@@ -18,7 +18,7 @@ For a detailed introduction to the AngusTester application, please see the: [Pro
 
 The [AngusTester](https://www.xcan.cloud) system architecture diagram illustrates the relationships among the main applications, services, components, and data flow. This diagram provides a comprehensive overview of how AngusTester can be deployed rapidly and effectively.
 
-![SystemArchitecture](docs/Images/SystemArchitecture-en.png)
+![SystemArchitecture](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/SystemArchitecture-en.png?fid=251751417168003559&fpt=S5cEQknNVBFrBYoXMwJeYrku0NECgaq5LLy0JDJ0)
 
 ## Features
 
@@ -75,7 +75,7 @@ The [AngusTester](https://www.xcan.cloud) system architecture diagram illustrate
 
 In each iteration, **the team adjusts and improves based on feedback from customers and stakeholders.** This flexibility allows the development team to respond promptly to changes in user demands, ensuring the final product better aligns with user expectations. Through regular reviews and feedback loops, the team can identify issues, optimize processes, and implement improvements in subsequent iterations, thereby continuously enhancing product quality and user satisfaction.
 
-![AgileDevelopment](docs/Images/AgileDevelopment-en.png)
+![AgileDevelopment](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/AgileDevelopment-en.png?fid=251751417168003547&fpt=cJtrXcKqHDinifAVloooQO5UMYQtbm1xiMseeUp0)
 
 - Agile Testing
 
@@ -83,7 +83,7 @@ In each iteration, **the team adjusts and improves based on feedback from custom
 
 **Through continuous feedback and collaboration, the testing team works closely with the development team to identify potential defects and risks.** This collaboration involves not only the design and execution of test cases but also understanding user stories and requirements. The goal of agile testing is to improve software quality, ensuring that it meets high standards in each iteration and fulfills user needs.
 
-![AgileTesting](docs/Images/AgileTesting-en.png)
+![AgileTesting](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/AgileTesting-en.png?fid=251751417168003551&fpt=iFgOChd9HoRhB8OKkQwMDr0m4BAXnZsBA1Dq7gFY)
 
 ## Plugins Support
 

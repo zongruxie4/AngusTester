@@ -18,7 +18,7 @@ AngusTester
 
 [AngusTester](https://www.xcan.cloud)系统架构图展示了主要应用程序、服务、组件之间的关系以及数据流，帮助您全面了解AngusTester如何快速部署。
 
-![SystemArchitecture.png](docs/Images/SystemArchitecture.png)
+![SystemArchitecture.png](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/SystemArchitecture.png?fid=251751417168003561&fpt=eRTvYMWpbCK4OhjXpSQZim3S88hO4z7msIQNMhSV)
 
 ## 产品特性
 
@@ -51,7 +51,7 @@ AngusTester
 
 在每个迭代中，**团队会根据来自客户和利益相关者的反馈进行调整和改进。** 这种灵活性使得开发团队能够及时响应用户需求的变化，确保最终产品更符合用户的期望和需求。通过定期的回顾和反馈循环，团队可以识别问题、优化流程，并在后续的迭代中实施改进，从而不断提升产品质量和用户满意度。
 
-![AgileDevelopment](docs/Images/AgileDevelopment.png)
+![AgileDevelopment](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/AgileDevelopment.png?fid=251751417168003549&fpt=0EE3SLzhTqktDwu6PJkwqkd9NQZWFEOZ3lixade7)
 
 - 敏捷测试
 
@@ -59,7 +59,7 @@ AngusTester
 
 **通过持续的反馈和协作，测试团队与开发团队密切合作，共同识别潜在的缺陷和风险。** 这种协作不仅包括测试用例的设计和执行，还涉及到对用户故事和需求的理解。敏捷测试的目标是提升软件的质量，确保软件在每个迭代中都能达到高标准，并满足用户的需求。
 
-![AgileTesting](docs/Images/AgileTesting.png)
+![AgileTesting](https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/AgileTesting.png?fid=251751417168003553&fpt=ZAJ6cKJNJJZl22DcX2dl3yY65y9likHP5dlOJuGd)
 
 ## 插件化实现
 
