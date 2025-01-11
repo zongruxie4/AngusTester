@@ -10,7 +10,7 @@
     <version>1.0.0</version>
   </parent>
 
-  <artifactId>import-openapi--plugin</artifactId>
+  <artifactId>import-openapi-plugin</artifactId>
   <name>AngusTester :: Extension :: Import Openapi Apis</name>
   <packaging>jar</packaging>
 
