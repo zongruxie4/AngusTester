@@ -1,0 +1,107 @@
+specification: angus/1.0.0
+info:
+  name: 简单的 Jdbc 功能测试
+  description: 这是 Jdbc 功能测试的一个示例
+type: TEST_FUNCTIONALITY
+plugin: Jdbc
+configuration:
+  thread:
+    threads: 1
+task:
+  arguments:
+    ignoreAssertions: false
+    jdbcSetting:
+      type: MYSQL
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://mysql01-sample.angusmock.cloud:3306/xcan_mockdata_sample
+      username: sample
+      password: 123456
+      isolation: TRANSACTION_REPEATABLE_READ
+      pool:
+        name: hikari
+        maximumPoolSize: 32
+        minimumIdle: 10
+        maxWaitTimeoutMillis: 60000
+  pipelines:
+    - target: JDBC
+      name: QueryUserEmpty
+      description: 通过查询语句查询用户
+      enabled: true
+      type: SELECT
+      sql: SELECT * FROM `user` WHERE username = 'JohnDoe'
+      maxResultRows: 1
+      timeoutInSecond: 60
+      assertions:
+        - name: 断言查询结果为空
+          enabled: true
+          type: BODY
+          assertionCondition: IS_EMPTY
+    - target: JDBC
+      name: InsertUser
+      description: 通过插入语句保存用户
+      enabled: true
+      beforeName: QueryUserEmpty
+      type: UPDATE
+      sql: "INSERT INTO `user` (username, password) VALUES ('JohnDoe', '@String(32)')"
+      timeoutInSecond: 60
+      assertions:
+        - name: 断言受影响的行数等于`1`
+          enabled: true
+          type: BODY
+          assertionCondition: EQUAL
+          expected: 1
+    - target: JDBC
+      name: UpdateUser
+      description: 通过预更新语句修改用户
+      enabled: true
+      beforeName: InsertUser
+      type: PREPARED_UPDATE
+      sql: UPDATE `user` SET password = ? WHERE username = ?
+      timeoutInSecond: 60
+      arguments:
+        - type: varchar
+          value: password123
+          inout: IN
+        - type: varchar
+          value: JohnDoe
+          inout: IN
+      assertions:
+        - name: 断言受影响的行数等于`1`
+          enabled: true
+          type: BODY
+          assertionCondition: EQUAL
+          expected: 1
+    - target: JDBC
+      name: QueryUser
+      description: 通过查询语句查询用户
+      enabled: true
+      beforeName: UpdateUser
+      type: SELECT
+      sql: SELECT * FROM `user` WHERE username = 'JohnDoe'
+      maxResultRows: 1
+      timeoutInSecond: 60
+      assertions:
+        - name: 断言查询结果包括`JohnDoe`.
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: JohnDoe
+        - name: 断言查询SQL响应时间不超过100毫秒
+          enabled: true
+          type: DURATION
+          assertionCondition: LESS_THAN
+          expected: 100
+    - target: JDBC
+      name: DeleteUser
+      description: 通过删除语句删除用户
+      enabled: true
+      beforeName: QueryUser
+      type: UPDATE
+      sql: DELETE FROM `user` WHERE username = 'JohnDoe'
+      timeoutInSecond: 60
+      assertions:
+        - name: 断言受影响的行数大于等于`1`
+          enabled: true
+          type: BODY
+          assertionCondition: GREATER_THAN_EQUAL
+          expected: 1

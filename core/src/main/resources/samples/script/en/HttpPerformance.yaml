@@ -1,0 +1,16 @@
+specification: angus/1.0.0
+info:
+  name: Simple http performance testing
+  description: This is an example of http customization performance testing.
+type: TEST_CUSTOMIZATION
+plugin: Http
+configuration:
+  duration: 1min
+  thread:
+    threads: 200
+task:
+  pipelines:
+    - target: HTTP
+      request:
+        method: GET
+        url: http://serv01-sample.angusmock.cloud:30010/benchmark

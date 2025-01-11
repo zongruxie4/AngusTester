@@ -1,0 +1,145 @@
+server:
+  port: ${ANGUSTESTER_PORT:1830}
+  servlet:
+    context-path: /
+
+xcan:
+  core:
+    enabled: true
+  global:
+    cors:
+      startWithPaths: [ '/' ]
+      credentials: true
+      origin: '*'
+      headers: '*'
+      methods: 'POST, GET, PUT, DELETE, PATCH, HEAD'
+  idgen:
+    enabled: true
+  idgenSwaggerUiMvcConfigurer:
+    enabled: true
+  datasource:
+    enabled: true
+    commonlink:
+      enabled: true
+  redis:
+    enabled: true
+  l2cache:
+    enabled: true
+    allowNullValues: true
+    composite:
+      l1AllOpen: true
+      l1Manual: false
+    # L1 cache
+    caffeine:
+      expireAfterWrite: 1800
+      expireAfterAccess: 600
+      initialCapacity: 50000
+      maximumSize: 500000
+    # L2 cache
+    redis:
+      defaultExpiration: 1800000
+      defaultPenetrationExpiration: 300000
+      expires: { setting: 7200000, settingTenant: 7200000, servicesSchema: 7200000, servicesComps: 7200000 }
+      topic: j2cache:angus
+  swagger:
+    enabled: true
+    description: AngusTester Boot Api
+    version: v1
+    license: ${info.app.license}
+    licenseUrl: ${info.app.licenseUrl}
+    contact:
+      name: '@organization.name@'
+      url: '@organization.url@'
+      email: dev@xcan.company
+  jackson:
+    defaultPropertyInclusion: always
+    dateFormat: yyyy-MM-dd HH:mm:ss
+    timeZone: ${info.app.timezone}
+    generator:
+      write_numbers_as_strings: true
+  validator:
+    enabled: true
+    extraMessages:
+      - classpath:/i18n/messages-angustester-model
+      - classpath:/i18n/messages-angustester-api
+      - classpath:/i18n/messages-angustester-core
+      - classpath:/i18n/messages-angustester-import-apis
+      - classpath:/i18n/messages-angusctrl-api
+      - classpath:/i18n/messages-angus-model
+      - classpath:/i18n/messages-angus-validator
+      - classpath:/i18n/messages-gm-api
+      - classpath:/i18n/messages-expense-api
+      - classpath:/i18n/messages-storage-api
+      - classpath:/i18n/messages-payproxy-api
+      - classpath:/i18n/messages-store-api
+  oauth:
+    enabled: true
+    holdType: resource_service
+    translateException: true
+
+info:
+  app:
+    name: '@project.name@'
+    editionType: '@editionType@'
+    version: '@project.version@'
+    artifactId: '@artifactId@'
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+    description: '@project.description@'
+    timezone: ${TIMEZONE:Asia/Shanghai}
+    profile: '@profile.active@'
+    runtime: ${RUNTIME:HOST}
+    license: XCan Business License, Version 1.0
+    licenseUrl: http://www.xcan.company/licenses/XCBL-1.0
+    organization: '@organization.name@'
+    organizationUrl: '@organization.url@'
+
+spring:
+  application:
+    name: '@artifactId@'
+  profiles:
+    active: '@profile.active@'
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  jmx:
+    enabled: true
+  main:
+    allow-bean-definition-overriding: true
+    banner-mode: OFF
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+
+logging:
+  config: classpath:spring-logback.xml
+  level:
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.springframework.cloud: WARN
+  file:
+    path: ${log.dir:logs}
+
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - enums
+          - systemlog
+          - appworkspace
+          - health
+          - info
+          - metrics
+          - serviceregistry
+  endpoint:
+    health:
+      enabled: true
+      show-details: always

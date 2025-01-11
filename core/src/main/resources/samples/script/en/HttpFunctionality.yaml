@@ -1,0 +1,65 @@
+specification: angus/1.0.0
+info:
+  name: Simple http functionality testing
+  description: This is an example of http functionality testing.
+type: TEST_FUNCTIONALITY
+plugin: Http
+configuration:
+  iterations: 10
+  thread:
+    threads: 1
+task:
+  arguments:
+    updateTestResult: true
+    ignoreAssertions: false
+  pipelines:
+    - target: HTTP
+      name: Case01
+      description: Test logging in with the correct username and password.
+      enabled: true
+      request:
+        method: POST
+        url: http://serv01-sample.angusmock.cloud:30010/user/signin
+        parameters:
+          - name: Content-Type
+            in: header
+            description: Content-Type is used to determine the request content
+            enabled: true
+            type: string
+            value: application/json
+        body:
+          rawContent: "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}"
+      assertions:
+        - name: Assert that the HTTP status code is `200`
+          enabled: true
+          type: STATUS
+          assertionCondition: EQUAL
+          expected: 200
+        - name: Assert the business code is `S`
+          enabled: true
+          type: BODY
+          assertionCondition: JSON_PATH_MATCH
+          expression: $..code
+          expected: S
+    - target: HTTP
+      name: Case02
+      description: "Test logging in with incorrect username and password, and returning\
+      \ a login failure message."
+      enabled: true
+      beforeName: Case01
+      request:
+        method: POST
+        url: http://serv01-sample.angusmock.cloud:30010/user/signin
+      assertions:
+        - name: Assert the business code is `E0`
+          enabled: true
+          type: BODY
+          assertionCondition: JSON_PATH_MATCH
+          expression: $..code
+          expected: E0
+        - name: Assert the failure message is `Login account or password error`
+          enabled: true
+          type: BODY
+          assertionCondition: JSON_PATH_MATCH
+          expression: $..msg
+          expected: Login account or password error

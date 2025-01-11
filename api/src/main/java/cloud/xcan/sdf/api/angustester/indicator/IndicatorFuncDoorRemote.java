@@ -1,0 +1,30 @@
+package cloud.xcan.sdf.api.angustester.indicator;
+
+import static cloud.xcan.sdf.spec.experimental.BizConstant.Header.OPT_TENANT_ID;
+
+import cloud.xcan.sdf.api.ApiLocaleResult;
+import cloud.xcan.sdf.api.angustester.indicator.vo.FuncVo;
+import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+@FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
+public interface IndicatorFuncDoorRemote {
+
+  @ApiOperation(value = "Query the indicator audit detail of functionality", nickname = "indicator:func:detailOrDefault:door")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class),
+      @ApiResponse(code = 404, message = "Resource not found", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/doorapi/v1/indicator/{targetType}/{targetId}/func/detailOrDefault")
+  ApiLocaleResult<FuncVo> detailOrDefault(
+      @RequestHeader(name = OPT_TENANT_ID) Long optTenantId,
+      @PathVariable("targetType") @ApiParam(name = "targetType", value = "Target type", allowableValues = "SERVICE,API", required = true) CombinedTargetType targetType,
+      @PathVariable("targetId") @ApiParam(name = "targetId", value = "Target id", required = true) Long targetId);
+
+}

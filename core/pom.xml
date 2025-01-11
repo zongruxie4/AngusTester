@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>AngusTester</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.core</artifactId>
+  <name>AngusTester :: Core</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.lettucex</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.parser</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.jdbc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.agent-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.mockservice-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.comp.jmock</groupId>
+      <artifactId>xcan-jmock.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.plugin-spring</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-gm.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-store.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-expense.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-storage.api</artifactId>
+    </dependency>
+
+    <!-- Note: Cannot move to the front, which will cause OAS failure in SDF -->
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angustester.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angustester.extension-import-apis</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.vngx</groupId>
+      <artifactId>vngx-jsch</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+    </dependency>
+
+    <!--aliyuncs-->
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>aliyun-java-sdk-core</artifactId>
+      <version>3.0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>aliyun-java-sdk-ecs</artifactId>
+      <version>4.10.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>ecs20140526</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>alidns20150109</artifactId>
+      <version>3.0.7</version>
+    </dependency>
+
+  </dependencies>
+</project>

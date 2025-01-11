@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>xcan-sdf</artifactId>
+    <groupId>cloud.xcan.sdf</groupId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>AngusTester</artifactId>
+  <name>AngusTester :: Parent</name>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <description>AngusTester (referred to as AT) helps software development teams conduct software
+    development and testing activities efficiently and sustainably, while meeting the requirements
+    of agile development and agile testing for clients.
+  </description>
+
+  <modules>
+    <module>model</module>
+    <module>api</module>
+    <module>core</module>
+    <module>boot</module>
+    <module>extension</module>
+    <module>docs</module>
+  </modules>
+
+  <organization>
+    <name>XCan Company</name>
+    <url>http://www.xcan.company</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>GPL-3.0 License</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+    </license>
+    <license>
+      <name>XCan Business License, Version 1.0</name>
+      <url>http://www.xcan.company/licenses/XCBL-1.0</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>scm:git:http://gitlab.xcan.work/angus/tester/angustester</url>
+    <connection>scm:git:git@gitlab.xcan.work/angus/tester/angustester.git</connection>
+    <developerConnection>scm:git:http://gitlab.xcan.work/angus/tester/angustester.git
+    </developerConnection>
+    <tag>0.1.0</tag>
+  </scm>
+
+  <issueManagement>
+    <system>gitlab</system>
+    <url>http://gitlab.xcan.work/angus/tester/angustester/-/issues</url>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <id>xiaolong.liu</id>
+      <name>xiaolong.liu</name>
+      <email>xiaolong.liu@xcan.company</email>
+      <organization>XCan Company</organization>
+      <organizationUrl>http://www.xcan.company</organizationUrl>
+      <roles>
+        <role>Developer</role>
+        <role>Project Manager</role>
+        <role>Architect</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <mailingLists>
+    <mailingList>
+      <name>Dev Mailing List</name>
+      <post>dev@xcan.company</post>
+      <subscribe>dev-subscribe@xcan.company</subscribe>
+      <unsubscribe>dev-unsubscribe@xcan.company</unsubscribe>
+    </mailingList>
+  </mailingLists>
+
+  <contributors/>
+
+  <properties>
+    <xcan-sdf.bom.version>1.0.0</xcan-sdf.bom.version>
+    <xcan-sdf-plugin.bom.version>1.0.0</xcan-sdf-plugin.bom.version>
+    <xcan-jmock.bom.version>1.0.0</xcan-jmock.bom.version>
+    <xcan-angus-bom.version>1.0.0</xcan-angus-bom.version>
+
+    <xcan-gm.api.version>1.0.0</xcan-gm.api.version>
+    <xcan-expense.api.version>1.0.0</xcan-expense.api.version>
+    <xcan-store.api.version>1.0.0</xcan-store.api.version>
+    <xcan-angusctrl.api.version>1.0.0</xcan-angusctrl.api.version>
+    <xcan-angusapi.api.version>1.0.0</xcan-angusapi.api.version>
+    <xcan-storage.api.version>1.0.0</xcan-storage.api.version>
+
+    <vngx-jsch.version>0.10</vngx-jsch.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-sdf.bom</artifactId>
+        <version>${xcan-sdf.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-sdf.plugin-bom</artifactId>
+        <version>${xcan-sdf-plugin.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.comp.jmock</groupId>
+        <artifactId>xcan-jmock.bom</artifactId>
+        <version>${xcan-jmock.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.angus</groupId>
+        <artifactId>xcan-angus.bom</artifactId>
+        <version>${xcan-angus-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.extension-import-apis</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.extension-analysis</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angustester.extension-report</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-gm.api</artifactId>
+        <version>${xcan-gm.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-storage.api</artifactId>
+        <version>${xcan-storage.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-store.api</artifactId>
+        <version>${xcan-store.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-expense.api</artifactId>
+        <version>${xcan-expense.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-angusctrl.api</artifactId>
+        <version>${xcan-angusctrl.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.vngx</groupId>
+        <artifactId>vngx-jsch</artifactId>
+        <version>${vngx-jsch.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+</project>

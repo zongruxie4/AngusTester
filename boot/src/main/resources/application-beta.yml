@@ -1,0 +1,144 @@
+eureka:
+  client:
+    # The default heartbeat implementation can effectively check whether the eureka client process is operating normally, but it cannot guarantee that the client application can provide services normally
+    # Change the way that eureka server detects the client's health, and use the /health endpoint of the actuator to detect
+    healthcheck:
+      enabled: true
+    # Maximum idle time to connect to eureka server
+    eureka-connection-idle-timeout-seconds: 10
+    # How long does it take to send instance information to the eureka server(s) after startup, the default is 40 seconds
+    initial-instance-info-replication-interval-seconds: 10
+    # The time interval for obtaining registration information from the eureka server registry (s), the default is 30 seconds
+    registry-fetch-interval-seconds: 10
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SECURITY_USER_NAME:discovery}:${DISCOVERY_SECURITY_USER_PASSD:discovery}@${DISCOVERY_HOST:beta-serv.xcan.cloud}:${DISCOVERY_PORT:1801}/eureka/
+  instance:
+    # Application name registered on eureka
+    appname: '@artifactId@'
+    # Instance ID registered on eureka server
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    # Renewal expiration time (default 90 seconds)
+    lease-expiration-duration-in-seconds: 30
+    # Renewal update interval (default 30 seconds)
+    lease-renewal-interval-in-seconds: 10
+    # The service client instance name shows the IP, the default is to show the host name + port
+    prefer-ip-address: true
+    # Configure the default status page
+    status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/swagger-ui/
+    health-check-url-path: /actuator/health
+    metadata-map:
+      # needed to trigger info and endpoint update after restart
+      startup: ${random.int}
+      # These two are needed so that the server can access the protected client endpoints
+      user.name: ${ADMIN_SECURITY_USER_NAME:admin}
+      user.password: ${ADMIN_SECURITY_USER_PASSD:admin}
+
+xcan:
+  trace:
+    enabled: true
+  cloud:
+    aasApiPrefix: ${AUTH_APIS_HOST:http://beta-apis.xcan.cloud}/aas
+    mockServiceDomainSuffix: ${MOCK_SERVICE_DOMAIN_SUFFIX:angusmock.cloud}
+    mockTesterApisServerUrl: ${MOCK_TESTER_APIS_SERVER_URL:http://beta-apis.xcan.cloud/altester}
+  # Hikari Datasource Configuration
+  datasource:
+    extra:
+      # Supporting databases: mysql、postgres
+      dbType: '@databaseType@'
+      # Supporting mode: single、master-slave
+      dbMode: '@databaseMode@'
+      entityPackages:
+        - cloud.xcan.sdf.idgen.entity
+        - cloud.xcan.sdf.api.commonlink
+        - cloud.xcan.sdf.core.angustester.domain
+    hikari:
+      # Configure to true when connecting to a read-only database to ensure safety
+      readOnly: false
+      # Test the validity of the connection
+      connectionTestQuery: SELECT 1 FROM DUAL
+      # Pool name
+      poolName: xcanHikariCP
+      # The maximum duration of a connection in the idle state (milliseconds), and it will be released (retired) when it expires. Default: 10 minutes
+      idleTimeout: 600000
+      # The life time of a connection (in milliseconds). It will be released if it is timed out and not used (retired). Default: 30 minutes.
+      # It is recommended to set 30 seconds less than the database timeout period. Refer to the MySQL wait_timeout parameter (show variables like'%timeout%' ;)
+      maxLifetime: 1800000
+      # The maximum number of connections allowed in the connection pool, default value: 10; recommended formula: ((core_count * 2) + effective_spindle_count)
+      maximumPoolSize: 30
+      # Minimum number of connections maintained when idle
+      minimumIdle: 10
+    mysql:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      type: com.zaxxer.hikari.HikariDataSource
+      url: jdbc:mysql://${ANGUS_TESTER_MYSQL_HOST:beta-mw.xcan.cloud}:${ANGUS_TESTER_MYSQL_PORT:3306}/xcan_angustester?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+      username: ${ANGUS_TESTER_MYSQL_USER:angustester}
+      password: ${ANGUS_TESTER_MYSQL_PWD:BEGINsi7Hvuc}
+      schema:
+        - mysql/idgen-schema.sql
+    postgresql:
+      driverClassName: org.postgresql.Driver
+      type: com.zaxxer.hikari.HikariDataSource
+      url: jdbc:postgresql://${ANGUS_TESTER_POSTGRES_HOST:beta-mw.xcan.cloud}:${ANGUS_TESTER_POSTGRES_PORT:5432}/xcan_angustester?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+      username: ${ANGUS_TESTER_POSTGRES_USER:angustester}
+      password: ${ANGUS_TESTER_POSTGRES_PWD:BEGINsi7Hvuc}
+      schema:
+        - postgres/idgen-schema.sql
+    # Second Level Cache Configuration
+    commonlink:
+      mysql:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://${COMMON_MYSQL_HOST:beta-mw.xcan.cloud}:${COMMON_MYSQL_PORT:3306}/${COMMON_MYSQL_DB:xcan_commonlink}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+        username: ${COMMON_MYSQL_USER:commonlink}
+        password: ${COMMON_MYSQL_PWD:LUYSMvzdVR0}
+      postgresql:
+        driverClassName: org.postgresql.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:postgresql://${COMMON_POSTGRES_HOST:beta-mw.xcan.cloud}:${COMMON_POSTGRES_PORT:5432}/${COMMON_POSTGRES_DB:xcan_commonlink}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+        username: ${COMMON_POSTGRES_USER:commonlink}
+        password: ${COMMON_POSTGRES_PWD:LUYSMvzdVR0}
+  redis:
+    host: ${ANGUS_TESTER_REDIS_HOST:beta-mw.xcan.cloud}
+    port: ${ANGUS_TESTER_REDIS_PORT:6379}
+    password: ${ANGUS_TESTER_REDIS_PWD:AcMMebXwmXPgrlC@ccH}
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 5
+
+security:
+  oauth2:
+    resource:
+      id: '@artifactId@'
+      preferTokenInfo: false
+      userInfoUri: ${AUTH_APIS_HOST:http://beta-apis.xcan.cloud}/gm/api/auth/user?serviceCode=@artifactId@
+
+spring:
+  # JPA Configuration Parameters
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    # show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 5
+          time_zone: ${info.app.timezone}
+        order_inserts: true
+        order_updates: true
+        enable_lazy_load_no_trans: true
+        session_factory:
+          statement_inspector: cloud.xcan.sdf.core.jpa.interceptor.TenantInterceptor
+    database: '@databaseType@'
+    database-platform: '@databaseDialect@'
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.engine.QueryParameters: debug
+    org.hibernate.engine.query.HQLQueryPlan: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+

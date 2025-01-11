@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JDBC_Testing_AngusTesterVSJMeter.md</title>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+  <style>
+    /* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+    /*---------------------------------------------------------------------------------------------
+     *  Copyright (c) Microsoft Corporation. All rights reserved.
+     *  Licensed under the MIT License. See License.txt in the project root for license information.
+     *--------------------------------------------------------------------------------------------*/
+
+    body {
+      font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+      font-size: var(--vscode-markdown-font-size, 14px);
+      padding: 0 26px;
+      line-height: var(--vscode-markdown-line-height, 22px);
+      word-wrap: break-word;
+    }
+
+    html, footer, header {
+      font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+      font-size: var(--vscode-markdown-font-size, 14px);
+    }
+
+    #code-csp-warning {
+      position: fixed;
+      top: 0;
+      right: 0;
+      color: white;
+      margin: 16px;
+      text-align: center;
+      font-size: 12px;
+      font-family: sans-serif;
+      background-color: #444444;
+      cursor: pointer;
+      padding: 6px;
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, .25);
+    }
+
+    #code-csp-warning:hover {
+      text-decoration: none;
+      background-color: #007acc;
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, .25);
+    }
+
+    body.scrollBeyondLastLine {
+      margin-bottom: calc(100vh - 22px);
+    }
+
+    body.showEditorSelection .code-line {
+      position: relative;
+    }
+
+    body.showEditorSelection .code-active-line:before,
+    body.showEditorSelection .code-line:hover:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -12px;
+      height: 100%;
+    }
+
+    body.showEditorSelection li.code-active-line:before,
+    body.showEditorSelection li.code-line:hover:before {
+      left: -30px;
+    }
+
+    .vscode-light.showEditorSelection .code-active-line:before {
+      border-left: 3px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .vscode-light.showEditorSelection .code-line:hover:before {
+      border-left: 3px solid rgba(0, 0, 0, 0.40);
+    }
+
+    .vscode-light.showEditorSelection .code-line .code-line:hover:before {
+      border-left: none;
+    }
+
+    .vscode-dark.showEditorSelection .code-active-line:before {
+      border-left: 3px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .vscode-dark.showEditorSelection .code-line:hover:before {
+      border-left: 3px solid rgba(255, 255, 255, 0.60);
+    }
+
+    .vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+      border-left: none;
+    }
+
+    .vscode-high-contrast.showEditorSelection .code-active-line:before {
+      border-left: 3px solid rgba(255, 160, 0, 0.7);
+    }
+
+    .vscode-high-contrast.showEditorSelection .code-line:hover:before {
+      border-left: 3px solid rgba(255, 160, 0, 1);
+    }
+
+    .vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+      border-left: none;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 1px solid -webkit-focus-ring-color;
+      outline-offset: -1px;
+    }
+
+    hr {
+      border: 0;
+      height: 2px;
+      border-bottom: 2px solid;
+    }
+
+    h1 {
+      padding-bottom: 0.3em;
+      line-height: 1.2;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+    }
+
+    h1, h2, h3 {
+      font-weight: normal;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    table > thead > tr > th {
+      text-align: left;
+      border-bottom: 1px solid;
+    }
+
+    table > thead > tr > th,
+    table > thead > tr > td,
+    table > tbody > tr > th,
+    table > tbody > tr > td {
+      padding: 5px 10px;
+    }
+
+    table > tbody > tr + tr > td {
+      border-top: 1px solid;
+    }
+
+    blockquote {
+      margin: 0 7px 0 5px;
+      padding: 0 16px 0 10px;
+      border-left-width: 5px;
+      border-left-style: solid;
+    }
+
+    code {
+      font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+      font-size: 1em;
+      line-height: 1.357em;
+    }
+
+    body.wordWrap pre {
+      white-space: pre-wrap;
+    }
+
+    pre:not(.hljs),
+    pre.hljs code > div {
+      padding: 16px;
+      border-radius: 3px;
+      overflow: auto;
+    }
+
+    pre code {
+      color: var(--vscode-editor-foreground);
+      tab-size: 4;
+    }
+
+    /** Theming */
+
+    .vscode-light pre {
+      background-color: rgba(220, 220, 220, 0.4);
+    }
+
+    .vscode-dark pre {
+      background-color: rgba(10, 10, 10, 0.4);
+    }
+
+    .vscode-high-contrast pre {
+      background-color: rgb(0, 0, 0);
+    }
+
+    .vscode-high-contrast h1 {
+      border-color: rgb(0, 0, 0);
+    }
+
+    .vscode-light table > thead > tr > th {
+      border-color: rgba(0, 0, 0, 0.69);
+    }
+
+    .vscode-dark table > thead > tr > th {
+      border-color: rgba(255, 255, 255, 0.69);
+    }
+
+    .vscode-light h1,
+    .vscode-light hr,
+    .vscode-light table > tbody > tr + tr > td {
+      border-color: rgba(0, 0, 0, 0.18);
+    }
+
+    .vscode-dark h1,
+    .vscode-dark hr,
+    .vscode-dark table > tbody > tr + tr > td {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+  </style>
+
+  <style>
+    /* Tomorrow Theme */
+    /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+    /* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+    /* Tomorrow Comment */
+    .hljs-comment,
+    .hljs-quote {
+      color: #8e908c;
+    }
+
+    /* Tomorrow Red */
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class,
+    .hljs-regexp,
+    .hljs-deletion {
+      color: #c82829;
+    }
+
+    /* Tomorrow Orange */
+    .hljs-number,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params,
+    .hljs-meta,
+    .hljs-link {
+      color: #f5871f;
+    }
+
+    /* Tomorrow Yellow */
+    .hljs-attribute {
+      color: #eab700;
+    }
+
+    /* Tomorrow Green */
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet,
+    .hljs-addition {
+      color: #718c00;
+    }
+
+    /* Tomorrow Blue */
+    .hljs-title,
+    .hljs-section {
+      color: #4271ae;
+    }
+
+    /* Tomorrow Purple */
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #8959a8;
+    }
+
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      color: #4d4d4c;
+      padding: 0.5em;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: bold;
+    }
+  </style>
+
+  <style>
+    /*
+     * Custom MD PDF CSS
+     */
+    html, footer, header {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+      padding: 0 12px;
+    }
+
+    pre {
+      background-color: #f8f8f8;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+
+    pre:not(.hljs) {
+      padding: 23px;
+      line-height: 19px;
+    }
+
+    blockquote {
+      background: rgba(127, 127, 127, 0.1);
+      border-color: rgba(0, 122, 204, 0.5);
+    }
+
+    .emoji {
+      height: 1.4em;
+    }
+
+    code {
+      font-size: 14px;
+      line-height: 19px;
+    }
+
+    /* for inline code */
+    :not(pre):not(.hljs) > code {
+      color: #C9AE75; /* Change the old color so it seems less like an error */
+      font-size: inherit;
+    }
+
+    /* Page Break : use <div class="page"/> to insert page break
+    -------------------------------------------------------- */
+    .page {
+      page-break-after: always;
+    }
+
+  </style>
+  <link rel="stylesheet"
+        href="file:///Volumes/workspace/workspace_xcan/xcan-source/xcan-apps/xcan-angus/docs/blogs/VS/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css"
+        type="text/css">
+  <link rel="stylesheet"
+        href="file:///Volumes/workspace/workspace_xcan/xcan-source/xcan-apps/xcan-angus/docs/blogs/VS/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css"
+        type="text/css">
+</head>
+
+<body>
+<h1 id="angustester-%E5%92%8C-jmeter-jdbc-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E6%AF%94%E8%BE%83">
+  AngusTester 和 JMeter JDBC 测试结果比较</h1>
+<p>本次测试主要目的是对比 AngusTester 和 JMeter 对 JDBC 协议性能表现。</p>
+<h2 id="%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83">测试环境</h2>
+<p>以下测试 AngusTester 和 JMeter 使用相同环境。注意：本次测试是在同一台 PC
+  机上进行，如果想测试特定配置下数据库的准确性能，需要将测试机和
+  MySQL服务器分开部署，或者使用更高配置的测试服务器。</p>
+<h3 id="%E8%BD%AF%E4%BB%B6">软件</h3>
+<ul>
+  <li>
+    <p>数据库 ：Percona Server MySQL 5.7.34-37</p>
+  </li>
+  <li>
+    <p>MySQL 驱动：mysql-connector-j-8.0.31.jar</p>
+  </li>
+  <li>
+    <p>Docker ：19.03.11 (使用 Docker 部署 MySQL)</p>
+  </li>
+  <li>
+    <p>测试工具</p>
+    <ul>
+      <li>AngusTester 1.0.0</li>
+      <li>Apache JMeter 4.0</li>
+    </ul>
+  </li>
+</ul>
+<h3 id="%E7%B3%BB%E7%BB%9F">系统</h3>
+<p>MacBookPro16 PC</p>
+<ul>
+  <li>Processors: 1</li>
+  <li>Cores: 8 * 2 Intel Core i9 2.3 GHz</li>
+  <li>Memory: 32 GB</li>
+</ul>
+<h3 id="mysql-%E9%85%8D%E7%BD%AE">MySQL 配置</h3>
+<pre class="hljs"><code><div>character_set_server = utf8mb4
+skip-host-cache
+skip-name-resolve
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+secure-file-priv=/var/lib/mysql-files
+user=mysql
+max_allowed_packet=100M
+max_connections=2000   # 最大连接数
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+log-error=/var/log/mysql/error.log
+pid-file=/var/run/mysqld/mysqld.pid
+</div></code></pre>
+<h3 id="%E6%B5%8B%E8%AF%95%E8%A1%A8">测试表</h3>
+<pre class="hljs"><code><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span
+    class="hljs-string">`user`</span>  (
+  <span class="hljs-string">`username`</span> <span class="hljs-built_in">varchar</span>(<span
+      class="hljs-number">255</span>) <span class="hljs-keyword">NOT</span> <span
+      class="hljs-literal">NULL</span>,
+  <span class="hljs-string">`password`</span> <span class="hljs-built_in">varchar</span>(<span
+      class="hljs-number">255</span>) <span class="hljs-literal">NULL</span> <span
+      class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">NULL</span>,
+  <span class="hljs-keyword">INDEX</span> <span class="hljs-string">`idx_username`</span>(<span
+      class="hljs-string">`username`</span>) <span class="hljs-keyword">USING</span> BTREE
+) <span class="hljs-keyword">ENGINE</span> = <span class="hljs-keyword">InnoDB</span>;
+</div></code></pre>
+<h2 id="%E6%B5%8B%E8%AF%95%E8%84%9A%E6%9C%AC">测试脚本</h2>
+<ul>
+  <li>JMeter Insert 脚本 (JDBC_Testing_Insert_AngusTesterVSJMeter.jmx)</li>
+</ul>
+<pre class="hljs"><code><div><span
+    class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">jmeterTestPlan</span> <span class="hljs-attr">version</span>=<span
+    class="hljs-string">"1.2"</span> <span class="hljs-attr">properties</span>=<span
+    class="hljs-string">"4.0"</span> <span class="hljs-attr">jmeter</span>=<span
+    class="hljs-string">"4.0 r1823414"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TestPlan</span> <span class="hljs-attr">guiclass</span>=<span
+        class="hljs-string">"TestPlanGui"</span> <span class="hljs-attr">testclass</span>=<span
+        class="hljs-string">"TestPlan"</span> <span class="hljs-attr">testname</span>=<span
+        class="hljs-string">"Jdbc prepared update performance testing"</span> <span
+        class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.comments"</span>&gt;</span><span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.functional_mode"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.tearDown_on_shutdown"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.serialize_threadgroups"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">elementProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.user_defined_variables"</span> <span class="hljs-attr">elementType</span>=<span
+          class="hljs-string">"Arguments"</span> <span class="hljs-attr">guiclass</span>=<span
+          class="hljs-string">"ArgumentsPanel"</span> <span class="hljs-attr">testclass</span>=<span
+          class="hljs-string">"Arguments"</span> <span class="hljs-attr">testname</span>=<span
+          class="hljs-string">"User Defined Variables"</span> <span class="hljs-attr">enabled</span>=<span
+          class="hljs-string">"true"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">collectionProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"Arguments.arguments"</span>/&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">elementProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.user_define_classpath"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TestPlan</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ThreadGroup</span> <span class="hljs-attr">guiclass</span>=<span
+          class="hljs-string">"ThreadGroupGui"</span> <span class="hljs-attr">testclass</span>=<span
+          class="hljs-string">"ThreadGroup"</span> <span class="hljs-attr">testname</span>=<span
+          class="hljs-string">"Thread Group"</span> <span class="hljs-attr">enabled</span>=<span
+          class="hljs-string">"true"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.on_sample_error"</span>&gt;</span>continue<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">elementProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.main_controller"</span> <span class="hljs-attr">elementType</span>=<span
+            class="hljs-string">"LoopController"</span> <span
+            class="hljs-attr">guiclass</span>=<span
+            class="hljs-string">"LoopControlPanel"</span> <span
+            class="hljs-attr">testclass</span>=<span
+            class="hljs-string">"LoopController"</span> <span
+            class="hljs-attr">testname</span>=<span
+            class="hljs-string">"Loop Controller"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"LoopController.continue_forever"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">intProp</span> <span class="hljs-attr">name</span>=<span
+              class="hljs-string">"LoopController.loops"</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span
+      class="hljs-name">intProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">elementProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.num_threads"</span>&gt;</span>1<span
+      class="hljs-comment">&lt;!-- 1/10/50/100/200/500/1000/2000 --&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.ramp_time"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.scheduler"</span>&gt;</span>true<span class="hljs-tag">&lt;/<span
+      class="hljs-name">boolProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.duration"</span>&gt;</span>60<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.delay"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ThreadGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">JDBCDataSource</span> <span
+            class="hljs-attr">guiclass</span>=<span class="hljs-string">"TestBeanGUI"</span> <span
+            class="hljs-attr">testclass</span>=<span
+            class="hljs-string">"JDBCDataSource"</span> <span
+            class="hljs-attr">testname</span>=<span class="hljs-string">"JDBC Connection Configuration"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"autocommit"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"checkQuery"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"connectionAge"</span>&gt;</span>5000<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span>&gt;</span>test<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dbUrl"</span>&gt;</span>jdbc:mysql://localhost:3306/xcan_mockdata_sample<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"driver"</span>&gt;</span>com.mysql.cj.jdbc.Driver<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"keepAlive"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"password"</span>&gt;</span>123456<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"poolMax"</span>&gt;</span>0<span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"timeout"</span>&gt;</span>100000<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"transactionIsolation"</span>&gt;</span>DEFAULT<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"trimInterval"</span>&gt;</span>200000<span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"username"</span>&gt;</span>sample<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">JDBCDataSource</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">JDBCSampler</span> <span
+            class="hljs-attr">guiclass</span>=<span class="hljs-string">"TestBeanGUI"</span> <span
+            class="hljs-attr">testclass</span>=<span class="hljs-string">"JDBCSampler"</span> <span
+            class="hljs-attr">testname</span>=<span class="hljs-string">"JDBC Request"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span>&gt;</span>test<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"query"</span>&gt;</span>INSERT INTO `user` (username, password) VALUES (?, ?)<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"queryArguments"</span>&gt;</span>${__RandomString(16,0123456789abcdefghijklmnopqrstuvwxyz,)},${__RandomString(32,0123456789abcdefghijklmnopqrstuvwxyz,)}<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"queryArgumentsTypes"</span>&gt;</span>VARCHAR,VARCHAR<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"queryTimeout"</span>&gt;</span>60<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"queryType"</span>&gt;</span>Prepared Update Statement<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"resultSetHandler"</span>&gt;</span>Store as String<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"resultVariable"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"variableNames"</span>&gt;</span><span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">JDBCSampler</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>/&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">jmeterTestPlan</span>&gt;</span>
+</div></code></pre>
+<p>运行脚本：</p>
+<pre class="hljs"><code><div>./jmeter -n -t ~/scripts/JDBC_Testing_Insert_AngusTesterVSJMeter.jmx
+</div></code></pre>
+<ul>
+  <li>AngusTester Insert 脚本 (JDBC_Testing_Insert_AngusTesterVSJMeter.yaml)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-attr">specification:</span> <span
+    class="hljs-string">angus/1.0.0</span>
+<span class="hljs-attr">info:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">Jdbc</span> <span
+      class="hljs-string">prepared</span> <span class="hljs-string">update</span> <span
+      class="hljs-string">performance</span> <span class="hljs-string">testing</span>
+  <span class="hljs-attr">description:</span> <span class="hljs-string">This</span> <span
+      class="hljs-string">is</span> <span class="hljs-string">an</span> <span class="hljs-string">example</span> <span
+      class="hljs-string">of</span> <span class="hljs-string">a</span> <span class="hljs-string">jdbc</span> <span
+      class="hljs-string">insert</span> <span class="hljs-string">statement</span> <span
+      class="hljs-string">testing.</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">TEST_PERFORMANCE</span>
+<span class="hljs-attr">plugin:</span> <span class="hljs-string">Jdbc</span>
+<span class="hljs-attr">configuration:</span>
+  <span class="hljs-attr">duration:</span> <span class="hljs-string">60s</span>
+  <span class="hljs-attr">thread:</span>
+    <span class="hljs-attr">threads:</span> <span class="hljs-number">1</span> <span
+      class="hljs-comment"># 1/10/50/100/200/500/1000/2000</span>
+  <span class="hljs-attr">priority:</span> <span class="hljs-number">1000</span>
+<span class="hljs-attr">task:</span>
+  <span class="hljs-attr">arguments:</span>
+    <span class="hljs-attr">jdbcSetting:</span>
+      <span class="hljs-attr">type:</span> <span class="hljs-string">MYSQL</span>
+      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/xcan_mockdata_sample</span>
+      <span class="hljs-attr">username:</span> <span class="hljs-string">sample</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-number">123456</span>
+    <span class="hljs-attr">ignoreAssertions:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">pipelines:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">target:</span> <span
+      class="hljs-string">JDBC</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">UpdateUser</span>
+      <span class="hljs-attr">description:</span> <span class="hljs-string">Save</span> <span
+      class="hljs-string">user</span> <span class="hljs-string">by</span> <span class="hljs-string">prepared</span> <span
+      class="hljs-string">update</span> <span class="hljs-string">statement</span>
+      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">type:</span> <span class="hljs-string">PREPARED_UPDATE</span>
+      <span class="hljs-attr">sql:</span> <span class="hljs-string">"INSERT INTO `user` (username, password) VALUES (?, ?)"</span>
+      <span class="hljs-attr">timeoutInSecond:</span> <span class="hljs-number">60</span>
+      <span class="hljs-attr">arguments:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span
+      class="hljs-string">varchar</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">"@String(16)"</span> <span
+      class="hljs-comment"># Mock数据函数</span>
+          <span class="hljs-attr">inout:</span> <span class="hljs-string">IN</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span
+      class="hljs-string">varchar</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">"@String(32)"</span> <span
+      class="hljs-comment"># Mock数据函数</span>
+          <span class="hljs-attr">inout:</span> <span class="hljs-string">IN</span>
+</div></code></pre>
+<p>运行脚本：</p>
+<pre class="hljs"><code><div>./startup-runner.sh -s ~/scripts/JDBC_Testing_Insert_AngusTesterVSJMeter.yaml -e 1001
+</div></code></pre>
+<ul>
+  <li>JMeter Select 脚本 (JDBC_Testing_Select_AngusTesterVSJMeter.jmx)</li>
+</ul>
+<pre class="hljs"><code><div><span
+    class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">jmeterTestPlan</span> <span class="hljs-attr">version</span>=<span
+    class="hljs-string">"1.2"</span> <span class="hljs-attr">properties</span>=<span
+    class="hljs-string">"4.0"</span> <span class="hljs-attr">jmeter</span>=<span
+    class="hljs-string">"4.0 r1823414"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TestPlan</span> <span class="hljs-attr">guiclass</span>=<span
+        class="hljs-string">"TestPlanGui"</span> <span class="hljs-attr">testclass</span>=<span
+        class="hljs-string">"TestPlan"</span> <span class="hljs-attr">testname</span>=<span
+        class="hljs-string">"Jdbc prepared select performance testing"</span> <span
+        class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.comments"</span>&gt;</span><span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.functional_mode"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.tearDown_on_shutdown"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.serialize_threadgroups"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">elementProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.user_defined_variables"</span> <span class="hljs-attr">elementType</span>=<span
+          class="hljs-string">"Arguments"</span> <span class="hljs-attr">guiclass</span>=<span
+          class="hljs-string">"ArgumentsPanel"</span> <span class="hljs-attr">testclass</span>=<span
+          class="hljs-string">"Arguments"</span> <span class="hljs-attr">testname</span>=<span
+          class="hljs-string">"User Defined Variables"</span> <span class="hljs-attr">enabled</span>=<span
+          class="hljs-string">"true"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">collectionProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"Arguments.arguments"</span>/&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">elementProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span class="hljs-attr">name</span>=<span
+          class="hljs-string">"TestPlan.user_define_classpath"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TestPlan</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ThreadGroup</span> <span class="hljs-attr">guiclass</span>=<span
+          class="hljs-string">"ThreadGroupGui"</span> <span class="hljs-attr">testclass</span>=<span
+          class="hljs-string">"ThreadGroup"</span> <span class="hljs-attr">testname</span>=<span
+          class="hljs-string">"Thread Group"</span> <span class="hljs-attr">enabled</span>=<span
+          class="hljs-string">"true"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.on_sample_error"</span>&gt;</span>continue<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">elementProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.main_controller"</span> <span class="hljs-attr">elementType</span>=<span
+            class="hljs-string">"LoopController"</span> <span
+            class="hljs-attr">guiclass</span>=<span
+            class="hljs-string">"LoopControlPanel"</span> <span
+            class="hljs-attr">testclass</span>=<span
+            class="hljs-string">"LoopController"</span> <span
+            class="hljs-attr">testname</span>=<span
+            class="hljs-string">"Loop Controller"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"LoopController.continue_forever"</span>&gt;</span>false<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">intProp</span> <span class="hljs-attr">name</span>=<span
+              class="hljs-string">"LoopController.loops"</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span
+      class="hljs-name">intProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">elementProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.num_threads"</span>&gt;</span>1<span
+      class="hljs-comment">&lt;!-- 1/10/50/100/200/500/1000/2000 --&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.ramp_time"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.scheduler"</span>&gt;</span>true<span class="hljs-tag">&lt;/<span
+      class="hljs-name">boolProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span class="hljs-string">"ThreadGroup.duration"</span>&gt;</span>60<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+            class="hljs-attr">name</span>=<span
+            class="hljs-string">"ThreadGroup.delay"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ThreadGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">JDBCDataSource</span> <span
+            class="hljs-attr">guiclass</span>=<span class="hljs-string">"TestBeanGUI"</span> <span
+            class="hljs-attr">testclass</span>=<span
+            class="hljs-string">"JDBCDataSource"</span> <span
+            class="hljs-attr">testname</span>=<span class="hljs-string">"JDBC Connection Configuration"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"autocommit"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"checkQuery"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"connectionAge"</span>&gt;</span>5000<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span>&gt;</span>test<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dbUrl"</span>&gt;</span>jdbc:mysql://localhost:3306/xcan_mockdata_sample<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"driver"</span>&gt;</span>com.mysql.cj.jdbc.Driver<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">boolProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"keepAlive"</span>&gt;</span>true<span
+      class="hljs-tag">&lt;/<span class="hljs-name">boolProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"password"</span>&gt;</span>123456<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"poolMax"</span>&gt;</span>0<span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"timeout"</span>&gt;</span>100000<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"transactionIsolation"</span>&gt;</span>DEFAULT<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"trimInterval"</span>&gt;</span>200000<span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"username"</span>&gt;</span>sample<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">JDBCDataSource</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">JDBCSampler</span> <span
+            class="hljs-attr">guiclass</span>=<span class="hljs-string">"TestBeanGUI"</span> <span
+            class="hljs-attr">testclass</span>=<span class="hljs-string">"JDBCSampler"</span> <span
+            class="hljs-attr">testname</span>=<span class="hljs-string">"JDBC Request"</span> <span
+            class="hljs-attr">enabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span>&gt;</span>test<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"query"</span>&gt;</span>SELECT * FROM `user` WHERE username = <span
+      class="hljs-symbol">&amp;apos;</span>FDgcM6u7xwbhkdCnz<span
+      class="hljs-symbol">&amp;apos;</span><span class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"queryArguments"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"queryArgumentsTypes"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"queryTimeout"</span>&gt;</span>60<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"queryType"</span>&gt;</span>Prepared Select Statement<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span class="hljs-string">"resultSetHandler"</span>&gt;</span>Store as String<span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"resultVariable"</span>&gt;</span><span
+      class="hljs-tag">&lt;/<span class="hljs-name">stringProp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">stringProp</span> <span
+              class="hljs-attr">name</span>=<span
+              class="hljs-string">"variableNames"</span>&gt;</span><span class="hljs-tag">&lt;/<span
+      class="hljs-name">stringProp</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">JDBCSampler</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hashTree</span>/&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">hashTree</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">jmeterTestPlan</span>&gt;</span>
+</div></code></pre>
+<p>运行脚本：</p>
+<pre class="hljs"><code><div>./jmeter -n -t ~/scripts/JDBC_Testing_Select_AngusTesterVSJMeter.jmx
+</div></code></pre>
+<ul>
+  <li>AngusTester Select 脚本 (JDBC_Testing_Select_AngusTesterVSJMeter.yaml)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-attr">specification:</span> <span
+    class="hljs-string">angus/1.0.0</span>
+<span class="hljs-attr">info:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">Jdbc</span> <span
+      class="hljs-string">prepared</span> <span class="hljs-string">select</span> <span
+      class="hljs-string">performance</span> <span class="hljs-string">testing</span>
+  <span class="hljs-attr">description:</span> <span class="hljs-string">This</span> <span
+      class="hljs-string">is</span> <span class="hljs-string">an</span> <span class="hljs-string">example</span> <span
+      class="hljs-string">of</span> <span class="hljs-string">a</span> <span class="hljs-string">jdbc</span> <span
+      class="hljs-string">prepared</span> <span class="hljs-string">select</span> <span
+      class="hljs-string">statement</span> <span class="hljs-string">testing.</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">TEST_PERFORMANCE</span>
+<span class="hljs-attr">plugin:</span> <span class="hljs-string">Jdbc</span>
+<span class="hljs-attr">configuration:</span>
+  <span class="hljs-attr">duration:</span> <span class="hljs-string">60s</span>
+  <span class="hljs-attr">thread:</span>
+    <span class="hljs-attr">threads:</span> <span class="hljs-number">1</span> <span
+      class="hljs-comment"># 1/10/50/100/200/500/1000/2000</span>
+  <span class="hljs-attr">priority:</span> <span class="hljs-number">1000</span>
+<span class="hljs-attr">task:</span>
+  <span class="hljs-attr">arguments:</span>
+    <span class="hljs-attr">ignoreAssertions:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">jdbcSetting:</span>
+      <span class="hljs-attr">type:</span> <span class="hljs-string">MYSQL</span>
+      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+      <span class="hljs-attr">jdbcUrl:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/xcan_mockdata_sample</span>
+      <span class="hljs-attr">username:</span> <span class="hljs-string">sample</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-number">123456</span>
+  <span class="hljs-attr">pipelines:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">target:</span> <span
+      class="hljs-string">JDBC</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">QueryUser</span>
+      <span class="hljs-attr">description:</span> <span class="hljs-string">Query</span> <span
+      class="hljs-string">user</span> <span class="hljs-string">by</span> <span class="hljs-string">prepared</span> <span
+      class="hljs-string">select</span> <span class="hljs-string">statement.</span>
+      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">type:</span> <span class="hljs-string">PREPARED_SELECT</span>
+      <span class="hljs-attr">sql:</span> <span class="hljs-string">SELECT</span> <span
+      class="hljs-string">*</span> <span class="hljs-string">FROM</span> <span class="hljs-string">`user`</span> <span
+      class="hljs-string">WHERE</span> <span class="hljs-string">username</span> <span
+      class="hljs-string">=</span> <span class="hljs-string">'FDgcM6u7xwbhkdCnz'</span>
+      <span class="hljs-attr">maxResultRows:</span> <span class="hljs-number">1</span>
+      <span class="hljs-attr">timeoutInSecond:</span> <span class="hljs-number">60</span>
+</div></code></pre>
+<p>运行脚本：</p>
+<pre class="hljs"><code><div>./startup-runner.sh -s ~/scripts/JDBC_Testing_Select_AngusTesterVSJMeter.yaml -e 1002
+</div></code></pre>
+<h2 id="%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C">测试结果</h2>
+<h3 id="insert-%E6%B5%8B%E8%AF%95">Insert 测试</h3>
+<ul>
+  <li>1 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 15:37:31 CST 2023 (1700811451582)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +      1 <span class="hljs-keyword">in</span> 00:00:01 =    1.6/s Avg:   560 Min:   560 Max:   560 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+summary +  16697 <span class="hljs-keyword">in</span> 00:00:27 =  611.7/s Avg:     1 Min:     1 Max:    38 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+summary =  16698 <span class="hljs-keyword">in</span> 00:00:28 =  598.0/s Avg:     1 Min:     1 Max:   560 Err:     0 (0.00%)
+summary +  17045 <span class="hljs-keyword">in</span> 00:00:30 =  568.2/s Avg:     1 Min:     1 Max:    83 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+summary =  33743 <span class="hljs-keyword">in</span> 00:00:58 =  582.6/s Avg:     1 Min:     1 Max:   560 Err:     0 (0.00%)
+summary +   1080 <span class="hljs-keyword">in</span> 00:00:02 =  504.7/s Avg:     1 Min:     1 Max:    12 Err:     0 (0.00%) Active: 0 Started: 1 Finished: 1
+summary =  34823 <span class="hljs-keyword">in</span> 00:01:00 =  579.8/s Avg:     1 Min:     1 Max:   560 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 15:38:32 CST 2023 (1700811512140)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 17:42:25 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 86.11MBM(Used), 9.15GBM(Free)
+  Bytes: 0.0B(Recv), 2.0MB(Write)               Iterations: 39560             Cpu: 5.42%(Proc), 460.27%(Sys)
+  Date: 11/24 05:41:24 to 11/24 05:42:24        Duration: 60 Second           Threads: 0/1  terminated
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean | Min | Max  | P50 | P75 | P90 | P99 | P999 | Trans | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+| Total | 39560   | 1.5  | 1.0 | 19.0 | 1.0 | 2.0 | 2.0 | 2.0 | 4.0  | 39560 | 659.32  | 0      | 0.0    | 0.0B   | 34.13KB |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>10 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 17:53:18 CST 2023 (1700819598435)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  23829 <span class="hljs-keyword">in</span> 00:00:11 = 2142.7/s Avg:     4 Min:     1 Max:   597 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+summary +  61228 <span class="hljs-keyword">in</span> 00:00:30 = 2040.9/s Avg:     4 Min:     2 Max:    45 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+summary =  85057 <span class="hljs-keyword">in</span> 00:00:41 = 2068.5/s Avg:     4 Min:     1 Max:   597 Err:     0 (0.00%)
+summary +  34121 <span class="hljs-keyword">in</span> 00:00:19 = 1801.2/s Avg:     5 Min:     2 Max:   127 Err:     0 (0.00%) Active: 0 Started: 10 Finished: 10
+summary = 119178 <span class="hljs-keyword">in</span> 00:01:00 = 1984.2/s Avg:     4 Min:     1 Max:   597 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 17:54:18 CST 2023 (1700819658945)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 17:56:08 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 101.2MBM(Used), 9.14GBM(Free)
+  Bytes: 0.0B(Recv), 6.36MB(Write)              Iterations: 125744            Cpu: 30.14%(Proc), 797.93%(Sys)
+  Date: 11/24 05:55:08 to 11/24 05:56:08        Duration: 60 Second           Threads: 0/10  terminated
++-------+---------+------+-----+--------+-----+-----+-----+------+------+--------+---------+--------+--------+--------+----------+
+| Name  | Samples | Mean | Min | Max    | P50 | P75 | P90 | P99  | P999 | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s  |
++-------+---------+------+-----+--------+-----+-----+-----+------+------+--------+---------+--------+--------+--------+----------+
+| Total | 125744  | 4.75 | 1.0 | 1005.0 | 4.0 | 5.0 | 7.0 | 13.0 | 29.0 | 125744 | 2095.66 | 0      | 0.0    | 0.0B   | 108.47KB |
++-------+---------+------+-----+--------+-----+-----+-----+------+------+--------+---------+--------+--------+--------+----------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>50 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 17:57:49 CST 2023 (1700819869164)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  34999 <span class="hljs-keyword">in</span> 00:00:10 = 3342.5/s Avg:    14 Min:     2 Max:   768 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+summary +  85981 <span class="hljs-keyword">in</span> 00:00:30 = 2866.0/s Avg:    17 Min:     3 Max:  1051 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+summary = 120980 <span class="hljs-keyword">in</span> 00:00:40 = 2989.3/s Avg:    16 Min:     2 Max:  1051 Err:     0 (0.00%)
+summary +  50604 <span class="hljs-keyword">in</span> 00:00:20 = 2546.9/s Avg:    19 Min:     3 Max:   379 Err:     0 (0.00%) Active: 0 Started: 50 Finished: 50
+summary = 171584 <span class="hljs-keyword">in</span> 00:01:00 = 2843.6/s Avg:    17 Min:     2 Max:  1051 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 17:58:49 CST 2023 (1700819929870)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 18:00:47 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 106.99MBM(Used), 9.13GBM(Free)
+  Bytes: 0.0B(Recv), 9.68MB(Write)              Iterations: 191423            Cpu: 65.26%(Proc), 813.71%(Sys)
+  Date: 11/24 05:59:47 to 11/24 06:00:47        Duration: 60 Second           Threads: 0/50  terminated
++-------+---------+-------+-----+-------+------+------+------+------+------+--------+---------+--------+--------+--------+----------+
+| Name  | Samples | Mean  | Min | Max   | P50  | P75  | P90  | P99  | P999 | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s  |
++-------+---------+-------+-----+-------+------+------+------+------+------+--------+---------+--------+--------+--------+----------+
+| Total | 191423  | 15.65 | 2.0 | 908.0 | 12.0 | 19.0 | 30.0 | 57.0 | 92.0 | 191423 | 3190.28 | 0      | 0.0    | 0.0B   | 165.12KB |
++-------+---------+-------+-----+-------+------+------+------+------+------+--------+---------+--------+--------+--------+----------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>100 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 18:01:45 CST 2023 (1700820105701)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  47439 <span class="hljs-keyword">in</span> 00:00:14 = 3417.5/s Avg:    29 Min:     2 Max:  1275 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
+summary +  78715 <span class="hljs-keyword">in</span> 00:00:30 = 2623.7/s Avg:    38 Min:     3 Max:  1032 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
+summary = 126154 <span class="hljs-keyword">in</span> 00:00:44 = 2874.8/s Avg:    34 Min:     2 Max:  1275 Err:     0 (0.00%)
+summary +  38058 <span class="hljs-keyword">in</span> 00:00:16 = 2347.5/s Avg:    42 Min:     3 Max:   315 Err:     0 (0.00%) Active: 0 Started: 100 Finished: 100
+summary = 164212 <span class="hljs-keyword">in</span> 00:01:00 = 2732.5/s Avg:    36 Min:     2 Max:  1275 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 18:02:46 CST 2023 (1700820166215)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 18:09:05 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 108.9MBM(Used), 9.13GBM(Free)
+  Bytes: 0.0B(Recv), 10.74MB(Write)             Iterations: 212575            Cpu: 54.37%(Proc), 1201.13%(Sys)
+  Date: 11/24 06:08:04 to 11/24 06:09:04        Duration: 60 Second           Threads: 0/100  terminated
++-------+---------+------+-----+-------+------+------+------+-------+-------+--------+---------+--------+--------+--------+----------+
+| Name  | Samples | Mean | Min | Max   | P50  | P75  | P90  | P99   | P999  | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s  |
++-------+---------+------+-----+-------+------+------+------+-------+-------+--------+---------+--------+--------+--------+----------+
+| Total | 212575  | 28.2 | 1.0 | 305.0 | 21.0 | 37.0 | 58.0 | 110.0 | 168.0 | 212575 | 3542.8  | 0      | 0.0    | 0.0B   | 183.37KB |
++-------+---------+------+-----+-------+------+------+------+-------+-------+--------+---------+--------+--------+--------+----------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>200 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 18:10:29 CST 2023 (1700820629673)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +      1 <span class="hljs-keyword">in</span> 00:00:03 =    0.4/s Avg:  2570 Min:  2570 Max:  2570 Err:     0 (0.00%) Active: 200 Started: 200 Finished: 0
+summary +  68344 <span class="hljs-keyword">in</span> 00:00:27 = 2528.4/s Avg:    83 Min:     3 Max:  3374 Err:     0 (0.00%) Active: 200 Started: 200 Finished: 0
+summary =  68345 <span class="hljs-keyword">in</span> 00:00:30 = 2299.4/s Avg:    83 Min:     3 Max:  3374 Err:     0 (0.00%)
+summary +  85912 <span class="hljs-keyword">in</span> 00:00:30 = 2877.5/s Avg:    71 Min:     2 Max:  1187 Err:     0 (0.00%) Active: 200 Started: 200 Finished: 0
+summary = 154257 <span class="hljs-keyword">in</span> 00:01:00 = 2589.1/s Avg:    76 Min:     2 Max:  3374 Err:     0 (0.00%)
+summary +   1702 <span class="hljs-keyword">in</span> 00:00:01 = 2676.1/s Avg:    71 Min:     4 Max:   379 Err:     0 (0.00%) Active: 0 Started: 200 Finished: 200
+summary = 155959 <span class="hljs-keyword">in</span> 00:01:00 = 2590.0/s Avg:    76 Min:     2 Max:  3374 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 18:11:30 CST 2023 (1700820690663)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 18:14:26 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 116.88MBM(Used), 9.12GBM(Free)
+  Bytes: 0.0B(Recv), 9.08MB(Write)              Iterations: 179738            Cpu: 61.37%(Proc), 1245.63%(Sys)
+  Date: 11/24 06:13:25 to 11/24 06:14:25        Duration: 60 Second           Threads: 0/200  terminated
++-------+---------+-------+-----+-------+------+------+-------+-------+-------+--------+---------+--------+--------+--------+----------+
+| Name  | Samples | Mean  | Min | Max   | P50  | P75  | P90   | P99   | P999  | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s  |
++-------+---------+-------+-----+-------+------+------+-------+-------+-------+--------+---------+--------+--------+--------+----------+
+| Total | 179738  | 66.72 | 2.0 | 670.0 | 50.0 | 89.0 | 141.0 | 270.0 | 398.0 | 179738 | 2995.53 | 0      | 0.0    | 0.0B   | 155.04KB |
++-------+---------+-------+-----+-------+------+------+-------+-------+-------+--------+---------+--------+--------+--------+----------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>500 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 18:15:41 CST 2023 (1700820941390)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  30277 <span class="hljs-keyword">in</span> 00:00:18 = 1661.8/s Avg:   294 Min:     3 Max:  5927 Err:     0 (0.00%) Active: 500 Started: 500 Finished: 0
+summary +  64740 <span class="hljs-keyword">in</span> 00:00:30 = 2157.9/s Avg:   232 Min:     3 Max:  2950 Err:     0 (0.00%) Active: 500 Started: 500 Finished: 0
+summary =  95017 <span class="hljs-keyword">in</span> 00:00:48 = 1970.5/s Avg:   252 Min:     3 Max:  5927 Err:     0 (0.00%)
+summary +  21322 <span class="hljs-keyword">in</span> 00:00:12 = 1759.8/s Avg:   281 Min:     3 Max:  3268 Err:     0 (0.00%) Active: 0 Started: 500 Finished: 500
+summary = 116339 <span class="hljs-keyword">in</span> 00:01:00 = 1928.2/s Avg:   257 Min:     3 Max:  5927 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 18:16:42 CST 2023 (1700821002123)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 18:18:24 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 277.65MBM(Used), 8.96GBM(Free)
+  Bytes: 0.0B(Recv), 7.36MB(Write)              Iterations: 145556            Cpu: 74.65%(Proc), 1175.65%(Sys)
+  Date: 11/24 06:17:24 to 11/24 06:18:24        Duration: 60 Second           Threads: 0/500  terminated
++-------+---------+--------+-----+--------+-------+-------+-------+--------+---------+--------+---------+--------+--------+--------+----------+
+| Name  | Samples | Mean   | Min | Max    | P50   | P75   | P90   | P99    | P999    | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s  |
++-------+---------+--------+-----+--------+-------+-------+-------+--------+---------+--------+---------+--------+--------+--------+----------+
+| Total | 145556  | 206.02 | 2.0 | 3642.0 | 140.0 | 258.0 | 434.0 | 1165.0 | 2002.89 | 145556 | 2425.69 | 0      | 0.0    | 0.0B   | 125.55KB |
++-------+---------+--------+-----+--------+-------+-------+-------+--------+---------+--------+---------+--------+--------+--------+----------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>1000 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 18:19:04 CST 2023 (1700821144033)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  29946 <span class="hljs-keyword">in</span> 00:00:26 = 1170.4/s Avg:   833 Min:     3 Max: 21601 Err:     0 (0.00%) Active: 1000 Started: 1000 Finished: 0
+summary +  49145 <span class="hljs-keyword">in</span> 00:00:30 = 1637.7/s Avg:   609 Min:     2 Max: 15572 Err:     0 (0.00%) Active: 1000 Started: 1000 Finished: 0
+summary =  79091 <span class="hljs-keyword">in</span> 00:00:56 = 1422.7/s Avg:   694 Min:     2 Max: 21601 Err:     0 (0.00%)
+summary +   7287 <span class="hljs-keyword">in</span> 00:00:05 = 1423.0/s Avg:   690 Min:     3 Max:  5303 Err:     0 (0.00%) Active: 0 Started: 1000 Finished: 1000
+summary =  86378 <span class="hljs-keyword">in</span> 00:01:01 = 1422.7/s Avg:   694 Min:     2 Max: 21601 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 18:20:05 CST 2023 (1700821205132)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 18:23:03 ***
+===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 152.27MBM(Used), 9.09GBM(Free)
+  Bytes: 0.0B(Recv), 4.9MB(Write)               Iterations: 96963             Cpu: 139.98%(Proc), 1146.34%(Sys)
+  Date: 11/24 06:22:03 to 11/24 06:23:03        Duration: 60 Second           Threads: 0/1000  terminated
++-------+---------+--------+-----+---------+-------+-------+--------+---------+---------+-------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean   | Min | Max     | P50   | P75   | P90    | P99     | P999    | Trans | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+--------+-----+---------+-------+-------+--------+---------+---------+-------+---------+--------+--------+--------+---------+
+| Total | 96963   | 616.32 | 2.0 | 22072.0 | 282.0 | 602.0 | 1301.0 | 6299.36 | 9910.36 | 96963 | 1615.81 | 0      | 0.0    | 0.0B   | 83.63KB |
++-------+---------+--------+-----+---------+-------+-------+--------+---------+---------+-------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>2000 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 18:30:50 CST 2023 (1700821850360)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +    176 <span class="hljs-keyword">in</span> 00:00:09 =   19.1/s Avg:  5352 Min:    65 Max:  9064 Err:    39 (22.16%) Active: 2000 Started: 2000 Finished: 0
+summary +  18908 <span class="hljs-keyword">in</span> 00:00:30 =  630.5/s Avg:  2913 Min:     4 Max: 39041 Err:     0 (0.00%) Active: 2000 Started: 2000 Finished: 0
+summary =  19084 <span class="hljs-keyword">in</span> 00:00:39 =  486.9/s Avg:  2935 Min:     4 Max: 39041 Err:    39 (0.20%)
+summary +  17040 <span class="hljs-keyword">in</span> 00:00:23 =  747.1/s Avg:  3778 Min:     3 Max: 60981 Err:     0 (0.00%) Active: 0 Started: 2000 Finished: 2000
+summary =  36124 <span class="hljs-keyword">in</span> 00:01:02 =  582.6/s Avg:  3333 Min:     3 Max: 60981 Err:    39 (0.11%)
+Tidying up ...    @ Fri Nov 24 18:31:52 CST 2023 (1700821912816)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  Exec ID: 1001                                 Run Mode: LOCAL               Memory: 352.47MBM(Used), 8.89GBM(Free)
+  Bytes: 0.0B(Recv), 2.86MB(Write)              Iterations: 56653             Cpu: 182.89%(Proc), 1318.76%(Sys)
+  Date: 11/24 06:33:28 to 11/24 06:34:28        Duration: 60 Second           Threads: 0/2000  terminated
++-------+---------+---------+-----+---------+-------+-------+--------+----------+----------+-------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean    | Min | Max     | P50   | P75   | P90    | P99      | P999     | Trans | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+---------+-----+---------+-------+-------+--------+----------+----------+-------+---------+--------+--------+--------+---------+
+| Total | 56653   | 2083.02 | 3.0 | 60515.0 | 331.0 | 899.0 | 5566.0 | 30802.46 | 49362.16 | 56653 | 944.14  | 3      | 0.01   | 0.0B   | 48.86KB |
++-------+---------+---------+-----+---------+-------+-------+--------+----------+----------+-------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<h3 id="select-%E6%B5%8B%E8%AF%95">Select 测试</h3>
+<p>以下测试 AngusTester 和 JMter 使用同一份表数据。</p>
+<ul>
+  <li>1 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:19:05 CST 2023 (1700806745751)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  22263 <span class="hljs-keyword">in</span> 00:00:24 =  933.3/s Avg:     1 Min:     0 Max:   390 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+summary +  29662 <span class="hljs-keyword">in</span> 00:00:30 =  988.8/s Avg:     0 Min:     0 Max:    50 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+summary =  51925 <span class="hljs-keyword">in</span> 00:00:54 =  964.2/s Avg:     1 Min:     0 Max:   390 Err:     0 (0.00%)
+summary +   6144 <span class="hljs-keyword">in</span> 00:00:06 =  990.6/s Avg:     0 Min:     0 Max:    10 Err:     0 (0.00%) Active: 0 Started: 1 Finished: 1
+summary =  58069 <span class="hljs-keyword">in</span> 00:01:00 =  966.9/s Avg:     1 Min:     0 Max:   390 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:20:06 CST 2023 (1700806806202)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:37:21 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 82.25MBM(Used), 9.15GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 62053             Cpu: 7.67%(Proc), 380.15%(Sys)
+  Date: 11/24 01:36:21 to 11/24 01:37:21        Duration: 60 Second           Threads: 0/1  terminated
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean | Min | Max  | P50 | P75 | P90 | P99 | P999 | Trans | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+| Total | 62053   | 0.96 | 0.0 | 28.0 | 1.0 | 1.0 | 1.0 | 2.0 | 2.0  | 62053 | 1034.2  | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+-------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>10 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:13:03 CST 2023 (1700806383302)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +      1 <span class="hljs-keyword">in</span> 00:00:01 =    1.8/s Avg:   498 Min:   498 Max:   498 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+summary + 147477 <span class="hljs-keyword">in</span> 00:00:26 = 5728.6/s Avg:     1 Min:     0 Max:  1008 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+summary = 147478 <span class="hljs-keyword">in</span> 00:00:26 = 5608.0/s Avg:     1 Min:     0 Max:  1008 Err:     0 (0.00%)
+summary + 188223 <span class="hljs-keyword">in</span> 00:00:30 = 6274.1/s Avg:     1 Min:     0 Max:   241 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+summary = 335701 <span class="hljs-keyword">in</span> 00:00:56 = 5962.9/s Avg:     1 Min:     0 Max:  1008 Err:     0 (0.00%)
+summary +  20618 <span class="hljs-keyword">in</span> 00:00:04 = 5489.4/s Avg:     1 Min:     1 Max:     7 Err:     0 (0.00%) Active: 0 Started: 10 Finished: 10
+summary = 356319 <span class="hljs-keyword">in</span> 00:01:00 = 5933.3/s Avg:     1 Min:     0 Max:  1008 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:14:03 CST 2023 (1700806443756)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 14:24:47 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 87.31MBM(Used), 9.15GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 400707            Cpu: 334.73%(Proc), 382.61%(Sys)
+  Date: 11/24 02:23:46 to 11/24 02:24:46        Duration: 60 Second           Threads: 0/10  terminated
++-------+---------+------+-----+------+-----+-----+-----+-----+------+--------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean | Min | Max  | P50 | P75 | P90 | P99 | P999 | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+--------+---------+--------+--------+--------+---------+
+| Total | 400707  | 1.49 | 0.0 | 42.0 | 1.0 | 2.0 | 2.0 | 3.0 | 5.0  | 400707 | 6678.34 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+------+-----+------+-----+-----+-----+-----+------+--------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>50 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:27:12 CST 2023 (1700807232560)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary + 191458 <span class="hljs-keyword">in</span> 00:00:17 = 11239.8/s Avg:     4 Min:     1 Max:   776 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+summary + 312263 <span class="hljs-keyword">in</span> 00:00:30 = 10408.8/s Avg:     4 Min:     1 Max:   212 Err:     0 (0.00%) Active: 50 Started: 50 Finished: 0
+summary = 503721 <span class="hljs-keyword">in</span> 00:00:47 = 10709.7/s Avg:     4 Min:     1 Max:   776 Err:     0 (0.00%)
+summary + 114747 <span class="hljs-keyword">in</span> 00:00:13 = 8807.7/s Avg:     5 Min:     1 Max:   145 Err:     0 (0.00%) Active: 0 Started: 50 Finished: 50
+summary = 618468 <span class="hljs-keyword">in</span> 00:01:00 = 10297.0/s Avg:     4 Min:     1 Max:   776 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:28:13 CST 2023 (1700807293029)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:33:43 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 211.14MBM(Used), 9.03GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 636037            Cpu: 120.28%(Proc), 1191.94%(Sys)
+  Date: 11/24 01:32:43 to 11/24 01:33:43        Duration: 60 Second           Threads: 0/50  terminated
++-------+---------+------+-----+------+-----+-----+-----+------+------+--------+----------+--------+--------+--------+---------+
+| Name  | Samples | Mean | Min | Max  | P50 | P75 | P90 | P99  | P999 | Trans  | Trans/s  | Errors | Error% | Recv/s | Write/s |
++-------+---------+------+-----+------+-----+-----+-----+------+------+--------+----------+--------+--------+--------+---------+
+| Total | 636037  | 4.71 | 1.0 | 72.0 | 4.0 | 5.0 | 7.0 | 13.0 | 26.0 | 636037 | 10600.26 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+------+-----+------+-----+-----+-----+------+------+--------+----------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>100 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:32:31 CST 2023 (1700807551943)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +      1 <span class="hljs-keyword">in</span> 00:00:01 =    0.9/s Avg:  1005 Min:  1005 Max:  1005 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
+summary + 354652 <span class="hljs-keyword">in</span> 00:00:27 = 13346.3/s Avg:     7 Min:     1 Max:  1047 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
+summary = 354653 <span class="hljs-keyword">in</span> 00:00:28 = 12819.1/s Avg:     7 Min:     1 Max:  1047 Err:     0 (0.00%)
+summary + 297778 <span class="hljs-keyword">in</span> 00:00:30 = 9925.6/s Avg:     9 Min:     1 Max:  2452 Err:     0 (0.00%) Active: 100 Started: 100 Finished: 0
+summary = 652431 <span class="hljs-keyword">in</span> 00:00:58 = 11313.6/s Avg:     8 Min:     1 Max:  2452 Err:     0 (0.00%)
+summary +  20427 <span class="hljs-keyword">in</span> 00:00:02 = 8423.5/s Avg:    11 Min:     2 Max:   126 Err:     0 (0.00%) Active: 0 Started: 100 Finished: 100
+summary = 672858 <span class="hljs-keyword">in</span> 00:01:00 = 11196.9/s Avg:     8 Min:     1 Max:  2452 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:33:32 CST 2023 (1700807612428)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:28:28 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 113.04MBM(Used), 9.12GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 811148            Cpu: 154.38%(Proc), 1271.88%(Sys)
+  Date: 11/24 01:27:28 to 11/24 01:28:28        Duration: 60 Second           Threads: 0/100  terminated
++-------+---------+------+-----+--------+-----+-----+------+------+------+--------+----------+--------+--------+--------+---------+
+| Name  | Samples | Mean | Min | Max    | P50 | P75 | P90  | P99  | P999 | Trans  | Trans/s  | Errors | Error% | Recv/s | Write/s |
++-------+---------+------+-----+--------+-----+-----+------+------+------+--------+----------+--------+--------+--------+---------+
+| Total | 811148  | 7.39 | 1.0 | 1010.0 | 6.0 | 8.0 | 12.0 | 23.0 | 44.0 | 811148 | 13518.68 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+------+-----+--------+-----+-----+------+------+------+--------+----------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>200 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:35:57 CST 2023 (1700807757194)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +    157 <span class="hljs-keyword">in</span> 00:00:02 =   69.1/s Avg:   784 Min:     4 Max:  2138 Err:     0 (0.00%) Active: 200 Started: 200 Finished: 0
+summary + 312258 <span class="hljs-keyword">in</span> 00:00:30 = 10415.9/s Avg:    19 Min:     1 Max:  2669 Err:     0 (0.00%) Active: 200 Started: 200 Finished: 0
+summary = 312415 <span class="hljs-keyword">in</span> 00:00:32 = 9687.0/s Avg:    20 Min:     1 Max:  2669 Err:     0 (0.00%)
+summary + 301315 <span class="hljs-keyword">in</span> 00:00:28 = 10802.1/s Avg:    18 Min:     1 Max:   899 Err:     0 (0.00%) Active: 0 Started: 200 Finished: 200
+summary = 613730 <span class="hljs-keyword">in</span> 00:01:00 = 10204.0/s Avg:    19 Min:     1 Max:  2669 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:36:57 CST 2023 (1700807817896)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:26:41 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 129.1MBM(Used), 9.11GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 932502            Cpu: 213.32%(Proc), 1423.54%(Sys)
+  Date: 11/24 01:25:41 to 11/24 01:26:41        Duration: 60 Second           Threads: 0/200  terminated
++-------+---------+-------+-----+-------+------+------+------+------+-------+--------+----------+--------+--------+--------+---------+
+| Name  | Samples | Mean  | Min | Max   | P50  | P75  | P90  | P99  | P999  | Trans  | Trans/s  | Errors | Error% | Recv/s | Write/s |
++-------+---------+-------+-----+-------+------+------+------+------+-------+--------+----------+--------+--------+--------+---------+
+| Total | 932502  | 12.86 | 1.0 | 383.0 | 10.0 | 14.0 | 23.0 | 59.0 | 134.0 | 932502 | 15540.66 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+-------+-----+-------+------+------+------+------+-------+--------+----------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>500 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:39:23 CST 2023 (1700807963131)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary +  26931 <span class="hljs-keyword">in</span> 00:00:06 = 4162.4/s Avg:   117 Min:     1 Max:  5782 Err:     0 (0.00%) Active: 500 Started: 500 Finished: 0
+summary + 330185 <span class="hljs-keyword">in</span> 00:00:30 = 11006.2/s Avg:    44 Min:     1 Max:  2146 Err:     0 (0.00%) Active: 500 Started: 500 Finished: 0
+summary = 357116 <span class="hljs-keyword">in</span> 00:00:36 = 9792.0/s Avg:    49 Min:     1 Max:  5782 Err:     0 (0.00%)
+summary + 210966 <span class="hljs-keyword">in</span> 00:00:24 = 8725.9/s Avg:    56 Min:     1 Max:  1531 Err:     0 (0.00%) Active: 0 Started: 500 Finished: 500
+summary = 568082 <span class="hljs-keyword">in</span> 00:01:01 = 9367.0/s Avg:    52 Min:     1 Max:  5782 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:40:24 CST 2023 (1700808024178)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:00:22 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 377.07MBM(Used), 8.87GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 758963            Cpu: 312.98%(Proc), 1481.01%(Sys)
+  Date: 11/24 12:59:21 to 11/24 01:00:21        Duration: 60 Second           Threads: 0/500  terminated
++-------+---------+-------+-----+--------+------+------+------+-------+-------+--------+----------+--------+--------+--------+---------+
+| Name  | Samples | Mean  | Min | Max    | P50  | P75  | P90  | P99   | P999  | Trans  | Trans/s  | Errors | Error% | Recv/s | Write/s |
++-------+---------+-------+-----+--------+------+------+------+-------+-------+--------+----------+--------+--------+--------+---------+
+| Total | 758963  | 39.51 | 1.0 | 1693.0 | 20.0 | 37.0 | 83.0 | 343.0 | 608.0 | 758963 | 12648.12 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+-------+-----+--------+------+------+------+-------+-------+--------+----------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>1000 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:40:35 CST 2023 (1700808035915)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary + 114773 <span class="hljs-keyword">in</span> 00:00:24 = 4849.3/s Avg:   196 Min:     2 Max: 14426 Err:     0 (0.00%) Active: 1000 Started: 1000 Finished: 0
+summary + 208145 <span class="hljs-keyword">in</span> 00:00:30 = 6947.4/s Avg:   146 Min:     1 Max:  3737 Err:     0 (0.00%) Active: 1000 Started: 1000 Finished: 0
+summary = 322918 <span class="hljs-keyword">in</span> 00:00:54 = 6021.4/s Avg:   164 Min:     1 Max: 14426 Err:     0 (0.00%)
+summary +  48142 <span class="hljs-keyword">in</span> 00:00:07 = 6982.2/s Avg:   139 Min:     2 Max:  2640 Err:     0 (0.00%) Active: 0 Started: 1000 Finished: 1000
+summary = 371060 <span class="hljs-keyword">in</span> 00:01:01 = 6130.8/s Avg:   161 Min:     1 Max: 14426 Err:     0 (0.00%)
+Tidying up ...    @ Fri Nov 24 14:41:36 CST 2023 (1700808096896)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:22:12 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 248.41MBM(Used), 8.99GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 752604            Cpu: 519.84%(Proc), 1499.72%(Sys)
+  Date: 11/24 01:21:11 to 11/24 01:22:11        Duration: 60 Second           Threads: 0/1000  terminated
++-------+---------+-------+-----+--------+------+------+-------+-------+--------+--------+----------+--------+--------+--------+---------+
+| Name  | Samples | Mean  | Min | Max    | P50  | P75  | P90   | P99   | P999   | Trans  | Trans/s  | Errors | Error% | Recv/s | Write/s |
++-------+---------+-------+-----+--------+------+------+-------+-------+--------+--------+----------+--------+--------+--------+---------+
+| Total | 752604  | 79.42 | 1.0 | 3352.0 | 33.0 | 65.0 | 181.0 | 810.0 | 1351.0 | 752604 | 12540.06 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+-------+-----+--------+------+------+-------+-------+--------+--------+----------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<ul>
+  <li>2000 个线程运行 60 秒测试结果</li>
+</ul>
+<p>JMeter 测试结果：</p>
+<pre class="hljs"><code><div>Starting the <span class="hljs-built_in">test</span> @ Fri Nov 24 14:42:32 CST 2023 (1700808152699)
+Waiting <span class="hljs-keyword">for</span> possible Shutdown/StopTestNow/Heapdump message on port 4445
+summary + 142530 <span class="hljs-keyword">in</span> 00:00:27 = 5301.9/s Avg:   248 Min:     1 Max: 26573 Err:    22 (0.02%) Active: 2000 Started: 2000 Finished: 0
+summary + 124608 <span class="hljs-keyword">in</span> 00:00:30 = 4153.6/s Avg:   597 Min:     2 Max: 47158 Err:     0 (0.00%) Active: 2000 Started: 2000 Finished: 0
+summary = 267138 <span class="hljs-keyword">in</span> 00:00:57 = 4696.3/s Avg:   411 Min:     1 Max: 47158 Err:    22 (0.01%)
+summary +  15477 <span class="hljs-keyword">in</span> 00:00:05 = 3236.5/s Avg:   608 Min:     3 Max:  8756 Err:     0 (0.00%) Active: 0 Started: 2000 Finished: 2000
+summary = 282615 <span class="hljs-keyword">in</span> 00:01:02 = 4583.0/s Avg:   422 Min:     1 Max: 47158 Err:    22 (0.01%)
+Tidying up ...    @ Fri Nov 24 14:43:34 CST 2023 (1700808214784)
+... end of run
+</div></code></pre>
+<p>AngusTester 测试结果：</p>
+<pre class="hljs"><code><div>===========================================================================================================================
+  *** Task Summary Report @ Jdbc TEST_PERFORMANCE @ 2023-11-24 13:24:44 ***
+===========================================================================================================================
+  Exec ID: 1002                                 Run Mode: LOCAL               Memory: 611.72MBM(Used), 8.64GBM(Free)
+  Bytes: 0.0B(Recv), 0.0B(Write)                Iterations: 401359            Cpu: 550.80%(Proc), 1347.39%(Sys)
+  Date: 11/24 01:23:43 to 11/24 01:24:43        Duration: 60 Second           Threads: 0/2000  terminated
++-------+---------+--------+-----+---------+------+-------+-------+--------+--------+--------+---------+--------+--------+--------+---------+
+| Name  | Samples | Mean   | Min | Max     | P50  | P75   | P90   | P99    | P999   | Trans  | Trans/s | Errors | Error% | Recv/s | Write/s |
++-------+---------+--------+-----+---------+------+-------+-------+--------+--------+--------+---------+--------+--------+--------+---------+
+| Total | 401359  | 296.03 | 1.0 | 13344.0 | 80.0 | 218.0 | 813.0 | 3054.0 | 6045.4 | 401359 | 6685.86 | 0      | 0.0    | 0.0B   | 0.0B    |
++-------+---------+--------+-----+---------+------+-------+-------+--------+--------+--------+---------+--------+--------+--------+---------+
+  *** Sampling Result: SUCCESS
+===========================================================================================================================
+</div></code></pre>
+<h2 id="%E5%AF%B9%E6%AF%94%E7%BB%93%E6%9E%9C">对比结果</h2>
+<ul>
+  <li>相同条件下，不断增加并发线程数，AngusTester 性能都要比 JMeter 高。
+    <ul>
+      <li>在 Insert 测试中，JMeter 50 并发时 QPS 达到最高 2843.6/s，AngusTester 100 并发时 QPS 达到最高
+        3542.8，<em><strong>最大 QPS 提升了 24.59%</strong></em>；
+      </li>
+      <li>在 Select 测试中，JMeter 100 并发时 QPS 达到最高 11196.9/s，AngusTester 200 并发时 QPS 达到最高
+        15540.66，<em><strong>最大 QPS 提升了 38.79</strong></em>%。
+      </li>
+    </ul>
+  </li>
+  <li>QPS 达到最大后，随着并发线程数继续增加，JMeter 性能下降迅速，AngusTester
+    性能下降比较平缓，表现平稳。
+  </li>
+</ul>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+package cloud.xcan.sdf.core.angustester.domain.services;
+
+public enum ServiceApisScope {
+  ALL, SELECTED_APIS, MATCH_APIS;
+
+  public boolean isAll(){
+    return this == ServiceApisScope.ALL;
+  }
+
+  public boolean isMatch(){
+    return this == ServiceApisScope.MATCH_APIS;
+  }
+
+  public boolean isSelected(){
+    return this == ServiceApisScope.SELECTED_APIS;
+  }
+
+}

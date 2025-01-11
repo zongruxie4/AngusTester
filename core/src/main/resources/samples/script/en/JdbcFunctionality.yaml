@@ -1,0 +1,109 @@
+specification: angus/1.0.0
+info:
+  name: Simple jdbc functionality testing
+  description: This is an example of jdbc functionality testing orchestration.
+type: TEST_FUNCTIONALITY
+plugin: Jdbc
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  arguments:
+    ignoreAssertions: false
+    jdbcSetting:
+      type: MYSQL
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://mysql01-sample.angusmock.cloud:3306/xcan_mockdata_sample
+      username: sample
+      password: 123456
+      isolation: TRANSACTION_REPEATABLE_READ
+      pool:
+        name: hikari
+        maximumPoolSize: 32
+        minimumIdle: 10
+        maxWaitTimeoutMillis: 60000
+  pipelines:
+    - target: JDBC
+      name: QueryUserEmpty
+      description: Query user by select statement
+      enabled: true
+      type: SELECT
+      sql: SELECT * FROM `user` WHERE username = 'JohnDoe'
+      maxResultRows: 1
+      timeoutInSecond: 60
+      assertions:
+        - name: Assert that the query result is empty.
+          enabled: true
+          type: BODY
+          assertionCondition: IS_EMPTY
+    - target: JDBC
+      name: InsertUser
+      description: Save user by insert statement
+      enabled: true
+      beforeName: QueryUserEmpty
+      type: UPDATE
+      sql: "INSERT INTO `user` (username, password) VALUES ('JohnDoe', '@String(32)')"
+      timeoutInSecond: 60
+      assertions:
+        - name: Assert that affected rows is 1.
+          enabled: true
+          type: BODY
+          assertionCondition: EQUAL
+          expected: 1
+    - target: JDBC
+      name: UpdateUser
+      description: "Modify user by prepared update statement, it is equivalent to static\
+      \ statement \"UPDATE `user` SET password = 'password123' WHERE username = 'JohnDoe'\""
+      enabled: true
+      beforeName: InsertUser
+      type: PREPARED_UPDATE
+      sql: UPDATE `user` SET password = ? WHERE username = ?
+      timeoutInSecond: 60
+      arguments:
+        - type: varchar
+          value: password123
+          inout: IN
+        - type: varchar
+          value: JohnDoe
+          inout: IN
+      assertions:
+        - name: Assert that affected rows is 1.
+          enabled: true
+          type: BODY
+          assertionCondition: EQUAL
+          expected: 1
+    - target: JDBC
+      name: QueryUser
+      description: Query user by select statement
+      enabled: true
+      beforeName: UpdateUser
+      type: SELECT
+      sql: SELECT * FROM `user` WHERE username = 'JohnDoe'
+      maxResultRows: 1
+      timeoutInSecond: 60
+      assertions:
+        - name: Assert that the query result includes JohnDoe.
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: JohnDoe
+        - name: Assert that the query SQL response time does not exceed 100 milliseconds.
+          enabled: true
+          type: DURATION
+          assertionCondition: LESS_THAN
+          expected: 100
+    - target: JDBC
+      name: DeleteUser
+      description: Delete user by delete statement
+      enabled: true
+      beforeName: QueryUser
+      type: UPDATE
+      sql: DELETE FROM `user` WHERE username = 'JohnDoe'
+      timeoutInSecond: 60
+      assertions:
+        - name: Assert that affected rows is 1.
+          enabled: true
+          type: BODY
+          assertionCondition: GREATER_THAN_EQUAL
+          expected: 1

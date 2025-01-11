@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>AngusTester</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.api</artifactId>
+  <name>AngusTester :: Api</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angustester.model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angustester.extension-import-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angusctrl.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-gm.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger.parser.v3</groupId>
+      <artifactId>swagger-parser</artifactId>
+    </dependency>
+    <!-- Fix:: swagger-parser-v2-converter java.lang.ClassNotFoundException: io.swagger.models.Responses-->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-models</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.parser.v3</groupId>
+      <artifactId>swagger-parser-v2-converter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.validator.v3</groupId>
+      <artifactId>swagger-validator</artifactId>
+    </dependency>
+
+  </dependencies>
+</project>

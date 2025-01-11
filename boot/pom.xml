@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>AngusTester</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.boot</artifactId>
+  <name>AngusTester :: Service Boot</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-angustester.core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.core-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.validator-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.swagger-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.idgen-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.resauth-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.l2cache-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <filters>
+      <filter>src/main/resources/application.yml</filter>
+      <filter>src/main/resources/application-${profile.active}.yml</filter>
+    </filters>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>application-local.yml</exclude>
+          <exclude>application-dev.yml</exclude>
+          <exclude>application-beta.yml</exclude>
+          <exclude>application-beta2.yml</exclude>
+          <exclude>application-beta3.yml</exclude>
+          <exclude>application-pre.yml</exclude>
+          <exclude>application-prod.yml</exclude>
+        </excludes>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>application-${profile.active}.yml</include>
+          <include>spring-logback.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/scripts</directory>
+        <includes>
+          <include>Dockerfile</include>
+          <include>startenv.sh</include>
+        </includes>
+        <filtering>true</filtering>
+        <targetPath>${project.basedir}/target</targetPath>
+      </resource>
+
+      <resource>
+        <directory>src/main/resources/samples</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+        <targetPath>${project.basedir}/target/samples</targetPath>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>repackage</id>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>cloud.xcan.sdf.XCanAngusTesterApplication</mainClass>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <!-- Swagger3 is not supported -->
+      <plugin>
+        <groupId>io.github.swagger2markup</groupId>
+        <artifactId>swagger2markup-maven-plugin</artifactId>
+        <version>1.3.4</version>
+        <configuration>
+          <swaggerInput>${project.parent.basedir}/docs/thirdapis/swagger-openapiv2-angustester.yaml
+          </swaggerInput>
+          <outputDir>${project.build.directory}/asciidoc</outputDir>
+          <config>
+            <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+            <!--<swagger2markup.markupLanguage>MARKDOWN</swagger2markup.markupLanguage>-->
+          </config>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- Deploy only community edition -->
+    <profile>
+      <id>xcan.dist.community</id>
+      <properties>
+        <editionType>COMMUNITY</editionType>
+      </properties>
+      <modules/>
+      <dependencies/>
+    </profile>
+    <!-- Deploy only enterprise edition -->
+    <profile>
+      <id>xcan.dist.enterprise</id>
+      <properties>
+        <editionType>ENTERPRISE</editionType>
+      </properties>
+      <modules/>
+      <dependencies>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-analysis</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-report</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- Deploy only datacenter edition -->
+    <profile>
+      <id>xcan.dist.datacenter</id>
+      <properties>
+        <editionType>DATACENTER</editionType>
+      </properties>
+      <modules/>
+      <dependencies>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-analysis</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-report</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <!-- Deploy only cloud service edition -->
+    <profile>
+      <id>xcan.dist.cloudService</id>
+      <properties>
+        <editionType>CLOUD_SERVICE</editionType>
+      </properties>
+      <modules/>
+      <dependencies>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-analysis</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>cloud.xcan.sdf</groupId>
+          <artifactId>xcan-angustester.extension-report</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
+</project>

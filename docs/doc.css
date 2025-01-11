@@ -1,0 +1,187 @@
+/* ---------------------------------------------------------------------------------------------
+ *  Copyright (c) XCan Corporation. All rights reserved.
+ *  Licensed under the XCBL-V1.0 License. See LICENSE in the project root for license information.
+ *-------------------------------------------------------------------------------------------- */
+html,
+footer,
+header {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+  font-size: 13px;
+}
+
+body {
+  padding: 0 26px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+  font-size: 13px;
+  line-height: 22px;
+  word-wrap: break-word;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.scale-image {
+  display: block; /* Ensure the image is a block-level element */
+  margin-right: auto; /* Automatic right margin to maintain left alignment */
+  margin-left: 0; /* Ensure there's no left margin */
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 1px solid -webkit-focus-ring-color;
+  outline-offset: -1px;
+}
+
+hr {
+  height: 2px;
+  border: 0;
+  border-bottom: 2px solid;
+}
+
+h1 {
+  padding-bottom: 0.3em;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  line-height: 1.2;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table > thead > tr > th {
+  border-bottom: 1px solid;
+  text-align: left;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+  padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+  border-top: 1px solid;
+}
+
+code {
+  font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+  font-size: 12px;
+  line-height: 15px;
+}
+
+body.wordWrap pre {
+  white-space: pre-wrap;
+}
+
+pre.hljs code > div {
+  padding: 16px;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+pre {
+  padding: 8px;
+  overflow-x: auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #f8f8f8;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* for inline code */
+:not(pre) /*:not(.hljs)*/ > code {
+  color: #c9ae75; /* Change the old color so it seems less like an error */
+  font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+  page-break-after: always;
+}
+
+#toc {
+  position: fixed; /* Floating on the right side */
+  right: 0; /* Align to the right */
+  top: 20px; /* Align to the top */
+  height: 100vh; /* Full viewport height */
+  width: 220px; /* Width of the table of contents */
+  padding: 20px;
+  padding-top: 60px;
+  border-left: 1px solid #F7F8FB; /* Left border */
+  overflow-y: auto; /* Allow vertical scrolling */
+  z-index: 0; /* Ensure the table of contents is on top */
+}
+
+#toc h2 {
+  margin: 0 0 10px 0;
+}
+
+#toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#toc ul li {
+  margin: 5px 0;
+}
+
+#toc ul li a {
+  text-decoration: none;
+  color: #686b6d;
+  display: block; /* 让整个区域可点击 */
+}
+
+#toc ul li a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+section {
+  margin: 0 20px;
+  padding-right: 250px;
+}
+
+.toc-h1 {
+  padding-left: 0;
+}
+
+.toc-h2 {
+  padding-left: 15px;
+}
+
+.toc-h3 {
+  padding-left: 30px;
+}
+
+.toc-h4 {
+  padding-left: 45px;
+}
+
+.toc-h5 {
+  padding-left: 60px;
+}
+
+/* 右侧导读 */

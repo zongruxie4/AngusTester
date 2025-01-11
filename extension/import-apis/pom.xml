@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>xcan-angustester.extension</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.extension-import-apis</artifactId>
+  <name>AngusTester :: Extension :: Import Apis :: Parent</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>api</module>
+    <module>plugins</module>
+  </modules>
+
+</project>

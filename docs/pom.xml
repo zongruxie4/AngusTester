@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>AngusTester</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.docs</artifactId>
+  <name>AngusTester :: Docs</name>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ruleoftech</groupId>
+        <artifactId>markdown-page-generator-plugin</artifactId>
+        <version>2.1.0</version>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <applyFiltering>true</applyFiltering>
+          <defaultTitle>AngusDocs</defaultTitle>
+          <headerHtmlFile>${project.basedir}/header.html</headerHtmlFile>
+          <footerHtmlFile>${project.basedir}/footer.html</footerHtmlFile>
+          <inputDirectory>${basedir}/docs/Guide/zh_CN</inputDirectory>
+          <outputDirectory>${project.build.directory}/docs/</outputDirectory>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <pegdownExtensions>TABLES,QUOTES,SMARTS,INSERTED,TASKLISTITEMS,STRIKETHROUGH,SUPPRESS_INLINE_HTML,SUPPRESS_HTML_BLOCKS,FENCED_CODE_BLOCKS,DEFINITIONS,MULTI_LINE_IMAGE_URLS</pegdownExtensions>
+          <attributes>
+            <attribute>Image|class=scale-image</attribute>
+          </attributes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

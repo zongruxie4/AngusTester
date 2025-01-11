@@ -1,0 +1,255 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI3 Sample
+  description: |-
+    This is a AngusTester api sample based on the OpenAPI specification.
+    You can find out more about AngusTester at https://www.xcan.cloud/help.
+  termsOfService: http://www.xcan.cloud/terms/
+  contact:
+    name: XCan Cloud
+    email: technical_support@xcancloud.com
+  license:
+    name: XCBL 1.0
+    url: http://www.xcan.company/licenses/xcbl-1.0.txt
+  version: "1.0"
+externalDocs:
+  description: Find out more about OpenAPI Specification
+  url: http://swagger.io
+tags:
+  - name: user
+    description: Operations about user
+  - name: testing
+    description: Operations about testing
+servers:
+  - url: "http://{env}-sample.angusmock.cloud:30010"
+    variables:
+      env:
+        default: serv01
+        enum:
+          - serv01
+          - serv02
+paths:
+  /user/signup:
+    post:
+      tags:
+        - user
+      summary: User registration operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: "admin"
+                password:
+                  type: string
+                  example: "admin"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "S"
+                  msg:
+                    type: string
+                    example: "Success"
+        '400':
+          description: Username or password is missing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "E0"
+                  msg:
+                    type: string
+                    example: "Username and password are required"
+  /user/signin:
+    post:
+      tags:
+        - user
+      summary: User login operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: "admin"
+                password:
+                  type: string
+                  example: "admin"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Success"
+  /user/{username}:
+    get:
+      summary: Query user information operation
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "admin"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "S"
+                  msg:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "181622ea2a1f4934ad6bec0308390da9"
+                      expires_in:
+                        type: integer
+                        format: int32
+                        example: 3599
+                      token_type:
+                        type: string
+                        example: "bearer"
+        '400':
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "E0"
+                  msg:
+                    type: string
+                    example: "Login account or password error"
+    put:
+      tags:
+        - user
+      summary: Modify user information operation
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "admin"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age:
+                  type: string
+                  example: "S"
+                hobbies:
+                  type: string
+                  example: "swimming, playing basketball"
+                avatar:
+                  type: string
+                  example: "http://serv01-sample.angusmock.cloud:30010/user/admin/avatar.png"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "S"
+                  msg:
+                    type: string
+                    example: "Success"
+  /user/{username}/avatar.png:
+    get:
+      tags:
+        - user
+      summary: Download user avatar operation
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "admin"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+  /benchmark:
+    get:
+      tags:
+        - testing
+      summary: A benchmark performance testing example operation
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Success"
+  /business:
+    get:
+      tags:
+        - testing
+      summary: Mock business processing delay operation
+      parameters:
+        - name: delay
+          in: query
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "S"
+                  msg:
+                    type: string
+                    example: "Respond with a delay of 1 millisecond."

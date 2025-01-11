@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>xcan-angustester.extension-import-apis</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.extension-import-api</artifactId>
+  <name>AngusTester :: Extension :: Import Apis :: Api</name>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.plugin-spring</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.spec</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.core</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angus.core</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger.validator.v3</groupId>
+      <artifactId>swagger-validator</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

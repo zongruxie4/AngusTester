@@ -1,0 +1,31 @@
+specification: angus/1.0.0
+info:
+  name: 简单的 Jdbc 性能测试
+  description: 这是 Jdbc 性能测试的一个示例
+type: TEST_CUSTOMIZATION
+plugin: Jdbc
+configuration:
+  duration: 1min
+  thread:
+    threads: 200
+task:
+  arguments:
+    ignoreAssertions: true
+    jdbcSetting:
+      type: MYSQL
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://mysql01-sample.angusmock.cloud:3306/xcan_mockdata_sample
+      username: sample
+      password: 123456
+      isolation: TRANSACTION_REPEATABLE_READ
+      pool:
+        name: hikari
+        maximumPoolSize: 32
+        minimumIdle: 10
+        maxWaitTimeoutMillis: 60000
+  pipelines:
+    - target: JDBC
+      name: QueryUser
+      description: Query user by select statement
+      type: SELECT
+      sql: "SELECT * FROM `user` WHERE username = '@String(32)'"

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>cloud.xcan.sdf</groupId>
+    <artifactId>AngusTester</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>xcan-angustester.extension</artifactId>
+  <name>AngusTester :: Extension :: Parent</name>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>import-apis</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <java.version>11</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    <xcan-sdf.bom.version>1.0.0</xcan-sdf.bom.version>
+    <xcan-sdf-plugin.bom.version>1.0.0</xcan-sdf-plugin.bom.version>
+  </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>xcan-maven-release</id>
+      <name>XCan Release</name>
+      <url>http://nexus.xcan.work/repository/xcan-maven-release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>xcan-maven-snapshot</id>
+      <name>XCan Snapshot</name>
+      <url>http://nexus.xcan.work/repository/xcan-maven-snapshot/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!--  The SLF4J API implements. -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-sdf.bom</artifactId>
+        <version>${xcan-sdf.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.sdf</groupId>
+        <artifactId>xcan-sdf.plugin-bom</artifactId>
+        <version>${xcan-sdf-plugin.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
