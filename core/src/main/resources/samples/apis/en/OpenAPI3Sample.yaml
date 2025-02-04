@@ -10,7 +10,7 @@ info:
     email: technical_support@xcancloud.com
   license:
     name: XCBL 1.0
-    url: http://www.xcan.company/licenses/xcbl-1.0.txt
+    url: http://www.xcan.cloud/licenses/xcbl-1.0.txt
   version: "1.0"
 externalDocs:
   description: Find out more about OpenAPI Specification

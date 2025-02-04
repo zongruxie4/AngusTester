@@ -122,7 +122,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
         authDb.setAuths(auth.getAuths());
         servicesAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.AUTH_UPDATED,
               authObjectName));

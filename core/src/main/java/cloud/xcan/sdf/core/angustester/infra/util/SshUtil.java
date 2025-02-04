@@ -41,10 +41,10 @@ public class SshUtil {
     SshUtil ssh = new SshUtil("192.168.0.102", 22, "xcan", "xc@123");
     log.info(ssh.run("uname -s"));
     log.info("====isAvailable result:{}", ssh.isAvailable());
-//    log.info("====exec result:{}",
-//        ssh.exec("curl -o /data/temp/arthas-boot.jar https://arthas.aliyun.com/arthas-boot.jar"));
-//    log.info("====shell result:{}",
-//        ssh.shell("curl -o /data/temp/arthas-boot.jar https://arthas.aliyun.com/arthas-boot.jar"));
+    //    log.info("====exec result:{}",
+    //        ssh.exec("curl -o /data/temp/arthas-boot.jar https://arthas.aliyun.com/arthas-boot.jar"));
+    //    log.info("====shell result:{}",
+    //        ssh.shell("curl -o /data/temp/arthas-boot.jar https://arthas.aliyun.com/arthas-boot.jar"));
   }
 
   /**

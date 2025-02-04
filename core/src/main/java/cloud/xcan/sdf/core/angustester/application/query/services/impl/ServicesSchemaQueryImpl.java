@@ -7,6 +7,7 @@ import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.extension.angustester.api.utils.OpenApiParser.checkAndParseOpenApi;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.distinctByKey;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.UrlEnvVariableChecker.containsEnvVariable;
@@ -375,7 +376,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
         // Use map to remove duplicates
         Map<String, ServicesComp> finalRefComps = new HashMap<>();
         for (ServicesComp comp : allComps) {
-          if (apisRefComps.contains(comp.getRef())){
+          if (apisRefComps.contains(comp.getRef()) && !finalRefComps.containsKey(comp.getRef())) {
             finalRefComps.put(comp.getRef(), comp);
           }
         }

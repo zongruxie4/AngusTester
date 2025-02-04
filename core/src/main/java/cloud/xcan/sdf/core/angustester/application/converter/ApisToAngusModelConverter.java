@@ -250,7 +250,8 @@ public class ApisToAngusModelConverter {
         : isNotEmpty(apisDb.getAvailableServers()) ? apisDb.getAvailableServers().stream()
             .filter(Server::isValidUrl).findFirst().orElse(null) : null;
     operation.endpoint = apisDb.getEndpoint();
-    operation.authentication = apisDb.getAuthentication();
+    operation.authentication = apisDb.isAuthSchemaRef()
+        ? apisDb.getRefAuthentication() : apisDb.getAuthentication();
     operation.parameters(apisDb.getParameters());
     operation.requestBody(apisDb.getRequestBody());
     // Fix:: The responses is required for OAS parser
@@ -332,7 +333,8 @@ public class ApisToAngusModelConverter {
     operation.method = caseDb.getMethod().name();
     operation.currentServer = caseDb.getCurrentServer();
     operation.endpoint = caseDb.getEndpoint();
-    operation.authentication = caseDb.getAuthentication();
+    operation.authentication = caseDb.isAuthSchemaRef()
+        ? caseDb.getRefAuthentication() : caseDb.getAuthentication();
     operation.parameters(caseDb.getParameters());
     operation.requestBody(caseDb.getRequestBody());
     // Fix:: The responses is required for OAS parser

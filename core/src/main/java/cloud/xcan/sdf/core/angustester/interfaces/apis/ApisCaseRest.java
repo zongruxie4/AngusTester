@@ -103,7 +103,7 @@ public class ApisCaseRest {
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/enabled")
   public ApiLocaleResult<?> enabled(
-      @Valid @NotEmpty @ApiParam(name = "ids", value = "Case ids", required = true) @RequestParam(value = "enabled") Set<Long> ids,
+      @Valid @NotEmpty @ApiParam(name = "ids", value = "Case ids", required = true) @RequestParam(value = "ids") Set<Long> ids,
       @Valid @NotNull @ApiParam(name = "enabled", value = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     apisCaseFacade.enabled(ids, enabled);
     return ApiLocaleResult.success();

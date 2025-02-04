@@ -14,18 +14,20 @@ import static cloud.xcan.sdf.core.angustester.application.converter.ApisToAngusM
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.importDtoToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.setReplaceInfo;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.toAngusAddScript;
+import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.SCRIPT_CONTENT_PARSE_ERROR;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.DELETED;
+import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
 import static cloud.xcan.sdf.spec.experimental.StandardCharsets.UTF_8;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.model.element.http.Http;
@@ -44,6 +46,8 @@ import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptTagCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.ApisToAngusModelConverter;
 import cloud.xcan.sdf.core.angustester.application.converter.DatasetConverter;
 import cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter;
+import cloud.xcan.sdf.core.angustester.application.query.apis.ApisCaseQuery;
+import cloud.xcan.sdf.core.angustester.application.query.apis.ApisQuery;
 import cloud.xcan.sdf.core.angustester.application.query.data.DatasetTargetQuery;
 import cloud.xcan.sdf.core.angustester.application.query.data.VariableTargetQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQuery;
@@ -70,6 +74,7 @@ import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -104,6 +109,12 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Resource
   private ScriptTagCmd scriptTagCmd;
+
+  @Resource
+  private ApisQuery apisQuery;
+
+  @Resource
+  private ApisCaseQuery apisCaseQuery;
 
   @Resource
   private ScenarioRepo scenarioRepo;
@@ -286,7 +297,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
       @Override
       protected void checkParams() {
-        ProtocolAssert.assertNotNull(projectId, "Parameter projectId is null");
+        assertNotNull(projectId, "Parameter projectId is null");
 
         // Check and serialize script
         content = scriptQuery.checkAndSerialize(angusScript, true);
@@ -411,13 +422,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
     if (nonNull(angusScript)) {
       scriptDb.setPlugin(angusScript.getPlugin());
+      judgeScriptType(scriptDb, angusScript);
     }
 
-    judgeScriptType(scriptDb, angusScript);
     scriptRepo.save(scriptDb);
 
     // Replace scripts tags
-    if (replaceTag) {
+    if (replaceTag && nonNull(angusScript)) {
       scriptTagCmd.replace(scriptDb.getId(), angusScript.getTags());
     }
 
@@ -604,18 +615,21 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         // NOOP
       }
 
-      @SneakyThrows
       @Override
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         for (String file : SAMPLE_SCRIPT_FILES) {
           URL resourceUrl = this.getClass().getResource("/samples/script/"
               + getDefaultLanguage().getValue() + "/" + file);
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-          Script script = importDtoToDomain(angusScript.getInfo().getName(),
-              angusScript.getInfo().getDescription(), content);
-          idKeys.add(imports(script));
+          try {
+            String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+            AngusScript angusScript = scriptQuery.checkAndParse(content, true);
+            Script script = importDtoToDomain(angusScript.getInfo().getName(),
+                angusScript.getInfo().getDescription(), content);
+            idKeys.add(imports(script));
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
         }
         return idKeys;
       }
@@ -632,14 +646,17 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
             "Importing content and files must specify one of them");
       }
 
-      @SneakyThrows
       @Override
       protected IdKey<Long, Object> process() {
         if (isBlank(script.getContent())) {
-          String content = copyToString(script.getFile().getInputStream(), UTF_8);
-          ProtocolAssert.assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
-              "Script length exceeds the limit of " + ANGUS_SCRIPT_LENGTH);
-          script.setContent(content);
+          try {
+            String content = copyToString(script.getFile().getInputStream(), UTF_8);
+            ProtocolAssert.assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
+                "Script length exceeds the limit of " + ANGUS_SCRIPT_LENGTH);
+            script.setContent(content);
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
         }
 
         IdKey<Long, Object> idKey = add(script, false);
@@ -715,6 +732,17 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   @Transactional(rollbackFor = Exception.class)
   @Override
   public long syncApisCaseToScript(Apis apisDb, List<ApisCase> casesDb) {
+    // Replace authentication references
+    for (ApisCase caseDb : casesDb) {
+      Map<String, String> allRefModels = apisCaseQuery.findCaseAllRef(caseDb);
+      caseDb.setResolvedRefModels(allRefModels);
+
+      if (nonNull(caseDb.getAuthentication()) && caseDb.isAuthSchemaRef()
+          && caseDb.includeSchemaRef(caseDb.getAuthentication().get$ref())) {
+        apisCaseQuery.setAndGetRefAuthentication(caseDb);
+      }
+    }
+
     Script scriptDb = scriptQuery.findBySourceAndScriptType(ScriptSource.API, apisDb.getId(),
         TEST_FUNCTIONALITY);
     List<Long> caseIds = casesDb.stream().map(ApisCase::getId).collect(Collectors.toList());
@@ -724,6 +752,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         API_CASE.getValue(), caseApiMap);
     Map<Long, List<Dataset>> caseDatasetMap = datasetTargetQuery.findDatasets(caseIds,
         API_CASE.getValue(), caseApiMap);
+    // Generate script
     if (isNull(scriptDb)) {
       String name = String.format("%s[%s]", apisDb.getName(), TestType.FUNCTIONAL.getMessage());
       Script script = assembleFuncTestScript(name, casesDb, false, ScriptSource.API, apisDb.getId(),
@@ -731,22 +760,23 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       return add(script, script.getAngusScript(), false).getId();
     } else {
       // Update existed script
-      AngusScript angusScript = scriptQuery.checkAndParse(scriptDb.getContent(), false);
+      AngusScript angusScript = scriptQuery.checkAndParse(scriptDb.getContent(), true);
+      assertNotNull(angusScript, SCRIPT_CONTENT_PARSE_ERROR);
       List<cloud.xcan.angus.model.element.variable.Variable>
           angusVariables = getAngusConfigurationVariables(caseVariableMap);
       angusScript.getConfiguration().setVariables(angusVariables);
 
-      if (ObjectUtils.isEmpty(angusScript.getTask().getPipelines())) {
-        angusScript.getTask().setPipelines(casesDb.stream().map(ApisToAngusModelConverter::toHttp)
-            .collect(Collectors.toList()));
+      if (isEmpty(angusScript.getTask().getPipelines())) {
+        angusScript.getTask().setPipelines(casesDb.stream()
+            .map(ApisToAngusModelConverter::toHttp).collect(Collectors.toList()));
       } else {
         List<TestTargetType> pipelines = new ArrayList<>();
         List<String> existedInScript = new ArrayList<>();
         // Preserve and update existing targets
         for (TestTargetType pipeline : angusScript.getTask().getPipelines()) {
           ApisCase existCases = casesDb.stream()
-              .filter(x -> Objects.equals(x.getName(), pipeline.getName())).findFirst()
-              .orElse(null);
+              .filter(x -> Objects.equals(x.getName(), pipeline.getName()))
+              .findFirst().orElse(null);
           if (nonNull(existCases)) {
             existedInScript.add(existCases.getName());
             Http case0 = toHttp(existCases);
@@ -782,7 +812,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         API_CASE.getValue(), caseApiMap);
     Map<Long, List<Dataset>> caseDatasetMap = datasetTargetQuery.findDatasets(caseIds,
         API_CASE.getValue(), caseApiMap);
-    Map<String, Server> serverMap = ObjectUtils.isEmpty(servers) ? Collections.emptyMap()
+    Map<String, Server> serverMap = isEmpty(servers) ? Collections.emptyMap()
         : servers.stream().collect(Collectors.toMap(Server::getUrl, x -> x));
     Script scriptDb = scriptQuery.findBySourceAndScriptType(source, serviceDb.getId(),
         TEST_FUNCTIONALITY);
@@ -863,7 +893,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       return;
     }
     AngusScript angusScript = scriptQuery.checkAndParse(scriptDb.getContent(), true);
-    if (ObjectUtils.isEmpty(angusScript.getTask().getPipelines())) {
+    if (isEmpty(angusScript.getTask().getPipelines())) {
       log.warn("Apis[{}] functionality case[{}] does not exist in script pipelines", apisId,
           caseId);
       return;
@@ -878,15 +908,22 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   }
 
   @Override
-  public void deleteCaseFromScript(Long apisId, Collection<Long> caseIds) {
+  public void deleteCaseInScript(Long apisId, Collection<Long> caseIds) {
     Script scriptDb = scriptQuery.findBySourceAndScriptType(ScriptSource.API, apisId,
         TEST_FUNCTIONALITY);
     if (isNull(scriptDb)) {
       log.warn("Apis[{}] functionality test script does not exist", apisId);
       return;
     }
+
+    // Delete script when its content is empty
+    if (isNull(scriptDb.getContent())) {
+      delete(Set.of(scriptDb.getId()));
+      return;
+    }
+
     AngusScript angusScript = scriptQuery.checkAndParse(scriptDb.getContent(), true);
-    if (ObjectUtils.isEmpty(angusScript.getTask().getPipelines())) {
+    if (isNull(angusScript) || isEmpty(angusScript.getTask().getPipelines())) {
       log.warn("Apis[{}] functionality case[{}] does not exist in script pipelines", apisId,
           caseIds);
       return;
@@ -898,8 +935,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         pipelines.add(pipeline);
       }
     }
-    angusScript.getTask().setPipelines(pipelines);
-    update0(scriptDb, scriptDb.getAngusScript(), false, false);
+    if (pipelines.isEmpty()) {
+      // Delete script when its content is empty
+      delete(Set.of(scriptDb.getId()));
+    } else {
+      angusScript.getTask().setPipelines(pipelines);
+      update0(scriptDb, scriptDb.getAngusScript(), false, false);
+    }
   }
 
   @Override
@@ -911,9 +953,9 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       return;
     }
     AngusScript angusScript = scriptQuery.checkAndParse(scriptDb.getContent(), true);
-    if (ObjectUtils.isEmpty(angusScript.getTask().getPipelines())) {
-      log.warn("Apis[{}] functionality case[{}] does not exist in script pipelines", apisId,
-          caseIds);
+    if (isEmpty(angusScript.getTask().getPipelines())) {
+      log.warn("Apis[{}] functionality case[{}] does not exist in script pipelines",
+          apisId, caseIds);
       return;
     }
 
@@ -923,21 +965,22 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         http.setEnabled(enabled);
       }
     }
-    update0(scriptDb, scriptDb.getAngusScript(), false, false);
+    update0(scriptDb, angusScript, false, false);
   }
 
   public static List<cloud.xcan.angus.model.element.variable.Variable> getAngusConfigurationVariables(
       Map<Long, List<Variable>> caseVariableMap) {
     List<Variable> variables = caseVariableMap.values().stream().flatMap(Collection::stream)
         .collect(Collectors.toList());
-    return ObjectUtils.isEmpty(variables) ? null : variables.stream()
+    return isEmpty(variables) ? null : variables.stream()
         .map(ApisToAngusModelConverter::toAngusVariable).collect(Collectors.toList());
   }
 
-  public static @Nullable List<cloud.xcan.angus.model.element.dataset.Dataset> getAngusDataset(
+  @Nullable
+  public static List<cloud.xcan.angus.model.element.dataset.Dataset> getAngusDataset(
       Map<Long, List<Dataset>> caseDatasetMap, ApisCase case0) {
     List<Dataset> datasets = caseDatasetMap.get(case0.getId());
-    return ObjectUtils.isEmpty(datasets) ? null
+    return isEmpty(datasets) ? null
         : datasets.stream().map(DatasetConverter::toAngusDataset)
             .collect(Collectors.toList());
   }

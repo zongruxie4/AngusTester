@@ -6,6 +6,7 @@ import cloud.xcan.angus.model.element.SharingMode;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.spec.http.HttpMethod;
@@ -41,15 +42,18 @@ public class ApisCaseDetailVo {
   @NameJoinField(id = "apisServiceId", repository = "servicesRepo")
   private String apisServiceName;
 
+  private String name;
+
+  private String description;
+
   @ApiModelProperty(value = "Enable test cases? default is enabled")
   private Boolean enabled;
 
   @ApiModelProperty(value = "Apis test cases type, default is USER_DEFINED")
   private ApisCaseType type;
 
-  private String name;
-
-  private String description;
+  @ApiModelProperty(value = "Apis test cases method, default is `NULL`")
+  private CaseTestMethod testMethod;
 
   private ApisProtocol protocol;
 

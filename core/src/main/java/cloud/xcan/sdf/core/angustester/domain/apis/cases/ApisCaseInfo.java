@@ -4,6 +4,7 @@ package cloud.xcan.sdf.core.angustester.domain.apis.cases;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.apis.converter.HttpAssertionConverter;
@@ -66,6 +67,10 @@ public class ApisCaseInfo extends TenantAuditingEntity<ApisCaseInfo, Long> imple
 
   @Enumerated(EnumType.STRING)
   private ApisCaseType type;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_method")
+  private CaseTestMethod testMethod;
 
   /**
    * @see Operation#getServers()

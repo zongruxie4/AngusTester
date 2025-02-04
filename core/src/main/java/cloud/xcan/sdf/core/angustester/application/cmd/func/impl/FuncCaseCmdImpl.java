@@ -335,7 +335,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
               .collect(Collectors.toList()));
 
-          // Add modify events
+          // Add modification events
           funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream()
               .map(x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                   .setTesterId(x.getTesterId()))
@@ -550,7 +550,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           Activity activity = toActivity(FUNC_CASE, caseDb, ActivityType.NAME_UPDATED, name);
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
         }
         return null;
@@ -657,7 +657,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             casesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList()));
         activityCmd.batchAdd(activities);
 
-        // Add modify event
+        // Add modification event
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
         return null;
       }
@@ -692,7 +692,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           Activity activity = toActivity(FUNC_CASE, caseDb, FUNC_TESTER, userDb.getFullname());
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           // funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
           funcCaseQuery.assembleAndSendModifyTesterNoticeEvent(caseDb);
         }
@@ -757,7 +757,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           Activity activity = toActivity(FUNC_CASE, caseDb, PRIORITY, priority.getMessage());
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
         }
         return null;
@@ -793,7 +793,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             caseDb.setEvalWorkload(null).setActualWorkload(null);
             funcCaseRepo.save(caseDb);
 
-            // Add modify event
+            // Add modification event
             funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
           }
           return null;
@@ -808,7 +808,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
               caseDb.getEvalWorkloadMethod(), evalWorkload);
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
         }
 
@@ -854,7 +854,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             caseDb.setActualWorkload(null);
             funcCaseRepo.save(caseDb);
 
-            // Add modify event
+            // Add modification event
             funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
           }
           return null;
@@ -869,7 +869,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
               ActivityType.ACTUAL_WORKLOAD, caseDb.getEvalWorkloadMethod(), actualWorkload);
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
         }
 
@@ -909,7 +909,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             caseDb.setAttachments(null);
             funcCaseRepo.save(caseDb);
 
-            // Add modify event
+            // Add modification event
             funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
           }
           return null;
@@ -926,7 +926,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
                       + "</a>").collect(Collectors.joining(",")));
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           funcCaseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
         }
 
@@ -994,7 +994,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
               ActivityType.RESULT_UPDATE, caseTestResult);
           activityCmd.batchAdd(activities);
 
-          // Add modify events
+          // Add modification events
           funcCaseQuery.assembleAndSendModifyNoticeEvent(resultCases.stream().map(
                   x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                       .setTesterId(x.getTesterId()))
@@ -1036,7 +1036,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RESULT_RESET);
         activityCmd.batchAdd(activities);
 
-        // Add modify events
+        // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
         return null;
       }
@@ -1081,7 +1081,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RETEST_START);
         activityCmd.batchAdd(activities);
 
-        // Add modify events
+        // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(
             casesDb.stream().map(x -> new FuncCaseInfo().setId(x.getId())
                     .setName(x.getName()).setTesterId(x.getTesterId()))
@@ -1165,7 +1165,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RESULT_RESET);
         activityCmd.batchAdd(activities);
 
-        // Add modify events
+        // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
         return null;
       }
@@ -1324,7 +1324,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         funcTrashCmd.add0(casesDb.stream().map(FuncCaseConverter::toFuncCaseTrash)
             .collect(Collectors.toList()));
 
-        // Add modify events
+        // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
         return null;
       }
@@ -1360,7 +1360,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           ActivityType.REVIEW_UPDATE, reviewStatus);
       activityCmd.batchAdd(activities);
 
-      // Add modify events
+      // Add modification events
       funcCaseQuery.assembleAndSendModifyNoticeEvent(reviewCasesDb.stream().map(
               x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                   .setTesterId(x.getTesterId()))
@@ -1398,7 +1398,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     // Do not log when parameter has not changed !!!  Null activity will ignored.
     activityCmd.batchAdd(activities);
 
-    // Add modify events
+    // Add modification events
     funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream().map(
             x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName()).setTesterId(x.getTesterId()))
         .collect(Collectors.toList()), activities);

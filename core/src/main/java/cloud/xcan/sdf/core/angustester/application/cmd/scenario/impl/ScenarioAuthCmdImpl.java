@@ -115,7 +115,7 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
         authDb.setAuths(auth.getAuths());
         scenarioAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(SCENARIO, scenarioDb, AUTH_UPDATED, authObjectName));
         }

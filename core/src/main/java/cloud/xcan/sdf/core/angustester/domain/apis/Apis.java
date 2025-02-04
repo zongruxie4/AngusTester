@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.domain.apis;
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.model.AngusConstant;
 import cloud.xcan.angus.model.element.ActionOnEOF;
@@ -332,6 +333,8 @@ public class Apis extends TenantAuditingEntity<Apis, Long> implements ActivityRe
   @Transient
   private Map<String, Tag> tagSchemas;
   @Transient
+  private SecurityScheme refAuthentication;
+  @Transient
   private Long mockApisId;
   @Transient
   private Long mockServiceId;
@@ -376,6 +379,14 @@ public class Apis extends TenantAuditingEntity<Apis, Long> implements ActivityRe
       needTested.add(TestType.STABILITY);
     }
     return needTested;
+  }
+
+  public boolean isAuthSchemaRef(){
+    return nonNull(authentication) && isNotEmpty(authentication.get$ref());
+  }
+
+  public boolean includeSchemaRef(String refKey){
+    return isNotEmpty(resolvedRefModels) && resolvedRefModels.containsKey(refKey);
   }
 
   @Override

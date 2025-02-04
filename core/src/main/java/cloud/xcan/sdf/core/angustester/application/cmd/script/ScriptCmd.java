@@ -57,7 +57,7 @@ public interface ScriptCmd {
 
   void renameCaseToScript(Long apisId, Long caseId, /*String oldName, */String newName);
 
-  void deleteCaseFromScript(Long apisId, Collection<Long> caseIds);
+  void deleteCaseInScript(Long apisId, Collection<Long> caseIds);
 
   void enableCaseToScript(Long apisId, Collection<Long> caseIds, boolean enabled);
 }

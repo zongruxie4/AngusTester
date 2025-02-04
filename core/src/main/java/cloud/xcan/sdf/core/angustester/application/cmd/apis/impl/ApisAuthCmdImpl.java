@@ -150,7 +150,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
         authDb.setAuths(auth.getAuths());
         apisAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(API, apiInfoDb, ActivityType.AUTH_UPDATED, authObjectName));
         }

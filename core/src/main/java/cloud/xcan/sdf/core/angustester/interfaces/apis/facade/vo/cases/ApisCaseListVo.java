@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.apis.facade.vo.cases;
 
 
 import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.spec.http.HttpMethod;
@@ -35,15 +36,18 @@ public class ApisCaseListVo {
 
   private String apisSummary;
 
+  private String name;
+
+  private String description;
+
   @ApiModelProperty(value = "Enable test cases? default is enabled")
   private Boolean enabled;
 
   @ApiModelProperty(value = "Apis test cases type, default is USER_DEFINED")
   private ApisCaseType type;
 
-  private String name;
-
-  private String description;
+  @ApiModelProperty(value = "Apis test cases method, default is `NULL`")
+  private CaseTestMethod testMethod;
 
   private ApisProtocol protocol;
 

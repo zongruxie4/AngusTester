@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.application.converter;
 
 import static cloud.xcan.sdf.core.angustester.application.query.services.impl.ServicesCompQueryImpl.toComponent;
 import static cloud.xcan.sdf.core.angustester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.distinctByKey;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static io.swagger.v3.oas.models.Components.COMPONENTS_EXTENSIONS_REF;
 
@@ -144,49 +145,51 @@ public class ServicesCompConverter {
   public static Components toOpenApiComp(Map<ServicesCompType, List<ServicesComp>> compsMap) {
     Components components = new Components();
     for (ServicesCompType type : compsMap.keySet()) {
+      List<ServicesComp> comps = compsMap.get(type).stream()
+          .filter(distinctByKey(ServicesComp::getRef)).collect(Collectors.toList());
       switch (type) {
         case schemas: {
-          components.schemas(compsMap.get(type).stream().collect(
+          components.schemas(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Schema.class))));
           break;
         }
         case responses: {
-          components.responses(compsMap.get(type).stream().collect(
+          components.responses(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(ApiResponse.class))));
           break;
         }
         case parameters: {
-          components.parameters(compsMap.get(type).stream().collect(
+          components.parameters(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Parameter.class))));
           break;
         }
         case examples: {
-          components.examples(compsMap.get(type).stream().collect(
+          components.examples(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Example.class))));
           break;
         }
         case requestBodies: {
-          components.requestBodies(compsMap.get(type).stream().collect(
+          components.requestBodies(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(RequestBody.class))));
           break;
         }
         case headers: {
-          components.headers(compsMap.get(type).stream().collect(
+          components.headers(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Header.class))));
           break;
         }
         case securitySchemes: {
-          components.securitySchemes(compsMap.get(type).stream().collect(
+          components.securitySchemes(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(SecurityScheme.class))));
           break;
         }
         case links: {
-          components.links(compsMap.get(type).stream().collect(
+          components.links(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Link.class))));
           break;
         }
         case extensions: {
-          components.extensions(compsMap.get(type).stream().collect(
+          components.extensions(comps.stream().collect(
               Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Map.class))));
           break;
         }

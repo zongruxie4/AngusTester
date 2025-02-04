@@ -7,6 +7,8 @@ import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCaseInfo;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -43,6 +45,11 @@ public interface ApisCaseQuery {
   void setInfoApisNameAndDeleted(List<ApisCaseInfo> cases);
 
   void setApisAndServiceInfo(List<ApisCase> cases);
+
+  @NotNull
+  Map<String, String> findCaseAllRef(ApisCase caseDb);
+
+  void setAndGetRefAuthentication(ApisCase case0);
 
   void setSafeCloneName(ApisCase funcCase);
 

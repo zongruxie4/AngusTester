@@ -96,7 +96,9 @@ import cloud.xcan.sdf.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.spec.http.HttpMethod;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json31;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
 import java.math.BigInteger;
@@ -112,11 +114,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+@Slf4j
 @Biz
 @SummaryQueryRegister(name = "Apis", table = "apis",
     groupByColumns = {"created_date", "source", "method", "protocol_type", "status", "auth_flag",
@@ -858,6 +861,20 @@ public class ApisQueryImpl implements ApisQuery {
   }
 
   @Override
+  public void setAndGetRefAuthentication(Apis apis) {
+    if (apis.isAuthSchemaRef()) {
+      ServicesComp comp = servicesCompQuery.detailByRef(apis.getServiceId(),
+          apis.getAuthentication().get$ref());
+      if (isNull(comp)){
+        log.warn("ServicesComp `{}` not found", apis.getAuthentication().get$ref());
+        return;
+      }
+      SecurityScheme auth = comp.toComponent(SecurityScheme.class);
+      apis.setRefAuthentication(auth);
+    }
+  }
+
+  @Override
   public void setTagSchemas(Apis apisDb, List<Tag> tagSchemas) {
     if (isNotEmpty(apisDb.getTags()) && isNotEmpty(tagSchemas)) {
       apisDb.setTagSchemas(tagSchemas.stream().filter(x -> apisDb.getTags()
@@ -973,23 +990,25 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
-  @SneakyThrows
   @Override
   public void setOpenApiPathRefModels(Apis apisDb) {
     Map<String, String> allRefModels = findApisAllRef(apisDb);
     apisDb.setResolvedRefModels(allRefModels);
   }
 
-  @SneakyThrows
   @NotNull
   @Override
   public Map<String, String> findApisAllRef(Apis apisDb) {
     Map<String, String> allRefModels = new HashMap<>();
-    Set<String> refs = RefResolver.findPropertyValues(Json31.pretty(apisDb), "$ref");
-    if (isNotEmpty(refs)) {
-      Map<String, String> compModelMap = servicesCompQuery.findByServiceId(apisDb.getServiceId())
-          .stream().collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
-      ApisConverter.findAllRef0(allRefModels, refs, compModelMap);
+    try {
+      Set<String> refs = RefResolver.findPropertyValues(Json31.pretty(apisDb), "$ref");
+      if (isNotEmpty(refs)) {
+        Map<String, String> compModelMap = servicesCompQuery.findByServiceId(apisDb.getServiceId())
+            .stream().collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
+        ApisConverter.findAllRef0(allRefModels, refs, compModelMap);
+      }
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
     }
     return allRefModels;
   }

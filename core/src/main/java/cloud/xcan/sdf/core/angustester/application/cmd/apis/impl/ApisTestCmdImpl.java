@@ -179,12 +179,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   @Override
   public void scriptGenerate(Long apisId, List<Script> scripts) {
     new BizTemplate<Void>() {
-      Apis apisDb;
 
       @Override
       protected void checkParams() {
         // Check the apis exists
-        apisDb = apisQuery.findDeRefById(apisId);
+        // apisQuery.checkAndFindBaseInfo(apisId); -> Do in apisQuery.findDeRefById(apisId);
 
         // Check the apis test permission
         apisAuthQuery.checkTestAuth(getUserId(), apisId);
@@ -219,6 +218,12 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     if (isNull(apisDb.getCurrentServer()) || !apisDb.getCurrentServer().isValidUrl()) {
       // Set available servers
       apisQuery.setAndGetAvailableServers(apisDb);
+    }
+
+    // Replace authentication references
+    if (nonNull(apisDb.getAuthentication()) && apisDb.isAuthSchemaRef()
+        && apisDb.includeSchemaRef(apisDb.getAuthentication().get$ref())){
+      apisQuery.setAndGetRefAuthentication(apisDb);
     }
 
     // Find existing scripts
@@ -520,10 +525,10 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       // Note: Deleting a script does not delete testing cases, and each time a script is generated, all testing cases need to be loaded
       Map<ApisCaseType, List<ApisCase>> typeCasesMap = apisCaseQuery.findByApisId(apisDb.getId())
           .stream().collect(Collectors.groupingBy(ApisCase::getType));
-      assembleAddApisScript(apisDb, serverMap, indicatorFunc, typeCasesMap, script, variables,
-          datasets);
+      assembleAddApisScript(apisDb, serverMap, indicatorFunc, typeCasesMap, script,
+          variables, datasets);
       if (isNotEmpty(script.getAngusScript().getTask().getPipelines())) {
-        apisCaseCmd.addCases(apisDb.getId(), script.getAngusScript().getTask().getPipelines()
+        apisCaseCmd.add(apisDb.getId(), script.getAngusScript().getTask().getPipelines()
             .stream().filter(x -> !((Http) x).isPersistent()) // Add new cases
             .map(x -> httpToFuncCase(apisDb, (Http) x)).collect(Collectors.toList()));
       }

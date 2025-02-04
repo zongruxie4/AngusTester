@@ -123,6 +123,8 @@ public interface ApisQuery {
 
   void setAvailableServers(Apis apis, List<Server> parentServers);
 
+  void setAndGetRefAuthentication(Apis apis);
+
   void setTagSchemas(Apis apisDb, List<Tag> tagSchemas);
 
   List<Server> getParentServiceServers(Long apiId);

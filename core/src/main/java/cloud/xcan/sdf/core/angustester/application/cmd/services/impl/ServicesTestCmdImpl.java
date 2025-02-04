@@ -92,9 +92,6 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
   private ScriptCmd scriptCmd;
 
   @Resource
-  private VariableQuery variableQuery;
-
-  @Resource
   private ActivityCmd activityCmd;
 
   @Resource

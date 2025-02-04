@@ -10,7 +10,7 @@ public interface ApisCaseCmd {
 
   List<IdKey<Long, Object>> add(List<ApisCase> cases);
 
-  void addCases(Long apisId, List<ApisCase> cases);
+  void add(Long apisId, List<ApisCase> cases);
 
   void update(List<ApisCase> cases);
 

@@ -50,6 +50,7 @@ public interface TesterCoreMessage extends TesterApisMessage {
   String SCRIPT_EXPORT_ERROR_CODE = "ATS121";
   String SCRIPT_EXPORT_ERROR = "xcm.altester.script.file.export.error";
   String SCRIPT_PROPERTIES_CONSTRAINT_ERROR = "xcm.altester.script.properties.constraint.error";
+  String SCRIPT_CONTENT_PARSE_ERROR = "xcm.altester.script.content.parse.error";
 
   /*<******************Apis(ATS200 ~ ATS249)******************>*/
   String APIS_OPERATION_EXISTED = "xcm.altester.apis.operation.existed.t";

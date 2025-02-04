@@ -114,7 +114,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
    * Note: Synchronous update script content is not included.
    */
   @Override
-  public void addCases(Long apisId, List<ApisCase> cases) {
+  public void add(Long apisId, List<ApisCase> cases) {
     if (isEmpty(cases)) {
       return;
     }
@@ -405,7 +405,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         apisCaseRepo.deleteByIdIn(ids);
 
         // Delete case in script
-        scriptCmd.deleteCaseFromScript(apiIds.iterator().next(), ids);
+        scriptCmd.deleteCaseInScript(apiIds.iterator().next(), ids);
 
         // Add delete activity
         activityCmd.batchAdd(toActivities(API_CASE, casesDb, ActivityType.DELETED,

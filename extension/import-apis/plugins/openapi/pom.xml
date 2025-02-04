@@ -30,7 +30,7 @@
     <plugin.provider>XiaoCan Technology (Beijing) Co.，Ltd</plugin.provider>
     <plugin.description>${name}</plugin.description>
     <plugin.dependencies/>
-    <plugin.license>http://www.xcan.company/licenses/XCBL-1.0.txt</plugin.license>
+    <plugin.license>http://www.xcan.cloud/licenses/XCBL-1.0.txt</plugin.license>
   </properties>
 
   <build>

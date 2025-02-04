@@ -40,6 +40,8 @@ public class ScriptStatisticsDto extends PageQuery {
 
   private ScriptSource source;
 
+  private Long serviceId;
+
   private String sourceId;
 
   private Long scenarioId;

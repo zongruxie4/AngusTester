@@ -5,7 +5,7 @@ import cloud.xcan.sdf.spec.locale.EnumMessage;
 
 @EndpointRegister
 public enum ProjectType implements EnumMessage<String> {
-  AGILE, GENERAL;
+  AGILE, GENERAL, TESTING;
 
   public static final ProjectType DEFAULT = AGILE;
 

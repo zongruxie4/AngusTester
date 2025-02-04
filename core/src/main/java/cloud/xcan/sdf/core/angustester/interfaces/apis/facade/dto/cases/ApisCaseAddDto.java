@@ -9,6 +9,7 @@ import cloud.xcan.angus.model.element.ActionOnEOF;
 import cloud.xcan.angus.model.element.SharingMode;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.sdf.spec.http.HttpMethod;
 import io.swagger.annotations.ApiModel;
@@ -39,11 +40,14 @@ public class ApisCaseAddDto {
   @ApiModelProperty(value = "Case apis id", required = true)
   private Long apisId;
 
-  @ApiModelProperty(value = "Enable test cases? default is enabled")
+  @ApiModelProperty(value = "Enable test cases flag default is `enabled`")
   private Boolean enabled;
 
-  @ApiModelProperty(value = "Apis test cases type, default is USER_DEFINED")
+  @ApiModelProperty(value = "Apis test cases type, default is `USER_DEFINED`")
   private ApisCaseType type;
+
+  @ApiModelProperty(value = "Apis test cases method, default is `NULL`")
+  private CaseTestMethod testMethod;
 
   @NotBlank
   @Length(max = DEFAULT_NAME_LENGTH_X4)

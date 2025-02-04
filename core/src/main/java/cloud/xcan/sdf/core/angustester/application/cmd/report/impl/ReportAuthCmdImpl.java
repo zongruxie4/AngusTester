@@ -116,7 +116,7 @@ public class ReportAuthCmdImpl extends CommCmd<ReportAuth, Long> implements Repo
         authDb.setAuths(auth.getAuths());
         reportAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(CombinedTargetType.REPORT, reportDb,
               ActivityType.AUTH_UPDATED, authObjectName));

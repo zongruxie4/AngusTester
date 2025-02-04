@@ -113,7 +113,7 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
         authDb.setAuths(auth.getAuths());
         scriptAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(SCRIPT, scriptDb, ActivityType.AUTH_UPDATED, authObjectName));
         }

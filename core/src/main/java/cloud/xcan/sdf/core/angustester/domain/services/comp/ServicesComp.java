@@ -75,29 +75,29 @@ public class ServicesComp extends TenantEntity<ServicesComp, Long> {
   private LocalDateTime lastModifiedDate;
 
   // @Transient -> transient <- Json and jpa both ignore
-  public @JsonIgnore
-  transient Schema schema;
-  public @JsonIgnore
-  transient ApiResponse response;
-  public @JsonIgnore
-  transient Parameter parameter;
-  public @JsonIgnore
-  transient Example example;
-  public @JsonIgnore
-  transient RequestBody requestBody;
-  public @JsonIgnore
-  transient Header header;
-  public @JsonIgnore
-  transient SecurityScheme securityScheme;
-  public @JsonIgnore
-  transient Link link;
+  @JsonIgnore
+  public transient Schema schema;
+  @JsonIgnore
+  public transient ApiResponse response;
+  @JsonIgnore
+  public transient Parameter parameter;
+  @JsonIgnore
+  public transient Example example;
+  @JsonIgnore
+  public transient RequestBody requestBody;
+  @JsonIgnore
+  public transient Header header;
+  @JsonIgnore
+  public transient SecurityScheme securityScheme;
+  @JsonIgnore
+  public transient Link link;
   //public transient Callback callback;
-  public @JsonIgnore
-  transient Object extension;
+  @JsonIgnore
+  public transient Object extension;
   //@OpenAPI31
   //public transient PathItem pathItem;
-  private @JsonIgnore
-  transient Map<String, String> resolvedRefModels;
+  @JsonIgnore
+  private transient Map<String, String> resolvedRefModels;
 
   @SneakyThrows
   public <T> T toComponent(Class<T> clz) {

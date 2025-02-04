@@ -331,7 +331,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           List<Activity> activities = toActivities(API, apisDbs, UPDATED, activityParams(apis));
           activityCmd.batchAdd(activities);
 
-          // Add modify events
+          // Add modification events
           apisQuery.assembleAndSendModifyNoticeEvent(apisDbs.stream().map(x -> {
             ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
                 .setId(x.getId()).setSummary(x.getSummary());
@@ -412,7 +412,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
               activityParams(apis));
           activityCmd.batchAdd(activities);
 
-          // Add modify events
+          // Add modification events
           apisQuery.assembleAndSendModifyNoticeEvent(updateApis.stream().map(x -> {
             ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
                 .setId(x.getId()).setSummary(x.getSummary());
@@ -454,7 +454,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           Activity activity = toActivity(API, apisInfoDb, ActivityType.NAME_UPDATED, name);
           activityCmd.add(activity);
 
-          // Add modify event
+          // Add modification event
           apisQuery.assembleAndSendModifyNoticeEvent(apisInfoDb, activity);
         }
         return null;
@@ -553,7 +553,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         List<Activity> activities = toActivities(API, apisDb, MOVED_TO, targetServiceDb.getName());
         activityCmd.batchAdd(activities);
 
-        // Add modify events
+        // Add modification events
         apisQuery.assembleAndSendModifyNoticeEvent(
             apisDb.stream().map(x -> {
               ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
@@ -619,7 +619,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         Activity activity = toActivity(API, apiInfoDb, STATUS_UPDATE, status);
         activityCmd.add(activity);
 
-        // Add modify event
+        // Add modification event
         apisQuery.assembleAndSendModifyNoticeEvent(apiInfoDb, activity);
         return null;
       }
@@ -1154,7 +1154,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         trashApisCmd.add0(apisBasesDb.stream().map(ApisConverter::toApisTrash)
             .collect(Collectors.toList()));
 
-        // Add modify events
+        // Add modification events
         apisQuery.assembleAndSendModifyNoticeEvent(
             apisBasesDb.stream().map(x -> {
               ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
@@ -1216,7 +1216,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         activityParams(updatedApisDbMap.values())));
   }
 
-  private @NotNull Set<Long> assembleUnarchivedInfo(List<Apis> apis, Services servicesDb) {
+  @NotNull
+  private Set<Long> assembleUnarchivedInfo(List<Apis> apis, Services servicesDb) {
     Set<Long> unarchiveIds = apis.stream().map(Apis::getUnarchiveId)
         .filter(Objects::nonNull).collect(Collectors.toSet());
     if (isNotEmpty(unarchiveIds)) {

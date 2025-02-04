@@ -18,6 +18,7 @@ import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.ProtocolAssert;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.parser.reference.ReferenceUtils;
 import java.util.Collection;
@@ -53,7 +54,6 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
         // projectAuthQuery.checkViewAuth(getUserId(), serviceId);
       }
 
-      @SneakyThrows
       @Override
       protected ServicesComp process() {
         List<ServicesComp> comps = servicesCompQuery.findByServiceId(serviceId);
@@ -64,13 +64,18 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
         ServicesComp comp = comps.stream().filter(x -> x.getRef().equals(ref)).findFirst()
             .orElse(null);
         if (nonNull(comp) && isNotEmpty(comp.getModel())) {
-          Set<String> refs = RefResolver.findPropertyValues(comp.getModel(), "$ref");
-          Map<String, String> allRefModels = new HashMap<>();
-          if (ObjectUtils.isNotEmpty(refs)) {
-            Map<String, String> compModelMap = comps
-                .stream().collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
-            findAllRef0(allRefModels, refs, compModelMap);
-            comp.setResolvedRefModels(allRefModels);
+          Set<String> refs;
+          try {
+            refs = RefResolver.findPropertyValues(comp.getModel(), "$ref");
+            Map<String, String> allRefModels = new HashMap<>();
+            if (ObjectUtils.isNotEmpty(refs)) {
+              Map<String, String> compModelMap = comps.stream()
+                  .collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
+              findAllRef0(allRefModels, refs, compModelMap);
+              comp.setResolvedRefModels(allRefModels);
+            }
+          } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
           }
         }
         return comp;

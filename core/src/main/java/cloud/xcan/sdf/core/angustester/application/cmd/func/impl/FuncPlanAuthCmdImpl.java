@@ -122,7 +122,7 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
         authDb.setAuths(auth.getAuths());
         funcPlanAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(CombinedTargetType.FUNC_PLAN, funcPlanDb,
               ActivityType.AUTH_UPDATED, authObjectName));

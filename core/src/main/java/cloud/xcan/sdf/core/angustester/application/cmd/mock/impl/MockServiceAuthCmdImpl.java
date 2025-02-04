@@ -126,7 +126,7 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
         authDb.setAuths(serviceAuth.getAuths());
         mockServiceAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(MOCK_SERVICE, serviceDb, AUTH_UPDATED, authObjectName));
         }

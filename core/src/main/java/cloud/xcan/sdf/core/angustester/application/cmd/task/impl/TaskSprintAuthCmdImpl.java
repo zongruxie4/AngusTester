@@ -119,7 +119,7 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
         authDb.setAuths(auth.getAuths());
         taskSprintAuthRepo.save(authDb);
 
-        // Add modify permission activity
+        // Add modification permission activity
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(TASK_SPRINT, sprintDb, AUTH_UPDATED, authObjectName));
         }

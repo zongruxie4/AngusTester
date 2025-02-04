@@ -10,6 +10,7 @@ import cloud.xcan.angus.model.element.SharingMode;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.sdf.spec.http.HttpMethod;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,6 +48,9 @@ public class ApisCaseReplaceDto {
 
   @ApiModelProperty(value = "Apis test cases type, default is USER_DEFINED")
   private ApisCaseType type;
+
+  @ApiModelProperty(value = "Apis test cases method, default is `NULL`")
+  private CaseTestMethod testMethod;
 
   @NotBlank
   @Length(max = DEFAULT_NAME_LENGTH_X4)

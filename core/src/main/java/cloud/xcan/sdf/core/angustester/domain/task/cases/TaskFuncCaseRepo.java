@@ -14,7 +14,7 @@ public interface TaskFuncCaseRepo extends BaseRepository<TaskFuncCase, Long> {
   List<TaskFuncCase> findByTargetIdAndAssocTargetType(Long targetId,
       CombinedTargetType assocTargetType);
 
-  @Query(value = "SELECT * FROM task_func_case WHERE target_id = ?1 OR assoc_target_id = ?1", nativeQuery = true)
+  @Query(value = "SELECT * FROM task_func_case WHERE target_id IN ?1 OR assoc_target_id IN ?1", nativeQuery = true)
   List<TaskFuncCase> findWideByTargetIdIn(Collection<Long> targetIds);
 
   List<TaskFuncCase> findByTargetId(Long targetId);

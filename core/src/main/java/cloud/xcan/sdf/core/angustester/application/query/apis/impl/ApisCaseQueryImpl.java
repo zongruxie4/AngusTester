@@ -10,6 +10,7 @@ import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X4;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -18,7 +19,9 @@ import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.http.ResourceExisted;
 import cloud.xcan.sdf.api.message.http.ResourceNotFound;
 import cloud.xcan.sdf.api.search.SearchCriteria;
+import cloud.xcan.sdf.core.angustester.application.converter.ApisConverter;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisCaseQuery;
+import cloud.xcan.sdf.core.angustester.application.query.services.ServicesCompQuery;
 import cloud.xcan.sdf.core.angustester.domain.apis.Apis;
 import cloud.xcan.sdf.core.angustester.domain.apis.ApisBaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.apis.ApisBaseInfoRepo;
@@ -26,22 +29,32 @@ import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCase;
 import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCaseInfoRepo;
 import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCaseRepo;
+import cloud.xcan.sdf.core.angustester.domain.services.comp.ServicesComp;
+import cloud.xcan.sdf.core.angustester.infra.util.RefResolver;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.exception.QuotaException;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.core.util.Json31;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Biz
 public class ApisCaseQueryImpl implements ApisCaseQuery {
 
+  private static final Logger log = LoggerFactory.getLogger(ApisCaseQueryImpl.class);
   @Resource
   private ApisCaseRepo apisCaseRepo;
 
@@ -50,6 +63,9 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
 
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
+
+  @Resource
+  private ServicesCompQuery servicesCompQuery;
 
   @Resource
   private UserManager userManager;
@@ -265,6 +281,37 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
         });
         // Set project name info -> Do by @NameJoin
       }
+    }
+  }
+
+  @NotNull
+  @Override
+  public Map<String, String> findCaseAllRef(ApisCase caseDb) {
+    Map<String, String> allRefModels = new HashMap<>();
+    try {
+      Set<String> refs = RefResolver.findPropertyValues(Json31.pretty(caseDb), "$ref");
+      if (isNotEmpty(refs)) {
+        Map<String, String> compModelMap = servicesCompQuery.findByServiceId(caseDb.getServicesId())
+            .stream().collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
+        ApisConverter.findAllRef0(allRefModels, refs, compModelMap);
+      }
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+    return allRefModels;
+  }
+
+  @Override
+  public void setAndGetRefAuthentication(ApisCase case0) {
+    if (case0.isAuthSchemaRef()) {
+      ServicesComp comp = servicesCompQuery.detailByRef(case0.getServicesId(),
+          case0.getAuthentication().get$ref());
+      if (isNull(comp)){
+        log.warn("ServicesComp `{}` not found", case0.getAuthentication().get$ref());
+        return;
+      }
+      SecurityScheme auth = comp.toComponent(SecurityScheme.class);
+      case0.setRefAuthentication(auth);
     }
   }
 

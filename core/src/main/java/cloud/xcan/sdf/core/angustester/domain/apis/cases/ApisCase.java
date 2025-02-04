@@ -1,12 +1,16 @@
 package cloud.xcan.sdf.core.angustester.domain.apis.cases;
 
 
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.angus.model.AngusConstant;
 import cloud.xcan.angus.model.element.ActionOnEOF;
 import cloud.xcan.angus.model.element.SharingMode;
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.CaseTestMethod;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.apis.converter.HttpAssertionConverter;
@@ -70,6 +74,10 @@ public class ApisCase extends TenantAuditingEntity<ApisCase, Long> implements Ac
 
   @Enumerated(EnumType.STRING)
   private ApisCaseType type;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "test_method")
+  private CaseTestMethod testMethod;
 
   /**
    * @see Operation#getServers()
@@ -161,6 +169,13 @@ public class ApisCase extends TenantAuditingEntity<ApisCase, Long> implements Ac
   private LocalDateTime execDate;
 
   @Transient
+  private List<Server> availableServers;
+  @Transient
+  private Map<String, String> resolvedRefModels;
+  @Transient
+  private SecurityScheme refAuthentication;
+
+  @Transient
   private String apisSummary;
   @Transient
   private Long apisServiceId;
@@ -168,8 +183,14 @@ public class ApisCase extends TenantAuditingEntity<ApisCase, Long> implements Ac
   private String createdByName;
   @Transient
   private String avatar;
-  @Transient
-  private Map<String, String> resolvedRefModels;
+
+  public boolean isAuthSchemaRef(){
+    return nonNull(authentication) && isNotEmpty(authentication.get$ref());
+  }
+
+  public boolean includeSchemaRef(String refKey){
+    return isNotEmpty(resolvedRefModels) && resolvedRefModels.containsKey(refKey);
+  }
 
   @Override
   public Long getParentId() {

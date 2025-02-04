@@ -62,6 +62,7 @@ public class ProjectAssembler {
     return new ProjectDetailVo()
         .setId(project.getId())
         .setName(project.getName())
+        .setType(project.getType())
         .setAvatar(project.getAvatar())
         .setDescription(project.getDescription())
         .setOwnerId(project.getOwnerId())

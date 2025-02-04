@@ -2480,8 +2480,8 @@ public class TaskQueryImpl implements TaskQuery {
         allFilters);
   }
 
-  private @NotNull Map<Long, List<TaskEfficiencySummary>> getAssigneeTaskMap(Long projectId,
-      Long sprintId) {
+  @NotNull
+  private Map<Long, List<TaskEfficiencySummary>> getAssigneeTaskMap(Long projectId, Long sprintId) {
     Set<SearchCriteria> allFilters = getTaskAssigneeResourcesFilter(projectId, sprintId,
         null, null, null);
     // allFilters.add(equal("backlogFlag", false)); // Should be included
