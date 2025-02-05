@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI3 示例
+  title: AngusTester OpenAPI3 示例
   description: |-
     这是一个基于 OpenAPI 规范的 AngusTester 接口示例。
     您可以了解更多关于 AngusTester 的信息在网站：https://www.xcan.cloud/help。

@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI3 Sample
+  title: AngusTester OpenAPI3 Sample
   description: |-
     This is a AngusTester api sample based on the OpenAPI specification.
     You can find out more about AngusTester at https://www.xcan.cloud/help.

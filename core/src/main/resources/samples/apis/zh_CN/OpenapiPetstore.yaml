@@ -1,0 +1,803 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    这是一个基于 OpenAPI 3.0 规范的示例宠物商店服务器。您可以在 [https://swagger.io](https://swagger.io) 了解更多关于 Swagger 的信息。在宠物商店的第三个迭代中，我们已经转向了以设计为先的方法！您现在可以通过更改定义本身或代码来帮助我们改进 API。这样，随着时间的推移，我们可以整体上改进 API，并揭示 OAS3 中的一些新特性。
+    
+    _如果您在寻找 Swagger 2.0/OAS 2.0 版本的宠物商店，请点击 [这里](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml)。或者，您可以通过 `编辑 > 加载宠物商店 OAS 2.0` 菜单选项进行加载!_
+    
+    一些有用的链接：
+    - [宠物商店代码库](https://github.com/swagger-api/swagger-petstore)
+    - [宠物商店的源 API 定义](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: 了解更多关于 Swagger
+  url: http://swagger.io
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: pet
+    description: 关于您的宠物的所有信息
+    externalDocs:
+      description: 了解更多
+      url: http://swagger.io
+  - name: store
+    description: 访问宠物商店订单
+    externalDocs:
+      description: 了解更多关于我们商店的信息
+      url: http://swagger.io
+  - name: user
+    description: 用户相关操作
+paths:
+  /pet:
+    put:
+      tags:
+        - pet
+      summary: 更新现有宠物
+      description: 通过 ID 更新现有宠物
+      operationId: updatePet
+      requestBody:
+        description: 在商店中更新现有宠物
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pet'
+        required: true
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: 提供的 ID 无效
+        '404':
+          description: 未找到宠物
+        '422':
+          description: 验证异常
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    post:
+      tags:
+        - pet
+      summary: 向商店添加新宠物
+      description: 向商店添加新宠物
+      operationId: addPet
+      requestBody:
+          description: 在商店中创建新宠物
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pet'
+        required: true
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: 输入无效
+        '422':
+          description: 验证异常
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/findByStatus:
+    get:
+      tags:
+        - pet
+      summary: 按状态查找宠物
+      description: 可以通过以逗号分隔的字符串提供多个状态值
+      operationId: findPetsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: 需要考虑用于过滤的状态值
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: 无效的状态码
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/findByTags:
+    get:
+      tags:
+        - pet
+      summary: 按标签查找宠物
+      description: 可以通过以逗号分隔的字符串提供多个标签。使用 tag1、tag2、tag3 进行测试。
+      operationId: findPetsByTags
+      parameters:
+        - name: tags
+          in: query
+          description: 用于过滤的标签
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: 无效的标签值
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/{petId}:
+    get:
+      tags:
+        - pet
+      summary: 通过 ID 查找宠物
+      description: 返回单个宠物
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: 要返回的宠物 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: 提供的 ID 无效
+        '404':
+          description: 未找到宠物
+      security:
+        - api_key: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    post:
+      tags:
+        - pet
+      summary: 使用表单数据更新商店中的宠物
+      description: ''
+      operationId: updatePetWithForm
+      parameters:
+        - name: petId
+          in: path
+          description: 需要更新的宠物 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          in: query
+          description: 需要更新的宠物名称
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: 需要更新的宠物状态
+          schema:
+            type: string
+      responses:
+        '400':
+          description: 输入无效
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    delete:
+      tags:
+        - pet
+      summary: 删除一只宠物
+      description: 删除一只宠物
+      operationId: deletePet
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: 要删除的宠物 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: 无效的宠物值
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/{petId}/uploadImage:
+    post:
+      tags:
+        - pet
+      summary: 上传一张图片
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: petId
+          in: path
+          description: 要更新的宠物 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: additionalMetadata
+          in: query
+          description: 附加元数据
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /store/inventory:
+    get:
+      tags:
+        - store
+      summary: 根据状态返回宠物库存
+      description: 返回状态码与数量的映射
+      operationId: getInventory
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+      security:
+        - api_key: []
+  /store/order:
+    post:
+      tags:
+        - store
+      summary: 为宠物下订单
+      description: 在商店中下新订单
+      operationId: placeOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: 输入无效
+        '422':
+          description: 验证异常
+  /store/order/{orderId}:
+    get:
+      tags:
+        - store
+      summary: 通过 ID 查找购买订单
+      description: 对于有效的响应，尝试值为 <= 5 或 > 10 的整数 ID。其他值将生成异常。
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: 需要获取的订单 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: 提供的 ID 无效
+        '404':
+          description: 未找到订单
+    delete:
+      tags:
+        - store
+      summary: 通过 ID 删除购买订单
+      description: 对于有效的响应，尝试值小于 1000 的整数 ID。超过 1000 或非整数的值将生成 API 错误。
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: 需要删除的订单 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: 提供的 ID 无效
+        '404':
+          description: 未找到订单
+  /user:
+    post:
+      tags:
+        - user
+      summary: 创建用户
+      description: 这只能由已登录的用户完成。
+      operationId: createUser
+      requestBody:
+        description: 创建的用户对象
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/createWithList:
+    post:
+      tags:
+        - user
+      summary: 根据给定的输入数组创建用户列表
+      description: 根据给定的输入数组创建用户列表
+      operationId: createUsersWithListInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: 操作成功
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: 用户登录到系统
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: 登录时的用户名
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: 以明文形式输入的登录密码
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 操作成功
+          headers:
+            X-Rate-Limit:
+              description: 用户每小时允许的调用次数
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: 令牌过期的 UTC 日期
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/xml:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: 提供的用户名/密码无效
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: 注销当前登录的用户会话
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: 操作成功
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: 通过用户名获取用户
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: '需要获取的名称。使用 user1 进行测试。'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 提供的用户名无效
+        '404':
+          description: 未找到用户
+    put:
+      tags:
+        - user
+      summary: 更新用户
+      description: 这只能由已登录的用户完成。
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: 需要删除的名称
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: 在商店中更新现有用户
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: 操作成功
+    delete:
+      tags:
+        - user
+      summary: 删除用户
+      description: 这只能由已登录的用户完成。
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: 需要删除的名称
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: 提供的用户名无效
+        '404':
+          description: 未找到用户
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        petId:
+          type: integer
+          format: int64
+          example: 198772
+        quantity:
+          type: integer
+          format: int32
+          example: 7
+        shipDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: 订单状态
+          example: approved
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          type: boolean
+      xml:
+        name: order
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100000
+        username:
+          type: string
+          example: fehguy
+        address:
+          type: array
+          xml:
+            name: addresses
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Address'
+      xml:
+        name: customer
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: 437 Lytton
+        city:
+          type: string
+          example: Palo Alto
+        state:
+          type: string
+          example: CA
+        zip:
+          type: string
+          example: '94301'
+      xml:
+        name: address
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Dogs
+      xml:
+        name: category
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+        userStatus:
+          type: integer
+          description: 用户状态
+          format: int32
+          example: 1
+      xml:
+        name: user
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: tag
+    Pet:
+      required:
+        - name
+        - photoUrls
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: doggie
+        category:
+          $ref: '#/components/schemas/Category'
+        photoUrls:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            type: string
+            xml:
+              name: photoUrl
+        tags:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: 商店中宠物的状态
+          enum:
+            - available
+            - pending
+            - sold
+      xml:
+        name: pet
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    Pet:
+      description: 需要添加到商店的宠物对象
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+    UserArray:
+      description: 用户对象列表
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: 修改您账户中的宠物
+            read:pets: 查看您的宠物
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
