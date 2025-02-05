@@ -1,0 +1,107 @@
+specification: angus/1.0.0
+info:
+  name: Ftp Functionality Testing Example
+  description: This is an example of ftp functionality testing orchestration.
+type: TEST_FUNCTIONALITY
+plugin: Ftp
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  pipelines:
+    - target: FTP
+      name: UploadFromLocalFile
+      description: Upload file from local file
+      enabled: true
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: LOCAL_FILE
+      remoteFileName: remote.txt
+      localFileName: local.txt
+      localFileContent: This is a text file content
+    - target: FTP
+      name: UploadAndEncodingFromLocalFile
+      beforeName: UploadFromLocalFile
+      description: Upload and encode file from local file
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: LOCAL_FILE
+      remoteFileName: remote2.txt
+      localFileName: local2.txt
+      localFileContent: VGhpcyBpcyBhIHRleHQgZmlsZSBjb250ZW50
+      localFileContentEncoding: base64
+      binaryMode: false
+    - target: FTP
+      name: UploadFromRemoteFtpFile
+      beforeName: UploadAndEncodingFromLocalFile
+      description: Download a file from the Ftp server and then upload it
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: REMOTE_FILE
+      remoteFileName: remote.txt
+    - target: FTP
+      name: UploadFromRemoteUrl
+      beforeName: UploadFromRemoteFtpFile
+      description: Download a file from the Ftp server and then upload it
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: REMOTE_URL
+      remoteFileUrl: https://pics6.baidu.com/feed/d50735fae6cd7b897fbfd8ad27e746a9d8330e1a.jpeg
+    - target: FTP
+      name: RetrieveFile
+      beforeName: UploadFromRemoteUrl
+      description: Retrieve file from remote Ftp server
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: false
+      remoteFileName: remote.txt
+    - target: FTP
+      name: RetrieveAndRenameFile
+      beforeName: RetrieveFile
+      description: "Retrieve file from remote Ftp server and save it. Note: By default,\
+      \       it is saved in the execution data directory."
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: false
+      remoteFileName: remote.txt
+      localFileName: new_file.txt

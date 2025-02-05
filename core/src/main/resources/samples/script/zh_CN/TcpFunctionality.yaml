@@ -1,0 +1,68 @@
+specification: angus/1.0.0
+info:
+  name: Tcp协议功能测试脚本示例
+  description: 一个 Tcp 协议功能测试简单示例。
+type: TEST_FUNCTIONALITY
+plugin: Tcp
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  pipelines:
+    - target: TCP
+      name: 使用行结束符字节发送 TCP 数据
+      description: 使用 TcpClientImpl 类实现发送 TCP 数据
+      enabled: false
+      server:
+        server: serv02-sample.angusmock.cloud
+        port: 8083
+        connectTimeout: 6s
+        responseTimeout: 60s
+      data: 这是一个 TCP 数据内容
+      dataEncoding: none
+      setting:
+        tcpClientImplClass: TcpClientImpl
+        reUseConnection: true
+        eolByte: 10
+        tcpNoDelay: true
+        tcpCharset: UTF-8
+        x-closeConnection: false
+    - target: TCP
+      name: 使用结束符字节发送 TCP 数据
+      beforeName: 使用行结束符字节发送 TCP 数据
+      description: 使用 BinaryTcpClientImpl 类实现发送 TCP 数据
+      enabled: false
+      server:
+        server: serv02-sample.angusmock.cloud
+        port: 8083
+        connectTimeout: 6s
+        responseTimeout: 60s
+      data: 这是一个 TCP 数据内容
+      dataEncoding: none
+      setting:
+        tcpClientImplClass: BinaryTcpClientImpl
+        reUseConnection: true
+        eomByte: 13
+        tcpNoDelay: true
+        tcpCharset: UTF-8
+        x-closeConnection: false
+    - target: TCP
+      name: 使用长度前缀发送 TCP 数据
+      beforeName: 使用结束符字节发送 TCP 数据
+      description: 使用 LengthPrefixedBinaryTcpClientImpl 类实现发送 TCP 数据
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8083
+        connectTimeout: 6s
+        responseTimeout: 60s
+      data: 这是一个 TCP 数据内容
+      dataEncoding: none
+      setting:
+        tcpClientImplClass: LengthPrefixedBinaryTcpClientImpl
+        reUseConnection: true
+        binaryPrefixLength: 2
+        tcpNoDelay: true
+        tcpCharset: UTF-8
+        x-closeConnection: false

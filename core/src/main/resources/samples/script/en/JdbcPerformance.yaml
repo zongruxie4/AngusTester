@@ -1,18 +1,17 @@
 specification: angus/1.0.0
 info:
-  name: Simple jdbc performance testing
+  name: Jdbc Performance Testing Example
   description: This is an example of jdbc performance testing.
-type: TEST_CUSTOMIZATION
+type: TEST_PERFORMANCE
 plugin: Jdbc
 configuration:
-  duration: 1min
+  duration: 30min
   thread:
-    threads: 200
-  variables:
-    - name: username
-      description: An example of execution configuration variables
-      value: '@Uuid()'
-      enabled: true
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 50
+    rampDownInterval: 1min
+    rampDownThreads: 50
 task:
   arguments:
     ignoreAssertions: true

@@ -1,0 +1,17 @@
+specification: angus/1.0.0
+info:
+  name: Http协议基准测试脚本示例
+type: TEST_CUSTOMIZATION
+plugin: Http
+configuration:
+  duration: 1min
+  thread:
+    threads: 500
+task:
+  pipelines:
+    - target: HTTP
+      request:
+        method: GET
+        server:
+          url: http://serv01-sample.angusmock.cloud:30010
+        endpoint: /benchmark

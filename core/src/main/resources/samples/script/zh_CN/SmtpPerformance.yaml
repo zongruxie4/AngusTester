@@ -1,0 +1,107 @@
+specification: angus/1.0.0
+info:
+  name: Smtp协议性能测试脚本示例
+  description: 一个 Smtp 协议性能测试简单示例。
+type: TEST_PERFORMANCE
+plugin: Smtp
+configuration:
+  duration: 50min
+  thread:
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 20
+  priority: 1000
+task:
+  pipelines:
+    - target: SMTP
+      name: 发送普通邮件消息（SMTP）
+      description: 使用 SMTP 协议发送普通消息电子邮件
+      enabled: true
+      server:
+        server: mail.xcan.cloud
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test001@xcan.cloud
+        receiverTo: test002@xcan.cloud
+        content:
+          subject: 电子邮件的主题
+          suppressSubject: false
+          message: 电子邮件的主要内容或正文
+          plainBody: true
+          includeTimestamp: false
+          messageSizeStatistics: true
+          sendEmlMessage: false
+          enableDebugLogging: true
+    - target: SMTP
+      name: 发送带本地附件的邮件消息（SMTP）
+      beforeName: 发送普通邮件消息（SMTP）
+      description: 使用 SMTP 协议发送带本地附件的消息电子邮件
+      enabled: false
+      server:
+        server: mail.xcan.cloud
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test001@xcan.cloud
+        receiverTo: test002@xcan.cloud
+        content:
+          subject: 电子邮件的主题
+          suppressSubject: false
+          message: 电子邮件的主要内容或正文
+          plainBody: true
+          includeTimestamp: true
+          localAttachBase64Contents:
+            attach1.txt: VGhpcyBpcyBhIGF0dGFjaG1lbnQxIGNvbnRlbnQ=
+            attach2.txt: VGhpcyBpcyBhIGF0dGFjaG1lbnQyIGNvbnRlbnQ=
+          messageSizeStatistics: true
+          sendEmlMessage: false
+          enableDebugLogging: true
+    - target: SMTP
+      name: 发送 eml 文件邮件消息（SMTP）
+      beforeName: 发送带本地附件的邮件消息（SMTP）
+      description: 使用 SMTP 协议发送 eml 文件消息电子邮件
+      enabled: false
+      server:
+        server: mail.xcan.cloud
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test001@xcan.cloud
+        receiverTo: test002@xcan.cloud
+        content:
+          subject: 电子邮件的主题
+          suppressSubject: false
+          plainBody: false
+          includeTimestamp: false
+          messageSizeStatistics: true
+          sendEmlMessage: true
+          localEmlMessageBase64Content: VGhpcyBpcyBhIGVtYWlsIGNvbnRlbnQ=
+          enableDebugLogging: true

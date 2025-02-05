@@ -1,13 +1,17 @@
 specification: angus/1.0.0
 info:
-  name: 简单的 Http 性能测试
-  description: 这是 Http 自定义性能测试的一个示例
-type: TEST_CUSTOMIZATION
+  name: Http协议性能测试脚本示例
+  description: 一个 Http 协议性能测试简单示例。
+type: TEST_PERFORMANCE
 plugin: Http
 configuration:
-  duration: 1min
+  duration: 30min
   thread:
-    threads: 200
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 50
+    rampDownInterval: 1min
+    rampDownThreads: 50
 task:
   pipelines:
     - target: HTTP

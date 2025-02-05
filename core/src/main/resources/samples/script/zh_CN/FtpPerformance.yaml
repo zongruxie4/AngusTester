@@ -1,0 +1,109 @@
+specification: angus/1.0.0
+info:
+  name: Ftp协议性能测试脚本示例
+  description: 一个 Ftp 协议性能测试简单示例。
+type: TEST_PERFORMANCE
+plugin: Ftp
+configuration:
+  duration: 50min
+  thread:
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 20
+  priority: 1000
+task:
+  pipelines:
+    - target: FTP
+      name: UploadFromLocalFile
+      description: 从本地文件上传文件
+      enabled: true
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: LOCAL_FILE
+      remoteFileName: remote.txt
+      localFileName: local.txt
+      localFileContent: 这是一个文本文件的内容
+    - target: FTP
+      name: UploadAndEncodingFromLocalFile
+      beforeName: UploadFromLocalFile
+      description: 从本地文件上传并编码文件
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: LOCAL_FILE
+      remoteFileName: remote2.txt
+      localFileName: local2.txt
+      localFileContent: VGhpcyBpcyBhIHRleHQgZmlsZSBjb250ZW50
+      localFileContentEncoding: base64
+      binaryMode: false
+    - target: FTP
+      name: UploadFromRemoteFtpFile
+      beforeName: UploadAndEncodingFromLocalFile
+      description: 从 FTP 服务器下载文件然后上传
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: REMOTE_FILE
+      remoteFileName: remote.txt
+    - target: FTP
+      name: UploadFromRemoteUrl
+      beforeName: UploadFromRemoteFtpFile
+      description: 从 FTP 服务器下载文件然后上传
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: true
+      uploadFileSource: REMOTE_URL
+      remoteFileUrl: https://pics6.baidu.com/feed/d50735fae6cd7b897fbfd8ad27e746a9d8330e1a.jpeg
+    - target: FTP
+      name: RetrieveFile
+      beforeName: UploadFromRemoteUrl
+      description: 从远程 FTP 服务器获取文件
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: false
+      remoteFileName: remote.txt
+    - target: FTP
+      name: RetrieveAndRenameFile
+      beforeName: RetrieveFile
+      description: 从远程 FTP 服务器获取文件并保存。注意：默认情况下，它会保存在执行数据目录中
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 8084
+        username: admin
+        password: 123456
+        readTimeout: 60s
+        connectTimeout: 6s
+      uploadFile: false
+      remoteFileName: remote.txt
+      localFileName: new_file.txt

@@ -90,8 +90,8 @@ public class ScriptFacadeImpl implements ScriptFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> sampleImport() {
-    return scriptCmd.sampleImport();
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return scriptCmd.sampleImport(projectId);
   }
 
   @Override

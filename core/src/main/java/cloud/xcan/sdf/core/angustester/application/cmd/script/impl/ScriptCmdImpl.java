@@ -39,6 +39,7 @@ import cloud.xcan.angus.model.script.configuration.Threads;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.sdf.api.commonlink.script.ScriptPermission;
+import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptAuthCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptCmd;
@@ -608,7 +609,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> sampleImport() {
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
@@ -618,18 +619,19 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       @Override
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
-        for (String file : SAMPLE_SCRIPT_FILES) {
+        for (String scriptFile : SAMPLE_SCRIPT_FILES) {
           URL resourceUrl = this.getClass().getResource("/samples/script/"
-              + getDefaultLanguage().getValue() + "/" + file);
+              + getDefaultLanguage().getValue() + "/" + scriptFile);
+          String content;
           try {
-            String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-            AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-            Script script = importDtoToDomain(angusScript.getInfo().getName(),
-                angusScript.getInfo().getDescription(), content);
-            idKeys.add(imports(script));
+            content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
           } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
           }
+          AngusScript angusScript = scriptQuery.checkAndParse(content, true);
+          Script script = importDtoToDomain(uidGenerator.getUID(), projectId,
+              angusScript.getInfo().getName(), angusScript.getInfo().getDescription(), content);
+          idKeys.add(imports(script));
         }
         return idKeys;
       }

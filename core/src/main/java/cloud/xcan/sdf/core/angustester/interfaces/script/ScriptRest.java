@@ -113,8 +113,9 @@ public class ScriptRest {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/sample/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport() {
-    return ApiLocaleResult.success(scriptFacade.sampleImport());
+  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(scriptFacade.sampleImport(projectId));
   }
 
   @ApiOperation(value = "Import script", nickname = "script:import")

@@ -1,7 +1,7 @@
 specification: angus/1.0.0
 info:
-  name: 简单的 Http 功能测试
-  description: 这是 Http 功能测试的一个示例。
+  name: Http协议功能测试脚本示例
+  description: 一个 Http 协议功能测试简单示例。
 type: TEST_FUNCTIONALITY
 plugin: Http
 configuration:

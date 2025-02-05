@@ -1,0 +1,114 @@
+specification: angus/1.0.0
+info:
+  name: WebSocket Performance Testing Example
+  description: This is an example of websocket performance testing.
+type: TEST_PERFORMANCE
+plugin: WebSocket
+configuration:
+  iterations: 10
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  arguments:
+    ignoreAssertions: false
+    webSocketSetting:
+      connectTimeout: 6s
+      responseTimeout: 60s
+      maxReconnections: 0
+      reconnectionInterval: 200ms
+  pipelines:
+    - target: WEBSOCKET
+      name: The `ONLY_SEND` mode example
+      description: Only send custom messages to the server.
+      enabled: false
+      url: ws://serv01-sample.angusmock.cloud:8082/example/ONLY_SEND
+      parameters:
+        - name: access_token
+          in: query
+          description: Authentication parameters when connecting to WebSocket.
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+      mode: ONLY_SEND
+      message: Hi~
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD
+    - target: WEBSOCKET
+      name: The `ONLY_RECEIVE` mode example
+      beforeName: The `ONLY_SEND` mode example
+      description: Only receiving messages from the server and asserting them.
+      enabled: false
+      url: ws://serv01-sample.angusmock.cloud:8082/example/ONLY_RECEIVE
+      parameters:
+        - name: access_token
+          in: query
+          description: Authentication parameters when connecting to WebSocket.
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+        - name: ServerMessage
+          in: query
+          description: This is the simulated test client's expectation for the message
+            to be returned by the server.
+          enabled: true
+          type: string
+          value: This is a `SUCCESS` message returned by the server.
+        - name: ServerDelay
+          in: query
+          description: This is the simulated test client's expectation for the delay(milliseconds)
+            in the message returned by the server.
+          enabled: true
+          type: string
+          value: 20-200
+      mode: ONLY_RECEIVE
+      assertions:
+        - name: Assert that the received content includes SUCCESS.
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: SUCCESS
+        - name: Assert that the length of the received content does not exceed 1 KB.
+          enabled: true
+          type: SIZE
+          assertionCondition: LESS_THAN
+          expected: 1024
+        - name: Assert that the time interval for receiving the latest message does not
+            exceed 200 milliseconds.
+          enabled: true
+          type: DURATION
+          assertionCondition: LESS_THAN
+          expected: 200
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD
+    - target: WEBSOCKET
+      name: The `SEND_AND_RECEIVE` mode example
+      beforeName: The `ONLY_RECEIVE` mode example
+      description: "The client and server simultaneously exchange messages with each\
+      \       other, default Mode."
+      enabled: true
+      url: ws://serv01-sample.angusmock.cloud:8082/example/SEND_AND_RECEIVE
+      parameters:
+        - name: access_token
+          in: query
+          description: Authentication parameters when connecting to WebSocket.
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+        - name: ServerMessage
+          in: query
+          description: This is the simulated test client's expectation for the message
+            to be returned by the server.
+          enabled: true
+          type: string
+          value: Hi~
+      mode: SEND_AND_RECEIVE
+      message: Hi~
+      assertions:
+        - name: Assert that the received content includes SUCCESS.
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: SUCCESS
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD

@@ -1,0 +1,109 @@
+specification: angus/1.0.0
+info:
+  name: WebSocket协议功能测试脚本
+  description: 一个 WebSocket 协议功能测试简单示例
+type: TEST_FUNCTIONALITY
+plugin: WebSocket
+configuration:
+  iterations: 10
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  arguments:
+    ignoreAssertions: false
+    webSocketSetting:
+      connectTimeout: 6s
+      responseTimeout: 60s
+      maxReconnections: 0
+      reconnectionInterval: 200ms
+  pipelines:
+    - target: WEBSOCKET
+      name: ONLY_SEND 模式示例
+      description: 仅向服务器发送自定义消息
+      enabled: false
+      url: ws://serv01-sample.angusmock.cloud:8082/example/ONLY_SEND
+      parameters:
+        - name: access_token
+          in: query
+          description: 连接到 WebSocket 时的身份验证参数
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+      mode: ONLY_SEND
+      message: Hi~
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD
+    - target: WEBSOCKET
+      name: ONLY_RECEIVE 模式示例
+      beforeName: ONLY_SEND 模式示例
+      description: 仅接收来自服务器的消息并进行断言
+      enabled: false
+      url: ws://serv01-sample.angusmock.cloud:8082/example/ONLY_RECEIVE
+      parameters:
+        - name: access_token
+          in: query
+          description: 连接到 WebSocket 时的身份验证参数
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+        - name: ServerMessage
+          in: query
+          description: 这是模拟测试客户端对服务器返回消息的期望
+          enabled: true
+          type: string
+          value: 这是服务器返回的 SUCCESS 消息
+        - name: ServerDelay
+          in: query
+          description: 这是模拟测试客户端对服务器返回消息延迟（毫秒）的期望
+          enabled: true
+          type: string
+          value: 20-200
+      mode: ONLY_RECEIVE
+      assertions:
+        - name: 断言接收到的内容包括 SUCCESS
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: SUCCESS
+        - name: 断言接收到的内容长度不超过 1 KB
+          enabled: true
+          type: SIZE
+          assertionCondition: LESS_THAN
+          expected: 1024
+        - name: 断言接收最新消息的时间间隔不超过 200 毫秒
+          enabled: true
+          type: DURATION
+          assertionCondition: LESS_THAN
+          expected: 200
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD
+    - target: WEBSOCKET
+      name: SEND_AND_RECEIVE 模式示例
+      beforeName: ONLY_RECEIVE 模式示例
+      description: 客户端和服务器同时相互交换消息，默认模式
+      enabled: true
+      url: ws://serv01-sample.angusmock.cloud:8082/example/SEND_AND_RECEIVE
+      parameters:
+        - name: access_token
+          in: query
+          description: 连接到 WebSocket 时的身份验证参数
+          enabled: true
+          type: string
+          value: 17062ee76ea94bd28cf4eccc48a85f0e
+        - name: ServerMessage
+          in: query
+          description: 这是模拟测试客户端对服务器返回消息的期望
+          enabled: true
+          type: string
+          value: Hi~
+      mode: SEND_AND_RECEIVE
+      message: Hi~
+      assertions:
+        - name: 断言接收到的内容包括 SUCCESS
+          enabled: true
+          type: BODY
+          assertionCondition: CONTAIN
+          expected: SUCCESS
+      actionOnEOF: RECYCLE
+      sharingMode: ALL_THREAD

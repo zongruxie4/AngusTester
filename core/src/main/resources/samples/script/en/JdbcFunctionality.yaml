@@ -1,6 +1,6 @@
 specification: angus/1.0.0
 info:
-  name: Simple jdbc functionality testing
+  name: Jdbc Functionality Testing Example
   description: This is an example of jdbc functionality testing orchestration.
 type: TEST_FUNCTIONALITY
 plugin: Jdbc

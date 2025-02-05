@@ -1,0 +1,125 @@
+specification: angus/1.0.0
+info:
+  name: Ldap Functionality Testing Example
+  description: This is an example of ldap functionality testing orchestration.
+type: TEST_FUNCTIONALITY
+plugin: Ldap
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  pipelines:
+    - target: LDAP
+      name: Add entry
+      description: Add person entry
+      enabled: true
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: ADD
+    - target: LDAP
+      name: Add customized entry
+      beforeName: Add entry
+      description: Add user defined person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: ADD
+      userDefined: true
+      entryDn: cn=TestUser
+      arguments:
+        givenname: User
+        sn: Test
+        cn: TestUser
+        uid: user
+        userpassword: passd
+    - target: LDAP
+      name: Modify entry
+      beforeName: Add customized entry
+      description: Modify person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: MODIFY
+    - target: LDAP
+      name: Modify customized entry
+      beforeName: Modify entry
+      description: Modify user defined person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: MODIFY
+      userDefined: true
+      entryDn: cn=TestUser
+      arguments:
+        mobile: 18910691700
+        userpassword: passd2
+    - target: LDAP
+      name: Search entry
+      beforeName: Modify customized entry
+      description: Search person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: SEARCH
+    - target: LDAP
+      name: Search customized entry
+      beforeName: Search entry
+      description: Search user defined person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: SEARCH
+      userDefined: true
+      searchBase: cn=TestUser
+      searchFilter: cn=TestUser
+    - target: LDAP
+      name: Delete entry
+      beforeName: Search customized entry
+      description: Delete person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: DELETE
+    - target: LDAP
+      name: Delete customized entry
+      beforeName: Delete entry
+      description: Delete user defined person entry
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: DELETE
+      userDefined: true
+      deleteEntry: cn=TestUser

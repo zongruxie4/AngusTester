@@ -1,6 +1,6 @@
 specification: angus/1.0.0
 info:
-  name: Simple http functionality testing
+  name: Http Functionality Testing Example
   description: This is an example of http functionality testing.
 type: TEST_FUNCTIONALITY
 plugin: Http

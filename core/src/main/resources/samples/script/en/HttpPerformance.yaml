@@ -1,13 +1,17 @@
 specification: angus/1.0.0
 info:
-  name: Simple http performance testing
-  description: This is an example of http customization performance testing.
-type: TEST_CUSTOMIZATION
+  name: Http Performance Testing Example
+  description: This is an example of http performance testing orchestration.
+type: TEST_PERFORMANCE
 plugin: Http
 configuration:
-  duration: 1min
+  duration: 30min
   thread:
-    threads: 200
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 50
+    rampDownInterval: 1min
+    rampDownThreads: 50
 task:
   pipelines:
     - target: HTTP

@@ -37,7 +37,7 @@ public interface ScriptFacade {
 
   IdKey<Long, Object> clone(Long id);
 
-  List<IdKey<Long, Object>> sampleImport();
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
 
   IdKey<Long, Object> imports(ScriptImportDto dto);
 

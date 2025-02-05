@@ -24,8 +24,14 @@ public interface TesterConstant {
    * Samples
    */
   List<String> SAMPLE_SERVICES_FILES = List.of("OpenapiPetstore.yaml", "AngusTesterSample.yaml");
-  List<String> SAMPLE_SCRIPT_FILES = List.of("HttpFunctionality.yaml", "HttpPerformance.yaml",
-      "JdbcFunctionality.yaml", "JdbcPerformance.yaml");
+  List<String> SAMPLE_SCRIPT_FILES = List.of(
+      "TcpFunctionality.yaml", "TcpPerformance.yaml",
+      "SmtpFunctionality.yaml", "SmtpPerformance.yaml",
+      "MailFunctionality.yaml", "MailPerformance.yaml",
+      "LdapFunctionality.yaml", "LdapPerformance.yaml",
+      "WebSocketFunctionality.yaml", "WebSocketPerformance.yaml",
+      "JdbcFunctionality.yaml", "JdbcPerformance.yaml",
+      "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
   String SAMPLE_MOCK_APIS_FILE = "MockApis.yaml";
 
   /**

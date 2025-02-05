@@ -1,0 +1,59 @@
+specification: angus/1.0.0
+info:
+  name: Mail协议功能测试脚本示例
+  description: 一个 Mail 协议功能测试简单示例。
+type: TEST_FUNCTIONALITY
+plugin: Mail
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  pipelines:
+    - target: MAIL
+      name: 获取邮件消息（IMAP）
+      description: 使用 IMAP 协议获取电子邮件
+      enabled: true
+      protocol: IMAP
+      server:
+        server: 192.168.0.211
+        port: 993
+        security:
+          use: USE_START_TLS
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        folder: INBOX
+        deleteMessage: false
+        storeMimeMessage: true
+        numMessages: 1
+    - target: MAIL
+      name: 获取邮件消息（POP3）
+      beforeName: 获取邮件消息（IMAP）
+      description: 使用 POP3 协议获取电子邮件
+      enabled: false
+      protocol: POP3
+      server:
+        server: 192.168.0.211
+        port: 995
+        security:
+          use: USE_START_TLS
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        folder: INBOX
+        deleteMessage: false
+        storeMimeMessage: true
+        numMessages: 1

@@ -1,0 +1,128 @@
+specification: angus/1.0.0
+info:
+  name: Ldap协议性能测试脚本示例
+  description: 一个 Ldap 协议性能测试简单示例。
+type: TEST_PERFORMANCE
+plugin: Ldap
+configuration:
+  duration: 50min
+  thread:
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 20
+  priority: 1000
+task:
+  pipelines:
+    - target: LDAP
+      name: 添加条目
+      description: 添加人员条目
+      enabled: true
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: ADD
+    - target: LDAP
+      name: 添加自定义条目
+      beforeName: 添加条目
+      description: 添加自定义人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: ADD
+      userDefined: true
+      entryDn: cn=TestUser
+      arguments:
+        givenname: User
+        sn: Test
+        cn: TestUser
+        uid: user
+        userpassword: passd
+    - target: LDAP
+      name: 修改条目
+      beforeName: 添加自定义条目
+      description: 修改人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: MODIFY
+    - target: LDAP
+      name: 修改自定义条目
+      beforeName:  修改条目
+      description: 修改自定义人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: MODIFY
+      userDefined: true
+      entryDn: cn=TestUser
+      arguments:
+        mobile: 18910691700
+        userpassword: passd2
+    - target: LDAP
+      name: 搜索条目
+      beforeName: 修改自定义条目
+      description: 搜索人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: SEARCH
+    - target: LDAP
+      name: 搜索自定义条目
+      beforeName: 搜索条目
+      description: 搜索人员自定义条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: SEARCH
+      userDefined: true
+      searchBase: cn=TestUser
+      searchFilter: cn=TestUser
+    - target: LDAP
+      name: 删除条目
+      beforeName: 搜索自定义条目
+      description: 删除人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: DELETE
+    - target: LDAP
+      name: 删除自定义条目
+      beforeName: 删除条目
+      description: 删除自定义人员条目
+      enabled: false
+      server:
+        server: serv01-sample.angusmock.cloud
+        port: 389
+        username: "cn=admin,dc=serv01-sample,dc=angusmock,dc=cloud"
+        password: xcan@demo123
+        rootDn: "dc=serv01-sample,dc=angusmock,dc=cloud"
+      testType: DELETE
+      userDefined: true
+      deleteEntry: cn=TestUser

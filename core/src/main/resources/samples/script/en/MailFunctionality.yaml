@@ -1,0 +1,59 @@
+specification: angus/1.0.0
+info:
+  name: Mail Functionality Testing Example
+  description: This is an example of mail functionality testing orchestration.
+type: TEST_FUNCTIONALITY
+plugin: Mail
+configuration:
+  thread:
+    threads: 1
+  priority: 1000
+task:
+  pipelines:
+    - target: MAIL
+      name: Get mail messages (IMAP)
+      description: Using IMAP protocol to obtain emails
+      enabled: true
+      protocol: IMAP
+      server:
+        server: 192.168.0.211
+        port: 993
+        security:
+          use: USE_START_TLS
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        folder: INBOX
+        deleteMessage: false
+        storeMimeMessage: true
+        numMessages: 1
+    - target: MAIL
+      name: Get mail messages (POP3)
+      beforeName: Get mail messages (IMAP)
+      description: Using POP3 protocol to obtain emails
+      enabled: false
+      protocol: POP3
+      server:
+        server: 192.168.0.211
+        port: 995
+        security:
+          use: USE_START_TLS
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        folder: INBOX
+        deleteMessage: false
+        storeMimeMessage: true
+        numMessages: 1

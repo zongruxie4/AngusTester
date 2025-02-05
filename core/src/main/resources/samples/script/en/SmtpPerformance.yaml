@@ -1,0 +1,107 @@
+specification: angus/1.0.0
+info:
+  name: Smtp Performance Testing Example
+  description: This is an example of smtp performance testing orchestration.
+type: TEST_PERFORMANCE
+plugin: Smtp
+configuration:
+  duration: 50min
+  thread:
+    threads: 500
+    rampUpInterval: 1min
+    rampUpThreads: 20
+  priority: 1000
+task:
+  pipelines:
+    - target: SMTP
+      name: Send mail plain message (SMTP)
+      description: Using SMTP protocol to send plain message email
+      enabled: true
+      server:
+        server: 192.168.0.211
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test002@xcan.cloud
+        receiverTo: test001@xcan.cloud
+        content:
+          subject: The subject of the email
+          suppressSubject: false
+          message: The main content or body of the email.
+          plainBody: true
+          includeTimestamp: false
+          messageSizeStatistics: false
+          sendEmlMessage: false
+          enableDebugLogging: false
+    - target: SMTP
+      name: Send mail local attachments message (SMTP)
+      beforeName: Send mail plain message (SMTP)
+      description: Using SMTP protocol to send local attachments message email
+      enabled: false
+      server:
+        server: 192.168.0.211
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test002@xcan.cloud
+        receiverTo: test001@xcan.cloud
+        content:
+          subject: The subject of the email
+          suppressSubject: false
+          message: The main content or body of the email.
+          plainBody: true
+          includeTimestamp: true
+          localAttachFiles:
+            - attach1.txt
+            - attach2.txt
+          messageSizeStatistics: false
+          sendEmlMessage: false
+          enableDebugLogging: false
+    - target: SMTP
+      name: Send mail eml file message (SMTP)
+      beforeName: Send mail local attachments message (SMTP)
+      description: Using SMTP protocol to send eml file message email
+      enabled: false
+      server:
+        server: 192.168.0.211
+        port: 465
+        security:
+          use: USE_SSL
+          trustAllCerts: true
+          enforceStartTLS: false
+          useLocalTrustStore: false
+        useAuth: true
+        username: test001@xcan.cloud
+        password: test001@xcan
+        readTimeout: 60s
+        connectTimeout: 6s
+      mail:
+        mailFrom: test002@xcan.cloud
+        receiverTo: test001@xcan.cloud
+        content:
+          subject: The subject of the email
+          suppressSubject: false
+          plainBody: false
+          includeTimestamp: false
+          messageSizeStatistics: false
+          sendEmlMessage: true
+          localEmlMessageBase64Content: VGhpcyBpcyBhIGVtYWlsIGNvbnRlbnQ=
+          enableDebugLogging: false
