@@ -98,7 +98,7 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Import the inner project sample", nickname = "services:sample:import")
+  @ApiOperation(value = "Import the inner services sample", nickname = "services:sample:import")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
@@ -129,7 +129,7 @@ public class ServicesRest {
   }
 
   @ApiOperation(value = "Modify services status", nickname = "services:status:update",
-      notes = "Note: When modifying a project, all services and apis status under the project will be synchronously modified.")
+      notes = "Note: When modifying a services, all services and apis status under the services will be synchronously modified.")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Modified successfully", response = ApiLocaleResult.class),
       @ApiResponse(code = 404, message = "Resource not found", response = ApiLocaleResult.class)
@@ -149,7 +149,7 @@ public class ServicesRest {
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ServicesDetailVo> detail(
       @ApiParam(name = "id", value = "Services id", required = true) @PathVariable("id") Long id,
-      @ApiParam(name = "joinSchemaFlag", value = "Whether to associate project schema information flag", required = false)
+      @ApiParam(name = "joinSchemaFlag", value = "Whether to associate services schema information flag", required = false)
       @RequestParam(name = "joinSchemaFlag", required = false) Boolean joinSchemaFlag) {
     return ApiLocaleResult.success(serviceFacade.detail(id, joinSchemaFlag));
   }
