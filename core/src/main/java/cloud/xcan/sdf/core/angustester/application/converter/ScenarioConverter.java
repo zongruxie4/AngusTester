@@ -9,6 +9,7 @@ import static cloud.xcan.sdf.spec.utils.WorkingTimeCalculator.isLastMonth;
 import static cloud.xcan.sdf.spec.utils.WorkingTimeCalculator.isLastWeek;
 import static java.util.Collections.emptyList;
 
+import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.sdf.model.scenario.ScenarioInfo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
@@ -81,6 +82,20 @@ public class ScenarioConverter {
         .setTestPerfFlag(scenarioDb.getTestPerfFlag())
         .setTestStabilityFlag(scenarioDb.getTestStabilityFlag())
         .setDeletedFlag(false);
+  }
+
+  public static Scenario sampleImportToDomain(Long projectId, AngusScript angusScript) {
+    return new Scenario()
+        .setName(angusScript.getInfo().getName())
+        .setProjectId(projectId)
+        .setAuthFlag(false)
+        .setPlugin(angusScript.getPlugin())
+        .setDescription(angusScript.getInfo().getDescription())
+        .setAngusScript(angusScript)
+        .setDeletedFlag(false)
+        .setTestFuncFlag(false)
+        .setTestPerfFlag(false)
+        .setTestStabilityFlag(false);
   }
 
   public static ScenarioInfo toScenarioInfo(Scenario scenario) {

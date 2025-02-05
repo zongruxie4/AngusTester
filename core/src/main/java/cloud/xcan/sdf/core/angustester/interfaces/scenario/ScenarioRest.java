@@ -110,6 +110,16 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.clone(id));
   }
 
+  @ApiOperation(value = "Import the inner scenario sample", nickname = "scenario:sample:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/sample/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(scenarioFacade.sampleImport(projectId));
+  }
+
   @ApiOperation(value = "Query the detail of scenario", nickname = "scenario:detail")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class),

@@ -18,6 +18,8 @@ public interface ScenarioCmd {
 
   IdKey<Long, Object> clone(Long id);
 
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
+
   void delete0(List<Long> ids);
 
 }

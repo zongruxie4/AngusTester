@@ -2,16 +2,24 @@ package cloud.xcan.sdf.core.angustester.application.cmd.scenario.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SCENARIO;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_SCRIPT_FILES;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.sampleImportToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.toScenarioTrash;
+import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.importDtoToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.toAngusScenarioAddScript;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
+import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.angus.model.script.AngusScript;
+import cloud.xcan.angus.model.script.info.Info;
 import cloud.xcan.angus.parser.AngusParser;
+import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.indicator.IndicatorPerfCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.indicator.IndicatorStabilityCmd;
@@ -23,6 +31,7 @@ import cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.sdf.core.angustester.application.query.scenario.ScenarioAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.scenario.ScenarioQuery;
+import cloud.xcan.sdf.core.angustester.application.query.script.ScriptQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.Activity;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.DatasetTargetRepo;
@@ -32,7 +41,9 @@ import cloud.xcan.sdf.core.angustester.domain.scenario.ScenarioRepo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.auth.ScenarioAuthRepo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.favorite.ScenarioFavouriteRepo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.follow.ScenarioFollowRepo;
+import cloud.xcan.sdf.core.angustester.domain.script.Script;
 import cloud.xcan.sdf.core.angustester.domain.script.ScriptInfo;
+import cloud.xcan.sdf.core.angustester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
@@ -41,7 +52,11 @@ import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.core.utils.CoreUtils;
 import cloud.xcan.sdf.model.script.ScriptSource;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -73,6 +88,9 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
+
+  @Resource
+  private ScriptQuery scriptQuery;
 
   @Resource
   private ScriptCmd scriptCmd;
@@ -363,6 +381,36 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
         // Add clone scenario activity
         activityCmd.add(toActivity(SCENARIO, scenarioDb, ActivityType.CLONE, scenarioDb.getName()));
         return idKey;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        List<IdKey<Long, Object>> idKeys = new ArrayList<>();
+        for (String scriptFile : SAMPLE_SCRIPT_FILES) {
+          URL resourceUrl = this.getClass().getResource("/samples/script/"
+              + getDefaultLanguage().getValue() + "/" + scriptFile);
+          String content;
+          try {
+            content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          } catch (IOException e) {
+            throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
+          }
+          AngusScript angusScript = scriptQuery.checkAndParse(content, true);
+          Scenario scenario = sampleImportToDomain(projectId, angusScript);
+          idKeys.add(add(scenario));
+        }
+        return idKeys;
       }
     }.execute();
   }

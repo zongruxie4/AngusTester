@@ -26,6 +26,8 @@ public interface ScenarioFacade {
 
   IdKey<Long, Object> clone(Long id);
 
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
+
   ScenarioDetailVo detail(Long id);
 
   List<ScenarioListVo> list(Set<Long> ids);
@@ -33,6 +35,5 @@ public interface ScenarioFacade {
   PageResult<ScenarioListVo> list(ScenarioInfoFindDto dto);
 
   PageResult<ScenarioListVo> search(ScenarioInfoSearchDto dto);
-
 
 }
