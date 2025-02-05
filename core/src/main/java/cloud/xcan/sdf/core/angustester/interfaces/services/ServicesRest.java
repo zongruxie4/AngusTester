@@ -98,13 +98,13 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Import the inner services sample", nickname = "services:sample:import")
+  @ApiOperation(value = "Import the inner project sample", nickname = "services:sample:import")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/{id}/sample/import")
   public ApiLocaleResult<IdKey<Long, Object>> sampleImport(
-      @ApiParam(name = "id", value = "Services id", required = true) @PathVariable("id") Long id) {
+      @ApiParam(name = "id", value = "Project id", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(serviceFacade.sampleImport(id));
   }
 

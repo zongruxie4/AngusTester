@@ -29,10 +29,12 @@ import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfoRepo;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseRepo;
 import cloud.xcan.sdf.core.angustester.domain.func.summary.FuncCaseEfficiencySummary;
 import cloud.xcan.sdf.core.angustester.domain.kanban.BurnDownResourceType;
+import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyCaseCountOverview;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyCaseOverview;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyCaseRanking;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyCaseTesterOverview;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyTaskAssigneeOverview;
+import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyTaskCountOverview;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyTaskOverview;
 import cloud.xcan.sdf.core.angustester.domain.kanban.EfficiencyTaskRanking;
 import cloud.xcan.sdf.core.angustester.domain.project.Project;
@@ -120,6 +122,7 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
         overview.setAssignees(commonQuery.getUserInfoMap(memberIds));
 
         if (isEmpty(tasks)) {
+          overview.setTotalOverview(new EfficiencyTaskCountOverview());
           return overview;
         }
 
@@ -179,6 +182,7 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
             .filter(Objects::nonNull).collect(Collectors.toSet()));
         overview.setTesters(commonQuery.getUserInfoMap(memberIds));
         if (isEmpty(cases)) {
+          overview.setTotalOverview(new EfficiencyCaseCountOverview());
           return overview;
         }
 
