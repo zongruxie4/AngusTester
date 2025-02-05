@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -98,14 +99,14 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Import the inner project sample", nickname = "services:sample:import")
+  @ApiOperation(value = "Import the inner project samples", nickname = "services:sample:import")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/{id}/sample/import")
-  public ApiLocaleResult<IdKey<Long, Object>> sampleImport(
-      @ApiParam(name = "id", value = "Project id", required = true) @PathVariable("id") Long id) {
-    return ApiLocaleResult.success(serviceFacade.sampleImport(id));
+  @PostMapping(value = "/sample/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(serviceFacade.sampleImport(projectId));
   }
 
   @ApiOperation(value = "Import the apis to services", nickname = "services:import",

@@ -84,7 +84,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
   }
 
   @Override
-  public IdKey<Long, Object> sampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
     return servicesCmd.sampleImport(projectId);
   }
 

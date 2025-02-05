@@ -26,7 +26,7 @@ public interface ServicesCmd {
 
   void statusUpdate(Long id, ApiStatus status);
 
-  IdKey<Long, Object> sampleImport(Long projectId);
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
 
   IdKey<Long, Object> imports(Long projectId, Long serviceId, String projectName,
       ApiImportSource importSource, StrategyWhenDuplicated strategyWhenDuplicated,

@@ -82,7 +82,7 @@ paths:
       description: 向商店添加新宠物
       operationId: addPet
       requestBody:
-          description: 在商店中创建新宠物
+        description: 在商店中创建新宠物
         content:
           application/json:
             schema:

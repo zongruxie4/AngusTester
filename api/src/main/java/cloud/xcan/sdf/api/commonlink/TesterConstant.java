@@ -23,11 +23,10 @@ public interface TesterConstant {
   /**
    * Samples
    */
-  String SAMPLE_PROJECT_NAME = "OpenAPI3Sample";
-  String SAMPLE_PROJECT_FILE = "OpenAPI3Sample.yaml";
-  String SAMPLE_MOCK_APIS_FILE = "MockApis.yaml";
+  List<String> SAMPLE_SERVICES_FILES = List.of("OpenapiPetstore.yaml", "AngusTesterSample.yaml");
   List<String> SAMPLE_SCRIPT_FILES = List.of("HttpFunctionality.yaml", "HttpPerformance.yaml",
       "JdbcFunctionality.yaml", "JdbcPerformance.yaml");
+  String SAMPLE_MOCK_APIS_FILE = "MockApis.yaml";
 
   /**
    * AngusTester

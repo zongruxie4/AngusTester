@@ -11,6 +11,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.services.facade.dto.ServicesSe
 import cloud.xcan.sdf.core.angustester.interfaces.services.facade.vo.ServiceVo;
 import cloud.xcan.sdf.core.angustester.interfaces.services.facade.vo.ServicesDetailVo;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public interface ServicesFacade {
 
   void clone(Long id);
 
-  IdKey<Long, Object> sampleImport(Long projectId);
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
 
   IdKey<Long, Object> imports(ServicesImportDto dto);
 

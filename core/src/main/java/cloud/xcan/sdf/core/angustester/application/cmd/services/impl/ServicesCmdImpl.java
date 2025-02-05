@@ -1,8 +1,7 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.services.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SERVICE;
-import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_PROJECT_FILE;
-import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_PROJECT_NAME;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_SERVICES_FILES;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.ApisConverter.cloneApis;
@@ -14,7 +13,6 @@ import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getIm
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_MS_FORMAT;
 import static cloud.xcan.sdf.spec.experimental.StandardCharsets.UTF_8;
@@ -62,6 +60,7 @@ import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import cloud.xcan.sdf.spec.locale.SupportedLanguage;
 import cloud.xcan.sdf.spec.utils.FileUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StreamUtils;
@@ -79,7 +78,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.util.FileUtil;
 import org.springframework.transaction.annotation.Transactional;
@@ -400,21 +398,30 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public IdKey<Long, Object> sampleImport(Long projectId) {
-    return new BizTemplate<IdKey<Long, Object>>() {
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
         // NOOP
       }
 
-      @SneakyThrows
       @Override
-      protected IdKey<Long, Object> process() {
-        URL resourceUrl = this.getClass().getResource("/samples/apis/"
-            + getDefaultLanguage().getValue() + "/" + SAMPLE_PROJECT_FILE);
-        String content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        return imports(projectId, null, SAMPLE_PROJECT_NAME, ApiImportSource.OPENAPI,
-            StrategyWhenDuplicated.IGNORE, false, null, content);
+      protected List<IdKey<Long, Object>> process() {
+        List<IdKey<Long, Object>> idKeys = new ArrayList<>();
+        for (String servicesFile : SAMPLE_SERVICES_FILES) {
+          URL resourceUrl = this.getClass().getResource("/samples/apis/"
+              + SupportedLanguage.en.getValue() + "/" + servicesFile);
+          String content;
+          try {
+            content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          } catch (IOException e) {
+            throw CommSysException.of("Couldn't read sample file " + servicesFile, e.getMessage());
+          }
+          IdKey<Long, Object> idKey = imports(projectId, null, servicesFile.split("\\.")[0],
+              ApiImportSource.OPENAPI, StrategyWhenDuplicated.IGNORE, false, null, content);
+          idKeys.add(idKey);
+        }
+        return idKeys;
       }
     }.execute();
   }
