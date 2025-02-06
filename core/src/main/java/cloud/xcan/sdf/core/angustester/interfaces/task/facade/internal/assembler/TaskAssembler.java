@@ -369,6 +369,7 @@ public class TaskAssembler {
         .setEvalWorkload(listVo.getEvalWorkload())
         .setActualWorkload(listVo.getActualWorkload())
         .setStatus(listVo.getStatus())
+        .setSoftwareVersion(listVo.getSoftwareVersion())
         .setOverdueFlag(listVo.getOverdueFlag())
         .setExecResult(listVo.getExecResult())
         .setExecFailureMessage(listVo.getExecFailureMessage())

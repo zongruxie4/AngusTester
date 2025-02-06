@@ -89,6 +89,8 @@ public class TaskListExportVo {
   @ExcelProperty(converter = EnumMessageWriteConverter.class)
   private TaskStatus status;
 
+  private String softwareVersion;
+
   @ExcelProperty(converter = EnumMessageWriteConverter.class)
   private Priority priority;
 
