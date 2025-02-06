@@ -83,6 +83,7 @@ public class TaskListExportVo {
   @ExcelProperty(converter = BooeanWriteConverter.class)
   private Boolean missingBugFlag;
 
+  @ExcelProperty(converter = BooeanWriteConverter.class)
   private Boolean unplannedFlag;
 
   @ExcelProperty(converter = EnumMessageWriteConverter.class)
