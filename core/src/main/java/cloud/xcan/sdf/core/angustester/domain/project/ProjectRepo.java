@@ -14,7 +14,7 @@ public interface ProjectRepo extends NameJoinRepository<Project, Long>,
     BaseRepository<Project, Long> {
 
   @Query(value = "SELECT count(*) FROM project WHERE id = ?1 AND (type = 'AGILE' || type is null)", nativeQuery = true)
-  boolean isAgileById(Long id);
+  long countAgileById(Long id);
 
   @Query(value = "SELECT DISTINCT p.* FROM project p, project_members pm WHERE p.id = pm.project_id AND p.deleted_flag = 0 AND pm.member_id IN ?1 ORDER BY p.id DESC ", nativeQuery = true)
   List<Project> findMemberProjects(List<Long> orgIds);

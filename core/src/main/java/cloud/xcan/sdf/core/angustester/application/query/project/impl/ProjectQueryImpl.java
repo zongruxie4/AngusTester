@@ -137,7 +137,7 @@ public class ProjectQueryImpl implements ProjectQuery {
 
   @Override
   public boolean isAgile(Long id){
-    return projectRepo.isAgileById(id);
+    return projectRepo.countAgileById(id) > 0;
   }
 
   @Override

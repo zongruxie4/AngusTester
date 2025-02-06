@@ -2185,7 +2185,7 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   @Override
-  public void checkAddNameExists(TaskSprint sprintDb, String name) {
+  public void checkAddNameExists(Long projectId, TaskSprint sprintDb, String name) {
     if (nonNull(sprintDb)) {
       assertResourceExisted(taskInfoRepo.countBySprintIdAndName(sprintDb.getId(), name) < 1,
           TASK_NAME_EXISTED_T, new Object[]{name});
@@ -2195,7 +2195,7 @@ public class TaskQueryImpl implements TaskQuery {
             TASK_NAME_EXISTED_T, new Object[]{sprintDb.getTaskPrefix() + name});
       }
     } else {
-      assertResourceExisted(taskInfoRepo.countByName(name) < 1,
+      assertResourceExisted(taskInfoRepo.countByProjectIdAndName(projectId, name) < 1,
           TASK_NAME_EXISTED_T, new Object[]{name});
     }
   }

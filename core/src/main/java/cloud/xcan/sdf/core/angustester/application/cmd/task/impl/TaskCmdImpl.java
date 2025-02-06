@@ -69,9 +69,9 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.extraction.utils.PoiUtils;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.Priority;
@@ -103,6 +103,7 @@ import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.apis.ApisBaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.module.Module;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
 import cloud.xcan.sdf.core.angustester.domain.tag.Tag;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
@@ -122,6 +123,7 @@ import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.biz.exception.BizException;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.idgen.BidGenerator;
+import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
@@ -227,7 +229,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
               .setBacklogFlag(taskParentDb.getBacklogFlag());
         }
 
-        if (task.getBacklogFlag()) {
+        if (task.getBacklogFlag() || isNull(task.getSprintId())) {
           // Check the project id is required to create a backlog
           assertTrue(nonNull(task.getProjectId()), "Backlog project id is required");
           // Check the project member permission
@@ -241,7 +243,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         }
 
         // Check the module exists
-        if (nonNull(task.getModuleId())) {
+        if (nonNull(task.getModuleId()) && !Objects.equals(task.getModuleId(), -1L)) {
           moduleQuery.checkAndFind(task.getModuleId());
         }
 
@@ -250,7 +252,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         //  assertNotNull(task.getTargetId(), TASK_ASSOC_TARGET_ID_REQUIRED);
         // }
 
-        if (task.isApiTest()) {
+        if (task.isApiTest() && nonNull(task.getTargetId())) {
           // Check the associated apis exists
           // apisQuery.check(task.getTargetId());
           Long serviceId = apisQuery.checkAndFindBaseInfo(task.getTargetId()).getServiceId();
@@ -276,7 +278,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         tagQuery.checkExists(task.getTagTargets());
 
         // Check the name exists
-        taskQuery.checkAddNameExists(sprintDb, task.getName());
+        taskQuery.checkAddNameExists(task.getProjectId(), sprintDb, task.getName());
 
         // NOOP:: Evaluation workload not set
         // ProtocolAssert.assertTrue(isNull(task.getEvalWorkload())
@@ -625,11 +627,14 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   public List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
       StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
       TaskSprint sprintDb;
 
       @Override
       protected void checkParams() {
-        if (nonNull(sprintId)) { // Agile Project Management
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+        if (projectDb.isAgile() && nonNull(sprintId)) { // Agile Project Management
           // Check the task sprint exists
           sprintDb = taskSprintQuery.checkAndFind(sprintId);
           // Check the add task permission
@@ -713,12 +718,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         boolean hasEmptyTaskTypes = taskTypes.stream().anyMatch(ObjectUtils::isEmpty);
         assertTrue(!hasEmptyTaskTypes, "The import task type cannot be empty");
 
-        assertTrue(assigneeIdx != -1, "Task assignee is required");
-        Set<String> assignees = data.stream().map(x -> x[assigneeIdx])
-            .collect(Collectors.toSet());
-        boolean hasEmptyAssignees = assignees.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyAssignees, "The import assignee cannot be empty");
         // Check the assignee exist
+        Set<String> assignees = data.stream()
+            .filter(x -> assigneeIdx != -1 && isNotBlank(x[assigneeIdx]))
+            .map(x -> x[assigneeIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> assigneeMap = userManager.checkValidAndFindUserBasesByName(
             assignees);
 
@@ -730,42 +733,42 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Check the confirmor exist
         Set<String> confirmors = data.stream()
-            .filter(x -> confirmorIdx != -1 && isNotEmpty(x[confirmorIdx]))
+            .filter(x -> confirmorIdx != -1 && isNotBlank(x[confirmorIdx]))
             .map(x -> x[confirmorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> confirmorMap = userManager.checkValidAndFindUserBasesByName(
             confirmors);
         // Check the tester exist
         Set<String> testers = data.stream()
-            .filter(x -> testerIdx != -1 && isNotEmpty(x[testerIdx]))
+            .filter(x -> testerIdx != -1 && isNotBlank(x[testerIdx]))
             .map(x -> x[testerIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> testersMap = userManager.checkValidAndFindUserBasesByName(
             testers);
         // Check the module exist
         Set<String> modules = data.stream()
-            .filter(x -> moduleIdx != -1 && isNotEmpty(x[moduleIdx]))
+            .filter(x -> moduleIdx != -1 && isNotBlank(x[moduleIdx]))
             .map(x -> x[moduleIdx]).collect(Collectors.toSet());
         Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(projectId, modules);
         // Check the creators exist
         Set<String> creators = data.stream()
-            .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
+            .filter(x -> creatorIdx != -1 && isNotBlank(x[creatorIdx]))
             .map(x -> x[creatorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
             creators);
         // Check the associated tags exist
-        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
+        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotBlank(x[tagsIdx]))
             .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(projectId, tags);
         // Check the associated tasks exist
         Set<String> taskNames = data.stream()
-            .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
+            .filter(x -> tasksIdx != -1 && isNotBlank(x[tasksIdx]))
             .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByPlanAndName(
             sprintId, taskNames);
         // Check the associated cases exist
         Set<String> caseNames = data.stream()
-            .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
+            .filter(x -> casesIdx != -1 && isNotBlank(x[casesIdx]))
             .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
@@ -774,7 +777,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Check the associated testing targets exist
 
         // Format import fields and convert them into task objects
-        List<Task> tasks = importToDomain(uidGenerator, projectId, sprintDb,
+        List<Task> tasks = importToDomain(uidGenerator, projectDb, sprintDb,
             data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
             assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, testerIdx, testersMap,
             missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
@@ -787,7 +790,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // @DoInFuture("Check if the associated task targets exist")
 
         // When using an `COVER` strategy, delete existing tasks, otherwise ignore duplicate import tasks
-        Set<String> safePrefixNames = nonNull(sprintDb) && isEmpty(sprintDb.getTaskPrefix())
+        Set<String> safePrefixNames = isNull(sprintDb) || isEmpty(sprintDb.getTaskPrefix())
             ? new HashSet<>(names) : names.stream().map(x -> sprintDb.getTaskPrefix() + x)
             .collect(Collectors.toSet());
         if (strategyWhenDuplicated.isCover()) {

@@ -194,7 +194,7 @@ public interface TaskQuery {
 
   void checkTaskOpenStatus(List<Task> taskDbs);
 
-  void checkAddNameExists(TaskSprint sprintDb, String name);
+  void checkAddNameExists(Long projectId, TaskSprint sprintDb, String name);
 
   void checkUpdateNameExists(Long projectId, Long sprintId, String name, Long taskId);
 

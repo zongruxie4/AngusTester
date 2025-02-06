@@ -29,6 +29,7 @@ import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import cloud.xcan.sdf.api.commonlink.TaskTargetType;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
@@ -485,7 +486,7 @@ public class TaskConverter {
   }
 
   public static @NotNull List<Task> importToDomain(
-      CachedUidGenerator uidGenerator, Long projectId, @Nullable TaskSprint sprintDb,
+      CachedUidGenerator uidGenerator, Project projectDb, @Nullable TaskSprint sprintDb,
       List<String[]> data, int nameIdx, int taskTypeIdx, int bugLevelIdx,
       int testTypeIdx, Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
       int confirmorIdx, Map<String, List<UserBase>> confirmorMap, int testerIdx,
@@ -503,12 +504,13 @@ public class TaskConverter {
       for (String[] row : data) {
         TaskType taskType = TaskType.ofMessage(row[taskTypeIdx], zhLocale);
         Task task = new Task().setId(uidGenerator.getUID())
-            .setProjectId(projectId).setCode(getTaskCode())
+            .setProjectId(projectDb.getProjectId()).setCode(getTaskCode())
             .setSprintId(nonNull(sprintDb) ? sprintDb.getId() : null)
             .setSprintAuthFlag(nonNull(sprintDb) ? sprintDb.getAuthFlag() : false)
             .setModuleId(moduleIdx != -1 && isNotEmpty(row[moduleIdx])
                 ? modulesMap.get(row[moduleIdx]).getId() : -1L)
-            .setBacklogFlag(/* Agile Project Management and IN Sprint */ nonNull(sprintDb))
+            .setBacklogFlag(/* Agile Project Management and not in Sprint */
+                projectDb.isAgile() && isNull(sprintDb))
             .setName(row[nameIdx]) // Required
             .setTaskType(taskType) // Required
             .setBugLevel(taskType.isBug() ? (bugLevelIdx != -1 && isNotEmpty(row[bugLevelIdx])
@@ -517,7 +519,8 @@ public class TaskConverter {
                 ? TestType.ofMessage(row[testTypeIdx], zhLocale) : null)
             /*.setTargetId(targetIdIdx != -1 && isDigits(row[targetIdIdx])
                 ? Long.parseLong(row[targetIdIdx]) : null)*/
-            .setAssigneeId(assigneeMap.get(row[assigneeIdx]).get(0).getId()) // Required
+            .setAssigneeId(assigneeIdx != -1 && nonNull(assigneeMap.get(row[assigneeIdx]))
+                ? assigneeMap.get(row[assigneeIdx]).get(0).getId() : null)
             .setConfirmorId(confirmorIdx != -1 && nonNull(confirmorMap.get(row[confirmorIdx]))
                 ? confirmorMap.get(row[confirmorIdx]).get(0).getId() : null)
             .setTesterId(testerIdx != -1 && nonNull(testerMap.get(row[testerIdx]))

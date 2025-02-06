@@ -31,8 +31,8 @@ public interface TaskInfoRepo extends BaseRepository<TaskInfo, Long>,
   @Query(value = "SELECT COUNT(id) FROM task WHERE project_id = ?1", nativeQuery = true)
   Long countAll0ByProjectId(Long projectId);
 
-  @Query(value = "SELECT COUNT(id) FROM task WHERE name = ?1", nativeQuery = true)
-  int countByName(String name);
+  @Query(value = "SELECT COUNT(id) FROM task WHERE project_id = ?1 AND name = ?2", nativeQuery = true)
+  int countByProjectIdAndName(Long projectId, String name);
 
   @Query(value = "SELECT COUNT(id) FROM task WHERE sprint_id = ?1 AND name = ?2", nativeQuery = true)
   int countBySprintIdAndName(Long sprintId, String name);

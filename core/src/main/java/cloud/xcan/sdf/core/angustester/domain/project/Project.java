@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.domain.project;
 
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNull;
 
 import cloud.xcan.sdf.api.commonlink.tag.OrgTargetInfo;
 import cloud.xcan.sdf.api.commonlink.tag.OrgTargetType;
@@ -79,6 +80,10 @@ public class Project extends TenantAuditingEntity<Project, Long> implements Acti
 
   @Transient
   private LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds;
+
+  public boolean isAgile() {
+    return isNull(type) || type.isAgile();
+  }
 
   @Override
   public Long getParentId() {
