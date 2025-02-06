@@ -245,7 +245,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           moduleQuery.checkAndFind(task.getModuleId());
         }
 
-        // Check the if the task is apis or scenario type, the parameter targetId is required
+        // Check the task is apis or scenario type, the parameter targetId is required
         // if (task.isTestTask()) {
         //  assertNotNull(task.getTargetId(), TASK_ASSOC_TARGET_ID_REQUIRED);
         // }
@@ -656,7 +656,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
         assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
 
-        // Check the if the required import columns exist
+        // Check the required import columns exist
         String missingRequiredField = TASK_IMPORT_REQUIRED_COLUMNS.stream()
             .filter(x -> !titles.contains(x)).findFirst().orElse(null);
         assertTrue(isEmpty(missingRequiredField),
@@ -671,26 +671,30 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         int testTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
         int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
         int confirmorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
-        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
-        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
-        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
-        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
-        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
-        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
-        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
-        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
-        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
-        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
-        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
-        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
-        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
-        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
-        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
-        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
-        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
-        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
+        int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
+        int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
+        int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
+        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
+        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
+        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
+        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
+        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
+        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
+        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
+        int softwareVersionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
+        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
+        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
+        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
+        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
+        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
+        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
+        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(23));
+        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(24));
+        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(25));
+        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(26));
+        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(27));
 
-        // Check the if the required import column values exist
+        // Check the required import column values exist
 
         // Check the for duplicate task names
         assertTrue(nameIdx != -1, "Task name is required");
@@ -714,7 +718,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             .collect(Collectors.toSet());
         boolean hasEmptyAssignees = assignees.stream().anyMatch(ObjectUtils::isEmpty);
         assertTrue(!hasEmptyAssignees, "The import assignee cannot be empty");
-        // Check the if the assignee exist
+        // Check the assignee exist
         Map<String, List<UserBase>> assigneeMap = userManager.checkValidAndFindUserBasesByName(
             assignees);
 
@@ -724,36 +728,42 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         //boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
         //assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
 
-        // Check the if the confirmor exist
+        // Check the confirmor exist
         Set<String> confirmors = data.stream()
             .filter(x -> confirmorIdx != -1 && isNotEmpty(x[confirmorIdx]))
             .map(x -> x[confirmorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> confirmorMap = userManager.checkValidAndFindUserBasesByName(
             confirmors);
-        // Check the if the module exist
+        // Check the tester exist
+        Set<String> testers = data.stream()
+            .filter(x -> testerIdx != -1 && isNotEmpty(x[testerIdx]))
+            .map(x -> x[testerIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> testersMap = userManager.checkValidAndFindUserBasesByName(
+            testers);
+        // Check the module exist
         Set<String> modules = data.stream()
             .filter(x -> moduleIdx != -1 && isNotEmpty(x[moduleIdx]))
             .map(x -> x[moduleIdx]).collect(Collectors.toSet());
         Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(projectId, modules);
-        // Check the if the creators exist
+        // Check the creators exist
         Set<String> creators = data.stream()
             .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
             .map(x -> x[creatorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
             creators);
-        // Check the if the associated tags exist
+        // Check the associated tags exist
         Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
             .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(projectId, tags);
-        // Check the if the associated tasks exist
+        // Check the associated tasks exist
         Set<String> taskNames = data.stream()
             .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
             .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByPlanAndName(
             sprintId, taskNames);
-        // Check the if the associated cases exist
+        // Check the associated cases exist
         Set<String> caseNames = data.stream()
             .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
             .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
@@ -761,16 +771,17 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
             sprintId, caseNames);
 
-        // Check the if the associated testing targets exist
+        // Check the associated testing targets exist
 
         // Format import fields and convert them into task objects
         List<Task> tasks = importToDomain(uidGenerator, projectId, sprintDb,
             data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
-            assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, priorityIdx, deadlineIdx,
-            descriptionIdx, evalWorkloadIdx, actualWorkloadIdx, statusIdx, startDateIdx,
-            processedDateIdx, canceledDateIdx, conformedDateIdx, completedDateIdx, creatorIdx,
-            creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap, casesIdx, casesMap,
-            moduleIdx, modulesMap);
+            assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, testerIdx, testersMap,
+            missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
+            evalWorkloadIdx, actualWorkloadIdx, statusIdx, softwareVersionIdx,
+            startDateIdx, processedDateIdx, canceledDateIdx, conformedDateIdx, completedDateIdx,
+            creatorIdx, creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap, casesIdx,
+            casesMap, moduleIdx, modulesMap);
 
         // @DoInFuture("Check if the associated testing targets exist")
         // @DoInFuture("Check if the associated task targets exist")

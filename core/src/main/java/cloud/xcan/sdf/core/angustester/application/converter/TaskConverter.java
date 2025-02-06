@@ -15,6 +15,7 @@ import static cloud.xcan.sdf.spec.utils.DateUtils.getLocalDateTime;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.calcRate;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isTrueValue;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.StringUtils.isNumeric;
 import static cloud.xcan.sdf.spec.utils.WorkingTimeCalculator.isLastMonth;
@@ -487,12 +488,13 @@ public class TaskConverter {
       CachedUidGenerator uidGenerator, Long projectId, @Nullable TaskSprint sprintDb,
       List<String[]> data, int nameIdx, int taskTypeIdx, int bugLevelIdx,
       int testTypeIdx, Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
-      int confirmorIdx, Map<String, List<UserBase>> confirmorMap, int priorityIdx, int deadlineIdx,
-      int descriptionIdx, int evalWorkloadIdx, int actualWorkloadIdx, int statusIdx,
-      int startDateIdx, int processedDateIdx, int canceledDateIdx, int conformedDateIdx,
-      int completedDateIdx, int creatorIdx, Map<String, List<UserBase>> creatorsMap,
-      int createdDateIdx, int tagsIdx, Map<String, List<Tag>> tagsMap,
-      int tasksIdx, Map<String, List<TaskInfo>> tasksMap,
+      int confirmorIdx, Map<String, List<UserBase>> confirmorMap, int testerIdx,
+      Map<String, List<UserBase>> testerMap, int missingBugIdx, int unplannedIdx, int priorityIdx,
+      int deadlineIdx, int descIdx, int evalWorkloadIdx, int actualWorkloadIdx, int statusIdx,
+      int softwareVersionIdx, int startDateIdx, int processedDateIdx, int canceledDateIdx,
+      int conformedDateIdx, int completedDateIdx, int creatorIdx,
+      Map<String, List<UserBase>> creatorsMap, int createdDateIdx, int tagsIdx,
+      Map<String, List<Tag>> tagsMap, int tasksIdx, Map<String, List<TaskInfo>> tasksMap,
       int casesIdx, Map<String, List<FuncCaseInfo>> casesMap,
       int moduleIdx, Map<String, Module> modulesMap) {
     List<Task> tasks = new ArrayList<>();
@@ -508,7 +510,6 @@ public class TaskConverter {
                 ? modulesMap.get(row[moduleIdx]).getId() : -1L)
             .setBacklogFlag(/* Agile Project Management and IN Sprint */ nonNull(sprintDb))
             .setName(row[nameIdx]) // Required
-            .setSoftwareVersion(null)
             .setTaskType(taskType) // Required
             .setBugLevel(taskType.isBug() ? (bugLevelIdx != -1 && isNotEmpty(row[bugLevelIdx])
                 ? BugLevel.ofMessage(row[bugLevelIdx], zhLocale) : BugLevel.DEFAULT) : null)
@@ -519,10 +520,15 @@ public class TaskConverter {
             .setAssigneeId(assigneeMap.get(row[assigneeIdx]).get(0).getId()) // Required
             .setConfirmorId(confirmorIdx != -1 && nonNull(confirmorMap.get(row[confirmorIdx]))
                 ? confirmorMap.get(row[confirmorIdx]).get(0).getId() : null)
+            .setTesterId(testerIdx != -1 && nonNull(testerMap.get(row[testerIdx]))
+                ? testerMap.get(row[testerIdx]).get(0).getId() : null)
+            .setMissingBugFlag(!taskType.isBug() ? null
+                : missingBugIdx != -1 && isTrueValue(row[missingBugIdx]))
+            .setUnplannedFlag(unplannedIdx != -1 && isTrueValue(row[unplannedIdx]))
             .setPriority(nullSafe(Priority.ofMessage(row[priorityIdx], zhLocale), Priority.DEFAULT))
             .setDeadlineDate(deadlineIdx != -1 && isNotEmpty(row[deadlineIdx])
                 ? getLocalDateTime(row[deadlineIdx]) : null)
-            .setDescription(descriptionIdx != -1 ? row[descriptionIdx] : null)
+            .setDescription(descIdx != -1 ? row[descIdx] : null)
             .setEvalWorkloadMethod(nonNull(sprintDb) ? sprintDb.getEvalWorkloadMethod()
                 : EvalWorkloadMethod.WORKING_HOURS) // General Project Management
             .setEvalWorkload(evalWorkloadIdx != -1 && isNumeric(row[evalWorkloadIdx])
@@ -531,6 +537,7 @@ public class TaskConverter {
                 ? BigDecimal.valueOf(Double.parseDouble(row[actualWorkloadIdx])) : null)
             .setStatus(statusIdx != -1 && isNotEmpty(row[statusIdx])
                 ? TaskStatus.ofMessage(row[statusIdx], zhLocale) : TaskStatus.PENDING)
+            .setSoftwareVersion(softwareVersionIdx != -1 ? row[softwareVersionIdx] : null)
             .setStartDate(startDateIdx != -1 && isNotEmpty(row[startDateIdx])
                 ? getLocalDateTime(row[startDateIdx]) : null)
             .setProcessedDate(processedDateIdx != -1 && isNotEmpty(row[processedDateIdx])
