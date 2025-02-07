@@ -106,6 +106,16 @@ public class DatasetRest {
     datasetFacade.delete(ids);
   }
 
+  @ApiOperation(value = "Import the inner dataset example", nickname = "data:dataset:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(datasetFacade.exampleImport(projectId));
+  }
+
   @ApiOperation(value = "Import the datasets", nickname = "data:dataset:import")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})

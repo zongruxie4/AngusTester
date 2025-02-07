@@ -79,6 +79,11 @@ public class DatasetFacadeImpl implements DatasetFacade {
   }
 
   @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return datasetCmd.exampleImport(projectId);
+  }
+
+  @Override
   public List<IdKey<Long, Object>> imports(DatasetImportDto dto) {
     return datasetCmd.imports(dto.getProjectId(), dto.getStrategyWhenDuplicated(),
         dto.getContent(), dto.getFile());
