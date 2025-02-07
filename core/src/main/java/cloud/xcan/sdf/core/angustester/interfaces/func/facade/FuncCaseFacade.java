@@ -91,9 +91,10 @@ public interface FuncCaseFacade {
 
   PageResult<FuncCaseListVo> search(boolean exportFlag, FuncCaseSearchDto dto);
 
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
+
   List<IdKey<Long, Object>> imports(FuncCaseImportDto dto);
 
   ResponseEntity<Resource> export(FuncCaseSearchDto dto, HttpServletResponse response);
-
 
 }

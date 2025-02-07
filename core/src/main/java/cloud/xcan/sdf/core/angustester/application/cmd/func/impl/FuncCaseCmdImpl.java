@@ -2,10 +2,19 @@ package cloud.xcan.sdf.core.angustester.application.cmd.func.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.FUNC_CASE;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.FUNC_CASE_BID_KEY;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_BASELINE_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_CASE_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_PLAN_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_REVIEW_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_TASK_FILE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.FuncActivityConverter.toModifyCaseActivity;
+import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.assembleExampleFuncBaseline;
+import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.assembleExampleFuncCase;
+import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.assembleExampleFuncPlan;
+import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.assembleExampleFuncReview;
 import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.importToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.setReplaceInfo;
 import static cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter.setReviewInfoAndStatus;
@@ -25,6 +34,8 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.PRIOR
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.spring.SpringContextHolder.getBean;
@@ -32,19 +43,25 @@ import static cloud.xcan.sdf.spec.utils.DateUtils.DATE_TIME_FMT;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
+import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.extraction.utils.PoiUtils;
 import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
+import cloud.xcan.sdf.api.commonlink.user.User;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.CommProtocolException;
+import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncBaselineCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncCaseCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncPlanCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncReviewCaseCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncReviewCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncTrashCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.tag.TagTargetCmd;
@@ -54,12 +71,14 @@ import cloud.xcan.sdf.core.angustester.application.query.func.FuncCaseQuery;
 import cloud.xcan.sdf.core.angustester.application.query.func.FuncPlanAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.func.FuncPlanQuery;
 import cloud.xcan.sdf.core.angustester.application.query.module.ModuleQuery;
+import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.application.query.tag.TagQuery;
 import cloud.xcan.sdf.core.angustester.application.query.task.TaskQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.Activity;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.comment.CommentRepo;
 import cloud.xcan.sdf.core.angustester.domain.comment.CommentTargetType;
+import cloud.xcan.sdf.core.angustester.domain.func.baseline.FuncBaseline;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestResult;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCase;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfo;
@@ -69,8 +88,10 @@ import cloud.xcan.sdf.core.angustester.domain.func.favourite.FuncCaseFavouriteRe
 import cloud.xcan.sdf.core.angustester.domain.func.follow.FuncCaseFollowRepo;
 import cloud.xcan.sdf.core.angustester.domain.func.plan.FuncPlan;
 import cloud.xcan.sdf.core.angustester.domain.func.plan.auth.FuncPlanPermission;
+import cloud.xcan.sdf.core.angustester.domain.func.review.FuncReview;
 import cloud.xcan.sdf.core.angustester.domain.func.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.sdf.core.angustester.domain.module.Module;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.tag.Tag;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
@@ -80,11 +101,16 @@ import cloud.xcan.sdf.core.biz.ProtocolAssert;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.idgen.BidGenerator;
+import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -124,6 +150,9 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   private FuncCaseQuery funcCaseQuery;
 
   @Resource
+  private FuncCaseCmd funcCaseCmd;
+
+  @Resource
   private TagQuery tagQuery;
 
   @Resource
@@ -131,6 +160,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Resource
   private FuncPlanQuery funcPlanQuery;
+
+  @Resource
+  private FuncPlanCmd funcPlanCmd;
+
+  @Resource
+  private ProjectQuery projectQuery;
 
   @Resource
   private ModuleQuery moduleQuery;
@@ -143,6 +178,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Resource
   private FuncReviewCmd funcReviewCmd;
+
+  @Resource
+  private FuncReviewCaseCmd funcReviewCaseCmd;
+
+  @Resource
+  private FuncBaselineCmd funcBaselineCmd;
 
   @Resource
   private FuncTrashCmd funcTrashCmd;
@@ -343,6 +384,108 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         }
         return idKeys;
       }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // 0. Query all tenant users
+        List<User> users = userManager.findByTenantId(getOptTenantId());
+        Assert.assertNotEmpty(users, "Tenant users are empty");
+
+        // 1. Create test plan by sample file
+        FuncPlan plan = parseSamplePlan();
+        assembleExampleFuncPlan(projectDb, uidGenerator.getUID(), users, plan);
+        funcPlanCmd.add(plan);
+
+        // 2. Create test case by sample file
+        List<FuncCase> cases = parseSampleCase();
+        for (FuncCase case0 : cases) {
+          assembleExampleFuncCase(projectDb, uidGenerator.getUID(), case0, plan, users);
+        }
+        List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
+
+        // 3. Create case review by sample file
+        FuncReview review = parseSampleReview();
+        assembleExampleFuncReview(projectDb, uidGenerator.getUID(), users, review, plan);
+        funcReviewCmd.add(review);
+        funcReviewCaseCmd.add(review.getId(), cases.stream()
+            .filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPending())
+            .map(FuncCase::getId).collect(Collectors.toSet()));
+
+        // 4. Create case baseline by sample file
+        FuncBaseline baseline = parseSampleBaseline();
+        assembleExampleFuncBaseline(projectDb, uidGenerator.getUID(), users, baseline, plan, cases);
+        funcBaselineCmd.add(baseline);
+
+        return idKeys;
+      }
+
+      private FuncPlan parseSamplePlan() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/plan/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncPlan.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_PLAN_FILE,
+              e.getMessage());
+        }
+      }
+
+      private List<FuncCase> parseSampleCase() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/cases/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, new TypeReference<List<FuncCase>>() {
+          });
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+              e.getMessage());
+        }
+      }
+
+      private FuncReview parseSampleReview() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/review/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncReview.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_REVIEW_FILE,
+              e.getMessage());
+        }
+      }
+
+      private FuncBaseline parseSampleBaseline() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/baseline/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncBaseline.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_BASELINE_FILE,
+              e.getMessage());
+        }
+      }
+
     }.execute();
   }
 

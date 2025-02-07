@@ -23,6 +23,12 @@ public interface TesterConstant {
   /**
    * Samples
    */
+  String SAMPLE_SPRINT_FILE = "SprintExample.json";
+  String SAMPLE_TASK_FILE = "TaskExample.json";
+  String SAMPLE_FUNC_PLAN_FILE = "FuncPlanExample.json";
+  String SAMPLE_FUNC_CASE_FILE = "FuncCaseExample.json";
+  String SAMPLE_FUNC_REVIEW_FILE = "FuncReviewExample.json";
+  String SAMPLE_FUNC_BASELINE_FILE = "FuncBaselineExample.json";
   List<String> SAMPLE_SERVICES_FILES = List.of("OpenapiPetstore.yaml", "AngusTesterSample.yaml");
   List<String> SAMPLE_SCRIPT_FILES = List.of(
       "TcpFunctionality.yaml", "TcpPerformance.yaml",
@@ -32,8 +38,6 @@ public interface TesterConstant {
       "WebSocketFunctionality.yaml", "WebSocketPerformance.yaml",
       "JdbcFunctionality.yaml", "JdbcPerformance.yaml",
       "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
-  String SAMPLE_SPRINT_FILE = "SprintExample.json";
-  String SAMPLE_TASK_FILE = "TaskExample.json";
   String SAMPLE_MOCK_APIS_FILE = "MockApis.yaml";
 
   /**

@@ -415,6 +415,16 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.search(false, dto));
   }
 
+  @ApiOperation(value = "Import the inner functional test cases sample", nickname = "func:case:sample:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/sample/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(funcCaseFacade.sampleImport(projectId));
+  }
+
   @ApiOperation(value = "Import the functional test cases", nickname = "func:case:import",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {

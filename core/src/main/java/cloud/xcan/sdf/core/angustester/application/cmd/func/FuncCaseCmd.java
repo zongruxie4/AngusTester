@@ -21,6 +21,8 @@ public interface FuncCaseCmd {
 
   List<IdKey<Long, Object>> replace(List<FuncCase> cases);
 
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
+
   List<IdKey<Long, Object>> imports(Long planId, StrategyWhenDuplicated strategyWhenDuplicated,
       MultipartFile file);
 
@@ -65,6 +67,7 @@ public interface FuncCaseCmd {
   void delete0(List<Long> caseIds);
 
   void addReviewActivities(List<FuncCase> casesDb);
+
 }
 
 

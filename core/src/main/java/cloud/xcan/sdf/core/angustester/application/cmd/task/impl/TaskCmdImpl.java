@@ -678,15 +678,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         softwareVersionCmd.add(version);
 
         // 3. Create task by sample file
-        // 3.1 Parse task sample file
         List<Task> tasks = parseSampleTasks();
-
-        // 3.2 Set default values
         for (Task task : tasks) {
           assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
         }
-
-        // 3.3 Save sample tasks
         return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
       }
 
@@ -698,7 +693,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
           return JsonUtils.convert(content, TaskSprint.class);
         } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_SPRINT_FILE,
               e.getMessage());
         }
       }

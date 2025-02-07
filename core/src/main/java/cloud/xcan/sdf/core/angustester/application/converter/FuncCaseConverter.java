@@ -7,6 +7,7 @@ import static cloud.xcan.sdf.api.search.SearchCriteria.lessThanEqual;
 import static cloud.xcan.sdf.core.angustester.application.cmd.func.impl.FuncCaseCmdImpl.getCaseCode;
 import static cloud.xcan.sdf.core.angustester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.sdf.core.utils.CoreUtils.getCommonResourcesStatsFilter;
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DAY_FORMAT;
@@ -26,6 +27,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
+import cloud.xcan.sdf.api.commonlink.user.User;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
@@ -51,6 +53,7 @@ import cloud.xcan.sdf.core.angustester.domain.func.trash.FuncTrash;
 import cloud.xcan.sdf.core.angustester.domain.kanban.BurnDownResourceType;
 import cloud.xcan.sdf.core.angustester.domain.kanban.DataTimeSeries;
 import cloud.xcan.sdf.core.angustester.domain.module.Module;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.tag.Tag;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
@@ -67,11 +70,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -157,6 +162,62 @@ public class FuncCaseConverter {
       caseDb.setEvalWorkload(caseDb.getActualWorkload());
     }
     return caseDb;
+  }
+
+  public static void assembleExampleFuncPlan(Project projectDb, Long id,
+      List<User> users, FuncPlan plan) {
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    plan.setId(id).setProjectId(projectDb.getId()).setOwnerId(currentUserId);
+    int testerNum = Math.min(plan.getTesterResponsibilities().size(), users.size());
+    LinkedHashMap<Long, String> testerResponsibilities = new LinkedHashMap<>();
+    List<String> responsibilities = new ArrayList<>(plan.getTesterResponsibilities().values());
+    for (int i = 0; i < testerNum; i++) {
+      testerResponsibilities.put(users.get(i).getId(), responsibilities.get(i));
+    }
+    plan.setTesterResponsibilities(testerResponsibilities);
+    Random userRandom = new Random();
+    plan.setTenantId(projectDb.getTenantId()).setDeletedFlag(false)
+        .setCreatedBy(users.get(userRandom.nextInt(users.size())).getId())
+        .setLastModifiedBy(users.get(userRandom.nextInt(users.size())).getId());
+  }
+
+  public static void assembleExampleFuncCase(Project projectDb, Long id,
+      FuncCase case0, FuncPlan plan, List<User> users) {
+    Random userRandom = new Random();
+    case0.setId(id).setProjectId(projectDb.getId())
+        .setCode(getCaseCode()).setVersion(1) // In order to establish a baseline starting from 1
+        .setPlanId(plan.getId()).setReviewerId(case0.getReviewFlag() &&
+            nonNull(case0.getReviewStatus()) && !case0.getReviewStatus().isPending()
+            ? users.get(userRandom.nextInt(users.size())).getId() : null)
+        .setTesterId(users.get(userRandom.nextInt(users.size())).getId())
+        .setDeveloperId(users.get(userRandom.nextInt(users.size())).getId())
+        .setTenantId(projectDb.getTenantId())
+        .setCreatedBy(users.get(userRandom.nextInt(users.size())).getId())
+        .setLastModifiedBy(users.get(userRandom.nextInt(users.size())).getId());
+  }
+
+  public static void assembleExampleFuncReview(Project projectDb, Long id,
+      List<User> users, FuncReview review, FuncPlan plan) {
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    review.setId(id).setProjectId(projectDb.getId())
+        .setPlanId(plan.getId()).setOwnerId(currentUserId)
+        .setParticipantIds(new LinkedHashSet<>(users.stream().map(User::getId)
+            .collect(Collectors.toSet())))
+        .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
+  }
+
+  public static void assembleExampleFuncBaseline(Project projectDb, Long id,
+      List<User> users, FuncBaseline baseline, FuncPlan plan, List<FuncCase> cases) {
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    baseline.setId(id).setProjectId(projectDb.getId())
+        .setPlanId(plan.getId()).setEstablishedFlag(false).setTenantId(projectDb.getTenantId())
+        .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
+    LinkedHashSet<Long> baselineCaseIds = new LinkedHashSet<>();
+    int baselineCasesNum = cases.size() / 2;
+    for (int j = 0; j < baselineCasesNum; j++) {
+      baselineCaseIds.add(cases.get(j * 2).getId());
+    }
+    baseline.setCaseIds(baselineCaseIds);
   }
 
   public static FuncTrash toFuncCaseTrash(FuncCaseInfo caseDb) {

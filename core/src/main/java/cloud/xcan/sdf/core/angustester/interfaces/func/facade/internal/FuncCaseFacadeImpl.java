@@ -267,6 +267,11 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @Override
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return funcCaseCmd.sampleImport(projectId);
+  }
+
+  @Override
   public List<IdKey<Long, Object>> imports(FuncCaseImportDto dto) {
     return funcCaseCmd.imports(dto.getPlanId(), dto.getStrategyWhenDuplicated(), dto.getFile());
   }

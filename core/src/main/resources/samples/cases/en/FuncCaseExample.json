@@ -1,0 +1,863 @@
+[
+  {
+    "name": "Create Tree Structure",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User has logged into the Wiki system and has creation permissions",
+    "steps": [
+      {
+        "step": "Click the 'New' button",
+        "expectedResult": "The input box for creating a tree structure appears"
+      },
+      {
+        "step": "Enter the tree structure name",
+        "expectedResult": "The input box displays the name entered by the user"
+      },
+      {
+        "step": "Click the 'Save' button",
+        "expectedResult": "The tree structure is successfully created and displayed in the list"
+      }
+    ],
+    "description": "<p>Test whether the user can successfully create a new tree structure</p>",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 10:32:16",
+    "lasModifiedDate": "2024-09-20 10:32:16"
+  },
+  {
+    "name": "Edit Tree Structure",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "The tree structure already exists, the user has logged into the Wiki system, and has editing permissions",
+    "steps": [
+      {
+        "step": "Select the structure to edit from the tree structure list",
+        "expectedResult": "The selected tree structure is highlighted"
+      },
+      {
+        "step": "Click the 'Edit' button",
+        "expectedResult": "Enters edit mode, displaying the current information of the tree structure"
+      },
+      {
+        "step": "Modify the tree structure name",
+        "expectedResult": "The input box displays the user's modified content"
+      },
+      {
+        "step": "Click the 'Save' button",
+        "expectedResult": "Modification successful, the tree structure is updated, and the new name is displayed in the list"
+      }
+    ],
+    "description": "Test whether the user can successfully edit an existing tree structure",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 14:54:38",
+    "reviewStatus": "FAILED",
+    "reviewRemark": "Insufficient accuracy and correctness of the test steps, unable to execute and verify accurately",
+    "reviewNum": 1,
+    "reviewFailNum": 1,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 10:32:16",
+    "lasModifiedDate": "2024-09-20 14:54:38"
+  },
+  {
+    "name": "Post Comment",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": null,
+    "actualWorkload": null,
+    "planAuthFlag": 0,
+    "precondition": "User has logged into the Wiki system and has commenting permissions",
+    "steps": [
+      {
+        "step": "Access a document page",
+        "expectedResult": "Document content loads successfully"
+      },
+      {
+        "step": "Enter comment content in the comment area",
+        "expectedResult": "The comment input box displays the user's entered content"
+      },
+      {
+        "step": "Click the 'Post Comment' button",
+        "expectedResult": "The comment is successfully posted and displayed below the document content"
+      }
+    ],
+    "description": "<p>Test whether the user can successfully post a comment on a document page</p>",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 10:32:16",
+    "lasModifiedDate": "2024-09-20 10:32:16"
+  },
+  {
+    "name": "Delete Tree Structure",
+    "version": 3,
+    "priority": "HIGH",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "The tree structure exists, the user has logged into the Wiki system, and has deletion permissions",
+    "steps": [
+      {
+        "step": "Select the structure to delete from the tree structure list",
+        "expectedResult": "The selected tree structure is highlighted"
+      },
+      {
+        "step": "Click the 'Delete' button",
+        "expectedResult": "A confirmation dialog appears asking for confirmation to delete"
+      },
+      {
+        "step": "Confirm deletion",
+        "expectedResult": "The tree structure is successfully deleted and no longer appears in the list"
+      }
+    ],
+    "description": "<p>Test whether the user can successfully delete an existing tree structure</p>",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 10:32:16",
+    "lasModifiedDate": "2024-09-20 10:32:16"
+  },
+  {
+    "name": "View Page Version History",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "There are multiple versions of the page",
+    "steps": [
+      {
+        "step": "User clicks the 'Version History' button",
+        "expectedResult": "The system displays a list of all versions of the page"
+      },
+      {
+        "step": "User selects a version to view",
+        "expectedResult": "The system shows the detailed content of the selected version"
+      }
+    ],
+    "description": "Test whether the user can view the page version history",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 11:10:49",
+    "lasModifiedDate": "2024-09-20 11:10:49"
+  },
+  {
+    "name": "Restore to Old Version",
+    "version": 1,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 2.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "The user has selected an old version in the version history",
+    "steps": [
+      {
+        "step": "User clicks the 'Restore this Version' button",
+        "expectedResult": "The system pops up a confirmation dialog"
+      },
+      {
+        "step": "User confirms the restore operation",
+        "expectedResult": "The system restores the page to the selected old version, and the user receives a notification of successful restoration"
+      }
+    ],
+    "description": "Test whether the user can successfully restore the page to a previous version",
+    "reviewFlag": 1,
+    "reviewerId": 213175152639213648,
+    "reviewDate": "2024-09-20 14:54:28",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:17:31",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 11:10:49",
+    "lasModifiedDate": "2024-09-20 15:46:23"
+  },
+  {
+    "name": "Set Watermark Transparency",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "The user is logged in and has entered the watermark settings page",
+    "steps": [
+      {
+        "step": "User selects the watermark transparency adjustment slider",
+        "expectedResult": "The slider can slide normally"
+      },
+      {
+        "step": "User sets the transparency to 50%",
+        "expectedResult": "The watermark transparency is updated to 50%"
+      },
+      {
+        "step": "User clicks the 'Save' button",
+        "expectedResult": "The system saves the watermark transparency settings, and the user receives a notification of successful saving"
+      }
+    ],
+    "description": "Test whether the user can successfully set the transparency of the watermark",
+    "reviewFlag": 1,
+    "reviewerId": 213175152639213648,
+    "reviewDate": "2024-10-22 14:30:00",
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 11:10:49",
+    "lasModifiedDate": "2024-10-22 14:30:00"
+  },
+  {
+    "name": "Download Page Version",
+    "version": 2,
+    "priority": "LOW",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 0.5,
+    "planAuthFlag": 0,
+    "precondition": "The user is viewing the version history of the page",
+    "steps": [
+      {
+        "step": "User clicks the 'Download' button next to a version",
+        "expectedResult": "The system prompts the user to save the file"
+      }
+    ],
+    "description": "Test whether the user can download a specific page version",
+    "reviewFlag": 0,
+    "reviewDate": null,
+    "reviewStatus": "NOT REQUIRED",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 11:10:49",
+    "lasModifiedDate": "2024-09-20 11:10:49"
+  },
+  {
+    "name": "Verify user has space management permissions",
+    "version": 1,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 3.0,
+    "actualWorkload": 3.0,
+    "planAuthFlag": 0,
+    "precondition": "User is logged in and has space management permissions",
+    "steps": [
+      {
+        "step": "Access the space management page",
+        "expectedResult": "Successfully loads the space management page"
+      },
+      {
+        "step": "Create a new space",
+        "expectedResult": "New space created successfully, the page indicates creation success"
+      },
+      {
+        "step": "Edit space permissions",
+        "expectedResult": "Successfully saves permission settings, the page indicates save success"
+      },
+      {
+        "step": "Delete space",
+        "expectedResult": "Space deleted successfully, the page indicates deletion success"
+      }
+    ],
+    "description": "This test case is used to verify that a user can successfully create, edit, and delete spaces when they have space management permissions.",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 15:42:24",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:43:13",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:04:55",
+    "lasModifiedDate": "2024-09-20 15:43:13"
+  },
+  {
+    "name": "Verify user does not have space management permissions",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 2.0,
+    "actualWorkload": 2.0,
+    "planAuthFlag": 0,
+    "precondition": "User is logged in and does not have space management permissions",
+    "steps": [
+      {
+        "step": "Access the space management page",
+        "expectedResult": "Displays a message indicating no permission to access"
+      },
+      {
+        "step": "Attempt to create a new space",
+        "expectedResult": "Informs the user they do not have permission to create a space"
+      }
+    ],
+    "description": "This test case is used to verify that when a user does not have space management permissions, the system should correctly prompt for lack of access.",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 14:56:54",
+    "reviewStatus": "FAILED",
+    "reviewRemark": "Inconsistency or conflicts with logical relationships between other test cases",
+    "reviewNum": 1,
+    "reviewFailNum": 1,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:04:55",
+    "lasModifiedDate": "2024-09-20 14:56:54"
+  },
+  {
+    "name": "Verify administrator can view comments",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "Administrator is logged in",
+    "steps": [
+      {
+        "step": "Access the comment management page",
+        "expectedResult": "Successfully loads the comment list"
+      }
+    ],
+    "description": "This test case is used to verify whether the administrator can successfully view all comments.",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:44:00",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:04:55",
+    "lasModifiedDate": "2024-09-20 15:44:00"
+  },
+  {
+    "name": "Verify normal user cannot view comments",
+    "version": 1,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 2.0,
+    "actualWorkload": 2.0,
+    "planAuthFlag": 0,
+    "precondition": "Normal user is logged in",
+    "steps": [
+      {
+        "step": "Access the comment management page",
+        "expectedResult": "Displays a message indicating no permission to access comments"
+      }
+    ],
+    "description": "This test case is used to verify that a normal user cannot view comments and receives an appropriate message.",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 14:57:30",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:45:00",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:04:55",
+    "lasModifiedDate": "2024-09-20 15:45:00"
+  },
+  {
+    "name": "Verify user can reset password",
+    "version": 1,
+    "priority": "HIGH",
+    "deadlineDate": "2024-12-15 23:59:59",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 5.0,
+    "actualWorkload": 5.0,
+    "planAuthFlag": 0,
+    "precondition": "User is logged in and requests a password reset",
+    "steps": [
+      {
+        "step": "Access the password reset page",
+        "expectedResult": "Successfully loads the password reset form"
+      },
+      {
+        "step": "Submit the password reset form",
+        "expectedResult": "Displays a confirmation message that the reset email has been sent"
+      }
+    ],
+    "description": "This test case is to ensure that users can successfully request a password reset and receive confirmation.",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 15:46:00",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:47:00",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:04:55",
+    "lasModifiedDate": "2024-09-20 15:47:00"
+  },
+  {
+    "name": "Verify that the administrator can edit comments",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "The administrator is logged in and the comment exists",
+    "steps": [
+      {
+        "step": "Select a comment and click edit",
+        "expectedResult": "Enter the editing page"
+      },
+      {
+        "step": "Modify the comment content and save",
+        "expectedResult": "Comment modified successfully, page prompts save successful"
+      }
+    ],
+    "description": "This test case is used to verify whether the administrator can successfully edit comments",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:08:10",
+    "lasModifiedDate": "2024-09-20 12:08:10"
+  },
+  {
+    "name": "Verify that the administrator can reply to comments",
+    "version": 1,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 3.0,
+    "actualWorkload": 2.0,
+    "planAuthFlag": 0,
+    "precondition": "The administrator is logged in and the comment exists",
+    "steps": [
+      {
+        "step": "Select a comment and click reply",
+        "expectedResult": "Enter the reply page"
+      },
+      {
+        "step": "Enter the reply content and submit",
+        "expectedResult": "Reply successful, page shows the new reply"
+      }
+    ],
+    "description": "This test case is used to verify whether the administrator can successfully reply to comments",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 15:42:24",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:43:01",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:08:10",
+    "lasModifiedDate": "2024-09-20 15:46:17"
+  },
+  {
+    "name": "Allow users to customize style functional test case",
+    "version": 1,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 2.0,
+    "actualWorkload": 2.0,
+    "planAuthFlag": 0,
+    "precondition": "The user is logged into the Wiki system and has editing permissions",
+    "steps": [
+      {
+        "step": "Enter the user settings interface",
+        "expectedResult": "User settings interface loads successfully"
+      },
+      {
+        "step": "Select the 'Custom Style' option",
+        "expectedResult": "Custom style setting area displayed"
+      },
+      {
+        "step": "Enter custom CSS styles",
+        "expectedResult": "Style preview updates, showing new style effects"
+      },
+      {
+        "step": "Click the 'Save' button",
+        "expectedResult": "System prompts that the style was saved successfully"
+      },
+      {
+        "step": "Refresh the page to verify style application",
+        "expectedResult": "Page style matches custom settings"
+      }
+    ],
+    "description": "This test case is used to verify the complete process of customizing styles for users in the Wiki system",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 15:42:24",
+    "reviewStatus": "PASSED",
+    "reviewRemark": null,
+    "reviewNum": 1,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 1,
+    "testFailNum": 0,
+    "testResult": "PASSED",
+    "testRemark": null,
+    "testResultHandleDate": "2024-09-20 15:43:01",
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:08:10",
+    "lasModifiedDate": "2024-09-20 15:46:17"
+  },
+  {
+    "name": "Verify user permissions for editing comments",
+    "version": 1,
+    "priority": "HIGH",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 0,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 2.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User is logged in and has permissions",
+    "steps": [
+      {
+        "step": "Attempt to edit a comment",
+        "expectedResult": "User successfully enters the edit mode"
+      },
+      {
+        "step": "Make changes to the comment and save",
+        "expectedResult": "Comment saved successfully"
+      }
+    ],
+    "description": "This test case is used to ensure that the user has the right permissions to edit comments",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-21 10:12:00",
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-21 10:00:00",
+    "lasModifiedDate": "2024-09-21 10:12:00"
+  },
+  {
+    "name": "User Click Article Link Test",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User is logged in and on the Wiki homepage",
+    "steps": [
+      {
+        "step": "User selects an article on the homepage and clicks the article title",
+        "expectedResult": "The page successfully redirects to the detailed content of the selected article"
+      },
+      {
+        "step": "User views the title and content of the selected article",
+        "expectedResult": "The title and content of the article are displayed accurately"
+      }
+    ],
+    "description": "Verify that the user can successfully navigate to the article page and view the content after clicking the article link",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:33:39",
+    "lasModifiedDate": "2024-09-20 12:33:39"
+  },
+  {
+    "name": "User Edit Article Test",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User has editing permissions and has opened the article to edit",
+    "steps": [
+      {
+        "step": "User enters new content in the editing box",
+        "expectedResult": "The editing box correctly displays the new input content"
+      },
+      {
+        "step": "User clicks the save button",
+        "expectedResult": "The system prompts that the content has been successfully saved and returns to the article page"
+      },
+      {
+        "step": "User checks the article page",
+        "expectedResult": "The article page displays the updated content"
+      }
+    ],
+    "description": "Verify the user's ability to edit and successfully save an article in the Wiki system",
+    "reviewFlag": 1,
+    "reviewDate": "2024-09-20 14:54:14",
+    "reviewStatus": "FAILED",
+    "reviewRemark": "The boundary definitions of the test case are not clear enough",
+    "reviewNum": 1,
+    "reviewFailNum": 1,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:33:39",
+    "lasModifiedDate": "2024-09-20 14:54:14"
+  },
+  {
+    "name": "User Share Article Function Test",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User has accessed and opened the article to share",
+    "steps": [
+      {
+        "step": "User clicks the share button",
+        "expectedResult": "A share options menu pops up"
+      },
+      {
+        "step": "User selects a specific social media platform to share",
+        "expectedResult": "A share link is generated and the user is prompted that it has been successfully copied"
+      },
+      {
+        "step": "User pastes and sends the share content on social media",
+        "expectedResult": "Successfully publishes the share content on social media, and the link is valid"
+      }
+    ],
+    "description": "Verify the user's ability to share an article in the Wiki system via social media platforms.",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:33:39",
+    "lasModifiedDate": "2024-09-20 12:33:39"
+  },
+  {
+    "name": "User Search Article Test",
+    "version": 3,
+    "priority": "MEDIUM",
+    "deadlineDate": "2024-11-30 23:29:12",
+    "overdueFlag": 1,
+    "evalWorkloadMethod": "STORY_POINT",
+    "evalWorkload": 1.0,
+    "actualWorkload": 1.0,
+    "planAuthFlag": 0,
+    "precondition": "User is on the homepage and has access to the search bar.",
+    "steps": [
+      {
+        "step": "User types a keyword into the search bar and hits enter",
+        "expectedResult": "The system displays a list of articles related to the keyword"
+      },
+      {
+        "step": "User selects one of the articles from the search results",
+        "expectedResult": "The page redirects to the selected article with relevant content displayed"
+      }
+    ],
+    "description": "Verify that the user can search for articles using keywords and view the relevant content.",
+    "reviewFlag": 1,
+    "reviewDate": null,
+    "reviewStatus": "PENDING",
+    "reviewRemark": null,
+    "reviewNum": 0,
+    "reviewFailNum": 0,
+    "unplannedFlag": 0,
+    "testNum": 0,
+    "testFailNum": 0,
+    "testResult": "PENDING",
+    "testRemark": null,
+    "testResultHandleDate": null,
+    "planDeletedFlag": 0,
+    "deletedFlag": 0,
+    "createdDate": "2024-09-20 12:33:39",
+    "lasModifiedDate": "2024-09-20 12:33:39"
+  }
+]
