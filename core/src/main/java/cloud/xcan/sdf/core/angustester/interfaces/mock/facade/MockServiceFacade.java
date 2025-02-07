@@ -38,7 +38,7 @@ public interface MockServiceFacade {
 
   void servicesAssocUpdate(Long mockServiceId, Long serviceId);
 
-  void sampleImport(Long id);
+  void exampleImport(Long id);
 
   void imports(MockServiceImportDto dto);
 

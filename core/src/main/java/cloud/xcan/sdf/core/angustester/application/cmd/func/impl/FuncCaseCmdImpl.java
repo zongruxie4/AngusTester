@@ -389,7 +389,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       Project projectDb;
 

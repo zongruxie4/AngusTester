@@ -531,7 +531,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void sampleImport(Long id) {
+  public void exampleImport(Long id) {
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {

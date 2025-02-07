@@ -41,7 +41,7 @@ public interface ScriptCmd {
 
   IdKey<Long, Object> cloneByScenario(Long id, Long newId);
 
-  List<IdKey<Long, Object>> sampleImport(Long projectId);
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   IdKey<Long, Object> imports(Script script);
 

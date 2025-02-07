@@ -299,8 +299,8 @@ public class TaskFacadeImpl implements TaskFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
-    return taskCmd.sampleImport(projectId);
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return taskCmd.exampleImport(projectId);
   }
 
   @Override

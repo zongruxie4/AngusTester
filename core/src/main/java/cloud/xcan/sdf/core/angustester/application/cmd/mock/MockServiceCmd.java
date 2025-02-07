@@ -36,7 +36,7 @@ public interface MockServiceCmd {
 
   void associationDelete(Long id);
 
-  void sampleImport(Long id);
+  void exampleImport(Long id);
 
   void imports(Long id, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, String content, MultipartFile file);

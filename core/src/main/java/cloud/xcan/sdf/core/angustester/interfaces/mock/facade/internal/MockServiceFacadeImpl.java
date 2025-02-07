@@ -99,8 +99,8 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
   }
 
   @Override
-  public void sampleImport(Long id) {
-    mockServiceCmd.sampleImport(id);
+  public void exampleImport(Long id) {
+    mockServiceCmd.exampleImport(id);
   }
 
   @Override

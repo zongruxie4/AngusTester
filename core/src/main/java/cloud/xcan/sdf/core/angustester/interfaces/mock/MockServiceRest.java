@@ -140,7 +140,7 @@ public class MockServiceRest {
   @PostMapping(value = "/{id}/sample/apis/import")
   public ApiLocaleResult<?> sampleApisImport(
       @ApiParam(name = "id", value = "Mock service id", required = true) @PathVariable("id") Long id) {
-    mockServiceFacade.sampleImport(id);
+    mockServiceFacade.exampleImport(id);
     return ApiLocaleResult.success();
   }
 

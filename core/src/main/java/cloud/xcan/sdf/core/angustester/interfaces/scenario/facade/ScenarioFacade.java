@@ -26,7 +26,7 @@ public interface ScenarioFacade {
 
   IdKey<Long, Object> clone(Long id);
 
-  List<IdKey<Long, Object>> sampleImport(Long projectId);
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   ScenarioDetailVo detail(Long id);
 

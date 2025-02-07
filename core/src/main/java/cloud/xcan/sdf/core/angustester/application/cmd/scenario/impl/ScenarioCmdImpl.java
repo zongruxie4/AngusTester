@@ -4,7 +4,7 @@ import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SCENARIO;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_SCRIPT_FILES;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.sampleImportToDomain;
+import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.exampleImportToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.toScenarioTrash;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.importDtoToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.toAngusScenarioAddScript;
@@ -388,7 +388,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
@@ -401,7 +401,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
           String content = readScriptContent(scriptFile);
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-          Scenario scenario = sampleImportToDomain(projectId, angusScript);
+          Scenario scenario = exampleImportToDomain(projectId, angusScript);
           idKeys.add(add(scenario));
         }
         return idKeys;

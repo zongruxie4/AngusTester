@@ -398,7 +398,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {

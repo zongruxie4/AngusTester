@@ -21,7 +21,7 @@ public interface FuncCaseCmd {
 
   List<IdKey<Long, Object>> replace(List<FuncCase> cases);
 
-  List<IdKey<Long, Object>> sampleImport(Long projectId);
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   List<IdKey<Long, Object>> imports(Long planId, StrategyWhenDuplicated strategyWhenDuplicated,
       MultipartFile file);
