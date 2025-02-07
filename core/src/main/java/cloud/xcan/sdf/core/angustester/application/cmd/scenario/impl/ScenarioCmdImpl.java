@@ -63,6 +63,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 @Biz
@@ -398,19 +399,23 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
-          URL resourceUrl = this.getClass().getResource("/samples/script/"
-              + getDefaultLanguage().getValue() + "/" + scriptFile);
-          String content;
-          try {
-            content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          } catch (IOException e) {
-            throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
-          }
+          String content = readScriptContent(scriptFile);
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
           Scenario scenario = sampleImportToDomain(projectId, angusScript);
           idKeys.add(add(scenario));
         }
         return idKeys;
+      }
+
+      private @NotNull String readScriptContent(String scriptFile) {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/script/"
+              + getDefaultLanguage().getValue() + "/" + scriptFile);
+          assert resourceUrl != null;
+          return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
+        }
       }
     }.execute();
   }
