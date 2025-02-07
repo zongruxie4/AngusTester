@@ -105,6 +105,16 @@ public class VariableRest {
     variableFacade.delete(ids);
   }
 
+  @ApiOperation(value = "Import the inner variable example", nickname = "data:variable:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(variableFacade.exampleImport(projectId));
+  }
+
   @ApiOperation(value = "Import the variables", nickname = "data:variable:import")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})

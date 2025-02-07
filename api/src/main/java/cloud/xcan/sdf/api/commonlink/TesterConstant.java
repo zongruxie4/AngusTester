@@ -38,6 +38,7 @@ public interface TesterConstant {
       "WebSocketFunctionality.yaml", "WebSocketPerformance.yaml",
       "JdbcFunctionality.yaml", "JdbcPerformance.yaml",
       "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
+  String SAMPLE_VARIABLE_FILE = "VariableExample.yaml";
   String SAMPLE_MOCK_APIS_FILE = "MockApis.yaml";
 
   /**

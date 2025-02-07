@@ -1,0 +1,82 @@
+- name: AutoUpdatedIncIdInIteration
+  extracted: false
+  value: '@IncId()'
+  description: Auto-increment ID variable, used to automatically generate an ID value at the start of each iteration for consistency testing of Http and Jdbc protocols.
+  passwordValue: false
+- name: AngusTester_AccessToken_Static
+  extracted: false
+  value: TST.JvuK4zCbFmJV1qottSVsBqNZKDSksXKz.d7fd1f0dd6224c9dad24a4a24888d31a
+  description: 'AngusTester user access token, the user token does not automatically expire by default. View and configure user access tokens in: "Personal Center" -> "Access Tokens".'
+  passwordValue: true
+- name: Admin_Account
+  extracted: false
+  value: admin
+  description: Test administrator account
+  passwordValue: false
+- name: AngusTester_AccessToken_Dynamic
+  extracted: true
+  description: Dynamically obtain an AngusTester access token based on the test account, used for testing time-sensitive access token interfaces.
+  passwordValue: false
+  extraction:
+    source: HTTP
+    name: JSON_PATH-Extraction
+    method: JSON_PATH
+    expression: $.data.access_token
+    defaultValue: error
+    location: RESPONSE_BODY
+    request:
+      method: GET
+      url: http://10.0.36.106:8802/pubapi/v1/auth/user/signin
+      parameters:
+        - name: account
+          in: query
+          enabled: true
+          type: string
+          value: xiaolong.liu
+        - name: clientId
+          in: query
+          enabled: true
+          type: string
+          value: xcan_tp
+        - name: clientSecret
+          in: query
+          enabled: true
+          type: string
+          value: 6917ae827c964acc8dd7638fe0581b67
+        - name: deviceId
+          in: query
+          enabled: true
+          type: string
+          value: 068dfcaaff5db4dbc4a40bfe24cfad2b
+        - name: passd
+          in: query
+          enabled: true
+          type: string
+          value: xcan@123
+        - name: scope
+          in: query
+          enabled: true
+          type: string
+          value: sign
+        - name: signinType
+          in: query
+          enabled: true
+          type: string
+          value: ACCOUNT_PASSD
+      body: {}
+      x-validSecurity: false
+- name: AutoUpdatedSnowIdInIteration
+  extracted: false
+  value: '@SnowId()'
+  description: 'Auto-increment ID variable based on the Snowflake algorithm, used to automatically generate an ID value at the start of each iteration for consistency testing of Http and Jdbc protocols.'
+  passwordValue: false
+- name: AutoUpdatedUuidInIteration
+  extracted: false
+  value: '@Uuid()'
+  description: 'UUID variable, used to automatically generate an ID value at the start of each iteration for consistency testing of Http and Jdbc protocols.'
+  passwordValue: false
+- name: Admin_Password
+  extracted: false
+  value: 123456
+  description: Test administrator account password
+  passwordValue: true

@@ -1,0 +1,82 @@
+- name: AutoUpdatedIncIdInIteration
+  extracted: false
+  value: '@IncId()'
+  description: 自增ID变量，用于Http和Jdbc协议一致性测试时在每个迭代开始时自动生成一个ID值。
+  passwordValue: false
+- name: AngusTester_AccessToken_Static
+  extracted: false
+  value: TST.JvuK4zCbFmJV1qottSVsBqNZKDSksXKz.d7fd1f0dd6224c9dad24a4a24888d31a
+  description: AngusTester用户访问令牌，用户令牌默认不会自动失效.查看与配置用户访问令牌：“个人中心”->“访问令牌”。
+  passwordValue: true
+- name: Admin_Account
+  extracted: false
+  value: admin
+  description: 测试管理员账号
+  passwordValue: false
+- name: AngusTester_AccessToken_Dynamic
+  extracted: true
+  description: 根据测试账号动态获取一个AngusTester访问令牌，用于有时效性访问令牌接口测试。
+  passwordValue: false
+  extraction:
+    source: HTTP
+    name: JSON_PATH-Extraction
+    method: JSON_PATH
+    expression: $.data.access_token
+    defaultValue: error
+    location: RESPONSE_BODY
+    request:
+      method: GET
+      url: http://10.0.36.106:8802/pubapi/v1/auth/user/signin
+      parameters:
+      - name: account
+        in: query
+        enabled: true
+        type: string
+        value: xiaolong.liu
+      - name: clientId
+        in: query
+        enabled: true
+        type: string
+        value: xcan_tp
+      - name: clientSecret
+        in: query
+        enabled: true
+        type: string
+        value: 6917ae827c964acc8dd7638fe0581b67
+      - name: deviceId
+        in: query
+        enabled: true
+        type: string
+        value: 068dfcaaff5db4dbc4a40bfe24cfad2b
+      - name: passd
+        in: query
+        enabled: true
+        type: string
+        value: xcan@123
+      - name: scope
+        in: query
+        enabled: true
+        type: string
+        value: sign
+      - name: signinType
+        in: query
+        enabled: true
+        type: string
+        value: ACCOUNT_PASSD
+      body: {}
+      x-validSecurity: false
+- name: AutoUpdatedSnowIdInIteration
+  extracted: false
+  value: '@SnowId()'
+  description: 基于雪花算法自增ID变量，用于Http和Jdbc协议一致性测试时在每个迭代开始时自动生成一个ID值。
+  passwordValue: false
+- name: AutoUpdatedUuidInIteration
+  extracted: false
+  value: '@Uuid()'
+  description: UUID变量，用于Http和Jdbc协议一致性测试时在每个迭代开始时自动生成一个ID值。
+  passwordValue: false
+- name: Admin_Password
+  extracted: false
+  value: 123456
+  description: 测试管理员账号密码
+  passwordValue: true

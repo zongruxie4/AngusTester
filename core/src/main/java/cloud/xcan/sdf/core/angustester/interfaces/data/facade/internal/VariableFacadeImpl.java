@@ -78,6 +78,11 @@ public class VariableFacadeImpl implements VariableFacade {
   }
 
   @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return variableCmd.exampleImport(projectId);
+  }
+
+  @Override
   public List<IdKey<Long, Object>> imports(VariableImportDto dto) {
     return variableCmd.imports(dto.getProjectId(), dto.getStrategyWhenDuplicated(),
         dto.getContent(), dto.getFile());

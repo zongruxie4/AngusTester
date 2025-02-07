@@ -20,10 +20,9 @@ public interface VariableCmd {
 
   void delete(Collection<Long> ids);
 
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
+
   List<IdKey<Long, Object>> imports(Long projectId, StrategyWhenDuplicated strategyWhenDuplicated,
       String content, MultipartFile file);
+
 }
-
-
-
-
