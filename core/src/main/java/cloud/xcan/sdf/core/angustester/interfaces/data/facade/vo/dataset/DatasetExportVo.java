@@ -16,6 +16,8 @@ public class DatasetExportVo {
 
   private String name;
 
+  private String description;
+
   private Boolean extracted;
 
   private List<DatasetParameter> parameters;

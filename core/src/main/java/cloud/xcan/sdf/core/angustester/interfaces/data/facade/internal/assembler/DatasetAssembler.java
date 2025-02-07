@@ -79,6 +79,7 @@ public class DatasetAssembler {
   public static DatasetExportVo toExportVo(Dataset dataset) {
     return new DatasetExportVo()
         .setName(dataset.getName())
+        .setDescription(dataset.getDescription())
         .setExtracted(dataset.getExtracted())
         .setParameters(dataset.getParameters())
         .setExtraction(dataset.getExtraction());

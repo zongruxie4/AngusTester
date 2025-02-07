@@ -36,7 +36,7 @@ public class VariableConverter {
   public static Variable toVariable(Long projectId,
       cloud.xcan.angus.model.element.variable.Variable x) {
     return new Variable().setProjectId(projectId)
-        .setName(x.getName()).setValue(x.getValue())
+        .setName(x.getName()).setDescription(x.getDescription()).setValue(x.getValue())
         .setExtracted(nonNull(x.getExtraction())).setExtraction(x.getExtraction());
   }
 }

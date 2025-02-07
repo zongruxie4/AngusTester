@@ -34,7 +34,8 @@ public class DatasetConverter {
 
   public static Dataset toDataset(Long projectId,
       cloud.xcan.angus.model.element.dataset.Dataset x) {
-    return new Dataset().setProjectId(projectId).setName(x.getName())
+    return new Dataset().setProjectId(projectId)
+        .setName(x.getName()).setDescription(x.getDescription())
         .setParameters(x.getParameters())
         .setExtracted(nonNull(x.getExtraction()))
         .setExtraction(x.getExtraction());
