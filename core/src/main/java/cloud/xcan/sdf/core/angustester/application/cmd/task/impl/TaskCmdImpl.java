@@ -11,9 +11,9 @@ import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConv
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toModifyTaskActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleMoveTask;
-import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleSampleTask;
-import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleSampleTaskSprint;
-import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleTaskSoftwareVersion;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTask;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTaskSprint;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTaskSoftwareVersion;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.importToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.toAddApisOrScenarioTask;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_IMPORT_COLUMNS;
@@ -668,12 +668,12 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         TaskSprint sprint = null;
         if (projectDb.isAgile()) {
           sprint = parseSampleSprint();
-          assembleSampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
+          assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
           taskSprintCmd.add(sprint);
         }
 
         // 2. Create version: v1.0
-        SoftwareVersion version = assembleTaskSoftwareVersion(projectDb,
+        SoftwareVersion version = assembleExampleTaskSoftwareVersion(projectDb,
             uidGenerator.getUID(), users, sprint);
         softwareVersionCmd.add(version);
 
@@ -683,7 +683,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // 3.2 Set default values
         for (Task task : tasks) {
-          assembleSampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
+          assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
         }
 
         // 3.3 Save sample tasks

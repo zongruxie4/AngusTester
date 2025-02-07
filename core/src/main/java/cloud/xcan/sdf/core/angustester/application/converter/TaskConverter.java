@@ -183,7 +183,7 @@ public class TaskConverter {
         && taskDb.getDeadlineDate().isBefore(LocalDateTime.now()));
   }
 
-  public static void assembleSampleTask(Project projectDb, Long id, Task task,
+  public static void assembleExampleTask(Project projectDb, Long id, Task task,
       TaskSprint sprint, List<User> users) {
     Random userRandom = new Random();
     task.setId(id).setCode(getTaskCode())
@@ -203,7 +203,7 @@ public class TaskConverter {
             ? task.getDeadlineDate().minusMonths(1) : LocalDateTime.now());
   }
 
-  public static void assembleSampleTaskSprint(Project projectDb, Long id,
+  public static void assembleExampleTaskSprint(Project projectDb, Long id,
       List<User> users, TaskSprint sprint) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
     sprint.setId(id).setProjectId(projectDb.getId()).setAuthFlag(false)
@@ -212,7 +212,7 @@ public class TaskConverter {
         .setLastModifiedBy(currentUserId).setLastModifiedDate(sprint.getStartDate());
   }
 
-  public static @NotNull SoftwareVersion assembleTaskSoftwareVersion(Project projectDb,
+  public static @NotNull SoftwareVersion assembleExampleTaskSoftwareVersion(Project projectDb,
       Long id, List<User> users, TaskSprint sprint) {
     SoftwareVersion version = new SoftwareVersion();
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
