@@ -90,27 +90,13 @@ public class ScriptFacadeImpl implements ScriptFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return scriptCmd.exampleImport(projectId);
-  }
-
-  @Override
   public IdKey<Long, Object> imports(ScriptImportDto dto) {
     return scriptCmd.imports(ScriptAssembler.importDtoToDomain(dto));
   }
 
-  @SneakyThrows
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(Long id,
-      ScriptFormat format, HttpServletResponse response) {
-    Script script = scriptQuery.detail(id);
-    String content = format.isYaml() ? script.getContent()
-        : AngusParser.JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(
-            AngusParser.getInstance().readContents(script.getContent(), null).getScript());
-    byte[] contentBytes = content.getBytes();
-    InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(contentBytes));
-    return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
-        script.getName() + format.getFileSuffix(), contentBytes.length, resource);
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return scriptCmd.exampleImport(projectId);
   }
 
   @Override
@@ -178,6 +164,20 @@ public class ScriptFacadeImpl implements ScriptFacade {
       return PageResult.empty();
     }
     return buildVoPageResult(page, ScriptAssembler::toScriptListVo);
+  }
+
+  @SneakyThrows
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(Long id,
+      ScriptFormat format, HttpServletResponse response) {
+    Script script = scriptQuery.detail(id);
+    String content = format.isYaml() ? script.getContent()
+        : AngusParser.JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(
+            AngusParser.getInstance().readContents(script.getContent(), null).getScript());
+    byte[] contentBytes = content.getBytes();
+    InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(contentBytes));
+    return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
+        script.getName() + format.getFileSuffix(), contentBytes.length, resource);
   }
 
 }

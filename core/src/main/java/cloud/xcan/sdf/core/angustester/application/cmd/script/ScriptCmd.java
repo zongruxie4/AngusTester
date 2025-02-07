@@ -35,15 +35,15 @@ public interface ScriptCmd {
 
   void angusReplace(Long id, AngusScript script, boolean validateScript);
 
-  void delete(Collection<Long> ids);
-
   IdKey<Long, Object> clone(Long id);
 
   IdKey<Long, Object> cloneByScenario(Long id, Long newId);
 
+  IdKey<Long, Object> imports(Script script);
+
   List<IdKey<Long, Object>> exampleImport(Long projectId);
 
-  IdKey<Long, Object> imports(Script script);
+  void delete(Collection<Long> ids);
 
   void deleteBySource(ScriptSource source, Collection<Long> sourceTargetIds);
 

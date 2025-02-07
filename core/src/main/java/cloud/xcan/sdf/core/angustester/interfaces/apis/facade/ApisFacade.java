@@ -84,8 +84,6 @@ public interface ApisFacade {
 
   String openapiDetail(Long id, ApisSchemaOpenApiDto dto);
 
-  ResponseEntity<Resource> export(Long id, ApisExportDto dto, HttpServletResponse response);
-
   void check(Long id);
 
   List<ApisDetailVo> listDetail(HashSet<Long> ids, Boolean resolveRefFlag);
@@ -97,5 +95,7 @@ public interface ApisFacade {
   PageResult<ApisInfoListVo> list(ApisInfoFindDto dto);
 
   PageResult<ApisInfoListVo> search(ApisInfoSearchDto dto);
+
+  ResponseEntity<Resource> export(Long id, ApisExportDto dto, HttpServletResponse response);
 
 }

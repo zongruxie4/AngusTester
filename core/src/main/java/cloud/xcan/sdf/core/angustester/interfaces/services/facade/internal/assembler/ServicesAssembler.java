@@ -6,6 +6,8 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotNull;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.sdf.api.ApiLocaleResult;
+import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.commonlink.apis.ApiSource;
 import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.api.commonlink.user.UserRepo;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
 public class ServicesAssembler {
 
@@ -83,17 +86,15 @@ public class ServicesAssembler {
         .setMockServiceId(services.getMockServiceId());
   }
 
-  public static Set<Long> getAdminConditionValue(ServicesSearchDto dto,
-      GenericSpecification<Services> spec, CommonQuery commonQuery, UserRepo userRepo) {
-    boolean adminFlag = findAdminFlagInCriteria(spec.getCriterias(), true);
-    adminFlag = nonNull(dto.getAdminFlag()) ? dto.getAdminFlag() : adminFlag;
-    List<Long> authObjectIds;
-    if (!adminFlag || !commonQuery.isAdminUser()) {
-      authObjectIds = userRepo.findOrgIdsById(getUserId());
-      authObjectIds.add(getUserId());
-      return new HashSet<>(authObjectIds);
+  @NotNull
+  public static ApiLocaleResult<PageResult<ServiceVo>> assembleAllowImportSampleStatus(
+      PageResult<ServiceVo> result) {
+    ApiLocaleResult<PageResult<ServiceVo>> apiResult = ApiLocaleResult.success(result);
+    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
+    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
+      apiResult.getExt().put("allowImportSamples", true);
     }
-    return Collections.emptySet();
+    return apiResult;
   }
 
   public static Set<SearchCriteria> getSearchCriteria(ServicesSearchDto dto) {

@@ -216,11 +216,6 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @Override
-  public void delete(Collection<Long> ids) {
-    funcCaseCmd.delete(ids);
-  }
-
-  @Override
   public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, @Nullable TaskType taskType) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInCase(id, moduleId, taskType);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
@@ -233,6 +228,21 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
     List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInCase(id, moduleId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<IdKey<Long, Object>> imports(FuncCaseImportDto dto) {
+    return funcCaseCmd.imports(dto.getPlanId(), dto.getStrategyWhenDuplicated(), dto.getFile());
+  }
+
+  @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return funcCaseCmd.exampleImport(projectId);
+  }
+
+  @Override
+  public void delete(Collection<Long> ids) {
+    funcCaseCmd.delete(ids);
   }
 
   @NameJoin
@@ -264,16 +274,6 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
     Page<FuncCaseInfo> page = funcCaseSearch.search(exportFlag, getSearchCriteria(dto),
         dto.tranPage(), FuncCaseInfo.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncCaseAssembler::toListVo);
-  }
-
-  @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return funcCaseCmd.exampleImport(projectId);
-  }
-
-  @Override
-  public List<IdKey<Long, Object>> imports(FuncCaseImportDto dto) {
-    return funcCaseCmd.imports(dto.getPlanId(), dto.getStrategyWhenDuplicated(), dto.getFile());
   }
 
   /**

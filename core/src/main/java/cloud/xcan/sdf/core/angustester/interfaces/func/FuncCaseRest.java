@@ -349,16 +349,6 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Delete functional test cases", nickname = "func:case:delete")
-  @ApiResponses(value = {
-      @ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping
-  public void delete(
-      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestBody HashSet<Long> ids) {
-    funcCaseFacade.delete(ids);
-  }
-
   @ApiOperation(value = "Query the not associated tasks list of task", nickname = "case:notAssociated:task:list")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class)})
@@ -378,6 +368,36 @@ public class FuncCaseRest {
       @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
       @ApiParam(name = "moduleId", value = "Module id", required = false) @RequestParam(value = "moduleId", required = false) Long moduleId) {
     return ApiLocaleResult.success(funcCaseFacade.notAssociatedCase(id, moduleId));
+  }
+
+  @ApiOperation(value = "Import the functional test cases", nickname = "func:case:import",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid FuncCaseImportDto dto) {
+    return ApiLocaleResult.success(funcCaseFacade.imports(dto));
+  }
+
+  @ApiOperation(value = "Import the inner functional test cases example", nickname = "func:case:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(funcCaseFacade.exampleImport(projectId));
+  }
+
+  @ApiOperation(value = "Delete functional test cases", nickname = "func:case:delete")
+  @ApiResponses(value = {
+      @ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping
+  public void delete(
+      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestBody HashSet<Long> ids) {
+    funcCaseFacade.delete(ids);
   }
 
   @ApiOperation(value = "Query the detail of functional test cases", nickname = "func:case:detail")
@@ -413,26 +433,6 @@ public class FuncCaseRest {
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<FuncCaseListVo>> search(@Valid FuncCaseSearchDto dto) {
     return ApiLocaleResult.success(funcCaseFacade.search(false, dto));
-  }
-
-  @ApiOperation(value = "Import the inner functional test cases example", nickname = "func:case:example:import")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
-      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(funcCaseFacade.exampleImport(projectId));
-  }
-
-  @ApiOperation(value = "Import the functional test cases", nickname = "func:case:import",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid FuncCaseImportDto dto) {
-    return ApiLocaleResult.success(funcCaseFacade.imports(dto));
   }
 
   @ApiOperation(value = "Export the functional test cases by conditions", nickname = "func:case:export")

@@ -28,13 +28,11 @@ public interface VariableFacade {
 
   List<IdKey<Long, Object>> clone(HashSet<Long> ids);
 
-  void delete(Collection<Long> ids);
+  List<IdKey<Long, Object>> imports(VariableImportDto dto);
 
   List<IdKey<Long, Object>> exampleImport(Long projectId);
 
-  List<IdKey<Long, Object>> imports(VariableImportDto dto);
-
-  ResponseEntity<Resource> export(VariableExportDto dto, HttpServletResponse response);
+  void delete(Collection<Long> ids);
 
   VariableDetailVo detail(Long id);
 
@@ -43,5 +41,7 @@ public interface VariableFacade {
   PageResult<VariableDetailVo> list(VariableFindDto dto);
 
   PageResult<VariableDetailVo> search(VariableSearchDto dto);
+
+  ResponseEntity<Resource> export(VariableExportDto dto, HttpServletResponse response);
 
 }

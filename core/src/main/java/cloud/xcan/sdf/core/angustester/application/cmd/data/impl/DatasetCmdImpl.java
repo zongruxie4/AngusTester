@@ -202,26 +202,44 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Collection<Long> ids) {
-    new BizTemplate<Void>() {
+  public List<IdKey<Long, Object>> imports(Long projectId,
+      StrategyWhenDuplicated strategyWhenDuplicated, String content, MultipartFile file) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
-        // NOOP
+        // Check the member permissions
+        projectMemberQuery.checkMember(projectId, getUserId());
+        // Check the upload content is required
+        assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
       }
 
       @Override
-      protected Void process() {
-        List<Dataset> datasetsDb = datasetRepo.findAllById(ids);
+      protected List<IdKey<Long, Object>> process() {
+        String finalContent = content;
 
-        if (isEmpty(datasetsDb)) {
-          return null;
+        // Read from upload file
+        if (isEmpty(content)) {
+          String srcFileName = file.getOriginalFilename();
+          File tmpPath = getImportTmpPath(ApiImportSource.ANGUS, srcFileName);
+          File importFile = new File(tmpPath.getPath() + File.separator + srcFileName);
+          try {
+            file.transferTo(importFile);
+            finalContent = FileUtil.readAsString(importFile);
+          } catch (IOException e) {
+            log.error("Exception reading import file", e);
+            throw CommSysException.of("Exception reading import file, cause: " + e.getMessage(),
+                ExceptionLevel.ERROR);
+          }
         }
 
-        datasetRepo.deleteByIdIn(ids);
-        datasetTargetRepo.deleteByDatasetIdIn(ids);
+        List<Dataset> datasets = parseVariablesFromScript(projectId,
+            strategyWhenDuplicated, finalContent);
+        List<IdKey<Long, Object>> idKeys = batchInsert(datasets, "name");
 
-        activityCmd.batchAdd(toActivities(DATASET, datasetsDb, ActivityType.DELETED));
-        return null;
+        // Save import dataset activities
+        activityCmd.batchAdd(toActivities(DATASET, datasets, IMPORT,
+            datasets.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+        return idKeys;
       }
     }.execute();
   }
@@ -272,44 +290,26 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> imports(Long projectId,
-      StrategyWhenDuplicated strategyWhenDuplicated, String content, MultipartFile file) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
+  public void delete(Collection<Long> ids) {
+    new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
-        // Check the member permissions
-        projectMemberQuery.checkMember(projectId, getUserId());
-        // Check the upload content is required
-        assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
+        // NOOP
       }
 
       @Override
-      protected List<IdKey<Long, Object>> process() {
-        String finalContent = content;
+      protected Void process() {
+        List<Dataset> datasetsDb = datasetRepo.findAllById(ids);
 
-        // Read from upload file
-        if (isEmpty(content)) {
-          String srcFileName = file.getOriginalFilename();
-          File tmpPath = getImportTmpPath(ApiImportSource.ANGUS, srcFileName);
-          File importFile = new File(tmpPath.getPath() + File.separator + srcFileName);
-          try {
-            file.transferTo(importFile);
-            finalContent = FileUtil.readAsString(importFile);
-          } catch (IOException e) {
-            log.error("Exception reading import file", e);
-            throw CommSysException.of("Exception reading import file, cause: " + e.getMessage(),
-                ExceptionLevel.ERROR);
-          }
+        if (isEmpty(datasetsDb)) {
+          return null;
         }
 
-        List<Dataset> datasets = parseVariablesFromScript(projectId,
-            strategyWhenDuplicated, finalContent);
-        List<IdKey<Long, Object>> idKeys = batchInsert(datasets, "name");
+        datasetRepo.deleteByIdIn(ids);
+        datasetTargetRepo.deleteByDatasetIdIn(ids);
 
-        // Save import dataset activities
-        activityCmd.batchAdd(toActivities(DATASET, datasets, IMPORT,
-            datasets.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
-        return idKeys;
+        activityCmd.batchAdd(toActivities(DATASET, datasetsDb, ActivityType.DELETED));
+        return null;
       }
     }.execute();
   }

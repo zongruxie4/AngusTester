@@ -220,87 +220,6 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Long id) {
-    new BizTemplate<Void>() {
-      Services serviceDb;
-
-      @Override
-      protected void checkParams() {
-        serviceDb = servicesRepo.findById(id).orElse(null);
-        if (isNull(serviceDb)) {
-          return;
-        }
-        servicesAuthQuery.checkDeleteAuth(getUserId(), id);
-      }
-
-      @Override
-      protected Void process() {
-        if (isNull(serviceDb)) {
-          return null;
-        }
-
-        // Logic delete
-        // After the service is deleted, filter the associated service and apis by service deletedFlag
-        ServicesConverter.completeDeleteInfo(serviceDb);
-        servicesRepo.save(serviceDb);
-
-        // Update apis deletion status
-        List<Long> serviceIds = Lists.newArrayList(id);
-
-        // Fix:: Do not delete the apis after deleting the project.
-        apisRepo.updateServiceDeleteStatusByService(serviceIds, true);
-
-        // Save to trash
-        ApisTrash trash = ServicesConverter.toTrash(serviceDb);
-        trashApisCmd.add0(Collections.singletonList(trash));
-
-        // Add delete service activity
-        activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.DELETED));
-        return null;
-      }
-    }.execute();
-  }
-
-  /**
-   * Physically delete, External calling biz must ensure data authed and secured!
-   */
-  //@Transactional(rollbackFor = Exception.class)
-  @Override
-  public void delete0(List<Long> ids) {
-    // Include logic deleted project
-    // Find all service and sub service ids
-    List<Long> allIds = servicesRepo.findIds0ByIdIn(ids);
-    if (isEmpty(allIds)) {
-      return;
-    }
-
-    // Set to empty if the service is associated
-    mockServiceRepo.updateAssocServiceIdToNull(allIds);
-    // Set to empty if the apis is associated
-    mockApisRepo.updateServiceIdAndApisIdToNullByServiceIdIn(allIds);
-    // Delete service and service, Include logic deleted project
-    servicesRepo.deleteAllByIdIn(allIds);
-    // Delete service schema
-    servicesSchemaCmd.deleteByServiceIdIn(allIds);
-    // Delete service Components
-    servicesCompCmd.deleteByServiceIdIn(allIds);
-    // Delete service and service auth
-    servicesAuthCmd.deleteAllByProject(allIds);
-    // Delete service sync sync
-    servicesSyncCmd.deleteAllByServices(allIds);
-    // Delete service indicator
-    indicatorPerfCmd.deleteAllByTarget(allIds, SERVICE);
-    indicatorStabilityCmd.deleteAllByTarget(allIds, SERVICE);
-    // NOOP:: Do not delete associated test tasks
-    List<Long> apisIds = apisRepo.findAll0IdByServiceIdIn(allIds);
-    if (ObjectUtils.isNotEmpty(apisIds)) {
-      apisCmd.delete0(apisIds);
-    }
-    // NOOP:: Delete projects and components ref -> Deleted in apisCmd.delete0(apisIds)
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
   public void clone(Long id) {
     new BizTemplate<Void>() {
       Services serviceDb;
@@ -398,36 +317,6 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
-
-      @Override
-      protected List<IdKey<Long, Object>> process() {
-        List<IdKey<Long, Object>> idKeys = new ArrayList<>();
-        for (String servicesFile : SAMPLE_SERVICES_FILES) {
-          URL resourceUrl = this.getClass().getResource("/samples/apis/"
-              + SupportedLanguage.en.getValue() + "/" + servicesFile);
-          String content;
-          try {
-            content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          } catch (IOException e) {
-            throw CommSysException.of("Couldn't read sample file " + servicesFile, e.getMessage());
-          }
-          IdKey<Long, Object> idKey = imports(projectId, null, servicesFile.split("\\.")[0],
-              ApiImportSource.OPENAPI, StrategyWhenDuplicated.IGNORE, false, null, content);
-          idKeys.add(idKey);
-        }
-        return idKeys;
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
   public IdKey<Long, Object> imports(Long projectId, Long serviceId, String serviceName,
       ApiImportSource importSource, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, MultipartFile file, String content) {
@@ -512,6 +401,36 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        List<IdKey<Long, Object>> idKeys = new ArrayList<>();
+        for (String servicesFile : SAMPLE_SERVICES_FILES) {
+          URL resourceUrl = this.getClass().getResource("/samples/apis/"
+              + SupportedLanguage.en.getValue() + "/" + servicesFile);
+          String content;
+          try {
+            content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          } catch (IOException e) {
+            throw CommSysException.of("Couldn't read sample file " + servicesFile, e.getMessage());
+          }
+          IdKey<Long, Object> idKey = imports(projectId, null, servicesFile.split("\\.")[0],
+              ApiImportSource.OPENAPI, StrategyWhenDuplicated.IGNORE, false, null, content);
+          idKeys.add(idKey);
+        }
+        return idKeys;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
   public File exportProject(ServicesExportScope exportScope,
       Set<Long> serviceIds, Set<Long> apisId, SchemaFormat format, boolean onlyApisComponents) {
     return new BizTemplate<File>() {
@@ -582,6 +501,88 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
       }
     }.execute();
   }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void delete(Long id) {
+    new BizTemplate<Void>() {
+      Services serviceDb;
+
+      @Override
+      protected void checkParams() {
+        serviceDb = servicesRepo.findById(id).orElse(null);
+        if (isNull(serviceDb)) {
+          return;
+        }
+        servicesAuthQuery.checkDeleteAuth(getUserId(), id);
+      }
+
+      @Override
+      protected Void process() {
+        if (isNull(serviceDb)) {
+          return null;
+        }
+
+        // Logic delete
+        // After the service is deleted, filter the associated service and apis by service deletedFlag
+        ServicesConverter.completeDeleteInfo(serviceDb);
+        servicesRepo.save(serviceDb);
+
+        // Update apis deletion status
+        List<Long> serviceIds = Lists.newArrayList(id);
+
+        // Fix:: Do not delete the apis after deleting the project.
+        apisRepo.updateServiceDeleteStatusByService(serviceIds, true);
+
+        // Save to trash
+        ApisTrash trash = ServicesConverter.toTrash(serviceDb);
+        trashApisCmd.add0(Collections.singletonList(trash));
+
+        // Add delete service activity
+        activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.DELETED));
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * Physically delete, External calling biz must ensure data authed and secured!
+   */
+  //@Transactional(rollbackFor = Exception.class)
+  @Override
+  public void delete0(List<Long> ids) {
+    // Include logic deleted project
+    // Find all service and sub service ids
+    List<Long> allIds = servicesRepo.findIds0ByIdIn(ids);
+    if (isEmpty(allIds)) {
+      return;
+    }
+
+    // Set to empty if the service is associated
+    mockServiceRepo.updateAssocServiceIdToNull(allIds);
+    // Set to empty if the apis is associated
+    mockApisRepo.updateServiceIdAndApisIdToNullByServiceIdIn(allIds);
+    // Delete service and service, Include logic deleted project
+    servicesRepo.deleteAllByIdIn(allIds);
+    // Delete service schema
+    servicesSchemaCmd.deleteByServiceIdIn(allIds);
+    // Delete service Components
+    servicesCompCmd.deleteByServiceIdIn(allIds);
+    // Delete service and service auth
+    servicesAuthCmd.deleteAllByProject(allIds);
+    // Delete service sync sync
+    servicesSyncCmd.deleteAllByServices(allIds);
+    // Delete service indicator
+    indicatorPerfCmd.deleteAllByTarget(allIds, SERVICE);
+    indicatorStabilityCmd.deleteAllByTarget(allIds, SERVICE);
+    // NOOP:: Do not delete associated test tasks
+    List<Long> apisIds = apisRepo.findAll0IdByServiceIdIn(allIds);
+    if (ObjectUtils.isNotEmpty(apisIds)) {
+      apisCmd.delete0(apisIds);
+    }
+    // NOOP:: Delete projects and components ref -> Deleted in apisCmd.delete0(apisIds)
+  }
+
 
   @Override
   protected BaseRepository<Services, Long> getRepository() {

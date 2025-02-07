@@ -389,279 +389,6 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
-      Project projectDb;
-
-      @Override
-      protected void checkParams() {
-        // Check the project exists
-        projectDb = projectQuery.checkAndFind(projectId);
-      }
-
-      @Override
-      protected List<IdKey<Long, Object>> process() {
-        // 0. Query all tenant users
-        List<User> users = userManager.findByTenantId(getOptTenantId());
-        Assert.assertNotEmpty(users, "Tenant users are empty");
-
-        // 1. Create test plan by sample file
-        FuncPlan plan = parseSamplePlan();
-        assembleExampleFuncPlan(projectDb, uidGenerator.getUID(), users, plan);
-        funcPlanCmd.add(plan);
-
-        // 2. Create test case by sample file
-        List<FuncCase> cases = parseSampleCase();
-        for (FuncCase case0 : cases) {
-          assembleExampleFuncCase(projectDb, uidGenerator.getUID(), case0, plan, users);
-        }
-        List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
-
-        // 3. Create case review by sample file
-        FuncReview review = parseSampleReview();
-        assembleExampleFuncReview(projectDb, uidGenerator.getUID(), users, review, plan);
-        funcReviewCmd.add(review);
-        funcReviewCaseCmd.add(review.getId(), cases.stream()
-            .filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPending())
-            .map(FuncCase::getId).collect(Collectors.toSet()));
-
-        // 4. Create case baseline by sample file
-        FuncBaseline baseline = parseSampleBaseline();
-        assembleExampleFuncBaseline(projectDb, uidGenerator.getUID(), users, baseline, plan, cases);
-        funcBaselineCmd.add(baseline);
-
-        return idKeys;
-      }
-
-      private FuncPlan parseSamplePlan() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/plan/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncPlan.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_PLAN_FILE,
-              e.getMessage());
-        }
-      }
-
-      private List<FuncCase> parseSampleCase() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/cases/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, new TypeReference<List<FuncCase>>() {
-          });
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
-              e.getMessage());
-        }
-      }
-
-      private FuncReview parseSampleReview() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/review/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncReview.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_REVIEW_FILE,
-              e.getMessage());
-        }
-      }
-
-      private FuncBaseline parseSampleBaseline() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/baseline/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncBaseline.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_BASELINE_FILE,
-              e.getMessage());
-        }
-      }
-
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public List<IdKey<Long, Object>> imports(Long planId,
-      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
-      FuncPlan planDb;
-
-      @Override
-      protected void checkParams() {
-        // Check and find func plan
-        planDb = funcPlanQuery.checkAndFind(planId);
-        // Check the add case permission
-        funcPlanAuthQuery.checkAddCaseAuth(getUserId(), planId);
-      }
-
-      @Override
-      protected List<IdKey<Long, Object>> process() {
-        // Parsing imported file
-        List<String[]> rows;
-        try {
-          rows = PoiUtils.readExcel(file.getInputStream());
-        } catch (IOException e) {
-          throw CommProtocolException.of("Failed to read excel file, cause: " + e.getMessage());
-        }
-        assertNotEmpty(rows, "Read excel content is empty");
-
-        // Check the for empty header fields
-        List<String> titles = Stream.of(rows.get(0))
-            .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
-        assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
-
-        // Check the if the required import columns exist
-        String missingRequiredField = CASE_IMPORT_REQUIRED_COLUMNS.stream()
-            .filter(x -> !titles.contains(x)).findFirst().orElse(null);
-        assertTrue(isEmpty(missingRequiredField),
-            String.format("The required field %s is missing", missingRequiredField));
-
-        List<String[]> data = rows.subList(1, rows.size());
-        assertNotEmpty(data, "Read case data is empty");
-
-        int nameIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(0));
-        int moduleIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(1));
-        int testerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(2));
-        int developerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(3));
-        int reviwerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(4));
-        int priorityIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(5));
-        int deadlineIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(6));
-        int preconditionIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(7));
-        int stepIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(8));
-        int descriptionIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(9));
-        int evalWorkloadIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(10));
-        int actualWorkloadIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(11));
-        int testResultIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(12));
-        int reviewStatusIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(13));
-        int testProcessedDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(14));
-        int reviewDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(15));
-        int tagsIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(16));
-        int tasksIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(17));
-        int casesIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(18));
-        int creatorIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(19));
-        int createdDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(20));
-
-        // Check the if the required import column values exist
-
-        // Check the for duplicate case names
-        assertTrue(nameIdx != -1, "Case name is required");
-        List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
-        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
-            .collect(Collectors.toList());
-        assertTrue(isEmpty(duplicateNames),
-            String.format("There are duplicates in the import case, duplicate case name: %s",
-                duplicateNames));
-        boolean hasEmptyName = names.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyName, "The import case name cannot be empty");
-
-        assertTrue(testerIdx != -1, "Case tester is required");
-        Set<String> testers = data.stream().map(x -> x[testerIdx])
-            .collect(Collectors.toSet());
-        boolean hasEmptyTester = testers.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyTester, "The import tester cannot be empty");
-        // Check the if the tester exist
-        Map<String, List<UserBase>> testerMap = userManager.checkValidAndFindUserBasesByName(
-            testers);
-
-        assertTrue(developerIdx != -1, "Case developer is required");
-        Set<String> developers = data.stream().map(x -> x[developerIdx])
-            .collect(Collectors.toSet());
-        boolean hasEmptyDeveloper = developers.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyDeveloper, "The import developer cannot be empty");
-        // Check the if the tester exist
-        Map<String, List<UserBase>> developerMap = userManager.checkValidAndFindUserBasesByName(
-            developers);
-
-        assertTrue(deadlineIdx != -1, "Case deadline date is required");
-        List<String> deadlines = data.stream().map(x -> x[deadlineIdx])
-            .collect(Collectors.toList());
-        boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
-
-        // Check the if the modules exist
-        Set<String> modules = data.stream()
-            .filter(x -> moduleIdx != -1 && isNotEmpty(x[moduleIdx]))
-            .map(x -> x[moduleIdx]).collect(Collectors.toSet());
-        Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(
-            planDb.getProjectId(), modules);
-        // Check the if the creators exist
-        Set<String> reviwers = data.stream()
-            .filter(x -> reviwerIdx != -1 && isNotEmpty(x[reviwerIdx]))
-            .map(x -> x[reviwerIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> reviwersMap = userManager.checkValidAndFindUserBasesByName(
-            reviwers);
-        // Check the if the creators exist
-        Set<String> creators = data.stream()
-            .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
-            .map(x -> x[creatorIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
-            creators);
-        // Check the if the associated tags exist
-        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
-            .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(
-            planDb.getProjectId(), tags);
-        // Check the if the associated tasks exist
-        Set<String> taskNames = data.stream()
-            .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
-            .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByProjectAndName(
-            planDb.getProjectId(), taskNames);
-        // Check the if the associated cases exist
-        Set<String> caseNames = data.stream()
-            .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
-            .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
-            planId, caseNames);
-
-        // Check the if the associated testing targets exist
-
-        // Format import fields and convert them into case domains
-        List<FuncCase> cases = importToDomain(
-            uidGenerator, planDb, data, nameIdx, moduleIdx, modulesMap, testerIdx, testerMap,
-            developerIdx, developerMap, reviwerIdx, reviwersMap, priorityIdx,
-            deadlineIdx, preconditionIdx, stepIdx, descriptionIdx, evalWorkloadIdx,
-            actualWorkloadIdx, testResultIdx, reviewStatusIdx, testProcessedDateIdx, reviewDateIdx,
-            creatorIdx, creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap,
-            casesIdx, casesMap);
-
-        // When using an `COVER` strategy, delete existing cases, otherwise ignore duplicate import cases
-        Set<String> safePrefixNames = isEmpty(planDb.getCasePrefix())
-            ? new HashSet<>(names) : names.stream().map(x -> planDb.getCasePrefix() + x)
-            .collect(Collectors.toSet());
-        if (strategyWhenDuplicated.isCover()) {
-          funcCaseRepo.deleteByPlanIdAndNameIn(planId, safePrefixNames);
-        } else {
-          List<String> namesDb = funcCaseRepo.findNamesByNameInAndPlanId(safePrefixNames, planId);
-          cases = cases.stream().filter(x -> !namesDb.contains(x.getName()))
-              .collect(Collectors.toList());
-        }
-
-        if (isEmpty(cases)) {
-          return null;
-        }
-
-        // Save imported cases
-        return add(cases);
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
   public void rename(Long id, String name) {
     new BizTemplate<Void>() {
       FuncCase caseDb = null;
@@ -1428,6 +1155,279 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         activityCmd.add(activity);
         return null;
       }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> imports(Long planId,
+      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      FuncPlan planDb;
+
+      @Override
+      protected void checkParams() {
+        // Check and find func plan
+        planDb = funcPlanQuery.checkAndFind(planId);
+        // Check the add case permission
+        funcPlanAuthQuery.checkAddCaseAuth(getUserId(), planId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // Parsing imported file
+        List<String[]> rows;
+        try {
+          rows = PoiUtils.readExcel(file.getInputStream());
+        } catch (IOException e) {
+          throw CommProtocolException.of("Failed to read excel file, cause: " + e.getMessage());
+        }
+        assertNotEmpty(rows, "Read excel content is empty");
+
+        // Check the for empty header fields
+        List<String> titles = Stream.of(rows.get(0))
+            .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
+        assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
+
+        // Check the if the required import columns exist
+        String missingRequiredField = CASE_IMPORT_REQUIRED_COLUMNS.stream()
+            .filter(x -> !titles.contains(x)).findFirst().orElse(null);
+        assertTrue(isEmpty(missingRequiredField),
+            String.format("The required field %s is missing", missingRequiredField));
+
+        List<String[]> data = rows.subList(1, rows.size());
+        assertNotEmpty(data, "Read case data is empty");
+
+        int nameIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(0));
+        int moduleIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(1));
+        int testerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(2));
+        int developerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(3));
+        int reviwerIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(4));
+        int priorityIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(5));
+        int deadlineIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(6));
+        int preconditionIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(7));
+        int stepIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(8));
+        int descriptionIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(9));
+        int evalWorkloadIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(10));
+        int actualWorkloadIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(11));
+        int testResultIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(12));
+        int reviewStatusIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(13));
+        int testProcessedDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(14));
+        int reviewDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(15));
+        int tagsIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(16));
+        int tasksIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(17));
+        int casesIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(18));
+        int creatorIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(19));
+        int createdDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(20));
+
+        // Check the if the required import column values exist
+
+        // Check the for duplicate case names
+        assertTrue(nameIdx != -1, "Case name is required");
+        List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
+        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
+            .collect(Collectors.toList());
+        assertTrue(isEmpty(duplicateNames),
+            String.format("There are duplicates in the import case, duplicate case name: %s",
+                duplicateNames));
+        boolean hasEmptyName = names.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyName, "The import case name cannot be empty");
+
+        assertTrue(testerIdx != -1, "Case tester is required");
+        Set<String> testers = data.stream().map(x -> x[testerIdx])
+            .collect(Collectors.toSet());
+        boolean hasEmptyTester = testers.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyTester, "The import tester cannot be empty");
+        // Check the if the tester exist
+        Map<String, List<UserBase>> testerMap = userManager.checkValidAndFindUserBasesByName(
+            testers);
+
+        assertTrue(developerIdx != -1, "Case developer is required");
+        Set<String> developers = data.stream().map(x -> x[developerIdx])
+            .collect(Collectors.toSet());
+        boolean hasEmptyDeveloper = developers.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyDeveloper, "The import developer cannot be empty");
+        // Check the if the tester exist
+        Map<String, List<UserBase>> developerMap = userManager.checkValidAndFindUserBasesByName(
+            developers);
+
+        assertTrue(deadlineIdx != -1, "Case deadline date is required");
+        List<String> deadlines = data.stream().map(x -> x[deadlineIdx])
+            .collect(Collectors.toList());
+        boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
+
+        // Check the if the modules exist
+        Set<String> modules = data.stream()
+            .filter(x -> moduleIdx != -1 && isNotEmpty(x[moduleIdx]))
+            .map(x -> x[moduleIdx]).collect(Collectors.toSet());
+        Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(
+            planDb.getProjectId(), modules);
+        // Check the if the creators exist
+        Set<String> reviwers = data.stream()
+            .filter(x -> reviwerIdx != -1 && isNotEmpty(x[reviwerIdx]))
+            .map(x -> x[reviwerIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> reviwersMap = userManager.checkValidAndFindUserBasesByName(
+            reviwers);
+        // Check the if the creators exist
+        Set<String> creators = data.stream()
+            .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
+            .map(x -> x[creatorIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
+            creators);
+        // Check the if the associated tags exist
+        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
+            .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(
+            planDb.getProjectId(), tags);
+        // Check the if the associated tasks exist
+        Set<String> taskNames = data.stream()
+            .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
+            .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByProjectAndName(
+            planDb.getProjectId(), taskNames);
+        // Check the if the associated cases exist
+        Set<String> caseNames = data.stream()
+            .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
+            .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
+            planId, caseNames);
+
+        // Check the if the associated testing targets exist
+
+        // Format import fields and convert them into case domains
+        List<FuncCase> cases = importToDomain(
+            uidGenerator, planDb, data, nameIdx, moduleIdx, modulesMap, testerIdx, testerMap,
+            developerIdx, developerMap, reviwerIdx, reviwersMap, priorityIdx,
+            deadlineIdx, preconditionIdx, stepIdx, descriptionIdx, evalWorkloadIdx,
+            actualWorkloadIdx, testResultIdx, reviewStatusIdx, testProcessedDateIdx, reviewDateIdx,
+            creatorIdx, creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap,
+            casesIdx, casesMap);
+
+        // When using an `COVER` strategy, delete existing cases, otherwise ignore duplicate import cases
+        Set<String> safePrefixNames = isEmpty(planDb.getCasePrefix())
+            ? new HashSet<>(names) : names.stream().map(x -> planDb.getCasePrefix() + x)
+            .collect(Collectors.toSet());
+        if (strategyWhenDuplicated.isCover()) {
+          funcCaseRepo.deleteByPlanIdAndNameIn(planId, safePrefixNames);
+        } else {
+          List<String> namesDb = funcCaseRepo.findNamesByNameInAndPlanId(safePrefixNames, planId);
+          cases = cases.stream().filter(x -> !namesDb.contains(x.getName()))
+              .collect(Collectors.toList());
+        }
+
+        if (isEmpty(cases)) {
+          return null;
+        }
+
+        // Save imported cases
+        return add(cases);
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // 0. Query all tenant users
+        List<User> users = userManager.findByTenantId(getOptTenantId());
+        Assert.assertNotEmpty(users, "Tenant users are empty");
+
+        // 1. Create test plan by sample file
+        FuncPlan plan = parseSamplePlan();
+        assembleExampleFuncPlan(projectDb, uidGenerator.getUID(), users, plan);
+        funcPlanCmd.add(plan);
+
+        // 2. Create test case by sample file
+        List<FuncCase> cases = parseSampleCase();
+        for (FuncCase case0 : cases) {
+          assembleExampleFuncCase(projectDb, uidGenerator.getUID(), case0, plan, users);
+        }
+        List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
+
+        // 3. Create case review by sample file
+        FuncReview review = parseSampleReview();
+        assembleExampleFuncReview(projectDb, uidGenerator.getUID(), users, review, plan);
+        funcReviewCmd.add(review);
+        funcReviewCaseCmd.add(review.getId(), cases.stream()
+            .filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPending())
+            .map(FuncCase::getId).collect(Collectors.toSet()));
+
+        // 4. Create case baseline by sample file
+        FuncBaseline baseline = parseSampleBaseline();
+        assembleExampleFuncBaseline(projectDb, uidGenerator.getUID(), users, baseline, plan, cases);
+        funcBaselineCmd.add(baseline);
+
+        return idKeys;
+      }
+
+      private FuncPlan parseSamplePlan() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/plan/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncPlan.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_PLAN_FILE,
+              e.getMessage());
+        }
+      }
+
+      private List<FuncCase> parseSampleCase() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/cases/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, new TypeReference<List<FuncCase>>() {
+          });
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+              e.getMessage());
+        }
+      }
+
+      private FuncReview parseSampleReview() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/review/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncReview.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_REVIEW_FILE,
+              e.getMessage());
+        }
+      }
+
+      private FuncBaseline parseSampleBaseline() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/baseline/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, FuncBaseline.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_BASELINE_FILE,
+              e.getMessage());
+        }
+      }
+
     }.execute();
   }
 

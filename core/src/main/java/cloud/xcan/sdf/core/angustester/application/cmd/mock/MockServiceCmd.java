@@ -34,20 +34,20 @@ public interface MockServiceCmd {
 
   void servicesAssocUpdate(Long mockServiceId, Long serviceId);
 
-  void associationDelete(Long id);
+  List<StartVo> start(HashSet<Long> ids);
 
-  void exampleImport(Long id);
+  List<StopVo> stop(HashSet<Long> ids);
 
   void imports(Long id, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, String content, MultipartFile file);
+
+  void exampleImport(Long id);
 
   File export(Long mockServiceId, Set<Long> mockApiIds, SchemaFormat format);
 
   void delete(HashSet<Long> ids, Boolean force);
 
-  List<StartVo> start(HashSet<Long> ids);
-
-  List<StopVo> stop(HashSet<Long> ids);
+  void associationDelete(Long id);
 
   List<MockApis> addMockApisAndResponses(MockService service, List<Apis> apis);
 

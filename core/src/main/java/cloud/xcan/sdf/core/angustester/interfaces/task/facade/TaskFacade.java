@@ -98,21 +98,21 @@ public interface TaskFacade {
 
   List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId);
 
-  void delete(Collection<Long> ids);
-
   void restart(Long id);
 
   void reopen(Long id);
+
+  List<IdKey<Long, Object>> imports(TaskImportDto dto);
+
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
+
+  void delete(Collection<Long> ids);
 
   TaskDetailVo detail(Long id);
 
   PageResult<TaskListVo> list(TaskFindDto dto);
 
   PageResult<TaskListVo> search(boolean exportFlag, TaskSearchDto dto);
-
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
-
-  List<IdKey<Long, Object>> imports(TaskImportDto dto);
 
   ResponseEntity<Resource> export(TaskSearchDto dto, HttpServletResponse response);
 

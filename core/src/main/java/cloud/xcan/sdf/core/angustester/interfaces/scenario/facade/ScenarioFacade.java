@@ -20,13 +20,13 @@ public interface ScenarioFacade {
 
   IdKey<Long, Object> replace(ScenarioReplaceDto dto);
 
-  void delete(Long id);
-
   void move(Long scenarioId, Long targetProjectId);
 
   IdKey<Long, Object> clone(Long id);
 
   List<IdKey<Long, Object>> exampleImport(Long projectId);
+
+  void delete(Long id);
 
   ScenarioDetailVo detail(Long id);
 

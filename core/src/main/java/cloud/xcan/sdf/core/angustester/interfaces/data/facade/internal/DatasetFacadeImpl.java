@@ -73,15 +73,6 @@ public class DatasetFacadeImpl implements DatasetFacade {
     return datasetCmd.clone(ids);
   }
 
-  @Override
-  public void delete(Collection<Long> ids) {
-    datasetCmd.delete(ids);
-  }
-
-  @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return datasetCmd.exampleImport(projectId);
-  }
 
   @Override
   public List<IdKey<Long, Object>> imports(DatasetImportDto dto) {
@@ -90,12 +81,13 @@ public class DatasetFacadeImpl implements DatasetFacade {
   }
 
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(DatasetExportDto dto,
-      HttpServletResponse response) {
-    ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
-    List<Dataset> variables = datasetQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
-    return getResourceResponseEntity(String.format("ExportDatasets-%s", currentTimeMillis()),
-        format, variables.stream().map(DatasetAssembler::toExportVo).collect(Collectors.toList()));
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return datasetCmd.exampleImport(projectId);
+  }
+
+  @Override
+  public void delete(Collection<Long> ids) {
+    datasetCmd.delete(ids);
   }
 
   @NameJoin
@@ -124,6 +116,15 @@ public class DatasetFacadeImpl implements DatasetFacade {
     Page<Dataset> page = datasetSearch.search(getSearchCriteria(dto),
         dto.tranPage(), Dataset.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, DatasetAssembler::toDetailVo);
+  }
+
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(DatasetExportDto dto,
+      HttpServletResponse response) {
+    ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
+    List<Dataset> variables = datasetQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
+    return getResourceResponseEntity(String.format("ExportDatasets-%s", currentTimeMillis()),
+        format, variables.stream().map(DatasetAssembler::toExportVo).collect(Collectors.toList()));
   }
 
 }

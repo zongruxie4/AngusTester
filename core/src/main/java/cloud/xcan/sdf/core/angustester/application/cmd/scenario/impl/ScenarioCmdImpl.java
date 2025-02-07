@@ -269,45 +269,6 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Long id) {
-    new BizTemplate<Void>() {
-      Optional<Scenario> scenarioDb;
-
-      @Override
-      protected void checkParams() {
-        // Check the scenario existed and authed
-        scenarioDb = scenarioRepo.find0ById(id);
-        if (scenarioDb.isEmpty()) {
-          return;
-        }
-        scenarioAuthQuery.checkDeleteAuth(getUserId(), id);
-      }
-
-      @Override
-      protected Void process() {
-        if (scenarioDb.isEmpty()) {
-          return null;
-        }
-
-        // Delete scenario
-        scenarioRepo.updateDeleteStatus(id, true, getUserId(), LocalDateTime.now());
-
-        // Add scenario to ApisTrash
-        trashScenarioCmd.add0(singletonList(toScenarioTrash(scenarioDb.get())));
-
-        // Add delete scenario activity
-        Activity activity = toActivity(SCENARIO, scenarioDb.get(), ActivityType.DELETED);
-        activityCmd.add(activity);
-
-        // Add modification event
-        scenarioQuery.assembleAndSendModifyNoticeEvent(scenarioDb.get(), activity);
-        return null;
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
   public void move(Long scenarioId, Long targetProjectId) {
     /*new BizTemplate<Void>() {
       Project projectDb;
@@ -416,6 +377,45 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
         } catch (IOException e) {
           throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
         }
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void delete(Long id) {
+    new BizTemplate<Void>() {
+      Optional<Scenario> scenarioDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the scenario existed and authed
+        scenarioDb = scenarioRepo.find0ById(id);
+        if (scenarioDb.isEmpty()) {
+          return;
+        }
+        scenarioAuthQuery.checkDeleteAuth(getUserId(), id);
+      }
+
+      @Override
+      protected Void process() {
+        if (scenarioDb.isEmpty()) {
+          return null;
+        }
+
+        // Delete scenario
+        scenarioRepo.updateDeleteStatus(id, true, getUserId(), LocalDateTime.now());
+
+        // Add scenario to ApisTrash
+        trashScenarioCmd.add0(singletonList(toScenarioTrash(scenarioDb.get())));
+
+        // Add delete scenario activity
+        Activity activity = toActivity(SCENARIO, scenarioDb.get(), ActivityType.DELETED);
+        activityCmd.add(activity);
+
+        // Add modification event
+        scenarioQuery.assembleAndSendModifyNoticeEvent(scenarioDb.get(), activity);
+        return null;
       }
     }.execute();
   }

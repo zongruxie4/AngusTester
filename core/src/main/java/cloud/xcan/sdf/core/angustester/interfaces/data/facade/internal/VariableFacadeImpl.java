@@ -73,8 +73,9 @@ public class VariableFacadeImpl implements VariableFacade {
   }
 
   @Override
-  public void delete(Collection<Long> ids) {
-    variableCmd.delete(ids);
+  public List<IdKey<Long, Object>> imports(VariableImportDto dto) {
+    return variableCmd.imports(dto.getProjectId(), dto.getStrategyWhenDuplicated(),
+        dto.getContent(), dto.getFile());
   }
 
   @Override
@@ -83,18 +84,8 @@ public class VariableFacadeImpl implements VariableFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> imports(VariableImportDto dto) {
-    return variableCmd.imports(dto.getProjectId(), dto.getStrategyWhenDuplicated(),
-        dto.getContent(), dto.getFile());
-  }
-
-  @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(VariableExportDto dto,
-      HttpServletResponse response) {
-    ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
-    List<Variable> variables = variableQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
-    return getResourceResponseEntity(String.format("ExportVariables-%s", currentTimeMillis()),
-        format, variables.stream().map(VariableAssembler::toExportVo).collect(Collectors.toList()));
+  public void delete(Collection<Long> ids) {
+    variableCmd.delete(ids);
   }
 
   @NameJoin
@@ -123,5 +114,14 @@ public class VariableFacadeImpl implements VariableFacade {
     Page<Variable> page = variableSearch.search(getSearchCriteria(dto),
         dto.tranPage(), Variable.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, VariableAssembler::toDetailVo);
+  }
+
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(VariableExportDto dto,
+      HttpServletResponse response) {
+    ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
+    List<Variable> variables = variableQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
+    return getResourceResponseEntity(String.format("ExportVariables-%s", currentTimeMillis()),
+        format, variables.stream().map(VariableAssembler::toExportVo).collect(Collectors.toList()));
   }
 }

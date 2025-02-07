@@ -206,27 +206,44 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Collection<Long> ids) {
-    new BizTemplate<Void>() {
+  public List<IdKey<Long, Object>> imports(Long projectId,
+      StrategyWhenDuplicated strategyWhenDuplicated, String content, MultipartFile file) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
-        // NOOP
+        // Check the member permissions
+        projectMemberQuery.checkMember(projectId, getUserId());
+        // Check the upload content is required
+        assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
       }
 
       @Override
-      protected Void process() {
-        List<Variable> variablesDb = variablesRepo.findAllById(ids);
+      protected List<IdKey<Long, Object>> process() {
+        String finalContent = content;
 
-        if (isEmpty(variablesDb)) {
-          return null;
+        // Read from upload file
+        if (isEmpty(content)) {
+          String srcFileName = file.getOriginalFilename();
+          File tmpPath = getImportTmpPath(ApiImportSource.ANGUS, srcFileName);
+          File importFile = new File(tmpPath.getPath() + File.separator + srcFileName);
+          try {
+            file.transferTo(importFile);
+            finalContent = FileUtil.readAsString(importFile);
+          } catch (IOException e) {
+            log.error("Exception reading import file", e);
+            throw CommSysException.of("Exception reading import file, cause: "
+                + e.getMessage(), ExceptionLevel.ERROR);
+          }
         }
 
-        variablesRepo.deleteByIdIn(ids);
+        List<Variable> variables = parseVariablesFromScript(projectId,
+            strategyWhenDuplicated, finalContent);
+        List<IdKey<Long, Object>> idKeys = batchInsert(variables, "name");
 
-        variableTargetRepo.deleteByVariableIdIn(ids);
-
-        activityCmd.batchAdd(toActivities(VARIABLE, variablesDb, ActivityType.DELETED));
-        return null;
+        // Save import variable activities
+        activityCmd.batchAdd(toActivities(VARIABLE, variables, IMPORT,
+            variables.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+        return idKeys;
       }
     }.execute();
   }
@@ -277,44 +294,27 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> imports(Long projectId,
-      StrategyWhenDuplicated strategyWhenDuplicated, String content, MultipartFile file) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
+  public void delete(Collection<Long> ids) {
+    new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
-        // Check the member permissions
-        projectMemberQuery.checkMember(projectId, getUserId());
-        // Check the upload content is required
-        assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
+        // NOOP
       }
 
       @Override
-      protected List<IdKey<Long, Object>> process() {
-        String finalContent = content;
+      protected Void process() {
+        List<Variable> variablesDb = variablesRepo.findAllById(ids);
 
-        // Read from upload file
-        if (isEmpty(content)) {
-          String srcFileName = file.getOriginalFilename();
-          File tmpPath = getImportTmpPath(ApiImportSource.ANGUS, srcFileName);
-          File importFile = new File(tmpPath.getPath() + File.separator + srcFileName);
-          try {
-            file.transferTo(importFile);
-            finalContent = FileUtil.readAsString(importFile);
-          } catch (IOException e) {
-            log.error("Exception reading import file", e);
-            throw CommSysException.of("Exception reading import file, cause: "
-                + e.getMessage(), ExceptionLevel.ERROR);
-          }
+        if (isEmpty(variablesDb)) {
+          return null;
         }
 
-        List<Variable> variables = parseVariablesFromScript(projectId,
-            strategyWhenDuplicated, finalContent);
-        List<IdKey<Long, Object>> idKeys = batchInsert(variables, "name");
+        variablesRepo.deleteByIdIn(ids);
 
-        // Save import variable activities
-        activityCmd.batchAdd(toActivities(VARIABLE, variables, IMPORT,
-            variables.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
-        return idKeys;
+        variableTargetRepo.deleteByVariableIdIn(ids);
+
+        activityCmd.batchAdd(toActivities(VARIABLE, variablesDb, ActivityType.DELETED));
+        return null;
       }
     }.execute();
   }

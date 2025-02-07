@@ -94,15 +94,13 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.clone(ids));
   }
 
-  @ApiOperation(value = "Delete variables", nickname = "data:variable:delete")
+  @ApiOperation(value = "Import the variables", nickname = "data:variable:import")
   @ApiResponses(value = {
-      @ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping
-  public void delete(
-      @ApiParam(name = "ids", value = "Variable ids", required = true)
-      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
-    variableFacade.delete(ids);
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid VariableImportDto dto) {
+    return ApiLocaleResult.success(variableFacade.imports(dto));
   }
 
   @ApiOperation(value = "Import the inner variable example", nickname = "data:variable:example:import")
@@ -115,23 +113,15 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.exampleImport(projectId));
   }
 
-  @ApiOperation(value = "Import the variables", nickname = "data:variable:import")
+  @ApiOperation(value = "Delete variables", nickname = "data:variable:delete")
   @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid VariableImportDto dto) {
-    return ApiLocaleResult.success(variableFacade.imports(dto));
-  }
-
-  @ApiOperation(value = "Export the variables", nickname = "data:variable:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
-  })
-  @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid VariableExportDto dto, HttpServletResponse response) {
-    return variableFacade.export(dto, response);
+      @ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping
+  public void delete(
+      @ApiParam(name = "ids", value = "Variable ids", required = true)
+      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
+    variableFacade.delete(ids);
   }
 
   @ApiOperation(value = "Query the detail of variable", nickname = "data:variable:detail")
@@ -165,5 +155,15 @@ public class VariableRest {
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<VariableDetailVo>> search(@Valid VariableSearchDto dto) {
     return ApiLocaleResult.success(variableFacade.search(dto));
+  }
+
+  @ApiOperation(value = "Export the variables", nickname = "data:variable:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
+  })
+  @GetMapping(value = "/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid VariableExportDto dto, HttpServletResponse response) {
+    return variableFacade.export(dto, response);
   }
 }

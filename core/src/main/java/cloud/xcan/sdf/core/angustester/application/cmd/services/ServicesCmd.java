@@ -1,11 +1,11 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.services;
 
-import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
-import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.sdf.core.angustester.domain.services.Services;
 import cloud.xcan.sdf.core.angustester.domain.services.ServicesExportScope;
 import cloud.xcan.sdf.core.angustester.domain.services.schema.SchemaFormat;
+import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
+import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.io.File;
 import java.util.List;
@@ -18,21 +18,20 @@ public interface ServicesCmd {
 
   void rename(Long id, String name);
 
-  void delete(Long id);
-
-  void delete0(List<Long> ids);
-
   void clone(Long id);
 
   void statusUpdate(Long id, ApiStatus status);
-
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   IdKey<Long, Object> imports(Long projectId, Long serviceId, String projectName,
       ApiImportSource importSource, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, MultipartFile file, String content);
 
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
+
   File exportProject(ServicesExportScope exportScope, Set<Long> serviceIds, Set<Long> apisId,
       SchemaFormat format, boolean onlyApisComponents);
 
+  void delete(Long id);
+
+  void delete0(List<Long> ids);
 }

@@ -648,263 +648,6 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
-      Project projectDb;
-
-      @Override
-      protected void checkParams() {
-        // Check the project exists
-        projectDb = projectQuery.checkAndFind(projectId);
-      }
-
-      @Override
-      protected List<IdKey<Long, Object>> process() {
-        // 0. Query all tenant users
-        List<User> users = userManager.findByTenantId(getOptTenantId());
-        Assert.assertNotEmpty(users, "Tenant users are empty");
-
-        // 1. If it is an agile project, create sprint by sample file
-        TaskSprint sprint = null;
-        if (projectDb.isAgile()) {
-          sprint = parseSampleSprint();
-          assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
-          taskSprintCmd.add(sprint);
-        }
-
-        // 2. Create version: v1.0
-        SoftwareVersion version = assembleExampleTaskSoftwareVersion(projectDb,
-            uidGenerator.getUID(), users, sprint);
-        softwareVersionCmd.add(version);
-
-        // 3. Create task by sample file
-        List<Task> tasks = parseSampleTasks();
-        for (Task task : tasks) {
-          assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
-        }
-        return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
-      }
-
-      private TaskSprint parseSampleSprint() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/sprint/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, TaskSprint.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_SPRINT_FILE,
-              e.getMessage());
-        }
-      }
-
-      private List<Task> parseSampleTasks() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/task/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, new TypeReference<List<Task>>() {
-          });
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
-              e.getMessage());
-        }
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
-      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file) {
-    return new BizTemplate<List<IdKey<Long, Object>>>() {
-      Project projectDb;
-      TaskSprint sprintDb;
-
-      @Override
-      protected void checkParams() {
-        // Check the project exists
-        projectDb = projectQuery.checkAndFind(projectId);
-        if (projectDb.isAgile() && nonNull(sprintId)) { // Agile Project Management
-          // Check the task sprint exists
-          sprintDb = taskSprintQuery.checkAndFind(sprintId);
-          // Check the add task permission
-          taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
-        } else { // General Project Management
-          // Check the add task permission
-          projectMemberQuery.checkMember(projectId, getUserId());
-        }
-      }
-
-      @Override
-      protected List<IdKey<Long, Object>> process() {
-        // Parsing imported file
-        List<String[]> rows;
-        try {
-          rows = PoiUtils.readExcel(file.getInputStream());
-        } catch (IOException e) {
-          throw CommProtocolException.of("Failed to read excel file, cause: " + e.getMessage());
-        }
-        assertNotEmpty(rows, "Read excel content is empty");
-
-        // Check the for empty header fields
-        List<String> titles = Stream.of(rows.get(0))
-            .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
-        assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
-
-        // Check the required import columns exist
-        String missingRequiredField = TASK_IMPORT_REQUIRED_COLUMNS.stream()
-            .filter(x -> !titles.contains(x)).findFirst().orElse(null);
-        assertTrue(isEmpty(missingRequiredField),
-            String.format("The required field %s is missing", missingRequiredField));
-
-        List<String[]> data = rows.subList(1, rows.size());
-        assertNotEmpty(data, "Read task data is empty");
-
-        int nameIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(0));
-        int taskTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(1));
-        int bugLevelIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(2));
-        int testTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
-        int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
-        int confirmorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
-        int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
-        int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
-        int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
-        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
-        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
-        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
-        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
-        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
-        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
-        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
-        int softwareVersionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
-        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
-        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
-        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
-        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
-        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
-        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
-        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(23));
-        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(24));
-        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(25));
-        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(26));
-        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(27));
-
-        // Check the required import column values exist
-
-        // Check the for duplicate task names
-        assertTrue(nameIdx != -1, "Task name is required");
-        List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
-        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
-            .collect(Collectors.toList());
-        assertTrue(isEmpty(duplicateNames),
-            String.format("There are duplicates in the import task, duplicate task name: %s",
-                duplicateNames));
-        boolean hasEmptyName = names.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyName, "The import task name cannot be empty");
-
-        assertTrue(taskTypeIdx != -1, "Task type is required");
-        List<String> taskTypes = data.stream().map(x -> x[taskTypeIdx])
-            .collect(Collectors.toList());
-        boolean hasEmptyTaskTypes = taskTypes.stream().anyMatch(ObjectUtils::isEmpty);
-        assertTrue(!hasEmptyTaskTypes, "The import task type cannot be empty");
-
-        // Check the assignee exist
-        Set<String> assignees = data.stream()
-            .filter(x -> assigneeIdx != -1 && isNotBlank(x[assigneeIdx]))
-            .map(x -> x[assigneeIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> assigneeMap = userManager.checkValidAndFindUserBasesByName(
-            assignees);
-
-        //assertTrue(deadlineIdx != -1, "Task deadline date is required");
-        //List<String> deadlines = data.stream().map(x -> x[deadlineIdx])
-        //    .collect(Collectors.toList());
-        //boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
-        //assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
-
-        // Check the confirmor exist
-        Set<String> confirmors = data.stream()
-            .filter(x -> confirmorIdx != -1 && isNotBlank(x[confirmorIdx]))
-            .map(x -> x[confirmorIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> confirmorMap = userManager.checkValidAndFindUserBasesByName(
-            confirmors);
-        // Check the tester exist
-        Set<String> testers = data.stream()
-            .filter(x -> testerIdx != -1 && isNotBlank(x[testerIdx]))
-            .map(x -> x[testerIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> testersMap = userManager.checkValidAndFindUserBasesByName(
-            testers);
-        // Check the module exist
-        Set<String> modules = data.stream()
-            .filter(x -> moduleIdx != -1 && isNotBlank(x[moduleIdx]))
-            .map(x -> x[moduleIdx]).collect(Collectors.toSet());
-        Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(projectId, modules);
-        // Check the creators exist
-        Set<String> creators = data.stream()
-            .filter(x -> creatorIdx != -1 && isNotBlank(x[creatorIdx]))
-            .map(x -> x[creatorIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
-            creators);
-        // Check the associated tags exist
-        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotBlank(x[tagsIdx]))
-            .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(projectId, tags);
-        // Check the associated tasks exist
-        Set<String> taskNames = data.stream()
-            .filter(x -> tasksIdx != -1 && isNotBlank(x[tasksIdx]))
-            .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByPlanAndName(
-            sprintId, taskNames);
-        // Check the associated cases exist
-        Set<String> caseNames = data.stream()
-            .filter(x -> casesIdx != -1 && isNotBlank(x[casesIdx]))
-            .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
-            .collect(Collectors.toSet());
-        Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
-            sprintId, caseNames);
-
-        // Check the associated testing targets exist
-
-        // Format import fields and convert them into task objects
-        List<Task> tasks = importToDomain(uidGenerator, projectDb, sprintDb,
-            data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
-            assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, testerIdx, testersMap,
-            missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
-            evalWorkloadIdx, actualWorkloadIdx, statusIdx, softwareVersionIdx,
-            startDateIdx, processedDateIdx, canceledDateIdx, conformedDateIdx, completedDateIdx,
-            creatorIdx, creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap, casesIdx,
-            casesMap, moduleIdx, modulesMap);
-
-        // @DoInFuture("Check if the associated testing targets exist")
-        // @DoInFuture("Check if the associated task targets exist")
-
-        // When using an `COVER` strategy, delete existing tasks, otherwise ignore duplicate import tasks
-        Set<String> safePrefixNames = isNull(sprintDb) || isEmpty(sprintDb.getTaskPrefix())
-            ? new HashSet<>(names) : names.stream().map(x -> sprintDb.getTaskPrefix() + x)
-            .collect(Collectors.toSet());
-        if (strategyWhenDuplicated.isCover()) {
-          taskRepo.deleteBySprintIdAndNameIn(sprintId, safePrefixNames);
-        } else {
-          List<String> namesDb = taskRepo.findNameBySprintIdAndNameIn(sprintId, safePrefixNames);
-          tasks = tasks.stream().filter(x -> !namesDb.contains(x.getName()))
-              .collect(Collectors.toList());
-        }
-
-        if (isEmpty(tasks)) {
-          return null;
-        }
-
-        // Save imported tasks
-        return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
   public void rename(Long id, String name) {
     new BizTemplate<Void>() {
       Task taskDb = null;
@@ -1966,6 +1709,263 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             assocCasesDb.stream().map(FuncCaseInfo::getName).collect(Collectors.joining(",")));
         activityCmd.add(activity);
         return null;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
+      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+      TaskSprint sprintDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+        if (projectDb.isAgile() && nonNull(sprintId)) { // Agile Project Management
+          // Check the task sprint exists
+          sprintDb = taskSprintQuery.checkAndFind(sprintId);
+          // Check the add task permission
+          taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
+        } else { // General Project Management
+          // Check the add task permission
+          projectMemberQuery.checkMember(projectId, getUserId());
+        }
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // Parsing imported file
+        List<String[]> rows;
+        try {
+          rows = PoiUtils.readExcel(file.getInputStream());
+        } catch (IOException e) {
+          throw CommProtocolException.of("Failed to read excel file, cause: " + e.getMessage());
+        }
+        assertNotEmpty(rows, "Read excel content is empty");
+
+        // Check the for empty header fields
+        List<String> titles = Stream.of(rows.get(0))
+            .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
+        assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
+
+        // Check the required import columns exist
+        String missingRequiredField = TASK_IMPORT_REQUIRED_COLUMNS.stream()
+            .filter(x -> !titles.contains(x)).findFirst().orElse(null);
+        assertTrue(isEmpty(missingRequiredField),
+            String.format("The required field %s is missing", missingRequiredField));
+
+        List<String[]> data = rows.subList(1, rows.size());
+        assertNotEmpty(data, "Read task data is empty");
+
+        int nameIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(0));
+        int taskTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(1));
+        int bugLevelIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(2));
+        int testTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
+        int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
+        int confirmorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
+        int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
+        int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
+        int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
+        int priorityIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(9));
+        int deadlineIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(10));
+        int moduleIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(11));
+        int descriptionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(12));
+        int evalWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(13));
+        int actualWorkloadIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(14));
+        int statusIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(15));
+        int softwareVersionIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(16));
+        int startDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(17));
+        int processedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(18));
+        int canceledDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(19));
+        int conformedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(20));
+        int completedDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(21));
+        int tagsIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(22));
+        int tasksIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(23));
+        int casesIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(24));
+        int creatorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(25));
+        int createdDateIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(26));
+        //int targetIdIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(27));
+
+        // Check the required import column values exist
+
+        // Check the for duplicate task names
+        assertTrue(nameIdx != -1, "Task name is required");
+        List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
+        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
+            .collect(Collectors.toList());
+        assertTrue(isEmpty(duplicateNames),
+            String.format("There are duplicates in the import task, duplicate task name: %s",
+                duplicateNames));
+        boolean hasEmptyName = names.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyName, "The import task name cannot be empty");
+
+        assertTrue(taskTypeIdx != -1, "Task type is required");
+        List<String> taskTypes = data.stream().map(x -> x[taskTypeIdx])
+            .collect(Collectors.toList());
+        boolean hasEmptyTaskTypes = taskTypes.stream().anyMatch(ObjectUtils::isEmpty);
+        assertTrue(!hasEmptyTaskTypes, "The import task type cannot be empty");
+
+        // Check the assignee exist
+        Set<String> assignees = data.stream()
+            .filter(x -> assigneeIdx != -1 && isNotBlank(x[assigneeIdx]))
+            .map(x -> x[assigneeIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> assigneeMap = userManager.checkValidAndFindUserBasesByName(
+            assignees);
+
+        //assertTrue(deadlineIdx != -1, "Task deadline date is required");
+        //List<String> deadlines = data.stream().map(x -> x[deadlineIdx])
+        //    .collect(Collectors.toList());
+        //boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
+        //assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
+
+        // Check the confirmor exist
+        Set<String> confirmors = data.stream()
+            .filter(x -> confirmorIdx != -1 && isNotBlank(x[confirmorIdx]))
+            .map(x -> x[confirmorIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> confirmorMap = userManager.checkValidAndFindUserBasesByName(
+            confirmors);
+        // Check the tester exist
+        Set<String> testers = data.stream()
+            .filter(x -> testerIdx != -1 && isNotBlank(x[testerIdx]))
+            .map(x -> x[testerIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> testersMap = userManager.checkValidAndFindUserBasesByName(
+            testers);
+        // Check the module exist
+        Set<String> modules = data.stream()
+            .filter(x -> moduleIdx != -1 && isNotBlank(x[moduleIdx]))
+            .map(x -> x[moduleIdx]).collect(Collectors.toSet());
+        Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(projectId, modules);
+        // Check the creators exist
+        Set<String> creators = data.stream()
+            .filter(x -> creatorIdx != -1 && isNotBlank(x[creatorIdx]))
+            .map(x -> x[creatorIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
+            creators);
+        // Check the associated tags exist
+        Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotBlank(x[tagsIdx]))
+            .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(projectId, tags);
+        // Check the associated tasks exist
+        Set<String> taskNames = data.stream()
+            .filter(x -> tasksIdx != -1 && isNotBlank(x[tasksIdx]))
+            .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByPlanAndName(
+            sprintId, taskNames);
+        // Check the associated cases exist
+        Set<String> caseNames = data.stream()
+            .filter(x -> casesIdx != -1 && isNotBlank(x[casesIdx]))
+            .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
+            .collect(Collectors.toSet());
+        Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
+            sprintId, caseNames);
+
+        // Check the associated testing targets exist
+
+        // Format import fields and convert them into task objects
+        List<Task> tasks = importToDomain(uidGenerator, projectDb, sprintDb,
+            data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
+            assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, testerIdx, testersMap,
+            missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
+            evalWorkloadIdx, actualWorkloadIdx, statusIdx, softwareVersionIdx,
+            startDateIdx, processedDateIdx, canceledDateIdx, conformedDateIdx, completedDateIdx,
+            creatorIdx, creatorsMap, createdDateIdx, tagsIdx, tagsMap, tasksIdx, tasksMap, casesIdx,
+            casesMap, moduleIdx, modulesMap);
+
+        // @DoInFuture("Check if the associated testing targets exist")
+        // @DoInFuture("Check if the associated task targets exist")
+
+        // When using an `COVER` strategy, delete existing tasks, otherwise ignore duplicate import tasks
+        Set<String> safePrefixNames = isNull(sprintDb) || isEmpty(sprintDb.getTaskPrefix())
+            ? new HashSet<>(names) : names.stream().map(x -> sprintDb.getTaskPrefix() + x)
+            .collect(Collectors.toSet());
+        if (strategyWhenDuplicated.isCover()) {
+          taskRepo.deleteBySprintIdAndNameIn(sprintId, safePrefixNames);
+        } else {
+          List<String> namesDb = taskRepo.findNameBySprintIdAndNameIn(sprintId, safePrefixNames);
+          tasks = tasks.stream().filter(x -> !namesDb.contains(x.getName()))
+              .collect(Collectors.toList());
+        }
+
+        if (isEmpty(tasks)) {
+          return null;
+        }
+
+        // Save imported tasks
+        return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // 0. Query all tenant users
+        List<User> users = userManager.findByTenantId(getOptTenantId());
+        Assert.assertNotEmpty(users, "Tenant users are empty");
+
+        // 1. If it is an agile project, create sprint by sample file
+        TaskSprint sprint = null;
+        if (projectDb.isAgile()) {
+          sprint = parseSampleSprint();
+          assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
+          taskSprintCmd.add(sprint);
+        }
+
+        // 2. Create version: v1.0
+        SoftwareVersion version = assembleExampleTaskSoftwareVersion(projectDb,
+            uidGenerator.getUID(), users, sprint);
+        softwareVersionCmd.add(version);
+
+        // 3. Create task by sample file
+        List<Task> tasks = parseSampleTasks();
+        for (Task task : tasks) {
+          assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
+        }
+        return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
+      }
+
+      private TaskSprint parseSampleSprint() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/sprint/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, TaskSprint.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_SPRINT_FILE,
+              e.getMessage());
+        }
+      }
+
+      private List<Task> parseSampleTasks() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/task/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, new TypeReference<List<Task>>() {
+          });
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+              e.getMessage());
+        }
       }
     }.execute();
   }

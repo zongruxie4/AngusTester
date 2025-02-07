@@ -133,38 +133,6 @@ public class MockServiceRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Import the inner mock apis sample", nickname = "mock:service:apis:sample:import")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/{id}/sample/apis/import")
-  public ApiLocaleResult<?> sampleApisImport(
-      @ApiParam(name = "id", value = "Mock service id", required = true) @PathVariable("id") Long id) {
-    mockServiceFacade.exampleImport(id);
-    return ApiLocaleResult.success();
-  }
-
-  @ApiOperation(value = "Import the apis to existed mock service", nickname = "mock:service:apis:import",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<?> imports(@Valid MockServiceImportDto dto) {
-    mockServiceFacade.imports(dto);
-    return ApiLocaleResult.success();
-  }
-
-  @DoInFuture("Limit the number of exports")
-  @ApiOperation(value = "Export the apis from existed mock service", nickname = "mock:service:apis:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid MockServiceExportDto dto, HttpServletResponse response) {
-    return mockServiceFacade.export(dto, response);
-  }
-
   @ApiOperation(value = "Start mock service by agent", nickname = "mock:service:start")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Successfully processed", response = ApiLocaleResult.class)
@@ -183,6 +151,28 @@ public class MockServiceRest {
   public ApiLocaleResult<List<StopVo>> stop(
       @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestBody HashSet<Long> ids) {
     return ApiLocaleResult.success(mockServiceFacade.stop(ids));
+  }
+
+  @ApiOperation(value = "Import the apis to existed mock service", nickname = "mock:service:apis:import",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<?> imports(@Valid MockServiceImportDto dto) {
+    mockServiceFacade.imports(dto);
+    return ApiLocaleResult.success();
+  }
+
+  @ApiOperation(value = "Import the inner mock apis sample", nickname = "mock:service:apis:sample:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/{id}/sample/apis/import")
+  public ApiLocaleResult<?> exampleImport(
+      @ApiParam(name = "id", value = "Mock service id", required = true) @PathVariable("id") Long id) {
+    mockServiceFacade.exampleImport(id);
+    return ApiLocaleResult.success();
   }
 
   @ApiOperation(value = "Delete the association between mock service and project", nickname = "mock:service:association:delete")
@@ -240,5 +230,15 @@ public class MockServiceRest {
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<MockServiceListVo>> search(@Valid MockServiceSearchDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.search(dto));
+  }
+
+  @DoInFuture("Limit the number of exports")
+  @ApiOperation(value = "Export the apis from existed mock service", nickname = "mock:service:apis:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid MockServiceExportDto dto, HttpServletResponse response) {
+    return mockServiceFacade.export(dto, response);
   }
 }

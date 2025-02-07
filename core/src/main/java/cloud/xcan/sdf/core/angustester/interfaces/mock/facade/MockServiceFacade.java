@@ -38,15 +38,13 @@ public interface MockServiceFacade {
 
   void servicesAssocUpdate(Long mockServiceId, Long serviceId);
 
-  void exampleImport(Long id);
-
-  void imports(MockServiceImportDto dto);
-
-  ResponseEntity<Resource> export(MockServiceExportDto dto, HttpServletResponse response);
-
   List<StartVo> start(HashSet<Long> ids);
 
   List<StopVo> stop(HashSet<Long> ids);
+
+  void imports(MockServiceImportDto dto);
+
+  void exampleImport(Long id);
 
   void assocDelete(Long id);
 
@@ -59,5 +57,7 @@ public interface MockServiceFacade {
   PageResult<MockServiceListVo> list(MockServiceFindDto dto);
 
   PageResult<MockServiceListVo> search(MockServiceSearchDto dto);
+
+  ResponseEntity<Resource> export(MockServiceExportDto dto, HttpServletResponse response);
 
 }

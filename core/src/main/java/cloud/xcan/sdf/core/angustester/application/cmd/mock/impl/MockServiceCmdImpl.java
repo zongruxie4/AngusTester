@@ -504,49 +504,58 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void associationDelete(Long id) {
-    new BizTemplate<Void>() {
-      MockService mockServiceDb;
+  public List<StartVo> start(HashSet<Long> ids) {
+    return new BizTemplate<List<StartVo>>() {
+      List<MockService> serviceDbs;
 
       @Override
       protected void checkParams() {
-        mockServiceDb = mockServiceQuery.checkAndFind(id);
-
-        // Check the add api permission
-        mockServiceAuthQuery.checkModifyAuth(getUserId(), id);
+        // Check the service exists
+        serviceDbs = mockServiceQuery.checkAndFind(ids);
+        // Check the modify permission
+        mockServiceAuthQuery.batchCheckPermission(ids, MockServicePermission.RUN);
       }
 
       @Override
-      protected Void process() {
-        // Disassociation mock service and apis
-        mockServiceRepo.updateAssocServiceIdToNullByMockServiceId(id);
-        mockApisRepo.updateAssocToNullByByMockServiceId(id);
+      protected List<StartVo> process() {
+        // Fix:: Node IP may be updated
+        Map<Long, Node> nodeMap = nodeQuery.findNodeMap(serviceDbs.stream()
+            .map(MockService::getNodeId).collect(Collectors.toList()));
 
-        // Save disassociation activity
-        activityCmd.add(toActivity(MOCK_SERVICE, mockServiceDb, ActivityType.DELETE_ASSOC_TARGET));
-        return null;
+        // Start mock service
+        MockServiceStartDto startDto = toMockServiceStartDto(nodeMap, serviceDbs,
+            mockTesterApisServerUrl);
+        List<StartVo> vos = mockServiceManageRemote.start(startDto).orElseContentThrow();
+
+        // Start activity
+        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.START));
+        return vos;
       }
     }.execute();
   }
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void exampleImport(Long id) {
-    new BizTemplate<Void>() {
+  public List<StopVo> stop(HashSet<Long> ids) {
+    return new BizTemplate<List<StopVo>>() {
+      List<MockServiceInfo> serviceDbs;
+
       @Override
       protected void checkParams() {
-        // NOOP
+        // Check the service exists
+        serviceDbs = mockServiceQuery.checkAndFindInfo(ids);
+        // Check the modify permission
+        mockServiceAuthQuery.batchCheckPermission(ids, MockServicePermission.RUN);
       }
 
-      @SneakyThrows
       @Override
-      protected Void process() {
-        URL resourceUrl = this.getClass().getResource("/samples/mockapis/"
-            + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_APIS_FILE);
-        assert resourceUrl != null;
-        String content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        imports(id, StrategyWhenDuplicated.IGNORE, false, content, null);
-        return null;
+      protected List<StopVo> process() {
+        MockServiceStopDto stopDto = toMockServiceStopDto(serviceDbs);
+        List<StopVo> vos = mockServiceManageRemote.stop(stopDto).orElseContentThrow();
+
+        // Stop activity
+        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.STOP));
+        return vos;
       }
     }.execute();
   }
@@ -674,6 +683,28 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void exampleImport(Long id) {
+    new BizTemplate<Void>() {
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @SneakyThrows
+      @Override
+      protected Void process() {
+        URL resourceUrl = this.getClass().getResource("/samples/mockapis/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_APIS_FILE);
+        assert resourceUrl != null;
+        String content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+        imports(id, StrategyWhenDuplicated.IGNORE, false, content, null);
+        return null;
+      }
+    }.execute();
+  }
+
   @Override
   public File export(Long mockServiceId, Set<Long> mockApiIds, SchemaFormat format) {
     return new BizTemplate<File>() {
@@ -734,6 +765,33 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void associationDelete(Long id) {
+    new BizTemplate<Void>() {
+      MockService mockServiceDb;
+
+      @Override
+      protected void checkParams() {
+        mockServiceDb = mockServiceQuery.checkAndFind(id);
+
+        // Check the add api permission
+        mockServiceAuthQuery.checkModifyAuth(getUserId(), id);
+      }
+
+      @Override
+      protected Void process() {
+        // Disassociation mock service and apis
+        mockServiceRepo.updateAssocServiceIdToNullByMockServiceId(id);
+        mockApisRepo.updateAssocToNullByByMockServiceId(id);
+
+        // Save disassociation activity
+        activityCmd.add(toActivity(MOCK_SERVICE, mockServiceDb, ActivityType.DELETE_ASSOC_TARGET));
+        return null;
+      }
+    }.execute();
+  }
+
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
   @Override
   public void delete(HashSet<Long> ids, Boolean force) {
@@ -770,64 +828,6 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         // Delete domain dns when cloud service edition
         deleteMockService(ids);
         return null;
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public List<StartVo> start(HashSet<Long> ids) {
-    return new BizTemplate<List<StartVo>>() {
-      List<MockService> serviceDbs;
-
-      @Override
-      protected void checkParams() {
-        // Check the service exists
-        serviceDbs = mockServiceQuery.checkAndFind(ids);
-        // Check the modify permission
-        mockServiceAuthQuery.batchCheckPermission(ids, MockServicePermission.RUN);
-      }
-
-      @Override
-      protected List<StartVo> process() {
-        // Fix:: Node IP may be updated
-        Map<Long, Node> nodeMap = nodeQuery.findNodeMap(serviceDbs.stream()
-            .map(MockService::getNodeId).collect(Collectors.toList()));
-
-        // Start mock service
-        MockServiceStartDto startDto = toMockServiceStartDto(nodeMap, serviceDbs,
-            mockTesterApisServerUrl);
-        List<StartVo> vos = mockServiceManageRemote.start(startDto).orElseContentThrow();
-
-        // Start activity
-        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.START));
-        return vos;
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public List<StopVo> stop(HashSet<Long> ids) {
-    return new BizTemplate<List<StopVo>>() {
-      List<MockServiceInfo> serviceDbs;
-
-      @Override
-      protected void checkParams() {
-        // Check the service exists
-        serviceDbs = mockServiceQuery.checkAndFindInfo(ids);
-        // Check the modify permission
-        mockServiceAuthQuery.batchCheckPermission(ids, MockServicePermission.RUN);
-      }
-
-      @Override
-      protected List<StopVo> process() {
-        MockServiceStopDto stopDto = toMockServiceStopDto(serviceDbs);
-        List<StopVo> vos = mockServiceManageRemote.stop(stopDto).orElseContentThrow();
-
-        // Stop activity
-        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.STOP));
-        return vos;
       }
     }.execute();
   }

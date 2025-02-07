@@ -25,11 +25,6 @@ public interface TaskCmd {
 
   void replace(Task task);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
-
-  List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
-      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file);
-
   void rename(Long taskId, String name);
 
   void move(List<Long> taskIds, Long targetSprintId);
@@ -83,6 +78,11 @@ public interface TaskCmd {
   void caseAssocAdd(Long id, HashSet<Long> assocCaseIds);
 
   void caseAssocCancel(Long id, HashSet<Long> assocCaseIds);
+
+  List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
+      StrategyWhenDuplicated strategyWhenDuplicated, MultipartFile file);
+
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   void delete(List<Long> taskIds);
 

@@ -37,11 +37,9 @@ public interface ScriptFacade {
 
   IdKey<Long, Object> clone(Long id);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
-
   IdKey<Long, Object> imports(ScriptImportDto dto);
 
-  ResponseEntity<Resource> export(Long id, ScriptFormat format, HttpServletResponse response);
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   void delete(Collection<Long> ids);
 
@@ -58,5 +56,7 @@ public interface ScriptFacade {
   PageResult<ScriptInfoListVo> infoList(ScriptFindDto dto);
 
   PageResult<ScriptListVo> search(ScriptSearchDto dto);
+
+  ResponseEntity<Resource> export(Long id, ScriptFormat format, HttpServletResponse response);
 
 }

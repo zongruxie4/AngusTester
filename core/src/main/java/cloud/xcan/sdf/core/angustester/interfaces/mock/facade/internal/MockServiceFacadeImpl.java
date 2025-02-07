@@ -94,13 +94,13 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
   }
 
   @Override
-  public void assocDelete(Long id) {
-    mockServiceCmd.associationDelete(id);
+  public List<StartVo> start(HashSet<Long> ids) {
+    return mockServiceCmd.start(ids);
   }
 
   @Override
-  public void exampleImport(Long id) {
-    mockServiceCmd.exampleImport(id);
+  public List<StopVo> stop(HashSet<Long> ids) {
+    return mockServiceCmd.stop(ids);
   }
 
   @Override
@@ -109,24 +109,14 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
         dto.getDeleteWhenNotExisted(), dto.getContent(), dto.getFile());
   }
 
-  @SneakyThrows
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      MockServiceExportDto dto, HttpServletResponse response) {
-    File file = mockServiceCmd.export(dto.getMockServiceId(), dto.getMockApiIds(), dto.getFormat());
-    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-    return buildDownloadResourceResponseEntity(-1,
-        APPLICATION_OCTET_STREAM, file.getName(), file.length(), resource);
+  public void exampleImport(Long id) {
+    mockServiceCmd.exampleImport(id);
   }
 
   @Override
-  public List<StartVo> start(HashSet<Long> ids) {
-    return mockServiceCmd.start(ids);
-  }
-
-  @Override
-  public List<StopVo> stop(HashSet<Long> ids) {
-    return mockServiceCmd.stop(ids);
+  public void assocDelete(Long id) {
+    mockServiceCmd.associationDelete(id);
   }
 
   @Override
@@ -161,6 +151,16 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
         .search(MockServiceAssembler.getSearchCriteria(dto), dto.tranPage(), MockServiceInfo.class,
             getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, MockServiceAssembler::toServiceListVo);
+  }
+
+  @SneakyThrows
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      MockServiceExportDto dto, HttpServletResponse response) {
+    File file = mockServiceCmd.export(dto.getMockServiceId(), dto.getMockApiIds(), dto.getFormat());
+    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+    return buildDownloadResourceResponseEntity(-1,
+        APPLICATION_OCTET_STREAM, file.getName(), file.length(), resource);
   }
 
 }

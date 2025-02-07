@@ -251,16 +251,6 @@ public class ApisRest {
     return ApiLocaleResult.successData(apisFacade.openapiDetail(id, dto));
   }
 
-  @ApiOperation(value = "Export the OpenAPI specification of apis", nickname = "apis:openapi:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/{id}/openapi/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      @ApiParam(name = "id", value = "Apis id", required = true) @PathVariable("id") Long id,
-      @Valid ApisExportDto dto, HttpServletResponse response) {
-    return apisFacade.export(id, dto, response);
-  }
-
   @ApiOperation(value = "Check apis", nickname = "apis:check")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Resource existed", response = ApiLocaleResult.class),
@@ -300,6 +290,16 @@ public class ApisRest {
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<ApisInfoListVo>> search(@Valid ApisInfoSearchDto dto) {
     return ApiLocaleResult.success(apisFacade.search(dto));
+  }
+
+  @ApiOperation(value = "Export the OpenAPI specification of apis", nickname = "apis:openapi:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/{id}/openapi/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @ApiParam(name = "id", value = "Apis id", required = true) @PathVariable("id") Long id,
+      @Valid ApisExportDto dto, HttpServletResponse response) {
+    return apisFacade.export(id, dto, response);
   }
 
 }

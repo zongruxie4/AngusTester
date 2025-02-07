@@ -1,5 +1,6 @@
 package cloud.xcan.sdf.core.angustester.interfaces.services;
 
+import static cloud.xcan.sdf.core.angustester.interfaces.services.facade.internal.assembler.ServicesAssembler.assembleAllowImportSampleStatus;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH;
 import static java.util.Objects.nonNull;
 
@@ -77,16 +78,6 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Delete services", nickname = "services:delete")
-  @ApiResponses(value = {
-      @ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/{id}")
-  public void delete(
-      @ApiParam(name = "id", value = "Services id", required = true) @PathVariable("id") Long id) {
-    serviceFacade.delete(id);
-  }
-
   @ApiOperation(value = "Clone services", nickname = "services:clone")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Cloned clone", response = ApiLocaleResult.class),
@@ -97,36 +88,6 @@ public class ServicesRest {
       @ApiParam(name = "id", value = "Services id", required = true) @PathVariable("id") Long id) {
     serviceFacade.clone(id);
     return ApiLocaleResult.success();
-  }
-
-  @ApiOperation(value = "Import the inner service example", nickname = "services:example:import")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
-      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(serviceFacade.exampleImport(projectId));
-  }
-
-  @ApiOperation(value = "Import the apis to services", nickname = "services:import",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<IdKey<Long, Object>> imports(@Valid ServicesImportDto dto) {
-    return ApiLocaleResult.success(serviceFacade.imports(dto));
-  }
-
-  @DoInFuture("Limit the number of exports")
-  @ApiOperation(value = "Export the apis from services", nickname = "services:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid ServicesExportDto dto, HttpServletResponse response) {
-    return serviceFacade.export(dto, response);
   }
 
   @ApiOperation(value = "Modify services status", nickname = "services:status:update",
@@ -141,6 +102,36 @@ public class ServicesRest {
       @ApiParam(name = "status", value = "Services status", required = true) @RequestParam("status") ApiStatus status) {
     serviceFacade.statusUpdate(id, status);
     return ApiLocaleResult.success();
+  }
+
+  @ApiOperation(value = "Import the apis to services", nickname = "services:import",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<IdKey<Long, Object>> imports(@Valid ServicesImportDto dto) {
+    return ApiLocaleResult.success(serviceFacade.imports(dto));
+  }
+
+  @ApiOperation(value = "Import the inner service example", nickname = "services:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(serviceFacade.exampleImport(projectId));
+  }
+
+  @ApiOperation(value = "Delete services", nickname = "services:delete")
+  @ApiResponses(value = {
+      @ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{id}")
+  public void delete(
+      @ApiParam(name = "id", value = "Services id", required = true) @PathVariable("id") Long id) {
+    serviceFacade.delete(id);
   }
 
   @ApiOperation(value = "Query the detail of services", nickname = "services:detail")
@@ -182,15 +173,14 @@ public class ServicesRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @NotNull
-  private ApiLocaleResult<PageResult<ServiceVo>> assembleAllowImportSampleStatus(
-      PageResult<ServiceVo> result) {
-    ApiLocaleResult<PageResult<ServiceVo>> apiResult = ApiLocaleResult.success(result);
-    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
-    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
-    }
-    return apiResult;
+  @DoInFuture("Limit the number of exports")
+  @ApiOperation(value = "Export the apis from services", nickname = "services:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid ServicesExportDto dto, HttpServletResponse response) {
+    return serviceFacade.export(dto, response);
   }
 
 }

@@ -610,6 +610,38 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
+  public IdKey<Long, Object> imports(Script script) {
+    return new BizTemplate<IdKey<Long, Object>>() {
+      @Override
+      protected void checkParams() {
+        ProtocolAssert.assertTrue(isNotBlank(script.getContent()) || nonNull(script.getFile()),
+            "Importing content and files must specify one of them");
+      }
+
+      @Override
+      protected IdKey<Long, Object> process() {
+        if (isBlank(script.getContent())) {
+          try {
+            String content = copyToString(script.getFile().getInputStream(), UTF_8);
+            ProtocolAssert.assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
+                "Script length exceeds the limit of " + ANGUS_SCRIPT_LENGTH);
+            script.setContent(content);
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        }
+
+        IdKey<Long, Object> idKey = add(script, false);
+
+        // Save activity
+        activityCmd.add(toActivity(SCRIPT, script, ActivityType.IMPORT));
+        return idKey;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
   public List<IdKey<Long, Object>> exampleImport(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
@@ -639,38 +671,6 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         } catch (IOException e) {
           throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
         }
-      }
-    }.execute();
-  }
-
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public IdKey<Long, Object> imports(Script script) {
-    return new BizTemplate<IdKey<Long, Object>>() {
-      @Override
-      protected void checkParams() {
-        ProtocolAssert.assertTrue(isNotBlank(script.getContent()) || nonNull(script.getFile()),
-            "Importing content and files must specify one of them");
-      }
-
-      @Override
-      protected IdKey<Long, Object> process() {
-        if (isBlank(script.getContent())) {
-          try {
-            String content = copyToString(script.getFile().getInputStream(), UTF_8);
-            ProtocolAssert.assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
-                "Script length exceeds the limit of " + ANGUS_SCRIPT_LENGTH);
-            script.setContent(content);
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        }
-
-        IdKey<Long, Object> idKey = add(script, false);
-
-        // Save activity
-        activityCmd.add(toActivity(SCRIPT, script, ActivityType.IMPORT));
-        return idKey;
       }
     }.execute();
   }

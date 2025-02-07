@@ -76,16 +76,6 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.replace(dto));
   }
 
-  @ApiOperation(value = "Delete scenario", nickname = "scenario:delete")
-  @ApiResponses(value = {
-      @ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("/{id}")
-  public void delete(
-      @ApiParam(name = "id", value = "Scenario id", required = true) @PathVariable("id") Long id) {
-    scenarioFacade.delete(id);
-  }
-
   @ApiOperation(value = "Move the scenario to another dir", nickname = "scenario:move")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Moved successfully", response = ApiLocaleResult.class),
@@ -118,6 +108,16 @@ public class ScenarioRest {
   public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
       @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(scenarioFacade.exampleImport(projectId));
+  }
+
+  @ApiOperation(value = "Delete scenario", nickname = "scenario:delete")
+  @ApiResponses(value = {
+      @ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{id}")
+  public void delete(
+      @ApiParam(name = "id", value = "Scenario id", required = true) @PathVariable("id") Long id) {
+    scenarioFacade.delete(id);
   }
 
   @ApiOperation(value = "Query the detail of scenario", nickname = "scenario:detail")

@@ -57,11 +57,6 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   }
 
   @Override
-  public void delete(Long id) {
-    scenarioCmd.delete(id);
-  }
-
-  @Override
   public void move(Long scenarioId, Long targetProjectId) {
     scenarioCmd.move(scenarioId, targetProjectId);
   }
@@ -74,6 +69,11 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   @Override
   public List<IdKey<Long, Object>> exampleImport(Long projectId) {
     return scenarioCmd.exampleImport(projectId);
+  }
+
+  @Override
+  public void delete(Long id) {
+    scenarioCmd.delete(id);
   }
 
   @NameJoin

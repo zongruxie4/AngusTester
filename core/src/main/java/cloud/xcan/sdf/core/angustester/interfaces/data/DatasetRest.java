@@ -95,15 +95,13 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.clone(ids));
   }
 
-  @ApiOperation(value = "Delete datasets", nickname = "data:dataset:delete")
+  @ApiOperation(value = "Import the datasets", nickname = "data:dataset:import")
   @ApiResponses(value = {
-      @ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping
-  public void delete(
-      @ApiParam(name = "ids", value = "Dataset ids", required = true)
-      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
-    datasetFacade.delete(ids);
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid DatasetImportDto dto) {
+    return ApiLocaleResult.success(datasetFacade.imports(dto));
   }
 
   @ApiOperation(value = "Import the inner dataset example", nickname = "data:dataset:example:import")
@@ -116,23 +114,15 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.exampleImport(projectId));
   }
 
-  @ApiOperation(value = "Import the datasets", nickname = "data:dataset:import")
+  @ApiOperation(value = "Delete datasets", nickname = "data:dataset:delete")
   @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid DatasetImportDto dto) {
-    return ApiLocaleResult.success(datasetFacade.imports(dto));
-  }
-
-  @ApiOperation(value = "Export the datasets", nickname = "data:dataset:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
-  })
-  @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(@Valid DatasetExportDto dto,
-      HttpServletResponse response) {
-    return datasetFacade.export(dto, response);
+      @ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping
+  public void delete(
+      @ApiParam(name = "ids", value = "Dataset ids", required = true)
+      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
+    datasetFacade.delete(ids);
   }
 
   @ApiOperation(value = "Query the detail of dataset", nickname = "data:dataset:detail")
@@ -169,4 +159,13 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.search(dto));
   }
 
+  @ApiOperation(value = "Export the datasets", nickname = "data:dataset:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
+  })
+  @GetMapping(value = "/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(@Valid DatasetExportDto dto,
+      HttpServletResponse response) {
+    return datasetFacade.export(dto, response);
+  }
 }

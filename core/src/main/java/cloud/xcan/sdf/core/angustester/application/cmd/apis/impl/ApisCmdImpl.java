@@ -566,32 +566,6 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
-  @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(Long id, SchemaFormat format,
-      HttpServletResponse response) {
-    return new BizTemplate<ResponseEntity<org.springframework.core.io.Resource>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
-
-      @Override
-      protected ResponseEntity<org.springframework.core.io.Resource> process() {
-        String openAPI = apisQuery.openapiDetail(id, format, false, true);
-        Apis apisDb = (Apis) getExtension(id.toString());
-        byte[] bytes = openAPI.getBytes(UTF_8);
-        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
-        ResponseEntity<org.springframework.core.io.Resource> responseEntity =
-            buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
-                apisDb.getSummary() + "." + format.name(), bytes.length, resource);
-
-        // Add export api activity
-        activityCmd.add(toActivity(API, apisDb, EXPORT, apisDb.getName()));
-        return responseEntity;
-      }
-    }.execute();
-  }
-
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void statusUpdate(Long apiId, ApiStatus status) {
@@ -1112,6 +1086,32 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Save the associated apis activity
         activityCmd.add(toActivity(MOCK_APIS, apisDb, ADD_ASSOC_TARGET));
         return idKeys.get(0);
+      }
+    }.execute();
+  }
+
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(Long id, SchemaFormat format,
+      HttpServletResponse response) {
+    return new BizTemplate<ResponseEntity<org.springframework.core.io.Resource>>() {
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @Override
+      protected ResponseEntity<org.springframework.core.io.Resource> process() {
+        String openAPI = apisQuery.openapiDetail(id, format, false, true);
+        Apis apisDb = (Apis) getExtension(id.toString());
+        byte[] bytes = openAPI.getBytes(UTF_8);
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
+        ResponseEntity<org.springframework.core.io.Resource> responseEntity =
+            buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
+                apisDb.getSummary() + "." + format.name(), bytes.length, resource);
+
+        // Add export api activity
+        activityCmd.add(toActivity(API, apisDb, EXPORT, apisDb.getName()));
+        return responseEntity;
       }
     }.execute();
   }

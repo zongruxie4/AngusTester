@@ -74,18 +74,13 @@ public class ServicesFacadeImpl implements ServicesFacade {
   }
 
   @Override
-  public void delete(Long id) {
-    servicesCmd.delete(id);
-  }
-
-  @Override
   public void clone(Long id) {
     servicesCmd.clone(id);
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return servicesCmd.exampleImport(projectId);
+  public void statusUpdate(Long id, ApiStatus status) {
+    servicesCmd.statusUpdate(id, status);
   }
 
   @Override
@@ -95,20 +90,14 @@ public class ServicesFacadeImpl implements ServicesFacade {
         dto.getFile(), dto.getContent());
   }
 
-  @SneakyThrows
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      ServicesExportDto dto, HttpServletResponse response) {
-    File file = servicesCmd.exportProject(dto.getExportScope(), dto.getServiceIds(),
-        dto.getApiIds(), dto.getFormat(), dto.isOnlyApisComponents());
-    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-    return buildDownloadResourceResponseEntity(-1,
-        APPLICATION_OCTET_STREAM, file.getName(), file.length(), resource);
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return servicesCmd.exampleImport(projectId);
   }
 
   @Override
-  public void statusUpdate(Long id, ApiStatus status) {
-    servicesCmd.statusUpdate(id, status);
+  public void delete(Long id) {
+    servicesCmd.delete(id);
   }
 
   @Override
@@ -143,6 +132,17 @@ public class ServicesFacadeImpl implements ServicesFacade {
     Page<Services> page = servicesSearch.search(criterias, dto.tranPage(),
         getMatchSearchFields(dto.getClass()));
     return joinAssocStatus(page, criterias);
+  }
+
+  @SneakyThrows
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      ServicesExportDto dto, HttpServletResponse response) {
+    File file = servicesCmd.exportProject(dto.getExportScope(), dto.getServiceIds(),
+        dto.getApiIds(), dto.getFormat(), dto.isOnlyApisComponents());
+    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+    return buildDownloadResourceResponseEntity(-1,
+        APPLICATION_OCTET_STREAM, file.getName(), file.length(), resource);
   }
 
   private PageResult<ServiceVo> joinAssocStatus(Page<Services> page,

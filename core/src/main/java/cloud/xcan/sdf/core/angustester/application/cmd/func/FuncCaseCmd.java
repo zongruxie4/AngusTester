@@ -21,11 +21,6 @@ public interface FuncCaseCmd {
 
   List<IdKey<Long, Object>> replace(List<FuncCase> cases);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
-
-  List<IdKey<Long, Object>> imports(Long planId, StrategyWhenDuplicated strategyWhenDuplicated,
-      MultipartFile file);
-
   void rename(Long id, String name);
 
   List<IdKey<Long, Object>> clone(Set<Long> ids);
@@ -61,6 +56,11 @@ public interface FuncCaseCmd {
   void caseAssocAdd(Long id, HashSet<Long> assocCaseIds);
 
   void caseAssocCancel(Long id, HashSet<Long> assocCaseIds);
+
+  List<IdKey<Long, Object>> imports(Long planId, StrategyWhenDuplicated strategyWhenDuplicated,
+      MultipartFile file);
+
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
   void delete(Collection<Long> ids);
 

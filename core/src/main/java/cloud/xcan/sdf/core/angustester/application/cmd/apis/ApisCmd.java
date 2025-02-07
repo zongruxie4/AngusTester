@@ -34,8 +34,6 @@ public interface ApisCmd {
 
   void move(List<Long> apisIds, Long targetProjectId);
 
-  ResponseEntity<Resource> export(Long id, SchemaFormat format, HttpServletResponse response);
-
   void statusUpdate(Long id, ApiStatus status);
 
   void serverReplace(Long id, Server server);
@@ -84,6 +82,8 @@ public interface ApisCmd {
       Set<String> filterTags, List<String> datasetNames);
 
   IdKey<Long, Object> assocMockApisAdd(Long id, Long mockServiceId, String name);
+
+  ResponseEntity<Resource> export(Long id, SchemaFormat format, HttpServletResponse response);
 
   void delete(Collection<Long> ids, boolean checkPermission);
 

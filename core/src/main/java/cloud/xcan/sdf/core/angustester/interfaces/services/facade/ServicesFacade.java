@@ -22,17 +22,15 @@ public interface ServicesFacade {
 
   void rename(Long id, String name);
 
-  void delete(Long id);
-
   void clone(Long id);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  void statusUpdate(Long id, ApiStatus status);
 
   IdKey<Long, Object> imports(ServicesImportDto dto);
 
-  ResponseEntity<Resource> export(ServicesExportDto dto, HttpServletResponse response);
+  List<IdKey<Long, Object>> exampleImport(Long projectId);
 
-  void statusUpdate(Long id, ApiStatus status);
+  void delete(Long id);
 
   ServicesDetailVo detail(Long id, Boolean joinSchemaFlag);
 
@@ -41,5 +39,7 @@ public interface ServicesFacade {
   PageResult<ServiceVo> list(ServicesFindDto dto);
 
   PageResult<ServiceVo> search(ServicesSearchDto dto);
+
+  ResponseEntity<Resource> export(ServicesExportDto dto, HttpServletResponse response);
 
 }

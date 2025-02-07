@@ -483,16 +483,6 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.notAssociatedCase(id, moduleId));
   }
 
-  @ApiOperation(value = "Delete tasks", nickname = "task:delete")
-  @ApiResponses(value = {@ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping
-  public void delete(
-      @ApiParam(name = "ids", value = "Task ids", required = true)
-      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
-    taskFacade.delete(ids);
-  }
-
   @ApiOperation(value = "Restart task", nickname = "task:restart")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Successful retest", response = ApiLocaleResult.class),
@@ -513,6 +503,35 @@ public class TaskRest {
       @ApiParam(name = "id", value = "Task id", required = true) @PathVariable("id") Long id) {
     taskFacade.reopen(id);
     return ApiLocaleResult.success();
+  }
+
+  @ApiOperation(value = "Import the tasks", nickname = "task:import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid TaskImportDto dto) {
+    return ApiLocaleResult.success(taskFacade.imports(dto));
+  }
+
+  @ApiOperation(value = "Import the inner task example", nickname = "task:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(taskFacade.exampleImport(projectId));
+  }
+
+  @ApiOperation(value = "Delete tasks", nickname = "task:delete")
+  @ApiResponses(value = {@ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping
+  public void delete(
+      @ApiParam(name = "ids", value = "Task ids", required = true)
+      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
+    taskFacade.delete(ids);
   }
 
   @ApiOperation(value = "Query the detail of task", nickname = "task:detail")
@@ -539,25 +558,6 @@ public class TaskRest {
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<TaskListVo>> search(@Valid TaskSearchDto dto) {
     return ApiLocaleResult.success(taskFacade.search(false, dto));
-  }
-
-  @ApiOperation(value = "Import the inner task example", nickname = "task:example:import")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
-      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(taskFacade.exampleImport(projectId));
-  }
-
-  @ApiOperation(value = "Import the tasks", nickname = "task:import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid TaskImportDto dto) {
-    return ApiLocaleResult.success(taskFacade.imports(dto));
   }
 
   @ApiOperation(value = "Export the tasks by conditions", nickname = "task:export")

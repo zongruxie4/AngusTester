@@ -218,12 +218,6 @@ public class ApisFacadeImpl implements ApisFacade {
   }
 
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      Long id, ApisExportDto dto, HttpServletResponse response) {
-    return apisCmd.export(id, dto.getFormat(), response);
-  }
-
-  @Override
   public void check(Long id) {
     apisQuery.check(id);
   }
@@ -265,6 +259,12 @@ public class ApisFacadeImpl implements ApisFacade {
     Page<ApisBasicInfo> apisPage = apisSearch.search(ApisAssembler.getSearchCriteria(dto),
         dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(apisPage, ApisAssembler::toApisPageVo);
+  }
+
+  @Override
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      Long id, ApisExportDto dto, HttpServletResponse response) {
+    return apisCmd.export(id, dto.getFormat(), response);
   }
 
 }

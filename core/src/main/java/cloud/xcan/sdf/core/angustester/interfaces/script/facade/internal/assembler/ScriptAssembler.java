@@ -3,7 +3,10 @@ package cloud.xcan.sdf.core.angustester.interfaces.script.facade.internal.assemb
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
+import cloud.xcan.sdf.api.ApiLocaleResult;
+import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.angustester.script.ScriptDetailVo;
 import cloud.xcan.sdf.api.angustester.script.dto.ScriptAddDto;
 import cloud.xcan.sdf.api.angustester.script.dto.ScriptFindDto;
@@ -11,6 +14,7 @@ import cloud.xcan.sdf.api.angustester.script.vo.AngusScriptDetailVo;
 import cloud.xcan.sdf.api.angustester.script.vo.ScriptInfoListVo;
 import cloud.xcan.sdf.api.angustester.script.vo.ScriptInfoVo;
 import cloud.xcan.sdf.api.angustester.script.vo.ScriptInfosVo;
+import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.model.script.ScriptSource;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.domain.script.Script;
@@ -23,6 +27,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.sdf.core.jpa.criteria.SearchCriteriaBuilder;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
 public class ScriptAssembler {
 
@@ -193,6 +198,29 @@ public class ScriptAssembler {
         .setCreatedDate(script.getCreatedDate())
         .setLastModifiedBy(script.getLastModifiedBy())
         .setLastModifiedDate(script.getLastModifiedDate());
+  }
+
+
+  @NotNull
+  public static ApiLocaleResult<PageResult<ScriptListVo>> assembleAllowImportSampleStatus(
+      PageResult<ScriptListVo> result) {
+    ApiLocaleResult<PageResult<ScriptListVo>> apiResult = ApiLocaleResult.success(result);
+    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
+    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
+      apiResult.getExt().put("allowImportSamples", true);
+    }
+    return apiResult;
+  }
+
+  @NotNull
+  public static ApiLocaleResult<PageResult<ScriptInfoListVo>> assembleInfoAllowImportSampleStatus(
+      PageResult<ScriptInfoListVo> result) {
+    ApiLocaleResult<PageResult<ScriptInfoListVo>> apiResult = ApiLocaleResult.success(result);
+    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
+    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
+      apiResult.getExt().put("allowImportSamples", true);
+    }
+    return apiResult;
   }
 
   public static GenericSpecification<ScriptInfo> getSpecification(ScriptFindDto dto) {

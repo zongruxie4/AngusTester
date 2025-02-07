@@ -256,11 +256,6 @@ public class TaskFacadeImpl implements TaskFacade {
   }
 
   @Override
-  public void delete(Collection<Long> ids) {
-    taskCmd.delete(new ArrayList<>(ids));
-  }
-
-  @Override
   public void restart(Long id) {
     taskCmd.restart(Collections.singletonList(id));
   }
@@ -268,6 +263,22 @@ public class TaskFacadeImpl implements TaskFacade {
   @Override
   public void reopen(Long id) {
     taskCmd.reopen(Collections.singletonList(id));
+  }
+
+  @Override
+  public List<IdKey<Long, Object>> imports(TaskImportDto dto) {
+    return taskCmd.imports(dto.getProjectId(), dto.getSprintId(),
+        dto.getStrategyWhenDuplicated(), dto.getFile());
+  }
+
+  @Override
+  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+    return taskCmd.exampleImport(projectId);
+  }
+
+  @Override
+  public void delete(Collection<Long> ids) {
+    taskCmd.delete(new ArrayList<>(ids));
   }
 
   @NameJoin
@@ -296,17 +307,6 @@ public class TaskFacadeImpl implements TaskFacade {
     Page<Task> page = taskSearch.search(exportFlag, TaskAssembler.getSearchCriteria(dto),
         dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskAssembler::toListVo);
-  }
-
-  @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return taskCmd.exampleImport(projectId);
-  }
-
-  @Override
-  public List<IdKey<Long, Object>> imports(TaskImportDto dto) {
-    return taskCmd.imports(dto.getProjectId(), dto.getSprintId(),
-        dto.getStrategyWhenDuplicated(), dto.getFile());
   }
 
   /**

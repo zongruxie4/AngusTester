@@ -1,6 +1,8 @@
 package cloud.xcan.sdf.core.angustester.interfaces.script;
 
 
+import static cloud.xcan.sdf.core.angustester.interfaces.script.facade.internal.assembler.ScriptAssembler.assembleAllowImportSampleStatus;
+import static cloud.xcan.sdf.core.angustester.interfaces.script.facade.internal.assembler.ScriptAssembler.assembleInfoAllowImportSampleStatus;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_BATCH_SIZE;
 import static java.util.Objects.nonNull;
 
@@ -88,15 +90,6 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.replace(dto));
   }
 
-  @ApiOperation(value = "Delete scripts", nickname = "script:delete")
-  @ApiResponses(value = {@ApiResponse(code = 204, message = "Deleted successfully")})
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping
-  public void delete(
-      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @ApiParam(name = "ids", value = "Script ids", required = true) @RequestParam("ids") HashSet<Long> ids) {
-    scriptFacade.delete(ids);
-  }
-
   @ApiOperation(value = "Clone script", nickname = "script:clone")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Cloned successfully", response = ApiLocaleResult.class),
@@ -106,6 +99,15 @@ public class ScriptRest {
   public ApiLocaleResult<IdKey<Long, Object>> clone(
       @ApiParam(name = "id", value = "Script id", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.clone(id));
+  }
+
+  @ApiOperation(value = "Import script", nickname = "script:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ApiLocaleResult<IdKey<Long, Object>> importScript(@Valid ScriptImportDto dto) {
+    return ApiLocaleResult.success(scriptFacade.imports(dto));
   }
 
   @ApiOperation(value = "Import the inner script example", nickname = "script:example:import")
@@ -118,25 +120,14 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.exampleImport(projectId));
   }
 
-  @ApiOperation(value = "Import script", nickname = "script:import")
-  @ApiResponses(value = {
-      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(value = "/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ApiLocaleResult<IdKey<Long, Object>> importScript(@Valid ScriptImportDto dto) {
-    return ApiLocaleResult.success(scriptFacade.imports(dto));
-  }
-
-  @ApiOperation(value = "Export script", nickname = "script:export")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
-  })
-  @GetMapping(value = "/{id}/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(
-      @ApiParam(name = "id", value = "Script id", required = true) @PathVariable("id") Long id,
-      @ApiParam(name = "format", value = "Script format, default yml", required = true) ScriptFormat format,
-      HttpServletResponse response) {
-    return scriptFacade.export(id, format, response);
+  @ApiOperation(value = "Delete scripts", nickname = "script:delete")
+  @ApiResponses(value = {@ApiResponse(code = 204, message = "Deleted successfully")})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping
+  public void delete(
+      @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @ApiParam(name = "ids", value = "Script ids", required = true)
+      @RequestParam("ids") HashSet<Long> ids) {
+    scriptFacade.delete(ids);
   }
 
   @ApiOperation(value = "Query the detail of script", nickname = "script:detail")
@@ -211,25 +202,16 @@ public class ScriptRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @NotNull
-  private ApiLocaleResult<PageResult<ScriptListVo>> assembleAllowImportSampleStatus(
-      PageResult<ScriptListVo> result) {
-    ApiLocaleResult<PageResult<ScriptListVo>> apiResult = ApiLocaleResult.success(result);
-    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
-    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
-    }
-    return apiResult;
+  @ApiOperation(value = "Export script", nickname = "script:export")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Exported successfully", response = ApiLocaleResult.class)
+  })
+  @GetMapping(value = "/{id}/export")
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @ApiParam(name = "id", value = "Script id", required = true) @PathVariable("id") Long id,
+      @ApiParam(name = "format", value = "Script format, default yml", required = true) ScriptFormat format,
+      HttpServletResponse response) {
+    return scriptFacade.export(id, format, response);
   }
 
-  @NotNull
-  private ApiLocaleResult<PageResult<ScriptInfoListVo>> assembleInfoAllowImportSampleStatus(
-      PageResult<ScriptInfoListVo> result) {
-    ApiLocaleResult<PageResult<ScriptInfoListVo>> apiResult = ApiLocaleResult.success(result);
-    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
-    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
-    }
-    return apiResult;
-  }
 }
