@@ -3,12 +3,17 @@ package cloud.xcan.sdf.core.angustester.application.cmd.task.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.TASK;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.TASK_SPRINT;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_SPRINT_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_TASK_FILE;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.TASK_BID_KEY;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toModifyTaskActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleMoveTask;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleSampleTask;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleSampleTaskSprint;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleTaskSoftwareVersion;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.importToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.toAddApisOrScenarioTask;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_IMPORT_COLUMNS;
@@ -57,6 +62,8 @@ import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertEnumOf;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.spring.SpringContextHolder.getBean;
@@ -67,23 +74,28 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
+import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.extraction.utils.PoiUtils;
 import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
+import cloud.xcan.sdf.api.commonlink.user.User;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.CommProtocolException;
+import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.task.TaskCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.task.TaskFuncCaseCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.task.TaskSprintCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.task.TaskTrashCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.version.SoftwareVersionCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.TaskConverter;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisQuery;
@@ -116,6 +128,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
 import cloud.xcan.sdf.core.angustester.domain.task.remark.TaskRemarkRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.sprint.TaskSprint;
 import cloud.xcan.sdf.core.angustester.domain.task.sprint.TaskSprintPermission;
+import cloud.xcan.sdf.core.angustester.domain.version.SoftwareVersion;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizAssert;
 import cloud.xcan.sdf.core.biz.BizTemplate;
@@ -124,11 +137,16 @@ import cloud.xcan.sdf.core.biz.exception.BizException;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.idgen.BidGenerator;
 import cloud.xcan.sdf.model.script.TestType;
+import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -161,7 +179,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   private TaskQuery taskQuery;
 
   @Resource
-  private SoftwareVersionQuery taskVersionQuery;
+  private SoftwareVersionQuery softwareVersionQuery;
+
+  @Resource
+  private SoftwareVersionCmd softwareVersionCmd;
 
   @Resource
   private TagQuery tagQuery;
@@ -180,6 +201,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Resource
   private TaskSprintQuery taskSprintQuery;
+
+  @Resource
+  private TaskSprintCmd taskSprintCmd;
 
   @Resource
   private TaskSprintAuthQuery taskSprintAuthQuery;
@@ -618,6 +642,79 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           taskQuery.assembleAndSendModifyAssigneeNoticeEvent(taskDb);
         }
         return null;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> sampleImport(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        // 0. Query all tenant users
+        List<User> users = userManager.findByTenantId(getOptTenantId());
+        Assert.assertNotEmpty(users, "Tenant users are empty");
+
+        // 1. If it is an agile project, create sprint by sample file
+        TaskSprint sprint = null;
+        if (projectDb.isAgile()) {
+          sprint = parseSampleSprint();
+          assembleSampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
+          taskSprintCmd.add(sprint);
+        }
+
+        // 2. Create version: v1.0
+        SoftwareVersion version = assembleTaskSoftwareVersion(projectDb,
+            uidGenerator.getUID(), users, sprint);
+        softwareVersionCmd.add(version);
+
+        // 3. Create task by sample file
+        // 3.1 Parse task sample file
+        List<Task> tasks = parseSampleTasks();
+
+        // 3.2 Set default values
+        for (Task task : tasks) {
+          assembleSampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
+        }
+
+        // 3.3 Save sample tasks
+        return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
+      }
+
+      private TaskSprint parseSampleSprint() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/sprint/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, TaskSprint.class);
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+              e.getMessage());
+        }
+      }
+
+      private List<Task> parseSampleTasks() {
+        try {
+          URL resourceUrl = this.getClass().getResource("/samples/task/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
+          assert resourceUrl != null;
+          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+          return JsonUtils.convert(content, new TypeReference<List<Task>>() {
+          });
+        } catch (IOException e) {
+          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
+              e.getMessage());
+        }
       }
     }.execute();
   }
@@ -1169,7 +1266,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Check the version not exists
         if (isNotEmpty(version)) {
-          taskVersionQuery.checkNotExits(taskDb.getProjectId(), version);
+          softwareVersionQuery.checkNotExits(taskDb.getProjectId(), version);
         }
 
         // Check the modify task permission

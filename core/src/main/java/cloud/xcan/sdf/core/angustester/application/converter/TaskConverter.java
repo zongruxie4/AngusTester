@@ -7,6 +7,7 @@ import static cloud.xcan.sdf.api.search.SearchCriteria.isNotNull;
 import static cloud.xcan.sdf.api.search.SearchCriteria.lessThanEqual;
 import static cloud.xcan.sdf.core.angustester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DAY_FORMAT;
@@ -17,6 +18,7 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isTrueValue;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
+import static cloud.xcan.sdf.spec.utils.ProbabilityUtils.randomWithProbability;
 import static cloud.xcan.sdf.spec.utils.StringUtils.isNumeric;
 import static cloud.xcan.sdf.spec.utils.WorkingTimeCalculator.isLastMonth;
 import static cloud.xcan.sdf.spec.utils.WorkingTimeCalculator.isLastWeek;
@@ -29,7 +31,10 @@ import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import cloud.xcan.sdf.api.commonlink.TaskTargetType;
+import cloud.xcan.sdf.api.commonlink.user.User;
 import cloud.xcan.sdf.core.angustester.domain.project.Project;
+import cloud.xcan.sdf.core.angustester.domain.version.SoftwareVersion;
+import cloud.xcan.sdf.core.angustester.domain.version.SoftwareVersionStatus;
 import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
@@ -84,6 +89,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -175,6 +181,54 @@ public class TaskConverter {
     }
     taskDb.setOverdueFlag(nonNull(taskDb.getDeadlineDate())
         && taskDb.getDeadlineDate().isBefore(LocalDateTime.now()));
+  }
+
+  public static void assembleSampleTask(Project projectDb, Long id, Task task,
+      TaskSprint sprint, List<User> users) {
+    Random userRandom = new Random();
+    task.setId(id).setCode(getTaskCode())
+        .setProjectId(projectDb.getId()).setModuleId(-1L)
+        .setSprintId(nonNull(sprint) ? sprint.getId(): null).setSprintAuthFlag(false)
+        // Set 1/3 of the pending tasks in the agile project as backlog
+        .setBacklogFlag(projectDb.isAgile() && task.getStatus().isPending()
+            && randomWithProbability(3))
+        .setAssigneeId(users.get(userRandom.nextInt(users.size())).getId())
+        .setConfirmorId(users.get(userRandom.nextInt(users.size())).getId())
+        .setTenantId(projectDb.getTenantId()).setDeletedFlag(false)
+        .setCreatedBy(users.get(userRandom.nextInt(users.size())).getId())
+        .setCreatedDate(nonNull(task.getDeadlineDate())
+            ? task.getDeadlineDate().minusMonths(1) : LocalDateTime.now())
+        .setLastModifiedBy(users.get(userRandom.nextInt(users.size())).getId())
+        .setLastModifiedDate(nonNull(task.getDeadlineDate())
+            ? task.getDeadlineDate().minusMonths(1) : LocalDateTime.now());
+  }
+
+  public static void assembleSampleTaskSprint(Project projectDb, Long id,
+      List<User> users, TaskSprint sprint) {
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    sprint.setId(id).setProjectId(projectDb.getId()).setAuthFlag(false)
+        .setOwnerId(currentUserId).setTenantId(projectDb.getTenantId()).setDeletedFlag(false)
+        .setCreatedBy(currentUserId).setCreatedDate(sprint.getStartDate())
+        .setLastModifiedBy(currentUserId).setLastModifiedDate(sprint.getStartDate());
+  }
+
+  public static @NotNull SoftwareVersion assembleTaskSoftwareVersion(Project projectDb,
+      Long id, List<User> users, TaskSprint sprint) {
+    SoftwareVersion version = new SoftwareVersion();
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    version.setId(id).setName("v1.0").setProjectId(projectDb.getId())
+        .setStatus(SoftwareVersionStatus.DEFAULT).setDescription("Release1.0")
+        .setTenantId(projectDb.getTenantId())
+        .setCreatedBy(currentUserId).setCreatedDate(projectDb.getCreatedDate())
+        .setLastModifiedBy(currentUserId).setLastModifiedDate(projectDb.getCreatedDate());
+    if (nonNull(sprint)) {
+      version.setStartDate(sprint.getStartDate())
+          .setReleaseDate(sprint.getDeadlineDate());
+    } else {
+      version.setStartDate(projectDb.getStartDate())
+          .setReleaseDate(projectDb.getDeadlineDate());
+    }
+    return version;
   }
 
   public static Task toAddApisOrScenarioTask(Long projectId, @Nullable TaskSprint sprintDb,

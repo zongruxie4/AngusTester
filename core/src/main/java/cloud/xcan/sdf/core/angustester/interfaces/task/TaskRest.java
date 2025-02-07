@@ -541,6 +541,16 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.search(false, dto));
   }
 
+  @ApiOperation(value = "Import the inner task sample", nickname = "task:sample:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/sample/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> sampleImport(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(taskFacade.sampleImport(projectId));
+  }
+
   @ApiOperation(value = "Import the tasks", nickname = "task:import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})

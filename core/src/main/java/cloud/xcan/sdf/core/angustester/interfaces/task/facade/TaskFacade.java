@@ -110,6 +110,8 @@ public interface TaskFacade {
 
   PageResult<TaskListVo> search(boolean exportFlag, TaskSearchDto dto);
 
+  List<IdKey<Long, Object>> sampleImport(Long projectId);
+
   List<IdKey<Long, Object>> imports(TaskImportDto dto);
 
   ResponseEntity<Resource> export(TaskSearchDto dto, HttpServletResponse response);
