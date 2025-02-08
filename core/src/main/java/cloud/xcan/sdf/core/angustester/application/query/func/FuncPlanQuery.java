@@ -23,8 +23,6 @@ public interface FuncPlanQuery {
 
   List<FuncCaseInfo> notEstablishedBaseline(Long planId, Long moduleId, Long baselineId);
 
-  Set<Long> findTesterIds(Long projectId, Long planId);
-
   boolean isAuthCtrl(Long planId);
 
   FuncPlan checkAndFind(Long id);
@@ -42,8 +40,6 @@ public interface FuncPlanQuery {
   void checkConsistent(Long planId, HashSet<Long> caseIds);
 
   void checkQuota();
-
-  int countPlan(Long projectId);
 
   void setCaseNum(List<FuncPlan> plans, Set<Long> planIds);
 

@@ -146,10 +146,6 @@ public interface FuncCaseQuery {
 
   Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long projectId, Set<String> caseNames);
 
-  void checkAndSafeCaseDeadline(List<FuncCase> cases, LocalDateTime planDeadlineD);
-
-  void checkCaseDeadline(List<FuncCase> cases, LocalDateTime planDeadline);
-
   void checkAddCaseNameExists(FuncPlan planDb, List<FuncCase> cases);
 
   void checkAndSafeUpdateNameExists(FuncPlan planDb, List<FuncCase> cases);

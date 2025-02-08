@@ -24,7 +24,7 @@ public class ReportConverter {
         .setNextGenerationDate(timeSetting.getNextDate());
   }
 
-  public static ReportRecord toGeneratedReportRecord(Report report, ReportContent reportContent) {
+  public static ReportRecord toGeneratedRecord(Report report, ReportContent reportContent) {
     return new ReportRecord()
         .setProjectId(report.getProjectId()).setReportId(report.getId())
         .setCategory(report.getCategory()).setTemplate(report.getTemplate())

@@ -22,10 +22,6 @@ public interface ApisBaseInfoRepo extends BaseRepository<ApisBaseInfo, Long>,
 
   List<ApisBaseInfo> findByServiceId(Long serviceId);
 
-  List<ApisBaseInfo> findByServiceIdOrderByIdDesc(Long serviceId);
-
-  List<ApisBaseInfo> findByProjectIdOrderByIdDesc(Long projectId);
-
   /**
    * Note: Logical deletion data is included
    */

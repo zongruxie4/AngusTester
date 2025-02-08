@@ -17,9 +17,6 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   @Query(value = "SELECT * FROM func_plan WHERE id = ?1", nativeQuery = true)
   Optional<FuncPlan> find0ById(Long id);
 
-  @Query(value = "SELECT DISTINCT project_id FROM func_plan WHERE id IN (?1)", nativeQuery = true)
-  List<Long> findAll0ProjectIdByIdIn(Collection<Long> ids);
-
   List<FuncPlan> findByProjectId(Long projectId);
 
   @Query(value = "SELECT * FROM func_plan WHERE id IN (?1)", nativeQuery = true)
@@ -46,10 +43,6 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   @Modifying
   @Query(value = "UPDATE func_plan s SET s.project_id =?2 WHERE s.id = ?1", nativeQuery = true)
   void updateDirById(Long id, Long projectId);
-
-  @Modifying
-  @Query("UPDATE FuncPlan s SET s.deletedFlag=?2, s.deletedBy =?3, s.deletedDate = ?4 WHERE s.id = ?1")
-  void updateDeleteStatus(Long ids, Boolean deletedFlag, Long deletedBy, LocalDateTime deletedDate);
 
   @Modifying
   @Query(value = "DELETE FROM func_plan WHERE id in (?1)", nativeQuery = true)

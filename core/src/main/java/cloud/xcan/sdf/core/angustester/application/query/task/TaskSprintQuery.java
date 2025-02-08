@@ -17,8 +17,6 @@ public interface TaskSprintQuery {
 
   Page<TaskSprint> find(GenericSpecification<TaskSprint> spec, Pageable pageable);
 
-  List<Long> findAllIdBySprintIdIn(List<Long> projectIds);
-
   TaskSprint checkAndFind(Long id);
 
   List<TaskSprint> checkAndFind(Collection<Long> ids);
@@ -34,8 +32,6 @@ public interface TaskSprintQuery {
   void checkSprintTasksCompleted(Long id);
 
   int checkQuota();
-
-  int countSprint(Long projectId);
 
   void setTaskNum(List<TaskSprint> sprints, Set<Long> sprintIds);
 

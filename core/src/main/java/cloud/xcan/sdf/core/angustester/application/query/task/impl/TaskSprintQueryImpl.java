@@ -11,7 +11,6 @@ import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORM
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X2;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
-import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNull;
 import static java.lang.Boolean.parseBoolean;
 import static java.util.Collections.singleton;
 import static java.util.Objects.nonNull;
@@ -150,11 +149,6 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   }
 
   @Override
-  public List<Long> findAllIdBySprintIdIn(List<Long> sprintIds) {
-    return taskSprintRepo.findAll0IdBySprintIdIn(sprintIds);
-  }
-
-  @Override
   public TaskSprint checkAndFind(Long id) {
     return taskSprintRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Sprint"));
   }
@@ -216,12 +210,6 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
     long count = taskSprintRepo.count();
     settingTenantQuotaManager.checkTenantQuota(QuotaResource.AngusTesterSprint, null, count + 1);
     return (int) count;
-  }
-
-  @Override
-  public int countSprint(Long projectId) {
-    return isNull(projectId) ? (int) taskSprintRepo.count()
-        : taskSprintRepo.countByProjectId(projectId);
   }
 
   @Override

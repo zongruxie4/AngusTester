@@ -41,7 +41,6 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.Function
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.FunctionCaseModification;
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.FunctionCaseModificationCode;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.CASE_CAN_NOT_REVIEWED_T;
-import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.CASE_DEADLINE_GREATER_PLAN_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.CASE_NAME_REPEATED_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.CASE_NOT_REVIEWED_CODE;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.CASE_NOT_REVIEWED_T;
@@ -64,12 +63,10 @@ import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserFullname;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
-import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X4;
 import static cloud.xcan.sdf.spec.locale.MessageHolder.message;
 import static cloud.xcan.sdf.spec.utils.DateUtils.asDate;
 import static cloud.xcan.sdf.spec.utils.DateUtils.formatByDatePattern;
-import static cloud.xcan.sdf.spec.utils.DateUtils.formatDate;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
@@ -87,7 +84,6 @@ import cloud.xcan.sdf.api.enums.AuthObjectType;
 import cloud.xcan.sdf.api.enums.NoticeType;
 import cloud.xcan.sdf.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.sdf.api.manager.UserManager;
-import cloud.xcan.sdf.api.message.CommProtocolException;
 import cloud.xcan.sdf.api.message.http.ResourceExisted;
 import cloud.xcan.sdf.api.message.http.ResourceNotFound;
 import cloud.xcan.sdf.api.pojo.Attachment;
@@ -1765,30 +1761,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       throw ResourceNotFound.of(names.iterator().next(), "FuncCase");
     }
     return caseDb.stream().collect(Collectors.groupingBy(FuncCaseInfo::getName));
-  }
-
-  @Override
-  public void checkAndSafeCaseDeadline(List<FuncCase> cases, LocalDateTime planDeadline) {
-    for (FuncCase case0 : cases) {
-      if (isNull(case0.getDeadlineDate())) {
-        case0.setDeadlineDate(planDeadline);
-      } else if (case0.getDeadlineDate().isAfter(planDeadline)) {
-        throw CommProtocolException.of(CASE_DEADLINE_GREATER_PLAN_T, new Object[]{
-            formatDate(asDate(case0.getDeadlineDate()), DEFAULT_DATE_TIME_FORMAT),
-            formatDate(asDate(planDeadline), DEFAULT_DATE_TIME_FORMAT)});
-      }
-    }
-  }
-
-  @Override
-  public void checkCaseDeadline(List<FuncCase> cases, LocalDateTime planDeadline) {
-    for (FuncCase case0 : cases) {
-      if (nonNull(case0.getDeadlineDate()) && case0.getDeadlineDate().isAfter(planDeadline)) {
-        throw CommProtocolException.of(CASE_DEADLINE_GREATER_PLAN_T, new Object[]{
-            formatDate(asDate(case0.getDeadlineDate()), DEFAULT_DATE_TIME_FORMAT),
-            formatDate(asDate(planDeadline), DEFAULT_DATE_TIME_FORMAT)});
-      }
-    }
   }
 
   @Override

@@ -3,7 +3,7 @@ package cloud.xcan.sdf.core.angustester.application.cmd.report.impl;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.REPORT;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.sdf.core.angustester.application.converter.ReportConverter.toGeneratedReportRecord;
+import static cloud.xcan.sdf.core.angustester.application.converter.ReportConverter.toGeneratedRecord;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
@@ -317,7 +317,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
           ReportStatus status = nonNull(failureMessage) ? ReportStatus.FAILURE
               : ReportStatus.SUCCESS;
           if (status.isSuccess()) {
-            reportRecordCmd.add0(toGeneratedReportRecord(reportDb, reportContent));
+            reportRecordCmd.add0(toGeneratedRecord(reportDb, reportContent));
 
             TimeSetting timeSetting = reportDb.getCreateTimeSetting();
             if (!timeSetting.isOnetime()) {

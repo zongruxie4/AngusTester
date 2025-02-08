@@ -32,15 +32,6 @@ public interface ScenarioRepo extends BaseRepository<Scenario, Long>,
   @Query(value = "SELECT count(*) FROM scenario s WHERE s.name = ?1 AND s.project_id = ?2 AND s.id <> ?3", nativeQuery = true)
   Long countAll0ByNameAndProjectIdAndIdNot(String name, Long projectId, Long id);
 
-  @Query(value = "SELECT count(*) FROM scenario s WHERE s.project_id = ?1 AND s.deleted_flag = ?2", nativeQuery = true)
-  Long countAll0ByProjectIdAndDeletedFlag(Long projectId, Boolean deleteFlag);
-
-  @Query(value = "SELECT s.id FROM scenario s WHERE s.project_id IN ?1", nativeQuery = true)
-  List<Long> findAll0IdByProjectIdIn(Collection<Long> projectIds);
-
-  @Query(value = "SELECT DISTINCT project_id FROM scenario WHERE project_id IN ?1 AND deleted_flag = 0", nativeQuery = true)
-  List<Long> findProjectIdByProjectIdIn(Collection<Long> projectIds);
-
   @Query(value = "SELECT id FROM scenario WHERE id IN ?1 AND auth_flag = ?2", nativeQuery = true)
   List<Long> findIds0ByIdInAndAuthFlag(Collection<Long> ids, boolean authFlag);
 
@@ -49,13 +40,6 @@ public interface ScenarioRepo extends BaseRepository<Scenario, Long>,
 
   @Query(value = "SELECT count(s.id) FROM Scenario s WHERE s.projectId = ?1 ")
   long countByProjectId(long projectId);
-
-  @Query(value = "SELECT count(s.id) FROM Scenario s WHERE s.tenantId = ?1")
-  long countByTenantId(Long tenantId);
-
-  @Modifying
-  @Query(value = "UPDATE scenario s SET s.project_id =?2 WHERE s.id = ?1", nativeQuery = true)
-  void updateProjectById(Long id, Long projectId);
 
   @Modifying
   @Query("UPDATE Scenario s SET s.authFlag=?2 WHERE s.id=?1")

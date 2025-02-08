@@ -232,21 +232,6 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   }
 
   @Override
-  public Set<Long> findTesterIds(Long projectId, Long planId) {
-    Set<Long> testerIds = new HashSet<>();
-    if (nonNull(planId)) {
-      testerIds.addAll(checkAndFind(planId).getTesterResponsibilities().keySet());
-      return testerIds;
-    }
-    if (nonNull(projectId)) {
-      for (FuncPlan plan : funcPlanRepo.findByProjectId(projectId)) {
-        testerIds.addAll(plan.getTesterResponsibilities().keySet());
-      }
-    }
-    return testerIds;
-  }
-
-  @Override
   public boolean isAuthCtrl(Long id) {
     FuncPlan plan = funcPlanRepo.findById(id).orElse(null);
     return nonNull(plan) && plan.getAuthFlag();
@@ -318,12 +303,6 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
     long count = funcPlanRepo.count();
     settingTenantQuotaManager.checkTenantQuota(QuotaResource.AngusTesterFuncPlan,
         null, count + 1);
-  }
-
-  @Override
-  public int countPlan(Long projectId) {
-    return isNull(projectId) ? (int) funcPlanRepo.count()
-        : funcPlanRepo.countByProjectId(projectId);
   }
 
   @Override
