@@ -110,8 +110,13 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
   }
 
   @Override
-  public void importExample(Long id) {
-    mockServiceCmd.importExample(id);
+  public IdKey<Long, Object> importExample(Long projectId) {
+    return mockServiceCmd.importExample(projectId);
+  }
+
+  @Override
+  public void importApisExample(Long id) {
+    mockServiceCmd.importApisExample(id);
   }
 
   @Override

@@ -31,8 +31,11 @@ public interface NodeRepo extends BaseRepository<Node, Long>, NameJoinRepository
 
   List<Node> findByTenantIdAndFreeFlag(Long ownerTenantId, boolean freeFlag);
 
-  @Query(value = "SELECT n.* FROM node n, node_role nr WHERE n.id = nr.node_id AND n.tenant_id = ?1 AND n.free_flag = ?2 AND nr.role = ?3 ", nativeQuery = true)
+  @Query(value = "SELECT DISTINCT n.* FROM node n, node_role nr WHERE n.id = nr.node_id AND n.tenant_id = ?1 AND n.free_flag = ?2 AND nr.role = ?3 ", nativeQuery = true)
   List<Node> findByTenantIdAndFreeFlagAndRole(Long ownerTenantId, boolean freeFlag, String role);
+
+  @Query(value = "SELECT DISTINCT n.* FROM node n, node_role nr WHERE n.id = nr.node_id AND n.tenant_id = ?1 AND n.free_flag = 0 AND nr.role = ?2 ", nativeQuery = true)
+  List<Node> findByTenantIdAndRole(Long ownerTenantId, String value);
 
   int countByTenantId(Long optTenantId);
 

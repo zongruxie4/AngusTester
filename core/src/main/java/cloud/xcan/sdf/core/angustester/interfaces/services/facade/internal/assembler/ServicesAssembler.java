@@ -1,7 +1,5 @@
 package cloud.xcan.sdf.core.angustester.interfaces.services.facade.internal.assembler;
 
-import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.findAdminFlagInCriteria;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotNull;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
@@ -9,10 +7,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.sdf.api.ApiLocaleResult;
 import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.commonlink.apis.ApiSource;
-import cloud.xcan.sdf.model.apis.ApiStatus;
-import cloud.xcan.sdf.api.commonlink.user.UserRepo;
 import cloud.xcan.sdf.api.search.SearchCriteria;
-import cloud.xcan.sdf.core.angustester.application.query.common.CommonQuery;
 import cloud.xcan.sdf.core.angustester.domain.services.Services;
 import cloud.xcan.sdf.core.angustester.domain.services.schema.ServicesSchema;
 import cloud.xcan.sdf.core.angustester.interfaces.services.facade.dto.ServicesAddDto;
@@ -23,10 +18,9 @@ import cloud.xcan.sdf.core.angustester.interfaces.services.facade.vo.ServicesDet
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.sdf.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
+import cloud.xcan.sdf.model.apis.ApiStatus;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;

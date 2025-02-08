@@ -4,7 +4,6 @@ package cloud.xcan.sdf.core.angustester.domain.task.summary;
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 
 import cloud.xcan.sdf.api.NameJoinField;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.associate.AssociateUserType;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
@@ -17,6 +16,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.sdf.model.script.TestType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;

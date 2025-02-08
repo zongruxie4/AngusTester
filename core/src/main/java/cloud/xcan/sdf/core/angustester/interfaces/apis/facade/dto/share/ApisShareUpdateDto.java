@@ -1,7 +1,6 @@
 package cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.share;
 
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH;
-import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X2;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X4;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_URL_LENGTH;
 

@@ -18,6 +18,8 @@ public interface NodeQuery {
 
   Page<Node> find(GenericSpecification<Node> spec, Pageable pageable);
 
+  List<Node> findByRole(NodeRole nodeRole);
+
   boolean hasOwnNodes(Long tenantId);
 
   Page<Node> getFreeWhenNonNodes(String role);

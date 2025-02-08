@@ -12,11 +12,11 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.sdf.model.script.ScriptSource;
 import cloud.xcan.sdf.core.angustester.domain.script.Script;
 import cloud.xcan.sdf.core.angustester.domain.script.ScriptInfo;
 import cloud.xcan.sdf.core.angustester.domain.script.count.ScriptCount;
 import cloud.xcan.sdf.core.angustester.domain.script.count.ScriptResourcesCreationCount;
+import cloud.xcan.sdf.model.script.ScriptSource;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;

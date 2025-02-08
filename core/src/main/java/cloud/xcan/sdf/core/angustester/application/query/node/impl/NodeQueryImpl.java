@@ -158,6 +158,10 @@ public class NodeQueryImpl implements NodeQuery {
     }.execute();
   }
 
+  @Override
+  public List<Node> findByRole(NodeRole nodeRole) {
+    return nodeRepo.findByTenantIdAndRole(getOptTenantId(), nodeRole.getValue());
+  }
 
   @Override
   public boolean hasOwnNodes(Long tenantId) {

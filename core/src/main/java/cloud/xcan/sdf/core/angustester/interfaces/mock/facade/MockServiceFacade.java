@@ -44,7 +44,9 @@ public interface MockServiceFacade {
 
   void imports(MockServiceImportDto dto);
 
-  void importExample(Long id);
+  IdKey<Long, Object> importExample(Long projectId);
+
+  void importApisExample(Long id);
 
   void assocDelete(Long id);
 

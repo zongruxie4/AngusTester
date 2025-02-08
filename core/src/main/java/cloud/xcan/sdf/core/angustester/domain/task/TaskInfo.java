@@ -4,7 +4,6 @@ package cloud.xcan.sdf.core.angustester.domain.task;
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
@@ -12,6 +11,7 @@ import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.activity.TaskActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
+import cloud.xcan.sdf.model.script.TestType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;

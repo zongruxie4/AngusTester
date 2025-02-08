@@ -1,6 +1,5 @@
 package cloud.xcan.sdf.core.angustester.application.query.task;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.AuthObjectType;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.search.SearchCriteria;
@@ -36,6 +35,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.summary.TaskAssigneeWorkSumma
 import cloud.xcan.sdf.core.angustester.domain.task.summary.TaskProjectWorkSummary;
 import cloud.xcan.sdf.core.angustester.domain.task.summary.TaskSprintWorkSummary;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.annotations.NonNullable;
 import java.time.LocalDateTime;
 import java.util.Collection;

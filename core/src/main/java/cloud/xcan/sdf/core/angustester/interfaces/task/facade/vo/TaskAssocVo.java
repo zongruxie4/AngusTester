@@ -2,9 +2,9 @@ package cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo;
 
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.sdf.api.NameJoinField;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
+import cloud.xcan.sdf.model.script.TestType;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;

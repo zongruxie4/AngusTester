@@ -1,7 +1,7 @@
 package cloud.xcan.sdf.model.services;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.model.apis.ApisInfo;
+import cloud.xcan.sdf.model.script.TestType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

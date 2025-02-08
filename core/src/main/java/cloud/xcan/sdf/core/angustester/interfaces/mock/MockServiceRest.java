@@ -164,14 +164,24 @@ public class MockServiceRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Import the inner mock apis sample", nickname = "mock:service:apis:sample:import")
+  @ApiOperation(value = "Import the inner mock service example", nickname = "mock:service:example:import")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping(value = "/{id}/sample/apis/import")
-  public ApiLocaleResult<?> importExample(
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<IdKey<Long, Object>> importExample(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(mockServiceFacade.importExample(projectId));
+  }
+
+  @ApiOperation(value = "Import the inner mock apis example", nickname = "mock:service:apis:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/{id}/example/apis/import")
+  public ApiLocaleResult<?> importApisExample(
       @ApiParam(name = "id", value = "Mock service id", required = true) @PathVariable("id") Long id) {
-    mockServiceFacade.importExample(id);
+    mockServiceFacade.importApisExample(id);
     return ApiLocaleResult.success();
   }
 

@@ -1,8 +1,8 @@
 package cloud.xcan.sdf.core.angustester.interfaces.apis;
 
 import cloud.xcan.sdf.api.ApiLocaleResult;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.ApisTestFacade;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

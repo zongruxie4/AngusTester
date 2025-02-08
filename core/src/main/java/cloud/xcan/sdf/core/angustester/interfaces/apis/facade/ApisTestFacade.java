@@ -1,9 +1,9 @@
 package cloud.xcan.sdf.core.angustester.interfaces.apis.facade;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.vo.test.TestResultDetailVo;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.HashSet;
 import java.util.LinkedHashSet;

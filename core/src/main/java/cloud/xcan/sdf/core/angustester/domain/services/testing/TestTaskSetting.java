@@ -1,8 +1,8 @@
 package cloud.xcan.sdf.core.angustester.domain.services.testing;
 
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.Priority;
+import cloud.xcan.sdf.model.script.TestType;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;

@@ -14,9 +14,7 @@ import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getIm
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.JsonUtils.isJson;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
@@ -27,8 +25,6 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.sdf.api.ExceptionLevel;
 import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
-import cloud.xcan.sdf.api.commonlink.user.User;
-import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.CommProtocolException;
 import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
@@ -36,18 +32,15 @@ import cloud.xcan.sdf.core.angustester.application.cmd.data.VariableCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.VariableConverter;
 import cloud.xcan.sdf.core.angustester.application.query.data.VariableQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.data.variables.Variable;
 import cloud.xcan.sdf.core.angustester.domain.data.variables.VariableRepo;
 import cloud.xcan.sdf.core.angustester.domain.data.variables.VariableTargetRepo;
-import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
-import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
@@ -81,16 +74,10 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   private VariableQuery variableQuery;
 
   @Resource
-  private ProjectQuery projectQuery;
-
-  @Resource
   private ProjectMemberQuery projectMemberQuery;
 
   @Resource
   private ActivityCmd activityCmd;
-
-  @Resource
-  private UserManager userManager;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -251,12 +238,9 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      Project projectDb;
-
       @Override
       protected void checkParams() {
-        // Check the project exists
-        projectDb = projectQuery.checkAndFind(projectId);
+        // NOOP
       }
 
       @Override
@@ -266,15 +250,6 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
-
-        if (!isUserAction()){
-          List<User> users = userManager.findByTenantId(getOptTenantId());
-          Assert.assertNotEmpty(users, "Tenant users are empty");
-          for (Variable variable : variables) {
-            variable.setId(uidGenerator.getUID()).setTenantId(projectDb.getTenantId())
-                .setCreatedBy(users.get(0).getId()).setLastModifiedBy(users.get(0).getId());
-          }
-        }
 
         return batchInsert(variables, "name");
       }

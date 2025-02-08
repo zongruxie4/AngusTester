@@ -1,8 +1,8 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.services;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.domain.script.Script;
 import cloud.xcan.sdf.core.angustester.domain.services.testing.TestTaskSetting;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import java.util.Set;

@@ -4,7 +4,6 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.exec.TestCaseResultInfo;
 import cloud.xcan.sdf.api.commonlink.exec.TestResultInfo;
 import cloud.xcan.sdf.api.enums.Result;
@@ -20,6 +19,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.TaskRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
+import cloud.xcan.sdf.model.script.TestType;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

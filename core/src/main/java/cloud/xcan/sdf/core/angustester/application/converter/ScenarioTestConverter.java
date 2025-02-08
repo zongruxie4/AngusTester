@@ -2,10 +2,10 @@ package cloud.xcan.sdf.core.angustester.application.converter;
 
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.sdf.model.script.TestType;
-import cloud.xcan.sdf.model.scenario.ScenarioTestCount;
 import cloud.xcan.sdf.core.angustester.domain.kanban.TestScenarioCount;
 import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
+import cloud.xcan.sdf.model.scenario.ScenarioTestCount;
+import cloud.xcan.sdf.model.script.TestType;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -3,6 +3,8 @@ package cloud.xcan.sdf.core.angustester.interfaces.mock.facade.internal.assemble
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.sdf.api.ApiLocaleResult;
+import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.domain.mock.apis.MockApis;
 import cloud.xcan.sdf.core.angustester.domain.mock.apis.MockApisSource;
@@ -16,11 +18,13 @@ import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.dto.apis.MockApisU
 import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.vo.apis.MockApisListVo;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.sdf.core.jpa.criteria.SearchCriteriaBuilder;
+import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.model.remoting.vo.MockApiResponseInfoVo;
 import cloud.xcan.sdf.model.remoting.vo.MockApisInfoVo;
 import cloud.xcan.sdf.model.remoting.vo.MockApisServiceInfoVo;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.jetbrains.annotations.NotNull;
 
 public class MockApisAssembler {
 
@@ -168,6 +172,17 @@ public class MockApisAssembler {
         .setAssocApisId(apis.getAssocApisId())
         .setResponses(nonNull(apis.getResponses()) ? apis.getResponses().stream()
             .map(MockApisAssembler::toMockApiResponseInfoVo).collect(Collectors.toList()) : null);
+  }
+
+  @NotNull
+  public static ApiLocaleResult<PageResult<MockApisListVo>> assembleAllowImportSampleStatus(
+      PageResult<MockApisListVo> result) {
+    ApiLocaleResult<PageResult<MockApisListVo>> apiResult = ApiLocaleResult.success(result);
+    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
+    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
+      apiResult.getExt().put("allowImportSamples", true);
+    }
+    return apiResult;
   }
 
   public static GenericSpecification<MockApis> getSpecification(MockApisFindDto dto) {

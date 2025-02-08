@@ -4,7 +4,6 @@ package cloud.xcan.sdf.core.angustester.interfaces.script;
 import static cloud.xcan.sdf.core.angustester.interfaces.script.facade.internal.assembler.ScriptAssembler.assembleAllowImportSampleStatus;
 import static cloud.xcan.sdf.core.angustester.interfaces.script.facade.internal.assembler.ScriptAssembler.assembleInfoAllowImportSampleStatus;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_BATCH_SIZE;
-import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.ApiLocaleResult;
 import cloud.xcan.sdf.api.PageResult;
@@ -21,7 +20,6 @@ import cloud.xcan.sdf.core.angustester.interfaces.script.facade.dto.ScriptReplac
 import cloud.xcan.sdf.core.angustester.interfaces.script.facade.dto.ScriptSearchDto;
 import cloud.xcan.sdf.core.angustester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.script.facade.vo.ScriptListVo;
-import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

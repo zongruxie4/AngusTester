@@ -5,7 +5,6 @@ import static cloud.xcan.sdf.core.angustester.interfaces.apis.facade.internal.as
 import static cloud.xcan.sdf.core.angustester.interfaces.apis.facade.internal.assembler.ApisTestAssembler.generateToTask;
 
 import cloud.xcan.sdf.api.angusctrl.exec.ExecResultRemote;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisTestQuery;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
@@ -14,6 +13,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.test.ApisTestS
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.test.ApisTestTaskGenerateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.TaskTestFacade;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Collections;
 import java.util.HashSet;

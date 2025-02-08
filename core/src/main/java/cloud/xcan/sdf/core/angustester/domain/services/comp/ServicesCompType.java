@@ -2,7 +2,6 @@ package cloud.xcan.sdf.core.angustester.domain.services.comp;
 
 import cloud.xcan.sdf.spec.experimental.EndpointRegister;
 import cloud.xcan.sdf.spec.locale.EnumMessage;
-import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import lombok.Getter;
 
 @EndpointRegister

@@ -2,8 +2,8 @@ package cloud.xcan.sdf.core.angustester.interfaces.services.facade.dto.test;
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.Priority;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;

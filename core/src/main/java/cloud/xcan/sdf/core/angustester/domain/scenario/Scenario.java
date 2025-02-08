@@ -6,12 +6,12 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.commonlink.exec.ExecStatus;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
 import cloud.xcan.sdf.core.jpa.hibernate.type.json.JsonStringType;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
+import cloud.xcan.sdf.model.script.TestType;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;

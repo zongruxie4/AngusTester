@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.infra.util;
 
 import static cloud.xcan.angus.model.AngusConstant.IS_SECURITY_CODE_REG;
 import static cloud.xcan.angus.model.AngusConstant.NOT_SECURITY_CODE_REG;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_MOCK_APIS_FILE;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_SERVER_IS_RESPONSIVE;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_STATUS_GE_200;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_STATUS_IS_401_403;
@@ -284,6 +285,17 @@ public class AngusTesterUtils {
     try {
       URL resourceUrl = resClz.getResource("/samples/script/"
           + getDefaultLanguage().getValue() + "/" + scriptFile);
+      assert resourceUrl != null;
+      return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
+    }
+  }
+
+  public static @NotNull String readExampleMockApisContent(Class<?> resClz, String scriptFile) {
+    try {
+      URL resourceUrl = resClz.getResource("/samples/mockapis/"
+          + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_APIS_FILE);
       assert resourceUrl != null;
       return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
     } catch (IOException e) {

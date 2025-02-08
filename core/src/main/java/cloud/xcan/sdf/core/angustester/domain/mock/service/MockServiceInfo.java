@@ -3,10 +3,10 @@ package cloud.xcan.sdf.core.angustester.domain.mock.service;
 
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.mock.service.auth.MockServicePermission;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
+import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;

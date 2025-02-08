@@ -4,7 +4,6 @@ import cloud.xcan.sdf.api.enums.AuthObjectType;
 import cloud.xcan.sdf.api.info.IdAndName;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.LinkedHashSet;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

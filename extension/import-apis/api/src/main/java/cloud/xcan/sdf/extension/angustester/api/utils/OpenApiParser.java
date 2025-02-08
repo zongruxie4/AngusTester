@@ -1,12 +1,11 @@
 package cloud.xcan.sdf.extension.angustester.api.utils;
 
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.sdf.extension.angustester.api.TesterExtensionMessage.SERVICE_DOC_FORMAT_ERROR;
 import static cloud.xcan.sdf.extension.angustester.api.TesterExtensionMessage.SERVICE_DOC_PARSE_ERROR_T;
 import static cloud.xcan.sdf.extension.angustester.api.TesterExtensionMessage.SERVICE_DOC_VERSION_NOT_SUPPORTED_T;
-import static cloud.xcan.sdf.extension.angustester.api.TesterExtensionMessage.SERVICE_DOC_FORMAT_ERROR;
 import static io.swagger.v3.oas.models.media.Schema.BIND_TO_VALUE;
 import static io.swagger.v3.oas.models.media.Schema.BIND_TYPE_AND_TYPES;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 

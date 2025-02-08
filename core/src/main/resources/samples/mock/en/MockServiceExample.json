@@ -1,0 +1,24 @@
+{
+  "name": "MockServiceExample",
+  "source": "CREATED",
+  "import_source": null,
+  "auth_flag": "0",
+  "api_security": null,
+  "api_cors": {
+    "enabledFlag": true,
+    "allowCorsOrigin": "*",
+    "allowCorsCredentials": true,
+    "allowCorsRequestMethods": "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
+  },
+  "setting": {
+    "useSsl": false,
+    "logFileLevel": "NONE",
+    "workThreadNum": 256,
+    "enableNettyLog": false,
+    "sendRequestLog": true,
+    "maxContentLength": 1048576000,
+    "workPushbackThreadNum": 8,
+    "maxPushbackConnectTimeout": 5000,
+    "maxPushbackRequestTimeout": -1
+  }
+}

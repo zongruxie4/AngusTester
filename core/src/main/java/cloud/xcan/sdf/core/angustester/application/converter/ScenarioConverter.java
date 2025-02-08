@@ -11,11 +11,11 @@ import static java.util.Collections.emptyList;
 
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.sdf.model.scenario.ScenarioInfo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
 import cloud.xcan.sdf.core.angustester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.sdf.core.angustester.domain.scenario.summary.ScenarioDetailSummary;
 import cloud.xcan.sdf.core.angustester.domain.scenario.trash.ScenarioTrash;
+import cloud.xcan.sdf.model.scenario.ScenarioInfo;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

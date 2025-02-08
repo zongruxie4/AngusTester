@@ -1,7 +1,7 @@
 package cloud.xcan.sdf.core.angustester.interfaces.mock;
 
+import static cloud.xcan.sdf.core.angustester.interfaces.mock.facade.internal.assembler.MockApisAssembler.assembleAllowImportSampleStatus;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_BATCH_SIZE;
-import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.ApiLocaleResult;
 import cloud.xcan.sdf.api.PageResult;
@@ -13,7 +13,6 @@ import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.dto.apis.MockApisS
 import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.dto.apis.MockApisUpdateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.vo.apis.MockApisDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.mock.facade.vo.apis.MockApisListVo;
-import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +25,6 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -199,14 +197,4 @@ public class MockApisRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @NotNull
-  private ApiLocaleResult<PageResult<MockApisListVo>> assembleAllowImportSampleStatus(
-      PageResult<MockApisListVo> result) {
-    ApiLocaleResult<PageResult<MockApisListVo>> apiResult = ApiLocaleResult.success(result);
-    Object queryAll = PrincipalContext.getExtension("queryAllEmpty");
-    if (result.isEmpty() && nonNull(queryAll) && (boolean) queryAll) {
-      apiResult.getExt().put("allowImportSamples", true);
-    }
-    return apiResult;
-  }
 }

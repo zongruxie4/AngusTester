@@ -43,6 +43,7 @@ public interface TesterConstant {
       "HttpFunctionality.yaml", "HttpPerformance.yaml", "HttpBenchmark.yaml");
   String SAMPLE_VARIABLE_FILE = "VariableExample.yaml";
   String SAMPLE_DATASET_FILE = "DatasetExample.yaml";
+  String SAMPLE_MOCK_SERVICE_FILE = "MockServiceExample.json";
   String SAMPLE_MOCK_APIS_FILE = "MockApisExample.yaml";
 
   /**

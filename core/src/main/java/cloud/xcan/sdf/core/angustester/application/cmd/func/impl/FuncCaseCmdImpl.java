@@ -6,7 +6,6 @@ import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_BASELINE_
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_CASE_FILE;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_PLAN_FILE;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_FUNC_REVIEW_FILE;
-import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_TASK_FILE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
@@ -44,7 +43,6 @@ import static cloud.xcan.sdf.spec.utils.DateUtils.DATE_TIME_FMT;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
-import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -56,7 +54,6 @@ import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.CommProtocolException;
-import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.func.FuncBaselineCmd;
@@ -92,7 +89,6 @@ import cloud.xcan.sdf.core.angustester.domain.func.plan.auth.FuncPlanPermission;
 import cloud.xcan.sdf.core.angustester.domain.func.review.FuncReview;
 import cloud.xcan.sdf.core.angustester.domain.func.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.sdf.core.angustester.domain.module.Module;
-import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.tag.Tag;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
@@ -104,14 +100,11 @@ import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.idgen.BidGenerator;
 import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
-import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1331,16 +1324,17 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      Project projectDb;
-
       @Override
       protected void checkParams() {
-        // Check the project exists
-        projectDb = projectQuery.checkAndFind(projectId);
+        // NOOP
       }
 
       @Override
@@ -1353,7 +1347,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         URL resourceUrl = this.getClass().getResource("/samples/plan/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
         FuncPlan plan = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_FUNC_PLAN_FILE);
-        assembleExampleFuncPlan(projectDb, uidGenerator.getUID(), users, plan);
+        assembleExampleFuncPlan(projectId, uidGenerator.getUID(), plan, users);
         funcPlanCmd.add(plan);
 
         // 2. Create test case by sample file
@@ -1362,7 +1356,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         List<FuncCase> cases = parseSample(Objects.requireNonNull(resourceUrl),
             SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
-          assembleExampleFuncCase(projectDb, uidGenerator.getUID(), case0, plan, users);
+          assembleExampleFuncCase(projectId, uidGenerator.getUID(), case0, plan, users);
         }
         List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
 
@@ -1371,7 +1365,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
         FuncReview review = parseSample(Objects.requireNonNull(resourceUrl),
             SAMPLE_FUNC_REVIEW_FILE);
-        assembleExampleFuncReview(projectDb, uidGenerator.getUID(), users, review, plan);
+        assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
         funcReviewCmd.add(review);
         funcReviewCaseCmd.add(review.getId(), cases.stream()
             .filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPending())
@@ -1382,7 +1376,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
         FuncBaseline baseline = parseSample(Objects.requireNonNull(resourceUrl),
             SAMPLE_FUNC_BASELINE_FILE);
-        assembleExampleFuncBaseline(projectDb, uidGenerator.getUID(), users, baseline, plan, cases);
+        assembleExampleFuncBaseline(projectId, uidGenerator.getUID(), baseline, plan, cases, users);
         funcBaselineCmd.add(baseline);
 
         return idKeys;

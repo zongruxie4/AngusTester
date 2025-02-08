@@ -2,9 +2,9 @@ package cloud.xcan.sdf.core.angustester.domain.script;
 
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.sdf.api.commonlink.script.ScriptPermission;
-import cloud.xcan.sdf.model.script.ScriptSource;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
+import cloud.xcan.sdf.model.script.ScriptSource;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

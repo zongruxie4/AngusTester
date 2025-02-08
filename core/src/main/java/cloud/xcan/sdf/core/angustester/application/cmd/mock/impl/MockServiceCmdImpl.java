@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.application.cmd.mock.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.MOCK_SERVICE;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_MOCK_APIS_FILE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_MOCK_SERVICE_FILE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.MockApisConverter.toAngusMockApis;
@@ -12,6 +13,7 @@ import static cloud.xcan.sdf.core.angustester.application.converter.MockServiceC
 import static cloud.xcan.sdf.core.angustester.application.converter.MockServiceConverter.toMockServiceStopDto;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.MOCK_SERVICE_ASSOC_EXISTED_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.MOCK_SERVICE_IMPORT_FILE_OR_TEXT_REQUIRED;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readExampleMockApisContent;
 import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.getExportTmpPath;
 import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.getImportTmpPath;
@@ -19,6 +21,7 @@ import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.isAngusFi
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportApiFiles;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isCloudServiceEdition;
@@ -37,6 +40,7 @@ import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.angus.parser.ObjectMapperFactory;
+import cloud.xcan.comp.jmock.core.support.utils.RandomUtils;
 import cloud.xcan.sdf.api.ExceptionLevel;
 import cloud.xcan.sdf.api.angusctrl.mockservice.MockServiceManageRemote;
 import cloud.xcan.sdf.api.angusctrl.mockservice.dto.MockServiceApisSyncDto;
@@ -91,10 +95,12 @@ import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -152,7 +158,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   private CommonQuery commonQuery;
 
   @Resource
-  private ServicesQuery projectQuery;
+  private ServicesQuery servicesQuery;
 
   @Resource
   private ServicesSchemaQuery projectSchemaQuery;
@@ -429,7 +435,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
       @Override
       protected void checkParams() {
         // Check the sample service exists
-        servicesDb = projectQuery.checkAndFind(service.getAssocServiceId());
+        servicesDb = servicesQuery.checkAndFind(service.getAssocServiceId());
 
         // Check and get apis
         apisDb = apisQuery.findByServiceId(service.getAssocServiceId());
@@ -476,7 +482,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
             MOCK_SERVICE_ASSOC_EXISTED_T, new Object[]{mockServiceDb.getName()});
 
         // Check the project exists
-        servicesDb = projectQuery.checkAndFind(serviceId);
+        servicesDb = servicesQuery.checkAndFind(serviceId);
 
         // Check the project not associated
         mockServiceQuery.checkAssocProjectExists(servicesDb);
@@ -676,6 +682,42 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         // Save import angus activity
         activityCmd.add(toActivity(MOCK_SERVICE, mockServiceDb, ActivityType.IMPORT));
         return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public IdKey<Long, Object> importExample(Long projectId) {
+    return new BizTemplate<IdKey<Long, Object>>() {
+
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @Override
+      protected IdKey<Long, Object> process() {
+        URL resourceUrl = this.getClass().getResource("/samples/mock/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_SERVICE_FILE);
+        MockService service = parseSample(Objects.requireNonNull(resourceUrl),
+            SAMPLE_MOCK_SERVICE_FILE);
+
+        List<Node> mockNodes = nodeQuery.findByRole(NodeRole.MOCK_SERVICE);
+        service.setNodeIp(isNotEmpty(mockNodes) ? mockNodes.get(0).getIp() : "[MockNodeNotFound]");
+        service.setServicePort(RandomUtils.nextInt(10000, 20000));
+        IdKey<Long, Object> idKey = insert(service);
+
+        // Set the default permission to creator
+        mockServiceAuthCmd.addCreatorAuth(singleton(idKey.getId()));
+
+        // Import mock apis by example
+        importApisExample(service.getId());
+        return idKey;
       }
     }.execute();
   }

@@ -396,6 +396,10 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {

@@ -3,8 +3,8 @@ package cloud.xcan.sdf.core.angustester.interfaces.apis.facade.dto.test;
 import static cloud.xcan.angus.model.AngusConstant.MAX_EXEC_DURATION_IN_MS;
 import static cloud.xcan.angus.model.AngusConstant.MAX_FUNCTIONAL_ITERATIONS;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.Priority;
+import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.unit.TimeValue;
 import cloud.xcan.sdf.web.validator.annotations.TimeValueRange;
 import io.swagger.annotations.ApiModel;

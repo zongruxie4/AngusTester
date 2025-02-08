@@ -1,9 +1,6 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.services.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SERVICE;
-import static cloud.xcan.sdf.model.script.ScriptSource.API;
-import static cloud.xcan.sdf.model.script.ScriptSource.SERVICE_SECURITY;
-import static cloud.xcan.sdf.model.script.ScriptSource.SERVICE_SMOKE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.generateToServicesTask;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.SERVICE_SECURITY_CASE_NOT_FOUND;
@@ -16,6 +13,9 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TARGE
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TARGET_TASK_RESTART;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
+import static cloud.xcan.sdf.model.script.ScriptSource.API;
+import static cloud.xcan.sdf.model.script.ScriptSource.SERVICE_SECURITY;
+import static cloud.xcan.sdf.model.script.ScriptSource.SERVICE_SMOKE;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Collections.singletonList;
 
@@ -23,7 +23,6 @@ import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.sdf.api.angusctrl.exec.ExecRemote;
 import cloud.xcan.sdf.api.angusctrl.exec.dto.ExecAddByScriptDto;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisTestCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptCmd;
@@ -31,7 +30,6 @@ import cloud.xcan.sdf.core.angustester.application.cmd.services.ServicesTestCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.task.TaskCmd;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisCaseQuery;
 import cloud.xcan.sdf.core.angustester.application.query.apis.ApisQuery;
-import cloud.xcan.sdf.core.angustester.application.query.data.VariableQuery;
 import cloud.xcan.sdf.core.angustester.application.query.script.ScriptQuery;
 import cloud.xcan.sdf.core.angustester.application.query.services.ServicesAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.services.ServicesQuery;
@@ -48,6 +46,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.TaskRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
+import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;

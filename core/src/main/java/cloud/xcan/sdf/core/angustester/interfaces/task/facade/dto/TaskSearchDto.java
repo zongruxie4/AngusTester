@@ -5,13 +5,13 @@ import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_BID_LENGTH;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X2;
 
 import cloud.xcan.sdf.api.PageQuery;
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.core.angustester.domain.task.BugLevel;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
 import cloud.xcan.sdf.core.angustester.domain.task.sprint.TaskSprintPermission;
+import cloud.xcan.sdf.model.script.TestType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;

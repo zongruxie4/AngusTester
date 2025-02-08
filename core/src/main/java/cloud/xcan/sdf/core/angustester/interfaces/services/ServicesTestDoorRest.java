@@ -1,9 +1,9 @@
 package cloud.xcan.sdf.core.angustester.interfaces.services;
 
 import cloud.xcan.sdf.api.ApiLocaleResult;
-import cloud.xcan.sdf.model.services.ApisTestCount;
 import cloud.xcan.sdf.api.dto.OrgAndDateFilterDto;
 import cloud.xcan.sdf.core.angustester.interfaces.services.facade.ServicesTestFacade;
+import cloud.xcan.sdf.model.services.ApisTestCount;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

@@ -2,7 +2,6 @@ package cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo;
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
@@ -12,6 +11,7 @@ import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
 import cloud.xcan.sdf.core.export.BooeanWriteConverter;
 import cloud.xcan.sdf.core.export.EnumMessageWriteConverter;
 import cloud.xcan.sdf.core.export.ListStringWriteConverter;
+import cloud.xcan.sdf.model.script.TestType;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;

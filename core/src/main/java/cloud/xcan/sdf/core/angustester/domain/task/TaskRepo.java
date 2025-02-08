@@ -1,8 +1,8 @@
 package cloud.xcan.sdf.core.angustester.domain.task;
 
-import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
+import cloud.xcan.sdf.model.script.TestType;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
