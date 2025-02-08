@@ -2,13 +2,13 @@ package cloud.xcan.sdf.core.angustester.application.cmd.data.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.DATASET;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_DATASET_FILE;
-import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_VARIABLE_FILE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.DatasetConverter.toDataset;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.DATASET_IS_NOT_VALID;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.CLONE;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.IMPORT;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
@@ -19,19 +19,15 @@ import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.JsonUtils.isJson;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
-import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.sdf.api.ExceptionLevel;
+import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.sdf.api.commonlink.user.User;
 import cloud.xcan.sdf.api.manager.UserManager;
-import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
-import cloud.xcan.sdf.core.angustester.domain.project.Project;
-import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
-import cloud.xcan.sdf.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.sdf.api.message.CommProtocolException;
 import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
@@ -39,25 +35,28 @@ import cloud.xcan.sdf.core.angustester.application.cmd.data.DatasetCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.DatasetConverter;
 import cloud.xcan.sdf.core.angustester.application.query.data.DatasetQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQuery;
+import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.Dataset;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.DatasetRepo;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.DatasetTargetRepo;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
+import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -258,7 +257,9 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        String content = parseSampleDataset();
+        URL resourceUrl = this.getClass().getResource("/samples/dataset/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_DATASET_FILE);
+        String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_DATASET_FILE);
         List<Dataset> datasets = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
 
@@ -272,18 +273,6 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         }
 
         return batchInsert(datasets, "name");
-      }
-
-      private String parseSampleDataset() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/dataset/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_DATASET_FILE);
-          assert resourceUrl != null;
-          return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_DATASET_FILE,
-              e.getMessage());
-        }
       }
     }.execute();
   }

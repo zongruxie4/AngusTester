@@ -9,6 +9,7 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.VARIABLE_
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.VARIABLE_IS_NOT_VALID;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.CLONE;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.IMPORT;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
@@ -20,7 +21,6 @@ import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.JsonUtils.isJson;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
-import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -53,12 +53,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -262,7 +261,9 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        String content = parseSampleVariable();
+        URL resourceUrl = this.getClass().getResource("/samples/variable/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_VARIABLE_FILE);
+        String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
 
@@ -276,18 +277,6 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         }
 
         return batchInsert(variables, "name");
-      }
-
-      private String parseSampleVariable() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/variable/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_VARIABLE_FILE);
-          assert resourceUrl != null;
-          return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_VARIABLE_FILE,
-              e.getMessage());
-        }
       }
     }.execute();
   }
@@ -310,7 +299,6 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         }
 
         variablesRepo.deleteByIdIn(ids);
-
         variableTargetRepo.deleteByVariableIdIn(ids);
 
         activityCmd.batchAdd(toActivities(VARIABLE, variablesDb, ActivityType.DELETED));
