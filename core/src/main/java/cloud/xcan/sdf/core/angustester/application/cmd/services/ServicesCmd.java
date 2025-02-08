@@ -26,7 +26,7 @@ public interface ServicesCmd {
       ApiImportSource importSource, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, MultipartFile file, String content);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  List<IdKey<Long, Object>> importExample(Long projectId);
 
   File exportProject(ServicesExportScope exportScope, Set<Long> serviceIds, Set<Long> apisId,
       SchemaFormat format, boolean onlyApisComponents);

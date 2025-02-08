@@ -385,9 +385,9 @@ public class FuncCaseRest {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+  public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
       @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(funcCaseFacade.exampleImport(projectId));
+    return ApiLocaleResult.success(funcCaseFacade.importExample(projectId));
   }
 
   @ApiOperation(value = "Delete functional test cases", nickname = "func:case:delete")

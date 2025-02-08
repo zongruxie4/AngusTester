@@ -109,9 +109,9 @@ public class DatasetRest {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+  public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
       @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(datasetFacade.exampleImport(projectId));
+    return ApiLocaleResult.success(datasetFacade.importExample(projectId));
   }
 
   @ApiOperation(value = "Delete datasets", nickname = "data:dataset:delete")

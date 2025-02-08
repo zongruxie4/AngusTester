@@ -91,8 +91,8 @@ public class ServicesFacadeImpl implements ServicesFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return servicesCmd.exampleImport(projectId);
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return servicesCmd.importExample(projectId);
   }
 
   @Override

@@ -8,6 +8,7 @@ import static cloud.xcan.sdf.core.angustester.application.converter.ApisConverte
 import static cloud.xcan.sdf.core.angustester.application.converter.ServicesConverter.cloneService;
 import static cloud.xcan.sdf.core.angustester.application.converter.ServicesConverter.toNewImportService;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.SERVICE_IMPORT_NEW_NAME_EMPTY;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readExampleServicesContent;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getExportTmpPath;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportApiFiles;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
@@ -60,15 +61,11 @@ import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.spec.experimental.IdKey;
-import cloud.xcan.sdf.spec.locale.SupportedLanguage;
 import cloud.xcan.sdf.spec.utils.FileUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
-import cloud.xcan.sdf.spec.utils.StreamUtils;
 import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -401,7 +398,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
@@ -412,14 +409,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         for (String servicesFile : SAMPLE_SERVICES_FILES) {
-          URL resourceUrl = this.getClass().getResource("/samples/apis/"
-              + SupportedLanguage.en.getValue() + "/" + servicesFile);
-          String content;
-          try {
-            content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          } catch (IOException e) {
-            throw CommSysException.of("Couldn't read sample file " + servicesFile, e.getMessage());
-          }
+          String content = readExampleServicesContent(this.getClass(), servicesFile);
           IdKey<Long, Object> idKey = imports(projectId, null, servicesFile.split("\\.")[0],
               ApiImportSource.OPENAPI, StrategyWhenDuplicated.IGNORE, false, null, content);
           idKeys.add(idKey);
@@ -431,8 +421,8 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public File exportProject(ServicesExportScope exportScope,
-      Set<Long> serviceIds, Set<Long> apisId, SchemaFormat format, boolean onlyApisComponents) {
+  public File exportProject(ServicesExportScope exportScope, Set<Long> serviceIds,
+      Set<Long> apisId, SchemaFormat format, boolean onlyApisComponents) {
     return new BizTemplate<File>() {
       List<Services> servicesDb;
 

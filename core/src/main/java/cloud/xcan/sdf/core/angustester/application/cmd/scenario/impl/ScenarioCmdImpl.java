@@ -4,10 +4,11 @@ import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SCENARIO;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_SCRIPT_FILES;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.exampleImportToDomain;
+import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.importExampleToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScenarioConverter.toScenarioTrash;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.importDtoToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.toAngusScenarioAddScript;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readExampleScriptContent;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
@@ -349,7 +350,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
@@ -360,23 +361,12 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
-          String content = readScriptContent(scriptFile);
+          String content = readExampleScriptContent(this.getClass(), scriptFile);
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
-          Scenario scenario = exampleImportToDomain(projectId, angusScript);
+          Scenario scenario = importExampleToDomain(projectId, angusScript);
           idKeys.add(add(scenario));
         }
         return idKeys;
-      }
-
-      private @NotNull String readScriptContent(String scriptFile) {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/script/"
-              + getDefaultLanguage().getValue() + "/" + scriptFile);
-          assert resourceUrl != null;
-          return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
-        }
       }
     }.execute();
   }

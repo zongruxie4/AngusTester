@@ -236,8 +236,8 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return funcCaseCmd.exampleImport(projectId);
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return funcCaseCmd.importExample(projectId);
   }
 
   @Override

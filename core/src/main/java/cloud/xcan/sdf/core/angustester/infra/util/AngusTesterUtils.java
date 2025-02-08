@@ -13,9 +13,11 @@ import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.assembleGrantPermis
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getFilterInFirstValue;
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getFilterMatchFirstValue;
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getInConditionValue;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
+import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.nonNull;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
@@ -27,12 +29,19 @@ import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import cloud.xcan.sdf.api.gm.indicator.SecurityCheckSetting;
 import cloud.xcan.sdf.api.gm.indicator.SmokeCheckSetting;
+import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.domain.script.ScriptFormat;
 import cloud.xcan.sdf.spec.http.HttpStatus;
 import cloud.xcan.sdf.spec.locale.MessageHolder;
+import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
+import cloud.xcan.sdf.spec.utils.StreamUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -246,5 +255,39 @@ public class AngusTesterUtils {
     InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(contentBytes));
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
         fileName + format.getFileSuffix(), contentBytes.length, resource);
+  }
+
+  public static <T> T parseSample(URL resourceUrl, String exampleFile) {
+    try {
+      String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+      return JsonUtils.convert(content, new TypeReference<T>() {
+      });
+    } catch (IOException e) {
+      throw CommSysException.of("Couldn't read sample file " + exampleFile,
+          e.getMessage());
+    }
+  }
+
+  public static @NotNull String readExampleServicesContent(Class<?> resClz, String servicesFile) {
+    URL resourceUrl = resClz.getResource("/samples/services/"
+        + getDefaultLanguage().getValue() + "/" + servicesFile);
+    String content;
+    try {
+      content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw CommSysException.of("Couldn't read sample file " + servicesFile, e.getMessage());
+    }
+    return content;
+  }
+
+  public static @NotNull String readExampleScriptContent(Class<?> resClz, String scriptFile) {
+    try {
+      URL resourceUrl = resClz.getResource("/samples/script/"
+          + getDefaultLanguage().getValue() + "/" + scriptFile);
+      assert resourceUrl != null;
+      return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
+    }
   }
 }

@@ -10,10 +10,10 @@ import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConv
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toModifyTaskActivity;
-import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleMoveTask;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTask;
-import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTaskSprint;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTaskSoftwareVersion;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleExampleTaskSprint;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleMoveTask;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.importToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.toAddApisOrScenarioTask;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_IMPORT_COLUMNS;
@@ -58,6 +58,7 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TYPE_UPDATED;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.VERSION;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.VERSION_CLEAR;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertEnumOf;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
@@ -74,7 +75,6 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
-import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -87,7 +87,6 @@ import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.CommProtocolException;
-import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.tag.TagTargetCmd;
@@ -139,14 +138,11 @@ import cloud.xcan.sdf.idgen.BidGenerator;
 import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
-import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -548,7 +544,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   /**
    * Test task information that supports modification: name、priority、result、startDate、endDate.
    * <p>
-   * Only assignees , creator, confirmor and admins are allowed to modify.
+   * Only assignees, creator, confirmor and admins are allowed to modify.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1904,7 +1900,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       Project projectDb;
 
@@ -1923,7 +1919,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // 1. If it is an agile project, create sprint by sample file
         TaskSprint sprint = null;
         if (projectDb.isAgile()) {
-          sprint = parseSampleSprint();
+          URL resourceUrl = this.getClass().getResource("/samples/sprint/"
+              + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
+          sprint = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_SPRINT_FILE);
           assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
           taskSprintCmd.add(sprint);
         }
@@ -1934,38 +1932,13 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         softwareVersionCmd.add(version);
 
         // 3. Create task by sample file
-        List<Task> tasks = parseSampleTasks();
+        URL resourceUrl = this.getClass().getResource("/samples/task/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
+        List<Task> tasks = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_TASK_FILE);
         for (Task task : tasks) {
           assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
         }
         return tasks.stream().map(x -> add(x)).collect(Collectors.toList());
-      }
-
-      private TaskSprint parseSampleSprint() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/sprint/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, TaskSprint.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_SPRINT_FILE,
-              e.getMessage());
-        }
-      }
-
-      private List<Task> parseSampleTasks() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/task/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, new TypeReference<List<Task>>() {
-          });
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
-              e.getMessage());
-        }
       }
     }.execute();
   }

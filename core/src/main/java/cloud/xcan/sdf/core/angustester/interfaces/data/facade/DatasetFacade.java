@@ -31,7 +31,7 @@ public interface DatasetFacade {
 
   List<IdKey<Long, Object>> imports(DatasetImportDto dto);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  List<IdKey<Long, Object>> importExample(Long projectId);
 
   void delete(Collection<Long> ids);
 

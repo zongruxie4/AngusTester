@@ -67,8 +67,8 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return scenarioCmd.exampleImport(projectId);
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return scenarioCmd.importExample(projectId);
   }
 
   @Override

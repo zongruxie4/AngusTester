@@ -41,7 +41,7 @@ public interface MockServiceCmd {
   void imports(Long id, StrategyWhenDuplicated strategyWhenDuplicated,
       Boolean deleteWhenNotExisted, String content, MultipartFile file);
 
-  void exampleImport(Long id);
+  void importExample(Long id);
 
   File export(Long mockServiceId, Set<Long> mockApiIds, SchemaFormat format);
 

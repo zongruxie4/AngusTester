@@ -84,7 +84,7 @@ public class ScenarioConverter {
         .setDeletedFlag(false);
   }
 
-  public static Scenario exampleImportToDomain(Long projectId, AngusScript angusScript) {
+  public static Scenario importExampleToDomain(Long projectId, AngusScript angusScript) {
     return new Scenario()
         .setName(angusScript.getInfo().getName())
         .setProjectId(projectId)

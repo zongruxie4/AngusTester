@@ -31,6 +31,7 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.EVAL_
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.FUNC_TESTER;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.MOVED;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.PRIORITY;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
@@ -1158,6 +1159,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> imports(Long planId,
@@ -1331,7 +1333,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       Project projectDb;
 
@@ -1348,19 +1350,27 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         Assert.assertNotEmpty(users, "Tenant users are empty");
 
         // 1. Create test plan by sample file
-        FuncPlan plan = parseSamplePlan();
+        URL resourceUrl = this.getClass().getResource("/samples/plan/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
+        FuncPlan plan = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_FUNC_PLAN_FILE);
         assembleExampleFuncPlan(projectDb, uidGenerator.getUID(), users, plan);
         funcPlanCmd.add(plan);
 
         // 2. Create test case by sample file
-        List<FuncCase> cases = parseSampleCase();
+        resourceUrl = this.getClass().getResource("/samples/cases/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
+        List<FuncCase> cases = parseSample(Objects.requireNonNull(resourceUrl),
+            SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
           assembleExampleFuncCase(projectDb, uidGenerator.getUID(), case0, plan, users);
         }
         List<IdKey<Long, Object>> idKeys = funcCaseCmd.add(cases);
 
         // 3. Create case review by sample file
-        FuncReview review = parseSampleReview();
+        resourceUrl = this.getClass().getResource("/samples/review/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
+        FuncReview review = parseSample(Objects.requireNonNull(resourceUrl),
+            SAMPLE_FUNC_REVIEW_FILE);
         assembleExampleFuncReview(projectDb, uidGenerator.getUID(), users, review, plan);
         funcReviewCmd.add(review);
         funcReviewCaseCmd.add(review.getId(), cases.stream()
@@ -1368,66 +1378,15 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             .map(FuncCase::getId).collect(Collectors.toSet()));
 
         // 4. Create case baseline by sample file
-        FuncBaseline baseline = parseSampleBaseline();
+        resourceUrl = this.getClass().getResource("/samples/baseline/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
+        FuncBaseline baseline = parseSample(Objects.requireNonNull(resourceUrl),
+            SAMPLE_FUNC_BASELINE_FILE);
         assembleExampleFuncBaseline(projectDb, uidGenerator.getUID(), users, baseline, plan, cases);
         funcBaselineCmd.add(baseline);
 
         return idKeys;
       }
-
-      private FuncPlan parseSamplePlan() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/plan/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncPlan.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_PLAN_FILE,
-              e.getMessage());
-        }
-      }
-
-      private List<FuncCase> parseSampleCase() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/cases/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, new TypeReference<List<FuncCase>>() {
-          });
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_TASK_FILE,
-              e.getMessage());
-        }
-      }
-
-      private FuncReview parseSampleReview() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/review/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncReview.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_REVIEW_FILE,
-              e.getMessage());
-        }
-      }
-
-      private FuncBaseline parseSampleBaseline() {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/baseline/"
-              + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
-          assert resourceUrl != null;
-          String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-          return JsonUtils.convert(content, FuncBaseline.class);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + SAMPLE_FUNC_BASELINE_FILE,
-              e.getMessage());
-        }
-      }
-
     }.execute();
   }
 

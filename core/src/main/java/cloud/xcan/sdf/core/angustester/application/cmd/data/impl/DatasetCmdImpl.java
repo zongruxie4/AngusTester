@@ -246,7 +246,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       Project projectDb;
 

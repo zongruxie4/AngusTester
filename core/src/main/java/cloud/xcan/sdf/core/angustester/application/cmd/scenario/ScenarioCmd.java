@@ -16,7 +16,7 @@ public interface ScenarioCmd {
 
   IdKey<Long, Object> clone(Long id);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  List<IdKey<Long, Object>> importExample(Long projectId);
 
   void delete(Long id);
 

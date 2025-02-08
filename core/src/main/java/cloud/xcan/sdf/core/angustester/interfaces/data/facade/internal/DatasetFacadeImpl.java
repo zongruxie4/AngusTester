@@ -81,8 +81,8 @@ public class DatasetFacadeImpl implements DatasetFacade {
   }
 
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
-    return datasetCmd.exampleImport(projectId);
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return datasetCmd.importExample(projectId);
   }
 
   @Override

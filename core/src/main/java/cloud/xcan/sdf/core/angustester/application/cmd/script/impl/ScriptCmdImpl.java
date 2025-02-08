@@ -16,8 +16,8 @@ import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConver
 import static cloud.xcan.sdf.core.angustester.application.converter.ScriptConverter.toAngusAddScript;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.SCRIPT_CONTENT_PARSE_ERROR;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.DELETED;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readExampleScriptContent;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
@@ -39,7 +39,6 @@ import cloud.xcan.angus.model.script.configuration.Threads;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.sdf.api.commonlink.script.ScriptPermission;
-import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptAuthCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.script.ScriptCmd;
@@ -76,8 +75,6 @@ import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -89,7 +86,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -642,7 +638,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> exampleImport(Long projectId) {
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
@@ -653,24 +649,13 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
-          String content = readScriptContent(scriptFile);
+          String content = readExampleScriptContent(this.getClass(), scriptFile);
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
           Script script = importDtoToDomain(uidGenerator.getUID(), projectId,
               angusScript.getInfo().getName(), angusScript.getInfo().getDescription(), content);
           idKeys.add(imports(script));
         }
         return idKeys;
-      }
-
-      private @NotNull String readScriptContent(String scriptFile) {
-        try {
-          URL resourceUrl = this.getClass().getResource("/samples/script/"
-              + getDefaultLanguage().getValue() + "/" + scriptFile);
-          assert resourceUrl != null;
-          return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-          throw CommSysException.of("Couldn't read sample file " + scriptFile, e.getMessage());
-        }
       }
     }.execute();
   }

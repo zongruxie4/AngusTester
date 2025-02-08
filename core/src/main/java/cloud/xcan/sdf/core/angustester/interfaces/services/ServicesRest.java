@@ -119,9 +119,9 @@ public class ServicesRest {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+  public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
       @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(serviceFacade.exampleImport(projectId));
+    return ApiLocaleResult.success(serviceFacade.importExample(projectId));
   }
 
   @ApiOperation(value = "Delete services", nickname = "services:delete")

@@ -169,9 +169,9 @@ public class MockServiceRest {
       @ApiResponse(code = 200, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/{id}/sample/apis/import")
-  public ApiLocaleResult<?> exampleImport(
+  public ApiLocaleResult<?> importExample(
       @ApiParam(name = "id", value = "Mock service id", required = true) @PathVariable("id") Long id) {
-    mockServiceFacade.exampleImport(id);
+    mockServiceFacade.importExample(id);
     return ApiLocaleResult.success();
   }
 

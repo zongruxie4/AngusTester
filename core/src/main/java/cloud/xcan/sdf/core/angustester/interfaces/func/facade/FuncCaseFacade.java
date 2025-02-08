@@ -91,7 +91,7 @@ public interface FuncCaseFacade {
 
   PageResult<FuncCaseListVo> search(boolean exportFlag, FuncCaseSearchDto dto);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  List<IdKey<Long, Object>> importExample(Long projectId);
 
   List<IdKey<Long, Object>> imports(FuncCaseImportDto dto);
 

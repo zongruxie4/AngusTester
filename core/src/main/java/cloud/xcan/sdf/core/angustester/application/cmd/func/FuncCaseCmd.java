@@ -60,7 +60,7 @@ public interface FuncCaseCmd {
   List<IdKey<Long, Object>> imports(Long planId, StrategyWhenDuplicated strategyWhenDuplicated,
       MultipartFile file);
 
-  List<IdKey<Long, Object>> exampleImport(Long projectId);
+  List<IdKey<Long, Object>> importExample(Long projectId);
 
   void delete(Collection<Long> ids);
 

@@ -108,9 +108,9 @@ public class VariableRest {
       @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
-  public ApiLocaleResult<List<IdKey<Long, Object>>> exampleImport(
+  public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
       @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
-    return ApiLocaleResult.success(variableFacade.exampleImport(projectId));
+    return ApiLocaleResult.success(variableFacade.importExample(projectId));
   }
 
   @ApiOperation(value = "Delete variables", nickname = "data:variable:delete")
