@@ -257,7 +257,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        URL resourceUrl = this.getClass().getResource("/samples/dataset/"
+        URL resourceUrl = this.getClass().getResource("/samples/data/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_DATASET_FILE);
         String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_DATASET_FILE);
         List<Dataset> datasets = parseVariablesFromScript(projectId,

@@ -261,7 +261,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        URL resourceUrl = this.getClass().getResource("/samples/variable/"
+        URL resourceUrl = this.getClass().getResource("/samples/data/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_VARIABLE_FILE);
         String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
         List<Variable> variables = parseVariablesFromScript(projectId,

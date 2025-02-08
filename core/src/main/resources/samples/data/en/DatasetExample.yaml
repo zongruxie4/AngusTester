@@ -1,0 +1,51 @@
+- name: Csv File Dataset
+  extracted: true
+  parameters:
+    - name: name
+    - name: age
+    - name: hobby
+  extraction:
+    source: FILE
+    name: EXACT_VALUE-Extraction
+    method: EXACT_VALUE
+    fileType: CSV
+    path: https://bj-c1-prod-files.xcan.cloud/storage/pubapi/v1/file/users.csv?fid=251751417168003072&sid=251751417168003074&spt=YoBG8sMtoY3otfMg02o48Ya814DQKMdqVYExSWJl&spf=true
+    encoding: UTF-8
+    quoteChar: '"'
+    escapeChar: \
+    separatorChar: ","
+    rowIndex: 1
+    columnIndex: 0
+- name: Jdbc Dataset Example
+  extracted: true
+  parameters:
+    - name: Name
+    - name: Age
+  extraction:
+    source: JDBC
+    name: EXACT_VALUE-Extraction
+    method: EXACT_VALUE
+    datasource:
+      type: MYSQL
+      username: sample
+      password: 123456
+      jdbcUrl: jdbc:mysql://mysql01-sample.angusmock.cloud:3306/xcan_mockdata_sample
+    select: SELECT * FROM `user`
+    rowIndex: 0
+    columnIndex: 0
+- name: MockData Dataset
+  extracted: false
+  parameters:
+    - name: Name
+      value: '@Name()'
+    - name: Age
+      value: '@Age()'
+    - name: Hobby
+      value: Loving everything
+- name: Add User Dataset
+  extracted: false
+  parameters:
+    - name: name
+      value: '@Name()'
+    - name: age
+      value: "@Age(30,40)"
