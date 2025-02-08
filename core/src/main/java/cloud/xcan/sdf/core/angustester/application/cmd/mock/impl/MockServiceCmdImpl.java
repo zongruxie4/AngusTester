@@ -12,13 +12,13 @@ import static cloud.xcan.sdf.core.angustester.application.converter.MockServiceC
 import static cloud.xcan.sdf.core.angustester.application.converter.MockServiceConverter.toMockServiceStopDto;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.MOCK_SERVICE_ASSOC_EXISTED_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.MOCK_SERVICE_IMPORT_FILE_OR_TEXT_REQUIRED;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readExampleMockApisContent;
 import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.getExportTmpPath;
 import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.angustester.infra.util.MockFileUtils.isAngusFile;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportApiFiles;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
-import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isCloudServiceEdition;
@@ -89,11 +89,8 @@ import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.core.utils.CoreUtils;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.FileUtils;
-import cloud.xcan.sdf.spec.utils.StreamUtils;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -685,20 +682,16 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void importExample(Long id) {
+  public void importApisExample(Long id) {
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
         // NOOP
       }
 
-      @SneakyThrows
       @Override
       protected Void process() {
-        URL resourceUrl = this.getClass().getResource("/samples/mockapis/"
-            + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_APIS_FILE);
-        assert resourceUrl != null;
-        String content = StreamUtils.copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
+        String content = readExampleMockApisContent(this.getClass(), SAMPLE_MOCK_APIS_FILE);
         imports(id, StrategyWhenDuplicated.IGNORE, false, content, null);
         return null;
       }
