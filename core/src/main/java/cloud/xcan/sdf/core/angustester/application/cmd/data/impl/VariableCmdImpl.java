@@ -234,6 +234,10 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
@@ -250,7 +254,9 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
-
+        for (Variable variable : variables) {
+          variable.setProjectId(projectId);
+        }
         return batchInsert(variables, "name");
       }
     }.execute();

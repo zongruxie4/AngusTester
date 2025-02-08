@@ -132,7 +132,9 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
         URL resourceUrl = this.getClass().getResource("/samples/tag/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_TAG_FILE);
         List<Tag> tags = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_TAG_FILE);
-
+        for (Tag tag : tags) {
+          tag.setProjectId(projectId);
+        }
         return batchInsert(tags, "name");
       }
     }.execute();

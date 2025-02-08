@@ -694,7 +694,6 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   @Override
   public IdKey<Long, Object> importExample(Long projectId) {
     return new BizTemplate<IdKey<Long, Object>>() {
-
       @Override
       protected void checkParams() {
         // NOOP
@@ -708,6 +707,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
             SAMPLE_MOCK_SERVICE_FILE);
 
         List<Node> mockNodes = nodeQuery.findByRole(NodeRole.MOCK_SERVICE);
+        service.setProjectId(projectId);
         service.setNodeIp(isNotEmpty(mockNodes) ? mockNodes.get(0).getIp() : "[MockNodeNotFound]");
         service.setServicePort(RandomUtils.nextInt(10000, 20000));
         IdKey<Long, Object> idKey = insert(service);

@@ -222,7 +222,9 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
         URL resourceUrl = this.getClass().getResource("/samples/module/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_MODULE_FILE);
         List<Module> modules = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_MODULE_FILE);
-
+        for (Module module : modules) {
+          module.setProjectId(projectId);
+        }
         return batchInsert(modules, "name");
       }
     }.execute();

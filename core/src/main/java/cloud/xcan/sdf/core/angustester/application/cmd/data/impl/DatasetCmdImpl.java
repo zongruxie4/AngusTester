@@ -250,7 +250,9 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_DATASET_FILE);
         List<Dataset> datasets = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
-
+        for (Dataset dataset : datasets) {
+          dataset.setProjectId(projectId);
+        }
         return batchInsert(datasets, "name");
       }
     }.execute();
