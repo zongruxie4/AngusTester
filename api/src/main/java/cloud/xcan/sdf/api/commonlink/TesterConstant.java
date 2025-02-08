@@ -23,6 +23,7 @@ public interface TesterConstant {
   /**
    * Samples
    */
+  String SAMPLE_TAG_FILE = "TagExample.json";
   String SAMPLE_SPRINT_FILE = "SprintExample.json";
   String SAMPLE_TASK_FILE = "TaskExample.json";
   String SAMPLE_FUNC_PLAN_FILE = "FuncPlanExample.json";

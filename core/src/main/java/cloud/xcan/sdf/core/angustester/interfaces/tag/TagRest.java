@@ -64,6 +64,16 @@ public class TagRest {
     return ApiLocaleResult.success();
   }
 
+  @ApiOperation(value = "Import the inner tag example", nickname = "tag:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
+      @ApiParam(name = "projectId", value = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+    return ApiLocaleResult.success(tagFacade.importExample(projectId));
+  }
+
   @ApiOperation(value = "Delete the tags", nickname = "tag:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {@ApiResponse(code = 204, message = "Deleted successfully")})

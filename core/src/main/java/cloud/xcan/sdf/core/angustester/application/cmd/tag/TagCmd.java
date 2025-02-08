@@ -12,5 +12,8 @@ public interface TagCmd {
 
   void update(List<Tag> tags);
 
+  List<IdKey<Long, Object>> importExample(Long projectId);
+
   void delete(Collection<Long> ids);
+
 }

@@ -49,6 +49,11 @@ public class TagFacadeImpl implements TagFacade {
   }
 
   @Override
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return tagCmd.importExample(projectId);
+  }
+
+  @Override
   public void delete(Collection<Long> ids) {
     tagCmd.delete(ids);
   }

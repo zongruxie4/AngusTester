@@ -267,7 +267,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
           List<User> users = userManager.findByTenantId(getOptTenantId());
           Assert.assertNotEmpty(users, "Tenant users are empty");
           for (Dataset dataset : datasets) {
-            dataset.setTenantId(projectDb.getTenantId())
+            dataset.setId(uidGenerator.getUID()).setTenantId(projectDb.getTenantId())
                 .setCreatedBy(users.get(0).getId()).setLastModifiedBy(users.get(0).getId());
           }
         }

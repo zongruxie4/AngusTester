@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Basic Functionality Testing"
+  },
+  {
+    "name": "UI/UX Testing"
+  },
+  {
+    "name": "Positive Testing"
+  },
+  {
+    "name": "Negative Testing"
+  },
+  {
+    "name": "Boundary Testing"
+  },
+  {
+    "name": "Business Process Testing"
+  },
+  {
+    "name": "Error Handling"
+  },
+  {
+    "name": "Input Validation"
+  },
+  {
+    "name": "Output Validation"
+  },
+  {
+    "name": "Exception Condition Testing"
+  },
+  {
+    "name": "Security Testing"
+  },
+  {
+    "name": "Compatibility Testing"
+  },
+  {
+    "name": "Permission Testing"
+  },
+  {
+    "name": "Exception Testing"
+  },
+  {
+    "name": "Quota Testing"
+  },
+  {
+    "name": "Interaction Testing"
+  },
+  {
+    "name": "Memory Leak Testing"
+  },
+  {
+    "name": "SQL Injection Testing"
+  },
+  {
+    "name": "Screen Adaptation Testing"
+  },
+  {
+    "name": "Incremental Requirements"
+  },
+  {
+    "name": "Critical Defects"
+  },
+  {
+    "name": "Server-Side 5XX Errors"
+  },
+  {
+    "name": "Testing Environment"
+  },
+  {
+    "name": "Pre-Production Environment"
+  },
+  {
+    "name": "Designed as Such"
+  },
+  {
+    "name": "Client-Side 4XX Errors"
+  },
+  {
+    "name": "Development Environment"
+  },
+  {
+    "name": "Production Environment"
+  }
+]

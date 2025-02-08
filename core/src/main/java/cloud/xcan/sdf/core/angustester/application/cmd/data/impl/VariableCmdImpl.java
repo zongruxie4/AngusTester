@@ -271,7 +271,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
           List<User> users = userManager.findByTenantId(getOptTenantId());
           Assert.assertNotEmpty(users, "Tenant users are empty");
           for (Variable variable : variables) {
-            variable.setTenantId(projectDb.getTenantId())
+            variable.setId(uidGenerator.getUID()).setTenantId(projectDb.getTenantId())
                 .setCreatedBy(users.get(0).getId()).setLastModifiedBy(users.get(0).getId());
           }
         }

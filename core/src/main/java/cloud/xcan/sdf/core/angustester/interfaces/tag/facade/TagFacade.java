@@ -16,6 +16,8 @@ public interface TagFacade {
 
   void update(List<TagUpdateDto> dto);
 
+  List<IdKey<Long, Object>> importExample(Long projectId);
+
   void delete(Collection<Long> ids);
 
   TagVo detail(Long id);
