@@ -19,6 +19,8 @@ public interface ModuleFacade {
 
   void update(List<ModuleUpdateDto> dto);
 
+  List<IdKey<Long, Object>> importExample(Long projectId);
+
   void delete(Collection<Long> ids);
 
   ModuleVo detail(Long id);

@@ -52,6 +52,11 @@ public class ModuleFacadeImpl implements ModuleFacade {
   }
 
   @Override
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return moduleCmd.importExample(projectId);
+  }
+
+  @Override
   public List<IdKey<Long, Object>> replace(List<ModuleReplaceDto> dto) {
     List<Module> modules = dto.stream()
         .map(ModuleAssembler::replaceDtoToDomain).collect(Collectors.toList());

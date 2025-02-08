@@ -13,6 +13,8 @@ public interface ModuleCmd {
 
   List<IdKey<Long, Object>> replace(List<Module> modules);
 
+  List<IdKey<Long, Object>> importExample(Long projectId);
+
   void delete(Collection<Long> ids);
 
 }

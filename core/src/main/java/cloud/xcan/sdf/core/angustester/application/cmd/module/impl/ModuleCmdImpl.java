@@ -1,16 +1,23 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.module.impl;
 
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.MODULE;
+import static cloud.xcan.sdf.api.commonlink.TesterConstant.SAMPLE_MODULE_FILE;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.CREATED;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.DELETED;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.UPDATED;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
+import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.utils.CoreUtils.batchCopyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.sdf.api.commonlink.user.User;
+import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.module.ModuleCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.ModuleConverter;
@@ -26,11 +33,14 @@ import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.ProtocolAssert;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
+import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -53,6 +63,9 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
 
   @Resource
   private ProjectQuery projectQuery;
+
+  @Resource
+  private UserManager userManager;
 
   @Resource
   private ActivityCmd activityCmd;
@@ -195,6 +208,38 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
           activityCmd.batchAdd(toActivities(MODULE, updateModulesDb, UPDATED));
         }
         return idKeys;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> importExample(Long projectId) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      Project projectDb;
+
+      @Override
+      protected void checkParams() {
+        // Check the project exists
+        projectDb = projectQuery.checkAndFind(projectId);
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        URL resourceUrl = this.getClass().getResource("/samples/module/"
+            + getDefaultLanguage().getValue() + "/" + SAMPLE_MODULE_FILE);
+        List<Module> modules = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_MODULE_FILE);
+
+        if (!isUserAction()){
+          List<User> users = userManager.findByTenantId(getOptTenantId());
+          Assert.assertNotEmpty(users, "Tenant users are empty");
+          for (Module module : modules) {
+            module.setId(uidGenerator.getUID()).setTenantId(projectDb.getTenantId())
+                .setCreatedBy(users.get(0).getId()).setLastModifiedBy(users.get(0).getId());
+          }
+        }
+
+        return batchInsert(modules, "name");
       }
     }.execute();
   }
