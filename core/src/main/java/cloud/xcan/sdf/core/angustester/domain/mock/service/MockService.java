@@ -12,7 +12,6 @@ import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.model.remoting.MockServiceSetting;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
@@ -29,7 +28,6 @@ import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 @Entity
 @Table(name = "mock_service")
 @Setter

@@ -1917,7 +1917,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
       @Override
       protected List<IdKey<Long, Object>> process() {
         // 0. Query all tenant users
-        List<User> users = userManager.findByTenantId(getOptTenantId());
+        List<User> users = userManager.findValidByTenantId(getOptTenantId());
         Assert.assertNotEmpty(users, "Tenant users are empty");
 
         // 1. If it is an agile project, create sprint by sample file

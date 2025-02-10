@@ -1,10 +1,10 @@
 {
   "name": "MockServiceExample",
   "source": "CREATED",
-  "import_source": null,
-  "auth_flag": "0",
-  "api_security": null,
-  "api_cors": {
+  "importSource": null,
+  "authFlag": false,
+  "apiSecurity": null,
+  "apiCors":  {
     "enabledFlag": true,
     "allowCorsOrigin": "*",
     "allowCorsCredentials": true,

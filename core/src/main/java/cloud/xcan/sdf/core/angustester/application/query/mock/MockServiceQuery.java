@@ -46,8 +46,6 @@ public interface MockServiceQuery {
 
   MockService checkAndFind(Long id);
 
-  MockService checkAndFindByProjectId(Long projectId);
-
   MockServiceInfo checkAndFindInfo(Long id);
 
   List<MockService> checkAndFind(Set<Long> ids);

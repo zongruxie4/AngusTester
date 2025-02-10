@@ -428,12 +428,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   }
 
   @Override
-  public MockService checkAndFindByProjectId(Long projectId) {
-    return mockServiceRepo.findByAssocServiceId(projectId)
-        .orElseThrow(() -> ResourceNotFound.of(projectId, "MockService"));
-  }
-
-  @Override
   public MockServiceInfo checkAndFindInfo(Long id) {
     return mockServiceInfoRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "MockService"));

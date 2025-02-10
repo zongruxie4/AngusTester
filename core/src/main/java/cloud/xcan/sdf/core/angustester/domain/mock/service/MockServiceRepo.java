@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @NoRepositoryBean
 public interface MockServiceRepo extends BaseRepository<MockService, Long> {
 
-  List<MockService> findAllByNameIn(Collection<String> names);
-
   Optional<MockService> findByAssocServiceId(Long serviceId);
 
   @Query(value = "SELECT auth_flag FROM mock_service WHERE id = ?1", nativeQuery = true)
