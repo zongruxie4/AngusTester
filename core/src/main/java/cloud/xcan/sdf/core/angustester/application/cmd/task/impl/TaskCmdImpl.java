@@ -140,6 +140,7 @@ import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -1925,7 +1926,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         if (projectDb.isAgile()) {
           URL resourceUrl = this.getClass().getResource("/samples/sprint/"
               + getDefaultLanguage().getValue() + "/" + SAMPLE_SPRINT_FILE);
-          sprint = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_SPRINT_FILE);
+          sprint = parseSample(Objects.requireNonNull(resourceUrl),
+              new TypeReference<TaskSprint>() {
+              }, SAMPLE_SPRINT_FILE);
           assembleExampleTaskSprint(projectDb, uidGenerator.getUID(), users, sprint);
           taskSprintCmd.add(sprint);
         }
@@ -1938,7 +1941,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // 3. Create task by sample file
         URL resourceUrl = this.getClass().getResource("/samples/task/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_TASK_FILE);
-        List<Task> tasks = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_TASK_FILE);
+        List<Task> tasks = parseSample(Objects.requireNonNull(resourceUrl),
+            new TypeReference<List<Task>>() {
+            }, SAMPLE_TASK_FILE);
         for (Task task : tasks) {
           assembleExampleTask(projectDb, uidGenerator.getUID(), task, sprint, users);
         }

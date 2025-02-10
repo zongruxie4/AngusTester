@@ -102,6 +102,7 @@ import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StringUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -1346,7 +1347,9 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // 1. Create test plan by sample file
         URL resourceUrl = this.getClass().getResource("/samples/plan/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
-        FuncPlan plan = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_FUNC_PLAN_FILE);
+        FuncPlan plan = parseSample(Objects.requireNonNull(resourceUrl),
+            new TypeReference<FuncPlan>() {
+            }, SAMPLE_FUNC_PLAN_FILE);
         assembleExampleFuncPlan(projectId, uidGenerator.getUID(), plan, users);
         funcPlanCmd.add(plan);
 
@@ -1354,7 +1357,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         resourceUrl = this.getClass().getResource("/samples/cases/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
         List<FuncCase> cases = parseSample(Objects.requireNonNull(resourceUrl),
-            SAMPLE_FUNC_CASE_FILE);
+            new TypeReference<List<FuncCase>>() {
+            }, SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
           assembleExampleFuncCase(projectId, uidGenerator.getUID(), case0, plan, users);
         }
@@ -1364,7 +1368,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         resourceUrl = this.getClass().getResource("/samples/review/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
         FuncReview review = parseSample(Objects.requireNonNull(resourceUrl),
-            SAMPLE_FUNC_REVIEW_FILE);
+            new TypeReference<FuncReview>() {
+            }, SAMPLE_FUNC_REVIEW_FILE);
         assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
         funcReviewCmd.add(review);
         funcReviewCaseCmd.add(review.getId(), cases.stream()
@@ -1375,7 +1380,8 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         resourceUrl = this.getClass().getResource("/samples/baseline/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
         FuncBaseline baseline = parseSample(Objects.requireNonNull(resourceUrl),
-            SAMPLE_FUNC_BASELINE_FILE);
+            new TypeReference<FuncBaseline>() {
+            }, SAMPLE_FUNC_BASELINE_FILE);
         assembleExampleFuncBaseline(projectId, uidGenerator.getUID(), baseline, plan, cases, users);
         funcBaselineCmd.add(baseline);
 

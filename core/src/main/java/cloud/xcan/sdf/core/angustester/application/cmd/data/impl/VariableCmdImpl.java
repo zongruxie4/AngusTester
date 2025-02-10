@@ -9,7 +9,7 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.VARIABLE_
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.VARIABLE_IS_NOT_VALID;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.CLONE;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.IMPORT;
-import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readSample;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
@@ -251,7 +251,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
       protected List<IdKey<Long, Object>> process() {
         URL resourceUrl = this.getClass().getResource("/samples/data/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_VARIABLE_FILE);
-        String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
+        String content = readSample(Objects.requireNonNull(resourceUrl), SAMPLE_VARIABLE_FILE);
         List<Variable> variables = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
         for (Variable variable : variables) {

@@ -258,11 +258,19 @@ public class AngusTesterUtils {
         fileName + format.getFileSuffix(), contentBytes.length, resource);
   }
 
-  public static <T> T parseSample(URL resourceUrl, String exampleFile) {
+  public static <T> T parseSample(URL resourceUrl, TypeReference<T> type, String exampleFile) {
     try {
       String content = copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
-      return JsonUtils.convert(content, new TypeReference<T>() {
-      });
+      return JsonUtils.convert(content, type);
+    } catch (IOException e) {
+      throw CommSysException.of("Couldn't read sample file " + exampleFile,
+          e.getMessage());
+    }
+  }
+
+  public static String readSample(URL resourceUrl, String exampleFile) {
+    try {
+      return copyToString(resourceUrl.openStream(), StandardCharsets.UTF_8);
     } catch (IOException e) {
       throw CommSysException.of("Couldn't read sample file " + exampleFile,
           e.getMessage());

@@ -25,6 +25,7 @@ import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.core.utils.CoreUtils;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -131,7 +132,9 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
       protected List<IdKey<Long, Object>> process() {
         URL resourceUrl = this.getClass().getResource("/samples/tag/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_TAG_FILE);
-        List<Tag> tags = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_TAG_FILE);
+        List<Tag> tags = parseSample(Objects.requireNonNull(resourceUrl),
+            new TypeReference<List<Tag>>() {
+            }, SAMPLE_TAG_FILE);
         for (Tag tag : tags) {
           tag.setProjectId(projectId);
         }

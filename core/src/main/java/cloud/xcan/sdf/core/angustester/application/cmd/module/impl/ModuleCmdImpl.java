@@ -30,6 +30,7 @@ import cloud.xcan.sdf.core.biz.ProtocolAssert;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -221,7 +222,9 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
       protected List<IdKey<Long, Object>> process() {
         URL resourceUrl = this.getClass().getResource("/samples/module/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_MODULE_FILE);
-        List<Module> modules = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_MODULE_FILE);
+        List<Module> modules = parseSample(Objects.requireNonNull(resourceUrl),
+            new TypeReference<List<Module>>() {
+            }, SAMPLE_MODULE_FILE);
         for (Module module : modules) {
           module.setProjectId(projectId);
         }

@@ -8,7 +8,7 @@ import static cloud.xcan.sdf.core.angustester.application.converter.DatasetConve
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.DATASET_IS_NOT_VALID;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.CLONE;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.IMPORT;
-import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
+import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.readSample;
 import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
@@ -247,7 +247,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
       protected List<IdKey<Long, Object>> process() {
         URL resourceUrl = this.getClass().getResource("/samples/data/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_DATASET_FILE);
-        String content = parseSample(Objects.requireNonNull(resourceUrl), SAMPLE_DATASET_FILE);
+        String content = readSample(Objects.requireNonNull(resourceUrl), SAMPLE_DATASET_FILE);
         List<Dataset> datasets = parseVariablesFromScript(projectId,
             StrategyWhenDuplicated.IGNORE, content);
         for (Dataset dataset : datasets) {

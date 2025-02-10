@@ -93,6 +93,7 @@ import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.core.utils.CoreUtils;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.FileUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -694,6 +695,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   @Override
   public IdKey<Long, Object> importExample(Long projectId) {
     return new BizTemplate<IdKey<Long, Object>>() {
+
       @Override
       protected void checkParams() {
         // NOOP
@@ -704,10 +706,12 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         URL resourceUrl = this.getClass().getResource("/samples/mock/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_MOCK_SERVICE_FILE);
         MockService service = parseSample(Objects.requireNonNull(resourceUrl),
-            SAMPLE_MOCK_SERVICE_FILE);
+            new TypeReference<MockService>() {
+            }, SAMPLE_MOCK_SERVICE_FILE);
 
         List<Node> mockNodes = nodeQuery.findByRole(NodeRole.MOCK_SERVICE);
         service.setProjectId(projectId);
+        service.setNodeId(isNotEmpty(mockNodes) ? mockNodes.get(0).getId() : -1L);
         service.setNodeIp(isNotEmpty(mockNodes) ? mockNodes.get(0).getIp() : "[MockNodeNotFound]");
         service.setServicePort(RandomUtils.nextInt(10000, 20000));
         IdKey<Long, Object> idKey = insert(service);
