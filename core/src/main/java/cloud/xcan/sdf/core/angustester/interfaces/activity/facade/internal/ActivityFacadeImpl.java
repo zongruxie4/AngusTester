@@ -12,7 +12,6 @@ import cloud.xcan.sdf.core.angustester.interfaces.activity.facade.dto.ActivityFi
 import cloud.xcan.sdf.core.angustester.interfaces.activity.facade.dto.ActivitySearchDto;
 import cloud.xcan.sdf.core.angustester.interfaces.activity.facade.internal.assembler.ActivityAssembler;
 import cloud.xcan.sdf.core.angustester.interfaces.activity.facade.vo.ActivityDetailVo;
-import cloud.xcan.sdf.core.biz.NameJoin;
 import javax.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,6 @@ public class ActivityFacadeImpl implements ActivityFacade {
   @Resource
   private ActivitySearch activitySearch;
 
-  @NameJoin
   @Override
   public PageResult<ActivityDetailVo> list(ActivityFindDto dto) {
     Page<Activity> activitiesPage = activityQuery
@@ -34,7 +32,6 @@ public class ActivityFacadeImpl implements ActivityFacade {
     return buildVoPageResult(activitiesPage, ActivityAssembler::toDetailVo);
   }
 
-  @NameJoin
   @Override
   public PageResult<ActivityDetailVo> search(ActivitySearchDto dto) {
     Page<Activity> activitiesPage = activitySearch

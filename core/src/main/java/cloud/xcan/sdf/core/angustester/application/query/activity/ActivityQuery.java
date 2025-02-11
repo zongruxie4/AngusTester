@@ -12,6 +12,8 @@ public interface ActivityQuery {
 
   Page<Activity> find(GenericSpecification<Activity> spec, Pageable pageable);
 
+  void setProjectName(Page<Activity> page);
+
   List<ActivitySummary> findSummaryByTarget(CombinedTargetType targetType, Long targetId);
 }
 

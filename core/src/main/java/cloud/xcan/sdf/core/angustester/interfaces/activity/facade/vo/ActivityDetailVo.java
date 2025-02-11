@@ -1,7 +1,6 @@
 package cloud.xcan.sdf.core.angustester.interfaces.activity.facade.vo;
 
 
-import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import io.swagger.annotations.ApiModel;
 import java.time.LocalDateTime;
@@ -19,7 +18,6 @@ public class ActivityDetailVo {
 
   private Long projectId;
 
-  @NameJoinField(id = "projectId", repository = "projectRepo")
   private String projectName;
 
   private Long userId;

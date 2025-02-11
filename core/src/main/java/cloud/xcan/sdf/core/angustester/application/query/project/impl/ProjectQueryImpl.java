@@ -146,8 +146,8 @@ public class ProjectQueryImpl implements ProjectQuery {
   }
 
   @Override
-  public Project find0(Long id) {
-    return projectRepo.findById(id).orElse(null);
+  public List<Project> find0ById(Set<Long> ids) {
+    return projectRepo.findAllByIdIn(ids);
   }
 
   @Override

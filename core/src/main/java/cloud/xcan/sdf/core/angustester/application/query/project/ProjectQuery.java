@@ -4,6 +4,7 @@ import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +22,7 @@ public interface ProjectQuery {
 
   Project checkAndFind(Long id);
 
-  Project find0(Long projectId);
+  List<Project> find0ById(Set<Long> ids);
 
   void checkQuota(int inc);
 

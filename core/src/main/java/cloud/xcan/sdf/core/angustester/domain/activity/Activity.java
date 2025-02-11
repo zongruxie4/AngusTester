@@ -66,6 +66,8 @@ public class Activity extends TenantEntity<Activity, Long> {
   private String detail;
 
   @Transient
+  private String projectName;
+  @Transient
   private String fullname;
   @Transient
   private String avatar;

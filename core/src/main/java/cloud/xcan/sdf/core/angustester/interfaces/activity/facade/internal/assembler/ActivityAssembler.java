@@ -14,6 +14,7 @@ public class ActivityAssembler {
   public static ActivityDetailVo toDetailVo(Activity activity) {
     return new ActivityDetailVo().setId(activity.getId())
         .setProjectId(activity.getProjectId())
+        .setProjectName(activity.getProjectName())
         .setUserId(activity.getUserId())
         .setFullname(activity.getFullname()).setAvatar(activity.getAvatar())
         .setTargetId(activity.getTargetId()).setTargetType(activity.getTargetType())

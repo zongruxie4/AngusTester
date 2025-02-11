@@ -5,6 +5,7 @@ import cloud.xcan.sdf.core.jpa.repository.NameJoinRepository;
 import cloud.xcan.sdf.spec.annotations.DoInFuture;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -21,6 +22,9 @@ public interface ProjectRepo extends NameJoinRepository<Project, Long>,
 
   @Query(value = "SELECT id FROM project WHERE id IN ?1", nativeQuery = true)
   List<Long> findId0ByIdIn(Collection<Long> ids);
+
+  @Query(value = "SELECT * FROM project WHERE id IN ?1", nativeQuery = true)
+  List<Project> findAllByIdIn(Collection<Long> ids);
 
   @Query(value = "SELECT COUNT(*) FROM project", nativeQuery = true)
   long countAll0();
@@ -43,6 +47,5 @@ public interface ProjectRepo extends NameJoinRepository<Project, Long>,
   @Modifying
   @Query(value = "DELETE FROM project WHERE id IN ?1", nativeQuery = true)
   void deleteAllByIdIn(List<Long> ids);
-
 
 }

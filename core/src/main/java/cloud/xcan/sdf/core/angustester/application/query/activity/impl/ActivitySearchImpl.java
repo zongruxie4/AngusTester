@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.application.query.activity.impl;
 
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.search.SearchCriteria;
+import cloud.xcan.sdf.core.angustester.application.query.activity.ActivityQuery;
 import cloud.xcan.sdf.core.angustester.application.query.activity.ActivitySearch;
 import cloud.xcan.sdf.core.angustester.domain.activity.Activity;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivitySearchRepo;
@@ -19,6 +20,9 @@ public class ActivitySearchImpl implements ActivitySearch {
   private ActivitySearchRepo activitySearchRepo;
 
   @Resource
+  private ActivityQuery activityQuery;
+
+  @Resource
   private UserManager userManager;
 
   @Override
@@ -32,12 +36,12 @@ public class ActivitySearchImpl implements ActivitySearch {
 
       @Override
       protected Page<Activity> process() {
-        Page<Activity> activityPage = activitySearchRepo.find(criterias, pageable, clz, matches);
-        if (activityPage.hasContent()) {
-          userManager.setUserNameAndAvatar(activityPage.getContent(),
-              "userId", "fullname", "avatar");
+        Page<Activity> page = activitySearchRepo.find(criterias, pageable, clz, matches);
+        if (page.hasContent()) {
+          activityQuery.setProjectName(page);
+          userManager.setUserNameAndAvatar(page.getContent(), "userId", "fullname", "avatar");
         }
-        return activityPage;
+        return page;
       }
     }.execute();
   }
