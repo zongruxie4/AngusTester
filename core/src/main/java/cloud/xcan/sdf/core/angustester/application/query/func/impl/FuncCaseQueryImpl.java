@@ -214,6 +214,8 @@ import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 @Biz
 public class FuncCaseQueryImpl implements FuncCaseQuery {
@@ -389,7 +391,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         if (isNotEmpty(associatedCaseIds)) {
           filters.add(SearchCriteria.notIn("id", associatedCaseIds));
         }
-        return funcCaseInfoRepo.findAllByFilters(filters);
+        return funcCaseInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }
@@ -422,7 +424,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         if (isNotEmpty(associatedCaseIds)) {
           filters.add(SearchCriteria.notIn("id", associatedCaseIds));
         }
-        return funcCaseInfoRepo.findAllByFilters(filters);
+        return funcCaseInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }

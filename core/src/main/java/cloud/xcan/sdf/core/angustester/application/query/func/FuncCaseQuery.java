@@ -38,7 +38,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -139,7 +138,6 @@ public interface FuncCaseQuery {
 
   AbstractOverview assembleCaseAnalysisSnapshot(Analysis analysis);
 
-  @SneakyThrows
   AbstractOverview parseCaseAnalysisSnapshot(String template0, String snapshot);
 
   void checkCaseQuota(int inc, Long planId);

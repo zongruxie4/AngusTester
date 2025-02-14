@@ -246,6 +246,8 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 @Biz
 @SummaryQueryRegister(name = "Task", table = "task",
@@ -456,7 +458,7 @@ public class TaskQueryImpl implements TaskQuery {
         if (isNotEmpty(associatedSubTaskIds)) {
           filters.add(SearchCriteria.notIn("id", associatedSubTaskIds));
         }
-        return taskInfoRepo.findAllByFilters(filters);
+        return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }
@@ -493,7 +495,7 @@ public class TaskQueryImpl implements TaskQuery {
         if (isNotEmpty(associatedTaskIds)) {
           filters.add(SearchCriteria.notIn("id", associatedTaskIds));
         }
-        return taskInfoRepo.findAllByFilters(filters);
+        return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }
@@ -530,7 +532,7 @@ public class TaskQueryImpl implements TaskQuery {
         if (isNotEmpty(associatedTaskIds)) {
           filters.add(SearchCriteria.notIn("id", associatedTaskIds));
         }
-        return taskInfoRepo.findAllByFilters(filters);
+        return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }
