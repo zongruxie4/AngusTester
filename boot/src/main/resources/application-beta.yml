@@ -37,7 +37,7 @@ xcan:
   trace:
     enabled: true
   cloud:
-    gmApiPrefix: ${AUTH_APIS_HOST:http://dev-apis.xcan.cloud}/gm
+    gmApiUrlPrefix: ${AUTH_APIS_HOST:http://dev-apis.xcan.cloud}/gm
     mockServiceDomainSuffix: ${MOCK_SERVICE_DOMAIN_SUFFIX:angusmock.cloud}
     mockTesterApisServerUrl: ${MOCK_TESTER_APIS_SERVER_URL:http://dev-apis.xcan.cloud/altester}
   # Hikari Datasource Configuration
