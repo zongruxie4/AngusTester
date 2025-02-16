@@ -89,7 +89,7 @@
     <xcan-jmock.bom.version>1.0.0</xcan-jmock.bom.version>
     <xcan-angus-bom.version>1.0.0</xcan-angus-bom.version>
 
-    <xcan-gm.api.version>1.0.0</xcan-gm.api.version>
+    <xcan-angusgm.api.version>1.0.0</xcan-angusgm.api.version>
     <xcan-expense.api.version>1.0.0</xcan-expense.api.version>
     <xcan-store.api.version>1.0.0</xcan-store.api.version>
     <xcan-angusctrl.api.version>1.0.0</xcan-angusctrl.api.version>
@@ -171,8 +171,8 @@
 
       <dependency>
         <groupId>cloud.xcan.sdf</groupId>
-        <artifactId>xcan-gm.api</artifactId>
-        <version>${xcan-gm.api.version}</version>
+        <artifactId>xcan-angusgm.api</artifactId>
+        <version>${xcan-angusgm.api.version}</version>
       </dependency>
 
       <dependency>

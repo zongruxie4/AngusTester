@@ -37,6 +37,7 @@ import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
+import cloud.xcan.sdf.l2cache.spring.RedisCaffeineCacheManager;
 import cloud.xcan.sdf.spec.annotations.DoInFuture;
 import cloud.xcan.sdf.spec.utils.GzipUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -423,7 +424,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     servicesSchemaRepo.deleteByServiceIdIn(serviceIds);
-    cacheManager.evict("servicesSchema", serviceIds.stream().map(id -> "serviceId_" + id)
+    ((RedisCaffeineCacheManager)cacheManager).evict("servicesSchema", serviceIds.stream().map(id -> "serviceId_" + id)
         .collect(Collectors.toList()));
   }
 
