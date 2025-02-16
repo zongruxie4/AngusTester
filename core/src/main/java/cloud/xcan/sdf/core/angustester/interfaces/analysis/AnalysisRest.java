@@ -12,7 +12,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.dto.AnalysisSe
 import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.dto.AnalysisUpdateDto;
 import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.vo.AnalysisDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.vo.AnalysisListVo;
-import cloud.xcan.sdf.core.spring.condition.NotPrivateEditionCondition;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")
-@Conditional(NotPrivateEditionCondition.class)
+@Conditional(NotCommunityEditionCondition.class)
 public class AnalysisRest {
 
   @Resource

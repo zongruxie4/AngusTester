@@ -28,7 +28,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.ReportListVo;
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.FuncCaseContentVo;
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.TaskContentVo;
 import cloud.xcan.sdf.core.biz.NameJoin;
-import cloud.xcan.sdf.core.spring.condition.NotPrivateEditionCondition;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-@Conditional(NotPrivateEditionCondition.class)
+@Conditional(NotCommunityEditionCondition.class)
 @Component
 public class ReportFacadeImpl implements ReportFacade {
 

@@ -6,17 +6,20 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import cloud.xcan.sdf.core.angustester.application.cmd.report.ReportCmd;
 import cloud.xcan.sdf.core.angustester.domain.report.Report;
 import cloud.xcan.sdf.core.angustester.domain.report.ReportRepo;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.lettucex.distlock.RedisLock;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@Conditional(NotCommunityEditionCondition.class)
 public class ReportGenerateJob {
 
   private static final String LOCK_KEY = "job:angustester:ReportGenerateJob";

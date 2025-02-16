@@ -11,7 +11,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.Scena
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.ServicesTestingContentVo;
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.TaskContentVo;
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.content.TaskSprintContentVo;
-import cloud.xcan.sdf.core.spring.condition.NotPrivateEditionCondition;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/report")
-@Conditional(NotPrivateEditionCondition.class)
+@Conditional(NotCommunityEditionCondition.class)
 public class ReportContentRest {
 
   @Resource

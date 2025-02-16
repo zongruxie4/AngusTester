@@ -16,7 +16,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.report.facade.internal.assembl
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.auth.ReportAuthCurrentVo;
 import cloud.xcan.sdf.core.angustester.interfaces.report.facade.vo.auth.ReportAuthVo;
 import cloud.xcan.sdf.core.biz.NameJoin;
-import cloud.xcan.sdf.core.spring.condition.NotPrivateEditionCondition;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-@Conditional(NotPrivateEditionCondition.class)
+@Conditional(NotCommunityEditionCondition.class)
 @Component
 public class ReportAuthFacadeImpl implements ReportAuthFacade {
 

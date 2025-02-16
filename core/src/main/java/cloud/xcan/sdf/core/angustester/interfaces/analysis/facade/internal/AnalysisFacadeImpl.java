@@ -20,7 +20,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.internal.assem
 import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.vo.AnalysisDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.analysis.facade.vo.AnalysisListVo;
 import cloud.xcan.sdf.core.biz.NameJoin;
-import cloud.xcan.sdf.core.spring.condition.NotPrivateEditionCondition;
+import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-@Conditional(NotPrivateEditionCondition.class)
+@Conditional(NotCommunityEditionCondition.class)
 @Component
 public class AnalysisFacadeImpl implements AnalysisFacade {
 
