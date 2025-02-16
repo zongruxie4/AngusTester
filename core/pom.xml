@@ -26,6 +26,11 @@
     </dependency>
 
     <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.l2cache-core</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angus.core</artifactId>
     </dependency>
@@ -62,7 +67,7 @@
 
     <dependency>
       <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-gm.api</artifactId>
+      <artifactId>xcan-angusgm.api</artifactId>
     </dependency>
 
     <dependency>
@@ -131,19 +136,4 @@
 
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <encoding>UTF-8</encoding>
-          <nonFilteredFileExtensions>
-            <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
-            <nonFilteredFileExtension>yaml</nonFilteredFileExtension>
-          </nonFilteredFileExtensions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

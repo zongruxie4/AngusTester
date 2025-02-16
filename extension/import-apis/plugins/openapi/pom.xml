@@ -16,8 +16,22 @@
 
   <dependencies>
     <dependency>
+      <groupId>cloud.xcan.sdf</groupId>
+      <artifactId>xcan-sdf.spec</artifactId>
+      <!-- !!! VERY IMPORTANT -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>io.swagger.parser.v3</groupId>
       <artifactId>swagger-parser</artifactId>
+      <exclusions>
+        <!-- Use the spec module instead -->
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-models</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>provided</scope>
     </dependency>
   </dependencies>

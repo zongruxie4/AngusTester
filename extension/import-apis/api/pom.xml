@@ -46,6 +46,13 @@
     <dependency>
       <groupId>io.swagger.validator.v3</groupId>
       <artifactId>swagger-validator</artifactId>
+      <exclusions>
+        <!-- Use the spec module instead -->
+        <exclusion>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-models</artifactId>
+        </exclusion>
+      </exclusions>
       <!-- !!! VERY IMPORTANT -->
       <scope>provided</scope>
     </dependency>
