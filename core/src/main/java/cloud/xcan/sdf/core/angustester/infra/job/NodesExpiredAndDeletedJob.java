@@ -1,6 +1,6 @@
 package cloud.xcan.sdf.core.angustester.infra.job;
 
-import static org.springframework.cache.AppEnvUtils.APP_INIT_READY;
+import static cloud.xcan.sdf.core.utils.AppEnvUtils.APP_INIT_READY;
 
 import cloud.xcan.sdf.core.angustester.application.cmd.node.NodeCmd;
 import cloud.xcan.sdf.core.spring.condition.CloudServiceEditionCondition;

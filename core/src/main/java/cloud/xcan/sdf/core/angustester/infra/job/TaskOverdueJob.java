@@ -5,11 +5,11 @@ import static cloud.xcan.sdf.api.commonlink.EventUtils.assembleAngusTesterUserNo
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskOverdue;
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskOverdueCode;
 import static cloud.xcan.sdf.core.angustester.infra.job.TaskWillOverdueEventJob.createInnerPrincipal;
+import static cloud.xcan.sdf.core.utils.AppEnvUtils.APP_INIT_READY;
 import static cloud.xcan.sdf.spec.locale.MessageHolder.message;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
-import static org.springframework.cache.AppEnvUtils.APP_INIT_READY;
 
 import cloud.xcan.sdf.api.commonlink.tenant.Tenant;
 import cloud.xcan.sdf.api.commonlink.tenant.TenantRepo;
