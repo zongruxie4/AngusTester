@@ -142,13 +142,13 @@ public interface FuncCaseQuery {
 
   void checkCaseQuota(int inc, Long planId);
 
+  FuncCaseInfo findLeastByProjectId(Long projectId);
+
   Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long projectId, Set<String> caseNames);
 
   void checkAddCaseNameExists(FuncPlan planDb, List<FuncCase> cases);
 
   void checkAndSafeUpdateNameExists(FuncPlan planDb, List<FuncCase> cases);
-
-  FuncCaseInfo findLeastByProjectId(Long projectId);
 
   FuncCase checkAndFind(Long id);
 
@@ -173,6 +173,10 @@ public interface FuncCaseQuery {
   void setFollow(List<? extends ResourceFavouriteAndFollow<?, ?>> cases);
 
   void setSafeCloneName(FuncCase funcCase);
+
+  void setCaseProgress(FuncCase caseDb);
+
+  void setCaseInfoProgress(List<FuncCaseInfo> caseDbs);
 
   void assembleAndSendModifyNoticeEvent(List<FuncCaseInfo> casesDb, List<Activity> activities);
 

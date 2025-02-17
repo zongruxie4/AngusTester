@@ -87,6 +87,7 @@ import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.http.ResourceExisted;
 import cloud.xcan.sdf.api.message.http.ResourceNotFound;
 import cloud.xcan.sdf.api.pojo.Attachment;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter;
 import cloud.xcan.sdf.core.angustester.application.query.analysis.AnalysisQuery;
@@ -314,6 +315,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         // Set comment num
         int commentNum = commentQuery.getCommentNum(id, CommentTargetType.FUNC_CASE.getValue());
         caseDb.setCommentNum(commentNum);
+        // Set progress
+        setCaseProgress(caseDb);
         return caseDb;
       }
     }.execute();
@@ -357,6 +360,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
           // Set tags
           tagQuery.setTags(page.getContent());
+          // Set progress
+          setCaseInfoProgress(page.getContent());
         }
         return page;
       }
@@ -478,7 +483,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       }
     }.execute();
   }
-
 
   @Override
   public FuncCaseCount countStatistics(Set<SearchCriteria> criterias) {
@@ -1748,6 +1752,11 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   @Override
+  public FuncCaseInfo findLeastByProjectId(Long projectId) {
+    return funcCaseInfoRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long planId, Set<String> names) {
     if (ObjectUtils.isEmpty(names)) {
       return emptyMap();
@@ -1798,11 +1807,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         }
       }
     }
-  }
-
-  @Override
-  public FuncCaseInfo findLeastByProjectId(Long projectId) {
-    return funcCaseInfoRepo.findLeastByProjectId(projectId);
   }
 
   @Override
@@ -1948,6 +1952,22 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     clonedName = clonedName.length() > DEFAULT_NAME_LENGTH_X4 ? clonedName.substring(0,
         DEFAULT_NAME_LENGTH_X4 - 3) + saltName : clonedName;
     funcCase.setName(clonedName);
+  }
+
+  @Override
+  public void setCaseProgress(FuncCase caseDb) {
+    caseDb.setProgress(new Progress()
+        .setCompleted(caseDb.getTestResult().isPassed() ? 1 : 0)
+        .setTotal(!caseDb.getTestResult().isCanceled() ? 1 : 0));
+  }
+
+  @Override
+  public void setCaseInfoProgress(List<FuncCaseInfo> caseDbs) {
+    for (FuncCaseInfo caseDb : caseDbs) {
+      caseDb.setProgress(new Progress()
+          .setCompleted(caseDb.getTestResult().isPassed() ? 1 : 0)
+          .setTotal(!caseDb.getTestResult().isCanceled() ? 1 : 0));
+    }
   }
 
   @Override

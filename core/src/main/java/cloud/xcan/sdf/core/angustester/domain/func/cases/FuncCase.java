@@ -8,6 +8,7 @@ import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.pojo.Attachment;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.ResourceTagAssoc;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
@@ -192,6 +193,8 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements Ac
   private LinkedHashSet<Long> refTaskIds;
   @Transient
   private LinkedHashSet<Long> refCaseIds;
+  @Transient
+  private Progress progress;
 
   public boolean canReview() {
     return isNull(reviewStatus) || reviewStatus.isFailed() || reviewStatus.isPending();

@@ -6,6 +6,7 @@ import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.pojo.Attachment;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.vo.IdAndNameVo;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestResult;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestStep;
@@ -119,6 +120,8 @@ public class FuncCaseDetailVo {
   private List<FuncCaseInfoVo> refCaseInfos;
 
   private Map<Integer, FuncCaseDetailVo> allVersionCaseVos;
+
+  private Progress progress;
 
   private Boolean favouriteFlag;
 

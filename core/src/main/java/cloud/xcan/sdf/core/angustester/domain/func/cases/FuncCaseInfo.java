@@ -7,6 +7,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.ResourceTagAssoc;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
@@ -174,6 +175,8 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   private List<TaskInfo> assocTasks;
   @Transient// Only used by export
   private List<FuncCaseInfo> assocCases;
+  @Transient
+  private Progress progress;
 
   public boolean isReviewed() {
     return nonNull(reviewStatus) && reviewStatus.isPassed();

@@ -7,6 +7,7 @@ import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.ReviewStatus;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.vo.IdAndNameVo;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestResult;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestStep;
@@ -122,6 +123,8 @@ public class FuncCaseListVo {
   private LocalDateTime testResultHandleDate;
 
   private List<IdAndNameVo> tags;
+
+  private Progress progress;
 
   private Boolean favouriteFlag;
 
