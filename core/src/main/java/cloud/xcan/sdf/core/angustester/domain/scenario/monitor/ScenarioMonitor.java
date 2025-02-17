@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.domain.scenario.monitor;
 import cloud.xcan.sdf.api.enums.CreatedAt;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.scenario.count.ScenarioMonitorCount;
+import cloud.xcan.sdf.core.angustester.domain.setting.MonitorTimeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.NoticeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.TimeSetting;
 import cloud.xcan.sdf.core.jpa.hibernate.type.json.JsonStringType;
@@ -71,7 +72,7 @@ public class ScenarioMonitor extends TenantAuditingEntity<ScenarioMonitor, Long>
 
   @Type(type = "json")
   @Column(name = "time_setting")
-  private TimeSetting timeSetting;
+  private MonitorTimeSetting timeSetting;
 
   @Type(type = "json")
   @Column(name = "server_setting")

@@ -10,6 +10,7 @@ import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.lengthSafe;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
@@ -35,6 +36,7 @@ import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
@@ -96,7 +98,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
         monitor.setProjectId(scenarioDb.getProjectId());
         monitor.setStatus(ScenarioMonitorStatus.PENDING);
         monitor.setScriptId(scenarioDb.getScriptId());
-        monitor.setNextExecDate(monitor.getTimeSetting().getNextDate());
+        monitor.setNextExecDate(monitor.getTimeSetting().getNextDate(LocalDateTime.now()));
         IdKey<Long, Object> idKey = insert(monitor);
 
         // Save activity
@@ -125,7 +127,8 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
       @Override
       protected Void process() {
         if (nonNull(monitor.getTimeSetting())) {
-          monitor.setNextExecDate(monitor.getTimeSetting().getNextDate());
+          monitor.setNextExecDate(monitor.getTimeSetting()
+              .getNextDate(nullSafe(monitorDb.getLastMonitorDate(), LocalDateTime.now())));
         }
         scenarioMonitorRepo.save(copyPropertiesIgnoreNull(monitor, monitorDb));
         activityCmd.add(toActivity(SCENARIO_MONITOR, monitorDb, ActivityType.UPDATED));
@@ -188,6 +191,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
             commonQuery.setInnerPrincipal(monitorDb.getTenantId(), monitorDb.getCreatedBy());
           }
 
+          LocalDateTime now = LocalDateTime.now();
           ScenarioMonitorHistory history = scenarioMonitorHistoryCmd.run(monitorDb);
           monitorDb.setStatus(history.getStatus())
               .setFailureMessage(lengthSafe(history.getFailureMessage(), 400))
@@ -195,7 +199,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
               .setLastMonitorDate(history.getCreatedDate());
           if (nonNull(monitorDb.getTimeSetting()) && !monitorDb.getTimeSetting().isOnetime()) {
             // Trigger the next execution
-            monitorDb.setNextExecDate(monitorDb.getTimeSetting().getNextDate());
+            monitorDb.setNextExecDate(monitorDb.getTimeSetting().getNextDate(now));
           }
           scenarioMonitorRepo.save(monitorDb);
 

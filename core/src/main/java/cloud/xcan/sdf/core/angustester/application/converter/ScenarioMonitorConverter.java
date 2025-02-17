@@ -12,6 +12,7 @@ import cloud.xcan.sdf.core.angustester.domain.scenario.count.ScenarioMonitorCoun
 import cloud.xcan.sdf.core.angustester.domain.scenario.monitor.ScenarioMonitor;
 import cloud.xcan.sdf.core.angustester.domain.scenario.monitor.ScenarioMonitorHistoryInfo;
 import cloud.xcan.sdf.spec.unit.TimeValue;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ScenarioMonitorConverter {
@@ -19,7 +20,8 @@ public class ScenarioMonitorConverter {
   public static void setReplaceInfo(ScenarioMonitor monitorDb, ScenarioMonitor monitor) {
     monitorDb.setName(monitor.getName())
         .setDescription(monitor.getDescription())
-        .setNextExecDate(monitor.getTimeSetting().getNextDate())
+        .setNextExecDate(monitor.getTimeSetting().getNextDate(
+            nullSafe(monitorDb.getNextExecDate(), LocalDateTime.now())))
         .setCreatedAt(monitor.getTimeSetting().getCreatedAt())
         .setTimeSetting(monitor.getTimeSetting())
         .setServerSetting(monitor.getServerSetting())
@@ -74,6 +76,5 @@ public class ScenarioMonitorConverter {
     }
     monitorDb.setCount(count);
   }
-
 
 }
