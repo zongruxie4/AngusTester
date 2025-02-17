@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.scenario.facade.vo.monitor;
 import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.core.angustester.domain.scenario.count.ScenarioMonitorCount;
 import cloud.xcan.sdf.core.angustester.domain.scenario.monitor.ScenarioMonitorStatus;
+import cloud.xcan.sdf.core.angustester.domain.setting.MonitorTimeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.NoticeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.TimeSetting;
 import io.swagger.annotations.ApiModel;
@@ -45,7 +46,7 @@ public class ScenarioMonitorDetailVo {
 
   private LocalDateTime lastMonitorDate;
 
-  private TimeSetting timeSetting;
+  private MonitorTimeSetting timeSetting;
 
   private List<Server> serverSetting;
 
