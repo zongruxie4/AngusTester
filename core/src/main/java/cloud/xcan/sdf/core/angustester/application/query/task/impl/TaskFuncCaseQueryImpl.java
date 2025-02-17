@@ -75,11 +75,11 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
             task.setAssocTasks(assocTaskInfoMap.entrySet().stream()
                 .filter(x -> taskAssocTaskIds.contains(x.getKey()))
                 .map(Entry::getValue).collect(Collectors.toList()));
-            // Set assignee name and avatar
-            userManager.setUserNameAndAvatar(task.getAssocTasks(),
-                "assigneeId", "assigneeName", "assigneeAvatar");
           }
         }
+        // Set assignee name and avatar
+        userManager.setUserNameAndAvatar(assocTaskInfoMap.values(),
+            "assigneeId", "assigneeName", "assigneeAvatar");
       }
 
       List<Long> assocCaseIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocCase)
@@ -97,11 +97,11 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
             task.setAssocCases(assocCaseInfoMap.entrySet().stream()
                 .filter(x -> taskAssocCaseIds.contains(x.getKey()))
                 .map(Entry::getValue).collect(Collectors.toList()));
-            // Set tester name and avatar
-            userManager.setUserNameAndAvatar(task.getAssocCases(), "testerId", "testerName",
-                "testerAvatar");
           }
         }
+        // Set tester name and avatar
+        userManager.setUserNameAndAvatar(assocCaseInfoMap.values(), "testerId", "testerName",
+            "testerAvatar");
       }
     }
   }
@@ -134,11 +134,11 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
             case0.setAssocTasks(assocTaskInfoMap.entrySet().stream()
                 .filter(x -> caseAssocTaskIds.contains(x.getKey()))
                 .map(Entry::getValue).collect(Collectors.toList()));
-            // Set assignee name and avatar
-            userManager.setUserNameAndAvatar(case0.getAssocTasks(),
-                "assigneeId", "assigneeName", "assigneeAvatar");
           }
         }
+        // Set assignee name and avatar
+        userManager.setUserNameAndAvatar(assocTaskInfoMap.values(),
+            "assigneeId", "assigneeName", "assigneeAvatar");
       }
 
       List<Long> assocCaseIds = tfcs.stream().filter(TaskFuncCase::isCaseAssocCase)
@@ -156,11 +156,11 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
             case0.setAssocCases(assocCaseInfoMap.entrySet().stream()
                 .filter(x -> caseAssocCaseIds.contains(x.getKey()))
                 .map(Entry::getValue).collect(Collectors.toList()));
-            // Set tester name and avatar
-            userManager.setUserNameAndAvatar(case0.getAssocCases(), "testerId", "testerName",
-                "testerAvatar");
           }
         }
+        // Set tester name and avatar
+        userManager.setUserNameAndAvatar(assocCaseInfoMap.values(), "testerId", "testerName",
+            "testerAvatar");
       }
     }
   }
