@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
@@ -31,6 +32,7 @@ public class TimeSetting {
 
   private DayOfWeek dayOfWeek;
 
+  @Range(min = 1, max = 31)
   private Integer dayOfMonth;
 
   @DateTimeFormat(pattern = DEFAULT_TIME_FORMAT)
