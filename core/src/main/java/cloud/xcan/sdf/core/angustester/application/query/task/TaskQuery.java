@@ -170,11 +170,15 @@ public interface TaskQuery {
 
   Map<String, List<TaskInfo>> checkAndFindByPlanAndName(Long sprintId, Set<String> names);
 
+  void checkSubTasksIsCompleted(Long projectId, Long id);
+
   void checkUpdateParentNotCircular(Long projectId, List<Task> tasks);
 
   List<TaskInfo> findSub(Long taskId);
 
-  List<TaskInfo> findAllSub(Long projectId, Collection<Long> taskIds);
+  List<TaskInfo> findAllSubInfo(Long projectId, Collection<Long> taskIds);
+
+  List<Task> findAllSub(Long projectId, Collection<Long> taskIds);
 
   List<Long> findAllSubIds(Long projectId, Collection<Long> taskIds);
 
@@ -213,6 +217,10 @@ public interface TaskQuery {
   void setApiTargetName(List<Task> tasks);
 
   void setScenarioTargetName(List<Task> tasks);
+
+  void setTaskProgress(List<Task> tasks);
+
+  void setTaskInfoProgress(List<TaskInfo> tasks);
 
   void assembleAndSendModifyNoticeEvent(List<Task> tasksDb, List<Activity> activities);
 

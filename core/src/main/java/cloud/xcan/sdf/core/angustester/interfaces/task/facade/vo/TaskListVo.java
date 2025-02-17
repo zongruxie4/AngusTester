@@ -7,6 +7,7 @@ import cloud.xcan.sdf.api.commonlink.associate.AssociateUserType;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.vo.IdAndNameVo;
 import cloud.xcan.sdf.core.angustester.domain.task.BugLevel;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
@@ -58,6 +59,11 @@ public class TaskListVo {
   private Priority priority;
 
   private TaskStatus status;
+
+  /**
+   * Use in the Gantt chart
+   */
+  private Progress progress;
 
   private TaskType taskType;
 

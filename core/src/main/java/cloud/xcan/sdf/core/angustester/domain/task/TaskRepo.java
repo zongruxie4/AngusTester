@@ -40,6 +40,8 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
   @Query(value = "SELECT DISTINCT id FROM task WHERE sprint_id = ?1 AND name IN ?2", nativeQuery = true)
   List<String> findNameBySprintIdAndNameIn(Long sprintId, Collection<String> taskNames);
 
+  List<Task> findByProjectIdAndParentTaskIdIn(Long projectId, Collection<Long> taskIds);
+
   @Query(value = "SELECT * FROM task WHERE target_id = ?1 AND test_type = ?2", nativeQuery = true)
   List<Task> find0ByTargetIdAndTestType(Long targetId, String testType);
 

@@ -7,6 +7,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.activity.TaskActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
@@ -221,6 +222,8 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements Ta
   private Boolean favouriteFlag;
   @Transient
   private Boolean followFlag;
+  @Transient
+  private Progress progress;
 
   public boolean isConfirmTask() {
     return nonNull(confirmorId);

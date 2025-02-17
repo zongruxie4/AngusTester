@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo;
 
 import cloud.xcan.sdf.api.NameJoinField;
 import cloud.xcan.sdf.api.enums.Priority;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.task.BugLevel;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskType;
@@ -26,6 +27,8 @@ public class TaskInfoVo {
   private String version;
 
   private TaskStatus status;
+
+  private Progress progress;
 
   private Long projectId;
 

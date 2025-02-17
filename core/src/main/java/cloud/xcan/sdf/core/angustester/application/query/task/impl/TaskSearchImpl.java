@@ -78,6 +78,8 @@ public class TaskSearchImpl implements TaskSearch {
           taskQuery.setApiTargetName(page.getContent());
           // Set scenario target name
           taskQuery.setScenarioTargetName(page.getContent());
+          // Set task progress
+          taskQuery.setTaskProgress(page.getContent());
           // Set assignee name and avatar
           userManager.setUserNameAndAvatar(page.getContent(),
               "assigneeId", "assigneeName", "assigneeAvatar");

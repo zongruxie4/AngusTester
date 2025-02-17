@@ -233,6 +233,8 @@ public interface TesterCoreMessage extends TesterApisMessage {
   String TASK_SCE_EXISTED_T = "xcm.altester.task.sce.existed.t";
   String TASK_PARENT_CIRCULAR_REF_BY_SELF = "xcm.altester.task.parent.circular.ref.by.self";
   String TASK_PARENT_CIRCULAR_REF = "xcm.altester.task.parent.circular.ref";
+  String TASK_EVAL_WORKLOAD_NOT_SET = "xcm.altester.task.eval.workload.not.set";
+  String TASK_SUB_IS_NOT_COMPLETED_T  = "xcm.altester.task.sub.is.not.completed.t";
 
   String TASK_START_NO_PENDING_CODE = "ATS930";
   String TASK_START_NO_PENDING = "xcm.altester.task.start.no.pending";

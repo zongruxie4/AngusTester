@@ -59,6 +59,10 @@ public class TaskDetailVo {
 
   private TaskStatus status;
 
+  private Progress progress;
+
+  private Progress subTaskProgress;
+
   private TaskType taskType;
 
   private BugLevel bugLevel;
@@ -104,8 +108,6 @@ public class TaskDetailVo {
 
   @NameJoinField(id = "parentTaskId", repository = "taskInfoRepo")
   private String parentTaskName;
-
-  private Progress subTaskProgress;
 
   private List<TaskInfoVo> subTaskInfos;
 

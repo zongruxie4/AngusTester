@@ -927,6 +927,49 @@ public class TaskConverter {
     return count;
   }
 
+  public static List<Task> findAllSubTasks(List<Task> tasks, Long parentTaskId) {
+    List<Task> allSubTasks = new ArrayList<>();
+    List<Task> directSubTasks = findSubTasks(tasks, parentTaskId);
+
+    for (Task subTask : directSubTasks) {
+      allSubTasks.add(subTask);
+      allSubTasks.addAll(findAllSubTasks(tasks, subTask.getId()));
+    }
+
+    return allSubTasks;
+  }
+
+  private static List<Task> findSubTasks(List<Task> tasks, Long parentTaskId) {
+    List<Task> subTasks = new ArrayList<>();
+    for (Task task : tasks) {
+      if (parentTaskId.equals(task.getParentTaskId())) {
+        subTasks.add(task);
+      }
+    }
+    return subTasks;
+  }
+
+  public static List<TaskInfo> findAllSubTaskInfos(List<TaskInfo> tasks, Long parentTaskId) {
+    List<TaskInfo> allSubTasks = new ArrayList<>();
+    List<TaskInfo> directSubTasks = findSubTaskInfos(tasks, parentTaskId);
+
+    for (TaskInfo subTask : directSubTasks) {
+      allSubTasks.add(subTask);
+      allSubTasks.addAll(findAllSubTaskInfos(tasks, subTask.getId()));
+    }
+    return allSubTasks;
+  }
+
+  private static List<TaskInfo> findSubTaskInfos(List<TaskInfo> tasks, Long parentTaskId) {
+    List<TaskInfo> subTasks = new ArrayList<>();
+    for (TaskInfo task : tasks) {
+      if (parentTaskId.equals(task.getParentTaskId())) {
+        subTasks.add(task);
+      }
+    }
+    return subTasks;
+  }
+
   public static Set<SearchCriteria> getTaskAssigneeResourcesFilter(Long projectId,
       Long sprintId, LocalDateTime startDate, LocalDateTime endDate, Set<Long> assigneeIds) {
     Set<SearchCriteria> filters = getTaskResourcesFilter(

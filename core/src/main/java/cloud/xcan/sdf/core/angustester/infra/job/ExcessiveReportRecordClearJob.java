@@ -1,11 +1,9 @@
 package cloud.xcan.sdf.core.angustester.infra.job;
 
 
-
 import static cloud.xcan.sdf.core.utils.AppEnvUtils.APP_INIT_READY;
 
 import cloud.xcan.sdf.core.angustester.domain.report.record.ReportRecordRepo;
-import cloud.xcan.sdf.core.spring.condition.CloudServiceEditionCondition;
 import cloud.xcan.sdf.core.spring.condition.NotCommunityEditionCondition;
 import cloud.xcan.sdf.lettucex.distlock.RedisLock;
 import java.util.List;

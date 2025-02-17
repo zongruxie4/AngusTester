@@ -16,6 +16,7 @@ import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverte
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.assembleMoveTask;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.importToDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.toAddApisOrScenarioTask;
+import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_EVAL_WORKLOAD_NOT_SET;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_IMPORT_COLUMNS;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_IMPORT_REQUIRED_COLUMNS;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_NO_CONFIRMING;
@@ -1399,9 +1400,14 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Check the add task permission
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // Evaluation workload not set
+        // Check the evaluation workload not set
         assertTrue(isNull(actualWorkload)
-            || nonNull(evalWorkload), "Evaluation workload not set");
+            || nonNull(evalWorkload), TASK_EVAL_WORKLOAD_NOT_SET);
+
+        // Check the subtask is not completed
+        if (result.isSuccess()){
+          taskQuery.checkSubTasksIsCompleted(taskDb.getProjectId(), id);
+        }
 
         boolean isConfirmTask = taskDb.isConfirmTask();
         if (isConfirmTask) {

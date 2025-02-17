@@ -5,7 +5,6 @@ import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.scenario.count.ScenarioMonitorCount;
 import cloud.xcan.sdf.core.angustester.domain.setting.MonitorTimeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.NoticeSetting;
-import cloud.xcan.sdf.core.angustester.domain.setting.TimeSetting;
 import cloud.xcan.sdf.core.jpa.hibernate.type.json.JsonStringType;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
 import io.swagger.v3.oas.models.servers.Server;

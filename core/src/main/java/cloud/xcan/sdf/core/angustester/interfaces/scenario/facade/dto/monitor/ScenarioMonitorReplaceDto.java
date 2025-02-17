@@ -5,7 +5,6 @@ import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH;
 
 import cloud.xcan.sdf.core.angustester.domain.setting.MonitorTimeSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.NoticeSetting;
-import cloud.xcan.sdf.core.angustester.domain.setting.TimeSetting;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.models.servers.Server;

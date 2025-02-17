@@ -37,6 +37,8 @@ import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverte
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.countCreationMeeting;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.countCreationSprint;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.countCreationTask;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.findAllSubTaskInfos;
+import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.findAllSubTasks;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.getTaskAssigneeResourcesFilter;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.getTaskCreatorResourcesFilter;
 import static cloud.xcan.sdf.core.angustester.application.converter.TaskConverter.toTaskDetailSummary;
@@ -64,6 +66,7 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_PARE
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_REOPEN_REPEATED_CODE;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_REOPEN_REPEATED_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_SCE_EXISTED_T;
+import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.TASK_SUB_IS_NOT_COMPLETED_T;
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskAssignment;
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskAssignmentCode;
 import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskModification;
@@ -73,6 +76,7 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterEventMessage.TaskPend
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginMessage.EXPORT_ANALYSIS_CASE_SUBMITTED_BUGS;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserFullname;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
@@ -101,6 +105,7 @@ import cloud.xcan.sdf.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.sdf.api.manager.UserManager;
 import cloud.xcan.sdf.api.message.http.ResourceNotFound;
 import cloud.xcan.sdf.api.pojo.Attachment;
+import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.application.converter.TaskConverter;
 import cloud.xcan.sdf.core.angustester.application.query.analysis.AnalysisQuery;
@@ -369,6 +374,10 @@ public class TaskQueryImpl implements TaskQuery {
         // Set remark num
         int remarkNum = taskRemarkQuery.getRemarkNum(id);
         taskDb.setRemarkNum(remarkNum);
+        // Set task progress
+        setTaskProgress(tasks);
+        // Set sub task progress
+        setTaskInfoProgress(taskDb.getSubTasks());
         return taskDb;
       }
     }.execute();
@@ -423,6 +432,8 @@ public class TaskQueryImpl implements TaskQuery {
           setApiTargetName(page.getContent());
           // Set scenario target name
           setScenarioTargetName(page.getContent());
+          // Set task progress
+          setTaskProgress(page.getContent());
           // Set assignee name and avatar
           userManager.setUserNameAndAvatar(page.getContent(),
               "assigneeId", "assigneeName", "assigneeAvatar");
@@ -2030,14 +2041,22 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   @Override
+  public void checkSubTasksIsCompleted(Long projectId, Long id) {
+    TaskInfo notCompletedTask = findSub(id).stream()
+        .filter(x -> !x.getStatus().isFinished()).findFirst()
+        .orElse(null);
+    assertTrue(isNull(notCompletedTask), TASK_SUB_IS_NOT_COMPLETED_T,
+        new Object[]{nonNull(notCompletedTask) ? notCompletedTask.getName() : null});
+  }
+
+  @Override
   public void checkUpdateParentNotCircular(Long projectId, List<Task> tasks) {
     for (Task task : tasks) {
       if (nonNull(task.getId())) {
-        ProtocolAssert.assertTrue(!Objects.equals(task.getId(), task.getParentTaskId()),
+        assertTrue(!Objects.equals(task.getId(), task.getParentTaskId()),
             TASK_PARENT_CIRCULAR_REF_BY_SELF);
         List<Long> subIds = findAllSubIds(projectId, List.of(task.getId()));
-        ProtocolAssert.assertTrue(!subIds.contains(task.getParentTaskId()),
-            TASK_PARENT_CIRCULAR_REF);
+        assertTrue(!subIds.contains(task.getParentTaskId()), TASK_PARENT_CIRCULAR_REF);
       }
     }
   }
@@ -2053,14 +2072,13 @@ public class TaskQueryImpl implements TaskQuery {
         setFavourite(subs);
       }
       // Set assignee name and avatar
-      userManager.setUserNameAndAvatar(subs,
-          "assigneeId", "assigneeName", "assigneeAvatar");
+      userManager.setUserNameAndAvatar(subs, "assigneeId", "assigneeName", "assigneeAvatar");
     }
     return subs;
   }
 
   @Override
-  public List<TaskInfo> findAllSub(Long projectId, Collection<Long> taskIds) {
+  public List<TaskInfo> findAllSubInfo(Long projectId, Collection<Long> taskIds) {
     if (isEmpty(taskIds)) {
       return Collections.emptyList();
     }
@@ -2069,17 +2087,35 @@ public class TaskQueryImpl implements TaskQuery {
     do {
       // Find sub tasks
       projectTaskSubs = taskInfoRepo.findByProjectIdAndParentTaskIdIn(projectId, taskIds);
-      if (ObjectUtils.isNotEmpty(projectTaskSubs)) {
+      if (isNotEmpty(projectTaskSubs)) {
         allTaskAndSub.addAll(projectTaskSubs);
         taskIds = projectTaskSubs.stream().map(TaskInfo::getId).collect(Collectors.toList());
       }
-    } while (ObjectUtils.isNotEmpty(projectTaskSubs));
+    } while (isNotEmpty(projectTaskSubs));
+    return allTaskAndSub;
+  }
+
+  @Override
+  public List<Task> findAllSub(Long projectId, Collection<Long> taskIds) {
+    if (isEmpty(taskIds)) {
+      return Collections.emptyList();
+    }
+    List<Task> allTaskAndSub = new ArrayList<>();
+    List<Task> projectTaskSubs;
+    do {
+      // Find sub tasks
+      projectTaskSubs = taskRepo.findByProjectIdAndParentTaskIdIn(projectId, taskIds);
+      if (isNotEmpty(projectTaskSubs)) {
+        allTaskAndSub.addAll(projectTaskSubs);
+        taskIds = projectTaskSubs.stream().map(Task::getId).collect(Collectors.toList());
+      }
+    } while (isNotEmpty(projectTaskSubs));
     return allTaskAndSub;
   }
 
   @Override
   public List<Long> findAllSubIds(Long projectId, Collection<Long> taskIds) {
-    return findAllSub(projectId, taskIds).stream().map(TaskInfo::getId)
+    return findAllSubInfo(projectId, taskIds).stream().map(TaskInfo::getId)
         .collect(Collectors.toList());
   }
 
@@ -2351,6 +2387,62 @@ public class TaskQueryImpl implements TaskQuery {
           }
         }
       }
+    }
+  }
+
+  @Override
+  public void setTaskProgress(List<Task> tasks) {
+    if (isEmpty(tasks)) {
+      return;
+    }
+    List<Task> allSubTasks = findAllSub(tasks.get(0).getProjectId(),
+        tasks.stream().map(Task::getId).collect(Collectors.toSet()));
+    if (isEmpty(allSubTasks)) {
+      for (Task task : tasks) {
+        task.setProgress(new Progress()
+            .setCompleted(task.getStatus().isCompleted() ? 1 : 0)
+            .setTotal(!task.getStatus().isCanceled() ? 1 : 0)
+        );
+      }
+      return;
+    }
+
+    for (Task task : tasks) {
+      List<Task> subs = findAllSubTasks(allSubTasks, task.getId());
+      subs.add(task);
+      task.setProgress(new Progress()
+          .setCompleted(subs.stream().filter(x -> x.getStatus().isCompleted())
+              .collect(Collectors.toSet()).size())
+          .setTotal(subs.stream().filter(x -> !x.getStatus().isCanceled())
+              .collect(Collectors.toSet()).size()));
+    }
+  }
+
+  @Override
+  public void setTaskInfoProgress(List<TaskInfo> tasks) {
+    if (isEmpty(tasks)) {
+      return;
+    }
+    List<TaskInfo> allSubTasks = findAllSubInfo(tasks.get(0).getProjectId(),
+        tasks.stream().map(TaskInfo::getId).collect(Collectors.toSet()));
+    if (isEmpty(allSubTasks)) {
+      for (TaskInfo task : tasks) {
+        task.setProgress(new Progress()
+            .setCompleted(task.getStatus().isCompleted() ? 1 : 0)
+            .setTotal(!task.getStatus().isCanceled() ? 1 : 0)
+        );
+      }
+      return;
+    }
+
+    for (TaskInfo task : tasks) {
+      List<TaskInfo> subs = findAllSubTaskInfos(allSubTasks, task.getId());
+      subs.add(task);
+      task.setProgress(new Progress()
+          .setCompleted(subs.stream().filter(x -> x.getStatus().isCompleted())
+              .collect(Collectors.toSet()).size())
+          .setTotal(subs.stream().filter(x -> !x.getStatus().isCanceled())
+              .collect(Collectors.toSet()).size()));
     }
   }
 
