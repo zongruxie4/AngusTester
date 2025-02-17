@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Page Management",
+    "pid": -1,
+    "sequence": 10000
+  },
+  {
+    "name": "Content Editing",
+    "pid": -1,
+    "sequence": 10000
+  },
+  {
+    "name": "Discussion and Comments",
+    "pid": -1,
+    "sequence": 10000
+  },
+  {
+    "name": "Search and Navigation",
+    "pid": -1,
+    "sequence": 1726472962
+  },
+  {
+    "name": "Themes and Styles",
+    "pid": -1,
+    "sequence": 1726473001
+  },
+  {
+    "name": "Plugins and Extensions",
+    "pid": -1,
+    "sequence": 1726473010
+  },
+  {
+    "name": "Other Features",
+    "pid": -1,
+    "sequence": 1726473020
+  }
+]
