@@ -286,6 +286,12 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   @Override
+  public Scenario findLeastByProjectIdAndPluginAndTypeIn(Long projectId, String plugin,
+      List<String> scriptTypes) {
+    return scenarioRepo.findLeastByProjectIdAndPluginAndTypeIn(projectId, plugin, scriptTypes);
+  }
+
+  @Override
   public void checkNameExists(long projectId, String name) {
     Long count = scenarioRepo.countAll0ByNameAndProjectId(name, projectId);
     assertResourceExisted(count < 1, SCE_NAME_REPEATED_T, new Object[]{name});

@@ -15,7 +15,9 @@ import cloud.xcan.sdf.api.commonlink.user.UserInfo;
 import cloud.xcan.sdf.core.angustester.application.cmd.project.ProjectCmd;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectSearch;
+import cloud.xcan.sdf.core.angustester.domain.ExampleDataType;
 import cloud.xcan.sdf.core.angustester.domain.project.Project;
+import cloud.xcan.sdf.core.angustester.domain.project.ProjectType;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.ProjectFacade;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectFindDto;
@@ -27,6 +29,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.project.facade.vo.ProjectDetai
 import cloud.xcan.sdf.core.biz.NameJoin;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -57,6 +60,12 @@ public class ProjectFacadeImpl implements ProjectFacade {
   @Override
   public IdKey<Long, Object> replace(ProjectReplaceDto dto) {
     return projectCmd.replace(replaceDtoToDomain(dto));
+  }
+
+  @Override
+  public IdKey<Long, Object> importExample(String name, ProjectType type,
+      Set<ExampleDataType> dataTypes) {
+    return projectCmd.importExample(name, type, dataTypes);
   }
 
   @Override

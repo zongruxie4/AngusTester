@@ -2,6 +2,8 @@ package cloud.xcan.sdf.core.angustester.interfaces.project.facade;
 
 import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.commonlink.user.UserInfo;
+import cloud.xcan.sdf.core.angustester.domain.ExampleDataType;
+import cloud.xcan.sdf.core.angustester.domain.project.ProjectType;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectFindDto;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectReplaceDto;
@@ -10,6 +12,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectUpda
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.vo.ProjectDetailVo;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.util.List;
+import java.util.Set;
 
 public interface ProjectFacade {
 
@@ -18,6 +21,8 @@ public interface ProjectFacade {
   void update(ProjectUpdateDto dto);
 
   IdKey<Long, Object> replace(ProjectReplaceDto dto);
+
+  IdKey<Long, Object> importExample(String name, ProjectType type, Set<ExampleDataType> dataTypes);
 
   void delete(Long id);
 

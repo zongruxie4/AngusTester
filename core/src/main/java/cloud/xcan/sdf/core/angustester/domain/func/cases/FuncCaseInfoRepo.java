@@ -49,8 +49,10 @@ public interface FuncCaseInfoRepo extends BaseRepository<FuncCaseInfo, Long> {
   @Query(value = "SELECT * FROM func_case WHERE plan_id = ?1 AND deleted_flag = 0 AND plan_deleted_flag = 0 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
   FuncCaseInfo findLeastByPlanId(Long planId);
 
+  @Query(value = "SELECT * FROM func_case WHERE project_id = ?1 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  FuncCaseInfo findLeastByProjectId(Long projectId);
+
   @Query(value = "SELECT * FROM func_case WHERE deadline_date < ?1 AND deadline_date >= ?2 AND test_result <> 'PASSED' AND test_result <> 'CANCELED' AND tester_id <> null AND deleted_flag = 0 AND plan_deleted_flag = 0 ORDER BY created_date ASC LIMIT ?3", nativeQuery = true)
   List<FuncCaseInfo> findWillOverdue(LocalDateTime now, LocalDateTime deadline, Long count);
-
 
 }

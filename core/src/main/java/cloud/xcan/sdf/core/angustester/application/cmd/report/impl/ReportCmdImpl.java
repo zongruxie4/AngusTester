@@ -1,8 +1,10 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.report.impl;
 
+import static cloud.xcan.angus.model.element.type.TestTargetType.PLUGIN_HTTP_NAME;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.REPORT;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.sdf.core.angustester.application.converter.ReportConverter.toExampleDomain;
 import static cloud.xcan.sdf.core.angustester.application.converter.ReportConverter.toGeneratedRecord;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.isUserAction;
@@ -13,27 +15,44 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import cloud.xcan.sdf.api.dto.OrgAndDateFilterDto;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.report.ReportAuthCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.report.ReportCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.report.ReportRecordCmd;
 import cloud.xcan.sdf.core.angustester.application.converter.ReportConverter;
+import cloud.xcan.sdf.core.angustester.application.query.apis.ApisQuery;
 import cloud.xcan.sdf.core.angustester.application.query.common.CommonQuery;
+import cloud.xcan.sdf.core.angustester.application.query.func.FuncCaseQuery;
+import cloud.xcan.sdf.core.angustester.application.query.func.FuncPlanQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.application.query.report.ReportAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.report.ReportQuery;
+import cloud.xcan.sdf.core.angustester.application.query.scenario.ScenarioQuery;
+import cloud.xcan.sdf.core.angustester.application.query.task.TaskQuery;
+import cloud.xcan.sdf.core.angustester.application.query.task.TaskSprintQuery;
+import cloud.xcan.sdf.core.angustester.domain.ExampleDataType;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
+import cloud.xcan.sdf.core.angustester.domain.apis.ApisBaseInfo;
+import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfo;
+import cloud.xcan.sdf.core.angustester.domain.func.plan.FuncPlan;
+import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.report.Report;
+import cloud.xcan.sdf.core.angustester.domain.report.ReportCategory;
 import cloud.xcan.sdf.core.angustester.domain.report.ReportRepo;
 import cloud.xcan.sdf.core.angustester.domain.report.ReportStatus;
 import cloud.xcan.sdf.core.angustester.domain.report.ReportTemplate;
 import cloud.xcan.sdf.core.angustester.domain.report.record.content.ExecutionContent;
 import cloud.xcan.sdf.core.angustester.domain.report.record.content.ReportContent;
+import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
 import cloud.xcan.sdf.core.angustester.domain.setting.ContentFilterSetting;
 import cloud.xcan.sdf.core.angustester.domain.setting.TimeSetting;
+import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
+import cloud.xcan.sdf.core.angustester.domain.task.sprint.TaskSprint;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
 import cloud.xcan.sdf.core.biz.ProtocolAssert;
@@ -41,6 +60,7 @@ import cloud.xcan.sdf.core.biz.cmd.CommCmd;
 import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.core.pojo.principal.PrincipalContext;
 import cloud.xcan.sdf.spec.experimental.IdKey;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +83,24 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
+
+  @Resource
+  private TaskSprintQuery taskSprintQuery;
+
+  @Resource
+  private TaskQuery taskQuery;
+
+  @Resource
+  private FuncPlanQuery funcPlanQuery;
+
+  @Resource
+  private FuncCaseQuery funcCaseQuery;
+
+  @Resource
+  private ApisQuery apisQuery;
+
+  @Resource
+  private ScenarioQuery scenarioQuery;
 
   @Resource
   private ReportAuthCmd reportAuthCmd;
@@ -105,13 +143,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
 
       @Override
       protected IdKey<Long, Object> process() {
-        ContentFilterSetting filter = report.getContentSetting().getFilter();
-        TimeSetting timeSetting = report.getCreateTimeSetting();
-        report.setTargetName(resourceDb.getName())
-            .setCreatedAt(timeSetting.getCreatedAt())
-            .setNextGenerationDate(timeSetting.getNextDate())
-            .setTargetType(filter.getTargetType()).setTargetId(filter.getTargetId());
-        IdKey<Long, Object> idKey = insert(report);
+        IdKey<Long, Object> idKey = add0(report, resourceDb);
 
         // Init report creator auth
         Long currentUserId = getUserId();
@@ -121,6 +153,20 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         return idKey;
       }
     }.execute();
+  }
+
+  @Override
+  public IdKey<Long, Object> add0(Report report, ActivityResource resourceDb) {
+    ContentFilterSetting filter = report.getContentSetting().getFilter();
+    TimeSetting timeSetting = report.getCreateTimeSetting();
+    report.setTargetName(resourceDb.getName())
+        .setCreatedAt(timeSetting.getCreatedAt())
+        .setNextGenerationDate(timeSetting.getNextDate())
+        .setTargetType(filter.getTargetType()).setTargetId(filter.getTargetId());
+    if (report.getTemplate().isWidePlan() && isNull(filter.getPlanOrSprintId())) {
+      filter.setPlanOrSprintId(filter.getTargetId());
+    }
+    return insert(report);
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -265,7 +311,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         ReportContent reportContent = null;
         String failureMessage = null;
         try {
-          if (!isUserAction()){
+          if (!isUserAction()) {
             // Transfer principal downwards
             commonQuery.setInnerPrincipal(reportDb.getTenantId(), reportDb.getCreatedBy());
           }
@@ -339,6 +385,104 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
           }
         }
         return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public List<IdKey<Long, Object>> importExample(Long projectId, Set<ExampleDataType> dataTypes) {
+    return new BizTemplate<List<IdKey<Long, Object>>>() {
+      @Override
+      protected void checkParams() {
+        ProtocolAssert.assertNotEmpty(dataTypes, "Example dataType is required");
+      }
+
+      @Override
+      protected List<IdKey<Long, Object>> process() {
+        List<IdKey<Long, Object>> idKeys = new ArrayList<>();
+
+        // Create project report
+        Project projectDb = projectQuery.checkAndFind(projectId);
+        Report projectReport = toExampleDomain(projectId,
+            projectDb.getName() + "-" + REPORT.getMessage(), ReportCategory.PROJECT,
+            ReportTemplate.PROJECT_PROGRESS, CombinedTargetType.PROJECT, projectId);
+        idKeys.add(add0(projectReport, projectDb));
+
+        // Create task report
+        if (dataTypes.contains(ExampleDataType.TASK)) {
+          // Create task sprint report
+          TaskSprint sprintDb = taskSprintQuery.findLeastByProjectId(projectId);
+          if (nonNull(sprintDb)) {
+            Report sprintReport = toExampleDomain(projectId,
+                sprintDb.getName() + "-" + REPORT.getMessage(), ReportCategory.TASK,
+                ReportTemplate.TASK_SPRINT, CombinedTargetType.TASK_SPRINT, sprintDb.getId());
+            idKeys.add(add0(sprintReport, sprintDb));
+          }
+
+          // Create task report
+          TaskInfo taskDb = taskQuery.findLeastByProjectId(projectId);
+          if (nonNull(taskDb)) {
+            Report taskReport = toExampleDomain(projectId,
+                taskDb.getName() + "-" + REPORT.getMessage(), ReportCategory.TASK,
+                ReportTemplate.TASK, CombinedTargetType.TASK, taskDb.getId());
+            idKeys.add(add0(taskReport, taskDb));
+          }
+        }
+
+        // Create function report
+        if (dataTypes.contains(ExampleDataType.FUNC)) {
+          // Create function plan report
+          FuncPlan planDb = funcPlanQuery.findLeastByProjectId(projectId);
+          if (nonNull(planDb)) {
+            Report planReport = toExampleDomain(projectId,
+                planDb.getName() + "-" + REPORT.getMessage(), ReportCategory.FUNCTIONAL,
+                ReportTemplate.FUNC_TESTING_PLAN, CombinedTargetType.FUNC_PLAN, planDb.getId());
+            idKeys.add(add0(planReport, planDb));
+          }
+
+          // Create function case report
+          FuncCaseInfo caseDb = funcCaseQuery.findLeastByProjectId(projectId);
+          if (nonNull(caseDb)) {
+            Report caseReport = toExampleDomain(projectId,
+                caseDb.getName() + "-" + REPORT.getMessage(), ReportCategory.FUNCTIONAL,
+                ReportTemplate.FUNC_TESTING_CASE, CombinedTargetType.FUNC_CASE, caseDb.getId());
+            idKeys.add(add0(caseReport, caseDb));
+          }
+        }
+
+        // Create apis report
+        if (dataTypes.contains(ExampleDataType.SERVICES)) {
+          ApisBaseInfo apisDb = apisQuery.findLeastByProjectId(projectId);
+          if (nonNull(apisDb)) {
+            Report apisReport = toExampleDomain(projectId,
+                apisDb.getName() + "-" + REPORT.getMessage(), ReportCategory.APIS,
+                ReportTemplate.APIS_TESTING_RESULT, CombinedTargetType.API, apisDb.getId());
+            idKeys.add(add0(apisReport, apisDb));
+          }
+        }
+
+        // Create scenario report
+        if (dataTypes.contains(ExampleDataType.SCENARIO)) {
+          Scenario scenarioDb = scenarioQuery.findLeastByProjectIdAndPluginAndTypeIn(projectId,
+              PLUGIN_HTTP_NAME, List.of(ScriptType.TEST_PERFORMANCE.getValue(),
+                  ScriptType.TEST_FUNCTIONALITY.getValue()));
+          if (nonNull(scenarioDb)) {
+            Report scenarioReport = toExampleDomain(projectId,
+                scenarioDb.getName() + "-" + REPORT.getMessage(), ReportCategory.SCENARIO,
+                ReportTemplate.SCENARIO_TESTING_RESULT, CombinedTargetType.SCENARIO,
+                scenarioDb.getId());
+            idKeys.add(add0(scenarioReport, scenarioDb));
+          }
+        }
+
+        // Create execution report ? Starting the test run may take a long time !!!
+        // Do nothing!
+        return idKeys;
       }
     }.execute();
   }

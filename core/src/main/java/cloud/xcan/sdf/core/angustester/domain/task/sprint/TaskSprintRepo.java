@@ -31,6 +31,9 @@ public interface TaskSprintRepo extends BaseRepository<TaskSprint, Long>,
 
   List<TaskSprint> findByProjectId(Long projectId);
 
+  @Query(value = "SELECT * FROM task_sprint WHERE project_id = ?1 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  TaskSprint findLeastByProjectId(Long projectId);
+
   boolean existsByProjectIdAndName(Long projectId, String name);
 
   long countByProjectIdAndName(Long projectId, String name);
@@ -53,5 +56,4 @@ public interface TaskSprintRepo extends BaseRepository<TaskSprint, Long>,
   @Modifying
   @Query(value = "DELETE FROM task_sprint WHERE id IN ?1", nativeQuery = true)
   void deleteAllByIdIn(Collection<Long> ids);
-
 }

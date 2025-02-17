@@ -518,6 +518,11 @@ public class ApisQueryImpl implements ApisQuery {
   }
 
   @Override
+  public ApisBaseInfo findLeastByProjectId(Long projectId) {
+    return apisBaseInfoRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public Apis findDeRefById(Long id) {
     Apis apis = apisRepo.findById(id).orElse(null);
     if (nonNull(apis)) {

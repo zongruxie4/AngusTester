@@ -43,6 +43,9 @@ public interface ScenarioQuery {
 
   List<Scenario> find0ByIdIn(Collection<Long> scenarioIds);
 
+  Scenario findLeastByProjectIdAndPluginAndTypeIn(Long projectId, String plugin,
+      List<String> scriptTypes);
+
   void checkNameExists(long projectId, String name);
 
   void checkUpdateNameExists(long projectId, String name, long scenarioId);
@@ -58,6 +61,7 @@ public interface ScenarioQuery {
   void setSafeCloneName(Scenario scenario);
 
   void assembleAndSendModifyNoticeEvent(Scenario scenarioDb, Activity activity);
+
 }
 
 

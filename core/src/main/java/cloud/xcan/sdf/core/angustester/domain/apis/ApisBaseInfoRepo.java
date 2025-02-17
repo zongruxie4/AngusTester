@@ -42,4 +42,7 @@ public interface ApisBaseInfoRepo extends BaseRepository<ApisBaseInfo, Long>,
   @Query(value = "SELECT id FROM apis WHERE service_id = ?1 ", nativeQuery = true)
   List<Long> findIdByServiceId(Long serviceId);
 
+  @Query(value = "SELECT * FROM apis WHERE project_id = ?1 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  ApisBaseInfo findLeastByProjectId(Long projectId);
+
 }

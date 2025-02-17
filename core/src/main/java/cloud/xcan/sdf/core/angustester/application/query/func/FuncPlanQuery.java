@@ -25,6 +25,8 @@ public interface FuncPlanQuery {
 
   boolean isAuthCtrl(Long planId);
 
+  FuncPlan findLeastByProjectId(Long projectId);
+
   FuncPlan checkAndFind(Long id);
 
   List<FuncPlan> checkAndFind(Collection<Long> ids);

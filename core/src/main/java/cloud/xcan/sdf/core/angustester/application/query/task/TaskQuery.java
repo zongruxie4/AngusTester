@@ -156,6 +156,8 @@ public interface TaskQuery {
 
   AbstractOverview parseTaskAnalysisSnapshot(String template0, String snapshot);
 
+  TaskInfo findLeastByProjectId(Long projectId);
+
   Task checkAndFind(Long id);
 
   TaskInfo checkAndFindInfo(Long id);

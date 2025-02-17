@@ -148,6 +148,8 @@ public interface FuncCaseQuery {
 
   void checkAndSafeUpdateNameExists(FuncPlan planDb, List<FuncCase> cases);
 
+  FuncCaseInfo findLeastByProjectId(Long projectId);
+
   FuncCase checkAndFind(Long id);
 
   FuncCaseInfo checkAndFindInfo(Long id);

@@ -24,6 +24,9 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   @Query(value = "SELECT DISTINCT id FROM func_plan WHERE id IN (?1) AND auth_flag = ?2 ", nativeQuery = true)
   Collection<Long> findIds0ByIdInAndAuthFlag(Collection<Long> planIds, Boolean authFlag);
 
+  @Query(value = "SELECT * FROM func_plan WHERE project_id = ?1 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  FuncPlan findLeastByProjectId(Long projectId);
+
   boolean existsByProjectIdAndName(Long projectId, String name);
 
   long countByProjectIdAndName(Long projectId, String name);
@@ -46,6 +49,7 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   @Modifying
   @Query(value = "DELETE FROM func_plan WHERE id in (?1)", nativeQuery = true)
   void deleteAllByIdIn(List<Long> ids);
+
 
 
 }

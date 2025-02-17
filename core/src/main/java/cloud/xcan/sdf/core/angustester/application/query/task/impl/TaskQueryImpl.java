@@ -1956,6 +1956,11 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   @Override
+  public TaskInfo findLeastByProjectId(Long projectId) {
+    return taskInfoRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public Task checkAndFind(Long id) {
     return taskRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Task"));
   }

@@ -149,6 +149,11 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   }
 
   @Override
+  public TaskSprint findLeastByProjectId(Long projectId) {
+    return taskSprintRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public TaskSprint checkAndFind(Long id) {
     return taskSprintRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Sprint"));
   }

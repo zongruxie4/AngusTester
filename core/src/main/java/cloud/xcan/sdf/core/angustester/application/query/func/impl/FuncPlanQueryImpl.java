@@ -238,6 +238,11 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   }
 
   @Override
+  public FuncPlan findLeastByProjectId(Long projectId) {
+    return funcPlanRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public FuncPlan checkAndFind(Long id) {
     return funcPlanRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncPlan"));
   }

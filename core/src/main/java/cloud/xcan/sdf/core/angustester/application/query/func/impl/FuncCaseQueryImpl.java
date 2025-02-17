@@ -1801,6 +1801,11 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   @Override
+  public FuncCaseInfo findLeastByProjectId(Long projectId) {
+    return funcCaseInfoRepo.findLeastByProjectId(projectId);
+  }
+
+  @Override
   public FuncCase checkAndFind(Long id) {
     return funcCaseRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncCase"));
   }

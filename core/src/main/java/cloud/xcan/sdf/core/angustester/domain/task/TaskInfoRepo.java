@@ -99,6 +99,9 @@ public interface TaskInfoRepo extends BaseRepository<TaskInfo, Long>,
   @Query(value = "SELECT * FROM task WHERE sprint_id = ?1 AND deleted_flag = 0 AND sprint_deleted_flag = 0 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
   TaskInfo findLeastBySprintId(Long sprintId);
 
+  @Query(value = "SELECT * FROM task WHERE project_id = ?1 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  TaskInfo findLeastByProjectId(Long projectId);
+
   @Query(value = "SELECT * FROM task WHERE deadline_date < ?1 AND deadline_date >= ?2 AND status <> 'COMPLETED' AND status <> 'CANCELED' AND assignee_id <> null AND deleted_flag = 0 AND sprint_deleted_flag = 0 ORDER BY created_date ASC LIMIT ?3", nativeQuery = true)
   List<TaskInfo> findWillOverdue(LocalDateTime now, LocalDateTime deadline, Long count);
 

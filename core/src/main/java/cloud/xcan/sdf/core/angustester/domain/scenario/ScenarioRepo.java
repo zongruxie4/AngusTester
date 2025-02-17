@@ -41,6 +41,10 @@ public interface ScenarioRepo extends BaseRepository<Scenario, Long>,
   @Query(value = "SELECT count(s.id) FROM Scenario s WHERE s.projectId = ?1 ")
   long countByProjectId(long projectId);
 
+  @Query(value = "SELECT * FROM scenario WHERE project_id = ?1 AND plugin = ?2 AND script_type IN ?3 ORDER BY created_date DESC LIMIT 1", nativeQuery = true)
+  Scenario findLeastByProjectIdAndPluginAndTypeIn(Long projectId, String plugin,
+      List<String> scriptTypes);
+
   @Modifying
   @Query("UPDATE Scenario s SET s.authFlag=?2 WHERE s.id=?1")
   void updateAuthFlagById(Long id, Boolean authFlag);

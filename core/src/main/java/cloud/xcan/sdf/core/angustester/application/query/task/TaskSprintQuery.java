@@ -17,6 +17,8 @@ public interface TaskSprintQuery {
 
   Page<TaskSprint> find(GenericSpecification<TaskSprint> spec, Pageable pageable);
 
+  TaskSprint findLeastByProjectId(Long projectId);
+
   TaskSprint checkAndFind(Long id);
 
   List<TaskSprint> checkAndFind(Collection<Long> ids);

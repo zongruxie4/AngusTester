@@ -77,9 +77,11 @@ public class Project extends TenantAuditingEntity<Project, Long> implements Acti
 
   @Transient
   private LinkedHashMap<OrgTargetType, LinkedHashSet<OrgTargetInfo>> members;
-
   @Transient
   private LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds;
+
+  @Transient
+  private boolean importExample = false;
 
   public boolean isAgile() {
     return isNull(type) || type.isAgile();

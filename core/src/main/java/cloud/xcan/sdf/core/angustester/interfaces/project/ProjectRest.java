@@ -3,6 +3,8 @@ package cloud.xcan.sdf.core.angustester.interfaces.project;
 import cloud.xcan.sdf.api.ApiLocaleResult;
 import cloud.xcan.sdf.api.PageResult;
 import cloud.xcan.sdf.api.commonlink.user.UserInfo;
+import cloud.xcan.sdf.core.angustester.domain.ExampleDataType;
+import cloud.xcan.sdf.core.angustester.domain.project.ProjectType;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.ProjectFacade;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.sdf.core.angustester.interfaces.project.facade.dto.ProjectFindDto;
@@ -17,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -68,6 +71,19 @@ public class ProjectRest {
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody ProjectReplaceDto dto) {
     return ApiLocaleResult.success(projectFacade.replace(dto));
+  }
+
+  @ApiOperation(value = "Import the inner project example", nickname = "project:example:import")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Imported successfully", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(value = "/example/import")
+  public ApiLocaleResult<IdKey<Long, Object>> importExample(
+      @ApiParam(name = "name", value = "Project name") @RequestParam(value ="name", required = false) String name,
+      @ApiParam(name = "type", value = "Project type", required = true) @RequestParam("type") ProjectType type,
+      @ApiParam(name = "dataTypes", value = "Example data types. Import all example data when empty.")
+      @RequestParam(value = "dataTypes", required = false) Set<ExampleDataType> dataTypes) {
+    return ApiLocaleResult.success(projectFacade.importExample(name, type, dataTypes));
   }
 
   @ApiOperation(value = "Delete the project", nickname = "project:delete")

@@ -1,9 +1,14 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.exec.impl;
 
+import static cloud.xcan.angus.model.element.type.TestTargetType.PLUGIN_HTTP_NAME;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.sdf.api.angusctrl.exec.ExecDoorRemote;
+import cloud.xcan.sdf.api.angusctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.sdf.api.commonlink.exec.TestCaseResultInfo;
 import cloud.xcan.sdf.api.commonlink.exec.TestResultInfo;
 import cloud.xcan.sdf.api.enums.Result;
@@ -14,12 +19,16 @@ import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCase;
 import cloud.xcan.sdf.core.angustester.domain.apis.cases.ApisCaseRepo;
 import cloud.xcan.sdf.core.angustester.domain.scenario.Scenario;
 import cloud.xcan.sdf.core.angustester.domain.scenario.ScenarioRepo;
+import cloud.xcan.sdf.core.angustester.domain.script.ScriptInfo;
+import cloud.xcan.sdf.core.angustester.domain.script.ScriptInfoRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.Task;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskStatus;
 import cloud.xcan.sdf.core.biz.Biz;
 import cloud.xcan.sdf.core.biz.BizTemplate;
+import cloud.xcan.sdf.core.spring.boot.ApplicationInfo;
 import cloud.xcan.sdf.model.script.TestType;
+import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,6 +49,15 @@ public class ExecTestCmdImpl implements ExecTestCmd {
 
   @Resource
   private ApisCaseRepo apisCaseRepo;
+
+  @Resource
+  private ScriptInfoRepo scriptInfoRepo;
+
+  @Resource
+  private ApplicationInfo applicationInfo;
+
+  @Resource
+  private ExecDoorRemote execDoorRemote;
 
   /**
    * Note: A scenario or apis may have multiple testing tasks.
@@ -69,6 +87,36 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           setApisCaseTestResult(caseResults);
         }
         return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
+  //@Transactional(rollbackFor = Exception.class)
+  @Override
+  public IdKey<Long, Object> importExample(Long projectId) {
+    return new BizTemplate<IdKey<Long, Object>>() {
+
+      @Override
+      protected void checkParams() {
+        // NOOP
+      }
+
+      @Override
+      protected IdKey<Long, Object> process() {
+        ScriptInfo script = scriptInfoRepo.findTop1ByProjectIdAndPluginAndTypeIn(projectId,
+            PLUGIN_HTTP_NAME, ScriptType.TEST_PERFORMANCE.getValue());
+        if (isNull(script)) {
+          return null;
+        }
+        return execDoorRemote.addByScript(new ExecAddByScriptDto()
+                .setName(script.getName() + "-" + script.getType().getMessage())
+                .setScriptId(script.getId()).setScriptType(script.getType())
+                .setTrial(applicationInfo.isCloudServiceEdition()))
+            .orElseContentThrow();
       }
     }.execute();
   }

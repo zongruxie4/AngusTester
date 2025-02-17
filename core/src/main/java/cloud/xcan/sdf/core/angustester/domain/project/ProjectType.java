@@ -17,6 +17,10 @@ public enum ProjectType implements EnumMessage<String> {
     return this == GENERAL;
   }
 
+  public boolean isTesting() {
+    return this == TESTING;
+  }
+
   @Override
   public String getValue() {
     return this.name();

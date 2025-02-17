@@ -61,6 +61,8 @@ public interface ApisQuery {
 
   List<Apis> findAllByServiceIdAndIdIn(Long serviceId, Collection<Long> apiIds);
 
+  ApisBaseInfo findLeastByProjectId(Long projectId);
+
   Apis findDeRefById(Long id);
 
   Map<String, String> findApisAllRef(Apis apisDb);
