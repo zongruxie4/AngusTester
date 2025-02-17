@@ -51,7 +51,6 @@ import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.spec.experimental.Assert;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.thread.delay.DelayOrderQueueManager;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -368,25 +367,6 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         return null;
       }
     }.execute();
-  }
-
-  /**
-   * Physically delete, External calling biz must ensure data authed and secured!
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public void delete0(List<Long> ids) {
-    List<Long> projectIds = projectRepo.findId0ByIdIn(ids);
-    if (ObjectUtils.isEmpty(projectIds)) {
-      return;
-    }
-
-    // Delete project
-    projectRepo.deleteAllByIdIn(projectIds);
-
-    // TODO Delete associated resources
-
-    // TODO Delete projects from ProjectTrash
   }
 
   //@Transactional(propagation = Propagation.REQUIRES_NEW)
