@@ -59,7 +59,6 @@ public class MonitorTimeSetting {
       case PERIODICALLY:
         assertNotNull(periodicCreationUnit,
             "Periodic creation time unit not specified, periodicCreationUnit is null");
-        assertNotNull(timeOfDay, "Daily creation time not specified, timeOfDay is null");
         LocalDateTime nowDateTime = LocalDateTime.now();
         LocalTime nowTime = nowDateTime.toLocalTime();
         switch (periodicCreationUnit) {
@@ -72,10 +71,12 @@ public class MonitorTimeSetting {
             return lastExecDate.isBefore(nowDateTime) ? lastExecDate.plusHours(
                 nullSafe(hourOfDay, 1)) : lastExecDate;
           case DAILY:
+            assertNotNull(timeOfDay, "Daily creation time not specified, timeOfDay is null");
             return nowTime.isBefore(timeOfDay)
                 ? LocalDateTime.of(nowDateTime.toLocalDate(), timeOfDay)
                 : LocalDateTime.of(nowDateTime.plusDays(1).toLocalDate(), timeOfDay);
           case WEEKLY:
+            assertNotNull(timeOfDay, "Daily creation time not specified, timeOfDay is null");
             assertNotNull(dayOfWeek,
                 "The day of creation in each week is not specified, dayOfWeek is null");
             java.time.DayOfWeek nowDayOfWeek = nowDateTime.getDayOfWeek();
@@ -89,6 +90,7 @@ public class MonitorTimeSetting {
                 : LocalDateTime.of(nowDateTime.plusDays(7 - nowDayOfWeek.getValue()
                     + dayOfWeek0.getValue()).toLocalDate(), timeOfDay);
           case MONTHLY:
+            assertNotNull(timeOfDay, "Daily creation time not specified, timeOfDay is null");
             assertNotNull(dayOfMonth,
                 "The day of creation in each month is not specified, dayOfMonth is null");
             int nowDayOfMonth = nowDateTime.getDayOfMonth();
