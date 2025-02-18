@@ -174,9 +174,9 @@ public class ServicesRest {
   @ApiOperation(value = "Export the apis from services", nickname = "services:export")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Exported Successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/export")
+  @PostMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid ServicesExportDto dto, HttpServletResponse response) {
+      @Valid @RequestBody ServicesExportDto dto, HttpServletResponse response) {
     return serviceFacade.export(dto, response);
   }
 
