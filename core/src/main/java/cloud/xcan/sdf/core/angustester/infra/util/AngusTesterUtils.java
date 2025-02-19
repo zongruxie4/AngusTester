@@ -17,9 +17,11 @@ import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getInConditionValue
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.model.element.assertion.Assertion;
@@ -72,7 +74,7 @@ public class AngusTesterUtils {
   public static void assembleAuthJoinTargetCondition(String targetType, StringBuilder sql,
       Set<SearchCriteria> criterias) {
     String authObjectIds = getFilterInFirstValue(criterias, "authObjectId");
-    if (ObjectUtils.isEmpty(authObjectIds)) {
+    if (isEmpty(authObjectIds)) {
       // Admin query all resource when authObjectIds is empty
       return;
     }
@@ -82,7 +84,7 @@ public class AngusTesterUtils {
     String authObjectIdsInValue = getInConditionValue(authObjectIds);
     long tenantId = getOptTenantId();
     // @formatter:off
-    if (ObjectUtils.isEmpty(grantFilter)){
+    if (isEmpty(grantFilter)){
       // Query has `VIEW` permission resource
       if (targetType.equals(CombinedTargetType.API.getValue())) {
         sql.append(
@@ -135,7 +137,7 @@ public class AngusTesterUtils {
   public static void assembleTargetNameMatchCondition(Set<SearchCriteria> criterias,
       String targetTypeValue, StringBuilder sql) {
     String searchValue = getFilterMatchFirstValue(criterias, "targetName");
-    if (ObjectUtils.isNotEmpty(searchValue)) {
+    if (isNotEmpty(searchValue)) {
       if (targetTypeValue.equalsIgnoreCase(CombinedTargetType.API.getValue())) {
         sql.append(" AND MATCH(").append("a.summary, a.operation_id, a.ext_search_merge")
             .append(") AGAINST ( \"").append(searchValue).append("\" IN BOOLEAN MODE)");
@@ -153,7 +155,7 @@ public class AngusTesterUtils {
       StringBuilder sql) {
     // Assemble non mainClass match Conditions
     String searchValue = getFilterMatchFirstValue(criterias, "targetName");
-    if (ObjectUtils.isNotEmpty(searchValue)) {
+    if (isNotEmpty(searchValue)) {
       sql.append(" AND a.name like \"%%").append(searchValue).append("%%\"");
     }
   }

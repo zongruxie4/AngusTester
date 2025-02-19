@@ -571,7 +571,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     indicatorStabilityCmd.deleteAllByTarget(allIds, SERVICE);
     // NOOP:: Do not delete associated test tasks
     List<Long> apisIds = apisRepo.findAll0IdByServiceIdIn(allIds);
-    if (ObjectUtils.isNotEmpty(apisIds)) {
+    if (isNotEmpty(apisIds)) {
       apisCmd.delete0(apisIds);
     }
     // NOOP:: Delete projects and components ref -> Deleted in apisCmd.delete0(apisIds)

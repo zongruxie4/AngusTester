@@ -1758,11 +1758,11 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   @Override
   public Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long planId, Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<FuncCaseInfo> caseDb = funcCaseInfoRepo.findByPlanIdAndNameIn(planId, names);
-    if (ObjectUtils.isEmpty(caseDb)) {
+    if (isEmpty(caseDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "FuncCase");
     }
     if (names.size() != caseDb.size()) {

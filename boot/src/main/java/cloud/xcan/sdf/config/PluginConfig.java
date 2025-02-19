@@ -10,6 +10,8 @@
  */
 package cloud.xcan.sdf.config;
 
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.sdf.plugin.core.PluginStateListener;
 import cloud.xcan.sdf.plugin.spring.SpringPluginManager;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
@@ -29,7 +31,7 @@ public class PluginConfig {
   public SpringPluginManager pluginManager(
       @Autowired(required = false) List<PluginStateListener> listeners) {
     SpringPluginManager springPluginManager = new SpringPluginManager();
-    if (ObjectUtils.isNotEmpty(listeners)){
+    if (isNotEmpty(listeners)){
       for (PluginStateListener pluginStateListener : listeners) {
         springPluginManager.addPluginStateListener(pluginStateListener);
       }

@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.infra.persistence.mysql.project;
 
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getFilterInFirstValue;
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getInConditionValue;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.domain.project.Project;
@@ -45,7 +46,7 @@ public class ProjectListRepoMySql extends AbstractSearchRepository<Project> impl
   private void assembleMembersJoinTargetCondition(StringBuilder sql,
       Set<SearchCriteria> criterias) {
     String authObjectIds = getFilterInFirstValue(criterias, "authObjectIds");
-    if (ObjectUtils.isEmpty(authObjectIds)) {
+    if (isEmpty(authObjectIds)) {
       // Admin query all resource when authObjectIds is empty
       return;
     }

@@ -23,6 +23,7 @@ import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
 import static cloud.xcan.sdf.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
@@ -698,7 +699,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   @Override
   public void deleteBySource(ScriptSource source, Collection<Long> targetIds) {
     Set<Long> scriptIds = scriptQuery.findIdsBySource(source, targetIds);
-    if (ObjectUtils.isNotEmpty(scriptIds)) {
+    if (isNotEmpty(scriptIds)) {
       scriptRepo.deleteByIdIn(scriptIds);
       scriptTagCmd.deleteByScriptIdIn(scriptIds);
       scriptAuthCmd.deleteByScriptIdIn(scriptIds);
@@ -709,7 +710,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   public void deleteBySource(ScriptSource source, Collection<Long> targetIds,
       Collection<ScriptType> testTypes) {
     Set<Long> scriptIds = scriptQuery.findIdsBySourceAndTypeIn(source, targetIds, testTypes);
-    if (ObjectUtils.isNotEmpty(scriptIds)) {
+    if (isNotEmpty(scriptIds)) {
       scriptRepo.deleteByIdIn(scriptIds);
       scriptTagCmd.deleteByScriptIdIn(scriptIds);
       scriptAuthCmd.deleteByScriptIdIn(scriptIds);

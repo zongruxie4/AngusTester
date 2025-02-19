@@ -1,5 +1,7 @@
 package cloud.xcan.sdf.core.angustester.domain.apis.auth;
 
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
+
 import cloud.xcan.sdf.api.commonlink.apis.ApiPermission;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.Collection;
@@ -20,7 +22,7 @@ public class ApisAuthCurrent {
   private LinkedHashSet<ApiPermission> permissions;
 
   public void addPermissions(Collection<ApiPermission> permissions0) {
-    if (ObjectUtils.isEmpty(permissions0)) {
+    if (isEmpty(permissions0)) {
       return;
     }
     if (permissions == null) {

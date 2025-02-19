@@ -72,6 +72,7 @@ import static cloud.xcan.sdf.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.spec.utils.DateUtils.DATE_TIME_FMT;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.collectionEquals;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.duplicateByKey;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
@@ -1170,7 +1171,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
       @Override
       protected Void process() {
         // Clear story point
-        if (ObjectUtils.isEmpty(description)) {
+        if (isEmpty(description)) {
           if (isNotEmpty(taskDb.getDescription())) {
             // Record activity before modifying taskDb.setDescription(null)
             Activity activity = toActivity(TASK, taskDb, DESCRIPTION_CLEAR);
@@ -1221,7 +1222,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
       @Override
       protected Void process() {
         // Clear attachments
-        if (ObjectUtils.isEmpty(attachments)) {
+        if (isEmpty(attachments)) {
           if (isNotEmpty(taskDb.getAttachments())) {
             // Record activity before modifying taskDb.setAttachmentsData(null)
             Activity activity = toActivity(TASK, taskDb,
@@ -1798,7 +1799,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Check the for duplicate task names
         assertTrue(nameIdx != -1, "Task name is required");
         List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
-        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
+        List<String> duplicateNames = names.stream().filter(duplicateByKey(x -> x))
             .collect(Collectors.toList());
         assertTrue(isEmpty(duplicateNames),
             String.format("There are duplicates in the import task, duplicate task name: %s",
