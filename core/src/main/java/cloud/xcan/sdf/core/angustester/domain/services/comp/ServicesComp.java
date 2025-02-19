@@ -18,6 +18,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -27,14 +28,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
+@Slf4j
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 @Entity
 @Table(name = "services_comp")
@@ -99,9 +101,16 @@ public class ServicesComp extends TenantEntity<ServicesComp, Long> {
   @JsonIgnore
   private transient Map<String, String> resolvedRefModels;
 
-  @SneakyThrows
+  @Nullable
   public <T> T toComponent(Class<T> clz) {
-    return isEmpty(model) ? null : OPENAPI_MAPPER.readValue(model, clz);
+    try {
+      // model value `{"scheme":"noauth"}`:  throw java.lang.NullPointerException: null
+      return isEmpty(model) ? null : OPENAPI_MAPPER.readValue(model, clz);
+    } catch (Exception e) {
+      log.error("Failed to convert model to component exception: \n model = {} \n cause = {}",
+          model, e.getMessage());
+      return null;
+    }
   }
 
   @Override

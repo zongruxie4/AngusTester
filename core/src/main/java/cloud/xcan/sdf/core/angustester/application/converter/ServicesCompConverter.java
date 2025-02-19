@@ -5,6 +5,7 @@ import static cloud.xcan.sdf.core.angustester.domain.apis.converter.ApiResponseC
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.distinctByKey;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 import static io.swagger.v3.oas.models.Components.COMPONENTS_EXTENSIONS_REF;
+import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.core.angustester.domain.services.comp.ServicesComp;
 import cloud.xcan.sdf.core.angustester.domain.services.comp.ServicesCompType;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
+import org.apache.poi.ss.formula.functions.T;
+import org.jetbrains.annotations.NotNull;
 
 public class ServicesCompConverter {
 
@@ -149,48 +152,39 @@ public class ServicesCompConverter {
           .filter(distinctByKey(ServicesComp::getRef)).collect(Collectors.toList());
       switch (type) {
         case schemas: {
-          components.schemas(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Schema.class))));
+          components.schemas(toOasComp(Schema.class, comps));
           break;
         }
         case responses: {
-          components.responses(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(ApiResponse.class))));
+          components.responses(toOasComp(ApiResponse.class, comps));
           break;
         }
         case parameters: {
-          components.parameters(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Parameter.class))));
+          components.parameters(toOasComp(Parameter.class, comps));
           break;
         }
         case examples: {
-          components.examples(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Example.class))));
+          components.examples(toOasComp(Example.class, comps));
           break;
         }
         case requestBodies: {
-          components.requestBodies(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(RequestBody.class))));
+          components.requestBodies(toOasComp(RequestBody.class, comps));
           break;
         }
         case headers: {
-          components.headers(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Header.class))));
+          components.headers(toOasComp(Header.class,comps));
           break;
         }
         case securitySchemes: {
-          components.securitySchemes(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(SecurityScheme.class))));
+          components.securitySchemes(toOasComp(SecurityScheme.class, comps));
           break;
         }
         case links: {
-          components.links(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Link.class))));
+          components.links(toOasComp(Link.class, comps));
           break;
         }
         case extensions: {
-          components.extensions(comps.stream().collect(
-              Collectors.toMap(ServicesComp::getKey, x -> x.toComponent(Map.class))));
+          components.extensions(toOasMapComp(comps));
           break;
         }
         default: {
@@ -199,6 +193,28 @@ public class ServicesCompConverter {
       }
     }
     return components;
+  }
+
+  private static @NotNull <T> Map<String, T> toOasComp(Class<T> clz, List<ServicesComp> comps) {
+    Map<String, T> oasComps = new HashMap<>();
+    for (ServicesComp comp : comps) {
+      T schema = comp.toComponent(clz);
+      if (nonNull(schema)){
+        oasComps.put(comp.getRef(), schema);
+      }
+    }
+    return oasComps;
+  }
+
+  private static @NotNull Map<String, Object> toOasMapComp(List<ServicesComp> comps) {
+    Map<String, Object> oasComps = new HashMap<>();
+    for (ServicesComp comp : comps) {
+      Object schema = comp.toComponent(Map.class);
+      if (nonNull(schema)){
+        oasComps.put(comp.getRef(), schema);
+      }
+    }
+    return oasComps;
   }
 
   @SneakyThrows
