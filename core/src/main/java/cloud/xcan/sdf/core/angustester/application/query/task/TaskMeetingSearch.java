@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface TaskMeetingSearch {
 
-  Page<TaskMeeting> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<TaskMeeting> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<TaskMeeting> clz, String... matches);
 
 }

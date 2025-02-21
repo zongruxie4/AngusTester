@@ -22,7 +22,7 @@ public class ScenarioTrashSearchImpl implements ScenarioTrashSearch {
   private UserManager userManager;
 
   @Override
-  public Page<ScenarioTrash> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ScenarioTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ScenarioTrash> clz, String... matches) {
     return new BizTemplate<Page<ScenarioTrash>>() {
       @Override
@@ -32,7 +32,7 @@ public class ScenarioTrashSearchImpl implements ScenarioTrashSearch {
 
       @Override
       protected Page<ScenarioTrash> process() {
-        Page<ScenarioTrash> page = scenarioTrashSearchRepo.find(criterias, pageable, clz, matches);
+        Page<ScenarioTrash> page = scenarioTrashSearchRepo.find(criteria, pageable, clz, matches);
         if (!page.isEmpty()) {
           // Set user name and avatar
           userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",

@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface FuncReviewCaseSearch {
 
-  Page<FuncReviewCase> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<FuncReviewCase> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<FuncReviewCase> clz, String... matches);
 }

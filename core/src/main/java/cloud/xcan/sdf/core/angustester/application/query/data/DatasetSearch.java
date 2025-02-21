@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface DatasetSearch {
 
-  Page<Dataset> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Dataset> clz,
+  Page<Dataset> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Dataset> clz,
       String... matches);
 
 }

@@ -25,13 +25,13 @@ public class NodeSearchRepoMysql extends AbstractSearchRepository<Node> implemen
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return nodeListRepo.getSqlTemplate0(getSearchMode(), step, criterias, "node", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return nodeListRepo.getSqlTemplate0(getSearchMode(), step, criteria, "node", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return nodeListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return nodeListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

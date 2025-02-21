@@ -12,10 +12,10 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface TaskListRepo extends CustomBaseRepository<Task> {
 
   StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches);
+      Set<SearchCriteria> criteria, String tableName, String... matches);
 
-  String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params);
+  String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params);
 
-  TaskCount count(Set<SearchCriteria> criterias);
+  TaskCount count(Set<SearchCriteria> criteria);
 
 }

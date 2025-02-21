@@ -33,28 +33,28 @@ public class ScriptSearchImpl implements ScriptSearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<ScriptInfo> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ScriptInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ScriptInfo> clz, String... matches) {
     return new BizTemplate<Page<ScriptInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<ScriptInfo> process() {
-        scriptQuery.safeScenarioQuery(criterias);
+        scriptQuery.safeScenarioQuery(criteria);
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<ScriptInfo> pages = scriptInfoSearchRepo.find(criterias, pageable, clz, matches);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<ScriptInfo> pages = scriptInfoSearchRepo.find(criteria, pageable, clz, matches);
         if (pages.isEmpty()) {
           return pages;
         }
 
         // For AngusCtrl remote query
-        InfoScope infoScope = findInfoScope(criterias, InfoScope.DETAIL);
+        InfoScope infoScope = findInfoScope(criteria, InfoScope.DETAIL);
         if (InfoScope.DETAIL.equals(infoScope)) {
           scriptQuery.setScriptInfoTag(pages.getContent());
           scriptQuery.setScriptSourceName(pages.getContent());

@@ -24,7 +24,7 @@ public class FuncReviewCaseSearchImpl implements FuncReviewCaseSearch {
   private FuncReviewCaseQuery funcReviewCaseQuery;
 
   @Override
-  public Page<FuncReviewCase> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<FuncReviewCase> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<FuncReviewCase> clz, String... matches) {
     return new BizTemplate<Page<FuncReviewCase>>() {
       @Override
@@ -34,9 +34,9 @@ public class FuncReviewCaseSearchImpl implements FuncReviewCaseSearch {
 
       @Override
       protected Page<FuncReviewCase> process() {
-        criterias.add(equal("lastReview", true));
+        criteria.add(equal("lastReview", true));
 
-        Page<FuncReviewCase> page = funcReviewCaseSearchRepo.find(criterias, pageable, clz, matches);
+        Page<FuncReviewCase> page = funcReviewCaseSearchRepo.find(criteria, pageable, clz, matches);
         funcReviewCaseQuery.setCaseInfo(page.getContent());
         return page;
       }

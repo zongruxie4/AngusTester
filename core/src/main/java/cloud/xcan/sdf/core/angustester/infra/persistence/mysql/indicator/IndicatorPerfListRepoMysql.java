@@ -25,19 +25,19 @@ public class IndicatorPerfListRepoMysql extends AbstractSearchRepository<Indicat
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    StringBuilder sql = getTargetSqlTemplate0(getSearchMode(), step, criterias,
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    StringBuilder sql = getTargetSqlTemplate0(getSearchMode(), step, criteria,
         "indicator_perf", matches);
 
     // Assemble non mainClass match Conditions
-    assembleTargetNameLikeCondition(criterias, sql);
+    assembleTargetNameLikeCondition(criteria, sql);
     return sql;
   }
 
   @Override
   public StringBuilder getTargetSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
-    String targetTypeValue = findFirstValue(criterias, "targetType");
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
+    String targetTypeValue = findFirstValue(criteria, "targetType");
     assertNotNull(targetTypeValue, "targetType is required");
 
     String mainAlis = "ip";
@@ -48,16 +48,16 @@ public class IndicatorPerfListRepoMysql extends AbstractSearchRepository<Indicat
     assembleIndicatorJoinTargetSql(targetTypeValue, sql);
 
     // Assemble mainClass Conditions
-    sql.append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+    sql.append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
 
     // Assemble non mainClass authObjectId Conditions
-    assembleAuthJoinTargetCondition(targetTypeValue, sql, criterias);
+    assembleAuthJoinTargetCondition(targetTypeValue, sql, criteria);
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    String targetTypeValue = findFirstValue(criterias, "targetType");
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    String targetTypeValue = findFirstValue(criteria, "targetType");
     assertNotNull(targetTypeValue, "targetType is required");
     CombinedTargetType type = CombinedTargetType.valueOf(targetTypeValue);
     if (type == CombinedTargetType.SCENARIO) {

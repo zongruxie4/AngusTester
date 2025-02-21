@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface FuncBaselineSearch {
 
-  Page<FuncBaselineInfo> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<FuncBaselineInfo> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<FuncBaselineInfo> clz, String... matches);
 }

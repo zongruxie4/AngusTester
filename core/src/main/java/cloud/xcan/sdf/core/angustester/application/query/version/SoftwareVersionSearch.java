@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface SoftwareVersionSearch {
 
-  Page<SoftwareVersion> search(Set<SearchCriteria> criterias, Pageable pageable, Class<SoftwareVersion> clz,
+  Page<SoftwareVersion> search(Set<SearchCriteria> criteria, Pageable pageable, Class<SoftwareVersion> clz,
       String... matches);
 
 }

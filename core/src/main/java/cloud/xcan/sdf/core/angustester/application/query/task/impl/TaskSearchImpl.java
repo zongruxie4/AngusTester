@@ -47,22 +47,22 @@ public class TaskSearchImpl implements TaskSearch {
   private UserManager userManager;
 
   @Override
-  public Page<Task> search(boolean exportFlag, Set<SearchCriteria> criterias,
+  public Page<Task> search(boolean exportFlag, Set<SearchCriteria> criteria,
       PageRequest pageable, String... matches) {
     return new BizTemplate<Page<Task>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<Task> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
-        criterias.add(SearchCriteria.equal("sprintDeletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("sprintDeletedFlag", false));
 
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Task> page = taskSearchRepo.find(criterias, pageable, Task.class, matches);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Task> page = taskSearchRepo.find(criteria, pageable, Task.class, matches);
         if (page.hasContent()) {
           if (isUserAction()){
             // Set follow flag

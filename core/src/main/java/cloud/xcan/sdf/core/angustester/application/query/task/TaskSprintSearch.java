@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface TaskSprintSearch {
 
-  Page<TaskSprint> search(Set<SearchCriteria> criterias, Pageable pageable, Class<TaskSprint> clz,
+  Page<TaskSprint> search(Set<SearchCriteria> criteria, Pageable pageable, Class<TaskSprint> clz,
       String... matches);
 
 }

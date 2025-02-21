@@ -22,7 +22,7 @@ public class ScenarioMonitorSearchImpl implements ScenarioMonitorSearch {
   private ScenarioMonitorQuery scenarioMonitorQuery;
 
   @Override
-  public Page<ScenarioMonitor> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<ScenarioMonitor> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<ScenarioMonitor> clz, String... matches) {
     return new BizTemplate<Page<ScenarioMonitor>>() {
       @Override
@@ -33,7 +33,7 @@ public class ScenarioMonitorSearchImpl implements ScenarioMonitorSearch {
       @Override
       protected Page<ScenarioMonitor> process() {
         Page<ScenarioMonitor> page = scenarioMonitorSearchRepo.find(
-            criterias, pageable, clz, matches);
+            criteria, pageable, clz, matches);
         if (page.hasContent()) {
           scenarioMonitorQuery.assembleScenarioMonitorCount(page);
         }

@@ -26,7 +26,7 @@ public class ApisCaseSearchImpl implements ApisCaseSearch {
   private UserManager userManager;
 
   @Override
-  public Page<ApisCaseInfo> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ApisCaseInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisCaseInfo> clz, String... matches) {
     return new BizTemplate<Page<ApisCaseInfo>>() {
       @Override
@@ -36,8 +36,8 @@ public class ApisCaseSearchImpl implements ApisCaseSearch {
 
       @Override
       protected Page<ApisCaseInfo> process() {
-        criterias.add(SearchCriteria.equal("apisDeletedFlag", false));
-        Page<ApisCaseInfo> page = apisCaseInfoSearchRepo.find(criterias, pageable, clz, matches);
+        criteria.add(SearchCriteria.equal("apisDeletedFlag", false));
+        Page<ApisCaseInfo> page = apisCaseInfoSearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           // Set apis deleted flag
           funcCaseQuery.setInfoApisNameAndDeleted(page.getContent());

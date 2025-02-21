@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 public interface FuncBaselineCaseSearch {
 
   Page<FuncBaselineCaseInfo> search(Long baselineId, boolean exportFlag,
-      Set<SearchCriteria> criterias, PageRequest pageable, Class<FuncBaselineCaseInfo> clz,
+      Set<SearchCriteria> criteria, PageRequest pageable, Class<FuncBaselineCaseInfo> clz,
       String... matches);
 
 }

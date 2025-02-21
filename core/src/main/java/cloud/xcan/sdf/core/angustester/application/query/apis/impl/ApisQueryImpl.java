@@ -358,12 +358,12 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected Page<ApisBasicInfo> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(equal("serviceId", serviceId));
-        criterias.add(equal("deletedFlag", false));
-        criterias.add(equal("serviceDeletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(equal("serviceId", serviceId));
+        criteria.add(equal("deletedFlag", false));
+        criteria.add(equal("serviceDeletedFlag", false));
 
-        return list0(criterias, pageable, clz);
+        return list0(criteria, pageable, clz);
       }
     }.execute();
   }
@@ -380,20 +380,20 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected Page<ApisBasicInfo> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(equal("deletedFlag", false));
-        criterias.add(equal("serviceDeletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(equal("deletedFlag", false));
+        criteria.add(equal("serviceDeletedFlag", false));
 
-        return list0(criterias, pageable, clz);
+        return list0(criteria, pageable, clz);
       }
     }.execute();
   }
 
-  private Page<ApisBasicInfo> list0(Set<SearchCriteria> criterias, PageRequest pageable,
+  private Page<ApisBasicInfo> list0(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<ApisBasicInfo> clz) {
     // Set authorization conditions when you are not an administrator or only query yourself
-    commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-    Page<ApisBasicInfo> page = apisInfoListRepo.find(criterias, pageable, clz,
+    commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+    Page<ApisBasicInfo> page = apisInfoListRepo.find(criteria, pageable, clz,
         ApisConverter::objectArrToApis, null);
 
     if (page.hasContent()) {
@@ -472,14 +472,14 @@ public class ApisQueryImpl implements ApisQuery {
   @Override
   public Page<ApisBasicInfo> find0(Long serviceId, PageRequest pageable,
       Class<ApisBasicInfo> clz) {
-    Set<SearchCriteria> criterias = new HashSet<>();
-    criterias.add(equal("serviceId", serviceId));
-    criterias.add(equal("deletedFlag", false));
-    //criterias.add(equal("serviceDeletedFlag", false));
+    Set<SearchCriteria> criteria = new HashSet<>();
+    criteria.add(equal("serviceId", serviceId));
+    criteria.add(equal("deletedFlag", false));
+    //criteria.add(equal("serviceDeletedFlag", false));
 
     // Set authorization conditions when you are not an administrator or only query yourself
-    commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-    return apisInfoListRepo.find(criterias, pageable, clz, ApisConverter::objectArrToApis, null);
+    commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+    return apisInfoListRepo.find(criteria, pageable, clz, ApisConverter::objectArrToApis, null);
   }
 
   @Override

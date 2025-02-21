@@ -31,23 +31,23 @@ public class FuncPlanSearchImpl implements FuncPlanSearch {
   private UserManager userManager;
 
   @Override
-  public Page<FuncPlan> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<FuncPlan> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<FuncPlan> clz, String... matches) {
     return new BizTemplate<Page<FuncPlan>>() {
       @Override
       protected void checkParams() {
         // Check the project permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<FuncPlan> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        // funcPlanQuery.checkAndSetAuthObjectIdCriteria(criterias); -> All project members are visible
+        // funcPlanQuery.checkAndSetAuthObjectIdCriteria(criteria); -> All project members are visible
 
-        Page<FuncPlan> page = funcPlanSearchRepo.find(criterias, pageable, clz, matches);
+        Page<FuncPlan> page = funcPlanSearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           Set<Long> planIds = page.getContent().stream().map(FuncPlan::getId)
               .collect(Collectors.toSet());

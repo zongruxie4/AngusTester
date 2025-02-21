@@ -35,32 +35,32 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "script", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "script", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
     StringBuilder sql = new StringBuilder("SELECT %s FROM " + tableName + " " + mainAlis)
         // Assemble non mainClass tag conditions
-        .append(assembleTagJoinCondition(criterias))
+        .append(assembleTagJoinCondition(criteria))
         // Assemble non mainClass source target conditions
-        .append(assembleSourceTargetJoinCondition(criterias))
+        .append(assembleSourceTargetJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass Conditions
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
     // Assemble non mainClass authObjectId and grantFlag Conditions
-    assembleAuthJoinTargetCondition(CombinedTargetType.SCRIPT.getValue(), sql, criterias);
+    assembleAuthJoinTargetCondition(CombinedTargetType.SCRIPT.getValue(), sql, criteria);
     return sql;
   }
 
-  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String tagInValue = getFilterInFirstValue(criterias, "tag");
-    String tagEqualValue = findFirstValue(criterias, "tag", SearchOperation.EQUAL);
+    String tagInValue = getFilterInFirstValue(criteria, "tag");
+    String tagEqualValue = findFirstValue(criteria, "tag", SearchOperation.EQUAL);
     if (isEmpty(tagInValue) && isEmpty(tagEqualValue)) {
       return sql;
     }
@@ -74,10 +74,10 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
     return sql;
   }
 
-  private StringBuilder assembleSourceTargetJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleSourceTargetJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String sourceTargetIdInValue = getFilterInFirstValue(criterias, "sourceTargetId");
-    String sourceTargetIdEqualValue = findFirstValue(criterias, "sourceTargetId",
+    String sourceTargetIdInValue = getFilterInFirstValue(criteria, "sourceTargetId");
+    String sourceTargetIdEqualValue = findFirstValue(criteria, "sourceTargetId",
         SearchOperation.EQUAL);
     if (isEmpty(sourceTargetIdInValue) && isEmpty(sourceTargetIdEqualValue)) {
       return sql;
@@ -93,7 +93,7 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
   }
 
   @Override
-  public ScriptCount count(Set<SearchCriteria> criterias) {
+  public ScriptCount count(Set<SearchCriteria> criteria) {
     // @formatter:off
     StringBuilder groupBySql = new StringBuilder("SELECT a.type,a.source,COUNT(*) num FROM script a ");
 
@@ -101,18 +101,18 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
     StringBuilder joinTarget = new StringBuilder();
     StringBuilder mainCondition = new StringBuilder();
     String matchValue = "";
-    if (isNotEmpty(criterias)) {
+    if (isNotEmpty(criteria)) {
       // Assemble non mainClass tag conditions
-      joinTag = assembleTagJoinCondition(criterias);
+      joinTag = assembleTagJoinCondition(criteria);
       // Assemble non mainClass target conditions
-      joinTarget = assembleSourceTargetJoinCondition(criterias);
+      joinTarget = assembleSourceTargetJoinCondition(criteria);
 
-      matchValue = getFilterMatchFirstValueAndRemove(criterias, "name");
+      matchValue = getFilterMatchFirstValueAndRemove(criteria, "name");
       matchValue = detectFulltextSearchValue(matchValue);
 
       // Assemble mainClass Conditions
       SingleTableEntityPersister step = getSingleTableEntityPersister();
-      mainCondition = getCriteriaAliasCondition(step, criterias, "a", getSearchMode(), false);
+      mainCondition = getCriteriaAliasCondition(step, criteria, "a", getSearchMode(), false);
     }
 
     groupBySql.append(joinTag).append(joinTarget)
@@ -120,7 +120,7 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
         .append(getMatchCondition(matchValue));
 
     // Assemble non mainClass authObjectId and grantFlag Conditions
-    assembleAuthJoinTargetCondition(CombinedTargetType.SCRIPT.getValue(), groupBySql, criterias);
+    assembleAuthJoinTargetCondition(CombinedTargetType.SCRIPT.getValue(), groupBySql, criteria);
 
     groupBySql.append(" GROUP BY a.type,a.source "); // Use Covering Index
 
@@ -130,8 +130,8 @@ public class ScriptInfoListRepoMySql extends AbstractSearchRepository<ScriptInfo
         .get(ScriptInfo.class.getName());
     Query groupByQueryResult = entityManager.createNativeQuery(groupBySql.toString());
 
-    if (isNotEmpty(criterias)) {
-      setQueryParameter(step, groupByQueryResult, criterias, ScriptInfo.class);
+    if (isNotEmpty(criteria)) {
+      setQueryParameter(step, groupByQueryResult, criteria, ScriptInfo.class);
     }
     return objectArrToScriptCount((List<Object[]>) groupByQueryResult.getResultList()
     );

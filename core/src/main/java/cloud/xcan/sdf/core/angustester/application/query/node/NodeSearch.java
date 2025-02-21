@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface NodeSearch {
 
-  Page<Node> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Node> clz,
+  Page<Node> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Node> clz,
       String... matches);
 
 }

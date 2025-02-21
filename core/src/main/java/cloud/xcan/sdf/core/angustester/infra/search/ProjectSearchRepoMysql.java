@@ -23,14 +23,14 @@ public class ProjectSearchRepoMysql extends AbstractSearchRepository<Project> im
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return projectListRepo.getSqlTemplate0(getSearchMode(), step, criterias, "project",
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return projectListRepo.getSqlTemplate0(getSearchMode(), step, criteria, "project",
         matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return projectListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return projectListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

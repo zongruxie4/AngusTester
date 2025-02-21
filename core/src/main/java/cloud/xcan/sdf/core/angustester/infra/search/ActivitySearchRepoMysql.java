@@ -20,14 +20,14 @@ public class ActivitySearchRepoMysql extends AbstractSearchRepository<Activity>
 
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] objects, String... matches) {
-    return activityListRepo.getSqlTemplate0(getSearchMode(), step, criterias,
+      Set<SearchCriteria> criteria, Object[] objects, String... matches) {
+    return activityListRepo.getSqlTemplate0(getSearchMode(), step, criteria,
         "activity", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return activityListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return activityListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

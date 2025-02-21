@@ -26,14 +26,14 @@ public class FuncCaseInfoSearchRepoMysql extends AbstractSearchRepository<FuncCa
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return funcCaseInfoListRepo.getSqlTemplate0(getSearchMode(), step, criterias,
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return funcCaseInfoListRepo.getSqlTemplate0(getSearchMode(), step, criteria,
         "func_case", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return funcCaseInfoListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return funcCaseInfoListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

@@ -22,7 +22,7 @@ public class TaskTrashSearchImpl implements TaskTrashSearch {
   private UserManager userManager;
 
   @Override
-  public Page<TaskTrash> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<TaskTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<TaskTrash> clz, String... matches) {
     return new BizTemplate<Page<TaskTrash>>() {
       @Override
@@ -32,7 +32,7 @@ public class TaskTrashSearchImpl implements TaskTrashSearch {
 
       @Override
       protected Page<TaskTrash> process() {
-        Page<TaskTrash> page = taskTrashSearchRepo.find(criterias, pageable, clz, matches);
+        Page<TaskTrash> page = taskTrashSearchRepo.find(criteria, pageable, clz, matches);
 
         if (!page.isEmpty()) {
           // Set user name and avatar

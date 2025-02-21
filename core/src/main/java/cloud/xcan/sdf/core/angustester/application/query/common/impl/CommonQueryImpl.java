@@ -353,15 +353,15 @@ public class CommonQueryImpl implements CommonQuery {
    * Set authorization conditions when you are not an administrator or only query yourself
    */
   @Override
-  public boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criterias) {
-    SearchCriteria adminCriteria = findFirstAndRemove(criterias, "adminFlag");
+  public boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria) {
+    SearchCriteria adminCriteria = findFirstAndRemove(criteria, "adminFlag");
     boolean adminFlag = false;
     if (Objects.nonNull(adminCriteria)) {
       adminFlag = Boolean.parseBoolean(
           adminCriteria.getValue().toString().replaceAll("\"", ""));
     }
     if (!adminFlag || !isAdminUser()) {
-      criterias.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));
+      criteria.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));
     }
     return false;
   }

@@ -27,18 +27,18 @@ public class IndicatorFuncListRepoMysql extends AbstractSearchRepository<Indicat
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
     StringBuilder sql = indicatorPerfListRepo.getTargetSqlTemplate0(getSearchMode(), step,
-        criterias, "indicator_func", matches);
+        criteria, "indicator_func", matches);
 
     // Assemble non mainClass match Conditions
-    assembleTargetNameLikeCondition(criterias, sql);
+    assembleTargetNameLikeCondition(criteria, sql);
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    String targetTypeValue = findFirstValue(criterias, "targetType");
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    String targetTypeValue = findFirstValue(criteria, "targetType");
     assertNotNull(targetTypeValue, "targetType is required");
     CombinedTargetType type = CombinedTargetType.valueOf(targetTypeValue);
     if (type == CombinedTargetType.API) {

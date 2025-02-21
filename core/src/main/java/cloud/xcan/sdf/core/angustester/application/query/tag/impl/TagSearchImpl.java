@@ -22,7 +22,7 @@ public class TagSearchImpl implements TagSearch {
   private TagQuery tagQuery;
 
   @Override
-  public Page<Tag> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<Tag> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Tag> clz, String... matches) {
     return new BizTemplate<Page<Tag>>() {
       @Override
@@ -32,8 +32,8 @@ public class TagSearchImpl implements TagSearch {
 
       @Override
       protected Page<Tag> process() {
-        Page<Tag> page = tagSearchRepo.find(criterias, pageable, clz, matches);
-        tagQuery.setEditPermissionFlag(criterias, page.getContent());
+        Page<Tag> page = tagSearchRepo.find(criteria, pageable, clz, matches);
+        tagQuery.setEditPermissionFlag(criteria, page.getContent());
         return page;
       }
     }.execute();

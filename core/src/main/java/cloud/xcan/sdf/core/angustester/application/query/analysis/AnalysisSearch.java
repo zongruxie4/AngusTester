@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface AnalysisSearch {
 
-  Page<Analysis> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<Analysis> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<Analysis> clz, String... matches);
 
 

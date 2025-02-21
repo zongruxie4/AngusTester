@@ -26,18 +26,18 @@ public class ApisTrashSearchImpl implements ApisTrashSearch {
   private UserManager userManager;
 
   @Override
-  public Page<ApisTrash> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ApisTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisTrash> clz, String... matches) {
     return new BizTemplate<Page<ApisTrash>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<ApisTrash> process() {
-        Page<ApisTrash> page = apisTrashSearchRepo.find(criterias, pageable, clz, matches);
+        Page<ApisTrash> page = apisTrashSearchRepo.find(criteria, pageable, clz, matches);
 
         if (!page.isEmpty()) {
           // Set user name and avatar

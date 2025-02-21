@@ -49,39 +49,39 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "func_case", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "func_case", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
-    String enabledGroup = findFirstValueAndRemove(criterias, "enabledGroup");
+    String enabledGroup = findFirstValueAndRemove(criteria, "enabledGroup");
     ProtocolAssert.assertTrue(isNull(enabledGroup) || !parseBoolean(enabledGroup),
         "Enabled group is not supported");
     StringBuilder sql = new StringBuilder();
     sql.append("SELECT %s FROM ").append(tableName).append(" ").append(mainAlis)
-        .append(assembleTagJoinCondition(criterias))
-        .append(assembleFavouriteByJoinCondition(criterias))
-        .append(assembleFollowByJoinCondition(criterias))
+        .append(assembleTagJoinCondition(criteria))
+        .append(assembleFavouriteByJoinCondition(criteria))
+        .append(assembleFollowByJoinCondition(criteria))
         .append(" WHERE 1=1 ")
-        .append(assembleCommentByInCondition(criterias))
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+        .append(assembleCommentByInCondition(criteria))
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.*";
   }
 
   @Override
-  public Page<Long> groups(Set<SearchCriteria> criterias, Pageable pageable, String... matches) {
+  public Page<Long> groups(Set<SearchCriteria> criteria, Pageable pageable, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
-    String enabledGroup = findFirstValueAndRemove(criterias, "enabledGroup");
+    String enabledGroup = findFirstValueAndRemove(criteria, "enabledGroup");
     ProtocolAssert.assertTrue(nonNull(enabledGroup) && parseBoolean(enabledGroup),
         "Enabled group is required");
     SingleTableEntityPersister step = getSingleTableEntityPersister();
@@ -89,10 +89,10 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     StringBuilder querySql = new StringBuilder()
         .append("SELECT DISTINCT a.module_id ")
         .append(" FROM func_case ").append(mainAlis)
-        .append(assembleTagJoinCondition(criterias))
+        .append(assembleTagJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass conditions
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis,
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis,
             getSearchMode(), false, matches))
         .append(" ORDER BY a.module_id DESC ");
 
@@ -100,8 +100,8 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     queryResult.setFirstResult((int) pageable.getOffset());
     queryResult.setMaxResults(pageable.getPageSize());
 
-    if (isNotEmpty(criterias)) {
-      setQueryParameter(step, queryResult, criterias, FuncCaseInfo.class);
+    if (isNotEmpty(criteria)) {
+      setQueryParameter(step, queryResult, criteria, FuncCaseInfo.class);
     }
     List<Long> groupIds = FuncCaseConverter
         .objectArrToGroup((ArrayList<Object>) queryResult.getResultList());
@@ -113,23 +113,23 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     StringBuilder countSql = new StringBuilder()
         .append("SELECT count(DISTINCT a.module_id")
         .append(") FROM func_case ").append(mainAlis)
-        .append(assembleTagJoinCondition(criterias))
-        .append(assembleFavouriteByJoinCondition(criterias))
-        .append(assembleFollowByJoinCondition(criterias))
+        .append(assembleTagJoinCondition(criteria))
+        .append(assembleFavouriteByJoinCondition(criteria))
+        .append(assembleFollowByJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass conditions
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis,
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis,
             getSearchMode(), false, matches));
     Query queryCount = this.getEntityManager().createNativeQuery(countSql.toString());
-    if (isNotEmpty(criterias)) {
-      this.setQueryParameter(step, queryCount, criterias, FuncCaseInfo.class);
+    if (isNotEmpty(criteria)) {
+      this.setQueryParameter(step, queryCount, criteria, FuncCaseInfo.class);
     }
     long count = ((BigInteger) queryCount.getSingleResult()).longValue();
     return new FixedPageImpl<>(groupIds, pageable, count);
   }
 
   @Override
-  public FuncCaseCount count(Set<SearchCriteria> criterias) {
+  public FuncCaseCount count(Set<SearchCriteria> criteria) {
     // @formatter:off
     StringBuilder groupBySql = new StringBuilder("SELECT a.`review_status`,a.test_result, COUNT(*) num FROM func_case a ");
     StringBuilder overdueSql = new StringBuilder("SELECT COUNT(a.id) FROM func_case a ");
@@ -143,16 +143,16 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     StringBuilder joinTag = new StringBuilder();
     StringBuilder mainCondition = new StringBuilder();
     String searchValue = "";
-    if (isNotEmpty(criterias)) {
+    if (isNotEmpty(criteria)) {
       // Assemble non mainClass tagIds in Conditions
-      joinTag = assembleTagJoinCondition(criterias);
+      joinTag = assembleTagJoinCondition(criteria);
 
-      searchValue = CriteriaUtils.getFilterMatchFirstValueAndRemove(criterias, "name");
+      searchValue = CriteriaUtils.getFilterMatchFirstValueAndRemove(criteria, "name");
       searchValue = detectFulltextSearchValue(searchValue);
 
       // Assemble mainClass Conditions
       SingleTableEntityPersister step = getSingleTableEntityPersister();
-      mainCondition = getCriteriaAliasCondition(step, criterias, "a",
+      mainCondition = getCriteriaAliasCondition(step, criteria, "a",
           getSearchMode(), false);
     }
 
@@ -192,14 +192,14 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     Query sumNumQueryResult = entityManager.createNativeQuery(sumNumSql.toString());
     Query completedWorkloadQueryResult = entityManager.createNativeQuery(completedWorkloadSql.toString());
 
-    if (isNotEmpty(criterias)) {
-      setQueryParameter(step, groupByQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, overdueQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, oneTimePassReviewQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, alreadyTestedQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, oneTimePassTestQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, sumNumQueryResult, criterias, FuncCaseInfo.class);
-      setQueryParameter(step, completedWorkloadQueryResult, criterias, FuncCaseInfo.class);
+    if (isNotEmpty(criteria)) {
+      setQueryParameter(step, groupByQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, overdueQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, oneTimePassReviewQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, alreadyTestedQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, oneTimePassTestQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, sumNumQueryResult, criteria, FuncCaseInfo.class);
+      setQueryParameter(step, completedWorkloadQueryResult, criteria, FuncCaseInfo.class);
     }
     return FuncCaseConverter.objectArrToCount(
         (List<Object[]>) groupByQueryResult.getResultList(),
@@ -219,10 +219,10 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     return (SingleTableEntityPersister) entityPm.get(FuncCase.class.getName());
   }
 
-  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String tagIdInValue = getFilterInFirstValue(criterias, "tagId");
-    String tagIdEqualValue = findFirstValue(criterias, "tagId", SearchOperation.EQUAL);
+    String tagIdInValue = getFilterInFirstValue(criteria, "tagId");
+    String tagIdEqualValue = findFirstValue(criteria, "tagId", SearchOperation.EQUAL);
     if (isEmpty(tagIdInValue) && isEmpty(tagIdEqualValue)) {
       return sql;
     }
@@ -241,9 +241,9 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
         + matchValue + "' IN BOOLEAN MODE) " : "";
   }
 
-  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String favouriteByEqualValue = findFirstValueAndRemove(criterias, "favouriteBy",
+    String favouriteByEqualValue = findFirstValueAndRemove(criteria, "favouriteBy",
         SearchOperation.EQUAL);
     if (isEmpty(favouriteByEqualValue)) {
       return sql;
@@ -255,9 +255,9 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     return sql;
   }
 
-  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String followByEqualValue = findFirstValueAndRemove(criterias, "followBy",
+    String followByEqualValue = findFirstValueAndRemove(criteria, "followBy",
         SearchOperation.EQUAL);
     if (isEmpty(followByEqualValue)) {
       return sql;

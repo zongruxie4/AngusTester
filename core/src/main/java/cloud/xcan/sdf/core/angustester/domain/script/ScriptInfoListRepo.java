@@ -12,7 +12,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface ScriptInfoListRepo extends CustomBaseRepository<ScriptInfo> {
 
   StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches);
+      Set<SearchCriteria> criteria, String tableName, String... matches);
 
-  ScriptCount count(Set<SearchCriteria> criterias);
+  ScriptCount count(Set<SearchCriteria> criteria);
 }

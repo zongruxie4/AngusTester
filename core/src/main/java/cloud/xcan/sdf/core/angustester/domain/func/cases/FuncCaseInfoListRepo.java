@@ -14,12 +14,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface FuncCaseInfoListRepo extends CustomBaseRepository<FuncCaseInfo> {
 
   StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches);
+      Set<SearchCriteria> criteria, String tableName, String... matches);
 
-  String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params);
+  String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params);
 
-  Page<Long> groups(Set<SearchCriteria> criterias, Pageable pageable, String... matches);
+  Page<Long> groups(Set<SearchCriteria> criteria, Pageable pageable, String... matches);
 
-  FuncCaseCount count(Set<SearchCriteria> criterias);
+  FuncCaseCount count(Set<SearchCriteria> criteria);
 
 }

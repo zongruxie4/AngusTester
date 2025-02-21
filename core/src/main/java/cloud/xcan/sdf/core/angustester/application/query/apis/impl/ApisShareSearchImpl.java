@@ -18,7 +18,7 @@ public class ApisShareSearchImpl implements ApisShareSearch {
   private ApisShareSearchRepo apisShareSearchRepo;
 
   @Override
-  public Page<ApisShare> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ApisShare> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisShare> clz, String... matches) {
     return new BizTemplate<Page<ApisShare>>() {
 
@@ -29,7 +29,7 @@ public class ApisShareSearchImpl implements ApisShareSearch {
 
       @Override
       protected Page<ApisShare> process() {
-        return apisShareSearchRepo.find(criterias, pageable, ApisShare.class, matches);
+        return apisShareSearchRepo.find(criteria, pageable, ApisShare.class, matches);
       }
     }.execute();
   }

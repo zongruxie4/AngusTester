@@ -23,7 +23,7 @@ public class SoftwareVersionSearchImpl implements SoftwareVersionSearch {
   private SoftwareVersionQuery softwareVersionQuery;
 
   @Override
-  public Page<SoftwareVersion> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<SoftwareVersion> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<SoftwareVersion> clz, String... matches) {
     return new BizTemplate<Page<SoftwareVersion>>() {
       @Override
@@ -33,7 +33,7 @@ public class SoftwareVersionSearchImpl implements SoftwareVersionSearch {
 
       @Override
       protected Page<SoftwareVersion> process() {
-        Page<SoftwareVersion> page = versionSearchRepo.find(criterias, pageable, clz, matches);
+        Page<SoftwareVersion> page = versionSearchRepo.find(criteria, pageable, clz, matches);
         softwareVersionQuery.setVersionProgress(page.getContent());
         return page;
       }

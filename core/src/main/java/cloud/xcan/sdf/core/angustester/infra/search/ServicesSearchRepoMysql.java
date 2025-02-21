@@ -23,8 +23,8 @@ public class ServicesSearchRepoMysql extends AbstractSearchRepository<Services> 
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return servicesListRepo.getSqlTemplate0(getSearchMode(), step, criterias, "services", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return servicesListRepo.getSqlTemplate0(getSearchMode(), step, criteria, "services", matches);
   }
 
   @Override

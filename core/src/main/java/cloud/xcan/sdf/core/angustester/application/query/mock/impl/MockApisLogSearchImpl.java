@@ -24,7 +24,7 @@ public class MockApisLogSearchImpl implements MockApisLogSearch {
   private MockServiceAuthQuery mockServiceAuthQuery;
 
   @Override
-  public Page<MockApisLogInfo> search(Long mockServiceId, Set<SearchCriteria> criterias,
+  public Page<MockApisLogInfo> search(Long mockServiceId, Set<SearchCriteria> criteria,
       PageRequest pageable, Class<MockApisLogInfo> clz, String... matches) {
     return new BizTemplate<Page<MockApisLogInfo>>() {
       @Override
@@ -34,8 +34,8 @@ public class MockApisLogSearchImpl implements MockApisLogSearch {
 
       @Override
       protected Page<MockApisLogInfo> process() {
-        criterias.add(SearchCriteria.equal("mockServiceId", mockServiceId));
-        return mockApisLogSearchRepo.find(criterias, pageable, clz, matches);
+        criteria.add(SearchCriteria.equal("mockServiceId", mockServiceId));
+        return mockApisLogSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

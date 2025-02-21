@@ -126,11 +126,11 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
 
       @Override
       protected Page<TaskSprint> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        // checkAndSetAuthObjectIdCriteria(criterias); -> All project members are visible
+        // checkAndSetAuthObjectIdCriteria(criteria); -> All project members are visible
 
         Page<TaskSprint> page = taskSprintRepo.findAll(spec, pageable);
         if (page.hasContent()) {
@@ -297,14 +297,14 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
    * Set authorization conditions when you are not an administrator or only query yourself
    */
   @Override
-  public boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criterias) {
-    SearchCriteria adminCriteria = findFirstAndRemove(criterias, "adminFlag");
+  public boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria) {
+    SearchCriteria adminCriteria = findFirstAndRemove(criteria, "adminFlag");
     boolean adminFlag = false;
     if (Objects.nonNull(adminCriteria)) {
       adminFlag = parseBoolean(adminCriteria.getValue().toString().replaceAll("\"", ""));
     }
     if (!adminFlag || !taskSprintAuthQuery.isAdminUser()) {
-      criterias.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));
+      criteria.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));
     }
     return false;
   }

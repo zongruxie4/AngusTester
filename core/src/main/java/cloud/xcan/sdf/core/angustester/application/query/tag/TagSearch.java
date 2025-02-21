@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface TagSearch {
 
-  Page<Tag> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Tag> cls,
+  Page<Tag> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Tag> cls,
       String... matches);
 }

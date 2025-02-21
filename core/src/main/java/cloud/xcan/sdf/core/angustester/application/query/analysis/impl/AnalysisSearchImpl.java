@@ -22,18 +22,18 @@ public class AnalysisSearchImpl implements AnalysisSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public Page<Analysis> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<Analysis> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<Analysis> clz, String... matches) {
     return new BizTemplate<Page<Analysis>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<Analysis> process() {
-        return analysisSearchRepo.find(criterias, pageable, clz, matches);
+        return analysisSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

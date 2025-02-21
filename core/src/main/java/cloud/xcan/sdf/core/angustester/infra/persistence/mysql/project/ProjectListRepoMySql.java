@@ -22,29 +22,29 @@ public class ProjectListRepoMySql extends AbstractSearchRepository<Project> impl
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "project", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "project", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
     StringBuilder sql = new StringBuilder(
         "SELECT %s FROM " + tableName + " " + mainAlis + " WHERE 1=1 ");
 
     // Assemble mainClass Conditions
-    sql.append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+    sql.append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
 
     // Assemble non mainClass members conditions
-    assembleMembersJoinTargetCondition(sql, criterias);
+    assembleMembersJoinTargetCondition(sql, criteria);
     return sql;
   }
 
   private void assembleMembersJoinTargetCondition(StringBuilder sql,
-      Set<SearchCriteria> criterias) {
-    String authObjectIds = getFilterInFirstValue(criterias, "authObjectIds");
+      Set<SearchCriteria> criteria) {
+    String authObjectIds = getFilterInFirstValue(criteria, "authObjectIds");
     if (isEmpty(authObjectIds)) {
       // Admin query all resource when authObjectIds is empty
       return;
@@ -56,7 +56,7 @@ public class ProjectListRepoMySql extends AbstractSearchRepository<Project> impl
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.*";
   }
 

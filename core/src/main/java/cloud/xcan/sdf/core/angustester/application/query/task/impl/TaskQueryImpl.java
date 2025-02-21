@@ -391,7 +391,7 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   @Override
-  public TaskCount countStatistics(Set<SearchCriteria> criterias) {
+  public TaskCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<TaskCount>() {
       @Override
       protected void checkParams() {
@@ -400,9 +400,9 @@ public class TaskQueryImpl implements TaskQuery {
 
       @Override
       protected TaskCount process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
-        criterias.add(SearchCriteria.equal("sprintDeletedFlag", false));
-        return taskListRepo.count(criterias);
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("sprintDeletedFlag", false));
+        return taskListRepo.count(criteria);
       }
     }.execute();
   }

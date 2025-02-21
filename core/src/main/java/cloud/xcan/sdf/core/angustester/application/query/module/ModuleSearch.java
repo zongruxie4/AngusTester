@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface ModuleSearch {
 
-  List<Module> search(Set<SearchCriteria> criterias, Class<Module> cls, String... matches);
+  List<Module> search(Set<SearchCriteria> criteria, Class<Module> cls, String... matches);
 }

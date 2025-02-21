@@ -14,8 +14,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface ServicesListRepo extends CustomBaseRepository<Services> {
 
   StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches);
+      Set<SearchCriteria> criteria, String tableName, String... matches);
 
-  String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params);
+  String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params);
 
 }

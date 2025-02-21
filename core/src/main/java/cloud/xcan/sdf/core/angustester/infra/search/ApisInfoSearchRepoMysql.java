@@ -23,13 +23,13 @@ public class ApisInfoSearchRepoMysql extends AbstractSearchRepository<ApisBasicI
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return apisInfoListRepo.getSqlTemplate0(getSearchMode(), step, criterias, "apis", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return apisInfoListRepo.getSqlTemplate0(getSearchMode(), step, criteria, "apis", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return apisInfoListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return apisInfoListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

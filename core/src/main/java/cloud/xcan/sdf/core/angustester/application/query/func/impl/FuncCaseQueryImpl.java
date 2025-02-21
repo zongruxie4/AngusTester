@@ -339,15 +339,15 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
       @Override
       protected Page<FuncCaseInfo> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(equal("deletedFlag", false));
-        criterias.add(equal("planDeletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(equal("deletedFlag", false));
+        criteria.add(equal("planDeletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        funcPlanQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        funcPlanQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
         // Assemble mainClass table
-        Page<FuncCaseInfo> page = funcCaseInfoListRepo.find(criterias, pageable,
+        Page<FuncCaseInfo> page = funcCaseInfoListRepo.find(criteria, pageable,
             FuncCaseInfo.class, null);
 
         if (page.hasContent()) {
@@ -491,21 +491,21 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   @Override
-  public FuncCaseCount countStatistics(Set<SearchCriteria> criterias) {
+  public FuncCaseCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<FuncCaseCount>() {
       String projectId;
 
       @Override
       protected void checkParams() {
-        projectId = CriteriaUtils.findFirstValue(criterias, "projectId");
+        projectId = CriteriaUtils.findFirstValue(criteria, "projectId");
         ProtocolAssert.assertTrue(nonNull(projectId), "Parameter projectId is required");
       }
 
       @Override
       protected FuncCaseCount process() {
-        criterias.add(equal("deletedFlag", false));
-        criterias.add(equal("planDeletedFlag", false));
-        return funcCaseInfoListRepo.count(criterias);
+        criteria.add(equal("deletedFlag", false));
+        criteria.add(equal("planDeletedFlag", false));
+        return funcCaseInfoListRepo.count(criteria);
       }
     }.execute();
   }

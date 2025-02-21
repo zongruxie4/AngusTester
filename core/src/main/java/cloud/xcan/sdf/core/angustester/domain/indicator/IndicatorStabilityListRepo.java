@@ -8,6 +8,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface IndicatorStabilityListRepo extends CustomBaseRepository<IndicatorStability> {
 
-  String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params);
+  String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params);
 
 }

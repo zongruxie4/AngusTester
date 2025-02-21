@@ -18,7 +18,7 @@ public class TaskMeetingSearchImpl implements TaskMeetingSearch {
   private TaskMeetingSearchRepo taskMeetingSearchRepo;
 
   @Override
-  public Page<TaskMeeting> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<TaskMeeting> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<TaskMeeting> clz, String... matches) {
     return new BizTemplate<Page<TaskMeeting>>() {
       @Override
@@ -28,7 +28,7 @@ public class TaskMeetingSearchImpl implements TaskMeetingSearch {
 
       @Override
       protected Page<TaskMeeting> process() {
-        return taskMeetingSearchRepo.find(criterias, pageable, clz, matches);
+        return taskMeetingSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

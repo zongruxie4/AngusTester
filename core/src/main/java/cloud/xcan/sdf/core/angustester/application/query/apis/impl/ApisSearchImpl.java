@@ -42,7 +42,7 @@ public class ApisSearchImpl implements ApisSearch {
   private UserManager userManager;
 
   @Override
-  public Page<ApisBasicInfo> searchByServiceId(Long serviceId, Set<SearchCriteria> criterias,
+  public Page<ApisBasicInfo> searchByServiceId(Long serviceId, Set<SearchCriteria> criteria,
       Pageable pageable, String... matches) {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
@@ -53,38 +53,38 @@ public class ApisSearchImpl implements ApisSearch {
 
       @Override
       protected Page<ApisBasicInfo> process() {
-        criterias.add(SearchCriteria.equal("serviceId", serviceId));
-        return search0(criterias, pageable, matches);
+        criteria.add(SearchCriteria.equal("serviceId", serviceId));
+        return search0(criteria, pageable, matches);
       }
     }.execute();
   }
 
   @Override
-  public Page<ApisBasicInfo> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ApisBasicInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       String... matches) {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<ApisBasicInfo> process() {
-        return search0(criterias, pageable, matches);
+        return search0(criteria, pageable, matches);
       }
     }.execute();
   }
 
-  private Page<ApisBasicInfo> search0(Set<SearchCriteria> criterias, Pageable pageable,
+  private Page<ApisBasicInfo> search0(Set<SearchCriteria> criteria, Pageable pageable,
       String... matches) {
-    criterias.add(SearchCriteria.equal("deletedFlag", false));
-    criterias.add(SearchCriteria.equal("serviceDeletedFlag", false));
+    criteria.add(SearchCriteria.equal("deletedFlag", false));
+    criteria.add(SearchCriteria.equal("serviceDeletedFlag", false));
 
     // Set authorization conditions when you are not an administrator or only query yourself
-    commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
+    commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
-    Page<ApisBasicInfo> page = apisInfoSearchRepo.find(criterias, pageable, ApisBasicInfo.class,
+    Page<ApisBasicInfo> page = apisInfoSearchRepo.find(criteria, pageable, ApisBasicInfo.class,
         ApisConverter::objectArrToApis, matches);
 
     if (page.hasContent()) {

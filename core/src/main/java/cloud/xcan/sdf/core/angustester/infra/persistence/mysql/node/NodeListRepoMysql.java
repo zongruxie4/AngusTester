@@ -25,29 +25,29 @@ public class NodeListRepoMysql extends AbstractSearchRepository<Node> implements
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "node", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "node", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
     StringBuilder sql = new StringBuilder("SELECT %s FROM " + tableName + " " + mainAlis);
 
     // Assemble non mainClass role in Conditions
-    sql.append(assembleRoleJoinCondition(criterias))
+    sql.append(assembleRoleJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass Conditions
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
     return sql;
   }
 
-  private StringBuilder assembleRoleJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleRoleJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String roleInValue = getFilterInFirstValue(criterias, "role");
-    String roleEqualValue = findFirstValue(criterias, "role", SearchOperation.EQUAL);
+    String roleInValue = getFilterInFirstValue(criteria, "role");
+    String roleEqualValue = findFirstValue(criteria, "role", SearchOperation.EQUAL);
     if (isEmpty(roleInValue) && isEmpty(roleEqualValue)) {
       return sql;
     }
@@ -64,7 +64,7 @@ public class NodeListRepoMysql extends AbstractSearchRepository<Node> implements
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.*";
   }
 

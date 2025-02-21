@@ -23,7 +23,7 @@ public class IndicatorStabilitySearchImpl implements IndicatorStabilitySearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<IndicatorStability> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<IndicatorStability> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<IndicatorStability> clz) {
     return new BizTemplate<Page<IndicatorStability>>() {
       @Override
@@ -34,9 +34,9 @@ public class IndicatorStabilitySearchImpl implements IndicatorStabilitySearch {
       @Override
       protected Page<IndicatorStability> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
-        return indicatorStabilitySearchRepo.find(criterias, pageable,
+        return indicatorStabilitySearchRepo.find(criteria, pageable,
             clz, IndicatorStabilityConverter::objectArrToStability, null);
       }
     }.execute();

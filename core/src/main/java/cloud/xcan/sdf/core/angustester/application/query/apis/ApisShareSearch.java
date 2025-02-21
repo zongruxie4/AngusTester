@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ApisShareSearch {
 
-  Page<ApisShare> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<ApisShare> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisShare> clz, String... matches);
 
 }

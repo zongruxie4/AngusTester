@@ -36,7 +36,7 @@ public interface ScriptQuery {
 
   Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, Pageable pageable);
 
-  void safeScenarioQuery(Set<SearchCriteria> criterias);
+  void safeScenarioQuery(Set<SearchCriteria> criteria);
 
   List<ScriptInfo> findInfoBySource(ScriptSource source, Long sourceTargetId);
 

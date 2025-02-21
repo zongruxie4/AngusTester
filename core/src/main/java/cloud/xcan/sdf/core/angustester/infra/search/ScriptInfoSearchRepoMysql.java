@@ -23,8 +23,8 @@ public class ScriptInfoSearchRepoMysql extends SimpleSearchRepository<ScriptInfo
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return scriptInfoListRepo.getSqlTemplate0(getSearchMode(), step, criterias,
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return scriptInfoListRepo.getSqlTemplate0(getSearchMode(), step, criteria,
         "script", matches);
   }
 

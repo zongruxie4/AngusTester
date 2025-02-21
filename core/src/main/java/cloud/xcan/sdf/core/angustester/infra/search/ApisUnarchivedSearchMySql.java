@@ -23,14 +23,14 @@ public class ApisUnarchivedSearchMySql extends AbstractSearchRepository<ApisUnar
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return apisUnarchivedListRepo.getSqlTemplate0(getSearchMode(), step, criterias,
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return apisUnarchivedListRepo.getSqlTemplate0(getSearchMode(), step, criteria,
         "apis_unarchived", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return apisUnarchivedListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return apisUnarchivedListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

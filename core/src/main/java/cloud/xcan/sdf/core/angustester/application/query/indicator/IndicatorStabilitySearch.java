@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface IndicatorStabilitySearch {
 
-  Page<IndicatorStability> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<IndicatorStability> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<IndicatorStability> clz);
 
 }

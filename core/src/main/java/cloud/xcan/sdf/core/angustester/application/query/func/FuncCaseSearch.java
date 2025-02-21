@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface FuncCaseSearch {
 
-  Page<FuncCaseInfo> search(boolean exportFlag, Set<SearchCriteria> criterias, Pageable pageable,
+  Page<FuncCaseInfo> search(boolean exportFlag, Set<SearchCriteria> criteria, Pageable pageable,
       Class<FuncCaseInfo> clz, String... matches);
 
 }

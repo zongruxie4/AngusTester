@@ -127,11 +127,11 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
   @Override
   public PageResult<ServiceVo> search(ServicesSearchDto dto) {
-    Set<SearchCriteria> criterias = ServicesAssembler.getSearchCriteria(dto);
+    Set<SearchCriteria> criteria = ServicesAssembler.getSearchCriteria(dto);
     // Set authorization conditions when you are not an administrator or only query yourself
-    Page<Services> page = servicesSearch.search(criterias, dto.tranPage(),
+    Page<Services> page = servicesSearch.search(criteria, dto.tranPage(),
         getMatchSearchFields(dto.getClass()));
-    return joinAssocStatus(page, criterias);
+    return joinAssocStatus(page, criteria);
   }
 
   @SneakyThrows
@@ -146,7 +146,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
   }
 
   private PageResult<ServiceVo> joinAssocStatus(Page<Services> page,
-      Set<SearchCriteria> criterias) {
+      Set<SearchCriteria> criteria) {
     if (isEmpty(page.getContent())) {
       // TODO PrincipalContext.addExtension("queryAllEmpty", queryAll);
       return PageResult.empty();
@@ -154,7 +154,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
     Set<Long> projectIds = page.stream().map(Services::getId).collect(Collectors.toSet());
 
-    String queryHasApisFlag = findFirstValueAndRemove(criterias, "queryHasApisFlag");
+    String queryHasApisFlag = findFirstValueAndRemove(criteria, "queryHasApisFlag");
     if (nonNull(queryHasApisFlag) && Boolean.parseBoolean(queryHasApisFlag)) {
       List<Long> hasApisProjectIds = servicesQuery.hasApisServiceIds(projectIds);
       for (Services project : page) {
@@ -162,7 +162,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
       }
     }
 
-    String queryHasMockServiceFlag = findFirstValueAndRemove(criterias, "queryHasMockServiceFlag");
+    String queryHasMockServiceFlag = findFirstValueAndRemove(criteria, "queryHasMockServiceFlag");
     if (nonNull(queryHasMockServiceFlag) && Boolean.parseBoolean(queryHasMockServiceFlag)) {
       Map<Long, Long> projectMockIdsMap = mockServiceQuery.findProjectMockIdsMap(projectIds);
       for (Services project : page) {

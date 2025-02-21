@@ -29,7 +29,7 @@ public class NodeSearchImpl implements NodeSearch {
   private NodeQuery nodeQuery;
 
   @Override
-  public Page<Node> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Node> clz,
+  public Page<Node> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Node> clz,
       String... matches) {
     return new BizTemplate<Page<Node>>(true, true) {
       @Override
@@ -40,16 +40,16 @@ public class NodeSearchImpl implements NodeSearch {
       @Override
       protected Page<Node> process() {
         if (PrincipalContext.isTenantClient()) {
-          criterias.add(SearchCriteria.equal("deletedFlag", false));
+          criteria.add(SearchCriteria.equal("deletedFlag", false));
         }
 
         Page<Node> page = null;
-        Long tenantId0 = getTenantId(criterias);
+        Long tenantId0 = getTenantId(criteria);
         if (nodeQuery.hasOwnNodes(tenantId0)) {
-          page = nodeSearchRepo.find(criterias, pageable, clz, matches);
+          page = nodeSearchRepo.find(criteria, pageable, clz, matches);
         } else if (isUserAction()) {
           PrincipalContext.addExtension("isFreeNodes", true);
-          page = nodeQuery.getFreeWhenNonNodes(findFirstValue(criterias, "role"));
+          page = nodeQuery.getFreeWhenNonNodes(findFirstValue(criteria, "role"));
         }
 
         if (nonNull(page) && page.hasContent()) {
@@ -60,8 +60,8 @@ public class NodeSearchImpl implements NodeSearch {
     }.execute();
   }
 
-  private Long getTenantId(Set<SearchCriteria> criterias) {
-    Object tenantId = isDoorApi() ? findFirstValue(criterias, "tenantId") : null;
+  private Long getTenantId(Set<SearchCriteria> criteria) {
+    Object tenantId = isDoorApi() ? findFirstValue(criteria, "tenantId") : null;
     return nonNull(tenantId) ? Long.valueOf(tenantId.toString()) : getOptTenantId();
   }
 

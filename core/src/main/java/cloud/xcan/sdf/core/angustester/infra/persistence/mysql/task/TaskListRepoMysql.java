@@ -36,36 +36,36 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "task", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "task", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
     // DISTINCT for repeated comments
     StringBuilder sql = new StringBuilder("SELECT %s FROM " + tableName + " " + mainAlis);
 
     // Assemble non mainClass assigneeIds in Conditions
-    sql.append(assembleTagJoinCondition(criterias))
-        .append(assembleFavouriteByJoinCondition(criterias))
-        .append(assembleFollowByJoinCondition(criterias))
+    sql.append(assembleTagJoinCondition(criteria))
+        .append(assembleFavouriteByJoinCondition(criteria))
+        .append(assembleFollowByJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass Conditions
-        .append(assembleCommentByInCondition(criterias))
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+        .append(assembleCommentByInCondition(criteria))
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.*";
   }
 
   @Override
-  public TaskCount count(Set<SearchCriteria> criterias) {
+  public TaskCount count(Set<SearchCriteria> criteria) {
     // @formatter:off
     /*******************************************************
      * status  | test_type | task_type | exec_result | num
@@ -86,16 +86,16 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     StringBuilder joinTag = new StringBuilder();
     StringBuilder mainCondition = new StringBuilder();
     String matchValue = "";
-    if (isNotEmpty(criterias)) {
+    if (isNotEmpty(criteria)) {
       // Assemble non mainClass tagIds in Conditions
-      joinTag = assembleTagJoinCondition(criterias);
+      joinTag = assembleTagJoinCondition(criteria);
 
-      matchValue = getFilterMatchFirstValueAndRemove(criterias, "name");
+      matchValue = getFilterMatchFirstValueAndRemove(criteria, "name");
       matchValue = detectFulltextSearchValue(matchValue);
 
       // Assemble mainClass Conditions
       SingleTableEntityPersister step = getSingleTableEntityPersister();
-      mainCondition = getCriteriaAliasCondition(step, criterias, "a",
+      mainCondition = getCriteriaAliasCondition(step, criteria, "a",
           getSearchMode(), false);
     }
 
@@ -126,12 +126,12 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     Query sumNumSqlQueryResult = entityManager.createNativeQuery(sumNumSql.toString());
     Query completedWorkloadQueryResult = entityManager.createNativeQuery(completedWorkloadSql.toString());
 
-    if (isNotEmpty(criterias)) {
-      setQueryParameter(step, groupByQueryResult, criterias, Task.class);
-      setQueryParameter(step, overdueQueryResult, criterias, Task.class);
-      setQueryParameter(step, oneTimePassQueryResult, criterias, Task.class);
-      setQueryParameter(step, sumNumSqlQueryResult, criterias, Task.class);
-      setQueryParameter(step, completedWorkloadQueryResult, criterias, Task.class);
+    if (isNotEmpty(criteria)) {
+      setQueryParameter(step, groupByQueryResult, criteria, Task.class);
+      setQueryParameter(step, overdueQueryResult, criteria, Task.class);
+      setQueryParameter(step, oneTimePassQueryResult, criteria, Task.class);
+      setQueryParameter(step, sumNumSqlQueryResult, criteria, Task.class);
+      setQueryParameter(step, completedWorkloadQueryResult, criteria, Task.class);
     }
     return TaskConverter.objectArrToTaskCount(
         (List<Object[]>) groupByQueryResult.getResultList(),
@@ -149,10 +149,10 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     return (SingleTableEntityPersister) entityPm.get(Task.class.getName());
   }
 
-  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleTagJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String tagIdInValue = getFilterInFirstValue(criterias, "tagId");
-    String tagIdEqualValue = findFirstValue(criterias, "tagId", SearchOperation.EQUAL);
+    String tagIdInValue = getFilterInFirstValue(criteria, "tagId");
+    String tagIdEqualValue = findFirstValue(criteria, "tagId", SearchOperation.EQUAL);
     if (isEmpty(tagIdInValue) && isEmpty(tagIdEqualValue)) {
       return sql;
     }
@@ -171,9 +171,9 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
         + "' IN BOOLEAN MODE) " : "";
   }
 
-  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String favouriteByEqualValue = findFirstValueAndRemove(criterias, "favouriteBy",
+    String favouriteByEqualValue = findFirstValueAndRemove(criteria, "favouriteBy",
         SearchOperation.EQUAL);
     if (isEmpty(favouriteByEqualValue)) {
       return sql;
@@ -185,9 +185,9 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     return sql;
   }
 
-  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String followByEqualValue = findFirstValueAndRemove(criterias, "followBy",
+    String followByEqualValue = findFirstValueAndRemove(criteria, "followBy",
         SearchOperation.EQUAL);
     if (isEmpty(followByEqualValue)) {
       return sql;
@@ -199,9 +199,9 @@ public class TaskListRepoMysql extends AbstractSearchRepository<Task> implements
     return sql;
   }
 
-  public static StringBuilder assembleCommentByInCondition(Set<SearchCriteria> criterias) {
+  public static StringBuilder assembleCommentByInCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String followByEqualValue = findFirstValueAndRemove(criterias, "commentBy",
+    String followByEqualValue = findFirstValueAndRemove(criteria, "commentBy",
         SearchOperation.EQUAL);
     if (isEmpty(followByEqualValue)) {
       return sql;

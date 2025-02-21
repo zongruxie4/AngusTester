@@ -85,9 +85,9 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
       @Override
       protected Page<ApisUnarchived> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(SearchCriteria.equal("createdBy", getUserId()));
-        return apisUnarchivedListRepo.find(criterias, pageable, clz,
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(SearchCriteria.equal("createdBy", getUserId()));
+        return apisUnarchivedListRepo.find(criteria, pageable, clz,
             ApisConverter::objectArrToApisUnarchived, null);
       }
     }.execute();

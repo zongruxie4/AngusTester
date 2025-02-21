@@ -22,18 +22,18 @@ public class FuncBaselineSearchImpl implements FuncBaselineSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public Page<FuncBaselineInfo> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<FuncBaselineInfo> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<FuncBaselineInfo> clz, String... matches) {
     return new BizTemplate<Page<FuncBaselineInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<FuncBaselineInfo> process() {
-        return funcBaselineInfoSearchRepo.find(criterias, pageable, clz, matches);
+        return funcBaselineInfoSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

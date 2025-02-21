@@ -154,9 +154,9 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
           getMatchSearchFields(dto.getClass()));
       return buildVoPageResult(page, FuncBaselineCaseAssembler::toListVo);
     }
-    Set<SearchCriteria> criterias = FuncCaseAssembler.getSearchCriteria(dto);
-    criterias.add(SearchCriteria.in("id", baselineDb.getCaseIds()));
-    Page<FuncCaseInfo> page = funcCaseSearch.search(exportFlag, criterias, dto.tranPage(),
+    Set<SearchCriteria> criteria = FuncCaseAssembler.getSearchCriteria(dto);
+    criteria.add(SearchCriteria.in("id", baselineDb.getCaseIds()));
+    Page<FuncCaseInfo> page = funcCaseSearch.search(exportFlag, criteria, dto.tranPage(),
         FuncCaseInfo.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncCaseAssembler::toListVo);
   }

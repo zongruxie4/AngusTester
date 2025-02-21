@@ -18,7 +18,7 @@ public class VariableSearchImpl implements VariableSearch {
   private VariableSearchRepo variableSearchRepo;
 
   @Override
-  public Page<Variable> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<Variable> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Variable> clz, String... matches) {
     return new BizTemplate<Page<Variable>>() {
       @Override
@@ -28,7 +28,7 @@ public class VariableSearchImpl implements VariableSearch {
 
       @Override
       protected Page<Variable> process() {
-        return variableSearchRepo.find(criterias, pageable, clz, matches);
+        return variableSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

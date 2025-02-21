@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ActivitySearch {
 
-  Page<Activity> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<Activity> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<Activity> clz, String... matches);
 }

@@ -232,33 +232,33 @@ public class ApisFacadeImpl implements ApisFacade {
   @NameJoin
   @Override
   public PageResult<ServicesApisInfoListVo> listApis(Long serviceId, ServiceApisFindDto dto) {
-    Page<ApisBasicInfo> apisPage = apisQuery.findByServiceId(serviceId,
+    Page<ApisBasicInfo> page = apisQuery.findByServiceId(serviceId,
         ApisAssembler.getSpecification(dto), dto.tranPage(), ApisBasicInfo.class);
-    return buildVoPageResult(apisPage, ApisAssembler::toProjectApisPageVo);
+    return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ServicesApisInfoListVo> searchApis(Long serviceId, ServicesApisSearchDto dto) {
-    Page<ApisBasicInfo> apisPage = apisSearch.searchByServiceId(serviceId,
+    Page<ApisBasicInfo> page = apisSearch.searchByServiceId(serviceId,
         ApisAssembler.getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(apisPage, ApisAssembler::toProjectApisPageVo);
+    return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ApisInfoListVo> list(ApisInfoFindDto dto) {
-    Page<ApisBasicInfo> apisPage = apisQuery.list(ApisAssembler.getSpecification(dto),
+    Page<ApisBasicInfo> page = apisQuery.list(ApisAssembler.getSpecification(dto),
         dto.tranPage(), ApisBasicInfo.class);
-    return buildVoPageResult(apisPage, ApisAssembler::toApisPageVo);
+    return buildVoPageResult(page, ApisAssembler::toApisVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ApisInfoListVo> search(ApisInfoSearchDto dto) {
-    Page<ApisBasicInfo> apisPage = apisSearch.search(ApisAssembler.getSearchCriteria(dto),
+    Page<ApisBasicInfo> page = apisSearch.search(ApisAssembler.getSearchCriteria(dto),
         dto.tranPage(), getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(apisPage, ApisAssembler::toApisPageVo);
+    return buildVoPageResult(page, ApisAssembler::toApisVo);
   }
 
   @Override

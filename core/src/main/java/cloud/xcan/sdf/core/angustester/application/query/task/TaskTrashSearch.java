@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface TaskTrashSearch {
 
-  Page<TaskTrash> search(Set<SearchCriteria> criterias, Pageable pageable, Class<TaskTrash> clz,
+  Page<TaskTrash> search(Set<SearchCriteria> criteria, Pageable pageable, Class<TaskTrash> clz,
       String... matches);
 
 }

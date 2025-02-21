@@ -34,7 +34,7 @@ public class MockApisSearchImpl implements MockApisSearch {
   private MockServiceAuthQuery mockServiceAuthQuery;
 
   @Override
-  public Page<MockApis> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<MockApis> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<MockApis> clz, String... matches) {
     return new BizTemplate<Page<MockApis>>() {
       MockServiceInfo mockServiceDb;
@@ -42,7 +42,7 @@ public class MockApisSearchImpl implements MockApisSearch {
       @Override
       protected void checkParams() {
         // Check the view permission
-        String mockServiceId = findFirstValue(criterias, "mockServiceId");
+        String mockServiceId = findFirstValue(criteria, "mockServiceId");
         mockServiceAuthQuery.checkViewAuth(getUserId(), Long.parseLong(mockServiceId));
 
         // Check the mock service exits
@@ -51,7 +51,7 @@ public class MockApisSearchImpl implements MockApisSearch {
 
       @Override
       protected Page<MockApis> process() {
-        Page<MockApis> page = mockApisSearchRepo.find(criterias, pageable, clz, matches);
+        Page<MockApis> page = mockApisSearchRepo.find(criteria, pageable, clz, matches);
         if (page.isEmpty()) {
           return page;
         }

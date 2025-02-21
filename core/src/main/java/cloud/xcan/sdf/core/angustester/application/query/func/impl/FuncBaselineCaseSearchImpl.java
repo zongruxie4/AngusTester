@@ -51,15 +51,15 @@ public class FuncBaselineCaseSearchImpl implements FuncBaselineCaseSearch {
 
   @Override
   public Page<FuncBaselineCaseInfo> search(Long baselineId, boolean exportFlag,
-      Set<SearchCriteria> criterias, PageRequest pageable, Class<FuncBaselineCaseInfo> clz,
+      Set<SearchCriteria> criteria, PageRequest pageable, Class<FuncBaselineCaseInfo> clz,
       String... matches) {
     return new BizTemplate<Page<FuncBaselineCaseInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
 
-        String planId = CriteriaUtils.findFirstValue(criterias, "planId");
+        String planId = CriteriaUtils.findFirstValue(criteria, "planId");
         // ProtocolAssert.assertNotEmpty(planId, "Plan id is required");
         if (nonNull(planId) && exportFlag) {
           funcPlanAuthQuery.checkExportCaseAuth(getUserId(), Long.parseLong(planId));
@@ -68,10 +68,10 @@ public class FuncBaselineCaseSearchImpl implements FuncBaselineCaseSearch {
 
       @Override
       protected Page<FuncBaselineCaseInfo> process() {
-        criterias.add(SearchCriteria.equal("baselineId", baselineId));
+        criteria.add(SearchCriteria.equal("baselineId", baselineId));
 
         // Assemble mainClass table
-        Page<FuncBaselineCaseInfo> page = funcBaselineCaseInfoSearchRepo.find(criterias, pageable,
+        Page<FuncBaselineCaseInfo> page = funcBaselineCaseInfoSearchRepo.find(criteria, pageable,
             FuncBaselineCaseInfo.class, matches);
 
         if (page.hasContent()) {

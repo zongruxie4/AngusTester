@@ -23,14 +23,14 @@ public class ScenarioSearchRepoMysql extends AbstractSearchRepository<Scenario> 
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
     return scenarioListRepo
-        .getSqlTemplate0(getSearchMode(), step, criterias, "scenario", matches);
+        .getSqlTemplate0(getSearchMode(), step, criteria, "scenario", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return scenarioListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return scenarioListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

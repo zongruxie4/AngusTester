@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface DatasourceSearch {
 
-  Page<Datasource> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<Datasource> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Datasource> mockDatasourceClass, String... matches);
 
 }

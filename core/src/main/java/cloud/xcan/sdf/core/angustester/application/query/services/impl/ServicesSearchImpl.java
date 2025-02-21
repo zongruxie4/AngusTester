@@ -30,20 +30,20 @@ public class ServicesSearchImpl implements ServicesSearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<Services> search(Set<SearchCriteria> criterias, Pageable pageable, String... matches) {
+  public Page<Services> search(Set<SearchCriteria> criteria, Pageable pageable, String... matches) {
     return new BizTemplate<Page<Services>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<Services> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", 0));
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Services> page = servicesSearchRepo.find(criterias, pageable, Services.class, matches);
-        servicesQuery.setApisNum(page.getContent(), criterias);
+        criteria.add(SearchCriteria.equal("deletedFlag", 0));
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Services> page = servicesSearchRepo.find(criteria, pageable, Services.class, matches);
+        servicesQuery.setApisNum(page.getContent(), criteria);
         return page;
       }
     }.execute();

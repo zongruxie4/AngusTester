@@ -23,7 +23,7 @@ public class IndicatorPerfSearchImpl implements IndicatorPerfSearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<IndicatorPerf> search(Set<SearchCriteria> criterias,
+  public Page<IndicatorPerf> search(Set<SearchCriteria> criteria,
       PageRequest pageable, Class<IndicatorPerf> clz) {
     return new BizTemplate<Page<IndicatorPerf>>() {
       @Override
@@ -34,9 +34,9 @@ public class IndicatorPerfSearchImpl implements IndicatorPerfSearch {
       @Override
       protected Page<IndicatorPerf> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
-        return indicatorPerfSearchRepo.find(criterias, pageable, clz,
+        return indicatorPerfSearchRepo.find(criteria, pageable, clz,
             IndicatorPerfConverter::objectArrToPerf, null);
       }
     }.execute();

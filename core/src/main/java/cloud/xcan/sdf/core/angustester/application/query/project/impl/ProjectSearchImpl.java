@@ -26,7 +26,7 @@ public class ProjectSearchImpl implements ProjectSearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<Project> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Project> clz,
+  public Page<Project> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Project> clz,
       String... matches) {
     return new BizTemplate<Page<Project>>() {
       @Override
@@ -36,11 +36,11 @@ public class ProjectSearchImpl implements ProjectSearch {
 
       @Override
       protected Page<Project> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Project> projectPage = projectSearchRepo.find(criterias, pageable, Project.class,
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Project> projectPage = projectSearchRepo.find(criteria, pageable, Project.class,
             matches);
         if (projectPage.hasContent()) {
           projectMemberQuery.setMembers(projectPage.getContent());

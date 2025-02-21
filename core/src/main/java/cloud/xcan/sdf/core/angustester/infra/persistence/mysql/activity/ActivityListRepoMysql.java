@@ -20,16 +20,16 @@ public class ActivityListRepoMysql extends AbstractSearchRepository<Activity>
 
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] objects, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "activity", matches);
+      Set<SearchCriteria> criteria, Object[] objects, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "activity", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     StringBuilder sql;
-    String targetTypeValue = findFirstValue(criterias, "targetType");
-    String targetIdValue = findFirstValue(criterias, "targetId");
+    String targetTypeValue = findFirstValue(criteria, "targetType");
+    String targetIdValue = findFirstValue(criteria, "targetId");
     if (isEmpty(targetTypeValue) || targetTypeValue.contains(",") /* IN filter*/
         || !CombinedTargetType.valueOf(targetTypeValue).isParent() || isEmpty(targetIdValue)) {
       String mainAlis = "a";
@@ -38,28 +38,28 @@ public class ActivityListRepoMysql extends AbstractSearchRepository<Activity>
       sql = new StringBuilder("SELECT %s FROM " + tableName + " " + mainAlis + " WHERE 1=1 ");
 
       // Assemble mainClass Conditions
-      sql.append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false,
+      sql.append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false,
           matches));
     } else {
       // Note: Only a single targetType value is supported.
       String mainAlis = "a";
       String subAlis = "b";
-      findValueAndRemove(criterias, "targetType");
-      findValueAndRemove(criterias, "targetId");
+      findValueAndRemove(criteria, "targetType");
+      findValueAndRemove(criteria, "targetId");
 
       // Query parent activities
       sql = new StringBuilder(
           "SELECT %s FROM " + tableName + " " + mainAlis + " WHERE " + mainAlis + ".id IN (");
       sql.append("SELECT id FROM " + tableName + " " + subAlis + " WHERE " + subAlis
           + ".target_id=" + targetIdValue + " AND " + subAlis + ".target_type='" + targetTypeValue
-          + "' ").append(getCriteriaAliasCondition(step, criterias, subAlis, mode, false,
+          + "' ").append(getCriteriaAliasCondition(step, criteria, subAlis, mode, false,
           matches));
 
       // Union sub activities
 
       sql.append(" UNION SELECT id FROM " + tableName + " " + subAlis + " WHERE " + subAlis
           + ".parent_target_id=" + targetIdValue);
-      sql.append(getCriteriaAliasCondition(step, criterias, subAlis, mode, false, matches));
+      sql.append(getCriteriaAliasCondition(step, criteria, subAlis, mode, false, matches));
 
       sql.append(" )");
     }
@@ -67,7 +67,7 @@ public class ActivityListRepoMysql extends AbstractSearchRepository<Activity>
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.*";
   }
 

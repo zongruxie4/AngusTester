@@ -26,7 +26,7 @@ public class ActivitySearchImpl implements ActivitySearch {
   private UserManager userManager;
 
   @Override
-  public Page<Activity> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<Activity> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<Activity> clz, String... matches) {
     return new BizTemplate<Page<Activity>>() {
       @Override
@@ -36,7 +36,7 @@ public class ActivitySearchImpl implements ActivitySearch {
 
       @Override
       protected Page<Activity> process() {
-        Page<Activity> page = activitySearchRepo.find(criterias, pageable, clz, matches);
+        Page<Activity> page = activitySearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           activityQuery.setProjectName(page);
           userManager.setUserNameAndAvatar(page.getContent(), "userId", "fullname", "avatar");

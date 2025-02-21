@@ -59,15 +59,15 @@ public class FuncCaseSearchImpl implements FuncCaseSearch {
   private UserManager userManager;
 
   @Override
-  public Page<FuncCaseInfo> search(boolean exportFlag, Set<SearchCriteria> criterias,
+  public Page<FuncCaseInfo> search(boolean exportFlag, Set<SearchCriteria> criteria,
       Pageable pageable, Class<FuncCaseInfo> clz, String... matches) {
     return new BizTemplate<Page<FuncCaseInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
 
-        String planId = CriteriaUtils.findFirstValue(criterias, "planId");
+        String planId = CriteriaUtils.findFirstValue(criteria, "planId");
         // ProtocolAssert.assertNotEmpty(planId, "Plan id is required");
         if (nonNull(planId) && exportFlag) {
           funcPlanAuthQuery.checkExportCaseAuth(getUserId(), Long.parseLong(planId));
@@ -76,14 +76,14 @@ public class FuncCaseSearchImpl implements FuncCaseSearch {
 
       @Override
       protected Page<FuncCaseInfo> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
-        criterias.add(SearchCriteria.equal("planDeletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("planDeletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        funcPlanQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        funcPlanQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
         // Assemble mainClass table
-        Page<FuncCaseInfo> page = funcCaseInfoSearchRepo.find(criterias, pageable,
+        Page<FuncCaseInfo> page = funcCaseInfoSearchRepo.find(criteria, pageable,
             FuncCaseInfo.class, matches);
 
         if (page.hasContent()) {

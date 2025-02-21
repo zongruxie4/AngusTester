@@ -266,9 +266,9 @@ public class ServicesQueryImpl implements ServicesQuery {
   }
 
   @Override
-  public void setApisNum(List<Services> services, Set<SearchCriteria> criterias) {
+  public void setApisNum(List<Services> services, Set<SearchCriteria> criteria) {
     if (isNotEmpty(services)) {
-      String projectId = CriteriaUtils.findFirstValue(criterias, "projectId");
+      String projectId = CriteriaUtils.findFirstValue(criteria, "projectId");
       Set<SearchCriteria> filters = new HashSet<>();
       filters.add(SearchCriteria.equal("projectId", projectId));
       filters.add(SearchCriteria.equal("serviceDeletedFlag", 0));

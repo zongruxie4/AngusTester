@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ReportSearch {
 
-  Page<ReportInfo> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<ReportInfo> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<ReportInfo> clz, String... matches);
 }

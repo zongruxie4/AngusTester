@@ -8,5 +8,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface IndicatorFuncListRepo extends CustomBaseRepository<IndicatorFunc> {
 
-  String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params);
+  String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params);
 }

@@ -18,7 +18,7 @@ public class DatasetSearchImpl implements DatasetSearch {
   private DatasetSearchRepo datasetSearchRepo;
 
   @Override
-  public Page<Dataset> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Dataset> clz,
+  public Page<Dataset> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Dataset> clz,
       String... matches) {
     return new BizTemplate<Page<Dataset>>() {
       @Override
@@ -28,7 +28,7 @@ public class DatasetSearchImpl implements DatasetSearch {
 
       @Override
       protected Page<Dataset> process() {
-        return datasetSearchRepo.find(criterias, pageable, clz, matches);
+        return datasetSearchRepo.find(criteria, pageable, clz, matches);
       }
     }.execute();
   }

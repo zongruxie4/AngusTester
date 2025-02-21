@@ -25,19 +25,19 @@ public class ApisUnarchivedSearchImpl implements ApisUnarchivedSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public Page<ApisUnarchived> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ApisUnarchived> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisUnarchived> apisClass, String... matches) {
     return new BizTemplate<Page<ApisUnarchived>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<ApisUnarchived> process() {
-        criterias.add(SearchCriteria.equal("createdBy", getUserId()));
-        return apisUnarchivedSearchRepo.find(criterias, pageable, apisClass,
+        criteria.add(SearchCriteria.equal("createdBy", getUserId()));
+        return apisUnarchivedSearchRepo.find(criteria, pageable, apisClass,
             ApisConverter::objectArrToApisUnarchived, matches);
       }
     }.execute();

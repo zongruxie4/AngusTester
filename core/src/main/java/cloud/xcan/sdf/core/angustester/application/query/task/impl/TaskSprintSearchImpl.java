@@ -32,23 +32,23 @@ public class TaskSprintSearchImpl implements TaskSprintSearch {
   private UserManager userManager;
 
   @Override
-  public Page<TaskSprint> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<TaskSprint> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<TaskSprint> clz, String... matches) {
     return new BizTemplate<Page<TaskSprint>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<TaskSprint> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        // taskSprintQuery.checkAndSetAuthObjectIdCriteria(criterias); -> -> All project members are visible
+        // taskSprintQuery.checkAndSetAuthObjectIdCriteria(criteria); -> -> All project members are visible
 
-        Page<TaskSprint> page = taskSprintSearchRepo.find(criterias, pageable, clz, matches);
+        Page<TaskSprint> page = taskSprintSearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           Set<Long> sprintIds = page.getContent().stream().map(TaskSprint::getId)
               .collect(Collectors.toSet());

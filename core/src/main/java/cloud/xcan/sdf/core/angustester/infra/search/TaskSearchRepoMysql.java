@@ -25,13 +25,13 @@ public class TaskSearchRepoMysql extends AbstractSearchRepository<Task> implemen
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return taskListRepo.getSqlTemplate0(getSearchMode(), step, criterias, "task", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return taskListRepo.getSqlTemplate0(getSearchMode(), step, criteria, "task", matches);
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return taskListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return taskListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override

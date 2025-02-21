@@ -63,8 +63,8 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
 
       @Override
       protected Page<FuncReviewCase> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(equal("lastReview", true));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(equal("lastReview", true));
 
         Page<FuncReviewCase> page = funcReviewCaseRepo.findAll(spec, pageable);
         setCaseInfo(page.getContent());

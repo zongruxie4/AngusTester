@@ -106,8 +106,8 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
 
       @Override
       protected Page<ApisCaseInfo> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(equal("apisDeletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(equal("apisDeletedFlag", false));
 
         // Assemble mainClass table
         Page<ApisCaseInfo> page = apisCaseInfoRepo.findAll(spec, pageable);

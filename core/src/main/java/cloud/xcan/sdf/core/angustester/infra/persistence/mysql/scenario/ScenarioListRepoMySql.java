@@ -25,37 +25,37 @@ public class ScenarioListRepoMySql extends AbstractSearchRepository<Scenario> im
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    return getSqlTemplate0(getSearchMode(), step, criterias, "scenario", matches);
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    return getSqlTemplate0(getSearchMode(), step, criteria, "scenario", matches);
   }
 
   @Override
   public StringBuilder getSqlTemplate0(SearchMode mode, SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, String tableName, String... matches) {
+      Set<SearchCriteria> criteria, String tableName, String... matches) {
     String mainAlis = "a";
     // Assemble mainClass table
     StringBuilder sql = new StringBuilder("SELECT %s FROM " + tableName + " " + mainAlis);
 
     // Assemble non mainClass assigneeIds in Conditions
-    sql.append(assembleFavouriteByJoinCondition(criterias))
-        .append(assembleFollowByJoinCondition(criterias))
+    sql.append(assembleFavouriteByJoinCondition(criteria))
+        .append(assembleFollowByJoinCondition(criteria))
         .append(" WHERE 1=1 ")
         // Assemble mainClass Conditions
-        .append(getCriteriaAliasCondition(step, criterias, mainAlis, mode, false, matches));
+        .append(getCriteriaAliasCondition(step, criteria, mainAlis, mode, false, matches));
 
     // Assemble non mainClass authObjectId and grantFlag Conditions
-    assembleAuthJoinTargetCondition(CombinedTargetType.SCENARIO.getValue(), sql, criterias);
+    assembleAuthJoinTargetCondition(CombinedTargetType.SCENARIO.getValue(), sql, criteria);
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
     return "a.id, a.name, a.description, a.project_id, a.auth_flag, a.plugin, a.script_type, a.script_id, a.created_by, a.created_date, a.last_modified_by, a.last_modified_date";
   }
 
-  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFavouriteByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String favouriteByEqualValue = findFirstValueAndRemove(criterias, "favouriteBy",
+    String favouriteByEqualValue = findFirstValueAndRemove(criteria, "favouriteBy",
         SearchOperation.EQUAL);
     if (isEmpty(favouriteByEqualValue)) {
       return sql;
@@ -67,9 +67,9 @@ public class ScenarioListRepoMySql extends AbstractSearchRepository<Scenario> im
     return sql;
   }
 
-  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criterias) {
+  private StringBuilder assembleFollowByJoinCondition(Set<SearchCriteria> criteria) {
     StringBuilder sql = new StringBuilder();
-    String followByEqualValue = findFirstValueAndRemove(criterias, "followBy",
+    String followByEqualValue = findFirstValueAndRemove(criteria, "followBy",
         SearchOperation.EQUAL);
     if (isEmpty(followByEqualValue)) {
       return sql;

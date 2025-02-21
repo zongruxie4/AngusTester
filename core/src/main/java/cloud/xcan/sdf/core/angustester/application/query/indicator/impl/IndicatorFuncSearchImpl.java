@@ -23,7 +23,7 @@ public class IndicatorFuncSearchImpl implements IndicatorFuncSearch {
   private CommonQuery commonQuery;
 
   @Override
-  public Page<IndicatorFunc> search(Set<SearchCriteria> criterias,
+  public Page<IndicatorFunc> search(Set<SearchCriteria> criteria,
       PageRequest pageable, Class<IndicatorFunc> clz) {
     return new BizTemplate<Page<IndicatorFunc>>() {
       @Override
@@ -34,9 +34,9 @@ public class IndicatorFuncSearchImpl implements IndicatorFuncSearch {
       @Override
       protected Page<IndicatorFunc> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
-        return indicatorPerfSearchRepo.find(criterias, pageable, clz,
+        return indicatorPerfSearchRepo.find(criteria, pageable, clz,
             IndicatorFuncConverter::objectArrToFunc, null);
       }
     }.execute();

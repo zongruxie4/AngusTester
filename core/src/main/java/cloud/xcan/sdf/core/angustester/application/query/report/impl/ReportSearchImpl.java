@@ -26,18 +26,18 @@ public class ReportSearchImpl implements ReportSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public Page<ReportInfo> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  public Page<ReportInfo> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<ReportInfo> clz, String... matches) {
     return new BizTemplate<Page<ReportInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<ReportInfo> process() {
-        Page<ReportInfo> page = reportSearchRepo.find(criterias, pageable, clz, matches);
+        Page<ReportInfo> page = reportSearchRepo.find(criteria, pageable, clz, matches);
         if (page.isEmpty()) {
           return page;
         }

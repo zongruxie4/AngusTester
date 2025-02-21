@@ -11,6 +11,6 @@ import org.springframework.data.domain.PageRequest;
  */
 public interface TaskSearch {
 
-  Page<Task> search(boolean exportFlag, Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<Task> search(boolean exportFlag, Set<SearchCriteria> criteria, PageRequest pageable,
       String... matches);
 }

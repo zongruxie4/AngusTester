@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ServicesSearch {
 
-  Page<Services> search(Set<SearchCriteria> criterias, Pageable pageable, String... matches);
+  Page<Services> search(Set<SearchCriteria> criteria, Pageable pageable, String... matches);
 
 }
 

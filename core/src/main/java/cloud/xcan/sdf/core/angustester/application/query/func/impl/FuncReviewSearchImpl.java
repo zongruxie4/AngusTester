@@ -31,18 +31,18 @@ public class FuncReviewSearchImpl implements FuncReviewSearch {
   private UserManager userManager;
 
   @Override
-  public Page<FuncReview> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<FuncReview> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<FuncReview> clz, String... matches) {
     return new BizTemplate<Page<FuncReview>>() {
       @Override
       protected void checkParams() {
         // Check the project permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<FuncReview> process() {
-        Page<FuncReview> page = funcReviewSearchRepo.find(criterias, pageable, clz, matches);
+        Page<FuncReview> page = funcReviewSearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           Set<Long> reviewIds = page.getContent().stream().map(FuncReview::getId)
               .collect(Collectors.toSet());

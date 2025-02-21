@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface VariableSearch {
 
-  Page<Variable> search(Set<SearchCriteria> criterias, Pageable pageable, Class<Variable> clz,
+  Page<Variable> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Variable> clz,
       String... matches);
 
 }

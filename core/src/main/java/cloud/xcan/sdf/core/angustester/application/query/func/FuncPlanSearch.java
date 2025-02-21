@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface FuncPlanSearch {
 
-  Page<FuncPlan> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<FuncPlan> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<FuncPlan> clz, String... matches);
 
 }

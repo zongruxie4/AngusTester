@@ -196,7 +196,7 @@ public class ScriptQueryImpl implements ScriptQuery {
   }
 
   @Override
-  public ScriptCount countStatistics(Set<SearchCriteria> criterias) {
+  public ScriptCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<ScriptCount>() {
       @Override
       protected void checkParams() {
@@ -206,9 +206,9 @@ public class ScriptQueryImpl implements ScriptQuery {
       @Override
       protected ScriptCount process() {
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
-        return scriptInfoListRepo.count(criterias);
+        return scriptInfoListRepo.count(criteria);
       }
     }.execute();
   }
@@ -309,14 +309,14 @@ public class ScriptQueryImpl implements ScriptQuery {
   }
 
   @Override
-  public void safeScenarioQuery(Set<SearchCriteria> criterias) {
+  public void safeScenarioQuery(Set<SearchCriteria> criteria) {
     // Convert the scenario query from associated table to the main table query
-    String source = findFirstValue(criterias, "source");
-    String sourceTargetId = findFirstValue(criterias, "sourceTargetId");
+    String source = findFirstValue(criteria, "source");
+    String sourceTargetId = findFirstValue(criteria, "sourceTargetId");
     if (isNotEmpty(source) && isNotEmpty(sourceTargetId) &&
         CombinedTargetType.SCENARIO.getValue().equals(source)) {
-      CriteriaUtils.findAndRemove(criterias, "sourceTargetId");
-      criterias.add(SearchCriteria.equal("scenarioId", sourceTargetId));
+      CriteriaUtils.findAndRemove(criteria, "sourceTargetId");
+      criteria.add(SearchCriteria.equal("scenarioId", sourceTargetId));
     }
   }
 

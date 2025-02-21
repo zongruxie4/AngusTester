@@ -28,20 +28,20 @@ public class ModuleSearchImpl implements ModuleSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public List<Module> search(Set<SearchCriteria> criterias, Class<Module> clz, String... matches) {
+  public List<Module> search(Set<SearchCriteria> criteria, Class<Module> clz, String... matches) {
     return new BizTemplate<List<Module>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected List<Module> process() {
-        List<Module> modules = moduleSearchRepo.find(criterias,
+        List<Module> modules = moduleSearchRepo.find(criteria,
             PageRequest.of(0, 10000, JpaSort.by(Order.asc("id"))), clz, matches).getContent();
         List<Module> allModules = moduleQuery.findAndAllParent(modules);
-        moduleQuery.setEditPermissionFlag(criterias, allModules);
+        moduleQuery.setEditPermissionFlag(criteria, allModules);
         return allModules;
       }
     }.execute();

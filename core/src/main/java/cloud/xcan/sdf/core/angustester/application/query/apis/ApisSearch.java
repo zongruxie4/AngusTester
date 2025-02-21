@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 
 public interface ApisSearch {
 
-  Page<ApisBasicInfo> searchByServiceId(Long serviceId, Set<SearchCriteria> criterias,
+  Page<ApisBasicInfo> searchByServiceId(Long serviceId, Set<SearchCriteria> criteria,
       Pageable pageable, String... matches);
 
-  Page<ApisBasicInfo> search(Set<SearchCriteria> criterias, Pageable pageable, String... matches);
+  Page<ApisBasicInfo> search(Set<SearchCriteria> criteria, Pageable pageable, String... matches);
 }
 
 

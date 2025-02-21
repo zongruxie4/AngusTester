@@ -43,7 +43,7 @@ public interface TaskSprintQuery {
 
   void setSafeCloneName(TaskSprint sprint);
 
-  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criterias);
+  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria);
 
   List<TaskSprint> getSprintCreatedSummaries(Long projectId, Long sprintId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,

@@ -55,7 +55,7 @@ public interface FuncCaseQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinPlan, boolean joinReview, boolean joinBaseline);
 
-  FuncCaseCount countStatistics(Set<SearchCriteria> criterias);
+  FuncCaseCount countStatistics(Set<SearchCriteria> criteria);
 
   List<FuncTesterCount> testerSummaryStatistics(Long projectId, Long planId);
 

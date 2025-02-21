@@ -71,14 +71,14 @@ public class AngusTesterUtils {
   }
 
   public static void assembleAuthJoinTargetCondition(String targetType, StringBuilder sql,
-      Set<SearchCriteria> criterias) {
-    String authObjectIds = getFilterInFirstValue(criterias, "authObjectId");
+      Set<SearchCriteria> criteria) {
+    String authObjectIds = getFilterInFirstValue(criteria, "authObjectId");
     if (isEmpty(authObjectIds)) {
       // Admin query all resource when authObjectIds is empty
       return;
     }
     assertNotNull(targetType, "targetType is required");
-    String grantFilter = assembleGrantPermissionCondition(criterias, "a3", "GRANT");
+    String grantFilter = assembleGrantPermissionCondition(criteria, "a3", "GRANT");
     // Non-Admin query own resource when authObjectIds is not empty
     String authObjectIdsInValue = getInConditionValue(authObjectIds);
     long tenantId = getOptTenantId();
@@ -133,9 +133,9 @@ public class AngusTesterUtils {
     // @formatter:on
   }
 
-  public static void assembleTargetNameMatchCondition(Set<SearchCriteria> criterias,
+  public static void assembleTargetNameMatchCondition(Set<SearchCriteria> criteria,
       String targetTypeValue, StringBuilder sql) {
-    String searchValue = getFilterMatchFirstValue(criterias, "targetName");
+    String searchValue = getFilterMatchFirstValue(criteria, "targetName");
     if (isNotEmpty(searchValue)) {
       if (targetTypeValue.equalsIgnoreCase(CombinedTargetType.API.getValue())) {
         sql.append(" AND MATCH(").append("a.summary, a.operation_id, a.ext_search_merge")
@@ -150,10 +150,10 @@ public class AngusTesterUtils {
     }
   }
 
-  public static void assembleTargetNameLikeCondition(Set<SearchCriteria> criterias,
+  public static void assembleTargetNameLikeCondition(Set<SearchCriteria> criteria,
       StringBuilder sql) {
     // Assemble non mainClass match Conditions
-    String searchValue = getFilterMatchFirstValue(criterias, "targetName");
+    String searchValue = getFilterMatchFirstValue(criteria, "targetName");
     if (isNotEmpty(searchValue)) {
       sql.append(" AND a.name like \"%%").append(searchValue).append("%%\"");
     }

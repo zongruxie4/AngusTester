@@ -22,7 +22,7 @@ public class DatasourceSearchImpl implements DatasourceSearch {
   private UserManager userManager;
 
   @Override
-  public Page<Datasource> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<Datasource> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Datasource> clz, String... matches) {
     return new BizTemplate<Page<Datasource>>() {
       @Override
@@ -33,7 +33,7 @@ public class DatasourceSearchImpl implements DatasourceSearch {
       @Override
       protected Page<Datasource> process() {
         Page<Datasource> page = mockDatasourceSearchRepo
-            .find(criterias, pageable, clz, matches);
+            .find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
           userManager.setUserNameAndAvatar(page.getContent(), "lastModifiedBy",
               "lastModifiedByName", "avatar");

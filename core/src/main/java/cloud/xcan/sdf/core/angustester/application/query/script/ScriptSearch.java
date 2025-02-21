@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ScriptSearch {
 
-  Page<ScriptInfo> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<ScriptInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ScriptInfo> clz, String... matches);
 }

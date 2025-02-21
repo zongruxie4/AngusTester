@@ -22,7 +22,7 @@ public class ProjectTrashSearchImpl implements ProjectTrashSearch {
   private UserManager userManager;
 
   @Override
-  public Page<ProjectTrash> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<ProjectTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ProjectTrash> clz, String... matches) {
     return new BizTemplate<Page<ProjectTrash>>() {
       @Override
@@ -32,7 +32,7 @@ public class ProjectTrashSearchImpl implements ProjectTrashSearch {
 
       @Override
       protected Page<ProjectTrash> process() {
-        Page<ProjectTrash> page = projectTrashSearchRepo.find(criterias, pageable, clz, matches);
+        Page<ProjectTrash> page = projectTrashSearchRepo.find(criteria, pageable, clz, matches);
 
         if (!page.isEmpty()) {
           // Set user name and avatar

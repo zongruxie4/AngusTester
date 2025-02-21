@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface MockApisSearch {
 
-  Page<MockApis> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<MockApis> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<MockApis> clz, String... matches);
 
 }

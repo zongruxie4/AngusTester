@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ApisUnarchivedSearch {
 
-  Page<ApisUnarchived> search(Set<SearchCriteria> criterias, Pageable pageable,
+  Page<ApisUnarchived> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisUnarchived> apisClass, String... matches);
 
 }

@@ -43,7 +43,7 @@ public interface CommonQuery {
 
   ActivityResource checkAndFindActivityResource(CombinedTargetType targetType, Long targetId);
 
-  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criterias);
+  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria);
 
   void checkTenantQuota(QuotaResource quotaObject, Set<Long> objectIds, Long incr);
 

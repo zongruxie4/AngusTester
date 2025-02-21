@@ -23,7 +23,7 @@ public class FuncTrashSearchImpl implements FuncTrashSearch {
   private UserManager userManager;
 
   @Override
-  public Page<FuncTrash> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<FuncTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<FuncTrash> clz, String... matches) {
     return new BizTemplate<Page<FuncTrash>>() {
       @Override
@@ -33,7 +33,7 @@ public class FuncTrashSearchImpl implements FuncTrashSearch {
 
       @Override
       protected Page<FuncTrash> process() {
-        Page<FuncTrash> page = funcTrashSearchRepo.find(criterias, pageable, clz, matches);
+        Page<FuncTrash> page = funcTrashSearchRepo.find(criteria, pageable, clz, matches);
         if (!page.isEmpty()) {
           // Set user name and avatar
           userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",

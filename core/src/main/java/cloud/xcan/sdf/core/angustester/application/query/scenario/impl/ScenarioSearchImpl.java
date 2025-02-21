@@ -37,22 +37,22 @@ public class ScenarioSearchImpl implements ScenarioSearch {
   private UserManager userManager;
 
   @Override
-  public Page<Scenario> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<Scenario> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Scenario> clz, String... matches) {
     return new BizTemplate<Page<Scenario>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<Scenario> process() {
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Scenario> page = scenarioSearchRepo.find(criterias, pageable, clz,
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Scenario> page = scenarioSearchRepo.find(criteria, pageable, clz,
             ScenarioConverter::objectArrToScenario, matches);
 
         if (page.hasContent()) {

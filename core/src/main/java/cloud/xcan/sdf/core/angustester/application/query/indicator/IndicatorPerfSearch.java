@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface IndicatorPerfSearch {
 
-  Page<IndicatorPerf> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<IndicatorPerf> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<IndicatorPerf> clz);
 }
 

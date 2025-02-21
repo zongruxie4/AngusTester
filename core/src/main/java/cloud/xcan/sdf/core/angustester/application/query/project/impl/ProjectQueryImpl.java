@@ -121,12 +121,12 @@ public class ProjectQueryImpl implements ProjectQuery {
 
       @Override
       protected Page<Project> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Project> projectPage = projectListRepo.find(criterias, pageable, Project.class, null);
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Project> projectPage = projectListRepo.find(criteria, pageable, Project.class, null);
         if (projectPage.hasContent()) {
           projectMemberQuery.setMembers(projectPage.getContent());
         }

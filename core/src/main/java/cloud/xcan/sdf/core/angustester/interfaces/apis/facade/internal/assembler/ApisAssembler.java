@@ -222,7 +222,7 @@ public class ApisAssembler {
         .setLastModifiedDate(apis.getLastModifiedDate());
   }
 
-  public static ServicesApisInfoListVo toProjectApisPageVo(ApisBasicInfo apis) {
+  public static ServicesApisInfoListVo toServiceApisVo(ApisBasicInfo apis) {
     return new ServicesApisInfoListVo().setId(apis.getId())
         .setSource(apis.getSource())
         .setImportSource(apis.getImportSource())
@@ -258,7 +258,7 @@ public class ApisAssembler {
         .setMockApisId(apis.getMockApisId());
   }
 
-  public static ApisInfoListVo toApisPageVo(ApisBasicInfo apis) {
+  public static ApisInfoListVo toApisVo(ApisBasicInfo apis) {
     return new ApisInfoListVo().setId(apis.getId())
         .setSource(apis.getSource())
         .setImportSource(apis.getImportSource())

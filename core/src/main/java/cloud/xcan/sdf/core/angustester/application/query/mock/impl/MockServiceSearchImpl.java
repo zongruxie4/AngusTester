@@ -26,18 +26,18 @@ public class MockServiceSearchImpl implements MockServiceSearch {
   private ProjectMemberQuery projectMemberQuery;
 
   @Override
-  public Page<MockServiceInfo> search(Set<SearchCriteria> criterias, Pageable pageable,
+  public Page<MockServiceInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<MockServiceInfo> clz, String... matches) {
     return new BizTemplate<Page<MockServiceInfo>>() {
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(criterias);
+        projectMemberQuery.checkMember(criteria);
       }
 
       @Override
       protected Page<MockServiceInfo> process() {
-        Page<MockServiceInfo> page = mockServiceSearchRepo.find(criterias, pageable, clz, matches);
+        Page<MockServiceInfo> page = mockServiceSearchRepo.find(criteria, pageable, clz, matches);
         if (page.isEmpty()) {
           return page;
         }

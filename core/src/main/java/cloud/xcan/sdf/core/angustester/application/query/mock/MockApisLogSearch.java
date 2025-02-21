@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface MockApisLogSearch {
 
-  Page<MockApisLogInfo> search(Long mockServiceId, Set<SearchCriteria> criterias,
+  Page<MockApisLogInfo> search(Long mockServiceId, Set<SearchCriteria> criteria,
       PageRequest pageable, Class<MockApisLogInfo> clz, String[] matchFields);
 }

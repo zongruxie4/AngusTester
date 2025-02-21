@@ -8,6 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ScenarioMonitorSearch {
 
-  Page<ScenarioMonitor> search(Set<SearchCriteria> criterias, PageRequest pageable,
+  Page<ScenarioMonitor> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<ScenarioMonitor> clz, String... matches);
 }

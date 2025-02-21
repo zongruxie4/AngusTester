@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProjectTrashSearch {
 
-  Page<ProjectTrash> search(Set<SearchCriteria> criterias, Pageable pageable, Class<ProjectTrash> clz,
+  Page<ProjectTrash> search(Set<SearchCriteria> criteria, Pageable pageable, Class<ProjectTrash> clz,
       String... matches);
 
 }

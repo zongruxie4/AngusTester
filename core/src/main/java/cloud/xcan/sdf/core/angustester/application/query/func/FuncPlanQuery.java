@@ -51,7 +51,7 @@ public interface FuncPlanQuery {
 
   void setSafeCloneName(FuncPlan plan);
 
-  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criterias);
+  boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria);
 
   List<FuncPlan> getPlanCreatedSummaries(Long projectId, Long planId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,

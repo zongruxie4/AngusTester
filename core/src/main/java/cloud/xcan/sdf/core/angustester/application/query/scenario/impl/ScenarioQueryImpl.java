@@ -186,12 +186,12 @@ public class ScenarioQueryImpl implements ScenarioQuery {
 
       @Override
       protected Page<Scenario> process() {
-        Set<SearchCriteria> criterias = spec.getCriterias();
-        criterias.add(SearchCriteria.equal("deletedFlag", false));
+        Set<SearchCriteria> criteria = spec.getCriterias();
+        criteria.add(SearchCriteria.equal("deletedFlag", false));
 
         // Set authorization conditions when you are not an administrator or only query yourself
-        commonQuery.checkAndSetAuthObjectIdCriteria(criterias);
-        Page<Scenario> page = scenarioListRepo.find(criterias, pageable, clz,
+        commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
+        Page<Scenario> page = scenarioListRepo.find(criteria, pageable, clz,
             ScenarioConverter::objectArrToScenario, null);
 
         if (page.hasContent()) {

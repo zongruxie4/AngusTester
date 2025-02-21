@@ -34,19 +34,19 @@ public class IndicatorStabilitySearchRepoMysql extends
    */
   @Override
   public StringBuilder getSqlTemplate(SingleTableEntityPersister step,
-      Set<SearchCriteria> criterias, Object[] params, String... matches) {
-    String targetTypeValue = findFirstValue(criterias, "targetType");
+      Set<SearchCriteria> criteria, Object[] params, String... matches) {
+    String targetTypeValue = findFirstValue(criteria, "targetType");
     StringBuilder sql = indicatorPerfListRepo.getTargetSqlTemplate0(getSearchMode(), step,
-        criterias, "indicator_stability", matches);
+        criteria, "indicator_stability", matches);
 
     // Assemble non mainClass match Conditions
-    assembleTargetNameMatchCondition(criterias, targetTypeValue, sql);
+    assembleTargetNameMatchCondition(criteria, targetTypeValue, sql);
     return sql;
   }
 
   @Override
-  public String getReturnFieldsCondition(Set<SearchCriteria> criterias, Object[] params) {
-    return indicatorStabilityListRepo.getReturnFieldsCondition(criterias, params);
+  public String getReturnFieldsCondition(Set<SearchCriteria> criteria, Object[] params) {
+    return indicatorStabilityListRepo.getReturnFieldsCondition(criteria, params);
   }
 
   @Override
