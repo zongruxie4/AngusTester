@@ -2,7 +2,6 @@ package cloud.xcan.sdf.core.angustester.domain.func.plan.auth;
 
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import lombok.Getter;

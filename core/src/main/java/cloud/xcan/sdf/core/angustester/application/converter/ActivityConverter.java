@@ -17,7 +17,7 @@ import cloud.xcan.sdf.api.commonlink.user.UserBase;
 import cloud.xcan.sdf.core.angustester.domain.activity.Activity;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
-import cloud.xcan.sdf.core.angustester.domain.activity.TaskActivityResource;
+import cloud.xcan.sdf.core.angustester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.activity.summary.ActivitySummary;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.tag.Tag;
@@ -95,8 +95,8 @@ public class ActivityConverter {
           .setTargetId(resource.getId())
           .setParentTargetId(nullSafe(resource.getParentId(), DEFAULT_ROOT_PID))
           .setTargetName(resource.getName());
-      if (resource instanceof TaskActivityResource) {
-        activity.setMainTargetId(((TaskActivityResource) resource).getTaskId());
+      if (resource instanceof MainTargetActivityResource) {
+        activity.setMainTargetId(((MainTargetActivityResource) resource).getMainTargetId());
       }
     }
     return activity;

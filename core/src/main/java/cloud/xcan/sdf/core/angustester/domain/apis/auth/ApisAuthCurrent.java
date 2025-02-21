@@ -3,7 +3,6 @@ package cloud.xcan.sdf.core.angustester.domain.apis.auth;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.sdf.api.commonlink.apis.ApiPermission;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.domain.task;
 
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.enums.EvalWorkloadMethod;
@@ -9,7 +10,7 @@ import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.enums.Result;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
-import cloud.xcan.sdf.core.angustester.domain.activity.TaskActivityResource;
+import cloud.xcan.sdf.core.angustester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.jpa.multitenancy.TenantAuditingEntity;
 import cloud.xcan.sdf.model.script.TestType;
@@ -38,8 +39,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements TaskActivityResource,
-    TaskAssociateUser, ResourceFavouriteAndFollow<TaskInfo, Long> {
+public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements
+    MainTargetActivityResource, TaskAssociateUser, ResourceFavouriteAndFollow<TaskInfo, Long> {
 
   @Id
   private Long id;
@@ -236,12 +237,16 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements Ta
 
   @Override
   public Long getParentId() {
-    return sprintId;
+    return nullSafe(this.sprintId, this.projectId);
+  }
+
+  @Override
+  public Long getMainTargetId() {
+    return this.id;
   }
 
   @Override
   public Long getTaskId() {
-    return id;
+    return this.id;
   }
-
 }

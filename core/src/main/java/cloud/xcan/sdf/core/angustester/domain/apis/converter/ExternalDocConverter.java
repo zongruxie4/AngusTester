@@ -3,7 +3,6 @@ package cloud.xcan.sdf.core.angustester.domain.apis.converter;
 import static cloud.xcan.sdf.core.angustester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

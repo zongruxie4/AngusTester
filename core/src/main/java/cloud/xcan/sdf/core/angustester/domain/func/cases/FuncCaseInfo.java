@@ -10,7 +10,7 @@ import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.ResourceTagAssoc;
-import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
+import cloud.xcan.sdf.core.angustester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
 import cloud.xcan.sdf.core.angustester.domain.task.cases.TaskFuncCaseAssoc;
@@ -40,7 +40,7 @@ import org.hibernate.annotations.Where;
 @Getter
 @Accessors(chain = true)
 public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> implements
-    ActivityResource, TaskFuncCaseAssoc<FuncCaseInfo, Long>,
+    MainTargetActivityResource, TaskFuncCaseAssoc<FuncCaseInfo, Long>,
     ResourceFavouriteAndFollow<FuncCaseInfo, Long>, ResourceTagAssoc<FuncCaseInfo, Long> {
 
   @Id
@@ -188,11 +188,16 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
 
   @Override
   public Long getParentId() {
-    return planId;
+    return this.planId;
   }
 
   @Override
   public Long identity() {
     return this.id;
+  }
+
+  @Override
+  public Long getMainTargetId() {
+    return this.projectId;
   }
 }

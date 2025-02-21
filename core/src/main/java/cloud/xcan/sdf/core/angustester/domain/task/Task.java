@@ -2,6 +2,7 @@ package cloud.xcan.sdf.core.angustester.domain.task;
 
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.commonlink.associate.AssociateUserType;
@@ -12,7 +13,7 @@ import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.ResourceTagAssoc;
-import cloud.xcan.sdf.core.angustester.domain.activity.TaskActivityResource;
+import cloud.xcan.sdf.core.angustester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.cases.TaskFuncCaseAssoc;
@@ -45,7 +46,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class Task extends TenantAuditingEntity<Task, Long> implements TaskActivityResource,
+public class Task extends TenantAuditingEntity<Task, Long> implements MainTargetActivityResource,
     TaskAssociateUser, TaskFuncCaseAssoc<Task, Long>, ResourceFavouriteAndFollow<Task, Long>,
     ResourceTagAssoc<Task, Long> {
 
@@ -288,13 +289,17 @@ public class Task extends TenantAuditingEntity<Task, Long> implements TaskActivi
   }
 
   @Override
-  public Long getTaskId() {
-    return id;
+  public Long getMainTargetId() {
+    return this.id;
   }
 
   @Override
   public Long getParentId() {
-    return targetParentId;
+    return nullSafe(this.sprintId, this.projectId);
   }
 
+  @Override
+  public Long getTaskId() {
+    return this.id;
+  }
 }

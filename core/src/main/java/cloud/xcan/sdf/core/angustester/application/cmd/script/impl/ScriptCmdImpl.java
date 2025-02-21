@@ -73,7 +73,6 @@ import cloud.xcan.sdf.core.jpa.repository.BaseRepository;
 import cloud.xcan.sdf.model.script.ScriptSource;
 import cloud.xcan.sdf.model.script.TestType;
 import cloud.xcan.sdf.spec.experimental.IdKey;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import java.io.IOException;
 import java.util.ArrayList;

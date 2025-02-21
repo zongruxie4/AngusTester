@@ -11,7 +11,7 @@ import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.core.angustester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.sdf.core.angustester.domain.ResourceTagAssoc;
-import cloud.xcan.sdf.core.angustester.domain.activity.ActivityResource;
+import cloud.xcan.sdf.core.angustester.domain.activity.MainTargetActivityResource;
 import cloud.xcan.sdf.core.angustester.domain.tag.TagTarget;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskInfo;
 import cloud.xcan.sdf.core.angustester.domain.task.cases.TaskFuncCaseAssoc;
@@ -41,9 +41,9 @@ import org.hibernate.annotations.Where;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements ActivityResource,
-    TaskFuncCaseAssoc<FuncCase, Long>, ResourceFavouriteAndFollow<FuncCase, Long>,
-    ResourceTagAssoc<FuncCase, Long> {
+public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
+    MainTargetActivityResource, TaskFuncCaseAssoc<FuncCase, Long>,
+    ResourceFavouriteAndFollow<FuncCase, Long>, ResourceTagAssoc<FuncCase, Long> {
 
   @Id
   private Long id;
@@ -210,7 +210,7 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements Ac
 
   @Override
   public Long getParentId() {
-    return projectId;
+    return  this.planId;
   }
 
   @Override
@@ -218,4 +218,8 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements Ac
     return this.id;
   }
 
+  @Override
+  public Long getMainTargetId() {
+    return this.id;
+  }
 }

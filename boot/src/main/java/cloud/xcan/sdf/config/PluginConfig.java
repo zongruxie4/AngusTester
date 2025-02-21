@@ -14,7 +14,6 @@ import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.sdf.plugin.core.PluginStateListener;
 import cloud.xcan.sdf.plugin.spring.SpringPluginManager;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,7 +9,6 @@ import cloud.xcan.sdf.core.angustester.domain.project.Project;
 import cloud.xcan.sdf.core.angustester.domain.project.ProjectListRepo;
 import cloud.xcan.sdf.core.jpa.repository.AbstractSearchRepository;
 import cloud.xcan.sdf.core.jpa.repository.SearchMode;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import java.util.Set;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.springframework.stereotype.Repository;

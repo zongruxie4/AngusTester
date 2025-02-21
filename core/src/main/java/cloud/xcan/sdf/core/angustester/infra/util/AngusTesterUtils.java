@@ -38,7 +38,6 @@ import cloud.xcan.sdf.core.angustester.domain.script.ScriptFormat;
 import cloud.xcan.sdf.spec.http.HttpStatus;
 import cloud.xcan.sdf.spec.locale.MessageHolder;
 import cloud.xcan.sdf.spec.utils.JsonUtils;
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import cloud.xcan.sdf.spec.utils.StreamUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.ByteArrayInputStream;

@@ -3,7 +3,6 @@ package cloud.xcan.sdf.core.angustester.domain.apis.converter;
 import static cloud.xcan.sdf.core.angustester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.Map;
 import javax.persistence.AttributeConverter;
