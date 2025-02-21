@@ -31,7 +31,7 @@ public class ActivityAssembler {
         .rangeSearchFields("id", "optDate")
         .orderByFields("id", "optDate")
         .matchSearchFields("targetName", "detail")
-        .inAndNotFields("taskId", "targetId", "targetType")
+        .inAndNotFields("mainTargetId", "parentTargetId", "targetId", "targetType")
         .build();
     return new GenericSpecification<>(filters);
   }
@@ -42,11 +42,7 @@ public class ActivityAssembler {
         .rangeSearchFields("id", "optDate")
         .orderByFields("id", "optDate")
         .matchSearchFields("targetName", "detail")
-        .inAndNotFields("taskId", "targetId", "targetType")
+        .inAndNotFields("mainTargetId", "parentTargetId", "targetId", "targetType")
         .build();
   }
 }
-
-
-
-

@@ -48,8 +48,8 @@ public class Activity extends TenantEntity<Activity, Long> {
   @Column(name = "target_name")
   private String targetName;
 
-  @Column(name = "task_id")
-  private Long taskId;
+  @Column(name = "main_target_id")
+  private Long mainTargetId;
 
   @Column(name = "user_id")
   private Long userId;

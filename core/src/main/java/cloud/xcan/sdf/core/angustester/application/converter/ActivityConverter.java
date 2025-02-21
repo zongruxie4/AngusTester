@@ -96,7 +96,7 @@ public class ActivityConverter {
           .setParentTargetId(nullSafe(resource.getParentId(), DEFAULT_ROOT_PID))
           .setTargetName(resource.getName());
       if (resource instanceof TaskActivityResource) {
-        activity.setTaskId(((TaskActivityResource) resource).getTaskId());
+        activity.setMainTargetId(((TaskActivityResource) resource).getTaskId());
       }
     }
     return activity;

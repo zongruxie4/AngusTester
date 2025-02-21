@@ -31,14 +31,17 @@ public class ActivitySearchDto extends PageQuery {
   @ApiModelProperty(value = "Target id")
   private Long targetId;
 
+  @ApiModelProperty(value = "Target parent id")
+  private Long parentTargetId;
+
   @ApiModelProperty(value = "Target type")
   private CombinedTargetType targetType;
 
-  @ApiModelProperty(value = "Operation id")
+  @ApiModelProperty(value = "Operation user id")
   private Long userId;
 
-  @ApiModelProperty(value = "Task id")
-  private Long taskId;
+  @ApiModelProperty(value = "Main target id")
+  private Long mainTargetId;
 
   @Length(max = DEFAULT_NAME_LENGTH_X2)
   @ApiModelProperty(value = "For fulltext search")
@@ -52,6 +55,3 @@ public class ActivitySearchDto extends PageQuery {
     return "optDate";
   }
 }
-
-
-
