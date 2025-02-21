@@ -237,6 +237,7 @@ public class TaskAssembler {
         .setFollowFlag(task.getFollowFlag())
         .setCommentNum(task.getCommentNum())
         .setRemarkNum(task.getRemarkNum())
+        .setActivityNum(task.getActivityNum())
         .setCreatedBy(task.getCreatedBy())
         .setCreatedDate(task.getCreatedDate())
         .setLastModifiedBy(task.getLastModifiedBy())

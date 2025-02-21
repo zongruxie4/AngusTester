@@ -253,6 +253,8 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
   @Transient
   private int remarkNum;
   @Transient
+  private int activityNum;
+  @Transient
   private Boolean favouriteFlag;
   @Transient
   private Boolean followFlag;

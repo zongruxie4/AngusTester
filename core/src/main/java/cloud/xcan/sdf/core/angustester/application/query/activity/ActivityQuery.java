@@ -15,6 +15,8 @@ public interface ActivityQuery {
   void setProjectName(Page<Activity> page);
 
   List<ActivitySummary> findSummaryByTarget(CombinedTargetType targetType, Long targetId);
+
+  int getActivityNumByMainTarget(Long id);
 }
 
 

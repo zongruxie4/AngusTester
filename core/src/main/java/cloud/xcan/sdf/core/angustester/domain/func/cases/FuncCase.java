@@ -174,6 +174,8 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
   @Transient
   private int commentNum;
   @Transient
+  private int activityNum;
+  @Transient
   private Boolean favouriteFlag;
   @Transient
   private Boolean followFlag;

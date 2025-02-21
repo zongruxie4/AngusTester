@@ -86,4 +86,9 @@ public class ActivityQueryImpl implements ActivityQuery {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public int getActivityNumByMainTarget(Long id) {
+    return activityRepo.countAllByMainTargetId(id);
+  }
+
 }

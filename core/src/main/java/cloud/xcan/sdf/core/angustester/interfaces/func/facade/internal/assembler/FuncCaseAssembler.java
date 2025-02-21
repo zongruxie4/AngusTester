@@ -212,6 +212,7 @@ public class FuncCaseAssembler {
         .setFavouriteFlag(case0.getFavouriteFlag())
         .setFollowFlag(case0.getFollowFlag())
         .setCommentNum(case0.getCommentNum())
+        .setActivityNum(case0.getActivityNum())
         .setTenantId(case0.getTenantId())
         .setCreatedBy(case0.getCreatedBy())
         .setCreatedDate(case0.getCreatedDate())

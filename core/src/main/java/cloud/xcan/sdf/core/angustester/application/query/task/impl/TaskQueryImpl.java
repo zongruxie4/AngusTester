@@ -108,6 +108,7 @@ import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.application.converter.TaskConverter;
+import cloud.xcan.sdf.core.angustester.application.query.activity.ActivityQuery;
 import cloud.xcan.sdf.core.angustester.application.query.analysis.AnalysisQuery;
 import cloud.xcan.sdf.core.angustester.application.query.comment.CommentQuery;
 import cloud.xcan.sdf.core.angustester.application.query.common.CommonQuery;
@@ -318,6 +319,9 @@ public class TaskQueryImpl implements TaskQuery {
   private TaskRemarkQuery taskRemarkQuery;
 
   @Resource
+  private ActivityQuery activityQuery;
+
+  @Resource
   private ProjectMemberQuery projectMemberQuery;
 
   @Resource
@@ -374,6 +378,9 @@ public class TaskQueryImpl implements TaskQuery {
         // Set remark num
         int remarkNum = taskRemarkQuery.getRemarkNum(id);
         taskDb.setRemarkNum(remarkNum);
+        // Set activity num
+        int activityNum = activityQuery.getActivityNumByMainTarget(id);
+        taskDb.setActivityNum(activityNum);
         // Set task progress
         setTaskProgress(tasks);
         // Set sub task progress

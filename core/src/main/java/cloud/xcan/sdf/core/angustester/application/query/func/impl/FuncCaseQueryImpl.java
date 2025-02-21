@@ -90,6 +90,7 @@ import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.application.converter.FuncCaseConverter;
+import cloud.xcan.sdf.core.angustester.application.query.activity.ActivityQuery;
 import cloud.xcan.sdf.core.angustester.application.query.analysis.AnalysisQuery;
 import cloud.xcan.sdf.core.angustester.application.query.comment.CommentQuery;
 import cloud.xcan.sdf.core.angustester.application.query.common.CommonQuery;
@@ -275,6 +276,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   private CommentQuery commentQuery;
 
   @Resource
+  private ActivityQuery activityQuery;
+
+  @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
 
   @Resource
@@ -314,6 +318,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         // Set comment num
         int commentNum = commentQuery.getCommentNum(id, CommentTargetType.FUNC_CASE.getValue());
         caseDb.setCommentNum(commentNum);
+        // Set activity num
+        int activityNum = activityQuery.getActivityNumByMainTarget(id);
+        caseDb.setActivityNum(activityNum);
         // Set progress
         setCaseProgress(caseDb);
         return caseDb;

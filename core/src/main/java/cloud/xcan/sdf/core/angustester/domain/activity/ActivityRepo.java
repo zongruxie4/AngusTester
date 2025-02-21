@@ -16,6 +16,8 @@ public interface ActivityRepo extends BaseRepository<Activity, Long> {
   @Query(value = "SELECT a0.target_id FROM activity a0 GROUP BY a0.target_id HAVING(count(a0.target_id) > ?1) LIMIT ?2", nativeQuery = true)
   List<Long> getTargetIdsHavingCount(Long reservedNum, Long batchNum);
 
+  int countAllByMainTargetId(Long id);
+
   @Transactional
   @Modifying
   @Query(value = "DELETE FROM activity WHERE target_id = ?1 AND id NOT IN "

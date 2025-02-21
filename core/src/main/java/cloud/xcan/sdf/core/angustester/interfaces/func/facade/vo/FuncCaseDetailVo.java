@@ -129,6 +129,8 @@ public class FuncCaseDetailVo {
 
   private int commentNum;
 
+  private int activityNum;
+
   private Long tenantId;
 
   //@NameJoinField(id = "tenantId", repository = "commonTenantRepo")
