@@ -60,11 +60,11 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
   public void checkMember(Set<SearchCriteria> criteria) {
     String projectId = CriteriaUtils.findFirstValue(criteria, "projectId");
     ProtocolAssert.assertNotEmpty(projectId, "Project id is required");
-    checkMember(Long.valueOf(projectId), getUserId());
+    checkMember(getUserId(), Long.valueOf(projectId));
   }
 
   @Override
-  public void checkMember(Long projectId, Long userId) {
+  public void checkMember(Long userId, Long projectId) {
     if (!isAdmin()) {
       List<Long> userOrgIds = userManager.getValidOrgAndUserIds(userId);
       List<Long> memberOrgIds = projectMemberRepo.findMemberIdsByProjectId(projectId);

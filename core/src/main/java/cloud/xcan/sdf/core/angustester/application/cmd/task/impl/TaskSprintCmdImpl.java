@@ -92,7 +92,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(sprint.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), sprint.getProjectId());
 
         // Check the project exists
         projectQuery.checkAndFind(sprint.getProjectId());

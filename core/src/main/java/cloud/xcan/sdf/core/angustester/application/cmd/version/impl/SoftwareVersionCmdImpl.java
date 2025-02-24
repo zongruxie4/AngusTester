@@ -66,7 +66,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
         // Check the project exists
         projectQuery.checkAndFind(version.getProjectId());
         // Check the project member
-        projectMemberQuery.checkMember(version.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), version.getProjectId());
         // Check the version name exists
         softwareVersionQuery.checkExits(version.getProjectId(), version.getName());
       }

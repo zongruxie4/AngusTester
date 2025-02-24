@@ -66,7 +66,7 @@ public class AnalysisCmdImpl extends CommCmd<Analysis, Long> implements Analysis
         // Check the project exists
         projectQuery.checkAndFind(analysis.getProjectId());
         // Check the project member
-        projectMemberQuery.checkMember(analysis.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), analysis.getProjectId());
         // Check the name exists
         analysisQuery.checkExits(analysis.getProjectId(), analysis.getName());
         // Check the plan or sprint id

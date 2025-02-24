@@ -44,7 +44,7 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
       @Override
       protected void checkParams() {
         // Check the project member permission
-        projectMemberQuery.checkMember(meeting.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), meeting.getProjectId());
       }
 
       @Override

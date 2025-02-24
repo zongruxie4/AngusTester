@@ -200,7 +200,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
       @Override
       protected void checkParams() {
         // Check the member permissions
-        projectMemberQuery.checkMember(service.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), service.getProjectId());
 
         // Check the name exists
         mockServiceQuery.checkNameExists(service.getName());

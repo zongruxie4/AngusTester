@@ -128,7 +128,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         // Check the project exists
         projectQuery.checkAndFind(report.getProjectId());
         // Check the project member
-        projectMemberQuery.checkMember(report.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), report.getProjectId());
         // Check the filter parameter valid by template
         ContentFilterSetting filter = report.getContentSetting().getFilter();
         reportQuery.checkFilters(report.getTemplate(), filter);

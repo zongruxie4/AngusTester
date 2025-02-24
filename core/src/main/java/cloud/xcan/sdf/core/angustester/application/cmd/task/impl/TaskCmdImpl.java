@@ -256,7 +256,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           // Check the project id is required to create a backlog
           assertTrue(nonNull(task.getProjectId()), "Backlog project id is required");
           // Check the project member permission
-          projectMemberQuery.checkMember(task.getProjectId(), getUserId());
+          projectMemberQuery.checkMember(getUserId(), task.getProjectId());
         } else {
           // Check the task sprint exists
           sprintDb = taskSprintQuery.checkAndFind(task.getSprintId());
@@ -382,7 +382,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
         } else { // General Project Management
           // Check the add task permission
-          projectMemberQuery.checkMember(projectId, getUserId());
+          projectMemberQuery.checkMember(getUserId(), projectId);
         }
       }
 
@@ -1736,7 +1736,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
         } else { // General Project Management
           // Check the add task permission
-          projectMemberQuery.checkMember(projectId, getUserId());
+          projectMemberQuery.checkMember(getUserId(), projectId);
         }
       }
 

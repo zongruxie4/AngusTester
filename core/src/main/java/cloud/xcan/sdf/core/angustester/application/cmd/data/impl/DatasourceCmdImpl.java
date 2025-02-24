@@ -46,7 +46,7 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
       @Override
       protected void checkParams() {
         // Check the member permission
-        projectMemberQuery.checkMember(datasource.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), datasource.getProjectId());
 
         // Check the name exists
         datasourceQuery.checkNameExists(datasource.getName());

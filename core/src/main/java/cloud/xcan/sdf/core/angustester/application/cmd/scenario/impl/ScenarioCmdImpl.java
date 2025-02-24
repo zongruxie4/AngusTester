@@ -114,7 +114,7 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       @Override
       protected void checkParams() {
         // Check the project member
-        projectMemberQuery.checkMember(scenario.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), scenario.getProjectId());
 
         // Check the scenario quota
         scenarioQuery.checkQuota(1);

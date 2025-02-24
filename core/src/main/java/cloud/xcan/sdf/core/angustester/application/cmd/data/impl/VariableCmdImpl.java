@@ -87,7 +87,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
       @Override
       protected void checkParams() {
         // Check the member permissions
-        projectMemberQuery.checkMember(variable.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), variable.getProjectId());
         // Check the required parameters
         variableQuery.checkRequiredParam(variable);
         // Check the name is not repeated
@@ -198,7 +198,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
       @Override
       protected void checkParams() {
         // Check the member permissions
-        projectMemberQuery.checkMember(projectId, getUserId());
+        projectMemberQuery.checkMember(getUserId(), projectId);
         // Check the upload content is required
         assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
       }

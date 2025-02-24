@@ -146,7 +146,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
       @Override
       protected void checkParams() {
         // Check the project member
-        projectMemberQuery.checkMember(services.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), services.getProjectId());
 
         // Check the service quota
         servicesQuery.checkQuota(1);

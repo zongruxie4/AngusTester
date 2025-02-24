@@ -98,7 +98,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
       @Override
       protected void checkParams() {
         // Check the project member
-        projectMemberQuery.checkMember(plan.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), plan.getProjectId());
         // Check the plan name exists
         funcPlanQuery.checkNameExists(plan.getProjectId(), plan.getName());
         // Check the plan date range
@@ -352,7 +352,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         planDb = funcPlanQuery.checkAndFind(id);
 
         // Check the project member
-        projectMemberQuery.checkMember(planDb.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), planDb.getProjectId());
       }
 
       @Override

@@ -86,7 +86,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
       @Override
       protected void checkParams() {
         // Check the member permissions
-        projectMemberQuery.checkMember(dataset.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), dataset.getProjectId());
         // Check the required parameters
         datasetQuery.checkRequiredParam(dataset);
         // Check the name is not repeated
@@ -194,7 +194,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
       @Override
       protected void checkParams() {
         // Check the member permissions
-        projectMemberQuery.checkMember(projectId, getUserId());
+        projectMemberQuery.checkMember(getUserId(), projectId);
         // Check the upload content is required
         assertTrue(isNotEmpty(content) || nonNull(file), "Upload file is required");
       }

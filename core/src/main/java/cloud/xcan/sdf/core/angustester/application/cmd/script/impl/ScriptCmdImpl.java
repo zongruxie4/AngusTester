@@ -145,7 +145,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       @Override
       protected void checkParams() {
         // Check the project member
-        projectMemberQuery.checkMember(script.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), script.getProjectId());
 
         // Check the script num quota
         scriptQuery.checkQuota(1);
@@ -197,7 +197,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       @Override
       protected void checkParams() {
         // Check the project member
-        projectMemberQuery.checkMember(script.getProjectId(), getUserId());
+        projectMemberQuery.checkMember(getUserId(), script.getProjectId());
 
         // Check the script num quota
         scriptQuery.checkQuota(1);

@@ -15,7 +15,7 @@ public interface ProjectMemberQuery {
 
   void checkMember(Set<SearchCriteria> criteria);
 
-  void checkMember(Long projectId, Long userId);
+  void checkMember(Long userId, Long projectId);
 
   void setMembers(Project project);
 
