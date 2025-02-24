@@ -71,7 +71,7 @@ public class FuncCaseListVo {
   private String precondition;
 
   @JsonIgnore // Only used by export
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   @JsonIgnore // Only used by export
   private List<TaskInfoVo> refTaskInfos;

@@ -97,7 +97,7 @@ public class FuncBaselineCase extends TenantAuditingEntity<FuncBaselineCase, Lon
 
   @Type(type = "json")
   @Column(columnDefinition = "json", name = "steps")
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   @Column(name = "description")
   private String description;

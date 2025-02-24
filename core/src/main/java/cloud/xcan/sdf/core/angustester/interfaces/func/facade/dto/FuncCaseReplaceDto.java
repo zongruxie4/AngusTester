@@ -75,7 +75,7 @@ public class FuncCaseReplaceDto {
 
   @Size(max = MAX_CASE_STEPS_NUM)
   @ApiModelProperty(value = "Case steps")
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   @Length(max = DEFAULT_REMARK_LENGTH_X10)
   @ApiModelProperty(value = "Case description")

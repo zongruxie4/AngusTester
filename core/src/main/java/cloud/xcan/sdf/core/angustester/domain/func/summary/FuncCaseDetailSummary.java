@@ -68,7 +68,7 @@ public class FuncCaseDetailSummary {
 
   private String precondition;
 
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   private String description;
 

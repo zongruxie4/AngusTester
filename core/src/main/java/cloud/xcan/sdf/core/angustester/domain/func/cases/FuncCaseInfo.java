@@ -170,7 +170,7 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   @Transient// Only used by export
   private String precondition;
   @Transient// Only used by export
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
   @Transient// Only used by export
   private List<TaskInfo> assocTasks;
   @Transient// Only used by export

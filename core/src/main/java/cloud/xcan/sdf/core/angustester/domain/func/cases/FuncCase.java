@@ -91,7 +91,7 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
 
   @Type(type = "json")
   @Column(columnDefinition = "json", name = "steps")
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   @Column(name = "description")
   private String description;

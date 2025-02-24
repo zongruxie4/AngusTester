@@ -579,7 +579,7 @@ public class FuncCaseConverter {
     return cases;
   }
 
-  private static LinkedHashSet<CaseTestStep> toSteps(String steps) {
+  private static List<CaseTestStep> toSteps(String steps) {
     if (isEmpty(steps)) {
       return null;
     }
@@ -589,7 +589,7 @@ public class FuncCaseConverter {
     if (isEmpty(stepsArray)) {
       return null;
     }
-    LinkedHashSet<CaseTestStep> testSteps = new LinkedHashSet<>();
+    List<CaseTestStep> testSteps = new ArrayList<>();
     for (String step : stepsArray) {
       String[] stepArray = step.split("##");
       if (stepArray.length > 0) {

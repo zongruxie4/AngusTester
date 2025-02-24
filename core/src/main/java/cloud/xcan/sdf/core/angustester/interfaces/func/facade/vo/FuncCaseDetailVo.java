@@ -68,7 +68,7 @@ public class FuncCaseDetailVo {
 
   private String precondition;
 
-  private LinkedHashSet<CaseTestStep> steps;
+  private List<CaseTestStep> steps;
 
   private String description;
 
