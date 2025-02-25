@@ -3,8 +3,8 @@ package cloud.xcan.sdf.core.angustester.application.cmd.version.impl;
 import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.TASK_RELEASE_VERSION;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
-import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_RELEASE_VERSION_MERGE;
-import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_RELEASE_VERSION_UPDATE;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_MERGE;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_UPDATE;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreTenantAuditing;
@@ -164,7 +164,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
           versionDb.setReleaseDate(LocalDateTime.now());
         }
 
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, versionDb, TASK_RELEASE_VERSION_UPDATE, status));
+        activityCmd.add(toActivity(TASK_RELEASE_VERSION, versionDb, SOFTWARE_VERSION_UPDATE, status));
         return null;
       }
     }.execute();
@@ -197,7 +197,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
         softwareVersionRepo.deleteByIdIn(Set.of(formId));
 
         activityCmd.add(toActivity(TASK_RELEASE_VERSION, formVersionDb,
-            TASK_RELEASE_VERSION_MERGE, formVersionDb.getName(), toVersionDb.getName()));
+            SOFTWARE_VERSION_MERGE, formVersionDb.getName(), toVersionDb.getName()));
         return null;
       }
     }.execute();
