@@ -33,16 +33,13 @@ import cloud.xcan.sdf.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -65,7 +62,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
   @Override
   public IdKey<Long, Object> add(ServicesAddDto dto) {
-    return servicesCmd.add(ServicesAssembler.addDtoToDomain(dto));
+    return servicesCmd.add(ServicesAssembler.addDtoToDomain(dto), true);
   }
 
   @Override
@@ -74,13 +71,13 @@ public class ServicesFacadeImpl implements ServicesFacade {
   }
 
   @Override
-  public void clone(Long id) {
-    servicesCmd.clone(id);
+  public void statusUpdate(Long id, ApiStatus status) {
+    servicesCmd.statusUpdate(id, status);
   }
 
   @Override
-  public void statusUpdate(Long id, ApiStatus status) {
-    servicesCmd.statusUpdate(id, status);
+  public void clone(Long id) {
+    servicesCmd.clone(id);
   }
 
   @Override
@@ -134,15 +131,12 @@ public class ServicesFacadeImpl implements ServicesFacade {
     return joinAssocStatus(page, criteria);
   }
 
-  @SneakyThrows
   @Override
   public ResponseEntity<org.springframework.core.io.Resource> export(
       ServicesExportDto dto, HttpServletResponse response) {
     File file = servicesCmd.exportProject(dto.getExportScope(), dto.getServiceIds(),
         dto.getApiIds(), dto.getFormat(), dto.isOnlyApisComponents());
-    InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-    return buildDownloadResourceResponseEntity(-1,
-        APPLICATION_OCTET_STREAM, file.getName(), file.length(), resource);
+    return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM, file);
   }
 
   private PageResult<ServiceVo> joinAssocStatus(Page<Services> page,

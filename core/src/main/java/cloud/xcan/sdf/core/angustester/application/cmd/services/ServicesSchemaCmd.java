@@ -36,6 +36,8 @@ public interface ServicesSchemaCmd {
 
   void init(Services services);
 
+  void init(Services services, OpenAPI openAPI);
+
   void clone(Long clonedServiceId, Long serviceId);
 
   void deleteByServiceIdIn(Collection<Long> serviceIds);

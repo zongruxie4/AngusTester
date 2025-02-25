@@ -61,6 +61,8 @@ public interface TesterCoreMessage extends TesterApisMessage {
   String APIS_PUBLISHED_CANNOT_MODIFY_CODE = "ATS201";
   String APIS_PUBLISHED_CANNOT_MODIFY_T = "xcm.altester.apis.released.cannot.modify.t";
 
+  String APIS_OAS_DESIGN_NOT_FOUND = "xcm.altester.apis.oas.not.found";
+
   //  String APIS_TENANT_OVER_LIMIT_CODE = "ATS206";
   //  String APIS_TENANT_OVER_LIMIT_T = "xcm.altester.apis.tenant.over.limit.t";
 

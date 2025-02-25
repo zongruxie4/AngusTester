@@ -37,7 +37,6 @@ import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.extension.angustester.api.ApisParseProvider;
 import cloud.xcan.sdf.spec.utils.GzipUtils;
 import cloud.xcan.sdf.spec.utils.ObjectUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.Yaml31;
 import io.swagger.v3.oas.models.Components;
@@ -115,6 +114,35 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
 
       @Override
       protected String process() {
+        OpenAPI openApi = openapiDetail0(serviceId, apisIds, onlyApisComponents);
+
+        // Format output
+        String result = SchemaFormat.json.equals(format) ? Json31.pretty(openApi)
+            : Yaml31.pretty(openApi);
+
+        if (gzipCompression) {
+          try {
+            result = GzipUtils.compress(result);
+          } catch (IOException e) {
+            throw CommSysException.of("Gzip OpenAPI exception, cause: " + e.getMessage());
+          }
+        }
+        return result;
+      }
+    }.execute();
+  }
+
+  @Override
+  public OpenAPI openapiDetail0(Long serviceId, Set<Long> apisIds, boolean onlyApisComponents) {
+    return new BizTemplate<OpenAPI>() {
+
+      @Override
+      protected void checkParams() {
+        servicesAuthQuery.checkViewAuth(getUserId(), serviceId);
+      }
+
+      @Override
+      protected OpenAPI process() {
         OpenAPI openApi = new OpenAPI();
 
         // Merge apis and project component servers
@@ -172,19 +200,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
           openApi.components(components);
         }
 
-        // Format output
-        try {
-          String result = SchemaFormat.json.equals(format) ? Json31.pretty(openApi)
-              : Yaml31.pretty(openApi);
-          if (gzipCompression) {
-            result = GzipUtils.compress(result);
-          }
-          return result;
-        } catch (JsonProcessingException e) {
-          throw CommSysException.of("Serializing OpenAPI exception, cause: " + e.getMessage());
-        } catch (IOException e) {
-          throw CommSysException.of("Gzip OpenAPI exception, cause: " + e.getMessage());
-        }
+        return openApi;
       }
     }.execute();
   }

@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ServicesCmd {
 
-  IdKey<Long, Object> add(Services services);
+  IdKey<Long, Object> add(Services services, boolean initSchema);
 
   void rename(Long id, String name);
 
-  void clone(Long id);
-
   void statusUpdate(Long id, ApiStatus status);
+
+  void clone(Long id);
 
   IdKey<Long, Object> imports(Long projectId, Long serviceId, String projectName,
       ApiImportSource importSource, StrategyWhenDuplicated strategyWhenDuplicated,
@@ -34,4 +34,5 @@ public interface ServicesCmd {
   void delete(Long id);
 
   void delete0(List<Long> ids);
+
 }

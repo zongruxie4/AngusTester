@@ -19,4 +19,8 @@ public enum ApiImportSource implements EnumMessage<String> {
     return this.equals(ANGUS);
   }
 
+  public boolean isWideOpenapi() {
+    return this.equals(OPENAPI) || this.equals(POSTMAN) /* Processed by the web front-end. */;
+  }
+
 }

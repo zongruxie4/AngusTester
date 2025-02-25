@@ -326,7 +326,8 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
       @Override
       protected Void process() {
         // Check the content is valid OpenAPI documents
-        openApi = servicesSchemaQuery.checkAndGetApisParseProvider(importSource)
+        openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
+                importSource.isWideOpenapi() ? ApiImportSource.OPENAPI : importSource)
             .parse(decompressedContent);
 
         // Update project schema
@@ -410,7 +411,12 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   @Override
   public void init(Services services) {
-    insert0(ServicesSchemaConverter.toInitProjectSchema(services));
+    insert0(ServicesSchemaConverter.toInitProjectSchema(services, null));
+  }
+
+  @Override
+  public void init(Services services, OpenAPI openAPI) {
+    insert0(ServicesSchemaConverter.toInitProjectSchema(services, openAPI));
   }
 
   @Override
@@ -424,8 +430,9 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     servicesSchemaRepo.deleteByServiceIdIn(serviceIds);
-    ((RedisCaffeineCacheManager)cacheManager).evict("servicesSchema", serviceIds.stream().map(id -> "serviceId_" + id)
-        .collect(Collectors.toList()));
+    ((RedisCaffeineCacheManager) cacheManager).evict("servicesSchema",
+        serviceIds.stream().map(id -> "serviceId_" + id)
+            .collect(Collectors.toList()));
   }
 
   @Override

@@ -194,6 +194,11 @@ public class ServicesQueryImpl implements ServicesQuery {
   }
 
   @Override
+  public List<Services> find0ByIds(Collection<Long> ids) {
+    return servicesRepo.findAll0ByIdIn(ids);
+  }
+
+  @Override
   public List<Long> hasApisServiceIds(Collection<Long> serviceIds) {
     return apisRepo.findServiceIdByServiceIdIn(serviceIds);
   }

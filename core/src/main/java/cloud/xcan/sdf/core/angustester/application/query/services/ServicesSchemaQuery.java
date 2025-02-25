@@ -6,6 +6,7 @@ import cloud.xcan.sdf.core.angustester.domain.services.schema.ServiceServer;
 import cloud.xcan.sdf.core.angustester.domain.services.schema.ServicesSchema;
 import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.extension.angustester.api.ApisParseProvider;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +21,8 @@ public interface ServicesSchemaQuery {
       boolean gzipCompression, boolean onlyApisComponents);
 
   List<Server> findServersByServiceIds(Collection<Long> serviceId);
+
+  OpenAPI openapiDetail0(Long serviceId, Set<Long> apisIds, boolean onlyApisComponents);
 
   List<ServiceServer> serverListByProject(Long projectId);
 

@@ -9,6 +9,8 @@ import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_STATUS_IS_NOT_401_403;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_STATUS_IS_OK;
 import static cloud.xcan.sdf.core.angustester.domain.TesterCoreMessage.APIS_CASE_ASSERT_STATUS_LESS_300;
+import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getExportTmpPath;
+import static cloud.xcan.sdf.core.angustester.infra.util.ServicesFileUtils.getImportTmpPath;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.assembleGrantPermissionCondition;
 import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getFilterInFirstValue;
@@ -17,6 +19,7 @@ import static cloud.xcan.sdf.core.jpa.criteria.CriteriaUtils.getInConditionValue
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getOptTenantId;
 import static cloud.xcan.sdf.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
+import static cloud.xcan.sdf.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.sdf.spec.utils.StreamUtils.copyToString;
@@ -29,18 +32,22 @@ import cloud.xcan.angus.model.element.assertion.AssertionCondition;
 import cloud.xcan.angus.model.element.assertion.AssertionType;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.parser.AngusParser;
+import cloud.xcan.sdf.api.ExceptionLevel;
 import cloud.xcan.sdf.api.commonlink.CombinedTargetType;
 import cloud.xcan.sdf.api.gm.indicator.SecurityCheckSetting;
 import cloud.xcan.sdf.api.gm.indicator.SmokeCheckSetting;
 import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.core.angustester.domain.script.ScriptFormat;
+import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.spec.http.HttpStatus;
 import cloud.xcan.sdf.spec.locale.MessageHolder;
+import cloud.xcan.sdf.spec.utils.FileUtils;
 import cloud.xcan.sdf.spec.utils.JsonUtils;
 import cloud.xcan.sdf.spec.utils.StreamUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +59,33 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public class AngusTesterUtils {
+
+  public static @NotNull File convertImportFile(MultipartFile file) {
+    File tmpPath = getImportTmpPath(ApiImportSource.OPENAPI, null);
+    File importFile = new File(tmpPath.getPath() + File.separator + file.getName());
+    try {
+      file.transferTo(importFile);
+    } catch (IOException e) {
+      throw CommSysException.of("Transfer import file exception, cause: "
+          + e.getMessage(), ExceptionLevel.ERROR);
+    }
+    return importFile;
+  }
+
+  public static @NotNull File writeExportFile(String name, String content) {
+    File tmpPath = getExportTmpPath(null);
+    File exportFile = new File(tmpPath.getPath() + File.separator + name);
+    try {
+      FileUtils.writeStringToFile(exportFile, content, UTF_8);
+    } catch (IOException e) {
+      throw CommSysException.of("Exception write export file, cause: "
+          + e.getMessage(), ExceptionLevel.URGENT);
+    }
+    return exportFile;
+  }
 
   public static void assembleIndicatorJoinTargetSql(String targetType, StringBuilder sql) {
     long tenantId = getOptTenantId();

@@ -30,6 +30,8 @@ public interface ServicesQuery {
 
   Services find0(Long id);
 
+  List<Services> find0ByIds(Collection<Long> ids);
+
   List<Long> hasApisServiceIds(Collection<Long> serviceIds);
 
   Services checkAndFind(Long id);
@@ -52,9 +54,4 @@ public interface ServicesQuery {
 
   void setSafeCloneName(Services service);
 
-
 }
-
-
-
-

@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.application.converter;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserFullname;
 import static cloud.xcan.sdf.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNotEmpty;
+import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNull;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.stringSafe;
 import static io.swagger.v3.oas.models.extension.ExtensionKey.ID_KEY;
 
@@ -26,10 +27,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ServicesSchemaConverter {
 
-  public static ServicesSchema toInitProjectSchema(Services services) {
-    OpenAPI openapi = new OpenAPI();
-    Info info = toInitInfo(services);
-    openapi.setInfo(info);
+  public static ServicesSchema toInitProjectSchema(Services services, OpenAPI openapi) {
+    if (isNull(openapi)) {
+      openapi = new OpenAPI();
+      Info info = toInitInfo(services);
+      openapi.setInfo(info);
+    }
     ServicesSchema schema = new ServicesSchema();
     schema.setProjectId(services.getProjectId());
     schema.setServiceId(services.getId());

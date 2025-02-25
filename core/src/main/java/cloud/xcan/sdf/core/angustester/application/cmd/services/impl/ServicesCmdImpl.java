@@ -31,6 +31,7 @@ import cloud.xcan.sdf.api.message.CommSysException;
 import cloud.xcan.sdf.core.angustester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisAuthCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisCmd;
+import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisDesignCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.apis.ApisTrashCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.indicator.IndicatorPerfCmd;
 import cloud.xcan.sdf.core.angustester.application.cmd.indicator.IndicatorStabilityCmd;
@@ -62,6 +63,7 @@ import cloud.xcan.sdf.extension.angustester.api.ApiImportSource;
 import cloud.xcan.sdf.model.apis.ApiStatus;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import cloud.xcan.sdf.spec.utils.FileUtils;
+import cloud.xcan.sdf.spec.utils.ObjectUtils;
 import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
@@ -120,6 +122,9 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
   private IndicatorStabilityCmd indicatorStabilityCmd;
 
   @Resource
+  private ApisDesignCmd apisDesignCmd;
+
+  @Resource
   private ApisTrashCmd trashApisCmd;
 
   @Resource
@@ -139,7 +144,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public IdKey<Long, Object> add(Services services) {
+  public IdKey<Long, Object> add(Services services, boolean initSchema) {
     return new BizTemplate<IdKey<Long, Object>>() {
       Services serviceDb;
 
@@ -163,7 +168,9 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         servicesAuthCmd.addCreatorAuth(idKey.getId(), getAuthCreatorIds());
 
         // Init schema
-        servicesSchemaCmd.init(services);
+        if (initSchema){
+          servicesSchemaCmd.init(services);
+        }
 
         // Add service activity
         activityCmd.add(toActivity(SERVICE, services, ActivityType.CREATED));
@@ -209,6 +216,42 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
           // Add service name updated activity
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.NAME_UPDATED, name));
         }
+        return null;
+      }
+    }.execute();
+  }
+
+  /**
+   * Publishing a service will publish all services and apis under the project.
+   * <p>
+   * Services allow duplicate publications
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void statusUpdate(Long serviceId, ApiStatus status) {
+    new BizTemplate<Void>() {
+      Services serviceDb = null;
+
+      @Override
+      protected void checkParams() {
+        // Check the service exists
+        serviceDb = servicesQuery.checkAndFind(serviceId);
+
+        // Check the to have permission to release
+        if (status.isReleased() || serviceDb.isReleased()) {
+          servicesAuthQuery.checkReleaseAuth(getUserId(), serviceId);
+        } else {
+          servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        }
+      }
+
+      @Override
+      protected Void process() {
+        servicesRepo.updateStatusById(serviceId, status.getValue());
+        apisRepo.updateStatusByServiceId(serviceId, status.getValue());
+
+        // Add publish services activity
+        activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.STATUS_UPDATE, status));
         return null;
       }
     }.execute();
@@ -275,42 +318,6 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
-  /**
-   * Publishing a service will publish all services and apis under the project.
-   * <p>
-   * Services allow duplicate publications
-   */
-  @Transactional(rollbackFor = Exception.class)
-  @Override
-  public void statusUpdate(Long serviceId, ApiStatus status) {
-    new BizTemplate<Void>() {
-      Services serviceDb = null;
-
-      @Override
-      protected void checkParams() {
-        // Check the service exists
-        serviceDb = servicesQuery.checkAndFind(serviceId);
-
-        // Check the to have permission to release
-        if (status.isReleased() || serviceDb.isReleased()) {
-          servicesAuthQuery.checkReleaseAuth(getUserId(), serviceId);
-        } else {
-          servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
-        }
-      }
-
-      @Override
-      protected Void process() {
-        servicesRepo.updateStatusById(serviceId, status.getValue());
-        apisRepo.updateStatusByServiceId(serviceId, status.getValue());
-
-        // Add publish services activity
-        activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.STATUS_UPDATE, status));
-        return null;
-      }
-    }.execute();
-  }
-
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> imports(Long projectId, Long serviceId, String serviceName,
@@ -344,7 +351,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         // If no import service is specified, create a new service
         if (isNull(serviceDb)) {
           serviceDb = toNewImportService(projectId, serviceName, importSource);
-          add(serviceDb);
+          add(serviceDb, true);
         }
 
         // Import by file
@@ -570,12 +577,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     indicatorStabilityCmd.deleteAllByTarget(allIds, SERVICE);
     // NOOP:: Do not delete associated test tasks
     List<Long> apisIds = apisRepo.findAll0IdByServiceIdIn(allIds);
-    if (isNotEmpty(apisIds)) {
+    if (ObjectUtils.isNotEmpty(apisIds)) {
       apisCmd.delete0(apisIds);
     }
     // NOOP:: Delete projects and components ref -> Deleted in apisCmd.delete0(apisIds)
+    // Delete apis design
+    apisDesignCmd.deleteByServiceIdIn(apisIds);
   }
-
 
   @Override
   protected BaseRepository<Services, Long> getRepository() {
