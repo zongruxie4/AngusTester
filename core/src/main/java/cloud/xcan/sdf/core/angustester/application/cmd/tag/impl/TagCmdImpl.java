@@ -75,7 +75,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
             .collect(Collectors.toList());
         List<IdKey<Long, Object>> idKeys = batchInsert(tags, "name");
 
-        activityCmd.batchAdd(toActivities(TAG, tags, CREATED, activityParams(tags)));
+        activityCmd.addAll(toActivities(TAG, tags, CREATED, activityParams(tags)));
         return idKeys;
       }
     }.execute();
@@ -109,7 +109,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
       protected Void process() {
         batchUpdate0(CoreUtils.batchCopyPropertiesIgnoreNull(tags, tagsDb));
 
-        activityCmd.batchAdd(toActivities(TAG, tagsDb, UPDATED));
+        activityCmd.addAll(toActivities(TAG, tagsDb, UPDATED));
         return null;
       }
     }.execute();
@@ -174,7 +174,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
         // Delete tags
         tagRepo.deleteByIdIn(ids);
 
-        activityCmd.batchAdd(toActivities(TAG, tagsDb, DELETED));
+        activityCmd.addAll(toActivities(TAG, tagsDb, DELETED));
         return null;
       }
     }.execute();

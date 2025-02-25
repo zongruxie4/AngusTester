@@ -532,7 +532,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         List<StartVo> vos = mockServiceManageRemote.start(startDto).orElseContentThrow();
 
         // Start activity
-        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.START));
+        activityCmd.addAll(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.START));
         return vos;
       }
     }.execute();
@@ -558,7 +558,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         List<StopVo> vos = mockServiceManageRemote.stop(stopDto).orElseContentThrow();
 
         // Stop activity
-        activityCmd.batchAdd(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.STOP));
+        activityCmd.addAll(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.STOP));
         return vos;
       }
     }.execute();

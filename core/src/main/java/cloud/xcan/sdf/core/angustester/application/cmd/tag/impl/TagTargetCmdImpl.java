@@ -99,7 +99,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     }
 
     // Add tags activity
-    activityCmd.batchAdd(toActivities(TASK,
+    activityCmd.addAll(toActivities(TASK,
         tags.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() ->
                 // Deduplicate by taskId
                 new TreeSet<>(Comparator.comparing(TagTarget::getTargetId))), ArrayList::new))
@@ -256,7 +256,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     }
 
     // Add tags activity
-    activityCmd.batchAdd(toActivities(FUNC_CASE,
+    activityCmd.addAll(toActivities(FUNC_CASE,
         tags.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() ->
                 // Deduplicate by taskId
                 new TreeSet<>(Comparator.comparing(TagTarget::getTargetId))), ArrayList::new))

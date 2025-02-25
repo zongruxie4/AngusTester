@@ -396,7 +396,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           newTasks = tasks.stream()
               .map(o -> toAddApisOrScenarioTask(projectId, sprintDb, apisDb, scenarioDb, o))
               .collect(Collectors.toList());
-          activityCmd.batchAdd(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
+          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
           batchInsert0(newTasks);
           return nonNull(apisDb) ? apisDb : scenarioDb;
         }
@@ -421,13 +421,13 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Save new task
         if (isNotEmpty(newTasks)) {
-          activityCmd.batchAdd(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
+          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
           batchInsert0(newTasks);
         }
 
         // Update existed task
         if (isNotEmpty(existedTasks)) {
-          activityCmd.batchAdd(toActivities(TASK, newTasks, ActivityType.UPDATED));
+          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.UPDATED));
           taskRepo.saveAll(existedTasks);
         }
         return nonNull(apisDb) ? apisDb : scenarioDb;
@@ -716,7 +716,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Add move task activities
         List<Activity> activities = getActivities();
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         taskQuery.assembleAndSendModifyNoticeEvent(tasksDb, activities);
@@ -1487,7 +1487,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         taskRepo.saveAll(tasksDb);
 
         List<Activity> activities = toActivities(TASK, tasksDb, TASK_RESTART);
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         taskQuery.assembleAndSendModifyNoticeEvent(tasksDb, activities);
@@ -1530,7 +1530,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         taskRepo.saveAll(tasksDb);
 
         List<Activity> activities = toActivities(TASK, tasksDb, TASK_REOPEN);
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         taskQuery.assembleAndSendModifyNoticeEvent(tasksDb, activities);
@@ -1990,7 +1990,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         // Add delete activity
         List<Activity> activities = toActivities(TASK, tasksDb, DELETED, activityParams(tasksDb));
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add deleted api to trash
         trashTaskCmd.add0(tasksDb.stream().map(TaskConverter::toTaskTrash)
@@ -2024,7 +2024,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
     taskRepo.saveAll(retestTaskDbs);
 
-    activityCmd.batchAdd(toActivities(TASK, tasksDb, restartFlag ? TASK_RESTART : TASK_REOPEN));
+    activityCmd.addAll(toActivities(TASK, tasksDb, restartFlag ? TASK_RESTART : TASK_REOPEN));
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -2039,7 +2039,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     taskRepo.deleteByIdIn(taskIds);
 
     // Save delete activity
-    activityCmd.batchAdd(toActivities(TASK, tasksDb, DELETED));
+    activityCmd.addAll(toActivities(TASK, tasksDb, DELETED));
   }
 
   @Override

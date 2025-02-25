@@ -183,7 +183,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<IdKey<Long, Object>> idKeys = batchInsert(clonedVariables, "name");
 
         // Add clone activities
-        activityCmd.batchAdd(toActivities(VARIABLE, clonedVariables, CLONE,
+        activityCmd.addAll(toActivities(VARIABLE, clonedVariables, CLONE,
             variablesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
         return idKeys;
       }
@@ -227,7 +227,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         List<IdKey<Long, Object>> idKeys = batchInsert(variables, "name");
 
         // Save import variable activities
-        activityCmd.batchAdd(toActivities(VARIABLE, variables, IMPORT,
+        activityCmd.addAll(toActivities(VARIABLE, variables, IMPORT,
             variables.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
         return idKeys;
       }
@@ -282,7 +282,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
         variablesRepo.deleteByIdIn(ids);
         variableTargetRepo.deleteByVariableIdIn(ids);
 
-        activityCmd.batchAdd(toActivities(VARIABLE, variablesDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(VARIABLE, variablesDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

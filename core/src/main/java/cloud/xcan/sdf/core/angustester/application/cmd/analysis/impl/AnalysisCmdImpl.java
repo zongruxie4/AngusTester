@@ -226,7 +226,7 @@ public class AnalysisCmdImpl extends CommCmd<Analysis, Long> implements Analysis
         analysisRepo.deleteByIdIn(ids);
         analysisSnapshotCmd.deleteByAnalysisId(ids);
 
-        activityCmd.batchAdd(toActivities(analysisDb.get(0).getResource().isTask()
+        activityCmd.addAll(toActivities(analysisDb.get(0).getResource().isTask()
             ? TASK_ANALYSIS : FUNC_CASE_ANALYSIS, analysisDb, ActivityType.DELETED));
         return null;
       }

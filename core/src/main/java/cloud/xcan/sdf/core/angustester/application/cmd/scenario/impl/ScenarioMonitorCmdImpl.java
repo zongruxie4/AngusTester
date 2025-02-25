@@ -233,7 +233,7 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
         scenarioMonitorHistoryRepo.deleteByMonitorIdIn(ids);
         scenarioMonitorRepo.deleteByIdIn(ids);
 
-        activityCmd.batchAdd(toActivities(SCENARIO_MONITOR, monitorDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(SCENARIO_MONITOR, monitorDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

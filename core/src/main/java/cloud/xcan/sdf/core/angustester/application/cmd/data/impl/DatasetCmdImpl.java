@@ -179,7 +179,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         List<IdKey<Long, Object>> idKeys = batchInsert(clonedDatasets, "name");
 
         // Add clone activities
-        activityCmd.batchAdd(toActivities(DATASET, clonedDatasets, CLONE,
+        activityCmd.addAll(toActivities(DATASET, clonedDatasets, CLONE,
             datasetsDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
         return idKeys;
       }
@@ -223,7 +223,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         List<IdKey<Long, Object>> idKeys = batchInsert(datasets, "name");
 
         // Save import dataset activities
-        activityCmd.batchAdd(toActivities(DATASET, datasets, IMPORT,
+        activityCmd.addAll(toActivities(DATASET, datasets, IMPORT,
             datasets.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
         return idKeys;
       }
@@ -278,7 +278,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         datasetRepo.deleteByIdIn(ids);
         datasetTargetRepo.deleteByDatasetIdIn(ids);
 
-        activityCmd.batchAdd(toActivities(DATASET, datasetsDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(DATASET, datasetsDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

@@ -405,7 +405,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
         startSprintIfCompleted(sprintsDb);
 
-        activityCmd.batchAdd(toActivities(TASK_SPRINT, sprintsDb, ActivityType.TASK_RESTART));
+        activityCmd.addAll(toActivities(TASK_SPRINT, sprintsDb, ActivityType.TASK_RESTART));
         return null;
       }
     }.execute();
@@ -432,7 +432,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
         startSprintIfCompleted(sprintsDb);
 
-        activityCmd.batchAdd(toActivities(TASK_SPRINT, sprintsDb, ActivityType.TASK_REOPEN));
+        activityCmd.addAll(toActivities(TASK_SPRINT, sprintsDb, ActivityType.TASK_REOPEN));
         return null;
       }
     }.execute();

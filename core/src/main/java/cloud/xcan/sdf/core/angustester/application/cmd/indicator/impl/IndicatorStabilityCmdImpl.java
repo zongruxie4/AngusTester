@@ -140,7 +140,7 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
           activities.add(toActivity(stability.getTargetType(), (ActivityResource) target,
               INDICATOR_UPDATE, STABILITY));
         }
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
       }
     }.execute();
   }

@@ -379,7 +379,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
         // Delete apis test task
         taskCmd.delete0ByTarget(taskIds);
 
-        activityCmd.batchAdd(toActivities(API, apisDb, TARGET_TASK_DELETED));
+        activityCmd.addAll(toActivities(API, apisDb, TARGET_TASK_DELETED));
         return null;
       }
     }.execute();

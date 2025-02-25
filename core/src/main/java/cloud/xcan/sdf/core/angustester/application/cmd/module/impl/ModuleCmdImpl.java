@@ -92,7 +92,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = batchInsert(modules, "name");
 
-        activityCmd.batchAdd(toActivities(MODULE, modules, CREATED, activityParams(modules)));
+        activityCmd.addAll(toActivities(MODULE, modules, CREATED, activityParams(modules)));
         return idKeys;
       }
     }.execute();
@@ -137,7 +137,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
       protected Void process() {
         batchUpdate0(batchCopyPropertiesIgnoreNull(modules, modulesDb));
 
-        activityCmd.batchAdd(toActivities(MODULE, modulesDb, UPDATED));
+        activityCmd.addAll(toActivities(MODULE, modulesDb, UPDATED));
         return null;
       }
     }.execute();
@@ -198,7 +198,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
               .map(x -> ModuleConverter.setReplaceInfo(x, updateModulesMap.get(x.getId())))
               .collect(Collectors.toList()));
 
-          activityCmd.batchAdd(toActivities(MODULE, updateModulesDb, UPDATED));
+          activityCmd.addAll(toActivities(MODULE, updateModulesDb, UPDATED));
         }
         return idKeys;
       }
@@ -270,7 +270,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
         // Clear task module
         taskRepo.updateModuleNull(moduleAndSubIds);
 
-        activityCmd.batchAdd(toActivities(MODULE, modulesDb, DELETED));
+        activityCmd.addAll(toActivities(MODULE, modulesDb, DELETED));
         return null;
       }
     }.execute();

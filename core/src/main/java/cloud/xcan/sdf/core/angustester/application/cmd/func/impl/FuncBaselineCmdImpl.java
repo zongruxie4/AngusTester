@@ -186,7 +186,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
           funcBaselineRepo.save(baselineDb);
 
           // Save establish baseline activity for case
-          activityCmd.batchAdd(toActivities(FUNC_CASE, casesDb, ActivityType.ESTABLISH_BASELINE));
+          activityCmd.addAll(toActivities(FUNC_CASE, casesDb, ActivityType.ESTABLISH_BASELINE));
         }
         return null;
       }
@@ -214,7 +214,7 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
         funcBaselineCaseRepo.deleteByBaselineIdIn(ids);
 
         // Save delete baseline activity
-        activityCmd.batchAdd(toActivities(FUNC_CASE_BASELINE, baselinesDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(FUNC_CASE_BASELINE, baselinesDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

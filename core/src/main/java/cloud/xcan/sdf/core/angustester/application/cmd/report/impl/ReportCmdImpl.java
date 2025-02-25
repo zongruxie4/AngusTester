@@ -503,7 +503,7 @@ public class ReportCmdImpl extends CommCmd<Report, Long> implements ReportCmd {
         reportRepo.deleteByIdIn(ids);
         reportAuthCmd.deleteByReportId(ids);
 
-        activityCmd.batchAdd(toActivities(REPORT, reportsDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(REPORT, reportsDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

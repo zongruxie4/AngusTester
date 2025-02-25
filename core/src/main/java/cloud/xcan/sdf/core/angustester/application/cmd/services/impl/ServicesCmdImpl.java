@@ -487,7 +487,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         }
 
         // Add export service pref activity information
-        activityCmd.batchAdd(toActivities(SERVICE, servicesDb, ActivityType.EXPORT, servicesDb
+        activityCmd.addAll(toActivities(SERVICE, servicesDb, ActivityType.EXPORT, servicesDb
             .stream().map(Services::getName).collect(Collectors.toList())
             .stream().map(str -> new Object[]{str}).collect(Collectors.toList())));
         return finalFile;

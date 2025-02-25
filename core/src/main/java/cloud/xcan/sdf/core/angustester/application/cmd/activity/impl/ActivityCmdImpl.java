@@ -42,7 +42,7 @@ public class ActivityCmdImpl extends CommCmd<Activity, Long> implements Activity
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void batchAdd(Collection<Activity> activities) {
+  public void addAll(Collection<Activity> activities) {
     if (!isUserAction() || ObjectUtils.isEmpty(activities)) {
       return;
     }

@@ -392,7 +392,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
         startPlanIfCompleted(plansDb);
 
-        activityCmd.batchAdd(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
+        activityCmd.addAll(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
         return null;
       }
     }.execute();
@@ -426,7 +426,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
         startPlanIfCompleted(plansDb);
 
-        activityCmd.batchAdd(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
+        activityCmd.addAll(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
         return null;
       }
     }.execute();

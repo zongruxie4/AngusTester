@@ -136,7 +136,7 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
           activities.add(toActivity(perf.getTargetType(),
               (ActivityResource) target, INDICATOR_UPDATE, PERF));
         }
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
       }
     }.execute();
   }

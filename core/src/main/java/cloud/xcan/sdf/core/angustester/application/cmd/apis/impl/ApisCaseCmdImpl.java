@@ -104,7 +104,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         // Synchronize testing cases to script
         scriptCmd.syncApisCaseToScript(apisDb, cases);
 
-        activityCmd.batchAdd(toActivities(API_CASE, cases, ActivityType.CREATED));
+        activityCmd.addAll(toActivities(API_CASE, cases, ActivityType.CREATED));
         return idKeys;
       }
     }.execute();
@@ -121,7 +121,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
 
     batchInsert(cases, "name");
 
-    activityCmd.batchAdd(toActivities(API_CASE, cases, ActivityType.CREATED));
+    activityCmd.addAll(toActivities(API_CASE, cases, ActivityType.CREATED));
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -159,7 +159,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         // Synchronize testing cases to script
         scriptCmd.syncApisCaseToScript(apisDb, updatedCasesDb);
 
-        activityCmd.batchAdd(toActivities(API_CASE, updatedCasesDb, ActivityType.UPDATED));
+        activityCmd.addAll(toActivities(API_CASE, updatedCasesDb, ActivityType.UPDATED));
         return null;
       }
     }.execute();
@@ -220,7 +220,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
           // Synchronize testing cases to script
           scriptCmd.syncApisCaseToScript(apisDb, updatedCasesDb);
 
-          activityCmd.batchAdd(toActivities(API_CASE, updatedCasesDb, ActivityType.UPDATED));
+          activityCmd.addAll(toActivities(API_CASE, updatedCasesDb, ActivityType.UPDATED));
         }
         return null;
       }
@@ -295,7 +295,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         // Synchronize testing cases to script
         scriptCmd.enableCaseToScript(casesDb.get(0).getApisId(), ids, enabled);
 
-        activityCmd.batchAdd(toActivities(API_CASE, casesDb,
+        activityCmd.addAll(toActivities(API_CASE, casesDb,
             enabled ? ActivityType.AUTH_ENABLED : ActivityType.AUTH_DISABLED));
         return null;
       }
@@ -364,7 +364,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         scriptCmd.syncApisCaseToScript(apisDb, clonedCases);
 
         // Add clone activities
-        activityCmd.batchAdd(toActivities(API_CASE, clonedCases, CLONE,
+        activityCmd.addAll(toActivities(API_CASE, clonedCases, CLONE,
             casesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
         return idKeys;
       }
@@ -408,7 +408,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
         scriptCmd.deleteCaseInScript(apiIds.iterator().next(), ids);
 
         // Add delete activity
-        activityCmd.batchAdd(toActivities(API_CASE, casesDb, ActivityType.DELETED,
+        activityCmd.addAll(toActivities(API_CASE, casesDb, ActivityType.DELETED,
             activityParams(casesDb)));
         return null;
       }

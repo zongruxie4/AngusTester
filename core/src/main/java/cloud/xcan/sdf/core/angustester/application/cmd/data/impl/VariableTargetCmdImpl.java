@@ -88,7 +88,7 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
         // Add activities
         if (saveActivity) {
           List<Variable> variablesDb = variableRepo.findAllById(variableIds);
-          activityCmd.batchAdd(toActivities(type, variablesDb, ADD_ASSOC_TARGET));
+          activityCmd.addAll(toActivities(type, variablesDb, ADD_ASSOC_TARGET));
         }
         return idKeys;
       }
@@ -112,7 +112,7 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
         // Add activities
         if (saveActivity) {
           List<Variable> variablesDb = variableRepo.findAllById(variableIds);
-          activityCmd.batchAdd(toActivities(type.isApi() ? API : SCENARIO, variablesDb,
+          activityCmd.addAll(toActivities(type.isApi() ? API : SCENARIO, variablesDb,
               DELETE_ASSOC_TARGET));
         }
 

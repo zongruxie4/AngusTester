@@ -136,7 +136,7 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
           activities.add(toActivity(func.getTargetType(), (ActivityResource) target,
               INDICATOR_UPDATE, FUNC));
         }
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
       }
     }.execute();
   }

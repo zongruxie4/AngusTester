@@ -239,7 +239,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         }
 
         // case.setActualWorkload(isNull(case.getEvalWorkload()) ? null : case.getActualWorkload()); -> Actual workload cannot be set when adding
-        activityCmd.batchAdd(toActivities(FUNC_CASE, cases, ActivityType.CREATED));
+        activityCmd.addAll(toActivities(FUNC_CASE, cases, ActivityType.CREATED));
         return idKeys;
       }
     }.execute();
@@ -365,7 +365,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           // @DoInFuture("Add new review content change user and flag: story point, deadline, prerequisites, testing steps, description")
 
           List<Activity> activities = toActivities(FUNC_CASE, updatedCasesDb, ActivityType.UPDATED);
-          activityCmd.batchAdd(activities);
+          activityCmd.addAll(activities);
 
           idKeys.addAll(updatedCasesDb.stream()
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
@@ -455,7 +455,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         List<IdKey<Long, Object>> idKeys = batchInsert(newCases, "name");
 
         // Add clone activity
-        activityCmd.batchAdd(toActivities(FUNC_CASE, newCases,
+        activityCmd.addAll(toActivities(FUNC_CASE, newCases,
             ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()})
                 .collect(Collectors.toList())));
         return idKeys;
@@ -520,7 +520,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Add move case activity
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, MOVED,
             casesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList()));
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification event
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
@@ -857,7 +857,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           List<FuncCase> resultCases = resultCaseMap.get(caseTestResult);
           List<Activity> activities = toActivities(FUNC_CASE, resultCases,
               ActivityType.RESULT_UPDATE, caseTestResult);
-          activityCmd.batchAdd(activities);
+          activityCmd.addAll(activities);
 
           // Add modification events
           funcCaseQuery.assembleAndSendModifyNoticeEvent(resultCases.stream().map(
@@ -899,7 +899,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         funcCaseRepo.updateTestResultToInitByIds(ids);
 
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RESULT_RESET);
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
@@ -944,7 +944,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         funcCaseRepo.saveAll(casesDb);
 
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RETEST_START);
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(
@@ -1028,7 +1028,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         funcCaseRepo.updateReviewResultToInitByIds(ids);
 
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, ActivityType.RESULT_RESET);
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
@@ -1420,7 +1420,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Add delete activity
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, DELETED,
             activityParams(casesDb));
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add deleted api to trash
         funcTrashCmd.add0(casesDb.stream().map(FuncCaseConverter::toFuncCaseTrash)
@@ -1460,7 +1460,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       List<FuncCase> reviewCasesDb = reviewStatusMap.get(reviewStatus);
       List<Activity> activities = toActivities(FUNC_CASE, reviewCasesDb,
           ActivityType.REVIEW_UPDATE, reviewStatus);
-      activityCmd.batchAdd(activities);
+      activityCmd.addAll(activities);
 
       // Add modification events
       funcCaseQuery.assembleAndSendModifyNoticeEvent(reviewCasesDb.stream().map(
@@ -1498,7 +1498,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }
 
     // Do not log when parameter has not changed !!!  Null activity will ignored.
-    activityCmd.batchAdd(activities);
+    activityCmd.addAll(activities);
 
     // Add modification events
     funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream().map(

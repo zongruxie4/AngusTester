@@ -88,7 +88,7 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
         // Add activities
         if (saveActivity) {
           List<Dataset> datasetsDb = datasetRepo.findAllById(datasetIds);
-          activityCmd.batchAdd(toActivities(type.isApi() ? API : SCENARIO, datasetsDb,
+          activityCmd.addAll(toActivities(type.isApi() ? API : SCENARIO, datasetsDb,
               ADD_ASSOC_TARGET));
         }
         return idKeys;
@@ -113,7 +113,7 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
         // Add activities
         if (saveActivity) {
           List<Dataset> datasetsDb = datasetRepo.findAllById(datasetIds);
-          activityCmd.batchAdd(toActivities(type.isApi() ? API : SCENARIO, datasetsDb,
+          activityCmd.addAll(toActivities(type.isApi() ? API : SCENARIO, datasetsDb,
               DELETE_ASSOC_TARGET));
         }
 

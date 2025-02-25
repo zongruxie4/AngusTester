@@ -144,7 +144,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
           batchInsert0(addSyncs);
 
           // Save activity information when configuration is added
-          activityCmd.batchAdd(addSyncs.stream()
+          activityCmd.addAll(addSyncs.stream()
               .map(x -> toActivity(SERVICE, serviceDb, SYNC_CONFIG_ADD, x.getName()))
               .collect(Collectors.toList()));
         }
@@ -158,7 +158,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
           }
           batchUpdate0(existedSyncsDb);
           // Save activity information when configuration is updated
-          activityCmd.batchAdd(addSyncs.stream()
+          activityCmd.addAll(addSyncs.stream()
               .map(x -> toActivity(SERVICE, serviceDb,
                   SYNC_CONFIG_UPDATE, x.getName())).collect(Collectors.toList()));
         }
@@ -172,7 +172,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
             servicesSyncRepo.deleteByServiceIdAndNameIn(serviceId,
                 deletedSyncs.stream().map(ServicesSync::getName).collect(Collectors.toList()));
             // Save activity information when configuration is deleted
-            activityCmd.batchAdd(addSyncs.stream()
+            activityCmd.addAll(addSyncs.stream()
                 .map(x -> toActivity(SERVICE, serviceDb,
                     SYNC_CONFIG_DELETE, x.getName())).collect(Collectors.toList()));
           }

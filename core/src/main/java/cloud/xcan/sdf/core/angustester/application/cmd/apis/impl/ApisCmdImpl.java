@@ -228,7 +228,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // Add created api activity
         if (saveActivity) {
-          activityCmd.batchAdd(toActivities(API, apis, ActivityType.CREATED, activityParams(apis)));
+          activityCmd.addAll(toActivities(API, apis, ActivityType.CREATED, activityParams(apis)));
         }
         return idKeys;
       }
@@ -272,7 +272,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         List<IdKey<Long, Object>> idKeys = add(apis, servicesDb, false);
 
         // Add archived apis activity
-        activityCmd.batchAdd(toActivities(API, apis, ARCHIVED,
+        activityCmd.addAll(toActivities(API, apis, ARCHIVED,
             archiveActivityParams(apis, servicesDb)));
 
         // Delete unarchived apis
@@ -329,7 +329,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         if (saveActivity) {
           // Add update api activity
           List<Activity> activities = toActivities(API, apisDbs, UPDATED, activityParams(apis));
-          activityCmd.batchAdd(activities);
+          activityCmd.addAll(activities);
 
           // Add modification events
           apisQuery.assembleAndSendModifyNoticeEvent(apisDbs.stream().map(x -> {
@@ -410,7 +410,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
           List<Activity> activities = toActivities(API, updateApisDbs, UPDATED,
               activityParams(apis));
-          activityCmd.batchAdd(activities);
+          activityCmd.addAll(activities);
 
           // Add modification events
           apisQuery.assembleAndSendModifyNoticeEvent(updateApis.stream().map(x -> {
@@ -551,7 +551,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // Add move api activity
         List<Activity> activities = toActivities(API, apisDb, MOVED_TO, targetServiceDb.getName());
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add modification events
         apisQuery.assembleAndSendModifyNoticeEvent(
@@ -726,7 +726,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         batchUpdate0(serviceApisDb);
 
-        activityCmd.batchAdd(toActivities(API, serviceApisDb, APIS_PARAMETER_ADD,
+        activityCmd.addAll(toActivities(API, serviceApisDb, APIS_PARAMETER_ADD,
             String.join(",", addParameterNames)));
         return null;
       }
@@ -895,7 +895,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         }
         batchUpdate0(serviceApisDb);
 
-        activityCmd.batchAdd(toActivities(API, serviceApisDb, APIS_AUTH_UPDATE));
+        activityCmd.addAll(toActivities(API, serviceApisDb, APIS_AUTH_UPDATE));
         return null;
       }
     }.execute();
@@ -922,7 +922,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         }
         batchUpdate0(serviceApisDb);
 
-        activityCmd.batchAdd(toActivities(API, serviceApisDb, APIS_SERVER_UPDATE));
+        activityCmd.addAll(toActivities(API, serviceApisDb, APIS_SERVER_UPDATE));
         return null;
       }
     }.execute();
@@ -1148,7 +1148,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Add delete activity
         List<Activity> activities = toActivities(API, apisBasesDb, ActivityType.DELETED,
             activityParams(apisBasesDb));
-        activityCmd.batchAdd(activities);
+        activityCmd.addAll(activities);
 
         // Add deleted api to trash
         trashApisCmd.add0(apisBasesDb.stream().map(ApisConverter::toApisTrash)
@@ -1212,7 +1212,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     batchUpdate0(updatedApisDbMap.values());
 
     // Add update api activity
-    activityCmd.batchAdd(toActivities(API, new ArrayList<>(updatedApisDbMap.values()), UPDATED,
+    activityCmd.addAll(toActivities(API, new ArrayList<>(updatedApisDbMap.values()), UPDATED,
         activityParams(updatedApisDbMap.values())));
   }
 

@@ -111,7 +111,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         List<IdKey<Long, Object>> idKeys = batchInsert(reviewCases);
 
         // Save activities
-        activityCmd.batchAdd(toActivities(FUNC_CASE, funcCasesDb, ActivityType.FUNC_REVIEW_ADD,
+        activityCmd.addAll(toActivities(FUNC_CASE, funcCasesDb, ActivityType.FUNC_REVIEW_ADD,
             funcReviewDb.getName()));
         return idKeys;
       }
@@ -236,7 +236,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         }
 
         List<FuncCaseInfo> caseInfos = funcCaseInfoRepo.findAll0ByIdIn(caseIds);
-        activityCmd.batchAdd(toActivities(FUNC_CASE, caseInfos, ActivityType.REVIEW_RESET));
+        activityCmd.addAll(toActivities(FUNC_CASE, caseInfos, ActivityType.REVIEW_RESET));
         return null;
       }
     }.execute();
@@ -276,7 +276,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
 
         List<FuncCaseInfo> caseInfos = funcCaseInfoRepo.findAll0ByIdIn(
             reviewCasesDb.stream().map(FuncReviewCase::getCaseId).collect(Collectors.toList()));
-        activityCmd.batchAdd(toActivities(FUNC_CASE, caseInfos, ActivityType.FUNC_REVIEW_DELETE,
+        activityCmd.addAll(toActivities(FUNC_CASE, caseInfos, ActivityType.FUNC_REVIEW_DELETE,
             reviewDb.getName()));
         return null;
       }

@@ -218,7 +218,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
       protected Void process() {
         softwareVersionRepo.deleteByIdIn(ids);
 
-        activityCmd.batchAdd(toActivities(TASK_RELEASE_VERSION, versionDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(TASK_RELEASE_VERSION, versionDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

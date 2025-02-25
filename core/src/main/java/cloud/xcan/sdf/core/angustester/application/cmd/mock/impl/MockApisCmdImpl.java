@@ -142,7 +142,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         syncAddedApisToServiceInstance(serviceDb, mockApis);
 
         // Save add activity
-        activityCmd.batchAdd(toActivities(MOCK_APIS, mockApis, ActivityType.CREATED));
+        activityCmd.addAll(toActivities(MOCK_APIS, mockApis, ActivityType.CREATED));
         return idKeys;
       }
     }.execute();
@@ -220,7 +220,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         syncAddedApisToServiceInstance(serviceDb, mockApis);
 
         // Save update activity
-        activityCmd.batchAdd(toActivities(MOCK_APIS, apisDb, ActivityType.UPDATED));
+        activityCmd.addAll(toActivities(MOCK_APIS, apisDb, ActivityType.UPDATED));
         return null;
       }
     }.execute();
@@ -293,7 +293,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
           syncAddedApisToServiceInstance(serviceDb, mockApis);
 
           // Save replace activity
-          activityCmd.batchAdd(toActivities(MOCK_APIS, updatedApisDb, ActivityType.UPDATED));
+          activityCmd.addAll(toActivities(MOCK_APIS, updatedApisDb, ActivityType.UPDATED));
 
           idKeys.addAll(updatedApisDb.stream()
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
@@ -404,7 +404,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         mockApisResponseRepo.updateMockServiceById(ids, targetServiceId);
 
         // Add move mock apis activity
-        activityCmd.batchAdd(toActivities(MOCK_APIS, apisDb, ActivityType.MOVED_TO,
+        activityCmd.addAll(toActivities(MOCK_APIS, apisDb, ActivityType.MOVED_TO,
             cloneActivityParams(targetServiceDb, apisDb.size())));
         return null;
       }
@@ -580,7 +580,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         mockApisRepo.updateAssocToNullByIdIn(ids);
 
         // Save disassociation activity
-        activityCmd.batchAdd(toActivities(MOCK_APIS, apisDb, ActivityType.DELETE_ASSOC_TARGET));
+        activityCmd.addAll(toActivities(MOCK_APIS, apisDb, ActivityType.DELETE_ASSOC_TARGET));
         return null;
       }
     }.execute();
@@ -623,7 +623,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         syncDeletedApisToServiceInstance(serviceDb, apisDb);
 
         // Add delete mock apis activity
-        activityCmd.batchAdd(toActivities(MOCK_APIS, apisDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(MOCK_APIS, apisDb, ActivityType.DELETED));
         return null;
       }
     }.execute();

@@ -361,7 +361,7 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
             reviewsDb.forEach(x -> x.setStatus(FuncPlanStatus.PENDING));
             funcReviewRepo.saveAll(reviewsDb);
 
-            activityCmd.batchAdd(toActivities(FUNC_REVIEW, reviewsDb, ActivityType.REVIEW_RESET));
+            activityCmd.addAll(toActivities(FUNC_REVIEW, reviewsDb, ActivityType.REVIEW_RESET));
           }
         }
         return null;

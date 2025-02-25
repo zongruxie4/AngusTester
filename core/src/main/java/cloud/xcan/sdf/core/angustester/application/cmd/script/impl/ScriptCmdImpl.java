@@ -689,7 +689,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         scenarioRepo.deleteByScriptIdIn(ids);
 
         // Save activity
-        activityCmd.batchAdd(toActivities(SCRIPT, scriptDb, DELETED, activityParams(scriptDb)));
+        activityCmd.addAll(toActivities(SCRIPT, scriptDb, DELETED, activityParams(scriptDb)));
         return null;
       }
     }.execute();

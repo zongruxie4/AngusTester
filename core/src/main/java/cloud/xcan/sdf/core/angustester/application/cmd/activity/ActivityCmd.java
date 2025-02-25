@@ -9,7 +9,7 @@ public interface ActivityCmd {
 
   void add(Activity activity);
 
-  void batchAdd(Collection<Activity> activities);
+  void addAll(Collection<Activity> activities);
 
   void deleteByTarget(CombinedTargetType targetType, List<Long> targetIds);
 
