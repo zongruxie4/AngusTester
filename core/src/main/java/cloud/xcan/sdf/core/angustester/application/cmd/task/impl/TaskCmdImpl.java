@@ -676,8 +676,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           Activity activity = toActivity(TASK, taskDb, NAME_UPDATED, name);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
       }
@@ -840,8 +840,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
               missingBugFlag ? MISSING_BUG_SET : MISSING_BUG_CLEAR);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
       }
@@ -1019,8 +1019,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           Activity activity = toActivity(TASK, taskDb, VERSION_CLEAR, version);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
 
           return null;
         }
@@ -1031,8 +1031,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           Activity activity = toActivity(TASK, taskDb, VERSION, version);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
       }
@@ -1067,8 +1067,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             taskDb.setEvalWorkload(null).setActualWorkload(null);
             taskRepo.save(taskDb);
 
-            // Add modification event
-            taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+            // Add modification event -> Non-primary event
+            // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
           }
           return null;
         }
@@ -1082,8 +1082,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
               taskDb.getEvalWorkloadMethod(), evalWorkload);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
 
         // Value has not changed -> noop
@@ -1128,8 +1128,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
             taskDb.setActualWorkload(null);
             taskRepo.save(taskDb);
 
-            // Add modification event
-            taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+            // Add modification event -> Non-primary event
+            // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
           }
           return null;
         }
@@ -1143,8 +1143,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
               taskDb.getEvalWorkloadMethod(), actualWorkload);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
 
         // Value has not changed -> noop
