@@ -8,10 +8,12 @@ import cloud.xcan.sdf.api.enums.ReviewStatus;
 import cloud.xcan.sdf.api.pojo.Attachment;
 import cloud.xcan.sdf.api.pojo.Progress;
 import cloud.xcan.sdf.api.vo.IdAndNameVo;
+import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseStepView;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestResult;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestStep;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -69,6 +71,8 @@ public class FuncCaseDetailVo {
   private BigDecimal actualWorkload;
 
   private String precondition;
+
+  private CaseStepView stepView;
 
   private List<CaseTestStep> steps;
 

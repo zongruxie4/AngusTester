@@ -92,6 +92,10 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
   @Column(name = "precondition")
   private String precondition;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "step_view")
+  private CaseStepView stepView;
+
   @Type(type = "json")
   @Column(columnDefinition = "json", name = "steps")
   private List<CaseTestStep> steps;

@@ -13,6 +13,7 @@ import cloud.xcan.sdf.api.commonlink.TesterConstant;
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.search.SearchCriteria;
 import cloud.xcan.sdf.api.vo.IdAndNameVo;
+import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseStepView;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestResult;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestStep;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCase;
@@ -68,6 +69,7 @@ public class FuncCaseAssembler {
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getEvalWorkload())
         .setPrecondition(dto.getPrecondition())
+        .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
         .setDescription(dto.getDescription())
         //.setReviewStatus(dto.getReviewStatus())
@@ -103,6 +105,7 @@ public class FuncCaseAssembler {
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
         .setPrecondition(dto.getPrecondition())
+        .setStepView(dto.getStepView())
         .setSteps(dto.getSteps())
         .setDescription(dto.getDescription())
         //.setReviewStatus(dto.getReviewStatus())
@@ -133,6 +136,7 @@ public class FuncCaseAssembler {
         .setEvalWorkload(dto.getEvalWorkload())
         .setActualWorkload(dto.getActualWorkload())
         .setPrecondition(dto.getPrecondition())
+        .setStepView(nullSafe(dto.getStepView(), CaseStepView.DEFAULT))
         .setSteps(dto.getSteps())
         .setDescription(dto.getDescription())
         //.setReviewStatus(dto.getReviewStatus())
@@ -187,6 +191,7 @@ public class FuncCaseAssembler {
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
         .setPrecondition(case0.getPrecondition())
+        .setStepView(nullSafe(case0.getStepView(), CaseStepView.DEFAULT))
         .setSteps(case0.getSteps())
         .setDescription(case0.getDescription())
         .setReviewFlag(case0.getReviewFlag())

@@ -87,8 +87,16 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   @Column(name = "actual_workload")
   private BigDecimal actualWorkload;
 
-  //  @Column(name = "precondition")
-  //  private String precondition;
+  //@Column(name = "precondition")
+  //private String precondition;
+
+  //@Enumerated(EnumType.STRING)
+  //@Column(name = "step_view")
+  //private CaseStepView stepView;
+
+  //@Type(type = "json")
+  //@Column(columnDefinition = "json", name = "steps")
+  //private List<CaseTestStep> steps;
 
   @Column(name = "description")
   private String description;

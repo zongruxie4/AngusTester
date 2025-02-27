@@ -11,6 +11,7 @@ import static cloud.xcan.sdf.spec.experimental.BizConstant.MAX_WORKLOAD_NUM;
 
 import cloud.xcan.sdf.api.enums.Priority;
 import cloud.xcan.sdf.api.pojo.Attachment;
+import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseStepView;
 import cloud.xcan.sdf.core.angustester.domain.func.cases.CaseTestStep;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -77,6 +78,9 @@ public class FuncCaseReplaceDto {
   @Length(max = DEFAULT_REMARK_LENGTH_X10)
   @ApiModelProperty(value = "Case preconditions")
   private String precondition;
+
+  @ApiModelProperty(value = "Case steps view type, default is 'TABLE'")
+  private CaseStepView stepView;
 
   @Size(max = MAX_CASE_STEPS_NUM)
   @ApiModelProperty(value = "Case steps")
