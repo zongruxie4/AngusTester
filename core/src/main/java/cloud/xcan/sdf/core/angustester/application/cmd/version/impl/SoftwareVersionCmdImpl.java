@@ -1,6 +1,6 @@
 package cloud.xcan.sdf.core.angustester.application.cmd.version.impl;
 
-import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.TASK_RELEASE_VERSION;
+import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SOFTWARE_VERSION;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_MERGE;
@@ -77,7 +77,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
         IdKey<Long, Object> idKey = insert(version);
 
         // Save activity
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, version, ActivityType.CREATED));
+        activityCmd.add(toActivity(SOFTWARE_VERSION, version, ActivityType.CREATED));
         return idKey;
       }
     }.execute();
@@ -102,7 +102,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
       @Override
       protected Void process() {
         softwareVersionRepo.save(copyPropertiesIgnoreNull(version, versionDb));
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, versionDb, ActivityType.UPDATED));
+        activityCmd.add(toActivity(SOFTWARE_VERSION, versionDb, ActivityType.UPDATED));
         return null;
       }
     }.execute();
@@ -134,7 +134,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
         softwareVersionRepo.save(copyPropertiesIgnoreTenantAuditing(version, versionDb,
             "projectId", "status"));
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, versionDb, ActivityType.UPDATED));
+        activityCmd.add(toActivity(SOFTWARE_VERSION, versionDb, ActivityType.UPDATED));
 
         return new IdKey<Long, Object>().setId(versionDb.getId()).setKey(versionDb.getName());
       }
@@ -164,7 +164,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
           versionDb.setReleaseDate(LocalDateTime.now());
         }
 
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, versionDb, SOFTWARE_VERSION_UPDATE, status));
+        activityCmd.add(toActivity(SOFTWARE_VERSION, versionDb, SOFTWARE_VERSION_UPDATE, status));
         return null;
       }
     }.execute();
@@ -196,7 +196,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
         // Delete merge version
         softwareVersionRepo.deleteByIdIn(Set.of(formId));
 
-        activityCmd.add(toActivity(TASK_RELEASE_VERSION, formVersionDb,
+        activityCmd.add(toActivity(SOFTWARE_VERSION, formVersionDb,
             SOFTWARE_VERSION_MERGE, formVersionDb.getName(), toVersionDb.getName()));
         return null;
       }
@@ -218,7 +218,7 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
       protected Void process() {
         softwareVersionRepo.deleteByIdIn(ids);
 
-        activityCmd.addAll(toActivities(TASK_RELEASE_VERSION, versionDb, ActivityType.DELETED));
+        activityCmd.addAll(toActivities(SOFTWARE_VERSION, versionDb, ActivityType.DELETED));
         return null;
       }
     }.execute();
