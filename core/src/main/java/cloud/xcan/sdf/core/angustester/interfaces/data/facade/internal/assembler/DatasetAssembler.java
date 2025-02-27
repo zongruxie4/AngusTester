@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.search.SearchCriteria;
+import cloud.xcan.sdf.core.angustester.domain.data.ParameterizationDataSource;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.Dataset;
 import cloud.xcan.sdf.core.angustester.domain.data.dataset.DatasetTarget;
 import cloud.xcan.sdf.core.angustester.interfaces.data.facade.dto.dataset.DatasetAddDto;
@@ -59,6 +60,7 @@ public class DatasetAssembler {
         .setName(dataset.getName())
         .setDescription(dataset.getDescription())
         .setExtracted(dataset.getExtracted())
+        .setDataSource(ParameterizationDataSource.of(dataset.getExtraction()))
         .setParameters(dataset.getParameters())
         .setExtraction(dataset.getExtraction())
         .setCreatedBy(dataset.getCreatedBy())

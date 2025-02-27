@@ -4,6 +4,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.data.facade.vo.dataset;
 import cloud.xcan.angus.model.element.dataset.DatasetParameter;
 import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
 import cloud.xcan.sdf.api.NameJoinField;
+import cloud.xcan.sdf.core.angustester.domain.data.ParameterizationDataSource;
 import io.swagger.annotations.ApiModel;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,8 @@ public class DatasetDetailVo {
   private String name;
 
   private String description;
+
+  private ParameterizationDataSource dataSource;
 
   private Boolean extracted;
 

@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.data.facade.vo.variable;
 
 import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
 import cloud.xcan.sdf.api.NameJoinField;
+import cloud.xcan.sdf.core.angustester.domain.data.ParameterizationDataSource;
 import io.swagger.annotations.ApiModel;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -24,6 +25,8 @@ public class VariableDetailVo {
   private String description;
 
   private Boolean extracted;
+
+  private ParameterizationDataSource dataSource;
 
   private String value;
 

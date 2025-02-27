@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.sdf.api.search.SearchCriteria;
+import cloud.xcan.sdf.core.angustester.domain.data.ParameterizationDataSource;
 import cloud.xcan.sdf.core.angustester.domain.data.variables.Variable;
 import cloud.xcan.sdf.core.angustester.domain.data.variables.VariableTarget;
 import cloud.xcan.sdf.core.angustester.interfaces.data.facade.dto.variable.VariableAddDto;
@@ -72,6 +73,7 @@ public class VariableAssembler {
         .setName(variable.getName())
         .setDescription(variable.getDescription())
         .setExtracted(variable.getExtracted())
+        .setDataSource(ParameterizationDataSource.of(variable.getExtraction()))
         .setValue(variable.getValue())
         .setPasswordValue(variable.getPasswordValue())
         .setExtraction(variable.getExtraction())
