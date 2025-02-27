@@ -992,7 +992,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void replaceVersion(Long id, String version) {
+  public void replaceSoftwareVersion(Long id, String version) {
     new BizTemplate<Void>() {
       Task taskDb = null;
 

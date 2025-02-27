@@ -17,7 +17,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskReplaceDto
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskUpdateDto;
-import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskVersionReplaceDto;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
@@ -60,7 +60,7 @@ public interface TaskFacade {
 
   void replacePriority(Long id, Priority priority);
 
-  void replaceVersion(Long id, TaskVersionReplaceDto version);
+  void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto version);
 
   void replaceEvalWorkload(Long id, TaskWorkloadReplaceDto dto);
 

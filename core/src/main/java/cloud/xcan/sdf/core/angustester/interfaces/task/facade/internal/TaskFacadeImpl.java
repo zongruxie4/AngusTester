@@ -37,7 +37,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskReplaceDto
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskUpdateDto;
-import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskVersionReplaceDto;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskDetailVo;
@@ -152,8 +152,8 @@ public class TaskFacadeImpl implements TaskFacade {
   }
 
   @Override
-  public void replaceVersion(Long id, TaskVersionReplaceDto dto) {
-    taskCmd.replaceVersion(id,  Objects.isNull(dto) ? null : dto.getSoftwareVersion());
+  public void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto dto) {
+    taskCmd.replaceSoftwareVersion(id,  Objects.isNull(dto) ? null : dto.getSoftwareVersion());
   }
 
   @Override

@@ -43,7 +43,7 @@ public interface TaskCmd {
 
   void replacePriority(Long taskId, Priority priority);
 
-  void replaceVersion(Long id, String version);
+  void replaceSoftwareVersion(Long id, String version);
 
   void replaceEvalWorkload(Long taskId, BigDecimal evalWorkload);
 

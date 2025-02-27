@@ -97,7 +97,7 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
 
   @Modifying
   @Query(value = "UPDATE task SET software_version = ?3 WHERE project_id = ?1 AND software_version = ?2", nativeQuery = true)
-  void updateVersionByProjectIdAndVersion(Long projectId, String fromVersion, String toVersion);
+  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion, String toVersion);
 
   @Modifying
   @Query(value = "UPDATE task SET parent_task_id = null WHERE parent_task_id = ?1 AND id IN ?2", nativeQuery = true)

@@ -137,6 +137,10 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
   @Query(value = "UPDATE func_case SET unplanned_flag=?2 WHERE id IN ?1", nativeQuery = true)
   void updateUnplannedFlagByIdIn(Collection<Long> ids, Boolean unplannedFlag);
 
+  @Modifying
+  @Query(value = "UPDATE func_case SET software_version = ?3 WHERE project_id = ?1 AND software_version = ?2", nativeQuery = true)
+  void updateVersionByProjectIdAndSoftwareVersion(Long projectId, String fromVersion, String toVersion);
+
   @Transactional
   @Modifying
   @Query(value = "UPDATE func_case SET version = version + 1 WHERE id IN ?1", nativeQuery = true)

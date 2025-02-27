@@ -25,7 +25,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskReplaceDto
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskUpdateDto;
-import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskVersionReplaceDto;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskDetailVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
@@ -237,16 +237,16 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Replace the release version of task", nickname = "task:version:replace")
+  @ApiOperation(value = "Replace the software version of task", nickname = "task:softwareVersion:replace")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Replaced successfully", response = ApiLocaleResult.class),
       @ApiResponse(code = 404, message = "Resource not found", response = ApiLocaleResult.class)})
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping("/{id}/version")
-  public ApiLocaleResult<?> replaceVersion(
+  @PutMapping("/{id}/software/version")
+  public ApiLocaleResult<?> replaceSoftwareVersion(
       @ApiParam(name = "id", value = "Task id", required = true) @PathVariable("id") Long id,
-      @Valid @RequestBody TaskVersionReplaceDto version) {
-    taskFacade.replaceVersion(id, version);
+      @Valid @RequestBody SoftwareVersionRefReplaceDto version) {
+    taskFacade.replaceSoftwareVersion(id, version);
     return ApiLocaleResult.success();
   }
 

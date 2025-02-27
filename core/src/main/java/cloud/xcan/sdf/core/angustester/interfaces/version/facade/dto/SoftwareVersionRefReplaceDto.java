@@ -1,4 +1,4 @@
-package cloud.xcan.sdf.core.angustester.interfaces.task.facade.dto;
+package cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto;
 
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_KEY_LENGTH;
 
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TaskVersionReplaceDto {
+public class SoftwareVersionRefReplaceDto {
 
   @Length(max = DEFAULT_KEY_LENGTH)
   @ApiModelProperty(value = "Version of software for the task, allow clear version by empty value")

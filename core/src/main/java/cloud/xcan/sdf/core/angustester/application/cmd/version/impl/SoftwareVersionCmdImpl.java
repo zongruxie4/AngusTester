@@ -18,6 +18,7 @@ import cloud.xcan.sdf.core.angustester.application.query.project.ProjectMemberQu
 import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
+import cloud.xcan.sdf.core.angustester.domain.func.cases.FuncCaseRepo;
 import cloud.xcan.sdf.core.angustester.domain.task.TaskRepo;
 import cloud.xcan.sdf.core.angustester.domain.version.SoftwareVersion;
 import cloud.xcan.sdf.core.angustester.domain.version.SoftwareVersionRepo;
@@ -47,6 +48,9 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
 
   @Resource
   private TaskRepo taskRepo;
+
+  @Resource
+  private FuncCaseRepo funcCaseRepo;
 
   @Resource
   private ProjectQuery projectQuery;
@@ -190,7 +194,11 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
       @Override
       protected Void process() {
         // Update task version
-        taskRepo.updateVersionByProjectIdAndVersion(formVersionDb.getProjectId(),
+        taskRepo.updateVersionByProjectIdAndSoftwareVersion(formVersionDb.getProjectId(),
+            formVersionDb.getName(), toVersionDb.getName());
+
+        // Update case version
+        funcCaseRepo.updateVersionByProjectIdAndSoftwareVersion(formVersionDb.getProjectId(),
             formVersionDb.getName(), toVersionDb.getName());
 
         // Delete merge version
