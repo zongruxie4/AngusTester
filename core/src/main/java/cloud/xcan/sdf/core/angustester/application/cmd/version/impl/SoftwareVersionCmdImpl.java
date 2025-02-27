@@ -4,7 +4,7 @@ import static cloud.xcan.sdf.api.commonlink.CombinedTargetType.SOFTWARE_VERSION;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.sdf.core.angustester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_MERGE;
-import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_UPDATE;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_STATUS_UPDATE;
 import static cloud.xcan.sdf.core.pojo.principal.PrincipalContext.getUserId;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreNull;
 import static cloud.xcan.sdf.core.utils.CoreUtils.copyPropertiesIgnoreTenantAuditing;
@@ -168,7 +168,8 @@ public class SoftwareVersionCmdImpl extends CommCmd<SoftwareVersion, Long> imple
           versionDb.setReleaseDate(LocalDateTime.now());
         }
 
-        activityCmd.add(toActivity(SOFTWARE_VERSION, versionDb, SOFTWARE_VERSION_UPDATE, status));
+        activityCmd.add(
+            toActivity(SOFTWARE_VERSION, versionDb, SOFTWARE_VERSION_STATUS_UPDATE, status));
         return null;
       }
     }.execute();

@@ -57,8 +57,8 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_SUB_CANCEL;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TASK_SUB_SET;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.TYPE_UPDATED;
-import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.VERSION;
-import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.VERSION_CLEAR;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_UPDATE;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_CLEAR;
 import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertEnumOf;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
@@ -771,8 +771,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           Activity activity = toActivity(TASK, taskDb, TYPE_UPDATED, taskType);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
       }
@@ -806,8 +806,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           Activity activity = toActivity(TASK, taskDb, BUG_LEVEL_UPDATED, level);
           activityCmd.add(activity);
 
-          // Add modification event
-          taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
+          // Add modification event -> Non-primary event
+          // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
       }
@@ -1016,10 +1016,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           taskDb.setSoftwareVersion(null);
           taskRepo.save(taskDb);
 
-          Activity activity = toActivity(TASK, taskDb, VERSION_CLEAR, version);
+          Activity activity = toActivity(TASK, taskDb, SOFTWARE_VERSION_CLEAR, version);
           activityCmd.add(activity);
 
-          // Add modification event -> Non-primary event
+          // Add modification event
           // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
 
           return null;
@@ -1028,10 +1028,10 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           taskDb.setSoftwareVersion(version);
           taskRepo.save(taskDb);
 
-          Activity activity = toActivity(TASK, taskDb, VERSION, version);
+          Activity activity = toActivity(TASK, taskDb, SOFTWARE_VERSION_UPDATE, version);
           activityCmd.add(activity);
 
-          // Add modification event -> Non-primary event
+          // Add modification event
           // taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         }
         return null;
