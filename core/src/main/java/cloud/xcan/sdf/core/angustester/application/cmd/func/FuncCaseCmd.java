@@ -33,6 +33,8 @@ public interface FuncCaseCmd {
 
   void replacePriority(Long id, Priority priority);
 
+  void replaceSoftwareVersion(Long id, String softwareVersion);
+
   void replaceEvalWorkload(Long id, BigDecimal workload);
 
   void replaceActualWorkload(Long id, BigDecimal workload);

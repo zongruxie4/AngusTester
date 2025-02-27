@@ -44,6 +44,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseReviewVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.core.biz.BizAssert;
 import cloud.xcan.sdf.core.biz.JoinSupplier;
 import cloud.xcan.sdf.core.biz.NameJoin;
@@ -145,6 +146,11 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @Override
+  public void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto dto) {
+    funcCaseCmd.replaceSoftwareVersion(id,  Objects.isNull(dto) ? null : dto.getSoftwareVersion());
+  }
+
+  @Override
   public void replaceEvalWorkload(Long id, FuncCaseWorkloadReplaceDto dto) {
     funcCaseCmd.replaceEvalWorkload(id, Objects.isNull(dto) ? null : dto.getWorkload());
   }
@@ -216,21 +222,6 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @Override
-  public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, @Nullable TaskType taskType) {
-    List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInCase(id, moduleId, taskType);
-    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .collect(Collectors.toList());
-  }
-
-  @NameJoin
-  @Override
-  public List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId) {
-    List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInCase(id, moduleId);
-    return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
-  }
-
-  @Override
   public List<IdKey<Long, Object>> imports(FuncCaseImportDto dto) {
     return funcCaseCmd.imports(dto.getPlanId(), dto.getStrategyWhenDuplicated(), dto.getFile());
   }
@@ -243,6 +234,21 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @Override
   public void delete(Collection<Long> ids) {
     funcCaseCmd.delete(ids);
+  }
+
+  @Override
+  public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, @Nullable TaskType taskType) {
+    List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInCase(id, moduleId, taskType);
+    return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
+        .collect(Collectors.toList());
+  }
+
+  @NameJoin
+  @Override
+  public List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId) {
+    List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInCase(id, moduleId);
+    return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
+        .collect(Collectors.toList());
   }
 
   @NameJoin

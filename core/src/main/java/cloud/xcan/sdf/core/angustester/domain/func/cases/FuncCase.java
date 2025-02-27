@@ -66,6 +66,9 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
   @Column(name = "module_id")
   private Long moduleId;
 
+  @Column(name = "software_version")
+  private String softwareVersion;
+
   @Column(name = "priority")
   @Enumerated(EnumType.STRING)
   public Priority priority;
@@ -212,7 +215,7 @@ public class FuncCase extends TenantAuditingEntity<FuncCase, Long> implements
 
   @Override
   public Long getParentId() {
-    return  this.planId;
+    return projectId;
   }
 
   @Override

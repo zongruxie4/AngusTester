@@ -30,6 +30,8 @@ import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.EVAL_
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.FUNC_TESTER;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.MOVED;
 import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.PRIORITY;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_CLEAR;
+import static cloud.xcan.sdf.core.angustester.domain.activity.ActivityType.SOFTWARE_VERSION_UPDATE;
 import static cloud.xcan.sdf.core.angustester.infra.util.AngusTesterUtils.parseSample;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.sdf.core.biz.ProtocolAssert.assertNotNull;
@@ -69,9 +71,9 @@ import cloud.xcan.sdf.core.angustester.application.query.func.FuncCaseQuery;
 import cloud.xcan.sdf.core.angustester.application.query.func.FuncPlanAuthQuery;
 import cloud.xcan.sdf.core.angustester.application.query.func.FuncPlanQuery;
 import cloud.xcan.sdf.core.angustester.application.query.module.ModuleQuery;
-import cloud.xcan.sdf.core.angustester.application.query.project.ProjectQuery;
 import cloud.xcan.sdf.core.angustester.application.query.tag.TagQuery;
 import cloud.xcan.sdf.core.angustester.application.query.task.TaskQuery;
+import cloud.xcan.sdf.core.angustester.application.query.version.SoftwareVersionQuery;
 import cloud.xcan.sdf.core.angustester.domain.activity.Activity;
 import cloud.xcan.sdf.core.angustester.domain.activity.ActivityType;
 import cloud.xcan.sdf.core.angustester.domain.comment.CommentRepo;
@@ -160,7 +162,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   private FuncPlanCmd funcPlanCmd;
 
   @Resource
-  private ProjectQuery projectQuery;
+  private SoftwareVersionQuery softwareVersionQuery;
 
   @Resource
   private ModuleQuery moduleQuery;
@@ -632,6 +634,56 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Transactional(rollbackFor = Exception.class)
   @Override
+  public void replaceSoftwareVersion(Long id, String version) {
+    new BizTemplate<Void>() {
+      FuncCase caseDb = null;
+
+      @Override
+      protected void checkParams() {
+        // Check and find case
+        caseDb = funcCaseQuery.checkAndFind(id);
+
+        // Check the version not exists
+        if (isNotEmpty(version)) {
+          softwareVersionQuery.checkNotExits(caseDb.getProjectId(), version);
+        }
+
+        // Check the modify case permission
+        funcPlanAuthQuery.checkModifyCaseAuth(getUserId(), caseDb.getPlanId());
+      }
+
+      @Override
+      protected Void process() {
+        if (isEmpty(version)) {
+          caseDb.setSoftwareVersion(null);
+          funcCaseRepo.save(caseDb);
+
+          Activity activity = toActivity(FUNC_CASE, caseDb, SOFTWARE_VERSION_CLEAR, version);
+          activityCmd.add(activity);
+
+          // Add modification event
+          // caseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
+
+          return null;
+        }
+        if (!version.equals(caseDb.getSoftwareVersion())) {
+          caseDb.setSoftwareVersion(version);
+          funcCaseRepo.save(caseDb);
+
+          Activity activity = toActivity(FUNC_CASE, caseDb, SOFTWARE_VERSION_UPDATE, version);
+          activityCmd.add(activity);
+
+          // Add modification event
+          // caseQuery.assembleAndSendModifyNoticeEvent(caseDb, activity);
+        }
+        return null;
+      }
+    }.execute();
+  }
+
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
   public void replaceEvalWorkload(Long id, BigDecimal evalWorkload) {
     new BizTemplate<Void>() {
       FuncCase caseDb = null;
@@ -762,7 +814,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       @Override
       protected Void process() {
         // Clear attachments
-        if (isEmpty(attachments)) {
+        if (ObjectUtils.isEmpty(attachments)) {
           if (isNotEmpty(caseDb.getAttachments())) {
             // Record activity before modifying caseDb.setAttachmentsData(null)
             Activity activity = toActivity(FUNC_CASE, caseDb,
@@ -1333,6 +1385,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
+
       @Override
       protected void checkParams() {
         // NOOP
@@ -1369,7 +1422,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
         FuncReview review = parseSample(Objects.requireNonNull(resourceUrl),
             new TypeReference<FuncReview>() {
-            }, SAMPLE_FUNC_REVIEW_FILE);
+            },  SAMPLE_FUNC_REVIEW_FILE);
         assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
         funcReviewCmd.add(review);
         funcReviewCaseCmd.add(review.getId(), cases.stream()

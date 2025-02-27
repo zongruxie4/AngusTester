@@ -64,6 +64,9 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
   @Column(name = "module_id")
   private Long moduleId;
 
+  @Column(name = "software_version")
+  private String softwareVersion;
+
   @Column(name = "priority")
   @Enumerated(EnumType.STRING)
   public Priority priority;
@@ -188,7 +191,7 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
 
   @Override
   public Long getParentId() {
-    return this.planId;
+    return planId;
   }
 
   @Override
@@ -198,6 +201,6 @@ public class FuncCaseInfo extends TenantAuditingEntity<FuncCaseInfo, Long> imple
 
   @Override
   public Long getMainTargetId() {
-    return this.projectId;
+    return this.id;
   }
 }

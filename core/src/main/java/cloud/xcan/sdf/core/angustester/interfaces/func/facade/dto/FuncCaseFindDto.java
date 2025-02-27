@@ -1,8 +1,6 @@
 package cloud.xcan.sdf.core.angustester.interfaces.func.facade.dto;
 
 import static cloud.xcan.sdf.spec.SpecConstant.DateFormat.DATE_FMT;
-import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_CODE_LENGTH;
-import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X2;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_URL_LENGTH_X4;
 
 import cloud.xcan.sdf.api.PageQuery;
@@ -43,11 +41,11 @@ public class FuncCaseFindDto extends PageQuery {
 
   private Long tagId;
 
-  @Length(max = DEFAULT_NAME_LENGTH_X2)
   private String name;
 
-  @Length(max = DEFAULT_CODE_LENGTH)
   private String code;
+
+  private String softwareVersion;
 
   private Long testerId;
 

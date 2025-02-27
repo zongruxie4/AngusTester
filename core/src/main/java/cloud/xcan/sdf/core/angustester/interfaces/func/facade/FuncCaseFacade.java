@@ -19,6 +19,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseDetailV
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseReviewVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -51,6 +52,8 @@ public interface FuncCaseFacade {
 
   void replacePriority(Long id, Priority priority);
 
+  void replaceSoftwareVersion(Long id, SoftwareVersionRefReplaceDto version);
+
   void replaceEvalWorkload(Long id, FuncCaseWorkloadReplaceDto dto);
 
   void replaceActualWorkload(Long id, FuncCaseWorkloadReplaceDto dto);
@@ -77,6 +80,10 @@ public interface FuncCaseFacade {
 
   void caseAssocCancel(Long id, HashSet<Long> assocCaseIds);
 
+  List<IdKey<Long, Object>> imports(FuncCaseImportDto dto);
+
+  List<IdKey<Long, Object>> importExample(Long projectId);
+
   void delete(Collection<Long> ids);
 
   List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, TaskType taskType);
@@ -90,10 +97,6 @@ public interface FuncCaseFacade {
   PageResult<FuncCaseListVo> list(FuncCaseFindDto dto);
 
   PageResult<FuncCaseListVo> search(boolean exportFlag, FuncCaseSearchDto dto);
-
-  List<IdKey<Long, Object>> importExample(Long projectId);
-
-  List<IdKey<Long, Object>> imports(FuncCaseImportDto dto);
 
   ResponseEntity<Resource> export(FuncCaseSearchDto dto, HttpServletResponse response);
 

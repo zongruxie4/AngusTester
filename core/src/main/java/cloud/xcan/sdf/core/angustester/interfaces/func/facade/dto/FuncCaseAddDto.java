@@ -3,6 +3,7 @@ package cloud.xcan.sdf.core.angustester.interfaces.func.facade.dto;
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.MAX_TAGS_NUM;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginConstant.MAX_CASE_OR_TASK_REFS_NUM;
 import static cloud.xcan.sdf.core.angustester.domain.TesterFuncPluginConstant.MAX_CASE_STEPS_NUM;
+import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_KEY_LENGTH;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_NAME_LENGTH_X4;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.DEFAULT_REMARK_LENGTH_X10;
 import static cloud.xcan.sdf.spec.experimental.BizConstant.MAX_ATTACHMENT_NUM;
@@ -36,13 +37,6 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncCaseAddDto {
 
-  @NotNull
-  @ApiModelProperty(value = "Functional testing plan id", required = true)
-  private Long planId;
-
-  @ApiModelProperty(value = "Function case module id")
-  private Long moduleId;
-
   @NotBlank
   @Length(max = DEFAULT_NAME_LENGTH_X4)
   @ApiModelProperty(value = "Case name", required = true)
@@ -52,6 +46,17 @@ public class FuncCaseAddDto {
   //@Length(max = DEFAULT_CODE_LENGTH)
   //@ApiModelProperty(value = "Case code", required = true)
   //private String code;
+
+  @NotNull
+  @ApiModelProperty(value = "Functional testing plan id", required = true)
+  private Long planId;
+
+  @ApiModelProperty(value = "Function case module id")
+  private Long moduleId;
+
+  @Length(max = DEFAULT_KEY_LENGTH)
+  @ApiModelProperty(value = "Version of software for the task")
+  private String softwareVersion;
 
   @ApiModelProperty(value = "Case priority")
   private Priority priority;

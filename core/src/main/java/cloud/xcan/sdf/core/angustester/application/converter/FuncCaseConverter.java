@@ -119,10 +119,9 @@ public class FuncCaseConverter {
 
   public static FuncCase setReplaceInfo(FuncCase caseDb, FuncCase case0) {
     caseDb.setId(case0.getId())
-        //.setDirId(case0.getDirId())
-        //.setDirAuthFlag(caseDb.getDirAuthFlag())
         //.setPlanId(case0.getPlanId())
         .setModuleId(nullSafe(case0.getModuleId(), -1L))
+        .setSoftwareVersion(case0.getSoftwareVersion())
         // .setCaseType(case0.getCaseType())
         .setName(case0.getName())
         //.setCode(case0.getCode())
@@ -175,7 +174,7 @@ public class FuncCaseConverter {
       testerResponsibilities.put(users.get(i).getId(), responsibilities.get(i));
     }
     plan.setTesterResponsibilities(testerResponsibilities);
-    plan.setTenantId(getOptTenantId()).setDeletedFlag(false)
+    plan.setDeletedFlag(false).setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
   }
 

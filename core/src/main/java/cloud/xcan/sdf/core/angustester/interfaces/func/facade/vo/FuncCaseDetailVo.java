@@ -54,6 +54,8 @@ public class FuncCaseDetailVo {
   @NameJoinField(id = "moduleId", repository = "moduleRepo")
   private String moduleName;
 
+  private String softwareVersion;
+
   private Priority priority;
 
   public LocalDateTime deadlineDate;
@@ -108,6 +110,7 @@ public class FuncCaseDetailVo {
   private CaseTestResult testResult;
 
   private String testRemark;
+
 
   private LocalDateTime testResultHandleDate;
 

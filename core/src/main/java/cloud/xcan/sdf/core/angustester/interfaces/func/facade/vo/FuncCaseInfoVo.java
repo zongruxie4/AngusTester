@@ -29,6 +29,10 @@ public class FuncCaseInfoVo {
 
   private String code;
 
+  private Integer version;
+
+  private String softwareVersion;
+
   private Priority priority;
 
   private BigDecimal evalWorkload;

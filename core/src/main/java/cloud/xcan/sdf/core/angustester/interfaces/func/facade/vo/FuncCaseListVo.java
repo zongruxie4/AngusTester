@@ -55,6 +55,8 @@ public class FuncCaseListVo {
   @NameJoinField(id = "moduleId", repository = "moduleRepo")
   private String moduleName;
 
+  private String softwareVersion;
+
   private Priority priority;
 
   public LocalDateTime deadlineDate;

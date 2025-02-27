@@ -1,6 +1,7 @@
 package cloud.xcan.sdf.core.angustester.application.converter;
 
 import static cloud.xcan.sdf.api.commonlink.TesterConstant.MAX_ACTIVITY_LENGTH;
+import static cloud.xcan.sdf.spec.locale.MessageHolder.message;
 import static cloud.xcan.sdf.spec.utils.DateUtils.DATE_TIME_FMT;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.sdf.spec.utils.ObjectUtils.isNull;
@@ -169,6 +170,25 @@ public class FuncActivityConverter extends ActivityConverter {
       if (replaceFlag && isEmpty(case0.getDescription()) && isNotEmpty(caseDb.getDescription())) {
         activity.append("<br/>").append(MessageHolder.message(
             ActivityType.DESCRIPTION_CLEAR.getDescMessageKey(), new Object[]{""}));
+        hasChanged = true;
+        if (activity.length() < MAX_ACTIVITY_LENGTH) {
+          safeActivity = activity;
+        }
+      }
+    }
+
+    if (isNotEmpty(case0.getSoftwareVersion())
+        && !case0.getSoftwareVersion().equals(caseDb.getSoftwareVersion())) {
+      activity.append("<br/>").append(message(
+          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(), new Object[]{"", case0.getSoftwareVersion()}));
+      hasChanged = true;
+      if (activity.length() < MAX_ACTIVITY_LENGTH) {
+        safeActivity = activity;
+      }
+    } else {
+      if (isEmpty(case0.getSoftwareVersion()) && isNotEmpty(caseDb.getSoftwareVersion())) {
+        activity.append("<br/>").append(message(
+            ActivityType.SOFTWARE_VERSION_CLEAR.getDescMessageKey(), new Object[]{""}));
         hasChanged = true;
         if (activity.length() < MAX_ACTIVITY_LENGTH) {
           safeActivity = activity;

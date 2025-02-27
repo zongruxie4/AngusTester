@@ -313,7 +313,7 @@ public class ActivityConverter {
     if (isNotEmpty(task.getSoftwareVersion())
         && !task.getSoftwareVersion().equals(taskDb.getSoftwareVersion())) {
       activity.append("<br/>").append(message(
-          ActivityType.VERSION.getDescMessageKey(), new Object[]{"", task.getSoftwareVersion()}));
+          ActivityType.SOFTWARE_VERSION_UPDATE.getDescMessageKey(), new Object[]{"", task.getSoftwareVersion()}));
       hasChanged = true;
       if (activity.length() < MAX_ACTIVITY_LENGTH) {
         safeActivity = activity;
@@ -321,7 +321,7 @@ public class ActivityConverter {
     } else {
       if (isEmpty(task.getSoftwareVersion()) && isNotEmpty(taskDb.getSoftwareVersion())) {
         activity.append("<br/>").append(message(
-            ActivityType.VERSION_CLEAR.getDescMessageKey(), new Object[]{""}));
+            ActivityType.SOFTWARE_VERSION_CLEAR.getDescMessageKey(), new Object[]{""}));
         hasChanged = true;
         if (activity.length() < MAX_ACTIVITY_LENGTH) {
           safeActivity = activity;

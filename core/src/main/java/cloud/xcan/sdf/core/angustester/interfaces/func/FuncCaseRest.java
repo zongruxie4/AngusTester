@@ -24,6 +24,7 @@ import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseDetailV
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.sdf.core.angustester.interfaces.func.facade.vo.FuncCaseReviewVo;
 import cloud.xcan.sdf.core.angustester.interfaces.task.facade.vo.TaskInfoVo;
+import cloud.xcan.sdf.core.angustester.interfaces.version.facade.dto.SoftwareVersionRefReplaceDto;
 import cloud.xcan.sdf.spec.experimental.IdKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -181,6 +182,19 @@ public class FuncCaseRest {
       @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
       @ApiParam(name = "priority", value = "Case priority", required = true) @PathVariable("priority") Priority priority) {
     funcCaseFacade.replacePriority(id, priority);
+    return ApiLocaleResult.success();
+  }
+
+  @ApiOperation(value = "Replace the software version of functional test case", nickname = "func:case:softwareVersion:replace")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Replaced successfully", response = ApiLocaleResult.class),
+      @ApiResponse(code = 404, message = "Resource not found", response = ApiLocaleResult.class)})
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping("/{id}/software/version")
+  public ApiLocaleResult<?> replaceSoftwareVersion(
+      @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
+      @Valid @RequestBody SoftwareVersionRefReplaceDto version) {
+    funcCaseFacade.replaceSoftwareVersion(id, version);
     return ApiLocaleResult.success();
   }
 
@@ -349,27 +363,6 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @ApiOperation(value = "Query the not associated tasks list of task", nickname = "case:notAssociated:task:list")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/{id}/task/notAssociated")
-  public ApiLocaleResult<List<TaskInfoVo>> notAssociatedTask(
-      @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
-      @ApiParam(name = "moduleId", value = "Module id", required = false) @RequestParam(value = "moduleId", required = false) Long moduleId,
-      @ApiParam(name = "taskType", value = "Task type", required = false) @RequestParam(value = "taskType", required = false) TaskType taskType) {
-    return ApiLocaleResult.success(funcCaseFacade.notAssociatedTask(id, moduleId, taskType));
-  }
-
-  @ApiOperation(value = "Query the not associated cases list of task", nickname = "case:notAssociated:case:list")
-  @ApiResponses(value = {
-      @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class)})
-  @GetMapping(value = "/{id}/case/notAssociated")
-  public ApiLocaleResult<List<FuncCaseListVo>> notAssociatedCase(
-      @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
-      @ApiParam(name = "moduleId", value = "Module id", required = false) @RequestParam(value = "moduleId", required = false) Long moduleId) {
-    return ApiLocaleResult.success(funcCaseFacade.notAssociatedCase(id, moduleId));
-  }
-
   @ApiOperation(value = "Import the functional test cases", nickname = "func:case:import",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
@@ -398,6 +391,27 @@ public class FuncCaseRest {
   public void delete(
       @Valid @NotEmpty @Size(max = DEFAULT_BATCH_SIZE) @RequestBody HashSet<Long> ids) {
     funcCaseFacade.delete(ids);
+  }
+
+  @ApiOperation(value = "Query the not associated tasks list of task", nickname = "case:notAssociated:task:list")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/{id}/task/notAssociated")
+  public ApiLocaleResult<List<TaskInfoVo>> notAssociatedTask(
+      @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
+      @ApiParam(name = "moduleId", value = "Module id", required = false) @RequestParam(value = "moduleId", required = false) Long moduleId,
+      @ApiParam(name = "taskType", value = "Task type", required = false) @RequestParam(value = "taskType", required = false) TaskType taskType) {
+    return ApiLocaleResult.success(funcCaseFacade.notAssociatedTask(id, moduleId, taskType));
+  }
+
+  @ApiOperation(value = "Query the not associated cases list of task", nickname = "case:notAssociated:case:list")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Retrieved successfully", response = ApiLocaleResult.class)})
+  @GetMapping(value = "/{id}/case/notAssociated")
+  public ApiLocaleResult<List<FuncCaseListVo>> notAssociatedCase(
+      @ApiParam(name = "id", value = "Case id", required = true) @PathVariable("id") Long id,
+      @ApiParam(name = "moduleId", value = "Module id", required = false) @RequestParam(value = "moduleId", required = false) Long moduleId) {
+    return ApiLocaleResult.success(funcCaseFacade.notAssociatedCase(id, moduleId));
   }
 
   @ApiOperation(value = "Query the detail of functional test cases", nickname = "func:case:detail")
@@ -444,5 +458,4 @@ public class FuncCaseRest {
       HttpServletResponse response) {
     return funcCaseFacade.export(dto, response);
   }
-
 }
