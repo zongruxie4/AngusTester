@@ -5,13 +5,13 @@ info:
 type: TEST_PERFORMANCE
 plugin: Http
 configuration:
-  duration: 30min
+  duration: 10min
   thread:
     threads: 500
     rampUpInterval: 1min
-    rampUpThreads: 50
+    rampUpThreads: 100
     rampDownInterval: 1min
-    rampDownThreads: 50
+    rampDownThreads: 100
 task:
   pipelines:
     - target: HTTP

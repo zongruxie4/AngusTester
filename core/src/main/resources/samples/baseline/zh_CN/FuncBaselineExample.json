@@ -1,6 +1,6 @@
 {
   "name": "测试阶段基线",
-  "description": "在测试开始前，创建测试基线，记录所有测试用例和测试环境。",
+  "description": "[{\"insert\": \"在测试开始前，创建测试基线，记录所有测试用例和测试环境。\"}]",
   "established_flag": 0,
   "created_date": "2024-10-16 22:31:57",
   "last_modified_date": "2024-10-21 18:59:28"

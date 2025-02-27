@@ -4,7 +4,7 @@
   "importSource": null,
   "authFlag": false,
   "apiSecurity": null,
-  "apiCors":  {
+  "apiCors": {
     "enabledFlag": true,
     "allowCorsOrigin": "*",
     "allowCorsCredentials": true,

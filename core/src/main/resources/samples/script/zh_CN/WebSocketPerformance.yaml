@@ -1,7 +1,7 @@
 specification: angus/1.0.0
 info:
-  name: WebSocket协议功能测试脚本
-  description: 一个 WebSocket 协议功能测试简单示例
+  name: WebSocket协议性能测试脚本
+  description: 一个 WebSocket 协议性能测试简单示例
 type: TEST_PERFORMANCE
 plugin: WebSocket
 configuration:
