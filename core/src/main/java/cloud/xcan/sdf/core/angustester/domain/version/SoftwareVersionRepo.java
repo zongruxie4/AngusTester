@@ -16,7 +16,7 @@ public interface SoftwareVersionRepo extends BaseRepository<SoftwareVersion, Lon
 
   @Transactional
   @Modifying
-  @Query(value = "DELETE FROM task_release_version WHERE id IN ?1", nativeQuery = true)
+  @Query(value = "DELETE FROM software_version WHERE id IN ?1", nativeQuery = true)
   void deleteByIdIn(Collection<Long> ids);
 
 }
