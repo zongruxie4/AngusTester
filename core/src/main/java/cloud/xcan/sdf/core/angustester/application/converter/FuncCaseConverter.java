@@ -132,6 +132,7 @@ public class FuncCaseConverter {
         .setEvalWorkload(case0.getEvalWorkload())
         .setActualWorkload(case0.getActualWorkload())
         .setPrecondition(case0.getPrecondition())
+        .setStepView(case0.getStepView())
         .setSteps(case0.getSteps())
         .setDescription(case0.getDescription())
         //.setReviewFlag(case0.getReviewFlag())
