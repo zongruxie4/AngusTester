@@ -66,7 +66,7 @@ public class SoftwareVersionAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .orderByFields("id", "createdDate")
-        .inAndNotFields("id", "status")
+        .inAndNotFields("id", "name", "status")
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);
@@ -77,7 +77,7 @@ public class SoftwareVersionAssembler {
     return new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .orderByFields("id", "createdDate")
-        .inAndNotFields("id", "status")
+        .inAndNotFields("id", "name", "status")
         .matchSearchFields("name", "description")
         .build();
   }
