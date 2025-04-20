@@ -9,10 +9,10 @@ import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.annotations.CloudServiceEdition;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "NodeInner")
+@Tag(name = "NodeInner", description = "Node Procurement (Internal) - Resource purchase and renewal workflows for cloud service nodes.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/node")
-public class NodeDoorRest {
+public class NodeInnerRest {
 
   @Resource
   private NodeFacade nodeFacade;

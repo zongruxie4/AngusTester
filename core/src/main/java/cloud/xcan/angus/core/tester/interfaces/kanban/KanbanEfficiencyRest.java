@@ -6,10 +6,10 @@ import cloud.xcan.angus.core.tester.domain.kanban.EfficiencyTaskOverview;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.KanbanEfficiencyFacade;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanEfficiencyFindDto;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "KanbanEfficiency")
+@Tag(name = "KanbanEfficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/efficiency")

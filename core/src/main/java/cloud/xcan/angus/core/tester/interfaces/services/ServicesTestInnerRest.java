@@ -5,11 +5,11 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.ServicesTestFacad
 import cloud.xcan.angus.model.services.ApisTestCount;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ServicesTestInner")
+@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - Internal query endpoints for API test execution statistics (success rates, latency percentiles).")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
-public class ServicesTestDoorRest {
+public class ServicesTestInnerRest {
 
   @Resource
   private ServicesTestFacade servicesTestFacade;

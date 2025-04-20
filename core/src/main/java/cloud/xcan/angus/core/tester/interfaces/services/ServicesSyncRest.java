@@ -7,11 +7,11 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.config.Servic
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.config.ServicesSyncTestDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.config.ServicesSyncDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ServicesSync")
+@Tag(name = "ServicesSync", description = "OpenAPI Document Sync - Synchronize service implementations with Swagger/OpenAPI documentation.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
   List<TestType> testEnabledFind(Long apisId);
 
-  void scriptGenerate(Long apisId, Set<ApisTestScriptGenerateDto> dtos);
+  void scriptGenerate(Long apisId, Set<ApisTestScriptGenerateDto> dto);
 
   void scriptDelete(Long apisId, Set<TestType> testTypes);
 

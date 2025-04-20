@@ -12,11 +12,11 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareAdd
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,10 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author XiaoLong Liu
- */
-@Api(tags = "ApisShare")
+@Tag(name = "ApisShare", description = "API Sharing Management - Unified management entrance for service and apis resource sharing.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/share")

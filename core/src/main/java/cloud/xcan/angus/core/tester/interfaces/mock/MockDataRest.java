@@ -15,10 +15,10 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.data.MockTextBatch
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.jmock.core.parser.docs.model.MockFunction;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "MockData")
+@Tag(name = "MockData", description = "Generate test data and debug dependencies via JMock rules.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")
@@ -55,8 +55,8 @@ public class MockDataRest {
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/function/data/batch")
   public ApiLocaleResult<List<MockBatchFuncVo>> mockFuncInBatch(
-      @Valid @RequestBody List<MockFuncDataDto> dtos) {
-    return ApiLocaleResult.success(mockDataFacade.mockFuncInBatch(dtos));
+      @Valid @RequestBody List<MockFuncDataDto> dto) {
+    return ApiLocaleResult.success(mockDataFacade.mockFuncInBatch(dto));
   }
 
   @Operation(description = "Replace function expressions in text", operationId = "mock:text:data")
@@ -72,8 +72,8 @@ public class MockDataRest {
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/text/data/batch")
   public ApiLocaleResult<List<MockTextBatchVo>> mockTextInBatch(
-      @Valid @RequestBody List<MockTextDataDto> dtos) {
-    return ApiLocaleResult.success(mockDataFacade.mockTextInBatch(dtos));
+      @Valid @RequestBody List<MockTextDataDto> dto) {
+    return ApiLocaleResult.success(mockDataFacade.mockTextInBatch(dto));
   }
 
   @Operation(description = "Generate mock data script", operationId = "mock:data:script:generate")

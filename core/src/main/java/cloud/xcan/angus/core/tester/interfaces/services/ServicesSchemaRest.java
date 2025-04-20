@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.schema.ApisSc
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceSchemaDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceServerVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ServicesSchema")
+@io.swagger.v3.oas.annotations.tags.Tag(name = "ServicesSchema", description = "API Metadata and Schema Management - Manage OpenAPI metadata and JSON Schema definitions with synchronization capabilities.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

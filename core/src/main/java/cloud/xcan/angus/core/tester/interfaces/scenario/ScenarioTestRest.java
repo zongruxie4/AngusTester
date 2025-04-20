@@ -8,11 +8,11 @@ import cloud.xcan.angus.model.scenario.ScenarioTestCount;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ScenarioTest")
+@Tag(name = "ScenarioTest", description = "User Scenario Testing - End-user interfaces for executing and tracking custom test scenarios.")
 @Validated
 @RestController
 @RequestMapping("/api/v1")

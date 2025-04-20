@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivitySearchRepo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
 import java.util.Set;
-import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.springframework.stereotype.Repository;
 
 @Repository

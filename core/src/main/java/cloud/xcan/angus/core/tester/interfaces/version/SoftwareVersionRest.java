@@ -14,11 +14,11 @@ import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersion
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,7 +38,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "SoftwareVersion")
+@Tag(name = "SoftwareVersion", description =
+    "Management Software Versions in Projects - Unified access entry for managing software versions within projects, "
+        + "helping teams keep track of different releases and maintain version control effectively.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/software/version")
@@ -135,7 +137,8 @@ public class SoftwareVersionRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<SoftwareVersionVo>> search(@Valid SoftwareVersionSearchDto dto) {
+  public ApiLocaleResult<PageResult<SoftwareVersionVo>> search(
+      @Valid SoftwareVersionSearchDto dto) {
     return ApiLocaleResult.success(softwareVersionFacade.search(dto));
   }
 

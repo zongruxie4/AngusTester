@@ -12,6 +12,6 @@ public interface AnalysisCustomizationFacade {
 
   Object summary(CustomizationSummaryDto dto);
 
-  Map<String, Object> summary(List<CustomizationSummaryDto> dtos);
+  Map<String, Object> summary(List<CustomizationSummaryDto> dto);
 
 }

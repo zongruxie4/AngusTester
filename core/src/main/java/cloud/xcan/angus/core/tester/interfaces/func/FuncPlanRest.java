@@ -13,11 +13,11 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.plan.FuncPlanDetai
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "FuncPlan")
+@Tag(name = "FuncPlan", description = "Test Plan Configuration - Core interface for creating/maintaining test plans that define testing scope, methodology, resources, etc.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")
@@ -46,7 +46,7 @@ public class FuncPlanRest {
   @Resource
   private FuncPlanFacade funcPlanFacade;
 
-  @Operation(description = "Add functional testing plan", operationId = "func:plan:add")
+  @Operation(description = "Add the plan of functional testing", operationId = "func:plan:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.add(dto));
   }
 
-  @Operation(description = "Update functional testing plan", operationId = "func:plan:update")
+  @Operation(description = "Update the plan of functional testing", operationId = "func:plan:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -66,7 +66,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace functional testing plan", operationId = "func:plan:replace")
+  @Operation(description = "Replace the plan of functional testing", operationId = "func:plan:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -76,7 +76,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.replace(dto));
   }
 
-  @Operation(description = "Start functional testing plan", operationId = "func:plan:start")
+  @Operation(description = "Start the plan of functional testing", operationId = "func:plan:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -88,7 +88,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "End functional testing plan", operationId = "func:plan:end")
+  @Operation(description = "End the plan of functional testing", operationId = "func:plan:end")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "End successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -100,7 +100,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Block functional testing plan", operationId = "func:plan:block")
+  @Operation(description = "Block the plan of functional testing", operationId = "func:plan:block")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Block successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -112,7 +112,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone functional testing plan", operationId = "func:plan:clone")
+  @Operation(description = "Clone the plan of functional testing", operationId = "func:plan:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -123,7 +123,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.clone(id));
   }
 
-  @Operation(description = "Reset the result of test result", operationId = "func:plan:case:test:result:reset")
+  @Operation(description = "Reset the test result of testing plan", operationId = "func:plan:case:test:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -135,7 +135,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reset the result of review result", operationId = "func:plan:case:review:result:reset")
+  @Operation(description = "Reset the review result of testing plan", operationId = "func:plan:case:review:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -147,7 +147,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete functional testing plan", operationId = "func:plan:delete")
+  @Operation(description = "Delete the plan of functional testing", operationId = "func:plan:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -157,7 +157,7 @@ public class FuncPlanRest {
     funcPlanFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of functional testing plan", operationId = "func:plan:detail")
+  @Operation(description = "Query the detail of testing plan", operationId = "func:plan:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -167,7 +167,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of functional testing plan", operationId = "func:plan:list")
+  @Operation(description = "Query the list of testing plan", operationId = "func:plan:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -175,7 +175,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of functional testing plan", operationId = "func:plan:search")
+  @Operation(description = "Fulltext search the list of testing plan", operationId = "func:plan:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -183,7 +183,7 @@ public class FuncPlanRest {
     return ApiLocaleResult.success(funcPlanFacade.search(dto));
   }
 
-  @Operation(description = "Query the not reviewed case list of functional testing plan", operationId = "func:plan:case:notReviewed:list")
+  @Operation(description = "Query the not reviewed case list of testing plan", operationId = "func:plan:case:notReviewed:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{planId}/case/notReviewed")

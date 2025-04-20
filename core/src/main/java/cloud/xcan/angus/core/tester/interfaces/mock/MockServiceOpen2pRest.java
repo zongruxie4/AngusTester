@@ -4,11 +4,11 @@ package cloud.xcan.angus.core.tester.interfaces.mock;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceOpen2pFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.MockServiceInfoVo;
 import cloud.xcan.angus.spec.annotations.Unused;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Api(tags = "MockServiceOpen2p")
+@Tag(name = "MockServiceOpen2p", description = "Mock Instance Config Query - Internal endpoints for querying mock service instance configurations.")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock/service")

@@ -7,8 +7,8 @@ import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.toIndicatorPerfVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.api.tester.indicator.vo.PerfVo;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
+import cloud.xcan.angus.api.tester.indicator.vo.PerfVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorPerfCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfQuery;

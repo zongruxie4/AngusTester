@@ -7,11 +7,11 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.ServicesCompFacad
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.comp.ServicesCompDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ServicesComp")
+@Tag(name = "ServicesComp", description = "OpenAPI Component Management - Centralized management of OpenAPI components (schemas, responses, security schemes) across services.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

@@ -31,8 +31,8 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
   }
 
   @Override
-  public void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dtos) {
-    servicesSyncCmd.replaceAll(serviceId, dtos.stream()
+  public void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dto) {
+    servicesSyncCmd.replaceAll(serviceId, dto.stream()
         .map(x -> ServicesSyncAssembler.toDomain(serviceId, x)).collect(Collectors.toList()));
   }
 

@@ -3,11 +3,11 @@ package cloud.xcan.angus.core.tester.interfaces.data;
 
 import cloud.xcan.angus.core.tester.interfaces.data.facade.DataParameterizationFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "DataParameterization")
+@Tag(name = "DataParameterization", description = "Data Parameterization Preview - Dedicated access for previewing parameterized data values during test configuration.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/target")

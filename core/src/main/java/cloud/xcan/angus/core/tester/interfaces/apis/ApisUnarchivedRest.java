@@ -13,11 +13,11 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedList
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ApisUnarchived")
+@Tag(name = "ApisUnarchived", description = "Personal Workspace (Unarchived) - Private staging area for managing uncommitted APIs and personal development artifacts.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/unarchived")
@@ -53,8 +53,8 @@ public class ApisUnarchivedRest {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisUnarchivedAddDto> dtos) {
-    return ApiLocaleResult.success(apisUnarchivedFacade.add(dtos));
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisUnarchivedAddDto> dto) {
+    return ApiLocaleResult.success(apisUnarchivedFacade.add(dto));
   }
 
   @Operation(description = "Update the unarchived apis", operationId = "apis:unarchived:update")
@@ -64,8 +64,8 @@ public class ApisUnarchivedRest {
   })
   @PatchMapping("/{id}")
   public ApiLocaleResult<?> update(
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisUnarchivedUpdateDto> dtos) {
-    apisUnarchivedFacade.update(dtos);
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisUnarchivedUpdateDto> dto) {
+    apisUnarchivedFacade.update(dto);
     return ApiLocaleResult.success();
   }
 

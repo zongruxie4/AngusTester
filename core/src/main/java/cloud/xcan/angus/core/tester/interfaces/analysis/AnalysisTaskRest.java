@@ -31,11 +31,11 @@ import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskAssigneeW
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskCreatorStatisticsDto;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto.TaskSummaryStatisticsDto;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "AnalysisTask")
+@Tag(name = "AnalysisTask", description = "Test Resource analytics - - Aggregated analytics for R&D tasks (sprint, backlog, task, bug, progress, etc).")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/task")

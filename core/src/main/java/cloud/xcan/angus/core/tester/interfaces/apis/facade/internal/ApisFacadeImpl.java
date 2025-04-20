@@ -59,8 +59,8 @@ public class ApisFacadeImpl implements ApisFacade {
   private ApisSearch apisSearch;
 
   @Override
-  public List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dtos) {
-    List<Apis> apis = dtos.stream().map(ApisAssembler::archiveDtoToDomain)
+  public List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dto) {
+    List<Apis> apis = dto.stream().map(ApisAssembler::archiveDtoToDomain)
         .collect(Collectors.toList());
     return apisCmd.archive(apis);
   }

@@ -7,11 +7,11 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.follow.FuncCaseFol
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "FuncCaseFollow")
+@Tag(name = "FuncCaseFollow", description = "Test Case Watchlist/Subscriptions - Notification management interface for receiving alerts when subscribed test cases are modified.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/case")

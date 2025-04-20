@@ -12,7 +12,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,14 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "IndicatorPerf")
+@Tag(name = "IndicatorPerf", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds).")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
 public class IndicatorPerfRest {
 
   @Resource
-  private IndicatorPerfFacade perfFacade;
+  private IndicatorPerfFacade indicatorPerfFacade;
 
   @Operation(description = "Add the indicator of performance", operationId = "indicator:perf:add")
   @ApiResponses(value = {
@@ -46,7 +46,7 @@ public class IndicatorPerfRest {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/perf")
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody PerfAddDto dto) {
-    return ApiLocaleResult.success(perfFacade.add(dto));
+    return ApiLocaleResult.success(indicatorPerfFacade.add(dto));
   }
 
   @Operation(description = "Replace the indicator of performance or throw 404 when it doesn't exist", operationId = "indicator:perf:replace")
@@ -56,7 +56,7 @@ public class IndicatorPerfRest {
   })
   @PutMapping("/perf")
   public ApiLocaleResult<?> replace(@Valid @RequestBody PerfReplaceDto dto) {
-    perfFacade.replace(dto);
+    indicatorPerfFacade.replace(dto);
     return ApiLocaleResult.success();
   }
 
@@ -69,7 +69,7 @@ public class IndicatorPerfRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    perfFacade.deleteByTarget(targetType, targetId);
+    indicatorPerfFacade.deleteByTarget(targetType, targetId);
   }
 
   @Operation(description = "Query the indicator detail of performance", operationId = "indicator:perf:detail")
@@ -81,7 +81,7 @@ public class IndicatorPerfRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(perfFacade.detail(targetType, targetId));
+    return ApiLocaleResult.success(indicatorPerfFacade.detail(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator detail of performance, return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
@@ -93,7 +93,7 @@ public class IndicatorPerfRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(perfFacade.detailOrDefault(targetType, targetId));
+    return ApiLocaleResult.success(indicatorPerfFacade.detailOrDefault(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator list of performance", operationId = "indicator:perf:list")
@@ -101,7 +101,7 @@ public class IndicatorPerfRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf")
   public ApiLocaleResult<PageResult<PerfListVo>> list(@Valid PerfFindDto dto) {
-    return ApiLocaleResult.success(perfFacade.list(dto));
+    return ApiLocaleResult.success(indicatorPerfFacade.list(dto));
   }
 
   @Operation(description = "Fulltext search the indicator of performance", operationId = "indicator:perf:search")
@@ -109,7 +109,7 @@ public class IndicatorPerfRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf/search")
   public ApiLocaleResult<PageResult<PerfListVo>> search(@Valid PerfSearchDto dto) {
-    return ApiLocaleResult.success(perfFacade.search(dto));
+    return ApiLocaleResult.success(indicatorPerfFacade.search(dto));
   }
 
 }

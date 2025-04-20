@@ -53,8 +53,8 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
   }
 
   @Override
-  public void scriptGenerate(Long apisId, Set<ApisTestScriptGenerateDto> dtos) {
-    apisTestCmd.scriptGenerate(apisId, generateToScript(dtos));
+  public void scriptGenerate(Long apisId, Set<ApisTestScriptGenerateDto> dto) {
+    apisTestCmd.scriptGenerate(apisId, generateToScript(dto));
   }
 
   @Override
@@ -63,8 +63,8 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
   }
 
   @Override
-  public void testTaskGenerate(Long apisId, @Nullable Long taskSprintId, Set<ApisTestTaskGenerateDto> dtos) {
-    apisTestCmd.testTaskGenerate(apisId, taskSprintId, generateToTask(apisId, dtos), false);
+  public void testTaskGenerate(Long apisId, @Nullable Long taskSprintId, Set<ApisTestTaskGenerateDto> dto) {
+    apisTestCmd.testTaskGenerate(apisId, taskSprintId, generateToTask(apisId, dto), false);
   }
 
   @Override

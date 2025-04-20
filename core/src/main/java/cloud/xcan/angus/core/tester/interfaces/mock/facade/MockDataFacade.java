@@ -14,11 +14,11 @@ public interface MockDataFacade {
 
   List<Object> mockFunc(String mockFunc, int iterations);
 
-  List<MockBatchFuncVo> mockFuncInBatch(List<MockFuncDataDto> dtos);
+  List<MockBatchFuncVo> mockFuncInBatch(List<MockFuncDataDto> dto);
 
   List<String> mockText(String text, int iterations);
 
-  List<MockTextBatchVo> mockTextInBatch(List<MockTextDataDto> dtos);
+  List<MockTextBatchVo> mockTextInBatch(List<MockTextDataDto> dto);
 
   IdKey<Long, Object> dataScriptGen(MockDataScriptGenDto dto);
 

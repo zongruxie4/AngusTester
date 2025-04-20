@@ -2,8 +2,8 @@ package cloud.xcan.angus.api.tester.indicator;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.Header.OPT_TENANT_ID;
 
-import cloud.xcan.angus.api.tester.indicator.vo.PerfVo;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
+import cloud.xcan.angus.api.tester.indicator.vo.PerfVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

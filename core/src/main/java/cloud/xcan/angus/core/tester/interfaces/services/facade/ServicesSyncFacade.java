@@ -10,7 +10,7 @@ public interface ServicesSyncFacade {
 
   void replace(Long serviceId, ServicesSyncReplaceDto dto);
 
-  void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dtos);
+  void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dto);
 
   void sync(Long serviceId, String name);
 

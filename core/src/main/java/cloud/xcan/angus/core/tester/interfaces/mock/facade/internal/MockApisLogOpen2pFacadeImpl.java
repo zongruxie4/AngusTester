@@ -17,8 +17,8 @@ public class MockApisLogOpen2pFacadeImpl implements MockApisLogOpen2pFacade {
   private MockApisLogCmd mockApisLogCmd;
 
   @Override
-  public List<IdKey<Long, Object>> add(List<ApisRequestLog> dtos) {
-    return dtos.stream().map(x -> mockApisLogCmd.add0(MockApisLogAssembler.toMockApisLog(x)))
+  public List<IdKey<Long, Object>> add(List<ApisRequestLog> dto) {
+    return dto.stream().map(x -> mockApisLogCmd.add0(MockApisLogAssembler.toMockApisLog(x)))
         .collect(Collectors.toList());
   }
 

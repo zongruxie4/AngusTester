@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface MockApisResponseFacade {
 
-  List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dtos);
+  List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dto);
 
-  void replace(Long apisId, List<MockApisResponseReplaceDto> dtos);
+  void replace(Long apisId, List<MockApisResponseReplaceDto> dto);
 
   void delete(Long apisId, HashSet<Long> responseIds);
 

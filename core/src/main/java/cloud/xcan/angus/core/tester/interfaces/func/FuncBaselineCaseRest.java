@@ -9,11 +9,11 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "FuncBaselineCase")
+@Tag(name = "FuncBaselineCase", description = "Test Baseline-Case Associations - Interface for managing relationships between functional test baselines and corresponding test cases.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/baseline")
@@ -41,7 +41,7 @@ public class FuncBaselineCaseRest {
   @Resource
   private FuncBaselineCaseFacade funcBaselineCaseFacade;
 
-  @Operation(description = "Add baseline test cases", operationId = "func:baseline:case:add")
+  @Operation(description = "Add the baseline of test cases", operationId = "func:baseline:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete baseline test cases", operationId = "func:baseline:case:delete")
+  @Operation(description = "Delete the baseline of test cases", operationId = "func:baseline:case:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,7 +64,7 @@ public class FuncBaselineCaseRest {
     funcBaselineCaseFacade.delete(baselineId, caseIds);
   }
 
-  @Operation(description = "Query the detail of baseline test cases", operationId = "func:baseline:case:detail")
+  @Operation(description = "Query the baseline detail of test cases", operationId = "func:baseline:case:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -75,7 +75,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.detail(baselineId, caseId));
   }
 
-  @Operation(description = "Query the list of baseline test cases", operationId = "func:baseline:case:list")
+  @Operation(description = "Query the baseline list of test cases", operationId = "func:baseline:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{baselineId}/case")
@@ -85,7 +85,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.list(baselineId, dto));
   }
 
-  @Operation(description = "Fulltext search the list of baseline test cases", operationId = "func:baseline:case:search")
+  @Operation(description = "Fulltext search list the of baseline test cases", operationId = "func:baseline:case:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{baselineId}/case/search")
@@ -95,7 +95,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.search(baselineId, false, dto));
   }
 
-  @Operation(description = "Export the baseline test cases by conditions", operationId = "func:baseline:case:export")
+  @Operation(description = "Export the test cases of baseline", operationId = "func:baseline:case:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

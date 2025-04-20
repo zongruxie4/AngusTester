@@ -56,8 +56,8 @@ public class ScenarioTestFacadeImpl implements ScenarioTestFacade {
 
   @Override
   public void testTaskGenerate(Long scenarioId, @Nullable Long taskSprintId,
-      Set<ScenarioTestTaskGenerateDto> dtos) {
-    scenarioTestCmd.testTaskGenerate(scenarioId, taskSprintId, generateToTask(scenarioId, dtos));
+      Set<ScenarioTestTaskGenerateDto> dto) {
+    scenarioTestCmd.testTaskGenerate(scenarioId, taskSprintId, generateToTask(scenarioId, dto));
   }
 
   @Override

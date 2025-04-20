@@ -19,7 +19,7 @@ public interface ServicesTestFacade {
 
   ApisTestCount countProjectTestApis(Long projectId, OrgAndDateFilterDto dto);
 
-  void scriptGenerate(Long serviceId, Set<ApisTestScriptGenerateDto> dtos);
+  void scriptGenerate(Long serviceId, Set<ApisTestScriptGenerateDto> dto);
 
   void scriptDelete(Long serviceId, Set<TestType> testTypes);
 

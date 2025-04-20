@@ -13,11 +13,11 @@ import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleTreeVo;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "Module")
+@Tag(name = "Module", description = "Software Module Management - APIs for modular system architecture design, enabling creation/organization of independent functional units.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/module")
@@ -47,7 +47,7 @@ public class ModuleRest {
   @Resource
   private ModuleFacade moduleFacade;
 
-  @Operation(description = "Add the module", operationId = "module:add")
+  @Operation(description = "Add the module of software project", operationId = "module:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.add(dto));
   }
 
-  @Operation(description = "Update the module", operationId = "module:update")
+  @Operation(description = "Update the module of software project", operationId = "module:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @PatchMapping
@@ -66,7 +66,7 @@ public class ModuleRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the module", operationId = "module:replace")
+  @Operation(description = "Replace the module of software project", operationId = "module:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -85,7 +85,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete the modules", operationId = "module:delete")
+  @Operation(description = "Delete the modules of software project", operationId = "module:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @DeleteMapping
@@ -95,7 +95,7 @@ public class ModuleRest {
     moduleFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of module", operationId = "module:detail")
+  @Operation(description = "Query the module detail of software project", operationId = "module:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -105,7 +105,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.detail(id));
   }
 
-  @Operation(description = "Query the module list", operationId = "module:list")
+  @Operation(description = "Query the module list of software project", operationId = "module:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -113,7 +113,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the module", operationId = "module:search")
+  @Operation(description = "Fulltext search the module of software project", operationId = "module:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -121,7 +121,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.search(dto));
   }
 
-  @Operation(description = "Query the tree of module", operationId = "module:tree")
+  @Operation(description = "Query the module tree of software project", operationId = "module:tree")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tree")
@@ -129,7 +129,7 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.tree(dto));
   }
 
-  @Operation(description = "Fulltext search the tree of module", operationId = "module:tree:search")
+  @Operation(description = "Fulltext search the module tree of software project", operationId = "module:tree:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tree/search")

@@ -7,8 +7,8 @@ import static cloud.xcan.angus.spec.utils.QueryParameterUtils.parseQueryString;
 import static org.apache.commons.codec.CharEncoding.UTF_8;
 
 import cloud.xcan.angus.spec.utils.StreamUtils;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ProxyRequest")
+@Tag(name = "ProxyRequest", description = "Http  Request Proxy - Proxy HTTP request endpoints via AngusTester to resolve cross-origin restrictions (CORS) and enforce security policies.")
 @Validated
 @RestController
 @RequestMapping("/pubapi/v1/proxy")
@@ -46,7 +46,7 @@ public class ProxyRequestRest {
     ClientHttpRequest delegate = new SimpleClientHttpRequestFactory()
         .createRequest(newUri, httpMethod);
     Enumeration<String> headerNames = request.getHeaderNames();
-    // Set request header
+    // Set request headers
     while (headerNames.hasMoreElements()) {
       String headerName = headerNames.nextElement();
       Enumeration<String> v = request.getHeaders(headerName);
@@ -58,13 +58,14 @@ public class ProxyRequestRest {
     }
     StreamUtils.copy(request.getInputStream(), delegate.getBody());
     // Execute remote calls
-    ClientHttpResponse clientHttpResponse = delegate.execute();
-    response.setStatus(clientHttpResponse.getStatusCode().value());
-    // Set response header
-    clientHttpResponse.getHeaders().forEach((key, value) -> value.forEach(it -> {
-      response.setHeader(key, it);
-    }));
-    StreamUtils.copy(clientHttpResponse.getBody(), response.getOutputStream());
+    try (ClientHttpResponse clientHttpResponse = delegate.execute()) {
+      response.setStatus(clientHttpResponse.getStatusCode().value());
+      // Set response header
+      clientHttpResponse.getHeaders().forEach((key, value) -> value.forEach(it -> {
+        response.setHeader(key, it);
+      }));
+      StreamUtils.copy(clientHttpResponse.getBody(), response.getOutputStream());
+    }
   }
 
   private URI getFullTargetUri(HttpServletRequest request) throws URISyntaxException {

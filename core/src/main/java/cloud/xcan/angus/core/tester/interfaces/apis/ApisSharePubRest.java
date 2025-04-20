@@ -5,10 +5,10 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisShareFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareViewDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareViewVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Api(tags = "ApisSharePub")
+@Tag(name = "ApisSharePub", description = "API Sharing Public Query - Public access entry for shared service and apis.")
 @Validated
 @RestController
 @RequestMapping("/pubapi/v1/apis/share")

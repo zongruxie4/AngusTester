@@ -21,11 +21,11 @@ import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "Apis")
+@Tag(name = "Apis", description = "API Metadata Management - Central registry for maintaining interface debug value, schema definitions, and version history.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
@@ -68,8 +68,8 @@ public class ApisRest {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/archive")
   public ApiLocaleResult<List<IdKey<Long, Object>>> archive(
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisArchiveDto> dtos) {
-    return ApiLocaleResult.success(apisFacade.archive(dtos));
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisArchiveDto> dto) {
+    return ApiLocaleResult.success(apisFacade.archive(dto));
   }
 
   @Operation(description = "Update apis", operationId = "apis:update")

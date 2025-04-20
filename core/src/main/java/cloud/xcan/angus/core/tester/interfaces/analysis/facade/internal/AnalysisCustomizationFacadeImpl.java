@@ -29,8 +29,8 @@ public class AnalysisCustomizationFacadeImpl implements AnalysisCustomizationFac
   }
 
   @Override
-  public Map<String, Object> summary(List<CustomizationSummaryDto> dtos) {
-    return simpleSummaryManager.getSummary(dtos.stream().map(AnalysisConverter::toQueryBuilder)
+  public Map<String, Object> summary(List<CustomizationSummaryDto> dto) {
+    return simpleSummaryManager.getSummary(dto.stream().map(AnalysisConverter::toQueryBuilder)
         .collect(Collectors.toList()));
   }
 

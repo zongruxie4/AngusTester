@@ -10,11 +10,11 @@ import cloud.xcan.angus.core.tester.interfaces.node.facade.vo.domain.NodeDomainD
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.context.annotation.Conditional;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "NodeRole")
+@Tag(name = "NodeDomain", description = "Cloud Subdomain Registry - Lifecycle management of subdomains for cloud service nodes (e.g., AliCloud hosted zones).")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node/domain")

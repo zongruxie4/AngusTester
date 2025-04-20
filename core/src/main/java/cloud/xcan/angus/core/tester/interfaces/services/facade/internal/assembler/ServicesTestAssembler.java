@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 public class ServicesTestAssembler {
 
-  public static List<TestTaskSetting> toTestTaskTestings(Set<ServicesTestTaskGenerateDto> dtos) {
+  public static List<TestTaskSetting> toTestTaskTestings(Set<ServicesTestTaskGenerateDto> dto) {
     List<TestTaskSetting> testTaskSettings = new ArrayList<>();
-    for (ServicesTestTaskGenerateDto dto : dtos) {
+    for (ServicesTestTaskGenerateDto dto : dto) {
       testTaskSettings.add(new TestTaskSetting()
           .setAssigneeId(dto.getAssigneeId())
           .setTestType(dto.getTestType()).setPriority(dto.getPriority())
@@ -22,9 +22,9 @@ public class ServicesTestAssembler {
     return testTaskSettings;
   }
 
-  public static List<Script> generateToTaskScript(Set<ServicesTestTaskGenerateDto> dtos) {
+  public static List<Script> generateToTaskScript(Set<ServicesTestTaskGenerateDto> dto) {
     /* Note: Generating functional test scripts is not supported, manual generation of test cases is required*/
-    return dtos.stream().filter(x -> !x.getTestType().isFunctional())
+    return dto.stream().filter(x -> !x.getTestType().isFunctional())
         .map(testing -> new Script()
                 .setType(testing.getTestType().toScriptType())
                 .setSource(ScriptSource.API)

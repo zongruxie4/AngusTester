@@ -13,11 +13,11 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBasel
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "FuncBaseline")
+@Tag(name = "FuncBaseline", description = "Functional Test Baseline Management - Defining and recording standard/reference attributes of functional test cases (e.g., pass/fail criteria, priority levels).")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/baseline")
@@ -104,7 +104,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.detail(id));
   }
 
-  @Operation(description = "Query the baseline list", operationId = "func:baseline:list")
+  @Operation(description = "Query the list of baseline", operationId = "func:baseline:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -112,7 +112,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the baseline", operationId = "func:baseline:search")
+  @Operation(description = "Fulltext search the list of baseline", operationId = "func:baseline:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

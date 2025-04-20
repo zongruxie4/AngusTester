@@ -9,11 +9,11 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesApisS
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesApisInfoListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ServicesApis")
+@Tag(name = "ServicesApis",description = "Service Apis Params - Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

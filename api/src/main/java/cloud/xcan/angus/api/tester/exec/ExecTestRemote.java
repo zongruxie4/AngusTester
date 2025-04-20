@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
 public interface ExecTestRemote {
 
-  @Operation(description = "Update the test results of execution", operationId = "exec:test:result:update")
+  @Operation(description = "Update the test results of execution", operationId = "exec:test:result:update:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @PatchMapping(value = "/innerapi/v1/exec/test/result")

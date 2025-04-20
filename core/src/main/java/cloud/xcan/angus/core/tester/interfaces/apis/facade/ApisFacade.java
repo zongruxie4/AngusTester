@@ -32,7 +32,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface ApisFacade {
 
-  List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dtos);
+  List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dto);
 
   void update(List<ApisUpdateDto> dto);
 

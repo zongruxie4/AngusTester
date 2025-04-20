@@ -6,11 +6,11 @@ import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.Scenari
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.trash.ScenarioTrashDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ScenarioTrash")
+@Tag(name = "ScenarioTrash", description = "Scenario Recycle Bin Management - Temporary storage for deleted scenario with restore capabilities and permanent deletion controls.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/trash")
@@ -42,7 +42,7 @@ public class ScenarioTrashRest {
     trashScenarioFacade.clear(id);
   }
 
-  @Operation(description = "Clear all the trash of scenario and dir ", operationId = "scenario:trash:clear:all")
+  @Operation(description = "Clear all the trash of scenario ", operationId = "scenario:trash:clear:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -51,7 +51,7 @@ public class ScenarioTrashRest {
     trashScenarioFacade.clearAll(projectId);
   }
 
-  @Operation(description = "Back the scenario or dir from the trash", operationId = "scenario:trash:back")
+  @Operation(description = "Back the scenario from the trash", operationId = "scenario:trash:back")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
@@ -61,7 +61,7 @@ public class ScenarioTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Back all the scenario and dir from trash", operationId = "scenario:trash:back:all")
+  @Operation(description = "Back all the scenario from trash", operationId = "scenario:trash:back:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
@@ -71,7 +71,7 @@ public class ScenarioTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the number of all scenario and dir trash", operationId = "scenario:trash:count")
+  @Operation(description = "Query the number of all scenario trash", operationId = "scenario:trash:count")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
@@ -80,7 +80,7 @@ public class ScenarioTrashRest {
     return ApiLocaleResult.success(trashScenarioFacade.count(projectId));
   }
 
-  @Operation(description = "Fulltext search the trash of scenario or dir", operationId = "scenario:trash:search")
+  @Operation(description = "Fulltext search the trash of scenario", operationId = "scenario:trash:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

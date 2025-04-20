@@ -24,7 +24,7 @@ public interface ServicesSchemaFacade {
 
   void securityRequirementReplace(Long serviceId, SecurityRequirement dto);
 
-  void securityRequirementReplaceAll(Long serviceId, List<SecurityRequirement> dtos);
+  void securityRequirementReplaceAll(Long serviceId, List<SecurityRequirement> dto);
 
   void securityRequirementDelete(Long serviceId, Set<String> names);
 
@@ -34,7 +34,7 @@ public interface ServicesSchemaFacade {
 
   void apisServerReplace(Long serviceId, Long serverId);
 
-  void serverReplaceAll(Long serviceId, List<Server> dtos);
+  void serverReplaceAll(Long serviceId, List<Server> dto);
 
   void serverDelete(Long serviceId, Set<Long> serverIds);
 
@@ -46,13 +46,13 @@ public interface ServicesSchemaFacade {
 
   void tagReplace(Long serviceId, Tag dto);
 
-  void tagReplaceAll(Long serviceId, List<Tag> dtos);
+  void tagReplaceAll(Long serviceId, List<Tag> dto);
 
   void tagDelete(Long serviceId, Set<String> names);
 
   List<Tag> tagList(Long serviceId);
 
-  void extensionsReplace(Long serviceId, Map<String, Object> dtos);
+  void extensionsReplace(Long serviceId, Map<String, Object> dto);
 
   Map<String, Object> extensionsList(Long serviceId);
 

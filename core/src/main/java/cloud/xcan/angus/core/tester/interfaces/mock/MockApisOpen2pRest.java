@@ -7,11 +7,11 @@ import cloud.xcan.angus.model.remoting.dto.MockApisRequestCountDto;
 import cloud.xcan.angus.model.remoting.vo.MockApisInfoVo;
 import cloud.xcan.angus.model.remoting.vo.MockApisServiceInfoVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Api(tags = "MockApisOpen2p")
+@Tag(name = "MockApisOpen2p", description = "Mock Definition Sync - Internal endpoints for querying and synchronizing mock interface definitions across AngusMockService instances.")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock")

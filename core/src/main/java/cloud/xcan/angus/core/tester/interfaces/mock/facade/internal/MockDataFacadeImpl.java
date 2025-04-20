@@ -34,9 +34,9 @@ public class MockDataFacadeImpl implements MockDataFacade {
   }
 
   @Override
-  public List<MockBatchFuncVo> mockFuncInBatch(List<MockFuncDataDto> dtos) {
+  public List<MockBatchFuncVo> mockFuncInBatch(List<MockFuncDataDto> dto) {
     List<MockFuncData> mockFunctions = mockDataCmd.mockFuncInBatch(
-        dtos.stream().map(MockDataAssembler::toMockFuncRequest).collect(Collectors.toList()));
+        dto.stream().map(MockDataAssembler::toMockFuncRequest).collect(Collectors.toList()));
     return mockFunctions.stream().map(MockDataAssembler::toMockFuncDataVo)
         .collect(Collectors.toList());
   }
@@ -47,9 +47,9 @@ public class MockDataFacadeImpl implements MockDataFacade {
   }
 
   @Override
-  public List<MockTextBatchVo> mockTextInBatch(List<MockTextDataDto> dtos) {
+  public List<MockTextBatchVo> mockTextInBatch(List<MockTextDataDto> dto) {
     List<MockTextData> mockFunctions = mockDataCmd.mockTextInBatch(
-        dtos.stream().map(MockDataAssembler::toMockTextRequest).collect(Collectors.toList()));
+        dto.stream().map(MockDataAssembler::toMockTextRequest).collect(Collectors.toList()));
     return mockFunctions.stream().map(MockDataAssembler::toMockTextBatchVo)
         .collect(Collectors.toList());
   }

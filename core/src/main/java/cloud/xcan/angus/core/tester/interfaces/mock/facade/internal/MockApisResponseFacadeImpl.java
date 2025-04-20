@@ -30,15 +30,15 @@ public class MockApisResponseFacadeImpl implements MockApisResponseFacade {
   private MockApisResponseQuery mockApisResponseQuery;
 
   @Override
-  public List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dtos) {
-    return mockApisResponseCmd.add(apisId, dtos.stream()
+  public List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dto) {
+    return mockApisResponseCmd.add(apisId, dto.stream()
         .map(dto -> MockApisResponseAssembler.addDtoToDomain(apisId, dto))
         .collect(Collectors.toList()));
   }
 
   @Override
-  public void replace(Long apisId, List<MockApisResponseReplaceDto> dtos) {
-    mockApisResponseCmd.replace(apisId, dtos.stream()
+  public void replace(Long apisId, List<MockApisResponseReplaceDto> dto) {
+    mockApisResponseCmd.replace(apisId, dto.stream()
         .map(dto -> MockApisResponseAssembler.replaceDtoToDomain(apisId, dto))
         .collect(Collectors.toList()));
   }

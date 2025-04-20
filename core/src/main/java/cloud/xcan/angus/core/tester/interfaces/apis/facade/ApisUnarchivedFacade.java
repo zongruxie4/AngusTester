@@ -14,7 +14,7 @@ public interface ApisUnarchivedFacade {
 
   List<IdKey<Long, Object>> add(List<ApisUnarchivedAddDto> dto);
 
-  void update(List<ApisUnarchivedUpdateDto> dtos);
+  void update(List<ApisUnarchivedUpdateDto> dto);
 
   void delete(Long id);
 

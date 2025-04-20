@@ -15,7 +15,7 @@ import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.annotations.Unused;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,14 +38,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "IndicatorStability")
+@Tag(name = "IndicatorStability", description = "Stability Test Indicator Management - Configure stability test profiles (duration, concurrency, error tolerance).")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
 public class IndicatorStabilityRest {
 
   @Resource
-  private IndicatorStabilityFacade stabilityFacade;
+  private IndicatorStabilityFacade indicatorStabilityFacade;
 
   @Unused
   @Operation(description = "Add the indicator of stability", operationId = "indicator:stability:add")
@@ -54,7 +54,7 @@ public class IndicatorStabilityRest {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/stability")
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody StabilityAddDto dto) {
-    return ApiLocaleResult.success(stabilityFacade.add(dto));
+    return ApiLocaleResult.success(indicatorStabilityFacade.add(dto));
   }
 
   @Operation(description = "Replace the indicator of stability", operationId = "indicator:stability:replace")
@@ -64,7 +64,7 @@ public class IndicatorStabilityRest {
   })
   @PutMapping("/stability")
   public ApiLocaleResult<?> replace(@Valid @RequestBody StabilityReplaceDto dto) {
-    stabilityFacade.replace(dto);
+    indicatorStabilityFacade.replace(dto);
     return ApiLocaleResult.success();
   }
 
@@ -76,7 +76,7 @@ public class IndicatorStabilityRest {
   public void delete(
       @Parameter(name = "ids", description = "Stability indicator id", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
-    stabilityFacade.delete(ids);
+    indicatorStabilityFacade.delete(ids);
   }
 
   @Operation(description = "Delete the stability indicator of target", operationId = "indicator:stability:target:delete")
@@ -87,7 +87,7 @@ public class IndicatorStabilityRest {
   public void deleteByTarget(
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true) @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    stabilityFacade.deleteByTarget(targetType, targetId);
+    indicatorStabilityFacade.deleteByTarget(targetType, targetId);
   }
 
   @Operation(description = "Query the indicator detail of stability", operationId = "indicator:stability:detail")
@@ -98,7 +98,7 @@ public class IndicatorStabilityRest {
   public ApiLocaleResult<StabilityVo> detail(
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true) @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(stabilityFacade.detail(targetType, targetId));
+    return ApiLocaleResult.success(indicatorStabilityFacade.detail(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator detail of stability, return to default configuration when not set", operationId = "indicator:stability:detailOrDefault")
@@ -109,7 +109,7 @@ public class IndicatorStabilityRest {
   public ApiLocaleResult<StabilityVo> detailOrDefault(
       @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true) @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(stabilityFacade.detailOrDefault(targetType, targetId));
+    return ApiLocaleResult.success(indicatorStabilityFacade.detailOrDefault(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator list of stability", operationId = "indicator:stability:list")
@@ -117,7 +117,7 @@ public class IndicatorStabilityRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/stability")
   public ApiLocaleResult<PageResult<StabilityListVo>> list(@Valid StabilityFindDto dto) {
-    return ApiLocaleResult.success(stabilityFacade.list(dto));
+    return ApiLocaleResult.success(indicatorStabilityFacade.list(dto));
   }
 
   @Operation(description = "Fulltext search the indicator of stability", operationId = "indicator:stability:search")
@@ -125,7 +125,7 @@ public class IndicatorStabilityRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/stability/search")
   public ApiLocaleResult<PageResult<StabilityListVo>> search(@Valid StabilitySearchDto dto) {
-    return ApiLocaleResult.success(stabilityFacade.search(dto));
+    return ApiLocaleResult.success(indicatorStabilityFacade.search(dto));
   }
 
 }

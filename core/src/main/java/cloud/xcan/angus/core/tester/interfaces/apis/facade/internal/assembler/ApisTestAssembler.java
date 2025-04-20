@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 
 public class ApisTestAssembler {
 
-  public static List<Script> generateToScript(Set<ApisTestScriptGenerateDto> dtos) {
+  public static List<Script> generateToScript(Set<ApisTestScriptGenerateDto> dto) {
     List<Script> scripts = new ArrayList<>();
-    Map<TestType, ApisTestScriptGenerateDto> typeMap = dtos.stream()
+    Map<TestType, ApisTestScriptGenerateDto> typeMap = dto.stream()
         .collect(Collectors.toMap(ApisTestScriptGenerateDto::getTestType, x -> x));
     if (typeMap.containsKey(TestType.FUNCTIONAL)) {
       ApisTestScriptGenerateDto testing = typeMap.get(TestType.FUNCTIONAL);
@@ -106,8 +106,8 @@ public class ApisTestAssembler {
     return scripts;
   }
 
-  public static List<Task> generateToTask(Long apisId, Set<ApisTestTaskGenerateDto> dtos) {
-    return dtos.stream().map(testing -> new Task()
+  public static List<Task> generateToTask(Long apisId, Set<ApisTestTaskGenerateDto> dto) {
+    return dto.stream().map(testing -> new Task()
         .setTargetId(apisId)
         .setTaskType(TaskType.API_TEST)
         .setTestType(testing.getTestType())

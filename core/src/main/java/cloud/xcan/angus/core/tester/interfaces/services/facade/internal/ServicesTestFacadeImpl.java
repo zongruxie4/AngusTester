@@ -50,8 +50,8 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
   }
 
   @Override
-  public void scriptGenerate(Long serviceId, Set<ApisTestScriptGenerateDto> dtos) {
-    servicesTestCmd.scriptGenerate(serviceId, generateToScript(dtos));
+  public void scriptGenerate(Long serviceId, Set<ApisTestScriptGenerateDto> dto) {
+    servicesTestCmd.scriptGenerate(serviceId, generateToScript(dto));
   }
 
   @Override
@@ -61,8 +61,8 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
 
   @Override
   public void testTaskGenerate(Long serviceId, @Nullable Long taskSprintId,
-      Set<ServicesTestTaskGenerateDto> dtos) {
-    servicesTestCmd.testTaskGenerate(serviceId, taskSprintId, toTestTaskTestings(dtos));
+      Set<ServicesTestTaskGenerateDto> dto) {
+    servicesTestCmd.testTaskGenerate(serviceId, taskSprintId, toTestTaskTestings(dto));
   }
 
   @Override

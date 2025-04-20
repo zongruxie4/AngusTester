@@ -7,11 +7,11 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "TaskTest")
+@Tag(name = "TaskTest", description = "Task Associations Resource Query - Query resources and test results associated with specific task.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")

@@ -12,7 +12,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,14 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "IndicatorFunc")
+@Tag(name = "IndicatorFunc", description = "Functional Test Indicator Management - Configure and manage functional test types (smoke testing, security testing) and their evaluation criteria.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
 public class IndicatorFuncRest {
 
   @Resource
-  private IndicatorFuncFacade funcFacade;
+  private IndicatorFuncFacade indicatorFuncFacade;
 
   @Operation(description = "Add the indicator of functionality", operationId = "indicator:func:add")
   @ApiResponses(value = {
@@ -46,7 +46,7 @@ public class IndicatorFuncRest {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/func")
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody FuncAddDto dto) {
-    return ApiLocaleResult.success(funcFacade.add(dto));
+    return ApiLocaleResult.success(indicatorFuncFacade.add(dto));
   }
 
   @Operation(description = "Replace the indicator of functionality or throw 404 when it doesn't exist", operationId = "indicator:func:replace")
@@ -56,7 +56,7 @@ public class IndicatorFuncRest {
   })
   @PutMapping("/func")
   public ApiLocaleResult<?> replace(@Valid @RequestBody FuncReplaceDto dto) {
-    funcFacade.replace(dto);
+    indicatorFuncFacade.replace(dto);
     return ApiLocaleResult.success();
   }
 
@@ -69,7 +69,7 @@ public class IndicatorFuncRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    funcFacade.deleteByTarget(targetType, targetId);
+    indicatorFuncFacade.deleteByTarget(targetType, targetId);
   }
 
   @Operation(description = "Query the indicator detail of functionality", operationId = "indicator:func:detail")
@@ -81,7 +81,7 @@ public class IndicatorFuncRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(funcFacade.detail(targetType, targetId));
+    return ApiLocaleResult.success(indicatorFuncFacade.detail(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator detail of functionality, return to default configuration when not set", operationId = "indicator:func:audit:detailOrDefault")
@@ -93,7 +93,7 @@ public class IndicatorFuncRest {
       @Parameter(name = "targetType", description = "Target Type, allowable values: API", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
       @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
-    return ApiLocaleResult.success(funcFacade.detailOrDefault(targetType, targetId));
+    return ApiLocaleResult.success(indicatorFuncFacade.detailOrDefault(targetType, targetId));
   }
 
   @Operation(description = "Query the indicator list of functionality", operationId = "indicator:func:list")
@@ -101,7 +101,7 @@ public class IndicatorFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
   public ApiLocaleResult<PageResult<FuncListVo>> list(@Valid FuncFindDto dto) {
-    return ApiLocaleResult.success(funcFacade.list(dto));
+    return ApiLocaleResult.success(indicatorFuncFacade.list(dto));
   }
 
   @Operation(description = "Fulltext search the indicator of functionality", operationId = "indicator:func:search")
@@ -109,7 +109,7 @@ public class IndicatorFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func/search")
   public ApiLocaleResult<PageResult<FuncListVo>> search(@Valid FuncSearchDto dto) {
-    return ApiLocaleResult.success(funcFacade.search(dto));
+    return ApiLocaleResult.success(indicatorFuncFacade.search(dto));
   }
 
 }

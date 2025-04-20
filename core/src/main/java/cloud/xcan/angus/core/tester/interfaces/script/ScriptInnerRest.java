@@ -11,11 +11,11 @@ import cloud.xcan.angus.api.tester.script.vo.ScriptInfosVo;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.ScriptFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ScriptInner")
+@Tag(name = "ScriptInner", description = "Script Query (Internal) - Internal system APIs for programmatic retrieval of test script metadata and execution records.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/script")
-public class ScriptDoorRest {
+public class ScriptInnerRest {
 
   @Resource
   private ScriptFacade scriptFacade;

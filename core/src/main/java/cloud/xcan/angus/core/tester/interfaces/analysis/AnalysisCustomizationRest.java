@@ -5,10 +5,10 @@ import cloud.xcan.angus.api.gm.analysis.dto.CustomizationSummaryDto;
 import cloud.xcan.angus.api.gm.analysis.vo.SummaryQueryDefinitionVo;
 import cloud.xcan.angus.core.tester.interfaces.analysis.facade.AnalysisCustomizationFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * It will automatically invalid after being consolidated to other package.
  */
-@Api(tags = "AnalysisCustomization")
+@Tag(name = "AnalysisCustomization", description =
+    "Customized definition statistical analysis implementation apis, "
+        + "used to query supported analysis resource definition information and to retrieve analysis and statistical information.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/customization")
@@ -52,8 +54,8 @@ public class AnalysisCustomizationRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/summary/batch")
   public ApiLocaleResult<Map<String, Object>> summary(
-      @Valid @Size(min = 1) List<CustomizationSummaryDto> dtos) {
-    return ApiLocaleResult.success(analysisCustomizationFacade.summary(dtos));
+      @Valid @Size(min = 1) List<CustomizationSummaryDto> dto) {
+    return ApiLocaleResult.success(analysisCustomizationFacade.summary(dto));
   }
 
 

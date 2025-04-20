@@ -7,11 +7,11 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestTask
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.ApiLocaleResult;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "ApisTest")
+@Tag(name = "ApisTest", description = "User Test Management & Results - Testing management with historical results tracking and test configuration management.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
@@ -79,8 +79,8 @@ public class ApisTestRest {
   @PutMapping("/{id}/test/script/generate")
   public ApiLocaleResult<?> scriptGenerate(
       @Parameter(name = "id", description = "Apis id", required = true) @PathVariable("id") Long apisId,
-      @Valid @NotEmpty @RequestBody Set<ApisTestScriptGenerateDto> dtos) {
-    apisTestFacade.scriptGenerate(apisId, dtos);
+      @Valid @NotEmpty @RequestBody Set<ApisTestScriptGenerateDto> dto) {
+    apisTestFacade.scriptGenerate(apisId, dto);
     return ApiLocaleResult.success();
   }
 
