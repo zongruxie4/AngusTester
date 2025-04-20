@@ -32,7 +32,7 @@
         in: query
         enabled: true
         type: string
-        value: xiaolong.liu
+        value: XiaoLong Liu
       - name: clientId
         in: query
         enabled: true
@@ -62,7 +62,7 @@
         in: query
         enabled: true
         type: string
-        value: ACCOUNT_PASSD
+        value: ACCOUNT_PASSWORD
       body: {}
       x-validSecurity: false
 - name: AutoUpdatedSnowIdInIteration

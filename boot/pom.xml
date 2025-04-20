@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cloud.xcan.sdf</groupId>
-    <artifactId>AngusTester</artifactId>
+    <groupId>cloud.xcan.angus</groupId>
+    <artifactId>xcan-angustester.parent</artifactId>
     <version>1.0.0</version>
   </parent>
 
@@ -14,52 +14,52 @@
   <name>AngusTester :: Service Boot</name>
   <packaging>jar</packaging>
 
+  <properties>
+    <archive.name>tester</archive.name>
+    <hump.name>AngusTester</hump.name>
+    <docker.image.name>angustester</docker.image.name>
+  </properties>
+
   <dependencies>
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
+      <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angustester.core</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.core-starter</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.web-starter</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.validator-starter</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.validator-starter</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.swagger-starter</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.oas3-starter</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.idgen-starter</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.idgen-starter</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.resauth-starter</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.auth-resource-starter</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.l2cache-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.test</artifactId>
-      <scope>test</scope>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.l2cache-starter</artifactId>
     </dependency>
 
   </dependencies>
 
   <build>
-    <finalName>${project.artifactId}-${project.version}</finalName>
+    <finalName>${hump.name}-${editionName}-${project.version}</finalName>
     <filters>
       <filter>src/main/resources/application.yml</filter>
       <filter>src/main/resources/application-${profile.active}.yml</filter>
@@ -68,44 +68,57 @@
     <resources>
       <resource>
         <directory>src/main/resources</directory>
-        <excludes>
-          <exclude>application-local.yml</exclude>
-          <exclude>application-dev.yml</exclude>
-          <exclude>application-beta.yml</exclude>
-          <exclude>application-beta2.yml</exclude>
-          <exclude>application-beta3.yml</exclude>
-          <exclude>application-pre.yml</exclude>
-          <exclude>application-prod.yml</exclude>
-        </excludes>
         <filtering>true</filtering>
         <includes>
           <include>**/*</include>
+        </includes>
+        <excludes>
+          <exclude>static/**</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>static/**</include>
         </includes>
       </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
-          <include>application-${profile.active}.yml</include>
           <include>spring-logback.xml</include>
         </includes>
       </resource>
+
       <resource>
         <directory>src/main/scripts</directory>
         <includes>
-          <include>Dockerfile</include>
           <include>startenv.sh</include>
+          <include>*.sh</include>
+          <include>*.bat</include>
         </includes>
         <filtering>true</filtering>
         <targetPath>${project.basedir}/target</targetPath>
       </resource>
 
       <resource>
-        <directory>src/main/resources/samples</directory>
+        <directory>src/main/docker</directory>
         <includes>
-          <include>**/*</include>
+          <include>Dockerfile</include>
         </includes>
-        <targetPath>${project.basedir}/target/samples</targetPath>
+        <filtering>true</filtering>
+        <targetPath>${project.basedir}/target</targetPath>
+      </resource>
+
+      <resource>
+        <directory>conf</directory>
+        <includes>
+          <include>*.properties</include>
+          <include>*.xml</include>
+        </includes>
+        <filtering>true</filtering>
+        <targetPath>${project.basedir}/target</targetPath>
       </resource>
     </resources>
 
@@ -122,7 +135,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>cloud.xcan.sdf.XCanAngusTesterApplication</mainClass>
+          <mainClass>cloud.xcan.angus.XCanAngusTesterApplication</mainClass>
         </configuration>
       </plugin>
 
@@ -155,7 +168,7 @@
   <profiles>
     <!-- Deploy only community edition -->
     <profile>
-      <id>xcan.dist.community</id>
+      <id>dist.community</id>
       <properties>
         <editionType>COMMUNITY</editionType>
       </properties>
@@ -164,55 +177,46 @@
     </profile>
     <!-- Deploy only enterprise edition -->
     <profile>
-      <id>xcan.dist.enterprise</id>
+      <id>dist.enterprise</id>
       <properties>
         <editionType>ENTERPRISE</editionType>
       </properties>
       <modules/>
       <dependencies>
         <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-analysis</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-report</artifactId>
+          <groupId>cloud.xcan.angus</groupId>
+          <artifactId>xcan-angustester.professional</artifactId>
+          <version>${project.version}</version>
         </dependency>
       </dependencies>
     </profile>
     <!-- Deploy only datacenter edition -->
     <profile>
-      <id>xcan.dist.datacenter</id>
+      <id>dist.datacenter</id>
       <properties>
         <editionType>DATACENTER</editionType>
       </properties>
       <modules/>
       <dependencies>
         <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-analysis</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-report</artifactId>
+          <groupId>cloud.xcan.angus</groupId>
+          <artifactId>xcan-angustester.professional</artifactId>
+          <version>${project.version}</version>
         </dependency>
       </dependencies>
     </profile>
     <!-- Deploy only cloud service edition -->
     <profile>
-      <id>xcan.dist.cloudService</id>
+      <id>dist.cloudService</id>
       <properties>
         <editionType>CLOUD_SERVICE</editionType>
       </properties>
       <modules/>
       <dependencies>
         <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-analysis</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>cloud.xcan.sdf</groupId>
-          <artifactId>xcan-angustester.extension-report</artifactId>
+          <groupId>cloud.xcan.angus</groupId>
+          <artifactId>xcan-angustester.professional</artifactId>
+          <version>${project.version}</version>
         </dependency>
       </dependencies>
     </profile>

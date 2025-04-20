@@ -6,11 +6,11 @@
     "status": "PENDING",
     "priority": "HIGH",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -22,7 +22,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "页面编辑",
@@ -31,11 +31,11 @@
     "status": "PENDING",
     "priority": "HIGH",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -47,7 +47,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "页面组织",
@@ -56,11 +56,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -72,7 +72,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "页面权限管理",
@@ -81,11 +81,11 @@
     "status": "IN_PROGRESS",
     "priority": "LOW",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:50",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -97,7 +97,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "允许管理员管理评论",
@@ -106,11 +106,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-10-09 20:45:29",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-10-09 23:45:39",
     "canceledDate": null,
     "confirmedDate": "2024-10-09 20:45:39",
@@ -122,7 +122,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "创建页面讨论板块",
@@ -131,11 +131,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -147,7 +147,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持讨论的跟踪和排序",
@@ -156,11 +156,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:06",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 23:07:07",
     "canceledDate": null,
     "confirmedDate": null,
@@ -172,7 +172,7 @@
     "actualWorkload": 1.5,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "允许用户订阅讨论",
@@ -181,11 +181,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:13:32",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -197,7 +197,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "设计并实现搜索功能",
@@ -206,11 +206,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:04",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -222,7 +222,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "优化搜索结果显示",
@@ -231,11 +231,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:51:40",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -247,7 +247,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "添加导航栏和侧边栏",
@@ -256,11 +256,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -272,7 +272,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "提供多种主题选择",
@@ -281,11 +281,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:44",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -297,7 +297,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "允许用户自定义样式",
@@ -306,11 +306,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:02",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -322,7 +322,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持响应式设计",
@@ -331,11 +331,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:34",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:56:35",
     "canceledDate": null,
     "confirmedDate": null,
@@ -347,7 +347,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "实现中文和英语语言支持",
@@ -356,11 +356,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:02:50",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -372,7 +372,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "实现语言切换功能",
@@ -381,11 +381,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:01",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:37:08",
     "canceledDate": null,
     "confirmedDate": "2024-09-18 22:37:08",
@@ -397,7 +397,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持翻译现有内容到新语言",
@@ -406,11 +406,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:02:39",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:06:59",
     "canceledDate": null,
     "confirmedDate": null,
@@ -422,7 +422,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "多语言功能的兼容性测试",
@@ -431,11 +431,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-11-18 21:02:14",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": "2024-11-20 21:02:16",
     "canceledDate": null,
     "confirmedDate": "2024-11-20 21:02:16",
@@ -447,7 +447,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "设计页面访问统计数据模型",
@@ -456,11 +456,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:30",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 22:56:31",
     "canceledDate": null,
     "confirmedDate": null,
@@ -472,7 +472,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "实现访问计数功能",
@@ -481,11 +481,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-11-20 21:02:00",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -497,7 +497,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "开发统计数据的可视化展示",
@@ -506,11 +506,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:52:37",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -522,7 +522,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "页面版本管理",
@@ -531,11 +531,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-10-09 16:01:15",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -547,7 +547,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "实现版本比较功能",
@@ -556,11 +556,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -572,7 +572,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "允许回滚到先前版本",
@@ -581,11 +581,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:15:56",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 23:15:57",
     "canceledDate": null,
     "confirmedDate": null,
@@ -597,7 +597,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持Markdown格式",
@@ -606,11 +606,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:10",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-20 23:07:11",
     "canceledDate": null,
     "confirmedDate": null,
@@ -622,7 +622,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持富文本编辑器",
@@ -631,11 +631,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -647,7 +647,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持图片和视频嵌入",
@@ -656,11 +656,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:03",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -672,7 +672,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "添加页面评论区域",
@@ -681,11 +681,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -697,7 +697,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "实现评论回复功能",
@@ -706,11 +706,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:46",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -722,7 +722,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "开发常用插件，如日历、待办事项等",
@@ -731,11 +731,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:02",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -747,7 +747,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "支持第三方插件扩展的集成",
@@ -756,11 +756,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:15:42",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -772,7 +772,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "插件管理",
@@ -781,11 +781,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:39",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -797,7 +797,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "添加用户访问来源分析",
@@ -806,11 +806,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -822,7 +822,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   }
 ]
 

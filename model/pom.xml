@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cloud.xcan.sdf</groupId>
-    <artifactId>AngusTester</artifactId>
+    <groupId>cloud.xcan.angus</groupId>
+    <artifactId>xcan-angustester.parent</artifactId>
     <version>1.0.0</version>
   </parent>
 
@@ -15,13 +15,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.spec</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.spec</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.api</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.remote</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.cloud</groupId>
@@ -44,12 +44,17 @@
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.mockservice-api</artifactId>
+      <artifactId>xcan-angusmeter.mockservice-api</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.model</artifactId>
+      <artifactId>xcan-angusmeter.model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-jackson</artifactId>
     </dependency>
 
     <dependency>

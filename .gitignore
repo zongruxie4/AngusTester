@@ -4,8 +4,10 @@ target/
 logs
 work
 tmp
-data
+.env
+conf/.*env
 extension/dist
+/docs/AIAgent/
 
 ### STS ###
 .apt_generated

@@ -1,5 +1,5 @@
 server:
-  port: ${ANGUSTESTER_PORT:1830}
+  port: ${ESTER_PORT:1830}
   servlet:
     context-path: /
 
@@ -13,9 +13,18 @@ xcan:
       origin: '*'
       headers: '*'
       methods: 'POST, GET, PUT, DELETE, PATCH, HEAD'
-  idgen:
+  opt-log:
     enabled: true
-  idgenSwaggerUiMvcConfigurer:
+    clearBeforeDay: 360
+  api-log:
+    enabled: true
+    userRequest:
+      enabled: false
+      printLevel: FULL
+    systemRequest:
+      enabled: true
+      printLevel: FULL
+  id-gen:
     enabled: true
   datasource:
     enabled: true
@@ -50,7 +59,7 @@ xcan:
     contact:
       name: '@organization.name@'
       url: '@organization.url@'
-      email: dev@xcan.company
+      email: dev@xcan.cloud
   jackson:
     defaultPropertyInclusion: always
     dateFormat: yyyy-MM-dd HH:mm:ss
@@ -60,22 +69,25 @@ xcan:
   validator:
     enabled: true
     extraMessages:
-      - classpath:/i18n/messages-angustester-model
-      - classpath:/i18n/messages-angustester-api
-      - classpath:/i18n/messages-angustester-core
-      - classpath:/i18n/messages-angustester-import-apis
-      - classpath:/i18n/messages-angusctrl-api
+      - classpath:/i18n/messages-tester-model
+      - classpath:/i18n/messages-tester-api
+      - classpath:/i18n/messages-tester-core
+      - classpath:/i18n/messages-tester-import-api
+      - classpath:/i18n/messages-tester-commercial
+      - classpath:/i18n/messages-ctrl-api
       - classpath:/i18n/messages-angus-model
       - classpath:/i18n/messages-angus-validator
       - classpath:/i18n/messages-gm-api
-      - classpath:/i18n/messages-expense-api
+      - classpath:/i18n/messages-ess-api
       - classpath:/i18n/messages-storage-api
-      - classpath:/i18n/messages-payproxy-api
-      - classpath:/i18n/messages-store-api
-  oauth:
-    enabled: true
-    holdType: resource_service
-    translateException: true
+  iaas:
+    aliyun:
+      ecs:
+        accessKeyId: ${ALIYUN_ECS_ACCESS_KEY_ID}
+        accessKeySecret: ${ALIYUN_ECS_ACCESS_KEY_SECRET}
+      dns:
+        accessKeyId: ${ALIYUN_DNS_ACCESS_KEY_ID}
+        accessKeySecret: ${ALIYUN_DNS_ACCESS_KEY_SECRET}
 
 info:
   app:
@@ -89,7 +101,7 @@ info:
     profile: '@profile.active@'
     runtime: ${RUNTIME:HOST}
     license: XCan Business License, Version 1.0
-    licenseUrl: http://www.xcan.company/licenses/XCBL-1.0
+    licenseUrl: http://www.xcan.cloud/licenses/XCBL-1.0
     organization: '@organization.name@'
     organizationUrl: '@organization.url@'
 
@@ -98,19 +110,38 @@ spring:
     name: '@artifactId@'
   profiles:
     active: '@profile.active@'
-  mvc:
-    throw-exception-if-no-handler-found: true
-  resources:
-    add-mappings: false
   jmx:
     enabled: true
   main:
+    allow-circular-references: true
     allow-bean-definition-overriding: true
     banner-mode: OFF
+  data:
+    ldap:
+      repositories:
+        enabled: false
+  web:
+    resources:
+      add-mappings: false
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 100MB
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  open-api:
+    info:
+      title: AngusTester RESTFul OpenAPI Documentation
+      description: >
+        AngusTester OpenAPI Documentation is a comprehensive, standards-compliant technical reference 
+        that provides detailed specifications for all API endpoints, including authentication methods, 
+        request/response schemas (with JSON/XML examples), HTTP status codes, error handling patterns,
+        and interactive testing capabilities through Swagger UI integration, designed to empower developers 
+        with version-controlled documentation for seamless third-party system integration.
 
 logging:
   config: classpath:spring-logback.xml
@@ -141,5 +172,5 @@ management:
           - serviceregistry
   endpoint:
     health:
-      enabled: true
       show-details: always
+      access: read_only

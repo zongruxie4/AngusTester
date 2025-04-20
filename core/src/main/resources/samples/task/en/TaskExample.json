@@ -6,11 +6,11 @@
     "status": "PENDING",
     "priority": "HIGH",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -22,7 +22,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Page Editing",
@@ -31,11 +31,11 @@
     "status": "PENDING",
     "priority": "HIGH",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -47,7 +47,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Page Organization",
@@ -56,11 +56,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -72,7 +72,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Page Permission Management",
@@ -81,11 +81,11 @@
     "status": "IN_PROGRESS",
     "priority": "LOW",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:50",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -97,7 +97,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Allow administrators to manage comments",
@@ -106,11 +106,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-10-09 20:45:29",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-10-09 23:45:39",
     "canceledDate": null,
     "confirmedDate": "2024-10-09 20:45:39",
@@ -122,7 +122,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Create a discussion section for the page",
@@ -131,11 +131,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -147,7 +147,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support tracking and sorting of discussions",
@@ -156,11 +156,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:06",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 23:07:07",
     "canceledDate": null,
     "confirmedDate": null,
@@ -172,7 +172,7 @@
     "actualWorkload": 1.5,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Allow users to subscribe to discussions",
@@ -181,11 +181,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:13:32",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -197,7 +197,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Design and implement a search function",
@@ -206,11 +206,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:04",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -222,7 +222,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Optimize the display of search results",
@@ -231,11 +231,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:51:40",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -247,7 +247,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Add navigation bar and sidebar",
@@ -256,11 +256,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -272,7 +272,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Provide multiple theme options",
@@ -281,11 +281,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:44",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -297,7 +297,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Allow users to customize styles",
@@ -306,11 +306,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:02",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -322,7 +322,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support responsive design",
@@ -331,11 +331,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:34",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:56:35",
     "canceledDate": null,
     "confirmedDate": null,
@@ -347,7 +347,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Implement Chinese and English language support",
@@ -356,11 +356,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:02:50",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -372,7 +372,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Implement language switch functionality",
@@ -381,11 +381,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:01",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:37:08",
     "canceledDate": null,
     "confirmedDate": "2024-09-18 22:37:08",
@@ -397,7 +397,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support translating existing content into new languages",
@@ -406,11 +406,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:02:39",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-18 23:06:59",
     "canceledDate": null,
     "confirmedDate": null,
@@ -422,7 +422,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Compatibility testing for multilingual features",
@@ -431,11 +431,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-11-18 21:02:14",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": "2024-11-20 21:02:16",
     "canceledDate": null,
     "confirmedDate": "2024-11-20 21:02:16",
@@ -447,7 +447,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Design a model for page access statistics",
@@ -456,11 +456,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:56:30",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 22:56:31",
     "canceledDate": null,
     "confirmedDate": null,
@@ -472,7 +472,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Implement access counting functionality",
@@ -481,11 +481,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-11-20 21:02:00",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -497,7 +497,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Develop visual displays for statistics",
@@ -506,11 +506,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:52:37",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -522,7 +522,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Page version management",
@@ -531,11 +531,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-10-09 16:01:15",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -547,7 +547,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Implement version comparison functionality",
@@ -556,11 +556,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -572,7 +572,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Allow rollback to previous versions",
@@ -581,11 +581,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:15:56",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-19 23:15:57",
     "canceledDate": null,
     "confirmedDate": null,
@@ -597,7 +597,7 @@
     "actualWorkload": 1.0,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support Markdown format",
@@ -606,11 +606,11 @@
     "status": "COMPLETED",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:07:10",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 0,
+    "overdue": 0,
     "completedDate": "2024-09-20 23:07:11",
     "canceledDate": null,
     "confirmedDate": null,
@@ -622,7 +622,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support rich text editor",
@@ -631,11 +631,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -647,7 +647,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support embedding images and videos",
@@ -656,11 +656,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:03",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -672,7 +672,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Add a comment area for pages",
@@ -681,11 +681,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -697,7 +697,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Implement comment reply functionality",
@@ -706,11 +706,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:46",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -722,7 +722,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Develop commonly used plugins, such as calendar, to-do list, etc",
@@ -731,11 +731,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 22:36:02",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -747,7 +747,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Support integration of third-party plugin extensions",
@@ -756,11 +756,11 @@
     "status": "IN_PROGRESS",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:15:42",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -772,7 +772,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Plugin management",
@@ -781,11 +781,11 @@
     "status": "CONFIRMING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": "2024-09-18 23:10:39",
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -797,7 +797,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   },
   {
     "name": "Add user access source analysis",
@@ -806,11 +806,11 @@
     "status": "PENDING",
     "priority": "MEDIUM",
     "softwareVersion": "v1.0",
-    "missingBugFlag": null,
-    "unplannedFlag": 0,
+    "missingBug": null,
+    "unplanned": 0,
     "startDate": null,
     "deadlineDate": "2024-10-23 20:31:41",
-    "overdueFlag": 1,
+    "overdue": 1,
     "completedDate": null,
     "canceledDate": null,
     "confirmedDate": null,
@@ -822,7 +822,7 @@
     "actualWorkload": null,
     "parentTaskId": null,
     "description": null,
-    "sprintDeletedFlag": 0
+    "sprintDeleted": 0
   }
 ]
 

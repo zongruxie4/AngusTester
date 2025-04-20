@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cloud.xcan.sdf</groupId>
-    <artifactId>AngusTester</artifactId>
+    <groupId>cloud.xcan.angus</groupId>
+    <artifactId>xcan-angustester.parent</artifactId>
     <version>1.0.0</version>
   </parent>
 

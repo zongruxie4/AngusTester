@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cloud.xcan.sdf</groupId>
-    <artifactId>AngusTester</artifactId>
+    <groupId>cloud.xcan.angus</groupId>
+    <artifactId>xcan-angustester.parent</artifactId>
     <version>1.0.0</version>
   </parent>
 
@@ -16,90 +16,84 @@
 
   <dependencies>
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.lettucex</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.l2cache-core</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.core</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.core</artifactId>
+      <artifactId>xcan-infra.lettucex</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.parser</artifactId>
+      <artifactId>xcan-infra.l2cache-core</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.jdbc</artifactId>
+      <artifactId>xcan-angusmeter.core</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.agent-api</artifactId>
+      <artifactId>xcan-angusmeter.parser</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angus.mockservice-api</artifactId>
+      <artifactId>xcan-angusmeter.jdbc</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.comp.jmock</groupId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusmeter.agent-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusmeter.mockservice-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.jmock</groupId>
       <artifactId>xcan-jmock.core</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.plugin-spring</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-angusgm.api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-store.api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-expense.api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-storage.api</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-plugin.spring</artifactId>
     </dependency>
 
     <!-- Note: Cannot move to the front, which will cause OAS failure in SDF -->
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
+      <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angustester.api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-angustester.extension-import-apis</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angustester.extension-import-api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.test</artifactId>
-      <scope>test</scope>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusgm.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusstorage.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusess.api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
     </dependency>
 
     <dependency>
@@ -132,6 +126,12 @@
       <groupId>com.aliyun</groupId>
       <artifactId>alidns20150109</artifactId>
       <version>3.0.7</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

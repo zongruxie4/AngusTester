@@ -1,8 +1,8 @@
-import static cloud.xcan.sdf.spec.SpecConstant.DEFAULT_ENCODING;
+import static cloud.xcan.angus.spec.SpecConstant.DEFAULT_ENCODING;
 
-import cloud.xcan.sdf.spec.experimental.Assert;
-import cloud.xcan.sdf.spec.utils.FileUtils;
-import cloud.xcan.sdf.spec.utils.GzipUtils;
+import cloud.xcan.angus.spec.experimental.Assert;
+import cloud.xcan.angus.spec.utils.FileUtils;
+import cloud.xcan.angus.spec.utils.GzipUtils;
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
 import io.swagger.v3.core.util.Json31;

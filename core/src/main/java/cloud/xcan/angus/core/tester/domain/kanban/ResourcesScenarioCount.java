@@ -1,0 +1,27 @@
+package cloud.xcan.angus.core.tester.domain.kanban;
+
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.LinkedHashMap;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+/**
+ * @author XiaoLong Liu
+ */
+@Getter
+@Setter
+@Accessors(chain = true)
+public class ResourcesScenarioCount {
+
+  @Schema(description = "Total number of scenario")
+  private long allSce;
+
+  @Schema(description = "The number of scenario group by type")
+  private LinkedHashMap<ScriptType, Integer> sceByScriptType = new LinkedHashMap<>();
+
+  @Schema(description = "The number of scenario group by plugin")
+  private LinkedHashMap<String, Integer> sceByPluginName = new LinkedHashMap<>();
+
+}

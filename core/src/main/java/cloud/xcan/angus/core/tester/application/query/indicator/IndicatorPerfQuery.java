@@ -1,0 +1,24 @@
+package cloud.xcan.angus.core.tester.application.query.indicator;
+
+import cloud.xcan.angus.api.commonlink.CombinedTargetType;
+import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+public interface IndicatorPerfQuery {
+
+  IndicatorPerf find(Long targetId, CombinedTargetType targetType);
+
+  IndicatorPerf detailAndDefault(CombinedTargetType targetType, Long targetId);
+
+  Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec, PageRequest pageable,
+      Class<IndicatorPerf> clz);
+
+  IndicatorPerf find0(Long targetId, CombinedTargetType targetType);
+
+}
+
+
+
+

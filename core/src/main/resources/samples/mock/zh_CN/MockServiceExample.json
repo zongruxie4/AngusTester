@@ -2,10 +2,10 @@
   "name": "示例Mock服务",
   "source": "CREATED",
   "importSource": null,
-  "authFlag": false,
+  "auth": false,
   "apiSecurity": null,
   "apiCors": {
-    "enabledFlag": true,
+    "enabled": true,
     "allowCorsOrigin": "*",
     "allowCorsCredentials": true,
     "allowCorsRequestMethods": "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"

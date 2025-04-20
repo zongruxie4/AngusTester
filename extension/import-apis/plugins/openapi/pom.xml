@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>cloud.xcan.sdf</groupId>
+    <groupId>cloud.xcan.angus</groupId>
     <artifactId>xcan-angustester.extension-import-apis-plugins</artifactId>
     <version>1.0.0</version>
   </parent>
@@ -16,8 +16,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>cloud.xcan.sdf</groupId>
-      <artifactId>xcan-sdf.spec</artifactId>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.spec</artifactId>
       <!-- !!! VERY IMPORTANT -->
       <scope>provided</scope>
     </dependency>
@@ -39,10 +39,10 @@
   <properties>
     <plugin.name>OpenapiImportPlugin</plugin.name>
     <plugin.id>${project.artifactId}</plugin.id>
-    <plugin.class>cloud.xcan.sdf.extension.angustester.plugin.OpenapiImportPlugin</plugin.class>
+    <plugin.class>cloud.xcan.angus.extension.angustester.plugin.OpenapiImportPlugin</plugin.class>
     <plugin.version>${project.version}</plugin.version>
     <plugin.provider>XiaoCan Technology (Beijing) Co.，Ltd</plugin.provider>
-    <plugin.description>${name}</plugin.description>
+    <plugin.description>${project.name}</plugin.description>
     <plugin.dependencies/>
     <plugin.license>http://www.xcan.cloud/licenses/XCBL-1.0.txt</plugin.license>
   </properties>

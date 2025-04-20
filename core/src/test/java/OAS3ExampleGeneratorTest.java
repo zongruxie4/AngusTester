@@ -1,4 +1,4 @@
-import cloud.xcan.sdf.core.angustester.infra.util.OAS3ExampleGenerator;
+import cloud.xcan.angus.core.tester.infra.util.OAS3ExampleGenerator;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;

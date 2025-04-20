@@ -1,5 +1,5 @@
-import cloud.xcan.sdf.core.angustester.infra.util.OpenApiExampleGenerator;
-import cloud.xcan.sdf.spec.utils.JsonUtils;
+import cloud.xcan.angus.core.tester.infra.util.OpenApiExampleGenerator;
+import cloud.xcan.angus.spec.utils.JsonUtils;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
