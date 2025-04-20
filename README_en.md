@@ -3,6 +3,12 @@ AngusTester
 
 [English](README_en.md) | [中文](README.md)
 
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.0-brightgreen)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-4.2.0-brightgreen)](https://spring.io/projects/spring-cloud)
+[![Eureka Client](https://img.shields.io/badge/Eureka%20Client-2.0.4-lightgrey)](https://spring.io/projects/spring-cloud-netflix)
+[![Angus Infra](https://img.shields.io/badge/Angus%20Infra-1.0.0-red)](https://github.com/xcancloud/AngusInfra)
+[![Open API](https://img.shields.io/badge/Open%20API-3.0.1-blue)](https://swagger.io/specification/)
+
 ## Introduction
 
 **[AngusTester](https://www.xcan.cloud)** (referred to as `AT`) is designed to assist software development teams in efficiently and sustainably carrying out software development and testing activities, while fulfilling the agile development and testing requirements of users.
