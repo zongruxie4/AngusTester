@@ -7,40 +7,40 @@ public interface TesterFuncPluginMessage {
 
   /*<******************Plan#Auth(ATF021 ~ ATF030)******************>*/
   String FUNC_PLAN_NO_AUTH_CODE = "ATF021";
-  String FUNC_PLAN_NO_AUTH = "xcm.angustester.func.plan.no.auth.t";
+  String FUNC_PLAN_NO_AUTH = "xcm.tester.func.plan.no.auth.t";
 
   /*Plan*/
   /*<******************Plan(ATF031 ~ ATF040)******************>*/
-  String FUNC_PLAN_NAME_REPEATED_T = "xcm.angustester.func.plan.name.repeated.t";
-  //String FUNC_PLAN_DATE_RANGE_ERROR_T = "xcm.angustester.func.plan.date.range.error.t";
-  String PLAN_STATUS_MISMATCH_T = "xcm.angustester.func.plan.status.mismatch.t";
+  String FUNC_PLAN_NAME_REPEATED_T = "xcm.tester.func.plan.name.repeated.t";
+  //String FUNC_PLAN_DATE_RANGE_ERROR_T = "xcm.tester.func.plan.date.range.error.t";
+  String PLAN_STATUS_MISMATCH_T = "xcm.tester.func.plan.status.mismatch.t";
   String PLAN_REVIEW_NOT_ENABLED_CODE = "ATF031";
-  String PLAN_REVIEW_NOT_ENABLED = "xcm.angustester.func.plan.review.not.enabled";
+  String PLAN_REVIEW_NOT_ENABLED = "xcm.tester.func.plan.review.not.enabled";
   String PLAN_NOT_STARTED_CODE = "ATF032";
-  String PLAN_NOT_STARTED = "xcm.angustester.func.plan.not.started";
-  String PLAN_CASE_NOT_COMPLETED = "xcm.angustester.func.plan.case.not.completed";
+  String PLAN_NOT_STARTED = "xcm.tester.func.plan.not.started";
+  String PLAN_CASE_NOT_COMPLETED = "xcm.tester.func.plan.case.not.completed";
 
   /*Review*/
   /*<******************Review(ATF041 ~ ATF050)******************>*/
-  String FUNC_REVIEW_NAME_REPEATED_T = "xcm.angustester.func.review.name.repeated.t";
-  String REVIEW_STATUS_MISMATCH_T = "xcm.angustester.func.review.status.mismatch.t";
-  String REVIEW_CANNOT_END = "xcm.angustester.func.review.cannot.end";
+  String FUNC_REVIEW_NAME_REPEATED_T = "xcm.tester.func.review.name.repeated.t";
+  String REVIEW_STATUS_MISMATCH_T = "xcm.tester.func.review.status.mismatch.t";
+  String REVIEW_CANNOT_END = "xcm.tester.func.review.cannot.end";
   String REVIEW_NOT_STARTED_CODE = "ATF052";
-  String REVIEW_NOT_STARTED = "xcm.angustester.func.review.not.started";
+  String REVIEW_NOT_STARTED = "xcm.tester.func.review.not.started";
 
   /*Case*/
   /*<******************Case(ATF051 ~ ATF060)******************>*/
-  String CASE_NAME_REPEATED_T = "xcm.angustester.case.name.repeated.t";
-  String CASE_DEADLINE_GREATER_PLAN_T = "xcm.angustester.case.deadline.greater.plan.t";
+  String CASE_NAME_REPEATED_T = "xcm.tester.case.name.repeated.t";
+  String CASE_DEADLINE_GREATER_PLAN_T = "xcm.tester.case.deadline.greater.plan.t";
   String CASE_NOT_REVIEWED_CODE = "ATF051";
-  String CASE_NOT_REVIEWED_T = "xcm.angustester.case.not.reviewed.t";
-  String CASE_CAN_NOT_REVIEWED_T = "xcm.angustester.case.can.not.reviewed.t";
-  String CASE_REVIEW_REPEATED_T = "xcm.angustester.case.review.is.repeated.t";
+  String CASE_NOT_REVIEWED_T = "xcm.tester.case.not.reviewed.t";
+  String CASE_CAN_NOT_REVIEWED_T = "xcm.tester.case.can.not.reviewed.t";
+  String CASE_REVIEW_REPEATED_T = "xcm.tester.case.review.is.repeated.t";
 
   /*<******************Case#Favourite(ATF071 ~ ATS075)******************>*/
-  String CASE_FAVOURITE_REPEATED_T = "xcm.angustester.case.favorite.repeated.t";
+  String CASE_FAVOURITE_REPEATED_T = "xcm.tester.case.favorite.repeated.t";
   /*<******************Case#Follow(ATF076 ~ ATS080)******************>*/
-  String CASE_FOLLOW_REPEATED_T = "xcm.angustester.case.follow.repeated.t";
+  String CASE_FOLLOW_REPEATED_T = "xcm.tester.case.follow.repeated.t";
 
   /**********************ExportHeaderName********************/
   //String EXPORT_FUNC_CREATION_STATISTICS = "xcm.export.funcCreationStatistics";
