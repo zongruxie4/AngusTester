@@ -13,11 +13,11 @@ public class ServicesTestAssembler {
 
   public static List<TestTaskSetting> toTestTaskTestings(Set<ServicesTestTaskGenerateDto> dto) {
     List<TestTaskSetting> testTaskSettings = new ArrayList<>();
-    for (ServicesTestTaskGenerateDto dto : dto) {
+    for (ServicesTestTaskGenerateDto x : dto) {
       testTaskSettings.add(new TestTaskSetting()
-          .setAssigneeId(dto.getAssigneeId())
-          .setTestType(dto.getTestType()).setPriority(dto.getPriority())
-          .setDeadlineDate(dto.getDeadlineDate()));
+          .setAssigneeId(x.getAssigneeId())
+          .setTestType(x.getTestType()).setPriority(x.getPriority())
+          .setDeadlineDate(x.getDeadlineDate()));
     }
     return testTaskSettings;
   }
