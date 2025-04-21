@@ -37,3 +37,4 @@ nbdist/
 .settings/
 #.classpath
 #.project
+/.metadata/
