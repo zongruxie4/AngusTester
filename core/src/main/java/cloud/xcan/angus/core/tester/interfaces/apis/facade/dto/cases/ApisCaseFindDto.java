@@ -16,7 +16,6 @@ import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

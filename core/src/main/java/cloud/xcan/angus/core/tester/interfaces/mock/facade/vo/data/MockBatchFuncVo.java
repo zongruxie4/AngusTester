@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

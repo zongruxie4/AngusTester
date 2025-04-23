@@ -18,7 +18,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

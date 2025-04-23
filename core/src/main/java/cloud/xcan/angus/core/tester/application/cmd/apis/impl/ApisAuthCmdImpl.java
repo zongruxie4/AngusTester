@@ -3,13 +3,13 @@ package cloud.xcan.angus.core.tester.application.cmd.apis.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.angus.api.commonlink.TesterApisMessage.FORBID_AUTH_CREATOR;
 import static cloud.xcan.angus.api.commonlink.TesterApisMessage.FORBID_AUTH_CREATOR_CODE;
+import static cloud.xcan.angus.core.biz.BizAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ApisAuthConverter.toApisCreatorAuth;
 import static cloud.xcan.angus.core.tester.application.converter.ServicesAuthConverter.toServicesViewPermission;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
 import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 @Biz
@@ -76,7 +75,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
         // Check the api exists
         apiInfoDb = apisQuery.checkAndFindBasicInfo(auth.getApisId());
         // Check the add creator permissions
-        BizAssert.assertTrue(!apiInfoDb.getCreatedBy().equals(auth.getAuthObjectId()),
+        assertTrue(!apiInfoDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
 
         // Check the user have api authorization permissions
@@ -133,7 +132,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
         // Check the Auth existed
         authDb = apisAuthQuery.checkAndFind(auth.getId());
         // Check the modify creator permissions
-        BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
+        assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
         // Check the api exists
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
@@ -171,8 +170,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
         // Check the api auth exists
         authDb = apisAuthQuery.checkAndFind(id);
         // Check the modify creator permissions
-        BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
-            FORBID_AUTH_CREATOR);
+        assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
         // Check the api exists
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
         // Check the user have api authorization permissions
@@ -235,8 +233,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     List<ApisAuth> apisAuths = new ArrayList<>();
     for (Long apisId : apisIds) {
       apisAuths.addAll(creatorIds.stream()
-          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator))
-          .collect(Collectors.toList()));
+          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)).toList());
     }
     batchInsert(apisAuths, "authObjectId");
   }
@@ -250,8 +247,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     List<ApisAuth> apisAuths = new ArrayList<>();
     for (Long apisId : apisIdAndCreatorIds.keySet()) {
       apisAuths.addAll(apisIdAndCreatorIds.get(apisId).stream()
-          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator))
-          .collect(Collectors.toList()));
+          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)).toList());
     }
     batchInsert(apisAuths, "authObjectId");
   }

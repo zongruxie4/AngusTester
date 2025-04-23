@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author XiaoLong Liu
  */@Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

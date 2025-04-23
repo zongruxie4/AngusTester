@@ -28,7 +28,6 @@ import lombok.experimental.Accessors;
  * message. Please do not modify the order arbitrarily.
  */
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

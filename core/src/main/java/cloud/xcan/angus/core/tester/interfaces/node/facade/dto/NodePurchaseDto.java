@@ -16,7 +16,6 @@ import lombok.experimental.Accessors;
  * @author wjl
  */
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

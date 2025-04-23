@@ -19,7 +19,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Range;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

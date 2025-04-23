@@ -37,7 +37,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

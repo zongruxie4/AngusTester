@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 /**
  * @author XiaoLong Liu
  */@Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

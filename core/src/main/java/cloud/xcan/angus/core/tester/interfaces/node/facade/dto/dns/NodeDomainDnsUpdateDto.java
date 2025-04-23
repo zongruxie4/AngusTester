@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)

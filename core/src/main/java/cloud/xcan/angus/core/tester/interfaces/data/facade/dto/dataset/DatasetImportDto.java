@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 @Valid
-
 @Setter
 @Getter
 @Accessors(chain = true)
