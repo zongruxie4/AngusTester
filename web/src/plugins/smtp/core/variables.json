@@ -1,0 +1,152 @@
+[
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=101",
+        "description": "响应头的描述",
+        "enabled": true,
+        "expected": "application/json",
+        "parameterName": "accept-type",
+        "name": "响应头",
+        "type": "HEADER"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应状态码的描述",
+        "enabled": true,
+        "expected": "200",
+        "name": "响应状态码",
+        "type": "STATUS"
+    },
+    {
+        "assertionCondition": "REG_MATCH",
+        "condition": "{id}=1001",
+        "description": "响应体正则匹配的描述",
+        "expression": "/\\d/",
+        "matchItem": "1",
+        "enabled": true,
+        "expected": "100",
+        "name": "响应体正则匹配",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "JSON_PATH_MATCH",
+        "condition": "{id}=1001",
+        "description": "响应体jsonpath匹配的描述",
+        "expression": "$..",
+        "matchItem": "0",
+        "enabled": true,
+        "expected": "200",
+        "name": "响应体jsonpath匹配",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "XPATH_MATCH",
+        "condition": "{id}=1001",
+        "description": "响应体xpath匹配的的描述",
+        "expression": "$.1",
+        "matchItem": "3",
+        "enabled": true,
+        "expected": "300",
+        "name": "响应体xpath匹配",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体等于的描述",
+        "enabled": true,
+        "expected": "400",
+        "name": "响应体等于",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体提取精确值等于的描述",
+        "enabled": true,
+        "extraction": {
+            "defaultValue": "500",
+            "location": "QUERY_PARAMETER",
+            "method": "EXACT_VALUE",
+            "parameterName": "name"
+        },
+        "name": "响应体提取精确值等于",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体提取正则表达式的描述",
+        "enabled": true,
+        "extraction": {
+            "defaultValue": "600",
+            "expression": "/\\d/",
+            "location": "PATH_PARAMETER",
+            "matchItem": "1",
+            "method": "REGEX",
+            "parameterName": "age"
+        },
+        "name": "响应体提取正则表达式",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体提取xpath表达式的描述",
+        "enabled": true,
+        "extraction": {
+            "defaultValue": "700",
+            "expression": "12",
+            "location": "QUERY_PARAMETER",
+            "matchItem": "2",
+            "method": "X_PATH",
+            "parameterName": "name"
+        },
+        "name": "响应体提取xpath表达式",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体提取jsonpath表达式的描述",
+        "enabled": true,
+        "extraction": {
+            "defaultValue": "800",
+            "expression": "$..",
+            "location": "PATH_PARAMETER",
+            "matchItem": "1",
+            "method": "JSON_PATH",
+            "parameterName": "age"
+        },
+        "name": "响应体提取jsonpath表达式",
+        "type": "BODY"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应体大小的描述",
+        "enabled": true,
+        "expected": "500",
+        "name": "响应体大小",
+        "type": "BODY_SIZE"
+    },
+    {
+        "assertionCondition": "EQUAL",
+        "condition": "{id}=1001",
+        "description": "响应大小的描述",
+        "enabled": true,
+        "expected": "200",
+        "name": "响应大小",
+        "type": "SIZE"
+    },
+    {
+        "assertionCondition": "GREATER_THAN",
+        "condition": "{id}=1001",
+        "description": "耗时的描述",
+        "enabled": true,
+        "expected": "600",
+        "name": "耗时",
+        "type": "DURATION"
+    }
+]

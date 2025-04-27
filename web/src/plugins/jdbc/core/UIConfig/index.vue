@@ -1,0 +1,279 @@
+<script setup lang="ts">
+import { defineAsyncComponent, nextTick, ref } from 'vue';
+import { Button } from 'ant-design-vue';
+import { Icon } from '@xcan-angus/vue-ui';
+import { utils } from '@xcan-angus/tools';
+
+import { PipelineConfig, TargetKey } from './PropsType';
+import { JDBCConfig } from './JDBCConfigs/PropsType';
+import { WaitingTimeConfig } from './WaitingTime/PropsType';
+import { RendezvousConfig } from './Rendezvous/PropsType';
+import { TransEndConfig } from './TransEnd/PropsType';
+import { TransStartConfig } from './TransStart/PropsType';
+
+export interface Props {
+  value: PipelineConfig[];
+  loaded: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  value: undefined,
+  loaded: false
+});
+
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (e:'errorNumChange', value:number):void;
+  (e:'renderChange', value:boolean):void;
+}>();
+
+const Draggable = defineAsyncComponent(() => import('./Draggable/index.vue'));
+
+const dragRef = ref();
+const domId = utils.uuid();
+const isTransEnd = ref(false);
+
+const scrollToBottom = () => {
+  const dom = document.getElementById(domId);
+  if (!dom) {
+    return;
+  }
+
+  nextTick(() => {
+    setTimeout(() => {
+      dom.scrollTop = dom.scrollHeight;
+    }, 16.66);
+  });
+};
+
+const renderChange = (value:boolean) => {
+  emit('renderChange', value);
+};
+
+const insertJDBC = () => {
+  const data: JDBCConfig = {
+    arguments: [],
+    assertions: [],
+    variables: [],
+    beforeName: '',
+    transactionName: '',
+    description: '',
+    enabled: true,
+    id: utils.uuid(),
+    name: '',
+    sql: '',
+    target: 'JDBC',
+    maxResultRows: '1000',
+    timeoutInSecond: '60',
+    type: undefined
+  };
+  if (typeof dragRef.value?.add === 'function') {
+    dragRef.value.add(data);
+  }
+
+  scrollToBottom();
+};
+
+const insertTransStart = () => {
+  isTransEnd.value = true;
+  const data: TransStartConfig = {
+    id: utils.uuid(),
+    target: 'TRANS_START',
+    name: '',
+    description: '',
+    enabled: true,
+    beforeName: '',
+    transactionName: ''
+  };
+
+  if (typeof dragRef.value?.add === 'function') {
+    dragRef.value.add(data);
+  }
+
+  scrollToBottom();
+};
+
+const insertTransEnd = () => {
+  isTransEnd.value = false;
+  const data: TransEndConfig = {
+    id: utils.uuid(),
+    target: 'TRANS_END',
+    name: '',
+    description: '',
+    beforeName: '',
+    transactionName: '',
+    enabled: true
+  };
+
+  if (typeof dragRef.value?.add === 'function') {
+    dragRef.value.add(data);
+  }
+
+  scrollToBottom();
+};
+
+let waitingTimeNum = 0;
+const insertTime = () => {
+  const data: WaitingTimeConfig = {
+    id: utils.uuid(),
+    beforeName: '',
+    transactionName: '',
+    target: 'WAITING_TIME',
+    name: '等待时间-' + waitingTimeNum++,
+    description: '',
+    enabled: true,
+    minWaitTimeInMs: '',
+    maxWaitTimeInMs: ''
+  };
+
+  if (typeof dragRef.value?.add === 'function') {
+    dragRef.value.add(data);
+  }
+
+  scrollToBottom();
+};
+
+let rendezvousNum = 0;
+const insertRendezvous = () => {
+  const data: RendezvousConfig = {
+    id: utils.uuid(),
+    target: 'RENDEZVOUS',
+    name: '集合点-' + rendezvousNum++,
+    description: '',
+    enabled: true,
+    beforeName: '',
+    transactionName: '',
+    timeoutInMs: '',
+    threads: ''
+  };
+
+  if (typeof dragRef.value?.add === 'function') {
+    dragRef.value.add(data);
+  }
+
+  scrollToBottom();
+};
+
+const deleteHandler = (data:{
+  id: string;
+  target: TargetKey;
+  children?: {
+    id: string;
+    target: TargetKey;
+  }[];
+}[]) => {
+  if (!data.length) {
+    isTransEnd.value = false;
+    return;
+  }
+
+  let transNum = 0;
+  let hasUncloseTrans = false;
+  for (let i = 0, len = data.length; i < len; i++) {
+    const { target, children } = data[i];
+    if (target === 'TRANS_START') {
+      transNum++;
+      if (!children?.length) {
+        hasUncloseTrans = true;
+        break;
+      } else {
+        const hasTransEnd = children.find(item => item.target === 'TRANS_END');
+        if (!hasTransEnd) {
+          hasUncloseTrans = true;
+          break;
+        }
+      }
+    }
+  }
+
+  if (transNum) {
+    isTransEnd.value = hasUncloseTrans;
+  } else {
+    isTransEnd.value = false;
+  }
+};
+
+const getData = () => {
+  if (typeof dragRef.value?.getData === 'function') {
+    return dragRef.value.getData();
+  }
+
+  return [];
+};
+
+defineExpose({
+  isValid: (): boolean => {
+    if (typeof dragRef.value?.isValid === 'function') {
+      return dragRef.value.isValid();
+    }
+
+    return true;
+  },
+  getData
+});
+
+</script>
+
+<template>
+  <div class="py-5 h-full text-3 leading-5">
+    <div class="flex items-center flex-nowrap whitespace-nowrap space-x-2 px-5">
+      <Button
+        type="default"
+        size="small"
+        @click="insertJDBC">
+        <div class="flex items-center">
+          <Icon icon="icon-jia" class="mr-1" />
+          <span>插入JDBC</span>
+        </div>
+      </Button>
+      <Button
+        v-if="!isTransEnd"
+        type="default"
+        size="small"
+        @click="insertTransStart">
+        <div class="flex items-center">
+          <Icon icon="icon-shiwu" class="mr-1" />
+          <span>插入开始事务</span>
+        </div>
+      </Button>
+      <Button
+        v-else
+        type="default"
+        size="small"
+        @click="insertTransEnd">
+        <div class="flex items-center">
+          <Icon icon="icon-shiwu" class="mr-1" />
+          <span>插入结束事务</span>
+        </div>
+      </Button>
+      <Button
+        type="default"
+        size="small"
+        @click="insertTime">
+        <div class="flex items-center">
+          <Icon icon="icon-dengdaishijian" class="mr-1" />
+          <span>插入等待时间</span>
+        </div>
+      </Button>
+      <Button
+        type="default"
+        size="small"
+        @click="insertRendezvous">
+        <div class="flex items-center">
+          <Icon icon="icon-jihedian1" class="mr-1" />
+          <span>插入集合点</span>
+        </div>
+      </Button>
+    </div>
+
+    <Draggable
+      :id="domId"
+      ref="dragRef"
+      :value="props.value"
+      :loaded="props.loaded"
+      style="height: calc(100% - 40px);"
+      class="my-4 pl-5 pr-4 space-y-3 overflow-y-auto overflow-x-hidden scroll-smooth"
+      @delete="deleteHandler"
+      @renderChange="renderChange" />
+  </div>
+</template>
