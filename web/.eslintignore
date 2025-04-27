@@ -1,0 +1,8 @@
+node_modules/
+.vscode/
+public/
+dist/
+nginx/
+lib/iconfont
+types/
+src/views/apis/commonComp/AssertForm/utils/xpath/xpath.ts

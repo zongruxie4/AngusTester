@@ -1,0 +1,48 @@
+import { TESTER, PUB_TESTER } from '@xcan-angus/tools';
+
+import Activity from './Activity';
+import Apis from './Apis';
+import Services from './Services';
+import Mock from './Mock';
+import Project from './Project';
+import Analysis from './Analysis';
+import Indicator from './Indicator';
+import Trash from './Trash';
+import Unarchived from './Unarchived';
+import Variable from './Variable';
+import Node from './Node';
+import Scenario from './Scenario';
+import Script from './Script';
+import AngusScript from './AngusScript';
+import Task from './Task';
+import ShareApis from './ShareApis';
+import Exec from './Exec';
+import FuncCase from './FuncCase';
+import Kanban from './Kanban';
+import Data from './Data';
+import DataSet from './DataSet';
+
+const baseUrl = TESTER;
+const pubBaseUrl = PUB_TESTER;
+
+export const activity = new Activity(baseUrl);
+export const apis = new Apis(baseUrl);
+export const services = new Services(baseUrl);
+export const mock = new Mock(baseUrl);
+export const project = new Project(baseUrl);
+export const analysis = new Analysis(baseUrl);
+export const indicator = new Indicator(baseUrl);
+export const trash = new Trash(baseUrl);
+export const unarchived = new Unarchived(baseUrl);
+export const variable = new Variable(baseUrl);
+export const node = new Node(baseUrl);
+export const scenario = new Scenario(baseUrl);
+export const script = new Script(baseUrl);
+export const angusScript = new AngusScript(baseUrl);
+export const task = new Task(baseUrl);
+export const shareApis = new ShareApis(pubBaseUrl);
+export const exec = new Exec(baseUrl);
+export const funcCase = new FuncCase(baseUrl);
+export const kanban = new Kanban(baseUrl);
+export const dataApi = new Data(baseUrl);
+export const dataSet = new DataSet(baseUrl);

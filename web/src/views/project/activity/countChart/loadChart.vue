@@ -1,0 +1,463 @@
+<script setup lang="ts">
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { BarData, DateType, PieData, PieSetting } from './PropsType';
+import dayjs from 'dayjs';
+import { http } from '@xcan-angus/tools';
+import { useI18n } from 'vue-i18n';
+
+// type Filters = { key: string, value: string | boolean | string[], op: string; };
+
+interface Props {
+  geteway:string,
+  resource:string,
+  pieParmas:PieSetting[];
+  barTitle:string;
+  dateType:DateType;
+  hasPieChart:boolean;
+  visible?:boolean;
+  userId?:string;
+  searchParams?:{
+    key: string,
+    op: string,
+    value: string
+  }[]
+}
+const props = withDefaults(defineProps<Props>(), {
+  resource: '',
+  pieParmas: () => [],
+  barTitle: '',
+  dateType: 'MONTH',
+  hasPieChart: false,
+  visible: true,
+  userId: '',
+  searchParams: () => []
+});
+
+const BarChartParam = defineAsyncComponent(() => import('./barChartParam.vue'));
+const PieChart = defineAsyncComponent(() => import('./pieChart.vue'));
+// const bar = defineAsyncComponent(() => import('@/components/bar/index.vue'));
+const LineChart = defineAsyncComponent(() => import('./lineChart.vue'));
+
+const { t } = useI18n();
+
+/**
+ * /uc/api/v1/list/customization/summary接口参数说明（统计接口）
+ * 开启loadCountGroup()查看具体可传的参数,以下部分参数必须按照loadCountGroup接口返回传参（返回的值以下统称结果）
+ * resource: 结果summaryQuery里每一项的name（对应数据库真实表）,有多少种name表示当前服务下分多少种统计（eg:User、Dept、Group、Tenant ）
+ * groupByColumns: 结果summaryQuery里每一项的groupByColumns（对应数据库表的字段）,目前分为时间范围类型和其他类型，
+ * 备注：时间范围类型统计多以柱状图或折线图展示，其他类型暂以饼图统计；
+ * aggregates[0].column: 结果summaryQuery里每一项的aggregateColumns（聚合字段）,通常统计传id即可 其他参数参考结果
+ * aggregates[0].function：统计类型 默认COUNT，其他参数参考/uc/api/v1/list/customization/summary接口
+ * groupBy：分组类型，即按什么分组 具体参数参考/uc/api/v1/list/customization/summary接口
+ * 备注：以上参数只支持结果里返回的，具体返回结构咨询后端
+ */
+
+const datePicker = ref([]);
+const dateChange = (value) => {
+  let unit:string[] = [];
+  let filters:{key:string, op:string, value:string}[] = [];
+  if (!value?.length) {
+    // 其他清空 默认展示近一月
+    filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${dayjs().startOf('date').subtract(1, 'week').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"` },
+      { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${dayjs().format('YYYY-MM-DD HH:mm:ss')}"` }];
+    unit = ['DAY', t('day')];
+  }
+
+  filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${value[0]}"` },
+    { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${value[1]}"` }];
+  const startDate = dayjs(value[0]);
+  const endDate = dayjs(value[1]);
+  const often = endDate.diff(startDate, 'day');
+  if (often <= 1) {
+    unit = ['HOUR', t('hour')];
+  } else if (often > 1 && often <= 30) {
+    unit = ['DAY', t('day')];
+  } else if (often > 30 && often <= 120) {
+    unit = ['WEEK', t('week')];
+  } else if (often > 120 && often <= 730) {
+    unit = ['MONTH', t('month')];
+  } else {
+    unit = ['YEAR', t('year')];
+  }
+
+  dateFilters.value = filters;
+  dateRangeType.value = unit;
+  loadCount();
+  loadDateCount();
+};
+
+const selectDate = (value) => {
+  datePicker.value = [];
+  let filters:{key:string, op:string, value:string}[] = [];
+  let unit:string[] = [];
+  switch (value) {
+    case 'DAY':
+      filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${dayjs().startOf('date').format('YYYY-MM-DD HH:mm:ss')}"` },
+        { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${dayjs().endOf('date').format('YYYY-MM-DD HH:mm:ss')}"` }];
+      unit = ['HOUR', t('hour')];
+      break;
+    case 'WEEK':
+      filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${dayjs().startOf('date').subtract(1, 'week').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"` },
+        { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${dayjs().format('YYYY-MM-DD HH:mm:ss')}"` }];
+      unit = ['DAY', t('day')];
+      break;
+    case 'MONTH':
+      filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${dayjs().startOf('date').subtract(1, 'month').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"` },
+        { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${dayjs().format('YYYY-MM-DD HH:mm:ss')}"` }];
+      unit = ['DAY', t('day')];
+      break;
+    case 'YEAR':
+      filters = [{ key: 'created_date', op: 'GREATER_THAN_EQUAL', value: `"${dayjs().startOf('date').subtract(1, 'year').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"` },
+        { key: 'created_date', op: 'LESS_THAN_EQUAL', value: `"${dayjs().format('YYYY-MM-DD HH:mm:ss')}"` }];
+      unit = ['MONTH', t('month')];
+      break;
+  }
+
+  dateFilters.value = filters;
+  dateRangeType.value = unit;
+  loadCount();
+  loadDateCount();
+};
+
+const targetTypeFilter = ref<{
+    key: string,
+    op: string,
+    value: string
+  }[]>([]);
+const userFilter = ref<{
+    key: string,
+    op: string,
+    value: string
+  }[]>([]);
+
+/**
+ * 用户饼图统计参数
+ * resource:对应数据库真实,有多少种name表示当前服务下分多少种统计（eg:User、Dept、Group、Tenant ）
+ * groupByColumns: groupByColumns对应数据库表的字段,目前分为时间范围类型和其他类型，
+ * aggregates[0].column: 通常统计传id即可
+ * aggregates[0].function：统计类型 默认COUNT，其他参数参考/uc/api/v1/list/customization/summary接口
+ * groupBy：分组类型，即按什么分组 具体参数参考/uc/api/v1/list/customization/summary接口
+ * 备注：以上参数只支持结果里返回的，具体返回结构咨询后端
+ */
+// 饼图公共参数
+const publicParams = {
+  'aggregates[0].column': 'id',
+  'aggregates[0].function': 'COUNT',
+  groupBy: 'STATUS',
+  name: props.resource
+};
+const pieloading = ref(true); // 饼图统计是否加载完成
+const pieChartData = ref<PieData []>([]);
+const loadCount = async () => {
+  const params = {
+    ...publicParams,
+    groupByColumns: props.pieParmas.map(item => item.key),
+    filters: [...dateFilters.value, ...targetTypeFilter.value, ...userFilter.value],
+    dateRangeType: dateRangeType.value[0]
+  };
+
+  params.filters.forEach(item => {
+    if (item.key === 'created_date') {
+      item.key = 'opt_date';
+    }
+  });
+
+  const [error, { data }] = await http.get(`/${props.geteway}/api/v1/analysis/customization/summary`, params);
+  pieloading.value = false;
+  if (error) {
+    return;
+  }
+  pieChartData.value = getCountData(props.pieParmas, data);
+};
+
+const getCountData = (group, data) => {
+  const dataSource:PieData[] = [];
+  for (let i = 0; i < group.length; i++) {
+    const cloum = group[i];
+    const res = data[cloum.key];
+    if (!res) {
+      const _dataSource = {
+        key: cloum.key,
+        title: cloum.value,
+        total: 0,
+        color: cloum.color,
+        legend: cloum.type,
+        data: cloum.type.map(m => ({ name: m.message, value: 0 }))
+      };
+      dataSource.push(_dataSource);
+      continue;
+    }
+    const arr = Object.entries(res);
+    if (!arr.length) {
+      const _dataSource = {
+        key: cloum.key,
+        title: cloum.value,
+        total: 0,
+        color: cloum.color,
+        legend: cloum.type,
+        data: cloum.type.map(m => ({ name: m.message, value: 0 }))
+      };
+      dataSource.push(_dataSource);
+      continue;
+    }
+
+    // 判断每一组下是否是空对象,每一组对象里后台不会反回只有key的情况，有key肯定有值
+    const _group = Object.keys(res);
+    if (!_group.length) {
+      continue;
+    }
+
+    // 所有来源只有枚举类型数据
+    if (['target_type'].includes(cloum.key)) {
+      setEnumDatasource(cloum, res, dataSource);
+    }
+
+    // 所有来源只有boolean 类型数据
+    if (['sys_admin_flag'].includes(cloum.key)) {
+      setBooleanDatasource(cloum, res, dataSource);
+    }
+  }
+  return dataSource;
+};
+
+// 设置布尔型数据
+const setBooleanDatasource = (cloum, res, dataSource) => {
+  const _data:{name:string, value:number | null}[] = [];
+  for (let j = 0; j < cloum.type.length; j++) {
+    const _key = cloum.type[j].value;
+    if (res[_key]) {
+      _data.push({ name: cloum.type[j]?.message, value: +res[_key]?.COUNT_id });
+    } else {
+      if (props.resource !== 'Dept') {
+        _data.push({ name: cloum.type[j]?.message, value: null });
+      }
+    }
+  }
+  const _dataSource = {
+    key: cloum.key,
+    title: cloum.value,
+    total: res[0]?.TOTAL_COUNT_id ? +res[0].TOTAL_COUNT_id : +res[1]?.TOTAL_COUNT_id,
+    color: cloum.color,
+    legend: cloum.type,
+    data: _data || []
+  };
+  dataSource.push(_dataSource);
+};
+// 设置枚举型数据
+const setEnumDatasource = (cloum, res, dataSource) => {
+  const _data:{name:string, value:number | null, codes?:number | null}[] = [];
+  let _total = 0;
+
+  for (let j = 0; j < cloum.type.length; j++) {
+    const _key = cloum.type[j].value;
+    if (res[_key]) {
+      const _item:{name:string, value:number | null, codes?:number | null} = { name: cloum.type[j]?.message, value: +res[_key]?.COUNT_id };
+      _data.push(_item);
+      _total = +res[_key]?.TOTAL_COUNT_id;
+    } else {
+      _data.push({ name: cloum.type[j]?.message, value: null });
+    }
+  }
+  const _dataSource = {
+    key: cloum.key,
+    title: cloum.value,
+    total: _total,
+    color: cloum.color,
+    legend: cloum.type,
+    data: _data.length ? _data : []
+  };
+  dataSource.push(_dataSource);
+};
+
+// 柱状图数据
+const barChartData = ref<BarData>({} as BarData);
+const getDefaultDateRangeType = () => {
+  return ['DAY', t('day')];
+};
+// 默认查询单位
+const dateRangeType = ref(getDefaultDateRangeType());
+
+const getDefaultDateFilters = () => {
+  return [
+    {
+      key: 'created_date',
+      op: 'GREATER_THAN_EQUAL',
+      value: `"${dayjs().subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss')}"`
+    },
+    {
+      key: 'created_date',
+      op: 'LESS_THAN_EQUAL',
+      value: `"${dayjs().format('YYYY-MM-DD HH:mm:ss')}"`
+    }
+  ];
+};
+
+// 默认查询时间范围单位
+const dateFilters = ref(getDefaultDateFilters());
+const barLoading = ref(true); // 柱图统计是否加载完成
+// 请求柱状图数据
+const loadDateCount = async () => {
+  const params = {
+    groupByColumns: 'opt_date',
+    groupBy: 'DATE',
+    name: props.resource,
+    dateRangeType: dateRangeType.value[0],
+    filters: [...dateFilters.value, ...targetTypeFilter.value, ...userFilter.value]
+  };
+  params.filters.forEach(item => {
+    if (item.key === 'created_date') {
+      item.key = 'opt_date';
+    }
+  });
+  const [error, { data }] = await http.get(`/${props.geteway}/api/v1/analysis/customization/summary`, params);
+  barLoading.value = false;
+  if (error) {
+    return;
+  }
+  setBarCharCount(data);
+};
+
+// 设置柱状图默认数据
+const setBarChartDefault = () => {
+  barChartData.value.xData = [];
+  barChartData.value.yData = [];
+  const startDate = dayjs(dateFilters.value[0].value.replace(/^"(.*)"$/, '$1'));
+  const endDate = dayjs(dateFilters.value[1].value.replace(/^"(.*)"$/, '$1'));
+  const often = endDate.diff(startDate, 'hour');
+  if (often <= 24) {
+    for (let i = startDate.hour(); i <= endDate.hour(); i++) {
+      barChartData.value.xData.push(i + '');
+      barChartData.value.yData.push(null);
+    }
+  } else if (often > 24 && often <= 120 * 24) {
+    for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate); date = date.add(1, 'day')) {
+      barChartData.value.xData.push(date.format('YYYY-MM-DD'));
+      barChartData.value.yData.push(null);
+    }
+  } else if (often > 120 * 24 && often <= 730 * 24) {
+    for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate); date = date.add(1, 'month')) {
+      barChartData.value.xData.push(date.format('YYYY-MM'));
+      barChartData.value.yData.push(null);
+    }
+  } else if (often > 730 * 24) {
+    for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate); date = date.add(1, 'year')) {
+      barChartData.value.xData.push(date.format('YYYY'));
+      barChartData.value.yData.push(null);
+    }
+  }
+
+  barChartData.value.title = `${t('添加')}${props.barTitle}`;
+  barChartData.value.unit = `${t('时间单位')}: ${dateRangeType.value[1]}`;
+};
+
+// 设置柱状图数据
+const setBarCharCount = (data:Record<string, any>) => {
+  if (!data) {
+    setBarChartDefault();
+    return;
+  }
+  const keys = Object.keys(data);
+  if (!keys.length) {
+    setBarChartDefault();
+    return;
+  }
+  setBarChartDefault();
+
+  barChartData.value.xData = dateRangeType.value[0] !== 'HOUR' ? keys : keys.map(item => dayjs(item).format('HH'));
+  barChartData.value.yData = Object.values(data).map(item => item.COUNT_id ? +item.COUNT_id : null);
+};
+
+onMounted(() => {
+  loadDateCount();
+});
+
+watch(() => props.hasPieChart, newValue => {
+  if (newValue) {
+    loadCount();
+  }
+}, {
+  immediate: true
+});
+
+watch(() => props.searchParams, newValue => {
+  if (newValue.length) {
+    targetTypeFilter.value = [];
+    userFilter.value = [];
+    for (let i = 0; i < newValue.length; i++) {
+      if (newValue[i].key === 'targetType') {
+        targetTypeFilter.value = [{
+          key: 'target_type',
+          op: 'EQUAL',
+          value: newValue[i].value
+        }];
+      }
+      if (newValue[i].key === 'userId') {
+        userFilter.value = [{
+          key: 'user_id',
+          op: 'EQUAL',
+          value: newValue[i].value
+        }];
+      }
+    }
+  } else {
+    targetTypeFilter.value = [];
+    userFilter.value = [];
+  }
+
+  loadCount();
+  loadDateCount();
+});
+
+</script>
+<template>
+  <div
+    class="statistics-container overflow-hidden relative h-57"
+    :class="{'show-statistics':props.visible}">
+    <BarChartParam
+      :datePicker="datePicker"
+      :resource="props.resource"
+      :dateType="props.dateType"
+      class="search-bar"
+      @selectDate="selectDate"
+      @dateChange="dateChange" />
+    <div
+      v-if="!pieloading"
+      class="flex"
+      style="height: calc(100% - 28px);">
+      <!-- <bar
+        class="mr-5 w-1/2"
+        :title="barChartData?.title"
+        :unit="barChartData?.unit"
+        :xData="barChartData?.xData"
+        :yData="barChartData?.yData" /> -->
+      <LineChart
+        class="mr-5 w-1/2"
+        :title="barChartData?.title"
+        :unit="barChartData?.unit"
+        :xData="barChartData?.xData"
+        :yData="barChartData?.yData" />
+      <div class="flex justify-center flex-none w-1/2">
+        <PieChart
+          v-for="item in pieChartData"
+          :key="item.key"
+          class="flex-1"
+          :title="item.title"
+          :color="item.color"
+          :total="item.total"
+          :dataSource="item.data" />
+      </div>
+    </div>
+  </div>
+</template>
+<style scoped>
+.statistics-container.show-statistics {
+  height: 236px;
+  opacity: 1;
+}
+
+.statistics-container {
+  height: 0;
+  transition: all 300ms linear 0ms;
+  opacity: 0;
+}
+</style>
