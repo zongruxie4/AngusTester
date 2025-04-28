@@ -3,7 +3,6 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Colon, Spin } from '@xcan-angus/vue-ui';
 import { TESTER, http } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
-// import RichBrowser from '@xcan/browser';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { MeetingInfo } from '../PropsType';

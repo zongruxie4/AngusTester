@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { http, TESTER } from '@xcan-angus/tools';
-// import RichBrowser from '@xcan/browser';
+
 import RichEditor from '@/components/richEditor/index.vue';
 import { Switch } from 'ant-design-vue';
 import _ from 'lodash-es';

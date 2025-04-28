@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, onMounted } from 'vue';
-import '@xcan/rapidoc';
+import '@xcan-angus/rapidoc';
 import { http, TESTER, cookie, site } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import YAML from 'yaml';

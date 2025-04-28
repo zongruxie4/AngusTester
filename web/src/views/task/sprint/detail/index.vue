@@ -4,9 +4,6 @@ import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { TESTER, clipboard, http, utils, download } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
-// import RichBrowser from '@xcan/browser';
-// import RichEditor from '@/components/richEditor/index.vue';
-
 import { SprintInfo } from '../PropsType';
 
 type Props = {

@@ -5,7 +5,6 @@ import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { http, utils, TESTER, enumLoader } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 
-// import RichEditor from '@xcan/editor';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { FormState } from './PropsType';

@@ -17,7 +17,6 @@ import {
 import { TESTER, http, download, duration } from '@xcan-angus/tools';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
-// import RichBrowser from '@xcan/browser';
 import RichEditor from '@/components/richEditor/index.vue';
 
 type Props = {

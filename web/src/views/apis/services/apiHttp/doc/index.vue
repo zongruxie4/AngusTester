@@ -3,11 +3,9 @@ import { defineAsyncComponent, ref, onMounted } from 'vue';
 import { site, cookie, TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
-import '@xcan/rapidoc';
+import '@xcan-angus/rapidoc';
 import { createPdf } from '@xcan/rapipdf';
-// import 'rapidoc';
-// import 'rapipdf';
-// import 'rapipdf';
+
 
 interface Props {
   id: string;

@@ -4,7 +4,6 @@ import { Icon, notification, Select, MonacoEditor } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Upload } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration, gzip, ungzip, utils } from '@xcan-angus/tools';
-import '@xcan/monaco/style.css';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 

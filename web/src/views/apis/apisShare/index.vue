@@ -4,7 +4,7 @@ import { http, cookie, site, PUB_TESTER } from '@xcan-angus/tools';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon } from '@xcan-angus/vue-ui';
-import '@xcan/rapidoc';
+import '@xcan-angus/rapidoc';
 
 const route = useRoute();
 const Agent = defineAsyncComponent(() => import('@/views/mock/detail/mockApis/components/agent/index.vue'));

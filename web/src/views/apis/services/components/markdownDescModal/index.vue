@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { Input, Modal } from '@xcan-angus/vue-ui';
-import mavonEditor from '@xcan/markdown';
-import '@xcan/markdown/dist/css/index.css';
-
-const Editor = mavonEditor.mavonEditor;
+import { Modal } from '@xcan-angus/vue-ui';
+import EasyMd from '@/components/easyMd/index.vue';
 
 interface Props {
   visible: boolean;
@@ -26,9 +23,11 @@ const cancelEditDescription = () => {
 };
 
 const saveDescription = () => {
+  description.value = easyMdRef.value.getValue();
   emits('ok', description.value);
 };
 
+const easyMdRef = ref();
 const description = ref();
 
 onMounted(() => {
@@ -60,20 +59,7 @@ const bodyStyle = {
     <div
       :class="{ 'border': isEdit }"
       class="flex items-start h-full rounded border-solid border-border-divider">
-      <Input
-        v-if="isEdit"
-        v-model:value="description"
-        type="textarea"
-        :maxlength="20000"
-        style="flex: 0 0 50%;height: 100%;padding: 18px;border: none;resize: none;"
-        placeholder="请输入描述，支持Markdown语法。"
-        :autoSize="false" />
-      <Editor
-        v-model="description"
-        defaultOpen="preview"
-        style="flex:1;height: 100%;border: none;font-size: 12px;word-break: break-all;"
-        :boxShadow="false"
-        :subfield="false" />
+      <EasyMd ref="easyMdRef" :value="description" />
     </div>
   </Modal>
 </template>

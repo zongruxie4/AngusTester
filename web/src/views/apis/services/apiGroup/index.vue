@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, r
 import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
 import { site, cookie } from '@xcan-angus/tools';
-import '@xcan/rapidoc';
+import '@xcan-angus/rapidoc';
 
 import store from '@/store';
 import { apis, services } from '@/api/altester';

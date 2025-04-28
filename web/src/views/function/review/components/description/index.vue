@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import RichBrowser from '@xcan/browser';
 import RichEditor from '@/components/richEditor/index.vue';
 
 interface Props {

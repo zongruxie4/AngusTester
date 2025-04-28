@@ -17,7 +17,6 @@ import { http, utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/t
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
-// import RichEditor from '@xcan/editor';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { ReviewInfo } from '../PropsType';

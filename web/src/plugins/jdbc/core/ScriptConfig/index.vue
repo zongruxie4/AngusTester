@@ -2,7 +2,6 @@
 import { ref, onMounted, watch } from 'vue';
 import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
-import '@xcan/monaco/style.css';
 
 import { SceneConfig } from '../PropsType';
 
