@@ -22,13 +22,14 @@ import {
   Validate
 } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { http, utils, TESTER, GM, duration, download } from '@xcan-angus/tools';
+import { utils, TESTER, duration, download } from '@xcan-angus/tools';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from '@/api/altester';
+import { setting } from '@/api/aas';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './PropsType';
 
 interface Props {
@@ -1120,7 +1121,7 @@ const loadServiceInfo = async () => {
 
 const readyState = ref(-1);
 const loadProxyUrl = async () => {
-  const [error, resp] = await http.get(`${GM}/setting/user/apis/proxy`);
+  const [error, resp] = await setting.getApiProxy();
   if (error) {
     return;
   }

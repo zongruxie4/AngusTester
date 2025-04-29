@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { analysis } from '@/api/altester';
 
 import { ResourceInfo } from '../PropsType';
 
@@ -81,7 +82,7 @@ const loadData = async () => {
     params = { ...params, ...props.params };
   }
 
-  const [error, res] = await http.get(`${TESTER}/analysis/task/count`, params);
+  const [error, res] = await analysis.getTaskCount(params);
   emit('update:loading', false);
   if (error) {
     return;

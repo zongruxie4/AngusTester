@@ -4,8 +4,7 @@ import { site, cookie, TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
 import '@xcan-angus/rapidoc';
-import { createPdf } from '@xcan/rapipdf';
-
+import { createPdf } from 'rapipdf';
 
 interface Props {
   id: string;

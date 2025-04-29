@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';
@@ -152,7 +153,7 @@ const batchCancel = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.put(`${TESTER}/task/${ids[i]}/cancel`, null, { silence: true }));
+        promises.push(task.cancelTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -200,7 +201,7 @@ const batchDelete = async () => {
     content: `确定删除选中的 ${num} 条任务吗？`,
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const [error] = await http.del(`${TESTER}/task`, { ids });
+      const [error] = await task.deleteTask(`${TESTER}/task`, ids);
       if (error) {
         return;
       }
@@ -222,7 +223,7 @@ const batchFavourite = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${TESTER}/task/${ids[i]}/favourite`, null, { silence: true }));
+        promises.push(task.favouriteTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -272,7 +273,7 @@ const batchCancelFavourite = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.del(`${TESTER}/task/${ids[i]}/favourite`, null, { silence: true }));
+        promises.push(task.cancelFavouriteTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -321,7 +322,7 @@ const batchFollow = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${TESTER}/task/${ids[i]}/follow`, null, { silence: true }));
+        promises.push(task.followTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -370,7 +371,7 @@ const batchCancelFollow = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.del(`${TESTER}/task/${ids[i]}/follow`, null, { silence: true }));
+        promises.push(task.cancelFollowTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {

@@ -16,7 +16,8 @@ import {
   TaskStatus,
   Table
 } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '@/views/task/PropsType';
 
@@ -72,7 +73,7 @@ const refChildTaskOk = async (subTaskIds) => {
     subTaskIds: subTaskIds
   };
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/task/${props.taskInfo?.id}/subtask/set`, params, { paramsType: true });
+  const [error] = await task.setSubTask(props.taskInfo?.id, params);
   loading.value = false;
   refTaskModalVisible.value = false;
   if (error) {
@@ -114,7 +115,7 @@ const toSave = async () => {
     params.missingBugFlag = false;
   }
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/task`, params);
+  const [error] = await task.addTask(params);
   loading.value = false;
   if (error) {
     return;
@@ -134,7 +135,7 @@ const toDelete = (data:TaskInfo['subTaskInfos'][number]) => {
         subTaskIds: [data.id]
       };
       emit('update:loading', true);
-      const [error] = await http.put(`${TESTER}/task/${props.taskInfo?.id}/subtask/cancel`, params, { paramsType: true });
+      const [error] = await task.cancelSubTask(props.taskInfo?.id, params);
       emit('update:loading', false);
       if (error) {
         return;
@@ -174,7 +175,7 @@ const dropdownClick = (menuItem, data: TaskInfo) => {
 };
 
 const toFavourite = async (data: TaskInfo) => {
-  const [error] = await http.post(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.favouriteTask(data.id);
   if (error) {
     return;
   }
@@ -184,7 +185,7 @@ const toFavourite = async (data: TaskInfo) => {
 };
 
 const toDeleteFavourite = async (data: TaskInfo) => {
-  const [error] = await http.del(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.cancelFavouriteTask(data.id);
   if (error) {
     return;
   }
@@ -194,7 +195,7 @@ const toDeleteFavourite = async (data: TaskInfo) => {
 };
 
 const toFollow = async (data: TaskInfo) => {
-  const [error] = await http.post(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.followTask(data.id);
   if (error) {
     return;
   }
@@ -204,7 +205,7 @@ const toFollow = async (data: TaskInfo) => {
 };
 
 const toDeleteFollow = async (data: TaskInfo) => {
-  const [error] = await http.del(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.cancelFollowTask(data.id);
   if (error) {
     return;
   }

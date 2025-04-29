@@ -13,8 +13,9 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '@/views/task/PropsType';
 
@@ -92,7 +93,7 @@ const nameBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/name`, { name: value }, { paramsType: true });
+  const [error] = await task.editTaskName(taskId.value, value);
   emit('loadingChange', false);
   nameEditFlag.value = false;
   if (error) {
@@ -129,7 +130,7 @@ const actualWorkloadBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/actualWorkload`, { workload: value });
+  const [error] = await task.editActualWorkload(taskId.value, { workload: value });
   emit('loadingChange', false);
   actualWorkloadEditFlag.value = false;
   if (error) {
@@ -166,7 +167,7 @@ const evalWorkloadBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/evalWorkload`, { workload: value });
+  const [error] = await task.editEvalWorkloadApi(taskId.value, { workload: value });
   emit('loadingChange', false);
   evalWorkloadEditFlag.value = false;
   if (error) {
@@ -207,10 +208,10 @@ const taskTypeBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/type`, { type: value }, { paramsType: true });
+  const [error] = await task.editTaskTaskType(taskId.value, value);
   emit('loadingChange', false);
   if (value === 'BUG') {
-    await http.patch(`${TESTER}/task/${taskId.value}`, {
+    await task.updateTask(taskId.value, {
       bugLevel: 'MINOR',
       missingBugFlag: false
     });
@@ -266,7 +267,7 @@ const priorityBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/priority/${value}`);
+  const [error] = await task.editTaskPriority(taskId.value, value);
   emit('loadingChange', false);
   priorityEditFlag.value = false;
   if (error) {
@@ -301,7 +302,7 @@ const tagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/tag`, { tagIds: ids });
+  const [error] = await task.editTagsApi(taskId.value, { tagIds: ids });
   emit('loadingChange', false);
   tagEditFlag.value = false;
   if (error) {
@@ -335,7 +336,7 @@ const versionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, { softwareVersion: value || '' });
+  const [error] = await task.updateTask(taskId.value, { softwareVersion: value || '' });
   emit('loadingChange', false);
   versionEditFlag.value = false;
   if (error) {

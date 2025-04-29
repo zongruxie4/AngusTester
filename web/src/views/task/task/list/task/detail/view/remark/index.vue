@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils, TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 type Remark = {
   content: string;
@@ -39,7 +40,7 @@ const editorChange = (value: string) => {
 };
 
 const toDelete = async (id: string) => {
-  const [error] = await http.del(`${TESTER}/task/remark/${id}`);
+  const [error] = await task.delTaskRemark(id);
   if (error) {
     return;
   }
@@ -81,7 +82,7 @@ const ok = async () => {
   validateErr.value = false;
 
   const params = { taskId: props.id, content: content.value };
-  const [error] = await http.post(`${TESTER}/task/remark`, params);
+  const [error] = await task.addTaskRemark(params);
   if (error) {
     return;
   }

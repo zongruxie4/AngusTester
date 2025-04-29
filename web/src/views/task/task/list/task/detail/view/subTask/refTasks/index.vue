@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { Colon, IconTask, Modal, notification, Select } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 
@@ -40,7 +41,7 @@ const ok = async () => {
     subTaskIds: refTaskIds.value
   };
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/task/${props.taskInfo?.id}/subtask/set`, params, { paramsType: true });
+  const [error] = await task.setSubTask(props.taskInfo?.id, params);
   loading.value = false;
   if (error) {
     return;

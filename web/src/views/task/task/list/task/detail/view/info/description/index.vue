@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 
@@ -63,7 +63,7 @@ const ok = async () => {
 
   const params = { description: content.value };
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${props.taskId}/description`, params);
+  const [error] = await task.editTaskDescription(props.taskId, params);
   emit('loadingChange', false);
   if (error) {
     return;

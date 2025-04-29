@@ -2,7 +2,8 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { HttpMethodText, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { ApiItem } from './PropsType';
@@ -115,7 +116,7 @@ const loadData = async () => {
       params.followBy = props.params.followBy;
     }
   }
-  const [error, res] = await http.get(`${TESTER}/apis/search`, params);
+  const [error, res] = await apis.searchList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -135,7 +136,7 @@ const deleteHandler = (data: ApiItem) => {
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
-      const [error] = await http.del(`${TESTER}/apis`, params);
+      const [error] = await apis.del(params);
       if (error) {
         return;
       }
@@ -155,7 +156,7 @@ const deleteHandler = (data: ApiItem) => {
 
 const cancelFavourite = async (data: ApiItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/apis/${data.id}/favourite`);
+  const [error] = await apis.cancelFavourite(data.id);
   loading.value = false;
   if (error) {
     return;
@@ -171,7 +172,7 @@ const cancelFavourite = async (data: ApiItem) => {
 
 const cancelFollow = async (data: ApiItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/apis/${data.id}/follow`);
+  const [error] = await apis.cancelWatch(data.id);
   loading.value = false;
   if (error) {
     return;

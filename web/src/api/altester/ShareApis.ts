@@ -7,8 +7,8 @@ export default class API {
   }
 
   // 获取分享信息
-  getShareInfo (params: {spt: string, sid: string, passd?: string}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share`, params);
+  getApiShareInfo<T> (params: T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/share/view`, params);
   }
 
   // 获取项目下 apis

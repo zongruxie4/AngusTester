@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, provide, watch } from 'vue';
-import { http, cookie, site, PUB_TESTER } from '@xcan-angus/tools';
+import { cookie, site, PUB_TESTER } from '@xcan-angus/tools';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon } from '@xcan-angus/vue-ui';
 import '@xcan-angus/rapidoc';
+import { shareApis } from "@/api/altester";
 
 const route = useRoute();
 const Agent = defineAsyncComponent(() => import('@/views/mock/detail/mockApis/components/agent/index.vue'));
@@ -47,7 +48,7 @@ const connectWs = () => {
 const responseErr = ref();
 
 const loadData = async () => {
-  const [error, { data }] = await http.get(`${PUB_TESTER}/apis/share/view`, {
+  const [error, { data }] = await shareApis.getApiShareInfo({
     id: id.value,
     pat: pat.value
   });

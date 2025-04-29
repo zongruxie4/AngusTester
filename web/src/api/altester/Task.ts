@@ -6,8 +6,6 @@ export default class API {
     baseUrl = prefix + '/task';
   }
 
-  // TODO Q3 API未提取出来
-
   loadTaskList (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params);
   }
@@ -28,27 +26,31 @@ export default class API {
     return http.put(`${baseUrl}/${id}/name?name=${name}`);
   }
 
-  editTaskDescription (id: string, description: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/description`, { description: description });
+  updateTask (taskId: string, parmas): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${taskId}`, parmas);
   }
 
-  editEvalWorkloadApi (id: string, workload: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/evalWorkload`, { workload: workload });
+  editTaskDescription (id: string, parmas: {description: string}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/description`, parmas);
   }
 
-  editActualWorkload (id: string, workload: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/actualWorkload`, { workload: workload });
+  editEvalWorkloadApi<T> (id: string, params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/evalWorkload`, params);
+  }
+
+  editActualWorkload<T> (id: string, params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/actualWorkload`, params);
   }
 
   editDeadlineDateApi (id: string, deadlineDate: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/deadline/${deadlineDate}`);
   }
 
-  editTaskAssignees (id: string, parmas: { assigneeIds: string[] }): Promise<[Error | null, any]> {
+  editTaskAssignees (id: string, parmas: { assigneeId: string }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/assignee`, parmas);
   }
 
-  editConfirmors (id: string, parmas: { confirmorIds: string[]|null }): Promise<[Error | null, any]> {
+  editConfirmors (id: string, parmas: { confirmorId: string|null }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/confirmor`, parmas);
   }
 
@@ -68,6 +70,10 @@ export default class API {
     return http.put(`${baseUrl}/${id}/tag`, parmas);
   }
 
+  moveTask<T> (params: T) {
+    return http.patch(`${baseUrl}/move`, params, { paramsType: false });
+  }
+
   loadTaskInfo (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
@@ -76,16 +82,16 @@ export default class API {
     return http.put(`${baseUrl}/${id}/start`);
   }
 
-  cancelTask (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/cancel`);
+  cancelTask (id: string, option = {}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/cancel`, null, option);
   }
 
   completeTask (id: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/complete`);
   }
 
-  deleteTask (id: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}?ids=${[id]}`);
+  deleteTask (ids: string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids });
   }
 
   processedTask (id: string): Promise<[Error | null, any]> {
@@ -112,29 +118,57 @@ export default class API {
     return http.del(`${baseUrl}/remark/${remarkId}`);
   }
 
-  // 确认任务
   confirmTask (id: string, status: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/result/${status}/confirm`);
   }
 
-  // 更改结果
   updateResult (id, result: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/process/result/${result}`);
   }
 
-  favouriteTask (id:string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${id}/favourite`);
+  favouriteTask (id:string, option?: {[key: string]: any}): Promise<[Error | null, any]> {
+    if (!option) { option = {}; }
+    return http.post(`${baseUrl}/${id}/favourite`, null, { ...option });
   }
 
-  followTask (id:string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${id}/follow`);
+  followTask (id:string, option = {}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${id}/follow`, null, option);
   }
 
-  cancelFavouriteTask (id:string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/favourite`);
+  cancelFavouriteTask (id:string, option = {}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${id}/favourite`, null, option);
   }
 
-  cancelFollowTask (id:string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/follow`);
+  cancelFollowTask (id:string, option = {}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${id}/follow`, null, option);
   }
+
+  deleteTrashTask (taskId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash/${taskId}`);
+  }
+
+  backTrashTask (taskId: string) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/${taskId}/back`);
+  }
+
+  searchTrashTask <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/trash/search`, params);
+  }
+
+  getUserSprintAuth<T> (sprintId: string, userId: string, params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/sprint/${sprintId}/user/${userId}/auth`, params);
+  }
+
+  getTaskResult (taskType: string, targetId: string, testType: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${taskType}/${targetId}/${testType}/result`);
+  }
+
+  setSubTask<T> (taskId: string, params:T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/subtask/set`, params, { paramsType: true });
+  }
+
+  cancelSubTask<T> (taskId: string, params:T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/subtask/cancel`, params, { paramsType: true });
+  }
+
 }

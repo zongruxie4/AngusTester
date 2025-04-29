@@ -16,12 +16,10 @@ export default class API {
     return http.patch(`${baseUrl}/move`, params);
   }
 
-  // 删除
   del (params: { ids: string[] }): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, params);
   }
 
-  // 查看详情
   loadInfo (id:string, resolveRefFlag = false): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`, { resolveRefFlag });
   }
@@ -56,13 +54,11 @@ export default class API {
     return http.put(`${baseUrl}/perf?id=${params.id}`, params);
   }
 
-  // 清除所有为归档
   delNotArchiveList (): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/archive`);
   }
 
-  // 查询
-  searchCollectLsit (params: any): Promise<[Error | null, any]> {
+  searchList (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params);
   }
 

@@ -21,6 +21,8 @@ import FuncCase from './FuncCase';
 import Kanban from './Kanban';
 import Data from './Data';
 import DataSet from './DataSet';
+import Module from './module';
+import Software from './Software';
 
 const baseUrl = TESTER;
 const pubBaseUrl = PUB_TESTER;
@@ -46,3 +48,6 @@ export const funcCase = new FuncCase(baseUrl);
 export const kanban = new Kanban(baseUrl);
 export const dataApi = new Data(baseUrl);
 export const dataSet = new DataSet(baseUrl);
+export const modules = new Module(baseUrl);
+export const software = new Software(baseUrl)
+

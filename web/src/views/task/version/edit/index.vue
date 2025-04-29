@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { DatePicker, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Textarea } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { software } from '@/api/altester';
 
 interface Props {
   visible: boolean;
@@ -34,7 +34,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/software/version/${id}`);
+  const [error, res] = await software.getVersionInfo(id);
 
   loading.value = false;
   if (error) {
@@ -68,7 +68,7 @@ const ok = async () => {
 
 const addOk = async () => {
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/software/version`, {
+  const [error] = await software.addVersion({
     ...formState.value,
     projectId: props.projectId
   });
@@ -82,7 +82,7 @@ const addOk = async () => {
 
 const editOk = async () => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/software/version`, {
+  const [error] = await software.updataVersion({
     ...formState.value,
     id: props.versionId
   });

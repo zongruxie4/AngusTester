@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, Tag } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { software } from '@/api/altester';
 
 import { VersionInfo } from '../PropsType';
 import SearchPanel from '@/views/task/version/list/searchPanel/index.vue';
@@ -72,7 +72,7 @@ const toDelete = async (data: VersionInfo) => {
     content: `确定删除版本【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/software/version`, { ids: [id] });
+      const [error] = await software.delete([id]);
       if (error) {
         return;
       }
@@ -109,7 +109,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/software/version/search`, { ...params });
+  const [error, res] = await software.searchList({ ...params });
   loaded.value = true;
   loading.value = false;
 
@@ -160,10 +160,8 @@ const changeStatus = async (status, record) => {
   modal.confirm({
     content: `确认修改版本状态为 “${status.name}” 吗？`,
     async onOk () {
-      const [error] = await http.put(`${TESTER}/software/version/${record.id}/status`, {
+      const [error] = await software.updateStatus(record.id, {
         status: status.key
-      }, {
-        paramsType: true
       });
       if (error) {
         return;

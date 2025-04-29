@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { software } from '@/api/altester';
 
 interface Props {
   visible: boolean;
@@ -32,10 +33,8 @@ const cancel = () => {
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
-    const [error] = await http.put(`${TESTER}/software/version/merge`, {
+    const [error] = await software.merge({
       ...formState.value
-    }, {
-      paramsType: true
     });
     loading.value = false;
     if (error) {

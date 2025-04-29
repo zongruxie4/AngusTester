@@ -2,8 +2,8 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../PropsType';
 
@@ -79,7 +79,7 @@ const blur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/deadline/${value}`);
+  const [error] = await task.editDeadlineDateApi(taskId.value, value);
   emit('loadingChange', false);
   if (error) {
     if (typeof dateRef.value?.focus === 'function') {

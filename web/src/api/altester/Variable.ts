@@ -63,4 +63,6 @@ export default class API {
     }
     return http.get(`${baseUrl}/value/all`, params);
   }
+
+
 }

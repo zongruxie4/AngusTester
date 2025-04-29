@@ -2,7 +2,8 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, SelectUser } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../PropsType';
 
@@ -87,7 +88,7 @@ const assigneeBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/assignee`, { assigneeId: value });
+  const [error] = await task.editTaskAssignees(taskId.value, { assigneeId: value });
   emit('loadingChange', false);
   if (error) {
     if (typeof assigneeRef.value?.focus === 'function') {
@@ -126,7 +127,7 @@ const confirmorBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/confirmor`, { confirmorId: value });
+  const [error] = await task.editConfirmors(taskId.value, { confirmorId: value });
   emit('loadingChange', false);
   if (error) {
     if (typeof confirmorRef.value?.focus === 'function') {
@@ -165,7 +166,7 @@ const testerBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, { testerId: value });
+  const [error] = await task.updateTask(taskId.value, { testerId: value });
   emit('loadingChange', false);
   if (error) {
     if (typeof testerRef.value?.focus === 'function') {

@@ -14,10 +14,11 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { http, TESTER, enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem, SprintPermissionKey } from './PropsType';
@@ -129,7 +130,7 @@ const loadEnum = async () => {
 const loadData = async () => {
   const params = getParams();
   emit('update:loading', true);
-  const [error, res] = await http.get(`${TESTER}/task/search`, params);
+  const [error, res] = await task.loadTaskList(params);
   if (error) {
     resetData();
     emit('update:loading', false);
@@ -147,7 +148,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await http.get(`${TESTER}/task/search`, _params);
+      const [_error, _res] = await task.loadTaskList( _params);
       if (_error) {
         emit('update:loading', false);
         return;
@@ -254,12 +255,12 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/task/sprint/${id}/user/${props.userInfo?.id}/auth`, params);
+  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await http.get(`${TESTER}/task/${id}`);
+  const [error, res] = await task.loadTaskInfo(id);
   emit('update:loading', false);
   if (error || !res?.data) {
     return { id };
@@ -573,7 +574,7 @@ const toDelete = (data: TaskInfo) => {
     content: `确定删除任务【${data.name}】吗？`,
     async onOk () {
       emit('update:loading', true);
-      const [error] = await http.del(`${TESTER}/task`, { ids: [data.id] });
+      const [error] = await task.deleteTask([data.id]);
       if (error) {
         emit('update:loading', false);
         return;
@@ -589,7 +590,7 @@ const toDelete = (data: TaskInfo) => {
 
 const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
   emit('update:loading', true);
-  const [error] = await http.post(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.favouriteTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -601,7 +602,7 @@ const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['stat
 
 const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
   emit('update:loading', true);
-  const [error] = await http.del(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.cancelFavouriteTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -613,7 +614,7 @@ const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo
 
 const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
   emit('update:loading', true);
-  const [error] = await http.post(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.followTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -625,7 +626,7 @@ const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status'
 
 const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
   emit('update:loading', true);
-  const [error] = await http.del(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.cancelFollowTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -638,7 +639,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
 const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.put(`${TESTER}/task/${id}/start`);
+  const [error] = await task.startProcessing(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -657,7 +658,7 @@ const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: 
 const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.put(`${TESTER}/task/${id}/processed`);
+  const [error] = await task.processedTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -676,7 +677,7 @@ const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallbac
 const toUncomplete = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.put(`${TESTER}/task/${id}/result/FAIL/confirm`);
+  const [error] = await task.confirmTask(id, 'FAIL');
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -692,7 +693,7 @@ const toUncomplete = async (data: TaskInfo, notificationFlag = true, errorCallba
 const toCompleted = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.put(`${TESTER}/task/${id}/result/SUCCESS/confirm`);
+  const [error] = await task.confirmTask(id, 'SUCCESS');
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -708,7 +709,7 @@ const toCompleted = async (data: TaskInfo, notificationFlag = true, errorCallbac
 const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.patch(`${TESTER}/task/${id}/reopen`);
+  const [error] = await task.reopenTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -727,7 +728,7 @@ const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?:
 const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await http.patch(`${TESTER}/task/${id}/restart`);
+  const [error] = await task.restartTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -760,7 +761,7 @@ const moveTaskOk = () => {
 
 const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/cancel`);
+  const [error] = await task.cancelTask(id);
   if (error) {
     if (typeof errorCallback === 'function') {
       errorCallback();

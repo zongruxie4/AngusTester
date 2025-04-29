@@ -25,6 +25,10 @@ export default class API {
     return http.get(`${baseUrl}/task/summary`, params);
   }
 
+  getTaskCount (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/count`, params);
+  }
+
   getAnalysisMockService (mockServiceId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/mock/service/count?mockServiceId=${mockServiceId}`);
   }

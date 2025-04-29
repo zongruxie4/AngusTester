@@ -4,6 +4,7 @@ import { http, TESTER, duration } from '@xcan-angus/tools';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
+import { modules } from '@/api/altester';
 
 type TagItem = {
   id: string;
@@ -86,7 +87,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/module`, [{ id, name: value }]);
+  const [error] = await modules.updateModule([{ id, name: value }]);
   loading.value = false;
   if (error) {
     return;
