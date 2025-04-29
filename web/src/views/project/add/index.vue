@@ -113,21 +113,21 @@ const setDefaultData = () => {
 
   if (_dataSource.members?.USER) {
     members.value.USER = _dataSource.members?.USER.map(i => {
-      defaultOptionsUser.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (_dataSource.members?.DEPT) {
     members.value.DEPT = _dataSource.members?.DEPT.map(i => {
-      defaultOptionsDept.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (_dataSource.members?.GROUP) {
     members.value.GROUP = _dataSource.members?.GROUP.map(i => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
@@ -189,9 +189,9 @@ watch(() => props.visible, newValue => {
     };
     defaultOptionsUser.value = {
       [tenantInfo.value.id]: {
-        fullname: tenantInfo.value.fullname,
+        fullName: tenantInfo.value.fullName,
         id: tenantInfo.value.id,
-        name: tenantInfo.value.fullname,
+        name: tenantInfo.value.fullName,
         disabled: true
       }
     };
@@ -422,7 +422,7 @@ const modalTitle = computed(() => {
               :action="`${GM}/user/search`"
               :defaultOptions="defaultOptionsUser"
               mode="multiple"
-              :fieldNames="{ label: 'fullname', value: 'id' }">
+              :fieldNames="{ label: 'fullName', value: 'id' }">
             </Select>
 
             <Select

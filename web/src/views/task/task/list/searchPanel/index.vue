@@ -1176,31 +1176,31 @@ const searchOptions = [
     type: 'select-user',
     valueKey: 'assigneeId',
     placeholder: '选择经办人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user',
     valueKey: 'confirmorId',
     placeholder: '选择确认人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user',
     valueKey: 'execBy',
     placeholder: '选择执行人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user',
     valueKey: 'createdBy',
     placeholder: '选择添加人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user',
     valueKey: 'lastModifiedBy',
     placeholder: '选择最后修改人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-enum',

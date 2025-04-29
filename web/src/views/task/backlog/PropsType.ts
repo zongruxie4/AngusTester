@@ -55,7 +55,7 @@ export type SprintInfo = {
     members: {
         id: string;
         username: string;
-        fullname: string;
+        fullName: string;
         mobile: string;
         email: string;
         avatar: string;

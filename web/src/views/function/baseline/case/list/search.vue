@@ -40,7 +40,7 @@ const TagList = defineAsyncComponent(() => import('@/views/function/case/list/ca
 
 const defaultUser = computed(() => {
   if (userInfo.value) {
-    return { [userInfo.value.id]: { fullname: userInfo.value.fullname, id: userInfo.value.id } };
+    return { [userInfo.value.id]: { fullName: userInfo.value.fullName, id: userInfo.value.id } };
   }
   return {};
 });

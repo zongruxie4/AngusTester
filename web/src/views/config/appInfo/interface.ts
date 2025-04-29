@@ -8,7 +8,7 @@ export interface TableData {
   avatar?: string,
   createdDate: string,
   name?:string,
-  fullname?: string,
+  fullName?: string,
   id:string
 }
 

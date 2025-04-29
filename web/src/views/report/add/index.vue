@@ -154,7 +154,7 @@ const resetData = () => {
     createdAt: 'NOW'
   };
   basicInfoSetting.value = {
-    reportContacts: tenantInfo?.value?.fullname + (tenantInfo?.value?.email ? `  ${tenantInfo?.value?.email}` : ''),
+    reportContacts: tenantInfo?.value?.fullName + (tenantInfo?.value?.email ? `  ${tenantInfo?.value?.email}` : ''),
     reportCopyright: `©  ${tenantInfo?.value?.tenantName} ${dayjs().year()}。 保留一切权利。\n非经本公司书面许可，任何单位和个人不得擅自摘抄、复制本文档内容的部分或全部，并不得以任何形式传播。`,
     otherInformation: '',
     watermark: tenantInfo?.value?.tenantName
@@ -317,7 +317,7 @@ onMounted(() => {
               <div class="font-semibold text-3.5">{{ report?.label }}</div>
               <div class="flex justify-between">
                 <div class="text-3 flex-1">分类： {{ reportTypeName }}</div>
-                <div class="text-3 flex-1">报告人： {{ reportId ? createdByName : tenantInfo?.fullname }}</div>
+                <div class="text-3 flex-1">报告人： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
               </div>
               <div class="text-3">描述： {{ report?.description }}</div>
             </div>

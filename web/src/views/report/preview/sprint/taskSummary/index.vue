@@ -34,7 +34,7 @@ const assigneeOverview = computed(() => {
     item.statusOverview.savingWorkloadRate = +(item.statusOverview.savingWorkloadRate?.replace(/(\d+\.\d{2})\d+/, '$1') || 0);
     return {
       ...item,
-      fullname: map[item.assigneeId].fullname
+      fullName: map[item.assigneeId].fullName
     };
   });
 });

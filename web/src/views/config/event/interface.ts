@@ -108,7 +108,7 @@ export const _recordColumns = [
   },
   {
     title: '接收人',
-    dataIndex: 'fullname',
+    dataIndex: 'fullName',
     width: '12%'
   },
   // {

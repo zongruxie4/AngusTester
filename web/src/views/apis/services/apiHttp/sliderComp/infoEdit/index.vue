@@ -37,7 +37,7 @@ const refreshUnarchived = inject('refreshUnarchived', () => {});
 const handleCloseDrawer = inject('selectHandle', () => {});
 const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
 const setApiInfo = inject('setApiInfo', (info) => (info));
-const userInfo = inject('tenantInfo', ref({ id: '', fullname: '' }));
+const userInfo = inject('tenantInfo', ref({ id: '', fullName: '' }));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const getParameter = inject('getParameter', () => ({} as any));
@@ -109,10 +109,10 @@ const loadInfo = async () => {
   })) || [];
   if (!form.ownerId && userInfo.value.id) {
     form.ownerId = userInfo.value.id;
-    form.ownerName = userInfo.value.fullname;
+    form.ownerName = userInfo.value.fullName;
   }
   form.tags = form.tags || undefined;
-  ownerOpt.value = [{ fullname: form.ownerName, id: form.ownerId }];
+  ownerOpt.value = [{ fullName: form.ownerName, id: form.ownerId }];
   defaultProject.value = { id: form.serviceId, name: form.serviceName };
 };
 
@@ -128,7 +128,7 @@ watch(() => state.id, async () => {
     }
     if (!form.ownerId && userInfo.value.id) {
       form.ownerId = userInfo.value.id;
-      form.ownerName = userInfo.value.fullname;
+      form.ownerName = userInfo.value.fullName;
     }
   }
 }, { immediate: true });

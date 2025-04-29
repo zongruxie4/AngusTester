@@ -47,7 +47,7 @@ export type ReportContent = {
             members: {
                 id: string;
                 username: string;
-                fullname: string;
+                fullName: string;
                 mobile: string;
                 email: string;
                 avatar: string;
@@ -55,7 +55,7 @@ export type ReportContent = {
             showMembers: {
                 id: string;
                 username: string;
-                fullname: string;
+                fullName: string;
                 mobile: string;
                 email: string;
                 avatar: string;
@@ -68,8 +68,8 @@ export type ReportContent = {
                 date: string;
                 time: string;
                 location: string;
-                moderator: { id: string; fullname: string; };
-                participants: { id: string; fullname: string; }[];
+                moderator: { id: string; fullName: string; };
+                participants: { id: string; fullName: string; }[];
                 content: string;
             }[];
         };
@@ -81,14 +81,14 @@ export type ReportContent = {
         members: {
             id: string;
             username: string;
-            fullname: string;
+            fullName: string;
             mobile: string
         }[];
         tasks: {
             assignees: {
                 [key: string]: {
                     id: string;
-                    fullname: string;
+                    fullName: string;
                     avatar: string
                 };
             };

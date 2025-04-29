@@ -39,7 +39,7 @@ export const getDefaultNode = () => {
     roles: [],
     nodeRoles: [],
     sshPort: '22',
-    passd: '',
+    password: '',
     ip: '',
     spec: {}
   };

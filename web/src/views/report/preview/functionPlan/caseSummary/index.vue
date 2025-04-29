@@ -35,7 +35,7 @@ const testerOverview = computed(() => {
     item.statusOverview.savingWorkloadRate = +(item.statusOverview.savingWorkloadRate?.replace(/(\d+\.\d{2})\d+/, '$1') || 0);
     return {
       ...item,
-      fullname: map[item.testerId].fullname
+      fullName: map[item.testerId].fullName
     };
   });
 });
@@ -336,7 +336,7 @@ const burnDownCharts = computed(() => {
           <progress
             :percent="+item.statusOverview?.progress"
             text="进度"
-            :title="item.fullname"
+            :title="item.fullName"
             class="ml-4" />
           <div class="flex-shrink-0 w-157.75 border border-solid border-border-input">
             <div class="flex border-b border-solid border-border-input">

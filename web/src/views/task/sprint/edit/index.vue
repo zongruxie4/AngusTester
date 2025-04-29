@@ -70,7 +70,7 @@ const formState = ref<FormState>({
   // meetings: []
 });
 
-const ownerDefaultOptions = ref<{[key:string]:{fullname:string;id:string;}}>();
+const ownerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
 
 const loading = ref(false);
 const authorizeModalVisible = ref(false);
@@ -442,7 +442,7 @@ const setFormData = (data: SprintInfo) => {
   formState.value.evalWorkloadMethod = evalWorkloadMethod?.value || '';
   formState.value.name = name;
   formState.value.ownerId = ownerId;
-  ownerDefaultOptions.value = { ownerId: { fullname: ownerName, id: ownerId } };
+  ownerDefaultOptions.value = { ownerId: { fullName: ownerName, id: ownerId } };
   formState.value.startDate = startDate;
   formState.value.deadlineDate = deadlineDate;
   formState.value.attachments = attachments || [];

@@ -2,8 +2,8 @@
 // export apis StateType{
 //   form:{
 //     expiredDay:number,
-//     passd:string,
-//     publicFlag:boolean,
+//     password:string,
+//     public0:boolean,
 //     url:string,
 //     targetType:string,
 //     uri:string,
@@ -20,8 +20,8 @@ export interface ListType{
       message: string
     }
   },
-  passd?: string,
-  publicFlag: boolean,
+  password?: string,
+  public0: boolean,
   url: string,
   remark?: string,
   id: string,

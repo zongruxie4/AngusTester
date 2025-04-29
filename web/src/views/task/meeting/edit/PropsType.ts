@@ -9,8 +9,8 @@ export type FormState = {
     timeEnd: string;
     timeStart: string;
     subject: string;
-    moderator: { fullname: string, id: string } | string;
-    participants: { fullname: string, id: string }[];
+    moderator: { fullName: string, id: string } | string;
+    participants: { fullName: string, id: string }[];
     startTime: Dayjs;
     type: 'DAILY_STANDUP' | 'PLANNING' | 'RETROSPECTIVE' | 'REVIEW' | 'OTHER';
 }

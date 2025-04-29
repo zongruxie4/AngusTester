@@ -618,7 +618,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                       <div
                         v-for="user in item.showMembers"
                         :key="user.id"
-                        :title="user.fullname"
+                        :title="user.fullName"
                         class="w-5 h-5 mr-2 overflow-hidden rounded-full">
                         <Image
                           :src="user.avatar"
@@ -645,7 +645,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                                   :src="_user.avatar"
                                   type="avatar" />
                               </div>
-                              <span class="flex-1 truncate">{{ _user.fullname }}</span>
+                              <span class="flex-1 truncate">{{ _user.fullName }}</span>
                             </div>
                           </div>
                         </template>

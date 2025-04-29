@@ -257,7 +257,7 @@ export type ReportContent = {
             testers: {
                 avatar: string;
                 email: string;
-                fullname: string;
+                fullName: string;
                 id: string;
                 mobile: string;
                 username: string;
@@ -478,7 +478,7 @@ export type ReportContent = {
                 [key: string]: {
                     avatar: string;
                     email: string;
-                    fullname: string;
+                    fullName: string;
                     id: string;
                     mobile: string;
                     username: string;

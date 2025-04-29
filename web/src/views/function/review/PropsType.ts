@@ -43,7 +43,7 @@ export type ReviewInfo = {
   members: {
     avatar: string;
     email: string;
-    fullname: string;
+    fullName: string;
     id: string;
     mobile: string;
     username: string
@@ -51,7 +51,7 @@ export type ReviewInfo = {
   showMembers: {
     id: string;
     username: string;
-    fullname: string;
+    fullName: string;
     mobile: string;
     email: string;
     avatar: string;

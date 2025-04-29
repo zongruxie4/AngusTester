@@ -310,7 +310,7 @@ const loadMembers = async () => {
   members.value = (data || []).map(i => {
     return {
       ...i,
-      label: i.fullname,
+      label: i.fullName,
       value: i.id
     };
   });

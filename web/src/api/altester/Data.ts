@@ -26,7 +26,7 @@ export default class API {
     return http.get(`${baseUrl}/datasource/${id}/test`);
   }
 
-  testSource (params:{username :string, passd:string, jdbcurl:string}): Promise<[Error | null, any]> {
+  testSource (params:{username :string, password:string, jdbcurl:string}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/datasource/test`, params);
   }
 

@@ -670,7 +670,7 @@ defineExpose({
           avatar
           :showPublishTitle="false"
           :bordered="false"
-          :publicFlag="false"
+          :public0="false"
           :userId="props.userInfo?.id"
           :targetId="caseDetail?.id"
           :action="`${TESTER}/comment`" />

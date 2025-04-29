@@ -48,7 +48,7 @@ export const formItems = [
     inputType: 'text',
     type: 'password',
     placeholder: '输入密码',
-    valueKey: 'passd',
+    valueKey: 'password',
     maxlength: 800,
     width: '18%'
   },

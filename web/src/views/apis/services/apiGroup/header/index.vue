@@ -126,7 +126,7 @@ const addApi = (type) => {
       method: 'GET',
       parameters: [],
       requestBody: {},
-      securityFlag: false,
+      secured: false,
       endpoint: '',
       protocol: 'http'
     };

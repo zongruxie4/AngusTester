@@ -106,7 +106,7 @@ onMounted(() => {
         v-model:value="userId"
         class="w-30"
         :action="`${TESTER}/project/${props.projectId}/member/user`"
-        :fieldNames="{value: 'id', label: 'fullname'}" />
+        :fieldNames="{value: 'id', label: 'fullName'}" />
     </div>
     <AsyncComponent :visible="loaded">
       <Calendar size="small">

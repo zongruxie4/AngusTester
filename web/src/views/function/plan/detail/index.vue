@@ -102,9 +102,9 @@ const loadData = async (id: string) => {
   testerResponsibilities.value = [];
   const members = data.members || [];
   for (let i = 0, len = members.length; i < len; i++) {
-    const { id, fullname } = members[i];
+    const { id, fullName } = members[i];
     testerResponsibilities.value.push({
-      name: fullname,
+      name: fullName,
       ...members[i],
       content: dataSource.value.testerResponsibilities[id]
     });

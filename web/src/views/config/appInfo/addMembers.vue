@@ -142,13 +142,13 @@ const policyAction = computed(() => {
 const fieldNames = computed(() => {
   switch (props.type) {
     case 'USER' :
-      return { label: 'fullname', value: 'id' };
+      return { label: 'fullName', value: 'id' };
     case 'DEPT' :
       return { label: 'name', value: 'id' };
     case 'GROUP':
       return { label: 'name', value: 'id' };
     default:
-      return { label: 'fullname', value: 'id' };
+      return { label: 'fullName', value: 'id' };
   }
 });
 

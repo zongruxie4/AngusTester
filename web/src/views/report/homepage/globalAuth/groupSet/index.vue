@@ -36,16 +36,16 @@ const inputValue = ref<string>();
 const activeId = ref<string>();
 const notify = ref(0);
 
-const nameKey = ref<'deptName' | 'groupName' | 'fullname' | 'name'>('name');
+const nameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
 const idKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
 const placeholder = ref<string>();
 const apiPath = ref<string>();
 
-const params = computed<{ filters?: [{ key: 'fullname' | 'name'; op: 'MATCH_END'; value: string }] }>(() => {
+const params = computed<{ filters?: [{ key: 'fullName' | 'name'; op: 'MATCH_END'; value: string }] }>(() => {
   const value = inputValue.value?.trim();
   if (value) {
     return {
-      filters: [{ key: props.type === 'user' ? 'fullname' : 'name', op: 'MATCH_END', value }]
+      filters: [{ key: props.type === 'user' ? 'fullName' : 'name', op: 'MATCH_END', value }]
     };
   }
 
@@ -85,7 +85,7 @@ onMounted(() => {
         apiPath.value = `${GM}/app/${_appId}/auth/group`;
         break;
       case 'user':
-        nameKey.value = 'fullname';
+        nameKey.value = 'fullName';
         idKey.value = 'id';
         placeholder.value = '查询用户';
         apiPath.value = `${GM}/app/${_appId}/auth/user`;

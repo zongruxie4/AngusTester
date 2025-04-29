@@ -87,12 +87,12 @@ const emits = defineEmits<{
 }>();
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const userInfo = inject<{ id: string, fullname: string }>('userInfo');
+const userInfo = inject<{ id: string, fullName: string }>('userInfo');
 const appInfo = inject<{ id: string, name: string }>('appInfo');
 const aiEnabled = inject('aiEnabled', ref(false));
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
 const isAdmin = inject('isAdmin', ref(false));
-const defaultUser = { [userInfo.id]: { fullname: userInfo.fullname, id: userInfo.id } };
+const defaultUser = { [userInfo.id]: { fullName: userInfo.fullName, id: userInfo.id } };
 const { getActionAuth } = useCaseActionAuth();
 
 const boardsGroupKey = ref<'none' | 'testerName' | 'lastModifiedByName'>('none');

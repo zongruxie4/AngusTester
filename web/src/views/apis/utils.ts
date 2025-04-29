@@ -24,9 +24,9 @@ const getTextValue = (value?: string) => {
   return div.innerText;
 };
 
-const getAuthData = (authorizationData, securityFlag) => {
+const getAuthData = (authorizationData, secured) => {
   let stateAuthoriData = JSON.parse(JSON.stringify(authorizationData));
-  if (securityFlag) {
+  if (secured) {
     switch (stateAuthoriData.type) {
       case 'BASIC_AUTH':
         // eslint-disable-next-line no-case-declarations
@@ -128,7 +128,7 @@ const getRealUri = (params: ParamsItem[], endpoint) => {
 };
 
 const getRequestParamByApi = async (api, allFuncNames, isLocal = false) => {
-  const { requestHeaders = [], requestParams = [], requestBody = { formData: [] as ParamsItem[] }, endpoint, host, method, authentication, securityFlag } = api;
+  const { requestHeaders = [], requestParams = [], requestBody = { formData: [] as ParamsItem[] }, endpoint, host, method, authentication, secured } = api;
   let formData: ParamsItem[] = [];
   for (const param of (requestBody.formData)) {
     const newParam = { name: '', value: '' } as ParamsItem;
@@ -174,7 +174,7 @@ const getRequestParamByApi = async (api, allFuncNames, isLocal = false) => {
         value: requestBody.contentType
       }
     : null;
-  const auth = getAuthData(authentication, securityFlag);
+  const auth = getAuthData(authentication, secured);
   if (auth) {
     headers = headers.filter(head => head.name !== auth.name);
     headers.push(auth);

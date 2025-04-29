@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e:'update:visible', value:boolean):void,
-  (e:'ok', value:{ url: string, passd: string, type: 'add' | 'edit' }):void
+  (e:'ok', value:{ url: string, password: string, type: 'add' | 'edit' }):void
 }>();
 
 const { t } = useI18n();
@@ -52,8 +52,8 @@ const shareList = ref<ShareObj[]>([{
   allFlag: false,
   url: '',
   expiredFlag: false,
-  publicFlag: true,
-  passd: undefined,
+  public0: true,
+  password: undefined,
   createdBy: '',
   createdByName: '',
   createdDate: '',
@@ -111,7 +111,7 @@ const loadSharedList = async () => {
 };
 
 const formState = ref({
-  publicFlag: true,
+  public0: true,
   url: '',
   name: '',
   targetId: '',
@@ -153,10 +153,10 @@ const handleEdit = (share, index:number) => {
   formState.value.name = share.id === 'add' ? '' : share.name;
   formState.value.url = share.url;
   formState.value.expiredFlag = !share.expiredFlag;
-  formState.value.publicFlag = share.publicFlag;
+  formState.value.public0 = share.public0;
   formState.value.targetId = share.targetId;
   formState.value.targetType = share.targetType.value;
-  passd.value = share.passd || '';
+  password.value = share.password || '';
   apiIds.value = share.apiIds || [];
   expiredDate.value = share.expiredDate;
   // 校验数据是否有修改需要用到 old是恢复旧数据 校验时用不到全部数据
@@ -169,9 +169,9 @@ const handleEdit = (share, index:number) => {
   }
   historyData.value.targetId = share.targetId;
   historyData.value.targetType = share.targetType.value;
-  historyData.value.publicFlag = share.publicFlag;
-  if (!share.publicFlag) {
-    historyData.value.passd = share.passd;
+  historyData.value.public0 = share.public0;
+  if (!share.public0) {
+    historyData.value.password = share.password;
   }
   if (share.apiIds?.length) {
     historyData.value.apiIds = share.apiIds;
@@ -222,17 +222,17 @@ const expirationTimeOptions = [{
   value: false
 }];
 
-const passd = ref('');
+const password = ref('');
 const publicFlagChange = e => {
   if (!e.target.value) {
-    passd.value = randomString();
-    realPassd.value = passd.value;
+    password.value = randomString();
+    realPassd.value = password.value;
     seePassword.value = true;
   }
 };
 
 const resetPassword = () => {
-  passd.value = randomString();
+  password.value = randomString();
   passdErr.value = false;
 };
 
@@ -292,15 +292,15 @@ const handleOk = async (share) => {
     expiredFlag: !formState.value.expiredFlag
   };
   // 选择私有 参数提交密码
-  if (!formState.value.publicFlag) {
+  if (!formState.value.public0) {
     // 校验密码
-    passdErr.value = !passd.value;
+    passdErr.value = !password.value;
     if (passdErr.value) {
       return;
     }
     params = {
       ...params,
-      passd: passd.value
+      password: password.value
     };
   }
   // 选择失效时间 参数提交失效时间（expiredDuration）
@@ -356,26 +356,26 @@ const handleOk = async (share) => {
 
   share.name = formState.value.name;
   share.url = res.data.url;
-  share.passd = res.data.passd;
-  share.publicFlag = formState.value.publicFlag;
-  emit('ok', { url: res.data.url, passd: params.passd, type: 'add' });
+  share.password = res.data.password;
+  share.public0 = formState.value.public0;
+  emit('ok', { url: res.data.url, password: params.password, type: 'add' });
   copy(share);
   emit('update:visible', false);
 };
 
 const historyData = ref<{
-  publicFlag: boolean;
+  public0: boolean;
   url: string;
   targetId: string;
   targetType: TargetType;
   expiredFlag: boolean;
   historyData?:string;
-  passd?: string;
+  password?: string;
   id: '',
   name: '',
   apiIds?: string[];
 }>({
-  publicFlag: false,
+  public0: false,
   url: '',
   targetId: '',
   targetType: 'SERVICE',
@@ -396,7 +396,7 @@ const patchShare = async (params, share) => {
   if (error) {
     return;
   }
-  emit('ok', { url: params.url, passd: params.passd, type: 'edit' });
+  emit('ok', { url: params.url, password: params.password, type: 'edit' });
   copy(params);
   emit('update:visible', false);
 };
@@ -453,8 +453,8 @@ const clickCopyIcon = (item:ShareObj) => {
 // 复制名称、密码和链接?
 const copy = (item:ShareObj, isCopy?:boolean) => {
   let message;
-  if (!item.publicFlag) {
-    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.passd || ''}`;
+  if (!item.public0) {
+    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.password || ''}`;
   } else {
     message = `名称: ${item.name}\n链接: ${item.url}`;
   }
@@ -497,8 +497,8 @@ const initData = () => {
     allFlag: false,
     url: '',
     expiredFlag: false,
-    publicFlag: true,
-    passd: undefined,
+    public0: true,
+    password: undefined,
     createdBy: '',
     createdByName: '',
     createdDate: '',
@@ -513,7 +513,7 @@ const initData = () => {
   apiList.value = [];
   allApiList.value = [];
   formState.value = {
-    publicFlag: true,
+    public0: true,
     url: '',
     name: '',
     targetId: '',
@@ -522,11 +522,11 @@ const initData = () => {
   };
   editShare.value = undefined;
   oldShare.value = undefined;
-  passd.value = '';
+  password.value = '';
   apiIndeterminate.value = false;
   apiCheckAll.value = false;
   historyData.value = {
-    publicFlag: false,
+    public0: false,
     url: '',
     targetId: '',
     targetType: 'SERVICE',
@@ -675,7 +675,7 @@ function isWithin5Minutes (timeStr:string) {
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">权限<Colon /></div>
             <div class="flex items-center h-7 -mt-0.5 px-2">
               <RadioGroup
-                v-model:value="formState.publicFlag"
+                v-model:value="formState.public0"
                 size="small"
                 class="w-1/2 flex"
                 @change="publicFlagChange">
@@ -687,9 +687,9 @@ function isWithin5Minutes (timeStr:string) {
                   {{ option.label }}
                 </Radio>
               </RadioGroup>
-              <template v-if="!formState.publicFlag">
+              <template v-if="!formState.public0">
                 <Input
-                  v-model:value="passd"
+                  v-model:value="password"
                   :error="passdErr"
                   :maxlength="20"
                   type="password"

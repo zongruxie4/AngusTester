@@ -471,7 +471,7 @@ const addApiByProject = async (item) => {
     method: 'GET',
     parameters: [],
     requestBody: {},
-    securityFlag: false,
+    secured: false,
     endpoint: '',
     protocol: 'http'
   };

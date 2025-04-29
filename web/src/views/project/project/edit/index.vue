@@ -81,21 +81,21 @@ const loadProjectData = async () => {
   projectData.value.dateRange = [startDate, deadlineDate];
   if (projectData.value.members?.USER) {
     members.value.USER = projectData.value.members?.USER.map(i => {
-      defaultOptionsUser.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (projectData.value.members?.DEPT) {
     members.value.DEPT = projectData.value.members?.DEPT.map(i => {
-      defaultOptionsDept.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (projectData.value.members?.GROUP) {
     members.value.GROUP = projectData.value.members?.GROUP.map(i => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
@@ -340,7 +340,7 @@ onMounted(() => {
                   :action="`${GM}/user/search`"
                   :defaultOptions="defaultOptionsUser"
                   mode="multiple"
-                  :fieldNames="{ label: 'fullname', value: 'id' }">
+                  :fieldNames="{ label: 'fullName', value: 'id' }">
                 </Select>
 
                 <Select
@@ -559,7 +559,7 @@ onMounted(() => {
                     :action="`${GM}/user/search`"
                     :defaultOptions="defaultOptionsUser"
                     mode="multiple"
-                    :fieldNames="{ label: 'fullname', value: 'id' }">
+                    :fieldNames="{ label: 'fullName', value: 'id' }">
                   </Select>
 
                   <Select

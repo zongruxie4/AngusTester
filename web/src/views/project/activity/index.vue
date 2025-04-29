@@ -32,7 +32,7 @@ interface Activity {
     targetId: string
     targetType: any
     title: string,
-    fullname: string,
+    fullName: string,
     description: string,
     detail: string,
     details: string[],
@@ -108,7 +108,7 @@ onMounted(() => {
 const columns = [
   {
     title: t('活动人'),
-    dataIndex: 'fullname',
+    dataIndex: 'fullName',
     width: '8%',
     ellipsis: true
   },
@@ -188,7 +188,7 @@ const columns = [
       :pagination="pagination"
       @change="tableChange">
       <template #bodyCell="{ column, text, record }">
-        <template v-if="column.dataIndex === 'fullname'">
+        <template v-if="column.dataIndex === 'fullName'">
           <div class="flex items-center">
             <Image
               :src="record.avatar"

@@ -525,7 +525,7 @@ const menuItems = [
                       type="avatar"
                       :src="person.avatar"
                       class="w-4 h-4 rounded-full" />
-                    <span>{{ person.fullname }}</span>
+                    <span>{{ person.fullName }}</span>
                   </div>
 
                   <Popover placement="bottom">
@@ -539,7 +539,7 @@ const menuItems = [
                             type="avatar"
                             :src="person.avatar"
                             class="w-4 h-4 rounded-full" />
-                          <span>{{ person.fullname }}</span>
+                          <span>{{ person.fullName }}</span>
                         </div>
                       </div>
                     </template>

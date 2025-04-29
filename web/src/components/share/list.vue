@@ -67,7 +67,7 @@ const edit = (item:ShareObj) => {
 // 设置密码可以编辑
 const openEditPassd = (item: ListType) => {
   item.editPassd = true;
-  item.tempPass = item.passd;
+  item.tempPass = item.password;
 };
 
 // 修改密码
@@ -77,11 +77,11 @@ const patchPassd = async (item:ListType, index:number) => {
     return;
   }
 
-  if (item.tempPass === oldList.value[index].passd) {
+  if (item.tempPass === oldList.value[index].password) {
     item.editPassd = false;
     return;
   }
-  item.passd = item.tempPass;
+  item.password = item.tempPass;
   delete item.editPassd;
   delete item.seeUrl;
   delete item.tempPass;
@@ -104,8 +104,8 @@ const cancelPassd = (item: ListType) => {
 // 复制密码和链接
 const copy = (item:ListType) => {
   let message;
-  if (!item.publicFlag) {
-    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.passd || ''}`;
+  if (!item.public0) {
+    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.password || ''}`;
   } else {
     message = `名称: ${item.name}\n链接: ${item.url}`;
   }
@@ -179,13 +179,13 @@ const params = computed(() => {
             <div class="break-all whitespace-normal ml-2 text-text-link hover:text-text-link-hover cursor-pointer">{{ item.url }}</div>
           </div>
           <div
-            v-if="!item.publicFlag"
+            v-if="!item.public0"
             style="width: 264px;"
             class="flex items-center h-7 mt-1">
             <span class="text-text-sub-content">密码<Colon /></span>
             <div class="flex items-center">
               <template v-if="!item.editPassd">
-                <span class="ml-2">{{ item.seePassword ? item.passd :'*'.repeat(item.passd?.length) }}</span>
+                <span class="ml-2">{{ item.seePassword ? item.password :'*'.repeat(item.password?.length) }}</span>
                 <Icon
                   :icon="item.seePassword?'icon-zhengyan':'icon-biyan'"
                   class="ml-1 cursor-pointer -mt-0.5 hover:text-text-link-hover"

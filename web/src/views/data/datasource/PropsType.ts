@@ -7,7 +7,7 @@ export interface SourceType {
   name: string;
   database: string;
   username: string;
-  passd: string;
+  password: string;
   jdbcUrl: string;
   connSuccessFlag: string;
   lastConnDate: string;

@@ -843,7 +843,7 @@ const searchOptions = [
     type: 'select-user',
     valueKey: 'createdBy',
     placeholder: '选择添加人',
-    fieldNames: { label: 'fullname', value: 'id' }
+    fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range',

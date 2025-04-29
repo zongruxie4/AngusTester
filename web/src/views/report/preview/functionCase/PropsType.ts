@@ -125,7 +125,7 @@ export type ReportContent = {
             id: string;
             projectId: string;
             userId: string;
-            fullname: string;
+            fullName: string;
             avatar: string;
             targetId: string;
             parentTargetId: string;

@@ -257,7 +257,7 @@ const state = reactive<State>({
   headerList: [],
   cookieList: [],
   assertions: [],
-  securityFlag: false,
+  secured: false,
   publishFlag: false
 });
 
@@ -447,7 +447,7 @@ const loadApiInfo = async (): Promise<void> => {
   state.authentication = authentication || { type: null };
   defaultAuthentication.value = JSON.parse(JSON.stringify(state.authentication));
   state.publishFlag = (status?.value === 'RELEASED');
-  state.securityFlag = !!state.authentication.type || !!state.authentication.$ref;
+  state.secured = !!state.authentication.type || !!state.authentication.$ref;
   for (const key in parameters) {
     if (parameters[key].$ref) {
       const model = await getModelFromRef(parameters[key].$ref);
@@ -568,7 +568,7 @@ const validateParam = () => {
  * 2. 校验通过执行该方法
  */
 const getParameter = async (isdebug = false) => {
-  const { parameters, requestBody, headerList, cookieList, authentication, securityFlag } = state;
+  const { parameters, requestBody, headerList, cookieList, authentication, secured } = state;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { content } = requestBody;
   if (!isdebug) {
@@ -642,8 +642,8 @@ const getParameter = async (isdebug = false) => {
     endpoint: apiUri.value,
     currentServer: currentServerICopy,
     method: apiMethod.value,
-    authentication: securityFlag ? authentication : { type: null },
-    securityFlag,
+    authentication: secured ? authentication : { type: null },
+    secured,
     protocol,
     [requestSettingKey]: {
       ...setting.value,
@@ -1784,11 +1784,11 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane key="authentication" :forceRender="true">
                 <template #tab>
-                  <div :class="{ 'has-content': state.securityFlag }"></div>Authorization
+                  <div :class="{ 'has-content': state.secured }"></div>Authorization
                 </template>
                 <Authorization
                   ref="authorizationRef"
-                  v-model:authFlag="state.securityFlag"
+                  v-model:authFlag="state.secured"
                   class="px-5"
                   :ws="props.ws"
                   :defaultValue="defaultAuthentication"

@@ -42,7 +42,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
       return;
     }
     const target = data.list?.[0];
-    creatorObjectName.value = target.fullname;
+    creatorObjectName.value = target.fullName;
     return;
   }
   if (creatorObjectType === 'dept') {

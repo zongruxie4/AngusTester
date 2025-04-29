@@ -91,8 +91,8 @@ const state = reactive({
 
 const form = reactive({
   expiredDuration: '15d',
-  passd: undefined,
-  publicFlag: true,
+  password: undefined,
+  public0: true,
   url: '',
   expiredFlag: true,
   remark: undefined,
@@ -102,8 +102,8 @@ const form = reactive({
 const resetForm = () => {
   form.expiredDuration = '15d';
   form.expiredFlag = true;
-  form.passd = undefined;
-  form.publicFlag = true;
+  form.password = undefined;
+  form.public0 = true;
   form.url = '';
   form.remark = undefined;
   form.id = undefined;
@@ -129,10 +129,10 @@ const loadShareInfo = async () => {
   if (error) {
     return;
   }
-  const { expiredDuration, passd, publicFlag, url, remark, id, objectIds, expiredFlag } = res.data;
+  const { expiredDuration, password, public0, url, remark, id, objectIds, expiredFlag } = res.data;
   form.expiredDuration = expiredDuration;
-  form.passd = passd;
-  form.publicFlag = publicFlag;
+  form.password = password;
+  form.public0 = public0;
   form.url = url;
   form.expiredFlag = expiredFlag;
   form.remark = remark;
@@ -172,7 +172,7 @@ const durationInputProps = {
 
 // 增加分享成功
 const addProjectShare = async () => {
-  if (!form.passd && !form.publicFlag) {
+  if (!form.password && !form.public0) {
     return;
   }
   if (form.url) {
@@ -231,20 +231,20 @@ const close = () => {
 };
 
 const resetPass = () => {
-  if (!form.publicFlag) {
-    form.passd = randomString();
+  if (!form.public0) {
+    form.password = randomString();
   } else {
-    form.passd = undefined;
+    form.password = undefined;
   }
 };
 
 // 复制密码和链接
 const copy = () => {
   let message;
-  if (form.publicFlag) {
+  if (form.public0) {
     message = `链接: ${form.url}`;
   } else {
-    message = `链接: ${form.url} 密码: ${form.passd || ''}`;
+    message = `链接: ${form.url} 密码: ${form.password || ''}`;
   }
   clipboard.toClipboard(message).then(() => {
     notification.success('复制成功');
@@ -312,7 +312,7 @@ watch(() => props.visible, newValue => {
       <FormItem label="查看权限">
         <div class="">
           <RadioGroup
-            v-model:value="form.publicFlag"
+            v-model:value="form.public0"
             :disabled="!!form.url"
             :options="state.enums"
             name="radioGroup"
@@ -321,14 +321,14 @@ watch(() => props.visible, newValue => {
           </RadioGroup>
         </div>
         <Input
-          v-if="!form.publicFlag"
-          v-model:value="form.passd"
+          v-if="!form.public0"
+          v-model:value="form.password"
           dataType="mixin-en"
           :maxlength="40"
           size="small"
           placeholder="请输入密码"
           class="w-50 rounded mt-1"
-          :class="{'!border-status-error': !form.passd}" />
+          :class="{'!border-status-error': !form.password}" />
       </FormItem>
       <FormItem v-if="form.url" label="查看链接">
         <Input

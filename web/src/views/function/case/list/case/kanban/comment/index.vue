@@ -51,7 +51,7 @@ const caseId = computed(() => {
       avatar
       targetType="FUNC_CASE"
       :bordered="false"
-      :publicFlag="false"
+      :public0="false"
       :showPublishTitle="false"
       :userId="props.userInfo?.id"
       :targetId="caseId"

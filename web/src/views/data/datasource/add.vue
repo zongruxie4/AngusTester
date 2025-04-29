@@ -25,7 +25,7 @@ const formState = ref({
   database: undefined,
   driverClassName: '',
   jdbcUrl: '',
-  passd: '',
+  password: '',
   username: ''
 });
 
@@ -61,7 +61,7 @@ const edit = async () => {
     database: formState.value.database,
     driverClassName: formState.value.driverClassName,
     jdbcUrl: formState.value.jdbcUrl,
-    passd: formState.value.passd,
+    password: formState.value.password,
     projectId: projectId.value,
     username: formState.value.username
   };
@@ -104,7 +104,7 @@ watch(() => props.visible, (newValue) => {
       driverClassName: _data.driverClassName,
       jdbcUrl: _data.jdbcUrl,
       username: _data.username,
-      passd: _data.passd
+      password: _data.password
     };
     return;
   }
@@ -114,7 +114,7 @@ watch(() => props.visible, (newValue) => {
     database: undefined,
     driverClassName: '',
     jdbcUrl: '',
-    passd: '',
+    password: '',
     username: ''
   };
 }, {
@@ -215,9 +215,9 @@ const databaseChange = (value:string) => {
               :disabled="formState.database === 'SQLITE' && !!props.editData"
               :maxlength="50" />
           </FormItem>
-          <FormItem name="passd">
+          <FormItem name="password">
             <Input
-              v-model:value="formState.passd"
+              v-model:value="formState.password"
               placeholder="密码"
               :maxlength="50"
               type="password" />

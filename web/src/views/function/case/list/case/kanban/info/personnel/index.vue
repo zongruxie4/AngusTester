@@ -53,8 +53,8 @@ const assignToMe = () => {
   testerBlur();
 };
 
-const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullname: string; }) => {
-  testerMessage.value = option.fullname;
+const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  testerMessage.value = option.fullName;
 };
 
 const testerBlur = async () => {
@@ -120,7 +120,7 @@ const testerDefaultOptions = computed(() => {
   return {
     [id]: {
       id: id,
-      fullname: testerName.value
+      fullName: testerName.value
     }
   };
 });
@@ -130,7 +130,7 @@ const userId = computed(() => {
 });
 
 const userName = computed(() => {
-  return props.userInfo?.fullname;
+  return props.userInfo?.fullName;
 });
 </script>
 

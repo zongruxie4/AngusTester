@@ -85,21 +85,21 @@ const loadformData = async () => {
   formData.value.type = data.type?.value || 'AGILE';
   if (formData.value.members?.USER) {
     members.value.USER = formData.value.members?.USER.map(i => {
-      defaultOptionsUser.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (formData.value.members?.DEPT) {
     members.value.DEPT = formData.value.members?.DEPT.map(i => {
-      defaultOptionsDept.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
   if (formData.value.members?.GROUP) {
     members.value.GROUP = formData.value.members?.GROUP.map(i => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullname: i.name };
+      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }

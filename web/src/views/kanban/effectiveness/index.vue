@@ -1144,7 +1144,7 @@ const loadData = async () => {
     const rankData = (ranking.completedNumRank || ranking.passedTestNumRank).slice(0, 10).reverse();
     const validTaskNumRank = ranking?.validTaskNumRank || ranking?.validCaseNumRank || [];
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const totalXData = userIds.map((userId) => validTaskNumRank.find(i => i.assigneeId === userId)?.score || 0);
     const completeXData = rankData.map(i => i.score);
     targetEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
@@ -1168,7 +1168,7 @@ const loadData = async () => {
     const rankData = (ranking.completedWorkloadRank).slice(0, 10).reverse();
     const actualWorkloadRank = ranking?.actualWorkloadRank || [];
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const totalXData = userIds.map((userId) => actualWorkloadRank.find(i => i.assigneeId === userId)?.score || 0);
     const completeXData = rankData.map(i => i.score);
     workloadEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
@@ -1191,7 +1191,7 @@ const loadData = async () => {
     const rankData = ranking.overdueNumRank.slice(0, 10).reverse();
     const validTaskNumRank = ranking?.validTaskNumRank || ranking?.validCaseNumRank || [];
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const totalXData = userIds.map((userId) => validTaskNumRank.find(i => i.assigneeId === userId)?.score || 0);
     const completeXData = rankData.map(i => i.score);
     overdueEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
@@ -1214,7 +1214,7 @@ const loadData = async () => {
     const rankData = (ranking.oneTimePassedNumRank || ranking?.oneTimePassedTestNumRank).slice(0, 10).reverse();
     const validTaskNumRank = ranking?.validTaskNumRank || ranking?.validCaseNumRank || [];
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const totalXData = userIds.map((userId) => validTaskNumRank.find(i => i.assigneeId === userId)?.score || 0);
     const completeXData = rankData.map(i => i.score);
     oneTimePassedTestConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
@@ -1239,7 +1239,7 @@ const loadData = async () => {
     const rankData = (ranking.validBugNumRank || ranking?.oneTimePassedReviewNumRank).slice(0, 10).reverse();
     const validTaskNumRank = ranking?.validTaskNumRank || ranking?.validCaseNumRank || [];
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const totalXData = userIds.map((userId) => validTaskNumRank.find(i => i.assigneeId === userId)?.score || 0);
     const completeXData = rankData.map(i => i.score);
     oneTimeUnPassedTestConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
@@ -1261,7 +1261,7 @@ const loadData = async () => {
   if (ranking?.completedRateRank || ranking?.passedTestRateRank) {
     const rankData = (ranking.completedRateRank || ranking?.passedTestRateRank).slice(0, 10).reverse();
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const XData = rankData.map(i => i.score);
     targetRateEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
     targetRateEchartsConfig.series[0].data = XData;
@@ -1280,7 +1280,7 @@ const loadData = async () => {
   if (ranking?.savingWorkloadRank) {
     const rankData = ranking.savingWorkloadRank.slice(0, 10).reverse();
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const XData = rankData.map(i => i.score);
     workloadRateEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
     workloadRateEchartsConfig.series[0].data = XData;
@@ -1299,7 +1299,7 @@ const loadData = async () => {
   if (ranking?.overdueRateRank) {
     const rankData = ranking.overdueRateRank.slice(0, 10).reverse();
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const XData = rankData.map(i => i.score);
     overdueRateEchartsConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
     overdueRateEchartsConfig.series[0].data = XData;
@@ -1318,7 +1318,7 @@ const loadData = async () => {
   if (ranking?.oneTimePassedRateRank || ranking?.oneTimePassedTestRateRank) {
     const rankData = (ranking?.oneTimePassedRateRank || ranking?.oneTimePassedTestRateRank).slice(0, 10).reverse();
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const XData = rankData.map(i => i.score);
     oneTimePassedTestRateConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
     oneTimePassedTestRateConfig.series[0].data = XData;
@@ -1337,7 +1337,7 @@ const loadData = async () => {
   if (ranking?.validBugRateRank || ranking?.oneTimePassedReviewRateRank) {
     const rankData = (ranking?.validBugRateRank || ranking?.oneTimePassedReviewRateRank).slice(0, 10).reverse();
     const userIds = rankData.map(i => i.assigneeId);
-    const yData = userIds.map(i => assignees[i].fullname);
+    const yData = userIds.map(i => assignees[i].fullName);
     const XData = rankData.map(i => i.score);
     oneTimeUnPassedTestRateConfig.yAxis.data = yData.map(i => ({ value: i, textStyle: { width: 50, overflow: 'breakAll' } }));
     oneTimeUnPassedTestRateConfig.series[0].data = XData;

@@ -23,7 +23,7 @@ const handleChangeType = () => {
 
 const setCreator = (value, opt) => {
   creatorObjectId.value = value;
-  creatorObjectName.value = opt?.fullname || opt?.name;
+  creatorObjectName.value = opt?.fullName || opt?.name;
   avatar.value = opt.avatar || undefined;
 };
 
@@ -72,7 +72,7 @@ const ok = () => {
         :showSearch="true"
         placeholder="选择用户"
         :action="`${GM}/user/search`"
-        :fieldNames="{ label: 'fullname', value: 'id' }"
+        :fieldNames="{ label: 'fullName', value: 'id' }"
         @change="setCreator">
       </Select>
       <Select

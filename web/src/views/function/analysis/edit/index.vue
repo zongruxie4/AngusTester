@@ -303,7 +303,7 @@ onMounted(async () => {
             :showSearch="true"
             placeholder="选择用户"
             :action="`${GM}/user/search`"
-            :fieldNames="{ label: 'fullname', value: 'id' }">
+            :fieldNames="{ label: 'fullName', value: 'id' }">
           </Select>
           <Select
             v-show="formData.orgType === 'DEPT'"

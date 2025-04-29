@@ -3,7 +3,7 @@ import { encode as et } from 'js-base64';
 export type UserInfo = {
     id: string;
     username: string;
-    fullname: string;
+    fullName: string;
     firstName: string;
     lastName: string;
     itc: string;
@@ -32,11 +32,11 @@ export type UserInfo = {
     createdDate: string;
     lastModifiedBy: string;
     lastModifiedDate: string;
-    passdStrength: {
+    passwordStrength: {
       value: string;
       message: string;
     };
-    passdExpiredFlag: boolean;
+    passwordExpiredFlag: boolean;
     tenantRealNameStatus: {
       value: string;
       message: string;

@@ -55,7 +55,7 @@ const pagination = reactive({
 const handleInputChange = debounce(duration.search, (event: ChangeEvent) => {
   const value = event.target.value;
   if (value) {
-    params.filters[0] = { key: props.activeKey === 'USER' ? 'fullname' : 'name', op: 'MATCH_END', value: value.trim() };
+    params.filters[0] = { key: props.activeKey === 'USER' ? 'fullName' : 'name', op: 'MATCH_END', value: value.trim() };
   } else {
     params.filters = [];
   }
@@ -315,7 +315,7 @@ watch(() => policyKeyword.value, debounce(duration.search, () => {
           :key="obj.id"
           class="leading-9 cursor-pointer px-3 truncate"
           :class="{'bg-gray-bg': obj.id === selectId}"
-          :title="obj.name || obj.fullname"
+          :title="obj.name || obj.fullName"
           @click="selectMember(obj.id)">
           <template v-if="activeKey === 'USER'">
             <Image
@@ -329,7 +329,7 @@ watch(() => policyKeyword.value, debounce(duration.search, () => {
           <template v-else>
             <Icon icon="icon-zu" class="text-3.5 leading-3.5 -mt-0.5 flex-shrink-0" />
           </template>
-          {{ obj.name || obj.fullname }}
+          {{ obj.name || obj.fullName }}
         </div>
       </Scroll>
     </div>

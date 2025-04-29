@@ -37,7 +37,7 @@ onMounted(() => {
     avatar
     targetType="TASK"
     :bordered="false"
-    :publicFlag="false"
+    :public0="false"
     :showPublishTitle="false"
     :userId="props.userInfo?.id"
     :targetId="props.id"

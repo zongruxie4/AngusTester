@@ -37,7 +37,7 @@ const assigneeOverview = computed(() => {
       totalStatusOverview: item.statusOverview,
       totalPriorityOverview: item.priorityOverview,
       totalTypeOverview: item.typeOverview,
-      fullname: map[item.assigneeId].fullname
+      fullName: map[item.assigneeId].fullName
     };
   });
 });
@@ -61,12 +61,12 @@ const totalOverview = computed(() => {
         <div
           v-for="item in assigneeOverview"
           :key="item.assigneeId">
-          <li>{{ item.fullname }}</li>
+          <li>{{ item.fullName }}</li>
           <div class="flex items-center space-x-7">
             <Progress
               :percent="+item.totalOverview?.progress"
               text="进度"
-              :title="item.fullname"
+              :title="item.fullName"
               class="ml-4" />
             <div class="flex-shrink-0 w-157.75 border border-solid border-border-input">
               <div class="flex border-b border-solid border-border-input">
@@ -226,7 +226,7 @@ const totalOverview = computed(() => {
         <div
           v-for="item in assigneeOverview"
           :key="item.assigneeId">
-          <li class="mb-3">{{ item.fullname }}</li>
+          <li class="mb-3">{{ item.fullName }}</li>
           <BurnDownChart :dataSource="item.burnDownCharts" />
         </div>
       </div>
@@ -240,7 +240,7 @@ const totalOverview = computed(() => {
         <div
           v-for="item in assigneeOverview"
           :key="item.assigneeId">
-          <li class="mb-3">{{ item.fullname }}</li>
+          <li class="mb-3">{{ item.fullName }}</li>
           <TaskGrouped :dataSource="{content: {tasks: item}}" />
         </div>
       </div>

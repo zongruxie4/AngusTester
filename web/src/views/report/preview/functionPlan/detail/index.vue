@@ -31,7 +31,7 @@ const testerResponsibilities = computed(() => {
   return Object.entries(_testerResponsibilities).map(([id, value]) => {
     return {
       id,
-      name: _testers[id].fullname,
+      name: _testers[id].fullName,
       responsibility: value
     };
   });

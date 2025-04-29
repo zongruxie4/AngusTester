@@ -81,7 +81,7 @@ const len = computed(() => {
           {{ item.optDate }}
         </div>
         <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          {{ item.fullname }}
+          {{ item.fullName }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap" v-html="item.detail"></div>
       </div>

@@ -12,7 +12,7 @@ interface Activity {
     targetId: string
     targetType: any
     title: string,
-    fullname: string,
+    fullName: string,
     description: string,
     detail: string,
     details: string[],

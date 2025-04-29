@@ -26,7 +26,7 @@ export const infoItem = [
   },
   {
     label: '密码',
-    dataIndex: 'passd'
+    dataIndex: 'password'
   },
   {
     label: '角色',

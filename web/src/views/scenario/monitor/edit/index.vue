@@ -9,7 +9,7 @@ import { MonitorInfo } from '../PropsType';
 
 type Props = {
   projectId: string;
-  userInfo: { id: string; fullname: string};
+  userInfo: { id: string; fullName: string};
   appInfo: { id: string; };
   _id: string;
   data: {
@@ -74,7 +74,7 @@ const handleSceneChange = (_id: string, option) => {
 };
 
 // 组织部门数组
-const orgs = ref<{name: string; id: string}[]>([{ id: props.userInfo?.id, name: props.userInfo?.fullname }]);
+const orgs = ref<{name: string; id: string}[]>([{ id: props.userInfo?.id, name: props.userInfo?.fullName }]);
 const validateOrgs = () => {
   if (!orgs.value.length) {
     return Promise.reject('请选择');
@@ -89,8 +89,8 @@ const handleChangeOrgType = () => {
 };
 
 // 组织变更
-const handleChangeOrgs = (_value: string[], valueObjs: {name: string; id: string; fullname}[]) => {
-  orgs.value = (valueObjs || []).map(i => ({ name: i.fullname || i.name, id: i.id }));
+const handleChangeOrgs = (_value: string[], valueObjs: {name: string; id: string; fullName}[]) => {
+  orgs.value = (valueObjs || []).map(i => ({ name: i.fullName || i.name, id: i.id }));
 };
 
 const hasVariable = (variables = {}) => {
@@ -250,7 +250,7 @@ const loadScenarioPlugin = async (scenarioId: string) => {
   isHttpPlugin.value = data.plugin === 'Http';
 };
 
-// const members = ref<{ fullname: string, id: string; }[]>([]);
+// const members = ref<{ fullName: string, id: string; }[]>([]);
 
 // const loadMembers = async () => {
 //   const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
@@ -440,7 +440,7 @@ const editFlag = computed(() => {
                   class="w-50"
                   placeholder="选择用户"
                   :action="`${GM}/user/search`"
-                  :fieldNames="{ label: 'fullname', value: 'id' }"
+                  :fieldNames="{ label: 'fullName', value: 'id' }"
                   @change="handleChangeOrgs">
                 </Select>
 

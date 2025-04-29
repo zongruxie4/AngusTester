@@ -76,8 +76,8 @@ const assignToMe = (key:'assigneeId'|'confirmorId'|'testerId') => {
   }
 };
 
-const assigneeChange = async (_event: { target: { value: string; } }, option: { id: string; fullname: string; }) => {
-  assigneeMessage.value = option.fullname;
+const assigneeChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  assigneeMessage.value = option.fullName;
 };
 
 const assigneeBlur = async () => {
@@ -115,8 +115,8 @@ const toEditConfirmor = () => {
   });
 };
 
-const confirmorChange = async (_event: { target: { value: string; } }, option: { id: string; fullname: string; }) => {
-  confirmorMessage.value = option.fullname;
+const confirmorChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  confirmorMessage.value = option.fullName;
 };
 
 const confirmorBlur = async () => {
@@ -154,8 +154,8 @@ const toEdiTester = () => {
   });
 };
 
-const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullname: string; }) => {
-  testerMessage.value = option.fullname;
+const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  testerMessage.value = option.fullName;
 };
 
 const testerBlur = async () => {
@@ -196,7 +196,7 @@ const assigneeDefaultOptions = computed(() => {
   return {
     [id]: {
       id: id,
-      fullname: assigneeName.value
+      fullName: assigneeName.value
     }
   };
 });
@@ -212,7 +212,7 @@ const testerDefaultOptions = computed(() => {
   return {
     [id]: {
       id: id,
-      fullname: testerName.value
+      fullName: testerName.value
     }
   };
 });
@@ -221,7 +221,7 @@ const userId = computed(() => {
   return props.userInfo?.id;
 });
 const userName = computed(() => {
-  return props.userInfo?.fullname;
+  return props.userInfo?.fullName;
 });
 const confirmorId = computed(() => props.dataSource?.confirmorId);
 const confirmorName = computed(() => props.dataSource?.confirmorName);
@@ -234,7 +234,7 @@ const confirmorDefaultOptions = computed(() => {
   return {
     [id]: {
       id: id,
-      fullname: confirmorName.value
+      fullName: confirmorName.value
     }
   };
 });

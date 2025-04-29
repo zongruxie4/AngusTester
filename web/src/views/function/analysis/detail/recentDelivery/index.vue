@@ -50,7 +50,7 @@ onMounted(() => {
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullname,
+            userName: assignees[userId]?.fullName,
             chartData,
             id: userId
           });

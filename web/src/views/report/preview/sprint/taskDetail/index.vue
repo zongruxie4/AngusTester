@@ -51,7 +51,7 @@ const assignees = computed(() => {
       :key="item.id"
       class="mb-7 last:mb-0">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span :id="`a${index+11}`">3.{{ index+1 }}<em class="inline-block w-3.5"></em>{{ item.fullname }}</span>
+        <span :id="`a${index+11}`">3.{{ index+1 }}<em class="inline-block w-3.5"></em>{{ item.fullName }}</span>
       </h2>
 
       <div class="space-y-5">

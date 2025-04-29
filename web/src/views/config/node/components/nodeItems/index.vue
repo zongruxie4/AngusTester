@@ -34,7 +34,7 @@ const nodeParams = reactive({
   publicIp: '',
   domain: '',
   username: '',
-  passd: '',
+  password: '',
   sshPort: '',
   roles: [],
   id: ''
@@ -138,7 +138,7 @@ const changeEditable = (state) => {
   nodeParams.id = state.id;
   nodeParams.name = state.name;
   nodeParams.username = state.username;
-  nodeParams.passd = state.passd;
+  nodeParams.password = state.password;
   nodeParams.sshPort = state.sshPort;
   nodeParams.roles = state.roles.map(i => i.value);
 };
@@ -289,8 +289,8 @@ const enable = async (state) => {
 
 // 测试链接
 const test = async () => {
-  const { ip, passd, sshPort, username, publicIp } = nodeParams;
-  const [error] = await node.test({ ip: publicIp || ip, passd, sshPort: Number(sshPort), username });
+  const { ip, password, sshPort, username, publicIp } = nodeParams;
+  const [error] = await node.test({ ip: publicIp || ip, password, sshPort: Number(sshPort), username });
   showTested.value = true;
   if (error) {
     testSuccess.value = false;

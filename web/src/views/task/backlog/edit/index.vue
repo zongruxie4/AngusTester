@@ -118,8 +118,8 @@ const formState = reactive<FormState>({
   softwareVersion: undefined
 });
 
-const assigneeDefaultOptions = ref<{[key:string]:{fullname:string;id:string;}}>();
-const confirmorDefaultOptions = ref<{[key:string]:{fullname:string;id:string;}}>();
+const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const confirmorDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
 
 const showContinue = computed(() => {
   return !props.taskId && !props.taskType;
@@ -482,7 +482,7 @@ onMounted(() => {
       formState.assigneeId = assigneeId;
       assigneeDefaultOptions.value = {
         [assigneeId]: {
-          fullname: data.assigneeName,
+          fullName: data.assigneeName,
           id: assigneeId
         }
       };
@@ -491,7 +491,7 @@ onMounted(() => {
       formState.confirmorId = confirmorId;
       confirmorDefaultOptions.value = {
         [confirmorId]: {
-          fullname: data.confirmorName,
+          fullName: data.confirmorName,
           id: confirmorId
         }
       };

@@ -38,7 +38,7 @@ const appInfo = inject('appInfo') as Ref<Record<string, any>>;
 
 const state = reactive({
   info: {
-    fullname: '',
+    fullName: '',
     operationId: '',
     source: {
       value: '',
@@ -199,7 +199,7 @@ const handleOwnerIdChange = async (value, option) => {
     return;
   }
   state.info.ownerId = value;
-  state.info.ownerName = option.fullname;
+  state.info.ownerName = option.fullName;
 };
 
 // 编辑 描述

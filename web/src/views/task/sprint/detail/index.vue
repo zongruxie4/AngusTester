@@ -182,13 +182,13 @@ const meetings = computed(() => {
     const startTime = dayjs(time[0]).format('HH:mm:ss');
     const endTime = dayjs(time[1]).format('HH:mm:ss');
 
-    const participantNames = item.participants.map(item => item.fullname).join(',');
+    const participantNames = item.participants.map(item => item.fullName).join(',');
     return {
       ...item,
       date,
       startTime,
       endTime,
-      moderatorName: item.moderator?.fullname,
+      moderatorName: item.moderator?.fullName,
       participantNames,
       id: utils.uuid()
     };

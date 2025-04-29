@@ -301,7 +301,7 @@ const setFormData = (data: ReviewInfo) => {
       members.value.push({
         ...m,
         value: m.id,
-        label: m.fullname
+        label: m.fullName
       });
     }
   });
@@ -352,7 +352,7 @@ const loadPermissions = async (id: string) => {
   permissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
-const members = ref<{id: string; fullname: string; value: string; label: string}[]>([]);
+const members = ref<{id: string; fullName: string; value: string; label: string}[]>([]);
 
 const loadMembers = async () => {
   const [error, res] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
@@ -364,7 +364,7 @@ const loadMembers = async () => {
   members.value = (data || []).map(i => {
     return {
       ...i,
-      label: i.fullname,
+      label: i.fullName,
       value: i.id
     };
   });

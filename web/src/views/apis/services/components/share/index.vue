@@ -96,7 +96,7 @@ const edit = (item:ListType) => {
 // 设置密码可以编辑
 const openEditPassd = (item: ListType) => {
   item.editPassd = true;
-  item.tempPass = item.passd;
+  item.tempPass = item.password;
 };
 
 // 修改密码
@@ -104,15 +104,15 @@ const patchPassd = async (item:ListType) => {
   if (!item.tempPass) {
     notification.error('输入的密码不能为空');
   }
-  const { expiredDuration, apiIds, id, publicFlag, remark, url } = item;
+  const { expiredDuration, apiIds, id, public0, remark, url } = item;
   const expiredFlag = !!expiredDuration.value;
   const params = {
     apiIds: apiIds || undefined,
     id,
     url,
-    publicFlag,
+    public0,
     remark,
-    passd: item.tempPass,
+    password: item.tempPass,
     expiredFlag,
     expiredDuration: expiredFlag ? { ...expiredDuration, unit: expiredDuration.unit.value } : undefined
   };
@@ -120,7 +120,7 @@ const patchPassd = async (item:ListType) => {
   if (error) {
     return;
   }
-  item.passd = item.tempPass as string;
+  item.password = item.tempPass as string;
   item.editPassd = false;
   notification.success('修改密码成功');
 };
@@ -133,8 +133,8 @@ const cancelPassd = (item: ListType) => {
 // 复制密码和链接
 const copy = (item:ListType) => {
   let message;
-  if (!item.publicFlag) {
-    message = `链接: ${item.url} 密码: ${item.passd || ''}`;
+  if (!item.public0) {
+    message = `链接: ${item.url} 密码: ${item.password || ''}`;
   } else {
     message = `链接: ${item.url}`;
   }
@@ -181,12 +181,12 @@ onMounted(() => {
           </Tooltip>
         </column-item>
         <column-item
-          v-if="!item.publicFlag"
+          v-if="!item.public0"
           label="密码"
           className="w-18">
           <div class="flex items-center">
             <template v-if="!item.editPassd">
-              <span>{{ item.passd }}</span>
+              <span>{{ item.password }}</span>
               <Icon
                 icon="icon-zhongzhi"
                 class="ml-2 text-gray-icon cursor-pointer"

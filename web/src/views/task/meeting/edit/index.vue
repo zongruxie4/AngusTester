@@ -199,7 +199,7 @@ const setFormData = (data: MeetingInfo) => {
     timeEnd: dayjs(endTime),
     moderator: moderator?.id,
     participants: (participants || []).map(i => {
-      if (i.fullname && i.id && members.value.find(item => item.id === i.id)) {
+      if (i.fullName && i.id && members.value.find(item => item.id === i.id)) {
         members.value.push({
           ...i
         });
@@ -209,7 +209,7 @@ const setFormData = (data: MeetingInfo) => {
   };
 };
 
-const members = ref<{ fullname: string, id: string; }[]>([]);
+const members = ref<{ fullName: string, id: string; }[]>([]);
 
 const loadMembers = async () => {
   const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
@@ -289,7 +289,7 @@ const editFlag = computed(() => {
 });
 
 const fieldNames = {
-  label: 'fullname',
+  label: 'fullName',
   value: 'id'
 };
 

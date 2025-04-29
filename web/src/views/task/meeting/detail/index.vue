@@ -52,13 +52,13 @@ const loadData = async (id: string) => {
   const startTime = dayjs(time[0]).format('HH:mm:ss');
   const endTime = dayjs(time[1]).format('HH:mm:ss');
 
-  const participantNames = data.participants.map(item => item.fullname).join(',');
+  const participantNames = data.participants.map(item => item.fullName).join(',');
   dataSource.value = {
     ...data,
     date,
     startTime,
     endTime,
-    moderatorName: data.moderator?.fullname,
+    moderatorName: data.moderator?.fullName,
     participantNames
   };
 
@@ -149,7 +149,7 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.moderator?.fullname }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.moderator?.fullName }}</div>
         </div>
       </div>
 

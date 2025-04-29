@@ -9,12 +9,12 @@ export interface ListType{
       message
     }
   },
-  passd:string,
+  password:string,
   url?:string,
   id:string,
   editPassd?: boolean,
   tempPass?: string,
-  publicFlag: boolean,
+  public0: boolean,
   expiredFlag?: boolean,
   targetType: 'PROJECT' | 'SERVICE' | 'API',
   remark?: string

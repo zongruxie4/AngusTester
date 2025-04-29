@@ -91,7 +91,7 @@ const delShare = async (id:string) => {
 // 设置密码可以编辑
 const openEditPassd = (item: ListType) => {
   item.editPassd = true;
-  item.tempPass = item.passd;
+  item.tempPass = item.password;
 };
 
 // 修改密码
@@ -103,16 +103,16 @@ const patchPassd = async (item:ListType) => {
     id: item.id,
     expiredFlag: item.expiredFlag,
     objectIds: item.objectIds,
-    publicFlag: item.publicFlag,
+    public0: item.public0,
     remark: item.remark,
     expiredDuration: item.expiredDuration ? { ...item.expiredDuration, unit: item.expiredDuration.unit.value } : undefined,
-    passd: item.tempPass
+    password: item.tempPass
   };
   const [error] = await space.patchShare(params);
   if (error) {
     return;
   }
-  item.passd = item.tempPass as string;
+  item.password = item.tempPass as string;
   item.editPassd = false;
   notification.success('修改密码成功');
 };
@@ -125,8 +125,8 @@ const cancelPassd = (item: ListType) => {
 // 复制密码和链接
 const copy = (item:ListType) => {
   let message;
-  if (!item.publicFlag) {
-    message = `链接: ${item.url} 密码: ${item.passd || ''}`;
+  if (!item.public0) {
+    message = `链接: ${item.url} 密码: ${item.password || ''}`;
   } else {
     message = `链接: ${item.url}`;
   }
@@ -195,12 +195,12 @@ onMounted(() => {
           </Tooltip>
         </column-item>
         <column-item
-          v-if="!item.publicFlag"
+          v-if="!item.public0"
           label="密码"
           className="w-18">
           <div class="flex items-center">
             <template v-if="!item.editPassd">
-              <span>{{ item.passd }}</span>
+              <span>{{ item.password }}</span>
               <Icon
                 icon="icon-zhongzhi"
                 class="ml-2 text-gray-icon cursor-pointer"

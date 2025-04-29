@@ -24,7 +24,7 @@ const formRef = ref();
 
 const receiversType = ref<{value:string, message:string}[]>([]);
 const otherType = ref<{value:string, message:string}>({ value: '', message: '' });
-const defaultUsers = ref<{value:string, laebel:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullname, value: i.id })));
+const defaultUsers = ref<{value:string, laebel:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
 const users = ref<string[]>(defaultUsers.value.map(user => user.value));
 const noticeTypeOpt = ref<{value:string, message:string}[]>([]);
 const noticeType = ref<string[]>((props.selectedItem?.receiveSetting?.receivers?.noticeTypes || []).map(i => i.value));

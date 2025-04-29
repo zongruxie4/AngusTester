@@ -218,7 +218,7 @@ const handleChangeNoticeType = async (typesValue, eventCode) => {
 
 const getReceiver = (receiveSetting) => {
   const receiverTypes: string[] = receiveSetting?.receivers?.receiverTypes?.map(m => m.message) || [];
-  const otherUser: string[] = receiveSetting?.receivers?.receivers?.map(m => m.fullname) || [];
+  const otherUser: string[] = receiveSetting?.receivers?.receivers?.map(m => m.fullName) || [];
   return [...otherUser, ...receiverTypes].join('、');
 };
 

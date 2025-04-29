@@ -48,7 +48,7 @@ const action = computed(() => {
   return `${GM}/app/${appId}/auth/user`;
 });
 const fieldNames = {
-  label: 'fullname',
+  label: 'fullName',
   value: 'id'
 };
 </script>
@@ -77,7 +77,7 @@ const fieldNames = {
               type="avatar"
               class="w-5 h-5 rounded-xl"
               :src="item.avatar" />
-            <span :title="item.fullname" class="relative top-0.5 ml-1.5 truncate">{{ item.fullname }}</span>
+            <span :title="item.fullName" class="relative top-0.5 ml-1.5 truncate">{{ item.fullName }}</span>
           </div>
         </Scroll>
       </template>

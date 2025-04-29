@@ -1314,7 +1314,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
             font-size="12px"
             :dataSource="state.infos"
             :columns="infoItem">
-            <template #passd="{text}">
+            <template #password="{text}">
               <template v-if="showPassd">
                 <span class="text-black-active align-middle">{{ text }}</span>
                 <Icon

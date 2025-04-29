@@ -44,7 +44,7 @@ export type SprintInfo = {
     members: {
         id: string;
         username: string;
-        fullname: string;
+        fullName: string;
         mobile: string;
         email: string;
         avatar: string;
@@ -52,7 +52,7 @@ export type SprintInfo = {
     showMembers: {
         id: string;
         username: string;
-        fullname: string;
+        fullName: string;
         mobile: string;
         email: string;
         avatar: string;
@@ -65,8 +65,8 @@ export type SprintInfo = {
         date: string;
         time: string;
         location: string;
-        moderator: {id:string;fullname:string;};
-        participants: {id:string;fullname:string;}[];
+        moderator: {id:string;fullName:string;};
+        participants: {id:string;fullName:string;}[];
         content: string;
     }[];
 }

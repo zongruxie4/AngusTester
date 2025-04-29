@@ -7,7 +7,7 @@ import { FormData, Priority } from './PropsType';
 interface Props {
   value: FormData;
   type: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO';
-  users: {fullname: string; id: string}[];
+  users: {fullName: string; id: string}[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -47,10 +47,10 @@ const update = (_value: { [key: string]: string | string[] }) => {
   emit('update:value', { ...formData.value, ..._value });
 };
 
-const seletionOptions = ref<{ fullname: string, userId: string }[]>();
+const seletionOptions = ref<{ fullName: string, userId: string }[]>();
 watch(() => props.value, (newValue) => {
   formData.value = newValue;
-  // seletionOptions.value = newValue.selectOptions?.map(item => ({ fullname: item.name, userId: item.id }));
+  // seletionOptions.value = newValue.selectOptions?.map(item => ({ fullName: item.name, userId: item.id }));
 }, { deep: true, immediate: true });
 
 const validate = () => {
@@ -107,7 +107,7 @@ defineExpose({ validate, reset });
         placeholder="请选择经办人"
         :allowClear="true"
         :options="props.users"
-        :fieldNames="{ label: 'fullname', value: 'id' }"
+        :fieldNames="{ label: 'fullName', value: 'id' }"
         size="small"
         @change="userChange" />
     </div>

@@ -17,7 +17,7 @@ export default class API {
   }
 
   // 获取api 信息
-  getApiInfo (params: {id: string, passd?: string, sid: string, spt: string}): Promise<[Error | null, any]> {
+  getApiInfo (params: {id: string, password?: string, sid: string, spt: string}): Promise<[Error | null, any]> {
     const { id, ...param } = params;
     return http.get(`${baseUrl}/share/apis/${id}`, param);
   }

@@ -7,7 +7,7 @@ export default class API {
   }
 
   // 获取空间信息
-  getSpaceInfo (params: {spt: string, sid: string, passd?: string}): Promise<[Error | null, any]> {
+  getSpaceInfo (params: {spt: string, sid: string, password?: string}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/share`, params);
   }
 

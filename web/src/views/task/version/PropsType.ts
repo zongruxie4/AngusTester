@@ -6,8 +6,8 @@ export type VersionInfo = {
     date: Dayjs;
     endTime: Dayjs;
     location: string;
-    moderator: { fullname: string, id: string };
-    participants: { fullname: string, id: string }[];
+    moderator: { fullName: string, id: string };
+    participants: { fullName: string, id: string }[];
     startTime: Dayjs;
     type: 'DAILY_STANDUP' | 'PLANNING' | 'RETROSPECTIVE' | 'REVIEW' | 'OTHER';
 }

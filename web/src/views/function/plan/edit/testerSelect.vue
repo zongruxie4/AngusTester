@@ -4,8 +4,8 @@ import { Input, Select } from '@xcan-angus/vue-ui';
 
 interface Props {
     value: {[userId: string]: string};
-    members: {fullname: string; id: string}[];
-    membersOptions: {fullname: string; id: string, value: string; label: string;}[];
+    members: {fullName: string; id: string}[];
+    membersOptions: {fullName: string; id: string, value: string; label: string;}[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'change', value: {[userId: string]: string})}>();
 
-const data = ref<{id?: string; fullname?: string; description: string}[]>([]);
+const data = ref<{id?: string; fullName?: string; description: string}[]>([]);
 
 const change = () => {
   emits('change', getData());
@@ -24,7 +24,7 @@ const change = () => {
 
 const onUserChange = () => {
   if (data.value.every(i => i.id)) {
-    data.value.push({ id: undefined, fullname: '', description: '' });
+    data.value.push({ id: undefined, fullName: '', description: '' });
   }
   change();
 };
@@ -58,15 +58,15 @@ onMounted(() => {
   watch(() => props.value, () => {
     if (props.value) {
       const propsValue = Object.keys(props.value).map(id => {
-        const fullname = (props.members || []).find(user => user.id === id)?.fullname;
-        defaultUserOptions.value[id] = { label: fullname, value: id, fullname, id };
+        const fullName = (props.members || []).find(user => user.id === id)?.fullName;
+        defaultUserOptions.value[id] = { label: fullName, value: id, fullName, id };
         if (data.value.find(user => user.id === id)) {
           return null;
         }
         return {
           id: id,
           description: props.value[id],
-          fullname
+          fullName
         };
       }).filter(Boolean);
       data.value.unshift(...propsValue);
@@ -75,7 +75,7 @@ onMounted(() => {
     if (data.value.find(user => !user.id)) {
       return;
     }
-    data.value.push({ id: undefined, fullname: '', description: '' });
+    data.value.push({ id: undefined, fullName: '', description: '' });
   }, {
     immediate: true
   });

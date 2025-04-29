@@ -56,7 +56,7 @@ state.id = inject('id', ''); // 当前 api id;
 const handleCloseDrawer = inject('selectHandle', closeFunCallBack);
 const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
 const setUnarchivedApiInfo = inject('setUnarchivedApiInfo', (info) => (info));
-const userInfo = inject('tenantInfo', ref({ id: '', fullname: '' }));
+const userInfo = inject('tenantInfo', ref({ id: '', fullName: '' }));
 
 const loadInfo = async () => {
   const [error, res] = await unarchived.loadInfo(state.id);
@@ -77,7 +77,7 @@ const loadInfo = async () => {
   })) || [];
   if (!form.ownerId && userInfo.value.id) {
     form.ownerId = userInfo.value.id;
-    form.ownerName = userInfo.value.fullname;
+    form.ownerName = userInfo.value.fullName;
   }
 };
 

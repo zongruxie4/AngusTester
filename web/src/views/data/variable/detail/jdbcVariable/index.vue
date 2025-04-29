@@ -86,7 +86,7 @@ const selectedDataSourceOk = (data) => {
   dbType.value = data.database;
   jdbcUrl.value = data.jdbcUrl;
   username.value = data.username;
-  password.value = data.passd;
+  password.value = data.password;
 };
 
 const nameChange = () => {

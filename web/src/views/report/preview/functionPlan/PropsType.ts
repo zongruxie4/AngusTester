@@ -48,7 +48,7 @@ export type ReportContent = {
             members: {
                 id: string;
                 username: string;
-                fullname: string;
+                fullName: string;
                 mobile: string;
                 email: string;
                 avatar: string;
@@ -56,7 +56,7 @@ export type ReportContent = {
             showMembers: {
                 id: string;
                 username: string;
-                fullname: string;
+                fullName: string;
                 mobile: string;
                 email: string;
                 avatar: string;
@@ -73,14 +73,14 @@ export type ReportContent = {
         members: {
             id: string;
             username: string;
-            fullname: string;
+            fullName: string;
             mobile: string
         }[];
         cases: {
             testers: {
                 [key: string]: {
                     id: string;
-                    fullname: string;
+                    fullName: string;
                     avatar: string
                 };
             };

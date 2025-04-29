@@ -55,7 +55,7 @@ const testers = computed(() => {
         v-for="(item) in testers"
         :key="item.id"
         class="mb-7 last:mb-0">
-        <li>{{ item.fullname }}</li>
+        <li>{{ item.fullName }}</li>
         <!-- {{ casesMap[item.id].statusOverview }} -->
         <div class="flex items-center space-x-7">
           <Progress
@@ -217,7 +217,7 @@ const testers = computed(() => {
         v-for="(item) in testers"
         :key="item.id"
         class="mb-7 last:mb-0">
-        <li>{{ item.fullname }}</li>
+        <li>{{ item.fullName }}</li>
         <!-- {{ casesMap[item.id].statusOverview }} -->
         <div class="flex items-center space-x-7">
           <div class="border border-solid border-border-input w-full">
@@ -303,7 +303,7 @@ const testers = computed(() => {
         v-for="(item) in testers"
         :key="item.id"
         class="mb-7 last:mb-0">
-        <li class="mb-3">{{ item.fullname }}</li>
+        <li class="mb-3">{{ item.fullName }}</li>
         <!-- {{ casesMap[item.id].statusOverview }} -->
         <BurnDownChart :data-source="casesMap[item.id].burnDownCharts" />
       </div>
@@ -317,7 +317,7 @@ const testers = computed(() => {
         v-for="(item) in testers"
         :key="item.id"
         class="mb-7 last:mb-0">
-        <li class="mb-3">{{ item.fullname }}</li>
+        <li class="mb-3">{{ item.fullName }}</li>
         <!-- {{ casesMap[item.id].statusOverview }} -->
         <CaseGrouped :data-source="{content: {cases: casesMap[item.id]}}" />
       </div>
@@ -328,7 +328,7 @@ const testers = computed(() => {
       :key="item.id"
       class="mb-7 last:mb-0">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span :id="`a${index+13}`">3.{{ index+1 }}<em class="inline-block w-3.5"></em>{{ item.fullname }}</span>
+        <span :id="`a${index+13}`">3.{{ index+1 }}<em class="inline-block w-3.5"></em>{{ item.fullName }}</span>
       </h2>
 
       <div class="space-y-5">

@@ -90,7 +90,7 @@ const rankIcon = {
   1: 'icon-dierming',
   2: 'icon-disanming'
 };
-const rankingData = ref<{userId: string; fullname: string; avatar: string; count: string}[]>([]);
+const rankingData = ref<{userId: string; fullName: string; avatar: string; count: string}[]>([]);
 // 排名数据
 const loadRankData = async () => {
   const [error, { data = {} }] = await kanban.loadRankData({ ...params.value });
@@ -1606,7 +1606,7 @@ defineExpose({
             class="w-6 h-6 rounded-full"
             type="avatar"
             :src="item.avatar" />
-          <div class="flex-1 truncate min-w-0" :title="item.fullname">{{ item.fullname }}</div>
+          <div class="flex-1 truncate min-w-0" :title="item.fullName">{{ item.fullName }}</div>
           <div>{{ item.count }}</div>
         </div>
         <NoData

@@ -446,7 +446,7 @@ const sortMenuItems: {
                       <div
                         v-for="user in item.participants.slice(0, 10)"
                         :key="user.id"
-                        :title="user.fullname"
+                        :title="user.fullName"
                         class="w-5 h-5 mr-2 overflow-hidden rounded-full">
                         <Image
                           :src="user.avatar"
@@ -473,7 +473,7 @@ const sortMenuItems: {
                                   :src="_user.avatar"
                                   type="avatar" />
                               </div>
-                              <span class="flex-1 truncate">{{ _user.fullname }}</span>
+                              <span class="flex-1 truncate">{{ _user.fullName }}</span>
                             </div>
                           </div>
                         </template>

@@ -1109,7 +1109,7 @@ const selectNone = computed(() => {
                     <Tooltip v-for="member in membersMap[item.id]" :key="member.id">
                       <template #title>
                         <div class="leading-5 text-theme-content">
-                          <div class="mb-1 text-theme-title">{{ member.fullname }}</div>
+                          <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
                           <div class="flex items-center mb-0.5">
                             <div class="flex items-center w-12.25">
                               <span>任务数</span>
@@ -1130,7 +1130,7 @@ const selectNone = computed(() => {
                       <div @mouseenter="mouseenter(item.id)">
                         <Image
                           :key="member.id"
-                          :alt="member.fullname"
+                          :alt="member.fullName"
                           :src="member.avatar"
                           type="avatar"
                           class="cursor-pointer"

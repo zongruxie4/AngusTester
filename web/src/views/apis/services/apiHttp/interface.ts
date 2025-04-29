@@ -19,12 +19,6 @@ export interface ParamsItem {
   key?: symbol
 }
 
-export interface HostItem {
-  name?: string;
-  host: string;
-  defaultFlag?: boolean;
-  protocol: { value: string };
-}
 
 export const getDefaultParams = (config = {}): ParamsItem => {
   return {
@@ -168,7 +162,7 @@ export interface State {
   assertions: any[];
   authentication: AuthItem;
   authDefaultValue?: AuthItem;
-  securityFlag: boolean;
+  secured: boolean;
   publishFlag?: boolean;
 }
 
