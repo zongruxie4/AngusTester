@@ -6,8 +6,8 @@ import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 import { utils, enumLoader, axiosClient } from '@xcan-angus/tools';
-import apiUtils from 'angus-design/utils';
-import { ResponseStatus } from 'angus-design';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { ResponseStatus } from '@xcan-angus/vue-ui';
 
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/mock/detail/mockApis/components/urlForm/index.vue';

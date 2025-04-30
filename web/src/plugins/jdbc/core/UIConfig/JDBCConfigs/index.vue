@@ -4,7 +4,7 @@ import { Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Dropdown, Menu, 
 import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 import { cloneDeep } from 'lodash-es';
-import { FunctionsButton } from 'angus-design';
+import { FunctionsButton } from '@xcan-angus/vue-ui';
 
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';

@@ -4,7 +4,7 @@ import { Tabs, TabPane } from 'ant-design-vue';
 import { NoData, TestBasicInfo } from '@xcan-angus/vue-ui';
 
 import { allCvsKeys, allColumns, throughputCvsKeys, throughputOptions, throughputColumns, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns, oneApiErrorColumns } from './ChartConfig';
-import { getCurrentDuration, splitTime } from 'lib/core/utils';
+import { getCurrentDuration, splitTime } from '../utils';
 
 interface Props {
   execInfo: Record<string, any>;

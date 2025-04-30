@@ -7,7 +7,6 @@ import { utils } from '@xcan-angus/tools';
 import StatusTag from '../StatusTag/index.vue';
 import { LdapInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
-import { formatTime } from 'lib/core/utils';
 
 export interface Props {
   value: LdapInfo;
@@ -78,7 +77,7 @@ const runtime = computed(() => {
     return '0';
   }
 
-  return formatTime(+timeStamp);
+  return utils.formatTime(+timeStamp);
 });
 
 const status = computed(() => {

@@ -3,10 +3,10 @@ import { defineAsyncComponent, nextTick, ref, onMounted, watch, inject, computed
 import { Button } from 'ant-design-vue';
 import { Icon, AsyncComponent } from '@xcan-angus/vue-ui';
 import { utils, http, TESTER } from '@xcan-angus/tools';
-import angusUtils from 'angus-design/utils';
+import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { uniq } from 'lodash-es';
 import qs from 'qs';
-// import { SelectApisByService } from 'angus-design';
+// import { SelectApisByService } from '@xcan-angus/vue-ui';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';

@@ -52,7 +52,7 @@ function start () {
     { key: 'VITE_EDITION_TYPE', value: editionType },
     { key: 'VITE_PROFILE', value: deployEnv }
   ];
-  let envContent = fs.readFileSync(resolve('../.env'), 'utf8');
+  let envContent = fs.readFileSync(resolve('../conf/.env'), 'utf8');
   envContent = replace(envContent, envReplaceList);
   fs.writeFileSync(resolve('../public/meta/env'), envContent, 'utf8');
 
@@ -61,14 +61,14 @@ function start () {
     { key: 'VITE_GM_URL_PREFIX', value: 'http://192.168.0.102:8802' },
     { key: 'VITE_DISCOVERY_URL_PREFIX', value: 'http://192.168.0.102:8801' }
   ];
-  let deployEnvContent = fs.readFileSync(resolve(`../.env.${deployEnv}`), 'utf8');
+  let deployEnvContent = fs.readFileSync(resolve(`../conf/.env.${deployEnv}`), 'utf8');
   deployEnvContent = replace(deployEnvContent, deployEnvUrlPrefix);
   fs.writeFileSync(resolve(`../public/meta/env.${deployEnv}`), deployEnvContent, 'utf8');
 
   // 5. Delete all nginx configuration files under public/
   if (deployEnv === 'priv') { // Not configuring Nginx in a private environment
     const nginxFileNames = allEnv.map(item => {
-      return `nginx_${item}_${packageInfo.name}`;
+      return `nginx_${item}_tester-web`;
     });
     for (let i = 0, len = nginxFileNames.length; i < len; i++) {
       const _path = resolve('../public/' + nginxFileNames[i] + '.conf');

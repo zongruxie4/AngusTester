@@ -2,8 +2,8 @@
 import { inject, ref, watch } from 'vue';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
-import SwaggerUI from 'swagger-ui';
-import { ParamInput } from 'angus-design';
+import SwaggerUI from '@xcan-angus/swagger-ui';
+import { ParamInput } from '@xcan-angus/vue-ui';
 
 import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';

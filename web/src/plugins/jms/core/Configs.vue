@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
 import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal } from '@xcan-angus/vue-ui';
-import { Indicator, HttpTestInfo } from 'angus-design';
+import { Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER, CTRL } from '@xcan-angus/tools';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';

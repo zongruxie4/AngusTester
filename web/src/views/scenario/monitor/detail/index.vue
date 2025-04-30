@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Hints, Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
 import { TESTER, CTRL, http } from '@xcan-angus/tools';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from 'angus-design';
+import { DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 
 import { MonitorInfo } from '../PropsType';
 import Chart from '@/views/scenario/monitor/detail/chart/index.vue';

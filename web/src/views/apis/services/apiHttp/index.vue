@@ -9,10 +9,10 @@ import { utils, axiosClient, duration } from '@xcan-angus/tools';
 import { dataURLtoBlob } from '@/utils/blob';
 import qs from 'qs';
 import { deconstruct } from '@/utils/swagger';
-import SwaggerUI from 'swagger-ui';
-import assertUtils from 'angus-design/assertUtils';
-import apiUtils from 'angus-design/utils';
-import authUtil from 'angus-design/authUtils';
+import SwaggerUI from '@xcan-angus/swagger-ui';
+import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { AuthUtils as authUtil } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
@@ -37,9 +37,9 @@ import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/apiHttp/
 import { AssertCondition, AssertResult, AssertType, ConditionResult, Parameter } from './PropsType';
 import { encode } from '@/utils/secure';
 
-const Indicator = defineAsyncComponent(() => import('angus-design').then(resp => resp.Indicator));
-const HttpTestInfo = defineAsyncComponent(() => import('angus-design').then(resp => resp.HttpTestInfo));
-const FunctionsButton = defineAsyncComponent(() => import('angus-design').then(resp => resp.FunctionsButton));
+const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));
+const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));
+const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/execDetail/index.vue'));
 

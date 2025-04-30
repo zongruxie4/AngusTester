@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Jdbc/index.mjs';
+import Plugin from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Jdbc/style.css';
+
 
 interface Props {
   execInfo:{

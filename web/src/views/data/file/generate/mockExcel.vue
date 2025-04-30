@@ -3,9 +3,8 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockExcel } from '/public/plugins/MockExcel/index.mjs';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockExcel/style.css';
+import { MockExcel } from '@/plugins/gendata/excelIndex';
 
 interface Props {
     params:{[key:string]:any};

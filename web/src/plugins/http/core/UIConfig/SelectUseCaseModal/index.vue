@@ -4,7 +4,7 @@ import { Button, Checkbox, RadioGroup, Radio } from 'ant-design-vue';
 import { http, TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { TreeSelect, Select, Input, Scroll, IconText, Icon, HttpMethodText, IconRequired, Modal, Tooltip, notification } from '@xcan-angus/vue-ui';
-import { SelectApisCase } from 'angus-design';
+import { SelectApisCase } from '@xcan-angus/vue-ui';
 
 import { UseCaseInfo } from './PropsType';
 

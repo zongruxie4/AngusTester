@@ -3,9 +3,7 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockJson } from '/public/plugins/MockJson/index.mjs';
-// eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockJson/style.css';
+import { MockJson } from '@/plugins/gendata/jsonIndex';
 
 interface Props {
     params:{[key:string]:any};

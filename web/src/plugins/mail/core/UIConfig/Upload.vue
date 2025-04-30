@@ -2,7 +2,7 @@
 import { ref, watch, computed, onMounted, nextTick } from 'vue';
 import { Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
-import apiUtils from 'angus-design/utils';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface File {
 formContentType: string;

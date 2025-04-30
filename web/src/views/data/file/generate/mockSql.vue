@@ -3,9 +3,8 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockSql } from '/public/plugins/MockSql/index.mjs';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockSql/style.css';
+import { MockSql } from '@/plugins/gendata/sqlIndex';
 
 interface Props {
     params:{[key:string]:any};

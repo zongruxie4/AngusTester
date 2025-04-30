@@ -5,7 +5,6 @@ import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 
 import { ExecContent } from '../../../../PropsType';
-import { formatTime } from 'lib/core/utils';
 
 export interface Props {
   value: ExecContent['content']['assertions'][number];
@@ -91,7 +90,7 @@ const realValue = computed(() => {
   }
 
   if (assertionType.value === 'DURATION') {
-    return formatTime(+props.execContent?.response?.timeline?.total);
+    return utils.formatTime(+props.execContent?.response?.timeline?.total);
   }
 
   return '';
@@ -132,7 +131,7 @@ const expectedValue = computed(() => {
   }
 
   if (assertionType.value === 'DURATION') {
-    return formatTime(+actualExpected);
+    return utils.formatTime(+actualExpected);
   }
 
   return actualExpected;

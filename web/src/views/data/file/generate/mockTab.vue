@@ -3,9 +3,8 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockTab } from '/public/plugins/MockTab/index.mjs';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockTab/style.css';
+import { MockTab } from '@/plugins/gendata/tabIndex';
 
 interface Props {
     params:{[key:string]:any};

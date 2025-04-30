@@ -2,8 +2,8 @@ import { Component, defineAsyncComponent } from 'vue';
 import { AuthItem } from './authorization/interface';
 import { RequestBodyParam } from '@/views/apis/services/apiHttp/requestBody/interface';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
-import { ApiAssert as ApiAssertion, ApiAuthencation, ResponseAssert } from 'angus-design';
-import 'angus-design/style.css';
+import { ApiAssert as ApiAssertion, ApiAuthencation, ResponseAssert } from '@xcan-angus/vue-ui';
+
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 

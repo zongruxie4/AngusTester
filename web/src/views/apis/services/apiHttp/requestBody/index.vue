@@ -6,7 +6,7 @@ import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
 import { Button, Radio, RadioGroup, Tooltip, Upload } from 'ant-design-vue';
-import SwaggerUI from 'swagger-ui';
+import SwaggerUI from '@xcan-angus/swagger-ui';
 import { debounce } from 'throttle-debounce';
 import { deconstruct } from '@/utils/swagger';
 import { gzip, ungzip, duration } from '@xcan-angus/tools';

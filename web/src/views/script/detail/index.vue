@@ -9,9 +9,9 @@ import { Button } from 'ant-design-vue';
 import { CTRL, GM, http } from '@xcan-angus/tools';
 
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Jdbc/style.css';
+
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Http/style.css';
+;
 
 import { script } from '@/api/altester';
 import { exec } from '@/api/alctrl';

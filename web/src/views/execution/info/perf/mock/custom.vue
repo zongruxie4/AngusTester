@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '/public/plugins/MockCustom/index.mjs';
+import { ExecInfo } from '@/plugins/gendata/customIndex';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockCustom/style.css';
 
 interface Props {
   dataSource: Record<string, any>

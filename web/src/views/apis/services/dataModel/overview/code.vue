@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { MonacoEditor } from 'angus-design';
+import { MonacoEditor } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
 
 interface Props {

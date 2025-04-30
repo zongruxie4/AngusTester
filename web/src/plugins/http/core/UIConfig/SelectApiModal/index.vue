@@ -4,7 +4,7 @@ import { DropdownGroup, Select, Input, Scroll, IconText, Icon, HttpMethodText, I
 import { Button, Checkbox } from 'ant-design-vue';
 import { http, TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { SelectApisByService } from 'angus-design';
+import { SelectApisByService } from '@xcan-angus/vue-ui';
 
 import { ApiInfo } from './PropsType';
 

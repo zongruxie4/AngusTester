@@ -2,12 +2,11 @@
 import { inject, computed, defineAsyncComponent, ref } from 'vue';
 import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
 
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
-import { formatTime } from 'lib/core/utils';
+import { utils } from '@xcan-angus/tools';
 
 export interface Props {
   value: HTTPInfo;
@@ -104,7 +103,7 @@ const runtime = computed(() => {
     return '--';
   }
 
-  return formatTime(+timeStamp);
+  return utils.formatTime(+timeStamp);
 });
 
 const status = computed(() => {

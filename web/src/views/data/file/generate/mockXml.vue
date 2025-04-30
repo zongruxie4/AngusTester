@@ -3,9 +3,8 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockXml } from '/public/plugins/MockXml/index.mjs';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockXml/style.css';
+import { MockXml } from '@/plugins/gendata/xmlIndex';
 
 interface Props {
     params:{[key:string]:any};

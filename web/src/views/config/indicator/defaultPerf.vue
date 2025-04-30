@@ -7,7 +7,7 @@ import { Button } from 'ant-design-vue';
 import ExpandGrid from './expandGrid.vue';
 import { setting } from '@/api/comm';
 import { splitDuration } from '@/utils/utils';
-import apiUtils from 'angus-design/utils';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 const editable = ref(false);
 const editInfo = ref({

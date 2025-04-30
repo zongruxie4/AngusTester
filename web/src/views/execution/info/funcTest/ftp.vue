@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Ftp/index.mjs';
+import Plugin from '@/plugins/ftp/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Ftp/style.css';
 
 interface Props {
   execInfo:{

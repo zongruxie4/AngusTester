@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Http/index.mjs';
+import Plugin from '@/plugins/http/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Http/style.css';
+;
 
 interface Props {
   execInfo:{

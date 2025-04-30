@@ -4,8 +4,8 @@ import { Button } from 'ant-design-vue';
 import { notification, Spin } from '@xcan-angus/vue-ui';
 
 import { exec } from '@/api/alctrl';
-import ExecSettingForm from '@angus/exec';
-import '@angus/exec/style.css';
+import { ExecSettingForm } from '@xcan-angus/vue-ui';
+
 
 interface Props {
   execName: string;

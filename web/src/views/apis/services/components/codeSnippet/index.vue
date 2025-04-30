@@ -9,7 +9,7 @@ import { Button } from 'ant-design-vue';
 import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
 import { clipboard } from '@xcan-angus/tools';
-import SwaggerUI from 'swagger-ui';
+import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { apis } from '@/api/altester';

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { http, CTRL } from '@xcan-angus/tools';
 
 import { ListData, useExecCount } from './useExecCount';
-import apiUtils from 'angus-design/utils';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
 // allColumns, throughputCvsKeys, throughputOptions, throughputColumns, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns
 interface Props {

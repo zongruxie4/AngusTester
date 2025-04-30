@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '/public/plugins/MockTab/index.mjs';
+import { ExecInfo } from '@/plugins/gendata/tabIndex';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockTab/style.css';
 
 interface Props {
   dataSource: Record<string, any>

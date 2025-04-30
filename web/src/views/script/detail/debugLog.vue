@@ -2,15 +2,15 @@
 import { computed } from 'vue';
 import { NoData } from '@xcan-angus/vue-ui';
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as JDBCDebugLog } from '/public/plugins/Jdbc/index.mjs';
+import { DebugLog as JDBCDebugLog } from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as HttpDebugLog } from '/public/plugins/Http/index.mjs';
+import { DebugLog as HttpDebugLog } from '@/plugins/http/index';
 
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as SmtpDebugLog } from '/public/plugins/Smtp/index.mjs';
+import { DebugLog as SmtpDebugLog } from '@/plugins/smtp/index';
 
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as MailDebugLog } from '/public/plugins/Mail/index.mjs';
+import { DebugLog as MailDebugLog } from '@/plugins/mail/index';
 
 interface Props {
   value: {

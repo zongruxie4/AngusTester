@@ -6,7 +6,7 @@ import router, { startupGuard } from '@/router';
 import store from '@/store';
 
 import '@xcan-angus/vue-ui/style.css';
-import 'angus-design/style.css';
+
 import 'tailwindcss/base.css';
 import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';

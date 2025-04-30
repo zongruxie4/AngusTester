@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
-import '@angus/exec/style.css';
+
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/WebSocket/index.mjs';
+import Plugin from '@/plugins/websocket/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/WebSocket/style.css';
 
 interface Props {
     tabKey:string;

@@ -14,7 +14,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { http, TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { SelectApisByServiceModal } from 'angus-design';
+import { SelectApisByServiceModal } from '@xcan-angus/vue-ui';
 
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';

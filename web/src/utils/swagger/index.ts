@@ -1,4 +1,4 @@
-import SwaggerUI from 'swagger-ui';
+import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { IConfig } from './PropsType';
 

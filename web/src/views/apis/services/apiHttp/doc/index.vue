@@ -4,7 +4,7 @@ import { site, cookie, TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
 import '@xcan-angus/rapidoc';
-import { createPdf } from 'rapipdf';
+// import { createPdf } from 'rapipdf';
 
 interface Props {
   id: string;
@@ -24,7 +24,7 @@ const docOrigin = ref();
 const accessToken = ref();
 
 const exportPdf = () => {
-  createPdf(`${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`);
+  // createPdf(`${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`);
 };
 
 const exportVisible = ref(false);

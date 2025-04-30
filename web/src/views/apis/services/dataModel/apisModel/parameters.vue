@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { ApiCookie, ApiHeader, ApiParameter } from 'angus-design';
+import { ApiCookie, ApiHeader, ApiParameter } from '@xcan-angus/vue-ui';
 
 interface Props {
     dataSource: {[key: string]: any}[]

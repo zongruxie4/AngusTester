@@ -2,11 +2,11 @@
 import { inject, ref, watch, onMounted, computed } from 'vue';
 import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
-import { SelectApisTable } from 'angus-design';
+import { SelectApisTable } from '@xcan-angus/vue-ui';
 import { services } from '@/api/altester';
 import { TESTER, download, site, utils, cookie, http, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { createPdf } from '@xcan/rapipdf';
+// import { createPdf } from '@xcan/rapipdf';
 
 type ProjectService = {
   id: string;
@@ -202,7 +202,7 @@ const handleOk = async () => {
         ...(params.apiIds && { apiIds: params.apiIds.join(',') })
       })}`;
     }
-    createPdf(apiUrl);
+    // createPdf(apiUrl);
     handleCancel();
     return;
   }

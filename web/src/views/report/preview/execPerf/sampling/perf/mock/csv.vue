@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '/public/plugins/MockCsv/index.mjs';
+import { ExecInfo } from '@/plugins/gendata/csvIndex';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockCsv/style.css';
 
 interface Props {
   dataSource: Record<string, any>

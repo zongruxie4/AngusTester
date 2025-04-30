@@ -7,7 +7,6 @@ import { utils } from '@xcan-angus/tools';
 import StatusTag from '../StatusTag/index.vue';
 import { SMTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
-import { formatTime } from 'lib/core/utils';
 
 export interface Props {
   value: SMTPInfo;
@@ -59,7 +58,7 @@ const runtime = computed(() => {
     return '';
   }
 
-  return formatTime(+timeStamp);
+  return utils.formatTime(+timeStamp);
 });
 
 const status = computed(() => {

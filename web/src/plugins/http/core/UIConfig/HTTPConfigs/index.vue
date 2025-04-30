@@ -4,8 +4,8 @@ import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design
 import { Composite, Input, SelectEnum, Icon, Tooltip, Popover } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 import { cloneDeep } from 'lodash-es';
-import { ExecAuthencation, FunctionsButton } from 'angus-design';
-import 'angus-design/style.css';
+import { ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
+
 
 import { HTTPConfig, HttpMethod } from './PropsType';
 

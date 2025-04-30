@@ -1,6 +1,6 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
-import angusUtils from 'angus-design/utils';
+import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { TESTER, http } from '@xcan-angus/tools';
 import { Authentication, AvailableServer, RequestBody, RequestConfig } from './PropsType';
 

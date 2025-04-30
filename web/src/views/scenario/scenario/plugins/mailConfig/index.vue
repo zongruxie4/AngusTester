@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
-import '@angus/exec/style.css';
+
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Mail/index.mjs';
+import Plugin from '@/plugins/mail/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Mail/style.css';
 
 interface Props {
     tabKey:string;

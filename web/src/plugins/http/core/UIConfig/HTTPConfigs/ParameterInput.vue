@@ -5,7 +5,7 @@ import { Checkbox, Button } from 'ant-design-vue';
 import { Input, Select, Icon } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { ParamInput } from 'angus-design';
+import { ParamInput } from '@xcan-angus/vue-ui';
 
 export interface OptionProps {
   name: string;

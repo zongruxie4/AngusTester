@@ -32,65 +32,57 @@ onMounted(() => {
   watch(() => props.pluginType, (pluginType) => {
     if (pluginType === 'Ftp') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Ftp/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/ftp/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Ftp/style.css');
       return;
     }
 
     if (pluginType === 'Http') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Http/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/http/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Http/style.css');
       return;
     }
 
     if (pluginType === 'Jdbc') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Jdbc/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/jdbc/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Jdbc/style.css');
       return;
     }
 
     if (pluginType === 'Ldap') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Ldap/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/ldap/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Ldap/style.css');
       return;
     }
 
     if (pluginType === 'Mail') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Mail/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/mail/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Mail/style.css');
       return;
     }
 
     if (pluginType === 'Smtp') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Smtp/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/smtp/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Smtp/style.css');
       return;
     }
 
     if (pluginType === 'Tcp') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/Tcp/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/tcp/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/Tcp/style.css');
       return;
     }
 
     if (pluginType === 'WebSocket') {
       // eslint-disable-next-line import/no-absolute-path
-      Plugin.value = defineAsyncComponent(() => import('/public/plugins/WebSocket/index.mjs').then(module => module.DebugResult));
+      Plugin.value = defineAsyncComponent(() => import('@/plugins/websocket/index').then(module => module.DebugResult));
       // eslint-disable-next-line import/no-absolute-path
-      import('/public/plugins/WebSocket/style.css');
     }
   }, { immediate: true });
 });

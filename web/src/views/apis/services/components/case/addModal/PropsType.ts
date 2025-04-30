@@ -1,4 +1,4 @@
-import apiUtils from 'angus-design/utils';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 export const { API_EXTENSION_KEY } = apiUtils;
 

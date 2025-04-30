@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { Form, FormItem, Button } from 'ant-design-vue';
 import { Select, Input, Icon, Popover, AsyncComponent } from '@xcan-angus/vue-ui';
 import type { Rule } from 'ant-design-vue/es/form';
-import { ParamInput, FunctionsModal } from 'angus-design';
+import { ParamInput, FunctionsModal } from '@xcan-angus/vue-ui';
 
 export interface FieldItem {
   name:string, type:string, value:string | undefined

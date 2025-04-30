@@ -9,8 +9,8 @@ import store from '@/store';
 import { apis, services } from '@/api/altester';
 import { navs, serviceNav, socketNavs, StateType } from './PropsType';
 
-const HttpTestInfo = defineAsyncComponent(() => import('angus-design').then(resp => resp.HttpTestInfo));
-const Indicator = defineAsyncComponent(() => import('angus-design').then(resp => resp.Indicator));
+const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));
+const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));
 const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/header/index.vue'));
 const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/list/index.vue'));
 const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/homepage/index.vue'));

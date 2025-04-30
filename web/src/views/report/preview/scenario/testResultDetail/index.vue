@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 // import { NoData } from '@xcan-angus/vue-ui';
-import apiUtils from 'angus-design/utils';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 import { ReportContent } from '../PropsType';
 

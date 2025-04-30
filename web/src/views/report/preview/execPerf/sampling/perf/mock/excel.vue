@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '/public/plugins/MockExcel/index.mjs';
+import { ExecInfo } from '@/plugins/gendata/excelIndex';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockExcel/style.css';
 
 interface Props {
   dataSource: Record<string, any>

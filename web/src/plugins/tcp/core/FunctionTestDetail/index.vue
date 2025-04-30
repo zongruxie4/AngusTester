@@ -5,7 +5,6 @@ import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
 
-import { formatTime } from 'lib/core/utils';
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
@@ -104,7 +103,7 @@ const duration = computed(() => {
     return '--';
   }
 
-  return formatTime(+duration).match(/(\d+\.?\d*)([^\d]+)/);
+  return utils.formatTime(+duration).match(/(\d+\.?\d*)([^\d]+)/);
 });
 
 const planIterationNum = computed(() => {

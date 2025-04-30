@@ -3,9 +3,9 @@ import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } fr
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import { Composite, HttpMethodText, Input, SelectEnum } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { ExecAuthencation } from 'angus-design';
-import angusUtils from 'angus-design/utils';
-import 'angus-design/style.css';
+import { ExecAuthencation } from '@xcan-angus/vue-ui';
+import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
+
 
 import { HttpMethod, HttpServer, RequestConfigs } from './PropsType';
 

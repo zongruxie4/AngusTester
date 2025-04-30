@@ -6,7 +6,7 @@ import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip 
 import { ContentEncoding, DelayData, ResponseContentConfig, ResponseHeader } from './PropsType';
 import DelayParameter from './delayParameter.vue';
 import SelectInputForm from '@/views/mock/detail/mockApis/components/contentForm/selectInputForm/index.vue';
-import { FunctionsButton } from 'angus-design';
+import { FunctionsButton } from '@xcan-angus/vue-ui';
 
 interface Props {
   value:ResponseContentConfig;

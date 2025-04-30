@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
-import '@angus/exec/style.css';
+
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Jdbc/index.mjs';
+import Plugin from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Jdbc/style.css';
+
 
 interface Props {
     tabKey:string;

@@ -4,7 +4,7 @@ import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { http, TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { FunctionsButton, ParamTextarea } from 'angus-design';
+import { FunctionsButton, ParamTextarea } from '@xcan-angus/vue-ui';
 
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';

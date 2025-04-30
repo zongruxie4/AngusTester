@@ -2,9 +2,9 @@
 import { inject, reactive, ref, watch } from 'vue';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
-import SwaggerUI from 'swagger-ui';
+import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
-import { ParamInput } from 'angus-design';
+import { ParamInput } from '@xcan-angus/vue-ui';
 
 import { services, variable as variableApi } from '@/api/altester';
 import { ParamsItem, paramsTypeOpt } from './interface';

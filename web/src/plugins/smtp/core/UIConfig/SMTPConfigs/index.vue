@@ -3,7 +3,7 @@ import { ref, onMounted, watch, defineAsyncComponent } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Button, Checkbox, Switch, RadioGroup } from 'ant-design-vue';
 import { Input, Icon, Tooltip, Hints, Select, IconRequired, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import 'angus-design/style.css';
+
 
 import { PipelineConfig } from '../../PropsType';
 import Upload from './Upload.vue';

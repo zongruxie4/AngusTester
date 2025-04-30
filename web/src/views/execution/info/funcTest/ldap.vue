@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Ldap/index.mjs';
+import Plugin from '@/plugins/ldap/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Ldap/style.css';
 
 interface Props {
   execInfo:{

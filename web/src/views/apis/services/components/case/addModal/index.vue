@@ -8,7 +8,7 @@ import { TESTER, http, localStore } from '@xcan-angus/tools';
 
 import { useI18n } from 'vue-i18n';
 
-import 'angus-design/style.css';
+
 
 import ApiDebug from '@/views/apis/services/components/case/debug/index.vue';
 import { ApiInfo } from '@/views/apis/services/components/case/debug/PropsType.ts';

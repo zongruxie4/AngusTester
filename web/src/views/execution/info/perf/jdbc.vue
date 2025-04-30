@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import ExecJdbcPerfExecDetail from '/public/plugins/Jdbc/index.mjs';
+import ExecJdbcPerfExecDetail from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Jdbc/style.css';
+
 
 interface Props {
   execInfo: Record<string, any>;

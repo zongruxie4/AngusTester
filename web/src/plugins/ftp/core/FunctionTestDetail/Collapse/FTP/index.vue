@@ -7,7 +7,6 @@ import { utils } from '@xcan-angus/tools';
 import StatusTag from '../StatusTag/index.vue';
 import { FtpInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
-import { formatTime } from 'lib/core/utils';
 
 export interface Props {
   value: FtpInfo;
@@ -82,7 +81,7 @@ const runtime = computed(() => {
     return '0毫秒';
   }
 
-  return formatTime(+timeStamp);
+  return utils.formatTime(+timeStamp);
 });
 
 const status = computed(() => {

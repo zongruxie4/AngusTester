@@ -5,12 +5,12 @@ import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
 import { axiosClient, TESTER, http, utils } from '@xcan-angus/tools';
-import SwaggerUI from 'swagger-ui';
-import apiUtils from 'angus-design/utils';
-import assertUtils from 'angus-design/assertUtils';
-import authUtils from 'angus-design/authUtils';
-import { type AssertResult, type ConditionResult } from 'angus-design/types/types';
-import 'angus-design/style.css';
+import SwaggerUI from '@xcan-angus/swagger-ui';
+import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { AssertUtils as assertUtils} from '@xcan-angus/vue-ui';
+import { AuthUtils as authUtils } from '@xcan-angus/vue-ui';
+import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types/types';
+
 import {
   ApiInfo,
   getModelFromRef,
@@ -52,20 +52,20 @@ const emits = defineEmits<{
   (e: 'apiChange', value?: string): void
 }>();
 
-const ApiParameter = defineAsyncComponent(() => import('angus-design').then(design => design.ApiParameter));
-const ApiHeader = defineAsyncComponent(() => import('angus-design').then(design => design.ApiHeader));
-const ApiCookie = defineAsyncComponent(() => import('angus-design').then(design => design.ApiCookie));
-const ApiBody = defineAsyncComponent(() => import('angus-design').then(design => design.ApiBody));
-const ApiAssert = defineAsyncComponent(() => import('angus-design').then(design => design.ApiAssert));
-const Toolbar = defineAsyncComponent(() => import('angus-design').then(design => design.Toolbar));
-const ResponseBase = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseBase));
-const ResponseBody = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseBody));
-const ResponseCookie = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseCookie));
-const ApiAuthencation = defineAsyncComponent(() => import('angus-design').then(design => design.ApiAuthencation));
-const ResponseError = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseError));
-const ResponseTimeAnalysis = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseTimeAnalysis));
-const ResponseAssert = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseAssert));
-const ResponseStatus = defineAsyncComponent(() => import('angus-design').then(design => design.ResponseStatus));
+const ApiParameter = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiParameter));
+const ApiHeader = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiHeader));
+const ApiCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiCookie));
+const ApiBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiBody));
+const ApiAssert = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiAssert));
+const Toolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.Toolbar));
+const ResponseBase = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBase));
+const ResponseBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBody));
+const ResponseCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseCookie));
+const ApiAuthencation = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiAuthencation));
+const ResponseError = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseError));
+const ResponseTimeAnalysis = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseTimeAnalysis));
+const ResponseAssert = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseAssert));
+const ResponseStatus = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseStatus));
 // const parameterization = defineAsyncComponent(() => import('@/components/parameterization/index.vue'));
 
 const allFunction = inject('allFunction', ref([]));

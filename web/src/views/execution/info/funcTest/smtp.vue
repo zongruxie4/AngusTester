@@ -1,8 +1,7 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '/public/plugins/Smtp/index.mjs';
+import Plugin from '@/plugins/smtp/index';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Smtp/style.css';
 
 interface Props {
   execInfo:{

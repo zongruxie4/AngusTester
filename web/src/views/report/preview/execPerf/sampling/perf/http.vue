@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/Http/style.css';
+;
 
 import ExecHttpPerfExecDetail from '@/views/report/preview/execPerf/sampling/perf/testDetail/index.vue';
 

@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
-import { IndicatorAssert } from 'angus-design';
+import { IndicatorAssert } from '@xcan-angus/vue-ui';
 import { enumLoader } from '@xcan-angus/tools';
 import { setting } from '@/api/comm';
 

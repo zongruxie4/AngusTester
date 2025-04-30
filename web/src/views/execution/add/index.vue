@@ -6,8 +6,8 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { IconRequired, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
 import { angusScript } from '@/api/altester';
-import ExecSettingForm from '@angus/exec';
-import '@angus/exec/style.css';
+import { ExecSettingForm } from '@xcan-angus/vue-ui';
+
 
 import { exec } from '@/api/alctrl';
 

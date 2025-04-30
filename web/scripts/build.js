@@ -11,6 +11,15 @@ function resolve (p) {
   return path.join(__dirname, p);
 }
 
+function replace (str, data) {
+  for (let i = 0, len = data.length; i < len; i++) {
+    const { key, value } = data[i];
+    const rex = new RegExp(`(${key}=)\\S+`, 'gmi');
+    str = str.replace(rex, '$1' + value);
+  }
+  return str;
+}
+
 const uuid = (() => {
   let index = 0;
   return (str = '') => {
@@ -29,7 +38,7 @@ function start () {
     { key: 'VITE_EDITION_TYPE', value: editionType },
     { key: 'VITE_PROFILE', value: deployEnv }
   ];
-  let envContent = fs.readFileSync(resolve('../.env'), 'utf8');
+  let envContent = fs.readFileSync(resolve('../conf/.env'), 'utf8');
   envContent = replace(envContent, envReplaceList);
   fs.writeFileSync(resolve('../public/meta/env'), envContent, 'utf8');
 
@@ -39,8 +48,8 @@ function start () {
 
   // 4. Copy the nginx configuration file to the public/
   if (deployEnv !== 'priv') { // Not configuring Nginx in a private environment
-    const nginxContent = fs.readFileSync(resolve(`../nginx/nginx_${deployEnv}_${packageInfo.name}.conf`), 'utf8');
-    fs.writeFileSync(resolve(`../public/nginx_${deployEnv}_${packageInfo.name}.conf`), nginxContent, 'utf8');
+    const nginxContent = fs.readFileSync(resolve(`../nginx/nginx_${deployEnv}_tester-web.conf`), 'utf8');
+    fs.writeFileSync(resolve(`../public/nginx_${deployEnv}_tester-web.conf`), nginxContent, 'utf8');
   }
 
   // 5. Execute a dynamically generated npm script command to trigger the Vite build tool for deploy environment build workflows

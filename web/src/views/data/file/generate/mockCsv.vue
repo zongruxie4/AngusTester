@@ -3,9 +3,8 @@ import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockCsv } from '/public/plugins/MockCsv/index.mjs';
 // eslint-disable-next-line import/no-absolute-path
-import '/public/plugins/MockCsv/style.css';
+import { MockCsv } from '@/plugins/gendata/csvIndex';
 
 interface Props {
     params:{[key:string]:any};
