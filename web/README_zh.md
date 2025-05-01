@@ -47,7 +47,7 @@ GitHub贡献者指南：克隆、配置和运行AngusTesterWeb项目。本指南
 
 1. 使用以下命令配置 NPM 使用XCan注册表：
    ```bash
-   npm set registry http://nexus.xcan.cloud/repository/xcan-npm-public/
+   npm set registry https://nexus.xcan.cloud/repository/xcan-npm-public/
    ```
 2. 在项目目录中，使用以下命令安装项目所需的所有依赖：
    ```bash

@@ -52,7 +52,7 @@ through the process of contributing to AngusTesterWeb project hosted on GitHub.
 
 1. Use the following command to configure NPM to use XCan registry:
    ```bash
-   npm set registry http://nexus.xcan.cloud/repository/xcan-npm-public/
+   npm set registry https://nexus.xcan.cloud/repository/xcan-npm-public/
    ```
 2. In the project directory, use the following command to install all the dependencies required by the project:
    ```bash
