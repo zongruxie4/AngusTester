@@ -6,6 +6,7 @@ import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assem
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
@@ -92,8 +93,7 @@ public class DatasetFacadeImpl implements DatasetFacade {
   @NameJoin
   @Override
   public DatasetDetailVo detail(Long id) {
-    Dataset dataset = datasetQuery.detail(id);
-    return DatasetAssembler.toDetailVo(dataset);
+    return toDetailVo(datasetQuery.detail(id));
   }
 
   @Override

@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.toDetail;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -75,7 +76,7 @@ public class FuncReviewCaseFacadeImpl implements FuncReviewCaseFacade {
   @Override
   public FuncReviewCaseDetailVo detail(Long id) {
     FuncReviewCase reviewCase = funcReviewCaseQuery.detail(id);
-    FuncReviewCaseDetailVo detailVo = FuncReviewCaseAssembler.toDetail(reviewCase);
+    FuncReviewCaseDetailVo detailVo = toDetail(reviewCase);
     detailVo.setLatestCase(funcCaseFacade.detail(reviewCase.getCaseId()));
     return detailVo;
   }

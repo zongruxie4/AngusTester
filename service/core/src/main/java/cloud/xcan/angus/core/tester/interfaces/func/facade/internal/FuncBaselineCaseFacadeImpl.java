@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncBaselineCaseAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncBaselineCaseAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toCaseListExportResource;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
@@ -99,9 +101,8 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
       allVersionCaseVos.putAll(allBaselineCaseVos.stream()
           .collect(Collectors.toMap(FuncCaseDetailVo::getVersion, x -> x)));
       if (baselineDb.getEstablished()) {
-        currentBaselineCaseVo = FuncBaselineCaseAssembler.toDetailVo(
-            baselineCases.stream().filter(x -> Objects.equals(baselineId, x.getBaselineId()))
-                .findFirst().orElse(null));
+        currentBaselineCaseVo = toDetailVo(baselineCases.stream()
+            .filter(x -> Objects.equals(baselineId, x.getBaselineId())).findFirst().orElse(null));
       }
     }
 
@@ -131,8 +132,8 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
       return PageResult.empty();
     }
     if (baselineDb.getEstablished()) {
-      Page<FuncBaselineCaseInfo> page = funcBaselineCaseQuery
-          .list(baselineId, FuncBaselineCaseAssembler.getSpecification(dto), dto.tranPage());
+      Page<FuncBaselineCaseInfo> page = funcBaselineCaseQuery.list(baselineId,
+          getSpecification(dto), dto.tranPage());
       return buildVoPageResult(page, FuncBaselineCaseAssembler::toListVo);
     }
     GenericSpecification<FuncCaseInfo> spc = FuncCaseAssembler.getSpecification(dto);
@@ -154,7 +155,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
           getMatchSearchFields(dto.getClass()));
       return buildVoPageResult(page, FuncBaselineCaseAssembler::toListVo);
     }
-    Set<SearchCriteria> criteria = FuncCaseAssembler.getSearchCriteria(dto);
+    Set<SearchCriteria> criteria = getSearchCriteria(dto);
     criteria.add(SearchCriteria.in("id", baselineDb.getCaseIds()));
     Page<FuncCaseInfo> page = funcCaseSearch.search(export, criteria, dto.tranPage(),
         FuncCaseInfo.class, getMatchSearchFields(dto.getClass()));
