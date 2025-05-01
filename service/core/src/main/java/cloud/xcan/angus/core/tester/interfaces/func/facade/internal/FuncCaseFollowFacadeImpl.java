@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseFollowAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFollowCmd;
@@ -26,7 +27,7 @@ public class FuncCaseFollowFacadeImpl implements FuncCaseFollowFacade {
 
   @Override
   public IdKey<Long, Object> add(Long apiId) {
-    return funcCaseFollowCmd.add(FuncCaseFollowAssembler.addDtoToDomain(apiId));
+    return funcCaseFollowCmd.add(addDtoToDomain(apiId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class FuncCaseFollowFacadeImpl implements FuncCaseFollowFacade {
 
   @Override
   public PageResult<FuncCaseFollowDetailVo> search(FuncCaseFollowSearchDto dto) {
-    Page<FuncCaseFollowP> pageResult = funcCaseFollowQuery
+    Page<FuncCaseFollowP> page = funcCaseFollowQuery
         .search(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
-    return buildVoPageResult(pageResult, FuncCaseFollowAssembler::toDetailVo);
+    return buildVoPageResult(page, FuncCaseFollowAssembler::toDetailVo);
   }
 
   @Override

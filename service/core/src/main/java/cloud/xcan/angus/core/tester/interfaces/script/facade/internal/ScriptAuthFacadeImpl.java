@@ -1,6 +1,11 @@
 package cloud.xcan.angus.core.tester.interfaces.script.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -38,12 +43,12 @@ public class ScriptAuthFacadeImpl implements ScriptAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long scriptId, ScriptAuthAddDto dto) {
-    return scriptAuthCmd.add(ScriptAuthAssembler.addDtoToDomain(scriptId, dto));
+    return scriptAuthCmd.add(addDtoToDomain(scriptId, dto));
   }
 
   @Override
   public void replace(Long scriptId, ScriptAuthReplaceDto dto) {
-    scriptAuthCmd.replace(ScriptAuthAssembler.replaceDtoToDomain(scriptId, dto));
+    scriptAuthCmd.replace(replaceDtoToDomain(scriptId, dto));
   }
 
   @Override
@@ -69,17 +74,15 @@ public class ScriptAuthFacadeImpl implements ScriptAuthFacade {
   @Override
   public ScriptAuthCurrentVo currentUserAuth(Long scriptId, Boolean admin) {
     ScriptAuthCurrent authCurrent = scriptAuthQuery.currentUserAuth(scriptId, admin);
-    return ScriptAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
   public Map<Long, ScriptAuthCurrentVo> currentUserAuths(HashSet<Long> scriptIds,
       Boolean admin) {
-    Map<Long, ScriptAuthCurrent> authCurrentsMap = scriptAuthQuery
-        .currentUserAuths(scriptIds, admin);
-    return ObjectUtils.isEmpty(authCurrentsMap) ? null : authCurrentsMap.entrySet()
-        .stream().collect(Collectors.toMap(Entry::getKey,
-            x -> ScriptAuthAssembler.toAuthCurrentVo(x.getValue())));
+    Map<Long, ScriptAuthCurrent> authMap = scriptAuthQuery.currentUserAuths(scriptIds, admin);
+    return isEmpty(authMap) ? null : authMap.entrySet()
+        .stream().collect(Collectors.toMap(Entry::getKey, x -> toAuthCurrentVo(x.getValue())));
   }
 
   @Override
@@ -94,9 +97,8 @@ public class ScriptAuthFacadeImpl implements ScriptAuthFacade {
     if (dto.getScriptId() != null) {
       scriptIds.add(String.valueOf(dto.getScriptId()));
     }
-    Page<ScriptAuth> dirAuthPage = scriptAuthQuery
-        .find(ScriptAuthAssembler.getSpecification(dto), scriptIds, dto.tranPage());
-    return buildVoPageResult(dirAuthPage, ScriptAuthAssembler::toDetailVo);
+    Page<ScriptAuth> page = scriptAuthQuery.find(getSpecification(dto), scriptIds, dto.tranPage());
+    return buildVoPageResult(page, ScriptAuthAssembler::toDetailVo);
   }
 
 }

@@ -1,6 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.toAddDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.toReplaceDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorAssembler.toUpdateDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -38,20 +44,17 @@ public class ScenarioMonitorFacadeImpl implements ScenarioMonitorFacade {
 
   @Override
   public IdKey<Long, Object> add(ScenarioMonitorAddDto dto) {
-    ScenarioMonitor monitor = ScenarioMonitorAssembler.toAddDomain(dto);
-    return scenarioMonitorCmd.add(monitor);
+    return scenarioMonitorCmd.add(toAddDomain(dto));
   }
 
   @Override
   public void update(ScenarioMonitorUpdateDto dto) {
-    ScenarioMonitor monitor = ScenarioMonitorAssembler.toUpdateDomain(dto);
-    scenarioMonitorCmd.update(monitor);
+    scenarioMonitorCmd.update(toUpdateDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(ScenarioMonitorReplaceDto dto) {
-    ScenarioMonitor monitor = ScenarioMonitorAssembler.toReplaceDomain(dto);
-    return scenarioMonitorCmd.replace(monitor);
+    return scenarioMonitorCmd.replace(toReplaceDomain(dto));
   }
 
   @Override
@@ -67,24 +70,21 @@ public class ScenarioMonitorFacadeImpl implements ScenarioMonitorFacade {
   @NameJoin
   @Override
   public ScenarioMonitorDetailVo detail(Long id) {
-    ScenarioMonitor monitor = scenarioMonitorQuery.detail(id);
-    return ScenarioMonitorAssembler.toDetailVo(monitor);
+    return toDetailVo(scenarioMonitorQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<ScenarioMonitorListVo> list(ScenarioMonitorFindDto dto) {
-    Page<ScenarioMonitor> page = scenarioMonitorQuery
-        .find(ScenarioMonitorAssembler.getSpecification(dto), dto.tranPage());
+    Page<ScenarioMonitor> page = scenarioMonitorQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, ScenarioMonitorAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ScenarioMonitorListVo> search(ScenarioMonitorSearchDto dto) {
-    Page<ScenarioMonitor> apisPage = scenarioMonitorSearch
-        .search(ScenarioMonitorAssembler.getSearchCriteria(dto), dto.tranPage(),
-            ScenarioMonitor.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(apisPage, ScenarioMonitorAssembler::toListVo);
+    Page<ScenarioMonitor> page = scenarioMonitorSearch.search(getSearchCriteria(dto),
+        dto.tranPage(), ScenarioMonitor.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, ScenarioMonitorAssembler::toListVo);
   }
 }

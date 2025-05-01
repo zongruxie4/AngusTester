@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal.assembler.KanbanDataAssetsAssembler.toCount;
+
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DataQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
@@ -74,7 +76,7 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
     FuncLastResourceCreationCount count = funcCaseQuery.creationResourcesStatistics(dto.getProjectId(),
         null, dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd(), true, true, true);
-    return KanbanDataAssetsAssembler.toCount(count);
+    return toCount(count);
   }
 
   @Override
@@ -82,7 +84,7 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
     ApisResourcesCreationCount count = apisQuery.creationStatistics(dto.getProjectId(),
         dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd());
-    return KanbanDataAssetsAssembler.toCount(count);
+    return toCount(count);
   }
 
   @Override
@@ -90,7 +92,7 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
     ScenarioResourcesCreationCount count = scenarioQuery.creationStatistics(dto.getProjectId(),
         dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd());
-    return KanbanDataAssetsAssembler.toCount(count);
+    return toCount(count);
   }
 
   @Override
@@ -98,7 +100,7 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
     TaskLastResourceCreationCount count = taskQuery.creationResourcesStatistics(dto.getProjectId(),
         null, dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd(), true, true);
-    return KanbanDataAssetsAssembler.toCount(count);
+    return toCount(count);
   }
 
   @Override
@@ -106,7 +108,7 @@ public class KanbanDataAssetsFacadeImpl implements KanbanDataAssetsFacade {
     ScriptResourcesCreationCount count = scriptQuery.creationStatistics(dto.getProjectId(),
         dto.getCreatorObjectType(), dto.getCreatorObjectId(), dto.getCreatedDateStart(),
         dto.getCreatedDateEnd());
-    return KanbanDataAssetsAssembler.toCount(count);
+    return toCount(count);
   }
 
   @Override

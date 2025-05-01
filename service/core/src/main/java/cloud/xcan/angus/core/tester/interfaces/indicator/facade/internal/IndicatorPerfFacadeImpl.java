@@ -74,17 +74,17 @@ public class IndicatorPerfFacadeImpl implements IndicatorPerfFacade {
   @NameJoin
   @Override
   public PageResult<PerfListVo> list(PerfFindDto dto) {
-    Page<IndicatorPerf> indicatorPerfPage = indicatorPerfQuery
+    Page<IndicatorPerf> page = indicatorPerfQuery
         .list(getSpecification(dto), dto.tranPage(), IndicatorPerf.class);
-    return buildVoPageResult(indicatorPerfPage, IndicatorPerfAssembler::toApisPerfListVo);
+    return buildVoPageResult(page, IndicatorPerfAssembler::toApisPerfListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<PerfListVo> search(PerfSearchDto dto) {
-    Page<IndicatorPerf> indicatorPerfPage = indicatorPerfSearch.search(
+    Page<IndicatorPerf> page = indicatorPerfSearch.search(
         getSearchCriteria(dto), dto.tranPage(), IndicatorPerf.class);
-    return buildVoPageResult(indicatorPerfPage, IndicatorPerfAssembler::toApisPerfListVo);
+    return buildVoPageResult(page, IndicatorPerfAssembler::toApisPerfListVo);
   }
 }
 

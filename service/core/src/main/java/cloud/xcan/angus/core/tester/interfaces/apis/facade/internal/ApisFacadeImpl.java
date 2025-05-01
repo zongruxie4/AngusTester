@@ -1,6 +1,10 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.toAssocMockApis;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static java.util.Objects.isNull;
 
@@ -134,23 +138,20 @@ public class ApisFacadeImpl implements ApisFacade {
   }
 
   @Override
-  public void deleteParameters(Long serviceId, ServiceApisScopeDto dto,
-      List<String> names) {
+  public void deleteParameters(Long serviceId, ServiceApisScopeDto dto, List<String> names) {
     apisCmd.deleteParameters(serviceId, dto.getScope(), dto.getMatchEndpointRegex(),
         dto.getMatchMethod(), dto.getSelectedApisIds(), dto.getFilterTags(), names);
   }
 
   @Override
-  public void enableParameters(Long serviceId, ServiceApisScopeDto dto,
-      List<String> names,
+  public void enableParameters(Long serviceId, ServiceApisScopeDto dto, List<String> names,
       Boolean enabled) {
     apisCmd.enableParameters(serviceId, dto.getScope(), dto.getMatchEndpointRegex(),
         dto.getMatchMethod(), dto.getSelectedApisIds(), dto.getFilterTags(), names, enabled);
   }
 
   @Override
-  public void updateAuth(Long serviceId, ServiceApisScopeDto dto,
-      SecurityScheme authentication) {
+  public void updateAuth(Long serviceId, ServiceApisScopeDto dto, SecurityScheme authentication) {
     apisCmd.updateAuth(serviceId, dto.getScope(), dto.getMatchEndpointRegex(),
         dto.getMatchMethod(), dto.getSelectedApisIds(), dto.getFilterTags(), authentication);
   }
@@ -197,14 +198,14 @@ public class ApisFacadeImpl implements ApisFacade {
   @NameJoin
   @Override
   public ApisDetailVo detail(Long id, Boolean resolveRef) {
-    return ApisAssembler.toDetailVo(apisQuery.detail(id, resolveRef));
+    return toDetailVo(apisQuery.detail(id, resolveRef));
   }
 
   @NameJoin
   @Override
   public ApisAssocMockApiVo assocMockApis(Long id) {
     MockApis mockApis = apisQuery.findMockApis(id);
-    return isNull(mockApis) ? null : ApisAssembler.toAssocMockApis(mockApis);
+    return isNull(mockApis) ? null : toAssocMockApis(mockApis);
   }
 
   @Override
@@ -232,8 +233,8 @@ public class ApisFacadeImpl implements ApisFacade {
   @NameJoin
   @Override
   public PageResult<ServicesApisInfoListVo> listApis(Long serviceId, ServiceApisFindDto dto) {
-    Page<ApisBasicInfo> page = apisQuery.findByServiceId(serviceId,
-        ApisAssembler.getSpecification(dto), dto.tranPage(), ApisBasicInfo.class);
+    Page<ApisBasicInfo> page = apisQuery.findByServiceId(serviceId, getSpecification(dto),
+        dto.tranPage(), ApisBasicInfo.class);
     return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
   }
 
@@ -241,14 +242,14 @@ public class ApisFacadeImpl implements ApisFacade {
   @Override
   public PageResult<ServicesApisInfoListVo> searchApis(Long serviceId, ServicesApisSearchDto dto) {
     Page<ApisBasicInfo> page = apisSearch.searchByServiceId(serviceId,
-        ApisAssembler.getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
+        getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ApisInfoListVo> list(ApisInfoFindDto dto) {
-    Page<ApisBasicInfo> page = apisQuery.list(ApisAssembler.getSpecification(dto),
+    Page<ApisBasicInfo> page = apisQuery.list(getSpecification(dto),
         dto.tranPage(), ApisBasicInfo.class);
     return buildVoPageResult(page, ApisAssembler::toApisVo);
   }
@@ -256,7 +257,7 @@ public class ApisFacadeImpl implements ApisFacade {
   @NameJoin
   @Override
   public PageResult<ApisInfoListVo> search(ApisInfoSearchDto dto) {
-    Page<ApisBasicInfo> page = apisSearch.search(ApisAssembler.getSearchCriteria(dto),
+    Page<ApisBasicInfo> page = apisSearch.search(getSearchCriteria(dto),
         dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisAssembler::toApisVo);
   }

@@ -1,7 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTrashAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.ApisTargetType;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTrashCmd;
@@ -66,19 +68,18 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
 
   @Override
   public PageResult<ApisTrashDetailVo> search(ApisTrashSearchDto dto) {
-    Page<ApisTrash> trashPage = apisTrashSearch
-        .search(ApisTrashAssembler.getSearchCriteria(dto), dto.tranPage(), ApisTrash.class,
-            getMatchSearchFields(dto.getClass()));
-    if (trashPage.isEmpty()) {
+    Page<ApisTrash> page = apisTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        ApisTrash.class, getMatchSearchFields(dto.getClass()));
+    if (page.isEmpty()) {
       return PageResult.empty();
     }
 
-    PageResult<ApisTrashDetailVo> detailVoPageResult = buildVoPageResult(trashPage,
-        ApisTrashAssembler::toDetailVo);
+    PageResult<ApisTrashDetailVo> detailPage
+        = buildVoPageResult(page, ApisTrashAssembler::toDetailVo);
     if (ApisTargetType.API.equals(dto.getTargetType())) {
-      setApiMethodAndUri(trashPage, detailVoPageResult);
+      setApiMethodAndUri(page, detailPage);
     }
-    return detailVoPageResult;
+    return detailPage;
   }
 
   private void setApiMethodAndUri(Page<ApisTrash> trashPage, PageResult<ApisTrashDetailVo> page) {
@@ -89,7 +90,7 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
         .collect(Collectors.toMap(ApisBaseInfo::getId, Function.identity()));
     for (ApisTrashDetailVo apisDetailVo : page.getList()) {
       ApisBaseInfo a = apisMap.get(apisDetailVo.getTargetId());
-      if (ObjectUtils.isNotEmpty(a)) {
+      if (isNotEmpty(a)) {
         apisDetailVo.setProtocol(a.getProtocol());
         apisDetailVo.setMethod(a.getMethod());
         apisDetailVo.setEndpoint(a.getEndpoint());

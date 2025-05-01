@@ -1,6 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
@@ -43,17 +49,17 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
 
   @Override
   public IdKey<Long, Object> add(FuncPlanAddDto dto) {
-    return funcPlanCmd.add(FuncPlanAssembler.addDtoToDomain(dto));
+    return funcPlanCmd.add(addDtoToDomain(dto));
   }
 
   @Override
   public void update(FuncPlanUpdateDto dto) {
-    funcPlanCmd.update(FuncPlanAssembler.updateDtoToDomain(dto));
+    funcPlanCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(FuncPlanReplaceDto dto) {
-    return funcPlanCmd.replace(FuncPlanAssembler.replaceDtoToDomain(dto));
+    return funcPlanCmd.replace(replaceDtoToDomain(dto));
   }
 
   @Override
@@ -95,21 +101,20 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
   @Override
   public FuncPlanDetailVo detail(Long id) {
     FuncPlan funcPlan = funcPlanQuery.detail(id);
-    return FuncPlanAssembler.toDetailVo(funcPlan);
+    return toDetailVo(funcPlan);
   }
 
   @NameJoin
   @Override
   public PageResult<FuncPlanDetailVo> list(FuncPlanFindDto dto) {
-    Page<FuncPlan> page = funcPlanQuery
-        .find(FuncPlanAssembler.getSpecification(dto), dto.tranPage());
+    Page<FuncPlan> page = funcPlanQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, FuncPlanAssembler::toDetailVo);
   }
 
   @NameJoin
   @Override
   public PageResult<FuncPlanDetailVo> search(FuncPlanSearchDto dto) {
-    Page<FuncPlan> page = funcPlanSearch.search(FuncPlanAssembler.getSearchCriteria(dto),
+    Page<FuncPlan> page = funcPlanSearch.search(getSearchCriteria(dto),
         dto.tranPage(), FuncPlan.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncPlanAssembler::toDetailVo);
   }

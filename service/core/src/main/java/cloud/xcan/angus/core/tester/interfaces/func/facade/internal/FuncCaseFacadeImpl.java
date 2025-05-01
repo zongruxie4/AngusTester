@@ -3,7 +3,9 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toCaseListExportResource;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.remote.ApiConstant.RLimit.MAX_REPORT_ROWS;
@@ -255,8 +257,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @NameJoin
   @Override
   public FuncCaseDetailVo detail(Long id) {
-    FuncCase detail = funcCaseQuery.detail(id);
-    return FuncCaseAssembler.toDetailVo(detail);
+    return toDetailVo(funcCaseQuery.detail(id));
   }
 
   @NameJoin
@@ -270,8 +271,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @NameJoin
   @Override
   public PageResult<FuncCaseListVo> list(FuncCaseFindDto dto) {
-    Page<FuncCaseInfo> page = funcCaseQuery
-        .list(FuncCaseAssembler.getSpecification(dto), dto.tranPage());
+    Page<FuncCaseInfo> page = funcCaseQuery.list(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, FuncCaseAssembler::toListVo);
   }
 

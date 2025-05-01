@@ -66,8 +66,7 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
   }
 
   @Override
-  public void securityRequirementReplaceAll(Long serviceId,
-      List<SecurityRequirement> srs) {
+  public void securityRequirementReplaceAll(Long serviceId, List<SecurityRequirement> srs) {
     servicesSchemaCmd.replaceAll(serviceId, null, null, srs, null, null, null);
   }
 
@@ -162,11 +161,10 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
   }
 
   @Override
-  public void openapiReplace(Long serviceId, Boolean forced,
-      Boolean gzipCompression, String content) {
-    servicesSchemaCmd.openapiReplace(serviceId, forced,
-        gzipCompression, content, StrategyWhenDuplicated.COVER, true,
-        ApiSource.EDITOR, null, false, null);
+  public void openapiReplace(Long serviceId, Boolean forced, Boolean gzipCompression,
+      String content) {
+    servicesSchemaCmd.openapiReplace(serviceId, forced, gzipCompression, content,
+        StrategyWhenDuplicated.COVER, true, ApiSource.EDITOR, null, false, null);
   }
 
   @Override

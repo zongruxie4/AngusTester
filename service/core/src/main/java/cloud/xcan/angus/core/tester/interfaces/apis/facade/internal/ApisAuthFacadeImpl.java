@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiPermission;
@@ -33,12 +37,12 @@ public class ApisAuthFacadeImpl implements ApisAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long apiId, ApisAuthAddDto dto) {
-    return apisAuthCmd.add(ApisAuthAssembler.addDtoToDomain(apiId, dto));
+    return apisAuthCmd.add(addDtoToDomain(apiId, dto));
   }
 
   @Override
   public void replace(Long id, ApisAuthReplaceDto dto) {
-    apisAuthCmd.replace(ApisAuthAssembler.replaceDtoToDomain(id, dto));
+    apisAuthCmd.replace(replaceDtoToDomain(id, dto));
   }
 
   @Override
@@ -64,7 +68,7 @@ public class ApisAuthFacadeImpl implements ApisAuthFacade {
   @Override
   public ApisAuthCurrentVo currentUserAuth(Long apiId, Boolean admin) {
     ApisAuthCurrent authCurrent = apisAuthQuery.currentUserAuth(apiId, admin);
-    return ApisAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
@@ -79,9 +83,8 @@ public class ApisAuthFacadeImpl implements ApisAuthFacade {
     if (dto.getApisId() != null) {
       apiIds.add(String.valueOf(dto.getApisId()));
     }
-    Page<ApisAuth> apisAuthPage = apisAuthQuery
-        .find(apiIds, ApisAuthAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(apisAuthPage, ApisAuthAssembler::toDetailVo);
+    Page<ApisAuth> page = apisAuthQuery.find(apiIds, getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, ApisAuthAssembler::toDetailVo);
   }
 
 }

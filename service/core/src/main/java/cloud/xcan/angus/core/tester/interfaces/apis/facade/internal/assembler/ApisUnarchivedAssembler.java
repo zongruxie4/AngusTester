@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.UNARCHIVED_API_NAME_PREFIX;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
@@ -48,7 +49,7 @@ import org.apache.commons.lang3.ObjectUtils;
   }
 
   private static String getDefaultName(ApisUnarchivedAddDto dto) {
-    return ObjectUtils.isEmpty(dto.getSummary()) ? UNARCHIVED_API_NAME_PREFIX
+    return isEmpty(dto.getSummary()) ? UNARCHIVED_API_NAME_PREFIX
         + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"))
         + randomAlphanumeric(2) : dto.getSummary();
   }

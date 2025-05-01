@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.func.plan.auth;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -17,7 +19,7 @@ public class FuncPlanAuthCurrent {
   private LinkedHashSet<FuncPlanPermission> permissions;
 
   public void addPermissions(Collection<FuncPlanPermission> permissions0) {
-    if (ObjectUtils.isEmpty(permissions0)) {
+    if (isEmpty(permissions0)) {
       return;
     }
     if (permissions == null) {

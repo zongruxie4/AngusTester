@@ -1,6 +1,10 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.addToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
@@ -46,7 +50,7 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
 
   @Override
   public IdKey<Long, Object> add(ApisDesignAddDto dto) {
-    return apisDesignCmd.add(ApisDesignAssembler.addToDomain(dto));
+    return apisDesignCmd.add(addToDomain(dto));
   }
 
   @Override
@@ -88,14 +92,14 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
   @NameJoin
   @Override
   public ApisDesignDetailVo detail(Long id) {
-    return ApisDesignAssembler.toDetailVo(apisDesignQuery.detail(id));
+    return toDetailVo(apisDesignQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<ApisDesignVo> list(ApisDesignFindDto dto) {
     Page<ApisDesignInfo> page = apisDesignQuery.list(
-        ApisDesignAssembler.getSpecification(dto), dto.tranPage(), ApisBasicInfo.class);
+        getSpecification(dto), dto.tranPage(), ApisBasicInfo.class);
     return buildVoPageResult(page, ApisDesignAssembler::toVo);
   }
 
@@ -103,8 +107,7 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
   @Override
   public PageResult<ApisDesignVo> search(ApisDesignSearchDto dto) {
     Page<ApisDesignInfo> page = apisDesignSearch.search(
-        ApisDesignAssembler.getSearchCriteria(dto),
-        dto.tranPage(), getMatchSearchFields(dto.getClass()));
+       getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisDesignAssembler::toVo);
   }
 

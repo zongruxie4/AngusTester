@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseFavouriteAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFavouriteCmd;
@@ -26,7 +27,7 @@ public class FuncCaseFavouriteFacadeImpl implements FuncCaseFavouriteFacade {
 
   @Override
   public IdKey<Long, Object> add(Long caseId) {
-    return funcCaseFavouriteCmd.add(FuncCaseFavouriteAssembler.addDtoToDomain(caseId));
+    return funcCaseFavouriteCmd.add(addDtoToDomain(caseId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class FuncCaseFavouriteFacadeImpl implements FuncCaseFavouriteFacade {
 
   @Override
   public PageResult<FuncCaseFavouriteDetailVo> search(FuncCaseFavouriteSearchDto dto) {
-    Page<FuncCaseFavouriteP> pageResult = funcCaseFavouriteQuery
+    Page<FuncCaseFavouriteP> page = funcCaseFavouriteQuery
         .search(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
-    return buildVoPageResult(pageResult, FuncCaseFavouriteAssembler::toDetailVo);
+    return buildVoPageResult(page, FuncCaseFavouriteAssembler::toDetailVo);
   }
 
   @Override

@@ -1,5 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAuthAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -34,12 +37,12 @@ public class MockServiceAuthFacadeImpl implements MockServiceAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long serviceId, ServiceAddAuthDto dto) {
-    return mockServiceAuthCmd.add(MockServiceAuthAssembler.addDtoToDomain(serviceId, dto));
+    return mockServiceAuthCmd.add(addDtoToDomain(serviceId, dto));
   }
 
   @Override
   public void replace(Long id, ServiceAuthReplaceDto dto) {
-    mockServiceAuthCmd.replace(MockServiceAuthAssembler.replaceDtoToDomain(id, dto));
+    mockServiceAuthCmd.replace(replaceDtoToDomain(id, dto));
   }
 
   @Override
@@ -70,9 +73,9 @@ public class MockServiceAuthFacadeImpl implements MockServiceAuthFacade {
   @Override
   @NameJoin
   public PageResult<ServiceAuthVo> list(Long serviceId, ServiceAuthFindDto dto) {
-    Page<MockServiceAuth> apisAuthPage = mockServiceAuthQuery
-        .find(serviceId, MockServiceAuthAssembler.getSpecification(serviceId, dto), dto.tranPage());
-    return buildVoPageResult(apisAuthPage, MockServiceAuthAssembler::toDetailVo);
+    Page<MockServiceAuth> page = mockServiceAuthQuery
+        .find(serviceId, getSpecification(serviceId, dto), dto.tranPage());
+    return buildVoPageResult(page, MockServiceAuthAssembler::toDetailVo);
   }
 
 }

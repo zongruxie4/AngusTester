@@ -1,13 +1,20 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toAddTask;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toReplaceTask;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toTaskDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toTaskListExportResource;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toUpdateTask;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.remote.ApiConstant.RLimit.MAX_REPORT_ROWS;
 import static cloud.xcan.angus.remote.CommonMessage.EXPORT_ROW_OVERT_LIMIT_CODE;
 import static cloud.xcan.angus.remote.CommonMessage.EXPORT_ROW_OVERT_LIMIT_T;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.api.enums.Priority;
@@ -88,17 +95,17 @@ public class TaskFacadeImpl implements TaskFacade {
 
   @Override
   public IdKey<Long, Object> add(TaskAddDto dto) {
-    return taskCmd.add(TaskAssembler.toAddTask(dto));
+    return taskCmd.add(toAddTask(dto));
   }
 
   @Override
   public void update(Long id, TaskUpdateDto dto) {
-    taskCmd.update(TaskAssembler.toUpdateTask(id, dto));
+    taskCmd.update(toUpdateTask(id, dto));
   }
 
   @Override
   public void replace(Long id, TaskReplaceDto dto) {
-    taskCmd.replace(TaskAssembler.toReplaceTask(id, dto));
+    taskCmd.replace(toReplaceTask(id, dto));
   }
 
   @Override
@@ -128,17 +135,17 @@ public class TaskFacadeImpl implements TaskFacade {
 
   @Override
   public void replaceAssignee(Long id, TaskAssigneeReplaceDto dto) {
-    taskCmd.replaceAssignees(id, Objects.isNull(dto) ? null : dto.getAssigneeId());
+    taskCmd.replaceAssignees(id, isNull(dto) ? null : dto.getAssigneeId());
   }
 
   @Override
   public void replaceConfirmor(Long id, TaskConfirmorReplaceDto dto) {
-    taskCmd.replaceConfirmors(id, Objects.isNull(dto) ? null : dto.getConfirmorId());
+    taskCmd.replaceConfirmors(id, isNull(dto) ? null : dto.getConfirmorId());
   }
 
   @Override
   public void replaceTag(Long id, TaskTagReplaceDto dto) {
-    tagTargetCmd.replaceTaskTags(id, Objects.isNull(dto) ? null : dto.getTagIds());
+    tagTargetCmd.replaceTaskTags(id, isNull(dto) ? null : dto.getTagIds());
   }
 
   @Override
@@ -284,7 +291,7 @@ public class TaskFacadeImpl implements TaskFacade {
   @NameJoin
   @Override
   public TaskDetailVo detail(Long id) {
-    TaskDetailVo detailVo = TaskAssembler.toTaskDetailVo(taskQuery.detail(id));
+    TaskDetailVo detailVo = toTaskDetailVo(taskQuery.detail(id));
     detailVo.setSubTaskInfos(joinSupplier.execute(() -> joinSubTaskInfos(detailVo)));
     return detailVo;
   }
@@ -297,14 +304,14 @@ public class TaskFacadeImpl implements TaskFacade {
   @NameJoin
   @Override
   public PageResult<TaskListVo> list(TaskFindDto dto) {
-    Page<Task> page = taskQuery.find(TaskAssembler.getSpecification(dto), dto.tranPage());
+    Page<Task> page = taskQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, TaskAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<TaskListVo> search(boolean export, TaskSearchDto dto) {
-    Page<Task> page = taskSearch.search(export, TaskAssembler.getSearchCriteria(dto),
+    Page<Task> page = taskSearch.search(export, getSearchCriteria(dto),
         dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskAssembler::toListVo);
   }
@@ -336,8 +343,7 @@ public class TaskFacadeImpl implements TaskFacade {
       dto.setPageNo(dto.getPageNo() + 1);
       page = search(true, dto);
       if (!page.isEmpty()) {
-        data.addAll(page.getList().stream().map(TaskAssembler::toTaskVo)
-            .collect(Collectors.toList()));
+        data.addAll(page.getList().stream().map(TaskAssembler::toTaskVo).toList());
       }
     }
     return data;

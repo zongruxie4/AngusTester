@@ -97,15 +97,15 @@ public class ProjectFacadeImpl implements ProjectFacade {
   @Override
   @NameJoin
   public PageResult<ProjectDetailVo> list(ProjectFindDto dto) {
-    Page<Project> nodePage = projectQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(nodePage, ProjectAssembler::toDetailVo);
+    Page<Project> page = projectQuery.find(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, ProjectAssembler::toDetailVo);
   }
 
   @Override
   @NameJoin
   public PageResult<ProjectDetailVo> search(ProjectSearchDto dto) {
-    Page<Project> nodePage = projectSearch.search(getSearchCriteria(dto),
+    Page<Project> page = projectSearch.search(getSearchCriteria(dto),
         dto.tranPage(), Project.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(nodePage, ProjectAssembler::toDetailVo);
+    return buildVoPageResult(page, ProjectAssembler::toDetailVo);
   }
 }

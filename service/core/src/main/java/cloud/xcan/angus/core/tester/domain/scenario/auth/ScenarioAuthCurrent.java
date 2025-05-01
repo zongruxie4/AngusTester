@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.scenario.auth;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -17,7 +19,7 @@ public class ScenarioAuthCurrent {
   private LinkedHashSet<ScenarioPermission> permissions;
 
   public void addPermissions(Collection<ScenarioPermission> permissions0) {
-    if (ObjectUtils.isEmpty(permissions0)) {
+    if (isEmpty(permissions0)) {
       return;
     }
     if (permissions == null) {

@@ -1,6 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.version.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.toAddDomain;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.toReplaceDomain;
+import static cloud.xcan.angus.core.tester.interfaces.version.facade.internal.assembler.SoftwareVersionAssembler.toUpdateDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -39,20 +45,17 @@ public class SoftwareVersionFacadeImpl implements SoftwareVersionFacade {
 
   @Override
   public IdKey<Long, Object> add(SoftwareVersionAddDto dto) {
-    SoftwareVersion version = SoftwareVersionAssembler.toAddDomain(dto);
-    return softwareVersionCmd.add(version);
+    return softwareVersionCmd.add(toAddDomain(dto));
   }
 
   @Override
   public void update(SoftwareVersionUpdateDto dto) {
-    SoftwareVersion version = SoftwareVersionAssembler.toUpdateDomain(dto);
-    softwareVersionCmd.update(version);
+    softwareVersionCmd.update(toUpdateDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(SoftwareVersionReplaceDto dto) {
-    SoftwareVersion version = SoftwareVersionAssembler.toReplaceDomain(dto);
-    return softwareVersionCmd.replace(version);
+    return softwareVersionCmd.replace(toReplaceDomain(dto));
   }
 
   @Override
@@ -73,24 +76,21 @@ public class SoftwareVersionFacadeImpl implements SoftwareVersionFacade {
   @NameJoin
   @Override
   public SoftwareVersionDetailVo detail(Long id) {
-    SoftwareVersion version = softwareVersionQuery.detail(id);
-    return SoftwareVersionAssembler.toDetailVo(version);
+    return toDetailVo(softwareVersionQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<SoftwareVersionVo> list(SoftwareVersionFindDto dto) {
-    Page<SoftwareVersion> page = softwareVersionQuery
-        .find(SoftwareVersionAssembler.getSpecification(dto), dto.tranPage());
+    Page<SoftwareVersion> page = softwareVersionQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, SoftwareVersionAssembler::toVo);
   }
 
   @NameJoin
   @Override
   public PageResult<SoftwareVersionVo> search(SoftwareVersionSearchDto dto) {
-    Page<SoftwareVersion> page = softwareVersionSearch
-        .search(SoftwareVersionAssembler.getSearchCriteria(dto), dto.tranPage(),
-            SoftwareVersion.class, getMatchSearchFields(dto.getClass()));
+    Page<SoftwareVersion> page = softwareVersionSearch.search(getSearchCriteria(dto),
+        dto.tranPage(), SoftwareVersion.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, SoftwareVersionAssembler::toVo);
   }
 }

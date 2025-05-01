@@ -3,9 +3,11 @@ package cloud.xcan.angus.core.tester.interfaces.node.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.application.query.common.impl.CommonQueryImpl.isAdmin;
 import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeAssembler.completeNodeDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isApi;
 import static cloud.xcan.angus.remote.ApiConstant.RLimit.MAX_PAGE_SIZE;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getExtension;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
@@ -162,7 +164,7 @@ public class NodeFacadeImpl implements NodeFacade {
     } catch (Exception e) {
       // If 404 do Nothing
     }
-    NodeDetailVo nodeDetailVo = NodeAssembler.toDetailVo(node, isAdmin());
+    NodeDetailVo nodeDetailVo = toDetailVo(node, isAdmin());
     completeNodeDetailVo(nodeDetailVo, infoDetailVo);
     return nodeDetailVo;
   }
@@ -170,40 +172,38 @@ public class NodeFacadeImpl implements NodeFacade {
   @NameJoin
   @Override
   public PageResult<NodeDetailVo> list(NodeFindDto dto) {
-    Page<Node> nodePage = nodeQuery.find(NodeAssembler.getSpecification(dto), dto.tranPage());
+    Page<Node> page = nodeQuery.find(NodeAssembler.getSpecification(dto), dto.tranPage());
     boolean isAdmin = isAdmin();
-    PageResult<NodeDetailVo> nodeDetailVos = buildVoPageResult(nodePage,
-        x -> NodeAssembler.toDetailVo(x, isAdmin));
-    if (nonNull(nodePage) && !nodePage.hasContent()) {
-      return nodeDetailVos;
+    PageResult<NodeDetailVo> detailPage = buildVoPageResult(page, x -> toDetailVo(x, isAdmin));
+    if (nonNull(page) && !page.hasContent()) {
+      return detailPage;
     }
     // Ignore door api
     if (isApi()) {
-      completePageNodeInfo(nodeDetailVos);
+      completePageNodeInfo(detailPage);
     }
-    return nodeDetailVos;
+    return detailPage;
   }
 
   @NameJoin
   @Override
   public PageResult<NodeDetailVo> search(NodeSearchDto dto) {
-    Page<Node> nodePage = nodeSearch.search(NodeAssembler.getSearchCriteria(dto),
+    Page<Node> page = nodeSearch.search(NodeAssembler.getSearchCriteria(dto),
         dto.tranPage(), Node.class, getMatchSearchFields(dto.getClass()));
     boolean isAdmin = isAdmin();
-    PageResult<NodeDetailVo> nodeDetailVos =
-        buildVoPageResult(nodePage, x -> NodeAssembler.toDetailVo(x, isAdmin));
-    if (nonNull(nodePage) && !nodePage.hasContent()) {
-      return nodeDetailVos;
+    PageResult<NodeDetailVo> detailPage = buildVoPageResult(page, x -> toDetailVo(x, isAdmin));
+    if (nonNull(page) && !page.hasContent()) {
+      return detailPage;
     }
-    completePageNodeInfo(nodeDetailVos);
-    return nodeDetailVos;
+    completePageNodeInfo(detailPage);
+    return detailPage;
   }
 
   private void completePageNodeInfo(PageResult<NodeDetailVo> nodeDetailVos) {
     String idIn = nodeDetailVos.getList().stream().map(NodeDetailVo::getId)
         .map(String::valueOf).collect(Collectors.joining(","));
-    boolean isFreeNodes = nonNull(PrincipalContext.getExtension("isFreeNodes"))
-        && Boolean.parseBoolean(PrincipalContext.getExtension("isFreeNodes").toString());
+    boolean isFreeNodes = nonNull(getExtension("isFreeNodes"))
+        && Boolean.parseBoolean(getExtension("isFreeNodes").toString());
     if (isNotEmpty(idIn)) {
       NodeInfoFindDto infoFindDto = new NodeInfoFindDto();
       infoFindDto.setPageSize(MAX_PAGE_SIZE);
@@ -212,12 +212,12 @@ public class NodeFacadeImpl implements NodeFacade {
       if (isFreeNodes) {
         infoFindDto.setIsFreeNode(isFreeNodes);
       }
-      PageResult<NodeInfoDetailVo> infoDetailVoPage = nodeInfoRemote.list(infoFindDto)
+      PageResult<NodeInfoDetailVo> detailPage = nodeInfoRemote.list(infoFindDto)
           .orElseContentThrow();
-      for (NodeDetailVo nodeDetailVo : nodeDetailVos.getList()) {
-        for (NodeInfoDetailVo infoDetailVo : infoDetailVoPage.getList()) {
-          if (infoDetailVo.getId().equals(nodeDetailVo.getId())) {
-            completeNodeDetailVo(nodeDetailVo, infoDetailVo);
+      for (NodeDetailVo detailVo : nodeDetailVos.getList()) {
+        for (NodeInfoDetailVo infoDetailVo : detailPage.getList()) {
+          if (infoDetailVo.getId().equals(detailVo.getId())) {
+            completeNodeDetailVo(detailVo, infoDetailVo);
           }
         }
       }

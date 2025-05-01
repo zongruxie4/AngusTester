@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioFavoriteAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioFavouriteCmd;
@@ -26,7 +27,7 @@ public class ScenarioFavouriteFacadeImpl implements ScenarioFavouriteFacade {
 
   @Override
   public IdKey<Long, Object> add(Long scenarioId) {
-    return scenarioFavouriteCmd.add(ScenarioFavoriteAssembler.addDtoToDomain(scenarioId));
+    return scenarioFavouriteCmd.add(addDtoToDomain(scenarioId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class ScenarioFavouriteFacadeImpl implements ScenarioFavouriteFacade {
 
   @Override
   public PageResult<ScenarioFavouriteDetailVo> search(ScenarioFavouriteFindDto dto) {
-    Page<ScenarioFavourite> pageResult = scenarioFavouriteQuery
+    Page<ScenarioFavourite> page = scenarioFavouriteQuery
         .search(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
-    return buildVoPageResult(pageResult, ScenarioFavoriteAssembler::toDetailVo);
+    return buildVoPageResult(page, ScenarioFavoriteAssembler::toDetailVo);
   }
 
   @Override

@@ -1,6 +1,13 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.toShareAddVo;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.toShareDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.toVo;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -38,13 +45,13 @@ public class ApisShareFacadeImpl implements ApisShareFacade {
 
   @Override
   public ApisShareAddVo add(ApisShareAddDto dto) {
-    ApisShare share = ApisShareAssembler.addDtoToDomain(dto);
-    return ApisShareAssembler.toShareAddVo(apisShareCmd.add(share));
+    ApisShare share = addDtoToDomain(dto);
+    return toShareAddVo(apisShareCmd.add(share));
   }
 
   @Override
   public void update(ApisShareUpdateDto dto) {
-    apisShareCmd.update(ApisShareAssembler.updateDtoToDomain(dto));
+    apisShareCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
@@ -55,31 +62,29 @@ public class ApisShareFacadeImpl implements ApisShareFacade {
   @NameJoin
   @Override
   public ApisShareVo detail(Long id) {
-    return ApisShareAssembler.toVo(apisShareQuery.detail(id));
+    return toVo(apisShareQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<ApisShareVo> list(ApisShareFindDto dto) {
-    Page<ApisShare> pageSpace = apisShareQuery
-        .find(ApisShareAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(pageSpace, ApisShareAssembler::toVo);
+    Page<ApisShare> page = apisShareQuery.find(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, ApisShareAssembler::toVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ApisShareVo> search(ApisShareSearchDto dto) {
-    Page<ApisShare> pageSpace = apisShareSearch
-        .search(ApisShareAssembler.getSearchCriteria(dto), dto.tranPage(), ApisShare.class,
-            getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(pageSpace, ApisShareAssembler::toVo);
+    Page<ApisShare> page = apisShareSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        ApisShare.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, ApisShareAssembler::toVo);
   }
 
   @Override
   public ApisShareViewVo view(ApisShareViewDto dto) {
     ApisShare share = apisShareQuery.view(dto.getId(), dto.getPat());
     apisShareCmd.incrView(dto.getId());
-    return ApisShareAssembler.toShareDetailVo(share);
+    return toShareDetailVo(share);
   }
 
 }

@@ -6,6 +6,7 @@ import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assem
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
@@ -92,7 +93,7 @@ public class VariableFacadeImpl implements VariableFacade {
   @Override
   public VariableDetailVo detail(Long id) {
     Variable variable = variableQuery.detail(id);
-    return VariableAssembler.toDetailVo(variable);
+    return toDetailVo(variable);
   }
 
   @Override

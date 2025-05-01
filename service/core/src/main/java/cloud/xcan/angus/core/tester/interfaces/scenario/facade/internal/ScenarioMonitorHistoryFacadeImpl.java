@@ -1,10 +1,11 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorHistoryAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioMonitorHistoryAssembler.toDetail;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorHistoryQuery;
-import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistory;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistoryInfo;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioMonitorHistoryFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorHistoryFindDto;
@@ -25,15 +26,14 @@ public class ScenarioMonitorHistoryFacadeImpl implements ScenarioMonitorHistoryF
   @NameJoin
   @Override
   public ScenarioMonitorHistoryDetailVo detail(Long id) {
-    ScenarioMonitorHistory history = scenarioMonitorHistoryQuery.detail(id);
-    return ScenarioMonitorHistoryAssembler.toDetail(history);
+    return toDetail(scenarioMonitorHistoryQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<ScenarioMonitorHistoryListVo> list(ScenarioMonitorHistoryFindDto dto) {
     Page<ScenarioMonitorHistoryInfo> page = scenarioMonitorHistoryQuery
-        .find(ScenarioMonitorHistoryAssembler.getSpecification(dto), dto.tranPage());
+        .find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, ScenarioMonitorHistoryAssembler::toListVo);
   }
 }

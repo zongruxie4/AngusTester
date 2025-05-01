@@ -1,6 +1,11 @@
 package cloud.xcan.angus.core.tester.interfaces.module.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler.ModuleAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler.ModuleAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler.ModuleAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler.ModuleAssembler.toListVo;
+import static cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler.ModuleAssembler.toTree;
 
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -41,7 +46,7 @@ public class ModuleFacadeImpl implements ModuleFacade {
 
   @Override
   public List<IdKey<Long, Object>> add(ModuleAddDto dto) {
-    return moduleCmd.add(dto.getProjectId(), ModuleAssembler.addDtoToDomain(dto));
+    return moduleCmd.add(dto.getProjectId(), addDtoToDomain(dto));
   }
 
   @Override
@@ -70,38 +75,37 @@ public class ModuleFacadeImpl implements ModuleFacade {
 
   @Override
   public ModuleVo detail(Long id) {
-    Module module = moduleQuery.detail(id);
-    return ModuleAssembler.toListVo(module);
+    return toListVo(moduleQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public List<ModuleVo> list(ModuleFindDto dto) {
-    List<Module> modules = moduleQuery.find(ModuleAssembler.getSpecification(dto));
+    List<Module> modules = moduleQuery.find(getSpecification(dto));
     return modules.stream().map(ModuleAssembler::toListVo).collect(Collectors.toList());
   }
 
   @NameJoin
   @Override
   public List<ModuleVo> search(ModuleSearchDto dto) {
-    List<Module> modules = moduleSearch.search(ModuleAssembler.getSearchCriteria(dto),
+    List<Module> modules = moduleSearch.search(getSearchCriteria(dto),
         Module.class, getMatchSearchFields(dto.getClass()));
     return modules.stream().map(ModuleAssembler::toListVo).collect(Collectors.toList());
   }
 
   @Override
   public List<ModuleTreeVo> tree(ModuleFindDto dto) {
-    List<Module> modules = moduleQuery.find(ModuleAssembler.getSpecification(dto));
+    List<Module> modules = moduleQuery.find(getSpecification(dto));
     joinSupplier.execute(() -> modules);
-    return ModuleAssembler.toTree(modules);
+    return toTree(modules);
   }
 
   @Override
   public List<ModuleTreeVo> treeSearch(ModuleSearchDto dto) {
-    List<Module> modules = moduleSearch.search(ModuleAssembler.getSearchCriteria(dto),
+    List<Module> modules = moduleSearch.search(getSearchCriteria(dto),
         Module.class, getMatchSearchFields(dto.getClass()));
     joinSupplier.execute(() -> modules);
-    return ModuleAssembler.toTree(modules);
+    return toTree(modules);
   }
 
 }

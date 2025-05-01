@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.toInfoVo;
+
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceOpen2pFacade;
@@ -18,7 +20,7 @@ public class MockServiceOpen2pFacadeImpl implements MockServiceOpen2pFacade {
   @Override
   public MockServiceInfoVo info(Long id) {
     MockService service = mockServiceQuery.info(id);
-    return Objects.nonNull(service) ? MockServiceAssembler.toInfoVo(service) : null;
+    return Objects.nonNull(service) ? toInfoVo(service) : null;
   }
 
 }

@@ -2,6 +2,13 @@ package cloud.xcan.angus.core.tester.interfaces.script.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.containsKey;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.importDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.toAngusDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.toInfoVo;
+import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
@@ -61,17 +68,17 @@ public class ScriptFacadeImpl implements ScriptFacade {
 
   @Override
   public IdKey<Long, Object> add(ScriptAddDto dto) {
-    return scriptCmd.add(ScriptAssembler.addDtoToDomain(dto), true);
+    return scriptCmd.add(addDtoToDomain(dto), true);
   }
 
   @Override
   public void update(ScriptUpdateDto dto) {
-    scriptCmd.update(ScriptAssembler.updateDtoToDomain(dto));
+    scriptCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(ScriptReplaceDto dto) {
-    return scriptCmd.replace(ScriptAssembler.replaceDtoToDomain(dto));
+    return scriptCmd.replace(replaceDtoToDomain(dto));
   }
 
   @Override
@@ -91,7 +98,7 @@ public class ScriptFacadeImpl implements ScriptFacade {
 
   @Override
   public IdKey<Long, Object> imports(ScriptImportDto dto) {
-    return scriptCmd.imports(ScriptAssembler.importDtoToDomain(dto));
+    return scriptCmd.imports(importDtoToDomain(dto));
   }
 
   @Override
@@ -107,12 +114,12 @@ public class ScriptFacadeImpl implements ScriptFacade {
   @NameJoin
   @Override
   public ScriptDetailVo detail(Long id) {
-    return ScriptAssembler.toDetailVo(scriptQuery.detail(id));
+    return toDetailVo(scriptQuery.detail(id));
   }
 
   @Override
   public ScriptInfoVo info(Long id) {
-    return ScriptAssembler.toInfoVo(scriptQuery.info(id));
+    return toInfoVo(scriptQuery.info(id));
   }
 
   @Override
@@ -123,7 +130,7 @@ public class ScriptFacadeImpl implements ScriptFacade {
 
   @Override
   public AngusScriptDetailVo angusDetail(Long id) {
-    return ScriptAssembler.toAngusDetailVo(scriptQuery.angusDetail(id));
+    return toAngusDetailVo(scriptQuery.angusDetail(id));
   }
 
   @NameJoin

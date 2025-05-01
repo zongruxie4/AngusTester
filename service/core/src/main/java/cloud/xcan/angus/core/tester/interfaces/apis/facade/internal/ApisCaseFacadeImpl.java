@@ -92,8 +92,7 @@ public class ApisCaseFacadeImpl implements ApisCaseFacade {
   @NameJoin
   @Override
   public ApisCaseDetailVo detail(Long id) {
-    ApisCase detail = apisCaseQuery.detail(id);
-    return toDetailVo(detail);
+    return toDetailVo(apisCaseQuery.detail(id));
   }
 
   @NameJoin

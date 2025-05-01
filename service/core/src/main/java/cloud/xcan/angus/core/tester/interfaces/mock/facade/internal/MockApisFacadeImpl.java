@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockApisAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockApisAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -110,14 +112,13 @@ public class MockApisFacadeImpl implements MockApisFacade {
   @NameJoin
   @Override
   public MockApisDetailVo detail(Long id) {
-    MockApis apis = mockApisQuery.detail(id);
-    return MockApisAssembler.toDetailVo(apis);
+    return toDetailVo(mockApisQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<MockApisListVo> list(MockApisFindDto dto) {
-    GenericSpecification<MockApis> spec = MockApisAssembler.getSpecification(dto);
+    GenericSpecification<MockApis> spec = getSpecification(dto);
     // mockServiceId filter is required
     boolean queryAll = spec.getCriteria().size() <= 1;
     Page<MockApis> page = mockApisQuery.find(spec, dto.tranPage());

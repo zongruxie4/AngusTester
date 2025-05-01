@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.apis.converter;
 
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -21,7 +22,7 @@ public class ExternalDocConverter implements AttributeConverter<ExternalDocument
 
   @Override
   public ExternalDocumentation convertToEntityAttribute(String dbData) {
-    if (ObjectUtils.isEmpty(dbData)) {
+    if (isEmpty(dbData)) {
       return null;
     }
     try {

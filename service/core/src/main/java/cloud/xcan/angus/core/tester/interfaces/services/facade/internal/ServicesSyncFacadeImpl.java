@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesSyncAssembler.toDomain;
+
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesSyncCmd;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesSyncQuery;
@@ -27,13 +29,13 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
 
   @Override
   public void replace(Long serviceId, ServicesSyncReplaceDto dto) {
-    servicesSyncCmd.replace(serviceId, ServicesSyncAssembler.toDomain(serviceId, dto));
+    servicesSyncCmd.replace(serviceId, toDomain(serviceId, dto));
   }
 
   @Override
   public void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dto) {
-    servicesSyncCmd.replaceAll(serviceId, dto.stream()
-        .map(x -> ServicesSyncAssembler.toDomain(serviceId, x)).collect(Collectors.toList()));
+    servicesSyncCmd.replaceAll(serviceId,
+        dto.stream().map(x -> toDomain(serviceId, x)).collect(Collectors.toList()));
   }
 
   @Override

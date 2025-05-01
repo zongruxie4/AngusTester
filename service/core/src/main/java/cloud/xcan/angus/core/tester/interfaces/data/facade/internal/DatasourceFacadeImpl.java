@@ -81,16 +81,16 @@ public class DatasourceFacadeImpl implements DatasourceFacade {
   @NameJoin
   @Override
   public PageResult<DatasourceVo> list(DatasourceFindDto dto) {
-    Page<Datasource> mockDatasourcePage = datasourceQuery.find(
+    Page<Datasource> page = datasourceQuery.find(
         getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(mockDatasourcePage, DatasourceAssembler::toVo);
+    return buildVoPageResult(page, DatasourceAssembler::toVo);
   }
 
   @NameJoin
   @Override
   public PageResult<DatasourceVo> search(DatasourceSearchDto dto) {
-    Page<Datasource> mockServicePage = datasourceSearch.search(getSearchCriteria(dto),
+    Page<Datasource> page = datasourceSearch.search(getSearchCriteria(dto),
         dto.tranPage(), Datasource.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(mockServicePage, DatasourceAssembler::toVo);
+    return buildVoPageResult(page, DatasourceAssembler::toVo);
   }
 }

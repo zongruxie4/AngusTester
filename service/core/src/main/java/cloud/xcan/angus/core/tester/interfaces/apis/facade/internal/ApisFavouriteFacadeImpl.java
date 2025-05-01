@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisFavouriteAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisFavouriteCmd;
@@ -26,7 +27,7 @@ public class ApisFavouriteFacadeImpl implements ApisFavouriteFacade {
 
   @Override
   public IdKey<Long, Object> add(Long apisId) {
-    return apisFavouriteCmd.add(ApisFavouriteAssembler.addDtoToDomain(apisId));
+    return apisFavouriteCmd.add(addDtoToDomain(apisId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class ApisFavouriteFacadeImpl implements ApisFavouriteFacade {
 
   @Override
   public PageResult<ApisFavouriteDetailVo> search(ApisFavouriteSearchDto dto) {
-    Page<ApisFavouriteP> pageResult = apisFavouriteQuery.search(dto.getProjectId(),
+    Page<ApisFavouriteP> page = apisFavouriteQuery.search(dto.getProjectId(),
         dto.getApisName(), dto.tranPage());
-    return buildVoPageResult(pageResult, ApisFavouriteAssembler::toDetailVo);
+    return buildVoPageResult(page, ApisFavouriteAssembler::toDetailVo);
   }
 
   @Override

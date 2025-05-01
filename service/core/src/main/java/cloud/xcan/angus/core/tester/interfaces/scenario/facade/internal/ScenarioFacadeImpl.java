@@ -2,7 +2,10 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
@@ -79,8 +82,7 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   @NameJoin
   @Override
   public ScenarioDetailVo detail(Long id) {
-    Scenario scenario = scenarioQuery.detail(id);
-    return ScenarioAssembler.toDetailVo(scenario);
+    return toDetailVo(scenarioQuery.detail(id));
   }
 
   @NameJoin
@@ -93,18 +95,16 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   @NameJoin
   @Override
   public PageResult<ScenarioListVo> list(ScenarioInfoFindDto dto) {
-    Page<Scenario> page = scenarioQuery
-        .find(ScenarioAssembler.getSpecification(dto), dto.tranPage(), Scenario.class);
+    Page<Scenario> page = scenarioQuery.find(getSpecification(dto), dto.tranPage(), Scenario.class);
     return buildVoPageResult(page, ScenarioAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<ScenarioListVo> search(ScenarioInfoSearchDto dto) {
-    Page<Scenario> apisPage = scenarioSearch
-        .search(ScenarioAssembler.getSearchCriteria(dto), dto.tranPage(), Scenario.class,
-            getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(apisPage, ScenarioAssembler::toListVo);
+    Page<Scenario> page = scenarioSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        Scenario.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, ScenarioAssembler::toListVo);
   }
 
 }

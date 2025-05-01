@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockApisResponseAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockApisResponseAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockApisResponseCmd;
@@ -32,15 +34,13 @@ public class MockApisResponseFacadeImpl implements MockApisResponseFacade {
   @Override
   public List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dto) {
     return mockApisResponseCmd.add(apisId, dto.stream()
-        .map(x -> MockApisResponseAssembler.addDtoToDomain(apisId, x))
-        .collect(Collectors.toList()));
+        .map(x -> addDtoToDomain(apisId, x)).collect(Collectors.toList()));
   }
 
   @Override
   public void replace(Long apisId, List<MockApisResponseReplaceDto> dto) {
     mockApisResponseCmd.replace(apisId, dto.stream()
-        .map(x -> MockApisResponseAssembler.replaceDtoToDomain(apisId, x))
-        .collect(Collectors.toList()));
+        .map(x -> replaceDtoToDomain(apisId, x)).collect(Collectors.toList()));
   }
 
   @Override

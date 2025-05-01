@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.api.commonlink.services.ServicesPermission;
@@ -33,12 +37,12 @@ public class ServicesAuthFacadeImpl implements ServicesAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long serviceId, ServicesAddAuthDto dto) {
-    return servicesAuthCmd.add(ServicesAuthAssembler.addDtoToDomain(serviceId, dto));
+    return servicesAuthCmd.add(addDtoToDomain(serviceId, dto));
   }
 
   @Override
   public void replace(Long id, ServicesAuthReplaceDto dto) {
-    servicesAuthCmd.replace(ServicesAuthAssembler.replaceDtoToDomain(id, dto));
+    servicesAuthCmd.replace(replaceDtoToDomain(id, dto));
   }
 
   @Override
@@ -69,7 +73,7 @@ public class ServicesAuthFacadeImpl implements ServicesAuthFacade {
   @Override
   public ServiceAuthCurrentVo currentUserAuth(Long serviceId, Boolean admin) {
     ServicesAuthCurrent authCurrent = servicesAuthQuery.currentUserAuth(serviceId, admin);
-    return ServicesAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
@@ -84,9 +88,9 @@ public class ServicesAuthFacadeImpl implements ServicesAuthFacade {
     if (dto.getServiceId() != null) {
       projectIds.add(String.valueOf(dto.getServiceId()));
     }
-    Page<ServicesAuth> apisAuthPage = servicesAuthQuery
-        .find(ServicesAuthAssembler.getSpecification(dto), projectIds, dto.tranPage());
-    return buildVoPageResult(apisAuthPage, ServicesAuthAssembler::toDetailVo);
+    Page<ServicesAuth> page = servicesAuthQuery.find(getSpecification(dto), projectIds,
+        dto.tranPage());
+    return buildVoPageResult(page, ServicesAuthAssembler::toDetailVo);
   }
 
 }

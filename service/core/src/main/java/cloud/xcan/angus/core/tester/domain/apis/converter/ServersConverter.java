@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.apis.converter;
 
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,7 +24,7 @@ public class ServersConverter implements AttributeConverter<List<Server>, String
 
   @Override
   public List<Server> convertToEntityAttribute(String dbData) {
-    if (ObjectUtils.isEmpty(dbData)) {
+    if (isEmpty(dbData)) {
       return null;
     }
     try {

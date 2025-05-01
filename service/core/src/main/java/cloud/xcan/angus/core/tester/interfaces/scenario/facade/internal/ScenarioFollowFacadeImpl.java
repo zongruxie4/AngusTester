@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioFollowAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioFollowCmd;
@@ -26,7 +27,7 @@ public class ScenarioFollowFacadeImpl implements ScenarioFollowFacade {
 
   @Override
   public IdKey<Long, Object> add(Long scenarioId) {
-    return scenarioFollowCmd.add(ScenarioFollowAssembler.addDtoToDomain(scenarioId));
+    return scenarioFollowCmd.add(addDtoToDomain(scenarioId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class ScenarioFollowFacadeImpl implements ScenarioFollowFacade {
 
   @Override
   public PageResult<ScenarioFollowDetailVo> search(ScenarioFollowFindDto dto) {
-    Page<ScenarioFollow> pageResult = scenarioFollowQuery
+    Page<ScenarioFollow> page = scenarioFollowQuery
         .search(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
-    return buildVoPageResult(pageResult, ScenarioFollowAssembler::toDetailVo);
+    return buildVoPageResult(page, ScenarioFollowAssembler::toDetailVo);
   }
 
   @Override

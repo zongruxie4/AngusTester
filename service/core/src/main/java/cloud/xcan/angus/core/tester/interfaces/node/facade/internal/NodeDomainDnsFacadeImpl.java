@@ -1,5 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.node.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainDnsAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainDnsAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainDnsAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -29,14 +32,12 @@ public class NodeDomainDnsFacadeImpl implements NodeDomainDnsFacade {
 
   @Override
   public IdKey<Long, Object> add(NodeDomainDnsAddDto dto) {
-    NodeDomainDns nodeDomainDns = NodeDomainDnsAssembler.addDtoToDomain(dto);
-    return nodeDomainDnsCmd.add(nodeDomainDns);
+    return nodeDomainDnsCmd.add(addDtoToDomain(dto));
   }
 
   @Override
   public void update(NodeDomainDnsUpdateDto dto) {
-    NodeDomainDns nodeDomainDns = NodeDomainDnsAssembler.updateDtoToDomain(dto);
-    nodeDomainDnsCmd.update(nodeDomainDns);
+    nodeDomainDnsCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
@@ -47,9 +48,8 @@ public class NodeDomainDnsFacadeImpl implements NodeDomainDnsFacade {
   @NameJoin
   @Override
   public PageResult<NodeDomainDnsDetailVo> list(NodeDomainDnsFindDto dto) {
-    Page<NodeDomainDns> nodeDomainDnsPage = nodeDomainDnsQuery.find(
-        NodeDomainDnsAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(nodeDomainDnsPage, NodeDomainDnsAssembler::toDetailVo);
+    Page<NodeDomainDns> page = nodeDomainDnsQuery.find(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, NodeDomainDnsAssembler::toDetailVo);
   }
 
 }

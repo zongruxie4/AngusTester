@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.apis.converter;
 
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.info.Info;
@@ -21,7 +22,7 @@ public class InfoConverter implements AttributeConverter<Info, String> {
 
   @Override
   public Info convertToEntityAttribute(String dbData) {
-    if (ObjectUtils.isEmpty(dbData)) {
+    if (isEmpty(dbData)) {
       return null;
     }
     try {

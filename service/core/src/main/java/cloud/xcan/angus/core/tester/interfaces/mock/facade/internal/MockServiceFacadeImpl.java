@@ -3,8 +3,11 @@ package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.fileImportDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.servicesAssocDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
@@ -138,23 +141,21 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
   @Override
   public MockServiceDetailVo detail(Long id) {
     MockService service = mockServiceQuery.detail(id);
-    return MockServiceAssembler.toDetailVo(service);
+    return toDetailVo(service);
   }
 
   @NameJoin
   @Override
   public PageResult<MockServiceListVo> list(MockServiceFindDto dto) {
-    Page<MockServiceInfo> page = mockServiceQuery
-        .find(MockServiceAssembler.getSpecification(dto), dto.tranPage());
+    Page<MockServiceInfo> page = mockServiceQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, MockServiceAssembler::toServiceListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<MockServiceListVo> search(MockServiceSearchDto dto) {
-    Page<MockServiceInfo> page = mockServiceSearch
-        .search(MockServiceAssembler.getSearchCriteria(dto), dto.tranPage(), MockServiceInfo.class,
-            getMatchSearchFields(dto.getClass()));
+    Page<MockServiceInfo> page = mockServiceSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        MockServiceInfo.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, MockServiceAssembler::toServiceListVo);
   }
 

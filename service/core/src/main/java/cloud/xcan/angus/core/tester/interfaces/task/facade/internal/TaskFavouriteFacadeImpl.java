@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskFavoriteAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskFavouriteCmd;
@@ -26,7 +27,7 @@ public class TaskFavouriteFacadeImpl implements TaskFavouriteFacade {
 
   @Override
   public IdKey<Long, Object> add(Long taskId) {
-    return taskFavouriteCmd.add(TaskFavoriteAssembler.addDtoToDomain(taskId));
+    return taskFavouriteCmd.add(addDtoToDomain(taskId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class TaskFavouriteFacadeImpl implements TaskFavouriteFacade {
 
   @Override
   public PageResult<TaskFavouriteDetailVo> search(TaskFavouriteFindDto dto) {
-    Page<TaskFavouriteP> pageResult = taskFavouriteQuery.search(
+    Page<TaskFavouriteP> page = taskFavouriteQuery.search(
         dto.getProjectId(), dto.getTaskName(), dto.tranPage());
-    return buildVoPageResult(pageResult, TaskFavoriteAssembler::toDetailVo);
+    return buildVoPageResult(page, TaskFavoriteAssembler::toDetailVo);
   }
 
   @Override

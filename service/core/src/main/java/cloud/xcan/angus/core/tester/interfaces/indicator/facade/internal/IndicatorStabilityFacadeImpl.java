@@ -74,17 +74,17 @@ public class IndicatorStabilityFacadeImpl implements IndicatorStabilityFacade {
   @NameJoin
   @Override
   public PageResult<StabilityListVo> list(StabilityFindDto dto) {
-    Page<IndicatorStability> indicatorStabilityPage = indicatorStabilityQuery
+    Page<IndicatorStability> page = indicatorStabilityQuery
         .list(getSpecification(dto), dto.tranPage(), IndicatorStability.class);
-    return buildVoPageResult(indicatorStabilityPage, IndicatorStabilityAssembler::toListVo);
+    return buildVoPageResult(page, IndicatorStabilityAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<StabilityListVo> search(StabilitySearchDto dto) {
-    Page<IndicatorStability> indicatorStabilityPage = indicatorStabilitySearch
+    Page<IndicatorStability> page = indicatorStabilitySearch
         .search(getSearchCriteria(dto), dto.tranPage(), IndicatorStability.class);
-    return buildVoPageResult(indicatorStabilityPage, IndicatorStabilityAssembler::toListVo);
+    return buildVoPageResult(page, IndicatorStabilityAssembler::toListVo);
   }
 
 }

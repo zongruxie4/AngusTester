@@ -1,6 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.tag.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.toListVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -60,21 +63,20 @@ public class TagFacadeImpl implements TagFacade {
 
   @Override
   public TagVo detail(Long id) {
-    Tag tag = tagQuery.detail(id);
-    return TagAssembler.toListVo(tag);
+    return toListVo(tagQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<TagVo> list(TagFindDto dto) {
-    Page<Tag> page = tagQuery.find(TagAssembler.getSpecification(dto), dto.tranPage());
+    Page<Tag> page = tagQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, TagAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<TagVo> search(TagSearchDto dto) {
-    Page<Tag> page = tagSearch.search(TagAssembler.getSearchCriteria(dto),
+    Page<Tag> page = tagSearch.search(getSearchCriteria(dto),
         dto.tranPage(), Tag.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TagAssembler::toListVo);
   }

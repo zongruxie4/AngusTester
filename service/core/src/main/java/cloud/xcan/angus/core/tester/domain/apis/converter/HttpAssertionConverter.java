@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.domain.apis.converter;
 
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.model.element.assertion.Assertion;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
@@ -25,7 +26,7 @@ public class HttpAssertionConverter implements
 
   @Override
   public List<Assertion<HttpExtraction>> convertToEntityAttribute(String dbData) {
-    if (ObjectUtils.isEmpty(dbData)) {
+    if (isEmpty(dbData)) {
       return null;
     }
     try {

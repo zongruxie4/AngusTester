@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.node.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeDomainAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeDomainCmd;
@@ -28,14 +32,12 @@ public class NodeDomainFacadeImpl implements NodeDomainFacade {
 
   @Override
   public IdKey<Long, Object> add(NodeDomainAddDto dto) {
-    NodeDomain nodeDomain = NodeDomainAssembler.addDtoToDomain(dto);
-    return nodeDomainCmd.add(nodeDomain);
+    return nodeDomainCmd.add(addDtoToDomain(dto));
   }
 
   @Override
   public void update(NodeDomainUpdateDto dto) {
-    NodeDomain nodeDomain = NodeDomainAssembler.updateDtoToDomain(dto);
-    nodeDomainCmd.update(nodeDomain);
+    nodeDomainCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
@@ -45,15 +47,13 @@ public class NodeDomainFacadeImpl implements NodeDomainFacade {
 
   @Override
   public NodeDomainDetailVo detail(Long id) {
-    NodeDomain domain = nodeDomainQuery.find(id);
-    return NodeDomainAssembler.toDetailVo(domain);
+    return toDetailVo(nodeDomainQuery.find(id));
   }
 
   @Override
   public PageResult<NodeDomainDetailVo> list(NodeDomainFindDto dto) {
-    Page<NodeDomain> nodeDomainPage = nodeDomainQuery
-        .find(NodeDomainAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(nodeDomainPage, NodeDomainAssembler::toDetailVo);
+    Page<NodeDomain> page = nodeDomainQuery.find(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, NodeDomainAssembler::toDetailVo);
   }
 }
 

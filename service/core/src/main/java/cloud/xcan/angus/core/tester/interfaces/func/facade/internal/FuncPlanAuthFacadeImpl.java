@@ -1,6 +1,10 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncPlanAuthCmd;
@@ -38,12 +42,12 @@ public class FuncPlanAuthFacadeImpl implements FuncPlanAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long planId, FuncPlanAuthAddDto dto) {
-    return funcPlanAuthCmd.add(FuncPlanAuthAssembler.addDtoToDomain(planId, dto));
+    return funcPlanAuthCmd.add(addDtoToDomain(planId, dto));
   }
 
   @Override
   public void replace(Long planId, FuncPlanAuthReplaceDto dto) {
-    funcPlanAuthCmd.replace(FuncPlanAuthAssembler.replaceDtoToDomain(planId, dto));
+    funcPlanAuthCmd.replace(replaceDtoToDomain(planId, dto));
   }
 
   @Override
@@ -69,7 +73,7 @@ public class FuncPlanAuthFacadeImpl implements FuncPlanAuthFacade {
   @Override
   public FuncPlanAuthCurrentVo currentUserAuth(Long planId, Boolean admin) {
     FuncPlanAuthCurrent authCurrent = funcPlanAuthQuery.currentUserAuth(planId, admin);
-    return FuncPlanAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
@@ -77,9 +81,9 @@ public class FuncPlanAuthFacadeImpl implements FuncPlanAuthFacade {
       Boolean admin) {
     Map<Long, FuncPlanAuthCurrent> authCurrentsMap = funcPlanAuthQuery
         .currentUserAuths(planIds, admin);
-    return ObjectUtils.isEmpty(authCurrentsMap) ? null : authCurrentsMap.entrySet()
+    return isEmpty(authCurrentsMap) ? null : authCurrentsMap.entrySet()
         .stream().collect(Collectors.toMap(Entry::getKey,
-            x -> FuncPlanAuthAssembler.toAuthCurrentVo(x.getValue())));
+            x -> toAuthCurrentVo(x.getValue())));
   }
 
   @Override
@@ -94,9 +98,9 @@ public class FuncPlanAuthFacadeImpl implements FuncPlanAuthFacade {
     if (dto.getPlanId() != null) {
       planIds.add(String.valueOf(dto.getPlanId()));
     }
-    Page<FuncPlanAuth> dirAuthPage = funcPlanAuthQuery
+    Page<FuncPlanAuth> page = funcPlanAuthQuery
         .find(FuncPlanAuthAssembler.getSpecification(dto), planIds, dto.tranPage());
-    return buildVoPageResult(dirAuthPage, FuncPlanAuthAssembler::toDetailVo);
+    return buildVoPageResult(page, FuncPlanAuthAssembler::toDetailVo);
   }
 
 }

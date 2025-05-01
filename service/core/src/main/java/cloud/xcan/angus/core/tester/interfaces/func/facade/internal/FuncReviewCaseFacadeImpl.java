@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -81,17 +83,15 @@ public class FuncReviewCaseFacadeImpl implements FuncReviewCaseFacade {
   @NameJoin
   @Override
   public PageResult<FuncReviewCaseVo> list(FuncReviewCaseFindDto dto) {
-    Page<FuncReviewCase> page = funcReviewCaseQuery
-        .list(FuncReviewCaseAssembler.getSpecification(dto), dto.tranPage());
+    Page<FuncReviewCase> page = funcReviewCaseQuery.list(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, FuncReviewCaseAssembler::toListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<FuncReviewCaseVo> search(FuncReviewCaseSearchDto dto) {
-    Page<FuncReviewCase> page = funcReviewCaseSearch
-        .search(FuncReviewCaseAssembler.getSearchCriteria(dto), dto.tranPage(),
-            FuncReviewCase.class, getMatchSearchFields(dto.getClass()));
+    Page<FuncReviewCase> page = funcReviewCaseSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        FuncReviewCase.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncReviewCaseAssembler::toListVo);
   }
 }

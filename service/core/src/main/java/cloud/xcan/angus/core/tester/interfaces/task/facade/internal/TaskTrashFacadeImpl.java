@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskTrashAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskTrashCmd;
@@ -55,10 +56,9 @@ public class TaskTrashFacadeImpl implements TaskTrashFacade {
 
   @Override
   public PageResult<TaskTrashDetailVo> search(TaskTrashSearchDto dto) {
-    Page<TaskTrash> alTrashPage = taskTrashSearch
-        .search(TaskTrashAssembler.getSearchCriteria(dto), dto.tranPage(), TaskTrash.class,
-            getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(alTrashPage, TaskTrashAssembler::toDetailVo);
+    Page<TaskTrash> page = taskTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        TaskTrash.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, TaskTrashAssembler::toDetailVo);
   }
 
 }

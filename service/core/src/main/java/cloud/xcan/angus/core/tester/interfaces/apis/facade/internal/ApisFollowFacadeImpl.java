@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisFollowAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisFollowCmd;
@@ -26,7 +27,7 @@ public class ApisFollowFacadeImpl implements ApisFollowFacade {
 
   @Override
   public IdKey<Long, Object> add(Long apiId) {
-    return apisFollowCmd.add(ApisFollowAssembler.addDtoToDomain(apiId));
+    return apisFollowCmd.add(addDtoToDomain(apiId));
   }
 
   @Override
@@ -41,9 +42,9 @@ public class ApisFollowFacadeImpl implements ApisFollowFacade {
 
   @Override
   public PageResult<ApisFollowDetailVo> search(ApisFollowSearchDto dto) {
-    Page<ApisFollowP> pageResult = apisFollowQuery.search(dto.getProjectId(),
+    Page<ApisFollowP> page = apisFollowQuery.search(dto.getProjectId(),
         dto.getApisName(), dto.tranPage());
-    return buildVoPageResult(pageResult, ApisFollowAssembler::toDetailVo);
+    return buildVoPageResult(page, ApisFollowAssembler::toDetailVo);
   }
 
   @Override

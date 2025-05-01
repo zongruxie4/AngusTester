@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTestAssembler.generateToScript;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTestAssembler.generateToTask;
+import static java.util.Collections.singletonList;
 
 import cloud.xcan.angus.api.ctrl.exec.ExecResultRemote;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
@@ -79,7 +80,7 @@ public class ApisTestFacadeImpl implements ApisTestFacade {
 
   @Override
   public void testTaskDelete(Long apisId, Set<TestType> testTypes) {
-    apisTestCmd.testTaskDelete(Collections.singletonList(apisId), testTypes);
+    apisTestCmd.testTaskDelete(singletonList(apisId), testTypes);
   }
 
   @Override

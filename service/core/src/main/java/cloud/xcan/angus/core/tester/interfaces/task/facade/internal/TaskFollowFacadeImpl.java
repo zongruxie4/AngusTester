@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskFollowAssembler.judgeMatchFilter;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskFollowCmd;
@@ -41,10 +42,10 @@ public class TaskFollowFacadeImpl implements TaskFollowFacade {
 
   @Override
   public PageResult<TaskFollowDetailVo> search(TaskFollowFindDto dto) {
-    TaskFollowAssembler.judgeMatchFilter(dto);
-    Page<TaskFollowP> pageResult = taskFollowQuery
-        .search(dto.getProjectId(), dto.getTaskName(), dto.tranPage());
-    return buildVoPageResult(pageResult, TaskFollowAssembler::toDetailVo);
+    judgeMatchFilter(dto);
+    Page<TaskFollowP> page = taskFollowQuery.search(dto.getProjectId(),
+        dto.getTaskName(), dto.tranPage());
+    return buildVoPageResult(page, TaskFollowAssembler::toDetailVo);
   }
 
   @Override

@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.activity.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.activity.facade.internal.assembler.ActivityAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.activity.facade.internal.assembler.ActivityAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.query.activity.ActivityQuery;
@@ -27,17 +29,15 @@ public class ActivityFacadeImpl implements ActivityFacade {
 
   @Override
   public PageResult<ActivityDetailVo> list(ActivityFindDto dto) {
-    Page<Activity> activitiesPage = activityQuery
-        .find(ActivityAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(activitiesPage, ActivityAssembler::toDetailVo);
+    Page<Activity> page = activityQuery.find(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, ActivityAssembler::toDetailVo);
   }
 
   @Override
   public PageResult<ActivityDetailVo> search(ActivitySearchDto dto) {
-    Page<Activity> activitiesPage = activitySearch
-        .search(ActivityAssembler.getSearchCriteria(dto), dto.tranPage(), Activity.class,
-            getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(activitiesPage, ActivityAssembler::toDetailVo);
+    Page<Activity> page = activitySearch.search(getSearchCriteria(dto), dto.tranPage(),
+        Activity.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, ActivityAssembler::toDetailVo);
   }
 
 }

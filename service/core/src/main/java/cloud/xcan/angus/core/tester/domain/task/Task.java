@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.domain.task;
 
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 
@@ -270,7 +271,7 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
   }
 
   public boolean hasTag() {
-    return ObjectUtils.isNotEmpty(tagTargets);
+    return isNotEmpty(tagTargets);
   }
 
   public boolean isApiTest() {

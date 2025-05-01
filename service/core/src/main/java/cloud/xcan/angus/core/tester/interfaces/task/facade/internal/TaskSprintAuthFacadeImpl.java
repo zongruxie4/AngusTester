@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -33,12 +37,12 @@ public class TaskSprintAuthFacadeImpl implements TaskSprintAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long sprintId, TaskSprintAuthAddDto dto) {
-    return taskSprintAuthCmd.add(TaskSprintAuthAssembler.addDtoToDomain(sprintId, dto));
+    return taskSprintAuthCmd.add(addDtoToDomain(sprintId, dto));
   }
 
   @Override
   public void replace(Long sprintId, TaskSprintAuthReplaceDto dto) {
-    taskSprintAuthCmd.replace(TaskSprintAuthAssembler.replaceDtoToDomain(sprintId, dto));
+    taskSprintAuthCmd.replace(replaceDtoToDomain(sprintId, dto));
   }
 
   @Override
@@ -64,7 +68,7 @@ public class TaskSprintAuthFacadeImpl implements TaskSprintAuthFacade {
   @Override
   public TaskSprintAuthCurrentVo currentUserAuth(Long sprintId, Boolean admin) {
     TaskSprintAuthCurrent authCurrent = taskSprintAuthQuery.currentUserAuth(sprintId, admin);
-    return TaskSprintAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
@@ -79,9 +83,9 @@ public class TaskSprintAuthFacadeImpl implements TaskSprintAuthFacade {
     if (dto.getSprintId() != null) {
       sprintIds.add(String.valueOf(dto.getSprintId()));
     }
-    Page<TaskSprintAuth> authPage = taskSprintAuthQuery
-        .find(TaskSprintAuthAssembler.getSpecification(dto), sprintIds, dto.tranPage());
-    return buildVoPageResult(authPage, TaskSprintAuthAssembler::toDetailVo);
+    Page<TaskSprintAuth> page = taskSprintAuthQuery.find(getSpecification(dto),
+        sprintIds, dto.tranPage());
+    return buildVoPageResult(page, TaskSprintAuthAssembler::toDetailVo);
   }
 
 }

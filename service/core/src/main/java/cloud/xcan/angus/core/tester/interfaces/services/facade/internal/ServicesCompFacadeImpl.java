@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesCompAssembler.toDetailVo;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
+
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCompCmd;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesCompQuery;
@@ -51,7 +55,7 @@ public class ServicesCompFacadeImpl implements ServicesCompFacade {
   @Override
   public ServicesCompDetailVo detailByRef(Long serviceId, String ref) {
     ServicesComp comp = servicesCompQuery.detailByRef(serviceId, ref);
-    return Objects.isNull(comp) ? null : ServicesCompAssembler.toDetailVo(comp);
+    return isNull(comp) ? null : toDetailVo(comp);
   }
 
   @NameJoin
@@ -59,9 +63,8 @@ public class ServicesCompFacadeImpl implements ServicesCompFacade {
   public List<ServicesCompDetailVo> listByType(Long serviceId, Set<ServicesCompType> types,
       Set<String> keys, Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listByType(serviceId, types, keys);
-    return CollectionUtils.isEmpty(comps) ? null
-        : comps.stream().map(x -> ServicesCompAssembler.toDetailVo(x, ignoreModel))
-            .collect(Collectors.toList());
+    return isEmpty(comps) ? null : comps.stream()
+        .map(x -> toDetailVo(x, ignoreModel)).collect(Collectors.toList());
   }
 
   @NameJoin
@@ -69,18 +72,16 @@ public class ServicesCompFacadeImpl implements ServicesCompFacade {
   public List<ServicesCompDetailVo> listByRef(Long serviceId, Set<String> refs,
       Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listByRef(serviceId, refs);
-    return CollectionUtils.isEmpty(comps) ? null :
-        comps.stream().map(x -> ServicesCompAssembler.toDetailVo(x, ignoreModel))
-            .collect(Collectors.toList());
+    return isEmpty(comps) ? null : comps.stream()
+        .map(x -> toDetailVo(x, ignoreModel)).collect(Collectors.toList());
   }
 
   @NameJoin
   @Override
   public List<ServicesCompDetailVo> listAll(Long serviceId, Boolean ignoreModel) {
     List<ServicesComp> comps = servicesCompQuery.listAll(serviceId);
-    return CollectionUtils.isEmpty(comps) ? null :
-        comps.stream().map(x -> ServicesCompAssembler.toDetailVo(x, ignoreModel))
-            .collect(Collectors.toList());
+    return isEmpty(comps) ? null : comps.stream()
+        .map(x -> toDetailVo(x, ignoreModel)).collect(Collectors.toList());
   }
 
 }

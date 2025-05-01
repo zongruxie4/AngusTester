@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAuthAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAuthAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAuthAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAuthAssembler.toAuthCurrentVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -33,12 +37,12 @@ public class ScenarioAuthFacadeImpl implements ScenarioAuthFacade {
 
   @Override
   public IdKey<Long, Object> add(Long scenarioId, ScenarioAuthAddDto dto) {
-    return scenarioAuthCmd.add(ScenarioAuthAssembler.addDtoToDomain(scenarioId, dto));
+    return scenarioAuthCmd.add(addDtoToDomain(scenarioId, dto));
   }
 
   @Override
   public void replace(Long scenarioId, ScenarioAuthReplaceDto dto) {
-    scenarioAuthCmd.replace(ScenarioAuthAssembler.replaceDtoToDomain(scenarioId, dto));
+    scenarioAuthCmd.replace(replaceDtoToDomain(scenarioId, dto));
   }
 
   @Override
@@ -64,7 +68,7 @@ public class ScenarioAuthFacadeImpl implements ScenarioAuthFacade {
   @Override
   public ScenarioAuthCurrentVo currentUserAuth(Long scenarioId, Boolean admin) {
     ScenarioAuthCurrent authCurrent = scenarioAuthQuery.currentUserAuth(scenarioId, admin);
-    return ScenarioAuthAssembler.toAuthCurrentVo(authCurrent);
+    return toAuthCurrentVo(authCurrent);
   }
 
   @Override
@@ -77,11 +81,11 @@ public class ScenarioAuthFacadeImpl implements ScenarioAuthFacade {
   public PageResult<ScenarioAuthVo> list(ScenarioAuthFindDto dto) {
     List<String> scenarioIds = dto.getFilterInValue("scenarioId");
     if (dto.getScenarioId() != null) {
-      scenarioIds.add(String.valueOf(dto.getScenarioId()));
+      scenarioIds.add(dto.getScenarioId().toString());
     }
-    Page<ScenarioAuth> dirAuthPage = scenarioAuthQuery
-        .find(ScenarioAuthAssembler.getSpecification(dto), scenarioIds, dto.tranPage());
-    return buildVoPageResult(dirAuthPage, ScenarioAuthAssembler::toDetailVo);
+    Page<ScenarioAuth> page = scenarioAuthQuery.find(getSpecification(dto),
+        scenarioIds, dto.tranPage());
+    return buildVoPageResult(page, ScenarioAuthAssembler::toDetailVo);
   }
 
 }

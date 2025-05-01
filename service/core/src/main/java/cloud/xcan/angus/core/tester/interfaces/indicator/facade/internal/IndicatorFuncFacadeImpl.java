@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler.toIndicatorFuncVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
@@ -39,12 +43,12 @@ public class IndicatorFuncFacadeImpl implements IndicatorFuncFacade {
 
   @Override
   public IdKey<Long, Object> add(FuncAddDto dto) {
-    return indicatorFuncCmd.add(IndicatorFuncAssembler.addDtoToDomain(dto, dto.getTargetType()));
+    return indicatorFuncCmd.add(addDtoToDomain(dto, dto.getTargetType()));
   }
 
   @Override
   public void replace(FuncReplaceDto dto) {
-    indicatorFuncCmd.replace(IndicatorFuncAssembler.replaceDtoToDomain(dto, dto.getTargetType()));
+    indicatorFuncCmd.replace(replaceDtoToDomain(dto, dto.getTargetType()));
   }
 
   @Override
@@ -71,17 +75,17 @@ public class IndicatorFuncFacadeImpl implements IndicatorFuncFacade {
   @NameJoin
   @Override
   public PageResult<FuncListVo> list(FuncFindDto dto) {
-    Page<IndicatorFunc> indicatorFuncPage = indicatorFuncQuery
-        .list(IndicatorFuncAssembler.getSpecification(dto), dto.tranPage(), IndicatorFunc.class);
-    return buildVoPageResult(indicatorFuncPage, IndicatorFuncAssembler::toApisFuncListVo);
+    Page<IndicatorFunc> page = indicatorFuncQuery.list(getSpecification(dto),
+        dto.tranPage(), IndicatorFunc.class);
+    return buildVoPageResult(page, IndicatorFuncAssembler::toApisFuncListVo);
   }
 
   @NameJoin
   @Override
   public PageResult<FuncListVo> search(FuncSearchDto dto) {
-    Page<IndicatorFunc> indicatorFuncPage = indicatorFuncSearch.search(
-        IndicatorFuncAssembler.getSearchCriteria(dto), dto.tranPage(), IndicatorFunc.class);
-    return buildVoPageResult(indicatorFuncPage, IndicatorFuncAssembler::toApisFuncListVo);
+    Page<IndicatorFunc> page = indicatorFuncSearch.search(getSearchCriteria(dto),
+        dto.tranPage(), IndicatorFunc.class);
+    return buildVoPageResult(page, IndicatorFuncAssembler::toApisFuncListVo);
   }
 }
 

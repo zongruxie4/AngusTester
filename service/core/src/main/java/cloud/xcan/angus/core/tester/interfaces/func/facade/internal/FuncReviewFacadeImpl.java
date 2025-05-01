@@ -1,6 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.replaceDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -37,17 +43,17 @@ public class FuncReviewFacadeImpl implements FuncReviewFacade {
 
   @Override
   public IdKey<Long, Object> add(FuncReviewAddDto dto) {
-    return funcReviewCmd.add(FuncReviewAssembler.addDtoToDomain(dto));
+    return funcReviewCmd.add(addDtoToDomain(dto));
   }
 
   @Override
   public void update(FuncReviewUpdateDto dto) {
-    funcReviewCmd.update(FuncReviewAssembler.updateDtoToDomain(dto));
+    funcReviewCmd.update(updateDtoToDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(FuncReviewReplaceDto dto) {
-    return funcReviewCmd.replace(FuncReviewAssembler.replaceDtoToDomain(dto));
+    return funcReviewCmd.replace(replaceDtoToDomain(dto));
   }
 
   @Override
@@ -88,24 +94,21 @@ public class FuncReviewFacadeImpl implements FuncReviewFacade {
   @NameJoin
   @Override
   public FuncReviewDetailVo detail(Long id) {
-    FuncReview funcReview = funcReviewQuery.detail(id);
-    return FuncReviewAssembler.toDetailVo(funcReview);
+    return toDetailVo(funcReviewQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<FuncReviewDetailVo> list(FuncReviewFindDto dto) {
-    Page<FuncReview> page = funcReviewQuery
-        .find(FuncReviewAssembler.getSpecification(dto), dto.tranPage());
+    Page<FuncReview> page = funcReviewQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, FuncReviewAssembler::toDetailVo);
   }
 
   @NameJoin
   @Override
   public PageResult<FuncReviewDetailVo> search(FuncReviewSearchDto dto) {
-    Page<FuncReview> page = funcReviewSearch
-        .search(FuncReviewAssembler.getSearchCriteria(dto), dto.tranPage(), FuncReview.class,
-            getMatchSearchFields(dto.getClass()));
+    Page<FuncReview> page = funcReviewSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        FuncReview.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncReviewAssembler::toDetailVo);
   }
 

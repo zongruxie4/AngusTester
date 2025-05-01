@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioTrashAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioTrashCmd;
@@ -55,10 +56,9 @@ public class ScenarioTrashFacadeImpl implements ScenarioTrashFacade {
 
   @Override
   public PageResult<ScenarioTrashDetailVo> search(ScenarioTrashSearchDto dto) {
-    Page<ScenarioTrash> alTrashPage = scenarioTrashSearch
-        .search(ScenarioTrashAssembler.getSearchCriteria(dto), dto.tranPage(), ScenarioTrash.class,
-            getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(alTrashPage, ScenarioTrashAssembler::toDetailVo);
+    Page<ScenarioTrash> page = scenarioTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        ScenarioTrash.class, getMatchSearchFields(dto.getClass()));
+    return buildVoPageResult(page, ScenarioTrashAssembler::toDetailVo);
   }
 
 }

@@ -2,6 +2,10 @@ package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValueAndRemove;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.addDtoToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.toVo;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
@@ -62,7 +66,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
   @Override
   public IdKey<Long, Object> add(ServicesAddDto dto) {
-    return servicesCmd.add(ServicesAssembler.addDtoToDomain(dto), true);
+    return servicesCmd.add(addDtoToDomain(dto), true);
   }
 
   @Override
@@ -100,7 +104,7 @@ public class ServicesFacadeImpl implements ServicesFacade {
   @Override
   @NameJoin
   public ServicesDetailVo detail(Long id, Boolean joinSchema) {
-    ServicesDetailVo vo = ServicesAssembler.toDetailVo(servicesQuery.detail(id, joinSchema));
+    ServicesDetailVo vo = toDetailVo(servicesQuery.detail(id, joinSchema));
     Map<Long, Long> projectMockIdsMap = mockServiceQuery.findProjectMockIdsMap(Set.of(id));
     vo.setMockServiceId(projectMockIdsMap.get(id));
     List<Long> hasApisProjectIds = servicesQuery.hasApisServiceIds(Set.of(id));
@@ -117,14 +121,14 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
   @Override
   public PageResult<ServiceVo> list(ServicesFindDto dto) {
-    GenericSpecification<Services> spec = ServicesAssembler.getSpecification(dto);
+    GenericSpecification<Services> spec = getSpecification(dto);
     Page<Services> page = servicesQuery.list(spec, dto.tranPage());
     return joinAssocStatus(page, spec.getCriteria());
   }
 
   @Override
   public PageResult<ServiceVo> search(ServicesSearchDto dto) {
-    Set<SearchCriteria> criteria = ServicesAssembler.getSearchCriteria(dto);
+    Set<SearchCriteria> criteria = getSearchCriteria(dto);
     // Set authorization conditions when you are not an administrator or only query yourself
     Page<Services> page = servicesSearch.search(criteria, dto.tranPage(),
         getMatchSearchFields(dto.getClass()));

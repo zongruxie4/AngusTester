@@ -38,6 +38,7 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseExportList
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +48,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -55,25 +55,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncBaselineCaseCmd funcBaselineCaseCmd;
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncBaselineCaseQuery funcBaselineCaseQuery;
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncBaselineCaseSearch funcBaselineCaseSearch;
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncCaseQuery funcCaseQuery;
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncCaseSearch funcCaseSearch;
 
-  @jakarta.annotation.Resource
+  @Resource
   private FuncBaselineQuery funcBaselineQuery;
 
-  @jakarta.annotation.Resource
+  @Resource
   private JoinSupplier joinSupplier;
 
   @Override
@@ -162,8 +162,8 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
   }
 
   @Override
-  public ResponseEntity<Resource> export(Long baselineId, FuncCaseSearchDto dto,
-      HttpServletResponse response) {
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      Long baselineId, FuncCaseSearchDto dto, HttpServletResponse response) {
     List<FuncCaseExportListVo> data = getExportFuncCaseData(baselineId, dto);
     String fileName = "BaselineCaseListExport-" + System.currentTimeMillis() + ".xlsx";
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM, fileName,
@@ -184,8 +184,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
       dto.setPageNo(dto.getPageNo() + 1);
       page = search(baselineId, true, dto);
       if (!page.isEmpty()) {
-        data.addAll(page.getList().stream().map(FuncCaseAssembler::toListVo)
-            .collect(Collectors.toList()));
+        data.addAll(page.getList().stream().map(FuncCaseAssembler::toListVo).toList());
       }
     }
     return data;

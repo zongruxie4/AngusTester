@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskRemarkAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskRemarkAssembler.toTaskRemark;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -31,7 +33,7 @@ public class TaskRemarkFacadeImpl implements TaskRemarkFacade {
 
   @Override
   public IdKey<Long, Object> add(TaskRemarkAddDto dto) {
-    return taskRemarkCmd.add(TaskRemarkAssembler.toTaskRemark(dto));
+    return taskRemarkCmd.add(toTaskRemark(dto));
   }
 
   @Override
@@ -42,8 +44,7 @@ public class TaskRemarkFacadeImpl implements TaskRemarkFacade {
   @NameJoin
   @Override
   public PageResult<TaskRemarkVo> list(TaskRemarkFindDto dto) {
-    Page<TaskRemark> taskRemarkPage = taskRemarkQuery
-        .list(TaskRemarkAssembler.getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(taskRemarkPage, TaskRemarkAssembler::toTaskRemarkVo);
+    Page<TaskRemark> page = taskRemarkQuery.list(getSpecification(dto), dto.tranPage());
+    return buildVoPageResult(page, TaskRemarkAssembler::toTaskRemarkVo);
   }
 }

@@ -1,7 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.comment.facade.internal;
 
+import static cloud.xcan.angus.core.tester.interfaces.comment.facade.internal.assembler.AngusCommentAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.comment.facade.internal.assembler.AngusCommentAssembler.toAngusCommentDetailVo;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static java.util.Collections.singleton;
 
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.tester.application.cmd.comment.CommentCmd;
@@ -34,9 +36,9 @@ public class CommentFacadeImpl implements CommentFacade {
 
   @Override
   public AngusCommentDetailVo add(AngusCommentAddDto dto) {
-    Comment contentComment = AngusCommentAssembler.addDtoToDomain(dto);
-    return AngusCommentAssembler.toAngusCommentDetailVo(userManager.getUserBaseMap(
-        Collections.singleton(getUserId())), commentCmd.add(contentComment));
+    Comment contentComment = addDtoToDomain(dto);
+    return toAngusCommentDetailVo(userManager.getUserBaseMap(
+        singleton(getUserId())), commentCmd.add(contentComment));
   }
 
   @Override

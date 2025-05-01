@@ -1,6 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.addToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.getSpecification;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.replaceToDomain;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.updateToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.biz.NameJoin;
@@ -37,17 +43,17 @@ public class TaskMeetingFacadeImpl implements TaskMeetingFacade {
 
   @Override
   public IdKey<Long, Object> add(TaskMeetingAddDto dto) {
-    return taskMeetingCmd.add(TaskMeetingAssembler.addToDomain(dto));
+    return taskMeetingCmd.add(addToDomain(dto));
   }
 
   @Override
   public void update(TaskMeetingUpdateDto dto) {
-    taskMeetingCmd.update(TaskMeetingAssembler.updateToDomain(dto));
+    taskMeetingCmd.update(updateToDomain(dto));
   }
 
   @Override
   public IdKey<Long, Object> replace(TaskMeetingReplaceDto dto) {
-    return taskMeetingCmd.replace(TaskMeetingAssembler.replaceToDomain(dto));
+    return taskMeetingCmd.replace(replaceToDomain(dto));
   }
 
   @Override
@@ -57,24 +63,21 @@ public class TaskMeetingFacadeImpl implements TaskMeetingFacade {
 
   @Override
   public TaskMeetingDetailVo detail(Long id) {
-    TaskMeeting meeting = taskMeetingQuery.detail(id);
-    return TaskMeetingAssembler.toDetailVo(meeting);
+    return toDetailVo(taskMeetingQuery.detail(id));
   }
 
   @NameJoin
   @Override
   public PageResult<TaskMeetingVo> list(TaskMeetingFindDto dto) {
-    Page<TaskMeeting> page = taskMeetingQuery
-        .find(TaskMeetingAssembler.getSpecification(dto), dto.tranPage());
+    Page<TaskMeeting> page = taskMeetingQuery.find(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, TaskMeetingAssembler::toVo);
   }
 
   @NameJoin
   @Override
   public PageResult<TaskMeetingVo> search(TaskMeetingSearchDto dto) {
-    Page<TaskMeeting> page = taskMeetingSearch
-        .search(TaskMeetingAssembler.getSearchCriteria(dto), dto.tranPage(),
-            TaskMeeting.class, getMatchSearchFields(dto.getClass()));
+    Page<TaskMeeting> page = taskMeetingSearch.search(getSearchCriteria(dto), dto.tranPage(),
+        TaskMeeting.class, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskMeetingAssembler::toVo);
   }
 }
