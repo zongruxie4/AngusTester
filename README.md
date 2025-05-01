@@ -183,7 +183,7 @@ GitHub贡献者指南：克隆、配置和运行AngusTester项目。本指南将
       <id>xcan-maven-public</id>
       <mirrorOf>*</mirrorOf>
       <name>xcan public</name>
-      <url>http://nexus.xcan.work/repository/xcan-maven-public/</url>
+      <url>https://nexus.xcan.cloud/repository/xcan-maven-public/</url>
     </mirror>
    ```
 

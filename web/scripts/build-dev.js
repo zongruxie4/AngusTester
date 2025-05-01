@@ -59,7 +59,9 @@ function start () {
   // 4. Update deploy env configuration file
   const deployEnvUrlPrefix = [
     { key: 'VITE_GM_URL_PREFIX', value: 'http://192.168.0.102:8802' },
-    { key: 'VITE_DISCOVERY_URL_PREFIX', value: 'http://192.168.0.102:8801' }
+    { key: 'VITE_TESTER_URL_PREFIX', value: 'http://192.168.0.102:8901' },
+    { key: 'VITE_CTRL_URL_PREFIX', value: 'http://192.168.0.102:8902' },
+    { key: 'VITE_INSTALLER_URL_PREFIX', value: 'http://192.168.0.102:8800' }
   ];
   let deployEnvContent = fs.readFileSync(resolve(`../conf/.env.${deployEnv}`), 'utf8');
   deployEnvContent = replace(deployEnvContent, deployEnvUrlPrefix);

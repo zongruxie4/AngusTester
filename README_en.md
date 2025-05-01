@@ -209,7 +209,7 @@ through the process of contributing to AngusTester project hosted on GitHub.
       <id>xcan-maven-public</id>
       <mirrorOf>*</mirrorOf>
       <name>xcan public</name>
-      <url>http://nexus.xcan.work/repository/xcan-maven-public/</url>
+      <url>https://nexus.xcan.cloud/repository/xcan-maven-public/</url>
     </mirror>
    ```
 
