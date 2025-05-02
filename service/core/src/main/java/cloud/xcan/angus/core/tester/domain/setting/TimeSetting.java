@@ -6,6 +6,7 @@ import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_TIME_FORMAT;
 import cloud.xcan.angus.api.enums.CreatedAt;
 import cloud.xcan.angus.api.enums.DayOfWeek;
 import cloud.xcan.angus.api.enums.PeriodicCreationUnit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -38,10 +39,12 @@ public class TimeSetting {
   @DateTimeFormat(pattern = DEFAULT_TIME_FORMAT)
   private LocalTime timeOfDay;
 
+  @JsonIgnore
   public boolean isOnetime() {
     return CreatedAt.NOW == createdAt || createdAt == CreatedAt.AT_SOME_DATE;
   }
 
+  @JsonIgnore
   public LocalDateTime getNextDate() {
     switch (createdAt) {
       case NOW:
