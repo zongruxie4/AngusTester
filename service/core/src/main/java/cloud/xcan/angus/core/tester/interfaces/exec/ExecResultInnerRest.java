@@ -2,10 +2,10 @@ package cloud.xcan.angus.core.tester.interfaces.exec;
 
 import cloud.xcan.angus.api.commonlink.exec.result.ExecApisResultInfo;
 import cloud.xcan.angus.api.commonlink.exec.result.ExecScenarioResultInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultSummary;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
-import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetail;
-import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetail;
-import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResult;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetailSummary;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetailSummary;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +37,7 @@ public class ExecResultInnerRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/{execId}/result")
-  public ApiLocaleResult<ExecTestResultDetail> execResult(
+  public ApiLocaleResult<ExecTestResultDetailSummary> execResult(
       @Parameter(name = "execId", description = "Execution id", required = true) @PathVariable("execId") Long execId) {
     return ApiLocaleResult.success(execResultFacade.execResult(execId));
   }
@@ -47,7 +47,7 @@ public class ExecResultInnerRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/apis/{apiId}/{scriptType}/result")
-  public ApiLocaleResult<ExecTestResultDetail> apisResultByScriptType(
+  public ApiLocaleResult<ExecTestResultDetailSummary> apisResultByScriptType(
       @Parameter(name = "apiId", description = "Apis id", required = true) @PathVariable("apiId") Long apiId,
       @Parameter(name = "scriptType", description = "Script type", required = true) @PathVariable("scriptType") String scriptType) {
     return ApiLocaleResult.success(execResultFacade.apisResultByScriptType(apiId, scriptType));
@@ -57,7 +57,7 @@ public class ExecResultInnerRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/apis/{apiId}/result")
-  public ApiLocaleResult<ExecTestResult> apisResult(
+  public ApiLocaleResult<ExecTestResultSummary> apisResult(
       @Parameter(name = "apiId", description = "Apis id", required = true) @PathVariable("apiId") Long apiId) {
     return ApiLocaleResult.success(execResultFacade.apisResult(apiId));
   }
@@ -87,7 +87,7 @@ public class ExecResultInnerRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/scenario/{scenarioId}/{scriptType}/result")
-  public ApiLocaleResult<ExecTestResultDetail> scenarioResultByScriptType(
+  public ApiLocaleResult<ExecTestResultDetailSummary> scenarioResultByScriptType(
       @Parameter(name = "scenarioId", description = "Scenario id", required = true) @PathVariable("scenarioId") Long scenarioId,
       @Parameter(name = "scriptType", description = "Script type", required = true) @PathVariable("scriptType") String scriptType) {
     return ApiLocaleResult.success(
@@ -98,7 +98,7 @@ public class ExecResultInnerRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/scenario/{scenarioId}/result")
-  public ApiLocaleResult<ExecTestResult> scenarioResult(
+  public ApiLocaleResult<ExecTestResultSummary> scenarioResult(
       @Parameter(name = "scenarioId", description = "Scenario id", required = true) @PathVariable("scenarioId") Long scenarioId) {
     return ApiLocaleResult.success(execResultFacade.scenarioResult(scenarioId));
   }
@@ -117,7 +117,7 @@ public class ExecResultInnerRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/case/{caseId}/result")
-  public ApiLocaleResult<ExecTestCaseResultDetail> caseResult(
+  public ApiLocaleResult<ExecTestCaseResultDetailSummary> caseResult(
       @Parameter(name = "caseId", description = "Case id", required = true) @PathVariable("caseId") Long caseId) {
     return ApiLocaleResult.success(execResultFacade.caseResult(caseId));
   }

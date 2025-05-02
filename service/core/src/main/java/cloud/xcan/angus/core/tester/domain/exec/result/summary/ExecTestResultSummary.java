@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestResult {
+public class ExecTestResultSummary {
 
   /**
    * A null value means not tested, no test results.
@@ -22,6 +22,6 @@ public class ExecTestResult {
 
   private List<ScriptType> enabledTestTypes;
 
-  private Map<ScriptType, ExecTestResultDetail> resultDetailVoMap;
+  private Map<ScriptType, ExecTestResultDetailSummary> resultDetailVoMap;
 
 }

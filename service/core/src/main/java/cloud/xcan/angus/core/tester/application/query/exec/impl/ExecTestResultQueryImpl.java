@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.exec.impl;
 
+import static cloud.xcan.angus.core.tester.application.converter.ExecResultSummaryConverter.assembleTestResultSummary;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
@@ -20,16 +21,20 @@ import cloud.xcan.angus.core.jpa.entity.projection.IdAndName;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecTestResultQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
+import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestCaseResult;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestCaseResultRepo;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResultInfoRepo;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResultRepo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultSummary;
+import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.model.apis.ApisInfo;
 import cloud.xcan.angus.model.scenario.ScenarioInfo;
 import cloud.xcan.angus.model.scenario.ScenarioTestCount;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.services.ApisTestCount;
 import jakarta.annotation.Resource;
@@ -64,6 +69,9 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
 
   @Resource
   private ExecQuery execQuery;
+
+  @Resource
+  private ScriptQuery scriptQuery;
 
   @Resource
   private UserManager userManager;
@@ -204,6 +212,17 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
         return result;
       }
     }.execute();
+  }
+
+  @Override
+  public ExecTestResultSummary assembleExecTestResultSummary(Long scriptSourceId,
+      List<TestType> enabledTestTypes) {
+    ExecTestResultSummary resultVo = new ExecTestResultSummary();
+    List<ExecTestResult> result = result(scriptSourceId);
+    Map<Long, ScriptInfo> scriptInfosVoMap = scriptQuery.getScriptInfoMap(
+        result.stream().map(ExecTestResult::getScriptId).collect(Collectors.toSet()));
+    assembleTestResultSummary(enabledTestTypes, result, scriptInfosVoMap, resultVo);
+    return resultVo;
   }
 
   private void assembleExecApisResultInfo(ExecApisResultInfo result, ApisTestCount testApis) {

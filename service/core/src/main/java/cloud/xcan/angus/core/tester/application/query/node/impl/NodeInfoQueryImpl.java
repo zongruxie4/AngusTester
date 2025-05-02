@@ -144,7 +144,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       @Override
       protected NodeInfo process() {
         NodeInfo nodeInfo = nodeInfoRepo.findById(id)
-            .orElseThrow(() -> ResourceNotFound.of(id, "ExecTestResult"));
+            .orElseThrow(() -> ResourceNotFound.of(id, "ExecTestResultSummary"));
         if (nonNull(isFreeNode) && Boolean.parseBoolean(isFreeNode.toString())) {
           PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
         }

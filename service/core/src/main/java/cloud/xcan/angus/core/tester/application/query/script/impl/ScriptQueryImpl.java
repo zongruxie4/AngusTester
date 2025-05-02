@@ -61,6 +61,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -374,6 +375,22 @@ public class ScriptQueryImpl implements ScriptQuery {
     retainsIds.removeAll(scriptDbIds);
     assertResourceNotFound(isEmpty(retainsIds), retainsIds, "Script");
     return scriptDbs;
+  }
+
+  @Override
+  public Map<Long, ScriptInfo> getScriptInfoMap(Set<Long> scriptIds) {
+    Map<Long, ScriptInfo> scriptVoMap = new HashMap<>();
+    if (isEmpty(scriptIds)) {
+      return scriptVoMap;
+    }
+    try {
+      scriptVoMap = infos(new HashSet<>(scriptIds))
+          .stream().collect(Collectors.toMap(ScriptInfo::getId, x -> x));
+    } catch (Exception e) {
+      log.warn("Join script infos failed.", e);
+      // 404, script deleted
+    }
+    return scriptVoMap;
   }
 
   @Override

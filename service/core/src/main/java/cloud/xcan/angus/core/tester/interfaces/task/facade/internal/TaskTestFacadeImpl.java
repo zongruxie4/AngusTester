@@ -8,7 +8,7 @@ import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
-import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetail;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetailSummary;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
@@ -41,7 +41,7 @@ public class TaskTestFacadeImpl implements TaskTestFacade {
   }
 
   @Override
-  public ExecTestResultDetail testResult(TaskType taskType, Long targetId, TestType testType) {
+  public ExecTestResultDetailSummary testResult(TaskType taskType, Long targetId, TestType testType) {
     if (taskType.isApiTest()) {
       return execResultFacade.apisResultByScriptType(targetId, testType.toScriptType().getValue());
     } else if (taskType.isScenarioTest()) {

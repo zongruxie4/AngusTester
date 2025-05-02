@@ -13,6 +13,7 @@ import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +60,8 @@ public interface ScriptQuery {
   ScriptInfo checkAndFindInfo(Long id);
 
   List<ScriptInfo> checkAndFindInfos(Collection<Long> ids);
+
+  Map<Long, ScriptInfo> getScriptInfoMap(Set<Long> scriptIds);
 
   AngusScript checkAndParse(String content, boolean validation);
 

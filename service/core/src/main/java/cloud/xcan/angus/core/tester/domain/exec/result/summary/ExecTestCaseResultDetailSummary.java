@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestCaseResultDetail {
+public class ExecTestCaseResultDetailSummary {
 
   private Long id;
 

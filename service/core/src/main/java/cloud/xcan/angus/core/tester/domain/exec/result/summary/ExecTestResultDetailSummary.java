@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestResultDetail {
+public class ExecTestResultDetailSummary {
 
   private Long id;
 
@@ -74,7 +74,7 @@ public class ExecTestResultDetail {
 
   private List<ExecSampleResultContent> sampleContent;
 
-  private List<ExecTestCaseResultDetail> caseResults;
+  private List<ExecTestCaseResultDetailSummary> caseResults;
 
   private Long execBy;
 
