@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task;
 
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultDetailVo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetail;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.model.script.TestType;
@@ -44,7 +44,7 @@ public class TaskTestRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{taskType}/{targetId}/{testType}/result")
-  public ApiLocaleResult<ExecTestResultDetailVo> testResult(
+  public ApiLocaleResult<ExecTestResultDetail> testResult(
       @Parameter(name = "taskType", description = "Task type, allowable values: API_TEST, SCENARIO_TEST", required = true) @PathVariable("taskType") TaskType taskType,
       @Parameter(name = "targetId", description = "Associated apis or scenario id", required = true) @PathVariable("targetId") Long targetId,
       @Parameter(name = "testType", description = "Test type", required = true) @PathVariable("testType") TestType testType) {

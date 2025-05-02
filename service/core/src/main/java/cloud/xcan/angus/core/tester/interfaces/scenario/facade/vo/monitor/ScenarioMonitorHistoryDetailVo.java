@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor;
 
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorStatus;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ public class ScenarioMonitorHistoryDetailVo {
 
   private RunnerRunVo schedulingResult;
 
-  private List<ExecSampleContentInfo> sampleContents;
+  private List<ExecSampleContent> sampleContents;
 
   private String sampleLogContent;
 

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.exec.facade;
 
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.sample.ExecSampleErrorContentFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.sample.ExecSampleExtcFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.sample.ExecSampleFindDto;
@@ -35,6 +35,6 @@ public interface ExecSampleFacade {
   LinkedHashMap<String, LinkedHashMap<String, Long>> latestExtCounterMap1(Long id, Long nodeId,
       String name);
 
-  PageResult<ExecSampleContentInfo> extContentList(Long id, ExecSampleExtcFindDto dto);
+  PageResult<ExecSampleContent> extContentList(Long id, ExecSampleExtcFindDto dto);
 
 }

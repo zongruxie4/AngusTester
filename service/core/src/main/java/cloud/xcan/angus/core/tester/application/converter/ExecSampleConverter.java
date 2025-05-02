@@ -4,8 +4,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
-import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.sample.ExecSampleSummaryInfoVo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSample;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleError;
@@ -69,8 +68,9 @@ public class ExecSampleConverter {
         .setExtGauge2(finishSample.getExtGauge2());
   }
 
-  public static ExecSampleContentInfo toExecSampleContentInfo(ExecSampleContent sample) {
-    return new ExecSampleContentInfo()
+  public static ExecSampleContent toExecSampleContentInfo(
+      cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent sample) {
+    return new ExecSampleContent()
         .setFinish(sample.isFinish())
         .setName(sample.getName())
         .setNodeId(sample.getNodeId())

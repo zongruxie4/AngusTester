@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result;
+package cloud.xcan.angus.core.tester.domain.exec.result.summary;
 
 import cloud.xcan.angus.api.commonlink.exec.result.TestResultSummary;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestResultVo {
+public class ExecTestResult {
 
   /**
    * A null value means not tested, no test results.
@@ -22,6 +22,6 @@ public class ExecTestResultVo {
 
   private List<ScriptType> enabledTestTypes;
 
-  private Map<ScriptType, ExecTestResultDetailVo> resultDetailVoMap;
+  private Map<ScriptType, ExecTestResultDetail> resultDetailVoMap;
 
 }

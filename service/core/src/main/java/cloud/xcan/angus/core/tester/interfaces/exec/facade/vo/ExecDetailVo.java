@@ -8,7 +8,7 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.pojo.node.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.sample.ExecSampleSummaryInfoVo;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.Configuration;
@@ -147,7 +147,7 @@ public class ExecDetailVo {
 
   private List<RunnerRunVo> lastSchedulingResult;
 
-  private List<ExecSampleContentInfo> sampleContents;
+  private List<ExecSampleContent> sampleContents;
 
   public boolean isIterationsProgress() {
     return nonNull(iterations) && iterations > 0;

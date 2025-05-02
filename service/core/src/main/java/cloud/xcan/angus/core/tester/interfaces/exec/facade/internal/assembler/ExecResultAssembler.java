@@ -8,11 +8,10 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.exec.result.TestResultStatus;
 import cloud.xcan.angus.api.commonlink.exec.result.TestResultSummary;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestCaseResult;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestCaseResultDetailVo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultDetailVo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultVo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetail;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetail;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResult;
 import cloud.xcan.angus.model.script.TestType;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,10 @@ import java.util.stream.Collectors;
 
 public class ExecResultAssembler {
 
-  public static ExecTestResultDetailVo toExecResultVo(ExecTestResult testResultDb,
+  public static ExecTestResultDetail toExecResultVo(
+      cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult testResultDb,
       ScriptInfo scriptInfo) {
-    return new ExecTestResultDetailVo()
+    return new ExecTestResultDetail()
         .setId(testResultDb.getId())
         .setExecId(testResultDb.getExecId())
         .setExecName(testResultDb.getExecName())
@@ -55,15 +55,15 @@ public class ExecResultAssembler {
         .setCreatedDate(testResultDb.getCreatedDate());
   }
 
-  public static List<ExecTestCaseResultDetailVo> toExecCaseResultVos(
+  public static List<ExecTestCaseResultDetail> toExecCaseResultVos(
       List<ExecTestCaseResult> testResultDbs, String execName) {
     return isEmpty(testResultDbs) ? null : testResultDbs.stream()
         .map(x -> toExecCaseResultVo(x, execName)).collect(Collectors.toList());
   }
 
-  public static ExecTestCaseResultDetailVo toExecCaseResultVo(ExecTestCaseResult testResultDb,
+  public static ExecTestCaseResultDetail toExecCaseResultVo(ExecTestCaseResult testResultDb,
       String execName) {
-    return new ExecTestCaseResultDetailVo()
+    return new ExecTestCaseResultDetail()
         .setId(testResultDb.getId())
         .setExecId(testResultDb.getExecId())
         .setExecName(nullSafe(execName, testResultDb.getExecName()))
@@ -88,18 +88,18 @@ public class ExecResultAssembler {
   }
 
   public static void assembleExecTestResultVo0(List<TestType> enabledTestTypes,
-      List<ExecTestResult> result, Map<Long, ScriptInfo> scriptInfosMap,
-      ExecTestResultVo resultVo) {
+      List<cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult> result, Map<Long, ScriptInfo> scriptInfosMap,
+      ExecTestResult resultVo) {
 
     resultVo.setPassed(enabledTestTypes.isEmpty() /*No enabled test*/
         ? null : enabledTestTypes.size() == result.size()
-        && result.stream().allMatch(ExecTestResult::isPassed));
+        && result.stream().allMatch(cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::isPassed));
 
     TestResultSummary resultSummary = new TestResultSummary();
     resultSummary.setTestNum(
-        result.stream().map(ExecTestResult::getTestNum).reduce(Integer::sum).orElse(0));
+        result.stream().map(cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::getTestNum).reduce(Integer::sum).orElse(0));
     resultSummary.setTestFailureNum(
-        result.stream().map(ExecTestResult::getTestFailureNum).reduce(Integer::sum).orElse(0));
+        result.stream().map(cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::getTestFailureNum).reduce(Integer::sum).orElse(0));
     resultSummary.setTestSuccessNum(resultSummary.getTestNum() - resultSummary.getTestFailureNum());
     resultSummary.setTestSuccessRate(
         calcRate(resultSummary.getTestSuccessNum(), resultSummary.getTestNum()));
@@ -108,9 +108,11 @@ public class ExecResultAssembler {
       resultStatus = TestResultStatus.NOT_ENABLED;
     } else if (isEmpty(result)) {
       resultStatus = TestResultStatus.UNTESTED;
-    } else if (result.stream().allMatch(ExecTestResult::isPassed)) {
+    } else if (result.stream().allMatch(
+        cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::isPassed)) {
       resultStatus = TestResultStatus.FULLY_PASSED;
-    } else if (result.stream().noneMatch(ExecTestResult::isPassed)) {
+    } else if (result.stream().noneMatch(
+        cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::isPassed)) {
       resultStatus = TestResultStatus.FULLY_PASSED;
     } else {
       resultStatus = TestResultStatus.PARTIALLY_PASSED;
@@ -122,7 +124,7 @@ public class ExecResultAssembler {
         .collect(Collectors.toList()));
 
     resultVo.setResultDetailVoMap(result.stream().collect(
-        Collectors.toMap(ExecTestResult::getScriptType, x -> toExecResultVo(x,
+        Collectors.toMap(cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::getScriptType, x -> toExecResultVo(x,
             scriptInfosMap.get(x.getScriptId())))));
   }
 }

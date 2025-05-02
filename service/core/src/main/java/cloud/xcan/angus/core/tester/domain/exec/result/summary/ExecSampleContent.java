@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.domain.exec.result;
+package cloud.xcan.angus.core.tester.domain.exec.result.summary;
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_MS_FORMAT;
 import static cloud.xcan.angus.spec.utils.DateUtils.formatDate;
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecSampleContentInfo {
+public class ExecSampleContent {
 
   private Boolean finish;
 
@@ -50,7 +50,7 @@ public class ExecSampleContentInfo {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof ExecSampleContentInfo that)) {
+    if (!(o instanceof ExecSampleContent that)) {
       return false;
     }
     return Objects.equals(finish, that.finish)

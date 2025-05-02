@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.exec;
 
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecSampleFacade;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.sample.ExecSampleErrorContentFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.sample.ExecSampleExtcFindDto;
@@ -140,7 +140,7 @@ public class ExecSampleRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/extension/content")
-  public ApiLocaleResult<PageResult<ExecSampleContentInfo>> extContentList(
+  public ApiLocaleResult<PageResult<ExecSampleContent>> extContentList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
       @Valid ExecSampleExtcFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.extContentList(id, dto));

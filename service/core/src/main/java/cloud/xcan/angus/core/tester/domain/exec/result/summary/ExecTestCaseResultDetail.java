@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result;
+package cloud.xcan.angus.core.tester.domain.exec.result.summary;
 
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.commonlink.exec.result.AssertionSummary;
@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class ExecTestCaseResultDetailVo {
+public class ExecTestCaseResultDetail {
 
   private Long id;
 

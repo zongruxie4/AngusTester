@@ -13,12 +13,11 @@ import cloud.xcan.angus.core.tester.application.query.exec.ExecTestResultQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestCaseResult;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestCaseResultDetailVo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultDetailVo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultVo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetail;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetail;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResult;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
@@ -50,22 +49,22 @@ public class ExecResultFacadeImpl implements ExecResultFacade {
   private ScriptQuery scriptQuery;
 
   @Override
-  public ExecTestResultDetailVo execResult(Long execId) {
-    ExecTestResult testResult = execTestResultQuery.execTestResult(execId);
+  public ExecTestResultDetail execResult(Long execId) {
+    cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult testResult = execTestResultQuery.execTestResult(execId);
     return isNull(testResult) ? null : toExecResultVo(testResult,
         getScriptInfosVoMap(Set.of(testResult.getScriptId())).get(testResult.getScriptId()));
   }
 
   @Override
-  public ExecTestResultDetailVo apisResultByScriptType(Long scriptSourceId, String scriptType) {
-    ExecTestResult testResult = execTestResultQuery.resultByScriptType(scriptSourceId,
+  public ExecTestResultDetail apisResultByScriptType(Long scriptSourceId, String scriptType) {
+    cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult testResult = execTestResultQuery.resultByScriptType(scriptSourceId,
         ScriptType.valueOf(scriptType));
     return isNull(testResult) ? null : toExecResultVo(testResult,
         getScriptInfosVoMap(Set.of(testResult.getScriptId())).get(testResult.getScriptId()));
   }
 
   @Override
-  public ExecTestResultVo apisResult(Long apiId) {
+  public ExecTestResult apisResult(Long apiId) {
     List<TestType> enabledTestTypes = apisTestQuery.findEnabledTestTypes(apiId);
     return assembleExecTestResultVo(apiId, enabledTestTypes);
   }
@@ -83,12 +82,12 @@ public class ExecResultFacadeImpl implements ExecResultFacade {
   }
 
   @Override
-  public ExecTestResultDetailVo scenarioResultByScriptType(Long scriptSourceId, String scriptType) {
+  public ExecTestResultDetail scenarioResultByScriptType(Long scriptSourceId, String scriptType) {
     return apisResultByScriptType(scriptSourceId, scriptType);
   }
 
   @Override
-  public ExecTestResultVo scenarioResult(Long scenarioId) {
+  public ExecTestResult scenarioResult(Long scenarioId) {
     List<TestType> enabledTestTypes = scenarioTestQuery.findEnabledTestTypes(scenarioId);
     return assembleExecTestResultVo(scenarioId, enabledTestTypes);
   }
@@ -100,18 +99,18 @@ public class ExecResultFacadeImpl implements ExecResultFacade {
   }
 
   @Override
-  public ExecTestCaseResultDetailVo caseResult(Long caseId) {
+  public ExecTestCaseResultDetail caseResult(Long caseId) {
     ExecTestCaseResult result = execTestResultQuery.caseResult(caseId);
     return isEmpty(result) ? null : toExecCaseResultVo(result, null);
   }
 
   @Override
-  public ExecTestResultVo assembleExecTestResultVo(Long scriptSourceId,
+  public ExecTestResult assembleExecTestResultVo(Long scriptSourceId,
       List<TestType> enabledTestTypes) {
-    ExecTestResultVo resultVo = new ExecTestResultVo();
-    List<ExecTestResult> result = execTestResultQuery.result(scriptSourceId);
+    ExecTestResult resultVo = new ExecTestResult();
+    List<cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult> result = execTestResultQuery.result(scriptSourceId);
     Map<Long, ScriptInfo> scriptInfosVoMap = getScriptInfosVoMap(
-        result.stream().map(ExecTestResult::getScriptId).collect(Collectors.toSet()));
+        result.stream().map(cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult::getScriptId).collect(Collectors.toSet()));
     assembleExecTestResultVo0(enabledTestTypes, result, scriptInfosVoMap, resultVo);
     return resultVo;
   }

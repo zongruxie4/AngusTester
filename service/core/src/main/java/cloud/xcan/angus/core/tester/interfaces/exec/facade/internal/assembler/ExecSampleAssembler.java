@@ -6,9 +6,8 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSample;
-import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleCounter;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleError;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCause;
@@ -259,8 +258,9 @@ public class ExecSampleAssembler {
     return vos;
   }
 
-  public static ExecSampleContentInfo toExecSampleExtcVo(ExecSampleContent sample) {
-    return new ExecSampleContentInfo()
+  public static ExecSampleContent toExecSampleExtcVo(
+      cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent sample) {
+    return new ExecSampleContent()
         .setFinish(sample.isFinish())
         .setName(sample.getName())
         .setNodeId(sample.getNodeId())
@@ -317,7 +317,7 @@ public class ExecSampleAssembler {
         .build());
   }
 
-  public static GenericSpecification<ExecSampleContent> getSampleExtcSpecification(
+  public static GenericSpecification<cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent> getSampleExtcSpecification(
       ExecSampleExtcFindDto dto) {
     return new GenericSpecification<>(new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("timestamp")

@@ -4,7 +4,7 @@ package cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.debug;
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.api.pojo.node.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecSampleContent;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.sample.ExecSampleSummaryInfoVo;
 import cloud.xcan.angus.model.script.configuration.Configuration;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -84,7 +84,7 @@ public class ExecDebugDetailVo {
 
   private RunnerRunVo schedulingResult;
 
-  private List<ExecSampleContentInfo> sampleContents;
+  private List<ExecSampleContent> sampleContents;
 
 
 }
