@@ -51,10 +51,6 @@ public class TagQueryImpl implements TagQuery {
   @Override
   public Tag detail(Long id) {
     return new BizTemplate<Tag>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Tag process() {
@@ -68,10 +64,6 @@ public class TagQueryImpl implements TagQuery {
   @Override
   public Page<Tag> find(GenericSpecification<Tag> spec, Pageable pageable) {
     return new BizTemplate<Page<Tag>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Tag> process() {
@@ -84,7 +76,7 @@ public class TagQueryImpl implements TagQuery {
 
   @Override
   public void checkExists(List<TagTarget> tags) {
-    if (ObjectUtils.isEmpty(tags)) {
+    if (isEmpty(tags)) {
       return;
     }
     List<Long> tagsIds = tags.stream().map(TagTarget::getTagId)

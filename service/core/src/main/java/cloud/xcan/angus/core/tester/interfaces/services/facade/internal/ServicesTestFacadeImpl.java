@@ -4,10 +4,10 @@ import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assem
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesTestAssembler.toTestTaskTestings;
 
 import cloud.xcan.angus.api.commonlink.exec.result.ExecApisResultInfo;
-import cloud.xcan.angus.api.ctrl.exec.ExecResultRemote;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesTestCmd;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.test.ApisTestScriptGenerateDto;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.ServicesTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.test.ServicesTestTaskGenerateDto;
 import cloud.xcan.angus.model.script.TestType;
@@ -30,7 +30,7 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
   private ServicesQuery servicesQuery;
 
   @Resource
-  private ExecResultRemote execResultRemote;
+  private ExecResultFacade execResultFacade;
 
   @Override
   public void testEnabled(Long serviceId, Set<TestType> testTypes, Boolean enabled) {
@@ -97,12 +97,12 @@ public class ServicesTestFacadeImpl implements ServicesTestFacade {
 
   @Override
   public ExecApisResultInfo testServiceResult(Long serviceId) {
-    return execResultRemote.serviceApisResult(serviceId, null).orElseContentThrow();
+    return execResultFacade.serviceApisResult(serviceId, null);
   }
 
   @Override
   public ExecApisResultInfo testProjectResult(Long projectId) {
-    return execResultRemote.projectApisResult(projectId, null).orElseContentThrow();
+    return execResultFacade.projectApisResult(projectId, null);
   }
 
 }

@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.tester.indicator.vo.StabilityVo;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
@@ -10,6 +9,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFin
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Objects;
 import java.util.Set;

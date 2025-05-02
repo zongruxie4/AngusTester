@@ -1,12 +1,12 @@
 package cloud.xcan.angus.core.tester.application.query.scenario;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;

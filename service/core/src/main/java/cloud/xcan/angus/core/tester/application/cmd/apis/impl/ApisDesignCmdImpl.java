@@ -302,10 +302,6 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   @Override
   public void delete(HashSet<Long> ids) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

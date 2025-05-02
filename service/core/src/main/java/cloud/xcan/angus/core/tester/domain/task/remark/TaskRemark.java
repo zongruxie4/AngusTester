@@ -19,7 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "task_remark")
 @EntityListeners({AuditingEntityListener.class})
 @Setter

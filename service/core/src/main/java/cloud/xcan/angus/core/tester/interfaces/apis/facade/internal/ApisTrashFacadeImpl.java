@@ -17,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.trash.ApisTrashSe
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTrashAssembler;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.trash.ApisTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;

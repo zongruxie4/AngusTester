@@ -1,13 +1,13 @@
 package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
-import cloud.xcan.jmock.core.parser.MockFunctionDocParser;
-import cloud.xcan.jmock.core.parser.docs.model.MockFunction;
-import cloud.xcan.angus.core.tester.application.query.mock.MockDataQuery;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.tester.application.query.mock.MockDataQuery;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import java.util.List;
+import cloud.xcan.jmock.core.parser.MockFunctionDocParser;
+import cloud.xcan.jmock.core.parser.docs.model.MockFunction;
 import jakarta.annotation.Resource;
+import java.util.List;
 
 @Biz
 public class MockDataQueryImpl implements MockDataQuery {
@@ -18,10 +18,6 @@ public class MockDataQueryImpl implements MockDataQuery {
   @Override
   public List<MockFunction> allFunctions() {
     return new BizTemplate<List<MockFunction>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<MockFunction> process() {
@@ -33,10 +29,6 @@ public class MockDataQueryImpl implements MockDataQuery {
   @Override
   public List<MockFunction> allFunctionsReload() {
     return new BizTemplate<List<MockFunction>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<MockFunction> process() {

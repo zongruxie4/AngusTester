@@ -25,10 +25,6 @@ public class DatasourceSearchImpl implements DatasourceSearch {
   public Page<Datasource> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Datasource> clz, String... matches) {
     return new BizTemplate<Page<Datasource>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Datasource> process() {

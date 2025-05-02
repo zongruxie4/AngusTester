@@ -22,10 +22,6 @@ public class ApisShareSearchImpl implements ApisShareSearch {
       Class<ApisShare> clz, String... matches) {
     return new BizTemplate<Page<ApisShare>>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisShare> process() {

@@ -1,0 +1,177 @@
+package cloud.xcan.angus.core.tester.interfaces.exec.facade.internal.assembler;
+
+
+import static cloud.xcan.angus.core.tester.application.converter.ExecSampleConverter.isSingleTargetPipeline;
+import static cloud.xcan.angus.core.tester.application.converter.ExecSampleConverter.toSample;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
+import cloud.xcan.angus.core.tester.domain.exec.Exec;
+import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecDetailVo;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecInfoVo;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecVo;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class ExecAssembler {
+
+  public static ExecInfoVo toExecInfoVo(ExecInfo exec) {
+    return new ExecInfoVo().setId(exec.getId())
+        .setProjectId(exec.getProjectId())
+        .setName(exec.getName())
+        .setPlugin(exec.getPlugin())
+        .setScriptType(exec.getScriptType())
+        .setScriptId(exec.getScriptId())
+        //.setScriptSource(exec.getScriptSource())
+        .setScriptSourceId(exec.getScriptSourceId())
+        //.setScriptSourceName(exec.getScriptSourceName())
+        .setStatus(exec.getStatus())
+        .setIterations(exec.getIterations())
+        .setDuration(exec.getDuration())
+        .setThread(exec.getThread())
+        .setPriority(exec.getPriority())
+        .setIgnoreAssertions(exec.getIgnoreAssertions())
+        .setStartMode(exec.getStartMode())
+        .setStartAtDate(exec.getStartAtDate())
+        .setReportInterval(exec.getReportInterval())
+        .setUpdateTestResult(exec.getUpdateTestResult())
+        .setCanUpdateTestResult(exec.canUpdateTestResult())
+        .setSyncTestResult(exec.isSyncTestResult())
+        .setAssocApiCaseIds(exec.getAssocApiCaseIds())
+        .setTrial(exec.getTrial())
+        .setActualStartDate(exec.getActualStartDate())
+        .setEndDate(exec.getEndDate())
+        .setMeterStatus(exec.getMeterStatus())
+        .setMeterMessage(exec.getMeterMessage())
+        .setSampleSummaryInfo(toSample(exec.getFinishSample()))
+        .setSchedulingNum(exec.getSchedulingNum())
+        .setLastSchedulingDate(exec.getLastSchedulingDate())
+        .setLastSchedulingResult(exec.getLastSchedulingResult());
+  }
+
+  public static ExecDetailVo toExecDetailVo(Exec exec) {
+    ExecDetailVo detailVo = new ExecDetailVo().setId(exec.getId())
+        .setProjectId(exec.getProjectId())
+        .setName(exec.getName())
+        .setPlugin(exec.getPlugin())
+        .setScriptType(exec.getScriptType())
+        .setScriptId(exec.getScriptId())
+        .setScriptName(exec.getScriptName())
+        .setScriptSource(exec.getScriptSource())
+        .setScriptSourceId(exec.getScriptSourceId())
+        .setScriptSourceName(exec.getScriptSourceName())
+        .setStatus(exec.getStatus())
+        .setIterations(exec.getIterations())
+        .setDuration(exec.getDuration())
+        .setThread(exec.getThread())
+        .setPriority(exec.getPriority())
+        .setIgnoreAssertions(exec.getIgnoreAssertions())
+        .setStartMode(exec.getStartMode())
+        .setStartAtDate(exec.getStartAtDate())
+        .setReportInterval(exec.getReportInterval())
+        .setUpdateTestResult(exec.getUpdateTestResult())
+        .setCanUpdateTestResult(exec.canUpdateTestResult())
+        .setSyncTestResult(exec.isSyncTestResult())
+        .setSyncTestResultFailure(exec.getSyncTestResultFailure())
+        .setAssocApiCaseIds(exec.getAssocApiCaseIds())
+        .setExecNodes(exec.getExecNodes())
+        .setAvailableNodes(exec.getAvailableNodes())
+        .setAppNodes(exec.getAppNodes())
+        .setConfiguration(exec.getConfiguration())
+        .setTask(exec.getTask())
+        .setPipelineTargetMappings(exec.getPipelineTargetMappings())
+        .setTrial(exec.getTrial())
+        .setActualStartDate(exec.getActualStartDate())
+        .setEndDate(exec.getEndDate())
+        .setMeterStatus(exec.getMeterStatus())
+        .setMeterMessage(exec.getMeterMessage())
+        .setSingleTargetPipeline(isSingleTargetPipeline(exec.getPipelineTargetMappings()))
+        .setExecBy(exec.getExecBy())
+        .setCreatedBy(exec.getCreatedBy())
+        .setCreatedDate(exec.getCreatedDate())
+        .setLastModifiedBy(exec.getLastModifiedBy())
+        .setLastModifiedDate(exec.getLastModifiedDate())
+        .setSampleSummaryInfo(toSample(exec.getFinishSampleResult()))
+        .setHasOperationPermission(exec.isHasOperationPermission())
+        .setSchedulingNum(exec.getSchedulingNum())
+        .setLastSchedulingDate(exec.getLastSchedulingDate())
+        .setLastSchedulingResult(exec.getLastSchedulingResult());
+    if (isNotEmpty(exec.getSampleContents())) {
+      detailVo.setSampleContents(exec.getSampleContents().stream()
+          .map(ExecSampleAssembler::toExecSampleExtcVo).collect(Collectors.toList()));
+    }
+    return detailVo;
+  }
+
+  public static ExecVo toExecVo(ExecInfo exec) {
+    return new ExecVo().setId(exec.getId())
+        .setProjectId(exec.getProjectId())
+        .setName(exec.getName())
+        .setPlugin(exec.getPlugin())
+        .setScriptType(exec.getScriptType())
+        .setScriptId(exec.getScriptId())
+        .setScriptName(exec.getScriptName())
+        .setScriptSource(exec.getScriptSource())
+        .setScriptSourceId(exec.getScriptSourceId())
+        .setScriptSourceName(exec.getScriptSourceName())
+        .setStatus(exec.getStatus())
+        .setIterations(exec.getIterations())
+        .setDuration(exec.getDuration())
+        .setThread(exec.getThread())
+        .setPriority(exec.getPriority())
+        .setIgnoreAssertions(exec.getIgnoreAssertions())
+        .setStartMode(exec.getStartMode())
+        .setStartAtDate(exec.getStartAtDate())
+        .setReportInterval(exec.getReportInterval())
+        .setUpdateTestResult(exec.getUpdateTestResult())
+        .setCanUpdateTestResult(exec.canUpdateTestResult())
+        .setSyncTestResult(exec.isSyncTestResult())
+        .setSyncTestResultFailure(exec.getSyncTestResultFailure())
+        .setAssocApiCaseIds(exec.getAssocApiCaseIds())
+        .setTrial(exec.getTrial())
+        .setActualStartDate(exec.getActualStartDate())
+        .setEndDate(exec.getEndDate())
+        .setMeterStatus(exec.getMeterStatus())
+        .setMeterMessage(exec.getMeterMessage())
+        .setSingleTargetPipeline(exec.getSingleTargetPipeline())
+        .setExecBy(exec.getExecBy())
+        .setCreatedBy(exec.getCreatedBy())
+        .setCreatedDate(exec.getCreatedDate())
+        .setLastModifiedBy(exec.getLastModifiedBy())
+        .setLastModifiedDate(exec.getLastModifiedDate())
+        .setSampleSummaryInfo(toSample(exec.getFinishSample()))
+        .setHasOperationPermission(exec.isHasOperationPermission())
+        .setSchedulingNum(exec.getSchedulingNum())
+        .setLastSchedulingDate(exec.getLastSchedulingDate())
+        .setLastSchedulingResult(exec.getLastSchedulingResult());
+  }
+
+  public static GenericSpecification<ExecInfo> getSpecification(ExecFindDto dto) {
+    return new GenericSpecification<>(new SearchCriteriaBuilder<>(dto)
+        .matchSearchFields("name", "plugin", "extSearchMerge")
+        .rangeSearchFields("id", "createdDate", "lastModifiedDate", "startDate",
+            "actualStartDate", "endDate", "priority")
+        .inAndNotFields("id", "name", "plugin", "priority", "status")
+        .orderByFields("id", "createdDate", "startDate", "lastModifiedDate", "actualStartDate",
+            "endDate", "priority")
+        .build());
+  }
+
+  public static Set<SearchCriteria> getSearchCriteria(ExecSearchDto dto) {
+    // Build the final filters
+    return new SearchCriteriaBuilder<>(dto)
+        .matchSearchFields("name", "plugin", "extSearchMerge")
+        .rangeSearchFields("id", "createdDate", "lastModifiedDate", "startDate",
+            "actualStartDate", "endDate", "priority")
+        .inAndNotFields("id", "name", "plugin", "priority", "status")
+        .orderByFields("id", "createdDate", "lastModifiedDate", "startDate", "actualStartDate",
+            "endDate", "priority")
+        .build();
+  }
+
+}

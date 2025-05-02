@@ -35,7 +35,8 @@ import org.hibernate.annotations.Type;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "apis_unarchived")
 @Setter
 @Getter

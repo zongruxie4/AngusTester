@@ -123,10 +123,6 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {

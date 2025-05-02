@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.func;
 
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCaseInfo;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

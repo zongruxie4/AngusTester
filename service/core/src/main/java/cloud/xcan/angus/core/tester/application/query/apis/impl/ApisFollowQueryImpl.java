@@ -22,10 +22,6 @@ public class ApisFollowQueryImpl implements ApisFollowQuery {
   @Override
   public Page<ApisFollowP> search(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ApisFollowP>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisFollowP> process() {
@@ -38,10 +34,6 @@ public class ApisFollowQueryImpl implements ApisFollowQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

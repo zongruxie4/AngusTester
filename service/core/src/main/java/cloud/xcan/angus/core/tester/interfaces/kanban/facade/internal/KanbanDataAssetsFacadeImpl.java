@@ -31,7 +31,6 @@ import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAsset
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAssetsFindDto;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAssetsMockCountDto;
 import cloud.xcan.angus.core.tester.interfaces.kanban.facade.dto.KanbanDataAssetsRankDto;
-import cloud.xcan.angus.core.tester.interfaces.kanban.facade.internal.assembler.KanbanDataAssetsAssembler;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;

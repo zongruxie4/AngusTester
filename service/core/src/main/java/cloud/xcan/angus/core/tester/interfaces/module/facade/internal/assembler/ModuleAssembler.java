@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.module.facade.internal.assembler;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.DEFAULT_ROOT_PID;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.isNull;
@@ -16,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleUpdateDto
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleTreeVo;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import cloud.xcan.angus.spec.utils.TreeUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +81,7 @@ public class ModuleAssembler {
   }
 
   public static List<ModuleTreeVo> toTree(List<Module> modules) {
-    if (ObjectUtils.isEmpty(modules)) {
+    if (isEmpty(modules)) {
       return null;
     }
     List<ModuleTreeVo> vos = new ArrayList<>();

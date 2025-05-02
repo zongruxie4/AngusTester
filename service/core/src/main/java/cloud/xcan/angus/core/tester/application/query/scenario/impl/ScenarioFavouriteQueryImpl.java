@@ -5,17 +5,17 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioFavouriteQuery;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.favorite.ScenarioFavourite;
 import cloud.xcan.angus.core.tester.domain.scenario.favorite.ScenarioFavouriteRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -31,10 +31,6 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
   @Override
   public Page<ScenarioFavourite> search(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioFavourite>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ScenarioFavourite> process() {
@@ -50,10 +46,6 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

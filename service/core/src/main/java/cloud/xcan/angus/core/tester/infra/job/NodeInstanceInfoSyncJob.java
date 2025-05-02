@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Conditional(CloudServiceEditionCondition.class)
 public class NodeInstanceInfoSyncJob {
 
-  private static final String LOCK_KEY = "job:angustester:NodeInstanceInfoSyncJob";
+  private static final String LOCK_KEY = "tester:job:NodeInstanceInfoSyncJob";
 
   @Resource
   private JobTemplate jobTemplate;

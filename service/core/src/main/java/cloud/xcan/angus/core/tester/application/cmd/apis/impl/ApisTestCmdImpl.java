@@ -27,13 +27,12 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiPermission;
-import cloud.xcan.angus.api.ctrl.exec.ExecRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
 import cloud.xcan.angus.core.tester.application.converter.ApisTestConverter;
@@ -134,7 +133,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   private ApisTestCmd apisTestCmd;
 
   @Resource
-  private ExecRemote execRemote;
+  private ExecCmd execCmd;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -222,7 +221,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
 
     // Replace authentication references
     if (nonNull(apisDb.getAuthentication()) && apisDb.isAuthSchemaRef()
-        && apisDb.includeSchemaRef(apisDb.getAuthentication().get$ref())){
+        && apisDb.includeSchemaRef(apisDb.getAuthentication().get$ref())) {
       apisQuery.setAndGetRefAuthentication(apisDb);
     }
 
@@ -310,7 +309,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   /**
    * Retest or reopen the task
    *
-   * @param apisId      Apis ID
+   * @param apisId  Apis ID
    * @param restart Restart is true, Reopen is false
    */
   @Transactional(rollbackFor = Exception.class)
@@ -411,10 +410,6 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   public void testExecAdd(HashSet<Long> apisIds, HashSet<TestType> testTypes,
       @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -453,8 +448,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
 
           // Create case functional testing execution
           // Note: Execution must be completed after the syncApisCaseToScript() transaction is committed.
-          execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scriptId))
-              .orElseContentThrow();
+          execCmd.addByRemoteScript(null, scriptId, null, null, null, null);
         }
         return null;
       }
@@ -494,9 +488,9 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       } else {
         // Generate scripts when it does not exist.
         IndicatorPerf indicatorPerf = testType.equals(PERFORMANCE)
-            ? indicatorPerfQuery.detailAndDefault(API, apisDb.getId()) : null;
+            ? indicatorPerfQuery.detailOrDefault(API, apisDb.getId()) : null;
         IndicatorStability indicatorStability = testType.equals(STABILITY)
-            ? indicatorStabilityQuery.detailAndDefault(API, apisDb.getId()) : null;
+            ? indicatorStabilityQuery.detailOrDefault(API, apisDb.getId()) : null;
         List<Script> scripts = ApisTestConverter.startToScript(apisDb, Set.of(testType),
             indicatorPerf, indicatorStability);
         apisTestCmd.scriptGenerate0(apisDb, serverMap, scripts);
@@ -509,8 +503,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     if (isNotEmpty(scriptIds)) {
       for (Long scriptId : scriptIds) {
         // Note: Execution must be completed after the scriptGenerated0() transaction is committed.
-        execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scriptId))
-            .orElseContentThrow();
+        execCmd.addByRemoteScript(null, scriptId, null, null, null, null);
       }
     }
   }
@@ -521,7 +514,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     script.setProjectId(apisDb.getProjectId());
     script.setSourceId(apisDb.getId());
     if (script.getType().isFunctionalTesting() /*&& apisDb.getTestFunc()*/) {
-      IndicatorFunc indicatorFunc = indicatorFuncQuery.detailAndDefault(API, apisDb.getId());
+      IndicatorFunc indicatorFunc = indicatorFuncQuery.detailOrDefault(API, apisDb.getId());
       // Note: Deleting a script does not delete testing cases, and each time a script is generated, all testing cases need to be loaded
       Map<ApisCaseType, List<ApisCase>> typeCasesMap = apisCaseQuery.findByApisId(apisDb.getId())
           .stream().collect(Collectors.groupingBy(ApisCase::getType));

@@ -2,13 +2,13 @@ package cloud.xcan.angus.core.tester.application.query.node.impl;
 
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.DOMAIN_DNS_NAME_REPEATED_T;
 
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.core.tester.application.query.node.NodeDomainDnsQuery;
-import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
-import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDnsRepo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.tester.application.query.node.NodeDomainDnsQuery;
+import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
+import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDnsRepo;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +23,6 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
   @Override
   public NodeDomainDns find(Long id) {
     return new BizTemplate<NodeDomainDns>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected NodeDomainDns process() {
@@ -39,10 +35,6 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
   @Override
   public Page<NodeDomainDns> find(Specification<NodeDomainDns> spec, Pageable pageable) {
     return new BizTemplate<Page<NodeDomainDns>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<NodeDomainDns> process() {

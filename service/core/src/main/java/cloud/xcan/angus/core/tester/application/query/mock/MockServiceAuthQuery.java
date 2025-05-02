@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.application.query.mock;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServiceAuth;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServicePermission;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;

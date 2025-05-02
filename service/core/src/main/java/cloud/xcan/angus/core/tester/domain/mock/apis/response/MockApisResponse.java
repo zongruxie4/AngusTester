@@ -19,7 +19,8 @@ import org.hibernate.annotations.Type;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "mock_apis_response")
 @NoArgsConstructor
 @AllArgsConstructor

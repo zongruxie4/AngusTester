@@ -27,6 +27,11 @@
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-infra.datasource</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-infra.l2cache-core</artifactId>
     </dependency>
 
@@ -53,6 +58,11 @@
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angusmeter.mockservice-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusmeter.remoting-server</artifactId>
     </dependency>
 
     <dependency>
@@ -106,7 +116,7 @@
       <artifactId>commons-text</artifactId>
     </dependency>
 
-    <!--aliyuncs-->
+    <!--aliyun-->
     <dependency>
       <groupId>com.aliyun</groupId>
       <artifactId>aliyun-java-sdk-core</artifactId>

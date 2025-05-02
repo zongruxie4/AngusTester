@@ -25,10 +25,6 @@ public class TagSearchImpl implements TagSearch {
   public Page<Tag> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Tag> clz, String... matches) {
     return new BizTemplate<Page<Tag>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Tag> process() {

@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX;
 import static cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource.AngusTesterMockServiceApis;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_ASSOC_SERVICE_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_DOMAIN_IN_USE_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_DOMAIN_PORT_IN_USE_T;
@@ -10,9 +11,9 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_OVER_LIMIT_IN_NODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_PORT_UNAVAILABLE_IN_AGENT_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_TOP_LEVEL_DOMAIN_ERROR_T;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
@@ -24,20 +25,19 @@ import cloud.xcan.angus.agent.message.CheckPortCmdParam;
 import cloud.xcan.angus.agent.message.CheckPortVo;
 import cloud.xcan.angus.agent.message.mockservice.StatusCmdParam;
 import cloud.xcan.angus.agent.message.mockservice.StatusVo;
-import cloud.xcan.angus.api.ctrl.mockservice.MockServiceManageRemote;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceStatusDto;
-import cloud.xcan.angus.api.ctrl.node.NodeInfoRemote;
-import cloud.xcan.angus.api.ctrl.node.dto.NodeAgentCheckPortDto;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.ProtocolException;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
+import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
+import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
@@ -59,12 +59,14 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceStatus;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServiceAuth;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServicePermission;
 import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStatusDto;
+import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAgentCheckPortDto;
+import cloud.xcan.angus.remote.message.ProtocolException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +78,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -101,13 +102,13 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   private MockServiceAuthQuery mockServiceAuthQuery;
 
   @Resource
-  private MockServiceManageRemote mockServiceManageRemote;
-
-  @Resource
-  private NodeInfoRemote nodeInfoRemote;
+  private MockServiceManageCmd mockServiceManageCmd;
 
   @Resource
   private NodeQuery nodeQuery;
+
+  @Resource
+  private NodeInfoQuery nodeInfoQuery;
 
   @Resource
   private ServicesQuery servicesQuery;
@@ -244,10 +245,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -292,10 +289,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   @Override
   public List<MockServiceInfo> findByNodeId(Long nodeId) {
     return new BizTemplate<List<MockServiceInfo>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<MockServiceInfo> process() {
@@ -311,10 +304,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   @Override
   public MockServiceCount countStatistics(Long mockServiceId) {
     return new BizTemplate<MockServiceCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected MockServiceCount process() {
@@ -349,10 +338,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       Set<Long> createdBys = null;
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected MockResourcesCreationCount process() {
@@ -465,10 +450,10 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   @Override
   public void checkNodeServiceNum(long nodeId, long existedNodeNum) {
     if (existedNodeNum >= 2) {
-      NodeInfoDetailVo detailVo = nodeInfoRemote.detail(nodeId, false).orElseContentThrow();
-      if (nonNull(detailVo.getInfo())
+      NodeInfo nodeInfo = nodeInfoQuery.detail(nodeId, false);
+      if (nonNull(nodeInfo.getInfo())
           /* Allow detailVo.getInfo().getMemTotal() / 1024 / 1024 / 1024 + 1 nodes */
-          && detailVo.getInfo().getMemTotal() / 1024 / 1024 / 1024 < existedNodeNum) {
+          && nodeInfo.getInfo().getMemTotal() / 1024 / 1024 / 1024 < existedNodeNum) {
         throw ProtocolException.of(MOCK_SERVICE_OVER_LIMIT_IN_NODE);
       }
     }
@@ -480,18 +465,18 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     if (isNotEmpty(serviceDomain)) {
       if (isCloudServiceEdition()) {
         // Check the service domain must end with angusmock.cloud
-        ProtocolAssert.assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
+        assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
             MOCK_SERVICE_TOP_LEVEL_DOMAIN_ERROR_T, new Object[]{MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX});
       }
       // Check the domain not used by any other nodes (Excluding nodeId)
       boolean existedDomain = mockServiceRepo.existsByServiceDomainAndNodeIdNot(
           serviceDomain, service.getNodeId());
-      ProtocolAssert.assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
+      assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
           new Object[]{service.getNodeId()});
       // Check the domain and port not used by any services
       boolean existedDomainAndPort = mockServiceRepo.existsByServiceDomainAndServicePort(
           serviceDomain, service.getServicePort());
-      ProtocolAssert.assertTrue(!existedDomainAndPort, MOCK_SERVICE_DOMAIN_PORT_IN_USE_T,
+      assertTrue(!existedDomainAndPort, MOCK_SERVICE_DOMAIN_PORT_IN_USE_T,
           new Object[]{serviceDomain, String.valueOf(service.getServicePort())});
     }
   }
@@ -501,13 +486,13 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     if (isNotEmpty(serviceDomain)) {
       if (isCloudServiceEdition()) {
         // Check the service domain must end with angusmock.cloud
-        ProtocolAssert.assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
+        assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
             MOCK_SERVICE_TOP_LEVEL_DOMAIN_ERROR_T, new Object[]{MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX});
       }
       // Check the domain not used by any other nodes (Excluding nodeId)
       boolean existedDomain = mockServiceRepo.existsByServiceDomainAndNodeIdNot(
           serviceDomain, nodeId);
-      ProtocolAssert.assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
+      assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
           new Object[]{nodeId});
     }
   }
@@ -516,7 +501,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   public void checkNodeAndPortAvailable(Node nodeDb, int port) {
     // Check the port not used by any other services
     boolean existedNodePort = mockServiceRepo.existsByNodeIdAndServicePort(nodeDb.getId(), port);
-    ProtocolAssert.assertTrue(!existedNodePort, MOCK_SERVICE_NODE_PORT_IN_USE_T,
+    assertTrue(!existedNodePort, MOCK_SERVICE_NODE_PORT_IN_USE_T,
         new Object[]{nodeDb.getId(), port});
 
     // Check the available in node by agent
@@ -529,7 +514,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
   @Override
   public void checkAssocProjectExists(Services projectDb) {
-    ProtocolAssert.assertTrue(!mockServiceRepo.existsByAssocServiceId(projectDb.getId()),
+    assertTrue(!mockServiceRepo.existsByAssocServiceId(projectDb.getId()),
         MOCK_SERVICE_ASSOC_SERVICE_EXISTED_T, new Object[]{projectDb.getName()});
   }
 
@@ -646,9 +631,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }
   }
 
-  /**
-   * Get mock service status
-   */
   @Override
   public Map<Long, MockServiceStatus> getMockServiceStatus(List<MockService> services) {
     MockServiceStatusDto dto = new MockServiceStatusDto()
@@ -656,7 +638,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
                 .setDeviceId(x.getNodeId()).setServiceId(x.getId())
                 .setServerIp(x.getNodeIp()).setServerPort(x.getServicePort()))
             .collect(Collectors.toList()));
-    List<StatusVo> result = mockServiceManageRemote.status(dto).orElseContentThrow();
+    List<StatusVo> result = mockServiceManageCmd.status(dto);
     Map<Long, MockServiceStatus> serviceStatusMap = new HashMap<>(services.size());
     if (isNotEmpty(result)) {
       Map<Long, List<StatusVo>> serviceStatusVoMap = result.stream()
@@ -673,9 +655,6 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     return serviceStatusMap;
   }
 
-  /**
-   * Get mock service status
-   */
   @Override
   public Map<Long, MockServiceStatus> getMockServiceInfoStatus(List<MockServiceInfo> services) {
     MockServiceStatusDto dto = new MockServiceStatusDto()
@@ -684,7 +663,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
                     .setDeviceId(x.getNodeId()).setServiceId(x.getId())
                     .setServerIp(x.getNodeIp()).setServerPort(x.getServicePort()))
                 .collect(Collectors.toList()));
-    List<StatusVo> result = mockServiceManageRemote.status(dto).orElseContentThrow();
+    List<StatusVo> result = mockServiceManageCmd.status(dto);
     Map<Long, MockServiceStatus> serviceStatusMap = new HashMap<>(services.size());
     if (isNotEmpty(result)) {
       Map<Long, List<StatusVo>> serviceStatusVoMap = result.stream()
@@ -717,11 +696,10 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   }
 
   private CheckPortVo checkPort(Long nodeId, String nodeIp, int port) {
-    List<CheckPortVo> result = nodeInfoRemote.checkPort(
+    List<CheckPortVo> result = nodeInfoQuery.checkPort(
             new NodeAgentCheckPortDto().setBroadcast(true)
                 .setCmdParams(List.of(new CheckPortCmdParam().setDeviceId(nodeId)
-                    .setServerIp(nodeIp).setServerPort(port))))
-        .orElseContentThrow();
+                    .setServerIp(nodeIp).setServerPort(port))));
     return result.get(0);
   }
 

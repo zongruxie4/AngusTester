@@ -1,23 +1,24 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.toSchemaApis;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_IMPORT_APIS_PLUGIN_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_IMPORT_APIS_PLUGIN_T;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.extension.angustester.api.utils.OpenApiParser.checkAndParseOpenApi;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.UrlEnvVariableChecker.containsEnvVariable;
-import static io.swagger.v3.oas.models.extension.OpenAPIUtils.getExtensionLong;
 import static io.swagger.v3.oas.models.extension.ExtensionKey.ID_KEY;
+import static io.swagger.v3.oas.models.extension.OpenAPIUtils.getExtensionLong;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.remote.message.SysException;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.spring.SpringContextHolder;
 import cloud.xcan.angus.core.tester.application.converter.ApisConverter;
 import cloud.xcan.angus.core.tester.application.converter.ServicesCompConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
@@ -30,25 +31,25 @@ import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServiceServer;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchemaRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.spring.SpringContextHolder;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.extension.angustester.api.ApisParseProvider;
+import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.GzipUtils;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.Yaml31;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.extension.OpenAPIUtils;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.extension.ExtensionKey;
+import io.swagger.v3.oas.models.extension.OpenAPIUtils;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.parser.core.models.ParseOptions;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +61,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,10 +208,6 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
   @Override
   public List<ServiceServer> serverListByProject(Long projectId) {
     return new BizTemplate<List<ServiceServer>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<ServiceServer> process() {
@@ -234,10 +230,6 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
   @Override
   public Server serverDetail(Long serviceId, Long serverId) {
     return new BizTemplate<Server>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Server process() {

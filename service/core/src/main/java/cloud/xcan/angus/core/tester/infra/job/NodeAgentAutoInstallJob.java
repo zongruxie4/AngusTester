@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeAgentAutoInstallJob {
 
-  private static final String LOCK_KEY = "job:angustester:NodeAgentAutoInstallJob";
+  private static final String LOCK_KEY = "tester:job:NodeAgentAutoInstallJob";
 
   @Resource
   private JobTemplate jobTemplate;

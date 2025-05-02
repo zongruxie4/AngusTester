@@ -148,10 +148,6 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
   @Override
   public void deleteAllByTarget(List<Long> targetIds, CombinedTargetType targetType) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

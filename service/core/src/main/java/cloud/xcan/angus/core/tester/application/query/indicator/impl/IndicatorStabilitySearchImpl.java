@@ -1,15 +1,15 @@
 package cloud.xcan.angus.core.tester.application.query.indicator.impl;
 
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorStabilityConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilitySearch;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilitySearchRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import java.util.Set;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,10 +26,6 @@ public class IndicatorStabilitySearchImpl implements IndicatorStabilitySearch {
   public Page<IndicatorStability> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<IndicatorStability> clz) {
     return new BizTemplate<Page<IndicatorStability>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<IndicatorStability> process() {

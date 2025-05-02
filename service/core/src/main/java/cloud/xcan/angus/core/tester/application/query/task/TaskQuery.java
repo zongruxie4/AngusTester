@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.domain.task.Task;
 import cloud.xcan.angus.core.tester.domain.task.TaskAssociateUser;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
-import cloud.xcan.angus.core.tester.domain.task.count.AbstractOverview;
 import cloud.xcan.angus.core.tester.domain.task.count.BackloggedOverview;
 import cloud.xcan.angus.core.tester.domain.task.count.BugOverview;
 import cloud.xcan.angus.core.tester.domain.task.count.BurnDownChartOverview;

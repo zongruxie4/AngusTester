@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskOverdueJob {
 
-  private static final String LOCK_KEY = "job:angustester:TaskOverdueJob";
+  private static final String LOCK_KEY = "tester:job:TaskOverdueJob";
 
   private static final Long COUNT = 2000L;
 

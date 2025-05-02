@@ -7,8 +7,8 @@ import static cloud.xcan.angus.remote.search.SearchCriteria.lessThanEqual;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.core.tester.domain.analysis.AnalysisResource;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
 import java.time.LocalDateTime;
 import java.util.HashSet;

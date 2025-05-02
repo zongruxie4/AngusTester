@@ -16,10 +16,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import cloud.xcan.angus.agent.message.mockservice.StartCmdParam;
 import cloud.xcan.angus.agent.message.mockservice.StopCmdParam;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceApisDeleteDto;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceApisSyncDto;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceStartDto;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceStopDto;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NormalStatus;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
@@ -35,6 +31,10 @@ import cloud.xcan.angus.core.tester.domain.node.dns.DnsRecordType;
 import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
 import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
 import cloud.xcan.angus.core.tester.infra.util.OAS3ExampleGenerator;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisDeleteDto;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStartDto;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStopDto;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.mockservice.api.MockApisDeleteDto;
@@ -60,7 +60,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author XiaoLong Liu
- */public class MockServiceConverter {
+ */
+public class MockServiceConverter {
 
   public static void setReplaceInfo(MockService serviceDb, MockService service) {
     serviceDb.setName(service.getName())

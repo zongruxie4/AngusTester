@@ -1,22 +1,22 @@
 package cloud.xcan.angus.core.tester.application.cmd.scenario.impl;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_SCE_MONITOR_HISTORY_NUM;
-import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorHistoryConverter.assembleExecDebugStartByMonitorDto;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorHistoryConverter.assembleScenarioMonitorResultInfo;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorHistoryConverter.readExecutionLogFromRemote;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecDebugDoorRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.debug.ExecDebugStartByMonitorDto;
-import cloud.xcan.angus.api.ctrl.exec.vo.debug.ExecDebugDetailVo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecDebugCmd;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioMonitorHistoryCmd;
+import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebug;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitor;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistory;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistoryRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorStatus;
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.pipeline.Arguments;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -30,24 +30,21 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
   private ScenarioMonitorHistoryRepo scenarioMonitorHistoryRepo;
 
   @Resource
-  private ExecDebugDoorRemote execDebugDoorRemote;
+  private ExecDebugCmd execDebugCmd;
 
   @Transactional(rollbackOn = Exception.class)
   @Override
   public ScenarioMonitorHistory run(ScenarioMonitor monitor) {
     return new BizTemplate<ScenarioMonitorHistory>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ScenarioMonitorHistory process() {
         ScenarioMonitorHistory history = new ScenarioMonitorHistory();
         history.setProjectId(monitor.getProjectId()).setMonitorId(monitor.getId());
         try {
-          ExecDebugStartByMonitorDto dto = assembleExecDebugStartByMonitorDto(monitor);
-          ExecDebugDetailVo result = execDebugDoorRemote.startByMonitor(dto).orElseContentThrow();
+          ExecDebug result = execDebugCmd.startByMonitor(true, null, monitor.getId(),
+              monitor.getScenarioId(), monitor.getScriptId(), ScriptType.TEST_FUNCTIONALITY,
+              null, new Arguments(), monitor.getServerSetting());
           assembleScenarioMonitorResultInfo(history, result);
           try {
             readExecutionLogFromRemote(result, history);

@@ -111,7 +111,6 @@ import cloud.xcan.angus.core.tester.application.query.task.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.ResourceFavouriteAndFollow;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
-import cloud.xcan.angus.core.tester.domain.analysis.AnalysisCaseTemplate;
 import cloud.xcan.angus.core.tester.domain.comment.CommentTargetType;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineRepo;
@@ -168,7 +167,6 @@ import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.summary.ProjectSummary;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCase;
-import cloud.xcan.angus.core.tester.domain.task.count.AbstractOverview;
 import cloud.xcan.angus.core.tester.domain.task.count.BackloggedCount;
 import cloud.xcan.angus.core.tester.domain.task.count.BackloggedDetail;
 import cloud.xcan.angus.core.tester.domain.task.count.BurnDownChartCount;
@@ -181,7 +179,6 @@ import cloud.xcan.angus.core.tester.domain.task.count.ProgressCount;
 import cloud.xcan.angus.core.tester.domain.task.count.ProgressDetail;
 import cloud.xcan.angus.core.tester.domain.task.count.RecentDeliveryCount;
 import cloud.xcan.angus.core.tester.domain.task.count.RecentDeliveryDetail;
-import cloud.xcan.angus.core.tester.domain.task.count.TesterSubmittedBugOverview;
 import cloud.xcan.angus.core.tester.domain.task.count.UnplannedWorkCount;
 import cloud.xcan.angus.core.tester.domain.task.count.UnplannedWorkDetail;
 import cloud.xcan.angus.core.tester.domain.task.count.WorkloadCount;
@@ -192,7 +189,6 @@ import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.JsonUtils;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -210,7 +206,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -440,10 +435,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinPlan, boolean joinReview, boolean joinBaseline) {
     return new BizTemplate<FuncLastResourceCreationCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected FuncLastResourceCreationCount process() {
@@ -508,10 +499,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   @Override
   public List<FuncTesterCount> testerSummaryStatistics(Long projectId, Long planId) {
     return new BizTemplate<List<FuncTesterCount>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<FuncTesterCount> process() {
@@ -541,10 +528,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   @Override
   public List<FuncTesterProgressCount> testerProgressStatistics(Long projectId, Long planId) {
     return new BizTemplate<List<FuncTesterProgressCount>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<FuncTesterProgressCount> process() {
@@ -674,10 +657,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   public FuncTesterWorkSummary testerWorkStatistics(
       Long projectId, @Nullable Long planId, Long userId) {
     return new BizTemplate<FuncTesterWorkSummary>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected FuncTesterWorkSummary process() {
@@ -719,10 +698,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<ProgressOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ProgressOverview process() {
@@ -781,10 +756,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       boolean joinDataDetail) {
     return new BizTemplate<BurnDownChartOverview>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected BurnDownChartOverview process() {
@@ -875,10 +846,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<WorkloadOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected WorkloadOverview process() {
@@ -937,10 +904,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<OverdueAssessmentOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected OverdueAssessmentOverview process() {
@@ -1004,10 +967,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       AuthObjectType testerOrgType, Long testerOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<TestingEfficiencyOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TestingEfficiencyOverview process() {
@@ -1064,10 +1023,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<CoreKpiOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected CoreKpiOverview process() {
@@ -1124,10 +1079,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       AuthObjectType testerOrgType, Long testerOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<ReviewEfficiencyOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ReviewEfficiencyOverview process() {
@@ -1185,10 +1136,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<BackloggedOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected BackloggedOverview process() {
@@ -1246,10 +1193,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<RecentDeliveryOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected RecentDeliveryOverview process() {
@@ -1313,10 +1256,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<LeadTimeOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected LeadTimeOverview process() {
@@ -1374,10 +1313,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<UnplannedWorkOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected UnplannedWorkOverview process() {
@@ -1439,10 +1374,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinTesterDetail, boolean joinDataDetail) {
     return new BizTemplate<GrowthTrendOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected GrowthTrendOverview process() {
@@ -1500,10 +1431,6 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       AuthObjectType creatorOrgType, Long creatorOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinCreatorDetail, boolean joinDataDetail) {
     return new BizTemplate<ResourceCreationOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ResourceCreationOverview process() {

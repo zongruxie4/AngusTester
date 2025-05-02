@@ -2,14 +2,14 @@ package cloud.xcan.angus.core.tester.interfaces.scenario;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BATCH_SIZE;
 
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioDetailVo;
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioListVo;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoFindDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;

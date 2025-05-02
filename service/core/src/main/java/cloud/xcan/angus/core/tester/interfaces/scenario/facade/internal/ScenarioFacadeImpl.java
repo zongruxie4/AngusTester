@@ -9,8 +9,6 @@ import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.a
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.updateDtoToDomain;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioDetailVo;
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioListVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
@@ -23,6 +21,8 @@ import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoS
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioListVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;

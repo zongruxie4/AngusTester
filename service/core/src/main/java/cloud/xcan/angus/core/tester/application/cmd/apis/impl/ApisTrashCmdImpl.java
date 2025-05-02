@@ -104,10 +104,6 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   @Override
   public void clearAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -162,10 +158,6 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   @Override
   public void backAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

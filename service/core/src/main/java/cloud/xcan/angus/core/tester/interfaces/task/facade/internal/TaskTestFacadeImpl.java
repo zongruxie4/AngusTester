@@ -2,13 +2,13 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecResultRemote;
-import cloud.xcan.angus.api.ctrl.exec.vo.result.ExecTestResultDetailVo;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
@@ -28,7 +28,7 @@ public class TaskTestFacadeImpl implements TaskTestFacade {
   private TaskQuery taskQuery;
 
   @Resource
-  private ExecResultRemote execResultRemote;
+  private ExecResultFacade execResultFacade;
 
   @Resource
   private JoinSupplier joinSupplier;
@@ -43,11 +43,10 @@ public class TaskTestFacadeImpl implements TaskTestFacade {
   @Override
   public ExecTestResultDetailVo testResult(TaskType taskType, Long targetId, TestType testType) {
     if (taskType.isApiTest()) {
-      return execResultRemote.apisResultByScriptType(targetId, testType.toScriptType().getValue())
-          .orElseContentThrow();
+      return execResultFacade.apisResultByScriptType(targetId, testType.toScriptType().getValue());
     } else if (taskType.isScenarioTest()) {
-      return execResultRemote.scenarioResultByScriptType(targetId,
-          testType.toScriptType().getValue()).orElseContentThrow();
+      return execResultFacade.scenarioResultByScriptType(targetId,
+          testType.toScriptType().getValue());
     } else {
       throw ProtocolException.of("Unsupported task type: " + taskType);
     }

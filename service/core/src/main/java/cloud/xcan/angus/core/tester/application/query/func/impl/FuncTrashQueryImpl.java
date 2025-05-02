@@ -27,10 +27,6 @@ public class FuncTrashQueryImpl implements FuncTrashQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

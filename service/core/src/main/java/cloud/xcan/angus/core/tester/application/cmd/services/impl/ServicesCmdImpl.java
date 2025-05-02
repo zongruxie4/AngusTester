@@ -410,10 +410,6 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
@@ -495,7 +491,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
         // Add export service pref activity information
         activityCmd.addAll(toActivities(SERVICE, servicesDb, ActivityType.EXPORT, servicesDb
-            .stream().map(Services::getName).collect(Collectors.toList())
+            .stream().map(Services::getName).toList()
             .stream().map(str -> new Object[]{str}).collect(Collectors.toList())));
         return finalFile;
       }

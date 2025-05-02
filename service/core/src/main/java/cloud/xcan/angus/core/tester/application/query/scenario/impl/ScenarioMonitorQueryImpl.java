@@ -2,20 +2,22 @@ package cloud.xcan.angus.core.tester.application.query.scenario.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SCENARIO_MONITOR;
 import static cloud.xcan.angus.api.commonlink.EventUtils.assembleAngusTesterUserNoticeEvent;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorConverter.assembleScenarioMonitorCount0;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.ScenarioMonitorFailed;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.ScenarioMonitorFailedCode;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.enums.NoticeType;
-import cloud.xcan.angus.remote.info.IdAndName;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.event.EventSender;
+import cloud.xcan.angus.core.event.source.EventContent;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorHistoryQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorQuery;
@@ -23,19 +25,17 @@ import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitor;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistoryInfo;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorRepo;
 import cloud.xcan.angus.core.tester.domain.setting.NoticeSetting;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.event.EventSender;
-import cloud.xcan.angus.core.event.source.EventContent;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.info.IdAndName;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -78,10 +78,6 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
   public Page<ScenarioMonitor> find(GenericSpecification<ScenarioMonitor> spec,
       PageRequest pageable) {
     return new BizTemplate<Page<ScenarioMonitor>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ScenarioMonitor> process() {

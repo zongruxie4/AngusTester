@@ -16,7 +16,9 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.kanban.KanbanEfficiencyQuery;
@@ -44,17 +46,15 @@ import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.task.cases.CaseTestHit;
 import cloud.xcan.angus.core.tester.domain.task.count.BurnDownChartCount;
 import cloud.xcan.angus.core.tester.domain.task.summary.TaskEfficiencySummary;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.JoinSupplier;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 
 @Biz
 public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
@@ -98,10 +98,6 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTaskList,
       boolean joinAssigneeOverview, boolean joinRanking, boolean joinBurnDownChar) {
     return new BizTemplate<EfficiencyTaskOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected EfficiencyTaskOverview process() {
@@ -158,10 +154,6 @@ public class KanbanEfficiencyQueryImpl implements KanbanEfficiencyQuery {
       boolean joinCaseList, boolean joinTesterOverview, boolean joinRanking,
       boolean joinBurnDownChar) {
     return new BizTemplate<EfficiencyCaseOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected EfficiencyCaseOverview process() {

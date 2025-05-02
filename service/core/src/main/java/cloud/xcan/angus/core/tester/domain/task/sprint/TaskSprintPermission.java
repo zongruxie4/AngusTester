@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum TaskSprintPermission implements EnumMessage<String> {
   MODIFY_SPRINT, DELETE_SPRINT, ADD_TASK, MODIFY_TASK, DELETE_TASK, EXPORT_TASK,
   RESTART_TASK, REOPEN_TASK, GRANT;

@@ -67,10 +67,6 @@ public class DataQueryImpl implements DataQuery {
 
       Set<Long> createdBys = null;
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected DataResourcesCount process() {
@@ -108,10 +104,6 @@ public class DataQueryImpl implements DataQuery {
 
       Set<Long> createdBys = null;
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected DataResourcesCreationCount process() {

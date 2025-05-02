@@ -11,8 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
     "cloud.xcan.angus.api.gm",
     "cloud.xcan.angus.api.ess",
     "cloud.xcan.angus.api.storage",
-    "cloud.xcan.angus.api.tester",
-    "cloud.xcan.angus.api.ctrl",
     "cloud.xcan.angus.security"
 })
 @EnableDiscoveryClient

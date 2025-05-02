@@ -16,8 +16,9 @@ public class JpaConfig {
   @EnableTransactionManagement
   @EnableJpaRepositories(
       repositoryBaseClass = BaseRepositoryImpl.class,
-      basePackages = {"cloud.xcan.angus.idgen.dao",
-          "cloud.xcan.angus.core.tester.infra.persistence.mysql.**"
+      basePackages = {
+          "cloud.xcan.angus.idgen.dao",
+          "cloud.xcan.angus.core.tester.infra.persistence.mysql.master"
       })
   @Conditional(MySqlEnvCondition.class)
   protected static class JpaEnableMysqlConfiguration {
@@ -28,8 +29,9 @@ public class JpaConfig {
   @EnableTransactionManagement
   @EnableJpaRepositories(
       repositoryBaseClass = BaseRepositoryImpl.class,
-      basePackages = {"cloud.xcan.angus.idgen.dao",
-          "cloud.xcan.angus.core.tester.infra.persistence.postgres.**"
+      basePackages = {
+          "cloud.xcan.angus.idgen.dao",
+          "cloud.xcan.angus.core.tester.infra.persistence.postgres.master"
       })
   @Conditional(PostgresEnvCondition.class)
   protected static class JpaEnablePostgresConfiguration {

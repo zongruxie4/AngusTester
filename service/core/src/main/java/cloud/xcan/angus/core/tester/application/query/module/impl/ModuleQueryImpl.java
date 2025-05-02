@@ -10,20 +10,21 @@ import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
-import cloud.xcan.angus.core.tester.domain.module.Module;
-import cloud.xcan.angus.core.tester.domain.module.ModuleRepo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.application.query.module.ModuleQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
+import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
+import cloud.xcan.angus.core.tester.domain.module.Module;
+import cloud.xcan.angus.core.tester.domain.module.ModuleRepo;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.JpaSort;
@@ -54,10 +54,6 @@ public class ModuleQueryImpl implements ModuleQuery {
   @Override
   public Module detail(Long id) {
     return new BizTemplate<Module>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Module process() {

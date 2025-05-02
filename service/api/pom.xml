@@ -47,11 +47,6 @@
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angusctrl.api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angusgm.api</artifactId>
     </dependency>
 

@@ -1,11 +1,13 @@
 package cloud.xcan.angus.core.tester.application.query.node;
 
 import cloud.xcan.angus.api.enums.NodeRole;
-import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,6 +21,8 @@ public interface NodeQuery {
   Page<Node> find(GenericSpecification<Node> spec, Pageable pageable);
 
   List<Node> findByRole(NodeRole nodeRole);
+
+  List<Node> findByFilters(Set<SearchCriteria> filters);
 
   boolean hasOwnNodes(Long tenantId);
 
@@ -45,6 +49,7 @@ public interface NodeQuery {
   void checkNodeAgentAvailable(Long nodeId);
 
   void setNodeRoles(List<Node> nodes);
+
 
 }
 

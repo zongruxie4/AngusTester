@@ -3,9 +3,9 @@ package cloud.xcan.angus.core.tester.application.converter;
 
 import static java.util.Objects.nonNull;
 
+import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import cloud.xcan.angus.model.element.dataset.DatasetParameter;
 import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
-import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import java.util.List;
 
 public class DatasetConverter {

@@ -25,7 +25,6 @@
     <module>core</module>
     <module>boot</module>
     <module>extension</module>
-    <module>docs</module>
   </modules>
 
   <organization>
@@ -97,7 +96,6 @@
     <xcan-angusmeter.bom.version>1.0.0</xcan-angusmeter.bom.version>
 
     <xcan-angusgm.api.version>1.0.0</xcan-angusgm.api.version>
-    <xcan-angusctrl.api.version>1.0.0</xcan-angusctrl.api.version>
     <xcan-angusapi.api.version>1.0.0</xcan-angusapi.api.version>
     <xcan-angusstorage.api.version>1.0.0</xcan-angusstorage.api.version>
     <xcan-angusess.api.version>1.0.0</xcan-angusess.api.version>
@@ -173,12 +171,6 @@
         <groupId>cloud.xcan.angus</groupId>
         <artifactId>xcan-angusstorage.api</artifactId>
         <version>${xcan-angusstorage.api.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>cloud.xcan.angus</groupId>
-        <artifactId>xcan-angusctrl.api</artifactId>
-        <version>${xcan-angusctrl.api.version}</version>
       </dependency>
 
       <dependency>

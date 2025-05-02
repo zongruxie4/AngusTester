@@ -1,5 +1,9 @@
 package cloud.xcan.angus.core.tester.application.query.node.impl;
 
+import static cloud.xcan.angus.core.biz.BizAssert.assertTrue;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_AGENT_NOT_ONLINE_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_AGENT_NOT_ONLINE_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_IP_EXISTED_T;
@@ -11,50 +15,44 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHAS
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHASE_BY_ORDER_REPEATED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHASE_UPDATE_ERROR_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHASE_UPDATE_ERROR_T;
-import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
-
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDoorApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isPrivateEdition;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantClient;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.model.result.command.SimpleCommandResult;
-import cloud.xcan.angus.api.ctrl.node.NodeInfoRemote;
-import cloud.xcan.angus.api.ctrl.node.dto.NodeAgentStatusQueryDto;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.page.FixedPageImpl;
+import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
+import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
 import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
+import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRoleRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.jpa.page.FixedPageImpl;
-import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
+import cloud.xcan.angus.model.result.command.SimpleCommandResult;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
-import jakarta.transaction.Transactional;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,29 +76,25 @@ public class NodeQueryImpl implements NodeQuery {
   private SettingTenantQuotaManager settingTenantQuotaManager;
 
   @Resource
-  private NodeInfoRemote nodeInfoRemote;
+  private NodeInfoQuery nodeInfoQuery;
 
   @Transactional
   @Override
   public Node detail(Long id) {
     return new BizTemplate<Node>(false) {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Node process() {
         Node node = nodeRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Node"));
-        ProtocolAssert.assertResourceNotFound(
+        assertResourceNotFound(
             node.isFreeNode() || node.getTenantId().equals(getOptTenantId()), id, "node");
 
         setNodeRoles(List.of(node));
 
         if (node.getInstallAgent() == null || !node.getInstallAgent()) {
           try {
-            NodeInfoDetailVo vo = nodeInfoRemote.detail(id, node.isFreeNode()).orElseContentThrow();
-            if (vo != null && vo.getAgentInstalled()) {
+            NodeInfo nodeInfo = nodeInfoQuery.detail(id, node.isFreeNode());
+            if (nodeInfo != null && nodeInfo.getAgentInstalled()) {
               // The agent is installed, possibly manually offline
               node.setInstallAgent(true);
               nodeRepo.save(node);
@@ -117,10 +111,6 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public Long count(Specification<Node> spec) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {
@@ -132,10 +122,6 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public Page<Node> find(GenericSpecification<Node> spec, Pageable pageable) {
     return new BizTemplate<Page<Node>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Node> process() {
@@ -163,6 +149,11 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public List<Node> findByRole(NodeRole nodeRole) {
     return nodeRepo.findByTenantIdAndRole(getOptTenantId(), nodeRole.getValue());
+  }
+
+  @Override
+  public List<Node> findByFilters(Set<SearchCriteria> filters) {
+    return nodeRepo.findAllByFilters(filters);
   }
 
   @Override
@@ -200,10 +191,10 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public List<Node> checkAndFind(Collection<Long> ids) {
     List<Node> nodes = nodeRepo.findAllById(ids);
-    ProtocolAssert.assertResourceNotFound(isNotEmpty(nodes), ids, "Node");
+    assertResourceNotFound(isNotEmpty(nodes), ids, "Node");
     if (ids.size() != nodes.size()) {
       for (Node node : nodes) {
-        ProtocolAssert.assertResourceNotFound(ids.contains(node.getId()), node.getId(), "Node");
+        assertResourceNotFound(ids.contains(node.getId()), node.getId(), "Node");
       }
     }
     return nodes;
@@ -212,10 +203,10 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public Node checkRoleAndGetNode(Long id, NodeRole role) {
     Node nodeDb = detail(id); // Multi tenant automatic assembly disabled
-    BizAssert.assertTrue(isNotEmpty(nodeDb.getRoles()) && nodeDb.getRoles().contains(role),
+    assertTrue(isNotEmpty(nodeDb.getRoles()) && nodeDb.getRoles().contains(role),
         NODE_NOT_CONFIGURED_ROLE_CODE, NODE_NOT_CONFIGURED_ROLE_T, new Object[]{id, role});
     // Verify that the node has the agent installed
-    BizAssert.assertTrue(nonNull(nodeDb.getInstallAgent()) && nodeDb.getInstallAgent(),
+    assertTrue(nonNull(nodeDb.getInstallAgent()) && nodeDb.getInstallAgent(),
         NODE_NOT_INSTALLED_AGENT_CODE, NODE_NOT_INSTALLED_AGENT_T, new Object[]{id});
     return nodeDb;
   }
@@ -224,7 +215,7 @@ public class NodeQueryImpl implements NodeQuery {
   public void checkIpNotExisted(List<Node> nodes) {
     List<Node> existedNodes = nodeRepo
         .findByIpIn(nodes.stream().map(Node::getIp).collect(Collectors.toSet()));
-    ProtocolAssert.assertResourceExisted(existedNodes, NODE_IP_EXISTED_T,
+    assertResourceExisted(existedNodes, NODE_IP_EXISTED_T,
         existedNodes.stream().map(Node::getIp).toArray());
   }
 
@@ -240,15 +231,14 @@ public class NodeQueryImpl implements NodeQuery {
     // Check and modify the IP duplication, ignore modifying the node itself
     Set<Node> ipNodes = nodes.stream().filter(n -> StringUtils.isNotEmpty(n.getIp()))
         .collect(Collectors.toSet());
-    if (CollectionUtils.isNotEmpty(ipNodes)) {
+    if (isNotEmpty(ipNodes)) {
       List<Node> nodesDb = nodeRepo.findByIpIn(ipNodes.stream().map(Node::getIp)
           .collect(Collectors.toSet()));
-      if (CollectionUtils.isNotEmpty(nodesDb)) {
+      if (isNotEmpty(nodesDb)) {
         for (Node existedNode : nodesDb) {
           for (Node ipNode : ipNodes) {
-            ProtocolAssert.assertResourceExisted(
-                !existedNode.getIp().equals(ipNode.getIp()) || existedNode.getId()
-                    .equals(ipNode.getId()), NODE_IP_EXISTED_T, new Object[]{ipNode.getIp()});
+            assertResourceExisted(!existedNode.getIp().equals(ipNode.getIp()) || existedNode.getId()
+                .equals(ipNode.getId()), NODE_IP_EXISTED_T, new Object[]{ipNode.getIp()});
           }
         }
       }
@@ -258,7 +248,7 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public void checkNotPurchasedUpdate(List<Node> nodesDb) {
     for (Node node : nodesDb) {
-      BizAssert.assertTrue(!node.getSource().isOnlineBuy(), NODE_PURCHASE_UPDATE_ERROR_CODE,
+      assertTrue(!node.getSource().isOnlineBuy(), NODE_PURCHASE_UPDATE_ERROR_CODE,
           NODE_PURCHASE_UPDATE_ERROR_T, new Object[]{node.getId()});
     }
   }
@@ -266,18 +256,16 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public void checkOrderPurchasedExisted(Long orderId) {
     int count = nodeRepo.countByOrderId(orderId);
-    BizAssert.assertTrue(count < 1, NODE_PURCHASE_BY_ORDER_REPEATED_CODE,
+    assertTrue(count < 1, NODE_PURCHASE_BY_ORDER_REPEATED_CODE,
         NODE_PURCHASE_BY_ORDER_REPEATED_T, new Object[]{orderId});
   }
 
   @Override
   public void checkNodeAgentAvailable(Long nodeId) {
-    NodeAgentStatusQueryDto dto = new NodeAgentStatusQueryDto()
-        .setNodeIds(Collections.singletonList(nodeId)).setBroadcast(true);
-    Map<Long, SimpleCommandResult> agentStatusVos = nodeInfoRemote.agentStatus(dto)
-        .orElseContentThrow();
-    BizAssert.assertTrue(isNotEmpty(agentStatusVos)
-            && agentStatusVos.get(nodeId).isSuccess(), NODE_AGENT_NOT_ONLINE_CODE,
+    Map<Long, SimpleCommandResult> resultMap = nodeInfoQuery.agentStatus(
+        true, singletonList(nodeId));
+    assertTrue(isNotEmpty(resultMap)
+            && resultMap.get(nodeId).isSuccess(), NODE_AGENT_NOT_ONLINE_CODE,
         NODE_AGENT_NOT_ONLINE_T, new Object[]{nodeId});
   }
 

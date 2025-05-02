@@ -1,10 +1,10 @@
 package cloud.xcan.angus.core.tester.application.query.func;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;

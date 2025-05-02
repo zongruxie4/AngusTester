@@ -5,20 +5,20 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REMARK_
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_REMARK_OVER_LIMIT_T;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.core.tester.application.converter.TaskConverter;
-import cloud.xcan.angus.core.tester.application.query.task.TaskRemarkQuery;
-import cloud.xcan.angus.core.tester.domain.task.remark.TaskRemark;
-import cloud.xcan.angus.core.tester.domain.task.remark.TaskRemarkRepo;
-import cloud.xcan.angus.core.tester.domain.task.summary.TaskRemarkSummary;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.application.converter.TaskConverter;
+import cloud.xcan.angus.core.tester.application.query.task.TaskRemarkQuery;
+import cloud.xcan.angus.core.tester.domain.task.remark.TaskRemark;
+import cloud.xcan.angus.core.tester.domain.task.remark.TaskRemarkRepo;
+import cloud.xcan.angus.core.tester.domain.task.summary.TaskRemarkSummary;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -35,10 +35,6 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
   public Page<TaskRemark> list(GenericSpecification<TaskRemark> spec,
       PageRequest pageable) {
     return new BizTemplate<Page<TaskRemark>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<TaskRemark> process() {

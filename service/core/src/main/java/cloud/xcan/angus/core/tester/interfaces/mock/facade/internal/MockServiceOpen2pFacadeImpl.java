@@ -5,7 +5,6 @@ import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assem
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceOpen2pFacade;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.MockServiceInfoVo;
 import jakarta.annotation.Resource;
 import java.util.Objects;

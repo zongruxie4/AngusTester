@@ -22,7 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "script")
 @Setter
 @Getter

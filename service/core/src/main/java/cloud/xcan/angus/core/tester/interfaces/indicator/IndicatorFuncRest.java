@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator;
 
 
-import cloud.xcan.angus.api.tester.indicator.vo.FuncVo;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorFuncFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncAddDto;
@@ -9,14 +8,15 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

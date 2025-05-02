@@ -1,15 +1,15 @@
 package cloud.xcan.angus.core.tester.application.query.indicator.impl;
 
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorPerfConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfSearch;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfSearchRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import java.util.Set;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -26,10 +26,6 @@ public class IndicatorPerfSearchImpl implements IndicatorPerfSearch {
   public Page<IndicatorPerf> search(Set<SearchCriteria> criteria,
       PageRequest pageable, Class<IndicatorPerf> clz) {
     return new BizTemplate<Page<IndicatorPerf>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<IndicatorPerf> process() {

@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.application.query.task;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;

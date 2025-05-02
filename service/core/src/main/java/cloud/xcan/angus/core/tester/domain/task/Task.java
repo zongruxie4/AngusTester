@@ -20,7 +20,6 @@ import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseAssoc;
 import cloud.xcan.angus.model.script.TestType;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

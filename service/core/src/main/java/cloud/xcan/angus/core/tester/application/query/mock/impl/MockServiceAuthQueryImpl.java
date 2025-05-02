@@ -13,9 +13,10 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
@@ -25,11 +26,11 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfoRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServiceAuth;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServiceAuthRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServicePermission;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.exception.BizException;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,7 +39,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -119,10 +119,6 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
   @Override
   public void check(Long serviceId, MockServicePermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

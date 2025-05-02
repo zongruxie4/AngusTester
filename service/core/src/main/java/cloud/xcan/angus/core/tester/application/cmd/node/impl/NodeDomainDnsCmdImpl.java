@@ -87,10 +87,6 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
   public void delete(Long id) {
     new BizTemplate<Void>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

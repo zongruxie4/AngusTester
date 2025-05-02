@@ -3,7 +3,7 @@ package cloud.xcan.angus.core.tester.domain.scenario.monitor;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
-import cloud.xcan.angus.api.ctrl.exec.vo.ExecSampleContentVo;
+import cloud.xcan.angus.core.tester.domain.exec.result.ExecSampleContentInfo;
 import cloud.xcan.angus.spec.experimental.EntitySupport;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
@@ -63,7 +63,7 @@ public class ScenarioMonitorHistory extends EntitySupport<ScenarioMonitorHistory
 
   @Type(JsonType.class)
   @Column(columnDefinition = "json", name = "sample_content")
-  private List<ExecSampleContentVo> sampleContents;
+  private List<ExecSampleContentInfo> sampleContents;
 
   @Column(name = "sample_log_content")
   private String sampleLogContent;

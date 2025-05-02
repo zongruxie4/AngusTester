@@ -116,10 +116,6 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
   @Override
   public void delete(Collection<Long> ids) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -152,10 +148,6 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
   @Override
   public void deleteAllByTarget(List<Long> targetIds, CombinedTargetType targetType) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

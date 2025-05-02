@@ -67,10 +67,6 @@ public class ApisTestQueryImpl implements ApisTestQuery {
   public ApisTestCount countServiceTestApis(Long serviceId, AuthObjectType creatorObjectType,
       Long creatorObjectId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd) {
     return new BizTemplate<ApisTestCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ApisTestCount process() {
@@ -90,10 +86,6 @@ public class ApisTestQueryImpl implements ApisTestQuery {
   public ApisTestCount countProjectTestApis(Long projectId, AuthObjectType creatorObjectType,
       Long creatorObjectId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd) {
     return new BizTemplate<ApisTestCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ApisTestCount process() {
@@ -113,10 +105,6 @@ public class ApisTestQueryImpl implements ApisTestQuery {
   public TestApisCount countTestResult(Long projectId, AuthObjectType creatorObjectType,
       Long creatorObjectId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd) {
     return new BizTemplate<TestApisCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TestApisCount process() {

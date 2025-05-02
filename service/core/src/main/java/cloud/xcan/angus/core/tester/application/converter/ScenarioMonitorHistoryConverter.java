@@ -6,44 +6,32 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.angus.api.ctrl.exec.dto.debug.ExecDebugStartByMonitorDto;
-import cloud.xcan.angus.api.ctrl.exec.vo.debug.ExecDebugDetailVo;
 import cloud.xcan.angus.api.pojo.node.NodeInfo;
-import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitor;
+import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebug;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistory;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorStatus;
 import cloud.xcan.angus.spec.http.HttpSender.Request;
 import cloud.xcan.angus.spec.http.HttpSender.Response;
+import java.util.stream.Collectors;
 
 public class ScenarioMonitorHistoryConverter {
 
-  public static ExecDebugStartByMonitorDto assembleExecDebugStartByMonitorDto(
-      ScenarioMonitor monitor) {
-    return new ExecDebugStartByMonitorDto()
-        .setBroadcast(true)
-        .setScenarioId(monitor.getScenarioId())
-        .setScriptId(monitor.getScriptId())
-        .setMonitorId(monitor.getId())
-        .setScriptType(ScriptType.TEST_FUNCTIONALITY)
-        .setServerSetting(monitor.getServerSetting());
-  }
-
   public static void assembleScenarioMonitorResultInfo(ScenarioMonitorHistory history,
-      ExecDebugDetailVo result) {
-    history.setStatus(result.isTestSucceed() ? ScenarioMonitorStatus.SUCCESS
+      ExecDebug debug) {
+    history.setStatus(nullSafe(debug.getSucceed(), false) ? ScenarioMonitorStatus.SUCCESS
             : ScenarioMonitorStatus.FAILURE)
-        .setFailureMessage(result.getTestFailureMessage())
-        .setResponseDelay(nonNull(result.getSampleSummaryInfo())
-            ? result.getSampleSummaryInfo().getDuration() : null)
-        .setExecId(result.getId())
-        .setExecStartDate(result.getCreatedDate()).setExecEndDate(result.getEndDate())
-        .setSampleContents(result.getSampleContents())
-        .setSchedulingResult(result.getSchedulingResult());
+        .setFailureMessage(debug.getFailureMessage())
+        .setResponseDelay(nonNull(debug.getFinishSampleResult())
+            ? debug.getFinishSampleResult().getDuration() : null)
+        .setExecId(debug.getId())
+        .setExecStartDate(debug.getCreatedDate()).setExecEndDate(debug.getEndDate())
+        .setSampleContents(debug.getSampleContents().stream()
+            .map(ExecSampleConverter::toExecSampleContentInfo).collect(Collectors.toList()))
+        .setSchedulingResult(debug.getSchedulingResult());
   }
 
   public static void readExecutionLogFromRemote(
-      ExecDebugDetailVo result, ScenarioMonitorHistory history) throws Throwable {
+      ExecDebug result, ScenarioMonitorHistory history) throws Throwable {
     NodeInfo execNode = result.getExecNode();
     if (nonNull(execNode)) {
       Response response = Request.build(String.format("http://%s:%s/actuator/runner/log/%s",

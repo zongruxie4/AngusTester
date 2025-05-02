@@ -1,11 +1,11 @@
 package cloud.xcan.angus.core.tester.application.query.task.impl;
 
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NO_AUTH;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NO_AUTH_CODE;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
@@ -13,8 +13,11 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizAssert;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskSprintAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskSprintQuery;
@@ -24,11 +27,9 @@ import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintRepo;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuth;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuthCurrent;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuthRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -37,10 +38,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.CollectionUtils;
 
 @Biz
 public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
@@ -144,10 +143,6 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
   @Override
   public void check(Long sprintId, TaskSprintPermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -248,7 +243,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
     }
 
     List<TaskSprintAuth> auths = findAuth(getUserId(), authIds);
-    if (CollectionUtils.isEmpty(auths)) {
+    if (isEmpty(auths)) {
       long firstId = authIds.stream().findFirst().get();
       TaskSprint sprint = taskSprintRepo.findById(firstId).orElse(null);
       BizAssert.assertTrue(false, TASK_SPRINT_NO_AUTH_CODE, TASK_SPRINT_NO_AUTH,

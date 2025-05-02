@@ -98,10 +98,6 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
   @Override
   public void cancelAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

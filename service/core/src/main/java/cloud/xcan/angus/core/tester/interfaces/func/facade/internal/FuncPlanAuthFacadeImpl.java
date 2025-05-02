@@ -21,7 +21,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.auth.FuncPlanAuthC
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.auth.FuncPlanAuthVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;

@@ -1,28 +1,28 @@
 package cloud.xcan.angus.core.tester.application.query.func.impl;
 
-import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
-import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.CASE_REVIEW_REPEATED_T;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.CASE_REVIEW_REPEATED_T;
+import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
-import cloud.xcan.angus.remote.message.ProtocolException;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseQuery;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.ProtocolException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -56,10 +56,6 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   public Page<FuncReviewCase> list(GenericSpecification<FuncReviewCase> spec,
       PageRequest pageable) {
     return new BizTemplate<Page<FuncReviewCase>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<FuncReviewCase> process() {

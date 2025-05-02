@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.project;
 
 import cloud.xcan.angus.api.commonlink.user.UserBase;
-import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.project.Project;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;

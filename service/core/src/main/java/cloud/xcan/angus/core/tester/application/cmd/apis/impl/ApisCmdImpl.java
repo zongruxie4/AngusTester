@@ -1094,10 +1094,6 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   public ResponseEntity<org.springframework.core.io.Resource> export(Long id, SchemaFormat format,
       HttpServletResponse response) {
     return new BizTemplate<ResponseEntity<org.springframework.core.io.Resource>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ResponseEntity<org.springframework.core.io.Resource> process() {

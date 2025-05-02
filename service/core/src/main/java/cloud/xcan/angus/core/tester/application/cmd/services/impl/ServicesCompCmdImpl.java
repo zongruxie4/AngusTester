@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.services.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
@@ -104,13 +105,13 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
 
       @Override
       protected Void process() {
-        if (ObjectUtils.isEmpty(keys)) {
+        if (isEmpty(keys)) {
           serviceCompRepo.deleteByServiceIdAndType(serviceId, type.getValue());
         } else {
           serviceCompRepo.deleteByServiceIdAndTypeAndKey(serviceId, type.getValue(), keys);
         }
         activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_COMP_DELETED,
-            ObjectUtils.isEmpty(keys) ? type + ":all" : String.join(",", keys)));
+            isEmpty(keys) ? type + ":all" : String.join(",", keys)));
         return null;
       }
     }.execute();

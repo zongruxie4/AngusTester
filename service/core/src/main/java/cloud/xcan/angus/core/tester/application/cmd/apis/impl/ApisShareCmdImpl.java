@@ -158,10 +158,6 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
   @Override
   public void incrView(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

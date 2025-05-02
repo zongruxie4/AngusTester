@@ -9,11 +9,10 @@ xcan:
   datasource:
     extra:
       dbType: '@databaseType@'
-      dbMode: '@databaseMode@'
       entityPackages:
         - cloud.xcan.angus.idgen.entity
-        - cloud.xcan.angus.core.tester.domain
         - cloud.xcan.angus.api.commonlink
+        - cloud.xcan.angus.core.tester.domain
     hikari:
       readOnly: false
       connectionTestQuery: SELECT 1 FROM DUAL
@@ -38,6 +37,41 @@ xcan:
       password: ${TESTER_POSTGRES_PASSWORD}
       schema:
         - postgres/idgen-schema.sql
+    metrics:
+      shardDbNum: ${METRICS_DB_SHARD_NUM:10}  # Range 1-10
+      shardTabledNum: ${METRICS_SHARD_TABLED_NUM:1} # Range 1-50
+      username: ${METRICS_DB_USER}
+      password: ${METRICS_DB_PASSWORD}
+      entityPackages:
+        - cloud.xcan.angus.core.tester.infra.metricsds.domain.usage
+        - cloud.xcan.angus.core.tester.infra.metricsds.domain.jvmservice
+        - cloud.xcan.angus.core.tester.infra.metricsds.domain.sample
+      mysql:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        urls:
+          - jdbc:mysql://${METRICS0_MYSQL_HOST}:${METRICS0_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS1_MYSQL_HOST}:${METRICS1_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS2_MYSQL_HOST}:${METRICS2_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS3_MYSQL_HOST}:${METRICS3_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS4_MYSQL_HOST}:${METRICS4_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS5_MYSQL_HOST}:${METRICS5_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS6_MYSQL_HOST}:${METRICS6_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS7_MYSQL_HOST}:${METRICS7_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS8_MYSQL_HOST}:${METRICS8_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS9_MYSQL_HOST}:${METRICS9_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+      postgresql:
+        driverClassName: org.postgresql.Driver
+        urls:
+          - jdbc:postgresql://${METRICS0_POSTGRES_HOST}:${METRICS0_POSTGRES_PORT}/${METRICS0_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS1_POSTGRES_HOST}:${METRICS1_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS2_POSTGRES_HOST}:${METRICS2_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS3_POSTGRES_HOST}:${METRICS3_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS4_POSTGRES_HOST}:${METRICS4_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS5_POSTGRES_HOST}:${METRICS5_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS6_POSTGRES_HOST}:${METRICS6_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS7_POSTGRES_HOST}:${METRICS7_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS8_POSTGRES_HOST}:${METRICS8_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS9_POSTGRES_HOST}:${METRICS9_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
     commonlink:
       mysql:
         driverClassName: com.mysql.cj.jdbc.Driver
@@ -62,6 +96,27 @@ xcan:
         max-active: 8
         max-idle: 8
         min-idle: 5
+  remoting:
+    # ServerIp is null means wildcard address
+    serverIp: ${TESTER_REMOTING_SERVER_IP:localhost}
+    # The exchange server address for the agent to connect through the public network. Get local ip when not specified.
+    serverPublicIp: ${TESTER_REMOTING_SERVER_PUBLIC_IP:localhost}
+    serverPort: ${TESTER_REMOTING_SERVER_PORT:5035}
+    sendTimeout: ${TESTER_REMOTING_SEND_TIMEOUT:60000}
+    allowMaxHeartbeatInterval: ${TESTER_REMOTING_ALLOW_MAX_HEARTBEAT_INTERVAL:30000}
+    redisDeployMode: ${TESTER_REDIS_DEPLOY_MODE:SINGLE}
+    redisDatabase: ${TESTER_REDIS_DATABASE:2}
+    redisHost: ${TESTER_REDIS_HOST}:${TESTER_REDIS_PORT}
+    redisPassword: ${TESTER_REDIS_PASSWORD}
+  angus-agent:
+    serverCtrlUrlPrefix: ${ANGUS_AGENT_CLOUD_APIS_PREFIX}/tester/openapi2p/v1/ctrl
+    installScriptUrlPrefix: ${ANGUS_AGENT_CLOUD_STORAGE_APIS_PREFIX}/storage/pubapi/v1/file
+    agentVersion: ${ANGUS_AGENT_VERSION}
+    agentFileId: ${ANGUS_AGENT_FILE_ID}
+    linuxInstallScriptId: ${ANGUS_AGENT_LINUX_INSTALL_SCRIPT_ID}
+    linuxInstallScriptName: ${ANGUS_AGENT_LINUX_INSTALL_SCRIPT_NAME}
+    windowsInstallScriptId: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_ID}
+    windowsInstallScriptName: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_NAME}
 
 eureka:
   client:

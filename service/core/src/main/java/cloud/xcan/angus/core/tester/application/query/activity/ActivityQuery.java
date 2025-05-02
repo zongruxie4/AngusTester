@@ -1,9 +1,9 @@
 package cloud.xcan.angus.core.tester.application.query.activity;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

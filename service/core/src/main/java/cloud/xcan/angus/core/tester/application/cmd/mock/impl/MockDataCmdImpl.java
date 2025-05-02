@@ -6,10 +6,9 @@ import static cloud.xcan.angus.remote.message.ProtocolException.M.EXPRESSION_PAR
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockDataCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.domain.mock.data.MockFuncData;
@@ -43,15 +42,11 @@ public class MockDataCmdImpl implements MockDataCmd {
   private ScriptCmd scriptCmd;
 
   @Resource
-  private ExecRemote execRemote;
+  private ExecCmd execCmd;
 
   @Override
   public List<Object> mockFunc(String function, int iterations) {
     return new BizTemplate<List<Object>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Object> process() {
@@ -63,10 +58,6 @@ public class MockDataCmdImpl implements MockDataCmd {
   @Override
   public List<MockFuncData> mockFuncInBatch(List<MockFuncRequest> functions) {
     return new BizTemplate<List<MockFuncData>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<MockFuncData> process() {
@@ -83,10 +74,6 @@ public class MockDataCmdImpl implements MockDataCmd {
   @Override
   public List<String> mockText(String text, int iterations) {
     return new BizTemplate<List<String>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<String> process() {
@@ -98,10 +85,6 @@ public class MockDataCmdImpl implements MockDataCmd {
   @Override
   public List<MockTextData> mockTextInBatch(List<MockTextRequest> texts) {
     return new BizTemplate<List<MockTextData>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<MockTextData> process() {
@@ -119,10 +102,6 @@ public class MockDataCmdImpl implements MockDataCmd {
   public IdKey<Long, Object> dataScriptAdd(Long scriptId, Long projectId, String plugin,
       Configuration configuration, MockData mockData) {
     return new BizTemplate<IdKey<Long, Object>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
@@ -147,10 +126,6 @@ public class MockDataCmdImpl implements MockDataCmd {
   @Override
   public String dataScriptView(String plugin, Configuration configuration, MockData mockData) {
     return new BizTemplate<String>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected String process() {
@@ -168,18 +143,13 @@ public class MockDataCmdImpl implements MockDataCmd {
   public IdKey<Long, Object> dataGen(Long scriptId, Long projectId, String plugin,
       Configuration configuration, MockData mockData) {
     return new BizTemplate<IdKey<Long, Object>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
         Long scriptId0 = dataScriptAdd(scriptId, projectId, plugin, configuration, mockData).getId();
 
         // Create execution
-        return execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scriptId0))
-            .orElseContentThrow();
+        return execCmd.addByRemoteScript(null, scriptId0, null, null, null, null);
       }
     }.execute();
   }

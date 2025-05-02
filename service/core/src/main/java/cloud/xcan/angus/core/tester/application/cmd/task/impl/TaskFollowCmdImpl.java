@@ -89,10 +89,6 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
   @Override
   public void cancelAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

@@ -91,10 +91,6 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
   @Override
   public void cancelAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

@@ -9,6 +9,7 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.core.tester.application.converter.TagTargetConverter.toCaseTagTargets;
 import static cloud.xcan.angus.core.tester.application.converter.TagTargetConverter.toUpdateCaseTag;
 import static cloud.xcan.angus.core.tester.application.converter.TagTargetConverter.toUpdateTaskTag;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -151,7 +152,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     TaskInfo taskDb = taskQuery.checkAndFindInfo(taskId);
 
     // Clear tags, do not log activity when database does not exist
-    if (ObjectUtils.isEmpty(tagIds)) {
+    if (isEmpty(tagIds)) {
       if (tagQuery.hasTag(taskId)) {
         delete0ByTaskIds(Collections.singleton(taskId));
         // Add clear tags activity
@@ -277,7 +278,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     FuncCaseInfo tagDb = funcCaseQuery.checkAndFindInfo(caseId);
 
     // Clear tags, do not log activity when database does not exist
-    if (ObjectUtils.isEmpty(tagIds)) {
+    if (isEmpty(tagIds)) {
       if (tagQuery.hasTag(caseId)) {
         delete0ByCaseIds(Collections.singleton(caseId));
         // Add clear tags activity

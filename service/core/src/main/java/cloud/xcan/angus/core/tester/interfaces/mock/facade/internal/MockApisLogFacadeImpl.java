@@ -9,7 +9,6 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.query.mock.MockApisLogQuery;
 import cloud.xcan.angus.core.tester.application.query.mock.MockApisLogSearch;
-import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLog;
 import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLogInfo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockApisLogFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.log.MockApisLogFindDto;

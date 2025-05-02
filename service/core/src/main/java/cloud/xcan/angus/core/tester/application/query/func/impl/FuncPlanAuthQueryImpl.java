@@ -7,7 +7,6 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantSysAdmin
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
 import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
-
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
@@ -43,7 +42,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.CollectionUtils;
 
 @Biz
 public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
@@ -211,10 +209,6 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
   @Override
   public void check(Long planId, FuncPlanPermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -346,7 +340,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
     }
 
     List<FuncPlanAuth> auths = findAuth(PrincipalContext.getUserId(), authIds);
-    if (CollectionUtils.isEmpty(auths)) {
+    if (isEmpty(auths)) {
       long firstId = authIds.stream().findFirst().get();
       FuncPlan plan = funcPlanRepo.findById(firstId).orElse(null);
       throw BizException.of(FUNC_PLAN_NO_AUTH_CODE, FUNC_PLAN_NO_AUTH,

@@ -1,13 +1,13 @@
 package cloud.xcan.angus.core.tester.application.query.script.impl;
 
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_NO_AUTH_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_NO_AUTH_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_NO_TARGET_AUTH;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_NO_TARGET_AUTH_CODE;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
@@ -15,8 +15,10 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
@@ -26,11 +28,10 @@ import cloud.xcan.angus.core.tester.domain.script.ScriptRepo;
 import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuth;
 import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuthCurrent;
 import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuthRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,11 +42,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.CollectionUtils;
 
 @Biz
 public class ScriptAuthQueryImpl implements ScriptAuthQuery {
@@ -229,10 +228,6 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
   @Override
   public void check(Long scriptId, ScriptPermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -347,7 +342,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }
 
     List<ScriptAuth> auths = findAuth(getUserId(), authIds);
-    if (CollectionUtils.isEmpty(auths)) {
+    if (isEmpty(auths)) {
       long firstId = authIds.stream().findFirst().get();
       Script script = scriptRepo.find0ById(firstId).orElse(null);
       throw BizException.of(SCRIPT_NO_TARGET_AUTH_CODE, SCRIPT_NO_TARGET_AUTH,

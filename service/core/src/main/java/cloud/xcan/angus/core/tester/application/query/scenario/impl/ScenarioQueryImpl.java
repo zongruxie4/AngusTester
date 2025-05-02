@@ -2,18 +2,18 @@ package cloud.xcan.angus.core.tester.application.query.scenario.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SCENARIO;
 import static cloud.xcan.angus.api.commonlink.EventUtils.assembleAngusTesterUserNoticeEvent;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioConverter.countCreationScenario;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioConverter.toScenarioDetailSummary;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCE_NAME_REPEATED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.ScenarioModification;
 import static cloud.xcan.angus.core.tester.domain.TesterEventMessage.ScenarioModificationCode;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserFullName;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonDeletedResourcesStatsFilter;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserFullName;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
@@ -22,21 +22,27 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import cloud.xcan.angus.agent.message.runner.RunnerRunVo;
-import cloud.xcan.angus.api.ctrl.exec.ExecDoorRemote;
-import cloud.xcan.angus.api.ctrl.exec.vo.ExecInfoVo;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.NameJoin;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.event.EventSender;
+import cloud.xcan.angus.core.event.source.EventContent;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.converter.ScenarioConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
+import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
+import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioListRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
@@ -48,16 +54,11 @@ import cloud.xcan.angus.core.tester.domain.scenario.follow.ScenarioFollowRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.summary.ScenarioDetailSummary;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.event.EventSender;
-import cloud.xcan.angus.core.event.source.EventContent;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
-import cloud.xcan.angus.spec.principal.PrincipalContext;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.spec.principal.PrincipalContext;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,7 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -103,7 +103,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   private UserManager userManager;
 
   @Resource
-  private ExecDoorRemote execDoorRemote;
+  private ExecQuery execQuery;
 
   @Override
   public Scenario detail(Long id) {
@@ -143,10 +143,6 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -161,10 +157,6 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   @Override
   public List<Scenario> list(Set<Long> ids) {
     return new BizTemplate<List<Scenario>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Scenario> process() {
@@ -215,10 +207,6 @@ public class ScenarioQueryImpl implements ScenarioQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd) {
     return new BizTemplate<ScenarioResourcesCreationCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ScenarioResourcesCreationCount process() {
@@ -348,32 +336,31 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   @Override
   public void setExecInfo(List<Scenario> scenarios) {
     Set<Long> scenarioIds = scenarios.stream().map(Scenario::getId).collect(Collectors.toSet());
-    List<ExecInfoVo> execInfos = execDoorRemote
-        .listInfoBySource(ScriptSource.SCENARIO.getValue(), scenarioIds, false)
-        .orElseContentThrow();
+    List<ExecInfo> execInfos = execQuery
+        .listInfoBySource(ScriptSource.SCENARIO, scenarioIds, false);
     if (isEmpty(execInfos)) {
       return;
     }
-    Map<Long, List<ExecInfoVo>> execInfoMap = execInfos.stream()
-        .collect(Collectors.groupingBy(ExecInfoVo::getScriptSourceId));
+    Map<Long, List<ExecInfo>> execInfoMap = execInfos.stream()
+        .collect(Collectors.groupingBy(ExecInfo::getScriptSourceId));
     scenarios.forEach(s -> {
-      ExecInfoVo execInfoVo =
+      ExecInfo execInfo =
           execInfoMap.containsKey(s.getId()) ? execInfoMap.get(s.getId()).stream()
               // Sort in descending order to select the last execution
-              .sorted(Comparator.comparing(ExecInfoVo::getActualStartDate,
-                  Comparator.nullsLast(Comparator.naturalOrder())).reversed())
-              .collect(Collectors.toList()).get(0) : null;
-      if (nonNull(execInfoVo)) {
+              .sorted(Comparator.comparing(ExecInfo::getActualStartDate,
+                  Comparator.nullsLast(Comparator.naturalOrder())).reversed()).toList().get(0)
+              : null;
+      if (nonNull(execInfo)) {
         String execFailureMessage = null;
-        if (execInfoVo.getStatus().isWideFailed()) {
-          execFailureMessage = isNotEmpty(execInfoVo.getLastSchedulingResult())
-              ? execInfoVo.getLastSchedulingResult().stream()
+        if (execInfo.getStatus().isWideFailed()) {
+          execFailureMessage = isNotEmpty(execInfo.getLastSchedulingResult())
+              ? execInfo.getLastSchedulingResult().stream()
               .filter(x -> !x.isSuccess() && nonNull(x.getMessage())).findFirst()
               .orElse(new RunnerRunVo()).getMessage() : null;
           execFailureMessage = nullSafe(execFailureMessage,
-              nullSafe(execInfoVo.getMeterMessage(), "Unknown Error"));
+              nullSafe(execInfo.getMeterMessage(), "Unknown Error"));
         }
-        s.setLastExecId(execInfoVo.getId()).setLastExecStatus(execInfoVo.getStatus())
+        s.setLastExecId(execInfo.getId()).setLastExecStatus(execInfo.getStatus())
             .setLastExecFailureMessage(execFailureMessage);
       }
     });
@@ -403,8 +390,8 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     receiveObjectIds.addAll(followUserIds);
     receiveObjectIds.remove(getUserId());
     if (isNotEmpty(receiveObjectIds)) {
-      String message = message(ScenarioModification, new Object[]{getUserFullName(),
-              scenarioDb.getName(), activity.getDescription()},
+      String message = message(ScenarioModification, new Object[]{
+              getUserFullName(), scenarioDb.getName(), activity.getDescription()},
           PrincipalContext.getDefaultLanguage().toLocale());
       EventContent event = assembleAngusTesterUserNoticeEvent(ScenarioModificationCode, message,
           SCENARIO.getValue(), scenarioDb.getId().toString(), scenarioDb.getName(), noticeTypes,

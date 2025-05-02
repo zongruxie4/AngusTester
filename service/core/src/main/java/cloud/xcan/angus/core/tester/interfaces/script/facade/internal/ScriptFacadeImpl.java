@@ -119,7 +119,7 @@ public class ScriptFacadeImpl implements ScriptFacade {
 
   @Override
   public ScriptInfoVo info(Long id) {
-    return toInfoVo(scriptQuery.info(id));
+    return toInfoVo(scriptQuery.findById(id));
   }
 
   @Override

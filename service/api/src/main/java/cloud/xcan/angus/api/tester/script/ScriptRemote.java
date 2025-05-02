@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author XiaoLong Liu
- */@FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
+ */
+@FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
 public interface ScriptRemote {
 
   @Operation(description = "Add script", operationId = "script:add")

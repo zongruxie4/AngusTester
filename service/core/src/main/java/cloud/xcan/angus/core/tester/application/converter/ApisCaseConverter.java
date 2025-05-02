@@ -4,11 +4,11 @@ import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
-import cloud.xcan.angus.model.element.http.ApisCaseType;
-import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
+import cloud.xcan.angus.model.element.http.ApisCaseType;
+import cloud.xcan.angus.model.element.http.Http;
 import io.swagger.v3.oas.models.extension.ApisProtocol;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;

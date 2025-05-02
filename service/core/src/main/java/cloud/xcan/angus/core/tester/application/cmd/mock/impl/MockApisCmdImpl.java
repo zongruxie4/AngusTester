@@ -18,8 +18,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
-import cloud.xcan.angus.api.ctrl.mockservice.MockServiceManageRemote;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceApisSyncDto;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
@@ -27,6 +25,7 @@ import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockApisCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockApisResponseCmd;
+import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.converter.MockApisConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
@@ -43,6 +42,7 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponse;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponseRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServicePermission;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.model.element.mock.apis.MockResponse;
 import cloud.xcan.angus.model.remoting.dto.MockApisRequestCountDto.Counter;
@@ -96,7 +96,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
   private ActivityCmd activityCmd;
 
   @Resource
-  private MockServiceManageRemote mockServiceManageRemote;
+  private MockServiceManageCmd mockServiceManageCmd;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -296,8 +296,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
           activityCmd.addAll(toActivities(MOCK_APIS, updatedApisDb, ActivityType.UPDATED));
 
           idKeys.addAll(updatedApisDb.stream()
-              .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
-              .collect(Collectors.toList()));
+              .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName())).toList());
         }
         return idKeys;
       }
@@ -713,7 +712,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
   public void syncAddedApisToServiceInstance0(MockService service, List<MockApis> apis) {
     mockServiceQuery.setNodeInfo(List.of(service));
     MockServiceApisSyncDto syncDto = toMockServiceApisSyncDto(service, apis);
-    mockServiceManageRemote.syncApis(syncDto).orElseContentThrow();
+    mockServiceManageCmd.syncApis(syncDto);
   }
 
   @Override
@@ -721,7 +720,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     if (isNotEmpty(apis)) {
       try {
         mockServiceQuery.setNodeInfo(List.of(service));
-        mockServiceManageRemote.deleteApis(toMockServiceApisDeleteDto(service, apis));
+        mockServiceManageCmd.deleteApis(toMockServiceApisDeleteDto(service, apis));
       } catch (Exception e) {
         log.error("Sync the apis of mock service instance exception: ", e);
       }

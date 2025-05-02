@@ -161,10 +161,6 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
   @Override
   public void check(Long apisId, ApiPermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

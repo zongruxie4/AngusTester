@@ -1,12 +1,12 @@
 package cloud.xcan.angus.core.tester.application.query.task.impl;
 
+import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstAndRemove;
 import static cloud.xcan.angus.core.tester.application.converter.TaskSprintConverter.getSprintCreatorResourcesFilter;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_DATE_RANGE_ERROR_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NAME_REPEATED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NOT_COMPLETED;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NOT_STARTED;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_NOT_STARTED_CODE;
-import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstAndRemove;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DEFAULT_DATE_TIME_FORMAT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
@@ -22,11 +22,12 @@ import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.ProtocolException;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.api.pojo.Progress;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskMeetingQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
@@ -36,14 +37,14 @@ import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
 import cloud.xcan.angus.core.tester.domain.task.count.SprintTaskNum;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintRepo;
-import cloud.xcan.angus.core.tester.infra.persistence.mysql.task.TaskRepoMysql;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.biz.exception.BizException;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.task.TaskRepoMysql;
 import cloud.xcan.angus.core.utils.CoreUtils;
+import cloud.xcan.angus.remote.message.ProtocolException;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.utils.DateUtils;
+import jakarta.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -54,7 +55,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -91,10 +91,6 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   @Override
   public TaskSprint detail(Long id) {
     return new BizTemplate<TaskSprint>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TaskSprint process() {

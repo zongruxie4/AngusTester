@@ -35,8 +35,6 @@ import cloud.xcan.angus.api.commonlink.tenant.TenantRepo;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.commonlink.user.UserBaseRepo;
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
-import cloud.xcan.angus.api.ctrl.exec.ExecDoorRemote;
-import cloud.xcan.angus.api.ctrl.exec.vo.ExecInfoVo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.NoticeType;
 import cloud.xcan.angus.api.manager.SettingManager;
@@ -49,6 +47,7 @@ import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
+import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncPlanQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
@@ -61,6 +60,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.activity.SimpleActivityResource;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
+import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
@@ -146,7 +146,7 @@ public class CommonQueryImpl implements CommonQuery {
   private ApplicationInfo applicationInfo;
 
   @Resource
-  private ExecDoorRemote execDoorRemote;
+  private ExecQuery execQuery;
 
   @Override
   public void checkAdminPermission() {
@@ -157,23 +157,23 @@ public class CommonQueryImpl implements CommonQuery {
 
   @Override
   public String checkAndGetAuthName(AuthObjectType authObjectType, Long authObjectId) {
-    switch (authObjectType) {
-      case USER:
+    return switch (authObjectType) {
+      case USER -> {
         UserBase userBase = userBaseRepo.findValidById(authObjectId).orElseThrow(
             () -> ResourceNotFound.of(String.valueOf(authObjectId), "User"));
-        return userBase.getFullName();
-      case GROUP:
+        yield userBase.getFullName();
+      }
+      case GROUP -> {
         Group group = groupRepo.findValidById(authObjectId).orElseThrow(
             () -> ResourceNotFound.of(String.valueOf(authObjectId), "Group"));
-        return group.getName();
-      case DEPT:
+        yield group.getName();
+      }
+      case DEPT -> {
         Dept dept = deptRepo.findById(authObjectId).orElseThrow(
             () -> ResourceNotFound.of(String.valueOf(authObjectId), "Department"));
-        return dept.getName();
-      default:
-        // NOOP
-    }
-    return null;
+        yield dept.getName();
+      }
+    };
   }
 
   /**
@@ -219,7 +219,7 @@ public class CommonQueryImpl implements CommonQuery {
   @Override
   public CombinedTarget checkAndGetCombinedTarget(CombinedTargetType targetType, Long targetId,
       boolean findParent) {
-    String targetName = null;
+    String targetName;
     if (CombinedTargetType.SCENARIO.equals(targetType)) {
       Scenario scenarioDb = scenarioQuery.checkAndFind0(targetId);
       targetName = scenarioDb.getName();
@@ -233,14 +233,12 @@ public class CommonQueryImpl implements CommonQuery {
         apisParent = servicesQuery.checkAndFind(apiDb.getServiceId());
       }
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setApisBaseInfo(apiDb)
-          .setApisParent(apisParent);
+          .setTargetName(targetName).setApisBaseInfo(apiDb).setApisParent(apisParent);
     } else if (CombinedTargetType.SERVICE.equals(targetType)) {
       Services serviceDb = servicesQuery.checkAndFind(targetId);
       targetName = serviceDb.getName();
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setServices(serviceDb)
-          .setApisParent(null);
+          .setTargetName(targetName).setServices(serviceDb).setApisParent(null);
     } else if (CombinedTargetType.TASK.equals(targetType)) {
       TaskInfo taskDb = taskQuery.checkAndFindInfo(targetId);
       targetName = taskDb.getName();
@@ -249,8 +247,7 @@ public class CommonQueryImpl implements CommonQuery {
         taskParent = taskSprintQuery.checkAndFind(taskDb.getSprintId());
       }
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setTaskInfo(taskDb)
-          .setTaskParent(taskParent);
+          .setTargetName(targetName).setTaskInfo(taskDb).setTaskParent(taskParent);
     } else if (CombinedTargetType.TASK_SPRINT.equals(targetType)) {
       TaskSprint sprintDb = taskSprintQuery.checkAndFind(targetId);
       targetName = sprintDb.getName();
@@ -265,14 +262,12 @@ public class CommonQueryImpl implements CommonQuery {
         caseParent = funcPlanQuery.checkAndFind(caseDb.getPlanId());
       }
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setCaseInfo(caseDb)
-          .setCaseParent(caseParent);
+          .setTargetName(targetName).setCaseInfo(caseDb).setCaseParent(caseParent);
     } else if (CombinedTargetType.FUNC_PLAN.equals(targetType)) {
       FuncPlan planDb = funcPlanQuery.checkAndFind(targetId);
       targetName = planDb.getName();
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setPlan(planDb)
-          .setCaseParent(null);
+          .setTargetName(targetName).setPlan(planDb).setCaseParent(null);
     }
     return null;
   }
@@ -316,37 +311,29 @@ public class CommonQueryImpl implements CommonQuery {
       }
       targetName = serviceDb.getName();
       return new CombinedTarget().setTargetType(targetType).setTargetId(targetId)
-          .setTargetName(targetName).setServices(serviceDb)
-          .setApisParent(null);
+          .setTargetName(targetName).setServices(serviceDb).setApisParent(null);
     }
   }
 
   @Override
   public ActivityResource checkAndFindActivityResource(CombinedTargetType targetType,
       Long targetId) {
-    switch (targetType) {
-      case PROJECT:
-        return projectQuery.checkAndFind(targetId);
-      case TASK_SPRINT:
-        return taskSprintQuery.checkAndFind(targetId);
-      case TASK:
-        return taskQuery.checkAndFindInfo(targetId);
-      case FUNC_PLAN:
-        return funcPlanQuery.checkAndFind(targetId);
-      case FUNC_CASE:
-        return funcCaseQuery.checkAndFindInfo(targetId);
-      case SERVICE:
-        return servicesQuery.checkAndFind(targetId);
-      case API:
-        return apisQuery.checkAndFindBaseInfo(targetId);
-      case SCENARIO:
-        return scenarioQuery.checkAndFind(targetId);
-      case EXECUTION:
-        ExecInfoVo execInfoVo = execDoorRemote.info(targetId, true).orElseContentThrow();
-        return new SimpleActivityResource().setId(execInfoVo.getId()).setName(execInfoVo.getName())
-            .setProjectId(execInfoVo.getProjectId());
-    }
-    throw ProtocolException.of("Unsupported target type: " + targetType);
+    return switch (targetType) {
+      case PROJECT -> projectQuery.checkAndFind(targetId);
+      case TASK_SPRINT -> taskSprintQuery.checkAndFind(targetId);
+      case TASK -> taskQuery.checkAndFindInfo(targetId);
+      case FUNC_PLAN -> funcPlanQuery.checkAndFind(targetId);
+      case FUNC_CASE -> funcCaseQuery.checkAndFindInfo(targetId);
+      case SERVICE -> servicesQuery.checkAndFind(targetId);
+      case API -> apisQuery.checkAndFindBaseInfo(targetId);
+      case SCENARIO -> scenarioQuery.checkAndFind(targetId);
+      case EXECUTION -> {
+        ExecInfo execInfo = execQuery.listInfo(Set.of(targetId), false).get(0);
+        yield new SimpleActivityResource().setId(execInfo.getId()).setName(execInfo.getName())
+            .setProjectId(execInfo.getProjectId());
+      }
+      default -> throw ProtocolException.of("Unsupported target type: " + targetType);
+    };
   }
 
   /**

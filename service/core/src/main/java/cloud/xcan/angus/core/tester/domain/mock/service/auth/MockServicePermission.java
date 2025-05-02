@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum MockServicePermission implements EnumMessage<String> {
   ADD, VIEW, MODIFY, DELETE, RUN, GRANT, EXPORT;
 

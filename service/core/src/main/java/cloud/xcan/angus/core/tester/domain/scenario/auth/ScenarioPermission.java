@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum ScenarioPermission implements EnumMessage<String> {
   VIEW, MODIFY, DELETE, TEST, GRANT, EXPORT;
 

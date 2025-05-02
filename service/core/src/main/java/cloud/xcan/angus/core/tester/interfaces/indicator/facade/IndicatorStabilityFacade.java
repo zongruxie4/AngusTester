@@ -1,12 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade;
 
-import cloud.xcan.angus.api.tester.indicator.vo.StabilityVo;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.Collection;

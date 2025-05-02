@@ -4,6 +4,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.manager.UserManager;
+import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.tester.application.query.task.TaskFuncCaseQuery;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoRepo;
@@ -13,14 +14,13 @@ import cloud.xcan.angus.core.tester.domain.task.cases.CaseTestHit;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCase;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseAssoc;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseRepo;
-import cloud.xcan.angus.core.biz.Biz;
+import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 
 @Biz
 public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {

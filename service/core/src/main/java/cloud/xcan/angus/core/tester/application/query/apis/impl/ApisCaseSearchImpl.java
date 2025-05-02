@@ -29,10 +29,6 @@ public class ApisCaseSearchImpl implements ApisCaseSearch {
   public Page<ApisCaseInfo> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ApisCaseInfo> clz, String... matches) {
     return new BizTemplate<Page<ApisCaseInfo>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisCaseInfo> process() {

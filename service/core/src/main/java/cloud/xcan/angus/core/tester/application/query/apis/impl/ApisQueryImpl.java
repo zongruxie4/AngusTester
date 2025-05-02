@@ -299,10 +299,6 @@ public class ApisQueryImpl implements ApisQuery {
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -434,10 +430,6 @@ public class ApisQueryImpl implements ApisQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd) {
     return new BizTemplate<ApisResourcesCreationCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ApisResourcesCreationCount process() {

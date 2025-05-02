@@ -16,7 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "mock_apis_log")
 @Setter
 @Getter

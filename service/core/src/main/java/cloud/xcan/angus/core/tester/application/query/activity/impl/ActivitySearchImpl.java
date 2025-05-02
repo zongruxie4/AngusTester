@@ -1,15 +1,15 @@
 package cloud.xcan.angus.core.tester.application.query.activity.impl;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.activity.ActivityQuery;
 import cloud.xcan.angus.core.tester.application.query.activity.ActivitySearch;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivitySearchRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import java.util.Set;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -29,10 +29,6 @@ public class ActivitySearchImpl implements ActivitySearch {
   public Page<Activity> search(Set<SearchCriteria> criteria, PageRequest pageable,
       Class<Activity> clz, String... matches) {
     return new BizTemplate<Page<Activity>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Activity> process() {

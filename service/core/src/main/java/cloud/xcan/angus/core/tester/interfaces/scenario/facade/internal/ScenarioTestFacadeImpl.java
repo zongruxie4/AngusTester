@@ -2,11 +2,11 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioTestAssembler.generateToTask;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecResultRemote;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioTestCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTestQuery;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.test.TestResultDetailVo;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.test.ScenarioTestTaskGenerateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
@@ -36,7 +36,7 @@ public class ScenarioTestFacadeImpl implements ScenarioTestFacade {
   private TaskTestFacade taskTestFacade;
 
   @Resource
-  private ExecResultRemote execResultRemote;
+  private ExecResultFacade execResultFacade;
 
   @Override
   public void testEnabled(Long scenarioId, Set<TestType> testTypes, Boolean enabled) {
@@ -88,7 +88,7 @@ public class ScenarioTestFacadeImpl implements ScenarioTestFacade {
   @Override
   public TestResultDetailVo testResult(Long scenarioId) {
     TestResultDetailVo result = new TestResultDetailVo();
-    result.setTestResult(execResultRemote.scenarioResult(scenarioId).orElseContentThrow());
+    result.setTestResult(execResultFacade.scenarioResult(scenarioId));
     result.setAssocTasks(taskTestFacade.assocList(TaskType.SCENARIO_TEST, scenarioId));
     return result;
   }

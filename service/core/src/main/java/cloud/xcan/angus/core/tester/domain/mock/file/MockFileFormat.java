@@ -5,7 +5,8 @@ import cloud.xcan.angus.spec.locale.EnumValueMessage;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum MockFileFormat implements EnumValueMessage<String> {
   CSV, XML, JSON, SQL, EXCEL, TXT, BINARY;
 

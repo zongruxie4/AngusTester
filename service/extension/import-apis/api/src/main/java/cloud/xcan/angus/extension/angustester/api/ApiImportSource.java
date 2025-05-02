@@ -5,7 +5,8 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum ApiImportSource implements EnumMessage<String> {
   OPENAPI, /*YAPI,*/ POSTMAN, ANGUS;
 

@@ -1,34 +1,31 @@
 package cloud.xcan.angus.core.tester.application.query.script.impl;
 
-import static cloud.xcan.angus.core.tester.application.converter.ScriptConverter.countCreationScript;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_PROPERTIES_CONSTRAINT_ERROR;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findInfoScope;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.core.tester.application.converter.ScriptConverter.countCreationScript;
+import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_PROPERTIES_CONSTRAINT_ERROR;
+import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrDoorApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
-import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
 import static cloud.xcan.angus.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.model.script.AngusScript;
-import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.angus.parser.AngusParser;
-import cloud.xcan.angus.parser.models.AngusParseResult;
-import cloud.xcan.angus.parser.models.ParseOptions;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.InfoScope;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -46,15 +43,19 @@ import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.tag.ScriptTag;
 import cloud.xcan.angus.core.tester.domain.script.tag.ScriptTagRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
+import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.parser.AngusParser;
+import cloud.xcan.angus.parser.models.AngusParseResult;
+import cloud.xcan.angus.parser.models.ParseOptions;
+import cloud.xcan.angus.remote.InfoScope;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.annotation.Resource;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import java.time.LocalDateTime;
@@ -65,7 +66,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -136,7 +136,7 @@ public class ScriptQueryImpl implements ScriptQuery {
   }
 
   @Override
-  public Script info(Long id) {
+  public Script findById(Long id) {
     return new BizTemplate<Script>() {
       @Override
       protected void checkParams() {
@@ -147,11 +147,7 @@ public class ScriptQueryImpl implements ScriptQuery {
 
       @Override
       protected Script process() {
-        Script script = checkAndFind(id);
-
-        // Note: For angusctrl check permission
-        script.setPermissions(scriptAuthQuery.getUserAuth(id, getUserId()));
-        return script;
+        return checkAndFind(id);
       }
     }.execute();
   }
@@ -159,10 +155,6 @@ public class ScriptQueryImpl implements ScriptQuery {
   @Override
   public List<ScriptInfo> infos(Set<Long> ids) {
     return new BizTemplate<List<ScriptInfo>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<ScriptInfo> process() {
@@ -218,10 +210,6 @@ public class ScriptQueryImpl implements ScriptQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd) {
     return new BizTemplate<ScriptResourcesCreationCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ScriptResourcesCreationCount process() {

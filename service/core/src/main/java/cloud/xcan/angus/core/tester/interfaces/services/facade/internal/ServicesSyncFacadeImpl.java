@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesSyncAssembler.toDomain;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesSyncCmd;
@@ -11,7 +12,6 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.config.Servic
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.config.ServicesSyncTestDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesSyncAssembler;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.config.ServicesSyncDetailVo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +57,7 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
   @Override
   public List<ServicesSyncDetailVo> list(Long serviceId) {
     List<ServicesSync> syncs = servicesSyncQuery.find(serviceId);
-    return ObjectUtils.isEmpty(syncs) ? null : syncs.stream().map(ServicesSyncAssembler::toDetailVo)
+    return isEmpty(syncs) ? null : syncs.stream().map(ServicesSyncAssembler::toDetailVo)
         .collect(Collectors.toList());
   }
 

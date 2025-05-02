@@ -33,7 +33,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -216,7 +215,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
             .map(o -> o.setProjectId(apisDb.getProjectId())
                 .setMockServiceId(apisDb.getMockServiceId()))
             .collect(Collectors.toList());
-    if (CollectionUtils.isNotEmpty(updateMockApisResponses)) {
+    if (isNotEmpty(updateMockApisResponses)) {
       // Check the name cannot be duplicated
       mockApisResponseQuery.checkAddResponseNameExists(updateMockApisResponses);
       batchUpdateOrNotFound0(updateMockApisResponses);

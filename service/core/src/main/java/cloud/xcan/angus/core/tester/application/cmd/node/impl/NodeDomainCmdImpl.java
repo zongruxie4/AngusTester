@@ -68,10 +68,6 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
   @Override
   public void delete(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

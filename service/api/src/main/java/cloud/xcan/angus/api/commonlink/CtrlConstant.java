@@ -1,0 +1,27 @@
+package cloud.xcan.angus.api.commonlink;
+
+public interface CtrlConstant {
+
+  int QUERY_MAX_FREE_EXEC_NODES = 50;
+  int QUERY_MAX_EXEC_NODES = 200;
+  int QUERY_MAX_CTRL_NODES = 200;
+  int EXEC_MAX_FREE_NODES = 1;
+  int EXEC_MAX_FREE_THREADS = 10000;
+  int EXEC_MAX_FREE_DURATION_MS = 5 * 60 * 1000;
+  long EXEC_MAX_FREE_ITERATIONS = 1000000L;
+  int MAX_FREE_EXEC_NUM = 5;
+  int MAX_FREE_CONCURRENT_TASK = 1;
+
+  long LATEST_LIVE_NODE_INTERVAL = 65 * 1000;
+
+  int BROADCAST_CTRL_CONNECTION_TIMEOUT = 5 * 1000;
+  int BROADCAST_CTRL_REQUEST_TIMEOUT_0 = 6 * 1000;
+  int BROADCAST_CTRL_REQUEST_TIMEOUT = 120 * 1000;
+
+  /**
+   * Used by angus agent and runner.
+   */
+  String OPEN2P_DISCOVER_URI_PREFIX = "/openapi2p/v1/ctrl";
+  String OPEN2P_DISCOVER_CONN_INFO_ENDPOINT = OPEN2P_DISCOVER_URI_PREFIX + "/connections/info";
+
+}

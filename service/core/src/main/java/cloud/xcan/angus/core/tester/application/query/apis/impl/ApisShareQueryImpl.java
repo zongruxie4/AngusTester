@@ -6,7 +6,7 @@ import static cloud.xcan.angus.core.biz.ProtocolAssert.assertUnauthorized;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SHARE_EXPIRED;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SHARE_TOKEN_ERROR_T;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
-import static java.lang.String.format;
+import static cloud.xcan.angus.spec.utils.StringUtils.format;
 
 import cloud.xcan.angus.api.gm.setting.SettingUserInnerRemote;
 import cloud.xcan.angus.core.biz.Biz;
@@ -66,10 +66,6 @@ public class ApisShareQueryImpl implements ApisShareQuery {
   public Page<ApisShare> find(GenericSpecification<ApisShare> spec,
       PageRequest pageable) {
     return new BizTemplate<Page<ApisShare>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisShare> process() {

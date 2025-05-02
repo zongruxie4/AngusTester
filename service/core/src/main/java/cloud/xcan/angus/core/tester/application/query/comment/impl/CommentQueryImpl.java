@@ -7,27 +7,27 @@ import static cloud.xcan.angus.api.commonlink.TesterApisMessage.COMMENT_TARGET_N
 import static cloud.xcan.angus.api.commonlink.TesterApisMessage.COMMENT_TARGET_NUM_OVER_LIMIT_T;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_COMMENT_TARGET_NUM;
 import static cloud.xcan.angus.core.tester.application.converter.CommentConverter.toCommentSummary;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.hasPolicy;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantSysAdmin;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.TesterConstant;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.tester.application.converter.CommentConverter;
 import cloud.xcan.angus.core.tester.application.query.comment.CommentQuery;
 import cloud.xcan.angus.core.tester.domain.comment.Comment;
 import cloud.xcan.angus.core.tester.domain.comment.CommentRepo;
 import cloud.xcan.angus.core.tester.domain.comment.summary.CommentSummary;
 import cloud.xcan.angus.core.tester.domain.comment.summary.CommentTreeSummary;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.exception.BizException;
-import cloud.xcan.angus.core.biz.exception.QuotaException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -45,10 +45,6 @@ public class CommentQueryImpl implements CommentQuery {
   @Override
   public Comment detail(Long id) {
     return new BizTemplate<Comment>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Comment process() {
@@ -61,10 +57,6 @@ public class CommentQueryImpl implements CommentQuery {
   @Override
   public List<Comment> find(Long targetId, String targetType) {
     return new BizTemplate<List<Comment>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Comment> process() {
@@ -76,7 +68,7 @@ public class CommentQueryImpl implements CommentQuery {
   @Override
   public List<CommentTreeSummary> treeSummary(CombinedTargetType targetType, Long targetId) {
     List<Comment> comments = find(targetId, targetType.getValue());
-    if (CollectionUtils.isEmpty(comments)) {
+    if (isEmpty(comments)) {
       return null;
     }
     List<Long> userIds = comments.stream().map(Comment::getUserId).collect(Collectors.toList());

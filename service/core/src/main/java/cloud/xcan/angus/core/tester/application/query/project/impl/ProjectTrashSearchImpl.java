@@ -1,14 +1,14 @@
 package cloud.xcan.angus.core.tester.application.query.project.impl;
 
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectTrashSearch;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrash;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrashSearchRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import java.util.Set;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,10 +25,6 @@ public class ProjectTrashSearchImpl implements ProjectTrashSearch {
   public Page<ProjectTrash> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<ProjectTrash> clz, String... matches) {
     return new BizTemplate<Page<ProjectTrash>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ProjectTrash> process() {

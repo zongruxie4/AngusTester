@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler;
 
 import static cloud.xcan.angus.core.tester.application.converter.NodeConverter.encryptHostPassword;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeInfoAssembler.toOsVo;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
@@ -9,7 +10,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.node.NodeSource;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
 import cloud.xcan.angus.api.tester.node.dto.NodeCountFindDto;
@@ -19,6 +19,7 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.infra.iaas.InstanceChargeType;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
@@ -112,29 +113,29 @@ public class NodeAssembler {
         .collect(Collectors.toList());
   }
 
-  public static void completeNodeDetailVo(NodeDetailVo nodeDetailVo, NodeInfoDetailVo nodeInfoVo) {
-    if (nodeInfoVo != null) {
-      nodeDetailVo.setOnline(nodeInfoVo.getAgentOnline());
-      nodeDetailVo.setOs(nodeInfoVo.getOs());
+  public static void completeNodeDetailVo(NodeDetailVo nodeDetailVo, NodeInfo nodeInfo) {
+    if (nodeInfo != null) {
+      nodeDetailVo.setOnline(nodeInfo.getAgentOnline());
+      nodeDetailVo.setOs(toOsVo(nodeInfo.getOs()));
       //      // Fix: The installation status of the Agent is not synchronized during manual installation.
       //      if (nonNull(nodeInfoVo.getAgentOnline()) && nodeInfoVo.getAgentOnline()){
       //        nodeDetailVo.setInstallAgent(true);
       //      }
-      if (!nodeDetailVo.getSource().isOnlineBuy() && nonNull(nodeInfoVo.getInfo())) {
-        setAgentNodeSpec(nodeDetailVo, nodeInfoVo);
+      if (!nodeDetailVo.getSource().isOnlineBuy() && nonNull(nodeInfo.getInfo())) {
+        setAgentNodeSpec(nodeDetailVo, nodeInfo);
       }
     }
   }
 
-  public static void setAgentNodeSpec(NodeDetailVo nodeDetailVo, NodeInfoDetailVo infoDetailVo) {
+  public static void setAgentNodeSpec(NodeDetailVo nodeDetailVo, NodeInfo nodeInfo) {
     NodeSpecData nodeSpecData = new NodeSpecData();
-    nodeSpecData.setCpu(infoDetailVo.getInfo().getCpuNum());
-    nodeSpecData.setMemory((int) DataSizeUtils.formatRoundingDataSize(infoDetailVo.getInfo()
+    nodeSpecData.setCpu(nodeInfo.getInfo().getCpuNum());
+    nodeSpecData.setMemory((int) DataSizeUtils.formatRoundingDataSize(nodeInfo.getInfo()
         .getMemTotal()).toGigabytes());
-    nodeSpecData.setSysDisk((int) DataSizeUtils.formatDataSize(infoDetailVo.getInfo()
+    nodeSpecData.setSysDisk((int) DataSizeUtils.formatDataSize(nodeInfo.getInfo()
         .getFsTotal()).toGigabytes());
-    if (isNotEmpty(infoDetailVo.getInfo().getNetworkSpeed())) {
-      int bandwidth = Double.valueOf(infoDetailVo.getInfo().getNetworkSpeed()).intValue();
+    if (isNotEmpty(nodeInfo.getInfo().getNetworkSpeed())) {
+      int bandwidth = Double.valueOf(nodeInfo.getInfo().getNetworkSpeed()).intValue();
       if (bandwidth > 0) {
         nodeSpecData.setNetwork(bandwidth);
       }

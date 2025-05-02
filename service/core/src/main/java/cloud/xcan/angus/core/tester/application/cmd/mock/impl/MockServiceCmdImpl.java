@@ -38,10 +38,6 @@ import cloud.xcan.angus.agent.message.mockservice.StartVo;
 import cloud.xcan.angus.agent.message.mockservice.StopVo;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
-import cloud.xcan.angus.api.ctrl.mockservice.MockServiceManageRemote;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceApisSyncDto;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceStartDto;
-import cloud.xcan.angus.api.ctrl.mockservice.dto.MockServiceStopDto;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
@@ -53,6 +49,7 @@ import cloud.xcan.angus.core.tester.application.cmd.mock.MockApisCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockApisResponseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceAuthCmd;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceCmd;
+import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeDomainDnsCmd;
 import cloud.xcan.angus.core.tester.application.converter.MockApisConverter;
 import cloud.xcan.angus.core.tester.application.converter.MockServiceConverter;
@@ -82,6 +79,9 @@ import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.domain.NodeDomain;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceApisSyncDto;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStartDto;
+import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceStopDto;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -153,7 +153,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   private ApisCmd apisCmd;
 
   @Resource
-  private MockServiceManageRemote mockServiceManageRemote;
+  private MockServiceManageCmd mockServiceManageCmd;
 
   @Resource
   private CommonQuery commonQuery;
@@ -529,7 +529,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         // Start mock service
         MockServiceStartDto startDto = toMockServiceStartDto(nodeMap, serviceDbs,
             mockServiceTesterApisUrlPrefix);
-        List<StartVo> vos = mockServiceManageRemote.start(startDto).orElseContentThrow();
+        List<StartVo> vos = mockServiceManageCmd.start(startDto);
 
         // Start activity
         activityCmd.addAll(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.START));
@@ -555,7 +555,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
       @Override
       protected List<StopVo> process() {
         MockServiceStopDto stopDto = toMockServiceStopDto(serviceDbs);
-        List<StopVo> vos = mockServiceManageRemote.stop(stopDto).orElseContentThrow();
+        List<StopVo> vos = mockServiceManageCmd.stop(stopDto);
 
         // Stop activity
         activityCmd.addAll(toActivities(MOCK_SERVICE, serviceDbs, ActivityType.STOP));
@@ -696,10 +696,6 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   public IdKey<Long, Object> importExample(Long projectId) {
     return new BizTemplate<IdKey<Long, Object>>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
@@ -730,10 +726,6 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   @Override
   public void importApisExample(Long id) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -935,7 +927,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
       mockServiceQuery.setNodeInfo(List.of(service));
 
       MockServiceApisSyncDto syncDto = toMockServiceApisSyncDto(service, false);
-      mockServiceManageRemote.syncApis(syncDto).orElseContentThrow();
+      mockServiceManageCmd.syncApis(syncDto);
     } catch (Exception e) {
       log.error("Sync the service setting and apis to mock service instance exception: ", e);
     }
@@ -944,7 +936,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   private void syncAllToInstance0(MockService service) {
     mockServiceQuery.setNodeInfo(List.of(service));
     MockServiceApisSyncDto syncDto = toMockServiceApisSyncDto(service, true);
-    mockServiceManageRemote.syncApis(syncDto).orElseContentThrow();
+    mockServiceManageCmd.syncApis(syncDto);
   }
 
   private void stopMockService(HashSet<Long> ids) {

@@ -5,6 +5,7 @@ import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TASK_SPRINT;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.query.common.impl.CommonQueryImpl.isAdmin;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
@@ -99,17 +100,13 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
   @Override
   public void clearAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
         // Find existed trash
         List<TaskTrash> trashDbs = getAllTrashesByProject(projectId);
 
-        if (ObjectUtils.isEmpty(trashDbs)) {
+        if (isEmpty(trashDbs)) {
           return null;
         }
 
@@ -188,10 +185,6 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
   @Override
   public void backAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

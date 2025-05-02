@@ -4,9 +4,9 @@ package cloud.xcan.angus.api.tester.node.vo;
 import static cloud.xcan.angus.spec.utils.NetworkUtils.getDefaultAgentPort;
 
 import cloud.xcan.angus.api.commonlink.node.NodeSource;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo.OsVo;
 import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
+import cloud.xcan.angus.api.tester.node.vo.NodeInfoDetailVo.OsVo;
 import cloud.xcan.angus.remote.NameJoinField;
 import java.time.LocalDateTime;
 import java.util.Set;

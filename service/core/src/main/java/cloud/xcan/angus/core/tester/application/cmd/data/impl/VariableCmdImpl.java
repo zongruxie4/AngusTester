@@ -242,10 +242,6 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
@@ -266,10 +262,6 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   @Override
   public void delete(Collection<Long> ids) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

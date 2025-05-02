@@ -1,10 +1,10 @@
 package cloud.xcan.angus.core.tester.application.query.task;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintPermission;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuth;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuthCurrent;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;

@@ -1,15 +1,15 @@
 package cloud.xcan.angus.core.tester.application.query.script;
 
-import cloud.xcan.angus.model.script.AngusScript;
-import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +21,7 @@ public interface ScriptQuery {
 
   Script detail(Long id);
 
-  Script info(Long id);
+  Script findById(Long id);
 
   List<ScriptInfo> infos(Set<Long> ids);
 
@@ -85,5 +85,6 @@ public interface ScriptQuery {
   void setScriptSourceName(Script script);
 
   void setScriptSourceName(List<ScriptInfo> scriptInfos);
+
 
 }

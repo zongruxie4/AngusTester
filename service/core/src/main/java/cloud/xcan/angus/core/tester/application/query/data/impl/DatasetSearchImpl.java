@@ -21,10 +21,6 @@ public class DatasetSearchImpl implements DatasetSearch {
   public Page<Dataset> search(Set<SearchCriteria> criteria, Pageable pageable, Class<Dataset> clz,
       String... matches) {
     return new BizTemplate<Page<Dataset>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Dataset> process() {

@@ -8,12 +8,11 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.exec.TestCaseResultInfo;
 import cloud.xcan.angus.api.commonlink.exec.TestResultInfo;
-import cloud.xcan.angus.api.ctrl.exec.ExecDoorRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.angus.api.enums.Result;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecTestCmd;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
@@ -28,6 +27,7 @@ import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.List;
@@ -57,7 +57,7 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   private ApplicationInfo applicationInfo;
 
   @Resource
-  private ExecDoorRemote execDoorRemote;
+  private ExecCmd execCmd;
 
   /**
    * Note: A scenario or apis may have multiple testing tasks.
@@ -66,10 +66,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   @Override
   public void testResultUpdate(TestResultInfo testResult, List<TestCaseResultInfo> caseResults) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -100,10 +96,6 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   public IdKey<Long, Object> importExample(Long projectId) {
     return new BizTemplate<IdKey<Long, Object>>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
@@ -112,11 +104,9 @@ public class ExecTestCmdImpl implements ExecTestCmd {
         if (isNull(script)) {
           return null;
         }
-        return execDoorRemote.addByScript(new ExecAddByScriptDto()
-            .setName(script.getName() + "-" + script.getType().getMessage())
-            .setScriptId(script.getId()).setScriptType(script.getType())
-            .setTrial(applicationInfo.isCloudServiceEdition()))
-            .orElseContentThrow();
+        return execCmd.addByRemoteScript(
+            script.getName() + "-" + script.getType().getMessage(), script.getId(),
+            script.getType(), null, new Arguments(), applicationInfo.isCloudServiceEdition());
       }
     }.execute();
   }

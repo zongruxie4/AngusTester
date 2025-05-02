@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.tester.indicator.vo.StabilityVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorStabilityCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
@@ -21,6 +20,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityRep
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
@@ -68,7 +68,7 @@ public class IndicatorStabilityFacadeImpl implements IndicatorStabilityFacade {
 
   @Override
   public StabilityVo detailOrDefault(CombinedTargetType targetType, Long tagetId) {
-    return toIndicatorStabilityVo(indicatorStabilityQuery.detailAndDefault(targetType, tagetId));
+    return toIndicatorStabilityVo(indicatorStabilityQuery.detailOrDefault(targetType, tagetId));
   }
 
   @NameJoin

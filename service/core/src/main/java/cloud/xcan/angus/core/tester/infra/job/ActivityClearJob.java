@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivityClearJob {
 
-  private static final String LOCK_KEY = "job:angustester:ActivityClearJob";
+  private static final String LOCK_KEY = "tester:job:ActivityClearJob";
 
   private static final Long RESERVED_NUM = 200L;
   private static final Long COUNT = 2000L;

@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.domain.script.auth;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import lombok.Getter;

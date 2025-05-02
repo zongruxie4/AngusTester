@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.version;
 
-import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.tester.domain.version.SoftwareVersion;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;

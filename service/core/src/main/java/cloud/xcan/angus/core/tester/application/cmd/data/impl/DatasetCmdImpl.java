@@ -138,10 +138,6 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   public IdKey<Long, Object> replace(Dataset dataset) {
     return new BizTemplate<IdKey<Long, Object>>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
@@ -238,10 +234,6 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
@@ -262,10 +254,6 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   @Override
   public void delete(Collection<Long> ids) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

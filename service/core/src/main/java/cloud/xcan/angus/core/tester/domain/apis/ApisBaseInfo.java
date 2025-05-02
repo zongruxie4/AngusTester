@@ -41,7 +41,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * @author XiaoLong Liu
- */@Entity
+ */
+@Entity
 @Table(name = "apis")
 @SQLRestriction("deleted = 0 and service_deleted = 0")
 @SQLDelete(sql = "update apis set deleted = 1 where id = ?")

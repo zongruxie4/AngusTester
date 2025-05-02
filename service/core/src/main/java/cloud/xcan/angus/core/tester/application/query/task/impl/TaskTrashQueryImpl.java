@@ -8,13 +8,13 @@ import static cloud.xcan.angus.core.tester.application.query.common.impl.CommonQ
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.core.tester.application.query.task.TaskTrashQuery;
-import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
-import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrashRepo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.core.tester.application.query.task.TaskTrashQuery;
+import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
+import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrashRepo;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 
@@ -27,10 +27,6 @@ public class TaskTrashQueryImpl implements TaskTrashQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

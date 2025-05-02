@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum FuncPlanPermission implements EnumMessage<String> {
   MODIFY_PLAN, DELETE_PLAN, ADD_CASE, MODIFY_CASE, DELETE_CASE, EXPORT_CASE,
   REVIEW, RESET_REVIEW_RESULT, TEST, RESET_TEST_RESULT, ESTABLISH_BASELINE, GRANT;

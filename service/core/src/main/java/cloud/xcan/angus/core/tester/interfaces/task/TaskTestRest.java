@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task;
 
-import cloud.xcan.angus.api.ctrl.exec.vo.result.ExecTestResultDetailVo;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.result.ExecTestResultDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTestFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.model.script.TestType;

@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FuncCaseOverdueJob {
 
-  private static final String LOCK_KEY = "job:angustester:FuncCaseOverdueJob";
+  private static final String LOCK_KEY = "tester:job:FuncCaseOverdueJob";
 
   private static final Long COUNT = 2000L;
 

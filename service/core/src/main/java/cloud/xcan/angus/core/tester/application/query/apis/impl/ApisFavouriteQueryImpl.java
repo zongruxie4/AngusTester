@@ -22,10 +22,6 @@ public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {
   @Override
   public Page<ApisFavouriteP> search(Long projectId, String apisName, PageRequest pageable) {
     return new BizTemplate<Page<ApisFavouriteP>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisFavouriteP> process() {
@@ -38,10 +34,6 @@ public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

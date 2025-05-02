@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.infra.util;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+
 import io.micrometer.core.instrument.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.vngx.jsch.ChannelExec;
 import org.vngx.jsch.ChannelType;
@@ -161,7 +162,7 @@ public class SshUtil {
 
   private String read(InputStream in) throws IOException {
     List<String> lines = IOUtils.readLines(in, StandardCharsets.UTF_8);
-    if (CollectionUtils.isEmpty(lines)) {
+    if (isEmpty(lines)) {
       return "";
     }
     return String.join("\n", lines);

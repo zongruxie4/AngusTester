@@ -6,7 +6,8 @@ import lombok.Getter;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 @Getter
 public enum MockApisSource implements EnumMessage<String> {
   /**

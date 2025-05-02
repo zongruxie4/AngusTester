@@ -58,10 +58,6 @@ public class DatasetQueryImpl implements DatasetQuery {
   @Override
   public Dataset detail(Long id) {
     return new BizTemplate<Dataset>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Dataset process() {
@@ -155,10 +151,6 @@ public class DatasetQueryImpl implements DatasetQuery {
   @Override
   public Page<Dataset> find(GenericSpecification<Dataset> spec, Pageable pageable) {
     return new BizTemplate<Page<Dataset>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Dataset> process() {
@@ -170,10 +162,6 @@ public class DatasetQueryImpl implements DatasetQuery {
   @Override
   public List<Dataset> findByProjectAndIds(Long projectId, @Nullable LinkedHashSet<Long> ids) {
     return new BizTemplate<List<Dataset>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Dataset> process() {

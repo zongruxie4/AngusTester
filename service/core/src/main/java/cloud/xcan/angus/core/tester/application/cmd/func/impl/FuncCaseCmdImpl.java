@@ -814,7 +814,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       @Override
       protected Void process() {
         // Clear attachments
-        if (ObjectUtils.isEmpty(attachments)) {
+        if (isEmpty(attachments)) {
           if (isNotEmpty(caseDb.getAttachments())) {
             // Record activity before modifying caseDb.setAttachmentsData(null)
             Activity activity = toActivity(FUNC_CASE, caseDb,
@@ -1386,10 +1386,6 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {

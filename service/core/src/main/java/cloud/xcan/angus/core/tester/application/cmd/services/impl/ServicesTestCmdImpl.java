@@ -19,12 +19,11 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Collections.singletonList;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTestCmd;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
@@ -47,6 +46,7 @@ import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
 import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
@@ -94,7 +94,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
   private ActivityCmd activityCmd;
 
   @Resource
-  private ExecRemote execRemote;
+  private ExecCmd execCmd;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -367,7 +367,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
             servers);
 
         // Create case functional testing execution
-        execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scriptId)).orElseContentThrow();
+        execCmd.addByRemoteScript(null, scriptId, null, null, new Arguments(), null);
         return null;
       }
     }.execute();
@@ -397,7 +397,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
             servers);
 
         // Create case functional testing execution
-        execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scriptId)).orElseContentThrow();
+        execCmd.addByRemoteScript(null, scriptId, null, null, new Arguments(), null);
         return null;
       }
     }.execute();

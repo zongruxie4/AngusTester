@@ -83,10 +83,6 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
   @Override
   public void clearAll() {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -142,10 +138,6 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
   @Override
   public void backAll() {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

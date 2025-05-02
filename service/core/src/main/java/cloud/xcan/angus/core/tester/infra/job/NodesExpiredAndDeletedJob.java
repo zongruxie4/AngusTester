@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Conditional(CloudServiceEditionCondition.class)
 public class NodesExpiredAndDeletedJob {
 
-  private static final String LOCK_KEY = "job:angustester:NodesExpiredAndDeletedJob";
+  private static final String LOCK_KEY = "tester:job:NodesExpiredAndDeletedJob";
 
   @Resource
   private JobTemplate jobTemplate;

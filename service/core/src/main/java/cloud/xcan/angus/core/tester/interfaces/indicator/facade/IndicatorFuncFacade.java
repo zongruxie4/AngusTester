@@ -1,12 +1,12 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.tester.indicator.vo.FuncVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import java.util.Collection;

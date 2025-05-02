@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.tester.indicator.vo.FuncVo;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
@@ -10,6 +9,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Objects;
 import java.util.Set;

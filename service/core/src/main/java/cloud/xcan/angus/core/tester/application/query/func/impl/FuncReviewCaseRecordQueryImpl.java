@@ -1,14 +1,14 @@
 package cloud.xcan.angus.core.tester.application.query.func.impl;
 
 import cloud.xcan.angus.api.manager.UserManager;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseRecordQuery;
 import cloud.xcan.angus.core.tester.domain.func.review.record.FuncReviewCaseRecord;
 import cloud.xcan.angus.core.tester.domain.func.review.record.FuncReviewCaseRecordRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import java.util.List;
 import jakarta.annotation.Resource;
+import java.util.List;
 
 @Biz
 public class FuncReviewCaseRecordQueryImpl implements FuncReviewCaseRecordQuery {

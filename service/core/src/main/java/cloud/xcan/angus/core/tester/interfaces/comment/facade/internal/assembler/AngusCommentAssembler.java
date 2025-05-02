@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.comment.facade.internal.assembler;
 
 import static cloud.xcan.angus.core.tester.application.query.comment.impl.CommentQueryImpl.hasDeletePermission;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.pidSafe;
 
 import cloud.xcan.angus.api.commonlink.user.UserBase;
@@ -9,7 +10,6 @@ import cloud.xcan.angus.core.tester.interfaces.comment.facade.dto.AngusCommentAd
 import cloud.xcan.angus.core.tester.interfaces.comment.facade.vo.AngusCommentDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.comment.facade.vo.AngusCommentTreeVo;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import cloud.xcan.angus.spec.utils.TreeUtils;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +49,9 @@ public class AngusCommentAssembler {
         .setPid(comment.getPid())
         .setContent(comment.getContent())
         .setUserId(comment.getUserId())
-        .setUserName(ObjectUtils.isEmpty(userMap.get(comment.getUserId())) ? ""
+        .setUserName(isEmpty(userMap.get(comment.getUserId())) ? ""
             : userMap.get(comment.getUserId()).getFullName())
-        .setAvatar(ObjectUtils.isEmpty(userMap.get(comment.getUserId())) ? ""
+        .setAvatar(isEmpty(userMap.get(comment.getUserId())) ? ""
             : userMap.get(comment.getUserId()).getAvatar())
         .setCreatedDate(comment.getCreatedDate())
         .setAllowDeleted(hasDeletePermission(comment));

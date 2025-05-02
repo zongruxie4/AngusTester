@@ -17,24 +17,24 @@ import static java.util.Collections.emptyList;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.commonlink.user.UserBase;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizAssert;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.ProjectListRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -59,10 +59,6 @@ public class ProjectQueryImpl implements ProjectQuery {
   @Override
   public List<Project> userJoined(Long userId, @Nullable String name) {
     return new BizTemplate<List<Project>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Project> process() {
@@ -77,10 +73,6 @@ public class ProjectQueryImpl implements ProjectQuery {
   @Override
   public List<UserBase> userMember(Long id) {
     return new BizTemplate<List<UserBase>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<UserBase> process() {
@@ -114,10 +106,6 @@ public class ProjectQueryImpl implements ProjectQuery {
   @Override
   public Page<Project> find(GenericSpecification<Project> spec, Pageable pageable) {
     return new BizTemplate<Page<Project>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Project> process() {

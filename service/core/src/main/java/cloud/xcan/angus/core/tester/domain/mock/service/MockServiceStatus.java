@@ -6,7 +6,8 @@ import lombok.Getter;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 @Getter
 public enum MockServiceStatus implements EnumMessage<String> {
   NOT_STARTED, RUNNING;

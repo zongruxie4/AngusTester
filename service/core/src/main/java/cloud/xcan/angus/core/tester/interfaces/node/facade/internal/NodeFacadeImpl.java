@@ -4,6 +4,7 @@ import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchS
 import static cloud.xcan.angus.core.tester.application.query.common.impl.CommonQueryImpl.isAdmin;
 import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeAssembler.completeNodeDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeAssembler.toDetailVo;
+import static cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeInfoAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isApi;
 import static cloud.xcan.angus.remote.ApiConstant.RLimit.MAX_PAGE_SIZE;
@@ -13,9 +14,6 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
-import cloud.xcan.angus.api.ctrl.node.NodeInfoRemote;
-import cloud.xcan.angus.api.ctrl.node.dto.NodeInfoFindDto;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.tester.node.dto.NodeCountFindDto;
 import cloud.xcan.angus.api.tester.node.dto.NodeFindDto;
 import cloud.xcan.angus.api.tester.node.dto.NodeOnlinePurchaseDto;
@@ -24,12 +22,15 @@ import cloud.xcan.angus.api.tester.node.vo.NodeDetailVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeCmd;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
+import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeSearch;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import cloud.xcan.angus.core.tester.domain.node.Node;
+import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeFacade;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
+import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeInfoFindDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeTestDto;
@@ -41,7 +42,6 @@ import cloud.xcan.angus.remote.dto.EnabledOrDisabledDto;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.search.SearchOperation;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.HashSet;
@@ -64,7 +64,7 @@ public class NodeFacadeImpl implements NodeFacade {
   private NodeSearch nodeSearch;
 
   @Resource
-  private NodeInfoRemote nodeInfoRemote;
+  private NodeInfoQuery nodeInfoQuery;
 
   @Resource
   private MockServiceQuery mockServiceQuery;
@@ -158,14 +158,14 @@ public class NodeFacadeImpl implements NodeFacade {
   @Override
   public NodeDetailVo detail(Long id) {
     Node node = nodeQuery.detail(id);
-    NodeInfoDetailVo infoDetailVo = null;
+    NodeInfo nodeInfo = null;
     try {
-      infoDetailVo = nodeInfoRemote.detail(id, node.isFreeNode()).orElseContentThrow();
+      nodeInfo = nodeInfoQuery.detail(id, node.isFreeNode());
     } catch (Exception e) {
       // If 404 do Nothing
     }
     NodeDetailVo nodeDetailVo = toDetailVo(node, isAdmin());
-    completeNodeDetailVo(nodeDetailVo, infoDetailVo);
+    completeNodeDetailVo(nodeDetailVo, nodeInfo);
     return nodeDetailVo;
   }
 
@@ -212,12 +212,11 @@ public class NodeFacadeImpl implements NodeFacade {
       if (isFreeNodes) {
         infoFindDto.setIsFreeNode(isFreeNodes);
       }
-      PageResult<NodeInfoDetailVo> detailPage = nodeInfoRemote.list(infoFindDto)
-          .orElseContentThrow();
+      Page<NodeInfo> infoPage = nodeInfoQuery.list(getSpecification(infoFindDto), infoFindDto.tranPage());
       for (NodeDetailVo detailVo : nodeDetailVos.getList()) {
-        for (NodeInfoDetailVo infoDetailVo : detailPage.getList()) {
-          if (infoDetailVo.getId().equals(detailVo.getId())) {
-            completeNodeDetailVo(detailVo, infoDetailVo);
+        for (NodeInfo info : infoPage.getContent()) {
+          if (info.getId().equals(detailVo.getId())) {
+            completeNodeDetailVo(detailVo, info);
           }
         }
       }

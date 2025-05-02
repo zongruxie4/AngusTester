@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @DoInFuture("Conflict with AngusCtrl ExecRunnerClearJob")
 public class ScenarioMonitorJob {
 
-  private static final String LOCK_KEY = "job:angustester:ScenarioMonitorJob";
+  private static final String LOCK_KEY = "tester:job:ScenarioMonitorJob";
 
   private static final Long COUNT = 100L;
 

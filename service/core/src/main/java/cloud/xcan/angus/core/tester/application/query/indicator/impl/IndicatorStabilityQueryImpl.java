@@ -1,16 +1,18 @@
 package cloud.xcan.angus.core.tester.application.query.indicator.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.IndicatorStabilityConverter.toIndicatorStability;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL_CODE;
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
-import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorStabilityConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
@@ -18,9 +20,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.SysException;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,10 +43,6 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   @Override
   public IndicatorStability find(Long targetId, CombinedTargetType targetType) {
     return new BizTemplate<IndicatorStability>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IndicatorStability process() {
@@ -60,13 +56,9 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   }
 
   @Override
-  public IndicatorStability detailAndDefault(CombinedTargetType targetType, Long targetId) {
+  public IndicatorStability detailOrDefault(CombinedTargetType targetType, Long targetId) {
     return new BizTemplate<IndicatorStability>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IndicatorStability process() {
@@ -94,10 +86,6 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
   public Page<IndicatorStability> list(GenericSpecification<IndicatorStability> spec,
       PageRequest pageable, Class<IndicatorStability> clz) {
     return new BizTemplate<Page<IndicatorStability>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<IndicatorStability> process() {

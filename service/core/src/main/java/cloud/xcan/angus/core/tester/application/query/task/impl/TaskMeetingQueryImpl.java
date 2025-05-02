@@ -4,18 +4,18 @@ import static cloud.xcan.angus.core.tester.application.converter.TaskMeetingConv
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.task.TaskMeetingQuery;
 import cloud.xcan.angus.core.tester.domain.task.meeting.TaskMeeting;
 import cloud.xcan.angus.core.tester.domain.task.meeting.TaskMeetingRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,10 +32,6 @@ public class TaskMeetingQueryImpl implements TaskMeetingQuery {
   @Override
   public TaskMeeting detail(Long id) {
     return new BizTemplate<TaskMeeting>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TaskMeeting process() {
@@ -47,10 +43,6 @@ public class TaskMeetingQueryImpl implements TaskMeetingQuery {
   @Override
   public Page<TaskMeeting> find(Specification<TaskMeeting> spec, Pageable pageable) {
     return new BizTemplate<Page<TaskMeeting>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<TaskMeeting> process() {

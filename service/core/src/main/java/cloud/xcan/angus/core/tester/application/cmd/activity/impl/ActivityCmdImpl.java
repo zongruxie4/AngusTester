@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.application.cmd.activity.impl;
 
 
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.Biz;
@@ -10,7 +11,6 @@ import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +44,7 @@ public class ActivityCmdImpl extends CommCmd<Activity, Long> implements Activity
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void addAll(Collection<Activity> activities) {
-    if (!isUserAction() || ObjectUtils.isEmpty(activities)) {
+    if (!isUserAction() || isEmpty(activities)) {
       return;
     }
     batchInsert0(activities);

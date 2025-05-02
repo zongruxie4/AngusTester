@@ -105,10 +105,6 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
   public Datasource testByConfig(Datasource datasource) {
     return new BizTemplate<Datasource>() {
 
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Datasource process() {

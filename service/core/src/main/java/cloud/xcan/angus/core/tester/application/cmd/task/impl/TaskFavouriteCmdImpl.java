@@ -90,10 +90,6 @@ public class TaskFavouriteCmdImpl extends CommCmd<TaskFavourite, Long> implement
   @Override
   public void cancelAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

@@ -71,10 +71,6 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
   @Override
   public List<Variable> findVariables(Long targetId, String targetType) {
     return new BizTemplate<List<Variable>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Variable> process() {
@@ -89,10 +85,6 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
   public Map<Long, List<Variable>> findVariables(Collection<Long> targetIds, String targetType,
       Map<Long, Long> caseApiMap) {
     return new BizTemplate<Map<Long, List<Variable>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Map<Long, List<Variable>> process() {
@@ -149,10 +141,6 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
   @Override
   public List<VariableTarget> findTargets(Long variableId) {
     return new BizTemplate<List<VariableTarget>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<VariableTarget> process() {
@@ -166,10 +154,6 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
   @Override
   public Map<String, String> valuePreview(Long targetId, String targetType) {
     return new BizTemplate<Map<String, String>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Map<String, String> process() {

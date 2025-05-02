@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.project;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.core.tester.domain.project.Project;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.List;
 import java.util.Set;
 

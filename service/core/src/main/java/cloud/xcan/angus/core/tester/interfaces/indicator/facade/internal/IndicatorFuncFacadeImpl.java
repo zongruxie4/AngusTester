@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
-import cloud.xcan.angus.api.tester.indicator.vo.FuncVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorFuncCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorFuncQuery;
@@ -21,6 +20,7 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceD
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorFuncAssembler;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
+import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
@@ -68,7 +68,7 @@ public class IndicatorFuncFacadeImpl implements IndicatorFuncFacade {
 
   @Override
   public FuncVo detailOrDefault(CombinedTargetType targetType, Long targetId) {
-    IndicatorFunc perf = indicatorFuncQuery.detailAndDefault(targetType, targetId);
+    IndicatorFunc perf = indicatorFuncQuery.detailOrDefault(targetType, targetId);
     return toIndicatorFuncVo(perf);
   }
 

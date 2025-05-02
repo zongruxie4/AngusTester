@@ -48,7 +48,6 @@ import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.thread.delay.DelayOrderQueueManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.Resource;
 import java.net.URL;
@@ -58,7 +57,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -125,9 +123,6 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
   @Resource
   private CommonQuery commonQuery;
-
-  @Resource
-  private DelayOrderQueueManager delayOrderQueueManager;
 
   @Override
   public IdKey<Long, Object> add(Project project) {
@@ -274,10 +269,6 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   public IdKey<Long, Object> importExample(@Nullable String name, ProjectType type,
       @Nullable Set<ExampleDataType> dataTypes) {
     return new BizTemplate<IdKey<Long, Object>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IdKey<Long, Object> process() {
@@ -399,10 +390,8 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     /*if (finalDataTypes.contains(ExampleDataType.REPORT) && !isCommunityEdition()) {
       reportCmd.importExample(project.getId(), finalDataTypes);
     }*/
-    // Note: Avoid importing the script example by delaying it before it has been committed.
     if (finalDataTypes.contains(ExampleDataType.EXECUTION)) {
-      delayOrderQueueManager.put(() -> execTestCmd.importExample(project.getId()), 3,
-          TimeUnit.SECONDS);
+      execTestCmd.importExample(project.getId());
     }
   }
 

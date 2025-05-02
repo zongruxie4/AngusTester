@@ -16,15 +16,13 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_IP_NOT_
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isToUser;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.emptySafe;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
-import cloud.xcan.angus.api.ctrl.node.NodeInfoDoorRemote;
-import cloud.xcan.angus.api.ctrl.node.NodeInfoRemote;
-import cloud.xcan.angus.api.ctrl.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.ess.order.OrderInnerRemote;
 import cloud.xcan.angus.api.ess.order.vo.OrderDetailVo;
 import cloud.xcan.angus.api.pojo.node.NodeSpecData;
@@ -37,11 +35,14 @@ import cloud.xcan.angus.core.biz.exception.NoRollbackException;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeCmd;
+import cloud.xcan.angus.core.tester.application.cmd.node.NodeInfoCmd;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeRoleCmd;
 import cloud.xcan.angus.core.tester.application.converter.NodeConverter;
+import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
+import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRole;
 import cloud.xcan.angus.core.tester.infra.iaas.EcsClient;
 import cloud.xcan.angus.core.tester.infra.iaas.InstanceChargeType;
@@ -67,7 +68,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /***
@@ -93,10 +93,10 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   private OrderInnerRemote orderInnerRemote;
 
   @Resource
-  private NodeInfoRemote nodeInfoRemote;
+  private NodeInfoQuery nodeInfoQuery;
 
   @Resource
-  private NodeInfoDoorRemote nodeInfoDoorRemote;
+  private NodeInfoCmd nodeInfoCmd;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -214,7 +214,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         Map<String, List<Node>> regionNodeMap = nodesDb.stream()
             .filter(x -> (x.getSource().isOnlineBuy() && !x.getDeleted()))
             .collect(Collectors.groupingBy(Node::getRegionId));
-        if (ObjectUtils.isEmpty(regionNodeMap)) {
+        if (isEmpty(regionNodeMap)) {
           return null;
         }
 
@@ -247,7 +247,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         Map<String, List<Node>> regionNodeMap = nodesDb.stream()
             .filter(x -> (x.getSource().isOnlineBuy() && !x.getDeleted()))
             .collect(Collectors.groupingBy(Node::getRegionId));
-        if (ObjectUtils.isEmpty(regionNodeMap)) {
+        if (isEmpty(regionNodeMap)) {
           return null;
         }
 
@@ -320,7 +320,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         nodeRepo.deleteAll(nodesDb);
 
         // Delete node info in AngusCtrl
-        nodeInfoDoorRemote.delete(new HashSet<>(ids));
+        nodeInfoCmd.delete(ids);
         return null;
       }
     }.execute();
@@ -449,17 +449,13 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   @Override
   public void syncInstanceInfo() {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
         // Max 100 instances
         Map<String, List<Node>> regionNodeMap = nodeRepo.findPurchuseAndNotSync(BATCH_INSTANCE_SIZE)
             .stream().collect(Collectors.groupingBy(Node::getRegionId));
-        if (ObjectUtils.isEmpty(regionNodeMap)) {
+        if (isEmpty(regionNodeMap)) {
           return null;
         }
 
@@ -487,7 +483,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
               updateNodes.add(descNode);
             }
           }
-          if (CollectionUtils.isNotEmpty(updateNodes)) {
+          if (isNotEmpty(updateNodes)) {
             batchUpdateOrNotFound0(updateNodes);
           }
         }
@@ -500,10 +496,6 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   @Override
   public void expireAndDeleteAliYunInstances() {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -514,12 +506,12 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         // Get expiration instance
         List<Node> expiredNodes = nodeRepo.findExpiredByNotDeletedSource(ONLINE_BUY.getValue(),
             BATCH_INSTANCE_SIZE);
-        if (ObjectUtils.isEmpty(expiredNodes)) {
+        if (isEmpty(expiredNodes)) {
           return null;
         }
 
         Set<Long> nodeIds = expiredNodes.stream().map(Node::getId).collect(Collectors.toSet());
-        nodeInfoDoorRemote.delete(new HashSet<>(nodeIds));
+        nodeInfoCmd.delete(new HashSet<>(nodeIds));
 
         // Delete AliYun instance
         deleteNodesByOnlineBuy(expiredNodes);
@@ -552,8 +544,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       protected AgentInstallCmd process() {
         syncAgentInstallStatus(nodeDb);
 
-        AgentInstallCmd installVo = nodeInfoRemote.agentInstallCmd(nodeDb.getId())
-            .orElseContentThrow();
+        AgentInstallCmd installCmd = nodeInfoCmd.agentInstallCmd(nodeDb.getId());
 
         SshUtil ssh = new SshUtil(emptySafe(nodeDb.getPublicIp(), nodeDb.getIp()),
             nodeDb.getSshPort(), nodeDb.getUsername(), decryptHostPassword(nodeDb.getPassword()));
@@ -563,7 +554,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
           // SSH will be installed to the user's home directory
           String testLinuxOrMacOs = ssh.run("uname -s");
           if ("Linux".equalsIgnoreCase(testLinuxOrMacOs)) {
-            String result = runLinuxAgentInstallCmd(installVo, ssh, nodeDb);
+            String result = runLinuxAgentInstallCmd(installCmd, ssh, nodeDb);
             if (isNotEmpty(result) && result.indexOf(AGENT_STARTED_MESSAGE) > 0) {
               installed = true;
             } else {
@@ -578,7 +569,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
           try {
             String testWindowsOs = ssh.run("systeminfo | findstr Windows");
             if (StringUtils.isNotBlank(testWindowsOs)) {
-              String result = ssh.run(installVo.getWindowsOnlineInstallCmd());
+              String result = ssh.run(installCmd.getWindowsOnlineInstallCmd());
               log.info("Install node {} agent on windows result:{}", nodeDb.getId(), result);
               if (isNotEmpty(result) && result.indexOf(AGENT_STARTED_MESSAGE) > 0) {
                 installed = true;
@@ -595,11 +586,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
           // Prompt for manual installation
           throw BizException.of(NODE_INSTALL_AGENT_FAILED_CODE,
               MessageHolder.message(NODE_INSTALL_AGENT_FAILED) + " : " + resultMessage, null,
-              installVo);
+              installCmd);
         }
         nodeDb.setInstallAgent(true);
         nodeRepo.save(nodeDb);
-        return installVo;
+        return installCmd;
       }
     }.execute();
   }
@@ -636,19 +627,15 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
-  // TODO 测试
+  // TODO Test ...
   @Override
   public void agentAutoInstall() {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
         List<Node> uninstallAgentNodes = nodeRepo.findUninstallAgentNodes(BATCH_INSTANCE_SIZE);
-        if (ObjectUtils.isEmpty(uninstallAgentNodes)) {
+        if (isEmpty(uninstallAgentNodes)) {
           return null;
         }
 
@@ -656,12 +643,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
           boolean installed = false;
           if (testConnectionNodeConfig0(emptySafe(node.getPublicIp(), node.getIp()),
               node.getSshPort(), node.getUsername(), decryptHostPassword(node.getPassword()))) {
-            AgentInstallCmd cmdVo = nodeInfoRemote.agentInstallCmdByDoor(node.getId())
-                .orElseContentThrow();
+            AgentInstallCmd installCmd = nodeInfoCmd.agentInstallCmd(node.getId());
             SshUtil ssh = new SshUtil(emptySafe(node.getPublicIp(), node.getIp()),
                 node.getSshPort(), node.getUsername(), decryptHostPassword(node.getPassword()));
             try {
-              String result = runLinuxAgentInstallCmd(cmdVo, ssh, node);
+              String result = runLinuxAgentInstallCmd(installCmd, ssh, node);
               if (isNotEmpty(result) && result.indexOf("AngusAgent started") > 0) {
                 installed = true;
               }
@@ -678,7 +664,8 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   }
 
   @Override
-  public void testConnectionNodeConfig(String ip, Integer sshPort, String username, String password) {
+  public void testConnectionNodeConfig(String ip, Integer sshPort, String username,
+      String password) {
     boolean result = NetworkUtils.ping(ip);
     BizAssert.assertTrue(result, NODE_IP_NOT_AVAILABLE_T, new Object[]{ip});
     SshUtil sshUtil = new SshUtil(ip, sshPort, username, password);
@@ -734,10 +721,10 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   }
 
   private void syncAgentInstallStatus(Node node) {
-    NodeInfoDetailVo vo;
     try {
-      vo = nodeInfoRemote.detail(node.getId(), node.isFreeNode()).getData();
-      if (nonNull(vo) && nonNull(vo.getAgentInstalled()) && vo.getAgentInstalled()) {
+      NodeInfo nodeInfo = nodeInfoQuery.detail(node.getId(), node.isFreeNode());
+      if (nonNull(nodeInfo) && nonNull(nodeInfo.getAgentInstalled())
+          && nodeInfo.getAgentInstalled()) {
         node.setInstallAgent(true);
         nodeRepo.save(node);
         // The agent is installed, possibly manually offline

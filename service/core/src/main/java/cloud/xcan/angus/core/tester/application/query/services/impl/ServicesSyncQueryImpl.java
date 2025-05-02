@@ -1,33 +1,33 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_SYNC_OPENAPI_NUM;
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_ERROR_KEY;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_NAME_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_NUM_OVER_LIMIT_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_NUM_OVER_LIMIT_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_TEST_CONN_FAILED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_TEST_URL_INVALID;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_ERROR_KEY;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.pojo.auth.SimpleHttpAuth;
-import cloud.xcan.angus.core.tester.application.query.services.ServicesSyncQuery;
-import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSync;
-import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSyncRepo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.QuotaException;
+import cloud.xcan.angus.core.tester.application.query.services.ServicesSyncQuery;
+import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSync;
+import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSyncRepo;
 import cloud.xcan.angus.core.utils.ValidatorUtils;
 import cloud.xcan.angus.spec.http.HttpSender.Request;
 import cloud.xcan.angus.spec.http.HttpUrlConnectionSender;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
+import jakarta.annotation.Resource;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Biz
@@ -39,10 +39,6 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
   @Override
   public List<ServicesSync> find(Long serviceId) {
     return new BizTemplate<List<ServicesSync>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<ServicesSync> process() {

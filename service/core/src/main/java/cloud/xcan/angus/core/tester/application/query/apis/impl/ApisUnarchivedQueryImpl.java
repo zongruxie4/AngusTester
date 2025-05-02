@@ -45,10 +45,6 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
   @Override
   public ApisUnarchived detail(Long id) {
     return new BizTemplate<ApisUnarchived>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ApisUnarchived process() {
@@ -60,10 +56,6 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Long process() {

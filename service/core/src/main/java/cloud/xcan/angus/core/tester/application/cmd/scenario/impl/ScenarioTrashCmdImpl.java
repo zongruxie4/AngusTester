@@ -81,10 +81,6 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
   @Override
   public void clearAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -137,10 +133,6 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
   @Override
   public void backAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

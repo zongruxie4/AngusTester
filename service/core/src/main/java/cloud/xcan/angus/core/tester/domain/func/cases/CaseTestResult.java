@@ -8,7 +8,8 @@ import java.util.Locale;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum CaseTestResult implements EnumMessage<String> {
   PENDING, PASSED, NOT_PASSED, BLOCKED, CANCELED;
 

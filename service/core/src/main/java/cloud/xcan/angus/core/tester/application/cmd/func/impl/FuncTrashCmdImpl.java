@@ -100,10 +100,6 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
   @Override
   public void clearAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {
@@ -188,10 +184,6 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
   @Override
   public void backAll(Long projectId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

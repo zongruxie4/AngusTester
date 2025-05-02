@@ -67,10 +67,6 @@ public class VariablesQueryImpl implements VariableQuery {
   @Override
   public Variable detail(Long id) {
     return new BizTemplate<Variable>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Variable process() {
@@ -136,10 +132,6 @@ public class VariablesQueryImpl implements VariableQuery {
   @Override
   public Page<Variable> find(GenericSpecification<Variable> spec, Pageable pageable) {
     return new BizTemplate<Page<Variable>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Variable> process() {
@@ -151,10 +143,6 @@ public class VariablesQueryImpl implements VariableQuery {
   @Override
   public List<Server> findServerByServiceId(Long serviceId) {
     return new BizTemplate<List<Server>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Server> process() {
@@ -180,10 +168,6 @@ public class VariablesQueryImpl implements VariableQuery {
   @Override
   public List<Variable> findByProjectAndIds(Long projectId, @Nullable LinkedHashSet<Long> ids) {
     return new BizTemplate<List<Variable>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Variable> process() {

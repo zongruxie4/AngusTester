@@ -550,10 +550,6 @@ public class TaskQueryImpl implements TaskQuery {
   @Override
   public List<TaskInfo> assocList(TaskType taskType, Long targetId) {
     return new BizTemplate<List<TaskInfo>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<TaskInfo> process() {
@@ -567,10 +563,6 @@ public class TaskQueryImpl implements TaskQuery {
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinSprint, boolean joinMeeting) {
     return new BizTemplate<TaskLastResourceCreationCount>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TaskLastResourceCreationCount process() {
@@ -612,10 +604,6 @@ public class TaskQueryImpl implements TaskQuery {
   @Override
   public List<TaskAssigneeCount> assigneeSummaryStatistics(Long projectId, Long sprintId) {
     return new BizTemplate<List<TaskAssigneeCount>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<TaskAssigneeCount> process() {
@@ -642,10 +630,6 @@ public class TaskQueryImpl implements TaskQuery {
   @Override
   public List<TaskAssigneeProgressCount> assigneeProgressStatistics(Long projectId, Long sprintId) {
     return new BizTemplate<List<TaskAssigneeProgressCount>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<TaskAssigneeProgressCount> process() {
@@ -771,10 +755,6 @@ public class TaskQueryImpl implements TaskQuery {
   public TaskAssigneeWorkSummary assigneeWorkStatistics(Long projectId, Long sprintId,
       Long userId) {
     return new BizTemplate<TaskAssigneeWorkSummary>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TaskAssigneeWorkSummary process() {
@@ -816,10 +796,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<ProgressOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ProgressOverview process() {
@@ -877,10 +853,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<BurnDownChartOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected BurnDownChartOverview process() {
@@ -971,10 +943,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<WorkloadOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected WorkloadOverview process() {
@@ -1033,10 +1001,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<OverdueAssessmentOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected OverdueAssessmentOverview process() {
@@ -1099,10 +1063,6 @@ public class TaskQueryImpl implements TaskQuery {
       AuthObjectType assigneeOrgType, Long assigneeOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<BugOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected BugOverview process() {
@@ -1155,10 +1115,6 @@ public class TaskQueryImpl implements TaskQuery {
       AuthObjectType assigneeOrgType, Long assigneeOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<ProcessingEfficiencyOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ProcessingEfficiencyOverview process() {
@@ -1216,10 +1172,6 @@ public class TaskQueryImpl implements TaskQuery {
       Long assigneeOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<CoreKpiOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected CoreKpiOverview process() {
@@ -1278,10 +1230,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<FailureAssessmentOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected FailureAssessmentOverview process() {
@@ -1337,10 +1285,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<BackloggedOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected BackloggedOverview process() {
@@ -1399,10 +1343,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<RecentDeliveryOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected RecentDeliveryOverview process() {
@@ -1467,10 +1407,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<LeadTimeOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected LeadTimeOverview process() {
@@ -1528,10 +1464,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<UnplannedWorkOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected UnplannedWorkOverview process() {
@@ -1594,10 +1526,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<TesterSubmittedBugOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected TesterSubmittedBugOverview process() {
@@ -1668,10 +1596,6 @@ public class TaskQueryImpl implements TaskQuery {
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
       boolean joinAssigneeDetail, boolean joinDataDetail) {
     return new BizTemplate<GrowthTrendOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected GrowthTrendOverview process() {
@@ -1733,10 +1657,6 @@ public class TaskQueryImpl implements TaskQuery {
       AuthObjectType creatorOrgType, Long creatorOrgId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinCreatorDetail, boolean joinDataDetail) {
     return new BizTemplate<ResourceCreationOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ResourceCreationOverview process() {

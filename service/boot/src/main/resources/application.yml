@@ -74,7 +74,6 @@ xcan:
       - classpath:/i18n/messages-tester-core
       - classpath:/i18n/messages-tester-import-api
       - classpath:/i18n/messages-tester-commercial
-      - classpath:/i18n/messages-ctrl-api
       - classpath:/i18n/messages-angus-model
       - classpath:/i18n/messages-angus-validator
       - classpath:/i18n/messages-gm-api

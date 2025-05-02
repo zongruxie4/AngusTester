@@ -48,10 +48,6 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
   @Override
   public List<Dataset> findDatasets(Long targetId, String targetType) {
     return new BizTemplate<List<Dataset>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<Dataset> process() {
@@ -66,10 +62,6 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
   public Map<Long, List<Dataset>> findDatasets(Collection<Long> targetIds, String targetType,
       Map<Long, Long> caseApiMap) {
     return new BizTemplate<Map<Long, List<Dataset>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Map<Long, List<Dataset>> process() {
@@ -124,10 +116,6 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
   @Override
   public List<DatasetTarget> findTargets(Long datasetId) {
     return new BizTemplate<List<DatasetTarget>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<DatasetTarget> process() {
@@ -141,10 +129,6 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
   @Override
   public Map<String, String> valuePreview(Long targetId, String targetType) {
     return new BizTemplate<Map<String, String>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Map<String, String> process() {

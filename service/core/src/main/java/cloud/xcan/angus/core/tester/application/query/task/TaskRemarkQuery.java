@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.task;
 
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.task.remark.TaskRemark;
 import cloud.xcan.angus.core.tester.domain.task.summary.TaskRemarkSummary;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

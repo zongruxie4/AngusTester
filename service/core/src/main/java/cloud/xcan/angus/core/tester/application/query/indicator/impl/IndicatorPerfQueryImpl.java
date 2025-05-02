@@ -11,7 +11,10 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
-import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorPerfConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfQuery;
@@ -19,10 +22,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.remote.message.SysException;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,10 +45,6 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
   @Override
   public IndicatorPerf find(Long targetId, CombinedTargetType targetType) {
     return new BizTemplate<IndicatorPerf>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IndicatorPerf process() {
@@ -61,12 +57,8 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
   }
 
   @Override
-  public IndicatorPerf detailAndDefault(CombinedTargetType targetType, Long targetId) {
+  public IndicatorPerf detailOrDefault(CombinedTargetType targetType, Long targetId) {
     return new BizTemplate<IndicatorPerf>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected IndicatorPerf process() {
@@ -93,10 +85,6 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
   public Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec,
       PageRequest pageable, Class<IndicatorPerf> clz) {
     return new BizTemplate<Page<IndicatorPerf>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<IndicatorPerf> process() {

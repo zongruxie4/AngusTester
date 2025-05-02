@@ -15,6 +15,7 @@ import static cloud.xcan.angus.api.commonlink.TesterConstant.INSTANCE_TYPE_8C_16
 import static cloud.xcan.angus.api.commonlink.TesterConstant.INSTANCE_TYPE_MINI;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.NODE_HOSTNAME_BID_KEY;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
 import cloud.xcan.angus.api.commonlink.TesterConstant;
@@ -38,7 +39,6 @@ import com.aliyun.ecs20140526.models.RunInstancesResponse;
 import com.aliyun.ecs20140526.models.StopInstancesRequest;
 import com.aliyun.ecs20140526.models.StopInstancesResponse;
 import com.aliyun.teaopenapi.models.Config;
-import io.micrometer.core.instrument.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,6 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -180,16 +179,16 @@ public class AliyunEcsClient implements EcsClient {
           Node node = new Node();
           List<String> vpcIps = instance.getVpcAttributes()
               .getPrivateIpAddress().getIpAddress();
-          if (CollectionUtils.isNotEmpty(vpcIps)) {
+          if (isNotEmpty(vpcIps)) {
             node.setIp(vpcIps.get(0));
           }
           List<String> pubIps = instance.getPublicIpAddress().getIpAddress();
-          if (CollectionUtils.isNotEmpty(pubIps)) {
+          if (isNotEmpty(pubIps)) {
             node.setPublicIp(pubIps.get(0));
           }
           node.setInstanceId(instance.getInstanceId())
               .setInstanceName(instance.getInstanceName())
-              .setSync(StringUtils.isNotEmpty(node.getIp()));
+              .setSync(isNotEmpty(node.getIp()));
           return node;
         }).collect(Collectors.toMap(Node::getInstanceId, x -> x));
   }

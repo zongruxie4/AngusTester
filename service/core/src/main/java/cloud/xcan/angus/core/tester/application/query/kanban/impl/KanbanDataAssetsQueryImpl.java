@@ -225,10 +225,6 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
       Long creatorObjectId, Long projectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd) {
     return new BizTemplate<DataAssetsRanking>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected DataAssetsRanking process() {

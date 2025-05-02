@@ -5,7 +5,8 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
 
 /**
  * @author XiaoLong Liu
- */@EndpointRegister
+ */
+@EndpointRegister
 public enum ScriptSource implements EnumMessage<String> {
   USER_DEFINED, IMPORTED, SERVICE_SMOKE, SERVICE_SECURITY, API, SCENARIO, GENERATE_DATA;
 

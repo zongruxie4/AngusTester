@@ -644,10 +644,6 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {

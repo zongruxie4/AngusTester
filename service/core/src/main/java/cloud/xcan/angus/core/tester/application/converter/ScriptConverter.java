@@ -10,13 +10,13 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
-import cloud.xcan.angus.model.script.AngusScript;
-import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
+import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
+import cloud.xcan.angus.model.script.configuration.ScriptType;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;

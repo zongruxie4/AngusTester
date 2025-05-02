@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FuncCaseWillOverdueEventJob {
 
-  private static final String LOCK_KEY = "job:angustester:FuncCaseWillOverdueEventJob";
+  private static final String LOCK_KEY = "tester:job:FuncCaseWillOverdueEventJob";
 
   /**
    * Remind every three hours.

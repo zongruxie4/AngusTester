@@ -11,7 +11,9 @@ import static cloud.xcan.angus.core.tester.application.query.task.impl.TaskQuery
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTestQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.kanban.KanbanCtoQuery;
@@ -29,15 +31,13 @@ import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
 import cloud.xcan.angus.core.tester.domain.task.summary.TaskEfficiencySummary;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.JoinSupplier;
+import cloud.xcan.angus.remote.search.SearchCriteria;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 
 @Biz
 public class KanbanCtoQueryImpl implements KanbanCtoQuery {
@@ -74,10 +74,6 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
       Long creatorObjectId, Long projectId, Long planId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinTaskList, boolean joinAssigneeOverview) {
     return new BizTemplate<CtoTaskOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected CtoTaskOverview process() {
@@ -120,10 +116,6 @@ public class KanbanCtoQueryImpl implements KanbanCtoQuery {
       Long creatorObjectId, Long projectId, Long planId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, boolean joinCaseList, boolean joinTesterOverview) {
     return new BizTemplate<CtoCaseOverview>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected CtoCaseOverview process() {

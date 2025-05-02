@@ -18,11 +18,10 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.api.ctrl.exec.ExecRemote;
-import cloud.xcan.angus.api.ctrl.exec.dto.ExecAddByScriptDto;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
+import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioTestCmd;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
@@ -40,7 +39,7 @@ import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.model.element.type.TestTargetType;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.TestType;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
+import cloud.xcan.angus.model.script.pipeline.Arguments;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import java.util.Collections;
@@ -82,7 +81,7 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
   private ActivityCmd activityCmd;
 
   @Resource
-  private ExecRemote execRemote;
+  private ExecCmd execCmd;
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -205,11 +204,11 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
 
       @Override
       protected Void process() {
-        List<Long> taskIds = ObjectUtils.isEmpty(testTypes)
+        List<Long> taskIds = isEmpty(testTypes)
             ? taskRepo.findIdsByTargetIdIn(List.of(scenarioId))
             : taskRepo.findIdsByTargetIdInAndTestTypeIn(List.of(scenarioId),
                 testTypes.stream().map(TestType::getValue).collect(Collectors.toList()));
-        if (ObjectUtils.isEmpty(taskIds)) {
+        if (isEmpty(taskIds)) {
           return null;
         }
         // Delete scenario test task
@@ -256,8 +255,8 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
         }
 
         // Note: Execution must be completed after the scriptCmd.update0() transaction is committed.
-        execRemote.addByScript(new ExecAddByScriptDto().setScriptId(scenarioDb.getScriptId()))
-            .orElseContentThrow();
+        execCmd.addByRemoteScript(null, scenarioDb.getScriptId(), null,
+            null, new Arguments(), null);
         return null;
       }
     }.execute();

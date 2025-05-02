@@ -3,8 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembl
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioDetailVo;
-import cloud.xcan.angus.api.tester.scenario.vo.ScenarioListVo;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
@@ -13,6 +11,8 @@ import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoF
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioListVo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.info.Info;
 import cloud.xcan.angus.remote.search.SearchCriteria;

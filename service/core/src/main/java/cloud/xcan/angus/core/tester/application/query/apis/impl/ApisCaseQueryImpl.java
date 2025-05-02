@@ -73,10 +73,6 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
   @Override
   public ApisCase detail(Long id) {
     return new BizTemplate<ApisCase>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected ApisCase process() {
@@ -99,10 +95,6 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
   @Override
   public Page<ApisCaseInfo> list(GenericSpecification<ApisCaseInfo> spec, Pageable pageable) {
     return new BizTemplate<Page<ApisCaseInfo>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<ApisCaseInfo> process() {

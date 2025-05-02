@@ -4,7 +4,6 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.plugin.core.PluginStateListener;
 import cloud.xcan.angus.plugin.spring.SpringPluginManager;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

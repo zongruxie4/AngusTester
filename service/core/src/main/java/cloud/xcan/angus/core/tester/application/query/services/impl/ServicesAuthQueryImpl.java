@@ -1,13 +1,13 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
-import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_AUTH;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_AUTH_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_TARGET_AUTH;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_TARGET_AUTH_CODE;
-import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_KEY;
+import static cloud.xcan.angus.remote.message.ProtocolException.M.PARAM_MISSING_T;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
@@ -16,8 +16,10 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.commonlink.services.ServicesPermission;
 import cloud.xcan.angus.api.commonlink.user.UserRepo;
 import cloud.xcan.angus.api.enums.AuthObjectType;
-import cloud.xcan.angus.remote.message.http.ResourceExisted;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import cloud.xcan.angus.core.biz.Biz;
+import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
+import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
@@ -26,10 +28,9 @@ import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
 import cloud.xcan.angus.core.tester.domain.services.auth.ServicesAuth;
 import cloud.xcan.angus.core.tester.domain.services.auth.ServicesAuthCurrent;
 import cloud.xcan.angus.core.tester.domain.services.auth.ServicesAuthRepo;
-import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
-import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,7 +39,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -160,10 +160,6 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
   @Override
   public void check(Long serviceId, ServicesPermission permission, Long userId) {
     new BizTemplate<Void>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Void process() {

@@ -346,10 +346,6 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   @Override
   public List<IdKey<Long, Object>> importExample(Long projectId) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected List<IdKey<Long, Object>> process() {

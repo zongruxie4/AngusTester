@@ -21,10 +21,6 @@ public class VariableSearchImpl implements VariableSearch {
   public Page<Variable> search(Set<SearchCriteria> criteria, Pageable pageable,
       Class<Variable> clz, String... matches) {
     return new BizTemplate<Page<Variable>>() {
-      @Override
-      protected void checkParams() {
-        // NOOP
-      }
 
       @Override
       protected Page<Variable> process() {
