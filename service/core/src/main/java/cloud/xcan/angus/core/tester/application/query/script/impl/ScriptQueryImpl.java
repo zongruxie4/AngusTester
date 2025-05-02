@@ -6,7 +6,7 @@ import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findInfoScope;
 import static cloud.xcan.angus.core.tester.application.converter.ScriptConverter.countCreationScript;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_PROPERTIES_CONSTRAINT_ERROR;
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
@@ -43,6 +43,7 @@ import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.script.tag.ScriptTag;
 import cloud.xcan.angus.core.tester.domain.script.tag.ScriptTagRepo;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
@@ -235,7 +236,7 @@ public class ScriptQueryImpl implements ScriptQuery {
     return new BizTemplate<Page<ScriptInfo>>() {
       @Override
       protected void checkParams() {
-        if (!isJobOrDoorApi()) {
+        if (!PrincipalContextUtils.isJobOrInnerApi()) {
           // Check the project member permission
           projectMemberQuery.checkMember(spec.getCriteria());
         }
@@ -270,7 +271,7 @@ public class ScriptQueryImpl implements ScriptQuery {
     return new BizTemplate<Page<ScriptInfo>>() {
       @Override
       protected void checkParams() {
-        if (!isJobOrDoorApi()) {
+        if (!PrincipalContextUtils.isJobOrInnerApi()) {
           // Check the project member permission
           projectMemberQuery.checkMember(spec.getCriteria());
         }

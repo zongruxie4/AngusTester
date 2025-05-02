@@ -17,7 +17,7 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHAS
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHASE_UPDATE_ERROR_T;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isPrivateEdition;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantClient;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
@@ -42,6 +42,7 @@ import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
 import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRoleRepo;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.result.command.SimpleCommandResult;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -284,7 +285,7 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   private Long getTenantId(GenericSpecification<Node> spec) {
-    Object tenantId = isDoorApi() ? findFirstValue(spec.getCriteria(), "tenantId") : null;
+    Object tenantId = PrincipalContextUtils.isInnerApi() ? findFirstValue(spec.getCriteria(), "tenantId") : null;
     return nonNull(tenantId) ? Long.valueOf(tenantId.toString()) : getOptTenantId();
   }
 }

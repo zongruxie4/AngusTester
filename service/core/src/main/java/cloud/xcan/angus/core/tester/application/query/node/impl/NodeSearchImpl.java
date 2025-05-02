@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.node.impl;
 
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantClient;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static java.util.Objects.nonNull;
@@ -13,6 +13,7 @@ import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeSearch;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.NodeSearchRepo;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
@@ -58,7 +59,7 @@ public class NodeSearchImpl implements NodeSearch {
   }
 
   private Long getTenantId(Set<SearchCriteria> criteria) {
-    Object tenantId = isDoorApi() ? findFirstValue(criteria, "tenantId") : null;
+    Object tenantId = PrincipalContextUtils.isInnerApi() ? findFirstValue(criteria, "tenantId") : null;
     return nonNull(tenantId) ? Long.valueOf(tenantId.toString()) : getOptTenantId();
   }
 

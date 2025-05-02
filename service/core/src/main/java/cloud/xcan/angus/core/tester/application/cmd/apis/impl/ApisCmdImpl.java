@@ -26,7 +26,7 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SCHEMA_S
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.STATUS_UPDATE;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.UPDATED;
 import static cloud.xcan.angus.core.utils.CoreUtils.batchCopyPropertiesIgnoreNull;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getExtension;
@@ -85,6 +85,7 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisSource;
 import cloud.xcan.angus.core.tester.domain.services.ServiceApisScope;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -238,7 +239,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         for (Apis api : apis) {
           ApisConverter.assembleApiAuthInfo(api, servicesDb);
           Set<Long> creatorIds = new HashSet<>();
-          creatorIds.add(isJobOrDoorApi() ? servicesDb.getCreatedBy() : getUserId());
+          creatorIds.add(PrincipalContextUtils.isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
           // Current services creator authorization
           creatorIds.add(servicesDb.getCreatedBy());
           apisAuths.addAll(ApisAuthConverter.toApisCreatorAuth(api, creatorIds));

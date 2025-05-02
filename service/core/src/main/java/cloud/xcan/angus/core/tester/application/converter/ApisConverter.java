@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.remote.search.SearchCriteria.greaterThanEqual;
 import static cloud.xcan.angus.remote.search.SearchCriteria.in;
@@ -31,6 +31,7 @@ import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.infra.util.RefResolver;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.core.utils.GsonUtils;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.idgen.UidGenerator;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
@@ -220,7 +221,7 @@ import java.util.stream.Collectors;
   public static void assembleApiAuthInfo(Apis api, Services projectDb) {
     api.setAuth(nonNull(api.getAuth()) ? api.getAuth() : projectDb.getAuth());
     api.setServiceAuth(projectDb.getAuth());
-    if (isJobOrDoorApi()) {
+    if (PrincipalContextUtils.isJobOrInnerApi()) {
       api.setTenantId(projectDb.getTenantId());
       api.setOwnerId(projectDb.getCreatedBy());
       api.setCreatedBy(projectDb.getCreatedBy());

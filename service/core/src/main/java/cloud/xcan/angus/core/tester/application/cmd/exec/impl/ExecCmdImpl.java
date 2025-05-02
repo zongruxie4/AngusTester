@@ -36,7 +36,7 @@ import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_STOP_IS_I
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_AGENT_UNAVAILABLE_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_NODES;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrDoorApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isMultiTenantCtrl;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.parser.AngusParser.YAML_MAPPER;
@@ -90,6 +90,7 @@ import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleRepo
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStopDto;
+import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.element.pipeline.PipelineBuilder;
 import cloud.xcan.angus.model.result.command.AbstractCommandResult;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -434,7 +435,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         execDb = execQuery.checkAndFind(dto.getId());
 
         // Set the operation tenant
-        if (isJobOrDoorApi()) {
+        if (PrincipalContextUtils.isJobOrInnerApi()) {
           PrincipalContext.get().setOptTenantId(execDb.getTenantId());
         }
 
@@ -695,7 +696,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         execDb = execQuery.checkAndFindInfo(dto.getId());
 
         // Set operation tenant
-        if (isJobOrDoorApi()) {
+        if (PrincipalContextUtils.isJobOrInnerApi()) {
           PrincipalContext.get().setOptTenantId(execDb.getTenantId());
         }
 
