@@ -5,7 +5,7 @@ import viteCompression from 'vite-plugin-compression';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-import server from './configs/dev-server';
+import server from './server/dev-server';
 
 export default defineConfig({
   server,

@@ -70,7 +70,7 @@ function start () {
   // 5. Delete all nginx configuration files under public/
   if (deployEnv === 'priv') { // Not configuring Nginx in a private environment
     const nginxFileNames = allEnv.map(item => {
-      return `nginx_${item}_tester-web`;
+      return `nginx_${item}_tester`;
     });
     for (let i = 0, len = nginxFileNames.length; i < len; i++) {
       const _path = resolve('../public/' + nginxFileNames[i] + '.conf');
