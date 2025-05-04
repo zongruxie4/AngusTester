@@ -23,6 +23,7 @@ import Data from './Data';
 import DataSet from './DataSet';
 import Module from './module';
 import Software from './Software';
+import Target from './target';
 
 const baseUrl = TESTER;
 const pubBaseUrl = PUB_TESTER;
@@ -49,5 +50,6 @@ export const kanban = new Kanban(baseUrl);
 export const dataApi = new Data(baseUrl);
 export const dataSet = new DataSet(baseUrl);
 export const modules = new Module(baseUrl);
-export const software = new Software(baseUrl)
+export const software = new Software(baseUrl);
+export const target = new Target(baseUrl);
 

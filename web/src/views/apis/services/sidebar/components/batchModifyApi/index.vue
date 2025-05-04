@@ -3,8 +3,9 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import { SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import qs from 'qs';
+import { services } from '@/api/altester';
 
 interface Props {
   visible: boolean;
@@ -160,7 +161,7 @@ const addParams = async () => {
     cancel();
     return;
   }
-  const [error] = await http.put(`${TESTER}/services/${props.serviceId}/apis/parameter?${config}`, parameters);
+  const [error] = await services.batchAddParams(props.serviceId, config, parameters);
   if (error) {
     return;
   }
@@ -175,7 +176,7 @@ const modifyParams = async () => {
     cancel();
     return;
   }
-  const [error] = await http.patch(`${TESTER}/services/${props.serviceId}/apis/parameter?${config}`, parameters);
+  const [error] = await services.batchUpdateParams(props.serviceId, config, parameters);
   if (error) {
     return;
   }
@@ -190,7 +191,7 @@ const delParams = async () => {
     cancel();
     return;
   }
-  const [error] = await http.del(`${TESTER}/services/${props.serviceId}/apis/parameter?${config}`, {
+  const [error] = await services.batchDeleteParams(props.serviceId, config, {
     names: parameters
   });
   if (error) {
@@ -207,11 +208,9 @@ const enabledParams = async () => {
     cancel();
     return;
   }
-  const [error] = await http.patch(`${TESTER}/services/${props.serviceId}/apis/parameter/enabled?${config}`, {
+  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, {
     enabled: true,
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;
@@ -227,11 +226,9 @@ const disabledParams = async () => {
     cancel();
     return;
   }
-  const [error] = await http.patch(`${TESTER}/services/${props.serviceId}/apis/parameter/enabled?${config}`, {
+  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, {
     enabled: false,
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;
@@ -243,7 +240,7 @@ const disabledParams = async () => {
 const modifyAuth = async () => {
   const config = getConfig();
   const parameters = modifyAuthRef.value.getData();
-  const [error] = await http.patch(`${TESTER}/services/${props.serviceId}/apis/authentication?${config}`, parameters);
+  const [error] = await services.batchUpdateAuthentication(props.serviceId, config, parameters);
   if (error) {
     return;
   }
@@ -257,7 +254,7 @@ const modifyServer = async () => {
   if (!parameters) {
     return;
   }
-  const [error] = await http.patch(`${TESTER}/services/${props.serviceId}/apis/server?${config}`, parameters);
+  const [error] = await services.batchUpdateServer(props.serviceId, config, parameters);
   if (error) {
     return;
   }
@@ -272,10 +269,8 @@ const referenceVariable = async () => {
     notification.error('请至少选择一个变量');
     return;
   }
-  const [error] = await http.put(`${TESTER}/services/${props.serviceId}/apis/variable/reference?${config}`, {
+  const [error] = await services.batchUpdateReferenceVariable(props.serviceId, config, {
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;
@@ -291,10 +286,8 @@ const referenceDataset = async () => {
     notification.error('请至少选择一个数据集');
     return;
   }
-  const [error] = await http.put(`${TESTER}/services/${props.serviceId}/apis/dataset/reference?${config}`, {
+  const [error] = await services.batchAddReferenceDataset(props.serviceId, config, {
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;
@@ -310,10 +303,8 @@ const delRefrenceVariable = async () => {
     notification.error('请至少选择一个变量');
     return;
   }
-  const [error] = await http.del(`${TESTER}/services/${props.serviceId}/apis/variable/reference?${config}`, {
+  const [error] = await services.batchDeleteReferenceVariable(props.serviceId, config, {
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;
@@ -329,10 +320,8 @@ const delRefrenceDataset = async () => {
     notification.error('请至少选择一个数据集');
     return;
   }
-  const [error] = await http.del(`${TESTER}/services/${props.serviceId}/apis/dataset/reference?${config}`, {
+  const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config, `${TESTER}/services/${props.serviceId}/apis/dataset/reference?${config}`, {
     names: parameters
-  }, {
-    paramsType: true
   });
   if (error) {
     return;

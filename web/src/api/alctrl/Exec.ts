@@ -125,4 +125,8 @@ export default class API {
   loadServiceTestResult (serviceId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/service/${serviceId}/result`);
   }
+
+  loadApiExecRes (apisId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/apis/${apisId}/result`)
+  }
 }

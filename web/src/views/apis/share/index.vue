@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { IPane } from './PropsType';
 
@@ -89,7 +90,7 @@ const hashChange = async (hash: string) => {
       });
     } else {
       if (!id) {
-        const [_error, { data = {} }] = await http.get(`${TESTER}/apis/share/search`, {
+        const [_error, { data = {} }] = await apis.loadShareList({
           projectId: props.projectId,
           name
         });

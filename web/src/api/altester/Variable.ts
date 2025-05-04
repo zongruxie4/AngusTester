@@ -64,5 +64,13 @@ export default class API {
     return http.get(`${baseUrl}/value/all`, params);
   }
 
+  //
+importVariable (formData: FormData) {
+  return http.post(`${baseUrl}/import`, formData, { silence: true })
+}
+
+
+
+
 
 }

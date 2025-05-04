@@ -7,9 +7,9 @@ import XML from 'xml';
 import { axiosClient, TESTER, http, utils } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { AssertUtils as assertUtils} from '@xcan-angus/vue-ui';
+import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
 import { AuthUtils as authUtils } from '@xcan-angus/vue-ui';
-import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types/types';
+import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 
 import {
   ApiInfo,

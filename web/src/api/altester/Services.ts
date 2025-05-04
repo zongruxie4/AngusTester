@@ -66,16 +66,25 @@ export default class API {
     return http.post(url);
   }
 
+
+  getProjectServers <T> (params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/schema/server`, params);
+  }
+
   putServicesServerUrl<T> (id: string, params: T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/server`, params);
   }
 
   delServicesServerUrl (id: string, ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/schema/server?ids=${ids}`);
+    return http.del(`${baseUrl}/${id}/schema/server`, {ids});
   }
 
   getServicesServerUrlInfo (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/schema/server`);
+  }
+
+  getServiceServerByServerId (serviceId: string, serverId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${serviceId}/schema/server/${serverId}`);
   }
 
   // 获取权限
@@ -235,7 +244,7 @@ export default class API {
     return http.get(`${baseUrl}/${id}/comp/ref`, { ref }, config);
   }
 
-  // TODO Q1
+
   updateServiceApisServer (id:string, serverId:string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/server/${serverId}/apis/sync`);
   }
@@ -264,4 +273,52 @@ export default class API {
   importServicesSamples ():Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/example/import`);
   }
+
+  batchAddParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchUpdateParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchDeleteParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchToggleEnabledParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/parameter/enabled?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+  batchUpdateAuthentication (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/authentication?${queryStr}`, parameters);
+  }
+
+  batchUpdateServer (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/server?${queryStr}`, parameters);
+  }
+
+  batchUpdateReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+
+
+  batchDeleteReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+  batchDeleteReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+
 }

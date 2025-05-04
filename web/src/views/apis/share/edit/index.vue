@@ -2,7 +2,8 @@
 import { onMounted, ref, watch, computed, nextTick } from 'vue';
 import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
-import { http, site, clipboard, TESTER, enumLoader } from '@xcan-angus/tools';
+import { site, clipboard, TESTER, enumLoader } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 interface Props {
   visible: boolean;
@@ -58,7 +59,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/apis/share/${id}`);
+  const [error, res] = await apis.loadShareInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -73,7 +74,7 @@ const loadData = async (id: string) => {
     name, remark, expiredDate, displayOptions, shareScope: shareScope.value, servicesId, apisIds
   };
   if (apisIds?.length) {
-    const [error, { data }] = await http.get(`${TESTER}/apis/search`, {
+    const [error, { data }] = await apis.loadShareList({
       projectId: props.projectId,
       filters: [{ value: apisIds, op: 'IN', key: 'id' }],
       pageSize: 1000
@@ -145,7 +146,7 @@ const ok = async () => {
 
 const addOk = async () => {
   loading.value = true;
-  const [error, { data }] = await http.post(`${TESTER}/apis/share`, {
+  const [error, { data }] = await apis.addShare({
     ...formState.value,
     baseUrl: baseUrl.value,
     projectId: props.projectId
@@ -154,7 +155,7 @@ const addOk = async () => {
     loading.value = false;
     return;
   }
-  const [_error1, resp] = await http.get(`${TESTER}/apis/share/${data.id}`);
+  const [_error1, resp] = await apis.loadShareInfo(data.id);
   loading.value = false;
   if (resp.data) {
     toClipboard(`分享“${resp.data.name}”，访问地址：${resp.data.url}`).then(() => {
@@ -169,7 +170,7 @@ const addOk = async () => {
 
 const editOk = async () => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/apis/share`, {
+  const [error] = await apis.patchShared({
     ...formState.value,
     id: props.shareId
   });

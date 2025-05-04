@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
@@ -47,7 +47,7 @@ const pagination = ref<{ total: number; current: number; pageSize: number; }>({
 
 const recoverHandler = async (data: TrashItem) => {
   emit('update:spinning', true);
-  const [error] = await http.patch(`${TESTER}/apis/trash/${data.id}/back`);
+  const [error] = await apis.backTrash(data.id);
   if (error) {
     emit('update:spinning', false);
     return;
@@ -60,7 +60,7 @@ const recoverHandler = async (data: TrashItem) => {
 
 const deleteHandler = async (data: TrashItem) => {
   emit('update:spinning', true);
-  const [error] = await http.del(`${TESTER}/apis/trash/${data.id}`);
+  const [error] = await apis.delTrash(data.id);
   if (error) {
     emit('update:spinning', false);
     return;
@@ -105,7 +105,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await http.get(`${TESTER}/apis/trash/search`, params);
+  const [error, res] = await apis.getTrashData(params);
   loaded.value = true;
   emit('update:spinning', false);
   if (error) {
