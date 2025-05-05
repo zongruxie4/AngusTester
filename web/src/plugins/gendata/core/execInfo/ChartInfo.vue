@@ -3,7 +3,7 @@ import { ref, onMounted, defineAsyncComponent, onBeforeUnmount, computed } from 
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
 import { Spin, NoData } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-import { http, CTRL } from '@xcan-angus/tools';
+import { http, TESTER } from '@xcan-angus/tools';
 
 import { ListData, useExecCount } from './useExecCount';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
@@ -101,7 +101,7 @@ const loadChartData = async () => {
   const { id } = props.dataSource;
   loading.value = true;
   // const [error, { data }] = await exec.getAggregateData(id, { ...pagination });
-  const [error, { data }] = await http.get(`${CTRL}/exec/${id}/sample/summary/list`, { ...pagination });
+  const [error, { data }] = await http.get(`${TESTER}/exec/${id}/sample/summary/list`, { ...pagination });
   if (error) {
     return;
   }
@@ -203,7 +203,7 @@ const loadChartDataInDuration = async () => {
   const { id } = props.dataSource;
   const startDate = times.value[times.value.length - 1] || props.dataSource.actualStartDate;
   const startTime = dayjs(startDate).format('YYYY-MM-DD HH:mm:ss');
-  const [error, { data }] = await http.get(`${CTRL}/exec/${id}/sample/summary/list`, {
+  const [error, { data }] = await http.get(`${TESTER}/exec/${id}/sample/summary/list`, {
     pageNo: 1,
     pageSize: 100,
     filters: [

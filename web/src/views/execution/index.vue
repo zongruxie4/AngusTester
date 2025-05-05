@@ -14,7 +14,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { http, site, CTRL } from '@xcan-angus/tools';
+import { http, site, TESTER } from '@xcan-angus/tools';
 import { Pagination, Progress, Switch } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
@@ -171,7 +171,7 @@ const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
     loading.value = true;
   }
   refinshLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await http.get(`${CTRL}/exec`, params);
+  const [error, { data = { list: [], total: 0 } }] = await http.get(`${TESTER}/exec`, params);
   refinshLoading.value = false;
   if (isRefinsh) {
     loading.value = false;
@@ -241,7 +241,7 @@ const loadDataList = async (): Promise<void> => {
   }
 
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await http.get(`${CTRL}/exec`, params);
+  const [error, { data = { list: [], total: 0 } }] = await http.get(`${TESTER}/exec`, params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -318,7 +318,7 @@ const editName = async (name: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { name });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { name });
   loading.value = false;
   if (error) {
     return;
@@ -347,7 +347,7 @@ const editThread = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { thread: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { thread: value });
   loading.value = false;
   if (error) {
     return;
@@ -372,7 +372,7 @@ const editDuration = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { duration: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { duration: value });
   loading.value = false;
   if (error) {
     return;
@@ -397,7 +397,7 @@ const editIterations = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { iterations: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { iterations: value });
   loading.value = false;
   if (error) {
     return;
@@ -425,7 +425,7 @@ const editPriority = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { priority: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { priority: value });
   loading.value = false;
   if (error) {
     return;
@@ -450,7 +450,7 @@ const editReportInterval = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { reportInterval: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { reportInterval: value });
   loading.value = false;
   if (error) {
     return;
@@ -467,7 +467,7 @@ const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { ignoreAssertions: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { ignoreAssertions: value });
   loading.value = false;
   if (error) {
     return;
@@ -484,7 +484,7 @@ const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${CTRL}/exec/${item.id}/config`, { updateTestResult: value });
+  const [error] = await http.put(`${TESTER}/exec/${item.id}/config`, { updateTestResult: value });
   loading.value = false;
   if (error) {
     return;
@@ -513,7 +513,7 @@ const handleRestart = async (item: ExecuteListObj) => {
   };
 
   loading.value = true;
-  const [error, { data }] = await http.post(`${CTRL}/exec/start`, params);
+  const [error, { data }] = await http.post(`${TESTER}/exec/start`, params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -554,7 +554,7 @@ const handleStop = async (item: ExecuteListObj) => {
     id: item.id
   };
   loading.value = true;
-  const [error, { data }] = await http.post(`${CTRL}/exec/stop`, params);
+  const [error, { data }] = await http.post(`${TESTER}/exec/stop`, params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -593,7 +593,7 @@ const handleDelete = async (item: ExecuteListObj) => {
     content: `确定删除【${item.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await http.del(`${CTRL}/exec`, [item.id], { dataType: true });
+      const [error] = await http.del(`${TESTER}/exec`, [item.id], { dataType: true });
       loading.value = false;
       if (error) {
         return;

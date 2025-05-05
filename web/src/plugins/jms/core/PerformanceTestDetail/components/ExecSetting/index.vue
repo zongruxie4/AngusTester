@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
-import { CTRL, http } from '@xcan-angus/tools';
+import { TESTER, http } from '@xcan-angus/tools';
 import { notification } from '@xcan-angus/vue-ui';
 
 import ExecSettingForm from '../../../ExecSettingForm/index.vue';
@@ -77,7 +77,7 @@ const saveSetting = async () => {
   };
 
   emit('update:loading', true);
-  const [error] = await http.put(`${CTRL}/exec/${props.execId}/script/config`, params.value);
+  const [error] = await http.put(`${TESTER}/exec/${props.execId}/script/config`, params.value);
   emit('update:loading', false);
   if (error) {
     return;

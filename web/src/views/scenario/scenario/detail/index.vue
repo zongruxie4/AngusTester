@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
-import { http, CTRL, TESTER } from '@xcan-angus/tools';
+import { http, TESTER } from '@xcan-angus/tools';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
 import { scenario } from 'src/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';
@@ -120,7 +120,7 @@ const authFlagChange = (data: {authFlag: boolean}) => {
 };
 
 const loadScenarioResult = async () => {
-  const [error, { data }] = await http.get(`${CTRL}/exec/scenario/${props.data?.scenarioId}/result`);
+  const [error, { data }] = await http.get(`${TESTER}/exec/scenario/${props.data?.scenarioId}/result`);
   if (error) {
     return;
   }

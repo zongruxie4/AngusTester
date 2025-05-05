@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { CTRL } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { contentTreeData } from './config';
 
 interface Props {
@@ -91,7 +91,7 @@ defineExpose({
         :showSearch="true"
         :error="valid && !execId"
         :disabled="!props.projectId || props.disabled"
-        :action="`${CTRL}/exec/search?projectId=${props.projectId}&scriptType=${props.execType || ''}`"
+        :action="`${TESTER}/exec/search?projectId=${props.projectId}&scriptType=${props.execType || ''}`"
         :params="execParams"
         :lazy="false"
         :defaultActiveFirstOption="true"

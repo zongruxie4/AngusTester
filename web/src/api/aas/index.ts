@@ -1,4 +1,4 @@
-import { GM, PUB_GM } from '@xcan-angus/tools';
+import { GM, PUB_ESS } from '@xcan-angus/tools';
 
 import AuthPolicy from './AuthPolicy';
 import Auth from './Auth';

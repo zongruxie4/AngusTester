@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { http, CTRL } from '@xcan-angus/tools';
+import { http, TESTER } from '@xcan-angus/tools';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
 
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 const serverList = ref([]);
 
 const loadServers = async () => {
-  const [error, { data = [] }] = await http.get(`${CTRL}/exec/${props.execId}/test/server`);
+  const [error, { data = [] }] = await http.get(`${TESTER}/exec/${props.execId}/test/server`);
   if (error) {
     return;
   }

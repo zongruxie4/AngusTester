@@ -3,7 +3,7 @@ import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from '
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
 import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal } from '@xcan-angus/vue-ui';
 import { Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, CTRL } from '@xcan-angus/tools';
+import { http, utils, TESTER } from '@xcan-angus/tools';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
 
@@ -310,7 +310,7 @@ const toDebug = async () => {
     scriptType: type
   };
 
-  const [error, { data }] = await http.post(`${CTRL}/exec/debug/scenario/start`, params);
+  const [error, { data }] = await http.post(`${TESTER}/exec/debug/scenario/start`, params);
   loading.value = false;
   if (error) {
     debugHttpError.value = {
@@ -330,7 +330,7 @@ const toDebug = async () => {
 
 const createTest = async () => {
   loading.value = true;
-  const [error] = await http.post(`${CTRL}/exec/byscript`, {
+  const [error] = await http.post(`${TESTER}/exec/byscript`, {
     scriptId: scriptId.value
   });
   loading.value = false;
@@ -965,7 +965,7 @@ const loadDebugInfo = async () => {
     return;
   }
 
-  const [error, { data }] = await http.get(`${CTRL}/exec/debug/scenario/${id}`);
+  const [error, { data }] = await http.get(`${TESTER}/exec/debug/scenario/${id}`);
   if (error) {
     return;
   }

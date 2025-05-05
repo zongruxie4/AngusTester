@@ -2,10 +2,10 @@
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { Icon, IconRefresh, Input, IntervalTimestamp, PureCard, Table } from '@xcan-angus/vue-ui';
 import { Tooltip } from 'ant-design-vue';
-import { duration, CTRL } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import { analysis, mock as mockAltester } from 'src/api/tester';
+import { analysis, mock as mock0 } from 'src/api/tester';
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp };
@@ -211,7 +211,7 @@ const getList = async () => {
     return;
   }
   tableLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await mockAltester.loadMockApisSearch(tableParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await mock0.loadMockApisSearch(tableParams.value);
   tableLoading.value = false;
   if (error) {
     return;
@@ -344,7 +344,7 @@ const bgColor = {
   <PureCard class="py-3.5">
     <div class="flex justify-end pr-15">
       <IntervalTimestamp
-        :action="`${CTRL}/mock/service/${props.id}/metrics`"
+        :action="`${TESTER}/mock/service/${props.id}/metrics`"
         @change="getChartData" />
     </div>
     <div class="flex h-60 space-x-2 mt-2">

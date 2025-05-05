@@ -6,7 +6,7 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
-import { CTRL, GM, http } from '@xcan-angus/tools';
+import { TESTER, GM, http } from '@xcan-angus/tools';
 
 // eslint-disable-next-line import/no-absolute-path
 
@@ -107,7 +107,7 @@ const toDebug = async () => {
       scriptType: scriptConfig.type
     };
     loading.value = true;
-    const [error, { data }] = await http.post(`${CTRL}/exec/debug/script/start`, params);
+    const [error, { data }] = await http.post(`${TESTER}/exec/debug/script/start`, params);
     loading.value = false;
     if (error || !data) {
       return;
@@ -354,7 +354,7 @@ const handleExec = async () => {
 
 const loadDebugInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await http.get(`${CTRL}/exec/debug/script/${scriptId.value}`);
+  const [error, { data }] = await http.get(`${TESTER}/exec/debug/script/${scriptId.value}`);
   loading.value = false;
   if (error || !data) {
     return;

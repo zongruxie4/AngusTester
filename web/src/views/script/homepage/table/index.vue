@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, PaginationProps, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
-import { CTRL, TESTER, http } from '@xcan-angus/tools';
+import { TESTER, http } from '@xcan-angus/tools';
 
 import { PermissionKey, ScriptInfo } from '../../PropsType';
 
@@ -121,7 +121,7 @@ const batchExec = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${CTRL}/exec/byscript`, { scriptId: ids[i] }, { silence: true }));
+        promises.push(http.post(`${TESTER}/exec/byscript`, { scriptId: ids[i] }, { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -212,7 +212,7 @@ const tableChange = (pagination: { current: number; pageSize: number; }, _filter
 
 const toCreateExec = async (data: ScriptInfo) => {
   emit('update:loading', true);
-  const [error] = await http.post(`${CTRL}/exec/byscript`, { scriptId: data.id });
+  const [error] = await http.post(`${TESTER}/exec/byscript`, { scriptId: data.id });
   emit('update:loading', false);
   if (error) {
     return;
