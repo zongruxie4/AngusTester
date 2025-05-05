@@ -15,9 +15,11 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, GM, http, utils, duration } from '@xcan-angus/tools';
+import { TESTER, utils, duration } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
+import { task } from '@/api/tester';
+import { ai } from '@/api/aas';
 
 import { TaskInfo } from '../../PropsType';
 
@@ -71,7 +73,7 @@ const aiKeywords = ref('');
 
 const toGenerate = async () => {
   generating.value = true;
-  const [error, res] = await http.get(`${GM}/ai/chat/result`, { type: 'WRITE_BACKLOG', question: aiKeywords.value });
+  const [error, res] = await ai.getChartResult({ type: 'WRITE_BACKLOG', question: aiKeywords.value });
   generating.value = false;
   if (error) {
     return;
@@ -180,7 +182,7 @@ const ok = async () => {
       }
     }
 
-    const [error] = await http.post(`${TESTER}/task`, params);
+    const [error] = await task.addTask(params);
     if (error) {
       errorNum++;
     }

@@ -2,7 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, upload } from '@xcan-angus/tools';
+import { utils, upload } from '@xcan-angus/tools';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../PropsType';
 
@@ -87,7 +88,7 @@ const updateAttachments = async (data:{name:string;url:string}[]) => {
     attachments: data
   };
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/attachment`, params);
+  const [error] = await task.updateAttachment(taskId.value, params);
   loading.value = false;
   if (error) {
     return;

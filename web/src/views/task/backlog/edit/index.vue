@@ -17,9 +17,10 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { http, localStore, upload, TESTER } from '@xcan-angus/tools';
+import { localStore, upload, TESTER } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
+import { modules, task } from '@/api/tester';
 
 import { FormState } from './PropsType';
 import { TaskInfo } from '../../PropsType';
@@ -81,7 +82,7 @@ const getModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: props.projectId
   });
   if (error) {
@@ -369,7 +370,7 @@ const submit = async (continueFlag: boolean) => {
 const createHandler = async (continueFlag = false) => {
   loading.value = true;
   const params = getParams();
-  const [error, res] = await http.post(`${TESTER}/task`, params);
+  const [error, res] = await task.addTask(params);
   loading.value = false;
   if (error) {
     return;
@@ -386,7 +387,7 @@ const createHandler = async (continueFlag = false) => {
 const editHandler = async () => {
   loading.value = true;
   const params = getParams();
-  const [error] = await http.put(`${TESTER}/task/${props.taskId}`, params);
+  const [error] = await task.editTask(props.taskId, params);
   loading.value = false;
   if (error) {
     return;
@@ -405,7 +406,7 @@ const cancel = () => {
 
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/${props.taskId}`);
+  const [error, res] = await task.loadTaskInfo(props.taskId);
   loading.value = false;
   if (error || !res?.data) {
     return { id: props.taskId! };

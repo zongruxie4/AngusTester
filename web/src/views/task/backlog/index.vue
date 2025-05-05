@@ -18,11 +18,12 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
+import { task, analysis } from '@/api/tester';
 
 import { MemberCount, SprintInfo } from './PropsType';
 import { TaskInfo } from '../PropsType';
@@ -234,7 +235,7 @@ const mouseenter = async (id: string) => {
     projectId: props.projectId
   };
   membersCountLoadingSet.value.add(id);
-  const [error, res] = await http.get(`${TESTER}/analysis/task/assignee/progress`, params);
+  const [error, res] = await analysis.getAssigneeProgress(params);
   membersCountLoadingSet.value.delete(id);
   if (error) {
     return;
@@ -301,7 +302,7 @@ const toSave = async () => {
     taskType: newTaskType.value
   };
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/task`, params);
+  const [error, res] = await task.addTask(params);
   loading.value = false;
   if (error) {
     return;
@@ -361,7 +362,7 @@ const toAssignment = async (toId: string, taskData: TaskInfo, index: number) => 
     taskIds: [taskId]
   };
   loading.value = true;
-  await http.patch(`${TESTER}/task/move`, params);
+  await task.moveTask(params);
   loading.value = false;
 
   taskListMap.value[toId].push(taskData);
@@ -387,7 +388,7 @@ const toMove = async (fromId: string, toId: string, taskData: TaskInfo, index: n
     taskIds: [taskId]
   };
   loading.value = true;
-  await http.patch(`${TESTER}/task/move`, params);
+  await task.moveTask(params);
   loading.value = false;
 
   taskListMap.value[toId].push(taskData);
@@ -413,7 +414,7 @@ const moveToBacklog = async (fromId: string, taskData: TaskInfo, index: number) 
     taskIds: [taskId]
   };
   loading.value = true;
-  await http.patch(`${TESTER}/task/move`, params);
+  await task.moveTask(params);
   loading.value = false;
 
   backlogTotal.value += 1;
@@ -429,7 +430,7 @@ const dragAdd = async (event: { item: { id: string; }; from: { id: string; } }, 
     taskIds: [taskId]
   };
   loading.value = true;
-  await http.patch(`${TESTER}/task/move`, params);
+  await task.moveTask(params);
   loading.value = false;
 
   const fromId = event.from.id;
@@ -450,7 +451,7 @@ const backlogAdd = async (event: { item: { id: string; }; from: { id: string; };
     taskIds: [taskId]
   };
   loading.value = true;
-  await http.patch(`${TESTER}/task/move`, params);
+  await task.moveTask(params);
   loading.value = false;
 
   const fromId = event.from.id;
@@ -493,7 +494,7 @@ const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
-      const [error] = await http.del(`${TESTER}/task`, params);
+      const [error] = await task.deleteTask([id]);
       if (error) {
         return;
       }
@@ -586,7 +587,7 @@ const namePressEnter = async (data:SprintInfo, index:number) => {
   const id = data.id;
   const newName = editNameMap.value[id];
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/task/${id}/name`, { name: newName }, { paramsType: true });
+  const [error] = await task.editTaskName(id, newName);
   loading.value = false;
   if (error) {
     return;
@@ -646,7 +647,7 @@ const toChecked = async (id: string, data?: SprintInfo) => {
 
 const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
   taskInfoLoadingSet.value.add(id);
-  const [error, res] = await http.get(`${TESTER}/task/${id}`);
+  const [error, res] = await task.loadTaskInfo(id);
   taskInfoLoadingSet.value.delete(id);
   if (error) {
     return;
@@ -733,7 +734,7 @@ const loadTaskListById = async (id: string, pageNo: number) => {
   Object.assign(params, (sortParamMap.value[id] || {}));
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/search`, params);
+  const [error, res] = await task.loadTaskList(params);
   loading.value = false;
   if (error) {
     return;
@@ -804,7 +805,7 @@ const loadSprintList = async () => {
     pageSize: PAGE_SIZE
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/sprint/search`, params);
+  const [error, res] = await task.searchSprints(params);
   loading.value = false;
   if (error) {
     return;
@@ -854,7 +855,7 @@ const loadBacklogList = async (pageNo: number) => {
   params.backlogFlag = true;
   Object.assign(params, backlogSort.value || {});
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/search`, params);
+  const [error, res] = await task.loadTaskList(params);
   loading.value = false;
   backlogLoaded.value = true;
   if (error) {
@@ -893,7 +894,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/task/sprint/${id}/user/${props.userInfo?.id}/auth`, params);
+  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
 const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {

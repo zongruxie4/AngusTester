@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -47,5 +47,17 @@ export default class API {
 
   getSprintBurndown (sprintId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/task/sprint/${sprintId}/burndown`);
+  }
+
+  getTaskWorkSummary <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/assignee/work/summary`, params);
+  }
+
+  getTaskResourceCount <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/resources/count`, params);
+  }
+
+  getTaskAssigneeBurndown <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/assignee/burndown`, params);
   }
 }
