@@ -2,7 +2,8 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, clipboard, TESTER } from '@xcan-angus/tools';
+import { clipboard } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
@@ -71,7 +72,7 @@ const toDelete = async (data: ShareInfo) => {
     content: `确定删除分享【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/apis/share`, { ids: [id] });
+      const [error] = await apis.delShare(id);
       if (error) {
         return;
       }
@@ -110,7 +111,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/apis/share/search`, { ...params });
+  const [error, res] = await apis.loadShareList({ ...params });
   loaded.value = true;
   loading.value = false;
 
@@ -161,7 +162,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
     });
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/apis/share/${record.id}`);
+  const [error, { data }] = await apis.loadShareInfo(record.id);
   if (error) {
     return;
   }
@@ -172,7 +173,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
 };
 
 const handleEnterShare = async (shareId: string) => {
-  const [error, { data }] = await http.get(`${TESTER}/apis/share/${shareId}`);
+  const [error, { data }] = await apis.loadShareInfo(shareId);
   if (error) {
     return;
   }

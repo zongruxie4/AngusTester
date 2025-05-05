@@ -12,7 +12,8 @@ import {
   TaskPriority,
   TaskStatus
 } from '@xcan-angus/vue-ui';
-import { TESTER, clipboard, http } from '@xcan-angus/tools';
+import { clipboard } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';
@@ -144,7 +145,7 @@ const batchCancel = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.put(`${TESTER}/task/${ids[i]}/cancel`, null, { silence: true }));
+        promises.push(task.cancelTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -191,7 +192,7 @@ const batchDelete = async () => {
     content: `确定删除选中的 ${num} 条任务吗？`,
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const [error] = await http.del(`${TESTER}/task`, { ids });
+      const [error] = await task.deleteTask(ids);
       if (error) {
         return;
       }
@@ -213,7 +214,7 @@ const batchFavourite = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${TESTER}/task/${ids[i]}/favourite`, null, { silence: true }));
+        promises.push(task.favouriteTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -261,7 +262,7 @@ const batchCancelFavourite = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.del(`${TESTER}/task/${ids[i]}/favourite`, null, { silence: true }));
+        promises.push(task.cancelFavouriteTask(ids[i],  { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -308,7 +309,7 @@ const batchFollow = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${TESTER}/task/${ids[i]}/follow`, null, { silence: true }));
+        promises.push(task.followTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -355,7 +356,7 @@ const batchCancelFollow = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.del(`${TESTER}/task/${ids[i]}/follow`, null, { silence: true }));
+        promises.push(task.cancelFollowTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -412,7 +413,7 @@ const toDelete = (data: TaskInfo) => {
   modal.confirm({
     content: `确定删除任务【${data.name}】吗？`,
     async onOk () {
-      const [error] = await http.del(`${TESTER}/task`, { ids: [data.id] });
+      const [error] = await task.deleteTask([data.id]);
       if (error) {
         return;
       }
@@ -492,7 +493,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo) => {
 };
 
 const toFavourite = async (data: TaskInfo) => {
-  const [error] = await http.post(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.favouriteTask(data.id);
   if (error) {
     return;
   }
@@ -502,7 +503,7 @@ const toFavourite = async (data: TaskInfo) => {
 };
 
 const toDeleteFavourite = async (data: TaskInfo) => {
-  const [error] = await http.del(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.cancelFavouriteTask(data.id);
   if (error) {
     return;
   }
@@ -512,7 +513,7 @@ const toDeleteFavourite = async (data: TaskInfo) => {
 };
 
 const toFollow = async (data: TaskInfo) => {
-  const [error] = await http.post(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.followTask(data.id);
   if (error) {
     return;
   }
@@ -522,7 +523,7 @@ const toFollow = async (data: TaskInfo) => {
 };
 
 const toDeleteFollow = async (data: TaskInfo) => {
-  const [error] = await http.del(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.cancelFollowTask(data.id);
   if (error) {
     return;
   }
@@ -533,7 +534,7 @@ const toDeleteFollow = async (data: TaskInfo) => {
 
 const toStart = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/start`);
+  const [error] = await task.startProcessing(id);
   if (error) {
     return;
   }
@@ -546,7 +547,7 @@ const toStart = async (data: TaskInfo) => {
 
 const toProcessed = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/processed`);
+  const [error] = await task.processedTask(id);
   if (error) {
     return;
   }
@@ -559,7 +560,7 @@ const toProcessed = async (data: TaskInfo) => {
 
 const toUncomplete = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/result/FAIL/confirm`);
+  const [error] = await task.confirmTask(id, 'FAIL');
   if (error) {
     return;
   }
@@ -571,7 +572,7 @@ const toUncomplete = async (data: TaskInfo) => {
 
 const toCompleted = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/result/SUCCESS/confirm`);
+  const [error] = await task.confirmTask(id, 'SUCCESS');
   if (error) {
     return;
   }
@@ -583,7 +584,7 @@ const toCompleted = async (data: TaskInfo) => {
 
 const toReopen = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/task/${id}/reopen`);
+  const [error] = await task.reopenTask(id);
   if (error) {
     return;
   }
@@ -596,7 +597,7 @@ const toReopen = async (data: TaskInfo) => {
 
 const toRestart = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/task/${id}/restart`);
+  const [error] = await task.restartTask(id);
   if (error) {
     return;
   }
@@ -613,7 +614,7 @@ const toMove = (data: TaskInfo) => {
 
 const toCancel = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await http.put(`${TESTER}/task/${id}/cancel`);
+  const [error] = await task.cancelTask(id);
   if (error) {
     return;
   }
@@ -635,7 +636,7 @@ const toCopyHref = (data: TaskInfo) => {
 
 const loadData = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await http.get(`${TESTER}/task/${id}`);
+  const [error, res] = await task.loadTaskInfo(id);
   emit('update:loading', false);
   if (error || !res?.data) {
     return { id };

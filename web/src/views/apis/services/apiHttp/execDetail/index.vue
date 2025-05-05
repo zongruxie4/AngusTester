@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject, Ref } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { NoData } from '@xcan-angus/vue-ui';
+import { exec } from '@/api/alctrl';
 
 interface Props {
   apisId: string;
@@ -23,7 +23,7 @@ const activeTab = ref('func');
 const dataSource = ref();
 
 const loadApisResult = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/exec/apis/${props.apisId}/result`);
+  const [error, { data }] = await exec.loadApiExecRes(props.apisId);
   if (error) {
     return;
   }

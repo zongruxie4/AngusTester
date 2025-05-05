@@ -2,7 +2,8 @@
 import { computed, inject, ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { UnarchivedItem } from './PropsType';
 
@@ -42,7 +43,7 @@ const scrollChange = (data:UnarchivedItem[]) => {
 
 const toDelete = async (value:UnarchivedItem) => {
   const id = value.id;
-  const [error] = await http.del(`${TESTER}/apis/unarchived/${id}`);
+  const [error] = await apis.delUnarchived(id);
   if (error) {
     return;
   }
@@ -62,7 +63,7 @@ const scrollDelete = (id:string) => {
 };
 
 const deleteAll = async () => {
-  const [error] = await http.del(`${TESTER}/apis/unarchived`);
+  const [error] = await apis.delAllUnarchived();
   if (error) {
     return;
   }

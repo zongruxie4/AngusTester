@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, TESTER } from '@xcan-angus/tools';
+import { clipboard, utils } from '@xcan-angus/tools';
+import { services } from '@/api/altester';
 
 import { ServerConfig } from './PropsType';
 
@@ -42,7 +43,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/services/${serviceId.value}/schema/server/${serverId.value}`);
+  const [error, res] = await services.getServiceServerByServerId(serviceId.value, serverId.value);
   loading.value = false;
   if (error) {
     return;
@@ -89,7 +90,7 @@ const toSave = async () => {
 
   const params = getSaveParams(data);
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/services/${data.serviceId}/schema/server`, params);
+  const [error] = await services.putServicesServerUrl(data.serviceId, params);
   loading.value = false;
   if (error) {
     return;
@@ -183,7 +184,7 @@ const toDelete = () => {
     async onOk () {
       const id = serverId.value;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/services/${serviceId.value}/schema/server`, { ids: [id] });
+      const [error] = await services.delServicesServerUrl(serviceId.value as string, [id] as string[]);
       loading.value = false;
       if (error) {
         return;
@@ -209,7 +210,7 @@ const toClone = async () => {
   } = getSaveParams(serverDemo.value);
   delete params['x-xc-id'];
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/services/${serviceId.value}/schema/server`, params);
+  const [error] = await services.putServicesServerUrl(serviceId.value as string, params);
   loading.value = false;
   if (error) {
     return;

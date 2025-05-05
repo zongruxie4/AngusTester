@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed, defineAsyncComponent } from 'vue';
-import { TESTER, http } from '@xcan-angus/tools';
 import { Hints } from '@xcan-angus/vue-ui';
+import { services } from '@/api/altester';
 
 interface Props {
   serviceId: string;
@@ -58,7 +58,7 @@ const typeValues = computed(() => {
 });
 
 const loadResult = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/services/${props.serviceId}/test/result`);
+  const [error, { data }] = await services.getTestResult(props.serviceId);
   if (error) {
     return;
   }

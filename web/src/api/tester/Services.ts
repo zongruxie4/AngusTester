@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl = '';
 export default class API {
@@ -66,22 +66,29 @@ export default class API {
     return http.post(url);
   }
 
+
+  getProjectServers <T> (params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/schema/server`, params);
+  }
+
   putServicesServerUrl<T> (id: string, params: T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/server`, params);
   }
 
   delServicesServerUrl (id: string, ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/schema/server?ids=${ids}`);
+    return http.del(`${baseUrl}/${id}/schema/server`, { ids });
   }
 
   getServicesServerUrlInfo (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/schema/server`);
   }
 
-  // 获取权限
-  loadAuthority (params: any): Promise<[Error | null, any]> {
-    // const { id, ...other } = params;
-    return http.get(`${baseUrl}/auth`, params);
+  getServiceServerByServerId (serviceId: string, serverId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${serviceId}/schema/server/${serverId}`);
+  }
+
+  loadAuthority (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
   // 查询apis列表
@@ -106,24 +113,22 @@ export default class API {
   }
 
   // 权限弹窗 添加权限
-  addAuth (params): Promise<[Error | null, any]> {
-    const { id, ...other } = params;
-    return http.post(`${baseUrl}/${id}/auth`, other);
+  addAuth (id: string, params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${id}/auth`, params);
   }
 
   // 修改权限
-  updateAuth (params: any): Promise<[Error | null, any]> {
-    const { id, ...other } = params;
-    return http.put(`${baseUrl}/auth/${id}`, other);
+  updateAuth (authId: string, params: any): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
   // 删除授权
-  delAuth (id: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/auth/${id}`);
+  delAuth (authId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/auth/${authId}`);
   }
 
   // 更改是否有权限控制
-  updateAuthFlag (params: any): Promise<[Error | null, any]> {
+  updateAuthEnabled (params: any): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
   }
 
@@ -235,7 +240,7 @@ export default class API {
     return http.get(`${baseUrl}/${id}/comp/ref`, { ref }, config);
   }
 
-  // TODO Q1
+
   updateServiceApisServer (id:string, serverId:string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/server/${serverId}/apis/sync`);
   }
@@ -264,4 +269,59 @@ export default class API {
   importServicesSamples ():Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/example/import`);
   }
+
+  batchAddParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchUpdateParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchDeleteParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/parameter?${queryStr}`, parameters);
+  }
+
+  batchToggleEnabledParams (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/parameter/enabled?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+  batchUpdateAuthentication (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/authentication?${queryStr}`, parameters);
+  }
+
+  batchUpdateServer (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/server?${queryStr}`, parameters);
+  }
+
+  batchUpdateReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+
+
+  batchDeleteReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+  batchDeleteReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters, {
+      paramsType: true
+    });
+  }
+
+  getOpenapi<T> (serviceId: string, params:T):Promise<[Error | null, any]> {
+    return http.get(`${TESTER}/services/${serviceId}/openapi`, params);
+  }
+
+  getTestResult (serviceId: string):Promise<[Error | null, any]> {
+    return http.get(`${TESTER}/services/${serviceId}/test/result`);
+  }
+
 }

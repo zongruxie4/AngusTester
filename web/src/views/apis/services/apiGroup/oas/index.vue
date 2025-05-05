@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { Collapse, CollapsePanel, Tag, TypographyParagraph } from 'ant-design-vue';
 import { http, utils, TESTER } from '@xcan-angus/tools';
-import { Arrow, Colon, HttpMethodTag, Icon, Spin } from '@xcan-angus/vue-ui';
+import { Spin } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
-
+import { services } from "@/api/altester";
 import { ComponentsKey, OpenApiInfo, PathItemInfo } from './PropsType';
 import { getArraySchema, getObjectShcema } from './utils';
-import { componentTextMap } from './data';
-
 interface Props {
   serviceId: string;
   mode:'UI'|'code'
@@ -60,7 +57,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/services/${props.serviceId}/openapi`, { gzipCompression: false, format: 'json' });
+  const [error, { data }] = await services.getOpenapi(props.serviceId, { gzipCompression: false, format: 'json' });
   if (error) {
     loading.value = false;
     return;

@@ -4,8 +4,8 @@ import addFormats from 'ajv-formats';
 import { getBodyDefaultItem, getDefaultParams, ParamsItem } from './interface';
 import { mock } from 'src/api/tester';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
-import { http, TESTER } from '@xcan-angus/tools';
 import { uniq } from 'lodash-es';
+import { target } from '@/api/altester';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 const ajv = new Ajv();
@@ -213,7 +213,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
   let variableValues = [];
   if (variableNames.length) {
     // const [error, resp] = await variable.getVariableValue(uniq(variableNames), apiId);
-    const [error, resp] = await http.get(`${TESTER}/target/${apiId}/API/parameter/data/value`);
+    const [error, resp] = await target.getParamsVariableValue(apiId);
     if (!error) {
       // const response = (resp.data || []).map(i => {
       //   return {

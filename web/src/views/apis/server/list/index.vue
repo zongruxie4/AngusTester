@@ -3,9 +3,9 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Popconfirm, Tag, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { services } from '@/api/altester';
 
-import GridList from '@/views/apis/server/list/gridList/index.vue';
 import { ServerInfo } from '../PropsType';
 import { cloneDeep } from 'lodash-es';
 
@@ -45,7 +45,7 @@ const toCreateServer = () => {
 };
 
 const toUpdate = async (data) => {
-  const [error] = await http.put(`${TESTER}/services/${data.serviceId}/schema/server/${data.server?.['x-xc-id']}/apis/sync`);
+  const [error] = await services.updateServiceApisServer(data.serviceId, data.server?.['x-xc-id']);
   if (error) {
     return;
   }
@@ -71,7 +71,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
   };
 
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/services/${data.serviceId}/schema/server`, params);
+  const [error] = await services.putServicesServerUrl(data.serviceId, params);
   loading.value = false;
   if (error) {
     return;
@@ -84,7 +84,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
 
 const toDelete = async (data:{serviceId:string;serviceName:string;server:ServerInfo}) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/services/${data.serviceId}/schema/server`, { ids: [data.server?.['x-xc-id']] });
+  const [error] = await services.delServicesServerUrl(data.serviceId, [data.server?.['x-xc-id']]);
   loading.value = false;
   if (error) {
     return;
@@ -132,7 +132,7 @@ const loadData = async () => {
   };
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/services/schema/server`, params);
+  const [error, res] = await services.getProjectServers(params);
   loaded.value = true;
   loading.value = false;
 

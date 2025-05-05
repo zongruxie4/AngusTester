@@ -4,6 +4,7 @@ import { Button, Collapse, CollapsePanel, Popconfirm, TypographyParagraph } from
 import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
+import { services } from '@/api/altester';
 
 import { ServerConfig, ServerInfo } from './PropsType';
 import EditForm from './editForm.vue';
@@ -72,7 +73,7 @@ const cancelAddServer = () => {
 const saveAddServer = async (data:ServerConfig) => {
   const params = getSaveParams(data);
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/services/${props.id}/schema/server`, params);
+  const [error] = await services.putServicesServerUrl(props.id, params);
   if (error) {
     loading.value = false;
     return;
@@ -94,7 +95,7 @@ const arrowChange = (open: boolean, data: ServerConfig) => {
 };
 
 const toUpdate = async (data: ServerConfig) => {
-  const [error] = await http.put(`${TESTER}/services/${props.id}/schema/server/${data['x-xc-id']}/apis/sync`);
+  const [error] = await services.updateServiceApisServer(props.id, data['x-xc-id']);
   if (error) {
     return;
   }
@@ -108,7 +109,7 @@ const toEdit = (data: ServerConfig) => {
 
 const toDelete = async (data:ServerConfig, index: number) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/services/${props.id}/schema/server`, { ids: [data['x-xc-id']] });
+  const [error] = await services.delServicesServerUrl(props.id, [data['x-xc-id'] as string]);
   loading.value = false;
   if (error) {
     return;
@@ -168,7 +169,7 @@ const save = async (data:ServerConfig, id:string, index:number) => {
   const editItem = { ...serverList.value[index], ...data };
   const params = getSaveParams(editItem);
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/services/${props.id}/schema/server`, params);
+  const [error] = await services.putServicesServerUrl(props.id, params);
   loading.value = false;
   if (error) {
     return;
@@ -180,7 +181,7 @@ const save = async (data:ServerConfig, id:string, index:number) => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/services/${props.id}/schema/server`);
+  const [error, { data }] = await services.getServicesServerUrlInfo(props.id);
   loading.value = false;
   if (error) {
     return;

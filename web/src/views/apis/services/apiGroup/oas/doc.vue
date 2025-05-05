@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, onMounted } from 'vue';
 import '@xcan-angus/rapidoc';
-import { http, TESTER, cookie, site } from '@xcan-angus/tools';
+import { cookie, site } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import YAML from 'yaml';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
+import { services } from '@/api/altester';
 
 interface Props {
   mode: 'UI' | 'code',
@@ -25,7 +26,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/services/${props.serviceId}/openapi`, { gzipCompression: false, format: 'json' });
+  const [error, { data }] = await services.getOpenapi(props.serviceId, { gzipCompression: false, format: 'json' });
   if (error) {
     loading.value = false;
     return;

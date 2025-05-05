@@ -4,7 +4,8 @@ import { Icon, Input, Modal, notification, SelectEnum, Spin } from '@xcan-angus/
 import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
-import { TESTER, http, localStore } from '@xcan-angus/tools';
+import { slocalStore } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 import { useI18n } from 'vue-i18n';
 
@@ -103,9 +104,7 @@ const resetApiDebug = () => {
 };
 
 const loadApiResolveModel = async () => {
-  const [error, resp] = await http.get(`${TESTER}/apis/${props.apisId}`, {
-    resolveRefFlag: true
-  });
+  const [error, resp] = await apis.loadInfo(props.apisId, true);
   if (error) {
     return;
   }
@@ -121,7 +120,7 @@ const defaultDescription = ref('');
 const caseInfoData = ref();
 const getCaseInfo = async () => {
   const resolvedRefModels = await loadApiResolveModel();
-  const [error, { data }] = await http.get(`${TESTER}/apis/case/${props.caseId}`);
+  const [error, { data }] = await apis.loadCaseInfo(props.caseId);
   if (error) {
     return;
   }
@@ -204,7 +203,7 @@ const editSave = async (closeModal = true) => {
     return;
   }
 
-  const [error] = await http.put(`${TESTER}/apis/case`, [{ id: props.caseId, ...params }]);
+  const [error] = await apis.replaceCase([{ id: props.caseId, ...params }]);
   loading.value = false;
   if (error) {
     return;
@@ -216,7 +215,7 @@ const editSave = async (closeModal = true) => {
 const addSave = async (closeModal = false) => {
   loading.value = true;
   const params = await getParams();
-  const [error] = await http.post(`${TESTER}/apis/case`, [params]);
+  const [error] = await apis.addApisCase([params]);
   loading.value = false;
   if (error) {
     return;

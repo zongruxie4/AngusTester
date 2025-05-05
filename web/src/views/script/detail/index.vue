@@ -8,10 +8,6 @@ import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 import { TESTER, GM, http } from '@xcan-angus/tools';
 
-// eslint-disable-next-line import/no-absolute-path
-
-// eslint-disable-next-line import/no-absolute-path
-;
 
 import { script } from 'src/api/tester';
 import { exec } from 'src/api/ctrl';
