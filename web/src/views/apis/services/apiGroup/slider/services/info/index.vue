@@ -4,7 +4,7 @@ import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, SelectEnum } 
 import { Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
 
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { IInfomation, Status } from './PropsType';
 
 interface Props {

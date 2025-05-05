@@ -10,7 +10,7 @@ import { getDefaultParams } from '../interface';
 // import ParamsInput from '@/components/ParamInput/index.vue';
 import { API_EXTENSION_KEY, variableNameReg } from '@/views/apis/utils';
 import { deconstruct } from '@/utils/swagger';
-import { services, variable as variableApi } from '@/api/altester';
+import { services, variable as variableApi } from 'src/api/tester';
 import { itemTypes } from './interface';
 import { deepDelAttrFromObj, validateType } from '../utils';
 import JsonContent from '../requestBody/json/index.vue';

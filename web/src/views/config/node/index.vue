@@ -7,7 +7,7 @@ import { Button, Pagination, Switch } from 'ant-design-vue';
 
 import { sortOpt } from './interface';
 import { pubStore } from '@/api/store';
-import { node } from '@/api/altester';
+import { node } from 'src/api/tester';
 import { pureParams } from '@/utils/common';
 
 const NodeItems = defineAsyncComponent(() => import('./components/nodeItems/index.vue'));

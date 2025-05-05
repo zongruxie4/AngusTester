@@ -5,7 +5,7 @@ import { Button, RadioGroup } from 'ant-design-vue';
 import { encode } from '@/utils/secure';
 import { http, utils } from '@xcan-angus/tools';
 import axios from 'axios';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 
 import {
   AuthItem,

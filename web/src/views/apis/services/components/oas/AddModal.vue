@@ -6,7 +6,7 @@ import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
 
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

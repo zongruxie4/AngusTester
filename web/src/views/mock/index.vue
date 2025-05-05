@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router';
 
 import ViewType from '@/views/mock/viewType/index.vue';
 import { MockServiceObj, TableSelection } from './PropsType';
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import router from '@/router';
 

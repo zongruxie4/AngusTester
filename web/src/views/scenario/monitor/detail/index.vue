@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
 import { Hints, Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, CTRL, http } from '@xcan-angus/tools';
+import { TESTER, http } from '@xcan-angus/tools';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 

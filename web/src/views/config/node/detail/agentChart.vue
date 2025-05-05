@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { IntervalTimestamp } from '@xcan-angus/vue-ui';
-import { TESTER, CTRL } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 
 const CacheChart = defineAsyncComponent(() => import('@/components/chart/mock/cacheChart.vue'));
 const RamChart = defineAsyncComponent(() => import('@/components/chart/mock/ramChart.vue'));
@@ -163,7 +163,7 @@ const getChartData = async (data, params) => {
   </div>
   <div class="flex justify-end pr-15">
     <IntervalTimestamp
-      :action="`${CTRL}/mock/service/${props.id}/metrics`"
+      :action="`${TESTER}/mock/service/${props.id}/metrics`"
       @change="getChartData" />
   </div>
   <div class="flex h-60 space-x-2 mt-2">

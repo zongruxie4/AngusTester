@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Colon, Scroll } from '@xcan-angus/vue-ui';
-import { CTRL } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 
 import { ExecInfo } from './PropsType';
 
@@ -39,7 +39,7 @@ const BG_COLOR = {
   <Scroll
     ref="scrollRef"
     :params="params"
-    :action="`${CTRL}/exec/search?projectId=${props.projectId}&scriptId=${props.scriptId}`"
+    :action="`${TESTER}/exec/search?projectId=${props.projectId}&scriptId=${props.scriptId}`"
     class="scroll-container"
     @change="scrollChange">
     <div class="group-container space-y-7.5">

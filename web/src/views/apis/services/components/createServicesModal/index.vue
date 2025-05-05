@@ -2,7 +2,7 @@
 import { computed, inject, ref } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 
 interface Props {
   visible:boolean,

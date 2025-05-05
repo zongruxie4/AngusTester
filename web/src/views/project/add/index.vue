@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch, defineAsyncComponent } from 'vue';
 import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Divider, Form, FormItem, RadioButton, RadioGroup, Textarea, Upload, Popover } from 'ant-design-vue';
-import { project } from '@/api/altester';
+import { project } from 'src/api/tester';
 import { GM, upload } from '@xcan-angus/tools';
 
 export type Project = {

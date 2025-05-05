@@ -5,7 +5,7 @@ import { TESTER, localStore, utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 
-import { services, unarchived } from '@/api/altester';
+import { services, unarchived } from 'src/api/tester';
 import { actions, ModalsConfig, ServiceProject } from './PropsType';
 
 type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';

@@ -5,7 +5,7 @@ import { Button, Checkbox, CheckboxGroup, Radio, RadioGroup, Tooltip } from 'ant
 import { enumLoader, duration, clipboard, site, utils } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import { apis, services } from '@/api/altester';
+import { apis, services } from 'src/api/tester';
 import dayjs from 'dayjs';
 
 import { randomString } from '@/utils/utils';

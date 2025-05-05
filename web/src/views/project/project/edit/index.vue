@@ -13,7 +13,7 @@ import {
 } from 'ant-design-vue';
 import { DatePicker, Icon, Image, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { http, TESTER, GM, upload } from '@xcan-angus/tools';
-import { project } from '@/api/altester';
+import { project } from 'src/api/tester';
 
 interface Props {
   projectId: string;

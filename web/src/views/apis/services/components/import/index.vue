@@ -4,7 +4,7 @@ import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vu
 import { Icon, Input, notification, SelectEnum, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { formatBytes } from '@/utils/common';
 import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 

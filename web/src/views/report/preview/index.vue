@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { PrinterOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, CTRL, TESTER } from '@xcan-angus/tools';
+import { http, utils, TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import { Watermark } from 'watermark-js-plus';
 import html2pdf from 'html3pdf';
@@ -43,7 +43,7 @@ const execResult = ref<ExecResult>();
 
 const loadExecResult = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${CTRL}/exec/${id}/result`);
+  const [error, res] = await http.get(`${TESTER}/exec/${id}/result`);
   loading.value = false;
   if (error) {
     return;
@@ -63,7 +63,7 @@ const loadExecContent = async (id: string) => {
   const pageSize = 500;
   const tempList: any[] = [];
   const load = async (pageNo = 1) => {
-    const [error, res] = await http.get(`${CTRL}/exec/${id}/sample/extension/content`, { pageNo, pageSize, extField: 'SampleResultContent' });
+    const [error, res] = await http.get(`${TESTER}/exec/${id}/sample/extension/content`, { pageNo, pageSize, extField: 'SampleResultContent' });
     if (error) {
       loading.value = false;
       return;
@@ -92,7 +92,7 @@ const loadExecContent = async (id: string) => {
 
 const loadExecInfo = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${CTRL}/exec/${id}`);
+  const [error, res] = await http.get(`${TESTER}/exec/${id}`);
   loading.value = false;
   if (error) {
     return;

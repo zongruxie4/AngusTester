@@ -16,7 +16,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 
-import { dataApi } from '@/api/altester';
+import { dataApi } from 'src/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'

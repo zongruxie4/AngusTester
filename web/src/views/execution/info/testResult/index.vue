@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref } from 'vue';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 // import { NoData, Icon } from '@xcan-angus/vue-ui';
 

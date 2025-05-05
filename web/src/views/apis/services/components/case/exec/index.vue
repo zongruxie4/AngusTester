@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { inject, ref, watch } from 'vue';
 import { Modal, NoData, notification } from '@xcan-angus/vue-ui';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
 
 // import http from '@/utils/http';

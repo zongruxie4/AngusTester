@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { Hints, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 
 interface Props {
   data?: {

@@ -3,7 +3,7 @@ import { inject, onMounted, reactive, ref } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 
-import { unarchived } from '@/api/altester';
+import { unarchived } from 'src/api/tester';
 
 interface Props {
   getParameter: any;

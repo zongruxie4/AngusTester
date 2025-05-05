@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { ExecInfo, ReportInfo } from '../../PropsType';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 const Performance = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/index.vue'));
 

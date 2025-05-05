@@ -68,14 +68,6 @@ const columnsCloud = [[
     label: '持有者',
     dataIndex: 'holder'
   }
-  // {
-  //   label: '发行日期',
-  //   dataIndex: 'beginDate'
-  // },
-  // {
-  //   label: '过期日期',
-  //   dataIndex: 'endDate'
-  // }
 ]];
 
 const dataSource = ref({});

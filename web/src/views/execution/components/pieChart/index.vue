@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { PieData, PieSetting } from './PropsType';
-import { http, enumLoader, CTRL } from '@xcan-angus/tools';
+import { http, enumLoader, TESTER } from '@xcan-angus/tools';
 
 import Charts from './charts.vue';
 
@@ -105,7 +105,7 @@ const pieloading = ref(true); // 饼图统计是否加载完成
 const pieChartData = ref<PieData[]>([]);
 const loadCount = async () => {
   const params = { ...publicParams, groupByColumns: groupByGroup.value.map(item => item.key), projectId: projectId.value };
-  const [error, { data }] = await http.get(`${CTRL}/analysis/customization/summary`, params);
+  const [error, { data }] = await http.get(`${TESTER}/analysis/customization/summary`, params);
   pieloading.value = false;
   if (error) {
     return;

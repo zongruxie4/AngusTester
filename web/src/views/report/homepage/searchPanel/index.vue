@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, Icon, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, CTRL, TESTER } from '@xcan-angus/tools';
+import { XCanDexie, TESTER } from '@xcan-angus/tools';
 
 import { MenuItem } from './PropsType';
 
@@ -646,7 +646,7 @@ const sortMenus = [
           <Select
             v-if="isExecutionTargetType"
             :value="targetIdFilter.value"
-            :action="`${CTRL}/exec/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/exec/search?projectId=${props.projectId}`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择执行"

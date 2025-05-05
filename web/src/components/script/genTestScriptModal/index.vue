@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue';
 import { Icon, Modal, notification, Toggle } from '@xcan-angus/vue-ui';
-import { apis, indicator, services } from '@/api/altester';
+import { apis, indicator, services } from 'src/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
 import TestForm from './testForm.vue';
 

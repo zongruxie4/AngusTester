@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { DatePicker, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Textarea } from 'ant-design-vue';
-import { software } from '@/api/altester';
+import { software } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

@@ -94,7 +94,7 @@
       <resource>
         <directory>src/main/scripts</directory>
         <includes>
-          <include>startenv.sh</include>
+          <include>set-opts.sh</include>
           <include>*.sh</include>
           <include>*.bat</include>
         </includes>

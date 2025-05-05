@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import * as eCharts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
-import { kanban } from '@/api/altester';
+import { kanban } from 'src/api/tester';
 import { throttle } from 'throttle-debounce';
 
 interface Props {

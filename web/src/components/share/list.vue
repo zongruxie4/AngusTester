@@ -4,7 +4,7 @@ import { Arrow, AsyncComponent, Colon, Hints, Icon, IconCopy, Input, notificatio
 import { Button, Tooltip } from 'ant-design-vue';
 import { clipboard, TESTER } from '@xcan-angus/tools';
 
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 import { ListType, ShareObj, TargetType } from './PropsType';
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));

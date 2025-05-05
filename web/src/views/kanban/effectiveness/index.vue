@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Icon } from '@xcan-angus/vue-ui';
 import * as eCharts from 'echarts';
 import { caseOverViewConfig, taskOverViewConfig } from './config';
-import { kanban } from '@/api/altester';
+import { kanban } from 'src/api/tester';
 import noData from './Image/nodata.png';
 import { throttle } from 'throttle-debounce';
 import { RadioGroup } from 'ant-design-vue';

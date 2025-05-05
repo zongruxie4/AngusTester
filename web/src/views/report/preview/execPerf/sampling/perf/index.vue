@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue';
 import dayjs from 'dayjs';
-import { http, CTRL } from '@xcan-angus/tools';
+import { http, TESTER } from '@xcan-angus/tools';
 
 import { ListData, useExecCount } from '../useExecCount';
 import { allCvsKeys } from '../chartConfig';
 
 import { Exception } from '../PropsType';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 interface Props {
   detail?: Record<string, any>;
@@ -359,7 +359,7 @@ const perfLoadList = async (_pageNo?: number, filters?: { key: string; op: strin
     perfListParams.value.filters = filters;
   }
 
-  const [error, { data = { list: [], total: 0 } }] = await http.get(`${CTRL}/exec/${props.detail?.id}/sample/summary/list`, perfListParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await http.get(`${TESTER}/exec/${props.detail?.id}/sample/summary/list`, perfListParams.value);
   if (error) {
     emit('update:loading', false);
     clearTimer();
@@ -874,7 +874,7 @@ const computedOhtersValue = () => {
 };
 
 const loadErrorCount = async () => {
-  const [counterErr, counterRes] = await http.get(`${CTRL}/exec/${props.detail?.id}/sample/errors/counter/latest`);
+  const [counterErr, counterRes] = await http.get(`${TESTER}/exec/${props.detail?.id}/sample/errors/counter/latest`);
   if (counterErr) {
     emit('update:loading', false);
     clearTimer();
@@ -945,7 +945,7 @@ const loadSampleErrorContent = async (_pageNo?: number) => {
     errParams.value.filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(errTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
   }
 
-  const [error, { data = { list: [], total: 0 } }] = await http.get(`${CTRL}/exec/${props.detail?.id}/sample/error/content`, errParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await http.get(`${TESTER}/exec/${props.detail?.id}/sample/error/content`, errParams.value);
   if (error) {
     emit('update:loading', false);
     clearTimer();
@@ -966,7 +966,7 @@ const loadSampleErrorContent = async (_pageNo?: number) => {
 const statusCodeData = ref({});
 // 请求状态码 状态码不展示历史
 const loadStatusCodeData = async () => {
-  const [error, { data }] = await http.get(`${CTRL}/exec/${props.detail?.id}/sample/extension/counter/map1/latest`);
+  const [error, { data }] = await http.get(`${TESTER}/exec/${props.detail?.id}/sample/extension/counter/map1/latest`);
   if (error) {
     emit('update:loading', false);
     clearTimer();

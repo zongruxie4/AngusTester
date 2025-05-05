@@ -15,7 +15,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/altester';
+import { task, modules } from 'src/api/tester';
 
 import { TaskInfo } from '@/views/task/PropsType';
 

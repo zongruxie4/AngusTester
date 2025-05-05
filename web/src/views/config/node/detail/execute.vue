@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { nodeCtrl } from '@/api/alctrl';
+import { nodeCtrl } from 'src/api/ctrl';
 
 interface Props {
   id: string; // node id

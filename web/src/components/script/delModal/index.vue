@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Modal } from 'ant-design-vue';
-import { apis, services } from '@/api/altester';
+import { apis, services } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { Image, notification, Icon } from '@xcan-angus/vue-ui';
 import { Form, FormItem, TabPane, Tabs, Tooltip, Tag } from 'ant-design-vue';
-import { project } from '@/api/altester';
+import { project } from 'src/api/tester';
 import { TESTER, http } from '@xcan-angus/tools';
 import DefaultProjectPng from '@/views/project/project/images/default.png';
 import dayjs from 'dayjs';

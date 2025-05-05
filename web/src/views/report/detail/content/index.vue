@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { http, CTRL, TESTER, GM } from '@xcan-angus/tools';
+import { http, TESTER, GM } from '@xcan-angus/tools';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 
@@ -131,7 +131,7 @@ const loadScenarioName = async (scenarioId) => {
 };
 
 const loadExecName = async (execId) => {
-  const [error, { data }] = await http.get(`${CTRL}/exec/${execId}`);
+  const [error, { data }] = await http.get(`${TESTER}/exec/${execId}`);
   if (error) {
     return;
   }

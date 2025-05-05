@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, inject, reactive, ref, watch } from 'vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
-import { unarchived } from '@/api/altester';
+import { unarchived } from 'src/api/tester';
 import { Button, Form, FormItem } from 'ant-design-vue';
 
 interface Props {

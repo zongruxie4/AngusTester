@@ -5,7 +5,7 @@ import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { site, TESTER } from '@xcan-angus/tools';
 import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
-import { mock, services } from '@/api/altester';
+import { mock, services } from 'src/api/tester';
 
 import ApiList from '@/views/mock/add/apiList.vue';
 

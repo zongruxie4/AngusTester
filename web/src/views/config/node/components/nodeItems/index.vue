@@ -9,8 +9,8 @@ import { site } from '@xcan-angus/tools';
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
 
-import { nodeCtrl, nodeInfo } from '@/api/alctrl';
-import { node } from '@/api/altester';
+import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
+import { node } from 'src/api/tester';
 
 type Roles = Array<{value: string, label: string, name: string, disabled?:boolean}>
 

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 import { TaskInfo } from '../../../../../PropsType';
 

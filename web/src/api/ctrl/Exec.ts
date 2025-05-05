@@ -6,15 +6,15 @@ export default class API {
     baseUrl = prefix + '/exec';
   }
 
-  addExecutetByScript (params): Promise<[Error | null, any]> {
+  addExecByScript (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/byscript`, params);
   }
 
-  editExecutetByScript (id:string, params): Promise<[Error | null, any]> {
+  editExecByScript (id:string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/script/config`, params);
   }
 
-  loadExecutetList (params): Promise<[Error | null, any]> {
+  loadExecList (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params);
   }
 
@@ -74,7 +74,7 @@ export default class API {
     return http.get(`${baseUrl}/${id}/sample/error`, params);
   }
 
-  loadErroCounterLatest (id:string): Promise<[Error | null, any]> {
+  loadErrorCounterLatest (id:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/errors/counter/latest`);
   }
 
@@ -106,22 +106,18 @@ export default class API {
     return http.get(`${baseUrl}/${id}/sample/extension/content`, params);
   }
 
-  // 执行测试结果
   loadExecTestResult (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/result`);
   }
 
-  // 接口执行测试结果
   loadApiExecTestResult (apisId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/${apisId}/${scriptType}/result`);
   }
 
-  // 场景执行测试结果
   loadScenarioTestResult (scenarioId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/${scenarioId}/${scriptType}/result`);
   }
 
-  // 服务执行测试结果
   loadServiceTestResult (serviceId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/service/${serviceId}/result`);
   }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 
 interface Props {
   nodeId: string

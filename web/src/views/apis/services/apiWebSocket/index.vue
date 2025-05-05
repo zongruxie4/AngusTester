@@ -11,7 +11,7 @@ import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import { apis, unarchived } from '@/api/altester';
+import { apis, unarchived } from 'src/api/tester';
 import { API_AUTH_CODE } from '@/views/apis/PropsType';
 import { formatBytes } from '@/utils/utils';
 import ApiServer from '@/views/apis/services/apiWebSocket/server/index.vue';

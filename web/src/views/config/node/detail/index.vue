@@ -5,12 +5,12 @@ import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { Button, Progress, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { Grid, Hints, Icon, IntervalTimestamp, modal, NoData, Select, Spin, Tooltip } from '@xcan-angus/vue-ui';
-import { CTRL } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
-import { nodeCtrl, nodeInfo } from '@/api/alctrl';
-import { node } from '@/api/altester';
+import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
+import { node } from 'src/api/tester';
 
 import { formatBytes, formatBytesToUnit } from '@/utils/common';
 
@@ -44,10 +44,10 @@ const state = reactive<{infos: Record<string, any>, linuxOfflineInstallSteps: Re
 const showPassd = ref(false);
 
 const chartServersMap = {
-  cpu: `${CTRL}/node/${id.value}/metrics/cpu`,
-  memory: `${CTRL}/node/${id.value}/metrics/memory`,
-  disk: `${CTRL}/node/${id.value}/metrics/disk`,
-  network: `${CTRL}/node/${id.value}/metrics/network`
+  cpu: `${TESTER}/node/${id.value}/metrics/cpu`,
+  memory: `${TESTER}/node/${id.value}/metrics/memory`,
+  disk: `${TESTER}/node/${id.value}/metrics/disk`,
+  network: `${TESTER}/node/${id.value}/metrics/network`
 };
 const loadingChart = ref(false);
 
