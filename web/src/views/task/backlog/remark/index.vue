@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/tester';
 
 type Remark = {
   content: string;
@@ -31,7 +32,7 @@ const scrollChange = (data: Remark[]) => {
 };
 
 const toDelete = async (id: string) => {
-  const [error] = await http.del(`${TESTER}/task/remark/${id}`);
+  const [error] = await task.delTaskRemark(id);
   if (error) {
     return;
   }

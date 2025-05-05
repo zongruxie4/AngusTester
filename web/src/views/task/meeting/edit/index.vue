@@ -4,6 +4,7 @@ import { Icon, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { http, utils, TESTER, enumLoader } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
+import { task, project } from '@/api/tester';
 
 import RichEditor from '@/components/richEditor/index.vue';
 
@@ -78,7 +79,7 @@ const refreshList = () => {
 const editOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/meeting`, params);
+  const [error] = await task.updateMeeting(params);
   loading.value = false;
   if (error) {
     return;
@@ -98,7 +99,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/task/meeting`, params);
+  const [error, res] = await task.addMeeting(params);
   loading.value = false;
   if (error) {
     return;
@@ -142,7 +143,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/meeting/${id}`);
+  const [error, res] = await task.getMeetingInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -212,7 +213,7 @@ const setFormData = (data: MeetingInfo) => {
 const members = ref<{ fullName: string, id: string; }[]>([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
+  const [error, { data }] = await project.getMemberUser(props.projectId);
   if (error) {
     return;
   }

@@ -2,8 +2,9 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, clipboard, http, utils, download } from '@xcan-angus/tools';
+import { TESTER, clipboard, utils, download } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
+import { task } from '@/api/tester';
 import { SprintInfo } from '../PropsType';
 
 type Props = {
@@ -62,7 +63,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/sprint/${id}/user/auth/current`, params);
+  const [error, res] = await task.getCurrentUserSprintAuth(id, params);
   loading.value = false;
   if (error) {
     return;
@@ -91,7 +92,7 @@ const loadPermissions = async (id: string) => {
 
 const loadData = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/sprint/${id}`);
+  const [error, res] = await task.getSprintInfo(id);
   loading.value = false;
   if (error) {
     return;

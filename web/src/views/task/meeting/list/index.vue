@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Avatar, Button, Pagination } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Icon, Image, modal, NoData, notification, Popover, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/tester';
 
 import { MeetingInfo } from '../PropsType';
 import SearchPanel from '@/views/task/meeting/list/searchPanel/index.vue';
@@ -74,7 +74,7 @@ const toDelete = async (data: MeetingInfo) => {
     content: `确定删除会议【${data.subject}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/task/meeting/${id}`);
+      const [error] = await task.deleteMeeting(id);
       if (error) {
         return;
       }
@@ -117,7 +117,7 @@ const loadData = async () => {
   //   params.filters = filters.value;
   // }
 
-  const [error, res] = await http.get(`${TESTER}/task/meeting/search`, params);
+  const [error, res] = await task.searchMeeting(params);
   loaded.value = true;
   loading.value = false;
 

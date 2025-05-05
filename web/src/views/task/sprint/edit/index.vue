@@ -13,9 +13,10 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea, Upload } from 'ant-design-vue';
-import { clipboard, http, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
+import { clipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
+import { task } from '@/api/tester';
 // import { cloneDeep, isEqual } from 'lodash-es';
 import { FormState } from './PropsType';
 import { SprintInfo } from '../PropsType';
@@ -129,7 +130,7 @@ const editOk = async () => {
   const params = getParams();
 
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/task/sprint`, params);
+  const [error] = await task.putSprint(params);
   loading.value = false;
   if (error) {
     return;
@@ -149,7 +150,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/task/sprint`, params);
+  const [error, res] = await task.addSprint(params);
   loading.value = false;
   if (error) {
     return;
@@ -208,7 +209,7 @@ const toStart = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/start`);
+  const [error] = await task.startSprint(id);
   loading.value = false;
   if (error) {
     return;
@@ -226,7 +227,7 @@ const toCompleted = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/end`);
+  const [error] = await task.endSprint(id);
   loading.value = false;
   if (error) {
     return;
@@ -248,7 +249,7 @@ const toDelete = async () => {
     async onOk () {
       const id = data.id;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/task/sprint/${id}`);
+      const [error] = await task.delSprint(id);
       loading.value = false;
       if (error) {
         return;
@@ -282,7 +283,7 @@ const toClone = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/clone`);
+  const [error] = await task.cloneSprint(id);
   loading.value = false;
   if (error) {
     return;
@@ -349,7 +350,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/sprint/${id}/user/auth/current`, params);
+  const [error, res] = await task.getCurrentUserSprintAuth(id, params);
   loading.value = false;
   if (error) {
     return;
@@ -378,7 +379,7 @@ const loadPermissions = async (id: string) => {
 
 const loadData = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/sprint/${id}`);
+  const [error, res] = await task.getSprintInfo(id);
   loading.value = false;
   if (error) {
     return;

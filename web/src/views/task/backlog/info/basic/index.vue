@@ -2,8 +2,9 @@
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, Select, SelectEnum, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
+import { task, modules } from '@/api/tester';
 
 import { TaskInfo } from '../../../PropsType';
 
@@ -92,7 +93,7 @@ const nameBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/name`, { name: value }, { paramsType: true });
+  const [error] = await task.editTaskName(taskId.value, value);
   emit('loadingChange', false);
   nameEditFlag.value = false;
   if (error) {
@@ -129,7 +130,7 @@ const actualWorkloadBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/actualWorkload`, { workload: value });
+  const [error] = await task.editActualWorkload(taskId.value, { workload: value });
   emit('loadingChange', false);
   actualWorkloadEditFlag.value = false;
   if (error) {
@@ -166,7 +167,7 @@ const evalWorkloadBlur = async (event: { target: { value: string; } }) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/evalWorkload`, { workload: value });
+  const [error] = await task.editEvalWorkloadApi(taskId.value, { workload: value });
   emit('loadingChange', false);
   evalWorkloadEditFlag.value = false;
   if (error) {
@@ -211,7 +212,7 @@ const sprintBlur = async () => {
     taskIds: [taskId.value],
     targetSprintId: value
   };
-  const [error] = await http.patch(`${TESTER}/task/move`, params, { paramsType: false });
+  const [error] = await task.moveTask(params);
   emit('loadingChange', false);
   sprintEditFlag.value = false;
   if (error) {
@@ -247,7 +248,7 @@ const moduleOk = async () => {
   const params = {
     moduleId: value
   };
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, params);
+  const [error] = await task.updateTask(taskId.value, params);
   emit('loadingChange', false);
   moduleEditFlag.value = false;
   if (error) {
@@ -268,7 +269,7 @@ const getModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: props.projectId
   });
   if (error) {
@@ -279,7 +280,7 @@ const getModuleTreeData = async () => {
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('loadingChange', true);
-  const [error, res] = await http.get(`${TESTER}/task/${id}`);
+  const [error, res] = await task.loadTaskInfo(id);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id };
@@ -313,11 +314,11 @@ const taskTypeBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/type`, { type: value }, { paramsType: true });
+  const [error] = await task.editTaskTaskType(taskId.value, value);
   emit('loadingChange', false);
   taskTypeEditFlag.value = false;
   if (value === 'BUG') {
-    await http.patch(`${TESTER}/task/${taskId.value}`, {
+    await task.updateTask(taskId.value, {
       bugLevel: 'MINOR',
       missingBugFlag: false
     });
@@ -372,7 +373,7 @@ const priorityBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/priority/${value}`);
+  const [error] = await task.editTaskPriority(taskId.value, value);
   emit('loadingChange', false);
   priorityEditFlag.value = false;
   if (error) {
@@ -407,7 +408,7 @@ const tagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.put(`${TESTER}/task/${taskId.value}/tag`, { tagIds: ids });
+  const [error] = await task.editTagsApi(taskId.value, { tagIds: ids });
   emit('loadingChange', false);
   tagEditFlag.value = false;
   if (error) {
@@ -449,7 +450,7 @@ const versionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, { softwareVersion: value || '' });
+  const [error] = await task.updateTask(taskId.value, { softwareVersion: value || '' });
   emit('loadingChange', false);
   versionEditFlag.value = false;
   if (error) {
