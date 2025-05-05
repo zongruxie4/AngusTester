@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER, download } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
+import { modules, task } from '@/api/altester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../PropsType';
@@ -121,7 +122,7 @@ const loadData = async () => {
 
   loading.value = false;
   const params = getParams();
-  const [error, res] = await http.get(`${TESTER}/task/search`, { ...params, moduleId: moduleId.value });
+  const [error, res] = await task.loadTaskList({ ...params, moduleId: moduleId.value });
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -205,7 +206,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/task/sprint/${id}/user/${props.userInfo?.id}/auth`, params);
+  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
 const searchPanelChange = (data: { key: string; op: string; value: boolean | string | string[]; }[]) => {
@@ -442,7 +443,7 @@ const setTableData = (data: Partial<TaskInfo>) => {
 const moduleTreeData = ref([{ name: '无模块任务', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: props.projectId,
     filters: keywords
       ? [{

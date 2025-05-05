@@ -10,6 +10,7 @@ import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
 import { AuthUtils as authUtils } from '@xcan-angus/vue-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
+import { apis } from '@/api/altester';
 
 import {
   ApiInfo,
@@ -286,9 +287,7 @@ const serviceId = ref();
 // 接口详情
 const loadApiInfo = async (apisId) => {
   bodyRef.value && bodyRef.value.resetBodyData();
-  const [error, resp] = await http.get(`${TESTER}/apis/${apisId}`, {
-    resolveRefFlag: true
-  });
+  const [error, resp] = await apis.loadInfo(apisId, true);
   if (error) {
     return;
   }

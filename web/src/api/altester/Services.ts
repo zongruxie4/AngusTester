@@ -38,7 +38,7 @@ export default class API {
 
   // 导出服务
   exportServices (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/export`, params);
+    return http.post(`${baseUrl}/export`, params);
   }
 
   loadServicesMockService (id: string): Promise<[Error | null, any]> {
@@ -324,4 +324,7 @@ export default class API {
     return http.get(`${TESTER}/services/${serviceId}/test/result`);
   }
 
+  putOpenapi<T> (serviceId: string, params:T):Promise<[Error | null, any]> {
+    return http.put(`${TESTER}/services/${serviceId}/openapi?forced=true&gzipCompression=false`, params);
+  }
 }

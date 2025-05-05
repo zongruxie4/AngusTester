@@ -15,6 +15,10 @@ export default class API {
   // }
 
   updateModule <T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, params);
+    return http.patch(`${baseUrl}`, params);
+  }
+
+  delModule <T> (params: T) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, params);
   }
 }

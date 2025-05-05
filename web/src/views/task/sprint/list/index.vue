@@ -17,6 +17,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER, download } from '@xcan-angus/tools';
 import ProcessPng from './images/process.png';
+import { task } from '@/api/altester';
 
 import { SprintInfo } from '../PropsType';
 import SearchPanel from '@/views/task/sprint/list/searchPanel/index.vue';
@@ -82,7 +83,7 @@ const refresh = () => {
 };
 
 const setTableData = async (id: string, index: number) => {
-  const [error, res] = await http.get(`${TESTER}/task/sprint/${id}`);
+  const [error, res] = await task.getSprintInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -111,7 +112,7 @@ const viewWorkCalendar = (data: SprintInfo) => {
 
 const reopen = async (data: SprintInfo, idx: number) => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/sprint/task/reopen`, {
+  const [error] = await task.reopenSprint({
     ids: [data.id]
   }, {
     paramsType: true
@@ -126,11 +127,7 @@ const reopen = async (data: SprintInfo, idx: number) => {
 
 const restart = async (data: SprintInfo, idx: number) => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/task/sprint/task/restart`, {
-    ids: [data.id]
-  }, {
-    paramsType: true
-  });
+  const [error] = await task.restartSprint({ ids: [data.id] }, { paramsType: true });
   loading.value = false;
   if (error) {
     return;
@@ -142,7 +139,7 @@ const restart = async (data: SprintInfo, idx: number) => {
 const toStart = async (data: SprintInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/start`);
+  const [error] = await task.startSprint(id);
   loading.value = false;
   if (error) {
     loading.value = false;
@@ -156,7 +153,7 @@ const toStart = async (data: SprintInfo, index: number) => {
 const toCompleted = async (data: SprintInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/end`);
+  const [error] = await task.endSprint(id);
   if (error) {
     loading.value = false;
     return;
@@ -169,7 +166,7 @@ const toCompleted = async (data: SprintInfo, index: number) => {
 const toBlock = async (data: SprintInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/task/sprint/${id}/block`);
+  const [error] = await task.blockSprint(id);
   if (error) {
     return;
   }
@@ -183,7 +180,7 @@ const toDelete = async (data: SprintInfo) => {
     content: `确定删除迭代【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/task/sprint/${id}`);
+      const [error] = await task.delSprint(id);
       if (error) {
         return;
       }
@@ -212,7 +209,7 @@ const authFlagChange = async ({ authFlag }: { authFlag: boolean }) => {
 };
 
 const toClone = async (data: SprintInfo) => {
-  const [error] = await http.patch(`${TESTER}/task/sprint/${data.id}/clone`);
+  const [error] = await task.cloneSprint(data.id);
   if (error) {
     return;
   }
@@ -289,7 +286,7 @@ const loadData = async () => {
     ...searchPanelParams
   };
 
-  const [error, res] = await http.get(`${TESTER}/task/sprint/search`, params);
+  const [error, res] = await task.searchSprints(params);
   loaded.value = true;
   loading.value = false;
 
@@ -352,7 +349,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/task/sprint/${id}/user/auth/current`, params);
+  return await task.getCurrentUserSprintAuth(id, params);
 };
 
 onMounted(() => {

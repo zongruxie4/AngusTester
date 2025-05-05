@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Image, Modal, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { analysis } from '@/api/altester';
 
 import { TableDataObj } from './PropsType';
 
@@ -28,7 +28,7 @@ const loadData = async () => {
     sprintId: props.sprintId,
     projectId: props.projectId
   };
-  const [error, { data = [] }] = await http.get(`${TESTER}/analysis/task/assignee/progress`, params);
+  const [error, { data = [] }] = await analysis.getAssigneeProgress(params);
   if (error) {
     return;
   }

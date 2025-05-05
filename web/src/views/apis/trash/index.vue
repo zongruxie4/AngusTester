@@ -4,6 +4,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, http, utils, TESTER } from '@xcan-angus/tools';
+import { apis } from '@/api/altester';
 
 type Props = {
   projectId: string;
@@ -29,7 +30,7 @@ const inputChange = debounce(duration.search, (event) => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.patch(`${TESTER}/apis/trash/back`, params, { paramsType: true });
+  const [error] = await apis.backAllTrash(params, { paramsType: true });
   if (error) {
     loading.value = false;
     return;
@@ -42,7 +43,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.del(`${TESTER}/apis/trash`, params);
+  const [error] = await apis.delAllTrash(params);
   if (error) {
     loading.value = false;
     return;

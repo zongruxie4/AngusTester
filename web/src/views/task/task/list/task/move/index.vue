@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { Modal, notification, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 interface Props {
   projectId: string;
@@ -51,7 +52,7 @@ const confirm = async () => {
     taskIds,
     targetSprintId: currentSprintId || undefined
   };
-  const [error] = await http.patch(`${TESTER}/task/move`, params, { paramsType: false });
+  const [error] = await task.moveTask(params);
   confirmLoading.value = false;
   if (error) {
     return;

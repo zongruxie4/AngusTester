@@ -40,4 +40,8 @@ export default class API {
   loadDataStatistics (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/data/resources`, params);
   }
+
+  getAssigneeProgress (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/assignee/progress`, params);
+  }
 }

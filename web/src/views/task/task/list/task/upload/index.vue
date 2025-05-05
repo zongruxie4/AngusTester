@@ -2,8 +2,9 @@
 import { computed, inject, ref, watch, Ref } from 'vue';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { TESTER, http, enumLoader } from '@xcan-angus/tools';
+import { TESTER, enumLoader } from '@xcan-angus/tools';
 import { formatBytes } from '@/utils/common';
+import { task } from '@/api/altester';
 
 export interface Props{
   visible: boolean;
@@ -79,7 +80,7 @@ const ok = () => {
       formParams.append('strategyWhenDuplicated', formData.value.strategyWhenDuplicated);
       formData.value.file && formParams.append('file', formData.value.file);
       loading.value = true;
-      const [error] = await http.post(`${TESTER}/task/import`, formParams);
+      const [error] = await task.importTask(formParams);
       loading.value = false;
       if (error) {
         return;

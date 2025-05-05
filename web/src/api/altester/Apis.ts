@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -315,13 +315,13 @@ export default class API {
   }
 
   // 删除回收站所有数据
-  delAllTrash () : Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/trash`);
+  delAllTrash <T> (params: T) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash`, params);
   }
 
   // 还原回收站所有数据
-  backAllTrash () : Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/trash/back`);
+  backAllTrash <T> (params: T, axioConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/back`, params, axioConf);
   }
 
   // 还原数据

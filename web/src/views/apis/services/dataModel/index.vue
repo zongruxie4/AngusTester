@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue';
 import { Arrow, Icon, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Popover } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { services } from '@/api/altester';
 
 import Main from './main.vue';
@@ -40,7 +39,7 @@ const compListMap = ref<{[key: string]: Array<any>}>({ paths: [] });
 const apiPaths = ref<{[key: string]: Array<any>}>({});
 
 const loadProjectOpenapi = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/services/${props.id}/openapi`, { gzipCompression: false, format: 'json' });
+  const [error, { data }] = await services.getOpenapi(props.id, { gzipCompression: false, format: 'json' });
   if (error) {
     return;
   }
@@ -120,7 +119,7 @@ const submitOpenapi = async (data) => {
   const { method, endpoint, ...api } = data;
   apiPaths.value[endpoint][method] = { ...api };
   apiObj.value.paths = apiPaths.value;
-  const [error] = await http.put(`${TESTER}/services/${props.id}/openapi?forced=true&gzipCompression=false`, {
+  const [error] = await services.putOpenapi(props.id, {
     ...apiObj.value
   });
   if (error) {
@@ -132,7 +131,7 @@ const submitOpenapi = async (data) => {
 
 const submitOverview = async (data) => {
   const target = { ...apiObj.value, ...data };
-  const [error] = await http.put(`${TESTER}/services/${props.id}/openapi?forced=true&gzipCompression=false`, {
+  const [error] = await services.putOpenapi(props.id, {
     ...target
   });
   if (error) {

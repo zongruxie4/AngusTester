@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
-import { AsyncComponent, Colon, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
-import { Button, Progress } from 'ant-design-vue';
+import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { TESTER } from '@xcan-angus/tools';
+import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
+import { task } from '@/api/altester';
 
 interface Props {
   projectId: string;
@@ -66,9 +67,7 @@ const handlePut = async (refCaseIds) => {
     return;
   }
   submitLoading.value = true;
-  const [error] = await http.put(`${TESTER}/task/${props.taskId}/association/case`, {
-    assocCaseIds: refCaseIds
-  }, {
+  const [error] = await task.associationCase(props.taskId, refCaseIds, {
     paramsType: true
   });
   submitLoading.value = false;
@@ -82,9 +81,7 @@ const handleDelCase = (record) => {
   modal.confirm({
     content: `确认取消关联用例【${record.name}】吗？`,
     onOk () {
-      return http.put(`${TESTER}/task/${props.taskId}/association/case/cancel`, {
-        assocCaseIds: [record.id]
-      }, {
+      return task.cancelAssociationCase(props.taskId, [record.id], {
         paramsType: true
       }).then(([error]) => {
         if (error) {

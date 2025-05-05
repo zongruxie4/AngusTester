@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -147,16 +147,64 @@ export default class API {
     return http.del(`${baseUrl}/trash/${taskId}`);
   }
 
+  deleteAllTrash (params: {projectId: string}) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash`, params);
+  }
+
   backTrashTask (taskId: string) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${taskId}/back`);
+  }
+
+  backTrashAllTask (params: {projectId: string}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/back`, params, { paramsType: true });
   }
 
   searchTrashTask <T> (params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/trash/search`, params);
   }
 
+  searchSprints <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/sprint/search`, params);
+  }
+
+  getSprintInfo (sprintId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/sprint/${sprintId}`);
+  }
+
+  delSprint (sprintId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/sprint/${sprintId}`);
+  }
+
+  cloneSprint (sprintId: string) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/sprint/${sprintId}/clone`);
+  }
+
+  startSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/sprint/${sprintId}/start`, null, axiosConf);
+  }
+
+  endSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/sprint/${sprintId}/end`, null, axiosConf);
+  }
+
+  blockSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/sprint/${sprintId}/block`, null, axiosConf);
+  }
+
+  reopenSprint <T> (params: T, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/sprint/task/reopen`, params, axiosConf);
+  }
+
+  restartSprint <T> (params: T, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.patch(`${TESTER}/task/sprint/task/restart`, params, axiosConf);
+  }
+
   getUserSprintAuth<T> (sprintId: string, userId: string, params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}/user/${userId}/auth`, params);
+  }
+
+  getCurrentUserSprintAuth<T> (sprintId: string, params: T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/sprint/${sprintId}/user/auth/current`, params);
   }
 
   getTaskResult (taskType: string, targetId: string, testType: string) : Promise<[Error | null, any]> {
@@ -171,4 +219,31 @@ export default class API {
     return http.put(`${baseUrl}/${taskId}/subtask/cancel`, params, { paramsType: true });
   }
 
+  importTask (param: FormData) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/import`, param);
+  }
+
+  associationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/task`, {
+      assocTaskIds
+    }, axiosConf);
+  }
+
+  cancelAssociationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/task/cancel`, {
+      assocTaskIds
+    }, axiosConf);
+  }
+
+  associationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/case`, {
+      assocCaseIds
+    }, axiosConf);
+  }
+
+  cancelAssociationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/case/cancel`, {
+      assocCaseIds
+    }, axiosConf);
+  }
 }

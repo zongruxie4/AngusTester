@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../../PropsType';
 
@@ -42,7 +43,7 @@ const ok = async () => {
     refTaskIds: taskIds.value
   };
   editFlag.value = false;
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, params);
+  const [error] = await task.updateTask(taskId.value, params);
   if (error) {
     return;
   }

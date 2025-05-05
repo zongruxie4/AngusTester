@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../../PropsType';
 
@@ -42,7 +43,7 @@ const ok = async () => {
     refCaseIds: caseIds.value
   };
   editFlag.value = false;
-  const [error] = await http.patch(`${TESTER}/task/${taskId.value}`, params);
+  const [error] = await task.updateTask(taskId.value, params);
   if (error) {
     return;
   }
@@ -56,7 +57,7 @@ const selectChange = (ids:string[]) => {
 
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   emit('loadingChange', true);
-  const [error, res] = await http.get(`${TESTER}/task/${taskId.value}`);
+  const [error, res] = await task.loadTaskInfo(taskId.value);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id: taskId.value };

@@ -2,9 +2,10 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, duration, TESTER } from '@xcan-angus/tools';
+import { clipboard, http, utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
+import { task } from '@/api/altester';
 
 import { TaskInfo } from '../../../../../PropsType';
 import { ActionMenuItem } from '../../../PropsType';
@@ -121,7 +122,7 @@ const toDelete = () => {
   modal.confirm({
     content: `确定删除任务【${name}】吗？`,
     async onOk () {
-      const [error] = await http.del(`${TESTER}/task`, { ids: [id] });
+      const [error] = await task.deleteTask([id]);
       if (error) {
         return;
       }
@@ -139,7 +140,7 @@ const toFavourite = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.post(`${TESTER}/task/${id}/favourite`);
+  const [error] = await task.favouriteTask(id);
   if (error) {
     return;
   }
@@ -154,7 +155,7 @@ const toDeleteFavourite = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.del(`${TESTER}/task/${id}/favourite`);
+  const [error] = await task.cancelFavouriteTask(id);
   if (error) {
     return;
   }
@@ -169,7 +170,7 @@ const toFollow = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.post(`${TESTER}/task/${id}/follow`);
+  const [error] = await task.followTask(id);
   if (error) {
     return;
   }
@@ -184,7 +185,7 @@ const toDeleteFollow = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.del(`${TESTER}/task/${id}/follow`);
+  const [error] = await task.cancelFollowTask(id);
   if (error) {
     return;
   }
@@ -199,7 +200,7 @@ const toStart = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.put(`${TESTER}/task/${id}/start`);
+  const [error] = await task.startProcessing(id);
   if (error) {
     return;
   }
@@ -216,7 +217,7 @@ const toProcessed = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.put(`${TESTER}/task/${id}/processed`);
+  const [error] = await task.processedTask(id);
   if (error) {
     return;
   }
@@ -233,7 +234,7 @@ const toUncomplete = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.put(`${TESTER}/task/${id}/result/FAIL/confirm`);
+  const [error] = await task.confirmTask(id, 'FAIL', );
   if (error) {
     return;
   }
@@ -249,7 +250,7 @@ const toCompleted = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.put(`${TESTER}/task/${id}/result/SUCCESS/confirm`);
+  const [error] = await task.confirmTask(id, 'SUCCESS');
   if (error) {
     return;
   }
@@ -265,7 +266,7 @@ const toReopen = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.patch(`${TESTER}/task/${id}/reopen`);
+  const [error] = await task.reopenTask(id);
   if (error) {
     return;
   }
@@ -282,7 +283,7 @@ const toRestart = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.patch(`${TESTER}/task/${id}/restart`);
+  const [error] = await task.restartTask(id);
   if (error) {
     return;
   }
@@ -299,7 +300,7 @@ const toCancel = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await http.put(`${TESTER}/task/${id}/cancel`);
+  const [error] = await task.cancelTask(id);
   if (error) {
     return;
   }
@@ -359,7 +360,7 @@ const fetchNewData = async (pageNo: number) => {
 
   params.pageNo = pageNo;
   const queryStr = http.getURLSearchParams(params, true);
-  const [error, res] = await http.get(`${TESTER}/task/search?${queryStr}`);
+  const [error, res] = await task.loadTaskList(params);
   if (error) {
     return;
   }
@@ -428,7 +429,7 @@ const refreshComment = () => {
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   const id = props.id;
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/${id}`);
+  const [error, res] = await task.loadTaskInfo(id);
   loading.value = false;
   if (error) {
     if (error.ext?.eKey === 'resource_not_found') {
@@ -464,7 +465,7 @@ const loadPermissions = async (id: string | undefined) => {
       adminFlag: true
     };
 
-    const [error, res] = await http.get(`${TESTER}/task/sprint/${id}/user/${props.userInfo?.id}/auth`, params);
+    const [error, res] = await task.getUserSprintAuth(id, props.userInfo?.id, params);
     if (error) {
       return;
     }

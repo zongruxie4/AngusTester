@@ -218,7 +218,7 @@ const handleOk = async () => {
       return;
     }
   } else {
-    const [error, res] = await http.post(`${host}${TESTER}/services/export`, {
+    const [error, res] = await services.exportServices({
       serviceIds: params.serviceIds,
       exportScope: params.exportScope,
       format: params.format,
