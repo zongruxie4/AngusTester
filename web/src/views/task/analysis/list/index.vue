@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Icon, modal, notification } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from './PropTypes';
 import { Button, Tag } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
+import { analysis } from '@/api/tester';
 
 import Introduce from '@/views/task/analysis/list/introduce/index.vue';
 import SearchPanel from '@/views/task/analysis/list/searchPanel/index.vue';
@@ -87,7 +87,7 @@ const loadAnalysisList = async () => {
   const params = getParams();
 
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/analysis/search`, {
+  const [error, { data }] = await analysis.searchList({
     ...params
   });
   loading.value = false;
@@ -115,7 +115,7 @@ const delAnalysis = (data) => {
   modal.confirm({
     content: `确认删除分析【${data.name}】吗？`,
     onOk () {
-      return http.del(`${TESTER}/analysis`, { ids: [data.id] })
+      return analysis.deleteAnalysis([data.id])
         .then(() => {
           notification.success('删除成功');
           pagination.pageNo = 1;
@@ -129,7 +129,7 @@ const updateSnapShot = (data) => {
   modal.confirm({
     content: `确认更新分析【${data.name}】的快照内容吗？`,
     onOk () {
-      return http.post(`${TESTER}/analysis/${data.id}/refresh`)
+      return analysis.refreshContent(data.id)
         .then(([error]) => {
           if (error) {
             return;
