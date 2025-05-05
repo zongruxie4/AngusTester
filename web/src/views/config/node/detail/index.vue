@@ -9,8 +9,8 @@ import { CTRL } from '@xcan-angus/tools';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
-import { nodeCtrl, nodeInfo } from '@/api/alctrl';
-import { node } from '@/api/altester';
+import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
+import { node } from 'src/api/tester';
 
 import { formatBytes, formatBytesToUnit } from '@/utils/common';
 

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { notification, Spin } from '@xcan-angus/vue-ui';
 
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 import { ExecSettingForm } from '@xcan-angus/vue-ui';
 
 

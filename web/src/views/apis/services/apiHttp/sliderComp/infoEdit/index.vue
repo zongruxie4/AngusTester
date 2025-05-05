@@ -14,7 +14,7 @@ import {
   IconText
   , VuexHelper
 } from '@xcan-angus/vue-ui';
-import { apis, services, unarchived } from '@/api/altester';
+import { apis, services, unarchived } from 'src/api/tester';
 import { TESTER } from '@xcan-angus/tools';
 import { Button, Form, FormItem } from 'ant-design-vue';
 

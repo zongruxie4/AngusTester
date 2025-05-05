@@ -6,7 +6,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import { ParamInput } from '@xcan-angus/vue-ui';
 
-import { services, variable as variableApi } from '@/api/altester';
+import { services, variable as variableApi } from 'src/api/tester';
 import { ParamsItem, paramsTypeOpt } from './interface';
 import { getDefaultParams } from '../interface';
 import { deepDelAttrFromObj, getParamsByUri, getUriByParams, validateType } from '../utils';

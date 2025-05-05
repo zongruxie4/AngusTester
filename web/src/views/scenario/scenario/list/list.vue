@@ -14,8 +14,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER, http } from '@xcan-angus/tools';
 
-import { scenario } from '@/api/altester';
-// import { exec } from '@/api/alctrl';
+import { scenario } from 'src/api/tester';
 import { MenuItem, MenuItemKey, MenuItemPermission, SceneInfo } from './PropsType';
 
 type Props = {

@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { IconRequired, Input, Modal, notification, SelectEnum } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { dataApi } from '@/api/altester';
+import { dataApi } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

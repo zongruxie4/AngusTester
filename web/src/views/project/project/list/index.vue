@@ -16,7 +16,7 @@ import {
   Spin,
   Dropdown
 } from '@xcan-angus/vue-ui';
-import { project } from '@/api/altester';
+import { project } from 'src/api/tester';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/tools';
 import { getCurrentPage } from '@/utils/utils';

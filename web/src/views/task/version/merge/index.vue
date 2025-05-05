@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
-import { software } from '@/api/altester';
+import { software } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

@@ -28,7 +28,7 @@ import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 import { setting } from '@/api/aas';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './PropsType';
 

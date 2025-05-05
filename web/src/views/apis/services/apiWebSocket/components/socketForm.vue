@@ -8,7 +8,7 @@ import { ParamInput } from '@xcan-angus/vue-ui';
 import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { deconstruct } from '@/utils/swagger';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { FormData, getDefaultForm, itemTypes } from '../PropsType';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

@@ -3,7 +3,7 @@ import { provide, ref, watch } from 'vue';
 import { Dropdown, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Divider, TabPane, Tabs } from 'ant-design-vue';
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { CONTENT_TYPE } from '@/views/apis/utils';
 
 import AddAttrModal from './addAttrModal.vue';

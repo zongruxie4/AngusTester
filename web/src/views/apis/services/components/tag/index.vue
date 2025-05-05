@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Arrow, Hints, Icon, IconRequired, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Textarea, Tooltip, TypographyParagraph } from 'ant-design-vue';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { regexp, utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 

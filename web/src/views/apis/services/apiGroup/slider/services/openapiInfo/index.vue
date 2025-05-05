@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { ISchema } from './PropsType';
 
 interface Props {

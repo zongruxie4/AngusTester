@@ -3,7 +3,7 @@ import { inject, ref, watch, onMounted, computed } from 'vue';
 import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { SelectApisTable } from '@xcan-angus/vue-ui';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { TESTER, download, site, utils, cookie, http, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 // import { createPdf } from '@xcan/rapipdf';

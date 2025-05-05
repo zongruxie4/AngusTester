@@ -17,7 +17,7 @@ import {
   Table
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 import { TaskInfo } from '@/views/task/PropsType';
 

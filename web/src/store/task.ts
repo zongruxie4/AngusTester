@@ -1,4 +1,4 @@
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 export default {
   namespaced: true,

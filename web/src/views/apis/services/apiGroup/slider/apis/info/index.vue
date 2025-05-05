@@ -14,7 +14,7 @@ import {
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
 
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';
 
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/security/index.vue'));

@@ -6,7 +6,7 @@ import { site, cookie } from '@xcan-angus/tools';
 import '@xcan-angus/rapidoc';
 
 import store from '@/store';
-import { apis, services } from '@/api/altester';
+import { apis, services } from 'src/api/tester';
 import { navs, serviceNav, socketNavs, StateType } from './PropsType';
 
 const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));

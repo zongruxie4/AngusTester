@@ -12,7 +12,7 @@ import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/tools';
 
 import { Case } from './type';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 
 interface Props {
   id: string; // apiId

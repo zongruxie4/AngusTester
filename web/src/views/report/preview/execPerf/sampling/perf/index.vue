@@ -7,7 +7,7 @@ import { ListData, useExecCount } from '../useExecCount';
 import { allCvsKeys } from '../chartConfig';
 
 import { Exception } from '../PropsType';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 interface Props {
   detail?: Record<string, any>;

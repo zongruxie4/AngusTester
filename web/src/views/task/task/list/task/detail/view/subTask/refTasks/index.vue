@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, IconTask, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 

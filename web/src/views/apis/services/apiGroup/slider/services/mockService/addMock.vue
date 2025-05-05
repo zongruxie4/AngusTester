@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification, Select, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER, site } from '@xcan-angus/tools';
-import { mock, services } from '@/api/altester';
+import { mock, services } from 'src/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
 
 import ApiList from '@/views/mock/add/apiList.vue';

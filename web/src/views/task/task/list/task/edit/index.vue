@@ -20,7 +20,7 @@ import {
 import { localStore, upload, TESTER } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { modules, task } from '@/api/altester';
+import { modules, task } from 'src/api/tester';
 
 import { FormState } from './PropsType';
 import { TaskInfo } from '../../../../PropsType';

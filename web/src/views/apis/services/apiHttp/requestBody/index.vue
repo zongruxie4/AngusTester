@@ -16,7 +16,7 @@ import { getBodyDefaultItem, ParamsItem } from '../interface';
 import { getNewItem } from '../utils';
 // import { fileToBuffer } from '@/utils/blob';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/views/apis/utils';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 
 const { valueKey, fileNameKey, enabledKey } = API_EXTENSION_KEY;
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestBody/form/index.vue'));

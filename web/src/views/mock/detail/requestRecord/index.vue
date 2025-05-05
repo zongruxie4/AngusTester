@@ -6,7 +6,7 @@ import { Pagination, TabPane, Tabs, Tooltip } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/tools';
 
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp };

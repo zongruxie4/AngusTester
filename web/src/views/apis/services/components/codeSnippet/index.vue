@@ -12,7 +12,7 @@ import { clipboard } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 import cIcon from './image/c.png';
 import cSharpIcon from './image/csharp.png';
 import cPlus from './image/c++.png';

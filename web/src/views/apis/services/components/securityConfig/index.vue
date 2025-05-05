@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Arrow, Hints, Icon, IconRequired, Input, notification, Select, SelectEnum, Spin, VuexHelper } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
-import { services } from '@/api/altester';
+import { services } from 'src/api/tester';
 import { regexp, utils } from '@xcan-angus/tools';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 

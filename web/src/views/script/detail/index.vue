@@ -13,8 +13,8 @@ import { CTRL, GM, http } from '@xcan-angus/tools';
 // eslint-disable-next-line import/no-absolute-path
 ;
 
-import { script } from '@/api/altester';
-import { exec } from '@/api/alctrl';
+import { script } from 'src/api/tester';
+import { exec } from 'src/api/ctrl';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
 import { PermissionKey, ScriptInfo } from '../PropsType';
 
@@ -343,7 +343,7 @@ const handleExec = async () => {
   }
 
   loading.value = true;
-  const [error] = await exec.addExecutetByScript({ scriptId: scriptId.value });
+  const [error] = await exec.addExecByScript({ scriptId: scriptId.value });
   loading.value = false;
   if (error) {
     return;

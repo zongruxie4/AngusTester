@@ -6,7 +6,7 @@ import { TESTER, duration } from '@xcan-angus/tools';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import ListItem from './listItem.vue';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 import { group } from '@/utils/common';
 import type { DataSourceType } from '../PropsType';
 import VirtualApiList from './virtualApiList.vue';

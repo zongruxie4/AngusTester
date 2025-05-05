@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, Tag } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { software } from '@/api/altester';
+import { software } from 'src/api/tester';
 
 import { VersionInfo } from '../PropsType';
 import SearchPanel from '@/views/task/version/list/searchPanel/index.vue';

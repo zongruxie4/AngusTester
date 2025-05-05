@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-angus/vue-ui';
 import { app, http, site, utils, duration, GM } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 
 import store from './store';
 

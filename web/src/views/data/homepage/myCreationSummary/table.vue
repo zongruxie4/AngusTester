@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { dataApi, dataSet, variable } from '@/api/altester';
+import { dataApi, dataSet, variable } from 'src/api/tester';
 import { space } from '@/api/storage';
 
 import { getCurrentPage } from '@/utils/utils';

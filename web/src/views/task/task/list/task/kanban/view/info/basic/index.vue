@@ -4,7 +4,7 @@ import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, Select, SelectEnum, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/altester';
+import { task, modules } from 'src/api/tester';
 
 import { TaskInfo } from '@/views/task/PropsType';
 

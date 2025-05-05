@@ -5,11 +5,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { IconRequired, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
-import { angusScript } from '@/api/altester';
+import { angusScript } from 'src/api/tester';
 import { ExecSettingForm } from '@xcan-angus/vue-ui';
 
 
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const projectId = computed(() => {
@@ -123,7 +123,7 @@ const saveSetting = async () => {
   }
 
   loading.value = true;
-  const [error] = route.params.id ? await exec.editExecutetByScript(route.params.id as string, params) : await exec.addExecutetByScript(params);
+  const [error] = route.params.id ? await exec.editExecByScript(route.params.id as string, params) : await exec.addExecByScript(params);
   loading.value = false;
   if (error) {
     return;

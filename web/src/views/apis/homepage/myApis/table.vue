@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { HttpMethodText, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from 'src/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { ApiItem } from './PropsType';

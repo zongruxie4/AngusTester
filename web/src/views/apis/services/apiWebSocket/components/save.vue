@@ -6,7 +6,7 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectEnum, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/tools';
 
-import { apis, services } from '@/api/altester';
+import { apis, services } from 'src/api/tester';
 
 interface Props {
   getParameter: any;

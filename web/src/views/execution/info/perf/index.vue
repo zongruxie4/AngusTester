@@ -7,7 +7,7 @@ import { ListData, useExecCount } from '../useExecCount';
 import { allCvsKeys } from '../ChartConfig';
 
 import { Exception } from '../PropsType';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 const PerformanceInfo = defineAsyncComponent(() => props.detail?.scriptType?.value === 'MOCK_DATA' ? import('@/views/execution/info/perf/mock/index.vue') : props.detail?.plugin === 'Http' ? import('./http.vue') : import('./jdbc.vue'));
 

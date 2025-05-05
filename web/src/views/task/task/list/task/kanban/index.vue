@@ -18,7 +18,7 @@ import { enumLoader } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
-import { task } from '@/api/altester';
+import { task } from 'src/api/tester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem, SprintPermissionKey } from './PropsType';

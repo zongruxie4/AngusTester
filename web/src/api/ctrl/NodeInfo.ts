@@ -6,7 +6,6 @@ export default class API {
     baseUrl = prefix + '/node/info';
   }
 
-  // 安装代理
   installAgent (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${params.id}/agent/install/cmd`);
   }

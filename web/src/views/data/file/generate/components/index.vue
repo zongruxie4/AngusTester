@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 import { encode } from '@/utils/secure';
 import { TESTER } from '@xcan-angus/tools';
-import { mock } from '@/api/altester';
+import { mock } from 'src/api/tester';
 // import { API_EXTENSION_KEY } from '@/views/apis/utils';
 // const { valueKey } = API_EXTENSION_KEY;
 

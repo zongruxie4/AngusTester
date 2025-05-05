@@ -6,7 +6,7 @@ import { http, TESTER } from '@xcan-angus/tools';
 import { debounce, throttle } from 'throttle-debounce';
 import { useRouter } from 'vue-router';
 
-import { scenario } from '@/api/altester';
+import { scenario } from 'src/api/tester';
 import { MonitorInfo } from '../PropsType';
 import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { Modal, notification } from '@xcan-angus/vue-ui';
-import { apis, scenario, services } from '@/api/altester';
+import { apis, scenario, services } from 'src/api/tester';
 
 interface Props {
   visible: boolean;

@@ -10,7 +10,7 @@ import { ParamsItem } from '../../interface';
 import { formDataTypes, itemTypes } from './interface';
 import { API_EXTENSION_KEY, getModelDataByRef, variableNameReg } from '@/views/apis/utils';
 import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
-import { services, variable as variableApi } from '@/api/altester';
+import { services, variable as variableApi } from 'src/api/tester';
 import { deconstruct } from '@/utils/swagger';
 import { deepDelAttrFromObj, validateType } from '@/views/apis/services/apiHttp/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';

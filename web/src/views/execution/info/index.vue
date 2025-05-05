@@ -5,7 +5,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Select, Spin } from '@xcan-angus/vue-ui';
 
 import { Exception, ExecObj } from './PropsType';
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 import YAML from 'yaml';
 import { emit } from 'process';

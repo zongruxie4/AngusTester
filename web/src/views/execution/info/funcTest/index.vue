@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { exec } from '@/api/alctrl';
+import { exec } from 'src/api/ctrl';
 
 interface Props {
   loading:boolean;

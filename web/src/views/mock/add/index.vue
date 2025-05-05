@@ -8,7 +8,7 @@ import { TESTER, site } from '@xcan-angus/tools';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 
 import { formatBytes } from '@/utils/common';
-import { mock, node } from '@/api/altester';
+import { mock, node } from 'src/api/tester';
 import store from '@/store';
 
 import ApiList from './apiList.vue';

@@ -2,7 +2,7 @@
 import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
 import { http, CTRL, TESTER } from '@xcan-angus/tools';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
-import { scenario } from '@/api/altester';
+import { scenario } from 'src/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';
 
 interface Props {
