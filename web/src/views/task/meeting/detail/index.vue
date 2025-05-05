@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
 import { Colon, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
+import { task } from '@/api/tester';
 
 import { MeetingInfo } from '../PropsType';
 
@@ -35,7 +35,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/meeting/${id}`);
+  const [error, res] = await task.getMeetingInfo(id);
   loading.value = false;
   if (error) {
     return;

@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -60,5 +60,9 @@ export default class API {
 
   backTrash (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${id}/back`);
+  }
+
+  getMemberUser (projectId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${projectId}/member/user`);
   }
 }

@@ -2,7 +2,8 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { http, utils } from '@xcan-angus/tools';
+import { task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../PropsType';
@@ -137,7 +138,7 @@ const getParams = () => {
 const loadData = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/task/search`, params);
+  const [error, res] = await task.loadTaskList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -171,8 +172,7 @@ const deleteHandler = (data: TaskInfo) => {
   modal.confirm({
     content: `确定删除任务【${data.name}】吗？`,
     async onOk () {
-      const params = { ids: [data.id] };
-      const [error] = await http.del(`${TESTER}/task`, params);
+      const [error] = await task.deleteTask([data.id]);
       if (error) {
         return;
       }
@@ -189,7 +189,7 @@ const deleteHandler = (data: TaskInfo) => {
 
 const cancelFavourite = async (data: TaskInfo) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/task/${data.id}/favourite`);
+  const [error] = await task.cancelFavouriteTask(data.id);
   loading.value = false;
   if (error) {
     return;
@@ -205,7 +205,7 @@ const cancelFavourite = async (data: TaskInfo) => {
 
 const cancelFollow = async (data: TaskInfo) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/task/${data.id}/follow`);
+  const [error] = await task.cancelFollowTask(data.id);
   loading.value = false;
   if (error) {
     return;

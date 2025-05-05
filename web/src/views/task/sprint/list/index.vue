@@ -15,7 +15,7 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download } from '@xcan-angus/tools';
+import { utils, TESTER, download } from '@xcan-angus/tools';
 import ProcessPng from './images/process.png';
 import { task } from '@/api/altester';
 

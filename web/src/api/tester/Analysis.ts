@@ -44,4 +44,8 @@ export default class API {
   getAssigneeProgress (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/task/assignee/progress`, params);
   }
+
+  getSprintBurndown (sprintId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/task/sprint/${sprintId}/burndown`);
+  }
 }

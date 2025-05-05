@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
-import { http, TESTER } from '@xcan-angus/tools';
 import { RadioGroup } from 'ant-design-vue';
+import { analysis } from '@/api/tester';
 
 interface Props {
   sprintId: string;
@@ -66,7 +66,7 @@ const burnDownEchartsConfig = {
 };
 
 const loadChartData = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/analysis/task/sprint/${props.sprintId}/burndown`);
+  const [error, { data }] = await analysis.getSprintBurndown(props.sprintId);
   if (error) {
     return;
   }

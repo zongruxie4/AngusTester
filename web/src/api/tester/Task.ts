@@ -167,6 +167,14 @@ export default class API {
     return http.get(`${baseUrl}/sprint/search`, params);
   }
 
+  putSprint <T> (params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/sprint`, params);
+  }
+
+  addSprint <T> (params: T): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/sprint`, params);
+  }
+
   getSprintInfo (sprintId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}`);
   }
@@ -196,7 +204,7 @@ export default class API {
   }
 
   restartSprint <T> (params: T, axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.patch(`${TESTER}/task/sprint/task/restart`, params, axiosConf);
+    return http.patch(`${baseUrl}/sprint/task/restart`, params, axiosConf);
   }
 
   getUserSprintAuth<T> (sprintId: string, userId: string, params: T) : Promise<[Error | null, any]> {
@@ -245,5 +253,25 @@ export default class API {
     return http.put(`${baseUrl}/${taskId}/association/case/cancel`, {
       assocCaseIds
     }, axiosConf);
+  }
+
+  updateMeeting <T> (params: T) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/meeting`, params);
+  }
+
+  addMeeting <T> (params: T) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/meeting`, params);
+  }
+
+  deleteMeeting (meetingId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/meeting/${meetingId}`);
+  }
+
+  getMeetingInfo (meetingId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/meeting/${meetingId}`);
+  }
+
+  searchMeeting <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/meeting/search`, params);
   }
 }

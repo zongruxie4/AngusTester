@@ -16,9 +16,11 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { TESTER, GM, http, utils, duration } from '@xcan-angus/tools';
+import { TESTER, utils, duration } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
+import { ai } from '@/api/aas';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../PropsType';
 
@@ -83,7 +85,7 @@ const toAISplit = () => {
 
 const toGenerate = async () => {
   generating.value = true;
-  const [error, res] = await http.get(`${GM}/ai/chat/result`, { type: 'SPLIT_SUB_TASK', question: aiKeywords.value });
+  const [error, res] = await ai.getChartResult({ type: 'SPLIT_SUB_TASK', question: aiKeywords.value });
   generating.value = false;
   if (error) {
     return;
@@ -218,7 +220,7 @@ const ok = async () => {
       }
     }
 
-    const [error] = await http.post(`${TESTER}/task`, params);
+    const [error] = await task.addTask(params);
     if (error) {
       errorNum++;
     }
