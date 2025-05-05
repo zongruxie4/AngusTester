@@ -16,6 +16,7 @@ export default class API {
   //   return http.get(`${baseUrl}/apis/association/creation`, params);
   // }
 
+
   // 查询主页统计
   loadScenarioStatistics (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/association/creation`, params);
@@ -60,4 +61,29 @@ export default class API {
   getTaskAssigneeBurndown <T> (params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/task/assignee/burndown`, params);
   }
+
+  searchList <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/search`, params);
+  }
+
+  deleteAnalysis (ids: string[]) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids });
+  }
+
+  refreshContent (analysisId: string) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${analysisId}/refresh`);
+  }
+
+  getAnalysisInfo (analysisId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${analysisId}`);
+  }
+
+  addAnalysis <T> (params: T) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}`, params);
+  }
+
+  updateAnalysis <T> (params: T) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}`, params);
+  }
+
 }

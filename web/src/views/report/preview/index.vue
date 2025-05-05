@@ -3,11 +3,12 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { PrinterOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import { Watermark } from 'watermark-js-plus';
 import html2pdf from 'html3pdf';
 import print from 'print-js';
+import { exec, report } from '@/api/tester';
 
 import { ExecContent, ExecInfo, ExecResult, ReportContent, ReportInfo } from './PropsType';
 
@@ -43,7 +44,7 @@ const execResult = ref<ExecResult>();
 
 const loadExecResult = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/exec/${id}/result`);
+  const [error, res] = await exec.getExecResult(id);
   loading.value = false;
   if (error) {
     return;
@@ -63,7 +64,7 @@ const loadExecContent = async (id: string) => {
   const pageSize = 500;
   const tempList: any[] = [];
   const load = async (pageNo = 1) => {
-    const [error, res] = await http.get(`${TESTER}/exec/${id}/sample/extension/content`, { pageNo, pageSize, extField: 'SampleResultContent' });
+    const [error, res] = await exec.getSampleExtensionContent(id, { pageNo, pageSize, extField: 'SampleResultContent' });
     if (error) {
       loading.value = false;
       return;
@@ -92,7 +93,7 @@ const loadExecContent = async (id: string) => {
 
 const loadExecInfo = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/exec/${id}`);
+  const [error, res] = await exec.getExecInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -115,7 +116,7 @@ const loadExecInfo = async (id: string) => {
 
 const loadReportDetail = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/report/${id}`);
+  const [error, res] = await report.getReportInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -136,7 +137,7 @@ const loadReportDetail = async (id: string) => {
 
 const loadReportContent = async (id: string) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/report/${id}/wide/content`, {
+  const [error, res] = await report.getWideContent(id, {
     recordId: recordId.value
   });
   loading.value = false;
