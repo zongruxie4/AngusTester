@@ -117,7 +117,7 @@ xcan:
     linuxInstallScriptName: ${ANGUS_AGENT_LINUX_INSTALL_SCRIPT_NAME}
     windowsInstallScriptId: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_ID}
     windowsInstallScriptName: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_NAME}
-    
+
 eureka:
   client:
     healthcheck:
@@ -166,7 +166,5 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.engine.QueryParameters: debug
-    org.hibernate.engine.query.HQLQueryPlan: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org: WARN
+    com: WARN
