@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -77,8 +77,8 @@ export default class API {
   }
 
   // 获取接口权限
-  loadApiAuthority (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/auth`, params);
+  loadApiAuthority (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
   // 更改是否有权限控制
@@ -86,10 +86,8 @@ export default class API {
     return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
   }
 
-  // 权限弹窗 添加权限
-  addAuth (params: any): Promise<[Error | null, any]> {
-    const { id, ...other } = params;
-    return http.post(`${baseUrl}/${id}/auth`, other);
+  addAuth (id: string, params: any): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${id}/auth`, params);
   }
 
   // 增加关注
@@ -103,13 +101,13 @@ export default class API {
   }
 
   // 修改权限
-  updateAuth (params: any): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/auth/${params.id}`, params);
+  updateAuth (authId: string, params: any): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
   // 删除授权
-  delAuth (id: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/auth/${id}`);
+  delAuth (authId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/auth/${authId}`);
   }
 
   // 执行测试信息
@@ -164,14 +162,22 @@ export default class API {
     return http.post(`${baseUrl}/${apisId}/case`, param);
   }
 
+  addApisCase (params: any[] = []): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/case`, params);
+  }
+
   // 详情
-  loadCaseInfo (id: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/case/${id}`);
+  loadCaseInfo (caseId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/case/${caseId}`);
   }
 
   // 修改
   patchCase (params = {}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/case`, params);
+  }
+
+  replaceCase (params:any[] = []): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/case`, params);
   }
 
   // case list API
@@ -322,4 +328,13 @@ export default class API {
   backTrash (id: string) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${id}/back`);
   }
+
+  delUnarchived (id: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/unarchived/${id}`);
+  }
+
+  delAllUnarchived () : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/unarchived`);
+  }
+
 }

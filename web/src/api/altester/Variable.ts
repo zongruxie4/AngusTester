@@ -65,12 +65,12 @@ export default class API {
   }
 
   //
-importVariable (formData: FormData) {
-  return http.post(`${baseUrl}/import`, formData, { silence: true })
-}
+  importVariable (formData: FormData): Promise<[Error | null, any]>{
+    return http.post(`${baseUrl}/import`, formData, { silence: true });
+  }
 
-
-
-
+  getTargetDetail (targetId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${targetId}/target`);
+  }
 
 }

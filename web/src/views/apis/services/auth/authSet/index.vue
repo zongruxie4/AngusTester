@@ -3,8 +3,9 @@ import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } fr
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { Arrow, IconText, Input, NoData, Spin } from '@xcan-angus/vue-ui';
+import { apis, services } from '@/api/altester';
 
 import CheckboxGroup from './checkboxGroup.vue';
 
@@ -124,7 +125,7 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
 const switchChange = async (checked: boolean, id: string) => {
   const isApi = dataMap.value[id].isApi;
   enabledLoadingMap.value[id] = true;
-  const [error] = await (isApi ? http.patch(`${TESTER}/apis/${id}/auth/enabled?enabled=${checked}`) : http.patch(`${TESTER}/services/${id}/auth/enabled?enabled=${checked}`));
+  const [error] = await (isApi ? apis.updateAuthFlag({ id, enabled: checked }) : services.updateAuthEnabled({ id, enabled: checked }));
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -165,7 +166,7 @@ const checkChange = async (permissions: string[], id: string) => {
   const authId = permissionsMap.value[id]?.id;
   if (!permissions.length) {
     updatingMap[id] = true;
-    const [error] = await (isApi ? http.del(`${TESTER}/apis/auth/${authId}`) : http.del(`${TESTER}/services/auth/${authId}`));
+    const [error] = await (isApi ? apis.delAuth(authId as string) : services.delAuth(authId as string));
     updatingMap[id] = false;
     if (error) {
       return;
@@ -177,7 +178,7 @@ const checkChange = async (permissions: string[], id: string) => {
 
   if (authId) {
     updatingMap[id] = true;
-    const [error] = await (isApi ? http.put(`${TESTER}/apis/auth/${authId}`, { permissions }) : http.put(`${TESTER}/services/auth/${authId}`, { permissions }));
+    const [error] = await (isApi ? apis.updateAuth(authId, { permissions }) : services.updateAuth(authId, { permissions }));
     updatingMap[id] = false;
     if (error) {
       return;
@@ -190,7 +191,7 @@ const checkChange = async (permissions: string[], id: string) => {
   // 没有进行过授权
   updatingMap[id] = true;
   const params = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
-  const [error, { data = { id: '' } }] = await (isApi ? http.post(`${TESTER}/apis/${id}/auth`, params) : http.post(`${TESTER}/services/${id}/auth`, params));
+  const [error, { data = { id: '' } }] = await (isApi ? apis.addAuth(id, params) : services.addAuth(id, params));
   updatingMap[id] = false;
   if (error) {
     return;
@@ -230,7 +231,7 @@ const loadApiList = async (id: string) => {
   };
   const params = getApiParams(id);
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/services/${id}/apis/search`, params, axiosConfig);
+  const [error, { data }] = await services.loadApis({ ...params, id }, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -299,7 +300,7 @@ const loadApiAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await http.get(`${TESTER}/apis/auth`, params, axiosConfig);
+  const [error, { data = { list: [] } }] = await apis.loadApiAuthority(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -354,7 +355,7 @@ const loadProjectAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await http.get(`${TESTER}/services/auth`, params, axiosConfig);
+  const [error, { data = { list: [] } }] = await services.loadAuthority(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -427,7 +428,7 @@ const loadProjectTree = async () => {
   };
   const params = getProjectTreeParams();
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/services/search`, params, axiosConfig);
+  const [error, { data }] = await services.loadList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
