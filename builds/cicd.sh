@@ -19,6 +19,8 @@ REMOTE_APP_STATIC_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_STATIC_DIR_NAME}"
 
 NGINX_CONFIG_DIR="/opt/required/nginx/conf_ext/"
 
+CLEAR_MAVEN_REPO="/data/repository"
+
 # Validate input parameters
 validate_parameters() {
   # Validate mandatory parameters
@@ -73,15 +75,8 @@ prepare_environment() {
       echo "ERROR: Java/Maven not found"; exit 1
     fi
 
-    echo "INFO: Cleaning Maven repository"
-    if [ -n "$MAVEN_HOME" ]; then
-      CLEAR_MAVEN_REPO="${MAVEN_HOME}/repository/cloud/xcan"
-    else
-      CLEAR_MAVEN_REPO="${HOME}/.m2/repository/cloud/xcan"
-    fi
-
-    echo "INFO: Cleaning Maven repository at ${CLEAR_MAVEN_REPO}"
-    rm -rf "${CLEAR_MAVEN_REPO}"/*
+    echo "INFO: Cleaning Maven repository at ${CLEAR_MAVEN_REPO}/cloud/xcan/"
+    rm -rf "${CLEAR_MAVEN_REPO}"/cloud/xcan/*
   fi
 }
 
@@ -134,13 +129,16 @@ deploy_service() {
   ssh "$host" "cd ${REMOTE_APP_DIR} && mkdir -p conf && mv classes/spring-logback.xml conf/tester-logback.xml" || {
     echo "ERROR: Failed to rename logback file"; exit 1
   }
+  ssh "$host" "cd ${REMOTE_APP_DIR} && cp -f ${REMOTE_APP_CONF_DIR}/.*.env conf/" || {
+    echo "ERROR: Failed to copy env files"; exit 1
+  }
   scp "builds/set-opts.sh" "${host}:${REMOTE_APP_DIR}/" || {
     echo "ERROR: Failed to copy service files"; exit 1
   }
   ssh "$host" "cd ${REMOTE_APP_DIR} && sh set-opts.sh ${host} && sh startup-tester.sh" || {
     echo "ERROR: Failed to start service"; exit 1
   }
-  ssh "sh check-health.sh ${host}" || {
+  sh builds/check-health.sh ${host} || {
     echo "ERROR: Service health check failed"; exit 1
   }
 }
