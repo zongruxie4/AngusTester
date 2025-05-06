@@ -4,10 +4,12 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { http, GM, enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/tools';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event } from '@/api/event';
+import { analysis } from '@/api/aas';
+import { setting } from '@/api/comm';
 
 const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));
 const ExpandHead = defineAsyncComponent(() => import('./expand-head.vue'));
@@ -72,7 +74,7 @@ const loadEnums = async () => {
 };
 
 const loadEventNoticeTypeByEventCode = async () => {
-  const [error, { data }] = await http.get(`${GM}/setting/tenant/tester/event`);
+  const [error, { data }] = await event.getEventNoticeType();
   if (error) {
     return;
   }
@@ -86,7 +88,7 @@ const getTargetTypeName = (value: string) => {
 
 const loadStatistics = async () => {
   // const [error, { data = { pushFail: '0', pushSuccess: '0', pushing: '0', unPush: '0' } }] = await event.loadStatistics();
-  const [error, { data = { push_status: {} } }] = await http.get(`${GM}/analysis/customization/summary`, {
+  const [error, { data = { push_status: {} } }] = await analysis.loadCustomizationSummary({
     aggregates: [
       {
         column: 'id',
@@ -203,7 +205,7 @@ const handleChangeNoticeType = async (typesValue, eventCode) => {
       noticeTypes: i.eventCode === eventCode ? typesValue : i.noticeTypes
     };
   });
-  const [error] = await http.put(`${GM}/setting/tenant/tester/event`, params);
+  const [error] = await setting.putEventNotice(params);
 
   if (error) {
     return;

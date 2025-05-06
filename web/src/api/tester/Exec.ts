@@ -21,4 +21,8 @@ export default class API {
   getSampleExtensionContent <T> (execId: string, params: T) : Promise<string[]> {
     return http.get(`${baseUrl}/${execId}/sample/extension/content`, params);
   }
+
+  execByScript (params: {scriptId: string}, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/byscript`, params, axiosConf);
+  }
 }

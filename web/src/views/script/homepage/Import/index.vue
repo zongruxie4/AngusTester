@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Button, Form, FormItem, Upload } from 'ant-design-vue';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { script } from '@/api/tester';
 
 import { formatBytes } from '@/utils/common';
 
@@ -130,7 +130,7 @@ const handleOk = async () => {
     }
 
     loading.value = true;
-    const [error] = await http.post(`${TESTER}/script/import`, formData);
+    const [error] = await script.import(formData);
     loading.value = false;
     if (error) {
       return;

@@ -2,10 +2,11 @@
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
 
 import { PermissionKey, ResourceInfo, ScriptInfo } from '../PropsType';
 import { isEqual } from 'lodash-es';
+import { script, analysis } from '@/api/tester';
 
 const Introduce = defineAsyncComponent(() => import('@/views/script/homepage/introduce/index.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/script/homepage/pieChart/index.vue'));
@@ -174,7 +175,7 @@ const getParams = () => {
 const loadScriptList = async () => {
   loading.value = false;
   const params = getParams();
-  const [error, res] = await http.get(`${TESTER}/script/search`, params);
+  const [error, res] = await script.loadScriptList(params);
   loaded.value = true;
   if (error) {
     loading.value = false;
@@ -237,11 +238,7 @@ const loadScriptListAuth = async (ids: string[]) => {
     return;
   }
 
-  const params = {
-    scriptIds: ids,
-    adminFlag: true
-  };
-  const [error, res] = await http.get(`${TESTER}/script/user/auth/current`, params);
+  const [error, res] = await script.loadScriptListAuth(ids);
   loading.value = false;
   if (error) {
     return false;
@@ -274,7 +271,7 @@ const loadScriptListAuth = async (ids: string[]) => {
 
 const loadResourcesData = async () => {
   const params = { filters: filters.value, projectId: projectId.value };
-  const [error, res] = await http.get(`${TESTER}/analysis/script/count`, params);
+  const [error, res] = await analysis.loadScriptCount(params);
   if (error) {
     return false;
   }

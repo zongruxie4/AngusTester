@@ -6,11 +6,10 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
-import { TESTER, GM, http } from '@xcan-angus/tools';
-
 
 import { script } from 'src/api/tester';
 import { exec } from 'src/api/ctrl';
+import { ai } from '@/api/aas';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
 import { PermissionKey, ScriptInfo } from '../PropsType';
 
@@ -103,7 +102,7 @@ const toDebug = async () => {
       scriptType: scriptConfig.type
     };
     loading.value = true;
-    const [error, { data }] = await http.post(`${TESTER}/exec/debug/script/start`, params);
+    const [error, { data }] = await exec.startDebug(params);
     loading.value = false;
     if (error || !data) {
       return;
@@ -181,7 +180,7 @@ const toGenerate = async () => {
   }
 
   generating.value = true;
-  const [error, res] = await http.get(`${GM}/ai/chat/result`, { type: 'WRITE_ANGUS_SCRIPT', question: aiKeywords.value });
+  const [error, res] = await ai.getChartResult({ type: 'WRITE_ANGUS_SCRIPT', question: aiKeywords.value });
   generating.value = false;
   if (error) {
     return;
@@ -350,7 +349,7 @@ const handleExec = async () => {
 
 const loadDebugInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/exec/debug/script/${scriptId.value}`);
+  const [error, { data }] = await exec.loadDebugScriptInfo(scriptId.value);
   loading.value = false;
   if (error || !data) {
     return;

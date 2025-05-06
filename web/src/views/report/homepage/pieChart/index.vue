@@ -5,7 +5,7 @@ import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipCompon
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { http, TESTER } from '@xcan-angus/tools';
+import { analysis } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -200,7 +200,7 @@ const resizeHandler = () => {
 const dataSource = ref({});
 const total = ref(0);
 const loadChartData = async () => {
-  const [error, { data = {} }] = await http.get(`${TESTER}/analysis/customization/summary`, {
+  const [error, { data = {} }] = await analysis.loadCustomizationSummary({
     projectId: props.projectId,
     name: 'Report',
     groupBy: 'STATUS',

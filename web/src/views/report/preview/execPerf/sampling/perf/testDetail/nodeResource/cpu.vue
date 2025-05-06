@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import dayjs from 'dayjs';
-import { TESTER, http } from '@xcan-angus/tools';
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
+import { nodeCtrl } from '@/api/ctrl';
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -192,7 +192,7 @@ const cpuloaded = ref(false);
 const loadCpuEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam();
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/cpu`, param);
+  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -341,7 +341,7 @@ const getChartTimerParam = (params = {}) => {
 const loadCputimerData = async () => {
   emit('loadingChange', true);
   const params = getChartTimerParam();
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/cpu`, params);
+  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, params);
   emit('loadingChange', false);
   if (error) {
     return;

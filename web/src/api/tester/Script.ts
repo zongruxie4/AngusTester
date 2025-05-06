@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -7,8 +7,8 @@ export default class API {
   }
 
   // 获取脚本列表
-  loadScriptList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  loadScriptList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/search`, params, axiosConfig);
   }
 
   // 获取脚本列表操作权限
@@ -31,23 +31,39 @@ export default class API {
     return http.del(`${baseUrl}`, { ids });
   }
 
-  // 克隆
   clone (id: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/clone`);
   }
 
-  // 获取脚本详情
   loadDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
 
-  // 获取脚本详情
   import (params: FormData): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/import`, params);
   }
 
-  // 获取脚本详情
   importDemo (): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/example/import`);
+  }
+
+  toggleEnabled (scriptId: string, enabled) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${scriptId}/auth/enabled?enabled=${enabled}`);
+  }
+
+  deleteAuth (authId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/auth/${authId}`);
+  }
+
+  putAuth (authId: string, params: { permissions: string[] }) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
+  }
+
+  addAuth (authId: string, params: { permissions: string[], authObjectType: string }) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${authId}/auth`, params);
+  }
+
+  getAuth (params = {}, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConf);
   }
 }

@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {GM, http} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -38,5 +38,9 @@ export default class API {
   // 配置接收人
   putReceiver (params: {id: string, noticeTypes: string[], receiverIds: string[], receiverTypes: string[]}): Promise<[Error|null, any]> {
     return http.put(`${baseUrl}/template/receiver`, params);
+  }
+
+  getEventNoticeType () : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/tenant/tester/event`);
   }
 }

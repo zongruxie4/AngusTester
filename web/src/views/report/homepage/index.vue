@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button, Popover } from 'ant-design-vue';
-import { clipboard, http, TESTER } from '@xcan-angus/tools';
+import { clipboard, TESTER } from '@xcan-angus/tools';
+import { report } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 
@@ -132,7 +133,7 @@ const loadDataList = async () => {
   }
 
   loading.value = true;
-  const [error, { data = {} }] = await http.get(`${TESTER}/report/search`, params);
+  const [error, { data = {} }] = await report.searchList( params);
   loading.value = false;
   if (error) {
     return;
@@ -172,7 +173,7 @@ const deleteReport = (report) => {
     title: '删除报告',
     content: `确认删除报告【${report.name}】吗？`,
     onOk () {
-      return http.del(`${TESTER}/report`, { ids: [report.id] }).then((resp) => {
+      return report.delete([report.id]).then((resp) => {
         const [error] = resp;
         if (error) {
           return;
@@ -188,7 +189,7 @@ const deleteReport = (report) => {
 
 // 获取分享 getShareToken
 const getShareToken = async (report) => {
-  const [error, { data }] = await http.get(`${TESTER}/report/${report.id}/shareToken`);
+  const [error, { data }] = await report.getShareToken(report.id);
   if (error) {
     notification.error('获取token失败');
     return;
@@ -222,7 +223,7 @@ const generateLoading = ref({});
 
 const generateReport = async (report) => {
   generateLoading.value[report.id] = true;
-  const [error] = await http.post(`${TESTER}/report/${report.id}/generate/now`);
+  const [error] = await report.generateReport(report.id);
   generateLoading.value[report.id] = false;
   if (error) {
     return;

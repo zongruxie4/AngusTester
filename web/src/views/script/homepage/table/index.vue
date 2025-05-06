@@ -3,7 +3,8 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, PaginationProps, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { script, exec } from '@/api/tester';
 
 import { PermissionKey, ScriptInfo } from '../../PropsType';
 
@@ -121,7 +122,7 @@ const batchExec = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(http.post(`${TESTER}/exec/byscript`, { scriptId: ids[i] }, { silence: true }));
+        promises.push(exec.execByScript({ scriptId: ids[i] }, { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -175,7 +176,7 @@ const batchDelete = async () => {
     async onOk () {
       emit('update:loading', true);
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const [error] = await http.del(`${TESTER}/script`, { ids });
+      const [error] = await script.delete(ids);
       emit('update:loading', false);
       if (error) {
         return;
@@ -196,7 +197,7 @@ const batchExport = async () => {
 
 const importDemo = async () => {
   emit('update:loading', true);
-  const [error] = await http.post(`${TESTER}/script/example/import`);
+  const [error] = await script.importDemo();
   emit('update:loading', false);
   if (error) {
     return;
@@ -212,7 +213,7 @@ const tableChange = (pagination: { current: number; pageSize: number; }, _filter
 
 const toCreateExec = async (data: ScriptInfo) => {
   emit('update:loading', true);
-  const [error] = await http.post(`${TESTER}/exec/byscript`, { scriptId: data.id });
+  const [error] = await exec.execByScript({ scriptId: data.id });
   emit('update:loading', false);
   if (error) {
     return;
@@ -228,7 +229,7 @@ const toAuth = (data: ScriptInfo) => {
 
 const toClone = async (data: ScriptInfo) => {
   emit('update:loading', true);
-  const [error] = await http.post(`${TESTER}/script/${data.id}/clone`);
+  const [error] = await script.clone(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -247,7 +248,7 @@ const toDelete = async (data: ScriptInfo) => {
     async onOk () {
       const id = data.id;
       emit('update:loading', true);
-      const [error] = await http.del(`${TESTER}/script`, { ids: [id] });
+      const [error] = await script.delete([id]);
       emit('update:loading', false);
       if (error) {
         return;

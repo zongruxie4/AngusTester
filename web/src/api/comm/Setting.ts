@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {GM, http} from '@xcan-angus/tools';
 
 type SettingKey = 'API_LOG_CONFIG' | 'COMMON_DATA_PERMISSION' | 'HEALTH_CHECK' | 'LOCALE' | 'MAX_METRICS_DAYS' | 'MAX_RESOURCE_ACTIVITIES' | 'OPERATION_LOG_CONFIG' | 'PREF_INDICATOR' | 'QUOTA' | 'SECURITY' | 'SOCIAL' | 'STABILITY_INDICATOR' | 'SYSTEM_LOG_CONFIG' | 'THEME';
 
@@ -88,4 +88,9 @@ export default class API {
   loadQuataByName (resourceName: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/quota/${resourceName}`);
   }
+
+  putEventNotice (params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/tenant/tester/event`, params);
+  }
+
 }

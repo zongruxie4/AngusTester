@@ -16,6 +16,13 @@ export default class API {
   //   return http.get(`${baseUrl}/apis/association/creation`, params);
   // }
 
+  loadScriptCount (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/script/count`, params);
+  }
+
+  loadCustomizationSummary (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/customization/summary`, params);
+  }
 
   // 查询主页统计
   loadScenarioStatistics (params): Promise<[Error | null, any]> {

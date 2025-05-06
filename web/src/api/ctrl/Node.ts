@@ -15,28 +15,28 @@ export default class API {
     return http.get(`${baseUrl}/${id}/metrics/network/info`);
   }
 
-  getCpuData ({ id = '', ...param }): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/cpu`, param);
+  getCpuData (nodeId: string, params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${nodeId}/metrics/cpu`, params);
   }
 
   getDiskName (id): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/metrics/disk/info`);
   }
 
-  getDiskData ({ id = '', ...param }): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/disk`, param);
+  getDiskData (nodeId: string, params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${nodeId}/metrics/disk`, params);
   }
 
-  getMemoryData ({ id = '', ...param }): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/memory`, param);
+  getMemoryData (nodeId: string, params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${nodeId}/metrics/memory`, params);
   }
 
   getNetworkName (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/metrics/network/info`);
   }
 
-  getNetworkData ({ id = '', ...param }): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/network`, param);
+  getNetworkData (nodeId: string, params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${nodeId}/metrics/network`, params);
   }
 
   getNodeStatus (id: string): Promise<[Error | null, any]> {
