@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../PropsType';
 
@@ -47,7 +48,7 @@ const ok = async () => {
   }];
   editFlag.value = false;
   loadingChange(true);
-  const [error] = await http.patch(`${TESTER}/func/case`, params);
+  const [error] = await funcCase.updateCase(params);
   loadingChange(false);
   if (error) {
     return;
@@ -71,7 +72,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, res] = await funcCase.getCaseInfo(id);
   loadingChange(false);
   if (error) {
     return;

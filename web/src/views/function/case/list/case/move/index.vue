@@ -2,7 +2,8 @@
 import { inject, ref } from 'vue';
 import { Icon, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseListObj } from '../PropsType';
@@ -37,7 +38,7 @@ const loading = ref(false);
 const onFinish = async () => {
   const ids = props.type === 'batch' ? props.selectedRowKeys : [props.selectedCase.id];
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case/move?targetPlanId=${formState.value.targetPlanId}`, ids, { paramsType: false });
+  const [error] = await funcCase.moveCase(formState.value.targetPlanId as string, ids);
   loading.value = false;
   if (error) {
     return;

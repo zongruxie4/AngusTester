@@ -21,4 +21,8 @@ export default class API {
   getPlanInfo (planId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}`);
   }
+
+  getCurrentAuth (params: {ids: string[], adminFlag: boolean}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/user/auth/current`, params);
+  }
 }

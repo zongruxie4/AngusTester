@@ -2,7 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, upload } from '@xcan-angus/tools';
+import { utils, upload } from '@xcan-angus/tools';
+import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
 
@@ -90,7 +91,7 @@ const updateAttachments = async (data:{name:string;url:string}[]) => {
     attachments: data
   };
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${taskId.value}/attachment`, params);
+  const [error] = await funcCase.putAttachment(caseId.value, params);
   loading.value = false;
   if (error) {
     return;
@@ -114,7 +115,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, res] = await funcCase.getCaseInfo(id);
   loadingChange(false);
   if (error) {
     return;
@@ -141,7 +142,7 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-const taskId = computed(() => props.dataSource?.id);
+const caseId = computed(() => props.dataSource?.id);
 const isEmpty = computed(() => !attachments.value.length);
 
 const maxFileSize = computed(() => {

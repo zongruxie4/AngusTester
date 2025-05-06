@@ -17,9 +17,11 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumLoader, TESTER, GM, upload, http, utils } from '@xcan-angus/tools';
+import { enumLoader, TESTER, upload, utils } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
+import { funcCase, project, modules } from '@/api/tester';
+import { ai } from '@/api/aas';
 
 import { useI18n } from 'vue-i18n';
 import { FormState } from './PropsType';
@@ -92,7 +94,7 @@ const formState = ref<FormState>({
 
 const generateCaseList = async () => {
   generateLoading.value = true;
-  const [error, { data }] = await http.get(`${GM}/ai/chat/result`, {
+  const [error, { data }] = await ai.getChartResult({
     type: 'WRITE_FUNC_CASE',
     question: question.value
   });
@@ -244,7 +246,7 @@ const loading = ref(false);
 const addSave = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/func/case`, [...params]);
+  const [error] = await funcCase.addCase([...params]);
   loading.value = false;
   if (error) {
     return;
@@ -314,7 +316,7 @@ const setTesterForMe = () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${projectInfo.value?.id}/member/user`);
+  const [error, { data }] = await project.getMemberUser(projectInfo.value?.id);
   if (error) {
     return;
   }
@@ -369,7 +371,7 @@ const getModuleTreeData = async () => {
   if (!projectInfo.value?.id) {
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: projectInfo.value.id
   });
   if (error) {

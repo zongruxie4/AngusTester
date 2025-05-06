@@ -25,6 +25,7 @@ import {
 import { clipboard, http, duration, download, TESTER, enumLoader, XCanDexie } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
+import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
 
 import { CaseActionAuth, CaseInfoObj, CaseListObj, CountObj, EnabledGroup, travelTreeData } from './PropsType';
 import { PlanObj } from '../../PropsType';
@@ -559,7 +560,7 @@ const loadData = () => {
 };
 
 const loadCaseCount = async (): Promise<void> => {
-  const [error, { data }] = await http.get(`${TESTER}/analysis/func/case/count`, { ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data }] = await analysis.loadFuncCaseCount({ ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
   if (error) {
     return;
   }
@@ -577,7 +578,7 @@ const loadCaseList = async (): Promise<void> => {
   }
 
   updateLoading(true);
-  const [error, { data = { list: [], total: 0 } }] = await http.get(`${TESTER}/func/case/search?infoScope=DETAIL`, { ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data = { list: [], total: 0 } }] = await funcCase.loadFuncCase({infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
   firstloading.value = false;
   if (error) {
     updateLoading(false);
@@ -819,7 +820,7 @@ const caseInfo = ref<CaseInfoObj>();
 const firstCase = ref<CaseInfoObj>();
 const getCaseInfo = async (id: string) => {
   updateLoading(true);
-  const [error, { data }] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, { data }] = await funcCase.getCaseInfo(id);
   updateLoading(false);
   if (error) {
     return;
@@ -861,7 +862,7 @@ const getPlanAuth = async () => {
   if (!planIds.length) {
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/func/plan/user/auth/current`, {
+  const [error, { data }] = await funcPlan.getCurrentAuth({
     ids: planIds,
     adminFlag: true
   });
@@ -897,7 +898,7 @@ const loadEnums = async () => {
 const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree( {
     projectId: projectInfo.value?.id,
     filters: keywords
       ? [{
@@ -1013,7 +1014,7 @@ watch(() => props.notify, () => {
 
 const handleClone = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await http.post(`${TESTER}/func/case/clone`, [rowData.id]);
+  const [error] = await funcCase.cloneCase([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -1039,7 +1040,7 @@ const handleDelete = async (rowData?: CaseListObj) => {
 
 const delCase = async (rowData?: CaseListObj) => {
   updateLoading(true);
-  const [error] = await http.del(`${TESTER}/func/case`, rowData ? [rowData.id] : selectedRowKeys.value, { dataType: true });
+  const [error] = await funcCase.deleteCase(rowData ? [rowData.id] : selectedRowKeys.value);
   if (error) {
     updateLoading(false);
     return;
@@ -1073,7 +1074,7 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 // 重置测试
 const hanldeResetTestResults = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await http.patch(`${TESTER}/func/case/result/reset`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.resetResult([rowData.id], );
   if (error) {
     updateLoading(false);
     return;
@@ -1085,7 +1086,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
 // 重置评审
 const handleResetReviewResult = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await http.patch(`${TESTER}/func/case/review/reset`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.resetReview([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -1097,7 +1098,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
 // 重新测试 将用例改为待测试
 const handleReTest = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await http.patch(`${TESTER}/func/case/result/retest`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.retestResult([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -1206,7 +1207,7 @@ const handleSetREsultBlocked = async (value) => {
       testResult: 'BLOCKED'
     }
   ];
-  const [error] = await http.patch(`${TESTER}/func/case/result`, params);
+  const [error] = await funcCase.updateResult(params);
   if (error) {
     return;
   }
@@ -1222,7 +1223,7 @@ const handleSetREsultCanceled = async (value) => {
       testResult: 'CANCELED'
     }
   ];
-  const [error] = await http.patch(`${TESTER}/func/case/result`, params);
+  const [error] = await funcCase.updateResult(params);
   if (error) {
     return;
   }
@@ -1329,7 +1330,7 @@ const handleUploadOk = () => {
 // 收藏
 const handleFavourite = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.favouriteFlag ? await http.del(`${TESTER}/func/case/${rowData.id}/favourite`) : await http.post(`${TESTER}/func/case/${rowData.id}/favourite`);
+  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.favouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
@@ -1341,7 +1342,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
 
 const handleFollow = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.followFlag ? await http.del(`${TESTER}/func/case/${rowData.id}/follow`) : await http.post(`${TESTER}/func/case/${rowData.id}/follow`);
+  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.followCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
