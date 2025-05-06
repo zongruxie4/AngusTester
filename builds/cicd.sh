@@ -10,7 +10,7 @@
 SERVICE_DIR="service"
 WEB_DIR="web"
 
-REMOTE_APP_DIR="/data/app/AngusGM"
+REMOTE_APP_DIR="/data/apps/AngusTester"
 REMOTE_APP_PLUGINS_DIR_NAME="plugins"
 REMOTE_APP_PLUGINS_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_PLUGINS_DIR_NAME}"
 
@@ -113,16 +113,22 @@ maven_build () {
 # Deploy service module
 deploy_service() {
   echo "INFO: Deploying service module to ${host}"
+  ssh "$host" "mkdir -p ${REMOTE_APP_DIR}" || {
+    echo "ERROR: Failed to init app directory"; exit 1
+  }
   ssh "$host" "cd ${REMOTE_APP_DIR} && sh shutdown-tester.sh" || {
     echo "WARN: Failed to stop service, proceeding anyway"
   }
   ssh "$host" "cd ${REMOTE_APP_DIR} && find . -mindepth 1 -maxdepth 1 -not \( -name ${REMOTE_APP_STATIC_DIR_NAME} -o -name ".*" \) -exec rm -rf {} +" || {
     echo "ERROR: Failed to clean service directory"; exit 1
   }
-  scp -r "${SERVICE_DIR}/boot/target"/* "${host}:${REMOTE_APP_DIR}/" || {
+  scp -rp "${SERVICE_DIR}/boot/target"/* "${host}:${REMOTE_APP_DIR}/" || {
     echo "ERROR: Failed to copy service files"; exit 1
   }
-  scp -r "${SERVICE_DIR}/boot/extension/dist"/* "${host}:${REMOTE_APP_PLUGINS_DIR}/" || {
+  ssh "$host" "mkdir -p ${REMOTE_APP_PLUGINS_DIR}" || {
+    echo "ERROR: Failed to init plugins directory"; exit 1
+  }
+  scp -rp "${SERVICE_DIR}/extension/dist"/* "${host}:${REMOTE_APP_PLUGINS_DIR}/" || {
     echo "ERROR: Failed to copy plugin files"; exit 1
   }
   ssh "$host" "cd ${REMOTE_APP_DIR} && mkdir -p conf && mv classes/spring-logback.xml conf/tester-logback.xml" || {
@@ -165,10 +171,10 @@ npm_build () {
 # Deploy web module
 deploy_web() {
   echo "INFO: Deploying web module to ${host}"
-  ssh "$host" "rm -rf ${REMOTE_APP_STATIC_DIR}/*" || {
+  ssh "$host" "mkdir -p ${REMOTE_APP_STATIC_DIR} && rm -rf ${REMOTE_APP_STATIC_DIR}/*" || {
     echo "ERROR: Failed to clean static directory"; exit 1
   }
-  scp -r "${WEB_DIR}/dist"/* "${host}:${REMOTE_APP_STATIC_DIR}/" || {
+  scp -rp "${WEB_DIR}/dist"/* "${host}:${REMOTE_APP_STATIC_DIR}/" || {
     echo "ERROR: Failed to copy web assets"; exit 1
   }
   nginxFileName="dist/nginx_${env##*.}_tester.conf"
@@ -227,11 +233,11 @@ if [ -n "$hosts" ]; then
   echo "INFO: Starting deployment to hosts: ${hosts}"
   IFS=',' read -ra HOST_LIST <<< "$hosts"
   for host in "${HOST_LIST[@]}"; do
-    if echo "$module" | grep -q "web"; then
-      deploy_web
-    fi
     if echo "$module" | grep -q "service"; then
       deploy_service
+    fi
+    if echo "$module" | grep -q "web"; then
+      deploy_web
     fi
   done
 else
