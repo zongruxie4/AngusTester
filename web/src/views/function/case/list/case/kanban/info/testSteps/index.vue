@@ -2,8 +2,8 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import { cloneDeep } from 'lodash-es';
+import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
 
@@ -47,7 +47,7 @@ const cancel = () => {
 
 const ok = async () => {
   loadingChange(true);
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.dataSource?.id,
     steps: stepsContent.value
   }]);
@@ -67,7 +67,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, res] = await funcCase.getCaseInfo(id);
   loadingChange(false);
   if (error) {
     return;

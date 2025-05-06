@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import {http} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -22,6 +22,10 @@ export default class API {
 
   loadCustomizationSummary (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/customization/summary`, params);
+  }
+
+  loadFuncCaseCount (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/case/count`, params)
   }
 
   // 查询主页统计

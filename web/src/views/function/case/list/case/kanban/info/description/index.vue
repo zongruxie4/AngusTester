@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { funcCase} from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
 
@@ -69,7 +69,7 @@ const ok = async () => {
 
   const params = [{ id: caseId.value, description: content.value }];
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/func/case`, params, { dataType: true });
+  const [error] = await funcCase.updateCase(params);
   emit('loadingChange', false);
   if (error) {
     return;

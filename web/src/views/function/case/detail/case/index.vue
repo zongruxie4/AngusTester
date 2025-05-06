@@ -16,7 +16,7 @@ import {
   Toggle
 } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag, Upload } from 'ant-design-vue';
-import { download, upload, TESTER, duration, http, utils } from '@xcan-angus/tools';
+import { download, upload, TESTER, duration, utils } from '@xcan-angus/tools';
 import RichEditor from '@/components/richEditor/index.vue';
 import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
@@ -34,6 +34,7 @@ import {
   minReviewInfoColumns,
   minTestInfoColumns
 } from './config';
+import { funcCase} from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 
@@ -171,7 +172,7 @@ const editName = async (event) => {
   }
 
   editNameLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/name?name=${event.target.value}`);
+  const [error] = await funcCase.putName(props.caseDetail.id, event.target.value);
   editNameLoading.value = false;
   isEditName.value = false;
   if (error) {
@@ -200,7 +201,7 @@ const editPriority = async (value:Priority) => {
   }
 
   editPriorityLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/priority/${value}`);
+  const [error] = await funcCase.putPriority(props.caseDetail.id, value);
   editPriorityLoading.value = false;
   isEditPriority.value = false;
   if (error) {
@@ -226,7 +227,7 @@ const editEvalWorkload = async (event) => {
   }
 
   editEvalWorkloadLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/evalWorkload`, { workload: event.target.value });
+  const [error] = await funcCase.putEvalWorkload(props.caseDetail.id, { workload: event.target.value });
   editEvalWorkloadLoading.value = false;
   isEditEvalWorkload.value = false;
   if (error) {
@@ -254,7 +255,7 @@ const editActualWorkload = async (event) => {
   }
 
   editActualWorkloadLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/actualWorkload`, { workload: event.target.value });
+  const [error] = await funcCase.putActualWorkload(props.caseDetail.id, { workload: event.target.value });
   editActualWorkloadLoading.value = false;
   isEditActualWorkload.value = false;
   if (error) {
@@ -291,7 +292,7 @@ const editTag = async () => {
     return;
   }
   editTagLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/tag`, { tagIds: tagsIds.value.length ? tagsIds.value : null });
+  const [error] = await funcCase.putTag(props.caseDetail.id, { tagIds: tagsIds.value.length ? tagsIds.value : null });
   editTagLoading.value = false;
   isEditTag.value = false;
   if (error) {
@@ -325,7 +326,7 @@ const editDeadlineDate = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/deadline/${deadlineDate.value}`);
+  const [error] = await funcCase.putDeadline(props.caseDetail.id, deadlineDate.value);
   loading.value = false;
   isEditDisabledDate.value = false;
   if (error) {
@@ -352,7 +353,7 @@ const cancelFile = async (i:number) => {
   }
   const attachments = attachmentsData.value?.filter((_item, index) => index !== i);
   uploadLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/attachment`, { attachments });
+  const [error] = await funcCase.putAttachment(props.caseDetail.id, { attachments });
   uploadLoading.value = false;
   if (error) {
     return;
@@ -387,7 +388,7 @@ const updateAttachment = async (data) => {
     attachments.push(...attachmentsData.value);
   }
   uploadLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseDetail.id}/attachment`, { attachments });
+  const [error] = await funcCase.putAttachment(props.caseDetail.id, { attachments });
   uploadLoading.value = false;
 
   if (error) {
@@ -424,7 +425,7 @@ const savePrecondition = async () => {
     return;
   }
   savePreconditionLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     precondition: preconditionContent.value
   }]);
@@ -452,7 +453,7 @@ const saveSteps = async () => {
     return;
   }
   saveStepsLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     steps: stepsContent.value
   }]);
@@ -505,7 +506,7 @@ const saveDescription = async () => {
     return;
   }
   savedescriptionLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     description: descriptionContent.value
   }]);
@@ -539,7 +540,7 @@ const saveTester = async () => {
     return;
   }
   saveTesterLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     testerId: testerIcContent.value
   }]);
@@ -559,7 +560,7 @@ const handleSetTester = async () => {
     return;
   }
   saveTesterLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case`, [{
+  const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     testerId: userInfo.id
   }]);
@@ -598,7 +599,7 @@ const versionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/func/case`, [{ softwareVersion: value || '', id: props.caseDetail.id }]);
+  const [error] = await funcCase.updateCase([{ softwareVersion: value || '', id: props.caseDetail.id }]);
   emit('loadingChange', false);
   versionEditFlag.value = false;
   if (error) {

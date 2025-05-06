@@ -2,8 +2,8 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
+import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
 
@@ -82,7 +82,7 @@ const dateBlur = async () => {
   }
 
   loadingChange(true);
-  const [error] = await http.put(`${TESTER}/func/case/${caseId.value}/deadline/${value}`);
+  const [error] = await funcCase.putDeadline(caseId.value, value);
   loadingChange(false);
   if (error) {
     if (typeof dateRef.value?.focus === 'function') {
@@ -113,7 +113,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, res] = await funcCase.getCaseInfo(id);
   loadingChange(false);
   if (error) {
     return;

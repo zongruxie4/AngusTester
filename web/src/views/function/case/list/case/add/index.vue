@@ -16,9 +16,10 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumLoader, TESTER, upload, http, localStore, utils } from '@xcan-angus/tools';
+import { enumLoader, TESTER, upload, localStore, utils } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
+import { funcCase, modules, project } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { FormState } from './PropsType';
@@ -70,7 +71,7 @@ const oldFormState = ref<FormState>();
 
 const detail = ref<CaseInfoObj>();
 const getCaseInfo = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/case/${props.editCase.id}`);
+  const [error, { data }] = await funcCase.getCaseInfo(props.editCase.id);
   if (error) {
     return;
   }
@@ -217,7 +218,7 @@ const editSave = async () => {
   }
   const params = getParams();
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case`, [{ id: props.editCase.id, ...params }]);
+  const [error] = await funcCase.putCase([{ id: props.editCase.id, ...params }]);
   loading.value = false;
   if (error) {
     return;
@@ -229,7 +230,7 @@ const editSave = async () => {
 const addSave = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/func/case`, [params]);
+  const [error] = await funcCase.addCase([params]);
   loading.value = false;
   if (error) {
     return;
@@ -303,7 +304,7 @@ const setTesterForMe = () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${projectInfo.value?.id}/member/user`);
+  const [error, { data }] = await project.getMemberUser(projectInfo.value?.id);
   if (error) {
     return;
   }
@@ -364,7 +365,7 @@ const getModuleTreeData = async () => {
   if (!projectInfo.value?.id) {
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: projectInfo.value.id
   });
   if (error) {
