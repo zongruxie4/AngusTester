@@ -168,7 +168,7 @@
   <profiles>
     <!-- Deploy only community edition -->
     <profile>
-      <id>dist.community</id>
+      <id>edition.community</id>
       <properties>
         <editionType>COMMUNITY</editionType>
       </properties>
@@ -177,7 +177,7 @@
     </profile>
     <!-- Deploy only enterprise edition -->
     <profile>
-      <id>dist.enterprise</id>
+      <id>edition.enterprise</id>
       <properties>
         <editionType>ENTERPRISE</editionType>
       </properties>
@@ -192,7 +192,7 @@
     </profile>
     <!-- Deploy only datacenter edition -->
     <profile>
-      <id>dist.datacenter</id>
+      <id>edition.datacenter</id>
       <properties>
         <editionType>DATACENTER</editionType>
       </properties>
@@ -207,7 +207,7 @@
     </profile>
     <!-- Deploy only cloud service edition -->
     <profile>
-      <id>dist.cloudService</id>
+      <id>edition.cloudService</id>
       <properties>
         <editionType>CLOUD_SERVICE</editionType>
       </properties>
