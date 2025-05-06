@@ -2,8 +2,9 @@
 import { onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { TESTER, http, enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/tools';
 import type { Rule } from 'ant-design-vue/es/form';
+import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseListObj } from '../PropsType';
@@ -70,7 +71,7 @@ const onFinish = async (addBug = false) => {
         }
       ];
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/result`, params);
+  const [error] = await funcCase.putResult(params);
   loading.value = false;
   if (error) {
     return;

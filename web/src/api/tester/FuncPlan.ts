@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import {http} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -6,23 +6,15 @@ export default class API {
     baseUrl = prefix + '/func/plan';
   }
 
-  // loadFuncCase (params): Promise<[Error | null, any]> {
-  //   return http.get(`${baseUrl}/search`, params);
-  // }
-  //
-  // loadFavourite (params): Promise<[Error | null, any]> {
-  //   return http.get(`${baseUrl}/favourite/search`, params);
-  // }
-  //
-  // loadFollow (params): Promise<[Error | null, any]> {
-  //   return http.get(`${baseUrl}/follow/search`, params);
-  // }
-
   getPlanInfo (planId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}`);
   }
 
   getCurrentAuth (params: {ids: string[], adminFlag: boolean}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/auth/current`, params);
+  }
+
+  getCurrentAuthByPlanId (planId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${planId}/user/auth/current`);
   }
 }

@@ -27,6 +27,7 @@ import Target from './target';
 import Report from './Report';
 import FuncPlan from './FuncPlan';
 import Tag from './Tag';
+import Func from './Func';
 
 const baseUrl = TESTER;
 const pubBaseUrl = PUB_TESTER;
@@ -58,3 +59,4 @@ export const target = new Target(baseUrl);
 export const report = new Report(baseUrl);
 export const funcPlan = new FuncPlan(baseUrl);
 export const tagApi = new Tag(baseUrl);
+export const func = new Func(baseUrl);

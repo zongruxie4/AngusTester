@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import {http} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -58,6 +58,10 @@ export default class API {
     return http.get(`${baseUrl}/${CaseId}`);
   }
 
+  putResult (params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/result`, params);
+  }
+
   updateResult (params): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/result`, params);
   }
@@ -72,6 +76,10 @@ export default class API {
 
   resetReview (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/reset`, caseIds, { dataType: true });
+  }
+
+  getReviewRecord (CaseId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${CaseId}/review`);
   }
 
   retestResult (caseIds: string[]): Promise<[Error | null, any]> {
@@ -108,5 +116,25 @@ export default class API {
 
   putTag (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/tag`, params);
+  }
+
+  importCase (formData: FormData): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/import`, formData);
+  }
+
+  putAssociationCase (caseId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/case`, params);
+  }
+
+  cancelAssociationCase (caseId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/case/cancel`, params);
+  }
+
+  putAssociationTask (caseId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/task`, params);
+  }
+
+  cancelAssociationTask (caseId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/task/cancel`, params);
   }
 }

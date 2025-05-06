@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Image, NoData } from '@xcan-angus/vue-ui';
+import { funcCase } from '@/api/tester';
 
 interface Props {
   dataSource: {id: string; reviewNum: number; reviewFailNum: number;};
@@ -87,7 +87,7 @@ const changeCurrentRecord = async (record) => {
 
 const reviewRecords = ref([]);
 const loadReviewRecord = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/case/${props.dataSource?.id}/review`);
+  const [error, { data }] = await funcCase.getReviewRecord(props.dataSource?.id);
   if (error) {
     return;
   }
