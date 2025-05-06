@@ -1,12 +1,10 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
   constructor (prefix: string) {
     baseUrl = prefix + '/func/case';
   }
-
-  // TODO Q3 API未提取出来
 
   loadFuncCase (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params);
@@ -18,5 +16,49 @@ export default class API {
 
   loadFollow (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/follow/search`, params);
+  }
+
+  deleteCase (caseIds: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, caseIds, { dataType: true });
+  }
+
+  cancelFavouriteCase (caseId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${caseId}/favourite`);
+  }
+
+  favouriteCase (caseId: string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${caseId}/favourite`);
+  }
+
+  followCase (caseId: string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${caseId}/follow`);
+  }
+
+  cancelFollowCase (caseId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${caseId}/follow`);
+  }
+
+  cloneCase (caseIds: string[]): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/clone`, caseIds);
+  }
+
+  getCaseInfo (CaseId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${CaseId}`);
+  }
+
+  updateResult (params): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/result`, params);
+  }
+
+  resetResult (caseIds: string[]): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/result/reset`, caseIds, { dataType: true });
+  }
+
+  resetReview (caseIds: string[]): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/review/reset`, caseIds, { dataType: true });
+  }
+
+  retestResult (caseIds: string[]): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/result/retest`, caseIds, { dataType: true });
   }
 }

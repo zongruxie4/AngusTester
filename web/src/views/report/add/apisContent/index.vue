@@ -4,6 +4,7 @@ import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER, http } from '@xcan-angus/tools';
 import { contentTreeData } from './config';
+import { apis } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -38,7 +39,7 @@ contentTreeData.forEach(item => {
 });
 
 const loadServiceId = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/apis/${apisId.value}`);
+  const [error, { data }] = await apis.loadInfo(apisId.value);
   if (error) {
     return;
   }

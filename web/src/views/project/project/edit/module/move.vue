@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { Icon, Modal } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import { travelTreeData } from './utils';
 import { Tree } from 'ant-design-vue';
+import { modules } from '@/api/tester';
 
 interface Props {
   visible: boolean;
@@ -30,7 +30,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok')
 
 const treeData = ref<any[]>([]);
 const loadTreeData = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: props.projectId
   });
   if (error) {
@@ -65,7 +65,7 @@ const ok = async () => {
     return;
   }
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/module`, [{
+  const [error] = await modules.updateModule([{
     id: props.module.id,
     pid: pid.value[0]
   }]);

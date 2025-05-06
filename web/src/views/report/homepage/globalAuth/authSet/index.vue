@@ -3,11 +3,11 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
+import { report } from '@/api/tester';
 
 import CheckboxGroup from './checkboxGroup.vue';
-
 import { SpaceItem } from './PropsType';
 
 type Props = {
@@ -58,7 +58,7 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
 
 const switchChange = async (checked: boolean, id: string) => {
   enabledLoadingMap.value[id] = true;
-  const [error] = await http.patch(`${TESTER}/report/${id}/auth/enabled?enabled=${checked}`);
+  const [error] = await report.toggleAuthEnabled(id, checked);
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -93,7 +93,7 @@ const checkChange = async (permissions: string[], id: string) => {
   const authId = permissionsMap.value[id]?.id;
   if (!permissions.length) {
     updatingMap[id] = true;
-    const [error] = await http.del(`${TESTER}/report/auth/${authId}`);
+    const [error] = await report.deleteAuth(authId as string);
     updatingMap[id] = false;
     if (error) {
       return;
@@ -105,7 +105,7 @@ const checkChange = async (permissions: string[], id: string) => {
 
   if (authId) {
     updatingMap[id] = true;
-    const [error] = await http.put(`${TESTER}/report/auth/${authId}`, { permissions });
+    const [error] = await report.putAuth(authId, { permissions });
     updatingMap[id] = false;
     if (error) {
       return;
@@ -118,7 +118,7 @@ const checkChange = async (permissions: string[], id: string) => {
   // 没有进行过授权
   updatingMap[id] = true;
   const params = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
-  const [error, { data = { id: '' } }] = await http.post(`${TESTER}/report/${id}/auth`, params);
+  const [error, { data = { id: '' } }] = await report.addAuth(id, params);
   updatingMap[id] = false;
   if (error) {
     return;
@@ -148,7 +148,7 @@ const loadAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await http.get(`${TESTER}/report/auth`, params, axiosConfig);
+  const [error, { data = { list: [] } }] = await report.getAuth(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -222,7 +222,7 @@ const loadData = async () => {
 
   const params = getParams();
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/report/search`, params, axiosConfig);
+  const [error, { data }] = await report.searchList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;

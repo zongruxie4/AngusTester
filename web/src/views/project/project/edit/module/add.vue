@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { ButtonProps } from 'ant-design-vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { modules } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -36,7 +36,7 @@ const ok = async () => {
     projectId: props.projectId,
     pid: props.pid
   };
-  const [error, res] = await http.post(`${TESTER}/module`, params);
+  const [error, res] = await modules.addModule(params);
   okButtonProps.value.loading = false;
   if (error) {
     return;

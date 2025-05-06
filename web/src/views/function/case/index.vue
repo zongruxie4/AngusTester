@@ -2,8 +2,8 @@
 import { defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
 import { Tooltip } from 'ant-design-vue';
 import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import { useRoute, useRouter } from 'vue-router';
+import { funcCase } from '@/api/tester';
 
 import type { CaseActionAuth, CaseListObj } from './PropsType';
 
@@ -233,7 +233,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
     return;
   }
   favouriteLoading.value = true;
-  const [error] = rowData.favouriteFlag ? await http.del(`${TESTER}/func/case/${rowData.id}/favourite`) : await http.post(`${TESTER}/func/case/${rowData.id}/favourite`);
+  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.favouriteCase(rowData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
@@ -250,7 +250,7 @@ const handleFollow = async (rowData: CaseListObj) => {
     return;
   }
   followLoading.value = true;
-  const [error] = rowData.followFlag ? await http.del(`${TESTER}/func/case/${rowData.id}/follow`) : await http.post(`${TESTER}/func/case/${rowData.id}/follow`);
+  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.followCase(rowData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
@@ -287,7 +287,7 @@ const handleClone = async (rowData?: CaseListObj) => {
   }
   const ids = [rowData.id];
   caseInfoLoading.value = true;
-  const [error] = await http.post(`${TESTER}/func/case/clone`, ids);
+  const [error] = await funcCase.cloneCase(ids);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -330,7 +330,7 @@ const handleSetREsultBlocked = async (value) => {
       testResult: 'BLOCKED'
     }
   ];
-  const [error] = await http.patch(`${TESTER}/func/case/result`, params);
+  const [error] = await funcCase.updateResult(params);
   if (error) {
     return;
   }
@@ -346,7 +346,7 @@ const handleSetREsultCanceled = async (value) => {
       testResult: 'CANCELED'
     }
   ];
-  const [error] = await http.patch(`${TESTER}/func/case/result`, params);
+  const [error] = await funcCase.updateResult(params);
   if (error) {
     return;
   }
@@ -360,7 +360,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case/result/reset`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.resetResult( [rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -376,7 +376,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/case/review/reset`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.resetReview([rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -390,7 +390,7 @@ const handleReTest = async (rowData: CaseListObj) => {
   if (caseInfoLoading.value) {
     return;
   }
-  const [error] = await http.patch(`${TESTER}/func/case/result/retest`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.retestResult([rowData.id]);
   if (error) {
     return;
   }
@@ -415,7 +415,7 @@ const handleDeleteCase = async (rowData?: CaseListObj) => {
 
 const delCase = async (rowData?: CaseListObj) => {
   caseInfoLoading.value = true;
-  const [error] = await http.del(`${TESTER}/func/case`, [rowData.id], { dataType: true });
+  const [error] = await funcCase.deleteCase([rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;

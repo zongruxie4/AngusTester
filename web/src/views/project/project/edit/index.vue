@@ -12,7 +12,7 @@ import {
   Upload
 } from 'ant-design-vue';
 import { DatePicker, Icon, Image, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
-import { http, TESTER, GM, upload } from '@xcan-angus/tools';
+import { GM, upload } from '@xcan-angus/tools';
 import { project } from 'src/api/tester';
 
 interface Props {
@@ -69,7 +69,7 @@ const projectData = ref<{[key: string]: string | boolean | string[] | object}>({
 const formRef = ref();
 const loading = ref(false);
 const loadProjectData = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}`);
+  const [error, { data }] = await project.getProjectDetail(props.projectId);
   if (error) {
     return;
   }

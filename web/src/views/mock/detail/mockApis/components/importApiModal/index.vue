@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Hints, Modal, notification, SingleUpload } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { mock } from '@/api/tester';
 
 interface Props {
   id:string;// mock service Id
@@ -49,7 +49,7 @@ const ok = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/mock/service/import`, formData);
+  const [error] = await mock.importService(formData);
   loading.value = false;
   if (error) {
     return;

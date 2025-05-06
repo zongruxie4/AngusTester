@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { http, TESTER, GM } from '@xcan-angus/tools';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
+import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
+import { user, dept, group } from '@/api/aas';
 
 import { treeData } from './config';
 
@@ -37,7 +38,7 @@ const creatorTypeConfig = {
 const creatorObjectName = ref();
 const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
   if (creatorObjectType === 'USER') {
-    const [error, { data }] = await http.get(`${GM}/user/search?id=${creatorObjectId}`);
+    const [error, { data }] = await user.searchList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -46,7 +47,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     return;
   }
   if (creatorObjectType === 'dept') {
-    const [error, { data }] = await http.get(`${GM}/dept/search?id=${creatorObjectId}`);
+    const [error, { data }] = await dept.searchList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -55,7 +56,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     return;
   }
   if (creatorObjectType === 'GROUP') {
-    const [error, { data }] = await http.get(`${GM}/group/search?id=${creatorObjectId}`);
+    const [error, { data }] = await group.searchList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -74,7 +75,7 @@ const scenarioName = ref();
 const execName = ref();
 
 const loadSprintName = async (sprintId) => {
-  const [error, { data }] = await http.get(`${TESTER}/task/sprint/${sprintId}`);
+  const [error, { data }] = await task.getSprintInfo(sprintId);
   if (error) {
     return;
   }
@@ -82,7 +83,7 @@ const loadSprintName = async (sprintId) => {
 };
 
 const loadTaskName = async (taskId) => {
-  const [error, { data }] = await http.get(`${TESTER}/task/${taskId}`);
+  const [error, { data }] = await task.loadTaskInfo(taskId);
   if (error) {
     return;
   }
@@ -90,7 +91,7 @@ const loadTaskName = async (taskId) => {
 };
 
 const loadPlanName = async (planId) => {
-  const [error, { data }] = await http.get(`${TESTER}/func/plan/${planId}`);
+  const [error, { data }] = await funcPlan.getPlanInfo(planId);
   if (error) {
     return;
   }
@@ -98,7 +99,7 @@ const loadPlanName = async (planId) => {
 };
 
 const loadCaseName = async (caseId) => {
-  const [error, { data }] = await http.get(`${TESTER}/func/case/${caseId}`);
+  const [error, { data }] = await funcCase.getCaseInfo(caseId);
   if (error) {
     return;
   }
@@ -106,7 +107,7 @@ const loadCaseName = async (caseId) => {
 };
 
 const loadServiceAndApisName = async (apisId) => {
-  const [error, { data }] = await http.get(`${TESTER}/apis/${apisId}`);
+  const [error, { data }] = await apis.loadInfo(apisId);
   if (error) {
     return;
   }
@@ -115,7 +116,7 @@ const loadServiceAndApisName = async (apisId) => {
 };
 
 const loadServiceName = async (serviceId) => {
-  const [error, { data }] = await http.get(`${TESTER}/services/${serviceId}`);
+  const [error, { data }] = await services.loadInfo(serviceId);
   if (error) {
     return;
   }
@@ -123,7 +124,7 @@ const loadServiceName = async (serviceId) => {
 };
 
 const loadScenarioName = async (scenarioId) => {
-  const [error, { data }] = await http.get(`${TESTER}/scenario/${scenarioId}`);
+  const [error, { data }] = await scenario.loadInfo(scenarioId);
   if (error) {
     return;
   }
@@ -131,7 +132,7 @@ const loadScenarioName = async (scenarioId) => {
 };
 
 const loadExecName = async (execId) => {
-  const [error, { data }] = await http.get(`${TESTER}/exec/${execId}`);
+  const [error, { data }] = await exec.getExecInfo(execId);
   if (error) {
     return;
   }

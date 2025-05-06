@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
-// import { useRoute } from 'vue-router';
 import { ActivityTimeline, Colon, Modal } from '@xcan-angus/vue-ui';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { report as reportApi } from '@/api/tester';
 
 import { reportMenus } from '@/views/report/add/config';
 
@@ -36,7 +35,7 @@ const reportTypeObj = computed(() => {
 });
 
 const loadReportDetail = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/report/${reportId.value}`);
+  const [error, { data }] = await reportApi.getReportInfo(reportId.value);
   if (error) {
     return;
   }

@@ -3,9 +3,9 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, Input, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, http, TESTER } from '@xcan-angus/tools';
-// import MavonEditor from 'mavon-editor';
-// const mavonEditor = MavonEditor.mavonEditor
+import { duration } from '@xcan-angus/tools';
+import { project } from '@/api/tester';
+
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
 
@@ -45,7 +45,7 @@ const inputChange = debounce(duration.search, () => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.patch(`${TESTER}/project/trash/back`, params, { paramsType: true });
+  const [error] = await project.backAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -59,7 +59,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.del(`${TESTER}/project/trash`, params);
+  const [error] = await project.delAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -77,7 +77,7 @@ const toRefresh = () => {
 
 const recoverHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/project/trash/${data.id}/back`);
+  const [error] = await project.backTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -90,7 +90,7 @@ const recoverHandler = async (data:TrashItem) => {
 
 const deleteHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/project/trash/${data.id}`);
+  const [error] = await project.delTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -133,7 +133,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await http.get(`${TESTER}/project/trash/search`, params);
+  const [error, res] = await project.searchTrash(params);
   loaded.value = true;
   loading.value = false;
   if (error) {

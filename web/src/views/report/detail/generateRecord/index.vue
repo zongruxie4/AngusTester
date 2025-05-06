@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button } from 'ant-design-vue';
+import { report } from '@/api/tester';
 
 interface Props {
   reportId: string;
@@ -76,7 +76,7 @@ const columns = [
 const recordData = ref<Record[]>([]);
 
 const loadRecord = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/report/record`, {
+  const [error, { data }] = await report.loadReportRecord({
     projectId: props.projectId,
     reportId: props.reportId
   });
@@ -99,7 +99,7 @@ const delRecord = (record: Record) => {
     title: '删除报告记录',
     content: `确认删除报告记录【${record.reportName}】吗？`,
     onOk () {
-      return http.del(`${TESTER}/report/record`, [record.id])
+      return report.deleteReocrd([record.id])
         .then((resp) => {
           const [error] = resp;
           if (error) {

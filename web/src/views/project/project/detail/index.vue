@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { Image, notification, Icon } from '@xcan-angus/vue-ui';
-import { Form, FormItem, TabPane, Tabs, Tooltip, Tag } from 'ant-design-vue';
+import { Form, FormItem, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { project } from 'src/api/tester';
-import { TESTER, http } from '@xcan-angus/tools';
 import DefaultProjectPng from '@/views/project/project/images/default.png';
 import dayjs from 'dayjs';
 
@@ -77,7 +76,7 @@ const members = ref({
 });
 
 const loadformData = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}`);
+  const [error, { data }] = await project.getProjectDetail(props.projectId);
   if (error) {
     return;
   }

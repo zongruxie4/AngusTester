@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
 import { Tag } from 'ant-design-vue';
+import { software } from '@/api/tester';
 
 import { VersionInfo } from '../PropsType';
 import Chart from './chart.vue';
@@ -39,7 +39,7 @@ const loadVersionData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/software/version/${id}`);
+  const [error, res] = await software.getVersionInfo(id);
   loading.value = false;
   if (error) {
     return;

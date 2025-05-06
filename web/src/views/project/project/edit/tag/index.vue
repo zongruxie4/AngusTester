@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { AsyncComponent, Hints, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
+import { tagApi } from '@/api/tester';
 
 type TagItem = {
   id: string;
@@ -110,7 +111,7 @@ const loadData = async (remainder = 0, _params?:{pageNo?:number;pageSize?:number
     params = { ...params, ..._params };
   }
 
-  const [error, res] = await http.get(`${TESTER}/tag/search`, params);
+  const [error, res] = await tagApi.search(params);
   loading.value = false;
   loaded.value = true;
 
@@ -166,7 +167,7 @@ const pressEnter = async (id: string, index: number, event: { target: { value: s
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/tag`, [{ id, name: value }]);
+  const [error] = await tagApi.updateTag([{ id, name: value }]);
   loading.value = false;
   if (error) {
     return;
@@ -191,9 +192,8 @@ const toDelete = (data: TagItem, index:number) => {
     content: `确定删除标签【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const params = { ids: [id] };
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/tag`, params);
+      const [error] = await tagApi.deleteTag([id]);
       loading.value = false;
       if (error) {
         return;

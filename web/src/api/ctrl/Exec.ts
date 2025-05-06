@@ -87,7 +87,7 @@ export default class API {
   }
 
   loadStatusCodeData (id:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/sample/extension/counter/latest`);
+    return http.get(`${baseUrl}/${id}/sample/extension/counter/map1/latest`);
   }
 
   loadSummary (id:string, taskName:string): Promise<[Error | null, any]> {

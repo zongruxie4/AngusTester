@@ -7,6 +7,7 @@ import { Form, FormItem, Menu, MenuItem, MenuItemGroup, TabPane, Tabs, Textarea 
 import { reportMenus } from './config';
 import { http, TESTER } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
+import { report as reportApi } from '@/api/tester';
 
 interface Props {
   reportId?: string;
@@ -166,7 +167,7 @@ const resetData = () => {
 
 // 回显数据
 const loadReportById = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/report/${reportId.value}`);
+  const [error, { data }] = await reportApi.getReportInfo(reportId.value);
   if (error) {
     return;
   }
@@ -224,11 +225,11 @@ const ok = () => {
         };
     loading.value = true;
     const [error] = reportId.value
-      ? await http.patch(`${TESTER}/report`, {
+      ? await reportApi.updateReport({
         ...params,
         id: reportId.value
       })
-      : await http.post(`${TESTER}/report`, params);
+      : await reportApi.addReport(params);
     loading.value = false;
     if (error) {
       return;

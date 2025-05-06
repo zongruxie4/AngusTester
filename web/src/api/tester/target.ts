@@ -13,4 +13,5 @@ export default class API {
   delVariable (targetId: string, targetType: string, ids: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${targetId}/${targetType}/variable`, ids, { dataType: true });
   }
+
 }

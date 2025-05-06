@@ -6,6 +6,9 @@ import App from './App';
 import Setting from './setting';
 import Ai from './Ai';
 import Analysis from './Analysis';
+import Dept from './Dept';
+import User from './User';
+import Group from './Group';
 
 const baseUrl = GM;
 
@@ -15,3 +18,6 @@ export const auth = new Auth(baseUrl);
 export const setting = new Setting(GM);
 export const ai = new Ai(baseUrl);
 export const analysis = new Analysis(baseUrl);
+export const dept = new Dept(baseUrl);
+export const user = new User(baseUrl);
+export const group = new Group(baseUrl);

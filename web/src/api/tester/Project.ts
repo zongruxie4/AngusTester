@@ -46,16 +46,16 @@ export default class API {
     return http.get(`${baseUrl}/trash/count`);
   }
 
-  delAllTrash (): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/trash`);
+  delAllTrash (params = {}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash`, params);
   }
 
   delTrash (id: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash/${id}`);
   }
 
-  backAllTrash (): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/trash/back`);
+  backAllTrash (params = {}): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/back`, params, { paramsType: true });
   }
 
   backTrash (id: string): Promise<[Error | null, any]> {
