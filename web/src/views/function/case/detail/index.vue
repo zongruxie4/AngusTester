@@ -2,12 +2,13 @@
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import Dexie, { TESTER, duration, clipboard, http } from '@xcan-angus/tools';
+import Dexie, { TESTER, duration, clipboard } from '@xcan-angus/tools';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 
 import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './PropsType';
 import type { CaseInfoObj, CaseListObj } from '../PropsType';
+import { funcCase, funcPlan } from '@/api/tester';
 
 export type TabKey = 'info' | 'activty' | 'comments' | 'asscoTask' | 'asscoCase'
 export interface Attachments { id?: string, name: string, url: string }
@@ -130,7 +131,7 @@ const getData = async (value: 'before' | 'after') => {
   value === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectInfo.value?.id };
-  const [listError, listRes] = await http.get(`${TESTER}/func/case/search?infoScope=DETAIL`, params);
+  const [listError, listRes] = await funcCase.loadFuncCase({infoScope: 'DETAIL', ...params});
   if (listError) {
     return;
   }
@@ -158,7 +159,7 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const getCaseInfo = async (id: string) => {
   destroyInactiveTabPane.value = true;
   emits('update:loading', true);
-  const [error, { data }] = await http.get(`${TESTER}/func/case/${id}`);
+  const [error, { data }] = await funcCase.getCaseInfo(id);
   emits('update:loading', false);
   if (error) {
     return;
@@ -188,7 +189,7 @@ const getPlanAuth = async (planId) => {
     planAuthList.value = CASE_PROJECT_PERMISSIONS;
     return;
   }
-  const [error, { data }] = await http.get(`${TESTER}/func/plan/${planId}/user/auth/current`);
+  const [error, { data }] = await funcPlan.getCurrentAuthByPlanId(planId);
   if (error) {
     return;
   }

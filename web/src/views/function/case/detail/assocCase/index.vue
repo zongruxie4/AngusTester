@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, ref } from 'vue';
-import { AsyncComponent, Colon, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
-import { Button, Progress } from 'ant-design-vue';
+import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { TESTER } from '@xcan-angus/tools';
+import { Button } from 'ant-design-vue';
+import { funcCase } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -65,7 +66,7 @@ const handlePut = async (refCaseIds) => {
     return;
   }
   submitLoading.value = true;
-  const [error] = await http.put(`${TESTER}/func/case/${props.caseId}/association/case`, {
+  const [error] = await funcCase.putAssociationCase(props.caseId, {
     assocCaseIds: refCaseIds
   }, {
     paramsType: true
@@ -81,7 +82,7 @@ const handleDelTask = (record) => {
   modal.confirm({
     content: `确认取消关联用例【${record.name}】吗？`,
     onOk () {
-      return http.put(`${TESTER}/func/case/${props.caseId}/association/case/cancel`, {
+      return funcCase.cancelAssociationCase(props.caseId, {
         assocCaseIds: [record.id]
       }, {
         paramsType: true

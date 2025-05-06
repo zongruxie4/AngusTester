@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, defineAsyncComponent } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Icon, Input, NoData } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
+import { funcCase } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -60,7 +60,7 @@ const ok = async () => {
 
   const params = [{ id: caseId.value, precondition: content.value }];
   emit('loadingChange', true);
-  const [error] = await http.patch(`${TESTER}/func/case`, params, { dataType: true });
+  const [error] = await funcCase.updateCase(params);
   emit('loadingChange', false);
   if (error) {
     return;

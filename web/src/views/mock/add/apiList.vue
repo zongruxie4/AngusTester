@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch, onMounted } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { HttpMethodText, Icon, Input, Scroll } from '@xcan-angus/vue-ui';
+import { HttpMethodText, Icon, Input } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Divider, FormItemRest } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { apis } from '@/api/tester';
 
 interface Props {
  serviceId:string;
@@ -48,10 +48,12 @@ const onCheckAllChange = e => {
 // };
 
 const loadList = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/apis/search?serviceId=${props.serviceId}&projectId=${projectId.value}`, {
+  const [error, { data }] = await apis.searchList({
     ...params.value,
     pageSize: 2000,
-    pageNo: 1
+    pageNo: 1,
+    serviceId: props.serviceId,
+    projectId: projectId.value
   });
   if (error) {
     return;

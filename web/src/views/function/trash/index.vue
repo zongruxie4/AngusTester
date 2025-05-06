@@ -3,7 +3,8 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, http, utils, TESTER } from '@xcan-angus/tools';
+import { duration, utils } from '@xcan-angus/tools';
+import { func } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -29,7 +30,7 @@ const inputChange = debounce(duration.search, (event) => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.patch(`${TESTER}/func/trash/back`, params, { paramsType: true });
+  const [error] = await func.backAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -42,7 +43,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.del(`${TESTER}/func/trash`, params);
+  const [error] = await func.deleteAllTrash(params);
   if (error) {
     loading.value = false;
     return;
