@@ -5,8 +5,7 @@ import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { NoData, Table } from '@xcan-angus/vue-ui';
 import { columns } from './interface';
-
-import { TESTER, http } from '@xcan-angus/tools';
+import { nodeCtrl } from '@/api/ctrl';
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -291,7 +290,7 @@ const cpuloaded = ref(false);
 // 获取图表数据 CPU
 const loadCpuEchartData = async () => {
   const param = getChartParam();
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/cpu`, param);
+  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -398,7 +397,7 @@ const networkloaded = ref(false);
 // 图表数据 网络
 const loadNetworkEchartData = async () => {
   const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/network`, param);
+  const [error, res] = await nodeCtrl.getNetworkData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -519,7 +518,7 @@ const memoryloaded = ref(false);
 const loadMemoryEchartData = async () => {
   const param = getChartParam();
   // // loadingChartData.value = true;
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/memory`, param);
+  const [error, res] = await nodeCtrl.getMemoryData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -641,7 +640,7 @@ const diskloaded = ref(false);
 // 获取图表数据 磁盘
 const loadDiskEchartData = async () => {
   const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/disk`, param);
+  const [error, res] = await nodeCtrl.getDiskData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -884,7 +883,7 @@ watch(() => activeTab.value, async () => {
   }
   if (activeTab.value === 'network') {
     if (!networkNames.value.length) {
-      const [error, { data }] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/network/info`);
+      const [error, { data }] = await nodeCtrl.getNetworkName(currrentNodeId.value);
       if (!error) {
         // networkNames.value = data;
         const _networkNames: {label: string, value: string}[] = [];
@@ -918,7 +917,7 @@ watch(() => activeTab.value, async () => {
 
   if (activeTab.value === 'disk') {
     if (!diskNames.value.length) {
-      const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/disk/info`);
+      const [error, res] = await nodeCtrl.getDiskName(currrentNodeId.value);
       if (error) {
         return;
       }
@@ -977,7 +976,7 @@ const getChartTimerParam = (params = {}) => {
 
 const loadCputimerData = async () => {
   const params = getChartTimerParam();
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/cpu`, params);
+  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, params);
   if (error) {
     return;
   }
@@ -992,7 +991,7 @@ const loadCputimerData = async () => {
 
 const loadNetworkTimerData = async () => {
   const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/network`, param);
+  const [error, res] = await nodeCtrl.getNetworkData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -1007,7 +1006,7 @@ const loadNetworkTimerData = async () => {
 
 const loadMemoryTimerData = async () => {
   const param = getChartTimerParam();
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/memory`, param);
+  const [error, res] = await nodeCtrl.getMemoryData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -1022,7 +1021,7 @@ const loadMemoryTimerData = async () => {
 
 const loadDiskTimerData = async () => {
   const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
-  const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/disk`, param);
+  const [error, res] = await nodeCtrl.getDiskData(currrentNodeId.value, param);
   if (error) {
     return;
   }
@@ -1121,7 +1120,7 @@ const restart = async (nodeChange = false) => {
     }
     if (activeTab.value === 'network') {
       if (!networkNames.value.length || nodeChange) {
-        const [error, { data }] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/network/info`);
+        const [error, { data }] = await nodeCtrl.getNetworkName(currrentNodeId.value);
         if (!error) {
           // networkNames.value = data;
           const _networkNames: {label: string, value: string}[] = [];
@@ -1145,7 +1144,7 @@ const restart = async (nodeChange = false) => {
 
     if (activeTab.value === 'disk') {
       if (!networkNames.value.length || nodeChange) {
-        const [error, res] = await http.get(`${TESTER}/node/${currrentNodeId.value}/metrics/disk/info`);
+        const [error, res] = await nodeCtrl.getDiskName(currrentNodeId.value);
         if (error) {
           return;
         }

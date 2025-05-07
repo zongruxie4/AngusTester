@@ -59,8 +59,8 @@ export default class API {
   }
 
   // 获取场景详情
-  loadInfo (id: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}`);
+  loadInfo (id: string, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}`, axiosConf);
   }
 
   // 获取变量列表
@@ -131,8 +131,12 @@ export default class API {
   }
 
   // 添加场景
-  addScene (params): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}`, params);
+  addScenario (params, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}`, params, axiosConfig);
+  }
+
+  putScenario (params, axiosConfig = {}) {
+    return http.put(`${baseUrl}/scenario`, params, axiosConfig);
   }
 
   // 移动场景
