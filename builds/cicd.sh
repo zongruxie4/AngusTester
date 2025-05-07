@@ -18,7 +18,7 @@ REMOTE_APP_STATIC_DIR_NAME="statics"
 REMOTE_APP_STATIC_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_STATIC_DIR_NAME}"
 REMOTE_APP_LOGS_DIR_NAME="logs"
 
-NGINX_CONFIG_DIR="/opt/required/nginx/conf_ext/"
+NGINX_CONFIG_DIR="/etc/nginx/conf.d"
 
 CLEAR_MAVEN_REPO="/data/repository"
 
@@ -176,9 +176,8 @@ deploy_web() {
   scp -rp "${WEB_DIR}/dist"/* "${host}:${REMOTE_APP_STATIC_DIR}/" || {
     echo "ERROR: Failed to copy web assets"; exit 1
   }
-  nginxFileName="dist/nginx_${env##*.}_tester.conf"
-  scp -p ${nginxFileName} "${host}:${NGINX_CONFIG_DIR}/" || {
-    echo "ERROR: Failed to copy web assets"; exit 1
+  ssh "$host" "mv -f ${REMOTE_APP_STATIC_DIR}/nginx_${env##*.}_*.conf ${NGINX_CONFIG_DIR}/" || {
+    echo "ERROR: Failed to clean static directory"; exit 1
   }
   ssh "$host" "nginx -s reload" || {
     echo "ERROR: Failed to reload nginx"; exit 1
