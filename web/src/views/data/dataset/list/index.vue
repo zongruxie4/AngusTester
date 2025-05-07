@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { dataSet } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { DataSetItem } from '../PropsType';
@@ -119,7 +119,7 @@ const toDelete = (data: DataSetItem) => {
     content: `确定删除数据集【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/dataset`, { ids: [id] });
+      const [error] = await dataSet.del([id]);
       if (error) {
         return;
       }
@@ -140,7 +140,7 @@ const toPreview = async (data: DataSetItem) => {
 
 const toClone = async (data: DataSetItem) => {
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/dataset/clone`, [data.id]);
+  const [error] = await dataSet.cloneDataSet([data.id]);
   loading.value = false;
   if (error) {
     return;
@@ -182,7 +182,7 @@ const toBatchDelete = () => {
     async onOk () {
       const ids = selectedRowKeys;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/dataset`, { ids });
+      const [error] = await dataSet.del(ids);
       loading.value = false;
       if (error) {
         return;
@@ -311,7 +311,7 @@ const loadData = async () => {
   // }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/dataset/search`, params);
+  const [error, res] = await dataSet.loadDataSetList(params);
   loaded.value = true;
   loading.value = false;
   if (params.filters?.length) {

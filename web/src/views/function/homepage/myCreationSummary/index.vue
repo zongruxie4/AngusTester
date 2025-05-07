@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { analysis } from '@/api/tester';
 
 import { ResourceInfo } from '../PropsType';
 
@@ -49,7 +49,7 @@ const loadData = async (): Promise<void> => {
     creatorObjectType: 'USER',
     creatorObjectId: props.userInfo?.id
   };
-  const [error, res] = await http.get(`${TESTER}/analysis/func/resources/count`, params);
+  const [error, res] = await analysis.loadFuncResourceCount(params);
   loading.value = false;
   if (error) {
     return;

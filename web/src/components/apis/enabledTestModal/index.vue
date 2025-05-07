@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { Hints, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Modal, Switch } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { services } from '@/api/tester';
 
 interface Props {
   visible: boolean;
@@ -59,7 +59,7 @@ const handleOk = async () => {
   }
   const enabled = showOpt.value.filter(i => checked.value.includes(i));
   if (enabled.length) {
-    const [error] = await http.put(`${TESTER}/services/${props.id}/test/enabled?enabled=true`, { testTypes: enabled }, {
+    const [error] = await services.toggleTestEnabled(props.id, true, {testTypes: enabled}, {
       paramsType: true
     });
     if (error) {
@@ -69,7 +69,7 @@ const handleOk = async () => {
 
   const disabled = showOpt.value.filter(i => !enabled.includes(i));
   if (disabled.length) {
-    const [error] = await http.put(`${TESTER}/services/${props.id}/test/enabled?enabled=false`, { testTypes: disabled }, {
+    const [error] = await services.toggleTestEnabled(props.id, false, { testTypes: disabled }, {
       paramsType: true
     });
     if (error) {

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
-import { scenario } from 'src/api/tester';
+import { scenario, exec } from 'src/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -37,7 +37,7 @@ const authPermissions = ref<string[]>([]);
 const sceanrioData = ref();
 
 const loadScenarioDetail = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/scenario/${props.data?.scenarioId}`);
+  const [error, { data }] = await scenario.loadInfo(props.data?.scenarioId);
   if (error) {
     return;
   }
@@ -51,7 +51,7 @@ const loadScenarioDetail = async () => {
 };
 
 const loadPermissions = async () => {
-  const [_error, { data }] = await http.get(`${TESTER}/scenario/${props.data?.scenarioId}/user/auth/current`);
+  const [_error, { data }] = await scenario.loadScenePermissions(props.data?.scenarioId);
   authPermissions.value = (data?.permissions || []).map(i => i.value);
 };
 
@@ -60,7 +60,7 @@ const del = () => {
     centered: true,
     content: `删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【${sceanrioData.value?.name}】？`,
     async onOk () {
-      const [error] = await scenario.delScript(sceanrioData.value?.id);
+      const [error] = await scenario.deleteScenario(sceanrioData.value?.id);
       if (error) {
         return;
       }
@@ -83,7 +83,7 @@ const toAuth = () => {
 const followLoading = ref(false);
 const handleFollow = async () => {
   followLoading.value = true;
-  const [error] = await (sceanrioData.value.followFlag ? scenario.delFollowScript(props.data?.scenarioId) : scenario.addFollowScript(props.data?.scenarioId));
+  const [error] = await (sceanrioData.value.followFlag ? scenario.delFollowScenario(props.data?.scenarioId) : scenario.addFollowScript(props.data?.scenarioId));
   followLoading.value = false;
   if (error) {
     return;
@@ -120,7 +120,7 @@ const authFlagChange = (data: {authFlag: boolean}) => {
 };
 
 const loadScenarioResult = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/exec/scenario/${props.data?.scenarioId}/result`);
+  const [error, { data }] = await exec.getScenarioResult(props.data?.scenarioId);
   if (error) {
     return;
   }

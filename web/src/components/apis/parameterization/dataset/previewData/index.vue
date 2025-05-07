@@ -2,8 +2,9 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { dataSet } from '@/api/tester';
 
 type TableData = {
   [key: string]: string;
@@ -93,7 +94,7 @@ const loadData = async () => {
   };
 
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/dataset/value/preview`, params, { silence: true });
+  const [error, res] = await dataSet.previewValue(params, { silence: true });
   loading.value = false;
   loaded.value = true;
   columns.value = [];

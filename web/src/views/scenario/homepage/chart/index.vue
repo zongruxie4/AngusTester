@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { analysis } from '@/api/tester';
 
 import { ResourceInfo } from './PropsType';
 
@@ -23,7 +23,7 @@ const dataSource = ref<ResourceInfo>();
 
 const loadData = async () => {
   const params = { projectId: props.projectId };
-  const [error, res] = await http.get(`${TESTER}/analysis/scenario/resources/count`, params);
+  const [error, res] = await analysis.loadScenarioResourceCount(params);
   if (error) {
     return;
   }

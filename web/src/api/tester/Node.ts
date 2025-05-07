@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -53,5 +53,13 @@ export default class API {
   // 重启代理
   restartProxy (id: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/agent/restart`);
+  }
+
+  loadRunnerProcess (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/info/runner/process`, params, { paramsType: true });
+  }
+
+  killRunnerProcess (params) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/info/runner/process/kill`, params);
   }
 }

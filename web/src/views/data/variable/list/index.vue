@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { variable } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { VariableItem } from '../PropsType';
@@ -120,7 +120,7 @@ const toVisibility = (data: VariableItem) => {
 const loadValue = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/variable/value/preview`, { id: data.id }, { silence: true });
+  const [error, res] = await variable.previewValue({ id: data.id }, { silence: true });
   loading.value = false;
   if (error) {
     errorMessageMap.value.set(id, error.message);
@@ -159,7 +159,7 @@ const toDelete = (data: VariableItem) => {
     content: `确定删除变量【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/variable`, { ids: [id] });
+      const [error] = await variable.delVariables([id]);
       if (error) {
         return;
       }
@@ -178,7 +178,7 @@ const toDelete = (data: VariableItem) => {
 
 const toClone = async (data: VariableItem) => {
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/variable/clone`, [data.id]);
+  const [error] = await variable.cloneVariable([data.id]);
   loading.value = false;
   if (error) {
     return;
@@ -220,7 +220,7 @@ const toBatchDelete = () => {
     async onOk () {
       const ids = selectedRowKeys;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/variable`, { ids });
+      const [error] = await variable.delVariables(ids);
       loading.value = false;
       if (error) {
         return;
@@ -357,7 +357,7 @@ const loadData = async () => {
   // }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/variable/search`, params);
+  const [error, res] = await variable.loadVariablesList(params);
   loaded.value = true;
   loading.value = false;
   if (params.filters?.length) {

@@ -7,8 +7,8 @@ export default class API {
   }
 
   // 空间 list
-  getSpaceList (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  getSpaceList (params: {[key: string]: any}, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/search`, params, axiosConfig);
   }
 
   // 添加空间
@@ -32,24 +32,22 @@ export default class API {
   }
 
   // 更新权限
-  updateAuth (params: {id: string, permissions: string[]}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/auth/${params.id}`, { permissions: params.permissions });
+  putAuth (authId: string, params: {permissions: string[]}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
   // 更新 AuthFlag
-  updateAuthFlag (params: {id: string, enabled: boolean}): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
+  updateAuthFlag (spaceId: string, enabled: boolean): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${spaceId}/auth/enabled?enabled=${enabled}`);
   }
 
   // 获取权限数据
-  loadAuthority (params): Promise<[Error | null, any]> {
-    params.spaceId = params.id;
-    return http.get(`${baseUrl}/auth`, params);
+  loadAuthority (params, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
   // 添加权限
-  addAuth (params): Promise<[Error | null, any]> {
-    const { id, ...param } = params;
+  addAuth (spaceId: string, param): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/auth`, param);
   }
 

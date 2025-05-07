@@ -2,8 +2,9 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Icon, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { dataSet } from '@/api/tester';
 
 import { DataSetItem } from './PropsType';
 
@@ -77,7 +78,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/dataset/search`, params);
+  const [error, res] = await dataSet.loadDataSetList(params);
   loaded.value = true;
   loading.value = false;
 

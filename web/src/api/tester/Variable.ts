@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -71,6 +71,14 @@ export default class API {
 
   getTargetDetail (targetId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetId}/target`);
+  }
+
+  cloneVariable (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/clone`, params);
+  }
+
+  previewValue (params, axiosConf): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/value/preview`, params, axiosConf);
   }
 
 }

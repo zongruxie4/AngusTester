@@ -6,8 +6,8 @@ export default class API {
     baseUrl = prefix + '/scenario';
   }
 
-  loadScenario (params: {[key: string]: any}):Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  loadScenario (params: {[key: string]: any}, axiosConfig = {}):Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/search`, params, axiosConfig);
   }
 
   patchScripts (params: {dirId: string, id: string, name: string, scriptYaml?: string}): Promise<[Error | null, any]> {
@@ -18,7 +18,7 @@ export default class API {
     return http.patch(`${baseUrl}/${id}`, params);
   }
 
-  delScript (id:string): Promise<[Error | null, any]> {
+  deleteScenario (id:string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}`);
   }
 
@@ -34,25 +34,23 @@ export default class API {
   }
 
   // 添加权限
-  updateAuth (params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/auth/${params.id}`, params);
+  putAuth (authId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
   // 权限标志
-  updateAuthFlag (params): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
+  updateAuthFlag (scenarioId: string, enabled: boolean): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${scenarioId}/auth/enabled?enabled=${enabled}`);
   }
 
   // 获取权限数据
-  loadAuthority (params): Promise<[Error | null, any]> {
-    params.scenarioId = params.id;
-    return http.get(`${baseUrl}/auth`, params);
+  loadAuthority (params, axiosConfig): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
   // 添加权限数
-  addAuth (params): Promise<[Error | null, any]> {
-    const { id, ...other } = params;
-    return http.post(`${baseUrl}/${id}/auth`, other);
+  addAuth (scenarioId: string, params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${scenarioId}/auth`, params);
   }
 
   // 删除权限
@@ -94,7 +92,7 @@ export default class API {
     return http.post(`${baseUrl}/${id}/follow`);
   }
 
-  delFollowScript (id:string): Promise<[Error | null, any]> {
+  delFollowScenario (id:string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/follow`);
   }
 

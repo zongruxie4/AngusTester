@@ -1,8 +1,8 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
 import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
 import { Authentication, AvailableServer, RequestBody, RequestConfig } from './PropsType';
+import { variable } from '@/api/tester';
 
 export const password = [
   'tokenUrl',
@@ -66,7 +66,7 @@ const replaceApiVariable = async (
     return;
   }
 
-  const [error, { data: _data = [] }] = await http.get(`${TESTER}/variable/value/all`, {
+  const [error, { data: _data = [] }] = await variable.getVariables({
     names: uniq(variableNames),
     targetId: id,
     targetType: 'API'

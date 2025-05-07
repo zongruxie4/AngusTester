@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch
 import { http, TESTER } from '@xcan-angus/tools';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 import { Icon, Modal, notification, Select, Toggle } from '@xcan-angus/vue-ui';
+import { project } from '@/api/tester';
 
 import { FormData } from './PropsType';
 
@@ -92,7 +93,7 @@ const formData = computed(() => {
 });
 
 const loadMembers = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/project/${projectInfo.value.id}/member/user`);
+  const [error, { data }] = await project.getMemberUser(projectInfo.value.id);
   if (error) {
     return;
   }

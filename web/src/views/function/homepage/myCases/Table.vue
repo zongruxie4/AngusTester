@@ -2,7 +2,8 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { funcCase } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { CaseItem } from '../PropsType';
@@ -133,7 +134,7 @@ const loadData = async () => {
       params.testResult = props.params.testResult;
     }
   }
-  const [error, res] = await http.get(`${TESTER}/func/case/search`, params);
+  const [error, res] = await funcCase.loadFuncCase(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -153,7 +154,7 @@ const deleteHandler = (data: CaseItem) => {
     async onOk () {
       const id = data.id;
       const params = [id];
-      const [error] = await http.del(`${TESTER}/func/case`, params, { dataType: true });
+      const [error] = await funcCase.deleteCase(params);
       if (error) {
         return;
       }
@@ -173,7 +174,7 @@ const deleteHandler = (data: CaseItem) => {
 
 const cancelFavourite = async (data: CaseItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/func/case/${data.id}/favourite`);
+  const [error] = await funcCase.cancelFavouriteCase(data.id);
   loading.value = false;
   if (error) {
     return;
@@ -189,7 +190,7 @@ const cancelFavourite = async (data: CaseItem) => {
 
 const cancelFollow = async (data: CaseItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/func/case/${data.id}/follow`);
+  const [error] = await funcCase.cancelFollowCase(data.id);
   loading.value = false;
   if (error) {
     return;

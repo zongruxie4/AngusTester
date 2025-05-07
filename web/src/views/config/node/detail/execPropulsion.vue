@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { node } from '@/api/tester';
 
 interface Props {
   nodeId: string;
@@ -25,11 +25,9 @@ const loadNodeProcess = async () => {
   if (loading.value) {
     return;
   }
-  const [error, { data = {} }] = await http.post(`${TESTER}/node/info/runner/process`, {
+  const [error, { data = {} }] = await node.loadRunnerProcess({
     nodeId: props.nodeId,
     broadcast: true
-  }, {
-    paramsType: true
   });
   loading.value = false;
   if (error) {
@@ -183,7 +181,7 @@ const killProcess = (item) => {
   modal.confirm({
     content: `确认强制退出进程【${item.processID}】？`,
     async onOk () {
-      const [error] = await http.post(`${TESTER}/node/info/runner/process/kill`, {
+      const [error] = await node.killRunnerProcess({
         nodeId: props.nodeId,
         broadcast: true,
         pid: item.processID

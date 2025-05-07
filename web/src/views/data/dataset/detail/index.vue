@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, TESTER } from '@xcan-angus/tools';
+import { clipboard, utils } from '@xcan-angus/tools';
+import { dataSet } from '@/api/tester';
 
 import { DataSetItem } from '../PropsType';
 
@@ -68,7 +69,7 @@ const toDelete = () => {
     content: `确定删除数据集【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/dataset`, { ids: [id] });
+      const [error] = await dataSet.del([id]);
       if (error) {
         return;
       }
@@ -95,7 +96,7 @@ const toClone = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/dataset/clone`, [data.id]);
+  const [error] = await dataSet.cloneDataSet([data.id]);
   loading.value = false;
   if (error) {
     return;
@@ -125,7 +126,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/dataset/${id}`);
+  const [error, res] = await dataSet.getDataSetInfo(id);
   loading.value = false;
   loaded.value = true;
   if (error) {
