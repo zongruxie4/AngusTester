@@ -16,6 +16,7 @@ REMOTE_APP_PLUGINS_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_PLUGINS_DIR_NAME}"
 
 REMOTE_APP_STATIC_DIR_NAME="statics"
 REMOTE_APP_STATIC_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_STATIC_DIR_NAME}"
+REMOTE_APP_LOGS_DIR_NAME="logs"
 
 NGINX_CONFIG_DIR="/opt/required/nginx/conf_ext/"
 
@@ -114,7 +115,7 @@ deploy_service() {
   ssh "$host" "cd ${REMOTE_APP_DIR} && sh shutdown-tester.sh" || {
     echo "WARN: Failed to stop service, proceeding anyway"
   }
-  ssh "$host" "cd ${REMOTE_APP_DIR} && find . -mindepth 1 -maxdepth 1 -not \( -name ${REMOTE_APP_STATIC_DIR_NAME} -o -name ".*" \) -exec rm -rf {} +" || {
+  ssh "$host" "cd ${REMOTE_APP_DIR} && find . -mindepth 1 -maxdepth 1 -not \( -name ${REMOTE_APP_LOGS_DIR_NAME} -o -name ${REMOTE_APP_STATIC_DIR_NAME} \) -exec rm -rf {} +" || {
     echo "ERROR: Failed to clean service directory"; exit 1
   }
   scp -rp "${SERVICE_DIR}/boot/target"/* "${host}:${REMOTE_APP_DIR}/" || {
