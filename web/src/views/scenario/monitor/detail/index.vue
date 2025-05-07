@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
 import { Hints, Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
-
+import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
 import Chart from '@/views/scenario/monitor/detail/chart/index.vue';
 // export { default as ScearioSmtpDebugResult } from "./ScearioSmtpDebugResult/index";
@@ -67,7 +66,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/scenario/monitor/${id}`);
+  const [error, res] = await scenario.getMonitorInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -86,7 +85,7 @@ const loadData = async (id: string) => {
 const scenarioData = ref({});
 // 获取场景详情
 const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await http.get(`${TESTER}/scenario/${scenarioId}`);
+  const [error, { data }] = await scenario.loadInfo(scenarioId);
   if (error) {
     return;
   }
@@ -96,7 +95,7 @@ const loadScenarioPlugin = async (scenarioId: string) => {
 
 // 历史执行记录
 const loadHistoryList = async (id) => {
-  const [error, { data }] = await http.get(`${TESTER}/scenario/monitor/history`, {
+  const [error, { data }] = await scenario.getMonitorHistory({
     monitorId: id,
     pageSize: 100,
     pageNo: 1
@@ -122,7 +121,7 @@ const changeHistory = (history: {id: string; execId: string}) => {
 // 执行记录内容
 const loadExecData = async () => {
   loadHIstoryContent.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/scenario/monitor/history/${currentHistoyId.value}`);
+  const [error, { data }] = await scenario.getExecInfoByMonitorHistoryId(currentHistoyId.value);
   loadHIstoryContent.value = false;
   if (error) {
     return;
@@ -150,7 +149,7 @@ const run = async (data: MonitorInfo) => {
     content: `立即执行监控【${data.name}】`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.post(`${TESTER}/scenario/monitor/${id}/run`);
+      const [error] = await scenario.runMonitor(id);
       if (error) {
         return;
       }

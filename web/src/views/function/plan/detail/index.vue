@@ -2,7 +2,8 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { TESTER, clipboard, http, download } from '@xcan-angus/tools';
+import { TESTER, clipboard, download } from '@xcan-angus/tools';
+import { funcPlan } from '@/api/tester';
 
 import { PlanInfo } from '../PropsType';
 
@@ -68,7 +69,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}/user/auth/current`, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
   loading.value = false;
   if (error) {
     return;
@@ -83,7 +84,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}`);
+  const [error, res] = await funcPlan.getPlanInfo(id);
   loading.value = false;
   if (error) {
     return;

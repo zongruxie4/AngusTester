@@ -2,8 +2,9 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { ReviewCaseInfo } from './PropsType';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { funcPlan } from '@/api/tester';
 
 interface Props {
   planId: string;
@@ -45,7 +46,7 @@ const loadCases = async () => {
     return;
   }
   loading.value = true;
-  const [error, resp] = await http.get(`${TESTER}/func/plan/${props.planId}/case/notReviewed`, {
+  const [error, resp] = await funcPlan.getNotReviewedPlan(props.planId, {
     reviewId: props.reviewId,
     moduleId: moduleId.value
   });

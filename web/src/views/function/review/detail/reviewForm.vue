@@ -2,7 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
-import { TESTER, http, enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/tools';
+import { func } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 
@@ -37,7 +38,7 @@ const onFinish = async () => {
     reviewStatus: formState.value.reviewStatus
   }));
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/review/case/review`, params);
+  const [error] = await func.reviewCase(params);
   loading.value = false;
   if (error) {
     return;

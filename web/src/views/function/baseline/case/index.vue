@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { func } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -26,7 +26,7 @@ const BaselineCompare = defineAsyncComponent(() => import('@/views/function/base
 const planId = ref();
 
 const loadBaseLineInfo = async () => {
-  const [error, res] = await http.get(`${TESTER}/func/baseline/${props.data.id}`);
+  const [error, res] = await func.getBaselineInfo(props.data.id);
   if (error) {
     return;
   }

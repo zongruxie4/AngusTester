@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
+import { modules } from '@/api/tester';
 
 type TagItem = {
   id: string;
@@ -76,7 +76,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/module`, [{ id, name: value }]);
+  const [error] = await modules.updateModule([{ id, name: value }]);
   loading.value = false;
   if (error) {
     return;
@@ -102,7 +102,7 @@ const toDelete = (data: TagItem) => {
       const id = data.id;
       const params = { ids: [id] };
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/module`, params);
+      const [error] = await modules.delModule(params);
       loading.value = false;
       if (error) {
         return;
@@ -154,7 +154,7 @@ const moveUp = async (record) => {
     };
   }
 
-  const [error] = await http.patch(`${TESTER}/module`, [params]);
+  const [error] = await modules.updateModule([params]);
   if (error) {
     return;
   }
@@ -182,7 +182,7 @@ const moveDown = async (record) => {
     id,
     sequence: +parentChildren[index + 1].sequence + 1
   };
-  const [error] = await http.patch(`${TESTER}/module`, [params]);
+  const [error] = await modules.updateModule([params]);
   if (error) {
     return;
   }
@@ -233,7 +233,7 @@ const travelTreeData = (treeData, callback = (item) => item) => {
 const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
 
 const loadDataList = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/module/tree/search`, {
+  const [error, { data }] = await modules.searchTree({
     projectId: props.projectId
   });
   if (error) {

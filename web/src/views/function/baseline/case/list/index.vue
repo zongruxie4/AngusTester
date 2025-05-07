@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Icon, modal, Table, TaskPriority } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { func } from '@/api/tester';
 
 const ModuleTree = defineAsyncComponent(() => import('./moduleTree.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/baseline/edit/selectCaseModal.vue'));
@@ -84,7 +84,7 @@ const baselineCaseList = ref([]);
 
 const selectCaseOk = async (caseIds: string[] = []) => {
   selectCaseVisible.value = false;
-  const [error] = await http.post(`${TESTER}/func/baseline/${props.baselineId}/case`, caseIds);
+  const [error] = await func.addBaselineCase(props.baselineId, caseIds);
   if (error) {
     return;
   }
@@ -93,7 +93,7 @@ const selectCaseOk = async (caseIds: string[] = []) => {
 
 const loadBaseLineCaseList = async () => {
   const { current, pageSize } = pagination.value;
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${props.baselineId}/case/search`, {
+  const [error, { data }] = await func.searchBaselineCase(props.baselineId, {
     moduleId: moduleId.value,
     projectId: props.projectId,
     pageNo: current,
@@ -121,9 +121,7 @@ const delCase = (record) => {
   modal.confirm({
     content: `确认取消关联用例【${record.name}】吗？`,
     onOk () {
-      return http.del(`${TESTER}/func/baseline/${props.baselineId}/case`, [record.id], {
-        dataType: true
-      })
+      return func.deleteBaselineCase(props.baselineId, [record.id])
         .then(([error]) => {
           if (error) {
             return;
@@ -150,7 +148,7 @@ const putCustom = (record) => {
       } else {
         selectedRowKey.value = record.id;
         // selectCaseInfo.value = record;
-        const [error, { data }] = await http.get(`${TESTER}/func/baseline/${props.baselineId}/case/${record.id}`);
+        const [error, { data }] = await func.getCaseInfoInBaseline(props.baselineId, record.id);
         if (error) {
           selectCaseInfo.value = record;
           return;
@@ -175,7 +173,7 @@ const handleSearchChange = (params) => {
 };
 
 const loadBaseLineData = async () => {
-  const [error, res] = await http.get(`${TESTER}/func/baseline/${props.baselineId}`);
+  const [error, res] = await func.getBaselineInfo(props.baselineId);
   if (error) {
     return;
   }

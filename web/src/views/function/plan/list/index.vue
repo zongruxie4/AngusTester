@@ -15,9 +15,10 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download } from '@xcan-angus/tools';
+import { utils, TESTER, download } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
+import { funcPlan } from '@/api/tester';
 
 import { PlanInfo } from '../PropsType';
 
@@ -104,7 +105,7 @@ const viewWrokCalendar = (data: PlanInfo) => {
 };
 
 const setTableData = async (id: string, index: number) => {
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}`);
+  const [error, res] = await funcPlan.getPlanInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -118,7 +119,7 @@ const setTableData = async (id: string, index: number) => {
 const toStart = async (data: PlanInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/start`);
+  const [error] = await funcPlan.startPlan(id);
   if (error) {
     loading.value = false;
     return;
@@ -131,7 +132,7 @@ const toStart = async (data: PlanInfo, index: number) => {
 const toCompleted = async (data: PlanInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/end`);
+  const [error] = await funcPlan.endPlan(id);
   if (error) {
     loading.value = false;
     return;
@@ -144,7 +145,7 @@ const toCompleted = async (data: PlanInfo, index: number) => {
 const toBlock = async (data: PlanInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/block`);
+  const [error] = await funcPlan.blockPlan(id);
   if (error) {
     loading.value = false;
     return;
@@ -159,7 +160,7 @@ const toDelete = async (data: PlanInfo) => {
     content: `确定删除计划【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/func/plan/${id}`);
+      const [error] = await funcPlan.deletePlan(id);
       if (error) {
         return;
       }
@@ -189,7 +190,7 @@ const authFlagChange = async ({ authFlag }: { authFlag: boolean }) => {
 };
 
 const toClone = async (data: PlanInfo) => {
-  const [error] = await http.patch(`${TESTER}/func/plan/${data.id}/clone`);
+  const [error] = await funcPlan.clonePlan(data.id);
   if (error) {
     return;
   }
@@ -202,7 +203,7 @@ const toResetTestResult = async (data: PlanInfo) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
-  const [error] = await http.patch(`${TESTER}/func/plan/case/result/reset`, params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseResult(params);
   loading.value = false;
   if (error) {
     return;
@@ -215,7 +216,7 @@ const toResetReviewResult = async (data: PlanInfo) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
-  const [error] = await http.patch(`${TESTER}/func/plan/case/review/reset`, params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -292,7 +293,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/func/plan/search`, params);
+  const [error, res] = await funcPlan.searchPlan(params);
   loaded.value = true;
   loading.value = false;
 
@@ -354,7 +355,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/func/plan/${id}/user/auth/current`, params);
+  return await funcPlan.getCurrentAuthByPlanId(id, params);
 };
 
 const goCase = (plan: PlanInfo) => {

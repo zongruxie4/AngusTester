@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
-import { Button, Form, FormItem, TabPane, Tabs, Textarea } from 'ant-design-vue';
+import { Button, Form, FormItem, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, enumLoader, duration } from '@xcan-angus/tools';
+import { utils, TESTER, enumLoader, duration } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
+import { func, project } from '@/api/tester';
 
 import { BaselineInfo } from '../PropsType';
 import { BaselineCaseInfo, FormState } from './PropsType';
@@ -86,7 +87,7 @@ const editOk = async () => {
   const params = getParams();
   delete params.planId;
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/baseline`, params);
+  const [error] = await func.updateBaseline(params);
   loading.value = false;
   if (error) {
     return;
@@ -106,7 +107,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/func/baseline`, params);
+  const [error, res] = await func.addBaseline(params);
   loading.value = false;
   if (error) {
     return;
@@ -142,7 +143,7 @@ const toDelete = async () => {
     async onOk () {
       const id = data.id;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/func/baseline/${id}`);
+      const [error] = await func.deleteBaseline(id);
       loading.value = false;
       if (error) {
         return;
@@ -165,7 +166,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/baseline/${id}`);
+  const [error, res] = await func.getBaselineInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -239,7 +240,7 @@ const loadEnums = async () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, res] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
+  const [error, res] = await project.getMemberUser(props.projectId);
   if (error) {
     return;
   }
@@ -259,7 +260,7 @@ const handleChangePlanId = () => {
 };
 
 const loadCaseList = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${baselineId.value}/case/search`, {
+  const [error, { data }] = await func.searchBaselineCase(baselineId.value, {
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize,
@@ -287,7 +288,7 @@ const addBaselineCase = () => {
 
 const handleAddCase = async (caseIds: string[], cases: BaselineCaseInfo[]) => {
   if (baselineId.value) {
-    const [error] = await http.post(`${TESTER}/func/baseline/${baselineId.value}/case`, caseIds);
+    const [error] = await func.addBaselineCase(baselineId.value, caseIds);
     if (error) {
       return;
     }
@@ -325,9 +326,7 @@ const delCase = async (record: BaselineCaseInfo) => {
     modal.confirm({
       title: `确认删除【${record.name}】吗？`,
       async onOk () {
-        const [error] = await http.del(`${TESTER}/func/baseline/case`, [record.id], {
-          dataType: true
-        });
+        const [error] = await func.deleteBaselineCaseByCaseIdInBaseline([record.id]);
         if (error) {
           return;
         }

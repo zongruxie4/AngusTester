@@ -14,10 +14,11 @@ import {
   Table,
   TaskPriority
 } from '@xcan-angus/vue-ui';
-import { TESTER, http, download, duration } from '@xcan-angus/tools';
+import { download, duration } from '@xcan-angus/tools';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
+import { funcPlan, func } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -76,7 +77,7 @@ const startLoading = ref(false);
 
 const startReview = async () => {
   startLoading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/review/${reviewId.value}/start`);
+  const [error] = await func.startReview(reviewId.value);
   startLoading.value = false;
   if (error) {
     return;
@@ -175,7 +176,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}/user/auth/current`, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
   loading.value = false;
   if (error) {
     return;
@@ -190,7 +191,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/review/${id}`);
+  const [error, res] = await func.getReview(id);
   loading.value = false;
   if (error) {
     return;
@@ -211,7 +212,7 @@ const loadData = async (id: string) => {
 
 const loadCaseList = async (id: string) => {
   const { current, pageSize } = pagination.value;
-  const [error, { data }] = await http.get(`${TESTER}/func/review/case/search`, {
+  const [error, { data }] = await func.searchReviewCase({
     reviewId: id,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     reviewStatus: reviewStatus.value,
@@ -281,7 +282,7 @@ const customRow = (record) => {
 };
 
 const loadCaseContentInfo = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/review/case/${selectedRowKey.value}`);
+  const [error, { data }] = await func.getReviewCase(selectedRowKey.value);
   if (error) {
     return;
   }
@@ -346,9 +347,7 @@ const delCase = async (record) => {
   modal.confirm({
     title: `确认取消评审用例【${record?.caseInfo?.name || ''}】吗？`,
     async onOk () {
-      const [error] = await http.del(`${TESTER}/func/review/case`, [record.id], {
-        dataType: true
-      });
+      const [error] = await func.deleteReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -366,9 +365,7 @@ const reStart = async (record) => {
     title: '重新开始评审',
     content: `确认重新开始评审用例【${record?.caseInfo?.name || ''}】吗？`,
     async onOk () {
-      const [error] = await http.patch(`${TESTER}/func/review/case/restart`, { ids: [record.id] }, {
-        paramsType: true
-      });
+      const [error] = await func.restartReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -383,9 +380,7 @@ const reset = async (record) => {
     title: '重置评审',
     content: `将用例更新为“待评审”，相关统计计数和状态会被清除。确认重置用例【${record?.caseInfo?.name || ''}】评审结果吗？`,
     async onOk () {
-      const [error] = await http.patch(`${TESTER}/func/review/case/reset`, { ids: [record.id] }, {
-        paramsType: true
-      });
+      const [error] = await func.resetReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -396,7 +391,7 @@ const reset = async (record) => {
 
 const handleAddCase = async (caseIds: string[]) => {
   selectModalVisible.value = false;
-  const [error] = await http.post(`${TESTER}/func/review/case`, {
+  const [error] = await func.addReviewCase({
     caseIds: caseIds,
     reviewId: reviewId.value
   });

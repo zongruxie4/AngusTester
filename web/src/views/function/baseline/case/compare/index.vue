@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Select } from '@xcan-angus/vue-ui';
 import _ from 'lodash-es';
+import { func } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -41,7 +41,7 @@ const compareLine = computed(() => {
 });
 
 const loadBaseLineList = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/search`, {
+  const [error, { data }] = await func.searchBaseline({
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -55,7 +55,7 @@ const loadBaseLineList = async () => {
 };
 
 const loadBaseCase = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${props.baselineId}/case`, {
+  const [error, { data }] = await func.searchCaseInBaseline(props.baselineId, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -70,7 +70,7 @@ const loadBaseCase = async () => {
 };
 
 const loadCompareCase = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${compareLineId.value}/case`, {
+  const [error, { data }] = await func.searchCaseInBaseline(compareLineId.value, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId

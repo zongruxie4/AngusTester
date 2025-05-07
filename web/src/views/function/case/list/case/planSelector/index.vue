@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { inject, ref, watch } from 'vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { Icon, Select } from '@xcan-angus/vue-ui';
+import { funcPlan } from '@/api/tester';
 
 interface Props {
   planId?: string;
@@ -63,7 +64,7 @@ const handleBlur = () => {
 };
 
 const loadPlanList = async () => {
-  const [error, res] = await http.get(`${TESTER}/func/plan/${props.planId}`);
+  const [error, res] = await funcPlan.getPlanInfo(props.planId);
   if (error) {
     return;
   }

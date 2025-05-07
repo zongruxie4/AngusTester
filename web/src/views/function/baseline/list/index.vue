@@ -2,8 +2,8 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
+import { func } from '@/api/tester';
 
 import { BaselineInfo } from '../PropsType';
 
@@ -64,7 +64,7 @@ const searchChange = (data) => {
 const toCompleted = async (data: BaselineInfo) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.post(`${TESTER}/func/baseline/${id}/establish`);
+  const [error] = await func.establishBaseline(id);
   loading.value = false;
   if (error) {
     return;
@@ -78,9 +78,7 @@ const toDelete = async (data: BaselineInfo) => {
     content: `确定删除基线【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/func/baseline`, {
-        ids: [id]
-      });
+      const [error] = await func.batchDelBaseline([id]);
       if (error) {
         return;
       }
@@ -115,7 +113,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/func/baseline`, params);
+  const [error, res] = await func.searchBaseline(params);
   loaded.value = true;
   loading.value = false;
 

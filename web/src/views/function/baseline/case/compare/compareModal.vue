@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Modal, Select } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { func } from '@/api/tester';
 
 import RichEditor from '@/components/richEditor/index.vue';
 import { Switch } from 'ant-design-vue';
@@ -49,7 +49,7 @@ const resetData = () => {
 };
 
 const loadBaseCase = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${props.baselineId}/case/${props.caseId}`);
+  const [error, { data }] = await func.getCaseInfoInBaseline(props.baselineId, props.caseId);
   if (error) {
     return;
   }
@@ -66,7 +66,7 @@ const loadBaseCase = async () => {
 };
 
 const loadCompareCase = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/baseline/${props.comparelineId}/case/${props.caseId}`);
+  const [error, { data }] = await func.getCaseInfoInBaseline(props.comparelineId, props.caseId);
   if (error) {
     return;
   }

@@ -2,11 +2,10 @@
 import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Button, Popover } from 'ant-design-vue';
 import { Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import { debounce, throttle } from 'throttle-debounce';
 import { useRouter } from 'vue-router';
 
-import { scenario } from 'src/api/tester';
+import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
 import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
 
@@ -73,7 +72,7 @@ const toDelete = async (data: MonitorInfo) => {
     content: `确定删除监控【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/scenario/monitor`, {
+      const [error] = await scenario.deleteMonitor({
         ids: [id]
       });
       if (error) {
@@ -113,7 +112,7 @@ const run = async (data: MonitorInfo) => {
     content: `立即执行监控【${data.name}】`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.post(`${TESTER}/scenario/monitor/${id}/run`);
+      const [error] = await scenario.runMonitor(id);
       if (error) {
         return;
       }
@@ -140,7 +139,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/scenario/monitor/search`, params);
+  const [error, res] = await scenario.searchMonitor(params);
   loaded.value = true;
   loading.value = false;
 

@@ -13,11 +13,12 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/tools';
+import { utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
+import { func, funcPlan, project } from '@/api/tester';
 
 import { ReviewInfo } from '../PropsType';
 import { FormState, ReviewCaseInfo } from './PropsType';
@@ -150,7 +151,7 @@ const editOk = async () => {
   const params = getParams();
   delete params.planId;
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/review`, params);
+  const [error] = await func.putReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -170,7 +171,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/func/review`, params);
+  const [error, res] = await func.addReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -215,7 +216,7 @@ const toDelete = async () => {
     async onOk () {
       const id = data.id;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/func/review/${id}`);
+      const [error] = await func.deleteReview(id);
       loading.value = false;
       if (error) {
         return;
@@ -238,7 +239,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/review/${id}`);
+  const [error, res] = await func.getReview(id);
   loading.value = false;
   if (error) {
     return;
@@ -343,7 +344,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}/user/auth/current`, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
   loading.value = false;
   if (error) {
     return;
@@ -355,7 +356,7 @@ const loadPermissions = async (id: string) => {
 const members = ref<{id: string; fullName: string; value: string; label: string}[]>([]);
 
 const loadMembers = async () => {
-  const [error, res] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
+  const [error, res] = await project.getMemberUser(props.projectId);
   if (error) {
     return;
   }
@@ -375,7 +376,7 @@ const handleChangePlanId = () => {
 };
 
 const loadCaseList = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/func/review/case/search`, {
+  const [error, { data }] = await func.searchReviewCase({
     reviewId: reviewId.value,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     pageNo: pagination.value.current,
@@ -403,7 +404,7 @@ const addReviewCase = () => {
 
 const handleAddCase = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
   if (reviewId.value) {
-    const [error] = await http.post(`${TESTER}/func/review/case`, {
+    const [error] = await func.addReviewCase({
       caseIds: caseIds,
       reviewId: reviewId.value
     });
@@ -460,9 +461,7 @@ const delCase = async (record: ReviewCaseInfo) => {
     modal.confirm({
       title: `确认删除【${record.name}】吗？`,
       async onOk () {
-        const [error] = await http.del(`${TESTER}/func/review/case`, [record.id], {
-          dataType: true
-        });
+        const [error] = await func.deleteReviewCase([record.id]);
         if (error) {
           return;
         }

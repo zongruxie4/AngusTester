@@ -3,8 +3,9 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download } from '@xcan-angus/tools';
+import { utils, download } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
+import { func } from '@/api/tester';
 
 import { ReviewInfo } from '../PropsType';
 
@@ -63,7 +64,7 @@ const searchChange = (data) => {
 
 const setTableData = async (id: string, index: number) => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/review/${id}`);
+  const [error, res] = await func.getReview(id);
   loading.value = false;
   if (error) {
     return;
@@ -77,7 +78,7 @@ const setTableData = async (id: string, index: number) => {
 const toStart = async (data: ReviewInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/func/review/${id}/start`);
+  const [error] = await func.startReview(id);
   loading.value = false;
   if (error) {
     return;
@@ -90,7 +91,7 @@ const toStart = async (data: ReviewInfo, index: number) => {
 const toCompleted = async (data: ReviewInfo, index: number) => {
   loading.value = true;
   const id = data.id;
-  const [error] = await http.patch(`${TESTER}/func/review/${id}/end`);
+  const [error] = await func.endReview(id);
   loading.value = false;
   if (error) {
     return;
@@ -105,7 +106,7 @@ const toDelete = async (data: ReviewInfo) => {
     content: `确定删除评审【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/func/review/${id}`);
+      const [error] = await func.deleteReview(id);
       if (error) {
         return;
       }
@@ -119,7 +120,7 @@ const toDelete = async (data: ReviewInfo) => {
 };
 
 const toClone = async (data: ReviewInfo) => {
-  const [error] = await http.patch(`${TESTER}/func/review/${data.id}/clone`);
+  const [error] = await func.cloneReview(data.id);
   if (error) {
     return;
   }
@@ -161,7 +162,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await http.get(`${TESTER}/func/review/search`, params);
+  const [error, res] = await func.searchReview(params);
   loaded.value = true;
   loading.value = false;
 
@@ -223,7 +224,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
 
-  return await http.get(`${TESTER}/func/review/${id}/user/auth/current`, params);
+  return await func.getCurrentReviewAuthByPlanId(id, params);
 };
 
 const reset = () => {

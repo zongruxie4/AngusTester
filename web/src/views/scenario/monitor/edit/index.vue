@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, watch, inject, nextTick, defineAsyncComponent } from 'vue';
 import { Input, Select, notification, Icon, Spin, Hints, IconRequired } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, DatePicker, Popover, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
-import { http, utils, TESTER, GM } from '@xcan-angus/tools';
+import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
+import { utils, TESTER, GM } from '@xcan-angus/tools';
+import { scenario } from '@/api/tester';
 
 import { FormState } from './PropsType';
 import { MonitorInfo } from '../PropsType';
@@ -55,7 +56,7 @@ const noticeSetting = ref<MonitorInfo['noticeSetting']>({
 // 服务器配置
 const serverSetting = ref<{url: string; description?: string; variables?: {[key: string]: {[key: string]: string}}}[]>([]);
 const loadServerSetting = async () => {
-  const [error, { data = [] }] = await http.get(`${TESTER}/scenario/${formState.value.scenarioId}/test/schema/server`);
+  const [error, { data = [] }] = await scenario.getTestSchemaServer(formState.value.scenarioId);
   if (error) {
     return;
   }
@@ -128,7 +129,7 @@ const refreshList = () => {
 const editOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/scenario/monitor`, params);
+  const [error] = await scenario.updateMonitor(params);
   loading.value = false;
   if (error) {
     return;
@@ -140,7 +141,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/scenario/monitor`, params);
+  const [error] = await scenario.addMonitor(params);
   loading.value = false;
   if (error) {
     return;
@@ -173,7 +174,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/scenario/monitor/${id}`);
+  const [error, res] = await scenario.getMonitorInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -243,7 +244,7 @@ const setFormData = (data: MonitorInfo) => {
 
 // 获取场景详情
 const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await http.get(`${TESTER}/scenario/${scenarioId}`);
+  const [error, { data }] = await scenario.loadInfo(scenarioId);
   if (error) {
     return;
   }

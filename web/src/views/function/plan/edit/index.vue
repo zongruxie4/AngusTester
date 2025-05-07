@@ -10,7 +10,6 @@ import {
   Switch,
   TabPane,
   Tabs,
-  Textarea,
   Upload
 } from 'ant-design-vue';
 import {
@@ -27,10 +26,11 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
+import { clipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
+import { funcPlan, project } from '@/api/tester';
 
 import { PlanInfo } from '../PropsType';
 import { FormState } from './PropsType';
@@ -263,7 +263,7 @@ const editOk = async () => {
 
   const params = getParams();
   loading.value = true;
-  const [error] = await http.put(`${TESTER}/func/plan`, params);
+  const [error] = await funcPlan.putFuncPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -283,7 +283,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/func/plan`, params);
+  const [error, res] = await funcPlan.addFuncPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -327,7 +327,7 @@ const toStart = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/start`);
+  const [error] = await funcPlan.startPlan(id);
   loading.value = false;
   if (error) {
     return;
@@ -345,7 +345,7 @@ const toCompleted = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/end`);
+  const [error] = await funcPlan.endPlan(id);
   loading.value = false;
   if (error) {
     return;
@@ -367,7 +367,7 @@ const toDelete = async () => {
     async onOk () {
       const id = data.id;
       loading.value = true;
-      const [error] = await http.del(`${TESTER}/func/plan/${id}`);
+      const [error] = await funcPlan.deletePlan(id);
       loading.value = false;
       if (error) {
         return;
@@ -401,7 +401,7 @@ const toClone = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/plan/${id}/clone`);
+  const [error] = await funcPlan.clonePlan(id);
   loading.value = false;
   if (error) {
     return;
@@ -419,7 +419,7 @@ const toResetTestResult = async () => {
 
   const params = { ids: [id] };
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/plan/case/result/reset`, params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseResult(params, { paramsType: true });
   loading.value = false;
   if (error) {
     return;
@@ -438,7 +438,7 @@ const toResetReviewResult = async () => {
 
   const params = { ids: [id] };
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/func/plan/case/review/reset`, params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseReview(params, { paramsType: true });
   loading.value = false;
   if (error) {
     return;
@@ -477,7 +477,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}`);
+  const [error, res] = await funcPlan.getPlanInfo(id);
   loading.value = false;
   if (error) {
     return;
@@ -610,7 +610,7 @@ const loadPermissions = async (id: string) => {
     adminFlag: true
   };
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/func/plan/${id}/user/auth/current`, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
   loading.value = true;
   if (error) {
     return;
@@ -622,7 +622,7 @@ const loadPermissions = async (id: string) => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, res] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
+  const [error, res] = await project.getMemberUser(props.projectId);
   if (error) {
     return;
   }

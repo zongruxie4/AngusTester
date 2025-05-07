@@ -3,7 +3,8 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, Input, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, http, TESTER } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
+import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
@@ -42,7 +43,7 @@ const inputChange = debounce(duration.search, () => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.patch(`${TESTER}/scenario/trash/back`, params, { paramsType: true });
+  const [error] = await scenario.backAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -56,7 +57,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await http.del(`${TESTER}/scenario/trash`, params);
+  const [error] = await scenario.deleteAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -74,7 +75,7 @@ const toRefresh = () => {
 
 const recoverHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await http.patch(`${TESTER}/scenario/trash/${data.id}/back`);
+  const [error] = await scenario.backTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -87,7 +88,7 @@ const recoverHandler = async (data:TrashItem) => {
 
 const deleteHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/scenario/trash/${data.id}`);
+  const [error] = await scenario.deleteTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -130,7 +131,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await http.get(`${TESTER}/scenario/trash/search`, params);
+  const [error, res] = await scenario.searchTrash(params);
   loaded.value = true;
   loading.value = false;
   if (error) {

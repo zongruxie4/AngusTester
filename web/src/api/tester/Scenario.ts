@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -140,5 +140,61 @@ export default class API {
   // 移动场景
   moveScenario (id:string, pid:string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/${pid}/move`);
+  }
+
+  addMonitor (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/monitor`, params);
+  }
+
+  updateMonitor (params): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/monitor`, params);
+  }
+
+  deleteMonitor (params): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/monitor`, params);
+  }
+
+  runMonitor (monitorId: string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/monitor/${monitorId}/run`);
+  }
+
+  searchMonitor (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/monitor/search`, params);
+  }
+
+  getMonitorInfo (monitorId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/monitor/${monitorId}`);
+  }
+
+  getMonitorHistory (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/monitor/history`, params);
+  }
+
+  getExecInfoByMonitorHistoryId (historyId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/monitor/history/${historyId}`);
+  }
+
+  getTestSchemaServer (scenarioId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${scenarioId}/test/schema/server`);
+  }
+
+  backAllTrash (params: {projectId: string}): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/back`, params, { paramsType: true });
+  }
+
+  deleteAllTrash (params: {projectId: string}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash`, params);
+  }
+
+  backTrash (trashId: string): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/trash/${trashId}/back`);
+  }
+
+  deleteTrash (trashId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/trash/${trashId}`);
+  }
+
+  searchTrash (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/trash/search`, params);
   }
 }
