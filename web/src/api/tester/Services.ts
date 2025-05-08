@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl = '';
 export default class API {
