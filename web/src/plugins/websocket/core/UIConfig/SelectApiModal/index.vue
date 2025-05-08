@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
+import { apis } from '@/api/tester';
 
 import { ApiInfo } from './PropsType';
 
@@ -33,7 +34,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     linking.value = true;
   }
-  const [error, { data }]:[Error|null, { data: ApiInfo }] = await http.get(`${TESTER}/apis/${checkedId.value}`, { resolveRefFlag: true });
+  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.loadInfo(checkedId.value, true);
   coping.value = false;
   linking.value = false;
   if (error) {

@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, defineAsyncComponent, onBeforeUnmount, computed } from 'vue';
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
-import { Spin, NoData } from '@xcan-angus/vue-ui';
+import { Spin, NoData, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-import { http, TESTER } from '@xcan-angus/tools';
+import { exec } from '@/api/tester';
 
 import { ListData, useExecCount } from './useExecCount';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
 // allColumns, throughputCvsKeys, throughputOptions, throughputColumns, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns
 interface Props {
@@ -101,7 +100,7 @@ const loadChartData = async () => {
   const { id } = props.dataSource;
   loading.value = true;
   // const [error, { data }] = await exec.getAggregateData(id, { ...pagination });
-  const [error, { data }] = await http.get(`${TESTER}/exec/${id}/sample/summary/list`, { ...pagination });
+  const [error, { data }] = await exec.getSampleSummaryList(id, { ...pagination });
   if (error) {
     return;
   }
@@ -203,7 +202,7 @@ const loadChartDataInDuration = async () => {
   const { id } = props.dataSource;
   const startDate = times.value[times.value.length - 1] || props.dataSource.actualStartDate;
   const startTime = dayjs(startDate).format('YYYY-MM-DD HH:mm:ss');
-  const [error, { data }] = await http.get(`${TESTER}/exec/${id}/sample/summary/list`, {
+  const [error, { data }] = await exec.getSampleSummaryList(id, {
     pageNo: 1,
     pageSize: 100,
     filters: [

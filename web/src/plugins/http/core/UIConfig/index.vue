@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent, nextTick, ref, onMounted, watch, inject, computed } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, AsyncComponent } from '@xcan-angus/vue-ui';
-import { utils, http, TESTER } from '@xcan-angus/tools';
-import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { uniq } from 'lodash-es';
+import { Icon, AsyncComponent, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
+import { utils } from '@xcan-angus/tools';
 import qs from 'qs';
-// import { SelectApisByService } from '@xcan-angus/vue-ui';
+import { target } from '@/api/tester';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
@@ -174,7 +172,7 @@ const replaceApiVariable = async (
   //   targetId: id,
   //   targetType: 'API'
   // });
-  const [_error, { data: _data = {} }] = await http.get(`${TESTER}/target/${apisId}/API/parameter/data/value`);
+  const [_error, { data: _data = {} }] = await target.getParamsVariableValue(apisId);
   const variableValues = _data || {};
 
   parameters = JSON.parse(JSON.stringify(parameters || []).replace(variableRegReplace, target => {

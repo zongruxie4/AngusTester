@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 import { DirectoryTree } from 'ant-design-vue';
-import { http, STORAGE } from '@xcan-angus/tools';
 import type { TreeProps } from 'ant-design-vue';
+import { space } from '@/api/storage';
 
 interface Props {
   visible: boolean
@@ -20,7 +20,7 @@ const selectFile = ref();
 // 空间数据
 const spaceData = ref([]);
 const loadSpaceData = async () => {
-  const [error, data] = await http.get(`${STORAGE}/space/search?pageSize=1000&pageNo=1&appCode=AngusTester`);
+  const [error, data] = await space.getSpaceList({ pageSize: 1000, pageNo: 1, appCode: 'AngusTester' });
   if (error) {
     return;
   }
@@ -34,7 +34,7 @@ const loadFile:TreeProps['loadData'] = (node) => {
       return;
     }
     const { spaceId, dirId } = node.dataRef;
-    http.get(`${STORAGE}/space/object/search?spaceId=${spaceId}&parentDirectoryId=${dirId}&pageSize=1000&pageNo=1`)
+    space.getFiles({ spaceId: spaceId, parentDirectoryId: dirId, pageSize: 1000, pageNo: 1 })
       .then(data => {
         const [error, resp] = data;
         if (error) {

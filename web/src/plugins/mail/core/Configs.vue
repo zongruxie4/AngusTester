@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
-import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal } from '@xcan-angus/vue-ui';
-import { Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
+import { utils, TESTER } from '@xcan-angus/tools';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
+import { exec, scenario } from '@/api/tester';
 
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
@@ -309,7 +309,7 @@ const toDebug = async () => {
     scriptType: type
   };
 
-  const [error, { data }] = await http.post(`${TESTER}/exec/debug/scenario/start`, params);
+  const [error, { data }] = await exec.startDebug(params);
   loading.value = false;
   if (error) {
     debugHttpError.value = {
@@ -329,7 +329,7 @@ const toDebug = async () => {
 
 const createTest = async () => {
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/exec/byscript`, {
+  const [error] = await exec.execByScript({
     scriptId: scriptId.value
   });
   loading.value = false;
@@ -639,7 +639,7 @@ const toFollow = async (id: string) => {
   }
 
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/scenario/${id}/follow`);
+  const [error] = await scenario.addFollowScript(id);
   loading.value = false;
   if (error) {
     return;
@@ -657,7 +657,7 @@ const cancelFollow = async (id: string) => {
   }
 
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/scenario/${id}/follow`);
+  const [error] = await scenario.delFollowScenario(id);
   loading.value = false;
   if (error) {
     return;
@@ -685,7 +685,7 @@ const toFavourite = async (id: string) => {
   }
 
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/scenario/${id}/favourite`);
+  const [error] = await scenario.addFavoriteScript(id);
   loading.value = false;
   if (error) {
     return;
@@ -703,7 +703,7 @@ const cancelFavourite = async (id: string) => {
   }
 
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/scenario/${id}/favourite`);
+  const [error] = await scenario.delFavoriteScript(id);
   loading.value = false;
   if (error) {
     return;
@@ -781,7 +781,7 @@ const save = async (data?: {
   };
   loading.value = true;
   if (!params.id) {
-    const [error, res] = await http.post(`${TESTER}/scenario`, params, axiosConfig);
+    const [error, res] = await scenario.addScenario(params, axiosConfig);
     loading.value = false;
     if (error) {
       return error;
@@ -804,7 +804,7 @@ const save = async (data?: {
       props.updateRefreshNotify(utils.uuid());
     }
   } else {
-    const [error] = await http.put(`${TESTER}/scenario`, params, axiosConfig);
+    const [error] = await scenario.putScenario(params, axiosConfig);
     loading.value = false;
     if (error) {
       return error;
@@ -930,7 +930,7 @@ const loadSceneInfo = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, { data }]: [Error, { data: SceneInfo }] = await http.get(`${TESTER}/scenario/${id}`, null, { silence: false });
+  const [error, { data }]: [Error, { data: SceneInfo }] = await scenario.loadInfo(id, { silence: false });
   loading.value = false;
   loaded.value = true;
   if (error || !data) {
@@ -951,7 +951,7 @@ const loadDebugInfo = async () => {
     return;
   }
 
-  const [error, { data }] = await http.get(`${TESTER}/exec/debug/scenario/${id}`);
+  const [error, { data }] = await exec.loadDebugScenarioInfo(id);
   if (error) {
     return;
   }

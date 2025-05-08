@@ -3,8 +3,9 @@ import { computed, ref, onMounted, watch } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, TESTER, http } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/tools';
 import YAML from 'yaml';
+import { script } from '@/api/tester';
 
 type DataItem = {
   id:string;
@@ -55,7 +56,7 @@ const checkChange = (event:{target:{checked:boolean}}, id:string) => {
 const ok = async () => {
   // 查询
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/script/${checkedId.value}`);
+  const [error, { data }] = await script.loadDetail(checkedId.value);
   loading.value = false;
   if (error) {
     return;
