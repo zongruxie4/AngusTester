@@ -2,7 +2,8 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { SceneItem } from '../PropsType';
@@ -101,7 +102,7 @@ const loadData = async () => {
       params.followBy = props.params.followBy;
     }
   }
-  const [error, res] = await http.get(`${TESTER}/scenario/search`, params);
+  const [error, res] = await scenario.loadScenario(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -119,7 +120,7 @@ const deleteHandler = (data: SceneItem) => {
   modal.confirm({
     content: `确定删除场景【${data.name}】吗？`,
     async onOk () {
-      const [error] = await http.del(`${TESTER}/scenario/${data.id}`);
+      const [error] = await scenario.deleteScenario(data.id);
       if (error) {
         return;
       }
@@ -136,7 +137,7 @@ const deleteHandler = (data: SceneItem) => {
 
 const cancelFavourite = async (data: SceneItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/scenario/${data.id}/favourite`);
+  const [error] = await scenario.delFavoriteScript(data.id);
   loading.value = false;
   if (error) {
     return;
@@ -152,7 +153,7 @@ const cancelFavourite = async (data: SceneItem) => {
 
 const cancelFollow = async (data: SceneItem) => {
   loading.value = true;
-  const [error] = await http.del(`${TESTER}/scenario/${data.id}/follow`);
+  const [error] = await scenario.delFollowScenario(data.id);
   loading.value = false;
   if (error) {
     return;

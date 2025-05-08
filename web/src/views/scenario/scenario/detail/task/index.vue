@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import { task } from '@/api/tester';
 
 interface Props {
   scenarioId: string;
@@ -24,7 +24,7 @@ const taskList = ref([]);
 const loadTasks = async () => {
   const { current, pageSize } = pagination.value;
   loading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/task/search`, {
+  const [error, { data }] = await task.loadTaskList({
     projectId: props.projectId,
     taskType: 'SCENARIO_TEST',
     filters: [{ value: props.scenarioId, op: 'EQUAL', key: 'targetId' }],

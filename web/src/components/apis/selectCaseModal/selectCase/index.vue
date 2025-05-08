@@ -2,8 +2,9 @@
 import { onMounted, ref, watch } from 'vue';
 import { DropdownGroup, HttpMethodText, Icon, IconText, Input, Select, Table } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { services, apis } from '@/api/tester';
 
 interface Props {
   visible: boolean;
@@ -58,7 +59,7 @@ const selectService = (id: string) => {
 let allApis = [];
 const currentApiId = ref<string[]>([]);
 const getApiList = async () => {
-  const [error, { data = {} }] = await http.get(`${TESTER}/services/${serviceId.value}/apis`, {
+  const [error, { data = {} }] = await services.loadApisByServicesId(serviceId.value, {
     pageNo: 1,
     pageSize: 2000,
     projectId: props.projectId,
@@ -94,7 +95,7 @@ const apiListSelect = async (apisId) => {
     return;
   }
   tableLoading.value = true;
-  const [error, { data }] = await http.get(`${TESTER}/apis/case/search`, {
+  const [error, { data }] = await apis.loadApiCases({
     pageNo: 1,
     pageSize: 2000,
     apisId,

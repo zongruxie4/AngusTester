@@ -54,4 +54,12 @@ export default class API {
   restartProxy (id: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/agent/restart`);
   }
+
+  loadRunnerProcess (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/info/runner/process`, params, { paramsType: true });
+  }
+
+  killRunnerProcess (params) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/info/runner/process/kill`, params);
+  }
 }

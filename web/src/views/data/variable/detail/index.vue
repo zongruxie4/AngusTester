@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, TESTER } from '@xcan-angus/tools';
+import { clipboard, utils } from '@xcan-angus/tools';
+import { variable } from '@/api/tester';
 
 import { VariableItem } from '../PropsType';
 
@@ -69,7 +70,7 @@ const toDelete = () => {
     content: `确定删除变量【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await http.del(`${TESTER}/variable`, { ids: [id] });
+      const [error] = await variable.delVariables([id]);
       if (error) {
         return;
       }
@@ -96,7 +97,7 @@ const toClone = async () => {
   }
 
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/variable/clone`, [data.id]);
+  const [error] = await variable.cloneVariable([data.id]);
   loading.value = false;
   if (error) {
     return;
@@ -126,7 +127,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/variable/${id}`);
+  const [error, res] = await variable.getVariableInfo(id);
   loading.value = false;
   loaded.value = true;
   if (error) {

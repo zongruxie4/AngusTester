@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Table, Icon, NoData, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { dataSet } from '@/api/tester';
 
 type Props = {
   id: string;
@@ -27,7 +27,7 @@ const refresh = () => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/dataset/${props.id}/target`);
+  const [error, res] = await dataSet.getTarget(props.id);
   loading.value = false;
   loaded.value = true;
   if (error) {

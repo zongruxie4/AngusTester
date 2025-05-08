@@ -2,8 +2,8 @@
 import { Modal } from '@xcan-angus/vue-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
-import { http, TESTER } from '@xcan-angus/tools';
 import { RadioGroup } from 'ant-design-vue';
+import { analysis } from '@/api/tester';
 
 interface Props {
   visible: boolean;
@@ -74,7 +74,7 @@ const burnDownEchartsConfig = {
 };
 
 const loadChartData = async () => {
-  const [error, { data }] = await http.get(`${TESTER}/analysis/func/plan/${props.planId}/burndown`);
+  const [error, { data }] = await analysis.loadFuncPlanBurndown(props.planId);
   if (error) {
     return;
   }

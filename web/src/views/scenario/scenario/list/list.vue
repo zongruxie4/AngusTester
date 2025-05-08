@@ -12,7 +12,7 @@ import {
   notification,
   ScriptTypeTag
 } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 
 import { scenario } from 'src/api/tester';
 import { MenuItem, MenuItemKey, MenuItemPermission, SceneInfo } from './PropsType';
@@ -90,7 +90,7 @@ const mouseenterHandler = async (data: SceneInfo) => {
   const id = data.id;
   const timestamp = permissionMap.value[id] ? 1000 : 300;
   actionTimer = setTimeout(async () => {
-    const [error, { data }] = await http.get(`${TESTER}/scenario/${id}/user/auth/current`);
+    const [error, { data }] = await scenario.loadScenePermissions(id);
     if (error) {
       return;
     }
@@ -141,7 +141,7 @@ const cancelFavourite = async (id: string) => {
 
 const cancelFollow = async (id: string) => {
   loading.value = true;
-  const [error] = await scenario.delFollowScript(id);
+  const [error] = await scenario.delFollowScenario(id);
   loading.value = false;
   if (error) {
     return;
@@ -169,7 +169,7 @@ const deleteScene = ({ name, id }: { name: string; id: string }) => {
     content: `删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【${name}】？`,
     async onOk () {
       loading.value = true;
-      const [error] = await scenario.delScript(id);
+      const [error] = await scenario.deleteScenario(id);
       loading.value = false;
       if (error) {
         return;

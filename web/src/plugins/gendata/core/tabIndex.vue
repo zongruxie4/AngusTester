@@ -2,7 +2,7 @@
 import { ref, watch, nextTick, inject, computed } from 'vue';
 import { PureCard, notification } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { mock } from '@/api/tester';
 
 import { UserInfo } from './PropsType';
 import DataField from './components/DataField.vue';
@@ -90,7 +90,7 @@ const generateScript = async () => {
   validateForm().then(async () => {
     const { configuration, mockData } = await getPackageData();
 
-    const [error, { data }] = await http.post(`${TESTER}/mock/data/script`, { configuration, mockData, plugin: plugin.value, scriptId: scriptId.value, projectId: projectId.value });
+    const [error, { data }] = await mock.mockData({ configuration, mockData, plugin: plugin.value, scriptId: scriptId.value, projectId: projectId.value });
     if (error) {
       return;
     }
@@ -104,7 +104,7 @@ const generatedata = async () => {
   validateForm().then(async () => {
     const { configuration, mockData } = await getPackageData();
 
-    const [error, { data }] = await http.post(`${TESTER}/mock/data/execution`, { configuration, mockData, plugin: plugin.value, scriptId: scriptId.value, projectId: projectId.value });
+    const [error, { data }] = await mock.execMockData({ configuration, mockData, plugin: plugin.value, scriptId: scriptId.value, projectId: projectId.value });
     if (error) {
       return;
     }
@@ -118,7 +118,7 @@ const generatedata = async () => {
 const viewScript = async () => {
   validateForm().then(async () => {
     const { configuration, mockData } = await getPackageData();
-    const [error, { data }] = await http.post(`${TESTER}/mock/data/script/content`, { configuration, mockData, plugin: plugin.value, projectId: projectId.value });
+    const [error, { data }] = await mock.getGenerateScriptContent({ configuration, mockData, plugin: plugin.value, projectId: projectId.value });
     if (error) {
       return;
     }

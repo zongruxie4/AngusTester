@@ -2,7 +2,8 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/tools';
+import { scenario } from '@/api/tester';
 
 import { GroupedKey, SceneInfo } from './PropsType';
 
@@ -151,7 +152,7 @@ const loadData = async (): Promise<void> => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/scenario/search`, params);
+  const [error, res] = await scenario.loadScenario(params);
   loaded.value = true;
   loading.value = false;
   errorMessage.value = undefined;

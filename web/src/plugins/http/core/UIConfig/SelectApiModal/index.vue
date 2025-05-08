@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue';
-import { DropdownGroup, Select, Input, Scroll, IconText, Icon, HttpMethodText, IconRequired, Modal, Tooltip, notification } from '@xcan-angus/vue-ui';
-import { Button, Checkbox } from 'ant-design-vue';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-angus/vue-ui';
+import { Button } from 'ant-design-vue';
+import { TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { SelectApisByService } from '@xcan-angus/vue-ui';
+import { apis, target } from '@/api/tester';
 
 import { ApiInfo } from './PropsType';
 
@@ -103,7 +103,7 @@ const ok = async (key:'link'|'copy') => {
   const ids = checkedApiIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
-    const [error, { data }]:[Error|null, { data: ApiInfo }] = await http.get(`${TESTER}/apis/${id}`, { resolveRefFlag: true }, { silence: false });
+    const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.loadInfo(id, true, { silence: false });
     if (error) {
       coping.value = false;
       linking.value = false;
@@ -115,7 +115,7 @@ const ok = async (key:'link'|'copy') => {
     }
 
     // 查询变量
-    const [_error, { data: _data }] = await http.get(`${TESTER}/target/${id}/API/variable`, { silence: false });
+    const [_error, { data: _data }] = await target.getVariable(id, 'API', { silence: false });
     if (_error) {
       coping.value = false;
       linking.value = false;
@@ -131,7 +131,7 @@ const ok = async (key:'link'|'copy') => {
     });
 
     // 查询数据集
-    const [_error2, { data: _data2 }] = await http.get(`${TESTER}/target/${id}/API/dataset`, { silence: false });
+    const [_error2, { data: _data2 }] = await target.getDataSet(id, 'API', { silence: false });
     if (_error2) {
       coping.value = false;
       linking.value = false;

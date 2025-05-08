@@ -1,4 +1,4 @@
-import {http, TESTER} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl = '';
 export default class API {
@@ -317,14 +317,18 @@ export default class API {
   }
 
   getOpenapi<T> (serviceId: string, params:T):Promise<[Error | null, any]> {
-    return http.get(`${TESTER}/services/${serviceId}/openapi`, params);
+    return http.get(`${baseUrl}/${serviceId}/openapi`, params);
   }
 
   getTestResult (serviceId: string):Promise<[Error | null, any]> {
-    return http.get(`${TESTER}/services/${serviceId}/test/result`);
+    return http.get(`${baseUrl}/${serviceId}/test/result`);
   }
 
   putOpenapi<T> (serviceId: string, params:T):Promise<[Error | null, any]> {
-    return http.put(`${TESTER}/services/${serviceId}/openapi?forced=true&gzipCompression=false`, params);
+    return http.put(`${baseUrl}/${serviceId}/openapi?forced=true&gzipCompression=false`, params);
+  }
+
+  toggleTestEnabled (serviceId: string, enabled: boolean, params, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${serviceId}/test/enabled?enabled=${enabled}`, params, axiosConf);
   }
 }

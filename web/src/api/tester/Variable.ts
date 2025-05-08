@@ -73,4 +73,12 @@ export default class API {
     return http.get(`${baseUrl}/${targetId}/target`);
   }
 
+  cloneVariable (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/clone`, params);
+  }
+
+  previewValue (params, axiosConf): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/value/preview`, params, axiosConf);
+  }
+
 }

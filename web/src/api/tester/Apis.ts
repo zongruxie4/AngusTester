@@ -20,8 +20,8 @@ export default class API {
     return http.del(`${baseUrl}`, params);
   }
 
-  loadInfo (id:string, resolveRefFlag = false): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}`, { resolveRefFlag });
+  loadInfo (id:string, resolveRefFlag = false, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}`, { resolveRefFlag }, axiosConf);
   }
 
   // 添加 socketapi
@@ -167,8 +167,8 @@ export default class API {
   }
 
   // 详情
-  loadCaseInfo (caseId: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/case/${caseId}`);
+  loadCaseInfo (caseId: string, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/case/${caseId}`, null, axiosConf);
   }
 
   // 修改

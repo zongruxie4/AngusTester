@@ -2,8 +2,9 @@
 import { onMounted, ref, watch } from 'vue';
 import { Badge, Calendar } from 'ant-design-vue';
 import { AsyncComponent, Icon, Popover, Select, TestResult } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/tools';
 import { Dayjs } from 'dayjs';
+import { analysis } from '@/api/tester';
 
 import { DataItem } from './PropsTyps';
 
@@ -31,7 +32,7 @@ const loadData = async () => {
     userId: userId.value,
     planId: props.planId
   };
-  const [error, res] = await http.get(`${TESTER}/analysis/func/tester/work/summary`, params);
+  const [error, res] = await analysis.loadFuncTesterWorkSummary(params);
   loaded.value = true;
   if (error) {
     return;

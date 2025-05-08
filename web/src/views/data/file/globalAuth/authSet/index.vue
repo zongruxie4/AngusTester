@@ -2,9 +2,10 @@
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
-import { duration, http, STORAGE } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import elementResizeDetector from 'element-resize-detector';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
+import { space } from '@/api/storage';
 
 import CheckboxGroup from './CheckboxGroup.vue';
 
@@ -56,7 +57,7 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
 
 const switchChange = async (checked: boolean, id: string) => {
   enabledLoadingMap.value[id] = true;
-  const [error] = await http.patch(`${STORAGE}/space/${id}/auth/enabled?enabled=${checked}`);
+  const [error] = await space.updateAuthFlag(id, checked);
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -91,7 +92,7 @@ const checkChange = async (permissions: string[], id: string) => {
   const authId = permissionsMap.value[id]?.id;
   if (!permissions.length) {
     updatingMap[id] = true;
-    const [error] = await http.del(`${STORAGE}/space/auth/${authId}`);
+    const [error] = await space.delAuth(authId);
     updatingMap[id] = false;
     if (error) {
       return;
@@ -103,7 +104,7 @@ const checkChange = async (permissions: string[], id: string) => {
 
   if (authId) {
     updatingMap[id] = true;
-    const [error] = await http.put(`${STORAGE}/space/auth/${authId}`, { permissions });
+    const [error] = await space.putAuth(authId, { permissions });
     updatingMap[id] = false;
     if (error) {
       return;
@@ -116,7 +117,7 @@ const checkChange = async (permissions: string[], id: string) => {
   // 没有进行过授权
   updatingMap[id] = true;
   const params = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
-  const [error, { data = { id: '' } }] = await http.post(`${STORAGE}/space/${id}/auth`, params);
+  const [error, { data = { id: '' } }] = await space.addAuth(id, params);
   updatingMap[id] = false;
   if (error) {
     return;
@@ -146,7 +147,7 @@ const loadAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await http.get(`${STORAGE}/space/auth`, params, axiosConfig);
+  const [error, { data = { list: [] } }] = await space.loadAuthority(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -220,7 +221,7 @@ const loadData = async () => {
 
   const params = getParams();
   loading.value = true;
-  const [error, { data }] = await http.get(`${STORAGE}/space/search`, params, axiosConfig);
+  const [error, { data }] = await space.getSpaceList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;

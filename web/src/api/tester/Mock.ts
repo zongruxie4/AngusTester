@@ -1,4 +1,4 @@
-import {http} from '@xcan-angus/tools';
+import {http, TESTER} from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -203,5 +203,13 @@ export default class API {
 
   importService (formData: FormData): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/service/import`, formData);
+  }
+
+  execMockData (params: {configuration: Record<string, any>; mockData: Record<string, any>, plugin: string, scriptId: string, projectId: string}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/data/execution`, params);
+  }
+
+  getGenerateScriptContent (params: Record<string, any>): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/data/script/content`, params);
   }
 }

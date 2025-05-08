@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { dataSet } from '@/api/tester';
 
 import { formatBytes } from '@/utils/common';
 
@@ -67,7 +67,7 @@ const ok = async () => {
   formData.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
   formData.append('projectId', props.projectId);
   loading.value = true;
-  const [error] = await http.post(`${TESTER}/dataset/import`, formData, { silence: true });
+  const [error] = await dataSet.importDataSet(formData, { silence: true });
   loading.value = false;
   if (error) {
     uploadErrorMsg.value = error.message;

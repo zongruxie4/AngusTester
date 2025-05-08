@@ -4,6 +4,7 @@ import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/tools';
 import { cloneDeep } from 'lodash-es';
+import { services } from '@/api/tester';
 
 type Props = {
   projectId: string;
@@ -179,15 +180,14 @@ const ok = async () => {
   }
 };
 
-const toUpdate = async (id:string) => {
-  await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
-  // const [error] = await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
-  // if (error) {
-  //   return;
-  // }
-
-  // notification.success('更新到已关联接口成功');
-};
+// const toUpdate = async (id:string) => {
+// await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
+// const [error] = await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
+// if (error) {
+//   return;
+// }
+// notification.success('更新到已关联接口成功');
+// };
 
 const okButtonProps = computed(() => {
   return {

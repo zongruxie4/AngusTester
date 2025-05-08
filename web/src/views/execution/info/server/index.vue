@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
+import { exec } from '@/api/tester';
 
 interface Props {
   execId: string
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 const serverList = ref([]);
 
 const loadServers = async () => {
-  const [error, { data = [] }] = await http.get(`${TESTER}/exec/${props.execId}/test/server`);
+  const [error, { data = [] }] = await exec.getTestServer(props.execId);
   if (error) {
     return;
   }

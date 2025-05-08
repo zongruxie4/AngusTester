@@ -12,9 +12,9 @@ import {
   Toggle,
   Validate
 } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
 import { SelectApisByServiceModal } from '@xcan-angus/vue-ui';
+import { variable, apis } from '@/api/tester';
 
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
@@ -92,7 +92,7 @@ const toSelectApi = () => {
 
 const selectApiOk = async (ids: string[]) => {
   selectApiVisible.value = false;
-  const [error, res] = await http.get(`${TESTER}/apis/${ids[0]}?resolveRefFlag=true`);
+  const [error, res] = await apis.loadInfo(ids[0], true);
   if (error) {
     return;
   }
@@ -183,7 +183,7 @@ const ok = async () => {
 const toEdit = async () => {
   const params = getParams();
   confirmLoading.value = true;
-  const [error] = await http.put(`${TESTER}/variable`, params);
+  const [error] = await variable.putVariables(params);
   confirmLoading.value = false;
   if (error) {
     return;
@@ -196,7 +196,7 @@ const toEdit = async () => {
 const toCreate = async () => {
   const params = getParams();
   confirmLoading.value = true;
-  const [error, res] = await http.post(`${TESTER}/variable`, params);
+  const [error, res] = await variable.addVariables(params);
   confirmLoading.value = false;
   if (error) {
     return;

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, inject, watch } from 'vue';
-import { Button, Checkbox, RadioGroup, Radio } from 'ant-design-vue';
-import { http, TESTER, duration } from '@xcan-angus/tools';
+import { Button } from 'ant-design-vue';
+import { TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { TreeSelect, Select, Input, Scroll, IconText, Icon, HttpMethodText, IconRequired, Modal, Tooltip, notification } from '@xcan-angus/vue-ui';
-import { SelectApisCase } from '@xcan-angus/vue-ui';
+import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
+import { target, apis } from '@/api/tester';
 
 import { UseCaseInfo } from './PropsType';
 
@@ -121,7 +121,7 @@ const ok = async (key:'link'|'copy') => {
   const ids = checkedUseCaseIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
-    const [error, { data }]:[Error|null, { data: UseCaseInfo }] = await http.get(`${TESTER}/apis/case/${id}`, null, { silence: false });
+    const [error, { data }]:[Error|null, { data: UseCaseInfo }] = await apis.loadCaseInfo(id, { silence: false });
     if (error) {
       coping.value = false;
       linking.value = false;
@@ -132,7 +132,7 @@ const ok = async (key:'link'|'copy') => {
       data.caseId = id;
     }
     // 查询变量
-    const [_error, { data: _data }] = await http.get(`${TESTER}/target/${apisId.value}/API/variable`, { silence: false });
+    const [_error, { data: _data }] = await target.getVariable(apisId.value, 'API', { silence: false });
     if (_error) {
       coping.value = false;
       linking.value = false;
@@ -148,7 +148,7 @@ const ok = async (key:'link'|'copy') => {
     });
 
     // 查询数据集
-    const [_error2, { data: _data2 }] = await http.get(`${TESTER}/target/${apisId.value}/API/dataset`, { silence: false });
+    const [_error2, { data: _data2 }] = await target.getDataSet(apisId.value, 'API', { silence: false });
     if (_error2) {
       coping.value = false;
       linking.value = false;

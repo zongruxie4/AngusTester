@@ -2,7 +2,8 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumLoader, http } from '@xcan-angus/tools';
+import { TESTER, GM, enumLoader } from '@xcan-angus/tools';
+import { analysis } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -85,7 +86,7 @@ const formData = ref({
 const saving = ref(false);
 
 const loadAnalysisInfo = async (id) => {
-  const [error, { data }] = await http.get(`${TESTER}/analysis/${id}`);
+  const [error, { data }] = await analysis.getAnalysisInfo(id);
   if (error) {
     return;
   }
@@ -152,8 +153,8 @@ const save = async () => {
     const params = getParams();
     saving.value = true;
     const [error] = await (!params.id
-      ? http.post(`${TESTER}/analysis`, { ...params })
-      : http.patch(`${TESTER}/analysis`, {
+      ? analysis.addAnalysis({ ...params })
+      : analysis.updateAnalysis({
         ...params
       }));
     saving.value = false;

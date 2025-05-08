@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Spin } from '@xcan-angus/vue-ui';
-import { http, TESTER } from '@xcan-angus/tools';
+import { variable } from '@/api/tester';
 
 type Props = {
   dataSource: {
@@ -65,7 +65,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/variable/value/preview`, props.dataSource, { silence: true });
+  const [error, res] = await variable.previewValue(props.dataSource, { silence: true });
   loading.value = false;
   if (error) {
     errorMessage.value = error.message;

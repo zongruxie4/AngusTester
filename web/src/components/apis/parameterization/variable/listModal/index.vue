@@ -2,8 +2,9 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Icon, IconCopy, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http, duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { variable } from '@/api/tester';
 
 import { VariableItem } from '../PropsType';
 
@@ -82,7 +83,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/variable/search`, params);
+  const [error, res] = await variable.loadVariablesList(params);
   loaded.value = true;
   loading.value = false;
 
@@ -151,7 +152,7 @@ const loadData = async () => {
 const loadValue = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error, res] = await http.post(`${TESTER}/variable/value/preview`, { id: data.id }, { silence: true });
+  const [error, res] = await variable.previewValue({ id: data.id }, { silence: true });
   loading.value = false;
   if (error) {
     errorMessageMap.value.set(id, error.message);

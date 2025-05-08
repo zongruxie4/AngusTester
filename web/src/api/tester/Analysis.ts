@@ -1,4 +1,4 @@
-import {http} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -25,12 +25,36 @@ export default class API {
   }
 
   loadFuncCaseCount (params) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/func/case/count`, params)
+    return http.get(`${baseUrl}/func/case/count`, params);
+  }
+
+  loadFuncPlanBurndown (planId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/plan/${planId}/burndown`);
+  }
+
+  loadFuncTesterWorkSummary (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/tester/work/summary`, params);
+  }
+
+  loadFuncTesterBurndown (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/tester/burndown`, params);
+  }
+
+  loadFuncTesterProgress (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/tester/progress`, params);
+  }
+
+  loadFuncResourceCount (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/func/resources/count`, params);
   }
 
   // 查询主页统计
   loadScenarioStatistics (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/association/creation`, params);
+  }
+
+  loadScenarioResourceCount (params) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/scenario/resources/count`, params);
   }
 
   loadTaskCount (params): Promise<[Error | null, any]> {

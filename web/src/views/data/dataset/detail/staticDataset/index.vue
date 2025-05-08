@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, IconRequired, Input, notification } from '@xcan-angus/vue-ui';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { http, TESTER } from '@xcan-angus/tools';
+import { dataSet } from '@/api/tester';
 
 import { DataSetItem } from '../../PropsType';
 import { FormState } from './PropsType';
@@ -106,7 +106,7 @@ const ok = async () => {
 const toEdit = async () => {
   const params = getParams();
   confirmLoading.value = true;
-  const [error] = await http.put(`${TESTER}/dataset`, params);
+  const [error] = await dataSet.putDataSet(params);
   confirmLoading.value = false;
   if (error) {
     return;
@@ -119,7 +119,7 @@ const toEdit = async () => {
 const toCreate = async () => {
   const params = getParams();
   confirmLoading.value = true;
-  const [error, res] = await http.post(`${TESTER}/dataset`, params);
+  const [error, res] = await dataSet.addDataSet(params);
   confirmLoading.value = false;
   if (error) {
     return;

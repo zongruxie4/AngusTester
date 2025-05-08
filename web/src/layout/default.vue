@@ -6,8 +6,9 @@ import {
   Breadcrumb, HeaderLogo, HeaderMessage, HeaderNavigator, HeaderPersonalCenter, HeaderSearch, Icon, IconRefresh,
   Image, Input, Notice, notification, Spin
 } from '@xcan-angus/vue-ui';
-import { app, TESTER, duration, http, localStore } from '@xcan-angus/tools';
+import { app, duration, localStore } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
+import { project } from '@/api/tester';
 
 type ProjectInfo = {
   id: string;
@@ -44,7 +45,7 @@ let timer: NodeJS.Timeout;
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await http.get(`${TESTER}/project/user/${userInfo.value?.id}/joined`);
+  const [error, res] = await project.loadMyProject(userInfo.value?.id);
   loading.value = false;
   if (error) {
     return;
@@ -107,7 +108,7 @@ const changeProjectInfo = async (projectId?: string, force = false) => {
     }
   }
 
-  const [error, { data }] = await http.get(`${TESTER}/project/${projectId}`);
+  const [error, { data }] = await project.getProjectDetail(projectId);
   if (error) {
     notification.warning('不存在此项目');
     loadData();

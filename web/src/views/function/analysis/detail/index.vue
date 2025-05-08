@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { TESTER, http, download } from '@xcan-angus/tools';
+import { TESTER, download } from '@xcan-angus/tools';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
 import { TemplateIconConfig } from '@/views/function/analysis/list/PropTypes';
 import { debounce } from 'throttle-debounce';
+import { analysis } from '@/api/tester';
 
 interface Props {
   data?: Record<string, string>;
@@ -41,7 +42,7 @@ const ResourceCreation = defineAsyncComponent(() => import('./resourceCreation/i
 const dataSource = ref({});
 
 const loadAnalysisInfo = async (id) => {
-  const [error, { data }] = await http.get(`${TESTER}/analysis/${id}`);
+  const [error, { data }] = await analysis.getAnalysisInfo(id);
   if (error) {
     return;
   }
