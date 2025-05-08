@@ -207,7 +207,7 @@
     </profile>
     <!-- Deploy only cloud service edition -->
     <profile>
-      <id>edition.cloudService</id>
+      <id>edition.cloud_service</id>
       <properties>
         <editionType>CLOUD_SERVICE</editionType>
       </properties>
