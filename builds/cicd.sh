@@ -136,7 +136,7 @@ deploy_service() {
   scp "builds/set-opts.sh" "${host}:${REMOTE_APP_DIR}/" || {
     echo "ERROR: Failed to copy service files"; exit 1
   }
-  ssh "$host" "cd ${REMOTE_APP_DIR} && sh set-opts.sh ${host} && sh startup-tester.sh" || {
+  ssh "$host" "cd ${REMOTE_APP_DIR} && . ./set-opts.sh ${host} && sh startup-tester.sh" || {
     echo "ERROR: Failed to start service"; exit 1
   }
   sh builds/check-health.sh ${host} || {

@@ -118,7 +118,8 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
     if (isNotEmpty(criteria)) {
       this.setQueryParameter(queryCount, criteria, FuncCaseInfo.class);
     }
-    long count = ((BigInteger) queryCount.getSingleResult()).longValue();
+    Object count0 = queryCount.getSingleResult();
+    long count = count instanceof BigInteger ? ((BigInteger) count).longValue() : (Long) count;
     return new FixedPageImpl<>(groupIds, pageable, count);
   }
 
