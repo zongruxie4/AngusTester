@@ -54,7 +54,7 @@ const loadData = async () => {
   const params = getParams();
   tableLoading.value = true;
 
-  const [error, resp] = await space.getSpaceList({ ...params, appCode: 'AngusTester', adminFlag: true, projectId: projectId.value });
+  const [error, resp] = await space.getSpaceList({ ...params, appCode: 'AngusTester', admin: true, projectId: projectId.value });
   tableLoading.value = false;
   if (error) {
     return;
@@ -76,7 +76,7 @@ const loadData = async () => {
 
 const loadDataAuth = async (list) => {
   const ids = list.map(space => space.id);
-  const [error, res] = await space.getListAuth({ ids, adminFlag: true });
+  const [error, res] = await space.getListAuth({ ids, admin: true });
   if (error) {
     return;
   }

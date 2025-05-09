@@ -173,7 +173,7 @@ const loadPermissions = async (id: string) => {
   }
 
   const params = {
-    adminFlag: true
+    admin: true
   };
   loading.value = true;
   const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);

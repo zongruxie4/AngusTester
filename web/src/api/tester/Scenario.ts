@@ -127,7 +127,7 @@ export default class API {
 
   // 获取场景权限
   loadScenePermissions (id:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/user/auth/current`, { adminFlag: true });
+    return http.get(`${baseUrl}/${id}/user/auth/current`, { admin: true });
   }
 
   // 添加场景

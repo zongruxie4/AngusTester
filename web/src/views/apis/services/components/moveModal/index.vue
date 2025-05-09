@@ -10,7 +10,7 @@ interface Props {
   id: string | undefined;
   parentName: string;//  上级目录名称
   pid: string, // 上级目录id
-  adminFlag?: boolean; // 修复警告Missing required prop: "adminFlag"->adminFlag改为非必传
+  admin?: boolean; // 修复警告Missing required prop: "admin"->adminFlag改为非必传
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   parentName: '',
   pid: '',
-  adminFlag: false,
+  admin: false,
   projectId: undefined
 });
 
@@ -65,7 +65,7 @@ const title = computed(() => {
 
 const params = computed(() => {
   return {
-    adminFlag: props.adminFlag,
+    admin: props.admin,
     hasPermission: 'ADD'
   };
 });

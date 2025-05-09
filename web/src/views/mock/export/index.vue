@@ -65,7 +65,7 @@ const treeProps = ref({
   disabled: !!props.mockService,
   params: {
     // hasPermission: 'EXPORT',
-    adminFlag: true,
+    admin: true,
     projectId: projectId.value
   },
   defaultValue: {
@@ -93,7 +93,7 @@ watch(() => props.visible, (newValue) => {
       disabled: !!props.mockService,
       params: {
         // hasPermission: 'EXPORT',
-        adminFlag: true,
+        admin: true,
         projectId: projectId.value
       },
       defaultValue: {
@@ -110,7 +110,7 @@ watch(() => props.visible, (newValue) => {
       action: `${TESTER}/mock/service/search`,
       params: {
         // hasPermission: 'EXPORT',
-        adminFlag: true,
+        admin: true,
         projectId: projectId.value
       },
       disabled: !!props.mockService,

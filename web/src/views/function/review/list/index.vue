@@ -221,7 +221,7 @@ const loadData = async () => {
 
 const loadPermissions = async (id: string) => {
   const params = {
-    adminFlag: true
+    admin: true
   };
 
   return await func.getCurrentReviewAuthByPlanId(id, params);
@@ -588,7 +588,7 @@ const sortMenuItems: {
                   </Button>
 
                   <Dropdown
-                    :adminFlag="false"
+                    :admin="false"
                     :menuItems="dropdownMenuItems"
                     :permissions="dropdownPermissionsMap.get(item.id)"
                     @click="dropdownClick(item, index, $event.key)">

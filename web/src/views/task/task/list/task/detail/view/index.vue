@@ -462,7 +462,7 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
 const loadPermissions = async (id: string | undefined) => {
   if (!isAdmin.value && id) {
     const params = {
-      adminFlag: true
+      admin: true
     };
 
     const [error, res] = await task.getUserSprintAuth(id, props.userInfo?.id, params);

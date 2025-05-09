@@ -20,8 +20,8 @@ export default class API {
     return http.del(`${baseUrl}`, params);
   }
 
-  loadInfo (id:string, resolveRefFlag = false, axiosConf = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}`, { resolveRefFlag }, axiosConf);
+  loadInfo (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}`, { resolveRef }, axiosConf);
   }
 
   // 添加 socketapi
@@ -145,8 +145,8 @@ export default class API {
   }
 
   // 查看个人权限
-  loadUserAuth (id: string, adminFlag = true): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/user/auth/current`, { adminFlag });
+  loadUserAuth (id: string, admin = true): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/user/auth/current`, { admin });
   }
 
   // 查询

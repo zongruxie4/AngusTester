@@ -657,7 +657,7 @@ const menuItems = [
 
             <Dropdown
               :menuItems="menuItems"
-              :adminFlag="false"
+              :admin="false"
               :permissions="props.permissionsMap[record.id]"
               @click="actionClick($event.key, record)">
               <Button

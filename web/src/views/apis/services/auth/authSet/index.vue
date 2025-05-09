@@ -209,10 +209,10 @@ const getApiParams = (id: string) => {
     pageNo: number;
     pageSize: number;
     hasPermission: string;
-    adminFlag: boolean;
+    admin: boolean;
   } = {
     hasPermission: 'GRANT',
-    adminFlag: true,
+    admin: true,
     pageNo: paginationMap[id].pageNo,
     pageSize: pageSize.value
   };
@@ -397,12 +397,12 @@ const getProjectTreeParams = () => {
     pageSize: number;
     queryHasApisFlag: boolean;
     hasPermission: string;
-    adminFlag: boolean;
+    admin: boolean;
     projectId: string;
     filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
   } = {
     hasPermission: 'GRANT',
-    adminFlag: true,
+    admin: true,
     queryHasApisFlag: true,
     pageNo: pageNo.value,
     pageSize: pageSize.value,

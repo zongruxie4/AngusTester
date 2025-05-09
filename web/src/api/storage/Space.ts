@@ -94,11 +94,11 @@ export default class API {
 
   // 获取单个空间权限
   getAuth ({ id = '' }): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/user/auth/current`, { adminFlag: true });
+    return http.get(`${baseUrl}/${id}/user/auth/current`, { admin: true });
   }
 
   // 获取多个空间权限
-  getListAuth (params: {ids: string[], adminFlag: boolean }): Promise<[Error | null, any]> {
+  getListAuth (params: {ids: string[], admin: boolean }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/auth/current`, params);
   }
 

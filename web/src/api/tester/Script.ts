@@ -13,7 +13,7 @@ export default class API {
 
   // 获取脚本列表操作权限
   loadScriptListAuth (scriptIds:string[]): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/user/auth/current?adminFlag=true`, { scriptIds });
+    return http.get(`${baseUrl}/user/auth/current?admin=true`, { scriptIds });
   }
 
   // 添加
