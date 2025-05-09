@@ -872,7 +872,7 @@ const statusStyleMap = {
               <Icon icon="icon-qingchu" class="mr-1 text-3.5" />删除
             </a>
             <Dropdown
-              :adminFlag="false"
+              :admin="false"
               :menuItems="menus"
               :permissions="record.currentAuthsValue"
               @click="handleClick($event.key, record)">

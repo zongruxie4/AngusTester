@@ -864,7 +864,7 @@ const getPlanAuth = async () => {
   }
   const [error, { data }] = await funcPlan.getCurrentAuth({
     ids: planIds,
-    adminFlag: true
+    admin: true
   });
   if (error) {
     return;

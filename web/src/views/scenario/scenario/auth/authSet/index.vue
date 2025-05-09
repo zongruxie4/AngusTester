@@ -193,14 +193,14 @@ const getParams = () => {
     pageSize: number;
     projectId: string;
     hasPermission: string;
-    adminFlag: boolean;
+    admin: boolean;
     filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
   } = {
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     projectId: props.projectId,
     hasPermission: 'GRANT',
-    adminFlag: true
+    admin: true
   };
 
   if (searchInputValue.value) {

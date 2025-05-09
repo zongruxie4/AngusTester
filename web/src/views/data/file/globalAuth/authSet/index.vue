@@ -189,12 +189,12 @@ const getParams = () => {
     pageSize: number;
     appCode:'AngusTester',
     hasPermission: string;
-    adminFlag:boolean;
+    admin:boolean;
     filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
     projectId: string;
   } = {
     hasPermission: 'GRANT',
-    adminFlag: true,
+    admin: true,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     appCode: 'AngusTester',

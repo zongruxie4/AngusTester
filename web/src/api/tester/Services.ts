@@ -261,8 +261,8 @@ export default class API {
   }
 
   // 获取服务权限信息
-  getCurrentAuth (id: string, adminFlag = true): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/user/auth/current`, { adminFlag });
+  getCurrentAuth (id: string, admin = true): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/user/auth/current`, { admin });
   }
 
   // 导入服务样例 TODO 功能已删除

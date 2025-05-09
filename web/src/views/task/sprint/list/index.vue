@@ -346,7 +346,7 @@ const loadData = async () => {
 
 const loadPermissions = async (id: string) => {
   const params = {
-    adminFlag: true
+    admin: true
   };
 
   return await task.getCurrentUserSprintAuth(id, params);
@@ -770,7 +770,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </Button>
 
                   <Dropdown
-                    :adminFlag="false"
+                    :admin="false"
                     :menuItems="getDropdownMenuItems(item)"
                     :permissions="dropdownPermissionsMap.get(item.id)"
                     @click="dropdownClick(item, index, $event.key)">

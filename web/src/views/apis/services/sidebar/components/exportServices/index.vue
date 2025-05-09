@@ -69,7 +69,7 @@ const total = ref(0);
 // 初始化项目服务
 const loadService = async () => {
   loading.value = true;
-  const _params = props.type === 'SERVICE' ? { ...params.value, exportFlag: true, adminFlag: true } : { ...params.value, exportFlag: true };
+  const _params = props.type === 'SERVICE' ? { ...params.value, exportFlag: true, admin: true } : { ...params.value, exportFlag: true };
   const [error, { data }] = await services.loadList({ ..._params, projectId: projectInfo.value.id });
   loading.value = false;
   if (error) { return; }
@@ -278,7 +278,7 @@ const handleCancel = () => {
 let treeProps = {
   params: {
     hasPermission: 'EXPORT',
-    adminFlag: true
+    admin: true
   },
   defaultValue: {
     name: props.selectedNode?.name,
@@ -317,7 +317,7 @@ watch(() => props.visible, (newValue) => {
   treeProps = {
     params: {
       hasPermission: 'EXPORT',
-      adminFlag: true
+      admin: true
     },
     defaultValue: {
       name: props.selectedNode?.name,

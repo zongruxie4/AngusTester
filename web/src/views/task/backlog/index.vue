@@ -891,7 +891,7 @@ const loadBacklogList = async (pageNo: number) => {
 
 const loadPermissions = async (id: string) => {
   const params = {
-    adminFlag: true
+    admin: true
   };
 
   return await task.getUserSprintAuth(id, props.userInfo?.id, params);

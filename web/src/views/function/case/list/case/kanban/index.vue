@@ -217,7 +217,7 @@ const loadData = async () => {
   if (!isAdmin.value) {
     const [error, { data }] = await funcPlan.getCurrentAuth({
       ids: sprintIds,
-      adminFlag: true
+      admin: true
     });
     if (error) {
       return;
