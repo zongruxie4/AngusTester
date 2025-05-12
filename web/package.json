@@ -40,6 +40,7 @@
     "@xcan-angus/postman-to-openapi": "^1.0.0",
     "@xcan-angus/quill": "^2.0.3",
     "@xcan-angus/rapidoc": "^1.0.0",
+    "@xcan-angus/rapipdf": "^1.0.0",
     "@xcan-angus/tools": "^1.0.0",
     "@xcan-angus/vue-ui": "^1.0.0",
     "ajv": "^8.12.0",

@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { Colon, Modal, Spin } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER, download, site, cookie, http } from '@xcan-angus/tools';
-// import { createPdf } from '@xcan/rapipdf';
+import { createPdf } from '@xcan-angus/rapipdf';
 
 interface Props {
   visible: boolean;
@@ -46,7 +46,7 @@ const handleOk = async () => {
     let apiUrl = '';
     if (props.type === 'API') {
       apiUrl = `${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`;
-      // createPdf(apiUrl);
+      createPdf(apiUrl);
     } else {
       exportLoading.value = true;
       // services/export?exportScope=SERVICE&serviceIds=${props.serviceId}&format=yaml&access_token=${accessToken}&gzipCompression=false
@@ -61,7 +61,7 @@ const handleOk = async () => {
       if (error) {
         return;
       }
-      // createPdf(res.data);
+      createPdf(res.data);
     }
     handleCancel();
     return;

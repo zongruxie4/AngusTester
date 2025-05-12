@@ -53,13 +53,4 @@ export default class API {
   addGroups (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${appId}/group/policy/auth`, params);
   }
-
-  getAppFunc (params): Promise<[Error | null, any]> {
-    const { appId, ...param } = params;
-    return http.get(`${baseUrl}/${appId}/func/policy/tree`, param);
-  }
-
-  updateAppSite (params:{id:string, icon?:string, showName?:string, url?:string}): Promise<[Error|null, any]> {
-    return http.patch(`${baseUrl}/site`, params);
-  }
 }
