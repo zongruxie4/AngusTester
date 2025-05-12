@@ -5,6 +5,7 @@ import static cloud.xcan.angus.api.commonlink.EventUtils.assembleAngusTesterUser
 import static cloud.xcan.angus.api.commonlink.TesterConstant.DEFAULT_DAILY_WORKLOAD;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.assembleCaseTesterCount;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.assembleCaseTesterProgressCount;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.assembleTimeSeriesByFormat;
@@ -484,7 +485,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
       @Override
       protected void checkParams() {
         projectId = CriteriaUtils.findFirstValue(criteria, "projectId");
-        ProtocolAssert.assertTrue(nonNull(projectId), "Parameter projectId is required");
+        assertTrue(nonNull(projectId), "Parameter projectId is required");
       }
 
       @Override
@@ -1633,7 +1634,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   public void checkCanReview(List<FuncCase> cases) {
     if (isNotEmpty(cases)) {
       for (FuncCase case0 : cases) {
-        ProtocolAssert.assertTrue(case0.canReview(), CASE_CAN_NOT_REVIEWED_T,
+        assertTrue(case0.canReview(), CASE_CAN_NOT_REVIEWED_T,
             new Object[]{case0.getName(), case0.getReviewStatus()});
       }
     }
@@ -1646,7 +1647,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   public void checkInfoCanReview(List<FuncCaseInfo> cases) {
     if (isNotEmpty(cases)) {
       for (FuncCaseInfo case0 : cases) {
-        ProtocolAssert.assertTrue(case0.canReview(), CASE_CAN_NOT_REVIEWED_T,
+        assertTrue(case0.canReview(), CASE_CAN_NOT_REVIEWED_T,
             new Object[]{case0.getName(), case0.getReviewStatus()});
       }
     }

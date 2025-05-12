@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.scenario.impl;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_SCE_MONITOR_HISTORY_NUM;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorHistoryConverter.assembleScenarioMonitorResultInfo;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitorHistoryConverter.readExecutionLogFromRemote;
+import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
@@ -35,34 +36,29 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
   @Transactional(rollbackOn = Exception.class)
   @Override
   public ScenarioMonitorHistory run(ScenarioMonitor monitor) {
-    return new BizTemplate<ScenarioMonitorHistory>() {
-
-      @Override
-      protected ScenarioMonitorHistory process() {
-        ScenarioMonitorHistory history = new ScenarioMonitorHistory();
-        history.setProjectId(monitor.getProjectId()).setMonitorId(monitor.getId());
-        try {
-          ExecDebug result = execDebugCmd.startByMonitor(true, null, monitor.getId(),
-              monitor.getScenarioId(), monitor.getScriptId(), ScriptType.TEST_FUNCTIONALITY,
-              null, new Arguments(), monitor.getServerSetting());
-          assembleScenarioMonitorResultInfo(history, result);
-          try {
-            readExecutionLogFromRemote(result, history);
-          } catch (Throwable e) {
-            log.warn("Exception in querying scenario monitoring execution logs: {}",
-                e.getMessage());
-          }
-        } catch (Exception e) {
-          history.setStatus(ScenarioMonitorStatus.FAILURE)
-              .setFailureMessage("Execution scenario monitoring exception: " + e.getMessage());
-        }
-        insert0(history);
-
-        // Maximum retention of historical records
-        scenarioMonitorHistoryRepo.deleteHistory(monitor.getId(), MAX_SCE_MONITOR_HISTORY_NUM);
-        return history;
+    ScenarioMonitorHistory history = new ScenarioMonitorHistory();
+    history.setProjectId(monitor.getProjectId())
+        .setMonitorId(monitor.getId()).setCreatedBy(getUserId());;
+    try {
+      ExecDebug result = execDebugCmd.startByMonitor(true, null, monitor.getId(),
+          monitor.getScenarioId(), monitor.getScriptId(), ScriptType.TEST_FUNCTIONALITY,
+          null, new Arguments(), monitor.getServerSetting());
+      assembleScenarioMonitorResultInfo(history, result);
+      try {
+        readExecutionLogFromRemote(result, history);
+      } catch (Throwable e) {
+        log.warn("Exception in querying scenario monitoring execution logs: {}",
+            e.getMessage());
       }
-    }.execute();
+    } catch (Exception e) {
+      history.setStatus(ScenarioMonitorStatus.FAILURE)
+          .setFailureMessage("Execution scenario monitoring exception: " + e.getMessage());
+    }
+    insert0(history);
+
+    // Maximum retention of historical records
+    scenarioMonitorHistoryRepo.deleteHistory(monitor.getId(), MAX_SCE_MONITOR_HISTORY_NUM);
+    return history;
   }
 
   @Override
