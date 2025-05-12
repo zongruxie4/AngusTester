@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { http } from '@xcan-angus/tools';
+import { http, PUB_TESTER } from '@xcan-angus/tools';
 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
 
@@ -33,7 +33,7 @@ const execLogPath = ref('');
 const execLogErr = ref(false);
 const errorText = ref();
 const loadExecLog = async () => {
-  const url = `/altester/pubapi/v1/proxy/actuator/runner/log/${props.execInfo?.id}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
+  const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execInfo?.id}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
   const [error, res] = await http.get(url, null, { timeout: 0 });
   if (error) {
     execLogErr.value = true;

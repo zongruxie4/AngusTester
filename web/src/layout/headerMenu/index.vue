@@ -10,7 +10,7 @@ import { Icon } from '@xcan-angus/vue-ui';
 type Tag = 'DYNAMIC_POSITION' | 'TOP_NAVIGATION' | 'FIXED_POSITION' | 'HEADER_MENU_POPOVER'
 
 interface IMenu {
-  hasAuthFlag: boolean;
+  hasAuth: boolean;
   tags: Tag[];
   authCtrlFlag: boolean;
   code: string;

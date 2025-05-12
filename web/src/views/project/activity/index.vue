@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/tools';
 import DOMPurify from 'dompurify';
 
 import { activity } from 'src/api/tester';
@@ -172,7 +172,7 @@ const columns = [
       :visible="showCount"
       barTitle="活动"
       resource="Activity"
-      geteway="altester" />
+      :geteway="TESTER" />
     <Hints class="mb-2" :text="`每个资源只保存最近${maxResource}条活动，超过${maxResource}条时将自动被删除。`" />
     <SearchPanel
       :loading="loading"

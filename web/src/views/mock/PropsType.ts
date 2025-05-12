@@ -19,7 +19,7 @@ export type MockServiceObj = {
   serviceDomainUrl: string;
   serviceHostUrl: string;
   authFlag: boolean;
-  hasAuthFlag: boolean;
+  hasAuth: boolean;
   assocProjectFlag: boolean;
   tenantId: string;
   createdBy: string;

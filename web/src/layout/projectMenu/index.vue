@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 type IMenu = {
-  hasAuthFlag: boolean;
+  hasAuth: boolean;
   tags: string[];
   authCtrlFlag: boolean;
   code: string;

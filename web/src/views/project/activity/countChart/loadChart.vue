@@ -162,7 +162,7 @@ const loadCount = async () => {
     }
   });
 
-  const [error, { data }] = await http.get(`/${props.geteway}/api/v1/analysis/customization/summary`, params);
+  const [error, { data }] = await http.get(`${props.geteway}/analysis/customization/summary`, params);
   pieloading.value = false;
   if (error) {
     return;
@@ -309,7 +309,7 @@ const loadDateCount = async () => {
       item.key = 'opt_date';
     }
   });
-  const [error, { data }] = await http.get(`/${props.geteway}/api/v1/analysis/customization/summary`, params);
+  const [error, { data }] = await http.get(`${props.geteway}/analysis/customization/summary`, params);
   barLoading.value = false;
   if (error) {
     return;

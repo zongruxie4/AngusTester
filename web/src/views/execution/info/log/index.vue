@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { Arrow, Colon, Icon, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { http } from '@xcan-angus/tools';
+import { http, PUB_TESTER } from '@xcan-angus/tools';
 
 interface Props {
   execId: string;
@@ -34,7 +34,7 @@ const execLogErr = ref(false);
 const errorText = ref();
 const loadExecLog = async () => {
   emit('update:loading', true);
-  const url = `/altester/pubapi/v1/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
+  const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
   const [error, res] = await http.get(url, {}, { timeout: 0 });
   emit('update:loading', false);
   if (error) {

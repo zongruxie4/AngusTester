@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { Colon, NoData, IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { http } from '@xcan-angus/tools';
+import { http, PUB_TESTER } from '@xcan-angus/tools';
 
 interface Props {
   execId:string;
@@ -30,7 +30,7 @@ const errorText = ref();
 
 const loading = ref(!!props.execNode?.id);
 const loadExecLog = async () => {
-  const url = `/altester/pubapi/v1/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
+  const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
   loading.value = true;
   const [error, res] = await http.get(url, {}, { timeout: 0 });
   loading.value = false;
