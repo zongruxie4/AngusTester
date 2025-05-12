@@ -48,7 +48,6 @@ import cloud.xcan.angus.agent.message.CheckPortVo;
 import cloud.xcan.angus.agent.message.CheckStatusDto;
 import cloud.xcan.angus.agent.message.runner.RunnerKillDto;
 import cloud.xcan.angus.agent.message.runner.RunnerQueryVo;
-import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -72,7 +71,6 @@ import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remoting.common.ClientRole;
 import cloud.xcan.angus.remoting.common.MessageService;
 import cloud.xcan.angus.remoting.common.message.BusinessMessage;
@@ -84,7 +82,6 @@ import cloud.xcan.angus.spec.http.HttpSender;
 import cloud.xcan.angus.spec.http.HttpSender.Request.Builder;
 import cloud.xcan.angus.spec.http.HttpSender.Response;
 import cloud.xcan.angus.spec.http.HttpUrlConnectionSender;
-import cloud.xcan.angus.spec.principal.Principal;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
 import cloud.xcan.angus.spec.unit.DataSize;
 import cloud.xcan.angus.spec.unit.RateValue;
@@ -96,7 +93,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -392,7 +388,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   @Override
   public List<NodeInfo> selectWithFree(Long execId, Integer num, Set<Long> availableNodeIds) {
     int nodeNum = nullSafe(num, 1);
-    List<Node> nodes = getNodes(availableNodeIds, EXECUTION, true,
+    List<Node> nodes = nodeQuery.getNodes(availableNodeIds, EXECUTION, true,
         QUERY_MAX_FREE_EXEC_NODES, OWNER_TENANT_ID /*Fix: getOptTenantId()*/);
     assertTrue(isNotEmpty(nodes), message(EXEC_NO_FREE_NODES));
     Set<Long> freeNodeIds = nodes.stream()
@@ -536,51 +532,30 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
 
   @Override
   public Map<Long, Node> getNodeMap(Set<Long> nodeIds, boolean trial) {
-    List<Node> nodes = getNodes(nodeIds, null, null,
+    List<Node> nodes = nodeQuery.getNodes(nodeIds, null, null,
         QUERY_MAX_EXEC_NODES, trial ? OWNER_TENANT_ID : getOptTenantId());
     return isEmpty(nodes) ? null : nodes.stream().collect(toMap(Node::getId, x -> x));
   }
 
   @Override
   public List<Node> getValidExecNodeVoMap(Set<Long> nodeIds, int size, Long tenantId) {
-    List<Node> nodes = getNodes(nodeIds, EXECUTION, true, size, tenantId);
+    List<Node> nodes = nodeQuery.getNodes(nodeIds, EXECUTION, true, size, tenantId);
     if (isNotEmpty(nodes)) {
-      Set<Long> onlineIds = getLiveNodeIds(nodes.stream().map(Node::getId).collect(
-          Collectors.toSet()));
+      Set<Long> onlineIds = getLiveNodeIds(nodes.stream().map(Node::getId)
+          .collect(Collectors.toSet()));
       return isEmpty(nodes) ? null : nodes.stream()
           .filter(x -> onlineIds.contains(x.getId())).collect(Collectors.toList());
     }
     return null;
   }
 
+  /**
+   * The controller role nodes only belongs to the deployment tenant.
+   */
   @Override
   public Map<String, List<Node>> getValidCtrlIpNodeVoMap() {
-    Principal principal = PrincipalContext.get();
-    Long optTenantId = principal.getOptTenantId();
-    principal.setOptTenantId(OWNER_TENANT_ID);
-    List<Node> nodes = getNodes(null, CONTROLLER, true,
-        QUERY_MAX_EXEC_NODES, OWNER_TENANT_ID
-        /*The controller only belongs to the deployment tenant*/);
-    principal.setOptTenantId(optTenantId);
-    return isEmpty(nodes) ? null : nodes.stream()
-        .collect(groupingBy(Node::getIp /*Internal IPv4*/));
-  }
-
-  @Override
-  public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
-      int size, Long tenantId) {
-    Set<SearchCriteria> filters = new HashSet<>();
-    filters.add(SearchCriteria.equal("tenantId", tenantId));
-    if (isNotEmpty(nodeIds)) {
-      filters.add(SearchCriteria.in("id", nodeIds));
-    }
-    if (nonNull(role)) {
-      filters.add(SearchCriteria.equal("role", role));
-    }
-    if (nonNull(enabled)) {
-      filters.add(SearchCriteria.equal("enabled", enabled));
-    }
-    return nodeQuery.findByFilters(filters);
+    List<Node> nodes = nodeQuery.getNodes(null, CONTROLLER, true, QUERY_MAX_EXEC_NODES, null);
+    return isEmpty(nodes) ? null : nodes.stream().collect(groupingBy(Node::getIp));
   }
 
   @Override
@@ -614,7 +589,6 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
     ChannelRouter router = remotingServer.getRouterManager()
         .lookup(String.valueOf(tenantId), String.valueOf(nodeId), MessageService.Agent,
             ClientRole.HANDLE_TASK);
-    ;
     return nonNull(router) && nonNull(router.getChannel()) ? router : null;
   }
 

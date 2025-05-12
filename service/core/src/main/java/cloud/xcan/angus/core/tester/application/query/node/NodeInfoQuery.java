@@ -52,9 +52,6 @@ public interface NodeInfoQuery {
   List<NodeInfo> selectByStrategy(Long execId, Integer num, Set<Long> availableNodeIds,
       Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy);
 
-  List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
-      int size, Long tenantId);
-
   NodeInfo checkAndFind(Long id);
 
   List<NodeInfo> checkAndFind(Collection<Long> ids);

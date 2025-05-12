@@ -30,6 +30,9 @@ public interface NodeQuery {
 
   Map<Long, Node> findNodeMap(Collection<Long> ids);
 
+  List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
+      int size, Long tenantId);
+
   Node checkAndFind(Long id);
 
   List<Node> checkAndFind(Collection<Long> ids);
@@ -47,6 +50,8 @@ public interface NodeQuery {
   void checkOrderPurchasedExisted(Long orderId);
 
   void checkNodeAgentAvailable(Long nodeId);
+
+  Map<Long, Set<NodeRole>> getNodeRoles(List<Long> nodeIds);
 
   void setNodeRoles(List<Node> nodes);
 

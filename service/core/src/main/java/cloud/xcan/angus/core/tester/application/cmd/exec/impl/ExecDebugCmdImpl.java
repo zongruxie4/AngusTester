@@ -37,16 +37,17 @@ import cloud.xcan.angus.core.tester.application.cmd.exec.ExecDebugCmd;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecDebugQuery;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
+import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebug;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebugRepo;
 import cloud.xcan.angus.core.tester.domain.exec.debug.ExecDebugSource;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
+import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContentRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCauseRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleRepo;
-import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.debug.ExecDebugStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.debug.ExecDebugDetailVo;
 import cloud.xcan.angus.model.element.http.Http;
@@ -94,6 +95,9 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
   @Resource
   private ExecQuery execQuery;
+
+  @Resource
+  private NodeQuery nodeQuery;
 
   @Resource
   private NodeInfoQuery nodeInfoQuery;
@@ -415,8 +419,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   }
 
   private void setExecNodeInfo(Long nodeId, ExecDebug debugDb) {
-    List<Node> nodes = nodeInfoQuery.getNodes(Set.of(nodeId),
-        null, null, 1, debugDb.getTenantId());
+    List<Node> nodes = nodeQuery.getNodes(Set.of(nodeId), null, null, 1, debugDb.getTenantId());
     if (isNotEmpty(nodes)) {
       debugDb.setExecNode(toExecNodeInfo(nodes.get(0)));
     }

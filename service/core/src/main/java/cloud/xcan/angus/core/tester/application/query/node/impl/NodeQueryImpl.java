@@ -17,7 +17,6 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHAS
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.NODE_PURCHASE_UPDATE_ERROR_T;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isPrivateEdition;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantClient;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
@@ -40,7 +39,6 @@ import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
 import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
-import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRoleRepo;
 import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.result.command.SimpleCommandResult;
@@ -50,6 +48,7 @@ import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,23 +86,9 @@ public class NodeQueryImpl implements NodeQuery {
       @Override
       protected Node process() {
         Node node = nodeRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Node"));
-        assertResourceNotFound(
-            node.isFreeNode() || node.getTenantId().equals(getOptTenantId()), id, "node");
-
+        assertResourceNotFound(node.isFreeNode()
+            || node.getTenantId().equals(getOptTenantId()), id, "node");
         setNodeRoles(List.of(node));
-
-        if (node.getInstallAgent() == null || !node.getInstallAgent()) {
-          try {
-            NodeInfo nodeInfo = nodeInfoQuery.detail(id, node.isFreeNode());
-            if (nodeInfo != null && nodeInfo.getAgentInstalled()) {
-              // The agent is installed, possibly manually offline
-              node.setInstallAgent(true);
-              nodeRepo.save(node);
-            }
-          } catch (Exception e) {
-            // NOOP
-          }
-        }
         return node;
       }
     }.execute();
@@ -182,6 +167,27 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public Map<Long, Node> findNodeMap(Collection<Long> ids) {
     return nodeRepo.findAllById(ids).stream().collect(Collectors.toMap(Node::getId, x -> x));
+  }
+
+  @Override
+  public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
+      int size, Long tenantId) {
+    Set<SearchCriteria> filters = new HashSet<>();
+    filters.add(SearchCriteria.equal("tenantId", tenantId));
+    if (isNotEmpty(nodeIds)) {
+      filters.add(SearchCriteria.in("id", nodeIds));
+    }
+    if (nonNull(enabled)) {
+      filters.add(SearchCriteria.equal("enabled", enabled));
+    }
+    List<Node> nodes = findByFilters(filters);
+    if (nonNull(role) && isNotEmpty(nodes)) {
+      Map<Long, Set<NodeRole>> nodeRoles = getNodeRoles(nodes.stream().map(Node::getId).toList());
+      nodes = nodes.stream()
+          .filter(x -> nodeRoles.containsKey(x.getId()) && nodeRoles.get(x.getId()).contains(role))
+          .toList();
+    }
+    return size > 0 ? nodes.subList(0, Math.min(size, nodes.size())) : nodes;
   }
 
   @Override
@@ -271,12 +277,17 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   @Override
-  public void setNodeRoles(List<Node> nodes) {
-    List<Long> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
-    Map<Long, Set<NodeRole>> rolesMap = nodeRoleRepo.findByNodeIdIn(nodeIds).stream()
+  public Map<Long, Set<NodeRole>> getNodeRoles(List<Long> nodeIds) {
+    return nodeRoleRepo.findByNodeIdIn(nodeIds).stream()
         .collect(Collectors.groupingBy(
             cloud.xcan.angus.core.tester.domain.node.role.NodeRole::getNodeId,
             Collectors.mapping(x -> NodeRole.valueOf(x.getRole()), Collectors.toSet())));
+  }
+
+  @Override
+  public void setNodeRoles(List<Node> nodes) {
+    List<Long> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
+    Map<Long, Set<NodeRole>> rolesMap = getNodeRoles(nodeIds);
     if (isNotEmpty(rolesMap)) {
       for (Node node0 : nodes) {
         node0.setRoles(rolesMap.get(node0.getId()));
@@ -285,7 +296,8 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   private Long getTenantId(GenericSpecification<Node> spec) {
-    Object tenantId = PrincipalContextUtils.isInnerApi() ? findFirstValue(spec.getCriteria(), "tenantId") : null;
+    Object tenantId =
+        PrincipalContextUtils.isInnerApi() ? findFirstValue(spec.getCriteria(), "tenantId") : null;
     return nonNull(tenantId) ? Long.valueOf(tenantId.toString()) : getOptTenantId();
   }
 }

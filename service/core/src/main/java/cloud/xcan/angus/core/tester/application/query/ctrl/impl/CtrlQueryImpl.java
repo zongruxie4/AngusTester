@@ -21,6 +21,7 @@ import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.ctrl.CtrlQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
+import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -54,7 +55,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 public class CtrlQueryImpl implements CtrlQuery {
 
   @Resource
-  private NodeInfoQuery nodeInfoQuery;
+  private NodeQuery nodeQuery;
 
   @Resource
   private DiscoveryClient discoveryClient;
@@ -80,7 +81,7 @@ public class CtrlQueryImpl implements CtrlQuery {
         DiscoveryNodeVo discoveryNodeVo = new DiscoveryNodeVo();
         Long tenantId = getOptTenantId();
 
-        List<Node> nodes = nodeInfoQuery.getNodes(null, NodeRole.CONTROLLER,
+        List<Node> nodes = nodeQuery.getNodes(null, NodeRole.CONTROLLER,
             true, QUERY_MAX_EXEC_NODES, isPrivateEdition() ? tenantId : OWNER_TENANT_ID);
         if (isEmpty(nodes)) {
           log.error("Fatal: No controller nodes found, edition={}, tenantId={}, dto={}",
@@ -92,8 +93,7 @@ public class CtrlQueryImpl implements CtrlQuery {
 
         List<ServiceInstance> upInstances = discoveryClient.getInstances(appInfo.getArtifactId());
         if (isEmpty(upInstances)) {
-          log.error("Fatal: No controller instance in up state, tenantId={}, dto={}", tenantId,
-              dto);
+          log.error("Fatal: No controller instance in up state, tenantId={}, dto={}", tenantId, dto);
           discoveryNodeVo.setFailed("Fatal: No controller instance in up state");
           return discoveryNodeVo;
         }
