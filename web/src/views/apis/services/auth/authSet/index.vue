@@ -5,7 +5,7 @@ import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
 import { duration } from '@xcan-angus/tools';
 import { Arrow, IconText, Input, NoData, Spin } from '@xcan-angus/vue-ui';
-import { apis, services } from '@/api/altester';
+import { apis, services } from '@/api/tester';
 
 import CheckboxGroup from './checkboxGroup.vue';
 

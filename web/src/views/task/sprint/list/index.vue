@@ -17,7 +17,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { utils, TESTER, download } from '@xcan-angus/tools';
 import ProcessPng from './images/process.png';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 import { SprintInfo } from '../PropsType';
 import SearchPanel from '@/views/task/sprint/list/searchPanel/index.vue';

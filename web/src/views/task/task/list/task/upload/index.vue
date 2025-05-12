@@ -4,7 +4,7 @@ import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { TESTER, enumLoader } from '@xcan-angus/tools';
 import { formatBytes } from '@/utils/common';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 export interface Props{
   visible: boolean;

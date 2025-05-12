@@ -5,7 +5,7 @@ import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
 import { slocalStore } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 

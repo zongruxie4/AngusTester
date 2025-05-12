@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';

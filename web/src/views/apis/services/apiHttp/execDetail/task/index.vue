@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 interface Props {
   apisId: string;

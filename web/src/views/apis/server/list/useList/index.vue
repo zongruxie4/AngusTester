@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { target, variable } from '@/api/altester';
+import { target, variable } from '@/api/tester';
 
 import { SourceItem } from '../../PropsType';
 

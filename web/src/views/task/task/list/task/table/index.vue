@@ -13,7 +13,7 @@ import {
   TaskStatus
 } from '@xcan-angus/vue-ui';
 import { clipboard } from '@xcan-angus/tools';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';

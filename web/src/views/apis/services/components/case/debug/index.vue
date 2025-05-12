@@ -10,7 +10,7 @@ import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
 import { AuthUtils as authUtils } from '@xcan-angus/vue-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import {
   ApiInfo,

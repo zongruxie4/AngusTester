@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER, download } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { modules, task } from '@/api/altester';
+import { modules, task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../PropsType';

@@ -2,7 +2,7 @@
 import { onMounted, ref, defineAsyncComponent, computed, inject, Ref } from 'vue';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { NoData } from '@xcan-angus/vue-ui';
-import { exec } from '@/api/alctrl';
+import { exec } from '@/api/ctrl';
 
 interface Props {
   apisId: string;

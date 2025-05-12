@@ -4,7 +4,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, utils } from '@xcan-angus/tools';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 type Props = {
   projectId: string;

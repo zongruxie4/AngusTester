@@ -5,7 +5,7 @@ import { SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
 import qs from 'qs';
-import { services } from '@/api/altester';
+import { services } from '@/api/tester';
 
 interface Props {
   visible: boolean;

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed, defineAsyncComponent } from 'vue';
 import { Hints } from '@xcan-angus/vue-ui';
-import { services } from '@/api/altester';
+import { services } from '@/api/tester';
 
 interface Props {
   serviceId: string;

@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { clipboard, utils } from '@xcan-angus/tools';
-import { services } from '@/api/altester';
+import { services } from '@/api/tester';
 
 import { ServerConfig } from './PropsType';
 

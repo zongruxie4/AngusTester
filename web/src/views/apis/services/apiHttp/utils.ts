@@ -5,7 +5,7 @@ import { getBodyDefaultItem, getDefaultParams, ParamsItem } from './interface';
 import { mock } from 'src/api/tester';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { uniq } from 'lodash-es';
-import { target } from '@/api/altester';
+import { target } from '@/api/tester';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 const ajv = new Ajv();

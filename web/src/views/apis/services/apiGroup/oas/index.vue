@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { http, utils, TESTER } from '@xcan-angus/tools';
 import { Spin } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
-import { services } from "@/api/altester";
+import { services } from "@/api/tester";
 import { ComponentsKey, OpenApiInfo, PathItemInfo } from './PropsType';
 import { getArraySchema, getObjectShcema } from './utils';
 interface Props {

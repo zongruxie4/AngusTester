@@ -3,7 +3,7 @@ import { onMounted, ref, watch, computed, nextTick } from 'vue';
 import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
 import { site, clipboard, TESTER, enumLoader } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 interface Props {
   visible: boolean;

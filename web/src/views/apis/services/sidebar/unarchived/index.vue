@@ -3,7 +3,7 @@ import { computed, inject, ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import { UnarchivedItem } from './PropsType';
 

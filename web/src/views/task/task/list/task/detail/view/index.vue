@@ -5,7 +5,7 @@ import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { clipboard, http, utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../PropsType';
 import { ActionMenuItem } from '../../../PropsType';

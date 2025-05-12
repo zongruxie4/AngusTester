@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { clipboard } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';

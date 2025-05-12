@@ -4,7 +4,7 @@ import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, 
 import { TESTER } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { task } from '@/api/altester';
+import { task } from '@/api/tester';
 
 interface Props {
   projectId: string;

@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Image, Modal, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
-import { analysis } from '@/api/altester';
+import { analysis } from '@/api/tester';
 
 import { TableDataObj } from './PropsType';
 

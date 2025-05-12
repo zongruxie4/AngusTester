@@ -5,7 +5,7 @@ import { cookie, site } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 import YAML from 'yaml';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
-import { services } from '@/api/altester';
+import { services } from '@/api/tester';
 
 interface Props {
   mode: 'UI' | 'code',

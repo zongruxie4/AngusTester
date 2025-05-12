@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { apis } from '@/api/altester';
+import { apis } from '@/api/tester';
 
 import { IPane } from './PropsType';
 

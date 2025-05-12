@@ -4,7 +4,7 @@ import { Button, Collapse, CollapsePanel, Popconfirm, TypographyParagraph } from
 import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 import { isEqual } from 'lodash-es';
-import { services } from '@/api/altester';
+import { services } from '@/api/tester';
 
 import { ServerConfig, ServerInfo } from './PropsType';
 import EditForm from './editForm.vue';
