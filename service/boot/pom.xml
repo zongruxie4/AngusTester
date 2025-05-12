@@ -95,8 +95,8 @@
         <directory>src/main/scripts</directory>
         <includes>
           <include>init-jdk.sh</include>
-          <include>startup-gm.sh</include>
-          <include>shutdown-gm.sh</include>
+          <include>startup-tester.sh</include>
+          <include>shutdown-tester.sh</include>
         </includes>
         <filtering>true</filtering>
         <targetPath>${project.basedir}/target</targetPath>

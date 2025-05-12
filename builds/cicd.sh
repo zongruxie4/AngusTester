@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # ---------------------------------------------------------------------------
-# Jenkins CI/CD Pipeline Script for AngusGM Project.
+# Jenkins CI/CD Pipeline Script for AngusTester Project.
 # Usage: sh cicd.sh --module service --env env.dev --editionType edition.cloud_service --hosts 127.0.0.1 --dbType db.mysql
 # Author: XiaoLong Liu
 # ---------------------------------------------------------------------------
@@ -13,6 +13,7 @@ WEB_DIR="web"
 REMOTE_APP_DIR="/data/apps/AngusTester"
 REMOTE_APP_PLUGINS_DIR_NAME="plugins"
 REMOTE_APP_PLUGINS_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_PLUGINS_DIR_NAME}"
+REMOTE_APP_CONF_DIR="/data/apps/conf/tester"
 
 REMOTE_APP_STATIC_DIR_NAME="statics"
 REMOTE_APP_STATIC_DIR="${REMOTE_APP_DIR}/${REMOTE_APP_STATIC_DIR_NAME}"
@@ -84,10 +85,10 @@ prepare_environment() {
 # Clone repository
 clone_repository() {
   echo "INFO: Cloning repository branch: ${gitBranch:-main}"
-  GIT_URL="https://github.com/xcancloud/AngusGM.git"
+  GIT_URL="https://github.com/xcancloud/AngusTester.git"
 
   if [ -n "$gitCredential" ]; then
-    GIT_URL="https://${gitCredential}@github.com/xcancloud/AngusGM.git"
+    GIT_URL="https://${gitCredential}@github.com/xcancloud/AngusTester.git"
   fi
 
   git clone -b "${gitBranch:-main}" "$GIT_URL" || {
@@ -133,7 +134,7 @@ deploy_service() {
   ssh "$host" "cd ${REMOTE_APP_DIR} && cp -f ${REMOTE_APP_CONF_DIR}/.*.env conf/" || {
     echo "ERROR: Failed to copy env files"; exit 1
   }
-  ssh "$host" "cd ${REMOTE_APP_DIR} && sh startup-tester.sh" || {
+  ssh "$host" "cd ${REMOTE_APP_DIR} && sh startup-tester.sh debug" || {
     echo "ERROR: Failed to start service"; exit 1
   }
   sh builds/check-health.sh ${host} || {
@@ -171,6 +172,10 @@ deploy_web() {
     echo "ERROR: Failed to clean static directory"; exit 1
   }
   scp -rp "${WEB_DIR}/dist"/* "${host}:${REMOTE_APP_STATIC_DIR}/" || {
+    echo "ERROR: Failed to copy web assets"; exit 1
+  }
+  nginxFileName="${WEB_DIR}/public/nginx_${env##*.}_tester.conf"
+  scp -p ${nginxFileName} "${host}:${NGINX_CONFIG_DIR}/" || {
     echo "ERROR: Failed to copy web assets"; exit 1
   }
   ssh "$host" "mv -f ${REMOTE_APP_STATIC_DIR}/nginx_${env##*.}_*.conf ${NGINX_CONFIG_DIR}/" || {
