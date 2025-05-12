@@ -66,9 +66,8 @@ export default class API {
     return http.post(url);
   }
 
-
   getProjectServers <T> (params: T): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/schema/server`, params);
+    return http.get(`${baseUrl}/schema/server`, params);
   }
 
   putServicesServerUrl<T> (id: string, params: T): Promise<[Error | null, any]> {
