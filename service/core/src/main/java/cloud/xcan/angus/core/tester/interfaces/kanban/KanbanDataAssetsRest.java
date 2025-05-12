@@ -26,6 +26,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/growthtrend")
   public ApiLocaleResult<Map<DataAssetsLabel, List<DataAssetsTimeSeries>>> growthTrend(
-      @Valid KanbanDataAssetsFindDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsFindDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.growthTrend(dto));
   }
 
@@ -55,7 +56,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
   public ApiLocaleResult<ResourcesFuncCount> funcResourcesStatistics(
-      @Valid KanbanDataAssetsCountDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.funcResourcesStatistics(dto));
   }
 
@@ -64,7 +65,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis")
   public ApiLocaleResult<ResourcesApisCount> apisResourcesStatistics(
-      KanbanDataAssetsCountDto dto) {
+      @ParameterObject KanbanDataAssetsCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.apisResourcesStatistics(dto));
   }
 
@@ -73,7 +74,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/scenarios")
   public ApiLocaleResult<ResourcesScenarioCount> scenarioResourcesStatistics(
-      KanbanDataAssetsCountDto dto) {
+      @ParameterObject KanbanDataAssetsCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.scenarioResourcesStatistics(dto));
   }
 
@@ -82,7 +83,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task")
   public ApiLocaleResult<ResourcesTaskCount> taskResourcesStatistics(
-      @Valid KanbanDataAssetsCountDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.taskResourcesStatistics(dto));
   }
 
@@ -91,7 +92,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script")
   public ApiLocaleResult<ResourcesScriptCount> scriptResourcesStatistics(
-      @Valid KanbanDataAssetsCountDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.scriptResourcesStatistics(dto));
   }
 
@@ -102,7 +103,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/mock")
   public ApiLocaleResult<MockResourcesCreationCount> mockResourcesStatistics(
-      @Valid KanbanDataAssetsMockCountDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsMockCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.mockResourcesStatistics(dto));
   }
 
@@ -111,7 +112,7 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/data")
   public ApiLocaleResult<DataResourcesCount> dataResourcesStatistics(
-      @Valid KanbanDataAssetsDataCountDto dto) {
+      @Valid @ParameterObject KanbanDataAssetsDataCountDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.dataResourcesStatistics(dto));
   }
 
@@ -120,7 +121,8 @@ public class KanbanDataAssetsRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/ranking")
-  public ApiLocaleResult<DataAssetsRanking> ranking(@Valid KanbanDataAssetsRankDto dto) {
+  public ApiLocaleResult<DataAssetsRanking> ranking(
+      @Valid @ParameterObject KanbanDataAssetsRankDto dto) {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.ranking(dto));
   }
 

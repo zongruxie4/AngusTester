@@ -22,6 +22,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,7 +90,8 @@ public class ApisShareRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ApisShareVo>> list(@Valid ApisShareFindDto dto) {
+  public ApiLocaleResult<PageResult<ApisShareVo>> list(
+      @Valid @ParameterObject ApisShareFindDto dto) {
     return ApiLocaleResult.success(apisShareFacade.list(dto));
   }
 
@@ -97,7 +99,8 @@ public class ApisShareRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisShareVo>> search(@Valid ApisShareSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisShareVo>> search(
+      @Valid @ParameterObject ApisShareSearchDto dto) {
     return ApiLocaleResult.success(apisShareFacade.search(dto));
   }
 

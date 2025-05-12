@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface MockApisOpen2pFacade {
 
+  void counterUpdate(MockApisRequestCountDto dto);
+
   MockApisServiceInfoVo mockService(Long id);
 
   List<MockApisInfoVo> mockApis(MockApisDetailDto dto);
 
-  void counterUpdate(MockApisRequestCountDto dto);
 }

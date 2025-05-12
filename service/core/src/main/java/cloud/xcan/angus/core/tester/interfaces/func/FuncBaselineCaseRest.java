@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -81,7 +82,7 @@ public class FuncBaselineCaseRest {
   @GetMapping("/{baselineId}/case")
   public ApiLocaleResult<PageResult<FuncCaseListVo>> list(
       @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
-      @Valid FuncCaseFindDto dto) {
+      @Valid @ParameterObject FuncCaseFindDto dto) {
     return ApiLocaleResult.success(funcBaselineCaseFacade.list(baselineId, dto));
   }
 
@@ -91,7 +92,7 @@ public class FuncBaselineCaseRest {
   @GetMapping("/{baselineId}/case/search")
   public ApiLocaleResult<PageResult<FuncCaseListVo>> search(
       @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
-      @Valid FuncCaseSearchDto dto) {
+      @Valid @ParameterObject FuncCaseSearchDto dto) {
     return ApiLocaleResult.success(funcBaselineCaseFacade.search(baselineId, false, dto));
   }
 
@@ -102,7 +103,7 @@ public class FuncBaselineCaseRest {
   @GetMapping(value = "/{baselineId}/case/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
       @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
-      @Valid FuncCaseSearchDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject FuncCaseSearchDto dto, HttpServletResponse response) {
     return funcBaselineCaseFacade.export(baselineId, dto, response);
   }
 

@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -129,7 +130,8 @@ public class SoftwareVersionRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<SoftwareVersionVo>> list(@Valid SoftwareVersionFindDto dto) {
+  public ApiLocaleResult<PageResult<SoftwareVersionVo>> list(
+      @Valid @ParameterObject SoftwareVersionFindDto dto) {
     return ApiLocaleResult.success(softwareVersionFacade.list(dto));
   }
 
@@ -138,7 +140,7 @@ public class SoftwareVersionRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<SoftwareVersionVo>> search(
-      @Valid SoftwareVersionSearchDto dto) {
+      @Valid @ParameterObject SoftwareVersionSearchDto dto) {
     return ApiLocaleResult.success(softwareVersionFacade.search(dto));
   }
 

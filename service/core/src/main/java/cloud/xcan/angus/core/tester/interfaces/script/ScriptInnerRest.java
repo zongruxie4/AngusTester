@@ -22,6 +22,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,7 +76,8 @@ public class ScriptInnerRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping("/info")
-  public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(@Valid ScriptFindDto dto) {
+  public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(
+      @Valid @ParameterObject ScriptFindDto dto) {
     return ApiLocaleResult.success(scriptFacade.infoList(dto));
   }
 

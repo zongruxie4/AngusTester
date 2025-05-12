@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class AnalysisCommonRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/scenario/resources/count")
   public ApiLocaleResult<ScenarioResourcesCreationCount> scenarioResourcesStatistics(
-      ResourcesStatisticsDto dto) {
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scenarioResourcesStatistics(dto));
   }
 
@@ -45,7 +46,8 @@ public class AnalysisCommonRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/scenario/test/result/count")
-  public ApiLocaleResult<TestScenarioCount> testResult(ResourcesStatisticsDto dto) {
+  public ApiLocaleResult<TestScenarioCount> testResult(
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.testResult(dto));
   }
 
@@ -54,7 +56,7 @@ public class AnalysisCommonRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script/resources/count")
   public ApiLocaleResult<ScriptResourcesCreationCount> scriptResourcesStatistics(
-      ResourcesStatisticsDto dto) {
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scriptResourcesStatistics(dto));
   }
 
@@ -62,7 +64,8 @@ public class AnalysisCommonRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script/count")
-  public ApiLocaleResult<ScriptCount> scriptCountStatistics(ScriptStatisticsDto dto) {
+  public ApiLocaleResult<ScriptCount> scriptCountStatistics(
+      @Valid @ParameterObject ScriptStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scriptCountStatistics(dto));
   }
 
@@ -70,7 +73,8 @@ public class AnalysisCommonRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/mock/service/count")
-  public ApiLocaleResult<MockServiceCount> mockServiceCount(@Valid MockServiceCountDto dto) {
+  public ApiLocaleResult<MockServiceCount> mockServiceCount(
+      @Valid @ParameterObject MockServiceCountDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.mockServiceCountStatistics(dto));
   }
 
@@ -79,7 +83,7 @@ public class AnalysisCommonRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/data/resources")
   public ApiLocaleResult<DataResourcesCreationCount> dataResourcesStatistics(
-      ResourcesStatisticsDto dto) {
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.dataResourcesStatistics(dto));
   }
 

@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.validator.constraints.Length;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -156,7 +157,8 @@ public class ApisCaseRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ApisCaseListVo>> list(@Valid ApisCaseFindDto dto) {
+  public ApiLocaleResult<PageResult<ApisCaseListVo>> list(
+      @Valid @ParameterObject ApisCaseFindDto dto) {
     return ApiLocaleResult.success(apisCaseFacade.list(dto));
   }
 
@@ -164,7 +166,8 @@ public class ApisCaseRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisCaseListVo>> search(@Valid ApisCaseSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisCaseListVo>> search(
+      @Valid @ParameterObject ApisCaseSearchDto dto) {
     return ApiLocaleResult.success(apisCaseFacade.search(dto));
   }
 

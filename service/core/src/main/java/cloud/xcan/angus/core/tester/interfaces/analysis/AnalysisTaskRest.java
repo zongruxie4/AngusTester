@@ -41,6 +41,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resources/count")
   public ApiLocaleResult<TaskLastResourceCreationCount> creationResourcesStatistics(
-      @Valid TaskCreatorStatisticsDto dto) {
+      @Valid @ParameterObject TaskCreatorStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.creationResourcesStatistics(dto));
   }
 
@@ -70,7 +71,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/count")
-  public ApiLocaleResult<TaskCount> countStatistics(@Valid TaskSummaryStatisticsDto dto) {
+  public ApiLocaleResult<TaskCount> countStatistics(
+      @Valid @ParameterObject TaskSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.countStatistics(dto));
   }
 
@@ -79,7 +81,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/count/export")
   public ResponseEntity<org.springframework.core.io.Resource> countStatisticsExport(
-      @Valid TaskSummaryStatisticsDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject TaskSummaryStatisticsDto dto, HttpServletResponse response) {
     return analysisAngusTaskFacade.countStatisticsExport(dto, response);
   }
 
@@ -88,7 +90,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/assignee/count")
   public ApiLocaleResult<List<TaskAssigneeCount>> assigneeSummaryStatistics(
-      @Valid TaskAssigneeSummaryStatisticsDto dto) {
+      @Valid @ParameterObject TaskAssigneeSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.assigneeSummaryStatistics(dto));
   }
 
@@ -97,7 +99,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/assignee/progress")
   public ApiLocaleResult<List<TaskAssigneeProgressCount>> assigneeProgressStatistics(
-      @Valid TaskAssigneeSummaryStatisticsDto dto) {
+      @Valid @ParameterObject TaskAssigneeSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.assigneeProgressStatistics(dto));
   }
 
@@ -124,7 +126,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/assignee/work/summary")
   public ApiLocaleResult<TaskAssigneeWorkSummary> assigneeWorkStatistics(
-      @Valid TaskAssigneeWorkStatisticsDto dto) {
+      @Valid @ParameterObject TaskAssigneeWorkStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.assigneeWorkStatistics(dto));
   }
 
@@ -151,7 +153,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/assignee/burndown")
   public ApiLocaleResult<Map<BurnDownResourceType, BurnDownChartCount>> assigneeBurndownChart(
-      @Valid TaskAssigneeWorkStatisticsDto dto) {
+      @Valid @ParameterObject TaskAssigneeWorkStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.assigneeBurndownChart(dto));
   }
 
@@ -159,7 +161,7 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/progress/overview")
-  public ApiLocaleResult<ProgressOverview> progress(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<ProgressOverview> progress(@Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.progress(dto));
   }
 
@@ -167,7 +169,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/burndown/overview")
-  public ApiLocaleResult<BurnDownChartOverview> burndownChart(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<BurnDownChartOverview> burndownChart(
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.burndownChart(dto));
   }
 
@@ -175,7 +178,7 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/workload/overview")
-  public ApiLocaleResult<WorkloadOverview> workload(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<WorkloadOverview> workload(@Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.workload(dto));
   }
 
@@ -183,7 +186,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/overdue/assessment/overview")
-  public ApiLocaleResult<OverdueAssessmentOverview> overdue(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<OverdueAssessmentOverview> overdue(
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.overdueAssessment(dto));
   }
 
@@ -191,7 +195,7 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/bug/overview")
-  public ApiLocaleResult<BugOverview> bug(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<BugOverview> bug(@Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.bug(dto));
   }
 
@@ -200,7 +204,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/processing/efficiency/overview")
   public ApiLocaleResult<ProcessingEfficiencyOverview> processingEfficiency(
-      @Valid TaskAnalysisDto dto) {
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.processingEfficiency(dto));
   }
 
@@ -208,7 +212,7 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/core/kpi/overview")
-  public ApiLocaleResult<CoreKpiOverview> coreKpi(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<CoreKpiOverview> coreKpi(@Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.coreKpi(dto));
   }
 
@@ -217,7 +221,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/failure/assessment/overview")
   public ApiLocaleResult<FailureAssessmentOverview> failureAssessment(
-      @Valid TaskAnalysisDto dto) {
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.failureAssessment(dto));
   }
 
@@ -226,7 +230,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/backlogged/overview")
   public ApiLocaleResult<BackloggedOverview> backloggedWork(
-      @Valid TaskAnalysisDto dto) {
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.backloggedWork(dto));
   }
 
@@ -235,7 +239,7 @@ public class AnalysisTaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/recent/delivery/overview")
   public ApiLocaleResult<RecentDeliveryOverview> recentDelivery(
-      @Valid TaskAnalysisDto dto) {
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.recentDelivery(dto));
   }
 
@@ -243,7 +247,7 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/leadtime/overview")
-  public ApiLocaleResult<LeadTimeOverview> leadTime(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<LeadTimeOverview> leadTime(@Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.leadTime(dto));
   }
 
@@ -251,7 +255,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/unplanned/work/overview")
-  public ApiLocaleResult<UnplannedWorkOverview> unplannedWork(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<UnplannedWorkOverview> unplannedWork(
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.unplannedWork(dto));
   }
 
@@ -259,7 +264,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/growth/trend/overview")
-  public ApiLocaleResult<GrowthTrendOverview> growthTrend(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<GrowthTrendOverview> growthTrend(
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.growthTrend(dto));
   }
 
@@ -267,7 +273,8 @@ public class AnalysisTaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resource/creation/overview")
-  public ApiLocaleResult<ResourceCreationOverview> resourceCreation(@Valid TaskAnalysisDto dto) {
+  public ApiLocaleResult<ResourceCreationOverview> resourceCreation(
+      @Valid @ParameterObject TaskAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusTaskFacade.resourceCreation(dto));
   }
 

@@ -23,6 +23,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,7 +81,7 @@ public class ProjectRest {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<IdKey<Long, Object>> importExample(
-      @Parameter(name = "name", description = "Project name") @RequestParam(value ="name", required = false) String name,
+      @Parameter(name = "name", description = "Project name") @RequestParam(value = "name", required = false) String name,
       @Parameter(name = "type", description = "Project type", required = true) @RequestParam("type") ProjectType type,
       @Parameter(name = "dataTypes", description = "Example data types. Import all example data when empty.")
       @RequestParam(value = "dataTypes", required = false) Set<ExampleDataType> dataTypes) {
@@ -132,7 +133,8 @@ public class ProjectRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ProjectDetailVo>> list(@Valid ProjectFindDto dto) {
+  public ApiLocaleResult<PageResult<ProjectDetailVo>> list(
+      @Valid @ParameterObject ProjectFindDto dto) {
     return ApiLocaleResult.success(projectFacade.list(dto));
   }
 
@@ -140,7 +142,8 @@ public class ProjectRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ProjectDetailVo>> search(@Valid ProjectSearchDto dto) {
+  public ApiLocaleResult<PageResult<ProjectDetailVo>> search(
+      @Valid @ParameterObject ProjectSearchDto dto) {
     return ApiLocaleResult.success(projectFacade.search(dto));
   }
 

@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,7 +71,8 @@ public class ApisFavouriteRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
-  public ApiLocaleResult<PageResult<ApisFavouriteDetailVo>> search(ApisFavouriteSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisFavouriteDetailVo>> search(
+      @Valid @ParameterObject ApisFavouriteSearchDto dto) {
     return ApiLocaleResult.success(apisFavouriteFacade.search(dto));
   }
 

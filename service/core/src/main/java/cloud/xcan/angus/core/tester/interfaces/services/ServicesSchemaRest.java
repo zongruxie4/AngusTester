@@ -20,6 +20,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -360,7 +361,7 @@ public class ServicesSchemaRest {
   @GetMapping(value = "/{serviceId}/openapi")
   public ApiLocaleResult<String> openapiDetail(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      ApisSchemaOpenApiDto dto) {
+      @ParameterObject ApisSchemaOpenApiDto dto) {
     return ApiLocaleResult.successData(servicesSchemaFacade.openapiDetail(serviceId, dto));
   }
 }

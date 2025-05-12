@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class KanbanEfficiencyRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task/overview")
   public ApiLocaleResult<EfficiencyTaskOverview> taskEfficiencyOverview(
-      @Valid KanbanEfficiencyFindDto dto) {
+      @Valid @ParameterObject KanbanEfficiencyFindDto dto) {
     return ApiLocaleResult.success(kanbanEfficiencyFacade.taskEfficiencyOverview(dto));
   }
 
@@ -40,7 +41,7 @@ public class KanbanEfficiencyRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/overview")
   public ApiLocaleResult<EfficiencyCaseOverview> caseEfficiencyOverview(
-      @Valid KanbanEfficiencyFindDto dto) {
+      @Valid @ParameterObject KanbanEfficiencyFindDto dto) {
     return ApiLocaleResult.success(kanbanEfficiencyFacade.caseEfficiencyOverview(dto));
   }
 

@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import org.hibernate.validator.constraints.Length;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -368,7 +369,8 @@ public class FuncCaseRest {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(@Valid FuncCaseImportDto dto) {
+  public ApiLocaleResult<List<IdKey<Long, Object>>> imports(
+      @Valid FuncCaseImportDto dto) {
     return ApiLocaleResult.success(funcCaseFacade.imports(dto));
   }
 
@@ -436,7 +438,8 @@ public class FuncCaseRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<FuncCaseListVo>> list(@Valid FuncCaseFindDto dto) {
+  public ApiLocaleResult<PageResult<FuncCaseListVo>> list(
+      @Valid @ParameterObject FuncCaseFindDto dto) {
     return ApiLocaleResult.success(funcCaseFacade.list(dto));
   }
 
@@ -444,7 +447,8 @@ public class FuncCaseRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncCaseListVo>> search(@Valid FuncCaseSearchDto dto) {
+  public ApiLocaleResult<PageResult<FuncCaseListVo>> search(
+      @Valid @ParameterObject FuncCaseSearchDto dto) {
     return ApiLocaleResult.success(funcCaseFacade.search(false, dto));
   }
 
@@ -453,8 +457,8 @@ public class FuncCaseRest {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })
   @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(@Valid FuncCaseSearchDto dto,
-      HttpServletResponse response) {
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid @ParameterObject FuncCaseSearchDto dto, HttpServletResponse response) {
     return funcCaseFacade.export(dto, response);
   }
 }

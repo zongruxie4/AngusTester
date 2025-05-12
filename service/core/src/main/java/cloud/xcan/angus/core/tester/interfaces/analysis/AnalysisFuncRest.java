@@ -42,6 +42,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resources/count")
   public ApiLocaleResult<FuncLastResourceCreationCount> funcResourcesStatistics(
-      @Valid FuncCreatorStatisticsDto dto) {
+      @Valid @ParameterObject FuncCreatorStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.creationResourcesStatistics(dto));
   }
 
@@ -71,7 +72,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/count")
-  public ApiLocaleResult<FuncCaseCount> countStatistics(@Valid FuncCaseSummaryStatisticsDto dto) {
+  public ApiLocaleResult<FuncCaseCount> countStatistics(
+      @Valid @ParameterObject FuncCaseSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.countStatistics(dto));
   }
 
@@ -80,7 +82,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/case/count/export")
   public ResponseEntity<org.springframework.core.io.Resource> countStatisticsExport(
-      @Valid FuncCaseSummaryStatisticsDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject FuncCaseSummaryStatisticsDto dto, HttpServletResponse response) {
     return analysisAngusFuncFacade.countStatisticsExport(dto, response);
   }
 
@@ -89,7 +91,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/count")
   public ApiLocaleResult<List<FuncTesterCount>> testerSummaryStatistics(
-      @Valid FuncTesterSummaryStatisticsDto dto) {
+      @Valid @ParameterObject FuncTesterSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerSummaryStatistics(dto));
   }
 
@@ -98,7 +100,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/progress")
   public ApiLocaleResult<List<FuncTesterProgressCount>> testerProgressStatistics(
-      @Valid FuncTesterSummaryStatisticsDto dto) {
+      @Valid @ParameterObject FuncTesterSummaryStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerProgressStatistics(dto));
   }
 
@@ -125,7 +127,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/work/summary")
   public ApiLocaleResult<FuncTesterWorkSummary> testerWorkStatistics(
-      @Valid FuncTesterWorkStatisticsDto dto) {
+      @Valid @ParameterObject FuncTesterWorkStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerWorkStatistics(dto));
   }
 
@@ -152,7 +154,7 @@ public class AnalysisFuncRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/burndown")
   public ApiLocaleResult<Map<BurnDownResourceType, BurnDownChartCount>> testerBurndownChart(
-      @Valid CaseTesterWorkStatisticsDto dto) {
+      @Valid @ParameterObject CaseTesterWorkStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerBurndownChart(dto));
   }
 
@@ -160,7 +162,7 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/progress/overview")
-  public ApiLocaleResult<ProgressOverview> progress(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<ProgressOverview> progress(@Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.progress(dto));
   }
 
@@ -168,7 +170,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/burndown/overview")
-  public ApiLocaleResult<BurnDownChartOverview> burndownChart(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<BurnDownChartOverview> burndownChart(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.burndownChart(dto));
   }
 
@@ -176,7 +179,7 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/workload/overview")
-  public ApiLocaleResult<WorkloadOverview> workload(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<WorkloadOverview> workload(@Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.workload(dto));
   }
 
@@ -184,7 +187,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/overdue/assessment/overview")
-  public ApiLocaleResult<OverdueAssessmentOverview> overdueAssessment(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<OverdueAssessmentOverview> overdueAssessment(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.overdueAssessment(dto));
   }
 
@@ -192,7 +196,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/submitted/bug/overview")
-  public ApiLocaleResult<TesterSubmittedBugOverview> submittedBug(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<TesterSubmittedBugOverview> submittedBug(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.submittedBug(dto));
   }
 
@@ -200,7 +205,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/testing/efficiency/overview")
-  public ApiLocaleResult<TestingEfficiencyOverview> testingEfficiency(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<TestingEfficiencyOverview> testingEfficiency(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testingEfficiency(dto));
   }
 
@@ -216,7 +222,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/review/efficiency/overview")
-  public ApiLocaleResult<ReviewEfficiencyOverview> reviewEfficiency(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<ReviewEfficiencyOverview> reviewEfficiency(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.reviewEfficiency(dto));
   }
 
@@ -224,7 +231,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/backlogged/overview")
-  public ApiLocaleResult<BackloggedOverview> backloggedWork(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<BackloggedOverview> backloggedWork(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.backloggedWork(dto));
   }
 
@@ -232,7 +240,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/recent/delivery/overview")
-  public ApiLocaleResult<RecentDeliveryOverview> recentDelivery(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<RecentDeliveryOverview> recentDelivery(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.recentDelivery(dto));
   }
 
@@ -240,7 +249,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/leadtime/overview")
-  public ApiLocaleResult<LeadTimeOverview> leadTime(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<LeadTimeOverview> leadTime(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.leadTime(dto));
   }
 
@@ -248,7 +258,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/unplanned/work/overview")
-  public ApiLocaleResult<UnplannedWorkOverview> unplannedWork(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<UnplannedWorkOverview> unplannedWork(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.unplannedWork(dto));
   }
 
@@ -256,7 +267,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/growth/trend/overview")
-  public ApiLocaleResult<GrowthTrendOverview> growthTrend(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<GrowthTrendOverview> growthTrend(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.growthTrend(dto));
   }
 
@@ -264,7 +276,8 @@ public class AnalysisFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resource/creation/overview")
-  public ApiLocaleResult<ResourceCreationOverview> resourceCreation(@Valid FuncAnalysisDto dto) {
+  public ApiLocaleResult<ResourceCreationOverview> resourceCreation(
+      @Valid @ParameterObject FuncAnalysisDto dto) {
     return ApiLocaleResult.success(analysisAngusFuncFacade.resourceCreation(dto));
   }
 

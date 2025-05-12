@@ -20,6 +20,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -143,7 +144,8 @@ public class ScenarioAuthRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")
-  public ApiLocaleResult<PageResult<ScenarioAuthVo>> list(@Valid ScenarioAuthFindDto dto) {
+  public ApiLocaleResult<PageResult<ScenarioAuthVo>> list(
+      @Valid @ParameterObject ScenarioAuthFindDto dto) {
     return ApiLocaleResult.success(scenarioAuthFacade.list(dto));
   }
 

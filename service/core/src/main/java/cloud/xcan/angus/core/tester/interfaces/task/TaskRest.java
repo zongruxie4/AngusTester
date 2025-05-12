@@ -46,6 +46,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -546,7 +547,7 @@ public class TaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<TaskListVo>> list(@Valid TaskFindDto dto) {
+  public ApiLocaleResult<PageResult<TaskListVo>> list(@Valid @ParameterObject TaskFindDto dto) {
     return ApiLocaleResult.success(taskFacade.list(dto));
   }
 
@@ -554,7 +555,7 @@ public class TaskRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskListVo>> search(@Valid TaskSearchDto dto) {
+  public ApiLocaleResult<PageResult<TaskListVo>> search(@Valid @ParameterObject TaskSearchDto dto) {
     return ApiLocaleResult.success(taskFacade.search(false, dto));
   }
 
@@ -563,8 +564,8 @@ public class TaskRest {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })
   @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(@Valid TaskSearchDto dto,
-      HttpServletResponse response) {
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid @ParameterObject TaskSearchDto dto, HttpServletResponse response) {
     return taskFacade.export(dto, response);
   }
 

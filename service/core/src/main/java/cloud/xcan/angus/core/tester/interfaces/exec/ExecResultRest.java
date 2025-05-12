@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,7 +66,7 @@ public class ExecResultRest {
   @GetMapping(value = "/service/{serviceId}/result")
   public ApiLocaleResult<ExecApisResultInfo> serviceApisResult(
       @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(execResultFacade.serviceApisResult(serviceId, dto));
   }
 
@@ -75,7 +76,7 @@ public class ExecResultRest {
   @GetMapping(value = "/project/{projectId}/apis/result")
   public ApiLocaleResult<ExecApisResultInfo> projectApisResult(
       @Parameter(name = "projectId", description = "Project id", required = true) @PathVariable("projectId") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId, dto));
   }
 
@@ -106,7 +107,7 @@ public class ExecResultRest {
   @GetMapping(value = "/project/{projectId}/scenario/result")
   public ApiLocaleResult<ExecScenarioResultInfo> projectScenarioResult(
       @Parameter(name = "projectId", description = "Project id", required = true) @PathVariable("projectId") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(execResultFacade.projectScenarioResult(projectId, dto));
   }
 

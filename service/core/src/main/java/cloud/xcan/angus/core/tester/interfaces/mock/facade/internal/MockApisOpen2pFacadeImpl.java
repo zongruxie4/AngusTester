@@ -36,6 +36,11 @@ public class MockApisOpen2pFacadeImpl implements MockApisOpen2pFacade {
   private MockApisCmd mockApisCmd;
 
   @Override
+  public void counterUpdate(MockApisRequestCountDto dto) {
+    mockApisCmd.counterUpdate(dto.getApisCounter0());
+  }
+
+  @Override
   public MockApisServiceInfoVo mockService(Long id) {
     MockService mockService = mockServiceQuery.info0(id);
     return isNull(mockService) ? null : toMockServiceDetailVo(mockService);
@@ -45,13 +50,8 @@ public class MockApisOpen2pFacadeImpl implements MockApisOpen2pFacade {
   public List<MockApisInfoVo> mockApis(MockApisDetailDto dto) {
     List<MockApis> mockApis = mockApisQuery.info0(dto.getMockServiceId(),
         dto.getMethod(), dto.getEndpoint());
-    return isEmpty(mockApis) ? null : mockApis.stream().map(MockApisAssembler::toMockApisDetailVo)
-        .collect(Collectors.toList());
-  }
-
-  @Override
-  public void counterUpdate(MockApisRequestCountDto dto) {
-    mockApisCmd.counterUpdate(dto.getApisCounter0());
+    return isEmpty(mockApis) ? null : mockApis.stream()
+        .map(MockApisAssembler::toMockApisDetailVo).collect(Collectors.toList());
   }
 
 }

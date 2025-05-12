@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class ActivityRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ActivityDetailVo>> list(@Valid ActivityFindDto dto) {
+  public ApiLocaleResult<PageResult<ActivityDetailVo>> list(@Valid @ParameterObject ActivityFindDto dto) {
     return ApiLocaleResult.success(activityFacade.list(dto));
   }
 
@@ -39,7 +40,7 @@ public class ActivityRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ActivityDetailVo>> search(@Valid ActivitySearchDto dto) {
+  public ApiLocaleResult<PageResult<ActivityDetailVo>> search(@Valid @ParameterObject ActivitySearchDto dto) {
     return ApiLocaleResult.success(activityFacade.search(dto));
   }
 

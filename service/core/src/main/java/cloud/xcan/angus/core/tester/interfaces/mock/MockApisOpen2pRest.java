@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,15 @@ public class MockApisOpen2pRest {
   @Resource
   private MockApisOpen2pFacade mockApisOpen2pFacade;
 
+  @Operation(description = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Updated successfully")})
+  @PostMapping(value = "/apis/counter")
+  public ApiLocaleResult<?> counterUpdate(@Valid @RequestBody MockApisRequestCountDto dto) {
+    mockApisOpen2pFacade.counterUpdate(dto);
+    return ApiLocaleResult.success();
+  }
+
   @Operation(description = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
@@ -48,17 +58,10 @@ public class MockApisOpen2pRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis")
-  public ApiLocaleResult<List<MockApisInfoVo>> mockApis(@Valid MockApisDetailDto dto) {
+  public ApiLocaleResult<List<MockApisInfoVo>> mockApis(
+      @Valid @ParameterObject MockApisDetailDto dto) {
     return ApiLocaleResult.success(mockApisOpen2pFacade.mockApis(dto));
   }
 
-  @Operation(description = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully")})
-  @PostMapping(value = "/apis/counter")
-  public ApiLocaleResult<?> counterUpdate(@Valid @RequestBody MockApisRequestCountDto dto) {
-    mockApisOpen2pFacade.counterUpdate(dto);
-    return ApiLocaleResult.success();
-  }
 
 }

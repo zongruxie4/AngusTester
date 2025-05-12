@@ -21,6 +21,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,8 +36,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskSprint", description = "Task Sprint Management - Provides a dedicated entry point for managing the iterations of tasks, "
-    + "enabling teams to track progress and make adjustments throughout the development cycle.")
+@Tag(name = "TaskSprint", description =
+    "Task Sprint Management - Provides a dedicated entry point for managing the iterations of tasks, "
+        + "enabling teams to track progress and make adjustments throughout the development cycle.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")
@@ -71,7 +73,8 @@ public class TaskSprintRest {
       @ApiResponse(responseCode = "404", description = "Resource not found")
   })
   @PutMapping
-  public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody TaskSprintReplaceDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> replace(
+      @Valid @RequestBody TaskSprintReplaceDto dto) {
     return ApiLocaleResult.success(taskSprintFacade.replace(dto));
   }
 
@@ -183,7 +186,8 @@ public class TaskSprintRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<TaskSprintDetailVo>> list(@Valid TaskSprintFindDto dto) {
+  public ApiLocaleResult<PageResult<TaskSprintDetailVo>> list(
+      @Valid @ParameterObject TaskSprintFindDto dto) {
     return ApiLocaleResult.success(taskSprintFacade.list(dto));
   }
 
@@ -191,7 +195,8 @@ public class TaskSprintRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskSprintDetailVo>> search(@Valid TaskSprintSearchDto dto) {
+  public ApiLocaleResult<PageResult<TaskSprintDetailVo>> search(
+      @Valid @ParameterObject TaskSprintSearchDto dto) {
     return ApiLocaleResult.success(taskSprintFacade.search(dto));
   }
 

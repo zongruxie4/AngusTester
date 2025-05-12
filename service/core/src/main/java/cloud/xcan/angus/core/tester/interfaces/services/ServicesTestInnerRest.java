@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class ServicesTestInnerRest {
   @GetMapping("/services/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countServiceTestApis(
       @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
@@ -48,7 +49,7 @@ public class ServicesTestInnerRest {
   @GetMapping("/project/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countProjectTestApis(
       @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countProjectTestApis(projectId, dto));
   }
 

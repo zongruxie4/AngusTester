@@ -25,6 +25,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -183,7 +184,8 @@ public class MockApisRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<MockApisListVo>> list(@Valid MockApisFindDto dto) {
+  public ApiLocaleResult<PageResult<MockApisListVo>> list(
+      @Valid @ParameterObject MockApisFindDto dto) {
     PageResult<MockApisListVo> result = mockApisFacade.list(dto);
     return assembleAllowImportSampleStatus(result);
   }
@@ -192,7 +194,8 @@ public class MockApisRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<MockApisListVo>> search(@Valid MockApisSearchDto dto) {
+  public ApiLocaleResult<PageResult<MockApisListVo>> search(
+      @Valid @ParameterObject MockApisSearchDto dto) {
     PageResult<MockApisListVo> result = mockApisFacade.search(dto);
     return assembleAllowImportSampleStatus(result);
   }

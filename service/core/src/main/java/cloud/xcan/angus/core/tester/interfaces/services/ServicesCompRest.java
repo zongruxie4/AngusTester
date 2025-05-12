@@ -112,8 +112,8 @@ public class ServicesCompRest {
       @Parameter(name = "types", description = "Component types", required = true) @RequestParam(required = true) Set<ServicesCompType> types,
       @Parameter(name = "keys", description = "Component keys", required = false) @RequestParam(required = false) Set<String> keys,
       @Parameter(name = "ignoreModel", description = "Ignore query model, default false", required = false) @RequestParam(required = false) Boolean ignoreModel) {
-    return ApiLocaleResult
-        .success(servicesCompFacade.listByType(serviceId, types, keys, ignoreModel));
+    return ApiLocaleResult.success(
+        servicesCompFacade.listByType(serviceId, types, keys, ignoreModel));
   }
 
   @Operation(description = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listByRef")
@@ -125,8 +125,7 @@ public class ServicesCompRest {
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "refs", description = "Component references", required = true) Set<String> refs,
       @Parameter(name = "ignoreModel", description = "Ignore query model, default false", required = false) @RequestParam(required = false) Boolean ignoreModel) {
-    return ApiLocaleResult
-        .success(servicesCompFacade.listByRef(serviceId, refs, ignoreModel));
+    return ApiLocaleResult.success(servicesCompFacade.listByRef(serviceId, refs, ignoreModel));
   }
 
   @Operation(description = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listAll")

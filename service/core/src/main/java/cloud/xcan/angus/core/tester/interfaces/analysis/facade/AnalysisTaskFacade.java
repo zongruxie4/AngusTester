@@ -58,7 +58,8 @@ public interface AnalysisTaskFacade {
 
   Map<BurnDownResourceType, BurnDownChartCount> sprintBurndownChart(Long sprintId);
 
-  Map<BurnDownResourceType, BurnDownChartCount> assigneeBurndownChart(TaskAssigneeWorkStatisticsDto dto);
+  Map<BurnDownResourceType, BurnDownChartCount> assigneeBurndownChart(
+      TaskAssigneeWorkStatisticsDto dto);
 
   ProgressOverview progress(TaskAnalysisDto dto);
 

@@ -24,6 +24,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -109,7 +110,7 @@ public class ModuleRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<List<ModuleVo>> list(@Valid ModuleFindDto dto) {
+  public ApiLocaleResult<List<ModuleVo>> list(@Valid @ParameterObject ModuleFindDto dto) {
     return ApiLocaleResult.success(moduleFacade.list(dto));
   }
 
@@ -117,7 +118,7 @@ public class ModuleRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<List<ModuleVo>> search(@Valid ModuleSearchDto dto) {
+  public ApiLocaleResult<List<ModuleVo>> search(@Valid @ParameterObject ModuleSearchDto dto) {
     return ApiLocaleResult.success(moduleFacade.search(dto));
   }
 
@@ -125,7 +126,7 @@ public class ModuleRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tree")
-  public ApiLocaleResult<List<ModuleTreeVo>> tree(@Valid ModuleFindDto dto) {
+  public ApiLocaleResult<List<ModuleTreeVo>> tree(@Valid @ParameterObject ModuleFindDto dto) {
     return ApiLocaleResult.success(moduleFacade.tree(dto));
   }
 
@@ -133,7 +134,8 @@ public class ModuleRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tree/search")
-  public ApiLocaleResult<List<ModuleTreeVo>> treeSearch(@Valid ModuleSearchDto dto) {
+  public ApiLocaleResult<List<ModuleTreeVo>> treeSearch(
+      @Valid @ParameterObject ModuleSearchDto dto) {
     return ApiLocaleResult.success(moduleFacade.treeSearch(dto));
   }
 }

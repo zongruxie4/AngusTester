@@ -98,7 +98,7 @@ public class AnalysisTaskFacadeImpl implements AnalysisTaskFacade {
 
   @Override
   public Map<BurnDownResourceType, BurnDownChartCount> projectBurndownChart(Long projectId) {
-    return taskQuery.burndownChart( projectId, null, null, null, null,
+    return taskQuery.burndownChart(projectId, null, null, null, null,
         null, false, false).getTotalBurnDownCharts();
   }
 
@@ -111,7 +111,7 @@ public class AnalysisTaskFacadeImpl implements AnalysisTaskFacade {
   @Override
   public Map<BurnDownResourceType, BurnDownChartCount> assigneeBurndownChart(
       TaskAssigneeWorkStatisticsDto dto) {
-    return taskQuery.burndownChart( dto.getProjectId(), dto.getSprintId(),
+    return taskQuery.burndownChart(dto.getProjectId(), dto.getSprintId(),
         AuthObjectType.USER, dto.getUserId(), null, null, false, false).getTotalBurnDownCharts();
   }
 

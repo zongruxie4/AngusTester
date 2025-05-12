@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -86,7 +87,8 @@ public class DatasourceRest {
       @ApiResponse(responseCode = "200", description = "Tested successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/config/test")
-  public ApiLocaleResult<DatasourceTestVo> testByConfig(@Valid DatasourceTestDto dto) {
+  public ApiLocaleResult<DatasourceTestVo> testByConfig(
+      @Valid @ParameterObject DatasourceTestDto dto) {
     return ApiLocaleResult.success(datasourceFacade.testByConfig(dto));
   }
 
@@ -104,7 +106,8 @@ public class DatasourceRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<DatasourceVo>> list(@Valid DatasourceFindDto dto) {
+  public ApiLocaleResult<PageResult<DatasourceVo>> list(
+      @Valid @ParameterObject DatasourceFindDto dto) {
     return ApiLocaleResult.success(datasourceFacade.list(dto));
   }
 
@@ -112,7 +115,8 @@ public class DatasourceRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<DatasourceVo>> search(@Valid DatasourceSearchDto dto) {
+  public ApiLocaleResult<PageResult<DatasourceVo>> search(
+      @Valid @ParameterObject DatasourceSearchDto dto) {
     return ApiLocaleResult.success(datasourceFacade.search(dto));
   }
 }

@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,7 @@ public class AnalysisApisRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis/resources")
   public ApiLocaleResult<ApisResourcesCreationCount> apisResourcesStatistics(
-      ResourcesStatisticsDto dto) {
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusApisFacade.apisResourcesStatistics(dto));
   }
 
@@ -38,7 +40,8 @@ public class AnalysisApisRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/apis/test/result/count")
-  public ApiLocaleResult<TestApisCount> testResult(ResourcesStatisticsDto dto) {
+  public ApiLocaleResult<TestApisCount> testResult(
+      @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusApisFacade.testResult(dto));
   }
 

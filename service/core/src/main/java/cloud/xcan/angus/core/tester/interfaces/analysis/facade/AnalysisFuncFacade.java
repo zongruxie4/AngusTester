@@ -59,7 +59,8 @@ public interface AnalysisFuncFacade {
 
   Map<BurnDownResourceType, BurnDownChartCount> planBurndownChart(Long planId);
 
-  Map<BurnDownResourceType, BurnDownChartCount> testerBurndownChart(CaseTesterWorkStatisticsDto dto);
+  Map<BurnDownResourceType, BurnDownChartCount> testerBurndownChart(
+      CaseTesterWorkStatisticsDto dto);
 
   ProgressOverview progress(FuncAnalysisDto dto);
 

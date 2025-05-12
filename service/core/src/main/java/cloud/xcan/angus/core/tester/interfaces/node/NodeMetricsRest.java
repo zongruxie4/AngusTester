@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics")
   public ApiLocaleResult<PageResult<NodeMetricsVo>> host(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsFindDto dto) {
+      @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.host(id, dto));
   }
 
@@ -61,7 +62,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics/cpu")
   public ApiLocaleResult<PageResult<NodeCpuMetricsVo>> cpu(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsFindDto dto) {
+      @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.cpu(id, dto));
   }
 
@@ -80,7 +81,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics/memory")
   public ApiLocaleResult<PageResult<NodeMemoryMetricsVo>> memory(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsFindDto dto) {
+      @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.memory(id, dto));
   }
 
@@ -99,7 +100,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics/filesystem")
   public ApiLocaleResult<PageResult<NodeFilesystemMetricsVo>> filesystem(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsFindDto dto) {
+      @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.filesystem(id, dto));
   }
 
@@ -127,7 +128,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics/disk")
   public ApiLocaleResult<List<NodeDiskMetricsVo>> disk(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsNameFindDto dto) {
+      @Valid @ParameterObject NodeMetricsNameFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.disk(id, dto));
   }
 
@@ -146,7 +147,7 @@ public class NodeMetricsRest {
   @GetMapping(value = "/{id}/metrics/network")
   public ApiLocaleResult<List<NodeNetworkMetricsVo>> network(
       @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsNameFindDto dto) {
+      @Valid @ParameterObject NodeMetricsNameFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.network(id, dto));
   }
 

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,7 +69,8 @@ public class ApisFollowRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
-  public ApiLocaleResult<PageResult<ApisFollowDetailVo>> search(@Valid ApisFollowSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisFollowDetailVo>> search(
+      @Valid @ParameterObject ApisFollowSearchDto dto) {
     return ApiLocaleResult.success(apisFollowFacade.search(dto));
   }
 

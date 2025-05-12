@@ -34,6 +34,7 @@ import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -174,7 +175,7 @@ public class ScriptRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ScriptListVo>> list(@Valid ScriptFindDto dto) {
+  public ApiLocaleResult<PageResult<ScriptListVo>> list(@Valid @ParameterObject ScriptFindDto dto) {
     PageResult<ScriptListVo> result = scriptFacade.list(dto);
     return assembleAllowImportSampleStatus(result);
   }
@@ -184,7 +185,8 @@ public class ScriptRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping("/info")
-  public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(@Valid ScriptFindDto dto) {
+  public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(
+      @Valid @ParameterObject ScriptFindDto dto) {
     PageResult<ScriptInfoListVo> result = scriptFacade.infoList(dto);
     return assembleInfoAllowImportSampleStatus(result);
   }
@@ -194,7 +196,8 @@ public class ScriptRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScriptListVo>> search(@Valid ScriptSearchDto dto) {
+  public ApiLocaleResult<PageResult<ScriptListVo>> search(
+      @Valid @ParameterObject ScriptSearchDto dto) {
     PageResult<ScriptListVo> result = scriptFacade.search(dto);
     return assembleAllowImportSampleStatus(result);
   }

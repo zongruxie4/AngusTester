@@ -16,6 +16,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,7 +60,7 @@ public class CommentRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<List<AngusCommentTreeVo>> tree(@Valid AngusCommentFindDto dto) {
+  public ApiLocaleResult<List<AngusCommentTreeVo>> tree(@Valid @ParameterObject AngusCommentFindDto dto) {
     return ApiLocaleResult.success(commentFacade.tree(dto));
   }
 }

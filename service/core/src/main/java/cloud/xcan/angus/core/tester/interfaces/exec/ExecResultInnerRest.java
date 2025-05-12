@@ -2,10 +2,10 @@ package cloud.xcan.angus.core.tester.interfaces.exec;
 
 import cloud.xcan.angus.api.commonlink.exec.result.ExecApisResultInfo;
 import cloud.xcan.angus.api.commonlink.exec.result.ExecScenarioResultInfo;
-import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultSummary;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetailSummary;
 import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetailSummary;
+import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultSummary;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +69,7 @@ public class ExecResultInnerRest {
   @GetMapping(value = "/service/{serviceId}/result")
   public ApiLocaleResult<ExecApisResultInfo> serviceApisResult(
       @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(execResultFacade.serviceApisResult(serviceId, dto));
   }
 
@@ -78,8 +79,8 @@ public class ExecResultInnerRest {
   @GetMapping(value = "/project/{projectId}/apis/result")
   public ApiLocaleResult<ExecApisResultInfo> projectApisResult(
       @Parameter(name = "projectId", description = "Project id", required = true) @PathVariable("projectId") Long projectId,
-      OrgAndDateFilterDto dto) {
-    return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId ,dto));
+      @ParameterObject OrgAndDateFilterDto dto) {
+    return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId, dto));
   }
 
   @Operation(description = "Query the scenario execution test result by script type", operationId = "exec:scenario:result:byScriptType:inner")
@@ -109,7 +110,7 @@ public class ExecResultInnerRest {
   @GetMapping(value = "/project/{projectId}/scenario/result")
   public ApiLocaleResult<ExecScenarioResultInfo> projectScenarioResult(
       @Parameter(name = "projectId", description = "Project id", required = true) @PathVariable("projectId") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(execResultFacade.projectScenarioResult(projectId, dto));
   }
 

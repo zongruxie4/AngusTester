@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -85,7 +86,7 @@ public class ScenarioTrashRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<ScenarioTrashDetailVo>> search(
-      @Valid ScenarioTrashSearchDto dto) {
+      @Valid @ParameterObject ScenarioTrashSearchDto dto) {
     return ApiLocaleResult.success(trashScenarioFacade.search(dto));
   }
 

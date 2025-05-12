@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,7 @@ public class ScenarioMonitorHistoryRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ScenarioMonitorHistoryListVo>> list(
-      @Valid ScenarioMonitorHistoryFindDto dto) {
+      @Valid @ParameterObject ScenarioMonitorHistoryFindDto dto) {
     return ApiLocaleResult.success(scenarioMonitorHistoryFacade.list(dto));
   }
 

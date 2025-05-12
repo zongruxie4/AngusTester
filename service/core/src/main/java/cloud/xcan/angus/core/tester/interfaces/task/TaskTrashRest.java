@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,7 +73,8 @@ public class TaskTrashRest {
   }
 
   @Operation(description = "Query the number of all task and sprint trash", operationId = "task:trash:count")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Query number succeeded")})
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count(
@@ -84,7 +86,8 @@ public class TaskTrashRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskTrashDetailVo>> search(@Valid TaskTrashSearchDto dto) {
+  public ApiLocaleResult<PageResult<TaskTrashDetailVo>> search(
+      @Valid @ParameterObject TaskTrashSearchDto dto) {
     return ApiLocaleResult.success(trashTaskFacade.search(dto));
   }
 

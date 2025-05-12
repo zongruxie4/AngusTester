@@ -23,6 +23,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -108,7 +109,8 @@ public class FuncBaselineRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<FuncBaselineVo>> list(@Valid FuncBaselineFindDto dto) {
+  public ApiLocaleResult<PageResult<FuncBaselineVo>> list(
+      @Valid @ParameterObject FuncBaselineFindDto dto) {
     return ApiLocaleResult.success(funcBaselineFacade.list(dto));
   }
 
@@ -116,7 +118,8 @@ public class FuncBaselineRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncBaselineVo>> search(@Valid FuncBaselineSearchDto dto) {
+  public ApiLocaleResult<PageResult<FuncBaselineVo>> search(
+      @Valid @ParameterObject FuncBaselineSearchDto dto) {
     return ApiLocaleResult.success(funcBaselineFacade.search(dto));
   }
 

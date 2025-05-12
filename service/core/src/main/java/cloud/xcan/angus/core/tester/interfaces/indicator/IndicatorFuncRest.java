@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,7 +101,7 @@ public class IndicatorFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
-  public ApiLocaleResult<PageResult<FuncListVo>> list(@Valid FuncFindDto dto) {
+  public ApiLocaleResult<PageResult<FuncListVo>> list(@Valid @ParameterObject FuncFindDto dto) {
     return ApiLocaleResult.success(indicatorFuncFacade.list(dto));
   }
 
@@ -108,7 +109,7 @@ public class IndicatorFuncRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func/search")
-  public ApiLocaleResult<PageResult<FuncListVo>> search(@Valid FuncSearchDto dto) {
+  public ApiLocaleResult<PageResult<FuncListVo>> search(@Valid @ParameterObject FuncSearchDto dto) {
     return ApiLocaleResult.success(indicatorFuncFacade.search(dto));
   }
 

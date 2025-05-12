@@ -25,6 +25,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -152,7 +153,7 @@ public class ServicesRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ServiceVo>> list(ServicesFindDto dto) {
+  public ApiLocaleResult<PageResult<ServiceVo>> list(@Valid @ParameterObject ServicesFindDto dto) {
     PageResult<ServiceVo> result = serviceFacade.list(dto);
     return assembleAllowImportSampleStatus(result);
   }
@@ -161,7 +162,8 @@ public class ServicesRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ServiceVo>> search(ServicesSearchDto dto) {
+  public ApiLocaleResult<PageResult<ServiceVo>> search(
+      @Valid @ParameterObject ServicesSearchDto dto) {
     PageResult<ServiceVo> result = serviceFacade.search(dto);
     return assembleAllowImportSampleStatus(result);
   }

@@ -26,6 +26,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -116,7 +117,8 @@ public class ApisDesignRest {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<IdKey<Long, Object>> imports(@Valid ApisDesignImportDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> imports(
+      @Valid @ParameterObject ApisDesignImportDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.imports(dto));
   }
 
@@ -146,7 +148,8 @@ public class ApisDesignRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ApisDesignVo>> list(@Valid ApisDesignFindDto dto) {
+  public ApiLocaleResult<PageResult<ApisDesignVo>> list(
+      @Valid @ParameterObject ApisDesignFindDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.list(dto));
   }
 
@@ -163,7 +166,7 @@ public class ApisDesignRest {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid ApisDesignExportDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject ApisDesignExportDto dto, HttpServletResponse response) {
     return apisDesignFacade.export(dto, response);
   }
 

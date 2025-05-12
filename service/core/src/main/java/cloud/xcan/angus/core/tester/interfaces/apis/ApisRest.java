@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.validator.constraints.Length;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -195,8 +196,9 @@ public class ApisRest {
     apisFacade.serverDelete(id, urls);
   }
 
-  @Operation(description = "Query the server configuration of apis. Note: `The data source includes "
-      + "the current api request server, api servers configuration, and parent services servers configuration`.", operationId = "apis:schema:server:all")
+  @Operation(description =
+      "Query the server configuration of apis. Note: `The data source includes "
+          + "the current api request server, api servers configuration, and parent services servers configuration`.", operationId = "apis:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Api not found")
@@ -248,7 +250,7 @@ public class ApisRest {
   @GetMapping(value = "/{id}/openapi")
   public ApiLocaleResult<String> openapiDetail(
       @Parameter(name = "id", description = "Apis id", required = true) @PathVariable("id") Long id,
-      ApisSchemaOpenApiDto dto) {
+      @Valid @ParameterObject ApisSchemaOpenApiDto dto) {
     return ApiLocaleResult.successData(apisFacade.openapiDetail(id, dto));
   }
 
@@ -281,7 +283,8 @@ public class ApisRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ApisInfoListVo>> list(@Valid ApisInfoFindDto dto) {
+  public ApiLocaleResult<PageResult<ApisInfoListVo>> list(
+      @Valid @ParameterObject ApisInfoFindDto dto) {
     return ApiLocaleResult.success(apisFacade.list(dto));
   }
 
@@ -289,7 +292,8 @@ public class ApisRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisInfoListVo>> search(@Valid ApisInfoSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisInfoListVo>> search(
+      @Valid @ParameterObject ApisInfoSearchDto dto) {
     return ApiLocaleResult.success(apisFacade.search(dto));
   }
 
@@ -299,7 +303,7 @@ public class ApisRest {
   @GetMapping(value = "/{id}/openapi/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
       @Parameter(name = "id", description = "Apis id", required = true) @PathVariable("id") Long id,
-      @Valid ApisExportDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject ApisExportDto dto, HttpServletResponse response) {
     return apisFacade.export(id, dto, response);
   }
 

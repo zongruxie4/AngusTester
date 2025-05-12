@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,7 +101,7 @@ public class IndicatorPerfRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf")
-  public ApiLocaleResult<PageResult<PerfListVo>> list(@Valid PerfFindDto dto) {
+  public ApiLocaleResult<PageResult<PerfListVo>> list(@Valid @ParameterObject PerfFindDto dto) {
     return ApiLocaleResult.success(indicatorPerfFacade.list(dto));
   }
 
@@ -108,7 +109,7 @@ public class IndicatorPerfRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf/search")
-  public ApiLocaleResult<PageResult<PerfListVo>> search(@Valid PerfSearchDto dto) {
+  public ApiLocaleResult<PageResult<PerfListVo>> search(@Valid @ParameterObject PerfSearchDto dto) {
     return ApiLocaleResult.success(indicatorPerfFacade.search(dto));
   }
 

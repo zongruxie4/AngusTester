@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,7 +82,7 @@ public class ProjectTrashRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<ProjectTrashDetailVo>> search(
-      @Valid ProjectTrashSearchDto dto) {
+      @Valid @ParameterObject ProjectTrashSearchDto dto) {
     return ApiLocaleResult.success(projectTrashFacade.search(dto));
   }
 

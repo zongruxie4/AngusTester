@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -157,7 +158,8 @@ public class FuncPlanAuthRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")
-  public ApiLocaleResult<PageResult<FuncPlanAuthVo>> list(@Valid FuncPlanAuthFindDto dto) {
+  public ApiLocaleResult<PageResult<FuncPlanAuthVo>> list(
+      @Valid @ParameterObject FuncPlanAuthFindDto dto) {
     return ApiLocaleResult.success(funcPlanAuthFacade.list(dto));
   }
 

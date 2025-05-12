@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -131,7 +132,7 @@ public class MockServiceAuthRest {
   @GetMapping("/{id}/auth")
   public ApiLocaleResult<PageResult<ServiceAuthVo>> list(
       @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long id,
-      @Valid ServiceAuthFindDto dto) {
+      @Valid @ParameterObject ServiceAuthFindDto dto) {
     return ApiLocaleResult.success(mockServiceAuthFacade.list(id, dto));
   }
 

@@ -32,6 +32,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.LinkedHashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,7 +79,8 @@ public class ExecRest {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
   @PostMapping(value = "/byscript")
-  public ApiLocaleResult<IdKey<Long, Object>> addByScript(@Valid @RequestBody ExecAddByScriptDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> addByScript(
+      @Valid @RequestBody ExecAddByScriptDto dto) {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
@@ -178,7 +180,7 @@ public class ExecRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ExecVo>> list(@Valid ExecFindDto dto) {
+  public ApiLocaleResult<PageResult<ExecVo>> list(@Valid @ParameterObject ExecFindDto dto) {
     return ApiLocaleResult.success(execFacade.list(dto));
   }
 
@@ -186,7 +188,7 @@ public class ExecRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ExecVo>> search(@Valid ExecSearchDto dto) {
+  public ApiLocaleResult<PageResult<ExecVo>> search(@Valid @ParameterObject ExecSearchDto dto) {
     return ApiLocaleResult.success(execFacade.search(dto));
   }
 

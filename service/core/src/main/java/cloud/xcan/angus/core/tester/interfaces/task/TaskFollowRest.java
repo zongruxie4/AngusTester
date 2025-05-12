@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,7 +70,7 @@ public class TaskFollowRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
   public ApiLocaleResult<PageResult<TaskFollowDetailVo>> search(
-      @Valid TaskFollowFindDto dto) {
+      @Valid @ParameterObject TaskFollowFindDto dto) {
     return ApiLocaleResult.success(taskFollowFacade.search(dto));
   }
 

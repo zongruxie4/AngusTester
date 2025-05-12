@@ -30,6 +30,7 @@ import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -189,7 +190,7 @@ public class NodeRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/count")
-  public ApiLocaleResult<Long> count(@Valid NodeCountFindDto dto) {
+  public ApiLocaleResult<Long> count(@Valid @ParameterObject NodeCountFindDto dto) {
     return ApiLocaleResult.success(nodeFacade.count(dto));
   }
 
@@ -206,7 +207,7 @@ public class NodeRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<NodeDetailVo>> list(@Valid NodeFindDto dto) {
+  public ApiLocaleResult<PageResult<NodeDetailVo>> list(@Valid @ParameterObject NodeFindDto dto) {
     return ApiLocaleResult.success(nodeFacade.list(dto));
   }
 
@@ -214,7 +215,8 @@ public class NodeRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<NodeDetailVo>> search(@Valid NodeSearchDto dto) {
+  public ApiLocaleResult<PageResult<NodeDetailVo>> search(
+      @Valid @ParameterObject NodeSearchDto dto) {
     return ApiLocaleResult.success(nodeFacade.search(dto));
   }
 

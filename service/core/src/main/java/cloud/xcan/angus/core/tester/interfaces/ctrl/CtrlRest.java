@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class CtrlRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_ENDPOINT_SUFFIX)
-  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(DiscoveryNodeDto dto) {
+  public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(@ParameterObject DiscoveryNodeDto dto) {
     return ctrlFacade.discovery(dto);
   }
 

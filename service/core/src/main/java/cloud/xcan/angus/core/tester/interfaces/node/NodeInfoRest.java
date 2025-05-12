@@ -31,6 +31,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +63,8 @@ public class NodeInfoRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = LIST_ENDPOINT)
-  public ApiLocaleResult<PageResult<NodeInfoDetailVo>> list(@Valid NodeInfoFindDto dto) {
+  public ApiLocaleResult<PageResult<NodeInfoDetailVo>> list(
+      @Valid @ParameterObject NodeInfoFindDto dto) {
     return ApiLocaleResult.success(nodeInfoFacade.list(dto));
   }
 
@@ -108,7 +110,8 @@ public class NodeInfoRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @PostMapping(value = RUNNER_PROCESS_ENDPOINT)
-  public ApiLocaleResult<RunnerQueryVo> runnerProcess(@Valid NodeRunnerQueryDto dto) {
+  public ApiLocaleResult<RunnerQueryVo> runnerProcess(
+      @Valid @ParameterObject NodeRunnerQueryDto dto) {
     return ApiLocaleResult.success(nodeInfoFacade.runnerProcess(dto));
   }
 

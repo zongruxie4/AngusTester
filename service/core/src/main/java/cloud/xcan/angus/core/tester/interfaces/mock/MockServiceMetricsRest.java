@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class MockServiceMetricsRest {
   @GetMapping(value = "/{id}/metrics")
   public ApiLocaleResult<PageResult<MockServiceMetricsVo>> metrics(
       @Parameter(name = "id", description = "Mock service ID", required = true) @PathVariable("id") Long id,
-      @Valid NodeMetricsFindDto dto) {
+      @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(mockServiceMetricsFacade.metrics(id, dto));
   }
 

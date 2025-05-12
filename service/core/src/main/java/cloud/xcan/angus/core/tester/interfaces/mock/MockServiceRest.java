@@ -34,6 +34,7 @@ import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +86,8 @@ public class MockServiceRest {
       @ApiResponse(responseCode = "404", description = "Resource not found")
   })
   @PutMapping
-  public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody MockServiceReplaceDto dto) {
+  public ApiLocaleResult<IdKey<Long, Object>> replace(
+      @Valid @RequestBody MockServiceReplaceDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.replace(dto));
   }
 
@@ -229,7 +231,8 @@ public class MockServiceRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<MockServiceListVo>> list(@Valid MockServiceFindDto dto) {
+  public ApiLocaleResult<PageResult<MockServiceListVo>> list(
+      @Valid @ParameterObject MockServiceFindDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.list(dto));
   }
 
@@ -237,7 +240,8 @@ public class MockServiceRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<MockServiceListVo>> search(@Valid MockServiceSearchDto dto) {
+  public ApiLocaleResult<PageResult<MockServiceListVo>> search(
+      @Valid @ParameterObject MockServiceSearchDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.search(dto));
   }
 
@@ -247,7 +251,7 @@ public class MockServiceRest {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid MockServiceExportDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject MockServiceExportDto dto, HttpServletResponse response) {
     return mockServiceFacade.export(dto, response);
   }
 

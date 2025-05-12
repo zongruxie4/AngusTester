@@ -24,6 +24,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.hibernate.validator.constraints.Length;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -124,7 +125,7 @@ public class ApisUnarchivedRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisUnarchivedListVo>> list(
-      @Valid ApisUnarchivedFindDto dto) {
+      @Valid @ParameterObject ApisUnarchivedFindDto dto) {
     return ApiLocaleResult.success(apisUnarchivedFacade.list(dto));
   }
 
@@ -133,7 +134,7 @@ public class ApisUnarchivedRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
   public ApiLocaleResult<PageResult<ApisUnarchivedListVo>> search(
-      @Valid ApisUnarchivedSearchDto dto) {
+      @Valid @ParameterObject ApisUnarchivedSearchDto dto) {
     return ApiLocaleResult.success(apisUnarchivedFacade.search(dto));
   }
 }

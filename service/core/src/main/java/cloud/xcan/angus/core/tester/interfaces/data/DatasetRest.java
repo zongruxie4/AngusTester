@@ -29,6 +29,7 @@ import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -147,7 +148,8 @@ public class DatasetRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<DatasetDetailVo>> list(@Valid DatasetFindDto dto) {
+  public ApiLocaleResult<PageResult<DatasetDetailVo>> list(
+      @Valid @ParameterObject DatasetFindDto dto) {
     return ApiLocaleResult.success(datasetFacade.list(dto));
   }
 
@@ -155,7 +157,8 @@ public class DatasetRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<DatasetDetailVo>> search(@Valid DatasetSearchDto dto) {
+  public ApiLocaleResult<PageResult<DatasetDetailVo>> search(
+      @Valid @ParameterObject DatasetSearchDto dto) {
     return ApiLocaleResult.success(datasetFacade.search(dto));
   }
 
@@ -164,7 +167,8 @@ public class DatasetRest {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })
   @GetMapping(value = "/export")
-  public ResponseEntity<org.springframework.core.io.Resource> export(@Valid DatasetExportDto dto,
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      @Valid @ParameterObject DatasetExportDto dto,
       HttpServletResponse response) {
     return datasetFacade.export(dto, response);
   }

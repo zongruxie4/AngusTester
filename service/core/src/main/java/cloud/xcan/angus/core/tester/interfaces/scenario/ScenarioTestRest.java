@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -79,7 +80,7 @@ public class ScenarioTestRest {
   @GetMapping("/project/{id}/test/scenario/count")
   public ApiLocaleResult<ScenarioTestCount> countProjectTestScenarios(
       @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(scenarioTestFacade.countProjectTestScenarios(projectId, dto));
   }
 

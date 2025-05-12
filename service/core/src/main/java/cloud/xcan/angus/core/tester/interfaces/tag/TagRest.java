@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -106,7 +107,7 @@ public class TagRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TagVo>> search(@Valid TagSearchDto dto) {
+  public ApiLocaleResult<PageResult<TagVo>> search(@Valid @ParameterObject TagSearchDto dto) {
     return ApiLocaleResult.success(tagFacade.search(dto));
   }
 }

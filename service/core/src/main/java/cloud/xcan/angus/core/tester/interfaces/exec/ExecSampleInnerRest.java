@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import java.util.LinkedHashMap;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +52,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/summary/list")
   public ApiLocaleResult<PageResult<ExecSampleVo>> summaryList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleFindDto dto) {
+      @Valid @ParameterObject ExecSampleFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.summaryList(id, dto));
   }
 
@@ -61,7 +62,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/score")
   public ApiLocaleResult<PageResult<ExecSampleVo>> scoreList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleFindDto dto) {
+      @Valid @ParameterObject ExecSampleFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.scoreList(id, dto));
   }
 
@@ -71,7 +72,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/throughput")
   public ApiLocaleResult<PageResult<ExecSampleVo>> throughputList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleFindDto dto) {
+      @Valid @ParameterObject ExecSampleFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.throughputList(id, dto));
   }
 
@@ -81,7 +82,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/thread")
   public ApiLocaleResult<PageResult<ExecSampleVo>> threadList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleFindDto dto) {
+      @Valid @ParameterObject ExecSampleFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.threadList(id, dto));
   }
 
@@ -91,7 +92,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/error")
   public ApiLocaleResult<PageResult<ExecSampleVo>> errorList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleFindDto dto) {
+      @Valid @ParameterObject ExecSampleFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.errorList(id, dto));
   }
 
@@ -101,7 +102,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/error/content")
   public ApiLocaleResult<PageResult<ExecSampleErrorContentVo>> errorContent(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleErrorContentFindDto dto) {
+      @Valid @ParameterObject ExecSampleErrorContentFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.errorContent(id, dto));
   }
 
@@ -142,7 +143,7 @@ public class ExecSampleInnerRest {
   @GetMapping(value = "/{id}/sample/extension/content")
   public ApiLocaleResult<PageResult<ExecSampleContent>> extContentList(
       @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Valid ExecSampleExtcFindDto dto) {
+      @Valid @ParameterObject ExecSampleExtcFindDto dto) {
     return ApiLocaleResult.success(execSampleFacade.extContentList(id, dto));
   }
 

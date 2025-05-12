@@ -25,6 +25,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -144,7 +145,8 @@ public class ScenarioRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ScenarioListVo>> list(@Valid ScenarioInfoFindDto dto) {
+  public ApiLocaleResult<PageResult<ScenarioListVo>> list(
+      @Valid @ParameterObject ScenarioInfoFindDto dto) {
     return ApiLocaleResult.success(scenarioFacade.list(dto));
   }
 
@@ -152,7 +154,8 @@ public class ScenarioRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScenarioListVo>> search(@Valid ScenarioInfoSearchDto dto) {
+  public ApiLocaleResult<PageResult<ScenarioListVo>> search(
+      @Valid @ParameterObject ScenarioInfoSearchDto dto) {
     return ApiLocaleResult.success(scenarioFacade.search(dto));
   }
 

@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -96,7 +97,8 @@ public class TaskMeetingRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<TaskMeetingVo>> list(@Valid TaskMeetingFindDto dto) {
+  public ApiLocaleResult<PageResult<TaskMeetingVo>> list(
+      @Valid @ParameterObject TaskMeetingFindDto dto) {
     return ApiLocaleResult.success(taskMeetingFacade.list(dto));
   }
 
@@ -104,7 +106,8 @@ public class TaskMeetingRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskMeetingVo>> search(@Valid TaskMeetingSearchDto dto) {
+  public ApiLocaleResult<PageResult<TaskMeetingVo>> search(
+      @Valid @ParameterObject TaskMeetingSearchDto dto) {
     return ApiLocaleResult.success(taskMeetingFacade.search(dto));
   }
 

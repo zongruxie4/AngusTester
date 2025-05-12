@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +47,7 @@ public class MockApisLogRest {
   @GetMapping("/service/{mockServiceId}/apis/log")
   public ApiLocaleResult<PageResult<MockApisLogListVo>> list(
       @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
-      @Valid MockApisLogFindDto dto) {
+      @Valid @ParameterObject MockApisLogFindDto dto) {
     return ApiLocaleResult.success(mockApisLogFacade.list(mockServiceId, dto));
   }
 
@@ -56,7 +57,7 @@ public class MockApisLogRest {
   @GetMapping("/service/{mockServiceId}/apis/log/search")
   public ApiLocaleResult<PageResult<MockApisLogListVo>> search(
       @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
-      @Valid MockApisLogSearchDto dto) {
+      @Valid @ParameterObject MockApisLogSearchDto dto) {
     return ApiLocaleResult.success(mockApisLogFacade.search(mockServiceId, dto));
   }
 }

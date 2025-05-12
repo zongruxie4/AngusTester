@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -83,7 +84,8 @@ public class NodeDomainRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<NodeDomainDetailVo>> list(@Valid NodeDomainFindDto dto) {
+  public ApiLocaleResult<PageResult<NodeDomainDetailVo>> list(
+      @Valid @ParameterObject NodeDomainFindDto dto) {
     return ApiLocaleResult.success(nodeDomainFacade.list(dto));
   }
 

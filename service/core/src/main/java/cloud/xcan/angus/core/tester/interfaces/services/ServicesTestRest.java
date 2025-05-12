@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -73,7 +74,7 @@ public class ServicesTestRest {
   @GetMapping("/services/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countServiceTestApis(
       @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
@@ -85,7 +86,7 @@ public class ServicesTestRest {
   @GetMapping("/project/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countProjectTestApis(
       @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
-      OrgAndDateFilterDto dto) {
+      @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countProjectTestApis(projectId, dto));
   }
 

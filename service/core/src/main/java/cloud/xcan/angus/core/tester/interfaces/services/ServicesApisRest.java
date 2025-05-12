@@ -22,6 +22,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesApis",description = "Service Apis Params - Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service.")
+@Tag(name = "ServicesApis", description = "Service Apis Params - Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -52,7 +53,7 @@ public class ServicesApisRest {
   @PutMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> addParameters(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<io.swagger.v3.oas.models.parameters.Parameter> parameters) {
     apisFacade.addParameters(serviceId, dto, parameters);
     return ApiLocaleResult.success();
@@ -66,7 +67,7 @@ public class ServicesApisRest {
   @PatchMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> updateParameters(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<io.swagger.v3.oas.models.parameters.Parameter> parameters) {
     apisFacade.updateParameters(serviceId, dto, parameters);
     return ApiLocaleResult.success();
@@ -80,7 +81,7 @@ public class ServicesApisRest {
   @DeleteMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> deleteParameters(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names", required = true) @RequestParam(value = "names") List<String> names) {
     apisFacade.deleteParameters(serviceId, dto, names);
     return ApiLocaleResult.success();
@@ -94,7 +95,7 @@ public class ServicesApisRest {
   @PatchMapping("/{serviceId}/apis/parameter/enabled")
   public ApiLocaleResult<?> enableParameters(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names", required = true) @RequestParam(value = "names") List<String> names,
       @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     apisFacade.enableParameters(serviceId, dto, names, enabled);
@@ -109,7 +110,7 @@ public class ServicesApisRest {
   @PatchMapping("/{serviceId}/apis/authentication")
   public ApiLocaleResult<?> updateAuth(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto, @RequestBody SecurityScheme authentication) {
+      @Valid @ParameterObject ServiceApisScopeDto dto, @RequestBody SecurityScheme authentication) {
     apisFacade.updateAuth(serviceId, dto, authentication);
     return ApiLocaleResult.success();
   }
@@ -122,7 +123,7 @@ public class ServicesApisRest {
   @PatchMapping("/{serviceId}/apis/server")
   public ApiLocaleResult<?> updateServer(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto, @RequestBody Server server) {
+      @Valid @ParameterObject ServiceApisScopeDto dto, @RequestBody Server server) {
     apisFacade.updateServer(serviceId, dto, server);
     return ApiLocaleResult.success();
   }
@@ -135,7 +136,7 @@ public class ServicesApisRest {
   @PutMapping("/{serviceId}/apis/variable/reference")
   public ApiLocaleResult<?> addVariableReference(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names", required = true) @RequestParam(value = "names", required = true) List<String> variableNames) {
     apisFacade.addVariableReference(serviceId, dto, variableNames);
     return ApiLocaleResult.success();
@@ -149,7 +150,7 @@ public class ServicesApisRest {
   @DeleteMapping("/{serviceId}/apis/variable/reference")
   public ApiLocaleResult<?> deleteVariableReference(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names", required = true) @RequestParam(value = "names", required = true) List<String> variableNames) {
     apisFacade.deleteVariableReference(serviceId, dto, variableNames);
     return ApiLocaleResult.success();
@@ -163,7 +164,7 @@ public class ServicesApisRest {
   @PutMapping("/{serviceId}/apis/dataset/reference")
   public ApiLocaleResult<?> addDatasetReference(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames) {
     apisFacade.addDatasetReference(serviceId, dto, datasetNames);
     return ApiLocaleResult.success();
@@ -177,7 +178,7 @@ public class ServicesApisRest {
   @DeleteMapping("/{serviceId}/apis/dataset/reference")
   public ApiLocaleResult<?> deleteDatasetReference(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisScopeDto dto,
+      @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames) {
     apisFacade.deleteDatasetReference(serviceId, dto, datasetNames);
     return ApiLocaleResult.success();
@@ -189,7 +190,7 @@ public class ServicesApisRest {
   @GetMapping("/{serviceId}/apis")
   public ApiLocaleResult<PageResult<ServicesApisInfoListVo>> listApis(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServiceApisFindDto dto) {
+      @Valid @ParameterObject ServiceApisFindDto dto) {
     return ApiLocaleResult.success(apisFacade.listApis(serviceId, dto));
   }
 
@@ -199,7 +200,7 @@ public class ServicesApisRest {
   @GetMapping("/{serviceId}/apis/search")
   public ApiLocaleResult<PageResult<ServicesApisInfoListVo>> searchApis(
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid ServicesApisSearchDto dto) {
+      @Valid @ParameterObject ServicesApisSearchDto dto) {
     return ApiLocaleResult.success(apisFacade.searchApis(serviceId, dto));
   }
 
