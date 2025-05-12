@@ -4,6 +4,7 @@ import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API_CASE;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SCRIPT;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_SCRIPT_FILES;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotNull;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
@@ -22,12 +23,13 @@ import static cloud.xcan.angus.model.script.configuration.ScriptType.TEST_FUNCTI
 import static cloud.xcan.angus.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isBlank;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.angus.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
@@ -44,7 +46,6 @@ import cloud.xcan.angus.core.tester.application.converter.ApisToAngusModelConver
 import cloud.xcan.angus.core.tester.application.converter.DatasetConverter;
 import cloud.xcan.angus.core.tester.application.converter.ScriptConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetTargetQuery;
 import cloud.xcan.angus.core.tester.application.query.data.VariableTargetQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -72,7 +73,6 @@ import cloud.xcan.angus.model.script.configuration.Threads;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.model.script.pipeline.Task;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import java.io.IOException;
@@ -107,9 +107,6 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Resource
   private ScriptTagCmd scriptTagCmd;
-
-  @Resource
-  private ApisQuery apisQuery;
 
   @Resource
   private ApisCaseQuery apisCaseQuery;
@@ -585,7 +582,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       protected void checkParams() {
         scriptDb = scenarioQuery.checkAndFindScenarioScript(id);
 
-        ProtocolAssert.assertTrue(scriptDb.getSource().isUnique(),
+        assertTrue(scriptDb.getSource().isUnique(),
             "The associated resource script does not allow cloning");
       }
 
@@ -610,7 +607,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        ProtocolAssert.assertTrue(isNotBlank(script.getContent()) || nonNull(script.getFile()),
+        assertTrue(isNotBlank(script.getContent()) || nonNull(script.getFile()),
             "Importing content and files must specify one of them");
       }
 
@@ -619,7 +616,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         if (isBlank(script.getContent())) {
           try {
             String content = copyToString(script.getFile().getInputStream(), UTF_8);
-            ProtocolAssert.assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
+            assertTrue(content.length() <= ANGUS_SCRIPT_LENGTH,
                 "Script length exceeds the limit of " + ANGUS_SCRIPT_LENGTH);
             script.setContent(content);
           } catch (IOException e) {
@@ -694,7 +691,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   @Override
   public void deleteBySource(ScriptSource source, Collection<Long> targetIds) {
     Set<Long> scriptIds = scriptQuery.findIdsBySource(source, targetIds);
-    if (ObjectUtils.isNotEmpty(scriptIds)) {
+    if (isNotEmpty(scriptIds)) {
       scriptRepo.deleteByIdIn(scriptIds);
       scriptTagCmd.deleteByScriptIdIn(scriptIds);
       scriptAuthCmd.deleteByScriptIdIn(scriptIds);
@@ -705,7 +702,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   public void deleteBySource(ScriptSource source, Collection<Long> targetIds,
       Collection<ScriptType> testTypes) {
     Set<Long> scriptIds = scriptQuery.findIdsBySourceAndTypeIn(source, targetIds, testTypes);
-    if (ObjectUtils.isNotEmpty(scriptIds)) {
+    if (isNotEmpty(scriptIds)) {
       scriptRepo.deleteByIdIn(scriptIds);
       scriptTagCmd.deleteByScriptIdIn(scriptIds);
       scriptAuthCmd.deleteByScriptIdIn(scriptIds);

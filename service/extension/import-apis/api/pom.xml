@@ -44,50 +44,15 @@
     </dependency>
 
     <dependency>
-      <groupId>io.swagger.validator.v3</groupId>
-      <artifactId>swagger-validator</artifactId>
+      <groupId>io.swagger.parser.v3</groupId>
+      <artifactId>swagger-parser</artifactId>
       <exclusions>
         <!-- Use the spec module instead -->
         <exclusion>
           <groupId>io.swagger.core.v3</groupId>
           <artifactId>swagger-models</artifactId>
         </exclusion>
-        <!-- mvn dependency:tree > dependency.txt -> swagger-inflector -> Jersey
-          /**
-           * <a
-           * href="https://stackoverflow.com/questions/77684538/how-to-solve-netflix-eureka-client-error-in-spring-boot-3-2-0-and-java-17">Fix:
-           * No qualifying bean of type
-           * 'com.netflix.discovery.shared.transport.jersey.TransportClientFactories<?>' available: expected
-           * at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}</a>
-           */
-        -->
-        <!-- Jersey -->
-        <exclusion>
-          <groupId>org.glassfish.jersey.inject</groupId>
-          <artifactId>jersey-hk2</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish.jersey.core</groupId>
-          <artifactId>jersey-server</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish.jersey.media</groupId>
-          <artifactId>jersey-media-multipart</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish.jersey.core</groupId>
-          <artifactId>jersey-client</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish.jersey.core</groupId>
-          <artifactId>jersey-server</artifactId>
-        </exclusion>
       </exclusions>
-      <!-- !!! VERY IMPORTANT -->
       <scope>provided</scope>
     </dependency>
   </dependencies>

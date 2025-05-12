@@ -21,10 +21,10 @@ import static cloud.xcan.angus.model.AngusConstant.NOT_SECURITY_CODE_REG;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguage;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.angus.spec.utils.StreamUtils.copyToString;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;

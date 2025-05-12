@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.apis.impl;
 
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static java.util.Objects.isNull;
-import static org.apache.commons.lang.StringUtils.isEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;

@@ -75,7 +75,7 @@
       <artifactId>xcan-plugin.spring</artifactId>
     </dependency>
 
-    <!-- Note: Cannot move to the front, which will cause OAS failure in SDF -->
+    <!-- Note: Cannot move to the front, which will cause OAS failure in Angus -->
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
       <artifactId>xcan-angustester.api</artifactId>

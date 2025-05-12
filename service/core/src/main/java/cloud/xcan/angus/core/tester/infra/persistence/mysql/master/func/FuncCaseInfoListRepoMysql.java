@@ -119,7 +119,7 @@ public class FuncCaseInfoListRepoMysql extends AbstractSearchRepository<FuncCase
       this.setQueryParameter(queryCount, criteria, FuncCaseInfo.class);
     }
     Object count0 = queryCount.getSingleResult();
-    long count = count instanceof BigInteger ? ((BigInteger) count).longValue() : (Long) count;
+    long count = count0 instanceof BigInteger ? ((BigInteger) count0).longValue() : (Long) count0;
     return new FixedPageImpl<>(groupIds, pageable, count);
   }
 
