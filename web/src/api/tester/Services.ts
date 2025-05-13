@@ -6,37 +6,26 @@ export default class API {
     baseUrl = prefix + '/services';
   }
 
-  // 获取服务列表
   loadList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params, axiosConfig);
   }
 
-  // 获取服务详情信息
   loadInfo (params: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${params}`, {});
   }
 
-  // 添加服务
   addServices (params: any): Promise<[Error | null, any]> {
     return http.post(baseUrl, params);
   }
 
-  // 更新项目
   updateServices (params: any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${params.id}/name?name=${params.name}`);
   }
 
-  // TODO Q2 肯定有用到为什么没找到？ 删除服务
-  delProject (params: any): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${params.id}`, {});
-  }
-
-  // 克隆服务
   cloneServices (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${params.id}/clone`);
   }
 
-  // 导出服务
   exportServices (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/export`, params);
   }
@@ -90,58 +79,47 @@ export default class API {
     return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
-  // 查询apis列表
   loadApis (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
     const { id, ...param } = params;
     return http.get(`${baseUrl}/${id}/apis/search`, param, axiosConfig);
   }
 
-  // 重新测试
   resetTest (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/test/task/restart`);
   }
 
-  // 重新打开测试任务
   reOpen (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/test/task/reopen`);
   }
 
-  // 删除测试任务
   deleteTest (id: string, testTypes: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/test/task`, { testTypes });
   }
 
-  // 权限弹窗 添加权限
   addAuth (id: string, params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/auth`, params);
   }
 
-  // 修改权限
   updateAuth (authId: string, params: any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
-  // 删除授权
   delAuth (authId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/auth/${authId}`);
   }
 
-  // 更改是否有权限控制
   updateAuthEnabled (params: any): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
   }
 
-  // 本地导入
   localImport (params: FormData): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/import`, params);
   }
 
-  // 服务活动记录
   loadActivity ({ id, ...params }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/activity`, params);
   }
 
-  // 查询操作权限
   loadActionAuth ({ id = '', userId = '' }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/user/${userId}/auth`);
   }
@@ -150,7 +128,6 @@ export default class API {
     return http.get(`${baseUrl}/${id}/apis`, params);
   }
 
-  // 修改接口状态
   patchStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/status?status=${status}`);
   }

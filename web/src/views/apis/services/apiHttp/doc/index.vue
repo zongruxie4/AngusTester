@@ -44,7 +44,7 @@ onMounted(async () => {
     <rapi-pdf></rapi-pdf> -->
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="`${docOrigin}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      :spec-url="`${docOrigin}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
       renderStyle="view"
       theme="light"
       headerColor="#fff"
