@@ -4,12 +4,10 @@ import { Icon, Input, Modal, notification, SelectEnum, Spin } from '@xcan-angus/
 import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
-import { slocalStore } from '@xcan-angus/tools';
+import { localStore } from '@xcan-angus/tools';
 import { apis } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-
-
 
 import ApiDebug from '@/views/apis/services/components/case/debug/index.vue';
 import { ApiInfo } from '@/views/apis/services/components/case/debug/PropsType.ts';

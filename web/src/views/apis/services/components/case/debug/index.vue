@@ -4,7 +4,7 @@ import { Input, NoData, notification, Select, SelectInput } from '@xcan-angus/vu
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
-import { axiosClient, TESTER, http, utils } from '@xcan-angus/tools';
+import { axiosClient, utils } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
@@ -58,7 +58,7 @@ const ApiHeader = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(d
 const ApiCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiCookie));
 const ApiBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiBody));
 const ApiAssert = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiAssert));
-const Toolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.Toolbar));
+const DebugToolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.DebugToolbar));
 const ResponseBase = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBase));
 const ResponseBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBody));
 const ResponseCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseCookie));
@@ -1449,7 +1449,7 @@ defineExpose({
         @rendered="rendered('apiAssert')" />
     </div>
   </div>
-  <Toolbar
+  <DebugToolbar
     ref="toolbarRef"
     v-model:height="toolbarHeight"
     v-model:tab="currentTab"
@@ -1515,5 +1515,5 @@ defineExpose({
         </div>
       </template>
     </template>
-  </Toolbar>
+  </DebugToolbar>
 </template>
