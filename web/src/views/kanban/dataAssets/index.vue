@@ -1248,32 +1248,32 @@ const scriptBarChartsConfig = {
 };
 
 // 报告数据
-const loadReport = async () => {
-  const [error, { data = {} }] = await kanban.loadReport({ ...params.value });
-  if (error) {
-    return;
-  }
-  reportTotal.value = data.allReport || 0;
-  if (data.reportByCategory) {
-    if (reportCategoryOpt.value.length) {
-      reportBarChartsConfig.series[0].data = reportCategoryOpt.value.map(i => {
-        return data.reportByCategory?.[i.value] || 0;
-      });
-    } else {
-      const { APIS, FUNCTIONAL, PROJECT, SCENARIO, TASK, EXECUTION } = data.reportByCategory;
-      const yData = [APIS, FUNCTIONAL, PROJECT, SCENARIO, TASK, EXECUTION];
-      reportBarChartsConfig.series[0].data = yData;
-    }
-  } else {
-    reportBarChartsConfig.series[0].data = [];
-  }
-  reportBarCharts.setOption(reportBarChartsConfig);
-  nextTick(() => reportBarCharts.resize());
-};
+// const loadReport = async () => {
+//   const [error, { data = {} }] = await kanban.loadReport({ ...params.value });
+//   if (error) {
+//     return;
+//   }
+//   reportTotal.value = data.allReport || 0;
+//   if (data.reportByCategory) {
+//     if (reportCategoryOpt.value.length) {
+//       reportBarChartsConfig.series[0].data = reportCategoryOpt.value.map(i => {
+//         return data.reportByCategory?.[i.value] || 0;
+//       });
+//     } else {
+//       const { APIS, FUNCTIONAL, PROJECT, SCENARIO, TASK, EXECUTION } = data.reportByCategory;
+//       const yData = [APIS, FUNCTIONAL, PROJECT, SCENARIO, TASK, EXECUTION];
+//       reportBarChartsConfig.series[0].data = yData;
+//     }
+//   } else {
+//     reportBarChartsConfig.series[0].data = [];
+//   }
+//   reportBarCharts.setOption(reportBarChartsConfig);
+//   nextTick(() => reportBarCharts.resize());
+// };
 
 // 报告图表
-let reportBarCharts;
-const reportRef = ref();
+// let reportBarCharts;
+// const reportRef = ref();
 const reportBarChartsConfig = {
   grid: {
     left: '60',
@@ -1387,11 +1387,7 @@ const resizeEcharts = () => {
   apiPieEcharts.setOption(apiPieEchartsConfig);
   apiBarEcharts.resize();
   apiPieEcharts.resize();
-  // taskBarEcharts = eCharts.init(taskStatusRef.value);
-  // taskBarEcharts.setOption(taskBarEchartsConfig);
 
-  // taskPieEcharts = eCharts.init(taskReviewRef.value);
-  // taskPieEcharts.setOption(taskPieEchartsConfig);
 
   if (proTypeShowMap.value.showTask) {
     taskBarEcharts.resize();
@@ -1401,7 +1397,7 @@ const resizeEcharts = () => {
   interationPieEcharts.resize();
   scenairoPieCharts.resize();
   scriptBarCharts.resize();
-  reportBarCharts.resize();
+  // reportBarCharts.resize();
 };
 
 // 监听右侧宽度变化，重绘右侧Echarts
@@ -1473,7 +1469,7 @@ onMounted(async () => {
       loadScript();
       loadMock();
       loadData();
-      loadReport();
+      // loadReport();
     }
   }, {
     immediate: true
@@ -1529,8 +1525,8 @@ const initChart = () => {
   scriptBarCharts = eCharts.init(scriptRef.value);
   scriptBarCharts.setOption(scriptBarChartsConfig);
 
-  reportBarCharts = eCharts.init(reportRef.value);
-  reportBarCharts.setOption(reportBarChartsConfig);
+  // reportBarCharts = eCharts.init(reportRef.value);
+  // reportBarCharts.setOption(reportBarChartsConfig);
 
   if (interationReviewRef.value) {
     interationPieEcharts = eCharts.init(interationReviewRef.value);
@@ -1556,7 +1552,7 @@ const refresh = () => {
   loadScript();
   loadMock();
   loadData();
-  loadReport();
+  // loadReport();
 };
 
 defineExpose({
@@ -1785,7 +1781,7 @@ defineExpose({
         </div>
 
         <!--脚本-->
-        <div class="border rounded py-2 min-w-0" :class="`flex-1/${echartsCol}`">
+        <div class="border rounded py-2 min-w-0" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
           <div class="px-2 font-semibold">脚本</div>
           <div class="flex px-2">
             <div class="px-2 text-center flex flex-col justify-center">
@@ -1797,16 +1793,16 @@ defineExpose({
         </div>
 
         <!--报告-->
-        <div class=" border rounded py-2 min-w-0" :class="`flex-1/${echartsCol}`">
-          <div class="px-2 font-semibold">报告</div>
-          <div class="flex px-2">
-            <div class="px-2 text-center flex flex-col justify-center">
-              <div class=" font-semibold">{{ reportTotal }}</div>
-              <div>总数</div>
-            </div>
-            <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>
-          </div>
-        </div>
+<!--        <div class=" border rounded py-2 min-w-0" :class="`flex-1/${echartsCol}`">-->
+<!--          <div class="px-2 font-semibold">报告</div>-->
+<!--          <div class="flex px-2">-->
+<!--            <div class="px-2 text-center flex flex-col justify-center">-->
+<!--              <div class=" font-semibold">{{ reportTotal }}</div>-->
+<!--              <div>总数</div>-->
+<!--            </div>-->
+<!--            <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
     <div v-if="!proTypeShowMap.showTask" class="flex-1 min-w-0">
@@ -1955,7 +1951,7 @@ defineExpose({
         </div>
 
         <!--脚本-->
-        <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-1/${echartsCol}`">
+        <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
           <div class="border rounded py-2">
             <div class="px-2 font-semibold">脚本</div>
             <div class="flex px-2">
@@ -1969,18 +1965,18 @@ defineExpose({
         </div>
 
         <!--报告-->
-        <div class=" pr-2 min-w-0  flex-grow-0 pb-2" :class="`flex-1/${echartsCol}`">
-          <div class="border rounded py-2">
-            <div class="px-2 font-semibold">报告</div>
-            <div class="flex px-2">
-              <div class="px-2 text-center flex flex-col justify-center">
-                <div class=" font-semibold">{{ reportTotal }}</div>
-                <div>总数</div>
-              </div>
-              <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>
-            </div>
-          </div>
-        </div>
+<!--        <div class=" pr-2 min-w-0  flex-grow-0 pb-2" :class="`flex-1/${echartsCol}`">-->
+<!--          <div class="border rounded py-2">-->
+<!--            <div class="px-2 font-semibold">报告</div>-->
+<!--            <div class="flex px-2">-->
+<!--              <div class="px-2 text-center flex flex-col justify-center">-->
+<!--                <div class=" font-semibold">{{ reportTotal }}</div>-->
+<!--                <div>总数</div>-->
+<!--              </div>-->
+<!--              <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
     <div
