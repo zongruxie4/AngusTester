@@ -282,7 +282,7 @@ provide('getNewCurrentProject', loadData);
     </Dropdown>
     <HeaderMenu :menus="headerMenus" class="mr-3.5 flex-shrink flex-grow basis-0 layout-header-menu" />
     <HeaderSearch
-      v-if="app.codeMap.get('SearchbBar')?.hasAuth"
+      v-if="app.codeMap.get('SearchBar')?.hasAuth"
       style="width:170px;"
       class="mr-5 flex-shrink-0 flex-grow-0 basis-auto" />
     <template v-if="app.codeMap.get('Expense')?.hasAuth">
