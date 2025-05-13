@@ -28,8 +28,8 @@ public class MetricsDataSourceContextHolder {
    */
   public static String getDataSource() {
     Shard lookUpKey = HOLDER.get();
-    return lookUpKey == null || lookUpKey.dataSource() == null ? MASTER_DATASOURCE_KEY
-        : lookUpKey.dataSource();
+    return lookUpKey == null || lookUpKey.dataSource() == null
+        ? MASTER_DATASOURCE_KEY : lookUpKey.dataSource();
   }
 
   public static void clear() {

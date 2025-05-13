@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.domain.shardtable;
+package cloud.xcan.angus.core.tester.domain.shard;
 
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import java.util.List;

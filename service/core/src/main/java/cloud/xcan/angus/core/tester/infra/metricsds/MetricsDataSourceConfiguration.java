@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.infra.metricsds;
 
+import static java.util.Objects.nonNull;
+
 import cloud.xcan.angus.core.jpa.repository.BaseRepositoryImpl;
 import cloud.xcan.angus.core.tester.infra.metricsds.MetricsDataSourceConfiguration.JpaEnableMetricsMysqlConfiguration;
 import cloud.xcan.angus.core.tester.infra.metricsds.config.MetricsDataSourceExtraProperties;
@@ -233,34 +235,34 @@ public class MetricsDataSourceConfiguration {
   public DataSource routingDataSource(MetricsDataSourceProperties mds) {
     MetricsDynamicDataSourceRouter proxy = new MetricsDynamicDataSourceRouter();
     Map<Object, Object> targetDataSources = new HashMap<>();
-    if (Objects.nonNull(metrics0DataSource)) {
+    if (nonNull(metrics0DataSource)) {
       targetDataSources.put(METRICS0_DATASOURCE_KEY, metrics0DataSource);
     }
-    if (Objects.nonNull(metrics1DataSource)) {
+    if (nonNull(metrics1DataSource)) {
       targetDataSources.put(METRICS1_DATASOURCE_KEY, metrics1DataSource);
     }
-    if (Objects.nonNull(metrics2DataSource)) {
+    if (nonNull(metrics2DataSource)) {
       targetDataSources.put(METRICS2_DATASOURCE_KEY, metrics2DataSource);
     }
-    if (Objects.nonNull(metrics3DataSource)) {
+    if (nonNull(metrics3DataSource)) {
       targetDataSources.put(METRICS3_DATASOURCE_KEY, metrics3DataSource);
     }
-    if (Objects.nonNull(metrics4DataSource)) {
+    if (nonNull(metrics4DataSource)) {
       targetDataSources.put(METRICS4_DATASOURCE_KEY, metrics4DataSource);
     }
-    if (Objects.nonNull(metrics5DataSource)) {
+    if (nonNull(metrics5DataSource)) {
       targetDataSources.put(METRICS5_DATASOURCE_KEY, metrics5DataSource);
     }
-    if (Objects.nonNull(metrics6DataSource)) {
+    if (nonNull(metrics6DataSource)) {
       targetDataSources.put(METRICS6_DATASOURCE_KEY, metrics6DataSource);
     }
-    if (Objects.nonNull(metrics7DataSource)) {
+    if (nonNull(metrics7DataSource)) {
       targetDataSources.put(METRICS7_DATASOURCE_KEY, metrics7DataSource);
     }
-    if (Objects.nonNull(metrics8DataSource)) {
+    if (nonNull(metrics8DataSource)) {
       targetDataSources.put(METRICS8_DATASOURCE_KEY, metrics8DataSource);
     }
-    if (Objects.nonNull(metrics9DataSource)) {
+    if (nonNull(metrics9DataSource)) {
       targetDataSources.put(METRICS9_DATASOURCE_KEY, metrics9DataSource);
     }
     Assert.assertTrue(targetDataSources.size() == mds.getShardDbNum(),

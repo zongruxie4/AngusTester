@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.domain.shardtable;
+package cloud.xcan.angus.core.tester.domain.shard;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

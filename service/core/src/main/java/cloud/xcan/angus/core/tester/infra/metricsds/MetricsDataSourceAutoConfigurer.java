@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 public class MetricsDataSourceAutoConfigurer {
 
   @Bean(initMethod = "init")
-  cloud.xcan.angus.core.tester.infra.metricsds.TableSchemaManager tableSchemaManager() {
+  public TableSchemaManager tableSchemaManager() {
     return new TableSchemaManager();
   }
 

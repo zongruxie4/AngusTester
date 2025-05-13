@@ -145,7 +145,7 @@ public class ExecQueryImpl implements ExecQuery {
         Exec exec = checkAndFind(id);
 
         // For sharding invoke by innerapi
-        if (PrincipalContextUtils.isJobOrInnerApi()) {
+        if (isJobOrInnerApi()) {
           PrincipalContext.get().setOptTenantId(exec.getTenantId());
         }
 

@@ -50,28 +50,28 @@ xcan:
         driverClassName: com.mysql.cj.jdbc.Driver
         urls:
           - jdbc:mysql://${METRICS0_MYSQL_HOST}:${METRICS0_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS1_MYSQL_HOST}:${METRICS1_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS2_MYSQL_HOST}:${METRICS2_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS3_MYSQL_HOST}:${METRICS3_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS4_MYSQL_HOST}:${METRICS4_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS5_MYSQL_HOST}:${METRICS5_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS6_MYSQL_HOST}:${METRICS6_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS7_MYSQL_HOST}:${METRICS7_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS8_MYSQL_HOST}:${METRICS8_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:mysql://${METRICS9_MYSQL_HOST}:${METRICS9_MYSQL_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS1_MYSQL_HOST}:${METRICS1_MYSQL_PORT}/${METRICS1_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS2_MYSQL_HOST}:${METRICS2_MYSQL_PORT}/${METRICS2_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS3_MYSQL_HOST}:${METRICS3_MYSQL_PORT}/${METRICS3_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS4_MYSQL_HOST}:${METRICS4_MYSQL_PORT}/${METRICS4_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS5_MYSQL_HOST}:${METRICS5_MYSQL_PORT}/${METRICS5_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS6_MYSQL_HOST}:${METRICS6_MYSQL_PORT}/${METRICS6_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS7_MYSQL_HOST}:${METRICS7_MYSQL_PORT}/${METRICS7_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS8_MYSQL_HOST}:${METRICS8_MYSQL_PORT}/${METRICS8_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:mysql://${METRICS9_MYSQL_HOST}:${METRICS9_MYSQL_PORT}/${METRICS9_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
       postgresql:
         driverClassName: org.postgresql.Driver
         urls:
           - jdbc:postgresql://${METRICS0_POSTGRES_HOST}:${METRICS0_POSTGRES_PORT}/${METRICS0_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS1_POSTGRES_HOST}:${METRICS1_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS2_POSTGRES_HOST}:${METRICS2_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS3_POSTGRES_HOST}:${METRICS3_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS4_POSTGRES_HOST}:${METRICS4_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS5_POSTGRES_HOST}:${METRICS5_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS6_POSTGRES_HOST}:${METRICS6_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS7_POSTGRES_HOST}:${METRICS7_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS8_POSTGRES_HOST}:${METRICS8_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
-          - jdbc:postgresql://${METRICS9_POSTGRES_HOST}:${METRICS9_POSTGRES_PORT}/${METRICS0_MYSQL_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS1_POSTGRES_HOST}:${METRICS1_POSTGRES_PORT}/${METRICS1_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS2_POSTGRES_HOST}:${METRICS2_POSTGRES_PORT}/${METRICS2_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS3_POSTGRES_HOST}:${METRICS3_POSTGRES_PORT}/${METRICS3_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS4_POSTGRES_HOST}:${METRICS4_POSTGRES_PORT}/${METRICS4_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS5_POSTGRES_HOST}:${METRICS5_POSTGRES_PORT}/${METRICS5_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS6_POSTGRES_HOST}:${METRICS6_POSTGRES_PORT}/${METRICS6_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS7_POSTGRES_HOST}:${METRICS7_POSTGRES_PORT}/${METRICS7_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS8_POSTGRES_HOST}:${METRICS8_POSTGRES_PORT}/${METRICS8_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
+          - jdbc:postgresql://${METRICS9_POSTGRES_HOST}:${METRICS9_POSTGRES_PORT}/${METRICS9_POSTGRES_DB}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=${info.app.timezone}&rewriteBatchedStatements=true
     commonlink:
       mysql:
         driverClassName: com.mysql.cj.jdbc.Driver
@@ -117,7 +117,7 @@ xcan:
     linuxInstallScriptName: ${ANGUS_AGENT_LINUX_INSTALL_SCRIPT_NAME}
     windowsInstallScriptId: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_ID}
     windowsInstallScriptName: ${ANGUS_AGENT_WINDOWS_INSTALL_SCRIPT_NAME}
-    
+
 eureka:
   client:
     healthcheck:
@@ -159,7 +159,7 @@ spring:
         order_updates: true
         enable_lazy_load_no_trans: true
         session_factory:
-          statement_inspector: cloud.xcan.angus.core.jpa.interceptor.TenantInterceptor
+          statement_inspector: cloud.xcan.angus.core.tester.infra.metricsds.interceptor.ShardingTableInterceptor
     database: '@databaseType@'
     database-platform: '@databaseDialect@'
     open-in-view: false

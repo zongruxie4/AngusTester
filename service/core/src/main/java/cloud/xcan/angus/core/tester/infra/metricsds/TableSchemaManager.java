@@ -4,8 +4,8 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.spring.SpringContextHolder;
-import cloud.xcan.angus.core.tester.domain.shardtable.ShardTables;
-import cloud.xcan.angus.core.tester.domain.shardtable.ShardTablesRepo;
+import cloud.xcan.angus.core.tester.domain.shard.ShardTables;
+import cloud.xcan.angus.core.tester.domain.shard.ShardTablesRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.config.MetricsDataSourceProperties;
 import cloud.xcan.angus.idgen.UidGenerator;
 import cloud.xcan.angus.spec.utils.ObjectUtils;

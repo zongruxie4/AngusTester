@@ -38,8 +38,8 @@ public class ShardingTableInterceptor extends TenantInterceptor {
 
   public ShardingTableInterceptor() {
     if (isEmpty(shardingTables)) {
-      shardingTables = loadAnnotationTable("cloud.xcan.angus.core.tester.domain",
-          ShardingTable.class);
+      shardingTables = loadAnnotationTable(
+          "cloud.xcan.angus.core.tester.infra.metricsds.domain", ShardingTable.class);
     }
   }
 
@@ -49,20 +49,22 @@ public class ShardingTableInterceptor extends TenantInterceptor {
     if (tableName == null) {
       return super.inspect(sql);
     }
-    boolean isShardDb = checkDataSourceShard();
-    if (!isShardDb) {
+
+    if (!checkDataSourceShard()) {
       return super.inspect(sql);
     }
+
     tableName = tableName.substring(0, tableName.indexOf(" "));
-    boolean isShardTable = shardingTables.contains(tableName);
-    if (!isShardTable) {
+    if (!shardingTables.contains(tableName)) {
       // Exclude isCreatedShardTable for "Select * from shard_tables where table_name like ? tenantId ? "
       return super.inspect(sql);
     }
+
     String realTabledName = getRealTableName(tableName);
     if (!getSchemaManager().isCreatedShardTable(realTabledName)) {
       getSchemaManager().checkAndCreate();
     }
+
     return super.inspect(sql.replaceAll(tableName, "`" + realTabledName + "`"));
   }
 

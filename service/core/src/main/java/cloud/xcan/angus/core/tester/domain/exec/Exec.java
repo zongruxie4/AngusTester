@@ -50,10 +50,8 @@ public class Exec extends TenantAuditingEntity<Exec, Long> {
   @Id
   private Long id;
 
-  @Column(name = "project_id")
   private Long projectId;
 
-  @Column(name = "service_id")
   private Long serviceId;
 
   private String name;
@@ -64,23 +62,18 @@ public class Exec extends TenantAuditingEntity<Exec, Long> {
    * Note: Execute actual script type.
    */
   @Enumerated(EnumType.STRING)
-  @Column(name = "script_type")
   private ScriptType scriptType;
 
   @Nullable
-  @Column(name = "script_id")
   private Long scriptId;
 
   private String script;
 
-  @Column(name = "script_created_by")
   private Long scriptCreatedBy;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "script_source")
   private ScriptSource scriptSource;
 
-  @Column(name = "script_source_id")
   private Long scriptSourceId;
 
   @Enumerated(EnumType.STRING)
@@ -90,105 +83,83 @@ public class Exec extends TenantAuditingEntity<Exec, Long> {
   //-------Fields that need to be overwritten for script configuration--------//
   private Long iterations;
 
-  @Type(JsonType.class)
-  @Column(columnDefinition = "json")
   private TimeValue duration;
 
   private int thread;
 
   private int priority;
 
-  @Column(name = "ignore_assertions")
   private Boolean ignoreAssertions;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "start_mode")
   private StartMode startMode;
 
-  @Column(name = "start_at_date")
   private LocalDateTime startAtDate;
 
-  @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "startup_timeout")
   private TimeValue startupTimeout;
 
-  @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "report_interval")
   private TimeValue reportInterval;
   //-------Fields that need to be overwritten for script configuration--------//
 
-  @Column(name = "update_test_result")
   private Boolean updateTestResult;
 
-  @Column(name = "sync_test_result")
   private boolean syncTestResult;
 
-  @Column(name = "sync_test_result_failure")
   private String syncTestResultFailure;
 
   /**
    * Only enabled cases be included
    */
   @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "assoc_api_case_ids")
+  @Column(columnDefinition = "json")
   private Set<Long> assocApiCaseIds;
 
   /**
    * Note: Last execution node, cannot be cleared, @see isOneNodeTask() usage.
    */
   @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "exec_node_ids")
+  @Column(columnDefinition = "json")
   private LinkedHashSet<Long> execNodeIds;
 
   @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "available_node_ids")
+  @Column(columnDefinition = "json")
   private LinkedHashSet<Long> availableNodeIds;
 
   @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "app_node_ids")
+  @Column(columnDefinition = "json")
   private LinkedHashSet<Long> appNodeIds;
   ////////////////////////AngusScript/////////////////////////
 
   private Boolean trial;
 
-  @Column(name = "actual_start_date")
   private LocalDateTime actualStartDate;
 
-  @Column(name = "end_date")
   private LocalDateTime endDate;
 
-  @Column(name = "exec_by")
   private Long execBy;
 
-  @Column(name = "scheduling_num")
   private int schedulingNum;
 
-  @Column(name = "last_scheduling_date")
   private LocalDateTime lastSchedulingDate;
 
   @Type(JsonType.class)
-  @Column(columnDefinition = "json", name = "last_scheduling_result")
+  @Column(columnDefinition = "json")
   private List<RunnerRunVo> lastSchedulingResult;
 
-  @Column(name = "meter_status")
   private String meterStatus;
 
-  @Column(name = "meter_message")
   private String meterMessage;
 
-  @Column(name = "single_target_pipeline")
   private Boolean singleTargetPipeline;
 
   /**
    * Only null value is need assemble and send event.
    */
-  @Column(name = "assemble_and_send_event")
   private Boolean assembleAndSendEvent;
 
   /**
    * Search for ID
    */
-  @Column(name = "ext_search_merge")
   private String extSearchMerge;
 
   @Transient
