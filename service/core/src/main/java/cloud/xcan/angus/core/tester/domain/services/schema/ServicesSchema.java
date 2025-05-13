@@ -20,10 +20,11 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
-import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -52,46 +53,36 @@ public class ServicesSchema extends TenantEntity<ServicesSchema, Long> implement
   @Id
   private Long id;
 
-  @Column(name = "project_id")
   private Long projectId;
 
-  @Column(name = "service_id")
   private Long serviceId;
 
   private String openapi;
 
   @Convert(converter = InfoConverter.class)
-  @Column(name = "info")
   private Info info;
 
   @Convert(converter = ExternalDocConverter.class)
-  @Column(name = "external_docs")
   private ExternalDocumentation externalDocs;
 
   @Convert(converter = ServersConverter.class)
-  @Column(name = "servers")
   private List<Server> servers = new ArrayList<>();
 
   @Convert(converter = SecurityRequirementConverter.class)
-  @Column(name = "security")
   private List<SecurityRequirement> security = new ArrayList<>();
 
   @Convert(converter = TagsConverter.class)
-  @Column(name = "tags")
   private List<Tag> tags = new ArrayList<>();
 
   @Convert(converter = ExtensionsConverter.class)
-  @Column(name = "extensions")
   private Map<String, Object> extensions = new HashMap<>();
 
-  @Column(name = "spec_version")
+  @Enumerated(EnumType.STRING)
   private SpecVersion specVersion;
 
-  @Column(name = "last_modified_by")
   @LastModifiedBy
   private Long lastModifiedBy;
 
-  @Column(name = "last_modified_date")
   @LastModifiedDate
   private LocalDateTime lastModifiedDate;
 

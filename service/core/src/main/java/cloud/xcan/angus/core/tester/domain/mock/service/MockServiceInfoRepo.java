@@ -15,10 +15,10 @@ public interface MockServiceInfoRepo extends BaseRepository<MockServiceInfo, Lon
 
   List<MockServiceInfo> findByNodeId(Long nodeId);
 
-  @Query(value = "SELECT * FROM mock_service s LEFT JOIN mock_apis a ON s.id = a.mock_service_id WHERE a.assoc_apis_id = ?1", nativeQuery = true)
+  @Query(value = "SELECT s.* FROM mock_service s, mock_apis a WHERE s.id = a.mock_service_id AND a.assoc_apis_id = ?1 LIMIT 1", nativeQuery = true)
   MockServiceInfo findByApisId(Long apisId);
 
-  MockServiceInfo findByAssocServiceId(Long assocProjectId);
+  MockServiceInfo findByAssocServiceId(Long assocServiceId);
 
   @Query(value = "SELECT id FROM mock_service WHERE id IN ?1 AND auth = ?2 ", nativeQuery = true)
   List<Long> findIds0ByIdInAndAuth(Collection<Long> ids, boolean auth);
