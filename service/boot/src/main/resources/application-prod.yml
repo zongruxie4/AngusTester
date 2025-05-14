@@ -101,7 +101,7 @@ xcan:
     redisHost: ${TESTER_REDIS_HOST}:${TESTER_REDIS_PORT}
     redisPassword: ${TESTER_REDIS_PASSWORD}
   angus-agent:
-    serverCtrlUrlPrefix: ${ANGUS_AGENT_CLOUD_CTRL_APIS_PREFIX}/tester/openapi2p/v1/ctrl
+    serverCtrlUrlPrefix: ${ANGUS_AGENT_CLOUD_CTRL_APIS_PREFIX}/tester/openapi2p/v1/ctrl/discovery
     installScriptUrlPrefix: ${ANGUS_AGENT_CLOUD_STORAGE_APIS_PREFIX}/storage/pubapi/v1/file
     agentVersion: ${ANGUS_AGENT_VERSION}
     agentFileId: ${ANGUS_AGENT_FILE_ID}
