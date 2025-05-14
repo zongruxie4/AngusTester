@@ -4,6 +4,7 @@ import static cloud.xcan.angus.core.spring.boot.ApplicationInfo.APP_READY;
 import static cloud.xcan.angus.core.tester.infra.remoting.converter.ExecMetricsConverter.toExecMetrics;
 import static cloud.xcan.angus.core.tester.infra.remoting.converter.ExecMetricsConverter.toExecSampleContent;
 import static cloud.xcan.angus.core.tester.infra.remoting.converter.ExecMetricsConverter.toExecSampleErrorCause;
+import static cloud.xcan.angus.core.tester.infra.remoting.hanlder.HostMetricsMessageHandler.checkAndParse;
 import static cloud.xcan.angus.model.AngusConstant.SAMPLE_TOTAL_NAME;
 import static cloud.xcan.angus.runner.RunnerConstant.METRICS_EXEC_ID_TAG_KEY;
 import static cloud.xcan.angus.runner.RunnerConstant.PUSH_RUNNER_FINISH_TASK_METRICS;
@@ -82,7 +83,7 @@ public class ExecMetricsMessageHandler implements CustomMessageHandler {
       return null;
     }
 
-    List<ExecMetrics> metrics = HostMetricsMessageHandler.checkAndParse(message, new TypeReference<List<ExecMetrics>>() {
+    List<ExecMetrics> metrics = checkAndParse(message, new TypeReference<List<ExecMetrics>>() {
     });
 
     try {

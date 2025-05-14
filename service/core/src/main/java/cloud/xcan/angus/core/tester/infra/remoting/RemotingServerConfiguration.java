@@ -10,7 +10,6 @@ import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.REM
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SEND_TIMEOUT;
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_IP;
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_PORT;
-import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_PUBLIC_IP;
 
 import cloud.xcan.angus.remoting.common.MessageService;
 import cloud.xcan.angus.remoting.server.RemotingServer;
