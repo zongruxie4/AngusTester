@@ -45,7 +45,7 @@ const toCreateServer = () => {
 };
 
 const toUpdate = async (data) => {
-  const [error] = await services.updateServiceApisServer(data.serviceId, data.server?.['x-xc-id']);
+  const [error] = await services.updateServiceApisServer(data.serviceId, data.server?.extensions?.['x-xc-id']);
   if (error) {
     return;
   }
@@ -84,7 +84,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
 
 const toDelete = async (data:{serviceId:string;serviceName:string;server:ServerInfo}) => {
   loading.value = true;
-  const [error] = await services.delServicesServerUrl(data.serviceId, [data.server?.['x-xc-id']]);
+  const [error] = await services.delServicesServerUrl(data.serviceId, [data.server?.extensions?.['x-xc-id']]);
   loading.value = false;
   if (error) {
     return;
@@ -145,7 +145,7 @@ const loadData = async () => {
   dataList.value = data.map((item) => {
     return {
       ...item,
-      editLinkUrl: `/apis#server?serviceId=${item.serviceId}&serverId=${item.server?.['x-xc-id']}`
+      editLinkUrl: `/apis#server?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.['x-xc-id']}`
     };
   });
 
@@ -260,10 +260,10 @@ const searchOptions = [
           <div class="flex flex-wrap">
             <div
               v-for="record in showList"
-              :key="record.server['x-xc-id']"
+              :key="record.server?.extensions?.['x-xc-id']"
               class="h-35.5 w-70 mb-2 mr-3 px-3 py-2.5 border rounded border-theme-text-box">
               <div class="flex items-center mb-2">
-                <div class="flex-shrink-0 flex items-center mr-1.5 flex-1 min-w-0"><span class="font-semibold">ID</span><Colon /><div class="flex-1 truncate min-w-0 " :title="record.server?.['x-xc-id']">{{ record.server?.['x-xc-id'] }}</div></div>
+                <div class="flex-shrink-0 flex items-center mr-1.5 flex-1 min-w-0"><span class="font-semibold">ID</span><Colon /><div class="flex-1 truncate min-w-0 " :title="record.server?.extensions?.['x-xc-id']">{{ record.server?.extensions?.['x-xc-id'] }}</div></div>
                 <Tag class="relative -top-1 mr-0 px-0.5 h-5" :color="getVariableLength(record) ? 'processing' : 'default'">{{ getVariableLength(record) ? '有变量' : '无变量' }}</Tag>
               </div>
               <div v-if="!record.server?.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">无描述~</div>
