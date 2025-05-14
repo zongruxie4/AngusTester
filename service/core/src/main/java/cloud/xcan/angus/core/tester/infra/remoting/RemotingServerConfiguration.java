@@ -21,12 +21,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties.class)
+@EnableConfigurationProperties(RemotingServerProperties.class)
 public class RemotingServerConfiguration {
 
   @Bean(destroyMethod = "shutdown")
-  public RemotingServer remotingServer(
-      cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties properties) {
+  public RemotingServer remotingServer(RemotingServerProperties properties) {
     configureRemotingServer(properties);
     RemotingServer server = new RemotingServer(MessageService.Ctrl,
         properties.getServerIp(), Integer.parseInt(properties.getServerPort()));
