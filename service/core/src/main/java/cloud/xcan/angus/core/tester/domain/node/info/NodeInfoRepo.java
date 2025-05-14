@@ -29,6 +29,12 @@ public interface NodeInfoRepo extends BaseRepository<NodeInfo, Long> {
 
   @Transactional
   @Modifying
+  @Query(value = "UPDATE node_info SET agent_installed = 1 WHERE id = ?1", nativeQuery = true)
+  void updateInstalled(String id);
+
+  @Transactional
+  @Modifying
   @Query(value = "DELETE FROM node_info WHERE id IN ?1", nativeQuery = true)
   void deleteByIdIn(Collection<Long> ids);
+
 }

@@ -10,7 +10,6 @@ import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.REM
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SEND_TIMEOUT;
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_IP;
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_PORT;
-import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SERVER_PUBLIC_IP;
 
 import cloud.xcan.angus.remoting.common.MessageService;
 import cloud.xcan.angus.remoting.server.RemotingServer;
@@ -21,12 +20,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties.class)
+@EnableConfigurationProperties(RemotingServerProperties.class)
 public class RemotingServerConfiguration {
 
   @Bean(destroyMethod = "shutdown")
-  public RemotingServer remotingServer(
-      cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties properties) {
+  public RemotingServer remotingServer(RemotingServerProperties properties) {
     configureRemotingServer(properties);
     RemotingServer server = new RemotingServer(MessageService.Ctrl,
         properties.getServerIp(), Integer.parseInt(properties.getServerPort()));
@@ -43,12 +41,6 @@ public class RemotingServerConfiguration {
   private void configureRemotingServer(RemotingServerProperties prop) {
     if (prop.getServerIp() != null) {
       System.setProperty(REMOTING_CONFIG_ROOT + SERVER_IP, prop.getServerIp());
-    }
-    if (prop.getServerPublicIp() != null) {
-      System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PUBLIC_IP, prop.getServerPublicIp());
-    } else {
-      assert prop.getServerIp() != null;
-      System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PUBLIC_IP, prop.getServerIp());
     }
     if (prop.getServerPort() != null) {
       System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PORT, prop.getServerPort());

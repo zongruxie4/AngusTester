@@ -42,20 +42,16 @@ public class Node extends TenantAuditingEntity<Node, Long> {
 
   private String ip;
 
-  @Column(name = "public_ip")
   private String publicIp;
 
-  @Column(name = "region_id")
   private String regionId;
 
   private String domain;
 
-  @Column(name = "username")
   private String username;
 
   private String password;
 
-  @Column(name = "ssh_port")
   private Integer sshPort;
 
   @Type(JsonType.class)
@@ -69,27 +65,21 @@ public class Node extends TenantAuditingEntity<Node, Long> {
 
   private Boolean enabled;
 
-  @Column(name = "instance_id")
   private String instanceId;
 
-  @Column(name = "instance_name")
   private String instanceName;
 
-  @Column(name = "instance_expired_date", columnDefinition = "TIMESTAMP")
   private LocalDateTime instanceExpiredDate;
 
   private Boolean deleted;
 
   private Boolean expired;
 
-  @Column(name = "order_id")
   private Long orderId;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "charge_type")
   private InstanceChargeType chargeType;
 
-  @Column(name = "install_agent")
   public Boolean installAgent;
 
   private Boolean sync;
@@ -97,7 +87,6 @@ public class Node extends TenantAuditingEntity<Node, Long> {
   /**
    * Search for ID
    */
-  @Column(name = "ext_search_merge")
   private String extSearchMerge;
 
   @Transient

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
 
 @NoRepositoryBean
 public interface NodeRepo extends BaseRepository<Node, Long>, NameJoinRepository<Node, Long> {
@@ -53,8 +54,12 @@ public interface NodeRepo extends BaseRepository<Node, Long>, NameJoinRepository
   @Query(value = "UPDATE node SET expired = 0, deleted = 0, instance_expired_date = ?3 WHERE tenant_id = ?1 AND order_id = ?2", nativeQuery = true)
   void updateNotExpired(Long tenantId, Long originalOrderId, LocalDateTime expiredDate);
 
+  @Transactional
+  @Modifying
+  @Query(value = "UPDATE node SET install_agent = 1 WHERE id = ?1", nativeQuery = true)
+  void updateInstalled(String id);
+
   @Modifying
   @Query(value = "UPDATE node SET deleted = 1 WHERE instance_id IN ?1", nativeQuery = true)
   void deleteByInstanceIdIn(Collection<String> instanceIds);
-
 }

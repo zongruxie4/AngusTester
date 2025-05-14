@@ -20,7 +20,6 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.ctrl.CtrlQuery;
-import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties;
@@ -74,7 +73,7 @@ public class CtrlQueryImpl implements CtrlQuery {
    */
   @Override
   public DiscoveryNodeVo discovery(DiscoveryNodeDto dto) {
-    return new BizTemplate<DiscoveryNodeVo>() {
+    return new BizTemplate<DiscoveryNodeVo>(false) {
 
       @Override
       protected DiscoveryNodeVo process() {
@@ -93,7 +92,8 @@ public class CtrlQueryImpl implements CtrlQuery {
 
         List<ServiceInstance> upInstances = discoveryClient.getInstances(appInfo.getArtifactId());
         if (isEmpty(upInstances)) {
-          log.error("Fatal: No controller instance in up state, tenantId={}, dto={}", tenantId, dto);
+          log.error("Fatal: No controller instance in up state, tenantId={}, dto={}", tenantId,
+              dto);
           discoveryNodeVo.setFailed("Fatal: No controller instance in up state");
           return discoveryNodeVo;
         }
@@ -108,7 +108,7 @@ public class CtrlQueryImpl implements CtrlQuery {
             (isNotEmpty(x.getPublicIp()) || isNotEmpty(x.getDomain()) && isNotEmpty(x.getIp())
                 && upInstanceIps.contains(x.getIp()))).collect(Collectors.toList())
             : nodes.stream().filter(x ->
-                isNotEmpty(x.getIp()) && upInstanceIps.contains(x.getIp()))
+                    isNotEmpty(x.getIp()) && upInstanceIps.contains(x.getIp()))
                 .collect(Collectors.toList());
         if (isEmpty(validNodes)) {
           log.error("Fatal: No valid controller nodes found, tenantId={}, dto={}", tenantId, dto);
@@ -123,10 +123,8 @@ public class CtrlQueryImpl implements CtrlQuery {
         List<DiscoveryNode> discoveryNodes = new ArrayList<>();
         for (ServiceInstance inst : upInstances) {
           if (ipNodesMap.containsKey(inst.getHost())) {
-            String remoteStartUrl = "http://" + inst.getInstanceId()
-                + OPEN2P_DISCOVER_CONN_INFO_ENDPOINT;
-            List<ChannelRouter> remoteResults = broadcastQueryConnections2RemoteCtrl(
-                remoteStartUrl);
+            String remote = "http://" + inst.getInstanceId() + OPEN2P_DISCOVER_CONN_INFO_ENDPOINT;
+            List<ChannelRouter> remoteResults = broadcastQueryConnections2RemoteCtrl(remote);
             if (isNull(remoteResults)) { // Controller node unavailable
               continue;
             }
@@ -177,14 +175,17 @@ public class CtrlQueryImpl implements CtrlQuery {
     try {
       Response response = doHttpGetRequest(remoteUrl);
       if (response.isSuccessful()) {
-        List<ChannelRouter> infoVos = objectMapper.readValue(response.body(),
+        List<ChannelRouter> routers = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<List<ChannelRouter>>>() {
             }).orElseContentThrow();
-        if (isEmpty(infoVos)) {
+        if (isEmpty(routers)) {
           // Safe result, return empty when there is no connections
           return new ArrayList<>();
         }
-        return infoVos;
+        return routers;
+      } else {
+        log.error("Fatal: Failed to query connections for remote url={}, body={}",
+            remoteUrl, response.body());
       }
     } catch (Throwable e) {
       log.error("Broadcast query controller connections exception, cause: ", e);
@@ -198,7 +199,7 @@ public class CtrlQueryImpl implements CtrlQuery {
         Duration.ofMillis(BROADCAST_CTRL_CONNECTION_TIMEOUT),
         Duration.ofMillis(BROADCAST_CTRL_REQUEST_TIMEOUT_0));
     Builder builder = sender.get(remoteUrl);
-    if (ObjectUtils.isNotEmpty(getAuthorization())) { // Fix: Door api invoke
+    if (isNotEmpty(getAuthorization())) { // Fix: Door api invoke
       builder.withAuthentication(BEARER, getAuthorization().substring((BEARER + " ").length()));
     }
     return builder.send();
