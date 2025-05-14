@@ -30,11 +30,19 @@ public class XCanAngusTesterApplication {
   }
 
   @PostConstruct
-  public void init() {
+  public void startAgent() {
     try {
       if (getBoolean(ENV_STARTUP_ANGUS_AGENT, false)) {
         XCanAngusAgent.start();
       }
+    }catch (Exception e) {
+      exitApp();
+    }
+  }
+
+  @PostConstruct
+  public void startProxy() {
+    try {
       if (getBoolean(ENV_STARTUP_ANGUS_PROXY, false)) {
         XCanAngusProxy.start();
       }
