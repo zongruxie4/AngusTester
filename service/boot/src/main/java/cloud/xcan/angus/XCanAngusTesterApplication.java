@@ -1,5 +1,13 @@
 package cloud.xcan.angus;
 
+import static cloud.xcan.angus.api.commonlink.TesterConstant.ENV_STARTUP_ANGUS_AGENT;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.ENV_STARTUP_ANGUS_PROXY;
+import static cloud.xcan.angus.core.spring.env.AngusEnvHelper.getBoolean;
+import static cloud.xcan.angus.core.utils.CoreUtils.exitApp;
+
+import cloud.xcan.angus.agent.XCanAngusAgent;
+import cloud.xcan.angus.proxy.XCanAngusProxy;
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -21,4 +29,17 @@ public class XCanAngusTesterApplication {
     SpringApplication.run(XCanAngusTesterApplication.class, args);
   }
 
+  @PostConstruct
+  public void init() {
+    try {
+      if (getBoolean(ENV_STARTUP_ANGUS_AGENT, false)) {
+        XCanAngusAgent.start();
+      }
+      if (getBoolean(ENV_STARTUP_ANGUS_PROXY, false)) {
+        XCanAngusProxy.start();
+      }
+    }catch (Exception e) {
+      exitApp();
+    }
+  }
 }
