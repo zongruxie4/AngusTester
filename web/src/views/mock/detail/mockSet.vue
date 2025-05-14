@@ -367,7 +367,7 @@ const hasEditAuth = computed(() => {
     return false;
   }
 
-  if (!mockServiceInfo.value.authFlag) {
+  if (!mockServiceInfo.value.auth) {
     return true;
   }
 

@@ -1,5 +1,5 @@
 export type SceneItem = {
-    authFlag: boolean;
+    auth: boolean;
     avatar: string;
     createdBy: string;
     createdByName: string;

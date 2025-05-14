@@ -25,5 +25,5 @@ export type ApiItem = {
     avatar: string;
     createdDate: string;
     lastModifiedDate: string;
-    authFlag: boolean;
+    auth: boolean;
 }

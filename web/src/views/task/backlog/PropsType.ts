@@ -22,7 +22,7 @@ export type SprintInfo = {
         value: string;
         message: string;
     };
-    authFlag: false;
+    auth: false;
     startDate: string;
     deadlineDate: string;
     ownerId: string;

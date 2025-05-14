@@ -19,7 +19,7 @@ interface Props {
   serviceId: string;
   pageType: 'default'|'success';
   spinning: boolean;
-  updateData:(value:{id:string;authFlag:boolean;})=>void;
+  updateData:(value:{id:string;auth:boolean;})=>void;
   groupedBy?: string;
 }
 
@@ -120,7 +120,7 @@ const state:{
       shareVisible:boolean,
       apiExportVisible:boolean,
       delVisible:boolean,
-      authFlag:boolean,
+      auth:boolean,
       activeApiId:string,
       id: string,
       initiatingVisible:boolean,
@@ -133,7 +133,7 @@ const state:{
       shareVisible: false, // 分享弹框
       apiExportVisible: false, // 导出
       delVisible: false, // 删除弹框
-      authFlag: false,
+      auth: false,
       activeApiId: '', // 当前 选中行 api的id
       id: '', // 当前按钮操作行 的 id
       initiatingVisible: false, // 发起请求显影判断
@@ -154,7 +154,7 @@ const handleClick = (event:string, data:DataSourceType) => {
       break;
     case 'auth':
       state.interfaceAuthVisible = true;
-      state.authFlag = data.authFlag;
+      state.auth = data.auth;
       break;
     case 'export':
       openExportModal();
@@ -356,9 +356,9 @@ const setTestScript = (api: DataSourceType, generate: 'create'|'update') => {
   setType.value = generate;
 };
 
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
+const authFlagChange = ({ auth }:{auth:boolean}) => {
   if (typeof props.updateData === 'function') {
-    props.updateData({ id: state.id, authFlag });
+    props.updateData({ id: state.id, auth });
   }
 };
 

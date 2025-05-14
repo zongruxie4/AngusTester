@@ -69,7 +69,7 @@ const getList = async () => {
   }
   tableData.value = data.list.map(item => {
     let _currentAuthsValue:string[] = [];
-    if (!item.authFlag) {
+    if (!item.auth) {
       if (item.currentAuths?.some(m => m.value === 'GRANT')) {
         _currentAuthsValue = ['EXPORT', 'GRANT'];
       } else {
@@ -161,7 +161,7 @@ const setData = (newData:MockServiceObj) => {
     const item = tableData.value[i];
     let _currentAuthsValue:string[] = [];
     if (item.id === newData.id) {
-      if (!newData.authFlag) {
+      if (!newData.auth) {
         if (newData.currentAuths?.some(m => m.value === 'GRANT')) {
           _currentAuthsValue = ['EXPORT', 'GRANT'];
         } else {
@@ -188,7 +188,7 @@ const batchStart = async () => {
     rouSelection.value = {
       onChange: onSelectChange,
       getCheckboxProps: (record: MockServiceObj) => ({
-        disabled: (record.authFlag && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
+        disabled: (record.auth && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
       })
     };
     lastBatchType.value = 'start';
@@ -202,7 +202,7 @@ const batchStart = async () => {
       rouSelection.value = {
         onChange: onSelectChange,
         getCheckboxProps: (record: MockServiceObj) => ({
-          disabled: (record.authFlag && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
+          disabled: (record.auth && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
         })
       };
       lastBatchType.value = 'start';
@@ -349,7 +349,7 @@ const batchDelete = async () => {
     rouSelection.value = {
       onChange: onSelectChange,
       getCheckboxProps: (record: MockServiceObj) => ({
-        disabled: (record.authFlag && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
+        disabled: (record.auth && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
       })
     };
     lastBatchType.value = 'del';
@@ -363,7 +363,7 @@ const batchDelete = async () => {
       rouSelection.value = {
         onChange: onSelectChange,
         getCheckboxProps: (record: MockServiceObj) => ({
-          disabled: (record.authFlag && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
+          disabled: (record.auth && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
         })
       };
       lastBatchType.value = 'del';
@@ -461,12 +461,12 @@ const openAuth = async (item?:MockServiceObj) => {
   authVisible.value = true;
 };
 
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
+const authFlagChange = ({ auth }:{auth:boolean}) => {
   const data = tableData.value;
   const targetId = authData.value?.id;
   for (let i = 0, len = data.length; i < len; i++) {
     if (data[i].id === targetId) {
-      data[i].authFlag = authFlag;
+      data[i].auth = auth;
       break;
     }
   }
@@ -779,7 +779,7 @@ const statusStyleMap = {
       @change="tableChange">
       <template #bodyCell="{ column,text, record }">
         <template v-if="column.dataIndex === 'name'">
-          <template v-if="(!record.authFlag || record.currentAuthsValue.includes('VIEW')) ">
+          <template v-if="(!record.auth || record.currentAuthsValue.includes('VIEW')) ">
             <RouterLink
               :to="`/mockservice/${record.id}/apis`"
               class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
@@ -848,7 +848,7 @@ const statusStyleMap = {
         <template v-if="column.dataIndex === 'action'">
           <div class="flex items-center">
             <a
-              v-if="(!record.authFlag || record.currentAuthsValue.includes('RUN')) && record.status?.value !== 'STARTING'"
+              v-if="(!record.auth || record.currentAuthsValue.includes('RUN')) && record.status?.value !== 'STARTING'"
               class="ml-2 cursor-pointer flex items-center text-3"
               @click="handleUpdateStatus(record)">
               <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'?'启动':'停止' }}
@@ -860,7 +860,7 @@ const statusStyleMap = {
               <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'?'启动':'停止' }}
             </a>
             <a
-              v-if="(!record.authFlag || record.currentAuthsValue.includes('DELETE')) && record.status?.value === 'NOT_STARTED' "
+              v-if="(!record.auth || record.currentAuthsValue.includes('DELETE')) && record.status?.value === 'NOT_STARTED' "
               class="mx-2 cursor-pointer flex items-center"
               @click="handleDelete([record.id])">
               <Icon icon="icon-qingchu" class="mr-1 text-3.5" />删除

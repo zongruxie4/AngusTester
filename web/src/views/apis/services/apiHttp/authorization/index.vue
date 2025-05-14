@@ -26,7 +26,7 @@ import { API_EXTENSION_KEY } from '@/views/apis/utils';
 
 interface Props {
   defaultValue:AuthItem,
-  authFlag?: boolean;
+  auth?: boolean;
   ws?: WebSocket
 }
 const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value:AuthItem): void,
-  (e: 'update:authFlag', value:boolean):void
+  (e: 'update:auth', value:boolean):void
 }>();
 
 const type = ref<string | null>(null);
@@ -89,9 +89,9 @@ const handleChangeType = () => {
   authType.value = 'authorizationCode';
   emits('change', { type: type.value });
   if (type.value) {
-    emits('update:authFlag', true);
+    emits('update:auth', true);
   } else {
-    emits('update:authFlag', false);
+    emits('update:auth', false);
   }
 };
 

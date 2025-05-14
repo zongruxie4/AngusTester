@@ -95,7 +95,7 @@ export const nodeStatus = [
   },
   {
     label: '代理安装状态：',
-    valueKey: 'installAgentFlag',
+    valueKey: 'installAgent',
     valueName: {
       true: '已安装',
       false: '未安装'
@@ -107,7 +107,7 @@ export const nodeStatus = [
   },
   {
     label: '连接状态：',
-    valueKey: 'onlineFlag',
+    valueKey: 'online',
     valueName: {
       true: '已连接',
       false: '未连接'

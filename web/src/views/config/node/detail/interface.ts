@@ -35,7 +35,7 @@ export const infoItem = [
   ],
   [{
     label: '代理状态',
-    dataIndex: 'installAgentFlag'
+    dataIndex: 'installAgent'
   },
   {
     label: '公网IP地址',
@@ -52,7 +52,7 @@ export const infoItem = [
   ],
   [{
     label: '连接状态',
-    dataIndex: 'onlineFlag'
+    dataIndex: 'online'
   },
   {
     label: '添加人',

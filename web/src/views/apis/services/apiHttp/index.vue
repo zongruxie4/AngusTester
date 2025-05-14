@@ -373,8 +373,8 @@ const loadApiInfo = async (): Promise<void> => {
     endpoint,
     status,
     responses,
-    authFlag,
-    serviceAuthFlag,
+    auth,
+    serviceAuth,
     datasetActionOnEOF: _datasetActionOnEOF,
     datasetSharingMode: _datasetSharingMode
   } = res.data;
@@ -387,7 +387,7 @@ const loadApiInfo = async (): Promise<void> => {
   datasetActionOnEOF.value = _datasetActionOnEOF?.value || _datasetActionOnEOF || 'RECYCLE';
   datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || 'ALL_THREAD';
 
-  if (!isUnarchivedApi.value && authFlag && serviceAuthFlag) {
+  if (!isUnarchivedApi.value && auth && serviceAuth) {
     loadApiAuth();
   }
   initApiInfo.value = res.data;
@@ -1788,7 +1788,7 @@ provide('selectHandle', closeDrawer);
                 </template>
                 <Authorization
                   ref="authorizationRef"
-                  v-model:authFlag="state.secured"
+                  v-model:auth="state.secured"
                   class="px-5"
                   :ws="props.ws"
                   :defaultValue="defaultAuthentication"

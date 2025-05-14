@@ -13,7 +13,7 @@ export type PlanObj = {
   id: string;
   createdBy: string;
   createdDate: string;
-  authFlag: boolean;
+  auth: boolean;
 }
 
 type EnumType = {

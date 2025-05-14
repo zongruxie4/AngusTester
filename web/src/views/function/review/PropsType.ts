@@ -4,7 +4,7 @@ export type ReviewInfo = {
     name: string;
     url: string;
   }[];
-  authFlag: boolean;
+  auth: boolean;
   autoUpdateResultByExec: boolean;
   caseNum: string;
   casePrefix: string;

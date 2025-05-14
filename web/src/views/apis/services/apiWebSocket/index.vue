@@ -299,7 +299,7 @@ const loadApiAuth = async () => {
   if (error) {
     return;
   }
-  if (!resp.data.serviceAuthFlag) {
+  if (!resp.data.serviceAuth) {
     auths.value = API_AUTH_CODE;
     if (apiInfo.status === 'RELEASED') {
       auths.value = auths.value.filter(i => i !== 'MODIFY');

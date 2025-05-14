@@ -13,7 +13,7 @@ export type SprintInfo = {
         url: string;
     }[];
     description: string;
-    authFlag: boolean;
+    auth: boolean;
     startDate: string;
     deadlineDate: string;
     ownerId: string;

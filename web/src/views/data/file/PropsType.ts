@@ -46,7 +46,7 @@ export interface SpaceInfoType {
   id: string;
   name: string;
   auth?: string[];
-  authFlag: boolean;
+  auth: boolean;
   quotaSize?: {
     value: string;
     unit: {

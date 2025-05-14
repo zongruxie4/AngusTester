@@ -55,7 +55,7 @@ export interface ServiceOptionType {
     name: string,
     code: string,
     pid: string,
-    authFlag: boolean,
+    auth: boolean,
     targetType: 'API' | 'PROJECT' | 'SERVICE',
     children: ServiceOptionType[],
   }

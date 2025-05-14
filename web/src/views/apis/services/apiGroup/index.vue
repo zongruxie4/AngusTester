@@ -72,7 +72,7 @@ const state = reactive<StateType>({
   showGroupList: !!(localGroupBy && localGroupBy !== ''),
   groupedBy: localStorage.getItem(`${props.serviceId}_groupBy`) || '',
   type: undefined,
-  serviceAuthFlag: false
+  serviceAuth: false
 });
 
 const updateInterface = inject('updateInterface', {
@@ -218,8 +218,8 @@ const ploadProjectAuthInfo = async () => {
   if (error) {
     return;
   }
-  state.serviceAuthFlag = resp.data.serviceAuthFlag;
-  if (state.serviceAuthFlag) {
+  state.serviceAuth = resp.data.serviceAuth;
+  if (state.serviceAuth) {
     projectAuths.value = (resp.data?.permissions || []).map(i => i.value);
     setProjectDrawerComp();
   } else {
@@ -242,12 +242,12 @@ const changeScrollDataList = (data) => {
 };
 
 // @TODO state.dataSource 为空，目前先使用scrollListData
-const updateApiData = (data: { id: string; authFlag: boolean; }) => {
+const updateApiData = (data: { id: string; auth: boolean; }) => {
   const dataSource = scrollListData.value;
-  const { id: targetId, authFlag } = data;
+  const { id: targetId, auth } = data;
   for (let i = 0, len = dataSource.length; i < len; i++) {
     if (dataSource[i].id === targetId) {
-      dataSource[i].authFlag = authFlag;
+      dataSource[i].auth = auth;
       break;
     }
   }
@@ -280,7 +280,7 @@ watch(() => state.id, async (newValue, oldValue) => {
     const selectApi = state.allData.find(api => api.id === state.id) || scrollListData.value.find(api => api.id === state.id);
     currentApi.value = selectApi;
 
-    if (selectApi?.serviceAuthFlag && selectApi?.authFlag) {
+    if (selectApi?.serviceAuth && selectApi?.auth) {
       if (!isAdmin.value) {
         await getApiAuth();
       }

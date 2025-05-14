@@ -8,5 +8,5 @@ export type CreatedItem = {
     avatar: string;
     createdDate: string;
     lastModifiedDate: string;
-    authFlag: boolean;
+    auth: boolean;
 }

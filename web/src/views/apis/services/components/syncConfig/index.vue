@@ -54,7 +54,7 @@ const demoData:SyncObj = {
   lastModifiedBy: '',
   lastModifiedByName: '',
   lastModifiedDate: '',
-  authFlag: true,
+  auth: true,
   isExpand: true,
   isEdit: true,
   isAdd: true,
@@ -85,7 +85,7 @@ const newData:SyncObj = {
   lastModifiedBy: '',
   lastModifiedByName: '',
   lastModifiedDate: '',
-  authFlag: false,
+  auth: false,
   isEdit: true,
   isExpand: true,
   isAdd: true,
@@ -126,7 +126,7 @@ const getSynchronizationList = async () => {
     syncSource: 'OpenAPI',
     strategyWhenDuplicated: item.strategyWhenDuplicated,
     auths: item.auths || [],
-    authFlag: !!item.auths?.length,
+    auth: !!item.auths?.length,
     isEdit: false,
     isAdd: false,
     isExpand: false,
@@ -220,7 +220,7 @@ const addAuth = (sync:SyncObj) => {
 const deleteAuth = (sync:SyncObj, authIndex:number) => {
   sync.auths.splice(authIndex, 1);
   if (!sync.auths.length) {
-    sync.authFlag = false;
+    sync.auth = false;
   }
 };
 
@@ -832,14 +832,14 @@ const handleSaveOk = () => {
             <div class="flex items-center">
               <span class="mr-3.5">认证</span>
               <Switch
-                v-model:checked="sync.authFlag"
+                v-model:checked="sync.auth"
                 size="small"
                 class="w-8 mr-2"
                 :disabled="!sync.isEdit"
                 @change="(checked:CheckedType)=>openAuth(checked,sync)" />
             </div>
             <Hints text="当同步地址受到保护时，它是必需的。最多允许添加10个。" class="mt-0.5" />
-            <template v-if="sync.authFlag">
+            <template v-if="sync.auth">
               <div class="mt-2">
                 <div
                   v-for="auth,aindex in sync.auths"
@@ -904,7 +904,7 @@ const handleSaveOk = () => {
                 </div>
               </div>
             </template>
-            <div class="flex justify-end" :class="sync.authFlag?'-mt-2':'mt-3'">
+            <div class="flex justify-end" :class="sync.auth?'-mt-2':'mt-3'">
               <template v-if="getShowEmptyingexample(sync)">
                 <Button
                   type="link"

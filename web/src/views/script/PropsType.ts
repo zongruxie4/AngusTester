@@ -1,7 +1,7 @@
 export type PermissionKey = 'TEST' | 'VIEW' | 'MODIFY' | 'DELETE' | 'EXPORT' | 'GRANT' | 'COLON';
 
 export type ScriptInfo = {
-  authFlag: boolean;
+  auth: boolean;
   content: string;
   createdBy: string;
   createdByName: string;

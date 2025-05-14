@@ -28,7 +28,7 @@ const loading = ref();
 const columns = [[
   { label: '名称', dataIndex: 'name' },
   { label: '节点', dataIndex: 'nodeName' },
-  { label: '权限', dataIndex: 'authFlag' }
+  { label: '权限', dataIndex: 'auth' }
 ], [
 
   { label: '状态', dataIndex: 'status' },
@@ -132,8 +132,8 @@ const openAuth = () => {
   authVisible.value = true;
 };
 
-const authFlagChange = ({ authFlag }: { authFlag: boolean }) => {
-  mockServiceInfo.value.authFlag = authFlag;
+const authFlagChange = ({ auth }: { auth: boolean }) => {
+  mockServiceInfo.value.auth = auth;
 };
 
 const cencelProjcetMock = async () => {
@@ -206,7 +206,7 @@ const statusStyleMap = {
               <span>{{ text?.message || "--" }}</span>
             </div>
           </template>
-          <template #authFlag="{ text }">
+          <template #auth="{ text }">
             <div class="flex items-center text-3">
               <div>{{ text ? '有权限控制' : '无权限控制' }}</div>
               <template v-if="props.disabled">

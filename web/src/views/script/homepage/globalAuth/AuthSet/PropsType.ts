@@ -1,7 +1,7 @@
 export type SpaceItem = {
     id: string;
     name: string;
-    authFlag: boolean;
+    auth: boolean;
     remark: string;
     bizKey: string;
     size: string;

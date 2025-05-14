@@ -7,7 +7,7 @@ export type SceneInfo = {
     dirId: string;
     dirName: string;
     plugin: 'WebSocket'|'Jdbc'|'Http';
-    authFlag: boolean;
+    auth: boolean;
     createdBy: string;
     createdByName: string;
     avatar: string;
