@@ -1,5 +1,6 @@
 export type ServerInfo = {
     'x-xc-id': string;
+    extensions?: Record<string, any>;
     'description': string;
     'emptyContent': true;
     'notEmptyContent': true;
