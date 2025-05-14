@@ -58,12 +58,12 @@
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angusmeter.agent</artifactId>
+      <artifactId>xcan-angusmeter.agent-service</artifactId>
     </dependency>
 
     <dependency>
       <groupId>cloud.xcan.angus</groupId>
-      <artifactId>xcan-angusmeter.proxy</artifactId>
+      <artifactId>xcan-angusmeter.proxy-service</artifactId>
     </dependency>
 
   </dependencies>
