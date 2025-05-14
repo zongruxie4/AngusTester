@@ -1332,7 +1332,7 @@ export type ExecInfo = {
 };
 
 export type ReportInfo = {
-    authFlag: boolean;
+    auth: boolean;
     basicInfoSetting: {
         otherInformation: string;
         reportContacts: string;
@@ -1394,7 +1394,7 @@ export type ReportInfo = {
 export type ReportContent = {
     content: { [key: string]: any };
     report: {
-        authFlag: boolean;
+        auth: boolean;
         basicInfoSetting: {
             otherInformation: string;
             reportContacts: string;

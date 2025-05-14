@@ -11,7 +11,7 @@ import { ButtonGroup, CollapseButtonGroup } from './interface';
 
 interface Props{
   dataSource:Array<DataSourceType>;
-  updateData:(value:{id:string;authFlag:boolean;})=>void;
+  updateData:(value:{id:string;auth:boolean;})=>void;
   height: number;
   showNum?: number;
   groupedBy?: string;

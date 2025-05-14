@@ -28,7 +28,7 @@ export type SyncObj = {
   lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
-  authFlag:boolean;
+  auth:boolean;
   isEdit:boolean;
   isExpand:boolean;
   isAdd:boolean;

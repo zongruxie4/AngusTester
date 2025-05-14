@@ -371,7 +371,7 @@ export interface ServiceProject {
   id: string,
   children: ServiceProject[],
   editable: boolean,
-  authFlag:boolean;
+  auth:boolean;
   spread?: boolean,
   active?: boolean,
   pid?: string;
@@ -401,7 +401,7 @@ export interface ModalsConfig {
   activeId: string,
   activeName: string,
   statusVisible: boolean;
-  authFlag: boolean;
+  auth: boolean;
   type?: 'SERVICE';
   selectedNode?:ServiceProject;
   delTestScriptVisible: boolean;

@@ -34,7 +34,7 @@ const columns = computed(() => [
     { label: '所属项目', dataIndex: 'parentName' },
     { label: '来源', dataIndex: 'source' },
     { label: '状态', dataIndex: 'status' },
-    { label: '权限', dataIndex: 'authFlag' },
+    { label: '权限', dataIndex: 'auth' },
     { label: '接口数量', dataIndex: 'apisNum' },
     { label: '用例数量', dataIndex: 'apisCaseNum' }, // @todo
     { label: '添加人', dataIndex: 'createdByName' },
@@ -76,7 +76,7 @@ const nameChange = () => {
 const status = ref<Status>();
 const statusName = ref<string>();
 const editStatusFlag = ref(false);
-const authFlag = ref(false);
+const auth = ref(false);
 const editStatus = () => {
   editStatusFlag.value = true;
 };
@@ -112,7 +112,7 @@ const loadInfo = async () => {
   status.value = data.status?.value;
   statusName.value = data.status?.message;
   name.value = data.name;
-  authFlag.value = data.authFlag;
+  auth.value = data.auth;
 };
 
 const security = ref([]);
@@ -131,8 +131,8 @@ const addSecurity = () => {
   });
 };
 
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
-  infomation.value!.authFlag = authFlag;
+const authFlagChange = ({ auth }:{auth:boolean}) => {
+  infomation.value!.auth = auth;
 };
 
 watch(() => props.id, (newValue) => {
@@ -239,7 +239,7 @@ const tipMap = {
         </div>
       </template>
     </template>
-    <template #authFlag="{ text }">
+    <template #auth="{ text }">
       <div class="flex items-start">
         <div class="flex-1">{{ text ? '有权限限制' : '无权限限制' }}</div>
         <Icon

@@ -71,7 +71,7 @@ const modalsConfig = reactive<ModalsConfig>({
   delTestScriptVisible: false,
   enabeldApiTestVisible: false,
   activeId: '',
-  authFlag: false,
+  auth: false,
   activeName: '',
   type: undefined,
   statusVisible: false,
@@ -249,7 +249,7 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
     case 'auth':
       modalsConfig.authModalVisible = true;
       modalsConfig.activeId = item.id;
-      modalsConfig.authFlag = item.authFlag;
+      modalsConfig.auth = item.auth;
       modalsConfig.type = 'SERVICE';
       break;
     case 'delete':
@@ -452,9 +452,9 @@ const changeStatusValue = (status) => {
 };
 
 // 权限表示变化
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
+const authFlagChange = ({ auth }:{auth:boolean}) => {
   if (typeof leftDrawerRef.value?.update === 'function') {
-    leftDrawerRef.value.update({ id: modalsConfig.activeId, authFlag });
+    leftDrawerRef.value.update({ id: modalsConfig.activeId, auth });
   }
 };
 
@@ -577,7 +577,7 @@ const visibleChange = async (visible, item, pItem) => {
   if (isAdmin.value) {
     return;
   }
-  if (item.authFlag) {
+  if (item.auth) {
     const [error, res] = await services.getCurrentAuth(item.id);
     if (error) {
       return;
@@ -595,7 +595,7 @@ const visibleChange = async (visible, item, pItem) => {
   }
   auths.value.push('CLONE');
   if (item.pid > 0) {
-    if (pItem?.authFlag) {
+    if (pItem?.auth) {
       const [perror, pResp] = await services.getCurrentAuth(pItem.id);
       if (!perror) {
         parentAuths.value = (pResp.data?.permissions || []).map(i => i.value);

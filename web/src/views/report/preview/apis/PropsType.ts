@@ -414,7 +414,7 @@ export type ReportContent = {
         }
     };
     report: {
-        authFlag: boolean;
+        auth: boolean;
         basicInfoSetting: {
             otherInformation: string;
             reportContacts: string;

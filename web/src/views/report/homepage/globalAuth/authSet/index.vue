@@ -65,11 +65,11 @@ const switchChange = async (checked: boolean, id: string) => {
   }
 
   if (checked) {
-    dataMap.value[id].authFlag = true;
+    dataMap.value[id].auth = true;
     return;
   }
 
-  dataMap.value[id].authFlag = false;
+  dataMap.value[id].auth = false;
 };
 
 const checkAllChange = async (event: { target: { checked: boolean } }, id: string) => {
@@ -377,13 +377,13 @@ const permissionValues = computed(() => {
             <div style="width:70px;" class="px-2">
               <Switch
                 :loading="enabledLoadingMap[item]"
-                :checked="dataMap[item].authFlag"
+                :checked="dataMap[item].auth"
                 size="small"
                 @change="switchChange($event, item)" />
             </div>
             <div style="width:52%" class="flex items-start">
               <Checkbox
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.authFlag === false"
+                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
                 :checked="!!(permissionsMap[item]?.permissions.length === props.permissions.length)"
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
@@ -391,7 +391,7 @@ const permissionValues = computed(() => {
                 全部
               </Checkbox>
               <CheckboxGroup
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.authFlag === false"
+                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
                 :value="permissionsMap[item]?.permissions"
                 :options="props.permissions"
                 @change="checkChange($event, item)" />

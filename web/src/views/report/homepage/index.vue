@@ -85,12 +85,12 @@ const openAuth = () => {
   authVisible.value = true;
 };
 
-const authFlagChange = async ({ authFlag }: { authFlag: boolean }) => {
+const authFlagChange = async ({ auth }: { auth: boolean }) => {
   const _list = dataList.value;
   const targetId = selectId.value;
   for (let i = 0, len = _list.length; i < len; i++) {
     if (_list[i].id === targetId) {
-      _list[i].authFlag = authFlag;
+      _list[i].auth = auth;
       break;
     }
   }

@@ -15,7 +15,7 @@ export interface DataSourceType {
   favouriteFlag: boolean,
   id: string,
   show: boolean,
-  authFlag:boolean,
+  auth:boolean,
   protocol: {
     value: string;
     message: string;
@@ -36,7 +36,7 @@ export interface StateType {
   drawerComp: Array<NavItem>,
   groupedBy?: string,
   type?: 'API' | 'WEBSOCKET';
-  serviceAuthFlag: boolean
+  serviceAuth: boolean
 }
 export const navs: NavItem[] = [
   {

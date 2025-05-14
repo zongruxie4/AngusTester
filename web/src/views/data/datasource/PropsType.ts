@@ -11,7 +11,7 @@ export interface SourceType {
   jdbcUrl: string;
   connSuccessFlag: string;
   lastConnDate: string;
-  authFlag: string;
+  auth: string;
   tenantId: string;
   createdBy: string;
   createdDate: string;

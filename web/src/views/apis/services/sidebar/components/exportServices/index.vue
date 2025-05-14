@@ -16,7 +16,7 @@ type ProjectService = {
       value: string;
       message: string;
   },
-  authFlag: false,
+  auth: false,
   status: {
       value: string;
       message: string;

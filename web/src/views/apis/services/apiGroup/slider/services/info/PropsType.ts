@@ -5,7 +5,7 @@ export type ImportSource = 'OPENAPI' | 'POSTMAN';
 
 export interface IInfomation {
     apiNum: number;
-    authFlag: boolean;
+    auth: boolean;
     code: string;
     createdBy: string;
     createdByName: string;

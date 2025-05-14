@@ -16,7 +16,7 @@ export type ReportContent = {
                 url: string;
             }[];
             description: string;
-            authFlag: boolean;
+            auth: boolean;
             startDate: string;
             deadlineDate: string;
             ownerId: string;
@@ -262,7 +262,7 @@ export type ReportContent = {
         }
     };
     report: {
-        authFlag: boolean;
+        auth: boolean;
         basicInfoSetting: {
             otherInformation: string;
             reportContacts: string;

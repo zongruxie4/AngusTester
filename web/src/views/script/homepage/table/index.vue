@@ -288,12 +288,12 @@ const actionClick = (key: string, data: ScriptInfo) => {
   }
 };
 
-const authFlagChange = ({ authFlag }: { authFlag: boolean }) => {
+const authFlagChange = ({ auth }: { auth: boolean }) => {
   const data = tableData.value;
   const targetId = selectedData.value?.id;
   for (let i = 0, len = data.length; i < len; i++) {
     if (data[i].id === targetId) {
-      data[i].authFlag = authFlag;
+      data[i].auth = auth;
       break;
     }
   }

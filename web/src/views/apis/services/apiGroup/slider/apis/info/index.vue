@@ -54,7 +54,7 @@ const state = reactive({
       message: ''
     },
     summary: '',
-    authFlag: false,
+    auth: false,
     security: [],
     description: '',
     externalDocs: {
@@ -80,7 +80,7 @@ const columns = computed(() => {
       { label: '编码', dataIndex: 'operationId' },
       { label: '来源', dataIndex: 'source', type: '1' },
       { label: '状态', dataIndex: 'status' },
-      { label: '权限', dataIndex: 'authFlag' },
+      { label: '权限', dataIndex: 'auth' },
       { label: '是否弃用', dataIndex: 'deprecated' },
       // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },
       { label: '添加人', dataIndex: 'createdByName' },
@@ -254,8 +254,8 @@ const toggleEditDeprecated = () => {
   }
 };
 
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
-  state.info.authFlag = authFlag;
+const authFlagChange = ({ auth }:{auth:boolean}) => {
+  state.info.auth = auth;
 };
 
 const selectStatus = async (value, options) => {
@@ -332,7 +332,7 @@ const openInterfaceAuthDialog = () => {
             @click="toggleOperateId" />
         </template>
       </template>
-      <template #authFlag="{text}">
+      <template #auth="{text}">
         {{ text ? '有权限限制' : '无权限限制' }}
         <span v-show="!disabled">
           <Icon

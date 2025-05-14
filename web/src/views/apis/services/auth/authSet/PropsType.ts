@@ -1,5 +1,5 @@
 export type TreeElement = {
-    authFlag: boolean;
+    auth: boolean;
     pid: string;
     id: string;
     name: string;
@@ -11,7 +11,7 @@ export type TreeElement = {
 }
 
 export type ArrayItem = {
-    authFlag: boolean;
+    auth: boolean;
     pid: string;
     id: string;
     name: string;

@@ -105,7 +105,7 @@ const changePage = ({ pageSize, current }) => {
 };
 
 const selectId = ref<string>();
-const authFlag = ref(false);
+const auth = ref(false);
 const selectName = ref();
 
 // 删除
@@ -145,7 +145,7 @@ const shareVisible = ref(false);
 const authModalVisible = ref(false);
 const editAuth = (record) => {
   selectId.value = record.id;
-  authFlag.value = record.authFlag;
+  auth.value = record.auth;
   authModalVisible.value = true;
 };
 
@@ -198,12 +198,12 @@ const openAuthorizeModal = () => {
   globalAuthVisible.value = true;
 };
 
-const authFlagChange = ({ authFlag }:{authFlag:boolean}) => {
+const authFlagChange = ({ auth }:{auth:boolean}) => {
   const data = dataList.value;
   const targetId = selectId.value;
   for (let i = 0, len = data.length; i < len; i++) {
     if (data[i].id === targetId) {
-      data[i].authFlag = authFlag;
+      data[i].auth = auth;
       break;
     }
   }

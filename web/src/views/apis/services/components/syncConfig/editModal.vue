@@ -40,7 +40,7 @@ const newData:SyncObj = {
   lastModifiedBy: '',
   lastModifiedByName: '',
   lastModifiedDate: '',
-  authFlag: false,
+  auth: false,
   isEdit: true,
   isExpand: true,
   isAdd: true,
@@ -203,7 +203,7 @@ const authValueChange = (value:string, auth:AuthObj):void => {
 const deleteAuth = (authIndex:number) => {
   sync.value.auths.splice(authIndex, 1);
   if (!sync.value.auths.length) {
-    sync.value.authFlag = false;
+    sync.value.auth = false;
   }
 };
 // 判断整个认证里有没有空项 返回ture有空项 false没有空项
@@ -323,13 +323,13 @@ watch(() => props.visible, (newValue) => {
         <div class="flex items-center">
           <span class="mr-3.5">认证</span>
           <Switch
-            v-model:checked="sync.authFlag"
+            v-model:checked="sync.auth"
             size="small"
             class="w-8 mr-2"
             @change="(checked:CheckedType)=>openAuth(checked)" />
         </div>
         <Hints text="当同步地址受到保护时，它是必需的。最多允许添加10个。" class="mt-0.5" />
-        <template v-if="sync?.authFlag">
+        <template v-if="sync?.auth">
           <div class="mt-2">
             <div
               v-for="auth,aindex in sync?.auths"

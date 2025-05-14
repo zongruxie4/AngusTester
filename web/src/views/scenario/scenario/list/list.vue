@@ -59,7 +59,7 @@ const sceneList = ref<SceneInfo[]>([]);
 
 const selectedId = ref<string>();
 const selectedScriptId = ref<string>();
-const authFlag = ref(false);
+const auth = ref(false);
 
 const toAuthVisible = ref(false);
 const createTestTaskVisible = ref(false);
@@ -83,7 +83,7 @@ const mouseenterHandler = async (data: SceneInfo) => {
   }
 
   // 无权限控制的不需要加载权限数据
-  if (isAdmin.value || !data.authFlag) {
+  if (isAdmin.value || !data.auth) {
     return;
   }
 
@@ -108,18 +108,18 @@ const mouseleaveHandler = () => {
   }
 };
 
-const toAuth = ({ id, authFlag: _authFlag }: { authFlag: boolean; id: string }) => {
+const toAuth = ({ id, auth: _authFlag }: { auth: boolean; id: string }) => {
   selectedId.value = id;
   toAuthVisible.value = true;
-  authFlag.value = _authFlag;
+  auth.value = _authFlag;
 };
 
-const authFlagChange = ({ authFlag }: { authFlag: boolean }) => {
+const authFlagChange = ({ auth }: { auth: boolean }) => {
   const data = sceneList.value;
   const targetId = selectedId.value;
   for (let i = 0, len = data.length; i < len; i++) {
     if (data[i].id === targetId) {
-      data[i].authFlag = authFlag;
+      data[i].auth = auth;
       break;
     }
   }
@@ -446,7 +446,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 @mouseenter="mouseenterHandler(record)"
                 @mouseleave="mouseleaveHandler">
                 <Button
-                  :disabled="record.authFlag && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('TEST')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('TEST')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -456,7 +456,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </Button>
 
                 <Button
-                  :disabled="record.authFlag && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('MODIFY')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('MODIFY')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -467,7 +467,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </Button>
 
                 <Button
-                  :disabled="record.authFlag && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('VIEW')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('VIEW')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -477,7 +477,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </Button>
 
                 <Dropdown
-                  :noAuth="!record.authFlag"
+                  :noAuth="!record.auth"
                   :permissions="permissionMap[record.id]?.permissions"
                   :authFlagKey="['scenarioAuthFlag']"
                   :menuItems="dropdownMenuItemsMap[record.id]"

@@ -31,7 +31,7 @@ const ExportScriptModal = defineAsyncComponent(() => import('@/components/script
 const activeTab = ref('func');
 const dataSource = ref();
 const isHttpPlugin = ref(false);
-const authFlag = ref(false);
+const auth = ref(false);
 const authPermissions = ref<string[]>([]);
 
 const sceanrioData = ref();
@@ -43,9 +43,9 @@ const loadScenarioDetail = async () => {
   }
   sceanrioData.value = data;
   isHttpPlugin.value = data?.plugin === 'Http';
-  authFlag.value = data.authFlag;
+  auth.value = data.auth;
 
-  if (data.authFlag) {
+  if (data.auth) {
     loadPermissions();
   }
 };
@@ -112,9 +112,9 @@ const handleFavourite = async () => {
   sceanrioData.value.favouriteFlag = !sceanrioData.value.favouriteFlag;
 };
 
-const authFlagChange = (data: {authFlag: boolean}) => {
-  authFlag.value = data.authFlag;
-  if (authFlag.value) {
+const authFlagChange = (data: {auth: boolean}) => {
+  auth.value = data.auth;
+  if (auth.value) {
     loadPermissions();
   }
 };
@@ -164,7 +164,7 @@ onMounted(() => {
       <Button
         size="small"
         type="text"
-        :disabled="authFlag && !authPermissions.includes('DELETE')"
+        :disabled="auth && !authPermissions.includes('DELETE')"
         @click="del">
         <Icon icon="icon-qingchu" class="mr-1" />
         删除
@@ -172,7 +172,7 @@ onMounted(() => {
       <Button
         size="small"
         type="text"
-        :disabled="authFlag && !authPermissions.includes('EXPORT')"
+        :disabled="auth && !authPermissions.includes('EXPORT')"
         @click="exportScript">
         <Icon icon="icon-daochu" class="mr-1" />
         导出脚本
@@ -180,7 +180,7 @@ onMounted(() => {
       <Button
         size="small"
         type="text"
-        :disabled="authFlag && !authPermissions.includes('GRANT')"
+        :disabled="auth && !authPermissions.includes('GRANT')"
         @click="toAuth">
         <Icon icon="icon-quanxian1" class="mr-1" />
         权限
