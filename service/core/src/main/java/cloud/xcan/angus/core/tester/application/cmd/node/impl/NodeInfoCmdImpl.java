@@ -151,7 +151,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
        * curl -s http://192.168.0.102:1805/filepxy/pubapi/v1/object/download/install-agent.sh?id=96204965327929444 | bash -s 1.0.0 99360265199419407 'http://localhost:6808/openapi2p/v1/ctrl' a0694ac2-e5e7-4eda-a29d-afd447b6c5e5 1 1
        */
       private String buildLinuxOnlineInstallCmd(NodeInfo nodeInfo) {
-        return "curl -s " + getLinuxInstallScriptUrl() + " | bash -s "
+        return "curl -s \"" + getLinuxInstallScriptUrl() + "\" | bash -s "
             + agentProperties.getAgentVersion() + " "
             + agentProperties.getAgentFileId() + " '"
             + agentProperties.getServerCtrlUrlPrefix() + "' "
