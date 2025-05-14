@@ -189,7 +189,7 @@ const loadInfo = async () => {
   if (error) {
     return;
   }
-  // delete res.data.onlineFlag;
+  // delete res.data.online;
   const rolesName = res.data.roles.map(i => i.message).join(',');
   const rolesValues = res.data.roles.map(i => i.value);
   state.infos = {
@@ -227,7 +227,7 @@ const installAgen = async () => {
     return;
   }
 
-  state.infos.installAgentFlag = true;
+  state.infos.installAgent = true;
 };
 
 // 手动安装步骤
@@ -323,7 +323,7 @@ const loadMetrics = async () => {
   if (res.data) {
     const timestamp = res.data?.timestamp;
     const datetime = res.datetime;
-    // state.infos.onlineFlag = true;
+    // state.infos.online = true;
     if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
       sourceUse.cpu = 0;
       sourceUse.cpuPercent = 0;
@@ -334,10 +334,10 @@ const loadMetrics = async () => {
       sourceUse.disk = '0';
       sourceUse.diskPercent = 0;
       sourceUse.diskTotal = '0';
-      // state.infos.onlineFlag = false;
+      // state.infos.online = false;
     }
   } else {
-    // state.infos.onlineFlag = false;
+    // state.infos.online = false;
   }
 };
 
@@ -1101,7 +1101,7 @@ onMounted(async () => {
 });
 
 const getOnlineInstallTip = (node) => {
-  if (node.infos.installAgentFlag) {
+  if (node.infos.installAgent) {
     return '已安装';
   }
   if (!isAdmin.value) {
@@ -1223,7 +1223,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 <Icon icon="icon-qingchu" class="mr-1" />
                 <span>删除</span>
               </Button>
-              <Tooltip v-if="state.infos.installAgentFlag || state.infos.freeFlag || !isAdmin" :title="getOnlineInstallTip(state)">
+              <Tooltip v-if="state.infos.installAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
                 <Button
                   :disabled="true"
                   :loading="installing"
@@ -1235,7 +1235,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               </Tooltip>
               <Button
                 v-else
-                :disabled="state.infos.installAgentFlag || !isAdmin"
+                :disabled="state.infos.installAgent || !isAdmin"
                 :loading="installing"
                 class="node-action-btn"
                 @click="installAgen">
@@ -1245,7 +1245,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   class="absolute left-5 -bottom-3"
                   text="预计需要一分钟" />
               </Button>
-              <Tooltip v-if="!isAdmin || state.infos.freeFlag" :title="!isAdmin ? `安装代理需要系统管理员或应用管理员权限` : ''">
+              <Tooltip v-if="!isAdmin || state.infos.free" :title="!isAdmin ? `安装代理需要系统管理员或应用管理员权限` : ''">
                 <Button
                   :disabled="true"
                   class="node-action-btn"
@@ -1350,10 +1350,10 @@ const activeKey = ref<'source' | 'proxy'>('source');
             <template #enabled="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '启用' : '禁用' }}</span>
             </template>
-            <template #installAgentFlag="{text}">
+            <template #installAgent="{text}">
               <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '已安装' : '未安装' }}</span>
             </template>
-            <template #onlineFlag="{text}">
+            <template #online="{text}">
               <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '已连接' : '未连接' }}</span>
             </template>
           </Grid>

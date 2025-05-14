@@ -194,7 +194,7 @@ const delNode = (state) => {
 
 // 安装 代理按钮禁用提示
 const getOnlineInstallTip = (node) => {
-  if (node.installAgentFlag) {
+  if (node.installAgent) {
     return '已安装';
   }
   if (props.isAdmin) {
@@ -441,7 +441,7 @@ const loadNodeListMetrics = () => {
           if (res.data) {
             const timestamp = res.data?.timestamp;
             const datetime = res.datetime;
-            // node.onlineFlag = true;
+            // node.online = true;
             if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
               // node.spec = {
               //   ...node.spec,
@@ -457,10 +457,10 @@ const loadNodeListMetrics = () => {
                 disk: 0,
                 swap: 0
               };
-              // node.onlineFlag = false;
+              // node.online = false;
             }
           } else {
-            // node.onlineFlag = false;
+            // node.online = false;
           }
           resp.shift();
         }
@@ -527,7 +527,7 @@ defineExpose({ add, startInterval });
           <template v-if="editNameId !== state.id">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
             <Icon
-              v-if="!state.freeFlag || tenantInfo.tenantId === '1'"
+              v-if="!state.free || tenantInfo.tenantId === '1'"
               icon="icon-shuxie"
               class="ml-1 hover:text-blue-1 cursor-pointer"
               @click="editName(state.name, state.id)" />
@@ -547,12 +547,12 @@ defineExpose({ add, startInterval });
           overlayClassName="proxy-uninstall"
           placement="right">
           <template #title><div class="text-3">检测到该节点还未安装代理，请先安装代理后在进行使用</div></template>
-          <p v-show="!state.installAgentFlag && !!state.id" class="text-http-put ml-6 cursor-pointer"><Icon icon="icon-tishi1" class="text-3.5" /></p>
+          <p v-show="!state.installAgent && !!state.id" class="text-http-put ml-6 cursor-pointer"><Icon icon="icon-tishi1" class="text-3.5" /></p>
         </Tooltip>
       </div>
       <div v-show="!state.editable" class="flex">
         <Tag
-          v-if="state.freeFlag"
+          v-if="state.free"
           color="success"
           class="h-5 leading-5 mr-4">
           免费节点
@@ -731,7 +731,7 @@ defineExpose({ add, startInterval });
                 <Icon icon="icon-qingchu" />
                 删除
               </Button>
-              <Tooltip v-if="state.freeFlag" :title="getOnlineInstallTip(state)">
+              <Tooltip v-if="state.free" :title="getOnlineInstallTip(state)">
                 <!-- <ButtonAuth
                   code="InstallAgentOnline"
                   type="text"
@@ -748,7 +748,7 @@ defineExpose({ add, startInterval });
               </Tooltip>
               <Button
                 v-else
-                :disabled="state.installAgentFlag"
+                :disabled="state.installAgent"
                 class="node-action-btn"
                 :loading="installingMap[state.id]"
                 @click="installAgent(state)">
@@ -759,7 +759,7 @@ defineExpose({ add, startInterval });
                   class="ml-1"
                   text="预计需要一分钟" />
               </Button>
-              <Tooltip v-if="state.freeFlag" :title="!props.isAdmin ? `手动安装代理需要系统管理员或应用管理员权限` : ''">
+              <Tooltip v-if="state.free" :title="!props.isAdmin ? `手动安装代理需要系统管理员或应用管理员权限` : ''">
                 <!-- <ButtonAuth
                   code="InstallAgentManually"
                   type="text"
