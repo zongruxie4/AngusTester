@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RemotingServerProperties {
 
   private String serverIp;
-  private String serverPublicIp;
   private String serverPort = "5035";
 
   /**

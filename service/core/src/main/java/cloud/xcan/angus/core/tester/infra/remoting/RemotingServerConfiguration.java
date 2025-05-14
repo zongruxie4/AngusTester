@@ -44,12 +44,6 @@ public class RemotingServerConfiguration {
     if (prop.getServerIp() != null) {
       System.setProperty(REMOTING_CONFIG_ROOT + SERVER_IP, prop.getServerIp());
     }
-    if (prop.getServerPublicIp() != null) {
-      System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PUBLIC_IP, prop.getServerPublicIp());
-    } else {
-      assert prop.getServerIp() != null;
-      System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PUBLIC_IP, prop.getServerIp());
-    }
     if (prop.getServerPort() != null) {
       System.setProperty(REMOTING_CONFIG_ROOT + SERVER_PORT, prop.getServerPort());
     }

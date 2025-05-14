@@ -90,9 +90,7 @@ xcan:
         min-idle: 5
   remoting:
     # ServerIp is null means wildcard address
-    serverIp: ${TESTER_REMOTING_SERVER_IP:localhost}
-    # The exchange server address for the agent to connect through the public network. Get local ip when not specified.
-    serverPublicIp: ${TESTER_REMOTING_SERVER_PUBLIC_IP:localhost}
+    serverIp: ${TESTER_REMOTING_SERVER_IP:0.0.0.0}
     serverPort: ${TESTER_REMOTING_SERVER_PORT:5035}
     sendTimeout: ${TESTER_REMOTING_SEND_TIMEOUT:60000}
     allowMaxHeartbeatInterval: ${TESTER_REMOTING_ALLOW_MAX_HEARTBEAT_INTERVAL:30000}
