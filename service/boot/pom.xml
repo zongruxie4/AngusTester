@@ -56,6 +56,16 @@
       <artifactId>xcan-infra.l2cache-starter</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusmeter.agent</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusmeter.proxy</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>
