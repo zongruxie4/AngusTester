@@ -136,7 +136,7 @@ export default class API {
   }
 
   putScenario (params, axiosConfig = {}) {
-    return http.put(`${baseUrl}/scenario`, params, axiosConfig);
+    return http.put(`${baseUrl}`, params, axiosConfig);
   }
 
   // 移动场景
