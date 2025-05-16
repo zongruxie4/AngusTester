@@ -20,9 +20,6 @@ public interface TesterConstant {
 
   int MOCK_EXCEPTION_SALF_LENGTH = 200;
 
-  String ENV_STARTUP_ANGUS_AGENT = "STARTUP_ANGUS_AGENT";
-  String ENV_STARTUP_ANGUS_PROXY = "STARTUP_ANGUS_PROXY";
-
   /**
    * Samples
    */

@@ -24,6 +24,9 @@ public interface NodeInfoRepo extends BaseRepository<NodeInfo, Long> {
   @Query(value = "SELECT * FROM node_info WHERE id NOT IN (SELECT node_id FROM exec_node)", nativeQuery = true)
   List<NodeInfo> findNodeIdsByNotInExec();
 
+  @Query(value = "SELECT ni.* FROM node_info ni, node n WHERE ni.id = n.id AND ni.tenant_id = ?1 AND n.ip = ?2", nativeQuery = true)
+  NodeInfo findByTenantIdAndIp(Long tenantId, String ip);
+
   @Query(value = "SELECT count(*) FROM node_info WHERE tenant_id = ?1", nativeQuery = true)
   long countByTenantId(Long tenantId);
 

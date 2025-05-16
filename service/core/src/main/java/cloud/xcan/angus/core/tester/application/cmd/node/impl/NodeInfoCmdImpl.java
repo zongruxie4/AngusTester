@@ -1,9 +1,14 @@
 package cloud.xcan.angus.core.tester.application.cmd.node.impl;
 
+import static cloud.xcan.angus.core.spring.env.AbstractEnvLoader.appDir;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_APIS_SERVER_URL;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_HOST;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.experimental.BizConstant.AuthKey.SIGN2P_TOKEN_CLIENT_SCOPE;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getTenantName;
+import static cloud.xcan.angus.spec.utils.NetworkUtils.getValidIpv4;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.agent.AgentCommandType;
@@ -17,18 +22,22 @@ import cloud.xcan.angus.api.gm.client.dto.ClientSignInDto;
 import cloud.xcan.angus.api.gm.client.dto.ClientSignupDto;
 import cloud.xcan.angus.api.gm.client.vo.ClientSignVo;
 import cloud.xcan.angus.api.gm.client.vo.ClientSignupVo;
+import cloud.xcan.angus.api.manager.TenantManager;
+import cloud.xcan.angus.api.pojo.auth.AgentAuth;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
+import cloud.xcan.angus.core.spring.env.EnvHelper;
 import cloud.xcan.angus.core.tester.application.cmd.node.NodeInfoCmd;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
-import cloud.xcan.angus.core.tester.domain.node.info.AgentAuth;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfoRepo;
 import cloud.xcan.angus.core.tester.infra.config.NodeAgentCmdConfig.NodeAgentCmdProperties;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeRunnerKillDto;
+import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remoting.common.message.ReplyMessage;
 import cloud.xcan.angus.remoting.common.router.ChannelRouter;
+import cloud.xcan.angus.spec.properties.repo.PropertiesRepo;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -65,7 +74,16 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
   private DiscoveryClient discoveryClient;
 
   @Resource
+  private TenantManager tenantManager;
+
+  @Resource
   private ApplicationInfo appInfo;
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void update0(NodeInfo nodeInfo){
+    nodeInfoRepo.save(nodeInfo);
+  }
 
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -121,30 +139,10 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         }
         initNodeInfo.setTenantId(tenantId);
         initNodeInfo.setId(nodeId);
-        initNodeInfo.setAgentAuth(genOpen2pAuthToken());
+        initNodeInfo.setAgentAuth(genOpen2pAuthToken(tenantId, nodeId));
         initNodeInfo.setLastModifiedDate(LocalDateTime.now());
         nodeInfoRepo.save(initNodeInfo);
         return initNodeInfo;
-      }
-
-      private AgentAuth genOpen2pAuthToken() {
-        // Generate open2p client for applyTenantId
-        ClientSignupDto signupDto = new ClientSignupDto()
-            .setSignupBiz(Client2pSignupBiz.AGENT)
-            .setTenantId(tenantId)
-            .setTenantName(getTenantName())
-            .setResourceId(nodeId);
-        ClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto).orElseContentThrow();
-
-        ClientSignInDto signInDto = new ClientSignInDto()
-            .setClientId(signupVo.getClientId())
-            .setClientSecret(signupVo.getClientSecret())
-            .setScope(SIGN2P_TOKEN_CLIENT_SCOPE);
-        ClientSignVo signInVo = clientSignPubRemote.signin(signInDto).orElseContentThrow();
-
-        return new AgentAuth().setClientId(signupVo.getClientId())
-            .setClientSecret(signupVo.getClientSecret())
-            .setAccessToken(signInVo.getAccessToken());
       }
 
       /**
@@ -333,6 +331,60 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         return null;
       }
     }.execute();
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void configureAgentAuth() throws Exception {
+    Long ownerTenantId = tenantManager.checkAndFindOwnerTenant().getId();
+    String ip = EnvHelper.getString(TESTER_HOST, getValidIpv4());
+    NodeInfo nodeInfo = nodeInfoQuery.findTenantNode(ownerTenantId, ip);
+    if (isNull(nodeInfo)) {
+      throw SysException.of("Application main node info not found");
+    }
+
+    AgentAuth agentAuth = nodeInfo.getAgentAuth();
+    if (isNull(agentAuth)) {
+      agentAuth = genOpen2pAuthToken(ownerTenantId, nodeInfo.getId());
+      nodeInfo.setAgentAuth(agentAuth);
+      update0(nodeInfo);
+    }
+
+    PropertiesRepo.of(appDir.getConfDir(), "remoting.properties")
+        .save("remoting.ctrlUrlPrefix",
+            EnvHelper.getString(TESTER_APIS_SERVER_URL + "/openapi2p/v1/ctrl/discovery"))
+        .save("remoting.ctrlAccessToken", agentAuth.getAccessToken())
+        .saveToDisk();
+
+    PropertiesRepo.of(appDir.getConfDir(), "agent.properties")
+        .save("angusagent.serverIp", ip)
+        .save("angusagent.principal.tenantId", ownerTenantId.toString())
+        .save("angusagent.principal.deviceId", nodeInfo.getId().toString())
+        .saveToDisk();
+  }
+
+
+  /**
+   * Generate openapi2p client for applyTenantId
+   */
+  @Override
+  public AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId) {
+    ClientSignupDto signupDto = new ClientSignupDto()
+        .setSignupBiz(Client2pSignupBiz.AGENT)
+        .setTenantId(tenantId)
+        .setTenantName(getTenantName())
+        .setResourceId(nodeId);
+    ClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto).orElseContentThrow();
+
+    ClientSignInDto signInDto = new ClientSignInDto()
+        .setClientId(signupVo.getClientId())
+        .setClientSecret(signupVo.getClientSecret())
+        .setScope(SIGN2P_TOKEN_CLIENT_SCOPE);
+    ClientSignVo signInVo = clientSignPubRemote.signin(signInDto).orElseContentThrow();
+
+    return new AgentAuth().setClientId(signupVo.getClientId())
+        .setClientSecret(signupVo.getClientSecret())
+        .setAccessToken(signInVo.getAccessToken());
   }
 
 }

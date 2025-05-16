@@ -382,6 +382,11 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
     }.execute();
   }
 
+  @Override
+  public NodeInfo findTenantNode(Long tenantId, String ip){
+    return nodeInfoRepo.findByTenantIdAndIp(tenantId, ip);
+  }
+
   /**
    * Note: Free experience execution does not support node selection strategy.
    */

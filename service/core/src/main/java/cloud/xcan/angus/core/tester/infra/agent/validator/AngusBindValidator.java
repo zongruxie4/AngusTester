@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.infra.remoting.validator;
+package cloud.xcan.angus.core.tester.infra.agent.validator;
 
 import static cloud.xcan.angus.api.commonlink.CtrlConstant.OPEN2P_DISCOVER_URI_PREFIX;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
