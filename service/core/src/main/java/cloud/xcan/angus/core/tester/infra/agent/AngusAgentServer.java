@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.infra.remoting;
+package cloud.xcan.angus.core.tester.infra.agent;
 
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.ALLOW_MAX_HEARTBEAT_INTERVAL;
 import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.REDIS_DATABASE;
@@ -14,31 +14,25 @@ import static cloud.xcan.angus.remoting.common.config.RemotingConfigDefaults.SER
 import cloud.xcan.angus.remoting.common.MessageService;
 import cloud.xcan.angus.remoting.server.RemotingServer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @Slf4j
-@Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(RemotingServerProperties.class)
-public class RemotingServerConfiguration {
+public class AngusAgentServer {
 
-  @Bean(destroyMethod = "shutdown")
-  public RemotingServer remotingServer(RemotingServerProperties properties) {
+  public static RemotingServer start(AgentServerProperties properties) {
     configureRemotingServer(properties);
     RemotingServer server = new RemotingServer(MessageService.Ctrl,
         properties.getServerIp(), Integer.parseInt(properties.getServerPort()));
     try {
-      log.info("\033[34m*** Start CtrlRemotingServer starting ***\033[0m");
+      log.info("\033[34m*** Start AngusAgentServer starting ***\033[0m");
       new Thread(server::start).start();
     } catch (Exception e) {
-      log.error("*** Start CtrlRemotingServer failure and exit ***", e);
+      log.error("*** Start AngusAgentServer failure and exit ***", e);
       server.shutdown();
     }
     return server;
   }
 
-  private void configureRemotingServer(RemotingServerProperties prop) {
+  private static void configureRemotingServer(AgentServerProperties prop) {
     if (prop.getServerIp() != null) {
       System.setProperty(REMOTING_CONFIG_ROOT + SERVER_IP, prop.getServerIp());
     }

@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.domain.node.info;
 
+import cloud.xcan.angus.api.pojo.auth.AgentAuth;
 import cloud.xcan.angus.core.jpa.multitenancy.TenantEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;

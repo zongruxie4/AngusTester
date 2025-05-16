@@ -47,6 +47,8 @@ public interface NodeInfoQuery {
 
   Map<String, List<Node>> getValidCtrlIpNodeVoMap();
 
+  NodeInfo findTenantNode(Long tenantId, String ip);
+
   List<NodeInfo> selectWithFree(Long execId, Integer num, Set<Long> availableNodeIds);
 
   List<NodeInfo> selectByStrategy(Long execId, Integer num, Set<Long> availableNodeIds,

@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.infra.remoting;
+package cloud.xcan.angus.core.tester.infra.agent;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "xcan.remoting", ignoreUnknownFields = false)
-public class RemotingServerProperties {
+public class AgentServerProperties {
 
   private String serverIp;
   private String serverPort = "5035";

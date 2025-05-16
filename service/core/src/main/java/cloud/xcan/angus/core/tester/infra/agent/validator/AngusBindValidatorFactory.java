@@ -1,4 +1,4 @@
-package cloud.xcan.angus.core.tester.infra.remoting.validator;
+package cloud.xcan.angus.core.tester.infra.agent.validator;
 
 
 import cloud.xcan.angus.remoting.common.spi.BindValidator;

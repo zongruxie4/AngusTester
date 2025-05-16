@@ -1,5 +1,5 @@
 server:
-  port: ${ESTER_PORT:1830}
+  port: ${TESTER_PORT:1830}
   servlet:
     context-path: /
 
@@ -80,7 +80,7 @@ xcan:
 
 info:
   app:
-    name: '@project.name@'
+    name: '@hump.name@'
     editionType: '@editionType@'
     version: '@project.version@'
     artifactId: '@artifactId@'

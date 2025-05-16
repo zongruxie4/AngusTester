@@ -22,7 +22,7 @@ import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.ctrl.CtrlQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
-import cloud.xcan.angus.core.tester.infra.remoting.RemotingServerProperties;
+import cloud.xcan.angus.core.tester.infra.agent.AgentServerProperties;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remoting.common.node.DiscoveryNodeDto;
 import cloud.xcan.angus.remoting.common.node.DiscoveryNodeVo;
@@ -34,7 +34,6 @@ import cloud.xcan.angus.spec.http.HttpSender.Request.Builder;
 import cloud.xcan.angus.spec.http.HttpSender.Response;
 import cloud.xcan.angus.spec.http.HttpUrlConnectionSender;
 import cloud.xcan.angus.spec.utils.JsonUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
@@ -63,7 +62,7 @@ public class CtrlQueryImpl implements CtrlQuery {
   private ApplicationInfo appInfo;
 
   @Resource
-  private RemotingServerProperties serverProperties;
+  private AgentServerProperties serverProperties;
 
   @Resource
   private ObjectMapper objectMapper;
