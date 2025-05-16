@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
-// import { useRouter, useRoute } from 'vue-router'
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Menu, MenuItem, MenuItemGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
 
 import { reportMenus } from './config';
-import { http, TESTER } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import { report as reportApi } from '@/api/tester';
 

@@ -86,12 +86,13 @@ defineExpose({
       label="选择空间"
       :rules="{required: true, message: '请选择空间'}">
       <Select
+        v-if="projectInfo?.id"
         :value="formState.spaceId"
         defaultActiveFirstOption
         showSearch
         :defaultOptions="defaultSpace"
         :lazy="false"
-        :action="`${STORAGE}/space/search?projectId=${projectInfo.id}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
+        :action="`${STORAGE}/space/search?projectId=${projectInfo?.id}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
         :params="selectParams"
         :fieldNames="{label: 'name', value: 'id'}"
         @change="onSpaceChaneg" />
