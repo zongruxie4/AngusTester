@@ -13,11 +13,11 @@ export default defineConfig({
     vue(),
     vueJsx(),
     viteCompression({
-      algorithm: 'gzip', // 压缩算法
-      ext: '.gz', // 压缩文件的扩展名
-      threshold: 2048, // 文件大小达到该值（单位：字节）才会被压缩
-      deleteOriginFile: false, // 是否删除原始文件
-      verbose: true // 是否在控制台输出压缩信息
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 2048,
+      deleteOriginFile: false,
+      verbose: true
     }),
     nodePolyfills()
   ],

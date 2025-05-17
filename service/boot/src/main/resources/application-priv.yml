@@ -4,7 +4,7 @@ xcan:
   cloud:
     gmApiUrlPrefix: ${GM_CLOUD_APIS_URL_PREFIX}
   mockService:
-    domainSuffix: ${MOCK_SERVICE_DOMAIN_SUFFIX}
+    domainSuffix: ${MOCK_SERVICE_DOMAIN_SUFFIX:mock.com}
     testerApisUrlPrefix: ${TESTER_APIS_SERVER_URL}
   datasource:
     extra:
@@ -169,6 +169,6 @@ spring:
 
 logging:
   level:
-    org: WARN
-    com: WARN
+    org: INFO
+    com: INFO
 
