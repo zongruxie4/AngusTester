@@ -4,6 +4,7 @@ import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-an
 import { app, http, site, utils, duration, GM } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { mock } from 'src/api/tester';
+import GlobalConstantConfig from "@/globalConstantConfig";
 
 import store from './store';
 
@@ -58,7 +59,8 @@ const loadAIAgent = async () => {
 const globalConfigs = ref<{ [key: string]: string }>();
 onMounted(async () => {
   window.addEventListener('resize', resizeHandler);
-  globalConfigs.value = await site.getEnvContent();
+  const envContent = await site.getEnvContent();
+  globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
   aiAgent.value = await loadAIAgent();
 });
 
