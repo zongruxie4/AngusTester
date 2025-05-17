@@ -5,6 +5,7 @@
 -- Note: After installation, it is necessary to modify the application URL.
 DELETE FROM `app` WHERE id = 100009;
 INSERT INTO `app` (`id`, `code`, `name`, `show_name`, `icon`, `type`, `edition_type`, `description`, `auth_ctrl`, `enabled`, `url`, `sequence`, `api_ids`, `version`, `open_stage`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (100009, 'AngusTester', 'AngusTester', 'AngusTester', '', 'CLOUD_APP', 'DATACENTER', 'AngusTester数据中心版', 1, 1, 'http://localhost:8901', 7, '[]', '1.0.0', 'SIGNUP', 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+UPDATE `app` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for app_func
@@ -25,6 +26,7 @@ INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000091515001, 'OfficialWebsite', '官网', '官网', -1, '', 'MENU', '', 1, 1, 'https://www.xcan.cloud', 100009, 17, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-04-03 17:55:24');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000091512001, 'SearchBar', '搜索框', '搜索框', -1, '', 'MENU', '', 1, 1, '/', 100009, 14, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-01-02 11:22:22');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000091513001, 'WorkOrder', '工单', '工单', -1, '', 'MENU', '', 1, 1, 'https://wo.xcan.cloud/workorders', 100009, 15, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-04-03 17:54:51');
+UPDATE `app_func` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for web_tag
@@ -87,6 +89,7 @@ DELETE FROM `auth_policy` WHERE app_id = 100009;
 INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (127001, '应用管理员', 'ANGUSTESTER_ADMIN', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能和“应用设置”权限。', 100009, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
 INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (127002, '一般用户', 'ANGUSTESTER_USER', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能权限，无“应用设置”权限。', 100009, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
 INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (127003, '访客', 'ANGUSTESTER_GUEST', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用功能查看权限，无“应用设置”权限。', 100009, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+UPDATE `auth_policy` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for auth_policy_func
