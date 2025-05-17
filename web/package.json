@@ -26,7 +26,6 @@
     "build:priv:community": "NODE_OPTIONS=--max-old-space-size=8192 node ./scripts/build.js --env=priv --edition_type=COMMUNITY",
     "build:priv:enterprise": "NODE_OPTIONS=--max-old-space-size=8192 node ./scripts/build.js --env=priv --edition_type=ENTERPRISE",
     "build:priv:datacenter": "NODE_OPTIONS=--max-old-space-size=8192 node ./scripts/build.js --env=priv --edition_type=DATACENTER",
-
     "fix:js": "eslint --fix --ext \".ts,.tsx,.js,.jsx,.vue\" --ignore-path .eslintignore src/",
     "fix:style": "stylelint src/**/*.{css,less,vue,html} --ignore-path .stylelintignore --fix",
     "fix": "npm run fix:js && npm run fix:style",
