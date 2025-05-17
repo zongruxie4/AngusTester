@@ -4,6 +4,8 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const args = process.argv.slice(2); // Remove node and script path
+console.log("args", args)
+
 const params = {};
 for (const arg of args) {
   if (arg.startsWith('--')) {
