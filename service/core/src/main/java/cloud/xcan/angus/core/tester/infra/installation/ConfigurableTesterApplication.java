@@ -144,18 +144,20 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
   }
 
   private void rewriteEnvByBusiness() {
-    if (appEdition.isPrivatization()) {
-      envs.put(GM_APIS_URL_PREFIX, getGMWebsite());
-      envs.put(TESTER_APIS_SERVER_URL, getTesterWebsite());
+    // Used by eureka
+    envs.put(GM_HOST, getInstallGMHost());
+    envs.put(GM_PORT, getInstallGMPort());
 
-      InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
-      if (installType.isShared()) {
-        envs.put(TESTER_DB_HOST, getString(GM_DB_HOST));
-        envs.put(TESTER_DB_PORT, getString(GM_DB_PORT));
-        envs.put(TESTER_DB_NAME, getString(GM_DB_NAME));
-        envs.put(TESTER_DB_USER, getString(GM_DB_USER));
-        envs.put(TESTER_DB_PASSWORD, getString(GM_DB_PASSWORD));
-      }
+    envs.put(GM_APIS_URL_PREFIX, getGMWebsite());
+    envs.put(TESTER_APIS_SERVER_URL, getTesterWebsite());
+
+    InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
+    if (installType.isShared()) {
+      envs.put(TESTER_DB_HOST, getString(GM_DB_HOST));
+      envs.put(TESTER_DB_PORT, getString(GM_DB_PORT));
+      envs.put(TESTER_DB_NAME, getString(GM_DB_NAME));
+      envs.put(TESTER_DB_USER, getString(GM_DB_USER));
+      envs.put(TESTER_DB_PASSWORD, getString(GM_DB_PASSWORD));
     }
   }
 
@@ -491,10 +493,6 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
   private void addEnvForInstallSql(DCache mainDCache) {
     envs.put(TENANT_ID, getFinalTenantId(mainDCache).toString());
     envs.put(TENANT_NAME, getFinalTenantName(mainDCache));
-
-    // Used by eureka
-    envs.put(GM_HOST, getInstallGMHost());
-    envs.put(GM_PORT, getInstallGMPort());
 
     //envs.put(GM_APP_OPEN_DATE, formatByDateTimePattern(new Date()));
     //envs.put(GM_APP_EXPIRATION_DATE, formatByDateTimePattern(getMaxFreeOpenDate()));

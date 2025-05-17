@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeRunnerKillDto;
 import java.util.Collection;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface NodeInfoCmd {
 
@@ -26,7 +25,6 @@ public interface NodeInfoCmd {
   String AGENT_INSTALL_DOOR_ENDPOINT = NODE_INFO_DOOR_ENDPOINT_PREFIX + "/{id}/agent/install/cmd";
   String NODE_INFO_DELETE_DOOR_ENDPOINT = NODE_INFO_DOOR_ENDPOINT_PREFIX;
 
-  @Transactional(rollbackFor = Exception.class)
   void update0(NodeInfo nodeInfo);
 
   void delete(Collection<Long> ids);
@@ -37,7 +35,6 @@ public interface NodeInfoCmd {
 
   Boolean runnerProcessKill(NodeRunnerKillDto dto);
 
-  @Transactional
   void configureAgentAuth() throws Exception;
 
   AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId);
