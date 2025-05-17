@@ -90,8 +90,8 @@ import cloud.xcan.angus.core.app.ProductInfo;
 import cloud.xcan.angus.core.jdbc.FullSQLException;
 import cloud.xcan.angus.core.jdbc.JDBCUtils;
 import cloud.xcan.angus.core.spring.env.ConfigurableApplication;
-import cloud.xcan.angus.core.spring.env.checker.DatabaseChecker;
-import cloud.xcan.angus.core.spring.env.checker.RedisChecker;
+import cloud.xcan.angus.core.utils.checker.DatabaseChecker;
+import cloud.xcan.angus.core.utils.checker.RedisChecker;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.properties.repo.PropertiesRepo;
 import cloud.xcan.angus.spec.utils.FileUtils;
@@ -132,9 +132,9 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
       rewriteEnvByBusiness();
 
       if (isNotEmpty(installApps) && installApps.contains(TESTER_SERVICE)) {
-        System.out.println(" ----> Configure application starting ---->");
+        System.out.println("---> Configure application starting <----");
         installApplication();
-        System.out.println(" ----> Configure application completed <----");
+        System.out.println("---> Configure application completed <----");
       }
     }
   }

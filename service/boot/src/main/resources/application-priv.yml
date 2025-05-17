@@ -134,6 +134,10 @@ eureka:
     health-check-url-path: /actuator/health
 
 spring:
+  web:
+    resources:
+      addMappings: false
+      static-locations: ${TESTER_WEB_STATICS:classpath:/static/,file:./statics/}
   security:
     oauth2:
       resource-server:
