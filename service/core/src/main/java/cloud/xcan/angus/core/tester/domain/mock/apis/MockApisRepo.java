@@ -39,7 +39,7 @@ public interface MockApisRepo extends BaseRepository<MockApis, Long> {
   String findMockServiceNameById(Long id);
 
   @Query(value = "SELECT a.mock_service_id AS serviceId, COUNT(a.id) AS num FROM mock_apis  a WHERE a.mock_service_id IN ?1  GROUP BY a.mock_service_id", nativeQuery = true)
-  List<Map<String, BigInteger>> countServiceApis(Collection<Long> sIds);
+  List<Map<String, Long>> countServiceApis(Collection<Long> sIds);
 
   MockApis findFirstByMockServiceIdAndAssocApisId(Long mockServiceId, Long apisId);
 

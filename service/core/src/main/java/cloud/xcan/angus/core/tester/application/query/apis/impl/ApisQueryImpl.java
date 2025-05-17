@@ -699,16 +699,16 @@ public class ApisQueryImpl implements ApisQuery {
    */
   @Override
   public void checkServiceApisQuota(List<Apis> apis) {
-    List<Map<String, BigInteger>> serviceApisNums = apisRepo.countServiceApis(
+    List<Map<String, Long>> serviceApisNums = apisRepo.countServiceApis(
         apis.stream().map(Apis::getServiceId).collect(Collectors.toSet()));
     Map<Long, Long> requestProjectApisNumMap = apis.stream()
         .collect(Collectors.groupingBy(Apis::getServiceId, Collectors.counting()));
-    for (Map<String, BigInteger> serviceApisNum : serviceApisNums) {
-      BigInteger serviceId = serviceApisNum.get("serviceId");
-      BigInteger apisNum = serviceApisNum.get("num");
+    for (Map<String, Long> serviceApisNum : serviceApisNums) {
+      Long serviceId = serviceApisNum.get("serviceId");
+      Long apisNum = serviceApisNum.get("num");
       commonQuery.checkTenantQuota(QuotaResource.AngusTesterServicesApis,
           Collections.singleton(apis.get(0).getServiceId()),
-          apisNum.longValue() + requestProjectApisNumMap.get(serviceId.longValue()));
+          apisNum + requestProjectApisNumMap.get(serviceId));
     }
     commonQuery.checkTenantQuota(QuotaResource.AngusTesterApis, apis.stream().map(Apis::getId)
         .collect(Collectors.toSet()), apisRepo.countByTenantId(getOptTenantId()) + apis.size());

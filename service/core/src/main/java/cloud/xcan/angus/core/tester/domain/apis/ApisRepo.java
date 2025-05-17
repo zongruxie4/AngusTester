@@ -41,7 +41,7 @@ public interface ApisRepo extends BaseRepository<Apis, Long> {
   List<Apis> findAllByIdInAndServiceIdIn(Collection<Long> ids, Collection<Long> serviceIds);
 
   @Query(value = "SELECT a.service_id AS serviceId, COUNT(a.id) AS num FROM apis a WHERE a.service_id IN ?1  GROUP BY a.service_id", nativeQuery = true)
-  List<Map<String, BigInteger>> countServiceApis(Set<Long> pIds);
+  List<Map<String, Long>> countServiceApis(Set<Long> pIds);
 
   @Query(value = "SELECT count(*) FROM apis WHERE tenant_id = ?1", nativeQuery = true)
   long countByTenantId(Long tenantId);
