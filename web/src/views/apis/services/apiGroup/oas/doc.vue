@@ -76,7 +76,7 @@ defineExpose({
       allowSpecUrlLoad="false"
       :allowSpecFileLoad="false"
       allowSpecFileDownload="false"
-      allowTry="false"
+      allow-try="false"
       schemaStyle="table"
       showHeader="false"
       schemaExpandLevel="20">

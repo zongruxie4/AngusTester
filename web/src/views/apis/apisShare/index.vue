@@ -123,7 +123,7 @@ provide('readyState', readyState);
       allowSpecUrlLoad="false"
       :allowSpecFileLoad="false"
       allowSpecFileDownload="false"
-      :allowTry="displayOptions.allowDebug"
+      :allow-try="displayOptions.allowDebug"
       :schemaStyle="displayOptions.schemaStyle"
       showHeader="false"
       schemaExpandLevel="20">
