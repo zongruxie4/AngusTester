@@ -434,7 +434,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
               + "?, ?, ?, ?, " + " ?, ?, ?, ?, ?, " + "?, ?, ?, ?, ?)",
           Arrays.asList(nodeId, nullSafe(getHostName(), "INSTALLATION_APP") , ip, null, null, null, null,
               "OWN_NODE", 0, 1, null, null, 22, null, null, null, 0,
-              null, null, 1, 0, String.valueOf(nodeId),
+              null, null, 0, 0, String.valueOf(nodeId),
               tenantId, -1L, formatByDateTimePattern(new Date()), -1L, formatByDateTimePattern(new Date())
           )
       );
@@ -459,7 +459,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
       JDBCUtils.executeUpdate(testerConnection,
           "INSERT node_info(id, tenant_id, info, os, agent_installed, agent_auth, last_modified_date) "
               + "VALUES (?, ?, ?, ?, ?, ?, ?)",
-          Arrays.asList(nodeId, tenantId, null, null, 1, null, formatByDateTimePattern(new Date()))
+          Arrays.asList(nodeId, tenantId, null, null, 0, null, formatByDateTimePattern(new Date()))
       );
     }
     // @formatter:on
