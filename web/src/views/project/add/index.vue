@@ -456,8 +456,9 @@ const modalTitle = computed(() => {
           <RichEditor
             ref="descRichRef"
             v-model:value="formData.description"
+            class="border rounded border-border-input"
             :height="80"
-            :options="{placeholder: '描述，最多2000个字符'}" />
+            :options="{placeholder: '描述，最多2000个字符', theme: 'bubble'}" />
           <!-- <Textarea
             v-model:value="formData.description"
             type="textarea"
