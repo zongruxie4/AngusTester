@@ -119,16 +119,18 @@ eureka:
   client:
     healthcheck:
       enabled: true
-    eureka-connection-idle-timeout-seconds: 10
-    initial-instance-info-replication-interval-seconds: 10
-    registry-fetch-interval-seconds: 10
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 30
+    eureka-connection-idle-timeout-seconds: 30
+    initial-instance-info-replication-interval-seconds: 40
     serviceUrl:
       defaultZone: http://${EUREKA_USER_NAME}:${EUREKA_USER_PASSWORD}@${GM_HOST}:${GM_PORT}/eureka/
   instance:
     app-name: '@artifactId@'
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
-    lease-expiration-duration-in-seconds: 30
-    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 90
+    lease-renewal-interval-in-seconds: 30
     prefer-ip-address: true
     status-page-url: http://${spring.cloud.client.ip-address}:${server.port}/swagger-ui/
     health-check-url-path: /actuator/health
