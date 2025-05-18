@@ -6,7 +6,7 @@ plugin: Http
 configuration:
   duration: 1min
   thread:
-    threads: 500
+    threads: 50
 task:
   pipelines:
     - target: HTTP

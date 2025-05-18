@@ -7,7 +7,7 @@ plugin: Smtp
 configuration:
   duration: 50min
   thread:
-    threads: 500
+    threads: 50
     rampUpInterval: 1min
     rampUpThreads: 20
   priority: 1000
