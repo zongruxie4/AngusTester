@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
+
 import cloud.xcan.angus.api.tester.node.vo.NodeInfoDetailVo;
 import cloud.xcan.angus.api.tester.node.vo.NodeInfoDetailVo.InfoVo;
 import cloud.xcan.angus.api.tester.node.vo.NodeInfoDetailVo.OsVo;
@@ -27,7 +29,7 @@ public class NodeInfoAssembler {
   }
 
   public static InfoVo toInfoVo(Info info) {
-    return new InfoVo().setPlatform(info.getPlatform())
+    return isNull(info) ? null : new InfoVo().setPlatform(info.getPlatform())
         .setCpuNum(info.getCpuNum())
         .setCpuPhysicalNum(info.getCpuPhysicalNum())
         .setMemTotal(info.getMemTotal())
@@ -39,7 +41,7 @@ public class NodeInfoAssembler {
   }
 
   public static OsVo toOsVo(Os os) {
-    return new OsVo().setName(os.getName())
+    return isNull(os) ? null : new OsVo().setName(os.getName())
         .setVersion(os.getVersion())
         .setArch(os.getArch())
         .setMachine(os.getMachine())

@@ -1,6 +1,10 @@
 package cloud.xcan.angus.core.tester.infra.installation;
 
 
+import static cloud.xcan.angus.api.commonlink.CtrlConstant.EXEC_MAX_FREE_NODES;
+import static cloud.xcan.angus.api.commonlink.CtrlConstant.EXEC_MAX_FREE_THREADS;
+import static cloud.xcan.angus.api.commonlink.CtrlConstant.MAX_FREE_CONCURRENT_TASK;
+import static cloud.xcan.angus.api.commonlink.CtrlConstant.MAX_FREE_USER;
 import static cloud.xcan.angus.api.enums.RedisDeployment.SINGLE;
 import static cloud.xcan.angus.api.enums.SupportedDbType.MYSQL;
 import static cloud.xcan.angus.core.spring.env.AbstractEnvLoader.appDir;
@@ -364,20 +368,18 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
     );
 
     // Update license quota, TODO When multiple main applications are used, the highest quota value should be update
-    if (nonNull(mainAppDCache)){
-      JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
-          Arrays.asList(mainAppDCache.getTco(), "AngusTesterConcurrency")
-      );
-      JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
-          Arrays.asList(mainAppDCache.getTta(), "AngusTesterConcurrentTask")
-      );
-      JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
-          Arrays.asList(mainAppDCache.getTno(), "AngusTesterNode")
-      );
-      JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
-          Arrays.asList(mainAppDCache.getCam(), "User")
-      );
-    }
+    JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
+        Arrays.asList(nonNull(mainAppDCache) ? mainAppDCache.getTco() : EXEC_MAX_FREE_THREADS, "AngusTesterConcurrency")
+    );
+    JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
+        Arrays.asList(nonNull(mainAppDCache) ? mainAppDCache.getTta() : MAX_FREE_CONCURRENT_TASK, "AngusTesterConcurrentTask")
+    );
+    JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
+        Arrays.asList(nonNull(mainAppDCache) ? mainAppDCache.getTno() : EXEC_MAX_FREE_NODES, "AngusTesterNode")
+    );
+    JDBCUtils.executeUpdate(gmConnection, "UPDATE c_setting_tenant_quota SET quota=? WHERE name=?",
+        Arrays.asList(nonNull(mainAppDCache) ? mainAppDCache.getCam() : MAX_FREE_USER, "User")
+    );
     // @formatter:on
   }
 
@@ -434,7 +436,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
               + "?, ?, ?, ?, " + " ?, ?, ?, ?, ?, " + "?, ?, ?, ?, ?)",
           Arrays.asList(nodeId, nullSafe(getHostName(), "INSTALLATION_APP") , ip, null, null, null, null,
               "OWN_NODE", 0, 1, null, null, 22, null, null, null, 0,
-              null, null, 1, 0, String.valueOf(nodeId),
+              null, null, 0, 0, String.valueOf(nodeId),
               tenantId, -1L, formatByDateTimePattern(new Date()), -1L, formatByDateTimePattern(new Date())
           )
       );
@@ -459,7 +461,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
       JDBCUtils.executeUpdate(testerConnection,
           "INSERT node_info(id, tenant_id, info, os, agent_installed, agent_auth, last_modified_date) "
               + "VALUES (?, ?, ?, ?, ?, ?, ?)",
-          Arrays.asList(nodeId, tenantId, null, null, 1, null, formatByDateTimePattern(new Date()))
+          Arrays.asList(nodeId, tenantId, null, null, 0, null, formatByDateTimePattern(new Date()))
       );
     }
     // @formatter:on

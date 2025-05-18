@@ -117,10 +117,6 @@ public class NodeAssembler {
     if (nodeInfo != null) {
       nodeDetailVo.setOnline(nodeInfo.getAgentOnline());
       nodeDetailVo.setOs(toOsVo(nodeInfo.getOs()));
-      //      // Fix: The installation status of the Agent is not synchronized during manual installation.
-      //      if (nonNull(nodeInfoVo.getAgentOnline()) && nodeInfoVo.getAgentOnline()){
-      //        nodeDetailVo.setInstallAgent(true);
-      //      }
       if (!nodeDetailVo.getSource().isOnlineBuy() && nonNull(nodeInfo.getInfo())) {
         setAgentNodeSpec(nodeDetailVo, nodeInfo);
       }
