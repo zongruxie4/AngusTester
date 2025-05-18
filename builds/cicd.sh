@@ -154,14 +154,15 @@ deploy_private_edition() {
   ssh "$host" "cd ${REMOTE_APP_DIR} && sh shutdown-test.sh" || {
     echo "WARN: Failed to stop app, proceeding anyway"
   }
-  ssh "$host" "rm -rf *" || {
+  ssh "$host" "cd ${REMOTE_APP_DIR} && rm -rf *" || {
     echo "ERROR: Failed to clean app directory"; exit 1
   }
-  dist_file=$(ls dist/AngusTester-*.zip)
-  scp -rp $dist_file "${host}:/tmp/" || {
+  dist_zip=$(ls dist/AngusTester-*.zip)
+  scp -rp $dist_zip "${host}:/tmp/" || {
     echo "ERROR: Failed to copy app zip file"; exit 1
   }
-  ssh "$host" "unzip /tmp/${dist_file} -d ${REMOTE_APP_DIR}" || {
+  dist_file=$(basename "$dist_zip")
+  ssh "$host" "unzip -qo /tmp/${dist_file} -d ${REMOTE_APP_DIR}" || {
     echo "ERROR: Failed to uzip to app directory"; exit 1
   }
   ssh "$host" "cp -f ${REMOTE_APP_CONF_DIR}/.priv-test.env ${REMOTE_APP_DIR}/conf/.priv.env" || {
