@@ -441,12 +441,12 @@ const loadProjectTree = async () => {
   const ids: string[] = [];
   const visibleChildren:string[] = [];
   for (let i = 0, len = temp.length; i < len; i++) {
-    const { id, level, children, hasApisFlag } = temp[i];
+    const { id, level, children, hasApis } = temp[i];
 
     ids.push(id);
     dataMap.value[id] = temp[i];
 
-    if (children.length || (!isSearch && hasApisFlag)) {
+    if (children.length || (!isSearch && hasApis)) {
       arrowSet.value.add(id);
 
       if (isSearch) {

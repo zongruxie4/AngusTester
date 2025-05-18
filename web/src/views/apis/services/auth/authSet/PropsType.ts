@@ -4,7 +4,7 @@ export type TreeElement = {
     id: string;
     name: string;
     level: number;
-    hasApisFlag: boolean;
+    hasApis: boolean;
     targetType: { message: string; value: 'PROJECT' | 'SERVICE'; };
     isApi?: boolean;
     children?: TreeElement[];
@@ -16,7 +16,7 @@ export type ArrayItem = {
     id: string;
     name: string;
     level: number;
-    hasApisFlag: boolean;
+    hasApis: boolean;
     targetType: 'PROJECT' | 'SERVICE';
     children: string[];
     endpoint?: string;

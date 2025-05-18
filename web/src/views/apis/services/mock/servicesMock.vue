@@ -171,7 +171,7 @@ onMounted(async () => {
           <FormItem label="端口" required />
           <FormItem label="节点" required />
           <FormItem label="服务" required />
-          <template v-if="formState.serviceId && serviceInfo?.hasApisFlag">
+          <template v-if="formState.serviceId && serviceInfo?.hasApis">
             <FormItem label="接口" />
           </template>
         </div>
@@ -246,7 +246,7 @@ onMounted(async () => {
               </template>
             </TreeSelect>
           </FormItem>
-          <template v-if="formState.serviceId && serviceInfo?.hasApisFlag">
+          <template v-if="formState.serviceId && serviceInfo?.hasApis">
             <FormItem name="apiIds">
               <ApiList
                 v-model:apiIds="formState.apiIds"
