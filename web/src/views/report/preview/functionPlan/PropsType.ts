@@ -17,7 +17,7 @@ export type ReportContent = {
             }[];
             description: string;
             auth: boolean;
-            reviewFlag: boolean;
+            review: boolean;
             startDate: string;
             deadlineDate: string;
             ownerId: string;
@@ -226,7 +226,7 @@ export type ReportContent = {
                     value: string;
                     message: string
                 };
-                reviewFlag: boolean;
+                review: boolean;
                 reviewDate: string;
                 reviewFailNum: string;
                 reviewNum: string;

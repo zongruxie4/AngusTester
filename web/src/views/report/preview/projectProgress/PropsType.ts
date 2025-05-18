@@ -141,7 +141,7 @@ export type ReportContent = {
                 projectId: string;
                 reviewDate: string;
                 reviewFailNum: string;
-                reviewFlag: boolean;
+                review: boolean;
                 reviewNum: string;
                 reviewRemark: string;
                 reviewStatus: {

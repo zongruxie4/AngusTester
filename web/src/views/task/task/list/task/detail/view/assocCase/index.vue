@@ -199,7 +199,7 @@ const columns = [
         </template>
         <template v-if="column.dataIndex === 'status'">
           <!-- <TaskStatus :value="record?.status" /> -->
-          <ReviewStatus v-if="record?.reviewStatus?.value === 'PENDING' && record.reviewFlag" :value="record.reviewStatus" />
+          <ReviewStatus v-if="record?.reviewStatus?.value === 'PENDING' && record.review" :value="record.reviewStatus" />
           <TestResult v-else :value="record.testResult" />
         </template>
       </template>

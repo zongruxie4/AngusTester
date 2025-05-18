@@ -347,7 +347,7 @@ defineExpose({
   <div class="h-full pl-3 pb-3 pt-1">
     <div class="flex justify-between">
       <div ref="buttonGroupRef" class="flex items-center button-combination flex-wrap">
-        <template v-if="!caseDetail?.reviewFlag || (caseDetail?.reviewFlag && caseDetail?.reviewStatus.value === 'PASSED')">
+        <template v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED')">
           <template v-if="!['PASSED', 'NOT_PASSED', 'CANCELED'].includes(caseDetail?.testResult?.value)">
             <Button
               :disabled="!actionAuth.includes('updateTestResult')"
@@ -398,7 +398,7 @@ defineExpose({
           </Button>
         </template>
         <Button
-          v-if="(!caseDetail?.reviewFlag || (caseDetail?.reviewFlag && caseDetail?.reviewStatus.value === 'PASSED')) && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
+          v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED')) && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -407,7 +407,7 @@ defineExpose({
           设为阻塞中
         </Button>
         <Button
-          v-if="!caseDetail?.reviewFlag || (caseDetail?.reviewFlag && caseDetail?.reviewStatus.value === 'PASSED') && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
+          v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED') && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -524,7 +524,7 @@ defineExpose({
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane
-        v-if="!!caseDetail?.reviewFlag"
+        v-if="!!caseDetail?.review"
         key="reviewRecord"
         tab="评审记录">
         <ReviewTab

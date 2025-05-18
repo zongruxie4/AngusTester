@@ -307,6 +307,7 @@ const toSave = async () => {
   if (error) {
     return;
   }
+  notification.success('保存成功');
 
   newTaskName.value = undefined;
   newTaskPriority.value = 'MEDIUM';

@@ -52,7 +52,7 @@ export type CaseInfo = {
     overdueFlag: boolean;
     code: string;
     deadlineDate: string;
-    reviewFlag: boolean;
+    review: boolean;
     reviewStatus: {
         value: ReviewStatus;
         message: string;

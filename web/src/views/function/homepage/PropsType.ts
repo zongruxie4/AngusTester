@@ -60,7 +60,7 @@ export type CaseItem = {
         value: string;
         message: string;
     };
-    reviewFlag: boolean;
+    review: boolean;
     reviewStatus: {
         value: string;
         message: string;

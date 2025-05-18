@@ -373,10 +373,10 @@ const dragEnd = () => {
 };
 
 const dragHandler = (data:CaseInfo, testResult:TestResult, toTestResult:TestResult, index:number, groupKey?:'none' | 'testerName' | 'lastModifiedByName') => {
-  const { reviewFlag, reviewStatus: { value: reviewStatus }, planId, id } = data;
+  const { review, reviewStatus: { value: reviewStatus }, planId, id } = data;
   const permissions = planPermissionsMap.value.get(planId) || [];
   if (testResult === 'PENDING') {
-    if (reviewFlag) {
+    if (review) {
       if (reviewStatus === 'PENDING') {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
@@ -1180,7 +1180,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (props.userInfo?.id === item.testerId && !permissions.includes('TEST')) {
         permissions.push('TEST');
       }
-      const { favouriteFlag, followFlag, testNum, reviewFlag, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
+      const { favouriteFlag, followFlag, testNum, review, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
 
       const menuItems: ActionMenuItem[] = [
         {
@@ -1199,7 +1199,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         }
       ];
 
-      if (!reviewFlag || (reviewFlag && reviewStatus === 'PASSED')) {
+      if (!review || (review && reviewStatus === 'PASSED')) {
         if (testResult === 'PENDING' || testResult === 'BLOCKED') {
           menuItems.push({
             name: '测试通过',

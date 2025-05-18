@@ -43,15 +43,15 @@ export default class API {
   }
 
   deleteReview (reviewId: string): Promise<[Error | null, any]> {
-    return http.del(`${basUrl}/review/${reviewId}`);
+    return http.del(`${baseUrl}/review/${reviewId}`);
   }
 
   getReview (reviewId: string): Promise<[Error | null, any]> {
-    return http.get(`${basUrl}/review/${reviewId}`);
+    return http.get(`${baseUrl}/review/${reviewId}`);
   }
 
   endReview (reviewId: string): Promise<[Error | null, any]> {
-    return http.patch(`${basUrl}/review/${reviewId}/end`);
+    return http.patch(`${baseUrl}/review/${reviewId}/end`);
   }
 
   cloneReview (reviewId: string): Promise<[Error | null, any]> {

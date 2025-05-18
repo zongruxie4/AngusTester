@@ -433,7 +433,7 @@ const searchPanelOptions = [
     maxlength: 100
   },
   {
-    valueKey: 'reviewFlag',
+    valueKey: 'review',
     type: 'select',
     allowClear: true,
     options: [{ label: '是', value: true }, { label: '否', value: false }],
@@ -719,7 +719,7 @@ const sortMenuItems: {
                       <span>是否评审</span>
                       <Colon />
                     </div>
-                    <div class="text-theme-content">{{ item.reviewFlag ? '是' : '否' }}</div>
+                    <div class="text-theme-content">{{ item.review ? '是' : '否' }}</div>
                   </div>
 
                   <div class="flex ml-8  mt-3">

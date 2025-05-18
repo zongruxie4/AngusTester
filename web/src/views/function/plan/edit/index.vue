@@ -82,7 +82,7 @@ const formState = ref<FormState>({
   evalWorkloadMethod: 'STORY_POINT',
   name: '',
   ownerId: props.userInfo?.id,
-  reviewFlag: true,
+  review: true,
   startDate: _startDate,
   deadlineDate: _deadlineDate,
   attachments: [],
@@ -204,7 +204,7 @@ const delFile = (index: number) => {
 
 const reviewFlagChange = (checked) => {
   if (checked) {
-    formState.value.reviewFlag = true;
+    formState.value.review = true;
     return;
   }
 
@@ -212,7 +212,7 @@ const reviewFlagChange = (checked) => {
 };
 
 const handleReviewFlagOk = () => {
-  formState.value.reviewFlag = false;
+  formState.value.review = false;
   reviewFlagVisible.value = false;
 };
 
@@ -507,7 +507,7 @@ const setFormData = (data: PlanInfo) => {
       description: '',
       evalWorkloadMethod: 'STORY_POINT',
       name: '',
-      reviewFlag: true,
+      review: true,
       startDate,
       deadlineDate,
       attachments: [],
@@ -534,7 +534,7 @@ const setFormData = (data: PlanInfo) => {
     attachments = '',
     startDate = '',
     deadlineDate = '',
-    reviewFlag = false,
+    review = false,
     testingObjectives = '',
     testingScope = '',
     otherInformation = '',
@@ -549,7 +549,7 @@ const setFormData = (data: PlanInfo) => {
   formState.value.evalWorkloadMethod = evalWorkloadMethod?.value || '';
   formState.value.name = name;
   formState.value.ownerId = ownerId;
-  formState.value.reviewFlag = reviewFlag;
+  formState.value.review = review;
   formState.value.startDate = startDate;
   formState.value.attachments = attachments || [];
   formState.value.date = [startDate, deadlineDate];
@@ -912,7 +912,7 @@ const autoSize = {
         label="是否评审"
         required
         class="flex-1"
-        name="reviewFlag">
+        name="review">
         <Tooltip
           :visible="reviewFlagVisible"
           placement="right"
@@ -927,7 +927,7 @@ const autoSize = {
             </div>
           </template>
           <Switch
-            :checked="formState.reviewFlag"
+            :checked="formState.review"
             :disabled="editDisabled"
             size="small"
             @change="reviewFlagChange" />

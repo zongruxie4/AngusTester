@@ -43,7 +43,7 @@ export type ReportContent = {
             };
             reviewDate: string;
             reviewFailNum: string;
-            reviewFlag: boolean;
+            review: boolean;
             reviewNum: string;
             reviewRemark: string;
             reviewerId: string;

@@ -47,7 +47,7 @@ export type CaseInfoObj = {
   actualWorkload: string | null;
   precondition: string;
   description: string | null;
-  reviewFlag: boolean;
+  review: boolean;
   reviewerId: string | null;
   reviewerName: string | null;
   reviewDate: string | null;

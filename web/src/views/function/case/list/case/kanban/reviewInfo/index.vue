@@ -31,7 +31,7 @@ const reviewInfoColumns = [
   [
     {
       label: '是否开启评审',
-      dataIndex: 'reviewFlag',
+      dataIndex: 'review',
       customRender: ({ text }) => text ? '是' : '否'
     },
     {

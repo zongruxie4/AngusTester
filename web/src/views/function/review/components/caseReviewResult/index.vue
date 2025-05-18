@@ -3,7 +3,7 @@ import { ReviewStatus } from '@xcan-angus/vue-ui';
 
 interface Props {
   caseInfo?: {
-    reviewFlag: boolean;
+    review: boolean;
     reviewRemark?: string;
     reviewStatus: {
       value: string;

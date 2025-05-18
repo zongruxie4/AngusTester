@@ -4,7 +4,7 @@ export type FormState = {
   name: string;
   ownerId: string;
   projectId: string;
-  reviewFlag: boolean;
+  review: boolean;
   startDate: string;
   casePrefix?: string;
   description?: string;

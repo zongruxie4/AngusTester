@@ -317,7 +317,7 @@ const columns = [
             </div>
 
             <div class="whitespace-pre-wrap break-words break-all">
-              {{ dataSource?.reviewFlag?'是':'否' }}
+              {{ dataSource?.review?'是':'否' }}
             </div>
           </div>
 

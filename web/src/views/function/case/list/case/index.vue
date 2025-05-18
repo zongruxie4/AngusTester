@@ -661,7 +661,7 @@ const tableAction = computed(() => {
       });
     }
 
-    if (!_case?.reviewFlag || (_case?.reviewFlag && _case?.reviewStatus.value === 'PASSED')) {
+    if (!_case?.review || (_case?.review && _case?.reviewStatus.value === 'PASSED')) {
       action.menus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
@@ -979,7 +979,7 @@ watch(() => selectedRowKeys.value, (newValue) => {
   } // TEST
 
   if (selectList.some(_case => {
-    if ((_case?.reviewFlag && _case?.reviewStatus.value !== 'PASSED') || ['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case.testResult.value)) {
+    if ((_case?.review && _case?.reviewStatus.value !== 'PASSED') || ['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case.testResult.value)) {
       return true;
     }
     if (planAuthMap.value[_case.planId].funcPlanAuthFlag) {

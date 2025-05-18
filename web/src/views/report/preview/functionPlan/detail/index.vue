@@ -130,7 +130,7 @@ const testerResponsibilities = computed(() => {
             是否评审用例
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-            {{ plan?.reviewFlag?'是':'否' }}
+            {{ plan?.review?'是':'否' }}
           </div>
         </div>
       </div>

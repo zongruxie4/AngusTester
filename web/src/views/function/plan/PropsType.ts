@@ -32,7 +32,7 @@ export type PlanInfo = {
   };
   projectId: string;
   projectName: string;
-  reviewFlag: boolean;
+  review: boolean;
   startDate: string;
   status: {
     value: 'BLOCKED' | 'COMPLETED' | 'IN_PROGRESS' | 'PENDING';

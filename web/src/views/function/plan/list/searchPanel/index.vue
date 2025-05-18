@@ -43,7 +43,7 @@ const searchPanelOptions = [
     maxlength: 100
   },
   {
-    valueKey: 'reviewFlag',
+    valueKey: 'review',
     type: 'select',
     allowClear: true,
     options: [{ label: '是', value: true }, { label: '否', value: false }],
