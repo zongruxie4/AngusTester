@@ -2,6 +2,7 @@
 -- ----------------------------
 -- Table structure for analysis
 -- ----------------------------
+DROP TABLE IF EXISTS `analysis`;
 CREATE TABLE `analysis` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(20) NOT NULL COMMENT '项目ID',
@@ -32,11 +33,12 @@ CREATE TABLE `analysis` (
   KEY `idx_created_date` (`created_date`) USING BTREE,
   KEY `idx_last_modified_by` (`last_modified_by`) USING BTREE,
   FULLTEXT KEY `udx_name_description` (`name`,`description`) /*!50100 WITH PARSER `ngram` */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT=' 分析'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='分析';
 
 -- ----------------------------
 -- Table structure for analysis_snapshot
 -- ----------------------------
+DROP TABLE IF EXISTS `analysis_snapshot`;
 CREATE TABLE `analysis_snapshot` (
   `id` bigint(20) NOT NULL COMMENT '主键ID',
   `analysis_id` bigint(20) NOT NULL COMMENT '分析ID',
@@ -112,7 +114,7 @@ CREATE TABLE `report_auth` (
  `created_by` bigint(20) NOT NULL COMMENT '创建人',
  `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
  PRIMARY KEY (`id`) USING BTREE,
- UNIQUE KEY `uidx_report_id_auth_creator_flag` (`report_id`,`auth_object_id`,`auth_object_type`,`creator`) USING BTREE,
+ UNIQUE KEY `uidx_report_id_auth_creator` (`report_id`,`auth_object_id`,`auth_object_type`,`creator`) USING BTREE,
  KEY `idx_created_by` (`created_by`) USING BTREE,
  KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
  KEY `idx_auth_object_id` (`auth_object_id`) USING BTREE,

@@ -11,6 +11,8 @@ import static cloud.xcan.angus.core.spring.env.AbstractEnvLoader.envs;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getFinalTenantId;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getFinalTenantName;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getGMWebsite;
+import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallGMHost;
+import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallGMPort;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallTesterHost;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getProductInfo;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getTesterWebsite;
@@ -33,6 +35,8 @@ import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_NAME;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_PASSWORD;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_PORT;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_USER;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_HOST;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_PORT;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.INSTALL_APPS;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.INSTALL_TYPE;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.REDIS_DEPLOYMENT;
@@ -90,8 +94,8 @@ import cloud.xcan.angus.core.app.ProductInfo;
 import cloud.xcan.angus.core.jdbc.FullSQLException;
 import cloud.xcan.angus.core.jdbc.JDBCUtils;
 import cloud.xcan.angus.core.spring.env.ConfigurableApplication;
-import cloud.xcan.angus.core.spring.env.checker.DatabaseChecker;
-import cloud.xcan.angus.core.spring.env.checker.RedisChecker;
+import cloud.xcan.angus.core.utils.checker.DatabaseChecker;
+import cloud.xcan.angus.core.utils.checker.RedisChecker;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.properties.repo.PropertiesRepo;
 import cloud.xcan.angus.spec.utils.FileUtils;
@@ -132,26 +136,28 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
       rewriteEnvByBusiness();
 
       if (isNotEmpty(installApps) && installApps.contains(TESTER_SERVICE)) {
-        System.out.println(" ----> Configure application starting ---->");
+        System.out.println("---> Configure application starting <----");
         installApplication();
-        System.out.println(" ----> Configure application completed <----");
+        System.out.println("---> Configure application completed <----");
       }
     }
   }
 
   private void rewriteEnvByBusiness() {
-    if (appEdition.isPrivatization()) {
-      envs.put(GM_APIS_URL_PREFIX, getGMWebsite());
-      envs.put(TESTER_APIS_SERVER_URL, getTesterWebsite());
+    // Used by eureka
+    envs.put(GM_HOST, getInstallGMHost());
+    envs.put(GM_PORT, getInstallGMPort());
 
-      InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
-      if (installType.isShared()) {
-        envs.put(TESTER_DB_HOST, getString(GM_DB_HOST));
-        envs.put(TESTER_DB_PORT, getString(GM_DB_PORT));
-        envs.put(TESTER_DB_NAME, getString(GM_DB_NAME));
-        envs.put(TESTER_DB_USER, getString(GM_DB_USER));
-        envs.put(TESTER_DB_PASSWORD, getString(GM_DB_PASSWORD));
-      }
+    envs.put(GM_APIS_URL_PREFIX, getGMWebsite());
+    envs.put(TESTER_APIS_SERVER_URL, getTesterWebsite());
+
+    InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
+    if (installType.isShared()) {
+      envs.put(TESTER_DB_HOST, getString(GM_DB_HOST));
+      envs.put(TESTER_DB_PORT, getString(GM_DB_PORT));
+      envs.put(TESTER_DB_NAME, getString(GM_DB_NAME));
+      envs.put(TESTER_DB_USER, getString(GM_DB_USER));
+      envs.put(TESTER_DB_PASSWORD, getString(GM_DB_PASSWORD));
     }
   }
 
@@ -481,15 +487,15 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
 
     Set<String> remoteApps = new HashSet<>(installApps);
     remoteApps.remove(TESTER_SERVICE);
-    repo.save(INSTALL_APPS, String.join(",", remoteApps));
+    repo.save(INSTALL_APPS, String.join(",", remoteApps)).saveToDisk();
   }
 
   private void addEnvForInstallSql(DCache mainDCache) {
     envs.put(TENANT_ID, getFinalTenantId(mainDCache).toString());
     envs.put(TENANT_NAME, getFinalTenantName(mainDCache));
 
-    envs.put(GM_APP_OPEN_DATE, formatByDateTimePattern(new Date()));
-    envs.put(GM_APP_EXPIRATION_DATE, formatByDateTimePattern(getMaxFreeOpenDate()));
+    //envs.put(GM_APP_OPEN_DATE, formatByDateTimePattern(new Date()));
+    //envs.put(GM_APP_EXPIRATION_DATE, formatByDateTimePattern(getMaxFreeOpenDate()));
 
     envs.put(GM_ADMIN_USER_ID, DEFAULT_ADMIN_USER_ID);
     envs.put(GM_ADMIN_FULL_NAME, getString(GM_ADMIN_FULL_NAME, "User" + randomNumeric(6)));

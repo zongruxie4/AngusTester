@@ -9,6 +9,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.StringUtils.format;
 
 import cloud.xcan.angus.api.gm.setting.SettingUserInnerRemote;
+import cloud.xcan.angus.api.gm.setting.vo.UserApiProxyVo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -95,8 +96,9 @@ public class ApisShareQueryImpl implements ApisShareQuery {
             shareDb.getApisIds(), SchemaFormat.json, false, true);
         shareDb.setOpenapi(openapi);
         // Relay optTenantId for door api
-        PrincipalContext.get().setOptTenantId(shareDb.getTenantId());
-        shareDb.setApiProxy(settingUserInnerRemote.proxyDetail().orElseContentThrow());
+        UserApiProxyVo apiProxy = settingUserInnerRemote.proxyDetail(shareDb.getTenantId())
+            .orElseContentThrow();
+        shareDb.setApiProxy(apiProxy);
         return shareDb;
       }
     }.execute();

@@ -6,12 +6,12 @@
 
   <parent>
     <groupId>cloud.xcan.angus</groupId>
-    <artifactId>AngusInfra</artifactId>
+    <artifactId>AngusTester</artifactId>
     <version>1.0.0</version>
   </parent>
 
-  <artifactId>xcan-angustester.parent</artifactId>
-  <name>AngusTester :: Parent</name>
+  <artifactId>xcan-angustester.service</artifactId>
+  <name>AngusTester :: Service</name>
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <description>AngusTester (referred to as AT) helps software development teams conduct software

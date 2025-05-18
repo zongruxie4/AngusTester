@@ -3,11 +3,14 @@
 -- Table data for app
 -- ----------------------------
 -- Note: After installation, it is necessary to modify the application URL.
+DELETE FROM `app` WHERE id = 100010;
 INSERT INTO `app` (`id`, `code`, `name`, `show_name`, `icon`, `type`, `edition_type`, `description`, `auth_ctrl`, `enabled`, `url`, `sequence`, `api_ids`, `version`, `open_stage`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (100010, 'AngusTester', 'AngusTester', 'AngusTester', '', 'CLOUD_APP', 'ENTERPRISE', 'AngusTester企业版', 1, 1, 'http://localhost:8901', 7, '[]', '1.0.0', 'SIGNUP', 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+UPDATE `app` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for app_func
 -- ----------------------------
+DELETE FROM `app_func` WHERE app_id = 100010;
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101502001, 'Apis', '接口', '接口', -1, '', 'MENU', '', 1, 1, '/apis', 100010, 5, '[]',  'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22',  -1, '2024-07-31 14:58:04');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101517001, 'Config', '配置', '配置', -1, '', 'MENU', '', 1, 1, '/config', 100010, 15, '[]',  'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-03-01 20:33:50');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101506001, 'Data', '数据', '数据', -1, '', 'MENU', '', 1, 1, '/data', 100010, 8, '[]',  'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-07-31 14:58:51');
@@ -23,6 +26,7 @@ INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101515001, 'OfficialWebsite', '官网', '官网', -1, '', 'MENU', '', 1, 1, 'https://www.xcan.cloud', 100010, 17, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-04-03 17:55:24');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101512001, 'SearchBar', '搜索框', '搜索框', -1, '', 'MENU', '', 1, 1, '/', 100010, 14, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-01-02 11:22:22');
 INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`, `description`, `auth_ctrl`, `enabled`, `url`, `app_id`, `sequence`, `api_ids`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (1000101513001, 'WorkOrder', '工单', '工单', -1, '', 'MENU', '', 1, 1, 'https://wo.xcan.cloud/workorders', 100010, 15, '[]', 'xcan_tp', :TENANT_ID, -1, '2024-01-02 11:22:22', -1, '2024-04-03 17:54:51');
+UPDATE `app_func` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for web_tag
@@ -33,6 +37,7 @@ INSERT INTO `app_func` (`id`, `code`, `name`, `show_name`, `pid`, `icon`, `type`
 -- Table data for web_tag_target
 -- ----------------------------
 -- Func Tag
+DELETE FROM `web_tag_target` WHERE target_id IN (SELECT id FROM `app_func` WHERE app_id = 100010);
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770069593, 1, 'MENU', 1000101502001, :TENANT_ID, -1, '2024-07-31 14:58:04');
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770069594, 4, 'MENU', 1000101502001, :TENANT_ID, -1, '2024-07-31 14:58:04');
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770074260, 1, 'MENU', 1000101517001, :TENANT_ID, -1, '2024-08-16 08:41:58');
@@ -66,26 +71,30 @@ INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenan
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (155580502340798175, 4, 'MENU', 1000101515001, :TENANT_ID, -1, '2024-04-03 17:55:24');
 
 -- App Tag
+DELETE FROM `web_tag_target` WHERE target_id = 100010;
 INSERT INTO `web_tag_target` (`id`, `tag_id`, `target_type`, `target_id`, `tenant_id`, `created_by`, `created_date`) VALUES (215509802372041260, 7, 'APP', 100010, :TENANT_ID, -1, '2024-03-27 09:35:12');
 
 -- Clear dirty data
 DELETE FROM web_tag_target WHERE tag_id NOT IN (SELECT id FROM web_tag);
 
 -- ----------------------------
--- Table data for app_open
+-- Table data for app_open  -> Do by code
 -- ----------------------------
-INSERT INTO `app_open` (`id`, `app_id`, `app_code`, `app_type`, `edition_type`, `version`, `client_id`, `tenant_id`, `user_id`, `open_date`, `expiration_date`, `expiration_deleted`, `op_client_open`, `created_date`) VALUES (2, 100010, 'AngusTester', 'CLOUD_APP', 'ENTERPRISE', '1.0.0', 'xcan_tp', :TENANT_ID, -1, ':appOpenDate', ':appExpirationDate', 0, 0, '2024-01-01 00:00:00');
+-- INSERT INTO `app_open` (`id`, `app_id`, `app_code`, `app_type`, `edition_type`, `version`, `client_id`, `tenant_id`, `user_id`, `open_date`, `expiration_date`, `expiration_deleted`, `op_client_open`, `created_date`) VALUES (2, 100010, 'AngusTester', 'CLOUD_APP', 'ENTERPRISE', '1.0.0', 'xcan_tp', :TENANT_ID, -1, ':appOpenDate', ':appExpirationDate', 0, 0, '2024-01-01 00:00:00');
 
 -- ----------------------------
 -- Table data for auth_policy
 -- ----------------------------
-INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129001, '应用管理员', 'ANGUSTESTER_ADMIN', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能和“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
-INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129002, '一般用户', 'ANGUSTESTER_USER', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能权限，无“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
-INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129003, '访客', 'ANGUSTESTER_GUEST', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用功能查看权限，无“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+DELETE FROM `auth_policy` WHERE app_id = 100010;
+INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129001, '应用管理员', 'ANGUSTESTER_ADMIN', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能和“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129002, '一般用户', 'ANGUSTESTER_USER', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用所有功能权限，无“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+INSERT INTO `auth_policy` (`id`, `name`, `code`, `enabled`, `type`, `default0`, `grant_stage`, `description`, `app_id`, `client_id`, `tenant_id`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) VALUES (129003, '访客', 'ANGUSTESTER_GUEST', 1, 'PRE_DEFINED', 1, 'SIGNUP_SUCCESS', '拥有“AngusTester”应用功能查看权限，无“应用设置”权限。', 100010, 'xcan_tp', :TENANT_ID, -1, '2024-01-01 00:00:00', -1, '2024-01-01 00:00:00');
+UPDATE `auth_policy` SET `created_date` = now(), `last_modified_date` = now();
 
 -- ----------------------------
 -- Table data for auth_policy_func
 -- ----------------------------
+DELETE FROM `auth_policy_func` WHERE app_id = 100010;
 INSERT INTO `auth_policy_func` (`id`, `policy_id`, `app_id`, `func_id`, `func_type`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770074051, 129001, 100010, 1000101503001, 'MENU', :TENANT_ID, -1, '2024-08-16 08:31:04');
 INSERT INTO `auth_policy_func` (`id`, `policy_id`, `app_id`, `func_id`, `func_type`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770074052, 129001, 100010, 1000101507001, 'MENU', :TENANT_ID, -1, '2024-08-16 08:31:04');
 INSERT INTO `auth_policy_func` (`id`, `policy_id`, `app_id`, `func_id`, `func_type`, `tenant_id`, `created_by`, `created_date`) VALUES (239132446770074053, 129001, 100010, 1000101502001, 'MENU', :TENANT_ID, -1, '2024-08-16 08:31:04');
@@ -130,7 +139,8 @@ DELETE FROM auth_policy_func WHERE policy_id NOT IN (SELECT id FROM auth_policy)
 -- ----------------------------
 -- Table data for auth_policy_org
 -- ----------------------------
-INSERT INTO `auth_policy_org` (`id`, `policy_id`, `policy_type`, `org_id`, `org_type`, `grant_scope`, `open_auth`, `app_id`, `tenant_id`, `default`, `created_by`, `created_date`) VALUES (219427254927626047, 129001, 'PRE_DEFINED', :TENANT_ID, 'TENANT', 'TENANT_SYS_ADMIN', 1, 100010, :TENANT_ID, 0, -1, '2024-03-31 23:51:12');
-INSERT INTO `auth_policy_org` (`id`, `policy_id`, `policy_type`, `org_id`, `org_type`, `grant_scope`, `open_auth`, `app_id`, `tenant_id`, `default`, `created_by`, `created_date`) VALUES (219427254927626048, 129002, 'PRE_DEFINED', :TENANT_ID, 'TENANT', 'TENANT_ALL_USER', 0, 100010, :TENANT_ID, 1, -1, '2024-03-31 23:51:12');
+DELETE FROM `auth_policy_org` WHERE app_id = 100010;
+INSERT INTO `auth_policy_org` (`id`, `policy_id`, `policy_type`, `org_id`, `org_type`, `grant_scope`, `open_auth`, `app_id`, `tenant_id`, `default0`, `created_by`, `created_date`) VALUES (219427254927626047, 129001, 'PRE_DEFINED', :TENANT_ID, 'TENANT', 'TENANT_SYS_ADMIN', 1, 100010, :TENANT_ID, 0, -1, '2024-03-31 23:51:12');
+INSERT INTO `auth_policy_org` (`id`, `policy_id`, `policy_type`, `org_id`, `org_type`, `grant_scope`, `open_auth`, `app_id`, `tenant_id`, `default0`, `created_by`, `created_date`) VALUES (219427254927626048, 129002, 'PRE_DEFINED', :TENANT_ID, 'TENANT', 'TENANT_ALL_USER', 0, 100010, :TENANT_ID, 1, -1, '2024-03-31 23:51:12');
 
 -- @formatter:on

@@ -972,7 +972,7 @@ CREATE TABLE `func_plan` (
   KEY `idx_start_date` (`start_date`) USING BTREE,
   KEY `idx_deadline_date` (`deadline_date`) USING BTREE,
   KEY `idx_owner_id` (`owner_id`) USING BTREE,
-  KEY `idx_deleted_flag` (`deleted`) USING BTREE,
+  KEY `idx_deleted` (`deleted`) USING BTREE,
   KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
   KEY `idx_created_by` (`created_by`) USING BTREE,
   KEY `idx_status` (`status`) USING BTREE,
@@ -981,7 +981,6 @@ CREATE TABLE `func_plan` (
   KEY `idx_last_modified_by` (`last_modified_by`) USING BTREE,
   KEY `idx_review` (`review`) USING BTREE,
   KEY `idx_auth` (`auth`) USING BTREE,
-  KEY `idx_deleted` (`deleted`),
   FULLTEXT KEY `fx_name_description` (`name`,`other_information`) /*!50100 WITH PARSER `ngram` */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='功能测试计划';
 
@@ -1382,7 +1381,7 @@ CREATE TABLE `mock_service_auth` (
   `created_by` bigint(20) NOT NULL COMMENT '创建人',
   `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uidx_service_id_auth_object_id_type_creator_flag` (`mock_service_id`,`auth_object_id`,`auth_object_type`,`creator`) USING BTREE,
+  UNIQUE KEY `uidx_service_id_auth_object_id_type_creator` (`mock_service_id`,`auth_object_id`,`auth_object_type`,`creator`) USING BTREE,
   KEY `idx_service_id` (`mock_service_id`) USING BTREE,
   KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
   KEY `idx_auth_object_id` (`auth_object_id`) USING BTREE,
@@ -1914,8 +1913,8 @@ CREATE TABLE `services` (
   KEY `idx_name` (`name`) USING BTREE,
   KEY `idx_pid` (`project_id`) USING BTREE,
   KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
-  KEY `idx_auth_flag` (`auth`) USING BTREE,
-  KEY `idx_deleted_flag` (`deleted`) USING BTREE,
+  KEY `idx_auth` (`auth`) USING BTREE,
+  KEY `idx_deleted` (`deleted`) USING BTREE,
   KEY `idx_created_date` (`created_date`) USING BTREE,
   KEY `idx_source` (`source`) USING BTREE,
   KEY `idx_project_id` (`project_id`),

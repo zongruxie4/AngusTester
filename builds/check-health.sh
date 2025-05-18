@@ -7,14 +7,15 @@
 # ---------------------------------------------------------------------------
 
 # Check parameters
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <host>"
+if [ $# -ne 2 ]; then
+    echo "Usage: <host> <port>"
     exit 1
 fi
 
 # Configuration parameters
 HOST="$1"
-HEALTH_URL="http://$HOST:1830/actuator/health"
+PORT="$2"
+HEALTH_URL="http://$HOST:$PORT/actuator/health"
 TIMEOUT=120          # Total timeout in seconds
 INTERVAL=3          # Check interval in seconds
 
