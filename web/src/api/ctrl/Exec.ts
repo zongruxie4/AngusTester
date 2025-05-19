@@ -1,4 +1,4 @@
-import {http} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -133,5 +133,4 @@ export default class API {
   loadDebugScriptInfo (scriptId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/debug/script/${scriptId}`);
   }
-
 }

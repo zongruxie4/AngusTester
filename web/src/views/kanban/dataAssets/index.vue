@@ -1388,7 +1388,6 @@ const resizeEcharts = () => {
   apiBarEcharts.resize();
   apiPieEcharts.resize();
 
-
   if (proTypeShowMap.value.showTask) {
     taskBarEcharts.resize();
     taskPieEcharts.resize();
@@ -1793,16 +1792,16 @@ defineExpose({
         </div>
 
         <!--报告-->
-<!--        <div class=" border rounded py-2 min-w-0" :class="`flex-1/${echartsCol}`">-->
-<!--          <div class="px-2 font-semibold">报告</div>-->
-<!--          <div class="flex px-2">-->
-<!--            <div class="px-2 text-center flex flex-col justify-center">-->
-<!--              <div class=" font-semibold">{{ reportTotal }}</div>-->
-<!--              <div>总数</div>-->
-<!--            </div>-->
-<!--            <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--        <div class=" border rounded py-2 min-w-0" :class="`flex-1/${echartsCol}`">-->
+        <!--          <div class="px-2 font-semibold">报告</div>-->
+        <!--          <div class="flex px-2">-->
+        <!--            <div class="px-2 text-center flex flex-col justify-center">-->
+        <!--              <div class=" font-semibold">{{ reportTotal }}</div>-->
+        <!--              <div>总数</div>-->
+        <!--            </div>-->
+        <!--            <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </div>
     <div v-if="!proTypeShowMap.showTask" class="flex-1 min-w-0">
@@ -1965,18 +1964,18 @@ defineExpose({
         </div>
 
         <!--报告-->
-<!--        <div class=" pr-2 min-w-0  flex-grow-0 pb-2" :class="`flex-1/${echartsCol}`">-->
-<!--          <div class="border rounded py-2">-->
-<!--            <div class="px-2 font-semibold">报告</div>-->
-<!--            <div class="flex px-2">-->
-<!--              <div class="px-2 text-center flex flex-col justify-center">-->
-<!--                <div class=" font-semibold">{{ reportTotal }}</div>-->
-<!--                <div>总数</div>-->
-<!--              </div>-->
-<!--              <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--        <div class=" pr-2 min-w-0  flex-grow-0 pb-2" :class="`flex-1/${echartsCol}`">-->
+        <!--          <div class="border rounded py-2">-->
+        <!--            <div class="px-2 font-semibold">报告</div>-->
+        <!--            <div class="flex px-2">-->
+        <!--              <div class="px-2 text-center flex flex-col justify-center">-->
+        <!--                <div class=" font-semibold">{{ reportTotal }}</div>-->
+        <!--                <div>总数</div>-->
+        <!--              </div>-->
+        <!--              <div ref="reportRef" class="h-35 flex-1 min-w-0"></div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </div>
     <div

@@ -360,7 +360,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetResult( [rowData.id]);
+  const [error] = await funcCase.resetResult([rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;

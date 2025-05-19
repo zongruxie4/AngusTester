@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/tools';
-import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { ParamInput } from '@xcan-angus/vue-ui';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';

@@ -2,10 +2,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, watchEffect, watch } from 'vue';
 import { Checkbox, Button } from 'ant-design-vue';
-import { Input, Select, Icon } from '@xcan-angus/vue-ui';
+import { Input, Select, Icon, ParamInput } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { ParamInput } from '@xcan-angus/vue-ui';
 
 export interface OptionProps {
   name: string;

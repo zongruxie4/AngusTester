@@ -578,7 +578,7 @@ const loadCaseList = async (): Promise<void> => {
   }
 
   updateLoading(true);
-  const [error, { data = { list: [], total: 0 } }] = await funcCase.loadFuncCase({infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data = { list: [], total: 0 } }] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
   firstloading.value = false;
   if (error) {
     updateLoading(false);
@@ -898,7 +898,7 @@ const loadEnums = async () => {
 const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await modules.searchTree( {
+  const [error, { data }] = await modules.searchTree({
     projectId: projectInfo.value?.id,
     filters: keywords
       ? [{
@@ -1074,7 +1074,7 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 // 重置测试
 const hanldeResetTestResults = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await funcCase.resetResult([rowData.id], );
+  const [error] = await funcCase.resetResult([rowData.id]);
   if (error) {
     updateLoading(false);
     return;

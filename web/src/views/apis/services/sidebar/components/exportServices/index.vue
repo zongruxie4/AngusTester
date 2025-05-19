@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref, watch, onMounted, computed } from 'vue';
-import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect,  SelectApisTable } from '@xcan-angus/vue-ui';
+import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect, SelectApisTable } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { TESTER, download, site, utils, cookie, duration } from '@xcan-angus/tools';

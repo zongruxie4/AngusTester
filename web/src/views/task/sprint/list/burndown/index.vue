@@ -3,7 +3,7 @@ import { Modal } from '@xcan-angus/vue-ui';
 import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
-import { analysis} from '@/api/tester';
+import { analysis } from '@/api/tester';
 
 interface Props {
   visible: boolean;

@@ -39,7 +39,7 @@ export default class API {
   }
 
   toggleAuthEnabled (reportId: string, enabled): Promise<void> {
-    return http.patch(`${baseUrl}/${reportId}/auth/enabled?enabled=${enabled}`)
+    return http.patch(`${baseUrl}/${reportId}/auth/enabled?enabled=${enabled}`);
   }
 
   deleteAuth (authId: string) : Promise<[Error | null, any]> {

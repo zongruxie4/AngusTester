@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-// eslint-disable-next-line import/no-absolute-path
-;
-
 import ExecHttpPerfExecDetail from '@/views/report/preview/execPerf/sampling/perf/testDetail/index.vue';
+
+// eslint-disable-next-line import/no-absolute-path
 
 interface Props {
   execInfo: Record<string, any>;

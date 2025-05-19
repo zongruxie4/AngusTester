@@ -1,14 +1,11 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
-import { Input, NoData, notification, Select, SelectInput } from '@xcan-angus/vue-ui';
+import { Input, NoData, notification, Select, SelectInput, ApiUtils as apiUtils, AssertUtils as assertUtils, AuthUtils as authUtils } from '@xcan-angus/vue-ui';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
 import { axiosClient, utils } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
-import { AuthUtils as authUtils } from '@xcan-angus/vue-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis } from '@/api/tester';
 

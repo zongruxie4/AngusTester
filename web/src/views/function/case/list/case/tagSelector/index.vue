@@ -52,7 +52,7 @@ const handleBlur = () => {
 };
 
 const getCacheTagList = async () => {
-  const [error, { data }] = await tagApi.search({projectId: projectInfo.value.id, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
+  const [error, { data }] = await tagApi.search({ projectId: projectInfo.value.id, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
   if (error) {
     return;
   }

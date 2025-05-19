@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip, FunctionsButton } from '@xcan-angus/vue-ui';
 
 import { ContentEncoding, DelayData, ResponseContentConfig, ResponseHeader } from './PropsType';
 import DelayParameter from './delayParameter.vue';
 import SelectInputForm from '@/views/mock/detail/mockApis/components/contentForm/selectInputForm/index.vue';
-import { FunctionsButton } from '@xcan-angus/vue-ui';
 
 interface Props {
   value:ResponseContentConfig;

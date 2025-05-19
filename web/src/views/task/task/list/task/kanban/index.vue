@@ -148,7 +148,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await task.loadTaskList( _params);
+      const [_error, _res] = await task.loadTaskList(_params);
       if (_error) {
         emit('update:loading', false);
         return;

@@ -152,7 +152,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await funcCase.loadFuncCase({infoScope: 'DETAIL', ..._params});
+      const [_error, _res] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ..._params });
       if (_error) {
         emit('loadingChange', false);
         return;
@@ -803,7 +803,7 @@ const toDelete = (data: CaseInfo) => {
     content: `确定删除用例【${data.name}】吗？`,
     async onOk () {
       emit('loadingChange', true);
-      const [error] = await funcCase.deleteCase( [data.id]);
+      const [error] = await funcCase.deleteCase([data.id]);
       if (error) {
         emit('loadingChange', false);
         return;

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface Props {
   indicatorPerf: {

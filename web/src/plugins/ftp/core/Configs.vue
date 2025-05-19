@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
-import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal } from '@xcan-angus/vue-ui';
-import { Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
+import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
 import { utils, TESTER } from '@xcan-angus/tools';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual, cloneDeep } from 'lodash-es';

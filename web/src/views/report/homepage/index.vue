@@ -133,7 +133,7 @@ const loadDataList = async () => {
   }
 
   loading.value = true;
-  const [error, { data = {} }] = await report.searchList( params);
+  const [error, { data = {} }] = await report.searchList(params);
   loading.value = false;
   if (error) {
     return;

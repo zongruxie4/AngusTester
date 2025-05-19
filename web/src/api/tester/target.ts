@@ -33,5 +33,4 @@ export default class API {
   getDataSet (targetId: string, targetType: string, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetId}/${targetType}/dataset`, null, axiosConf);
   }
-
 }

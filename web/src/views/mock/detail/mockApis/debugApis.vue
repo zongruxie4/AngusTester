@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
-import { AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, notification, Toggle, ApiUtils as apiUtils, ResponseStatus } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 import { utils, enumLoader, axiosClient } from '@xcan-angus/tools';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { ResponseStatus } from '@xcan-angus/vue-ui';
 
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/mock/detail/mockApis/components/urlForm/index.vue';

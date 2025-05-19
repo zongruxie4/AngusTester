@@ -3,7 +3,6 @@
 import ExecJdbcPerfExecDetail from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
 
-
 interface Props {
   execInfo: Record<string, any>;
   exception:{

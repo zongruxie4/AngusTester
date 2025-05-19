@@ -216,7 +216,6 @@ export default class API {
     return http.get(`${baseUrl}/${id}/comp/ref`, { ref }, config);
   }
 
-
   updateServiceApisServer (id:string, serverId:string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/server/${serverId}/apis/sync`);
   }
@@ -277,8 +276,6 @@ export default class API {
       paramsType: true
     });
   }
-
-
 
   batchDeleteReferenceVariable (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${serviceId}/apis/variable/reference?${queryStr}`, parameters, {

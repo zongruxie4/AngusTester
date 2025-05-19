@@ -120,5 +120,4 @@ export default class API {
   updateAnalysis <T> (params: T) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
   }
-
 }

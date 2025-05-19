@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, ShortDuration, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { enumLoader } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
 import ExpandGrid from './expandGrid.vue';
 import { setting } from '@/api/comm';
 import { splitDuration } from '@/utils/utils';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 const editable = ref(false);
 const editInfo = ref({

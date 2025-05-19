@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, IconCopy, IconRequired, Input, Tooltip } from '@xcan-angus/vue-ui';
+import { Icon, IconCopy, IconRequired, Input, Tooltip, FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
 
 export interface Option {
   name: string;

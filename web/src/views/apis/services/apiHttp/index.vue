@@ -3,16 +3,13 @@ import {
   computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, watch
 } from 'vue';
 import { Popover, TabPane, Tabs, RadioGroup, RadioButton, Button, Badge } from 'ant-design-vue';
-import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, SelectEnum, AsyncComponent } from '@xcan-angus/vue-ui';
+import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, SelectEnum, AsyncComponent, AssertUtils as assertUtils, ApiUtils as apiUtils, AuthUtils as authUtil } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
 import { utils, axiosClient, duration } from '@xcan-angus/tools';
 import { dataURLtoBlob } from '@/utils/blob';
 import qs from 'qs';
 import { deconstruct } from '@/utils/swagger';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import { AssertUtils as assertUtils } from '@xcan-angus/vue-ui';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { AuthUtils as authUtil } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';

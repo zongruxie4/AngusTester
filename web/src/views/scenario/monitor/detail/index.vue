@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
-import { Hints, Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
+import { Hints, Icon, modal, NoData, Spin, DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
 import Chart from '@/views/scenario/monitor/detail/chart/index.vue';

@@ -4,7 +4,6 @@ import { RequestBodyParam } from '@/views/apis/services/apiHttp/requestBody/inte
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { ApiAssert as ApiAssertion, ApiAuthencation, ResponseAssert } from '@xcan-angus/vue-ui';
 
-
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 
 export interface ParamsItem {
@@ -18,7 +17,6 @@ export interface ParamsItem {
   valueType?: string | null,
   key?: symbol
 }
-
 
 export const getDefaultParams = (config = {}): ParamsItem => {
   return {

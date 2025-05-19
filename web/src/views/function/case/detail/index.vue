@@ -131,7 +131,7 @@ const getData = async (value: 'before' | 'after') => {
   value === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectInfo.value?.id };
-  const [listError, listRes] = await funcCase.loadFuncCase({infoScope: 'DETAIL', ...params});
+  const [listError, listRes] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ...params });
   if (listError) {
     return;
   }

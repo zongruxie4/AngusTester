@@ -2,7 +2,6 @@
 // eslint-disable-next-line import/no-absolute-path
 import Plugin from '@/plugins/http/index';
 // eslint-disable-next-line import/no-absolute-path
-;
 
 interface Props {
   execInfo:{

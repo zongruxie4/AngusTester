@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue';
 import dayjs from 'dayjs';
-import { Drawer, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
+import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils, HttpTestInfo, Indicator } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { utils, duration } from '@xcan-angus/tools';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { HttpTestInfo, Indicator } from '@xcan-angus/vue-ui';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';

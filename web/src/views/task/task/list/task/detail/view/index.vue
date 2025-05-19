@@ -234,7 +234,7 @@ const toUncomplete = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await task.confirmTask(id, 'FAIL', );
+  const [error] = await task.confirmTask(id, 'FAIL');
   if (error) {
     return;
   }

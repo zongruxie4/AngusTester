@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
 
-
 // eslint-disable-next-line import/no-absolute-path
 import Plugin from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-
 
 interface Props {
     tabKey:string;

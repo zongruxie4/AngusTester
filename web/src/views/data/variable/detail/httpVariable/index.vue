@@ -11,9 +11,9 @@ import {
   SelectEnum,
   Toggle,
   Validate
+  , SelectApisByServiceModal
 } from '@xcan-angus/vue-ui';
 import { isEqual } from 'lodash-es';
-import { SelectApisByServiceModal } from '@xcan-angus/vue-ui';
 import { variable, apis } from '@/api/tester';
 
 import { VariableItem } from '../../PropsType';

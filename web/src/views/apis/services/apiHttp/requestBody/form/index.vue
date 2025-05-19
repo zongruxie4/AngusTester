@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
 import { Button, Checkbox } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import { ParamInput } from '@xcan-angus/vue-ui';
 
 import ApiUpload from '@/views/apis/services/apiHttp/upload/index.vue';
 import { ParamsItem } from '../../interface';

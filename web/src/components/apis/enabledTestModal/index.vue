@@ -59,7 +59,7 @@ const handleOk = async () => {
   }
   const enabled = showOpt.value.filter(i => checked.value.includes(i));
   if (enabled.length) {
-    const [error] = await services.toggleTestEnabled(props.id, true, {testTypes: enabled}, {
+    const [error] = await services.toggleTestEnabled(props.id, true, { testTypes: enabled }, {
       paramsType: true
     });
     if (error) {

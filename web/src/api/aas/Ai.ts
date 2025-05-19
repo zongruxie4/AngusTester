@@ -10,4 +10,3 @@ export default class API {
     return http.get(`${baseUrl}/chat/result`, params);
   }
 }
-
