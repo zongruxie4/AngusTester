@@ -382,7 +382,7 @@ const loadApiInfo = async (): Promise<void> => {
   if (serviceId) {
     loadProjectServers(serviceId);
   }
-  apisStatus.value = status.value;
+  apisStatus.value = status?.value;
 
   datasetActionOnEOF.value = _datasetActionOnEOF?.value || _datasetActionOnEOF || 'RECYCLE';
   datasetSharingMode.value = _datasetSharingMode?.value || _datasetSharingMode || 'ALL_THREAD';
