@@ -42,14 +42,15 @@ public class MockServiceSearchImpl implements MockServiceSearch {
           return page;
         }
 
+        // Set node info and the IP address must be set before executing the following code
+        mockServiceQuery.setInfoNodeInfo(page.getContent());
+
         // Set mock service status
         mockServiceQuery.setMockServiceInfoStatus(page.getContent());
 
         // Set the current user service permissions
         mockServiceQuery.setMockServiceInfoCurrentAuths(page.getContent());
 
-        // Set node info
-        mockServiceQuery.setInfoNodeInfo(page.getContent());
         return page;
       }
     }.execute();
