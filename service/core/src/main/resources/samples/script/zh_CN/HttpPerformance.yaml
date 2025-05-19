@@ -7,7 +7,7 @@ plugin: Http
 configuration:
   duration: 10min
   thread:
-    threads: 500
+    threads: 50
     rampUpInterval: 1min
     rampUpThreads: 100
     rampDownInterval: 1min
