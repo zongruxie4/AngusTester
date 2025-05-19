@@ -166,7 +166,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
        */
       private String buildLinuxRunInstallCmd(NodeInfo nodeInfo) {
         return "./" + agentProperties.getLinuxInstallScriptName() + " "
-            + agentProperties.getAgentVersion() + " " + agentProperties.getAgentFileId() + "\\\n '"
+            + agentProperties.getAgentVersion() + " " + agentProperties.getAgentFileId() + " \\\n '"
             + agentProperties.getServerCtrlUrlPrefix() + "' \\\n"
             + nodeInfo.getAgentAuth().getAccessToken() + " \\\n"
             + tenantId + " " + nodeId;
@@ -177,7 +177,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
        */
       private String buildLinuxOnlineInstallCmd(NodeInfo nodeInfo) {
         return "curl -s \"" + getLinuxInstallScriptUrl() + "\" | bash -s "
-            + agentProperties.getAgentVersion() + " " + agentProperties.getAgentFileId() + "\\\n '"
+            + agentProperties.getAgentVersion() + " " + agentProperties.getAgentFileId() + " \\\n '"
             + agentProperties.getServerCtrlUrlPrefix() + "' \\\n"
             + nodeInfo.getAgentAuth().getAccessToken() + " \\\n"
             + tenantId + " " + nodeId;
