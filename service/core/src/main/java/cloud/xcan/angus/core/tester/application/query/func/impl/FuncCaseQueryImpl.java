@@ -92,7 +92,6 @@ import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;

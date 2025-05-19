@@ -6,7 +6,6 @@ import static cloud.xcan.angus.core.tester.application.converter.ScenarioMonitor
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 
 import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecDebugCmd;

@@ -26,7 +26,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SCHEMA_S
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.STATUS_UPDATE;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.UPDATED;
 import static cloud.xcan.angus.core.utils.CoreUtils.batchCopyPropertiesIgnoreNull;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getExtension;

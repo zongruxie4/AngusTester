@@ -2,8 +2,8 @@ package cloud.xcan.angus.core.tester.application.converter;
 
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
+import cloud.xcan.angus.model.element.extraction.DefaultExtraction;
 
 public class VariableConverter {
 

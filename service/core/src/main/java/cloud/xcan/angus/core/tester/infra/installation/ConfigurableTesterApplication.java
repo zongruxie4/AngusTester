@@ -32,8 +32,6 @@ import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_ADMIN_PASSWORD;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_ADMIN_USERNAME;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_ADMIN_USER_ID;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_APIS_URL_PREFIX;
-import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_APP_EXPIRATION_DATE;
-import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_APP_OPEN_DATE;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_HOST;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_NAME;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_DB_PASSWORD;

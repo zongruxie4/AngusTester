@@ -6,7 +6,6 @@ import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findInfoScope;
 import static cloud.xcan.angus.core.tester.application.converter.ScriptConverter.countCreationScript;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCRIPT_PROPERTIES_CONSTRAINT_ERROR;
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.spec.experimental.BizConstant.ANGUS_SCRIPT_LENGTH;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;

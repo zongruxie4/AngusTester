@@ -5,11 +5,6 @@ import static cloud.xcan.angus.core.converter.oas3.SchemaToHttpConverter.toServe
 import static cloud.xcan.angus.core.tester.application.converter.ApisToAngusModelConverter.getScriptTaskArguments;
 import static java.util.Objects.nonNull;
 
-import cloud.xcan.angus.model.script.AngusScript;
-import cloud.xcan.angus.model.script.configuration.Configuration;
-import cloud.xcan.angus.model.script.configuration.ScriptType;
-import cloud.xcan.angus.model.script.configuration.Threads;
-import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
@@ -18,8 +13,13 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.kanban.TestApisCount;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.model.apis.ApisInfo;
+import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.TestType;
+import cloud.xcan.angus.model.script.configuration.Configuration;
+import cloud.xcan.angus.model.script.configuration.ScriptType;
+import cloud.xcan.angus.model.script.configuration.Threads;
+import cloud.xcan.angus.model.script.pipeline.Arguments;
 import cloud.xcan.angus.model.services.ApisTestCount;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
