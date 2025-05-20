@@ -167,31 +167,47 @@ public class FuncCaseConverter {
   public static void assembleExampleFuncPlan(Long projectId, Long id,
       FuncPlan plan, List<User> users) {
     Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    plan.setId(id).setProjectId(projectId).setOwnerId(currentUserId);
+    plan.setId(id).setProjectId(projectId)
+        .setOwnerId(currentUserId)
+        .setTesterResponsibilities(getTesterResponsibilities(plan, users))
+        .setDeleted(false)
+        .setDeadlineDate(LocalDateTime.now().plusDays(30))
+        .setTenantId(getOptTenantId())
+        .setCreatedBy(currentUserId).setCreatedDate(LocalDateTime.now())
+        .setLastModifiedBy(currentUserId).setLastModifiedDate(LocalDateTime.now());
+  }
+
+  private static LinkedHashMap<Long, String> getTesterResponsibilities(FuncPlan plan,
+      List<User> users) {
     int testerNum = Math.min(plan.getTesterResponsibilities().size(), users.size());
     LinkedHashMap<Long, String> testerResponsibilities = new LinkedHashMap<>();
     List<String> responsibilities = new ArrayList<>(plan.getTesterResponsibilities().values());
     for (int i = 0; i < testerNum; i++) {
       testerResponsibilities.put(users.get(i).getId(), responsibilities.get(i));
     }
-    plan.setTesterResponsibilities(testerResponsibilities);
-    plan.setDeleted(false).setTenantId(getOptTenantId())
-        .setCreatedBy(currentUserId).setLastModifiedBy(currentUserId);
+    return testerResponsibilities;
   }
 
   public static void assembleExampleFuncCase(Long projectId, Long id,
       FuncCase case0, FuncPlan plan, List<User> users) {
-    Random userRandom = new Random();
+    Random random = new Random();
+    LocalDateTime createdDate = LocalDateTime.now().plusHours(random.nextInt(10 * 25));
+    LocalDateTime deadlineDate = createdDate.plusHours(random.nextInt(10 * 25));
     case0.setId(id).setProjectId(projectId)
         .setCode(getCaseCode()).setVersion(1) // In order to establish a baseline starting from 1
-        .setPlanId(plan.getId()).setReviewerId(case0.getReview() &&
-            nonNull(case0.getReviewStatus()) && !case0.getReviewStatus().isPending()
-            ? users.get(userRandom.nextInt(users.size())).getId() : null)
-        .setTesterId(users.get(userRandom.nextInt(users.size())).getId())
-        .setDeveloperId(users.get(userRandom.nextInt(users.size())).getId())
+        .setPlanId(plan.getId())
+        .setReviewerId(case0.getReview()
+            && nonNull(case0.getReviewStatus()) && !case0.getReviewStatus().isPending()
+            ? users.get(random.nextInt(users.size())).getId() : null)
+        .setTesterId(users.get(random.nextInt(users.size())).getId())
+        .setDeveloperId(users.get(random.nextInt(users.size())).getId())
+        .setDeadlineDate(deadlineDate)
         .setTenantId(getOptTenantId())
-        .setCreatedBy(users.get(userRandom.nextInt(users.size())).getId())
-        .setLastModifiedBy(users.get(userRandom.nextInt(users.size())).getId());
+        .setCreatedBy(users.get(random.nextInt(users.size())).getId())
+        .setCreatedDate(createdDate)
+        .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
+        .setLastModifiedDate(nullSafe(case0.getTestResult(), CaseTestResult.PENDING).isFinished()
+            ? deadlineDate : createdDate);
   }
 
   public static void assembleExampleFuncReview(Long projectId, Long id,

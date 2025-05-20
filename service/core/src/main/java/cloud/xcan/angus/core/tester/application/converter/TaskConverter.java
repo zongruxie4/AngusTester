@@ -182,33 +182,40 @@ import org.jetbrains.annotations.Nullable;
         && taskDb.getDeadlineDate().isBefore(LocalDateTime.now()));
   }
 
+  public static void assembleExampleTaskSprint(Project projectDb, Long id,
+      List<User> users, TaskSprint sprint) {
+    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
+    sprint.setId(id).setProjectId(projectDb.getId())
+        .setAuth(false)
+        .setOwnerId(currentUserId)
+        .setTenantId(projectDb.getTenantId())
+        .setDeleted(false)
+        .setDeadlineDate(LocalDateTime.now().plusDays(30))
+        .setCreatedBy(currentUserId)
+        .setCreatedDate(LocalDateTime.now())
+        .setLastModifiedBy(currentUserId)
+        .setLastModifiedDate(LocalDateTime.now());
+  }
+
   public static void assembleExampleTask(Project projectDb, Long id, Task task,
       TaskSprint sprint, List<User> users) {
-    Random userRandom = new Random();
+    Random random = new Random();
+    LocalDateTime createdDate = LocalDateTime.now().plusHours(random.nextInt(10 * 25));
+    LocalDateTime deadlineDate = createdDate.plusHours(random.nextInt(10 * 25));
     task.setId(id).setCode(getTaskCode())
         .setProjectId(projectDb.getId()).setModuleId(-1L)
         .setSprintId(nonNull(sprint) ? sprint.getId(): null).setSprintAuth(false)
         // Set 1/3 of the pending tasks in the agile project as backlog
         .setBacklog(projectDb.isAgile() && task.getStatus().isPending()
             && randomWithProbability(3))
-        .setAssigneeId(users.get(userRandom.nextInt(users.size())).getId())
-        .setConfirmorId(users.get(userRandom.nextInt(users.size())).getId())
+        .setAssigneeId(users.get(random.nextInt(users.size())).getId())
+        .setConfirmorId(users.get(random.nextInt(users.size())).getId())
         .setTenantId(projectDb.getTenantId()).setDeleted(false)
-        .setCreatedBy(users.get(userRandom.nextInt(users.size())).getId())
-        .setCreatedDate(nonNull(task.getDeadlineDate())
-            ? task.getDeadlineDate().minusMonths(1) : LocalDateTime.now())
-        .setLastModifiedBy(users.get(userRandom.nextInt(users.size())).getId())
-        .setLastModifiedDate(nonNull(task.getDeadlineDate())
-            ? task.getDeadlineDate().minusMonths(1) : LocalDateTime.now());
-  }
-
-  public static void assembleExampleTaskSprint(Project projectDb, Long id,
-      List<User> users, TaskSprint sprint) {
-    Long currentUserId = isUserAction() ? getUserId() : users.get(0).getId();
-    sprint.setId(id).setProjectId(projectDb.getId()).setAuth(false)
-        .setOwnerId(currentUserId).setTenantId(projectDb.getTenantId()).setDeleted(false)
-        .setCreatedBy(currentUserId).setCreatedDate(sprint.getStartDate())
-        .setLastModifiedBy(currentUserId).setLastModifiedDate(sprint.getStartDate());
+        .setCreatedBy(users.get(random.nextInt(users.size())).getId())
+        .setCreatedDate(createdDate).setDeadlineDate(deadlineDate)
+        .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
+        .setLastModifiedDate(nullSafe(task.getStatus(), TaskStatus.PENDING).isFinished()
+            ? deadlineDate : createdDate);
   }
 
   public static @NotNull SoftwareVersion assembleExampleTaskSoftwareVersion(Project projectDb,
