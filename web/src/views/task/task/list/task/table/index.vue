@@ -262,7 +262,7 @@ const batchCancelFavourite = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.cancelFavouriteTask(ids[i],  { silence: true }));
+        promises.push(task.cancelFavouriteTask(ids[i], { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {

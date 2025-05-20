@@ -5,7 +5,6 @@ import static cloud.xcan.angus.core.tester.application.converter.MockApisConvert
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MESSAGE_MATCH_STATUS_AND_MEDIATYPE_RESPONSE_NAME;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MESSAGE_MATCH_STATUS_RESPONSE_NAME;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
-
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;

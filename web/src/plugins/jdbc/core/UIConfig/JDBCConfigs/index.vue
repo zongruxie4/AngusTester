@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onMounted, watch, computed, watchEffect } from 'vue';
 import { Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Dropdown, Menu, MenuItem } from 'ant-design-vue';
-import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate } from '@xcan-angus/vue-ui';
+import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 import { cloneDeep } from 'lodash-es';
-import { FunctionsButton } from '@xcan-angus/vue-ui';
 
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';

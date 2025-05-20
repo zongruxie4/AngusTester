@@ -1,21 +1,21 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
+import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.remote.search.SearchCriteria.greaterThanEqual;
 import static cloud.xcan.angus.remote.search.SearchCriteria.in;
 import static cloud.xcan.angus.remote.search.SearchCriteria.lessThanEqual;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
-import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.TaskTargetType;
-import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintStatus;
 import cloud.xcan.angus.core.tester.domain.task.summary.TaskSprintSummary;
 import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
+import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;

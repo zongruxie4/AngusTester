@@ -2,10 +2,10 @@ package cloud.xcan.angus.core.tester.interfaces.exec;
 
 import cloud.xcan.angus.api.commonlink.exec.result.ExecApisResultInfo;
 import cloud.xcan.angus.api.commonlink.exec.result.ExecScenarioResultInfo;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestCaseResultDetailSummary;
 import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultDetailSummary;
 import cloud.xcan.angus.core.tester.domain.exec.result.summary.ExecTestResultSummary;
+import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecResultFacade;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.dto.OrgAndDateFilterDto;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
+import { Icon, IndicatorAssert } from '@xcan-angus/vue-ui';
 import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
-import { IndicatorAssert } from '@xcan-angus/vue-ui';
 import { enumLoader } from '@xcan-angus/tools';
 import { setting } from '@/api/comm';
 

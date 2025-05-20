@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.application.query.node;
 import cloud.xcan.angus.agent.message.CheckPortVo;
 import cloud.xcan.angus.agent.message.runner.RunnerKillDto;
 import cloud.xcan.angus.agent.message.runner.RunnerQueryVo;
-import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;

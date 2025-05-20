@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
-import { ParamInput } from '@xcan-angus/vue-ui';
 
 import { services, variable as variableApi } from 'src/api/tester';
 import { ParamsItem, paramsTypeOpt } from './interface';

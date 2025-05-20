@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.application.query.node.impl;
 
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isInnerApi;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantClient;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static java.util.Objects.nonNull;

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, nextTick } from 'vue';
 import { Upload } from 'ant-design-vue';
-import { Icon } from '@xcan-angus/vue-ui';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface File {
 formContentType: string;

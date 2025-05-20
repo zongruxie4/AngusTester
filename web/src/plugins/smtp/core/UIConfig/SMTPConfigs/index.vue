@@ -4,7 +4,6 @@ import { Collapse, CollapsePanel, Tabs, TabPane, Button, Checkbox, Switch, Radio
 import { Input, Icon, Tooltip, Hints, Select, IconRequired, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 
-
 import { PipelineConfig } from '../../PropsType';
 import Upload from './Upload.vue';
 

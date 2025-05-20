@@ -34,7 +34,7 @@ import {
   minReviewInfoColumns,
   minTestInfoColumns
 } from './config';
-import { funcCase} from '@/api/tester';
+import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 

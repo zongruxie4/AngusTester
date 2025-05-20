@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.remote.search.SearchCriteria.greaterThanEqual;
 import static cloud.xcan.angus.remote.search.SearchCriteria.in;

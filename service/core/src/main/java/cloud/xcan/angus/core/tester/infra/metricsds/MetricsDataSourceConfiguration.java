@@ -15,7 +15,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.spi.SessionImplementor;

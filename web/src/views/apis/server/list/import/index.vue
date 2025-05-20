@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
-import { variable} from '@/api/tester';
+import { variable } from '@/api/tester';
 
 import { formatBytes } from '@/utils/common';
 

@@ -3,7 +3,6 @@
 import Plugin from '@/plugins/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
 
-
 interface Props {
   execInfo:{
     id:string;

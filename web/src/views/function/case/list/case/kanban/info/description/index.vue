@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
-import { funcCase} from '@/api/tester';
+import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
 

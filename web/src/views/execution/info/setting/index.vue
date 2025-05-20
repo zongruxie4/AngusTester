@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { notification, Spin } from '@xcan-angus/vue-ui';
+import { notification, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
 
 import { exec } from 'src/api/ctrl';
-import { ExecSettingForm } from '@xcan-angus/vue-ui';
-
 
 interface Props {
   execName: string;

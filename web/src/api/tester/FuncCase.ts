@@ -1,4 +1,4 @@
-import {http} from '@xcan-angus/tools';
+import { http } from '@xcan-angus/tools';
 
 let baseUrl: string;
 export default class API {
@@ -91,7 +91,7 @@ export default class API {
   }
 
   moveCase (targetPlanId: string, caseIds: string[]): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/move?targetPlanId=${targetPlanId}`, caseIds,{ paramsType: false });
+    return http.patch(`${baseUrl}/move?targetPlanId=${targetPlanId}`, caseIds, { paramsType: false });
   }
 
   putAttachment (caseId: string, params): Promise<[Error | null, any]> {

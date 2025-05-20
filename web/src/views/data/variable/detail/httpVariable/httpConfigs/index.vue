@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } from 'vue';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
-import { Composite, HttpMethodText, Input, SelectEnum } from '@xcan-angus/vue-ui';
+import { Composite, HttpMethodText, Input, SelectEnum, ExecAuthencation, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { ExecAuthencation } from '@xcan-angus/vue-ui';
-import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-
 
 import { HttpMethod, HttpServer, RequestConfigs } from './PropsType';
 

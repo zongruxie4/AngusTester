@@ -65,5 +65,4 @@ export default class API {
   getCaseNotEstablishedBaseline (planId: string, params = {}) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}/case/notEstablishedBaseline`, params);
   }
-
 }

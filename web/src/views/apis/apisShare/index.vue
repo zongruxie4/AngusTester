@@ -5,7 +5,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon } from '@xcan-angus/vue-ui';
 import '@xcan-angus/rapidoc';
-import { shareApis } from "src/api/tester";
+import { shareApis } from 'src/api/tester';
 
 const route = useRoute();
 const Agent = defineAsyncComponent(() => import('@/views/mock/detail/mockApis/components/agent/index.vue'));
@@ -123,7 +123,7 @@ provide('readyState', readyState);
       allowSpecUrlLoad="false"
       :allowSpecFileLoad="false"
       allowSpecFileDownload="false"
-      :allow-try="displayOptions.allowDebug"
+      :allowTry="displayOptions.allowDebug"
       :schemaStyle="displayOptions.schemaStyle"
       showHeader="false"
       schemaExpandLevel="20">

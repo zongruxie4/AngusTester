@@ -9,7 +9,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   value: '',
-  preview: false, // 是否为预览模式
+  preview: false // 是否为预览模式
 });
 
 const textareaRef = ref();

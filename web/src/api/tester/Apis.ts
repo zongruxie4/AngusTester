@@ -336,5 +336,4 @@ export default class API {
   delAllUnarchived () : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived`);
   }
-
 }

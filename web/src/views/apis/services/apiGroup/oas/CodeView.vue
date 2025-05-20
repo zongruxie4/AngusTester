@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { AsyncComponent } from '@xcan-angus/vue-ui';
-import { MonacoEditor } from '@xcan-angus/vue-ui';
+import { AsyncComponent, MonacoEditor } from '@xcan-angus/vue-ui';
 
 interface Props {
   value: string;

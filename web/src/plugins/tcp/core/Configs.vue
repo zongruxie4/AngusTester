@@ -5,7 +5,7 @@ import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeMod
 import { utils, TESTER } from '@xcan-angus/tools';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual, cloneDeep } from 'lodash-es';
-import { exec, scenario} from '@/api/tester';
+import { exec, scenario } from '@/api/tester';
 
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';

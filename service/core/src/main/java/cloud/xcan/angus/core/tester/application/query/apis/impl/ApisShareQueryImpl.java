@@ -20,7 +20,6 @@ import cloud.xcan.angus.core.tester.domain.apis.share.ApisShare;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareRepo;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;

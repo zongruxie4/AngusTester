@@ -65,7 +65,7 @@ export default class API {
   }
 
   //
-  importVariable (formData: FormData): Promise<[Error | null, any]>{
+  importVariable (formData: FormData): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/import`, formData, { silence: true });
   }
 
@@ -80,5 +80,4 @@ export default class API {
   previewValue (params, axiosConf): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/value/preview`, params, axiosConf);
   }
-
 }
