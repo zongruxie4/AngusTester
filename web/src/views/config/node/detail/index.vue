@@ -1272,11 +1272,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 <div class="text-3">必须以root用户执行脚本, 安装目录为脚本所在目录</div>
                 <div class="text-3">
                   安装方式1：
-                  <p class="install-step">
+                  <p class="install-step whitespace-pre-line">
                     {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
                   安装方式2：
-                  <p class="install-step">
+                  <p class="install-step whitespace-pre-line">
                     1).下载自动安装脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
                     2).将{{ state.linuxOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：{{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                   </p>
@@ -1285,11 +1285,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <TabPane key="windows" tab="Windows系统自动安装步骤">
                 <div class="text-3">
                   安装方式1：
-                  <p class="install-step">
+                  <p class="install-step whitespace-pre-line">
                     {{ state.windowsOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
                   安装方式2：
-                  <p class="install-step">
+                  <p class="install-step whitespace-pre-line">
                     1).下载自动安装脚本：<a class="cursor-pointer" :href="state.windowsOfflineInstallSteps?.installScriptUrl">{{ state.windowsOfflineInstallSteps?.installScriptName }}</a> <br />
                     2).将{{ state.windowsOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：{{ state.windowsOfflineInstallSteps?.runInstallCmd }}
                   </p>
