@@ -13,6 +13,7 @@ const Services = defineAsyncComponent(() => import('@/views/apis/services/index.
 const Share = defineAsyncComponent(() => import('@/views/apis/share/index.vue'));
 const Server = defineAsyncComponent(() => import('@/views/apis/server/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/apis/trash/index.vue'));
+const Design = defineAsyncComponent(() => import('@/views/apis/design/index.vue'));
 
 const activeKey = ref<MenuKey>();
 const servicesRef = ref();
@@ -96,7 +97,8 @@ const menuItems = [
   { name: '服务', icon: 'icon-fuwuxinxi', key: 'services' },
   { name: '分享', icon: 'icon-fenxiang', key: 'share' },
   { name: '服务器', icon: 'icon-host', key: 'server' },
-  { name: '回收站', icon: 'icon-qingchu', key: 'trash' }
+  { name: '回收站', icon: 'icon-qingchu', key: 'trash' },
+  { name: '设计', icon: 'icon-design', key: 'design'}
 ];
 </script>
 
@@ -135,6 +137,12 @@ const menuItems = [
         :userInfo="userInfo"
         :appInfo="appInfo"
         :refreshNotify="trashRefreshNotify" />
+    </template>
+    <template #design>
+      <Design
+        :projectId="projectId"
+        :userInfo="userInfo"
+        :appInfo="appInfo"/>
     </template>
   </LeftMenu>
 </template>

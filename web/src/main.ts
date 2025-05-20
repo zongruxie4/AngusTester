@@ -5,6 +5,7 @@ import { app, preference, http } from '@xcan-angus/tools';
 import router, { startupGuard } from '@/router';
 import store from '@/store';
 
+import 'open-api-designer/style.css'
 import '@xcan-angus/vue-ui/style.css';
 
 import 'tailwindcss/base.css';

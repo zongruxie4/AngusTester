@@ -64,6 +64,7 @@
     "md5": "^2.3.0",
     "monaco-editor": "^0.45.0",
     "oas": "^24.1.0",
+    "open-api-designer": "^1.0.0",
     "pdf-lib": "^1.17.1",
     "postcss": "^8.4.35",
     "pretty": "^2.0.0",

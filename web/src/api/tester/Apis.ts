@@ -336,4 +336,45 @@ export default class API {
   delAllUnarchived () : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived`);
   }
+
+  getDesignList <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/design/search`, params, axioConf);
+  }
+
+  addDesign <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/design`, params, axioConf);
+  }
+
+  updateDesign <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design`, params, axioConf);
+  }
+
+  getDesignInfo (designId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/design/${designId}`);
+  }
+
+  deleteDesign (designId: string) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/design/${designId}`);
+  }
+
+  exportDesign  (params: {id: string, format: 'json'|'yaml'}, axioConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/design/export`, params, axioConf);
+  }
+
+  cloneDesign (designId: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design/${designId}/clone`);
+  }
+
+  releaseDesign (designId: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design/${designId}/release`);
+  }
+
+  generateServiceFromDesign (designId: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design/${designId}/service/generate`);
+  }
+
+  importDesign (params: {projectId: string, name: string, content: string}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/design/import`, params);
+  }
+
 }
