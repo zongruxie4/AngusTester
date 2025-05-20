@@ -1264,6 +1264,9 @@ const getRefTaskNum = (type = 'TASK') => {
   padding: 20px 0 20px 20px;
   background-color: #fff;
 }
+:deep(.ant-tabs-nav::before) {
+  border: 0;
+}
 
 :deep(.ant-tabs-top>.ant-tabs-nav::before) {
   right: 20px;
