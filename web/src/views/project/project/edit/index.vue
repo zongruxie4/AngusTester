@@ -9,10 +9,9 @@ import {
   RadioGroup,
   TabPane,
   Tabs,
-  Upload
 } from 'ant-design-vue';
-import { DatePicker, Icon, Image, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
-import { GM, upload } from '@xcan-angus/tools';
+import { DatePicker, Icon, Image, Input, notification, Select, SelectUser, Cropper } from '@xcan-angus/vue-ui';
+import { GM } from '@xcan-angus/tools';
 import { project } from 'src/api/tester';
 
 interface Props {
@@ -34,7 +33,6 @@ const projectInfo = inject('projectInfo', ref({ id: '' }));
 const delTabPane = inject('delTabPane');
 
 const activeKey = ref('basic');
-
 const projectTypeTipConfig = {
   AGILE: ['支持Scrum敏捷开发与敏捷测试流程，旨在通过迭 代和增量的方式开发和测试软件，‌这种方法可以有 效加速产品交付，同时确保产品开发方向始终和用 户的需求和期望保持一致。', '适用于软件项目和具有敏捷经验的团队。'],
   GENERAL: ['支持通用化研发和测试流程，使用WBS将项目递归 分解为较小、更易管理的组件的层次结构，然后基 于甘特图管理任务进度、依赖关系和时间线。', '适用于有软件项目和所有开发测试团队。'],
@@ -54,6 +52,35 @@ const members = ref({
 });
 const memberType = ref('user');
 const descRef = ref();
+const uploadAvatarVisible = ref(false);
+const uploadParams = {
+  bizKey: 'angusTesterProjectAvatar'
+};
+
+const uploadOption = {
+  outputSize: 1,
+  outputType: 'png',
+  info: true,
+  canScale: true,
+  autoCrop: true,
+  autoCropWidth: '280',
+  autoCropHeight: '280',
+  fixed: true,
+  fixedNumber: [1, 1],
+  full: false,
+  fixedBox: false,
+  canMove: true,
+  canMoveBox: true,
+  original: false,
+  centerBox: false,
+  high: true,
+  infoTrue: false,
+  maxImgSize: 2000,
+  enlarge: 1,
+  mode: 'contain',
+  preW: 0,
+  limitMinSize: [10, 10]
+}
 
 const defaultOptionsUser = ref<{ [key: string]: any }>({});
 const defaultOptionsDept = ref<{ [key: string]: any }>({});
@@ -101,16 +128,12 @@ const loadProjectData = async () => {
   }
 };
 
-const uploadImg = async ({ file }) => {
-  const [error, { data = [] }] = await upload(file, {
-    bizKey: 'angusTesterProjectAvatar'
-  });
-  if (error) {
-    return;
-  }
-  if (data.length > 0) {
-    projectData.value.avatar = data[0].url;
-  }
+const openCropper = () => {
+  uploadAvatarVisible.value = true;
+};
+
+const uploadImgSuccess = (resp) => {
+  projectData.value.avatar = resp?.data?.[0]?.url;
 };
 
 const delImg = () => {
@@ -233,17 +256,12 @@ onMounted(() => {
                 </div>
               </div>
               <div v-else class="text-left">
-                <Upload
-                  name="avatar"
-                  accept=".png,.jpeg,.jpg"
-                  listType="picture-card"
-                  :showUploadList="false"
-                  :customRequest="uploadImg">
-                  <div class="ant-upload-text bg-blue-2 h-full w-full flex flex-col items-center spacey-2 justify-around">
-                    <img src="../images/default.png" class="w-15" />
-                    <div class="text-3">点击替换图标</div>
-                  </div>
-                </Upload>
+                <div
+                  class="ant-upload-text w-25 h-25 rounded cursor-pointer bg-blue-2  flex flex-col items-center spacey-2 justify-around"
+                  @click="openCropper">
+                  <img src="../images/default.png" class="w-15" />
+                  <div class="text-3">点击替换图标</div>
+                </div>
               </div>
             </FormItem>
             <FormItem
@@ -375,15 +393,6 @@ onMounted(() => {
                 v-model:value="projectData.description"
                 :toolbarOptions="toolbarOptions"
                 :options="{placeholder: '描述，最多2000个字符'}" />
-              <!-- <Textarea
-                v-model:value="projectData.description"
-                type="textarea"
-                :autosize="{
-                  minRows: 5
-                }"
-                showCount
-                placeholder="描述，最多2000个字符"
-                :maxlength="2000" /> -->
             </FormItem>
           </div>
           <div class="w-100">
@@ -465,17 +474,12 @@ onMounted(() => {
                   </div>
                 </div>
                 <div v-else class="text-left">
-                  <Upload
-                    name="avatar"
-                    accept=".png,.jpeg,.jpg"
-                    listType="picture-card"
-                    :showUploadList="false"
-                    :customRequest="uploadImg">
-                    <div class="ant-upload-text bg-blue-2 h-full w-full flex flex-col items-center spacey-2 justify-around">
-                      <img src="../images/default.png" class="w-15" />
-                      <div class="text-3">点击替换图标</div>
-                    </div>
-                  </Upload>
+                  <div
+                    class="ant-upload-text w-25 h-25 rounded cursor-pointer bg-blue-2  flex flex-col items-center spacey-2 justify-around"
+                    @click="openCropper">
+                    <img src="../images/default.png" class="w-15" />
+                    <div class="text-3">点击替换图标</div>
+                  </div>
                 </div>
               </FormItem>
               <FormItem
@@ -595,15 +599,6 @@ onMounted(() => {
                   v-model:value="projectData.description"
                   :toolbarOptions="toolbarOptions"
                   :options="{placeholder: '描述，最多2000个字符'}" />
-                <!-- <Textarea
-                  v-model:value="projectData.description"
-                  type="textarea"
-                  :autosize="{
-                    minRows: 5
-                  }"
-                  showCount
-                  placeholder="描述，最多2000个字符"
-                  :maxlength="2000" /> -->
               </FormItem>
             </div>
             <div class="w-100 pt-12">
@@ -667,5 +662,11 @@ onMounted(() => {
         <Tags :projectId="props.projectId" />
       </TabPane>
     </Tabs>
+    <Cropper
+      v-model:visible="uploadAvatarVisible"
+      title="上传图标"
+      :params="uploadParams"
+      :options="uploadOption"
+      @success="uploadImgSuccess" />
   </div>
 </template>
