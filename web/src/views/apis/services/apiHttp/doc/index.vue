@@ -40,24 +40,22 @@ onMounted(async () => {
 </script>
 <template>
   <div class="">
-    <!-- <Button @click="exportPdf">PDF</Button>
-    <rapi-pdf></rapi-pdf> -->
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="`${docOrigin}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
-      renderStyle="view"
-      theme="light"
-      headerColor="#fff"
-      :showInfo="true"
+      :spec-url="`${docOrigin}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      allowSpecFileDownload="false"
+      allowSpecFileLoad="false"
       allowSpecUrlLoad="false"
-      :allowSpecFileLoad="false"
-      :allowSpecFileDownload="false"
-      :allowTry="false"
+      allowTry="false"
       bgColor="#fff"
+      headerColor="#fff"
+      renderStyle="view"
+      schemaExpandLevel="20"
       schemaStyle="table"
-      :showHeader="true"
-      updateRoute="false"
-      schemaExpandLevel="20">
+      showHeader="true"
+      showInfo="true"
+      theme="light"
+      updateRoute="false">
       <!-- Delete the default logo at the top -->
       <Button
         slot="exportDoc"
