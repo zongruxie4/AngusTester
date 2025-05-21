@@ -377,4 +377,8 @@ export default class API {
     return http.post(`${baseUrl}/design/import`, params);
   }
 
+  putDesignContent (params: {id: string, openapi: string}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design/import`, params)
+  }
+
 }
