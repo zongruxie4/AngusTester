@@ -4,7 +4,7 @@ import qs from 'qs';
 import { inject, ref, watch } from 'vue';
 import { notification, Select, FormatHighlight } from '@xcan-angus/vue-ui';
 import XML from 'xml';
-import { Button } from 'ant-design-vue';
+import { Button, RadioGroup } from 'ant-design-vue';
 // import { supportedLanguages, oasToSnippet } from '@readme/oas-to-snippet';
 import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
@@ -342,11 +342,30 @@ watch(() => props.id, async () => {
         <div class="bg-gray-bg-active mt-1">{{ getLanguageLabel(value) }}</div>
       </div>
     </div>
-    <Select
-      v-model:value="language[1]"
-      :options="langFuncs"
-      class="bg-white max-w-100 w-full" />
-    <div class="py-2 mt-2 whitespace-pre-wrap break-all flex-1 overflow-auto">
+
+    <div class="flex space-x-5 items-center">
+      <RadioGroup
+        v-model:value="language[1]"
+        class="inline-block"
+        :options="langFuncs"/>
+      <div>
+        <Button
+          type="link"
+          size="small"
+          class="text-left inline-block"
+          @click="copyCode">
+          复制
+        </Button>
+        <Button
+          type="link"
+          size="small"
+          class="text-left  inline-block"
+          @click="refresh">
+          刷新
+        </Button>
+      </div>
+    </div>
+    <div class="py-2 whitespace-pre-wrap break-all flex-1 overflow-auto">
       <!-- <div>{{ codeContent }}</div> -->
       <div v-show="codeContent" class="code-wrapper">
         <FormatHighlight
@@ -355,22 +374,7 @@ watch(() => props.id, async () => {
           :dataType="language[0]">
         </FormatHighlight>
       </div>
-      <div>
-        <Button
-          type="link"
-          size="small"
-          class="px-1 py-1 h-5 leading-5 text-left"
-          @click="copyCode">
-          复制
-        </Button>
-        <Button
-          type="link"
-          size="small"
-          class="px-1 py-1 h-5 leading-5 text-left"
-          @click="refresh">
-          刷新
-        </Button>
-      </div>
+
     </div>
   </div>
 </template>
