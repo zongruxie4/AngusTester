@@ -47,6 +47,7 @@ onMounted(async () => {
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"
       allowTry="false"
+      allowAdvancedSearch="false"
       bgColor="#fff"
       headerColor="#fff"
       renderStyle="view"

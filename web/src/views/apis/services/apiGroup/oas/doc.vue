@@ -73,6 +73,7 @@ defineExpose({
       navBgColor="#fff"
       showInfo="true"
       bgColor="#fff"
+      allowAdvancedSearch="false"
       allowSpecUrlLoad="false"
       allowSpecFileLoad="false"
       allowSpecFileDownload="false"
