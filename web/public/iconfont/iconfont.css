@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3017674 */
-  src: url('iconfont.woff2?t=1736935969435') format('woff2'),
-       url('iconfont.woff?t=1736935969435') format('woff'),
-       url('iconfont.ttf?t=1736935969435') format('truetype');
+  src: url('iconfont.woff2?t=1747894681208') format('woff2'),
+       url('iconfont.woff?t=1747894681208') format('woff'),
+       url('iconfont.ttf?t=1747894681208') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,126 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-left-tab:before {
+  content: "\e843";
+}
+
+.icon-sub:before {
+  content: "\e849";
+}
+
+.icon-right:before {
+  content: "\e84b";
+}
+
+.icon-video:before {
+  content: "\e84a";
+}
+
+.icon-right-tab:before {
+  content: "\e84c";
+}
+
+.icon-table:before {
+  content: "\e84d";
+}
+
+.icon-color:before {
+  content: "\e83f";
+}
+
+.icon-image:before {
+  content: "\e840";
+}
+
+.icon-italic:before {
+  content: "\e841";
+}
+
+.icon-bold:before {
+  content: "\e842";
+}
+
+.icon-disordered:before {
+  content: "\e844";
+}
+
+.icon-link:before {
+  content: "\e845";
+}
+
+.icon-checked:before {
+  content: "\e846";
+}
+
+.icon-ordered:before {
+  content: "\e847";
+}
+
+.icon-strike:before {
+  content: "\e848";
+}
+
+.icon-underline:before {
+  content: "\e838";
+}
+
+.icon-formula:before {
+  content: "\e839";
+}
+
+.icon-normal:before {
+  content: "\e83a";
+}
+
+.icon-background:before {
+  content: "\e83b";
+}
+
+.icon-yinyong1:before {
+  content: "\e83c";
+}
+
+.icon-blockquote:before {
+  content: "\e83d";
+}
+
+.icon-super:before {
+  content: "\e83e";
+}
+
+.icon-peizhishujubiaoqian:before {
+  content: "\e834";
+}
+
+.icon-peizhiruanjianmokuai:before {
+  content: "\e833";
+}
+
+.icon-peizhiguanliruanjianbanben:before {
+  content: "\e835";
+}
+
+.icon-waibuwendang:before {
+  content: "\e830";
+}
+
+.icon-sheji:before {
+  content: "\e831";
+}
+
+.icon-wendangxinxi1:before {
+  content: "\e832";
+}
+
+.icon-anquanxuqiu:before {
+  content: "\e836";
+}
+
+.icon-fuwuqi1:before {
+  content: "\e837";
 }
 
 .icon-ceshixiangmuguanli:before {

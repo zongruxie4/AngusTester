@@ -286,7 +286,7 @@ onMounted(() => {
           type="primary"
           size="small"
           @click="importDesign">
-          <Icon icon="icon-jia" class="text-3.5 mr-1" />
+          <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
           <span>导入设计</span>
         </Button>
 
