@@ -38,7 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Project", description = "Project Management - Work unit for end-to-end project coordination, including resource allocation, test planning, task tracking, requirement management, and workflow automation.")
+@Tag(name = "Project", description = "Project Management - Work unit for end-to-end project coordination, "
+    + "including resource allocation, test planning, task tracking, requirement management, and workflow automation.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/project")
