@@ -417,10 +417,10 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
       //    "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "EXECUTION"));
       // JDBCUtils.executeUpdate(testerConnection,
       //    "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "EXECUTION"));
-      JDBCUtils.executeUpdate(testerConnection,
-          "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "MOCK_SERVICE"));
-      JDBCUtils.executeUpdate(testerConnection,
-          "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "MOCK_SERVICE"));
+      // JDBCUtils.executeUpdate(testerConnection,
+      //    "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "MOCK_SERVICE"));
+      // DBCUtils.executeUpdate(testerConnection,
+      //    "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "MOCK_SERVICE"));
     } else {
       // Not Existing! insert node and roles
       nodeId = nanoTime();
@@ -442,10 +442,10 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
           "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "MANAGEMENT"));
       JDBCUtils.executeUpdate(testerConnection,
           "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "CONTROLLER"));
-      JDBCUtils.executeUpdate(testerConnection,
-          "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "EXECUTION"));
-      JDBCUtils.executeUpdate(testerConnection,
-          "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "MOCK_SERVICE"));
+      // JDBCUtils.executeUpdate(testerConnection,
+      //    "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "EXECUTION"));
+      // JDBCUtils.executeUpdate(testerConnection,
+      //    "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "MOCK_SERVICE"));
     }
     // @formatter:on
     return nodeId;
