@@ -58,7 +58,7 @@ const releaseDesign = async ()  => {
 onMounted(async () => {
   await getDesignContent();
   await getDesignInfo();
-  openAPIDesignInstance = new OpenApiDesign(openApiDesignRef.value);
+  openAPIDesignInstance = new OpenApiDesign();
 })
 </script>
 <template>
