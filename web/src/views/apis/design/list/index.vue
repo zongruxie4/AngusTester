@@ -341,7 +341,7 @@ const columns = [
                   <Button
                     type="text"
                     size="small"
-                    @click="copyLink(record)">
+                    @click="handleEnterDesign(record)">
                     <Icon icon="icon-sheji" />
                     设计
                   </Button>
@@ -349,7 +349,7 @@ const columns = [
                     type="text"
                     size="small"
                     @click="cloneDesign(record)">
-                    <Icon icon="icon-sheji" />
+                    <Icon icon="icon-fuzhi" />
                     克隆
                   </Button>
                   <Button

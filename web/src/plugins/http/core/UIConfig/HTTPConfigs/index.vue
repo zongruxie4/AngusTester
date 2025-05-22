@@ -570,7 +570,7 @@ const initializedData = async () => {
     httpMethod.value = request.method;
     requestBody.value = request.body || {};
 
-    authentication.value = request.authentication;
+    authentication.value = request.authentication ? {...request.authentication, ...(request.authentication.extensions || {})} : {type: null};
     if (authentication.value) {
       defaultAuthentication.value = JSON.parse(JSON.stringify(authentication.value));
       authInHeader.value = authenticationToHeader(authentication.value);

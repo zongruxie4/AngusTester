@@ -305,6 +305,7 @@ const projectId = computed(() => projectInfo.value?.id);
     </div>
 
     <SearchPanel
+      v-if="projectId"
       :projectId="projectId"
       :userInfo="userInfo"
       :appInfo="appInfo"

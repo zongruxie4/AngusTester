@@ -441,7 +441,7 @@ const loadApiInfo = async (): Promise<void> => {
   })) || [];
   assertNum.value = state.assertions?.length;
 
-  state.authentication = authentication || { type: null };
+  state.authentication = authentication ? {...authentication, ...(authentication.extensions || {})} : {type: null};
   defaultAuthentication.value = JSON.parse(JSON.stringify(state.authentication));
   state.publishFlag = (status?.value === 'RELEASED');
   state.secured = !!state.authentication.type || !!state.authentication.$ref;

@@ -22,10 +22,8 @@ const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/sideb
 //   id?: ProjectService;
 const docOrigin = ref();
 const accessToken = ref();
+const isPrivate = ref();
 
-const exportPdf = () => {
-  // createPdf(`${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`);
-};
 
 const exportVisible = ref(false);
 const handleExportdoc = () => {
@@ -34,7 +32,9 @@ const handleExportdoc = () => {
 
 onMounted(async () => {
   accessToken.value = cookie.get('access_token');
+  isPrivate.value = await site.isPrivate();
   docOrigin.value = await site.getUrl('apis');
+
 });
 
 </script>
@@ -42,7 +42,7 @@ onMounted(async () => {
   <div class="">
     <rapi-doc
       v-if="docOrigin"
-      :spec-url="`${docOrigin}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      :spec-url="`${docOrigin}${isPrivate ? '/api/v1' : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
       allowSpecFileDownload="false"
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"

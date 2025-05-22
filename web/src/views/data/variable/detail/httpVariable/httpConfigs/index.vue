@@ -345,7 +345,7 @@ const initializedData = async () => {
     });
   }
 
-  authentication.value = _authentication;
+  authentication.value = _authentication ? {..._authentication, ...(_authentication.extensions || {})} : {type: null};
   if (authentication.value) {
     defaultAuthentication.value = JSON.parse(JSON.stringify(authentication.value));
     authInHeader.value = authenticationToHeader(authentication.value);
