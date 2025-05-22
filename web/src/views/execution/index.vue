@@ -755,6 +755,7 @@ const reportIntervalSelectProps = {
     style="scrollbar-gutter: stable;">
     <NavigationHeader class="mb-3" />
     <SearchPanel
+      v-if="projectId"
       :projectId="projectId"
       :userInfo="userInfo"
       class="mb-3.5"

@@ -7,7 +7,7 @@ export default class API {
   }
 
   searchList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, params);
+    return http.get(`${baseUrl}/search`, params);
   }
 
   putConfig (execId:string, params): Promise<[Error | null, any]> {
