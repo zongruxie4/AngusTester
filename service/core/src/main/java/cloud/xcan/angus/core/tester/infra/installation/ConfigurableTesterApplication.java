@@ -412,11 +412,11 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
           "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "CONTROLLER"));
       JDBCUtils.executeUpdate(testerConnection,
           "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "CONTROLLER"));
-      // TODO Execution and Mock service nodes should be separate
-      JDBCUtils.executeUpdate(testerConnection,
-          "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "EXECUTION"));
-      JDBCUtils.executeUpdate(testerConnection,
-          "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "EXECUTION"));
+      // Execution and Mock service nodes should be separate
+      // JDBCUtils.executeUpdate(testerConnection,
+      //    "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "EXECUTION"));
+      // JDBCUtils.executeUpdate(testerConnection,
+      //    "INSERT node_role(id, node_id, role) VALUES (?, ?, ?)", Arrays.asList(nanoTime(), nodeId, "EXECUTION"));
       JDBCUtils.executeUpdate(testerConnection,
           "DELETE FROM node_role WHERE node_id =? AND role=?", Arrays.asList(nodeId, "MOCK_SERVICE"));
       JDBCUtils.executeUpdate(testerConnection,
