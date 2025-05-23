@@ -158,26 +158,9 @@ const importDesign = () => {
   importVisible.value = true;
 };
 
-const editDesign = (record: {id: string} = {}) => {
-  selectDesignId.value = record.id;
+const editDesign = (record: {id?: string} = {}) => {
+  selectDesignId.value = record?.id;
   editVisible.value = true;
-};
-
-const copyLink = async (record: {id: string; name: string; url?: string} = { name: '', id: '' }) => {
-  if (record.url) {
-    toClipboard(`设计“${record.name}”，访问地址：${record.url}`).then(() => {
-      notification.success('成功复制到剪贴板');
-    });
-    return;
-  }
-  const [error, { data }] = await apis.getDesignInfo(record.id);
-  if (error) {
-    return;
-  }
-  record.url = data?.url;
-  toClipboard(`设计“${record.name}”，访问地址：${record.url}`).then(() => {
-    notification.success('成功复制到剪贴板');
-  });
 };
 
 const exportDesign = (record: {id: string; name: string; url?: string})  => {

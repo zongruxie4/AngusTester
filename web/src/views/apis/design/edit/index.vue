@@ -23,12 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
-
-const origin = ref('');
-const baseUrl = computed(() => {
-  return `${origin.value}/apis/design`;
-});
-
 const formState = ref({
   name: undefined,
   openapiSpecVersion: '3.0.1'
@@ -86,7 +80,6 @@ const addOk = async () => {
   loading.value = true;
   const [error] = await apis.addDesign({
     ...formState.value,
-    baseUrl: baseUrl.value,
     projectId: props.projectId
   });
   if (error) {
