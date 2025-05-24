@@ -7,7 +7,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */public interface ServiceAuthVo extends Serializable {
+ */
+public interface ServiceAuthVo extends Serializable {
 
   Long getId();
 

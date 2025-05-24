@@ -6,14 +6,12 @@ import cloud.xcan.angus.api.pojo.Attachment;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
 import cloud.xcan.angus.remote.NameJoinField;
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

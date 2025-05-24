@@ -3,14 +3,12 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting;
 import cloud.xcan.angus.api.commonlink.user.UserInfo;
 import cloud.xcan.angus.core.tester.domain.task.meeting.TaskMeetingType;
 import cloud.xcan.angus.remote.NameJoinField;
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

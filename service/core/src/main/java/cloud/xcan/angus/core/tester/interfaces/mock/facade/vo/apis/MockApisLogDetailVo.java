@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Accessors(chain = true)
 @Setter
 @Getter
+@Accessors(chain = true)
 public class MockApisLogDetailVo {
 
   protected Long tenantId;

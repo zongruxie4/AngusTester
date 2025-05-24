@@ -13,7 +13,6 @@ import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestResult;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +24,6 @@ import lombok.experimental.Accessors;
  * Note: The current class field order is consistent with the export order and configuration header
  * message. Please do not modify the order arbitrarily.
  */
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

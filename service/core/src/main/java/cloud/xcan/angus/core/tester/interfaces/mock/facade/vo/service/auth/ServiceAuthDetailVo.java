@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-
 public abstract class ServiceAuthDetailVo implements ServiceAuthVo {
 
   @Schema(description = "Datasource authorization id")

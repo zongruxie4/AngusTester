@@ -8,14 +8,12 @@ import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintStatus;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingDetailVo;
 import cloud.xcan.angus.remote.NameJoinField;
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)
