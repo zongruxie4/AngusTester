@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.dto;
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_URL_LENGTH_X4;
 
-import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.ReviewStatus;
 import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestResult;
 import cloud.xcan.angus.remote.PageQuery;
@@ -52,7 +51,8 @@ public class FuncCaseFindDto extends PageQuery {
 
   private Boolean unplanned;
 
-  private Priority priority;
+  @Schema(allowableValues = {"HIGHEST", "HIGH", "MEDIUM", "LOW", "LOWEST"})
+  private String priority;
 
   private Boolean overdue;
 

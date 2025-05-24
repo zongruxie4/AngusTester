@@ -52,7 +52,8 @@ public class FuncCaseSearchDto extends PageQuery {
 
   private Boolean unplanned;
 
-  private Priority priority;
+  @Schema(allowableValues = {"HIGHEST", "HIGH", "MEDIUM", "LOW", "LOWEST"})
+  private String priority;
 
   private Boolean overdue;
 
