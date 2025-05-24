@@ -26,22 +26,18 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
   @Id
   private Long id;
 
-  @Column(name = "project_id")
   private Long projectId;
 
   private String name;
 
-  @Column(name = "release")
   private Boolean released;
 
-  @Column(name = "openapi_spec_version")
   private String openapiSpecVersion;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "design_source")
   private ApisDesignSource designSource;
 
-  @Column(name = "design_source_id")
   private Long designSourceId;
 
   @Transient
