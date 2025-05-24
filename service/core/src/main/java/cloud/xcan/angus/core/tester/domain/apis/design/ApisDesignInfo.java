@@ -32,7 +32,7 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
   private String name;
 
   @Column(name = "release")
-  private Boolean release;
+  private Boolean released;
 
   @Column(name = "openapi_spec_version")
   private String openapiSpecVersion;
@@ -48,7 +48,7 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
   private String designSourceName;
 
   public boolean hasLatestContent(){
-    return release && designSource.isSynchronousService() && nonNull(designSourceId);
+    return released && designSource.isSynchronousService() && nonNull(designSourceId);
   }
 
   @Override
