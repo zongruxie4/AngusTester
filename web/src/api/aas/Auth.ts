@@ -1,5 +1,5 @@
-import {http} from '@xcan-angus/tools';
-import {handleHeaders} from '@/utils/index';
+import { http } from '@xcan-angus/tools';
+import { handleHeaders } from '@/utils/index';
 
 let baseUrl: string;
 export default class AuthPolicy {
