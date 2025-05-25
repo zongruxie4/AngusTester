@@ -34,8 +34,6 @@ import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_STOP_IGNO
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_STOP_IS_IGNORED;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_AGENT_UNAVAILABLE_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_NODES;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isMultiTenantCtrl;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.parser.AngusParser.YAML_MAPPER;
 import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
@@ -536,11 +534,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           if (nonNull(execDb.getTrial()) && execDb.getTrial()) {
             if (isUserAction()) {
               // Query idle shared nodes during trial execution
-              nodeIds.addAll(selectFreeNode(execDb.getAvailableNodeIds()));
+              nodeIds.addAll(nodeInfoQuery.selectFreeNodeIds(1, execDb.getAvailableNodeIds()));
             } else {
               try {
                 // Query idle shared nodes during trial execution
-                nodeIds.addAll(selectFreeNode(execDb.getAvailableNodeIds()));
+                nodeIds.addAll(nodeInfoQuery.selectFreeNodeIds(1, execDb.getAvailableNodeIds()));
               } catch (Exception e) {
                 // Ignore NO_AVAILABLE_NODES message
                 // If there are no public trial nodes, use the tenant's own nodes
@@ -1100,32 +1098,6 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, message))
           .collect(Collectors.toList());
     }
-  }
-
-  private List<Long> selectFreeNode(Set<Long> availableNodeIds) {
-    boolean isMultiTenantCtrl = isMultiTenantCtrl();
-    long realTenantId = getOptTenantId();
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(false);
-      PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
-    }
-
-    List<NodeInfo> selectNodes = nodeInfoQuery.selectWithFree(1, availableNodeIds);
-    assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
-
-    List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-        .collect(Collectors.toList());
-    Set<Long> liveNodeIds = nodeInfoQuery.getLiveNodeIds(selectNodeIds);
-    for (NodeInfo selectNode : selectNodes) {
-      BizAssert.assertTrue(liveNodeIds.contains(selectNode.getId()),
-          message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
-    }
-
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(true);
-      PrincipalContext.get().setOptTenantId(realTenantId);
-    }
-    return selectNodeIds;
   }
 
   private List<Long> selectNodeByStrategy(Exec execDb) {
