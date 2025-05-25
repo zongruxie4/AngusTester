@@ -26,6 +26,8 @@ public interface NodeQuery {
 
   boolean hasOwnNodes(Long tenantId);
 
+  boolean isTrailNode(Long nodeId);
+
   Page<Node> getFreeWhenNonNodes(String role);
 
   Map<Long, Node> findNodeMap(Collection<Long> ids);

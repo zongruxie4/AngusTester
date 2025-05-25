@@ -42,6 +42,8 @@ public interface NodeRepo extends BaseRepository<Node, Long>, NameJoinRepository
 
   int countByOrderId(Long orderId);
 
+  int countByIdInAndFree(Collection<Long> ids, boolean free);
+
   @Modifying
   @Query(value = "UPDATE node n SET n.name=?2 WHERE n.id=?1", nativeQuery = true)
   void updateNameById(Long id, String name);

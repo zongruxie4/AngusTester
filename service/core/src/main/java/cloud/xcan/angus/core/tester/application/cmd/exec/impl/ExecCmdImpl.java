@@ -460,14 +460,14 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   // @Transactional(rollbackFor = Exception.class) -> Lock wait timeout exceeded; try restarting transaction
   @Override
   public List<RunnerRunVo> start0(Exec execDb, ExecStartDto dto) {
+    // formatter:off
     String execId = String.valueOf(execDb.getId());
     List<RunnerRunVo> results = new ArrayList<>();
 
     // Lock to prevent repeated restart
     // Lock only on the main controller (Broadcast=true)
     if (dto.isBroadcast()) {
-      boolean locked = distributedLock.tryLock(format(EXEC_LOCK_KEY_FMT, execId), execId,
-          2, TimeUnit.MINUTES);
+      boolean locked = distributedLock.tryLock(format(EXEC_LOCK_KEY_FMT, execId), execId, 2, TimeUnit.MINUTES);
       if (!locked) {
         // Execution is triggered by other threads during scheduling
         String message = message(EXEC_START_IS_IGNORED);
@@ -489,11 +489,9 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // Parsing and overwrite script configuration
     String script;
     try {
-      script = overwriteConfigScript(execDb, execDb.getThread(),
-          null, null, execDb.getIterations());
+      script = overwriteConfigScript(execDb, execDb.getThread(), null, null, execDb.getIterations());
     } catch (Exception e) {
-      updateSchedulingFailed(execId, results, message(EXEC_START_IGNORED_WITH_PARSE_ERROR_T,
-          new Object[]{e.getMessage()}));
+      updateSchedulingFailed(execId, results, message(EXEC_START_IGNORED_WITH_PARSE_ERROR_T, new Object[]{e.getMessage()}));
       return results;
     }
 
@@ -506,8 +504,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     try {
       if (dto.isBroadcast()) {
         // Check that the pipeline is valid
-        if (isNotEmpty(execDb.getTask().getPipelines())
-            && execDb.getTask().getPipelines().size() > 1) {
+        if (isNotEmpty(execDb.getTask().getPipelines()) && execDb.getTask().getPipelines().size() > 1) {
           try {
             PipelineBuilder.of(execDb.getTask().getPipelines());
           } catch (Exception e) {
@@ -555,8 +552,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           log.error("No execution nodes that meet the policy", e);
           if (e instanceof BizException || execDb.getTrial()) {
             // BizException will terminate and continue scheduling.
-            updateSchedulingFailed(execId, results, nullSafe(selectFailMessage,
-                message(EXEC_NOT_MEET_CONDITIONS_NODES)));
+            updateSchedulingFailed(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
             return results;
           }
         }
@@ -565,8 +561,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       }
 
       if (isEmpty(nodeIds)) {
-        updateSchedulingFailedInPending(execId, results, nullSafe(selectFailMessage,
-            message(EXEC_NOT_MEET_CONDITIONS_NODES)));
+        updateSchedulingFailedInPending(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
         return results;
       }
 
@@ -587,8 +582,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       if (nodeIds.size() == 1) {
         Long nodeId = nodeIds.stream().findFirst().get();
-        startSingleNodeTask(null, execDb, execId, results, script, nodeId, remoteNodeIds,
-            successNodeIds);
+        startSingleNodeTask(null, execDb, execId, results, script, nodeId, remoteNodeIds, successNodeIds);
       } else {
         ExecutorService executorService = Executors.newFixedThreadPool(nodeIds.size());
         CountDownLatch latch = new CountDownLatch(nodeIds.size());
@@ -604,8 +598,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           script = shardingScript(execDb, nodeIds.size(), i == 0);
           String finalScript = script;
           executorService.submit(() -> {
-            startSingleNodeTask(latch, execDb, execId, results, finalScript, nodeId,
-                remoteNodeIds, successNodeIds);
+            startSingleNodeTask(latch, execDb, execId, results, finalScript, nodeId, remoteNodeIds, successNodeIds);
           });
         }
         latch.await();
@@ -641,8 +634,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               }
 
               String remoteStartUrl = "http://" + inst.getInstanceId() + EXEC_START_ENDPOINT;
-              List<RunnerRunVo> remoteResults = broadcastRun2RemoteCtrl(remoteRunCmd,
-                  remoteStartUrl);
+              List<RunnerRunVo> remoteResults = broadcastRun2RemoteCtrl(remoteRunCmd, remoteStartUrl);
               if (isNotEmpty(remoteResults)) {
                 results.addAll(remoteResults);
                 for (RunnerRunVo result0 : remoteResults) {
@@ -653,19 +645,15 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               }
             }
             if (isEmpty(successNodeIds)) {
-              results.addAll(remoteNodeIds.stream().map(x ->
-                      RunnerRunVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND)))
-                  .toList());
+              results.addAll(remoteNodeIds.stream().map(x -> RunnerRunVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND))).toList());
             }
           } else {
-            String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
-                new Object[]{getStringJoiner(remoteNodeIds).toString()});
+            String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
             log.error(message);
             results.add(RunnerRunVo.fail(execId, message));
           }
         } else {
-          String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T,
-              new Object[]{getStringJoiner(remoteNodeIds).toString()});
+          String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
           log.error(message);
           results.add(RunnerRunVo.fail(execId, message));
         }
@@ -679,6 +667,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       distributedLock.releaseLock(format(EXEC_LOCK_KEY_FMT, execId), execId);
     }
     return results;
+    // formatter:on
   }
 
   @Override
@@ -718,6 +707,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<RunnerStopVo> stop0(ExecInfo execDb, ExecStopDto dto) {
+    // formatter:off
     String execId = String.valueOf(execDb.getId());
     List<RunnerStopVo> results = new ArrayList<>();
 
@@ -733,8 +723,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // Select and check available nodes, Note:
     LinkedHashSet<Long> nodeIds = new LinkedHashSet<>();
     if (dto.isBroadcast()) {
-      Set<Long> execNodeIds = execNodeRepo.findByExecId(execDb.getId()).stream()
-          .map(ExecNode::getNodeId).collect(Collectors.toSet());
+      Set<Long> execNodeIds = execNodeRepo.findByExecId(execDb.getId()).stream().map(ExecNode::getNodeId).collect(Collectors.toSet());
       if (isNotEmpty(execNodeIds)) {
         nodeIds.addAll(execNodeIds);
       } else {
@@ -767,13 +756,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           results.add(result0);
           if (result0.isSuccess()) {
             if (!Objects.equals(nodeId, result0.getDeviceId())) {
-              log.error("The scheduling node `{}` and execution node `{}` are inconsistent",
-                  nodeId, result0.getDeviceId());
+              log.error("The scheduling node `{}` and execution node `{}` are inconsistent", nodeId, result0.getDeviceId());
             }
           }
         } catch (Exception e) {
-          String message = message(EXEC_CONTROLLER_STOP_EXCEPTION,
-              new Object[]{isLocalRouter, getMessage(e)});
+          String message = message(EXEC_CONTROLLER_STOP_EXCEPTION, new Object[]{isLocalRouter, getMessage(e)});
           log.error(message);
           results.add(RunnerStopVo.fail(execId, nodeId, message));
         }
@@ -807,8 +794,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               continue;
             }
             String remoteStartUrl = "http://" + inst.getInstanceId() + EXEC_STOP_ENDPOINT;
-            List<RunnerStopVo> remoteResults = broadcastStop2RemoteCtrl(remoteRunCmd,
-                remoteStartUrl);
+            List<RunnerStopVo> remoteResults = broadcastStop2RemoteCtrl(remoteRunCmd, remoteStartUrl);
             if (isNotEmpty(remoteResults)) {
               results.addAll(remoteResults);
               for (RunnerStopVo result0 : remoteResults) {
@@ -819,19 +805,15 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             }
           }
           if (isEmpty(successNodeIds)) {
-            results.addAll(remoteNodeIds.stream().map(x ->
-                    RunnerStopVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND)))
-                .toList());
+            results.addAll(remoteNodeIds.stream().map(x -> RunnerStopVo.fail(execId, x, message(EXEC_AGENT_ROUTER_NOT_FOUND))).toList());
           }
         } else {
-          String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
-              new Object[]{getStringJoiner(remoteNodeIds).toString()});
+          String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
           log.error(message);
           results.add(RunnerStopVo.fail(execId, message));
         }
       } else {
-        String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T,
-            new Object[]{getStringJoiner(remoteNodeIds).toString()});
+        String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{getStringJoiner(remoteNodeIds).toString()});
         log.error(message);
         results.add(RunnerStopVo.fail(execId, message));
       }
@@ -844,8 +826,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       if (allSuccess) {
         execRepo.updateStoppedStatusById(execDb.getId(), now(), getUserId());
       } else {
-        execRepo.updateStatusById(execDb.getId(), ExecStatus.RUNNING.getValue(),
-            getUserId(), now());
+        execRepo.updateStatusById(execDb.getId(), ExecStatus.RUNNING.getValue(), getUserId(), now());
       }
     }
 
@@ -853,6 +834,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       execNodeRepo.deleteByNodeIdIn(successNodeIds);
     }
     return results;
+    // formatter:on
   }
 
   @Override
