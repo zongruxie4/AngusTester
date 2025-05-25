@@ -345,7 +345,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
         // Check the sprint exists
         sprintDb = taskSprintQuery.checkAndFind(id);
 
-        // Check the if the movement position has changed
+        // Check if the movement position has changed
         ProtocolAssert.assertTrue(!sprintDb.getProjectId().equals(targetProjectId),
             "The moving position has not changed");
 

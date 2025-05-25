@@ -191,8 +191,12 @@ public class FuncCaseConverter {
   public static void assembleExampleFuncCase(Long projectId, Long id,
       FuncCase case0, FuncPlan plan, List<User> users) {
     Random random = new Random();
-    LocalDateTime createdDate = LocalDateTime.now().plusHours(random.nextInt(10 * 25));
-    LocalDateTime deadlineDate = createdDate.plusHours(random.nextInt(10 * 25));
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime createdDate = now.minusHours(random.nextInt(5 * 24));
+    LocalDateTime deadlineDate = now.plusHours(random.nextInt(10 * 24));
+    LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
+    finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
+    CaseTestResult result = nullSafe(case0.getTestResult(), CaseTestResult.PENDING);
     case0.setId(id).setProjectId(projectId)
         .setCode(getCaseCode()).setVersion(1) // In order to establish a baseline starting from 1
         .setPlanId(plan.getId())
@@ -202,12 +206,13 @@ public class FuncCaseConverter {
         .setTesterId(users.get(random.nextInt(users.size())).getId())
         .setDeveloperId(users.get(random.nextInt(users.size())).getId())
         .setDeadlineDate(deadlineDate)
+        .setTestResult(result)
+        .setTestResultHandleDate(result.isFinished() ? finishedDate : null)
         .setTenantId(getOptTenantId())
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
         .setCreatedDate(createdDate)
         .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(nullSafe(case0.getTestResult(), CaseTestResult.PENDING).isFinished()
-            ? deadlineDate : createdDate);
+        .setLastModifiedDate(result.isFinished() ? finishedDate : createdDate);
   }
 
   public static void assembleExampleFuncReview(Long projectId, Long id,

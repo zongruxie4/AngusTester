@@ -437,7 +437,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         apisInfoDb = apisQuery.checkAndFindBasicInfo(id);
 
         if (!name.equals(apisInfoDb.getName())) {
-          // Check the whether you have the permission to modify the apis
+          // Check if you have the permission to modify the apis
           apisAuthQuery.checkModifyAuth(getUserId(), id);
 
           // Check the released api are not allowed to be modified
@@ -514,7 +514,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         ProtocolAssert.assertTrue(serviceIds.size() == 1,
             "Only batch move apis with one service is allowed");
 
-        // Check the if the movement position has changed
+        // Check if the movement position has changed
         ProtocolAssert.assertTrue(!apisDb.get(0).getServiceId().equals(targetServiceId),
             "The moving position has not changed");
 

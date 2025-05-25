@@ -42,11 +42,14 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getDefaultLanguag
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getTenantId;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.DateUtils.DATE_TIME_FMT;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.duplicateByKey;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.remove;
 
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.api.commonlink.user.User;
@@ -103,7 +106,6 @@ import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
-import cloud.xcan.angus.spec.utils.StringUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.Resource;
 import java.io.IOException;
@@ -204,8 +206,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Check the plan exists
         Set<Long> planIds = cases.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());
-        assertTrue(planIds.size() == 1,
-            "Only batch adding cases with one plan is allowed");
+        assertTrue(planIds.size() == 1, "Only batch adding cases with one plan is allowed");
         planDb = funcPlanQuery.checkAndFind(planIds.iterator().next());
 
         // Check the module exists
@@ -488,7 +489,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             "Only batch move cases with one dir is allowed");
         //dirDb = funcDirQuery.checkAndFind(casesDb.get(0).getDirId());
 
-        // Check the if the movement position has changed
+        // Check if the movement position has changed
         ProtocolAssert.assertTrue(!casesDb.get(0).getPlanId().equals(targetPlanId),
             "The moving position has not changed");
 
@@ -1233,11 +1234,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         assertNotEmpty(rows, "Read excel content is empty");
 
         // Check the for empty header fields
-        List<String> titles = Stream.of(rows.get(0))
-            .map(x -> StringUtils.remove(stringSafe(x), "*")).collect(Collectors.toList());
+        List<String> titles = Stream.of(rows.get(0)).map(x -> remove(stringSafe(x), "*")).toList();
         assertTrue(titles.stream().noneMatch(ObjectUtils::isEmpty), "Title has empty value name");
 
-        // Check the if the required import columns exist
+        // Check if the required import columns exist
         String missingRequiredField = CASE_IMPORT_REQUIRED_COLUMNS.stream()
             .filter(x -> !titles.contains(x)).findFirst().orElse(null);
         assertTrue(isEmpty(missingRequiredField),
@@ -1268,13 +1268,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         int creatorIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(19));
         int createdDateIdx = titles.indexOf(CASE_IMPORT_COLUMNS.get(20));
 
-        // Check the if the required import column values exist
+        // Check if the required import column values exist
 
         // Check the for duplicate case names
         assertTrue(nameIdx != -1, "Case name is required");
-        List<String> names = data.stream().map(x -> x[nameIdx]).collect(Collectors.toList());
-        List<String> duplicateNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
-            .collect(Collectors.toList());
+        List<String> names = data.stream().map(x -> x[nameIdx]).toList();
+        List<String> duplicateNames = names.stream().filter(duplicateByKey(x -> x)).toList();
         assertTrue(isEmpty(duplicateNames),
             String.format("There are duplicates in the import case, duplicate case name: %s",
                 duplicateNames));
@@ -1282,11 +1281,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         assertTrue(!hasEmptyName, "The import case name cannot be empty");
 
         assertTrue(testerIdx != -1, "Case tester is required");
-        Set<String> testers = data.stream().map(x -> x[testerIdx])
-            .collect(Collectors.toSet());
+        Set<String> testers = data.stream().map(x -> x[testerIdx]).collect(Collectors.toSet());
         boolean hasEmptyTester = testers.stream().anyMatch(ObjectUtils::isEmpty);
         assertTrue(!hasEmptyTester, "The import tester cannot be empty");
-        // Check the if the tester exist
+        // Check if the tester exist
         Map<String, List<UserBase>> testerMap = userManager.checkValidAndFindUserBasesByName(
             testers);
 
@@ -1295,48 +1293,46 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             .collect(Collectors.toSet());
         boolean hasEmptyDeveloper = developers.stream().anyMatch(ObjectUtils::isEmpty);
         assertTrue(!hasEmptyDeveloper, "The import developer cannot be empty");
-        // Check the if the tester exist
+        // Check if the tester exist
         Map<String, List<UserBase>> developerMap = userManager.checkValidAndFindUserBasesByName(
             developers);
 
         assertTrue(deadlineIdx != -1, "Case deadline date is required");
-        List<String> deadlines = data.stream().map(x -> x[deadlineIdx])
-            .collect(Collectors.toList());
+        List<String> deadlines = data.stream().map(x -> x[deadlineIdx]).toList();
         boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
         assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
 
-        // Check the if the modules exist
+        // Check if the modules exist
         Set<String> modules = data.stream()
             .filter(x -> moduleIdx != -1 && isNotEmpty(x[moduleIdx]))
             .map(x -> x[moduleIdx]).collect(Collectors.toSet());
         Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(
             planDb.getProjectId(), modules);
-        // Check the if the creators exist
+        // Check if the creators exist
         Set<String> reviwers = data.stream()
             .filter(x -> reviwerIdx != -1 && isNotEmpty(x[reviwerIdx]))
             .map(x -> x[reviwerIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> reviwersMap = userManager.checkValidAndFindUserBasesByName(
             reviwers);
-        // Check the if the creators exist
+        // Check if the creators exist
         Set<String> creators = data.stream()
             .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
             .map(x -> x[creatorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
             creators);
-        // Check the if the associated tags exist
+        // Check if the associated tags exist
         Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
             .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
-        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(
-            planDb.getProjectId(), tags);
-        // Check the if the associated tasks exist
+        Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(planDb.getProjectId(), tags);
+        // Check if the associated tasks exist
         Set<String> taskNames = data.stream()
             .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
             .map(x -> List.of(x[tasksIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByProjectAndName(
             planDb.getProjectId(), taskNames);
-        // Check the if the associated cases exist
+        // Check if the associated cases exist
         Set<String> caseNames = data.stream()
             .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
             .map(x -> List.of(x[casesIdx].split("##"))).flatMap((Collection::stream))
@@ -1344,7 +1340,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         Map<String, List<FuncCaseInfo>> casesMap = funcCaseQuery.checkAndFindByPlanAndName(
             planId, caseNames);
 
-        // Check the if the associated testing targets exist
+        // Check if the associated testing targets exist
 
         // Format import fields and convert them into case domains
         List<FuncCase> cases = importToDomain(
@@ -1396,7 +1392,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // 1. Create test plan by sample file
         URL resourceUrl = this.getClass().getResource("/samples/plan/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_PLAN_FILE);
-        FuncPlan plan = parseSample(Objects.requireNonNull(resourceUrl),
+        FuncPlan plan = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncPlan>() {
             }, SAMPLE_FUNC_PLAN_FILE);
         assembleExampleFuncPlan(projectId, uidGenerator.getUID(), plan, users);
@@ -1405,7 +1401,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // 2. Create test case by sample file
         resourceUrl = this.getClass().getResource("/samples/cases/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_CASE_FILE);
-        List<FuncCase> cases = parseSample(Objects.requireNonNull(resourceUrl),
+        List<FuncCase> cases = parseSample(requireNonNull(resourceUrl),
             new TypeReference<List<FuncCase>>() {
             }, SAMPLE_FUNC_CASE_FILE);
         for (FuncCase case0 : cases) {
@@ -1416,9 +1412,9 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // 3. Create case review by sample file
         resourceUrl = this.getClass().getResource("/samples/review/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_REVIEW_FILE);
-        FuncReview review = parseSample(Objects.requireNonNull(resourceUrl),
+        FuncReview review = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncReview>() {
-            },  SAMPLE_FUNC_REVIEW_FILE);
+            }, SAMPLE_FUNC_REVIEW_FILE);
         assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
         funcReviewCmd.add(review);
         funcReviewCaseCmd.add(review.getId(), cases.stream()
@@ -1428,7 +1424,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // 4. Create case baseline by sample file
         resourceUrl = this.getClass().getResource("/samples/baseline/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_FUNC_BASELINE_FILE);
-        FuncBaseline baseline = parseSample(Objects.requireNonNull(resourceUrl),
+        FuncBaseline baseline = parseSample(requireNonNull(resourceUrl),
             new TypeReference<FuncBaseline>() {
             }, SAMPLE_FUNC_BASELINE_FILE);
         assembleExampleFuncBaseline(projectId, uidGenerator.getUID(), baseline, plan, cases, users);
@@ -1451,7 +1447,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         casesDb = funcCaseInfoRepo.findAll0ByIdIn(ids);
 
         if (isNotEmpty(casesDb)) {
-          // Check the whether you have the permission to modify the apis
+          // Check if you have the permission to modify the apis
           funcPlanAuthQuery.batchCheckPermission(casesDb.stream().map(FuncCaseInfo::getPlanId)
               .collect(Collectors.toSet()), FuncPlanPermission.DELETE_CASE);
         }
@@ -1505,7 +1501,6 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     Map<ReviewStatus, List<FuncCase>> reviewStatusMap = casesDb.stream()
         .collect(Collectors.groupingBy(FuncCase::getReviewStatus));
     for (ReviewStatus reviewStatus : reviewStatusMap.keySet()) {
-
       List<FuncCase> reviewCasesDb = reviewStatusMap.get(reviewStatus);
       List<Activity> activities = toActivities(FUNC_CASE, reviewCasesDb,
           ActivityType.REVIEW_UPDATE, reviewStatus);
@@ -1556,7 +1551,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   public static String getCaseCode() {
-    return getBean(BidGenerator.class).getId(FUNC_CASE_BID_KEY, getTenantId());
+    return requireNonNull(getBean(BidGenerator.class)).getId(FUNC_CASE_BID_KEY, getTenantId());
   }
 
   @Override

@@ -127,7 +127,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         // Check the only a maximum of MAX_PROJECT_OR_SERVICE_APIS_NUM apis can be added to a mock service
         mockApisQuery.checkServiceApisQuota(serviceDb, mockApis.size());
 
-        // Check the if the apis is associated with a mock apis
+        // Check if the apis is associated with a mock apis
         mockApisQuery.checkAssocApissExists(mockApis);
       }
 
@@ -377,7 +377,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         assertTrue(serviceIds.size() == 1,
             "Only batch move mock apis with one service is allowed");
 
-        // Check the if the movement position has changed
+        // Check if the movement position has changed
         assertTrue(!apisDb.get(0).getMockServiceId().equals(targetServiceId),
             "The moving position has not changed");
 
