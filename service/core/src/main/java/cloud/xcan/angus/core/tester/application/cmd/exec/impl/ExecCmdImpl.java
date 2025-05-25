@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.cmd.exec.impl;
 
-import static cloud.xcan.angus.api.commonlink.CtrlConstant.EXEC_MAX_FREE_NODES;
 import static cloud.xcan.angus.api.commonlink.TesterApisMessage.SCRIPT_NO_AUTH_CODE;
 import static cloud.xcan.angus.api.commonlink.TesterApisMessage.SCRIPT_NO_AUTH_T;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
@@ -537,11 +536,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           if (nonNull(execDb.getTrial()) && execDb.getTrial()) {
             if (isUserAction()) {
               // Query idle shared nodes during trial execution
-              nodeIds.addAll(selectFreeNode(execDb));
+              nodeIds.addAll(selectFreeNode(execDb.getAvailableNodeIds()));
             } else {
               try {
                 // Query idle shared nodes during trial execution
-                nodeIds.addAll(selectFreeNode(execDb));
+                nodeIds.addAll(selectFreeNode(execDb.getAvailableNodeIds()));
               } catch (Exception e) {
                 // Ignore NO_AVAILABLE_NODES message
                 // If there are no public trial nodes, use the tenant's own nodes
@@ -1103,7 +1102,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }
   }
 
-  private List<Long> selectFreeNode(Exec execDb) {
+  private List<Long> selectFreeNode(Set<Long> availableNodeIds) {
     boolean isMultiTenantCtrl = isMultiTenantCtrl();
     long realTenantId = getOptTenantId();
     if (isMultiTenantCtrl) {
@@ -1111,8 +1110,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
     }
 
-    List<NodeInfo> selectNodes = nodeInfoQuery.selectWithFree(execDb.getId(),
-        1, execDb.getAvailableNodeIds());
+    List<NodeInfo> selectNodes = nodeInfoQuery.selectWithFree(1, availableNodeIds);
     assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
@@ -1132,10 +1130,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
   private List<Long> selectNodeByStrategy(Exec execDb) {
     NodeSelector nodeSelector = execDb.getConfiguration().getNodeSelectors();
-    List<NodeInfo> selectNodes = nodeInfoQuery.selectByStrategy(execDb.getId(),
+    List<NodeInfo> selectNodes = nodeInfoQuery.selectByStrategy(
         isNull(nodeSelector) || isNull(nodeSelector.getNum())
             ? 1 : nodeSelector.getNum(), execDb.getAvailableNodeIds(), execDb.getExecNodeIds(),
-        isNull(nodeSelector) ? null : nodeSelector.getStrategy());
+        isNull(nodeSelector) ? null : nodeSelector.getStrategy(), false);
     assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)

@@ -383,7 +383,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   }
 
   @Override
-  public NodeInfo findTenantNode(Long tenantId, String ip){
+  public NodeInfo findTenantNode(Long tenantId, String ip) {
     return nodeInfoRepo.findByTenantIdAndIp(tenantId, ip);
   }
 
@@ -391,7 +391,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * Note: Free experience execution does not support node selection strategy.
    */
   @Override
-  public List<NodeInfo> selectWithFree(Long execId, Integer num, Set<Long> availableNodeIds) {
+  public List<NodeInfo> selectWithFree(Integer num, Set<Long> availableNodeIds) {
     int nodeNum = nullSafe(num, 1);
     List<Node> nodes = nodeQuery.getNodes(availableNodeIds, EXECUTION, true,
         QUERY_MAX_FREE_EXEC_NODES, OWNER_TENANT_ID /*Fix: getOptTenantId()*/);
@@ -424,8 +424,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * 3. BizException will terminate and continue scheduling.
    */
   @Override
-  public List<NodeInfo> selectByStrategy(Long execId, Integer num, Set<Long> availableNodeIds,
-      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy) {
+  public List<NodeInfo> selectByStrategy(Integer num, Set<Long> availableNodeIds,
+      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy, boolean allowTrialNode) {
     Long tenantId = getOptTenantId();
     int nodeNum = nullSafe(num, 1);
 
@@ -433,15 +433,17 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
         message(EXEC_NODES_LESS_AVAILABLE_T, new Object[]{nodeNum}));
 
     List<NodeInfo> nodes;
-    boolean selectLastedNodes = nonNull(execId) && nonNull(strategy) && strategy.getEnabled()
+    boolean selectLastedNodes = nonNull(strategy) && strategy.getEnabled()
         && nonNull(strategy.getLastExecuted()) && strategy.getLastExecuted();
     if (selectLastedNodes && isNotEmpty(lastExecNodeIds)) {
-      assertTrue(lastExecNodeIds.size() >= nodeNum,
-          message(EXEC_LAST_NODES_IS_INSUFFICIENT));
+      assertTrue(lastExecNodeIds.size() >= nodeNum, message(EXEC_LAST_NODES_IS_INSUFFICIENT));
       nodes = nodeInfoRepo.findAllById(lastExecNodeIds);
     } else {
       nodes = isNotEmpty(availableNodeIds) ? checkAndFind(availableNodeIds)
           : nodeInfoRepo.findAllByTenantId(tenantId);
+      if (isEmpty(nodes) && allowTrialNode){
+        nodes = selectWithFree(nodeNum, availableNodeIds);
+      }
     }
     assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
 

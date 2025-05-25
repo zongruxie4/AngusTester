@@ -170,8 +170,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           Long nodeId;
           if (broadcast) {
             // Election testing node
-            nodeId = selectNodeByStrategy(
-                angusScript.getConfiguration().getNodeSelectors()).getId();
+            NodeSelector nodeSelector = angusScript.getConfiguration().getNodeSelectors();
+            nodeId = selectNodeByStrategy(nodeSelector, 1).getId();
           } else {
             nodeId = debugDb.getExecNodeId();
           }
@@ -461,14 +461,14 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }
   }
 
-  private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector) {
+  private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector, int nodeNum) {
     NodeInfo nodeInfo;
     if (nonNull(nodeSelector)) {
-      nodeInfo = nodeInfoQuery.selectByStrategy(null, 1,
-          nodeSelector.getAvailableNodeIds(), null, nodeSelector.getStrategy()).get(0);
+      nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, nodeSelector.getAvailableNodeIds(),
+          null, nodeSelector.getStrategy(), true).get(0);
     } else {
-      nodeInfo = nodeInfoQuery.selectByStrategy(null, 1, null,
-          null, null).get(0);
+      nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, null,
+          null, null, true).get(0);
     }
     return nodeInfo;
   }
