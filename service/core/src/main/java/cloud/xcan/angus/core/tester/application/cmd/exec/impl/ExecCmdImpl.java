@@ -1112,7 +1112,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }
 
     List<NodeInfo> selectNodes = nodeInfoQuery.selectWithFree(execDb.getId(),
-        EXEC_MAX_FREE_NODES, execDb.getAvailableNodeIds());
+        1, execDb.getAvailableNodeIds());
     assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
