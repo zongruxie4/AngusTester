@@ -393,7 +393,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   }
 
   @Override
-  public List<Long> selectFreeNodeIds(int nodeNum, Set<Long> availableNodeIds) {
+  public List<Long> selectValidFreeNodeIds(int nodeNum, Set<Long> availableNodeIds) {
     boolean isMultiTenantCtrl = isMultiTenantCtrl();
     long realTenantId = getOptTenantId();
     if (isMultiTenantCtrl) {
@@ -420,7 +420,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   }
 
   @Override
-  public List<NodeInfo> selectFreeNode(int nodeNum, Set<Long> availableNodeIds) {
+  public List<NodeInfo> selectValidFreeNode(int nodeNum, Set<Long> availableNodeIds) {
     boolean isMultiTenantCtrl = isMultiTenantCtrl();
     long realTenantId = getOptTenantId();
     if (isMultiTenantCtrl) {
@@ -501,9 +501,12 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       nodes = isNotEmpty(availableNodeIds) ? checkAndFind(availableNodeIds)
           : nodeInfoRepo.findAllByTenantId(tenantId);
       if (isEmpty(nodes) && allowTrialNode){
-        nodes = selectFreeNode(nodeNum, availableNodeIds);
+        nodes = selectValidFreeNode(nodeNum, availableNodeIds);
+        assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
+        return nodes;
       }
     }
+
     assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
 
     Set<Long> nodeIds = nodes.stream().map(NodeInfo::getId).collect(Collectors.toSet());

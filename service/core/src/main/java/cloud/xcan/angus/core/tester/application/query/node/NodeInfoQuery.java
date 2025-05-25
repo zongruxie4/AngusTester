@@ -48,9 +48,9 @@ public interface NodeInfoQuery {
 
   NodeInfo findTenantNode(Long tenantId, String ip);
 
-  List<Long> selectFreeNodeIds(int nodeNum, Set<Long> availableNodeIds);
+  List<Long> selectValidFreeNodeIds(int nodeNum, Set<Long> availableNodeIds);
 
-  List<NodeInfo> selectFreeNode(int nodeNum, Set<Long> availableNodeIds);
+  List<NodeInfo> selectValidFreeNode(int nodeNum, Set<Long> availableNodeIds);
 
   List<NodeInfo> selectWithFree0(Integer nodeNum, Set<Long> availableNodeIds);
 

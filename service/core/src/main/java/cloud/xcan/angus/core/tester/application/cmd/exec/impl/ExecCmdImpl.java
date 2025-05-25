@@ -534,11 +534,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           if (nonNull(execDb.getTrial()) && execDb.getTrial()) {
             if (isUserAction()) {
               // Query idle shared nodes during trial execution
-              nodeIds.addAll(nodeInfoQuery.selectFreeNodeIds(1, execDb.getAvailableNodeIds()));
+              nodeIds.addAll(nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
             } else {
               try {
                 // Query idle shared nodes during trial execution
-                nodeIds.addAll(nodeInfoQuery.selectFreeNodeIds(1, execDb.getAvailableNodeIds()));
+                nodeIds.addAll(nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
               } catch (Exception e) {
                 // Ignore NO_AVAILABLE_NODES message
                 // If there are no public trial nodes, use the tenant's own nodes
