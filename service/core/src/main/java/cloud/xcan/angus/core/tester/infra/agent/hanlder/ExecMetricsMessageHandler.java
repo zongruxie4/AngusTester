@@ -142,6 +142,11 @@ public class ExecMetricsMessageHandler implements CustomMessageHandler {
       Long actualTenantId = getExecRepo().findActualTenantIdByIdAndTrial(execId);
       if (nonNull(actualTenantId)) {
         tenantId = actualTenantId;
+      } else {
+        actualTenantId = getExecDebugRepo().findActualTenantIdByIdAndTrial(execId);
+        if (nonNull(actualTenantId)) {
+          tenantId = actualTenantId;
+        }
       }
     }
     return tenantId;

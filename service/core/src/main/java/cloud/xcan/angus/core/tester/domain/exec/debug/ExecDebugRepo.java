@@ -22,6 +22,9 @@ public interface ExecDebugRepo extends BaseRepository<ExecDebug, Long> {
 
   ExecDebug findBySourceAndMonitorId(ExecDebugSource source, Long monitorId);
 
+  @Query(value = "SELECT tenant_id FROM exec_debug WHERE id = ?1 ", nativeQuery = true)
+  Long findActualTenantIdByIdAndTrial(Long id);
+
   @Query(value = "SELECT id FROM exec_debug WHERE script_id = ?2 AND source = ?1", nativeQuery = true)
   List<Long> findIdBySourceAndScriptId(String source, Long scriptId);
 

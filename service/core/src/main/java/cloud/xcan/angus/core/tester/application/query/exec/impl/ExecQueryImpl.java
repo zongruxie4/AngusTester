@@ -144,11 +144,6 @@ public class ExecQueryImpl implements ExecQuery {
       protected Exec process() {
         Exec exec = checkAndFind(id);
 
-        if (isCloudServiceEdition() || isDatacenterEdition()) {
-          // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
-          PrincipalContext.get().setMultiTenantCtrl(false);
-        }
-
         setParsedScriptContent(exec);
 
         setExecNodeInfo(exec);
@@ -273,10 +268,6 @@ public class ExecQueryImpl implements ExecQuery {
         Page<ExecInfo> page = execInfoListRepo.find(spec.getCriteria(), pageable,
             ExecInfo.class, null);
         if (page.hasContent()) {
-          if (isCloudServiceEdition() || isDatacenterEdition()) {
-            // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
-            PrincipalContext.get().setMultiTenantCtrl(false);
-          }
           setExecInfoScriptName(page.getContent());
           setExecInfoCurrentOperationPermission(page.getContent());
           execSampleQuery.setExecInfoLatestTotalMergeSample(page.getContent());
@@ -632,11 +623,6 @@ public class ExecQueryImpl implements ExecQuery {
   public void setSampleSummary(List<ExecInfo> execs, Boolean joinSampleSummary) {
     if (isEmpty(execs)) {
       return;
-    }
-
-    if (isCloudServiceEdition() || isDatacenterEdition()) {
-      // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
-      PrincipalContext.get().setMultiTenantCtrl(false);
     }
 
     // setExecInfoScriptName(execs);

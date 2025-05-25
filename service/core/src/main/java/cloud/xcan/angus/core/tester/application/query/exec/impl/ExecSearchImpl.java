@@ -50,10 +50,6 @@ public class ExecSearchImpl implements ExecSearch {
       protected Page<ExecInfo> process() {
         Page<ExecInfo> page = execSearchRepo.find(criteria, pageable, clz, matches);
         if (page.hasContent()) {
-          if (isCloudServiceEdition() || isDatacenterEdition()) {
-            // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
-            PrincipalContext.get().setMultiTenantCtrl(false);
-          }
           execQuery.setExecInfoScriptName(page.getContent());
           execQuery.setExecInfoCurrentOperationPermission(page.getContent());
           execSampleQuery.setExecInfoLatestTotalMergeSample(page.getContent());
