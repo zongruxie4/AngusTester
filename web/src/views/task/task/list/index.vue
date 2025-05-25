@@ -89,7 +89,7 @@ const prevParams = ref<{[key:string]:any}>();
 
 const getParams = () => {
   const params: {
-    backlogFlag?: boolean,
+    backlog?: boolean,
     projectId: string;
     pageNo: number;
     pageSize: number;
@@ -97,7 +97,7 @@ const getParams = () => {
     orderBy?: string;
     orderSort?: 'DESC' | 'ASC';
   } = {
-    backlogFlag: proTypeShowMap.value.showBackLog ? false : undefined,
+    backlog: proTypeShowMap.value.showBackLog ? false : undefined,
     projectId: props.projectId,
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize
@@ -668,7 +668,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 const statisticsParams = computed(() => {
   const param = { };
   if (proTypeShowMap.value.showBackLog) {
-    param.backlogFlag = false;
+    param.backlog = false;
   }
   if (filters.value.length) {
     param.filters = filters.value;

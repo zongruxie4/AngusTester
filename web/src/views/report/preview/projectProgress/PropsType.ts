@@ -518,7 +518,7 @@ export type ReportContent = {
                 actualWorkload: string;
                 assigneeId: string;
                 assigneeName: string;
-                backlogFlag: boolean;
+                backlog: boolean;
                 canceledDate: string;
                 code: string;
                 completedDate: string;

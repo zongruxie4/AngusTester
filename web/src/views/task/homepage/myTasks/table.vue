@@ -77,7 +77,7 @@ const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy
 const getParams = () => {
   const { current, pageSize } = pagination.value;
   const params: {
-    backlogFlag: false;
+    backlog: false;
     projectId: string;
     pageNo: number;
     pageSize: number;
@@ -91,7 +91,7 @@ const getParams = () => {
     orderSort?: string;
     commentBy?: string;
   } = {
-    backlogFlag: false,
+    backlog: false,
     projectId: props.projectId,
     pageNo: current,
     pageSize

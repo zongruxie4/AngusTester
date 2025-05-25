@@ -16,7 +16,7 @@ export type ReportContent = {
             testerId: string;
             testerName: string;
             precondition: string;
-            backlogFlag: false;
+            backlog: false;
             priority: {
                 value: 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM';
                 message: string

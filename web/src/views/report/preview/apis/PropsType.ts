@@ -13,7 +13,7 @@ export type ReportContent = {
             sprintName: string;
             moduleId: string;
             moduleName: string;
-            backlogFlag: boolean;
+            backlog: boolean;
             priority: {
                 value: 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM';
                 message: string

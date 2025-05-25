@@ -665,7 +665,7 @@ const getTaskParams = () => {
     pageSize: number;
     sprintId?: string;
     pageNo?: number;
-    backlogFlag?: boolean;
+    backlog?: boolean;
     orderBy?: string;
     orderSort?: 'ASC'|'DESC'
   } = {
@@ -853,7 +853,7 @@ const sortBacklogByPriority = () => {
 const loadBacklogList = async (pageNo: number) => {
   const params = getTaskParams();
   params.pageNo = pageNo;
-  params.backlogFlag = true;
+  params.backlog = true;
   Object.assign(params, backlogSort.value || {});
   loading.value = true;
   const [error, res] = await task.loadTaskList(params);

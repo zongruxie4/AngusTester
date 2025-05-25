@@ -18,14 +18,14 @@ export type UserInfo = {
       message: string;
     };
     address: string;
-    sysAdminFlag: boolean;
-    deptHeadFlag: boolean;
+    sysAdmin: boolean;
+    deptHead: boolean;
     enabled: boolean;
     source: {
       value: string;
       message: string;
     };
-    lockedFlag: boolean;
+    locked: boolean;
     tenantId: string;
     tenantName: string;
     createdBy: string;
@@ -36,12 +36,12 @@ export type UserInfo = {
       value: string;
       message: string;
     };
-    passwordExpiredFlag: boolean;
+    passwordExpired: boolean;
     tenantRealNameStatus: {
       value: string;
       message: string;
     };
-    onlineFlag: boolean;
+    online: boolean;
     onlineDate: string;
     preference: {
       themeCode: string;
