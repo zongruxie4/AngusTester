@@ -29,7 +29,7 @@ import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_SPEC_INFO
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_EXEC_ROLE_NODES;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_NODES;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isMultiTenantCtrl;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDatacenterEdition;
 import static cloud.xcan.angus.spec.experimental.BizConstant.AuthKey.BEARER;
 import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
@@ -51,10 +51,10 @@ import cloud.xcan.angus.agent.message.CheckStatusDto;
 import cloud.xcan.angus.agent.message.runner.RunnerKillDto;
 import cloud.xcan.angus.agent.message.runner.RunnerQueryVo;
 import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.multitenancy.TenantAwareProcessor;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
@@ -104,7 +104,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.data.domain.Page;
@@ -394,56 +393,36 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
 
   @Override
   public List<Long> selectValidFreeNodeIds(int nodeNum, Set<Long> availableNodeIds) {
-    boolean isMultiTenantCtrl = isMultiTenantCtrl();
-    long realTenantId = getOptTenantId();
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(false);
-      PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
-    }
+    return new TenantAwareProcessor().call(() -> {
+      List<NodeInfo> selectNodes = selectWithFree0(nodeNum, availableNodeIds);
+      ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
-    List<NodeInfo> selectNodes = selectWithFree0(nodeNum, availableNodeIds);
-    ProtocolAssert.assertTrue(ObjectUtils.isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
-
-    List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-        .collect(Collectors.toList());
-    Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
-    for (NodeInfo selectNode : selectNodes) {
-      BizAssert.assertTrue(liveNodeIds.contains(selectNode.getId()),
-          message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
-    }
-
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(true);
-      PrincipalContext.get().setOptTenantId(realTenantId);
-    }
-    return selectNodeIds;
+      List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
+          .collect(Collectors.toList());
+      Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
+      for (NodeInfo selectNode : selectNodes) {
+        assertTrue(liveNodeIds.contains(selectNode.getId()),
+            message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
+      }
+      return selectNodeIds;
+    }, getOptTenantId());
   }
 
   @Override
   public List<NodeInfo> selectValidFreeNode(int nodeNum, Set<Long> availableNodeIds) {
-    boolean isMultiTenantCtrl = isMultiTenantCtrl();
-    long realTenantId = getOptTenantId();
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(false);
-      PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
-    }
+    return new TenantAwareProcessor().call(() -> {
+      List<NodeInfo> selectNodes = selectWithFree0(1, availableNodeIds);
+      ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
-    List<NodeInfo> selectNodes = selectWithFree0(1, availableNodeIds);
-    ProtocolAssert.assertTrue(ObjectUtils.isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
-
-    List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-        .collect(Collectors.toList());
-    Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
-    for (NodeInfo selectNode : selectNodes) {
-      BizAssert.assertTrue(liveNodeIds.contains(selectNode.getId()),
-          message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
-    }
-
-    if (isMultiTenantCtrl) {
-      PrincipalContext.get().setMultiTenantCtrl(true);
-      PrincipalContext.get().setOptTenantId(realTenantId);
-    }
-    return selectNodes;
+      List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
+          .collect(Collectors.toList());
+      Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
+      for (NodeInfo selectNode : selectNodes) {
+        assertTrue(liveNodeIds.contains(selectNode.getId()),
+            message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
+      }
+      return selectNodes;
+    }, getOptTenantId());
   }
 
   /**
@@ -500,7 +479,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
     } else {
       nodes = isNotEmpty(availableNodeIds) ? checkAndFind(availableNodeIds)
           : nodeInfoRepo.findAllByTenantId(tenantId);
-      if (isEmpty(nodes) && allowTrialNode){
+      if (isEmpty(nodes) && allowTrialNode) {
         nodes = selectValidFreeNode(nodeNum, availableNodeIds);
         assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
         return nodes;
@@ -623,8 +602,10 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    */
   @Override
   public Map<String, List<Node>> getValidCtrlIpNodeVoMap() {
-    List<Node> nodes = nodeQuery.getNodes(null, CONTROLLER, true, QUERY_MAX_EXEC_NODES, null);
-    return isEmpty(nodes) ? null : nodes.stream().collect(groupingBy(Node::getIp));
+    return new TenantAwareProcessor().call(() -> {
+      List<Node> nodes = nodeQuery.getNodes(null, CONTROLLER, true, QUERY_MAX_EXEC_NODES, null);
+      return isEmpty(nodes) ? null : nodes.stream().collect(groupingBy(Node::getIp));
+    }, isDatacenterEdition() /*It could be multi tenancy*/ ? null : getOptTenantId());
   }
 
   @Override
