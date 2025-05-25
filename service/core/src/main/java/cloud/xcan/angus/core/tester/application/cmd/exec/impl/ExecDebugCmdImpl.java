@@ -274,7 +274,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           execDebugRepo.save(debugDb);
 
           if (broadcast) {
-            // Forcefully disable multi tenant control and allow querying trial nodes for testing
+            // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
             PrincipalContext.get().setMultiTenantCtrl(false);
             execDebugQuery.setDebugResult(debugDb);
             setExecNodeInfo(nodeId, debugDb);

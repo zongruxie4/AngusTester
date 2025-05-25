@@ -145,7 +145,7 @@ public class ExecQueryImpl implements ExecQuery {
         Exec exec = checkAndFind(id);
 
         if (isCloudServiceEdition() || isDatacenterEdition()) {
-          // Forcefully disable multi tenant control and allow querying trial nodes for testing
+          // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
           PrincipalContext.get().setMultiTenantCtrl(false);
         }
 
@@ -274,7 +274,7 @@ public class ExecQueryImpl implements ExecQuery {
             ExecInfo.class, null);
         if (page.hasContent()) {
           if (isCloudServiceEdition() || isDatacenterEdition()) {
-            // Forcefully disable multi tenant control and allow querying trial nodes for testing
+            // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
             PrincipalContext.get().setMultiTenantCtrl(false);
           }
           setExecInfoScriptName(page.getContent());
@@ -635,7 +635,7 @@ public class ExecQueryImpl implements ExecQuery {
     }
 
     if (isCloudServiceEdition() || isDatacenterEdition()) {
-      // Forcefully disable multi tenant control and allow querying trial nodes for testing
+      // Forcefully disable multi tenant control and allow querying trial node and sampling for testing
       PrincipalContext.get().setMultiTenantCtrl(false);
     }
 
