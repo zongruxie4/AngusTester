@@ -98,7 +98,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author XiaoLong Liu
- */public class TaskConverter {
+ */
+public class TaskConverter {
 
   public static void assembleAddTaskInfo(Task task, @Nullable TaskSprint sprintDb,
       boolean isAgile) {

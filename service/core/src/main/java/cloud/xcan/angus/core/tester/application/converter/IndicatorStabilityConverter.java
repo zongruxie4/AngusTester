@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 
 /**
  * @author XiaoLong Liu
- */public class IndicatorStabilityConverter {
+ */
+public class IndicatorStabilityConverter {
 
   public static IndicatorStability toIndicatorStability(Stability default0, Long targetId,
       CombinedTargetType targetType) {

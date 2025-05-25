@@ -37,7 +37,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author XiaoLong Liu
- */public class MockApisConverter {
+ */
+public class MockApisConverter {
 
   public static MockApis toAssocOrCopeMockApis(Apis apisDb, Long mockServiceId,
       MockApisSource apisSource) {

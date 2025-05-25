@@ -6,7 +6,8 @@ import java.util.List;
 
 /**
  * @author XiaoLong Liu
- */public interface ApisUnarchivedCmd {
+ */
+public interface ApisUnarchivedCmd {
 
   List<IdKey<Long, Object>> add(List<ApisUnarchived> apis);
 

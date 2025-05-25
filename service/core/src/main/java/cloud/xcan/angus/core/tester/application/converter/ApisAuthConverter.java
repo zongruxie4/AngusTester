@@ -16,7 +16,8 @@ import java.util.Set;
 
 /**
  * @author XiaoLong Liu
- */public class ApisAuthConverter {
+ */
+public class ApisAuthConverter {
 
   public static List<ApisAuth> toApisCreatorAuth(Apis apis, Set<Long> userIds) {
     List<ApisAuth> apisAuths = new ArrayList<>();

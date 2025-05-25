@@ -60,7 +60,8 @@ import java.util.stream.Collectors;
 
 /**
  * @author XiaoLong Liu
- */public class ApisConverter {
+ */
+public class ApisConverter {
 
   public static Apis toCloneApis(Apis apisDb, Services serviceDb) {
     return new Apis().setProjectId(apisDb.getProjectId())

@@ -11,7 +11,8 @@ import java.util.Set;
 
 /**
  * @author XiaoLong Liu
- */public class TaskRemarkAssembler {
+ */
+public class TaskRemarkAssembler {
 
   public static TaskRemark toTaskRemark(TaskRemarkAddDto dto) {
     return new TaskRemark().setTaskId(dto.getTaskId())

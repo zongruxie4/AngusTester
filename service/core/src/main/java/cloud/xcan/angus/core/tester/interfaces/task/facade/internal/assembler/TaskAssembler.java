@@ -55,7 +55,8 @@ import org.springframework.core.io.InputStreamResource;
 
 /**
  * @author XiaoLong Liu
- */public class TaskAssembler {
+ */
+public class TaskAssembler {
 
   public static Task toAddTask(TaskAddDto dto) {
     CachedUidGenerator uidGenerator = getBean(CachedUidGenerator.class);

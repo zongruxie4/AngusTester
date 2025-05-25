@@ -12,7 +12,8 @@ import javax.annotation.Nullable;
 
 /**
  * @author XiaoLong Liu
- */public interface ScenarioTestFacade {
+ */
+public interface ScenarioTestFacade {
 
   void testEnabled(Long scenarioId, Set<TestType> testTypes, Boolean enabled);
 

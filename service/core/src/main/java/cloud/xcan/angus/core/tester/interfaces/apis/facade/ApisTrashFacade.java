@@ -6,7 +6,8 @@ import cloud.xcan.angus.remote.PageResult;
 
 /**
  * @author XiaoLong Liu
- */public interface ApisTrashFacade {
+ */
+public interface ApisTrashFacade {
 
   void clear(Long id);
 
