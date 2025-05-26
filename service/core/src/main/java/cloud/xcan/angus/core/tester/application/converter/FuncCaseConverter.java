@@ -176,7 +176,7 @@ public class FuncCaseConverter {
         .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
         .setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId)
-        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
+        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
         .setLastModifiedBy(currentUserId)
         .setLastModifiedDate(LocalDateTime.now());
   }
