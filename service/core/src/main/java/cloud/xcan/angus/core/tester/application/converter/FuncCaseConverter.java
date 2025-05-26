@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.core.tester.application.cmd.func.impl.FuncCaseCmdImpl.getCaseCode;
 import static cloud.xcan.angus.core.tester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
@@ -171,10 +173,12 @@ public class FuncCaseConverter {
         .setOwnerId(currentUserId)
         .setTesterResponsibilities(getTesterResponsibilities(plan, users))
         .setDeleted(false)
-        .setDeadlineDate(LocalDateTime.now().plusDays(30))
+        .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
         .setTenantId(getOptTenantId())
-        .setCreatedBy(currentUserId).setCreatedDate(LocalDateTime.now())
-        .setLastModifiedBy(currentUserId).setLastModifiedDate(LocalDateTime.now());
+        .setCreatedBy(currentUserId)
+        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
+        .setLastModifiedBy(currentUserId)
+        .setLastModifiedDate(LocalDateTime.now());
   }
 
   private static LinkedHashMap<Long, String> getTesterResponsibilities(FuncPlan plan,
@@ -192,8 +196,8 @@ public class FuncCaseConverter {
       FuncCase case0, FuncPlan plan, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime createdDate = now.minusHours(random.nextInt(5 * 24));
-    LocalDateTime deadlineDate = now.plusHours(random.nextInt(10 * 24));
+    LocalDateTime createdDate = now.minusHours(random.nextInt(SAMPLE_BEFORE_HOURS));
+    LocalDateTime deadlineDate = now.plusHours(random.nextInt(SAMPLE_AFTER_HOURS));
     LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     CaseTestResult result = nullSafe(case0.getTestResult(), CaseTestResult.PENDING);

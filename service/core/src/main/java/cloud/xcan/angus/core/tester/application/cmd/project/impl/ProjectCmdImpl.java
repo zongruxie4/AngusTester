@@ -1,6 +1,8 @@
 package cloud.xcan.angus.core.tester.application.cmd.project.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.PROJECT;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_PROJECT_FILE;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ProjectConverter.getSafeExampleDataTypes;
@@ -300,7 +302,9 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     // Create example project
     project.setId(uidGenerator.getUID()).setType(type)
         .setName(isNotEmpty(name) ? name : project.getName())
-        .setOwnerId(getUserId());
+        .setOwnerId(getUserId())
+        .setStartDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
+        .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS));
     IdKey<Long, Object> idKey = insert(project);
 
     // Create project members

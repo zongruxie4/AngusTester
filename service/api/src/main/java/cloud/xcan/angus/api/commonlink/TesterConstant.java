@@ -98,6 +98,9 @@ public interface TesterConstant {
 
   double DEFAULT_DAILY_WORKLOAD = 8d;
 
+  int SAMPLE_BEFORE_HOURS = 15 * 24;
+  int SAMPLE_AFTER_HOURS = 30 * 24;
+
   String IMPORT_OPENAPI_DIR = "importApis" + File.separator + "openapi" + File.separator;
   String IMPORT_POSTMAN_DIR = "importApis" + File.separator + "postman" + File.separator;
   String EXPORT_OPENAPI_DIR = "exportApis" + File.separator;

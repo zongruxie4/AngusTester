@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
+import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.core.tester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;
@@ -191,9 +193,9 @@ public class TaskConverter {
         .setOwnerId(currentUserId)
         .setTenantId(projectDb.getTenantId())
         .setDeleted(false)
-        .setDeadlineDate(LocalDateTime.now().plusDays(30))
+        .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
         .setCreatedBy(currentUserId)
-        .setCreatedDate(LocalDateTime.now())
+        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
         .setLastModifiedBy(currentUserId)
         .setLastModifiedDate(LocalDateTime.now());
   }
@@ -202,8 +204,8 @@ public class TaskConverter {
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime createdDate = now.minusHours(random.nextInt(5 * 24));
-    LocalDateTime deadlineDate = now.plusHours(random.nextInt(10 * 24));
+    LocalDateTime createdDate = now.minusHours(random.nextInt(SAMPLE_BEFORE_HOURS));
+    LocalDateTime deadlineDate = now.plusHours(random.nextInt(SAMPLE_AFTER_HOURS));
     LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
