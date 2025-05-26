@@ -2,13 +2,10 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { clipboard } from '@xcan-angus/tools';
 import { apis } from '@/api/tester';
 
 import { DesignInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/design/list/searchPanel/index.vue';
-
-const { toClipboard } = clipboard;
 
 type Props = {
   projectId: string;
@@ -226,6 +223,10 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'status',
+    width: 100,
+    customRender: ({text}) => {
+      return text?.value;
+    }
   },
   {
     title: '来源',

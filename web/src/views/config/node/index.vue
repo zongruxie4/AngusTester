@@ -121,7 +121,7 @@ const loadEnums = async () => {
   if (error) {
     return;
   }
-  roleOptions.value = data?.map(i => ({ ...i, label: i.message, disabled: disabledRoles.includes(i.value) }));
+  roleOptions.value = (data || []).map(i => ({ ...i, label: i.message, disabled: disabledRoles.includes(i.value) }));
 };
 
 const changeForm = (val) => {
