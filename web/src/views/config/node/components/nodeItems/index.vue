@@ -3,8 +3,7 @@ import { Button, CheckboxGroup, Popover, Progress, TabPane, Tabs, Tag } from 'an
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { Grid, Hints, Icon, Input, modal, notification, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-// import { app } from '@xcan-angus/tools';
-import { site } from '@xcan-angus/tools';
+import { site, clipboard } from '@xcan-angus/tools';
 
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
@@ -508,6 +507,18 @@ onMounted(async () => {
   isPrivate.value = await site.isPrivate();
 });
 
+const showInstallCtrlAccessTokenMap = ref<{[key: string]: boolean}>({});
+const toggleShowCtrlAccessToken = (id) => {
+  showInstallCtrlAccessTokenMap.value[id] = !showInstallCtrlAccessTokenMap.value[id];
+}
+
+
+const copyContent = (text) => {
+  clipboard.toClipboard(text).then(() => {
+    notification.success('已复制到剪贴板');
+  });
+}
+
 onBeforeUnmount(() => {
   timer && clearInterval(timer);
 });
@@ -837,27 +848,47 @@ defineExpose({ add, startInterval });
                 安装方式2：
                 <p class="install-step whitespace-pre-line">
                   1).下载自动安装脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                  2).将{{ state.linuxOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：{{ state.linuxOfflineInstallSteps?.runInstallCmd }}
+                  2).将{{ state.linuxOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br />
+                  {{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                 </p>
               </div>
             </TabPane>
-            <TabPane key="windows" tab="Windows系统自动安装步骤">
-              <div class="text-3">
-                安装方式1：
-                <p class="install-step whitespace-pre-line">
-                  {{ state.windowsOfflineInstallSteps?.onlineInstallCmd }}
-                </p>
-                安装方式2：
-                <p class="install-step whitespace-pre-line">
-                  1).下载自动安装脚本：<a class="cursor-pointer" :href="state.windowsOfflineInstallSteps?.installScriptUrl">{{ state.windowsOfflineInstallSteps?.installScriptName }}</a> <br />
-                  2).将{{ state.windowsOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：{{ state.windowsOfflineInstallSteps?.runInstallCmd }}
-                </p>
-              </div>
-            </TabPane>
+<!--            <TabPane key="windows" tab="Windows系统自动安装步骤">-->
+<!--              <div class="text-3">-->
+<!--                安装方式1：-->
+<!--                <p class="install-step whitespace-pre-line">-->
+<!--                  {{ state.windowsOfflineInstallSteps?.onlineInstallCmd }}-->
+<!--                </p>-->
+<!--                安装方式2：-->
+<!--                <p class="install-step whitespace-pre-line">-->
+<!--                  1).下载自动安装脚本：<a class="cursor-pointer" :href="state.windowsOfflineInstallSteps?.installScriptUrl">{{ state.windowsOfflineInstallSteps?.installScriptName }}</a> <br />-->
+<!--                  2).将{{ state.windowsOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br />-->
+<!--                  {{ state.windowsOfflineInstallSteps?.runInstallCmd }}-->
+
+<!--                </p>-->
+<!--              </div>-->
+<!--            </TabPane>-->
             <TabPane key="config" tab="安装配置信息">
               <Grid
                 :dataSource="state.installConfig"
-                :columns="installConfigColumns" />
+                :columns="installConfigColumns">
+                <template #tenantId="{text}">
+                  <div class="flex items-center">
+                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)">复制 <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
+                  </div>
+                </template>
+                <template #deviceId="{text}">
+                  <div class="flex items-center">
+                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)">复制 <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
+                  </div>
+                </template>
+                <template #ctrlAccessToken="{text}">
+                  <div class="flex items-center">
+                    <span>{{showInstallCtrlAccessTokenMap[state.id] ? text : '******'}}</span>
+                    <Button size="small" type="link" class="leading-5 h-5"  @click="toggleShowCtrlAccessToken(state.id)"><Icon class="text-4" :icon="showInstallCtrlAccessTokenMap[state.id] ? 'icon-biyan' : 'icon-zhengyan'" /></Button>
+                  </div>
+                </template>
+              </Grid>
             </TabPane>
           </Tabs>
           <Button
