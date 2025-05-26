@@ -794,7 +794,7 @@ const loadTaskListById = async (id: string, pageNo: number) => {
   if (taskListMap.value[id].length < taskTotalMap.value[id]) {
     await loadTaskListById(id, pageNo + 1);
   } else {
-    if (sortParamMap.value[id].orderBy === 'priority') {
+    if (sortParamMap.value[id]?.orderBy === 'priority') {
       sortTaskByPriority(id);
     }
   }
