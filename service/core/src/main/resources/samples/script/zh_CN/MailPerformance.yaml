@@ -7,7 +7,7 @@ plugin: Mail
 configuration:
   duration: 50min
   thread:
-    threads: 50
+    threads: 200
     rampUpInterval: 30s
     rampUpThreads: 1
   priority: 1000
