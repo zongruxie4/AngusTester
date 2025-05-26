@@ -43,6 +43,7 @@ provide('updateRefreshNotify', updateRefreshNotify);
   <div class="w-full h-full flex items-start px-5 py-5 leading-5 text-3 overflow-auto">
     <div class="flex-1 min-h-full">
       <MyScenarios
+        v-if="projectId"
         :notify="notify"
         :userInfo="props.userInfo"
         :projectId="props.projectId"
@@ -52,7 +53,7 @@ provide('updateRefreshNotify', updateRefreshNotify);
 
     <div class="flex-shrink-0 pt-8 h-full w-right">
       <Introduce class="mb-5" />
-      <ActivityTimeline :userInfo="props.userInfo" :projectId="props.projectId" />
+      <ActivityTimeline v-if="projectId" :userInfo="props.userInfo" :projectId="props.projectId" />
     </div>
   </div>
 </template>

@@ -49,6 +49,7 @@ const menuItems = [
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
     <template #homepage>
       <Homepage
+        v-if="projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
@@ -56,26 +57,28 @@ const menuItems = [
     </template>
     <template #variables>
       <Variables
-        v-if="activeKey === 'variables'"
+        v-if="activeKey === 'variables' && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #dataSet>
       <DataSet
-        v-if="activeKey === 'dataSet'"
+        v-if="activeKey === 'dataSet' && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #file>
       <FileData
+        v-if="projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
     <template #dataSource>
       <SourceData
+        v-if="projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />

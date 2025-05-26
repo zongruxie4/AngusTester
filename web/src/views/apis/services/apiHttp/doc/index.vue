@@ -34,7 +34,6 @@ onMounted(async () => {
   accessToken.value = cookie.get('access_token');
   isPrivate.value = await site.isPrivate();
   docOrigin.value = await site.getUrl('apis');
-
 });
 
 </script>
