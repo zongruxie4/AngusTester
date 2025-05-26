@@ -7,7 +7,7 @@ plugin: Jdbc
 configuration:
   duration: 30min
   thread:
-    threads: 50
+    threads: 200
     rampUpInterval: 1min
     rampUpThreads: 50
     rampDownInterval: 1min
