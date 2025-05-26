@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * @author XiaoLong Liu
- */public interface TaskSearch {
+ */
+public interface TaskSearch {
 
   Page<Task> search(boolean export, Set<SearchCriteria> criteria, PageRequest pageable,
       String... matches);

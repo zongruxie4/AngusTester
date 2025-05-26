@@ -2,6 +2,8 @@ package cloud.xcan.angus.core.tester.application.query.exec.impl;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDatacenterEdition;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
@@ -13,6 +15,7 @@ import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoSearchRepo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.search.SearchOperation;
+import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
 import java.util.Set;
 import org.springframework.data.domain.Page;

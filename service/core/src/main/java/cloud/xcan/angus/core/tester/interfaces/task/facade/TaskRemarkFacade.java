@@ -8,7 +8,8 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 
 /**
  * @author XiaoLong Liu
- */public interface TaskRemarkFacade {
+ */
+public interface TaskRemarkFacade {
 
   IdKey<Long, Object> add(TaskRemarkAddDto dto);
 

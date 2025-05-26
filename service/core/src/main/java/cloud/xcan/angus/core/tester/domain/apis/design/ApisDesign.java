@@ -26,15 +26,12 @@ public class ApisDesign extends TenantAuditingEntity<Apis, Long> implements Acti
   @Id
   private Long id;
 
-  @Column(name = "project_id")
   private Long projectId;
 
   private String name;
 
-  @Column(name = "release")
-  private Boolean release;
+  private Boolean released;
 
-  @Column(name = "openapi_spec_version")
   private String openapiSpecVersion;
 
   private String openapi;
@@ -43,7 +40,6 @@ public class ApisDesign extends TenantAuditingEntity<Apis, Long> implements Acti
   @Column(name = "design_source")
   private ApisDesignSource designSource;
 
-  @Column(name = "design_source_id")
   private Long designSourceId;
 
   @Transient
@@ -52,7 +48,7 @@ public class ApisDesign extends TenantAuditingEntity<Apis, Long> implements Acti
   private String designSourceName;
 
   public boolean hasLatestContent(){
-    return release && designSource.isSynchronousService() && nonNull(designSourceId);
+    return released && designSource.isSynchronousService() && nonNull(designSourceId);
   }
 
   @Override

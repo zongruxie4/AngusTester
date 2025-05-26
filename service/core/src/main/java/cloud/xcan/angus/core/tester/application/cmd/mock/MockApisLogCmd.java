@@ -5,7 +5,8 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 
 /**
  * @author XiaoLong Liu
- */public interface MockApisLogCmd {
+ */
+public interface MockApisLogCmd {
 
   IdKey<Long, Object> add0(MockApisLog log);
 

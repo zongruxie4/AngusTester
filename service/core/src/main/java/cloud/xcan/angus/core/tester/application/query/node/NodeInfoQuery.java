@@ -48,10 +48,14 @@ public interface NodeInfoQuery {
 
   NodeInfo findTenantNode(Long tenantId, String ip);
 
-  List<NodeInfo> selectWithFree(Long execId, Integer num, Set<Long> availableNodeIds);
+  List<Long> selectValidFreeNodeIds(int nodeNum, Set<Long> availableNodeIds);
 
-  List<NodeInfo> selectByStrategy(Long execId, Integer num, Set<Long> availableNodeIds,
-      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy);
+  List<NodeInfo> selectValidFreeNode(int nodeNum, Set<Long> availableNodeIds);
+
+  List<NodeInfo> selectWithFree0(Integer nodeNum, Set<Long> availableNodeIds);
+
+  List<NodeInfo> selectByStrategy(Integer nodeNum, Set<Long> availableNodeIds,
+      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy, boolean allowTrialNode);
 
   NodeInfo checkAndFind(Long id);
 

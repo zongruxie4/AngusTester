@@ -21,7 +21,8 @@ import java.util.Set;
 
 /**
  * @author XiaoLong Liu
- */public class ApisUnarchivedAssembler {
+ */
+public class ApisUnarchivedAssembler {
 
   public static ApisUnarchived addDtoToDomain(ApisUnarchivedAddDto dto) {
     return new ApisUnarchived()

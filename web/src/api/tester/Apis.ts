@@ -357,7 +357,7 @@ export default class API {
     return http.del(`${baseUrl}/design/${designId}`);
   }
 
-  exportDesign  (params: {id: string, format: 'json'|'yaml'}, axioConf = {}): Promise<[Error | null, any]> {
+  exportDesign (params: {id: string, format: 'json'|'yaml'}, axioConf = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/design/export`, params, axioConf);
   }
 
@@ -378,7 +378,6 @@ export default class API {
   }
 
   putDesignContent (params: {id: string, openapi: string}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/design/import`, params)
+    return http.put(`${baseUrl}/design/import`, params);
   }
-
 }

@@ -1345,7 +1345,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Check the add task permission
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // Check the whether there is assignee permission
+        // Check if there is assignee permission
         taskQuery.checkAssigneeUserPermission(taskDb);
 
         // Check the in_progress status
@@ -1412,7 +1412,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         boolean isConfirmTask = taskDb.isConfirmTask();
         if (isConfirmTask) {
-          // Check the whether there is confirmor permission
+          // Check if there is confirmor permission
           taskQuery.checkConfirmorUserPermission(taskDb);
         }
 

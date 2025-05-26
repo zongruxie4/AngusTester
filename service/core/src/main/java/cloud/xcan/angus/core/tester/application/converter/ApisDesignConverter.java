@@ -8,7 +8,7 @@ public class ApisDesignConverter {
   public static ApisDesign toClone(ApisDesign designDb) {
     return new ApisDesign()
         .setProjectId(designDb.getProjectId())
-        .setName(designDb.getName() + "-Copy").setRelease(false)
+        .setName(designDb.getName() + "-Copy").setReleased(false)
         .setOpenapiSpecVersion(designDb.getOpenapiSpecVersion())
         .setOpenapi(designDb.getOpenapi()).setDesignSource(ApisDesignSource.MANUAL_CREATED);
   }

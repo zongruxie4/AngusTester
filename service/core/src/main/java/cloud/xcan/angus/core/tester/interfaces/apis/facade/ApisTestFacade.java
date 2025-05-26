@@ -13,7 +13,8 @@ import javax.annotation.Nullable;
 
 /**
  * @author XiaoLong Liu
- */public interface ApisTestFacade {
+ */
+public interface ApisTestFacade {
 
   void testEnabled(Long apisId, Set<TestType> testTypes, boolean enabled);
 

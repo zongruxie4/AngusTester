@@ -17,6 +17,7 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.model.element.type.TestTargetType.PLUGIN_HTTP_NAME;
 import static cloud.xcan.angus.parser.AngusParser.YAML_MAPPER;
+import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
@@ -151,14 +152,14 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           execQuery.checkNodeValid(angusScript.getConfiguration(), false);
         } else {
           // Check the id is required
-          assertNotNull(debug.getId(),
-              "Selected execution debug id is required when broadcast = false");
+          assertNotNull(debug.getId(), "Execution debug id is required when broadcast = false");
           debugDb = execDebugQuery.checkAndFind(debug.getId());
         }
       }
 
       @Override
       protected ExecDebug process() {
+        // formatter:off
         log.info("Controller handle to start execution debug `{}` request", debug.getId());
 
         try {
@@ -170,8 +171,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           Long nodeId;
           if (broadcast) {
             // Election testing node
-            nodeId = selectNodeByStrategy(
-                angusScript.getConfiguration().getNodeSelectors()).getId();
+            NodeSelector nodeSelector = angusScript.getConfiguration().getNodeSelectors();
+            nodeId = selectNodeByStrategy(nodeSelector, 1).getId();
           } else {
             nodeId = debugDb.getExecNodeId();
           }
@@ -186,7 +187,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
             debugDb = debug;
           }
 
-          ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, debugDb.getTenantId());
+          Long nodeTenantId = nodeQuery.isTrailNode(nodeId) ? OWNER_TENANT_ID : debugDb.getTenantId();
+          ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, nodeTenantId);
           if (nonNull(router)) {
             // Push local controller
             RunnerRunDto runCmd = RunnerRunDto.newBuilder()
@@ -219,8 +221,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                 throw SysException.of(EXEC_CONTROLLER_NODE_NOT_FOUND);
               }
 
-              List<ServiceInstance> instances = discoveryClient.getInstances(
-                  appInfo.getArtifactId());
+              List<ServiceInstance> instances = discoveryClient.getInstances(appInfo.getArtifactId());
               if (isNotEmpty(instances)) {
                 String currentInstanceIp = appInfo.getInstanceId().split(":")[0];
                 // Send run command to node agent
@@ -243,8 +244,8 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                   RunnerRunVo result0 = broadcastRun2RemoteCtrl(runCmd, remoteUrl);
                   if (nonNull(result0)) {
                     // Save success result
-                    debugDb.setStatus(result0.isSuccess() ? ExecStatus.COMPLETED
-                            : ExecStatus.FAILED).setMessage(result0.getMessage())
+                    debugDb.setStatus(result0.isSuccess() ? ExecStatus.COMPLETED : ExecStatus.FAILED)
+                        .setMessage(result0.getMessage())
                         .setSchedulingResult(result0);
                     debugDb.setSchedulingResult(result0);
                     broadcastSuccess = true;
@@ -253,27 +254,20 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                 }
                 if (!broadcastSuccess) {
                   String message = message(EXEC_AGENT_ROUTER_NOT_FOUND_T, new Object[]{nodeId});
-                  RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()),
-                      nodeId, message);
-                  debugDb.setStatus(ExecStatus.FAILED).setMessage(message)
-                      .setSchedulingResult(result0);
+                  RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
+                  debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
                 }
               } else {
-                String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T,
-                    new Object[]{nodeId});
+                String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{nodeId});
                 log.error(message);
-                RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()),
-                    nodeId, message);
-                debugDb.setStatus(ExecStatus.FAILED).setMessage(message)
-                    .setSchedulingResult(result0);
+                RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
+                debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
               }
             } else {
               String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{nodeId});
               log.error(message);
-              RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()),
-                  nodeId, message);
-              debugDb.setStatus(ExecStatus.FAILED).setMessage(message)
-                  .setSchedulingResult(result0);
+              RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
+              debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
             }
           }
 
@@ -289,6 +283,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           }
         }
         return debugDb;
+        // formatter:on
       }
     }.execute();
   }
@@ -461,14 +456,14 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }
   }
 
-  private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector) {
+  private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector, int nodeNum) {
     NodeInfo nodeInfo;
     if (nonNull(nodeSelector)) {
-      nodeInfo = nodeInfoQuery.selectByStrategy(null, 1,
-          nodeSelector.getAvailableNodeIds(), null, nodeSelector.getStrategy()).get(0);
+      nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, nodeSelector.getAvailableNodeIds(),
+          null, nodeSelector.getStrategy(), true).get(0);
     } else {
-      nodeInfo = nodeInfoQuery.selectByStrategy(null, 1, null,
-          null, null).get(0);
+      nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, null,
+          null, null, true).get(0);
     }
     return nodeInfo;
   }

@@ -48,14 +48,14 @@ const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/k
 
 const getParams = () => {
   const params: {
-    backlogFlag: false,
+    backlog: false,
     projectId: string;
     pageNo: number;
     pageSize: number;
     moduleId?: string;
     filters?: { key: string; op: string; value: boolean | string | string[]; }[];
   } = {
-    backlogFlag: false,
+    backlog: false,
     projectId: props.projectId,
     pageNo: 1,
     pageSize: 500

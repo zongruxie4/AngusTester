@@ -259,7 +259,7 @@ export type ReportContent = {
                 projectId: string;
                 planId: string;
                 planName: string;
-                backlogFlag: boolean;
+                backlog: boolean;
                 startDate: string;
                 deadlineDate: string;
                 processedDate: string;

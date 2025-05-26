@@ -19,7 +19,7 @@ public class ApisDesignDetailVo {
 
   private String name;
 
-  private Boolean release;
+  private Boolean released;
 
   private String openapiSpecVersion;
 

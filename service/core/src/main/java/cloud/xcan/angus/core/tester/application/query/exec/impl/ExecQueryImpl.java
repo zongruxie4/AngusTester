@@ -20,7 +20,8 @@ import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_IS_NOT_EX
 import static cloud.xcan.angus.core.utils.AngusUtils.toServer;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.hasPolicy;
-import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDatacenterEdition;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isTenantSysAdmin;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isUserAction;
 import static cloud.xcan.angus.model.AngusConstant.SAMPLE_TOTAL_NAME;
@@ -69,7 +70,6 @@ import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent;
 import cloud.xcan.angus.core.utils.CoreUtils;
-import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.element.extraction.HttpExtraction;
 import cloud.xcan.angus.model.element.http.Http;
 import cloud.xcan.angus.model.element.pipeline.PipelineBuilder;
@@ -143,11 +143,6 @@ public class ExecQueryImpl implements ExecQuery {
       @Override
       protected Exec process() {
         Exec exec = checkAndFind(id);
-
-        // For sharding invoke by innerapi
-        if (isJobOrInnerApi()) {
-          PrincipalContext.get().setOptTenantId(exec.getTenantId());
-        }
 
         setParsedScriptContent(exec);
 
@@ -274,9 +269,7 @@ public class ExecQueryImpl implements ExecQuery {
             ExecInfo.class, null);
         if (page.hasContent()) {
           setExecInfoScriptName(page.getContent());
-
           setExecInfoCurrentOperationPermission(page.getContent());
-
           execSampleQuery.setExecInfoLatestTotalMergeSample(page.getContent());
         }
         return page;
@@ -630,11 +623,6 @@ public class ExecQueryImpl implements ExecQuery {
   public void setSampleSummary(List<ExecInfo> execs, Boolean joinSampleSummary) {
     if (isEmpty(execs)) {
       return;
-    }
-
-    // For sharding invoke by innerapi
-    if (PrincipalContextUtils.isJobOrInnerApi()) {
-      PrincipalContext.get().setOptTenantId(execs.get(0).getTenantId());
     }
 
     // setExecInfoScriptName(execs);

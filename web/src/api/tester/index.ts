@@ -1,4 +1,4 @@
-import { TESTER, PUB_TESTER } from '@xcan-angus/tools';
+import { PUB_TESTER, TESTER } from '@xcan-angus/tools';
 
 import Activity from './Activity';
 import Apis from './Apis';

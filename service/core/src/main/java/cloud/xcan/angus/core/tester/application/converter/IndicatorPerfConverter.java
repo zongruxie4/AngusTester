@@ -17,7 +17,8 @@ import java.util.Objects;
 
 /**
  * @author XiaoLong Liu
- */public class IndicatorPerfConverter {
+ */
+public class IndicatorPerfConverter {
 
   public static IndicatorPerf toIndicatorPerf(Perf default0, Long targetId,
       CombinedTargetType targetType) {

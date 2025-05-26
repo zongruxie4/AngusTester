@@ -24,10 +24,12 @@ import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_NO_FREE_N
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_NO_FREE_NODES_RETRY_LATER_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.EXEC_VALID_NODES_IS_INSUFFICIENT_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.MOCKSERV_BROADCAST_IGNORE_REMOTE_NODE;
+import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_AGENT_UNAVAILABLE_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NODE_SPEC_INFO_MISSING_T;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_EXEC_ROLE_NODES;
 import static cloud.xcan.angus.core.tester.domain.CtrlCoreMessage.NO_AVAILABLE_NODES;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isDatacenterEdition;
 import static cloud.xcan.angus.spec.experimental.BizConstant.AuthKey.BEARER;
 import static cloud.xcan.angus.spec.experimental.BizConstant.OWNER_TENANT_ID;
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
@@ -50,7 +52,9 @@ import cloud.xcan.angus.agent.message.runner.RunnerKillDto;
 import cloud.xcan.angus.agent.message.runner.RunnerQueryVo;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.multitenancy.TenantAwareProcessor;
 import cloud.xcan.angus.core.spring.boot.ApplicationInfo;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
@@ -383,15 +387,49 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   }
 
   @Override
-  public NodeInfo findTenantNode(Long tenantId, String ip){
+  public NodeInfo findTenantNode(Long tenantId, String ip) {
     return nodeInfoRepo.findByTenantIdAndIp(tenantId, ip);
+  }
+
+  @Override
+  public List<Long> selectValidFreeNodeIds(int nodeNum, Set<Long> availableNodeIds) {
+    return new TenantAwareProcessor().call(() -> {
+      List<NodeInfo> selectNodes = selectWithFree0(nodeNum, availableNodeIds);
+      ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
+
+      List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
+          .collect(Collectors.toList());
+      Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
+      for (NodeInfo selectNode : selectNodes) {
+        assertTrue(liveNodeIds.contains(selectNode.getId()),
+            message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
+      }
+      return selectNodeIds;
+    }, getOptTenantId());
+  }
+
+  @Override
+  public List<NodeInfo> selectValidFreeNode(int nodeNum, Set<Long> availableNodeIds) {
+    return new TenantAwareProcessor().call(() -> {
+      List<NodeInfo> selectNodes = selectWithFree0(1, availableNodeIds);
+      ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
+
+      List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
+          .collect(Collectors.toList());
+      Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
+      for (NodeInfo selectNode : selectNodes) {
+        assertTrue(liveNodeIds.contains(selectNode.getId()),
+            message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
+      }
+      return selectNodes;
+    }, getOptTenantId());
   }
 
   /**
    * Note: Free experience execution does not support node selection strategy.
    */
   @Override
-  public List<NodeInfo> selectWithFree(Long execId, Integer num, Set<Long> availableNodeIds) {
+  public List<NodeInfo> selectWithFree0(Integer num, Set<Long> availableNodeIds) {
     int nodeNum = nullSafe(num, 1);
     List<Node> nodes = nodeQuery.getNodes(availableNodeIds, EXECUTION, true,
         QUERY_MAX_FREE_EXEC_NODES, OWNER_TENANT_ID /*Fix: getOptTenantId()*/);
@@ -424,8 +462,8 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    * 3. BizException will terminate and continue scheduling.
    */
   @Override
-  public List<NodeInfo> selectByStrategy(Long execId, Integer num, Set<Long> availableNodeIds,
-      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy) {
+  public List<NodeInfo> selectByStrategy(Integer num, Set<Long> availableNodeIds,
+      Set<Long> lastExecNodeIds, NodeSelectorStrategy strategy, boolean allowTrialNode) {
     Long tenantId = getOptTenantId();
     int nodeNum = nullSafe(num, 1);
 
@@ -433,16 +471,21 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
         message(EXEC_NODES_LESS_AVAILABLE_T, new Object[]{nodeNum}));
 
     List<NodeInfo> nodes;
-    boolean selectLastedNodes = nonNull(execId) && nonNull(strategy) && strategy.getEnabled()
+    boolean selectLastedNodes = nonNull(strategy) && strategy.getEnabled()
         && nonNull(strategy.getLastExecuted()) && strategy.getLastExecuted();
     if (selectLastedNodes && isNotEmpty(lastExecNodeIds)) {
-      assertTrue(lastExecNodeIds.size() >= nodeNum,
-          message(EXEC_LAST_NODES_IS_INSUFFICIENT));
+      assertTrue(lastExecNodeIds.size() >= nodeNum, message(EXEC_LAST_NODES_IS_INSUFFICIENT));
       nodes = nodeInfoRepo.findAllById(lastExecNodeIds);
     } else {
       nodes = isNotEmpty(availableNodeIds) ? checkAndFind(availableNodeIds)
           : nodeInfoRepo.findAllByTenantId(tenantId);
+      if (isEmpty(nodes) && allowTrialNode) {
+        nodes = selectValidFreeNode(nodeNum, availableNodeIds);
+        assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
+        return nodes;
+      }
     }
+
     assertTrue(isNotEmpty(nodes), message(NO_AVAILABLE_NODES));
 
     Set<Long> nodeIds = nodes.stream().map(NodeInfo::getId).collect(Collectors.toSet());
@@ -559,8 +602,10 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
    */
   @Override
   public Map<String, List<Node>> getValidCtrlIpNodeVoMap() {
-    List<Node> nodes = nodeQuery.getNodes(null, CONTROLLER, true, QUERY_MAX_EXEC_NODES, null);
-    return isEmpty(nodes) ? null : nodes.stream().collect(groupingBy(Node::getIp));
+    return new TenantAwareProcessor().call(() -> {
+      List<Node> nodes = nodeQuery.getNodes(null, CONTROLLER, true, QUERY_MAX_EXEC_NODES, null);
+      return isEmpty(nodes) ? null : nodes.stream().collect(groupingBy(Node::getIp));
+    }, isDatacenterEdition() /*It could be multi tenancy*/ ? null : getOptTenantId());
   }
 
   @Override

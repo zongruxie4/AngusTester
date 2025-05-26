@@ -32,6 +32,7 @@ import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
+import cloud.xcan.angus.core.jpa.multitenancy.TenantAwareProcessor;
 import cloud.xcan.angus.core.jpa.page.FixedPageImpl;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
@@ -148,17 +149,29 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   @Override
+  public boolean isTrailNode(Long nodeId) {
+    // Show shared nodes when there are no nodes in the cloud service version
+    if (isCloudServiceEdition()) {
+      return new TenantAwareProcessor().call(() ->
+          nodeRepo.countByIdInAndFree(List.of(nodeId), true) > 0, null);
+    }
+    return false;
+  }
+
+  @Override
   public Page<Node> getFreeWhenNonNodes(String role) {
     // Show shared nodes when there are no nodes in the cloud service version
     if (isCloudServiceEdition()) {
       int count = nodeRepo.countByTenantId(getOptTenantId());
       if (count <= 0) {
-        PrincipalContext.get().setMultiTenantCtrl(false);
-        List<Node> nodes = isNull(role) ? nodeRepo.findByTenantIdAndFree(OWNER_TENANT_ID, true)
-            : nodeRepo.findByTenantIdAndFreeAndRole(OWNER_TENANT_ID, true, role);
-        if (isNotEmpty(nodes)) {
-          return new FixedPageImpl<>(nodes);
-        }
+        return new TenantAwareProcessor().call(() -> {
+          List<Node> nodes = isNull(role) ? nodeRepo.findByTenantIdAndFree(OWNER_TENANT_ID, true)
+              : nodeRepo.findByTenantIdAndFreeAndRole(OWNER_TENANT_ID, true, role);
+          if (isNotEmpty(nodes)) {
+            return new FixedPageImpl<>(nodes);
+          }
+          return Page.empty();
+        }, null);
       }
     }
     return Page.empty();

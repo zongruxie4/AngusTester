@@ -150,7 +150,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
       @Override
       protected Void process() {
-        designDb.setRelease(false);
+        designDb.setReleased(false);
         OpenAPI osa = servicesSchemaQuery.checkAndGetApisParseProvider(ApiImportSource.OPENAPI)
             .parse(openapi);
         designDb.setOpenapi(Json31.pretty(osa));
@@ -185,7 +185,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
               designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true, ApiSource.SYNC,
               null, false, null);
         }
-        designDb.setRelease(true);
+        designDb.setReleased(true);
         apisDesignRepo.save(designDb);
 
         activityCmd.add(toActivity(API_DESIGN, designDb, ActivityType.RELEASE));
@@ -359,7 +359,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
   private IdKey<Long, Object> addClone(OpenAPI openApi, Long projectId, String name) {
     ApisDesign design = new ApisDesign().setProjectId(projectId)
-        .setName(name).setRelease(false).setOpenapiSpecVersion(openApi.getOpenapi())
+        .setName(name).setReleased(false).setOpenapiSpecVersion(openApi.getOpenapi())
         .setOpenapi(Json31.pretty(openApi))
         .setDesignSource(ApisDesignSource.FILE_IMPORT);
 

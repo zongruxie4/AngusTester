@@ -9,7 +9,8 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * @author XiaoLong Liu
- */public interface TaskRemarkQuery {
+ */
+public interface TaskRemarkQuery {
 
   Page<TaskRemark> list(GenericSpecification<TaskRemark> spec, PageRequest pageable);
 

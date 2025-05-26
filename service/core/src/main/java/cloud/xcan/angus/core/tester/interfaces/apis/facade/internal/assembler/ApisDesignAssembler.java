@@ -17,7 +17,7 @@ public class ApisDesignAssembler {
 
   public static ApisDesign addToDomain(ApisDesignAddDto dto) {
     return new ApisDesign().setProjectId(dto.getProjectId())
-        .setName(dto.getName()).setRelease(false)
+        .setName(dto.getName()).setReleased(false)
         .setOpenapiSpecVersion(dto.getOpenapiSpecVersion())
         .setDesignSource(ApisDesignSource.MANUAL_CREATED);
   }
@@ -25,7 +25,7 @@ public class ApisDesignAssembler {
   public static ApisDesignDetailVo toDetailVo(ApisDesign design) {
     return new ApisDesignDetailVo().setId(design.getId())
         .setProjectId(design.getProjectId())
-        .setName(design.getName()).setRelease(design.getRelease())
+        .setName(design.getName()).setReleased(design.getReleased())
         .setOpenapiSpecVersion(design.getOpenapiSpecVersion())
         .setOpenapi(design.getLatestOpenapi())
         .setDesignSource(design.getDesignSource())
@@ -40,7 +40,7 @@ public class ApisDesignAssembler {
   public static ApisDesignVo toVo(ApisDesignInfo design) {
     return new ApisDesignVo().setId(design.getId())
         .setProjectId(design.getProjectId())
-        .setName(design.getName()).setRelease(design.getRelease())
+        .setName(design.getName()).setReleased(design.getReleased())
         .setOpenapiSpecVersion(design.getOpenapiSpecVersion())
         .setDesignSource(design.getDesignSource())
         .setDesignSourceId(design.getDesignSourceId())

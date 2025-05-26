@@ -241,7 +241,7 @@ export type ReportContent = {
                 projectId: string;
                 sprintId: string;
                 sprintName: string;
-                backlogFlag: boolean;
+                backlog: boolean;
                 startDate: string;
                 deadlineDate: string;
                 processedDate: string;

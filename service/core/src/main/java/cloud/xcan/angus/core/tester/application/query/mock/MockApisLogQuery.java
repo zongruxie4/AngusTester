@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * @author XiaoLong Liu
- */public interface MockApisLogQuery {
+ */
+public interface MockApisLogQuery {
 
   MockApisLog detail(Long id);
 

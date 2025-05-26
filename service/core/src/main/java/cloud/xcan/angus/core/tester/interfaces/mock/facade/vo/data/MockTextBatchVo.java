@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.data;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,6 @@ import lombok.experimental.Accessors;
 /**
  * @author XiaoLong Liu
  */
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

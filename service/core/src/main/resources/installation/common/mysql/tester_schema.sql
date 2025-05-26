@@ -217,7 +217,7 @@ CREATE TABLE `apis_design` (
   `id` bigint(20) NOT NULL COMMENT '主键ID',
   `project_id` bigint(20) NOT NULL COMMENT '项目ID',
   `name` varchar(100) COLLATE utf8mb4_bin NOT NULL COMMENT '设计名',
-  `release` int(1) NOT NULL COMMENT '发布标志',
+  `released` int(1) NOT NULL COMMENT '发布标志',
   `openapi_spec_version` varchar(20) COLLATE utf8mb4_bin NOT NULL COMMENT 'OAS版本',
   `openapi` longtext COLLATE utf8mb4_bin COMMENT 'OAS内容',
   `design_source` varchar(20) COLLATE utf8mb4_bin NOT NULL COMMENT '设计来源',

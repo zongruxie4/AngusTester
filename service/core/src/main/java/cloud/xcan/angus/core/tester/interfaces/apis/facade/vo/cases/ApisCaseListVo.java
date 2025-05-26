@@ -8,7 +8,6 @@ import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.extension.ApisProtocol;
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,6 @@ import lombok.experimental.Accessors;
  * Note: The current class field order is consistent with the export order and configuration header
  * message. Please do not modify the order arbitrarily.
  */
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

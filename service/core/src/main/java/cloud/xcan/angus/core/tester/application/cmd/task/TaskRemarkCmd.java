@@ -5,7 +5,8 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 
 /**
  * @author XiaoLong Liu
- */public interface TaskRemarkCmd {
+ */
+public interface TaskRemarkCmd {
 
   IdKey<Long, Object> add(TaskRemark taskRemark);
 

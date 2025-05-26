@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskInfoVo;
 import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
-import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +18,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
 @Setter
 @Getter
 @Accessors(chain = true)

@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
-
 public abstract class TaskSprintAuthDetailVo implements TaskSprintAuthVo {
 
   @Schema(description = "Apis authorization id")

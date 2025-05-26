@@ -444,7 +444,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
         // Check the view project permission
         projectAuthQuery.checkViewAuth(getUserId(), service.getAssocServiceId());
 
-        // Check the if the project is associated with a mock service
+        // Check if the project is associated with a mock service
         mockServiceQuery.checkAssocProjectExists(servicesDb);
       }
 

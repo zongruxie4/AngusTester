@@ -98,7 +98,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author XiaoLong Liu
- */public class TaskConverter {
+ */
+public class TaskConverter {
 
   public static void assembleAddTaskInfo(Task task, @Nullable TaskSprint sprintDb,
       boolean isAgile) {
@@ -200,8 +201,12 @@ import org.jetbrains.annotations.Nullable;
   public static void assembleExampleTask(Project projectDb, Long id, Task task,
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
-    LocalDateTime createdDate = LocalDateTime.now().plusHours(random.nextInt(10 * 25));
-    LocalDateTime deadlineDate = createdDate.plusHours(random.nextInt(10 * 25));
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime createdDate = now.minusHours(random.nextInt(5 * 24));
+    LocalDateTime deadlineDate = now.plusHours(random.nextInt(10 * 24));
+    LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
+    finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
+    TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
     task.setId(id).setCode(getTaskCode())
         .setProjectId(projectDb.getId()).setModuleId(-1L)
         .setSprintId(nonNull(sprint) ? sprint.getId(): null).setSprintAuth(false)
@@ -210,12 +215,12 @@ import org.jetbrains.annotations.Nullable;
             && randomWithProbability(3))
         .setAssigneeId(users.get(random.nextInt(users.size())).getId())
         .setConfirmorId(users.get(random.nextInt(users.size())).getId())
+        .setStatus(status).setCompletedDate((status.isFinished() ? finishedDate : null))
         .setTenantId(projectDb.getTenantId()).setDeleted(false)
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
         .setCreatedDate(createdDate).setDeadlineDate(deadlineDate)
         .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(nullSafe(task.getStatus(), TaskStatus.PENDING).isFinished()
-            ? deadlineDate : createdDate);
+        .setLastModifiedDate(status.isFinished() ? finishedDate : createdDate);
   }
 
   public static @NotNull SoftwareVersion assembleExampleTaskSoftwareVersion(Project projectDb,
@@ -767,7 +772,7 @@ import org.jetbrains.annotations.Nullable;
   public static void countCreationBacklog(TaskLastResourceCreationCount result,
       List<TaskEfficiencySummary> allTasks) {
     List<TaskEfficiencySummary> backlogs = allTasks.stream()
-        .filter(TaskEfficiencySummary::getBacklog).collect(Collectors.toList());
+        .filter(TaskEfficiencySummary::getBacklog).toList();
     result.setAllBacklog(backlogs.size())
         .setBacklogByLastWeek(backlogs.stream().filter(x -> isLastWeek(x.getCreatedDate())).count())
         .setBacklogByLastMonth(
@@ -781,8 +786,7 @@ import org.jetbrains.annotations.Nullable;
 
   public static void countCreationTask(TaskLastResourceCreationCount result,
       List<TaskEfficiencySummary> allTasks) {
-    List<TaskEfficiencySummary> tasks = allTasks.stream()
-        .filter(x -> !x.getBacklog()).collect(Collectors.toList());
+    List<TaskEfficiencySummary> tasks = allTasks.stream().filter(x -> !x.getBacklog()).toList();
     result.setAllTask(tasks.size())
         .setTaskByOverdue(tasks.stream().filter(TaskEfficiencySummary::getOverdue).count())
         .setTaskByLastWeek(tasks.stream().filter(x -> isLastWeek(x.getCreatedDate())).count())
@@ -842,7 +846,7 @@ import org.jetbrains.annotations.Nullable;
     List<TaskEfficiencySummary> assigneeTasks = assigneeTaskMap.get(assigneeId);
     count.setTotalTaskNum(assigneeTasks.size());
     List<TaskEfficiencySummary> validAssigneeTasks = assigneeTasks.stream()
-        .filter(x -> !x.getStatus().isCanceled()).collect(Collectors.toList());
+        .filter(x -> !x.getStatus().isCanceled()).toList();
     count.setValidTaskNum(validAssigneeTasks.size());
 
     count.setEvalWorkload(
@@ -890,7 +894,7 @@ import org.jetbrains.annotations.Nullable;
     List<TaskEfficiencySummary> assigneeTasks = assigneeTaskMap.get(assigneeId);
     count.setTotalTaskNum(assigneeTasks.size());
     List<TaskEfficiencySummary> validAssigneeTasks = assigneeTasks.stream()
-        .filter(x -> !x.getStatus().isCanceled()).collect(Collectors.toList());
+        .filter(x -> !x.getStatus().isCanceled()).toList();
     count.setValidTaskNum(validAssigneeTasks.size());
 
     count.setEvalWorkload(
