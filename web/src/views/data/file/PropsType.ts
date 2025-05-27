@@ -8,7 +8,7 @@ export const columns = [
   },
   {
     title: '文件夹数',
-    dataIndex: 'subdirectoryNum',
+    dataIndex: 'subDirectoryNum',
     width: 80,
     ellipsis: true
   },
@@ -32,7 +32,7 @@ export interface SourceType {
     name:string,
     summary: {
       usedSize:number | string,
-      subfileNum: number | string,
+      subFileNum: number | string,
     },
     type:FileType,
     lastModifiedDate:string,
@@ -55,8 +55,8 @@ export interface SpaceInfoType {
     }
   };
   size: string;
-  subdirectoryNum: string;
-  subfileNum: string;
+  subDirectoryNum: string;
+  subFileNum: string;
   createdByName: string;
   createdDate: string
 }

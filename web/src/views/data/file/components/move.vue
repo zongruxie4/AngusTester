@@ -51,7 +51,7 @@ const onLoadData:TreeProps['loadData'] = treeNode => {
       }
 
       if (treeNode.dataRef) {
-        treeNode.dataRef.children = (res.data.list || []).map(data => ({ ...data, spaceId: spaceId, isLeaf: data.summary.subdirectoryNum === '0' })).filter(data => !props.moveIds?.includes(data.id));
+        treeNode.dataRef.children = (res.data.list || []).map(data => ({ ...data, spaceId: spaceId, isLeaf: data.summary.subDirectoryNum === '0' })).filter(data => !props.moveIds?.includes(data.id));
       }
       treeData.value = [...treeData.value];
     });

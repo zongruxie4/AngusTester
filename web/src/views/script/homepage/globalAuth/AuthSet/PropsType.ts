@@ -5,8 +5,8 @@ export type SpaceItem = {
     remark: string;
     bizKey: string;
     size: string;
-    subdirectoryNum: string;
-    subfileNum: string;
+    subDirectoryNum: string;
+    subFileNum: string;
     createdBy: string;
     createdByName: string;
     createdDate: string;

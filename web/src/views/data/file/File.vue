@@ -197,7 +197,7 @@ const create = () => {
       spaceId: '',
       summary: {
         usedSize: 0,
-        subfileNum: 0
+        subFileNum: 0
       },
       type: {
         message: '文件夹',
@@ -569,10 +569,10 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
             </div>
           </template>
           <template v-if="column.dataIndex === 'fileNum'">
-            <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subfileNum : '--' }}</span>
+            <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subFileNum : '--' }}</span>
           </template>
-          <template v-if="column.dataIndex === 'subdirectoryNum'">
-            <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subdirectoryNum : '--' }}</span>
+          <template v-if="column.dataIndex === 'subDirectoryNum'">
+            <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subDirectoryNum : '--' }}</span>
           </template>
           <template v-if="column.dataIndex == 'size'">
             <span>{{ record.summary.usedSize }}</span>
