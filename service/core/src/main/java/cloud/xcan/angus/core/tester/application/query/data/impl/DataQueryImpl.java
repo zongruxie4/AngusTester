@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.data.impl;
 
 import static cloud.xcan.angus.core.utils.CoreUtils.getCommonResourcesStatsFilter;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEdition;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.api.commonlink.space.StorageResourcesCount;
@@ -8,6 +9,7 @@ import cloud.xcan.angus.api.commonlink.space.StorageResourcesCreationCount;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.enums.UseStatus;
 import cloud.xcan.angus.api.manager.UserManager;
+import cloud.xcan.angus.api.storage.space.SpacePrivRemote;
 import cloud.xcan.angus.api.storage.space.SpaceRemote;
 import cloud.xcan.angus.api.storage.space.dto.SpaceAssetsCountDto;
 import cloud.xcan.angus.core.biz.Biz;
@@ -57,6 +59,9 @@ public class DataQueryImpl implements DataQuery {
 
   @Resource
   private SpaceRemote spaceRemote;
+
+  @Resource
+  private SpacePrivRemote spacePrivRemote;
 
   @Override
   public DataResourcesCount countStatistics(Long projectId, AuthObjectType creatorObjectType,
@@ -166,11 +171,12 @@ public class DataQueryImpl implements DataQuery {
   private void countSpaceFile(DataResourcesCreationCount result, Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd) {
-    StorageResourcesCreationCount count = spaceRemote.resourcesCreationStatistics(
-            new SpaceAssetsCountDto().setProjectId(projectId)
-                .setCreatorObjectType(creatorObjectType).setCreatorObjectId(creatorObjectId)
-                .setCreatedDateStart(createdDateStart).setCreatedDateEnd(createdDateEnd))
-        .orElseContentThrow();
+    SpaceAssetsCountDto dto = new SpaceAssetsCountDto().setProjectId(projectId)
+        .setCreatorObjectType(creatorObjectType).setCreatorObjectId(creatorObjectId)
+        .setCreatedDateStart(createdDateStart).setCreatedDateEnd(createdDateEnd);
+    StorageResourcesCreationCount count = isCloudServiceEdition()
+        ? spaceRemote.resourcesCreationStatistics(dto).orElseContentThrow()
+        : spacePrivRemote.resourcesCreationStatistics(dto).orElseContentThrow();
     result.setAllFile(count.getAllSpaceFile())
         .setFileByLast7Day(count.getSpaceFileByLast7Day())
         .setFileByLast30Day(count.getSpaceFileByLast30Day())

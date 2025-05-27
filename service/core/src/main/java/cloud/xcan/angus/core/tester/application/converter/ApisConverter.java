@@ -15,6 +15,7 @@ import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.isLastWeek;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import cloud.xcan.angus.api.commonlink.ApisTargetType;
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -227,7 +229,7 @@ public class ApisConverter {
       api.setCreatedBy(projectDb.getCreatedBy());
     }
     if (isEmpty(api.getId())) {
-      api.setId(getBean(CachedUidGenerator.class).getUID());
+      api.setId(requireNonNull(getBean(CachedUidGenerator.class)).getUID());
     }
   }
 
