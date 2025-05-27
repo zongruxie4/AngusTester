@@ -149,8 +149,11 @@ const setEchartOption = () => {
 
 const resizeHandler = () => {
   setEchartOption();
-  echartInstance.setOption(echartOption);
-  echartInstance.resize();
+  if (echartInstance) {
+    echartInstance.setOption(echartOption);
+    echartInstance.resize();
+  }
+
 };
 
 onMounted(() => {
