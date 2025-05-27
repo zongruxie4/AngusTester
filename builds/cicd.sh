@@ -23,8 +23,8 @@ NGINX_CONFIG_DIR="/etc/nginx/conf.d"
 
 CLEAR_MAVEN_REPO="/data/repository"
 
-PORT=1806
-PRIVATE_PORT=8802
+PORT=1830
+PRIVATE_PORT=8901
 
 # Validate input parameters
 validate_parameters() {
