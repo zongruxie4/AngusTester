@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted } from 'vue';
-import { site, cookie, TESTER } from '@xcan-angus/tools';
+import { site, cookie, TESTER, VERSION, API } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
 import '@xcan-angus/rapidoc';
@@ -41,7 +41,7 @@ onMounted(async () => {
   <div class="">
     <rapi-doc
       v-if="docOrigin"
-      :spec-url="`${docOrigin}${isPrivate ? '/api/v1' : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      :spec-url="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
       allowSpecFileDownload="false"
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"
