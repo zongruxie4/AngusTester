@@ -263,13 +263,13 @@ const columns = [
     title: '空间名称'
   },
   {
-    dataIndex: 'subdirectoryNum',
-    key: 'subdirectoryNum',
+    dataIndex: 'subDirectoryNum',
+    key: 'subDirectoryNum',
     title: '文件夹数'
   },
   {
-    dataIndex: 'subfileNum',
-    key: 'subfileNum',
+    dataIndex: 'subFileNum',
+    key: 'subFileNum',
     title: '文件数'
   },
   {
