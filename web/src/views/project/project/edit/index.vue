@@ -79,7 +79,7 @@ const uploadOption = {
   enlarge: 1,
   mode: 'contain',
   preW: 0,
-  limitMinSize: [10, 10]
+  limitMinSize: [100, 100]
 }
 
 const defaultOptionsUser = ref<{ [key: string]: any }>({});
