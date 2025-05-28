@@ -35,10 +35,13 @@ const getDesignInfo = async () => {
 };
 
 const updateContent = async () => {
-  console.log(updateContent)
+  if (typeof openAPIDesignInstance?.updateData === 'function') {
+    openAPIDesignInstance.updateData();
+  }
+
   const content = (openAPIDesignInstance && typeof openAPIDesignInstance.getDocApi === 'function')
-    ? openAPIDesignInstance.getDocApi === 'function'
-    : designInfo.value;
+    ? openAPIDesignInstance.getDocApi()
+    : designContent.value;
   const [error] = await apis.putDesignContent({id: props.designId, openapi: JSON.stringify(content)});
   if (error) {
     return;

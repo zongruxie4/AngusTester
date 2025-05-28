@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
-import { Button } from 'ant-design-vue';
+import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 
@@ -161,7 +161,6 @@ const editDesign = (record: {id?: string} = {}) => {
 };
 
 const exportDesign = (record: {id: string; name: string; url?: string})  => {
-  debugger;
   selectDesignId.value = record.id;
   exportVisible.value = true;
 }
@@ -222,11 +221,8 @@ const columns = [
   },
   {
     title: '状态',
-    dataIndex: 'status',
-    width: 100,
-    customRender: ({text}) => {
-      return text?.value;
-    }
+    dataIndex: 'released',
+    width: 100
   },
   {
     title: '来源',
@@ -314,6 +310,10 @@ const columns = [
                     {{ record.name }}
                   </Button>
                 </template>
+                <template v-if="column.dataIndex=== 'released'">
+                  <Tag v-if="record.released" color="success">已发布</Tag>
+                  <Tag v-else color="default">草稿</Tag>
+                </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
                     type="text"
@@ -353,7 +353,7 @@ const columns = [
                   <Button
                     type="text"
                     size="small"
-                    :disabled="!!record.designSourceName"
+                    :disabled="!!record.designSourceId"
                     @click="generateService(record)">
                     <Icon icon="icon-shengchengshuju" />
                     生成服务

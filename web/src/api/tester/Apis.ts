@@ -370,7 +370,7 @@ export default class API {
   }
 
   generateServiceFromDesign (designId: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/design/${designId}/service/generate`);
+    return http.put(`${baseUrl}/design/${designId}/services/generate`);
   }
 
   importDesign (params: {projectId: string, name: string, content: string}): Promise<[Error | null, any]> {
@@ -378,6 +378,6 @@ export default class API {
   }
 
   putDesignContent (params: {id: string, openapi: string}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/design/import`, params);
+    return http.put(`${baseUrl}/design/content`, params);
   }
 }
