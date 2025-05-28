@@ -53,7 +53,6 @@ const loadExecLog = async () => {
 };
 
 const schedulingLogItem = computed(() => {
-  debugger;
   if (props.lastSchedulingResult.length) {
     const foundItem = props.lastSchedulingResult.find(item => item.deviceId === nodeId.value);
     if (foundItem) {

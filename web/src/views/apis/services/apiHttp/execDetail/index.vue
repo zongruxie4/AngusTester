@@ -70,50 +70,50 @@ onMounted(() => {
       class="flex-1 min-h-0">
       <TabPane key="func" tab="功能测试">
         <Execdetail
-          v-if="funcExecId"
           class="p-0"
           :showBackBtn="false"
           :execId="funcExecId"
           :monicaEditorStyle="{height: '600px'}"
+          scriptType="TEST_FUNCTIONALITY"
           @del="handleDel" />
 
-        <NoData size="small" class="mt-25" />
+<!--        <NoData size="small" class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" tab="性能测试">
         <Execdetail
-          v-if="perfExecId"
           :showBackBtn="false"
           :execId="perfExecId"
           :monicaEditorStyle="{height: '600px'}"
+          scriptType="TEST_PERFORMANCE"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="stability" tab="稳定性测试">
         <Execdetail
-          v-if="stabilityExecId"
           :showBackBtn="false"
           :execId="stabilityExecId"
           :monicaEditorStyle="{height: '600px'}"
+          scriptType="TEST_STABILITY"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" tab="自定义测试">
         <Execdetail
-          v-if="customExecId"
           :showBackBtn="false"
           :execId="customExecId"
           :monicaEditorStyle="{height: '600px'}"
+          scriptType="TEST_CUSTOMIZATION"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane
         v-if="proTypeShowMap.showTask"
