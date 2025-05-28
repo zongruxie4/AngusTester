@@ -1024,6 +1024,7 @@ const zoomInFlagCacheKey = computed(() => {
               <RichEditor
                 ref="descRichRef"
                 v-model:value="formState.description"
+                :options="{placeholder: '任务描述，最大支持6000个字符'}"
                 :height="300"
                 @change="editorChange"
                 @loadingChange="editorLoading" />
