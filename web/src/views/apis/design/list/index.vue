@@ -131,7 +131,7 @@ const loadData = async () => {
   const data = res?.data || { total: 0, list: [] };
   if (data) {
     pagination.value.total = +data.total;
-    const _list = (data.list || [] as DesignInfo[]);
+    const _list = data.list || [] as DesignInfo[];
     dataList.value = _list;
   }
 };

@@ -267,6 +267,7 @@ onMounted(() => {
             <FormItem
               label="名称"
               name="name"
+              class="input_select"
               required>
               <Input
                 v-model:value="projectData.name"
@@ -278,7 +279,7 @@ onMounted(() => {
               label="负责人"
               name="ownerId"
               required
-              class="relative">
+              class="relative input_select">
               <SelectUser
                 v-model:value="projectData.ownerId"
                 size="small"
@@ -296,6 +297,7 @@ onMounted(() => {
             <FormItem
               label="时间"
               name="dateRange"
+              class="input_select"
               required>
               <DatePicker
                 v-model:value="projectData.dateRange"
@@ -326,7 +328,7 @@ onMounted(() => {
                 <Icon icon="icon-tishi1" class="text-tips text-3.5" />
               </Popover>
             </FormItem>
-            <FormItem label="成员" required>
+            <FormItem label="成员" class="input_select" required >
               <RadioGroup
                 v-model:value="memberType"
                 buttonStyle="solid"
@@ -485,6 +487,7 @@ onMounted(() => {
               <FormItem
                 label="名称"
                 name="name"
+                class="input_select"
                 required>
                 <Input
                   v-model:value="projectData.name"
@@ -496,7 +499,7 @@ onMounted(() => {
                 label="负责人"
                 name="ownerId"
                 required
-                class="relative">
+                class="relative input_select">
                 <SelectUser
                   v-model:value="projectData.ownerId"
                   size="small"
@@ -514,6 +517,7 @@ onMounted(() => {
               <FormItem
                 label="时间"
                 name="dateRange"
+                class="input_select"
                 required>
                 <DatePicker
                   v-model:value="projectData.dateRange"
@@ -531,7 +535,7 @@ onMounted(() => {
                 </Popover>
               </FormItem>
 
-              <FormItem label="成员" required>
+              <FormItem label="成员" class="input_select" required>
                 <RadioGroup
                   v-model:value="memberType"
                   buttonStyle="solid"
@@ -670,3 +674,8 @@ onMounted(() => {
       @success="uploadImgSuccess" />
   </div>
 </template>
+<style scoped>
+  :deep(.ant-form) .input_select .ant-form-item-label > label {
+    @apply h-7;
+  }
+</style>
