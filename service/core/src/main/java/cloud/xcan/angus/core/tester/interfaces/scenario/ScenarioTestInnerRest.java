@@ -31,7 +31,7 @@ public class ScenarioTestInnerRest {
   @Resource
   private ScenarioTestFacade scenarioTestFacade;
 
-  @Operation(description = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find:inner")
+  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -42,7 +42,7 @@ public class ScenarioTestInnerRest {
     return ApiLocaleResult.success(scenarioTestFacade.testEnabledFind(scenario));
   }
 
-  @Operation(description = "The testing scenario summary the functionality, performance, stability testing of project", operationId = "project:test:scenario:count:inner")
+  @Operation(summary = "The testing scenario summary the functionality, performance, stability testing of project", operationId = "project:test:scenario:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

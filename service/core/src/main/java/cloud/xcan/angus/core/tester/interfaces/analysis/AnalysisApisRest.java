@@ -27,7 +27,7 @@ public class AnalysisApisRest {
   @Resource
   private AnalysisApisFacade analysisAngusApisFacade;
 
-  @Operation(description = "Apis and services creation statistics", operationId = "analysis:apis:resources:count")
+  @Operation(summary = "Apis and services creation statistics", operationId = "analysis:apis:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis/resources")
@@ -36,7 +36,7 @@ public class AnalysisApisRest {
     return ApiLocaleResult.success(analysisAngusApisFacade.apisResourcesStatistics(dto));
   }
 
-  @Operation(description = "Query the test results of apis", operationId = "analysis:apis:test:result:count")
+  @Operation(summary = "Query the test results of apis", operationId = "analysis:apis:test:result:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/apis/test/result/count")

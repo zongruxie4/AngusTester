@@ -39,7 +39,7 @@ public class ScriptInnerRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(description = "Query the detail of script", operationId = "script:detail:inner")
+  @Operation(summary = "Query the detail of script", operationId = "script:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -49,7 +49,7 @@ public class ScriptInnerRest {
     return ApiLocaleResult.success(scriptFacade.detail(id));
   }
 
-  @Operation(description = "Query the info of script", operationId = "script:info:inner")
+  @Operation(summary = "Query the info of script", operationId = "script:info:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -59,7 +59,7 @@ public class ScriptInnerRest {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(description = "Query the info of script", operationId = "script:infos")
+  @Operation(summary = "Query the info of script", operationId = "script:infos")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -71,7 +71,7 @@ public class ScriptInnerRest {
     return ApiLocaleResult.success(scriptFacade.infos(ids));
   }
 
-  @Operation(description = "Query the list of script info", operationId = "script:info:list:inner")
+  @Operation(summary = "Query the list of script info", operationId = "script:info:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

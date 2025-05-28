@@ -47,7 +47,7 @@ public class ScenarioMonitorRest {
   @Resource
   private ScenarioMonitorFacade scenarioMonitorFacade;
 
-  @Operation(description = "Create scenario monitor", operationId = " scenario:monitor:add")
+  @Operation(summary = "Create scenario monitor", operationId = " scenario:monitor:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -56,7 +56,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success(scenarioMonitorFacade.add(dto));
   }
 
-  @Operation(description = "Update scenario monitor", operationId = " scenario:monitor:update")
+  @Operation(summary = "Update scenario monitor", operationId = " scenario:monitor:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -67,7 +67,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace scenario monitor", operationId = " scenario:monitor:replace")
+  @Operation(summary = "Replace scenario monitor", operationId = " scenario:monitor:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -77,7 +77,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success(scenarioMonitorFacade.replace(dto));
   }
 
-  @Operation(description = "Run scenario monitoring immediately", operationId = " scenario:monitor:run:now")
+  @Operation(summary = "Run scenario monitoring immediately", operationId = " scenario:monitor:run:now")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Generated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -89,7 +89,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete scenario monitor", operationId = " scenario:monitor:delete")
+  @Operation(summary = "Delete scenario monitor", operationId = " scenario:monitor:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -100,7 +100,7 @@ public class ScenarioMonitorRest {
     scenarioMonitorFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of scenario monitor", operationId = " scenario:monitor:detail")
+  @Operation(summary = "Query the detail of scenario monitor", operationId = " scenario:monitor:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -110,7 +110,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success(scenarioMonitorFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of scenario monitor", operationId = " scenario:monitor:list")
+  @Operation(summary = "Query the list of scenario monitor", operationId = " scenario:monitor:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -119,7 +119,7 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success(scenarioMonitorFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of scenario monitor", operationId = " scenario:monitor:search")
+  @Operation(summary = "Fulltext search the list of scenario monitor", operationId = " scenario:monitor:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

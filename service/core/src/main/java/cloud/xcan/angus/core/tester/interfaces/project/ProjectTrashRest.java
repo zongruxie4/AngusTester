@@ -34,7 +34,7 @@ public class ProjectTrashRest {
   @Resource
   private ProjectTrashFacade projectTrashFacade;
 
-  @Operation(description = "Clear the trash of project", operationId = "project:trash:clear")
+  @Operation(summary = "Clear the trash of project", operationId = "project:trash:clear")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
@@ -43,7 +43,7 @@ public class ProjectTrashRest {
     projectTrashFacade.clear(id);
   }
 
-  @Operation(description = "Clear all the trash of project ", operationId = "project:trash:clear:all")
+  @Operation(summary = "Clear all the trash of project ", operationId = "project:trash:clear:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping()
@@ -51,7 +51,7 @@ public class ProjectTrashRest {
     projectTrashFacade.clearAll();
   }
 
-  @Operation(description = "Back the project from the trash", operationId = "project:trash:back")
+  @Operation(summary = "Back the project from the trash", operationId = "project:trash:back")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
@@ -61,7 +61,7 @@ public class ProjectTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Back all the project from trash", operationId = "project:trash:back:all")
+  @Operation(summary = "Back all the project from trash", operationId = "project:trash:back:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
@@ -70,7 +70,7 @@ public class ProjectTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the number of all project trash", operationId = "project:trash:count")
+  @Operation(summary = "Query the number of all project trash", operationId = "project:trash:count")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
@@ -78,7 +78,7 @@ public class ProjectTrashRest {
     return ApiLocaleResult.success(projectTrashFacade.count());
   }
 
-  @Operation(description = "Fulltext search the trash of project", operationId = "project:trash:search")
+  @Operation(summary = "Fulltext search the trash of project", operationId = "project:trash:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

@@ -48,7 +48,7 @@ public class NodeInfoRest {
   @Resource
   private NodeInfoFacade nodeInfoFacade;
 
-  @Operation(description = "Query the detail of node system information.", operationId = "node:info:detail")
+  @Operation(summary = "Query the detail of node system information.", operationId = "node:info:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Not found resource")})
@@ -59,7 +59,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.detail(id, freeNode));
   }
 
-  @Operation(description = "Query the list of node system information.", operationId = "node:info:list")
+  @Operation(summary = "Query the list of node system information.", operationId = "node:info:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = LIST_ENDPOINT)
@@ -68,7 +68,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.list(dto));
   }
 
-  @Operation(description = "Query the list of node execution.", operationId = "node:exec:list")
+  @Operation(summary = "Query the list of node execution.", operationId = "node:exec:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT)
@@ -77,7 +77,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.exec(id));
   }
 
-  @Operation(description = "Query the list of node agent status.", operationId = "node:info:agent:status")
+  @Operation(summary = "Query the list of node agent status.", operationId = "node:info:agent:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Not found resource")})
@@ -87,7 +87,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.agentStatus(dto));
   }
 
-  @Operation(description = "Check if the agent port is available.", operationId = "node:info:agent:port:check")
+  @Operation(summary = "Check if the agent port is available.", operationId = "node:info:agent:port:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -97,7 +97,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.checkPort(dto));
   }
 
-  @Operation(description = "Query the installation cmd of node agent by door api.", operationId = "node:agent:install:cmd")
+  @Operation(summary = "Query the installation cmd of node agent by door api.", operationId = "node:agent:install:cmd")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = AGENT_INSTALL_ENDPOINT)
@@ -106,7 +106,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.agentInstallCmd(id));
   }
 
-  @Operation(description = "Query the list of runner processes.", operationId = "node:runner:process:list")
+  @Operation(summary = "Query the list of runner processes.", operationId = "node:runner:process:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @PostMapping(value = RUNNER_PROCESS_ENDPOINT)
@@ -115,7 +115,7 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.runnerProcess(dto));
   }
 
-  @Operation(description = "Kill the runner processes.", operationId = "node:runner:process:kill")
+  @Operation(summary = "Kill the runner processes.", operationId = "node:runner:process:kill")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Kill successfully")})
   @PostMapping(value = KILL_RUNNER_PROCESS_ENDPOINT)

@@ -45,7 +45,7 @@ public class ApisShareRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(description = "Add the sharing of apis", operationId = "apis:share:add")
+  @Operation(summary = "Add the sharing of apis", operationId = "apis:share:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +54,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success(apisShareFacade.add(dto));
   }
 
-  @Operation(description = "Update the sharing of apis", operationId = "apis:share:update")
+  @Operation(summary = "Update the sharing of apis", operationId = "apis:share:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -64,7 +64,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the sharing of apis", operationId = "apis:share:delete")
+  @Operation(summary = "Delete the sharing of apis", operationId = "apis:share:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
@@ -76,7 +76,7 @@ public class ApisShareRest {
     apisShareFacade.delete(ids);
   }
 
-  @Operation(description = "Query the sharing detail of apis", operationId = "space:share:detail")
+  @Operation(summary = "Query the sharing detail of apis", operationId = "space:share:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -86,7 +86,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success(apisShareFacade.detail(id));
   }
 
-  @Operation(description = "Query the sharing list of apis", operationId = "apis:share:list")
+  @Operation(summary = "Query the sharing list of apis", operationId = "apis:share:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -95,7 +95,7 @@ public class ApisShareRest {
     return ApiLocaleResult.success(apisShareFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the sharing of apis", operationId = "apis:share:search")
+  @Operation(summary = "Fulltext search the sharing of apis", operationId = "apis:share:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

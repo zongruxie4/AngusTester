@@ -42,7 +42,7 @@ public class MockDataRest {
   @Resource
   private MockDataFacade mockDataFacade;
 
-  @Operation(description = "Generate data based on mock function expressions", operationId = "mock:function:data")
+  @Operation(summary = "Generate data based on mock function expressions", operationId = "mock:function:data")
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/function/data")
   public ApiLocaleResult<List<Object>> mockFunc(
@@ -51,7 +51,7 @@ public class MockDataRest {
     return ApiLocaleResult.success(mockDataFacade.mockFunc(function, iterations));
   }
 
-  @Operation(description = "Generate data in batch based on mock function expressions", operationId = "mock:function:batch:data")
+  @Operation(summary = "Generate data in batch based on mock function expressions", operationId = "mock:function:batch:data")
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/function/data/batch")
   public ApiLocaleResult<List<MockBatchFuncVo>> mockFuncInBatch(
@@ -59,7 +59,7 @@ public class MockDataRest {
     return ApiLocaleResult.success(mockDataFacade.mockFuncInBatch(dto));
   }
 
-  @Operation(description = "Replace function expressions in text", operationId = "mock:text:data")
+  @Operation(summary = "Replace function expressions in text", operationId = "mock:text:data")
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/text/data")
   public ApiLocaleResult<List<String>> mockText(
@@ -68,7 +68,7 @@ public class MockDataRest {
     return ApiLocaleResult.success(mockDataFacade.mockText(text, iterations));
   }
 
-  @Operation(description = "Batch replace function expressions in text", operationId = "mock:text:batch:data")
+  @Operation(summary = "Batch replace function expressions in text", operationId = "mock:text:batch:data")
   @ApiResponse(responseCode = "200", description = "Successfully generated data")
   @PostMapping(value = "/text/data/batch")
   public ApiLocaleResult<List<MockTextBatchVo>> mockTextInBatch(
@@ -76,7 +76,7 @@ public class MockDataRest {
     return ApiLocaleResult.success(mockDataFacade.mockTextInBatch(dto));
   }
 
-  @Operation(description = "Generate mock data script", operationId = "mock:data:script:generate")
+  @Operation(summary = "Generate mock data script", operationId = "mock:data:script:generate")
   @ApiResponse(responseCode = "200", description = "Successfully generated script")
   @PostMapping(value = "/data/script")
   public ApiLocaleResult<IdKey<Long, Object>> dataScriptGen(
@@ -84,28 +84,28 @@ public class MockDataRest {
     return ApiLocaleResult.success(mockDataFacade.dataScriptGen(dto));
   }
 
-  @Operation(description = "View mock data script", operationId = "mock:data:script:content:view")
+  @Operation(summary = "View mock data script", operationId = "mock:data:script:content:view")
   @ApiResponse(responseCode = "200", description = "Successfully generated script")
   @PostMapping(value = "/data/script/content")
   public ApiLocaleResult<String> dataScriptView(@Valid @RequestBody MockDataScriptGenDto dto) {
     return ApiLocaleResult.successData(mockDataFacade.dataScriptView(dto));
   }
 
-  @Operation(description = "Create execution and generate data", operationId = "mock:data:execution:generate")
+  @Operation(summary = "Create execution and generate data", operationId = "mock:data:execution:generate")
   @ApiResponse(responseCode = "200", description = "Successfully created execution")
   @PostMapping(value = "/data/execution")
   public ApiLocaleResult<IdKey<Long, Object>> dataGen(@Valid @RequestBody MockDataGenDto dto) {
     return ApiLocaleResult.success(mockDataFacade.dataGen(dto));
   }
 
-  @Operation(description = "Query all mock functions", operationId = "mock:function:all")
+  @Operation(summary = "Query all mock functions", operationId = "mock:function:all")
   @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   @GetMapping(value = "/functions")
   public ApiLocaleResult<List<MockFunction>> allFunctions() {
     return ApiLocaleResult.success(mockDataFacade.allFunctions());
   }
 
-  @Operation(description = "Query and reload all mock functions", operationId = "mock:function:all:reload")
+  @Operation(summary = "Query and reload all mock functions", operationId = "mock:function:all:reload")
   @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   @GetMapping(value = "/functions/reload")
   public ApiLocaleResult<List<MockFunction>> allFunctionsReload() {

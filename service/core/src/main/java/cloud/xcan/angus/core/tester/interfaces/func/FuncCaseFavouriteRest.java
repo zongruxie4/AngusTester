@@ -34,7 +34,7 @@ public class FuncCaseFavouriteRest {
   @Resource
   private FuncCaseFavouriteFacade funcCaseFavouriteFacade;
 
-  @Operation(description = "Add the favourite of case", operationId = "func:case:favourite:add")
+  @Operation(summary = "Add the favourite of case", operationId = "func:case:favourite:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Favourite successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +44,7 @@ public class FuncCaseFavouriteRest {
     return ApiLocaleResult.success(funcCaseFavouriteFacade.add(caseId));
   }
 
-  @Operation(description = "Cancel the favourite of case", operationId = "func:case:favourite:cancel")
+  @Operation(summary = "Cancel the favourite of case", operationId = "func:case:favourite:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Canceled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -56,7 +56,7 @@ public class FuncCaseFavouriteRest {
     funcCaseFavouriteFacade.cancel(caseId);
   }
 
-  @Operation(description = "Cancel all the favourite of case", operationId = "func:case:favourite:cancel:all")
+  @Operation(summary = "Cancel all the favourite of case", operationId = "func:case:favourite:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,7 +66,7 @@ public class FuncCaseFavouriteRest {
     funcCaseFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Fulltext search case favourite", operationId = "func:case:favourite:search")
+  @Operation(summary = "Fulltext search case favourite", operationId = "func:case:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -75,7 +75,7 @@ public class FuncCaseFavouriteRest {
     return ApiLocaleResult.success(funcCaseFavouriteFacade.search(dto));
   }
 
-  @Operation(description = "Query the favourite number of case", operationId = "func:case:favourite:count")
+  @Operation(summary = "Query the favourite number of case", operationId = "func:case:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/favourite/count")

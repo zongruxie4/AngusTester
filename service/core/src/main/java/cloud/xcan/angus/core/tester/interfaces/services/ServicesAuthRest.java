@@ -44,7 +44,7 @@ public class ServicesAuthRest {
   @Resource
   private ServicesAuthFacade servicesAuthFacade;
 
-  @Operation(description = "Add the authorization of services", operationId = "services:auth:add")
+  @Operation(summary = "Add the authorization of services", operationId = "services:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success(servicesAuthFacade.add(projectId, dto));
   }
 
-  @Operation(description = "Replace the authorization of services", operationId = "services:auth:replace")
+  @Operation(summary = "Replace the authorization of services", operationId = "services:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -68,7 +68,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the authorization of services", operationId = "services:auth:delete")
+  @Operation(summary = "Delete the authorization of services", operationId = "services:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -78,7 +78,7 @@ public class ServicesAuthRest {
     servicesAuthFacade.delete(id);
   }
 
-  @Operation(description = "Enable or disable the authorization of services", operationId = "services:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of services", operationId = "services:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -91,7 +91,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query authorization status of services", operationId = "services:auth:status")
+  @Operation(summary = "Query authorization status of services", operationId = "services:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -102,7 +102,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success(servicesAuthFacade.status(projectId));
   }
 
-  @Operation(description = "Enable or disable the authorization of services apis", operationId = "services:apis:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of services apis", operationId = "services:apis:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -114,7 +114,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth")
+  @Operation(summary = "Query the user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -127,7 +127,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success(servicesAuthFacade.userAuth(projectId, userId, admin));
   }
 
-  @Operation(description = "Query the current user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth:current")
+  @Operation(summary = "Query the current user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -139,7 +139,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success(servicesAuthFacade.currentUserAuth(projectId, admin));
   }
 
-  @Operation(description = "Check the user authorization permission of services, the administrator permission is included", operationId = "services:auth:check")
+  @Operation(summary = "Check the user authorization permission of services, the administrator permission is included", operationId = "services:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -152,7 +152,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of services authorization", operationId = "services:auth:list")
+  @Operation(summary = "Query the list of services authorization", operationId = "services:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")

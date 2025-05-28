@@ -48,7 +48,7 @@ public class ProjectRest {
   @Resource
   private ProjectFacade projectFacade;
 
-  @Operation(description = "Add the project", operationId = "project:add")
+  @Operation(summary = "Add the project", operationId = "project:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -57,7 +57,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.add(dto));
   }
 
-  @Operation(description = "Update the project", operationId = "project:update")
+  @Operation(summary = "Update the project", operationId = "project:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -67,7 +67,7 @@ public class ProjectRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the project", operationId = "project:replace")
+  @Operation(summary = "Replace the project", operationId = "project:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -76,7 +76,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.replace(dto));
   }
 
-  @Operation(description = "Import the inner project example", operationId = "project:example:import")
+  @Operation(summary = "Import the inner project example", operationId = "project:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -89,7 +89,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.importExample(name, type, dataTypes));
   }
 
-  @Operation(description = "Delete the project", operationId = "project:delete")
+  @Operation(summary = "Delete the project", operationId = "project:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -99,7 +99,7 @@ public class ProjectRest {
     projectFacade.delete(id);
   }
 
-  @Operation(description = "Query the projects that users have joined", operationId = "project:user:joined")
+  @Operation(summary = "Query the projects that users have joined", operationId = "project:user:joined")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -110,7 +110,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.userJoined(userId, name));
   }
 
-  @Operation(description = "Query the project detail", operationId = "project:detail")
+  @Operation(summary = "Query the project detail", operationId = "project:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -120,7 +120,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.detail(id));
   }
 
-  @Operation(description = "Query all user members of the project ", operationId = "project:member:user:all")
+  @Operation(summary = "Query all user members of the project ", operationId = "project:member:user:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -130,7 +130,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.userMember(id));
   }
 
-  @Operation(description = "Query the the list of project", operationId = "project:list")
+  @Operation(summary = "Query the the list of project", operationId = "project:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -139,7 +139,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of project", operationId = "project:search")
+  @Operation(summary = "Fulltext search the list of project", operationId = "project:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

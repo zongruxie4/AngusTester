@@ -42,7 +42,7 @@ public class DatasourceRest {
   @Resource
   private DatasourceFacade datasourceFacade;
 
-  @Operation(description = "Add the datasource of data", operationId = "data:datasource:add")
+  @Operation(summary = "Add the datasource of data", operationId = "data:datasource:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -51,7 +51,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.add(dto));
   }
 
-  @Operation(description = "Replace the datasource of data", operationId = "data:datasource:replace")
+  @Operation(summary = "Replace the datasource of data", operationId = "data:datasource:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -62,7 +62,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.replace(dto));
   }
 
-  @Operation(description = "Delete the datasource of data", operationId = "data:datasource:delete")
+  @Operation(summary = "Delete the datasource of data", operationId = "data:datasource:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -72,7 +72,7 @@ public class DatasourceRest {
     datasourceFacade.delete(id);
   }
 
-  @Operation(description = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byId")
+  @Operation(summary = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byId")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tested successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -82,7 +82,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.testById(id));
   }
 
-  @Operation(description = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byParam")
+  @Operation(summary = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byParam")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tested successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -92,7 +92,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.testByConfig(dto));
   }
 
-  @Operation(description = "Query the detail of data datasource", operationId = "data:datasource:detail")
+  @Operation(summary = "Query the detail of data datasource", operationId = "data:datasource:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -102,7 +102,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of data datasource", operationId = "data:datasource:list")
+  @Operation(summary = "Query the list of data datasource", operationId = "data:datasource:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -111,7 +111,7 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of data datasource", operationId = "data:datasource:search")
+  @Operation(summary = "Fulltext search the list of data datasource", operationId = "data:datasource:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

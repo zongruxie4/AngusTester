@@ -30,7 +30,7 @@ public class ExecResultRest {
   @Resource
   private ExecResultFacade execResultFacade;
 
-  @Operation(description = "Query the execution test result.", operationId = "exec:result:detail")
+  @Operation(summary = "Query the execution test result.", operationId = "exec:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -40,7 +40,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.execResult(execId));
   }
 
-  @Operation(description = "Query the apis execution test result by script type.", operationId = "exec:apis:result:byScriptType")
+  @Operation(summary = "Query the apis execution test result by script type.", operationId = "exec:apis:result:byScriptType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -51,7 +51,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.apisResultByScriptType(apiId, scriptType));
   }
 
-  @Operation(description = "Query the execution test result of apis.", operationId = "exec:apis:result:all")
+  @Operation(summary = "Query the execution test result of apis.", operationId = "exec:apis:result:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/apis/{apiId}/result")
@@ -60,7 +60,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.apisResult(apiId));
   }
 
-  @Operation(description = "Query the execution apis test result of services.", operationId = "exec:service:result:info")
+  @Operation(summary = "Query the execution apis test result of services.", operationId = "exec:service:result:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/service/{serviceId}/result")
@@ -70,7 +70,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.serviceApisResult(serviceId, dto));
   }
 
-  @Operation(description = "Query the execution apis test result of project.", operationId = "exec:project:apis:result:info")
+  @Operation(summary = "Query the execution apis test result of project.", operationId = "exec:project:apis:result:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/project/{projectId}/apis/result")
@@ -80,7 +80,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.projectApisResult(projectId, dto));
   }
 
-  @Operation(description = "Query the scenario execution test result by script type.", operationId = "exec:scenario:result:byScriptType")
+  @Operation(summary = "Query the scenario execution test result by script type.", operationId = "exec:scenario:result:byScriptType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -92,7 +92,7 @@ public class ExecResultRest {
         execResultFacade.scenarioResultByScriptType(scenarioId, scriptType));
   }
 
-  @Operation(description = "Query the execution test result of scenario.", operationId = "exec:scenario:result:all")
+  @Operation(summary = "Query the execution test result of scenario.", operationId = "exec:scenario:result:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/scenario/{scenarioId}/result")
@@ -101,7 +101,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.scenarioResult(scenarioId));
   }
 
-  @Operation(description = "Query the execution scenario test result of project", operationId = "exec:project:scenario:result:info")
+  @Operation(summary = "Query the execution scenario test result of project", operationId = "exec:project:scenario:result:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/project/{projectId}/scenario/result")
@@ -111,7 +111,7 @@ public class ExecResultRest {
     return ApiLocaleResult.success(execResultFacade.projectScenarioResult(projectId, dto));
   }
 
-  @Operation(description = "Query the execution result of case", operationId = "exec:case:result:detail")
+  @Operation(summary = "Query the execution result of case", operationId = "exec:case:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/case/{caseId}/result")

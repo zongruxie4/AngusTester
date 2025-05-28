@@ -61,7 +61,7 @@ public class ApisRest {
   @Resource
   private ApisFacade apisFacade;
 
-  @Operation(description = "Archive the unarchived apis", operationId = "apis:archive")
+  @Operation(summary = "Archive the unarchived apis", operationId = "apis:archive")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successful save"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -73,7 +73,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.archive(dto));
   }
 
-  @Operation(description = "Update apis", operationId = "apis:update")
+  @Operation(summary = "Update apis", operationId = "apis:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -85,7 +85,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace apis", operationId = "apis:replace")
+  @Operation(summary = "Replace apis", operationId = "apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -94,7 +94,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.replace(dto));
   }
 
-  @Operation(description = "Update the name of apis", operationId = "apis:replace:name")
+  @Operation(summary = "Update the name of apis", operationId = "apis:replace:name")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -106,7 +106,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Move the apis to another services", operationId = "apis:move")
+  @Operation(summary = "Move the apis to another services", operationId = "apis:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Move successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -117,7 +117,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone apis", operationId = "apis:clone")
+  @Operation(summary = "Clone apis", operationId = "apis:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -129,7 +129,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.clone(id));
   }
 
-  @Operation(description = "Delete apis", operationId = "apis:delete")
+  @Operation(summary = "Delete apis", operationId = "apis:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -140,7 +140,7 @@ public class ApisRest {
     apisFacade.delete(ids);
   }
 
-  @Operation(description = "Modify apis status", operationId = "apis:status:update")
+  @Operation(summary = "Modify apis status", operationId = "apis:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -153,7 +153,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace server configuration of the apis. A declaration of which servers can be used across the API. "
           + "For more details on the server, please see: [OpenAPI Specification#Server Object](https://swagger.io/specification/#server-object)", operationId = "apis:schema:server:replace")
   @ApiResponses(value = {
@@ -168,7 +168,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace all server configuration of the apis. A declaration of which servers can be used across the API. "
           + "Note: `The local server will be deleted when it does not exist in the request`. For more details on the server, please see: [OpenAPI Specification#Server Object](https://swagger.io/specification/#server-object)", operationId = "apis:schema:server:all:replace")
   @ApiResponses(value = {
@@ -183,7 +183,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete servers of the apis. Delete the servers of apis by url.", operationId = "apis:schema:server:delete")
+  @Operation(summary = "Delete servers of the apis. Delete the servers of apis by url.", operationId = "apis:schema:server:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -196,7 +196,7 @@ public class ApisRest {
     apisFacade.serverDelete(id, urls);
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Query the server configuration of apis. Note: `The data source includes "
           + "the current api request server, api servers configuration, and parent services servers configuration`.", operationId = "apis:schema:server:all")
   @ApiResponses(value = {
@@ -209,7 +209,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.serverList(id));
   }
 
-  @Operation(description = "Add mock apis association", operationId = "apis:association:mock:apis:add")
+  @Operation(summary = "Add mock apis association", operationId = "apis:association:mock:apis:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -220,7 +220,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.assocMockApisAdd(id, dto));
   }
 
-  @Operation(description = "Query the mock apis information associated with the apis", operationId = "apis:association:mock:apis:all")
+  @Operation(summary = "Query the mock apis information associated with the apis", operationId = "apis:association:mock:apis:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -230,7 +230,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.assocMockApis(id));
   }
 
-  @Operation(description = "Query the detail of apis", operationId = "apis:detail")
+  @Operation(summary = "Query the detail of apis", operationId = "apis:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -242,7 +242,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.detail(id, resolveRef));
   }
 
-  @Operation(description = "Query the OpenAPI document of apis", operationId = "apis:openapi:detail")
+  @Operation(summary = "Query the OpenAPI document of apis", operationId = "apis:openapi:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -254,7 +254,7 @@ public class ApisRest {
     return ApiLocaleResult.successData(apisFacade.openapiDetail(id, dto));
   }
 
-  @Operation(description = "Check apis", operationId = "apis:check")
+  @Operation(summary = "Check apis", operationId = "apis:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -266,7 +266,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the detail list of apis", operationId = "apis:list:detail")
+  @Operation(summary = "Query the detail list of apis", operationId = "apis:list:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -279,7 +279,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.listDetail(ids, resolveRef));
   }
 
-  @Operation(description = "Query the basic information of apis", operationId = "apis:list")
+  @Operation(summary = "Query the basic information of apis", operationId = "apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -288,7 +288,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the basic information of apis", operationId = "apis:search")
+  @Operation(summary = "Fulltext search the basic information of apis", operationId = "apis:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -297,7 +297,7 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.search(dto));
   }
 
-  @Operation(description = "Export the OpenAPI specification of apis", operationId = "apis:openapi:export")
+  @Operation(summary = "Export the OpenAPI specification of apis", operationId = "apis:openapi:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/{id}/openapi/export")

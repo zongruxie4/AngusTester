@@ -28,7 +28,7 @@ public class ActivityRest {
   @Resource
   private ActivityFacade activityFacade;
 
-  @Operation(description = "Query the list of activity", operationId = "activity:list")
+  @Operation(summary = "Query the list of activity", operationId = "activity:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -36,7 +36,7 @@ public class ActivityRest {
     return ApiLocaleResult.success(activityFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of activity", operationId = "activity:search")
+  @Operation(summary = "Fulltext search the list of activity", operationId = "activity:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

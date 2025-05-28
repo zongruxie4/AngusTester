@@ -47,7 +47,7 @@ public class FuncBaselineRest {
   @Resource
   private FuncBaselineFacade funcBaselineFacade;
 
-  @Operation(description = "Add the baseline", operationId = "func:baseline:add")
+  @Operation(summary = "Add the baseline", operationId = "func:baseline:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.add(dto));
   }
 
-  @Operation(description = "Update the baseline", operationId = "func:baseline:update")
+  @Operation(summary = "Update the baseline", operationId = "func:baseline:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @PatchMapping
@@ -65,7 +65,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the baseline", operationId = "func:baseline:replace")
+  @Operation(summary = "Replace the baseline", operationId = "func:baseline:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -74,7 +74,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.replace(dto));
   }
 
-  @Operation(description = "Establish the baseline", operationId = "func:baseline:establish")
+  @Operation(summary = "Establish the baseline", operationId = "func:baseline:establish")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -85,7 +85,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the baselines", operationId = "func:baseline:delete")
+  @Operation(summary = "Delete the baselines", operationId = "func:baseline:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @DeleteMapping
@@ -95,7 +95,7 @@ public class FuncBaselineRest {
     funcBaselineFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of baseline", operationId = "func:baseline:detail")
+  @Operation(summary = "Query the detail of baseline", operationId = "func:baseline:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -105,7 +105,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of baseline", operationId = "func:baseline:list")
+  @Operation(summary = "Query the list of baseline", operationId = "func:baseline:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -114,7 +114,7 @@ public class FuncBaselineRest {
     return ApiLocaleResult.success(funcBaselineFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of baseline", operationId = "func:baseline:search")
+  @Operation(summary = "Fulltext search the list of baseline", operationId = "func:baseline:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

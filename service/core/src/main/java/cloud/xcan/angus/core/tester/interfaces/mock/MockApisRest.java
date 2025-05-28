@@ -49,7 +49,7 @@ public class MockApisRest {
   @Resource
   private MockApisFacade mockApisFacade;
 
-  @Operation(description = "Add mock apis", operationId = "mock:apis:add")
+  @Operation(summary = "Add mock apis", operationId = "mock:apis:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -59,7 +59,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.add(dto));
   }
 
-  @Operation(description = "Update mock apis", operationId = "mock:apis:update")
+  @Operation(summary = "Update mock apis", operationId = "mock:apis:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -71,7 +71,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace mock apis", operationId = "mock:apis:replace")
+  @Operation(summary = "Replace mock apis", operationId = "mock:apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")
   })
@@ -81,7 +81,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.replace(dto));
   }
 
-  @Operation(description = "Clone mock apis", operationId = "mock:apis:clone")
+  @Operation(summary = "Clone mock apis", operationId = "mock:apis:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -92,7 +92,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.clone(id));
   }
 
-  @Operation(description = "Move the apis to another mock service", operationId = "mock:apis:move")
+  @Operation(summary = "Move the apis to another mock service", operationId = "mock:apis:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Moved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -104,7 +104,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Sync the apis to mock service instance", operationId = "mock:apis:instance:sync")
+  @Operation(summary = "Sync the apis to mock service instance", operationId = "mock:apis:instance:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -117,7 +117,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Generate mock apis from copied apis", operationId = "mock:apis:copy:add")
+  @Operation(summary = "Generate mock apis from copied apis", operationId = "mock:apis:copy:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -128,7 +128,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.copyApisAdd(mockServiceId, apisId));
   }
 
-  @Operation(description = "Generate associated mock apis from apis", operationId = "mock:apis:association:add")
+  @Operation(summary = "Generate associated mock apis from apis", operationId = "mock:apis:association:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -139,7 +139,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.assocApisAdd(mockServiceId, apisId));
   }
 
-  @Operation(description = "Associate mock apis and apis", operationId = "mock:apis:association:update")
+  @Operation(summary = "Associate mock apis and apis", operationId = "mock:apis:association:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -151,7 +151,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the association between mock apis and apis", operationId = "mock:apis:association:delete")
+  @Operation(summary = "Delete the association between mock apis and apis", operationId = "mock:apis:association:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/association")
@@ -160,7 +160,7 @@ public class MockApisRest {
     mockApisFacade.assocDelete(ids);
   }
 
-  @Operation(description = "Delete mock apis", operationId = "mock:apis:delete")
+  @Operation(summary = "Delete mock apis", operationId = "mock:apis:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -170,7 +170,7 @@ public class MockApisRest {
     mockApisFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of mock apis", operationId = "mock:apis:detail")
+  @Operation(summary = "Query the detail of mock apis", operationId = "mock:apis:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -180,7 +180,7 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of mock apis", operationId = "mock:apis:list")
+  @Operation(summary = "Query the list of mock apis", operationId = "mock:apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -190,7 +190,7 @@ public class MockApisRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(description = "Fulltext search the list of mock apis", operationId = "mock:apis:search")
+  @Operation(summary = "Fulltext search the list of mock apis", operationId = "mock:apis:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

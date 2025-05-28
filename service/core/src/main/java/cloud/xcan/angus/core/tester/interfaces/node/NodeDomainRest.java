@@ -41,7 +41,7 @@ public class NodeDomainRest {
   @Resource
   private NodeDomainFacade nodeDomainFacade;
 
-  @Operation(description = "Add node domains ", operationId = "node:domain:add")
+  @Operation(summary = "Add node domains ", operationId = "node:domain:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -50,7 +50,7 @@ public class NodeDomainRest {
     return ApiLocaleResult.success(nodeDomainFacade.add(dto));
   }
 
-  @Operation(description = "Update node domains", operationId = "node:domain:update")
+  @Operation(summary = "Update node domains", operationId = "node:domain:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -61,7 +61,7 @@ public class NodeDomainRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete node domains", operationId = "node:domain:delete")
+  @Operation(summary = "Delete node domains", operationId = "node:domain:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
@@ -70,7 +70,7 @@ public class NodeDomainRest {
     nodeDomainFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of node domain", operationId = "node:domain:detail")
+  @Operation(summary = "Query the detail of node domain", operationId = "node:domain:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -80,7 +80,7 @@ public class NodeDomainRest {
     return ApiLocaleResult.success(nodeDomainFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of node domain", operationId = "node:domain:list")
+  @Operation(summary = "Query the list of node domain", operationId = "node:domain:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping

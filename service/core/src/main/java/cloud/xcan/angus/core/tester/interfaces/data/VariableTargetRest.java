@@ -41,7 +41,7 @@ public class VariableTargetRest {
   @Resource
   private VariableTargetFacade variableTargetFacade;
 
-  @Operation(description = "Add target variable", operationId = "data:target:variable:add")
+  @Operation(summary = "Add target variable", operationId = "data:target:variable:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class VariableTargetRest {
     return ApiLocaleResult.success(variableTargetFacade.add(targetId, targetType, variableIds));
   }
 
-  @Operation(description = "Delete target variables", operationId = "data:target:variable:delete")
+  @Operation(summary = "Delete target variables", operationId = "data:target:variable:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class VariableTargetRest {
     variableTargetFacade.delete(targetId, targetType, variableIds);
   }
 
-  @Operation(description = "Query the list of target variables", operationId = "data:target:variable:list")
+  @Operation(summary = "Query the list of target variables", operationId = "data:target:variable:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/target/{targetId}/{targetType}/variable")
@@ -75,7 +75,7 @@ public class VariableTargetRest {
     return ApiLocaleResult.success(variableTargetFacade.list(targetId, targetType));
   }
 
-  @Operation(description = "Query the list of variable targets", operationId = "data:variable:target:list")
+  @Operation(summary = "Query the list of variable targets", operationId = "data:variable:target:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/variable/{variableId}/target")
@@ -84,7 +84,7 @@ public class VariableTargetRest {
     return ApiLocaleResult.success(variableTargetFacade.listTarget(variableId));
   }
 
-  @Operation(description = "Preview the values of target variables", operationId = "data:target:variable:value:preview")
+  @Operation(summary = "Preview the values of target variables", operationId = "data:target:variable:value:preview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/target/{targetId}/{targetType}/variable/value/preview")

@@ -37,7 +37,7 @@ public class CommentRest {
   @Resource
   private CommentFacade commentFacade;
 
-  @Operation(description = "Add comment", operationId = "comment:add")
+  @Operation(summary = "Add comment", operationId = "comment:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -46,7 +46,7 @@ public class CommentRest {
     return ApiLocaleResult.success(commentFacade.add(dto));
   }
 
-  @Operation(description = "Delete comments", operationId = "comment:delete")
+  @Operation(summary = "Delete comments", operationId = "comment:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -56,7 +56,7 @@ public class CommentRest {
     commentFacade.delete(id);
   }
 
-  @Operation(description = "Query the tree of comment", operationId = "comment:tree")
+  @Operation(summary = "Query the tree of comment", operationId = "comment:tree")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping

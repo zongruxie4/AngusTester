@@ -27,7 +27,7 @@ public class KanbanEfficiencyRest {
   @Resource
   private KanbanEfficiencyFacade kanbanEfficiencyFacade;
 
-  @Operation(description = "Task efficiency statistics overview", operationId = "kanban:efficiency:task:overview")
+  @Operation(summary = "Task efficiency statistics overview", operationId = "kanban:efficiency:task:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task/overview")
@@ -36,7 +36,7 @@ public class KanbanEfficiencyRest {
     return ApiLocaleResult.success(kanbanEfficiencyFacade.taskEfficiencyOverview(dto));
   }
 
-  @Operation(description = "Case efficiency statistics overview", operationId = "kanban:efficiency:case:overview")
+  @Operation(summary = "Case efficiency statistics overview", operationId = "kanban:efficiency:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/overview")

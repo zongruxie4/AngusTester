@@ -35,7 +35,7 @@ public class TaskFavoriteRest {
   @Resource
   private TaskFavouriteFacade taskFavouriteFacade;
 
-  @Operation(description = "Add the favourite of task", operationId = "task:favourite:add")
+  @Operation(summary = "Add the favourite of task", operationId = "task:favourite:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskFavoriteRest {
     return ApiLocaleResult.success(taskFavouriteFacade.add(id));
   }
 
-  @Operation(description = "Cancel the favourite of task", operationId = "task:favourite:delete")
+  @Operation(summary = "Cancel the favourite of task", operationId = "task:favourite:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancel(id);
   }
 
-  @Operation(description = "Cancel all the favorites of task", operationId = "task:favourite:delete:all")
+  @Operation(summary = "Cancel all the favorites of task", operationId = "task:favourite:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Query the favourite list of task", operationId = "task:favourite:search")
+  @Operation(summary = "Query the favourite list of task", operationId = "task:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -74,7 +74,7 @@ public class TaskFavoriteRest {
     return ApiLocaleResult.success(taskFavouriteFacade.search(dto));
   }
 
-  @Operation(description = "Query the favourite number of task", operationId = "task:favourite:count")
+  @Operation(summary = "Query the favourite number of task", operationId = "task:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/favourite/count")

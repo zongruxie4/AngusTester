@@ -37,7 +37,7 @@ public class ServicesSyncRest {
   @Resource
   private ServicesSyncFacade servicesSyncFacade;
 
-  @Operation(description =
+  @Operation(summary =
       "Replace synchronization configuration of the services. Replace synchronization configuration of the services, "
           + "allow up to " + MAX_SYNC_OPENAPI_NUM
           + " configuration to be added", operationId = "services:sync:replace")
@@ -53,7 +53,7 @@ public class ServicesSyncRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace all synchronization configuration of the services. Replace all synchronization configuration of the services, allow up to "
           + MAX_SYNC_OPENAPI_NUM
           + " configuration to be added", operationId = "services:sync:all:replace")
@@ -69,7 +69,7 @@ public class ServicesSyncRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Execute the services synchronization. Execute the synchronization of services by OpenAPI docs configuration", operationId = "services:sync:exec")
+  @Operation(summary = "Execute the services synchronization. Execute the synchronization of services by OpenAPI docs configuration", operationId = "services:sync:exec")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -82,7 +82,7 @@ public class ServicesSyncRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Test the synchronization configuration. Test whether the synchronization url and authorization information are configured correctly", operationId = "services:sync:test")
+  @Operation(summary = "Test the synchronization configuration. Test whether the synchronization url and authorization information are configured correctly", operationId = "services:sync:test")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test successfully")})
   @PostMapping("/synchronization/test")
@@ -91,7 +91,7 @@ public class ServicesSyncRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the services synchronization configuration. Delete the OpenAPI docs synchronization configuration of services by name", operationId = "services:sync:delete")
+  @Operation(summary = "Delete the services synchronization configuration. Delete the OpenAPI docs synchronization configuration of services by name", operationId = "services:sync:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Test successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,7 +102,7 @@ public class ServicesSyncRest {
     servicesSyncFacade.delete(serviceId, names);
   }
 
-  @Operation(description = "Query the services synchronization configuration. Query the all synchronization configuration of services", operationId = "services:sync:list")
+  @Operation(summary = "Query the services synchronization configuration. Query the all synchronization configuration of services", operationId = "services:sync:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")})

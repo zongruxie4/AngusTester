@@ -30,7 +30,7 @@ public class TaskTestRest {
   @Resource
   private TaskTestFacade taskTestFacade;
 
-  @Operation(description = "Query the associated target list of task", operationId = "task:assoc:list")
+  @Operation(summary = "Query the associated target list of task", operationId = "task:assoc:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{taskType}/{targetId}/test/association")
@@ -40,7 +40,7 @@ public class TaskTestRest {
     return ApiLocaleResult.success(taskTestFacade.assocList(taskType, targetId));
   }
 
-  @Operation(description = "Query the test results of task", operationId = "apis:test:result:info")
+  @Operation(summary = "Query the test results of task", operationId = "apis:test:result:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{taskType}/{targetId}/{testType}/result")

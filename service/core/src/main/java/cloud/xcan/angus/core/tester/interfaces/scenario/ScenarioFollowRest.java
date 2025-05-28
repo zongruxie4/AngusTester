@@ -35,7 +35,7 @@ public class ScenarioFollowRest {
   @Resource
   private ScenarioFollowFacade scenarioFollowFacade;
 
-  @Operation(description = "Add the follow of scenario", operationId = "scenario:follow:add")
+  @Operation(summary = "Add the follow of scenario", operationId = "scenario:follow:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Follow successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class ScenarioFollowRest {
     return ApiLocaleResult.success(scenarioFollowFacade.add(id));
   }
 
-  @Operation(description = "Cancel the follow of scenario", operationId = "scenario:follow:cancel")
+  @Operation(summary = "Cancel the follow of scenario", operationId = "scenario:follow:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class ScenarioFollowRest {
     scenarioFollowFacade.cancel(id);
   }
 
-  @Operation(description = "Cancel all the follows of scenario", operationId = "scenario:follow:cancel:all")
+  @Operation(summary = "Cancel all the follows of scenario", operationId = "scenario:follow:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class ScenarioFollowRest {
     scenarioFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Query the follow list of scenario", operationId = "scenario:follow:search")
+  @Operation(summary = "Query the follow list of scenario", operationId = "scenario:follow:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
@@ -74,7 +74,7 @@ public class ScenarioFollowRest {
     return ApiLocaleResult.success(scenarioFollowFacade.search(dto));
   }
 
-  @Operation(description = "Query the follow number of scenario", operationId = "scenario:follow:count")
+  @Operation(summary = "Query the follow number of scenario", operationId = "scenario:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/follow/count")

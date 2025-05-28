@@ -55,7 +55,7 @@ public class DatasetRest {
   @Resource
   private DatasetFacade datasetFacade;
 
-  @Operation(description = "Add dataset", operationId = "data:dataset:add")
+  @Operation(summary = "Add dataset", operationId = "data:dataset:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -64,7 +64,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.add(dto));
   }
 
-  @Operation(description = "Update dataset", operationId = "data:dataset:update")
+  @Operation(summary = "Update dataset", operationId = "data:dataset:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -75,7 +75,7 @@ public class DatasetRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace dataset", operationId = "data:dataset:replace")
+  @Operation(summary = "Replace dataset", operationId = "data:dataset:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -85,7 +85,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.replace(dto));
   }
 
-  @Operation(description = "Clone the datasets", operationId = "data:dataset:clone")
+  @Operation(summary = "Clone the datasets", operationId = "data:dataset:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Clone successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -96,7 +96,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.clone(ids));
   }
 
-  @Operation(description = "Import the datasets", operationId = "data:dataset:import")
+  @Operation(summary = "Import the datasets", operationId = "data:dataset:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -105,7 +105,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner dataset example", operationId = "data:dataset:example:import")
+  @Operation(summary = "Import the inner dataset example", operationId = "data:dataset:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -115,7 +115,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete datasets", operationId = "data:dataset:delete")
+  @Operation(summary = "Delete datasets", operationId = "data:dataset:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -126,7 +126,7 @@ public class DatasetRest {
     datasetFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of dataset", operationId = "data:dataset:detail")
+  @Operation(summary = "Query the detail of dataset", operationId = "data:dataset:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{id}")
@@ -135,7 +135,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.detail(id));
   }
 
-  @Operation(description = "Preview the value of dataset", operationId = "data:dataset:value:preview")
+  @Operation(summary = "Preview the value of dataset", operationId = "data:dataset:value:preview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @PostMapping("/value/preview")
@@ -144,7 +144,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.valuePreview(dto));
   }
 
-  @Operation(description = "Query the list of datasets", operationId = "data:dataset:list")
+  @Operation(summary = "Query the list of datasets", operationId = "data:dataset:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -153,7 +153,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of datasets", operationId = "data:dataset:search")
+  @Operation(summary = "Fulltext search the list of datasets", operationId = "data:dataset:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -162,7 +162,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.search(dto));
   }
 
-  @Operation(description = "Export the datasets", operationId = "data:dataset:export")
+  @Operation(summary = "Export the datasets", operationId = "data:dataset:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

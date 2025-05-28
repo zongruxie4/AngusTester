@@ -67,7 +67,7 @@ public class FuncCaseRest {
   @Resource
   private FuncCaseFacade funcCaseFacade;
 
-  @Operation(description = "Add functional test cases", operationId = "func:case:add")
+  @Operation(summary = "Add functional test cases", operationId = "func:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -77,7 +77,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.add(dto));
   }
 
-  @Operation(description = "Update functional test cases", operationId = "func:case:update")
+  @Operation(summary = "Update functional test cases", operationId = "func:case:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -89,7 +89,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace functional test cases", operationId = "func:case:replace")
+  @Operation(summary = "Replace functional test cases", operationId = "func:case:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -98,7 +98,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.replace(dto));
   }
 
-  @Operation(description = "Replace the name of functional test cases", operationId = "func:case:name:replace")
+  @Operation(summary = "Replace the name of functional test cases", operationId = "func:case:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -111,7 +111,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone the functional test cases", operationId = "func:case:clone")
+  @Operation(summary = "Clone the functional test cases", operationId = "func:case:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Clone successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -122,7 +122,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.clone(ids));
   }
 
-  @Operation(description = "Move the case to another plan", operationId = "func:case:move")
+  @Operation(summary = "Move the case to another plan", operationId = "func:case:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Moved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -134,7 +134,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the tester of case", operationId = "func:case:tester:replace")
+  @Operation(summary = "Replace the tester of case", operationId = "func:case:tester:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -147,7 +147,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the tags of functional test cases", operationId = "func:case:tags:replace")
+  @Operation(summary = "Replace the tags of functional test cases", operationId = "func:case:tags:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -160,7 +160,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the deadline of functional test cases", operationId = "func:case:deadline:replace")
+  @Operation(summary = "Replace the deadline of functional test cases", operationId = "func:case:deadline:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -173,7 +173,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the priority of functional test cases", operationId = "func:case:priority:replace")
+  @Operation(summary = "Replace the priority of functional test cases", operationId = "func:case:priority:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -186,7 +186,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the software version of functional test case", operationId = "func:case:softwareVersion:replace")
+  @Operation(summary = "Replace the software version of functional test case", operationId = "func:case:softwareVersion:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -199,7 +199,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the eval workload of functional test cases", operationId = "func:case:evalWorkload:replace")
+  @Operation(summary = "Replace the eval workload of functional test cases", operationId = "func:case:evalWorkload:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -212,7 +212,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the actual workload of functional test cases", operationId = "func:case:actualWorkload:replace")
+  @Operation(summary = "Replace the actual workload of functional test cases", operationId = "func:case:actualWorkload:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -225,7 +225,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace attachment the functional test cases", operationId = "func:case:attachment:replace")
+  @Operation(summary = "Replace attachment the functional test cases", operationId = "func:case:attachment:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -238,7 +238,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the result of functional test cases", operationId = "func:case:result:replace")
+  @Operation(summary = "Replace the result of functional test cases", operationId = "func:case:result:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -250,7 +250,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Update the result of functional test cases", operationId = "func:case:result:update")
+  @Operation(summary = "Update the result of functional test cases", operationId = "func:case:result:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -262,7 +262,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reset the result of test result", operationId = "func:case:result:reset")
+  @Operation(summary = "Reset the result of test result", operationId = "func:case:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -274,7 +274,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Retest functional test cases, set the test as pending and skip the review when there is a review", operationId = "func:case:retest")
+  @Operation(summary = "Retest functional test cases, set the test as pending and skip the review when there is a review", operationId = "func:case:retest")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -286,7 +286,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  //  @Operation(description = "Review functional test cases", operationId = "func:case:review")
+  //  @Operation(summary = "Review functional test cases", operationId = "func:case:review")
   //  @ApiResponses(value = {
   //      @ApiResponse(responseCode = "200", description = "Updated successfully"),
   //      @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -298,7 +298,7 @@ public class FuncCaseRest {
   //    return ApiLocaleResult.success();
   //  }
 
-  //  @Operation(description = "Reset the result of case review", operationId = "func:case:review:reset")
+  //  @Operation(summary = "Reset the result of case review", operationId = "func:case:review:reset")
   //  @ApiResponses(value = {
   //      @ApiResponse(responseCode = "200", description = "Updated successfully"),
   //      @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -310,7 +310,7 @@ public class FuncCaseRest {
   //    return ApiLocaleResult.success();
   //  }
 
-  @Operation(description = "Associate the tasks of the case", operationId = "func:case:association:task:add")
+  @Operation(summary = "Associate the tasks of the case", operationId = "func:case:association:task:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Set successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -323,7 +323,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel the association tasks of the case", operationId = "func:case:association:task:cancel")
+  @Operation(summary = "Cancel the association tasks of the case", operationId = "func:case:association:task:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cancel successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -337,7 +337,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Associate the cases of the case", operationId = "func:case:association:case:add")
+  @Operation(summary = "Associate the cases of the case", operationId = "func:case:association:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Set successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -350,7 +350,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel the association cases of the case", operationId = "func:case:association:case:cancel")
+  @Operation(summary = "Cancel the association cases of the case", operationId = "func:case:association:case:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cancel successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -364,7 +364,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Import the functional test cases", operationId = "func:case:import")
+  @Operation(summary = "Import the functional test cases", operationId = "func:case:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -374,7 +374,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner functional test cases example", operationId = "func:case:example:import")
+  @Operation(summary = "Import the inner functional test cases example", operationId = "func:case:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -384,7 +384,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete functional test cases", operationId = "func:case:delete")
+  @Operation(summary = "Delete functional test cases", operationId = "func:case:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -394,7 +394,7 @@ public class FuncCaseRest {
     funcCaseFacade.delete(ids);
   }
 
-  @Operation(description = "Query the not associated tasks list of task", operationId = "case:notAssociated:task:list")
+  @Operation(summary = "Query the not associated tasks list of task", operationId = "case:notAssociated:task:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/task/notAssociated")
@@ -405,7 +405,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.notAssociatedTask(id, moduleId, taskType));
   }
 
-  @Operation(description = "Query the not associated cases list of task", operationId = "case:notAssociated:case:list")
+  @Operation(summary = "Query the not associated cases list of task", operationId = "case:notAssociated:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/case/notAssociated")
@@ -415,7 +415,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.notAssociatedCase(id, moduleId));
   }
 
-  @Operation(description = "Query the detail of functional test cases", operationId = "func:case:detail")
+  @Operation(summary = "Query the detail of functional test cases", operationId = "func:case:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -425,7 +425,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.detail(id));
   }
 
-  @Operation(description = "Query the functional case info list of review", operationId = "func:case:review:list")
+  @Operation(summary = "Query the functional case info list of review", operationId = "func:case:review:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/review")
@@ -434,7 +434,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.reviewList(id));
   }
 
-  @Operation(description = "Query the list of functional test cases", operationId = "func:case:list")
+  @Operation(summary = "Query the list of functional test cases", operationId = "func:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -443,7 +443,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of functional test cases", operationId = "func:case:search")
+  @Operation(summary = "Fulltext search the list of functional test cases", operationId = "func:case:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -452,7 +452,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.search(false, dto));
   }
 
-  @Operation(description = "Export the functional test cases by conditions", operationId = "func:case:export")
+  @Operation(summary = "Export the functional test cases by conditions", operationId = "func:case:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

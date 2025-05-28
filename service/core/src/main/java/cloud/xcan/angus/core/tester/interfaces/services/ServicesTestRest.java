@@ -50,7 +50,7 @@ public class ServicesTestRest {
   @Resource
   private ServicesSchemaFacade servicesSchemaFacade;
 
-  @Operation(description =
+  @Operation(summary =
       "Enable or disable the functionality, performance, stability testing of service apis. "
           + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis.", operationId = "services:test:enabled")
   @ApiResponses(value = {
@@ -66,7 +66,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "The testing apis summary the functionality, performance, stability testing of service", operationId = "services:test:apis:count")
+  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of service", operationId = "services:test:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -78,7 +78,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
-  @Operation(description = "The testing apis summary the functionality, performance, stability testing of project", operationId = "project:test:apis:count")
+  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of project", operationId = "project:test:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -90,7 +90,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success(servicesTestFacade.countProjectTestApis(projectId, dto));
   }
 
-  @Operation(description = "Configure and generate the performance, stability testing scripts of services", operationId = "services:test:script:generate")
+  @Operation(summary = "Configure and generate the performance, stability testing scripts of services", operationId = "services:test:script:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Configure and generate successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -103,7 +103,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the performance, stability testing scripts of services", operationId = "services:test:script:delete")
+  @Operation(summary = "Delete the performance, stability testing scripts of services", operationId = "services:test:script:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -114,7 +114,7 @@ public class ServicesTestRest {
     servicesTestFacade.scriptDelete(serviceId, testTypes);
   }
 
-  @Operation(description = "Configure and generate performance, stability testing of services, which will override the configuration when the task exists", operationId = "services:test:task:generate")
+  @Operation(summary = "Configure and generate performance, stability testing of services, which will override the configuration when the task exists", operationId = "services:test:task:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Configure and generate successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -127,7 +127,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Restart the existing performance, stability testing of services", operationId = "services:test:task:restart")
+  @Operation(summary = "Restart the existing performance, stability testing of services", operationId = "services:test:task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Restarted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -138,7 +138,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reopen the existing performance, stability testing of services", operationId = "services:test:task:reopen")
+  @Operation(summary = "Reopen the existing performance, stability testing of services", operationId = "services:test:task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Reopened successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -149,7 +149,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the performance, stability testing of services", operationId = "services:test:task:delete")
+  @Operation(summary = "Delete the performance, stability testing of services", operationId = "services:test:task:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -160,7 +160,7 @@ public class ServicesTestRest {
     servicesTestFacade.testTaskDelete(serviceId, testTypes);
   }
 
-  @Operation(description = "Query all server configurations of the services", operationId = "services:test:schema:server:all")
+  @Operation(summary = "Query all server configurations of the services", operationId = "services:test:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -171,7 +171,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success(servicesSchemaFacade.serverList(serviceId, true));
   }
 
-  @Operation(description = "Create the apis functionality, performance or stability testing execution, if the script does not exist, create the script", operationId = "services:test:apis:exec:add")
+  @Operation(summary = "Create the apis functionality, performance or stability testing execution, if the script does not exist, create the script", operationId = "services:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -185,7 +185,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Create the apis smoke testing execution, if the script does not exist, create the script", operationId = "services:smoke:test:apis:exec:add")
+  @Operation(summary = "Create the apis smoke testing execution, if the script does not exist, create the script", operationId = "services:smoke:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -198,7 +198,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Create the apis smoke testing execution, if the script does not exist, create the script", operationId = "services:security:test:apis:exec:add")
+  @Operation(summary = "Create the apis smoke testing execution, if the script does not exist, create the script", operationId = "services:security:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -211,7 +211,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the test results of services", operationId = "services:test:apis:result:detail")
+  @Operation(summary = "Query the test results of services", operationId = "services:test:apis:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/services/{id}/test/result")
@@ -220,7 +220,7 @@ public class ServicesTestRest {
     return ApiLocaleResult.success(servicesTestFacade.testServiceResult(serviceId));
   }
 
-  @Operation(description = "Query the test results of project", operationId = "project:test:apis:result:detail")
+  @Operation(summary = "Query the test results of project", operationId = "project:test:apis:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/project/{id}/test/result")

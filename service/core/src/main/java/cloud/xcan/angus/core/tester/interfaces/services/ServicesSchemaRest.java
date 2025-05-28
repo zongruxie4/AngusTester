@@ -42,7 +42,7 @@ public class ServicesSchemaRest {
   @Resource
   private ServicesSchemaFacade servicesSchemaFacade;
 
-  @Operation(description = "Replace the services schema info. Provides metadata about the API. "
+  @Operation(summary = "Replace the services schema info. Provides metadata about the API. "
       + "Note: `Metadata is required for an OpenAPI document, so it cannot be deleted after adding it`.", operationId = "services:schema:info:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
@@ -56,7 +56,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the schema info of services", operationId = "services:schema:info:detail")
+  @Operation(summary = "Query the schema info of services", operationId = "services:schema:info:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")})
@@ -66,7 +66,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.infoDetail(serviceId));
   }
 
-  @Operation(description = "Replace the services referencing for external documentation. "
+  @Operation(summary = "Replace the services referencing for external documentation. "
       + "Allows referencing an external resource for extended documentation for OpenAPI document.", operationId = "services:schema:externalDoc:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
@@ -80,7 +80,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the additional external documentation of services", operationId = "services:schema:externalDoc:detail")
+  @Operation(summary = "Query the additional external documentation of services", operationId = "services:schema:externalDoc:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")})
@@ -90,7 +90,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.externalDocDetail(serviceId));
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace security requirements of the services. A declaration of which security mechanisms can be used across the API. "
           + "For more details on the security requirements, please see: [OpenAPI Specification#Security Requirement Object](https://swagger.io/specification/#security-requirement-object)", operationId = "services:schema:securityRequirement:replace")
   @ApiResponses(value = {
@@ -105,7 +105,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace all security requirements of the services. A declaration of which security mechanisms can be used across the API. "
           + "For more details on the security requirements, please see: [OpenAPI Specification#Security Requirement Object](https://swagger.io/specification/#security-requirement-object)", operationId = "services:schema:securityRequirement:all:replace")
   @ApiResponses(value = {
@@ -121,7 +121,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete security requirements of the services. Delete the security requirements of services by name", operationId = "services:schema:securityRequirement:delete")
+  @Operation(summary = "Delete security requirements of the services. Delete the security requirements of services by name", operationId = "services:schema:securityRequirement:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -134,7 +134,7 @@ public class ServicesSchemaRest {
     servicesSchemaFacade.securityRequirementDelete(serviceId, names);
   }
 
-  @Operation(description = "Query all security requirements of the services. Query the all security requirement of services", operationId = "services:schema:securityRequirement:all")
+  @Operation(summary = "Query all security requirements of the services. Query the all security requirement of services", operationId = "services:schema:securityRequirement:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -145,7 +145,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.securityRequirementList(serviceId));
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace server configuration of the services. A declaration of which servers can be used across the API. "
           + "For more details on the server, please see: [OpenAPI Specification#Server Object](https://swagger.io/specification/#server-object)", operationId = "services:schema:server:replace")
   @ApiResponses(value = {
@@ -160,7 +160,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Synchronous server configuration to the services apis", operationId = "services:schema:server:apis:replace")
+  @Operation(summary = "Synchronous server configuration to the services apis", operationId = "services:schema:server:apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -173,7 +173,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace all server configurations of the services. A declaration of which servers can be used across the API. "
           + "Note: `The local server will be deleted when it does not exist in the request`. "
           + "For more details on the server, please see: [OpenAPI Specification#Server Object](https://swagger.io/specification/#server-object)", operationId = "services:schema:server:all:replace")
@@ -189,7 +189,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete servers of the services. Delete the servers of services by url", operationId = "services:schema:server:delete")
+  @Operation(summary = "Delete servers of the services. Delete the servers of services by url", operationId = "services:schema:server:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -202,7 +202,7 @@ public class ServicesSchemaRest {
     servicesSchemaFacade.serverDelete(serviceId, ids);
   }
 
-  @Operation(description = "Query all server configurations of the services", operationId = "services:schema:server:all")
+  @Operation(summary = "Query all server configurations of the services", operationId = "services:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -213,7 +213,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.serverList(serviceId, false));
   }
 
-  @Operation(description = "Query the detail of server configurations", operationId = "services:schema:server:detail")
+  @Operation(summary = "Query the detail of server configurations", operationId = "services:schema:server:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -225,7 +225,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.serverDetail(serviceId, serverId));
   }
 
-  @Operation(description = "Query all server configurations of the project services", operationId = "services:schema:server:byProject")
+  @Operation(summary = "Query all server configurations of the project services", operationId = "services:schema:server:byProject")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -236,7 +236,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.serverListByProject(projectId));
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace tag of the services. Note: `The order of the tags can be used to reflect on their order by the parsing tools`. "
           + "Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic.", operationId = "services:schema:tag:replace")
   @ApiResponses(value = {
@@ -251,7 +251,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Replace all tags of the services. Note: `The order of the tags can be used to reflect on their order by the parsing tools`. "
           + "Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized "
           + "randomly or based on the tools' logic.", operationId = "services:schema:tag:all:replace")
@@ -267,7 +267,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete tags of the services. Delete the tags of services by name", operationId = "services:schema:tag:delete")
+  @Operation(summary = "Delete tags of the services. Delete the tags of services by name", operationId = "services:schema:tag:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -280,7 +280,7 @@ public class ServicesSchemaRest {
     servicesSchemaFacade.tagDelete(serviceId, names);
   }
 
-  @Operation(description = "Query all tags of the services", operationId = "services:schema:tag:all")
+  @Operation(summary = "Query all tags of the services", operationId = "services:schema:tag:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -291,7 +291,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.tagList(serviceId));
   }
 
-  @Operation(description = "Replace all schema extensions of the services. "
+  @Operation(summary = "Replace all schema extensions of the services. "
       + "For more information, please see: [Specification Extensions](https://swagger.io/specification/#specification-extensions)", operationId = "services:schema:extensions:all:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
@@ -305,7 +305,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query all schema extensions of the services", operationId = "services:schema:extensions:all")
+  @Operation(summary = "Query all schema extensions of the services", operationId = "services:schema:extensions:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -316,7 +316,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success(servicesSchemaFacade.extensionsList(serviceId));
   }
 
-  @Operation(description = "Query the schema detail of services", operationId = "services:schema:detail")
+  @Operation(summary = "Query the schema detail of services", operationId = "services:schema:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -338,7 +338,7 @@ public class ServicesSchemaRest {
    *                        compression is enabled.
    * @param content         OpenAPI document yaml or json content
    */
-  @Operation(description = "Replace the OpenAPI document of services", operationId = "services:openapi:replace")
+  @Operation(summary = "Replace the OpenAPI document of services", operationId = "services:openapi:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -353,7 +353,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the OpenAPI document of services", operationId = "services:openapi:detail")
+  @Operation(summary = "Query the OpenAPI document of services", operationId = "services:openapi:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")

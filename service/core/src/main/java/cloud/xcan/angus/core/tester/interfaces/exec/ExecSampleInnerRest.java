@@ -35,7 +35,7 @@ public class ExecSampleInnerRest {
   @Resource
   private ExecSampleFacade execSampleFacade;
 
-  @Operation(description = "Query the total summary information of the last sampling execution.", operationId = "exec:sample:summary:total:inner")
+  @Operation(summary = "Query the total summary information of the last sampling execution.", operationId = "exec:sample:summary:total:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/summary/total")
@@ -44,7 +44,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryTotal(id));
   }
 
-  @Operation(description = "Query the summary list of execution sampling. "
+  @Operation(summary = "Query the summary list of execution sampling. "
       + "Values format: duration,errors,iterations,n,operations,transactions,readBytes,writeBytes,ops,tps,brps,bwps,tranMean,tranMin,tranMax,tranP50,tranP75,tranP90,tranP95,tranP99,tranP999,errorRate,threadPoolSize,threadPoolActiveSize,threadMaxPoolSize,extCounter1,extCounter2,extCounter3,extGauge1,extGauge2,extGauge3",
       operationId = "exec:sample:summary:list:inner")
   @ApiResponses(value = {
@@ -56,7 +56,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryList(id, dto));
   }
 
-  @Operation(description = "Query the score (RT) list of execution sampling.", operationId = "exec:sample:score:list:inner")
+  @Operation(summary = "Query the score (RT) list of execution sampling.", operationId = "exec:sample:score:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/score")
@@ -66,7 +66,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.scoreList(id, dto));
   }
 
-  @Operation(description = "Query the throughput list of execution sampling.", operationId = "exec:sample:score:list:inner")
+  @Operation(summary = "Query the throughput list of execution sampling.", operationId = "exec:sample:score:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/throughput")
@@ -76,7 +76,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.throughputList(id, dto));
   }
 
-  @Operation(description = "Query the thread list of execution sampling", operationId = "exec:sample:thread:list:inner")
+  @Operation(summary = "Query the thread list of execution sampling", operationId = "exec:sample:thread:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/thread")
@@ -86,7 +86,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.threadList(id, dto));
   }
 
-  @Operation(description = "Query the errors list of execution sampling", operationId = "exec:sample:error:list:inner")
+  @Operation(summary = "Query the errors list of execution sampling", operationId = "exec:sample:error:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/error")
@@ -96,7 +96,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.errorList(id, dto));
   }
 
-  @Operation(description = "Query the error content list of execution sampling", operationId = "exec:sample:error:content:list:inner")
+  @Operation(summary = "Query the error content list of execution sampling", operationId = "exec:sample:error:content:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/error/content")
@@ -106,7 +106,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.errorContent(id, dto));
   }
 
-  @Operation(description = "Query the latest errors counter of execution sampling", operationId = "exec:sample:errors:counter:latest:inner")
+  @Operation(summary = "Query the latest errors counter of execution sampling", operationId = "exec:sample:errors:counter:latest:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/errors/counter/latest")
@@ -117,7 +117,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestErrorsCounter(id, nodeId, name));
   }
 
-  @Operation(description = "Query the latest upload result progress of execution sampling", operationId = "exec:sample:uploadResultProgress:latest:inner")
+  @Operation(summary = "Query the latest upload result progress of execution sampling", operationId = "exec:sample:uploadResultProgress:latest:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/uploadResultProgress/latest")
@@ -126,7 +126,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestUploadResultProgress(id));
   }
 
-  @Operation(description = "Query the latest extended counter of execution sampling", operationId = "exec:sample:counter:map:latest:inner")
+  @Operation(summary = "Query the latest extended counter of execution sampling", operationId = "exec:sample:counter:map:latest:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/extension/counter/map1/latest")
@@ -137,7 +137,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.latestExtCounterMap1(id, nodeId, name));
   }
 
-  @Operation(description = "Query the extended content list of execution sampling", operationId = "exec:sample:content:list:inner")
+  @Operation(summary = "Query the extended content list of execution sampling", operationId = "exec:sample:content:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/extension/content")

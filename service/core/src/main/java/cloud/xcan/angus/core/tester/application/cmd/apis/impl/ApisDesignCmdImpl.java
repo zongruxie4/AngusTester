@@ -277,8 +277,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       protected IdKey<Long, Object> process() {
         if (isNotEmpty(content)) {
           OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
-                  ApiImportSource.OPENAPI)
-              .parse(content);
+              ApiImportSource.OPENAPI).parse(content);
           return addClone(openApi, projectId, name);
         }
 
@@ -286,8 +285,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
           try {
             File importFile = convertImportFile(file);
             OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
-                    ApiImportSource.OPENAPI)
-                .parse(FileUtils.readFileToString(importFile, UTF_8));
+                ApiImportSource.OPENAPI).parse(FileUtils.readFileToString(importFile, UTF_8));
             return addClone(openApi, projectId, name);
           } catch (IOException e) {
             throw new RuntimeException(e);

@@ -54,7 +54,7 @@ public class NodeRest {
   @Resource
   private NodeFacade nodeFacade;
 
-  @Operation(description = "Add nodes", operationId = "node:add")
+  @Operation(summary = "Add nodes", operationId = "node:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -64,7 +64,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.add(dto));
   }
 
-  @Operation(description = "Update nodes", operationId = "node:update")
+  @Operation(summary = "Update nodes", operationId = "node:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -77,7 +77,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the name of services", operationId = "services:name:replace")
+  @Operation(summary = "Replace the name of services", operationId = "services:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -90,7 +90,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Stop nodes, only stopping purchased cloud nodes is supported", operationId = "node:stop")
+  @Operation(summary = "Stop nodes, only stopping purchased cloud nodes is supported", operationId = "node:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stop successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -102,7 +102,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Restart nodes, only restart of purchased cloud nodes is supported", operationId = "node:restart")
+  @Operation(summary = "Restart nodes, only restart of purchased cloud nodes is supported", operationId = "node:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Restarted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -114,7 +114,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable nodes", operationId = "node:enabled")
+  @Operation(summary = "Enable or disable nodes", operationId = "node:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -128,7 +128,7 @@ public class NodeRest {
 
   // TODO 运营端设置免费共享节点
 
-  @Operation(description = "Delete nodes", operationId = "node:delete")
+  @Operation(summary = "Delete nodes", operationId = "node:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -138,7 +138,7 @@ public class NodeRest {
     nodeFacade.delete(ids);
   }
 
-  @Operation(description = "Test node configuration", operationId = "node:test")
+  @Operation(summary = "Test node configuration", operationId = "node:test")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Tested successfully")})
   @PostMapping("/test")
@@ -147,7 +147,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Install node agent", operationId = "node:agent:install")
+  @Operation(summary = "Install node agent", operationId = "node:agent:install")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -157,7 +157,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.agentInstall(id));
   }
 
-  @Operation(description = "Restart node agent", operationId = "node:agent:restart")
+  @Operation(summary = "Restart node agent", operationId = "node:agent:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Restart successfully")})
   @PostMapping("/{id}/agent/restart")
@@ -167,7 +167,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Purchase node", operationId = "node:purchase")
+  @Operation(summary = "Purchase node", operationId = "node:purchase")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Purchase successfully")})
   @PostMapping("/purchase")
@@ -176,7 +176,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the detail of node", operationId = "node:detail")
+  @Operation(summary = "Query the detail of node", operationId = "node:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -186,7 +186,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.detail(id));
   }
 
-  @Operation(description = "Query the number of node", operationId = "node:count")
+  @Operation(summary = "Query the number of node", operationId = "node:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/count")
@@ -194,7 +194,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.count(dto));
   }
 
-  @Operation(description = "Query the list of mock service instances in the node", operationId = "node:mock:service:list")
+  @Operation(summary = "Query the list of mock service instances in the node", operationId = "node:mock:service:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/mock/service")
@@ -203,7 +203,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.mockServiceList(id));
   }
 
-  @Operation(description = "Query the list of node", operationId = "node:list")
+  @Operation(summary = "Query the list of node", operationId = "node:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -211,7 +211,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of node", operationId = "node:search")
+  @Operation(summary = "Fulltext search the list of node", operationId = "node:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

@@ -47,7 +47,7 @@ public class FuncPlanAuthRest {
   @Resource
   private FuncPlanAuthFacade funcPlanAuthFacade;
 
-  @Operation(description = "Add the authorization of functional test plan", operationId = "func:plan:auth:add")
+  @Operation(summary = "Add the authorization of functional test plan", operationId = "func:plan:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +58,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.add(planId, dto));
   }
 
-  @Operation(description = "Replace the authorization of functional test plan", operationId = "func:plan:auth:replace")
+  @Operation(summary = "Replace the authorization of functional test plan", operationId = "func:plan:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -71,7 +71,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable the authorization of functional test plan", operationId = "func:plan:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of functional test plan", operationId = "func:plan:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -83,7 +83,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query authorization status of functional test plan", operationId = "func:plan:auth:status")
+  @Operation(summary = "Query authorization status of functional test plan", operationId = "func:plan:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -94,7 +94,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.status(planId));
   }
 
-  @Operation(description = "Delete the authorization of functional test plan", operationId = "func:plan:auth:delete")
+  @Operation(summary = "Delete the authorization of functional test plan", operationId = "func:plan:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -104,7 +104,7 @@ public class FuncPlanAuthRest {
     funcPlanAuthFacade.delete(id);
   }
 
-  @Operation(description = "Query the user authorization permission of functional test plan", operationId = "func:plan:user:auth")
+  @Operation(summary = "Query the user authorization permission of functional test plan", operationId = "func:plan:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -117,7 +117,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.userAuth(planId, userId, admin));
   }
 
-  @Operation(description = "Query the current user authorization permission of functional test plan", operationId = "func:plan:user:auth:current")
+  @Operation(summary = "Query the current user authorization permission of functional test plan", operationId = "func:plan:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -129,7 +129,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.currentUserAuth(planId, admin));
   }
 
-  @Operation(description = "Query the current user authorization permission", operationId = "func:plan:user:auth:current:batch")
+  @Operation(summary = "Query the current user authorization permission", operationId = "func:plan:user:auth:current:batch")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -141,7 +141,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.currentUserAuths(planIds, admin));
   }
 
-  @Operation(description = "Check the user authorization permission of functional test plan, the administrator permission is included", operationId = "func:plan:auth:check")
+  @Operation(summary = "Check the user authorization permission of functional test plan, the administrator permission is included", operationId = "func:plan:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -154,7 +154,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of functional test plan authorization", operationId = "func:plan:auth:list")
+  @Operation(summary = "Query the list of functional test plan authorization", operationId = "func:plan:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")

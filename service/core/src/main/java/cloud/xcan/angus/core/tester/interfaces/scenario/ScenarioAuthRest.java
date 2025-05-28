@@ -44,7 +44,7 @@ public class ScenarioAuthRest {
   @Resource
   private ScenarioAuthFacade scenarioAuthFacade;
 
-  @Operation(description = "Add the authorization of scenario", operationId = "scenario:auth:add")
+  @Operation(summary = "Add the authorization of scenario", operationId = "scenario:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.add(scenarioId, dto));
   }
 
-  @Operation(description = "Replace the authorization of scenario", operationId = "scenario:auth:replace")
+  @Operation(summary = "Replace the authorization of scenario", operationId = "scenario:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -68,7 +68,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable the authorization of scenario", operationId = "scenario:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of scenario", operationId = "scenario:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -81,7 +81,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query authorization status of scenario", operationId = "scenario:auth:status")
+  @Operation(summary = "Query authorization status of scenario", operationId = "scenario:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -92,7 +92,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.status(scenarioId));
   }
 
-  @Operation(description = "Delete the authorization of scenario", operationId = "scenario:auth:delete")
+  @Operation(summary = "Delete the authorization of scenario", operationId = "scenario:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,7 +102,7 @@ public class ScenarioAuthRest {
     scenarioAuthFacade.delete(id);
   }
 
-  @Operation(description = "Query the user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth")
+  @Operation(summary = "Query the user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -115,7 +115,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.userAuth(scenarioId, userId, admin));
   }
 
-  @Operation(description = "Query the current user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth:current")
+  @Operation(summary = "Query the current user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -127,7 +127,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.currentUserAuth(scenarioId, admin));
   }
 
-  @Operation(description = "Check the user authorization permission of scenario, the administrator permission is included", operationId = "scenario:auth:check")
+  @Operation(summary = "Check the user authorization permission of scenario, the administrator permission is included", operationId = "scenario:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -140,7 +140,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of scenario authorization", operationId = "scenario:auth:list")
+  @Operation(summary = "Query the list of scenario authorization", operationId = "scenario:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")

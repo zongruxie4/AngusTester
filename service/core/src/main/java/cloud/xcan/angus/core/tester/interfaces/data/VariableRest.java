@@ -53,7 +53,7 @@ public class VariableRest {
   @Resource
   private VariableFacade variableFacade;
 
-  @Operation(description = "Add variable", operationId = "data:variable:add")
+  @Operation(summary = "Add variable", operationId = "data:variable:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -62,7 +62,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.add(dto));
   }
 
-  @Operation(description = "Update variable", operationId = "data:variable:update")
+  @Operation(summary = "Update variable", operationId = "data:variable:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -73,7 +73,7 @@ public class VariableRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace variable", operationId = "data:variable:replace")
+  @Operation(summary = "Replace variable", operationId = "data:variable:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -83,7 +83,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.replace(dto));
   }
 
-  @Operation(description = "Clone the variables", operationId = "data:variable:clone")
+  @Operation(summary = "Clone the variables", operationId = "data:variable:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Clone successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -94,7 +94,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.clone(ids));
   }
 
-  @Operation(description = "Import the variables", operationId = "data:variable:import")
+  @Operation(summary = "Import the variables", operationId = "data:variable:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -103,7 +103,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner variable example", operationId = "data:variable:example:import")
+  @Operation(summary = "Import the inner variable example", operationId = "data:variable:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -113,7 +113,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete variables", operationId = "data:variable:delete")
+  @Operation(summary = "Delete variables", operationId = "data:variable:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -124,7 +124,7 @@ public class VariableRest {
     variableFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of variable", operationId = "data:variable:detail")
+  @Operation(summary = "Query the detail of variable", operationId = "data:variable:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{id}")
@@ -133,7 +133,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.detail(id));
   }
 
-  @Operation(description = "Preview the value of variable", operationId = "data:variable:value:preview")
+  @Operation(summary = "Preview the value of variable", operationId = "data:variable:value:preview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @PostMapping("/value/preview")
@@ -141,7 +141,7 @@ public class VariableRest {
     return ApiLocaleResult.successData(variableFacade.valuePreview(dto));
   }
 
-  @Operation(description = "Query the list of variables", operationId = "data:variable:list")
+  @Operation(summary = "Query the list of variables", operationId = "data:variable:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -149,7 +149,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of variables", operationId = "data:variable:search")
+  @Operation(summary = "Fulltext search the list of variables", operationId = "data:variable:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -157,7 +157,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.search(dto));
   }
 
-  @Operation(description = "Export the variables", operationId = "data:variable:export")
+  @Operation(summary = "Export the variables", operationId = "data:variable:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

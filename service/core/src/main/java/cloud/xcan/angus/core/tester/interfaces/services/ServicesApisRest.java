@@ -45,7 +45,7 @@ public class ServicesApisRest {
   @Resource
   private ApisFacade apisFacade;
 
-  @Operation(description = "Add apis parameters, override parameter value if it exists", operationId = "apis:parameter:add")
+  @Operation(summary = "Add apis parameters, override parameter value if it exists", operationId = "apis:parameter:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -59,7 +59,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Update apis parameters", operationId = "apis:parameter:update")
+  @Operation(summary = "Update apis parameters", operationId = "apis:parameter:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -73,7 +73,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete apis parameters", operationId = "apis:parameter:delete")
+  @Operation(summary = "Delete apis parameters", operationId = "apis:parameter:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -87,7 +87,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable apis parameters", operationId = "apis:parameter:enabled")
+  @Operation(summary = "Enable or disable apis parameters", operationId = "apis:parameter:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -102,7 +102,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Update apis authentication", operationId = "apis:parameter:update")
+  @Operation(summary = "Update apis authentication", operationId = "apis:parameter:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -115,7 +115,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Update apis current server", operationId = "apis:server:update")
+  @Operation(summary = "Update apis current server", operationId = "apis:server:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -128,7 +128,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Add apis reference variables", operationId = "apis:variable:reference:add")
+  @Operation(summary = "Add apis reference variables", operationId = "apis:variable:reference:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -142,7 +142,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete apis reference variables", operationId = "apis:variable:reference:delete")
+  @Operation(summary = "Delete apis reference variables", operationId = "apis:variable:reference:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -156,7 +156,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Add apis reference datasets", operationId = "apis:dataset:reference:add")
+  @Operation(summary = "Add apis reference datasets", operationId = "apis:dataset:reference:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -170,7 +170,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete apis reference datasets", operationId = "apis:dataset:reference:delete")
+  @Operation(summary = "Delete apis reference datasets", operationId = "apis:dataset:reference:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -184,7 +184,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of http and websocket apis", operationId = "services:apis:list")
+  @Operation(summary = "Query the list of http and websocket apis", operationId = "services:apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{serviceId}/apis")
@@ -194,7 +194,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success(apisFacade.listApis(serviceId, dto));
   }
 
-  @Operation(description = "Fulltext search the http and websocket apis", operationId = "services:apis:search")
+  @Operation(summary = "Fulltext search the http and websocket apis", operationId = "services:apis:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{serviceId}/apis/search")

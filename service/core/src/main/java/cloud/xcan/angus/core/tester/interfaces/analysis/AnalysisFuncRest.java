@@ -59,7 +59,7 @@ public class AnalysisFuncRest {
   @Resource
   private AnalysisFuncFacade analysisAngusFuncFacade;
 
-  @Operation(description = "The count of cases creation statistics. Cases and associated plan, tag, and module creation count statistics", operationId = "analysis:func:resources:count")
+  @Operation(summary = "The count of cases creation statistics. Cases and associated plan, tag, and module creation count statistics", operationId = "analysis:func:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resources/count")
@@ -68,7 +68,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.creationResourcesStatistics(dto));
   }
 
-  @Operation(description = "The count of cases statistics", operationId = "analysis:func:case:count")
+  @Operation(summary = "The count of cases statistics", operationId = "analysis:func:case:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/count")
@@ -77,7 +77,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.countStatistics(dto));
   }
 
-  @Operation(description = "Export the count of cases statistics", operationId = "analysis:func:case:count:export")
+  @Operation(summary = "Export the count of cases statistics", operationId = "analysis:func:case:count:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/case/count/export")
@@ -86,7 +86,7 @@ public class AnalysisFuncRest {
     return analysisAngusFuncFacade.countStatisticsExport(dto, response);
   }
 
-  @Operation(description = "The count of case statistics for tester", operationId = "analysis:func:tester:count")
+  @Operation(summary = "The count of case statistics for tester", operationId = "analysis:func:tester:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/count")
@@ -95,7 +95,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerSummaryStatistics(dto));
   }
 
-  @Operation(description = "The case progress analysis of testers", operationId = "analysis:func:tester:progress")
+  @Operation(summary = "The case progress analysis of testers", operationId = "analysis:func:tester:progress")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/progress")
@@ -104,7 +104,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerProgressStatistics(dto));
   }
 
-  @Operation(description = "The work summary of cases for project", operationId = "analysis:func:project:work:summary")
+  @Operation(summary = "The work summary of cases for project", operationId = "analysis:func:project:work:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/project/{projectId}/work/summary")
@@ -113,7 +113,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.projectWorkStatistics(projectId));
   }
 
-  @Operation(description = "The work summary of cases for plan", operationId = "analysis:func:plan:work:summary")
+  @Operation(summary = "The work summary of cases for plan", operationId = "analysis:func:plan:work:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/plan/{planId}/work/summary")
@@ -122,7 +122,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.planWorkStatistics(planId));
   }
 
-  @Operation(description = "The work summary of cases for tester", operationId = "analysis:func:tester:work:summary")
+  @Operation(summary = "The work summary of cases for tester", operationId = "analysis:func:tester:work:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/work/summary")
@@ -131,7 +131,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerWorkStatistics(dto));
   }
 
-  @Operation(description = "The summary of cases burndown for project", operationId = "analysis:func:project:burndown:summary")
+  @Operation(summary = "The summary of cases burndown for project", operationId = "analysis:func:project:burndown:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/project/{projectId}/burndown")
@@ -140,7 +140,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.projectBurndownChart(projectId));
   }
 
-  @Operation(description = "The summary of cases burndown for plan", operationId = "analysis:func:plan:burndown:summary")
+  @Operation(summary = "The summary of cases burndown for plan", operationId = "analysis:func:plan:burndown:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/plan/{planId}/burndown")
@@ -149,7 +149,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.planBurndownChart(planId));
   }
 
-  @Operation(description = "The summary of cases burndown for tester", operationId = "analysis:func:tester:burndown:summary")
+  @Operation(summary = "The summary of cases burndown for tester", operationId = "analysis:func:tester:burndown:summary")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/tester/burndown")
@@ -158,7 +158,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testerBurndownChart(dto));
   }
 
-  @Operation(description = "The overview of cases progress", operationId = "analysis:func:progress:overview")
+  @Operation(summary = "The overview of cases progress", operationId = "analysis:func:progress:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/progress/overview")
@@ -166,7 +166,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.progress(dto));
   }
 
-  @Operation(description = "The overview of cases burndown", operationId = "analysis:func:burndown:overview")
+  @Operation(summary = "The overview of cases burndown", operationId = "analysis:func:burndown:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/burndown/overview")
@@ -175,7 +175,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.burndownChart(dto));
   }
 
-  @Operation(description = "The overview of cases workload", operationId = "analysis:func:workload:overview")
+  @Operation(summary = "The overview of cases workload", operationId = "analysis:func:workload:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/workload/overview")
@@ -183,7 +183,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.workload(dto));
   }
 
-  @Operation(description = "The overview of overdue cases assessment", operationId = "analysis:func:overdue:assessment:overview")
+  @Operation(summary = "The overview of overdue cases assessment", operationId = "analysis:func:overdue:assessment:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/overdue/assessment/overview")
@@ -192,7 +192,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.overdueAssessment(dto));
   }
 
-  @Operation(description = "The overview of tester submitted bug", operationId = "analysis:func:submitted:bug:overview")
+  @Operation(summary = "The overview of tester submitted bug", operationId = "analysis:func:submitted:bug:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/submitted/bug/overview")
@@ -201,7 +201,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.submittedBug(dto));
   }
 
-  @Operation(description = "The overview of cases testing efficiency", operationId = "analysis:func:testing:efficiency:overview")
+  @Operation(summary = "The overview of cases testing efficiency", operationId = "analysis:func:testing:efficiency:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/testing/efficiency/overview")
@@ -210,7 +210,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.testingEfficiency(dto));
   }
 
-  @Operation(description = "The overview of cases core KPI", operationId = "analysis:func:core:kpi:overview")
+  @Operation(summary = "The overview of cases core KPI", operationId = "analysis:func:core:kpi:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/core/kpi/overview")
@@ -218,7 +218,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.coreKpi(dto));
   }
 
-  @Operation(description = "The overview of cases review efficiency", operationId = "analysis:func:review:efficiency:overview")
+  @Operation(summary = "The overview of cases review efficiency", operationId = "analysis:func:review:efficiency:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/review/efficiency/overview")
@@ -227,7 +227,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.reviewEfficiency(dto));
   }
 
-  @Operation(description = "The overview of backlogged cases", operationId = "analysis:func:backlogged:overview")
+  @Operation(summary = "The overview of backlogged cases", operationId = "analysis:func:backlogged:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/backlogged/overview")
@@ -236,7 +236,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.backloggedWork(dto));
   }
 
-  @Operation(description = "The overview of recent delivery cases", operationId = "analysis:func:recent:delivery:overview")
+  @Operation(summary = "The overview of recent delivery cases", operationId = "analysis:func:recent:delivery:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/recent/delivery/overview")
@@ -245,7 +245,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.recentDelivery(dto));
   }
 
-  @Operation(description = "The overview of cases lead time", operationId = "analysis:func:leadtime:overview")
+  @Operation(summary = "The overview of cases lead time", operationId = "analysis:func:leadtime:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/leadtime/overview")
@@ -254,7 +254,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.leadTime(dto));
   }
 
-  @Operation(description = "The overview of unplanned work cases", operationId = "analysis:func:unplanned:work:overview")
+  @Operation(summary = "The overview of unplanned work cases", operationId = "analysis:func:unplanned:work:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/unplanned/work/overview")
@@ -263,7 +263,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.unplannedWork(dto));
   }
 
-  @Operation(description = "The overview of case growth trend", operationId = "analysis:func:growth:trend:overview")
+  @Operation(summary = "The overview of case growth trend", operationId = "analysis:func:growth:trend:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/growth/trend/overview")
@@ -272,7 +272,7 @@ public class AnalysisFuncRest {
     return ApiLocaleResult.success(analysisAngusFuncFacade.growthTrend(dto));
   }
 
-  @Operation(description = "The overview of function resource creation", operationId = "analysis:func:resource:creation:overview")
+  @Operation(summary = "The overview of function resource creation", operationId = "analysis:func:resource:creation:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resource/creation/overview")

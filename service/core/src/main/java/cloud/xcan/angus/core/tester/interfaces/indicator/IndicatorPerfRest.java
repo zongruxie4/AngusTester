@@ -41,7 +41,7 @@ public class IndicatorPerfRest {
   @Resource
   private IndicatorPerfFacade indicatorPerfFacade;
 
-  @Operation(description = "Add the indicator of performance", operationId = "indicator:perf:add")
+  @Operation(summary = "Add the indicator of performance", operationId = "indicator:perf:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -50,7 +50,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.add(dto));
   }
 
-  @Operation(description = "Replace the indicator of performance or throw 404 when it doesn't exist", operationId = "indicator:perf:replace")
+  @Operation(summary = "Replace the indicator of performance or throw 404 when it doesn't exist", operationId = "indicator:perf:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -61,7 +61,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the performance indicator of target", operationId = "indicator:perf:target:delete")
+  @Operation(summary = "Delete the performance indicator of target", operationId = "indicator:perf:target:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -73,7 +73,7 @@ public class IndicatorPerfRest {
     indicatorPerfFacade.deleteByTarget(targetType, targetId);
   }
 
-  @Operation(description = "Query the indicator detail of performance", operationId = "indicator:perf:detail")
+  @Operation(summary = "Query the indicator detail of performance", operationId = "indicator:perf:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -85,7 +85,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.detail(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator detail of performance, return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of performance, return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -97,7 +97,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.detailOrDefault(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator list of performance", operationId = "indicator:perf:list")
+  @Operation(summary = "Query the indicator list of performance", operationId = "indicator:perf:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf")
@@ -105,7 +105,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the indicator of performance", operationId = "indicator:perf:search")
+  @Operation(summary = "Fulltext search the indicator of performance", operationId = "indicator:perf:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/perf/search")

@@ -30,7 +30,7 @@ public class ScenarioMonitorHistoryRest {
   @Resource
   private ScenarioMonitorHistoryFacade scenarioMonitorHistoryFacade;
 
-  @Operation(description = "Query the detail of scenario monitor history", operationId = " scenario:monitor:history:detail")
+  @Operation(summary = "Query the detail of scenario monitor history", operationId = " scenario:monitor:history:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -40,7 +40,7 @@ public class ScenarioMonitorHistoryRest {
     return ApiLocaleResult.success(scenarioMonitorHistoryFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of scenario monitor history", operationId = " scenario:monitor:history:list")
+  @Operation(summary = "Query the list of scenario monitor history", operationId = " scenario:monitor:history:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping

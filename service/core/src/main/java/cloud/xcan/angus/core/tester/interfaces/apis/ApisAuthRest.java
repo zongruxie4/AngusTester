@@ -44,7 +44,7 @@ public class ApisAuthRest {
   @Resource
   private ApisAuthFacade apisAuthFacade;
 
-  @Operation(description = "Add the authorization of http or websocket apis", operationId = "apis:auth:add")
+  @Operation(summary = "Add the authorization of http or websocket apis", operationId = "apis:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.add(apiId, dto));
   }
 
-  @Operation(description = "Replace the authorization of http or websocket apis", operationId = "apis:auth:replace")
+  @Operation(summary = "Replace the authorization of http or websocket apis", operationId = "apis:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -68,7 +68,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable the authorization of http or websocket apis", operationId = "apis:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of http or websocket apis", operationId = "apis:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -81,7 +81,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query authorization status of http or websocket apis", operationId = "apis:auth:status")
+  @Operation(summary = "Query authorization status of http or websocket apis", operationId = "apis:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -92,7 +92,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.status(apiId));
   }
 
-  @Operation(description = "Delete the authorization of http or websocket apis", operationId = "apis:auth:delete")
+  @Operation(summary = "Delete the authorization of http or websocket apis", operationId = "apis:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,7 +102,7 @@ public class ApisAuthRest {
     apisAuthFacade.delete(id);
   }
 
-  @Operation(description = "Query the user authorization permission of http or websocket apis and throw 404 when apis doesn't exist", operationId = "apis:user:auth")
+  @Operation(summary = "Query the user authorization permission of http or websocket apis and throw 404 when apis doesn't exist", operationId = "apis:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -115,7 +115,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.userAuth(apiId, userId, admin));
   }
 
-  @Operation(description = "Query the current user authorization permission of http or websocket apis and throw 404 when apis doesn't exist", operationId = "apis:user:auth:current")
+  @Operation(summary = "Query the current user authorization permission of http or websocket apis and throw 404 when apis doesn't exist", operationId = "apis:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -127,7 +127,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success(apisAuthFacade.currentUserAuth(apiId, admin));
   }
 
-  @Operation(description = "Check the user authorization permission of http or websocket apis, the administrator permission is included", operationId = "apis:auth:check")
+  @Operation(summary = "Check the user authorization permission of http or websocket apis, the administrator permission is included", operationId = "apis:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -140,7 +140,7 @@ public class ApisAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of http or websocket apis authorization", operationId = "apis:auth:list")
+  @Operation(summary = "Query the list of http or websocket apis authorization", operationId = "apis:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")

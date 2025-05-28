@@ -46,7 +46,7 @@ public class TagRest {
   @Resource
   private TagFacade tagFacade;
 
-  @Operation(description = "Add the tag", operationId = "tag:add")
+  @Operation(summary = "Add the tag", operationId = "tag:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class TagRest {
     return ApiLocaleResult.success(tagFacade.add(dto));
   }
 
-  @Operation(description = "Update the tag", operationId = "tag:update")
+  @Operation(summary = "Update the tag", operationId = "tag:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @PatchMapping
@@ -65,7 +65,7 @@ public class TagRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Import the inner tag example", operationId = "tag:example:import")
+  @Operation(summary = "Import the inner tag example", operationId = "tag:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -75,7 +75,7 @@ public class TagRest {
     return ApiLocaleResult.success(tagFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete the tags", operationId = "tag:delete")
+  @Operation(summary = "Delete the tags", operationId = "tag:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @DeleteMapping
@@ -85,7 +85,7 @@ public class TagRest {
     tagFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of tag", operationId = "tag:detail")
+  @Operation(summary = "Query the detail of tag", operationId = "tag:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -95,7 +95,7 @@ public class TagRest {
     return ApiLocaleResult.success(tagFacade.detail(id));
   }
 
-  @Operation(description = "Query the tag list", operationId = "tag:list")
+  @Operation(summary = "Query the tag list", operationId = "tag:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -103,7 +103,7 @@ public class TagRest {
     return ApiLocaleResult.success(tagFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the tag", operationId = "tag:search")
+  @Operation(summary = "Fulltext search the tag", operationId = "tag:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

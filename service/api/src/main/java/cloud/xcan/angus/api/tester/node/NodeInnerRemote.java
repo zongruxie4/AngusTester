@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface NodeInnerRemote {
 
   @CloudServiceEdition
-  @Operation(description = "Online purchase nodes by order", operationId = "node:online:purchase:byorder:inner")
+  @Operation(summary = "Online purchase nodes by order", operationId = "node:online:purchase:byorder:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successful purchase or change")})
   @ResponseStatus(HttpStatus.OK)
@@ -32,14 +32,14 @@ public interface NodeInnerRemote {
   ApiLocaleResult<?> purchase(@Valid @RequestBody NodeOnlinePurchaseDto dto);
 
   @CloudServiceEdition
-  @Operation(description = "Online renewal nodes by order", operationId = "node:online:renewal:byorder:inner")
+  @Operation(summary = "Online renewal nodes by order", operationId = "node:online:renewal:byorder:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successful renew")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/innerapi/v1/node/renewal/byorder")
   ApiLocaleResult<?> renew(@Valid @RequestBody NodeRenewDto dto);
 
-  @Operation(description = "Query the list of node", operationId = "node:list:inner")
+  @Operation(summary = "Query the list of node", operationId = "node:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/innerapi/v1/node")

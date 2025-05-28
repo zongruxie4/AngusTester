@@ -37,7 +37,7 @@ public class NodeMetricsRest {
   @Resource
   private NodeMetricsFacade nodeMetricsFacade;
 
-  @Operation(description = "Query the list of node sampling(cpu,memory,filesystem).", operationId = "node:sample")
+  @Operation(summary = "Query the list of node sampling(cpu,memory,filesystem).", operationId = "node:sample")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics")
@@ -47,7 +47,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.host(id, dto));
   }
 
-  @Operation(description = "Query the latest node sampling(cpu,memory,filesystem).", operationId = "node:sample:latest")
+  @Operation(summary = "Query the latest node sampling(cpu,memory,filesystem).", operationId = "node:sample:latest")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/latest")
@@ -56,7 +56,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.hostLatest(id));
   }
 
-  @Operation(description = "Query the list of node cpu sampling.", operationId = "node:sample:cpu")
+  @Operation(summary = "Query the list of node cpu sampling.", operationId = "node:sample:cpu")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/cpu")
@@ -66,7 +66,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.cpu(id, dto));
   }
 
-  @Operation(description = "Query the latest of node cpu sampling.", operationId = "node:sample:cpu:latest")
+  @Operation(summary = "Query the latest of node cpu sampling.", operationId = "node:sample:cpu:latest")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/cpu/latest")
@@ -75,7 +75,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.cpuLatest(id));
   }
 
-  @Operation(description = "Query the list of node memory sampling.", operationId = "node:sample:memory")
+  @Operation(summary = "Query the list of node memory sampling.", operationId = "node:sample:memory")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/memory")
@@ -85,7 +85,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.memory(id, dto));
   }
 
-  @Operation(description = "Query the latest of node memory sampling.", operationId = "node:sample:memory:latest")
+  @Operation(summary = "Query the latest of node memory sampling.", operationId = "node:sample:memory:latest")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/memory/latest")
@@ -94,7 +94,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.memoryLatest(id));
   }
 
-  @Operation(description = "Query the list of node filesystem sampling.", operationId = "node:sample:filesystem")
+  @Operation(summary = "Query the list of node filesystem sampling.", operationId = "node:sample:filesystem")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/filesystem")
@@ -104,7 +104,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.filesystem(id, dto));
   }
 
-  @Operation(description = "Query the latest of node filesystem sampling.", operationId = "node:sample:filesystem:latest")
+  @Operation(summary = "Query the latest of node filesystem sampling.", operationId = "node:sample:filesystem:latest")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/filesystem/latest")
@@ -113,7 +113,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.filesystemLatest(id));
   }
 
-  @Operation(description = "Query the list of node disk info.", operationId = "node:sample:disk:info")
+  @Operation(summary = "Query the list of node disk info.", operationId = "node:sample:disk:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/disk/info")
@@ -122,7 +122,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.diskInfo(id));
   }
 
-  @Operation(description = "Query the list of node disk metric sampling.", operationId = "node:sample:disk")
+  @Operation(summary = "Query the list of node disk metric sampling.", operationId = "node:sample:disk")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/disk")
@@ -132,7 +132,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.disk(id, dto));
   }
 
-  @Operation(description = "Query the list of node network info sampling.", operationId = "node:sample:network:info")
+  @Operation(summary = "Query the list of node network info sampling.", operationId = "node:sample:network:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/network/info")
@@ -141,7 +141,7 @@ public class NodeMetricsRest {
     return ApiLocaleResult.success(nodeMetricsFacade.networkInfo(id));
   }
 
-  @Operation(description = "Query the list of node disk metric sampling.", operationId = "node:sample:network")
+  @Operation(summary = "Query the list of node disk metric sampling.", operationId = "node:sample:network")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/network")

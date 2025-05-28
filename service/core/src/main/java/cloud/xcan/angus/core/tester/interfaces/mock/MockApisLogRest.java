@@ -31,7 +31,7 @@ public class MockApisLogRest {
   @Resource
   private MockApisLogFacade mockApisLogFacade;
 
-  @Operation(description = "Query the request log detail of mock apis", operationId = "mock:apis:log:detail")
+  @Operation(summary = "Query the request log detail of mock apis", operationId = "mock:apis:log:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -41,7 +41,7 @@ public class MockApisLogRest {
     return ApiLocaleResult.success(mockApisLogFacade.detail(id));
   }
 
-  @Operation(description = "Query the request log list of mock apis", operationId = "mock:service:apis:log:list")
+  @Operation(summary = "Query the request log list of mock apis", operationId = "mock:service:apis:log:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/service/{mockServiceId}/apis/log")
@@ -51,7 +51,7 @@ public class MockApisLogRest {
     return ApiLocaleResult.success(mockApisLogFacade.list(mockServiceId, dto));
   }
 
-  @Operation(description = "Query the request log list of mock apis", operationId = "mock:service:apis:log:list")
+  @Operation(summary = "Query the request log list of mock apis", operationId = "mock:service:apis:log:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/service/{mockServiceId}/apis/log/search")
