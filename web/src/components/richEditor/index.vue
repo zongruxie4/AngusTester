@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   mode: 'edit',
   height: 200,
-  options: () => ({}),
+  options: undefined,
   toolbarOptions: undefined,
   emptyText: ''
 });
