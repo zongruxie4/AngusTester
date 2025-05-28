@@ -380,7 +380,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             apisCmd.add(newApis.stream().map(
                     x -> ApisConverter.assembleSchemaToAddApis(x, serviceDb, openApi.getComponents(),
                         apiSource, importSource, syncName))
-                .collect(Collectors.toList()), serviceDb, true);
+                .collect(Collectors.toList()), serviceDb, false);
           }
         } else {
           if (deleteWhenNotExisted) {
