@@ -59,7 +59,7 @@ const loadScriptTypeEnum = async () => {
 };
 
 const loadNodeQuota = async () => {
-  const [error, { data }] = await setting.loadQuataByName('AngusTesterNode');
+  const [error, { data }] = await setting.loadQuotaByName('AngusTesterNode');
   if (error) {
     return;
   }
