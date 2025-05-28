@@ -474,12 +474,12 @@ public class CommonQueryImpl implements CommonQuery {
     //            .orElseContentThrow();
     //        if (!page.getList().isEmpty()) {
     //          String content = page.getList().get(0).getContent();
-    //          String lcsNo = page.getList().get(0).getNo();
-    //          String lcsPath = new SpringAppDirUtils().getWorkDir() + TesterConstant.LCS_DIR + lcsNo
+    //          String licenseNo = page.getList().get(0).getNo();
+    //          String lcsPath = new SpringAppDirUtils().getWorkDir() + TesterConstant.LCS_DIR + licenseNo
     //              + File.separator;
     //          File lcsFile = new File(lcsPath);
     //          FileUtils.writeByteArrayToFile(lcsFile, content.getBytes(StandardCharsets.UTF_8));
-    //          String lcsKeypass = lcsNo + new Str0(
+    //          String lcsKeypass = licenseNo + new Str0(
     //              new long[]{0x473558DE36922716L, 0x43CCDE755449D9F4L, 0x93C95B98018A1E61L,
     //                  0x3BDB4EA026F4DDC4L});
     //          Guard guard = new Guard(lcsKeypass, lcsPath);
