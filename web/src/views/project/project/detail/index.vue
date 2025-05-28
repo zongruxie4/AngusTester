@@ -225,12 +225,10 @@ watch(() => props.projectId, newValue => {
             </FormItem>
 
             <FormItem label="描述:">
-              <div class="text-3">
-                <RichEditor
-                  :value="formData.description"
-                  emptyText="无描述~"
-                  mode="view" />
-              </div>
+              <RichEditor
+                :value="formData.description"
+                emptyText="无描述~"
+                mode="view" />
             </FormItem>
           </Form>
           <div class="w-100">

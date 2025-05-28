@@ -580,8 +580,8 @@ const showTestType = computed(() => {
 
 const descRichRef = ref();
 const validateDesc = async () => {
-  if (descRichRef.value && descRichRef.value.getLength() > 8000) {
-    return Promise.reject(new Error('描述最大支持8000个字符'));
+  if (descRichRef.value && descRichRef.value.getLength() > 6000) {
+    return Promise.reject(new Error('描述最大支持6000个字符'));
   }
   return Promise.resolve();
 };
@@ -993,6 +993,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               <RichEditor
                 ref="descRichRef"
                 :value="formState.description"
+                :options="{placeholder: '任务描述，最大支持6000个字符'}"
                 :height="340"
                 @change="editorChange"
                 @loadingChange="editorLoading" />

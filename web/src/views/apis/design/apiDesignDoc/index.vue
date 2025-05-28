@@ -35,10 +35,13 @@ const getDesignInfo = async () => {
 };
 
 const updateContent = async () => {
-  console.log(updateContent)
+  if (typeof openAPIDesignInstance?.updateData === 'function') {
+    openAPIDesignInstance.updateData();
+  }
+
   const content = (openAPIDesignInstance && typeof openAPIDesignInstance.getDocApi === 'function')
-    ? openAPIDesignInstance.getDocApi === 'function'
-    : designInfo.value;
+    ? openAPIDesignInstance.getDocApi()
+    : designContent.value;
   const [error] = await apis.putDesignContent({id: props.designId, openapi: JSON.stringify(content)});
   if (error) {
     return;
@@ -64,7 +67,7 @@ onMounted(async () => {
 <template>
 <div ref="openApiDesignRef" class="h-full">
   <component is="open-api-design" :open-api-doc="designContent">
-    <div slot="docTitle" class="flex justify-center items-center space-x-2">
+    <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
       <Tag color="green" class="text-3.5 rounded-full">{{designInfo.openapiSpecVersion}}</Tag>
       <div class="text-5 font-medium">{{designInfo.name}}</div>
       <div>{{designInfo.lastModifiedByName}}最后修改于{{designInfo.lastModifiedDate}}</div>
