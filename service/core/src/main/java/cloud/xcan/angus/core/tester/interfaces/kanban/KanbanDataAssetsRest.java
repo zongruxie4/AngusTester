@@ -41,7 +41,7 @@ public class KanbanDataAssetsRest {
   @Resource
   private KanbanDataAssetsFacade kanbanDataAssetsFacade;
 
-  @Operation(description = "Query the data assets growth trend", operationId = "kanban:dataassets:growthtrend")
+  @Operation(summary = "Query the data assets growth trend", operationId = "kanban:dataassets:growthtrend")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -51,7 +51,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.growthTrend(dto));
   }
 
-  @Operation(description = "Cases and associated plan, tag, and module resource statistics", operationId = "kanban:dataassets:func:count")
+  @Operation(summary = "Cases and associated plan, tag, and module resource statistics", operationId = "kanban:dataassets:func:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
@@ -60,7 +60,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.funcResourcesStatistics(dto));
   }
 
-  @Operation(description = "Apis and services resource statistics", operationId = "kanban:dataassets:apis:count")
+  @Operation(summary = "Apis and services resource statistics", operationId = "kanban:dataassets:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis")
@@ -69,7 +69,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.apisResourcesStatistics(dto));
   }
 
-  @Operation(description = "Scenario resource statistics", operationId = "kanban:dataassets:scenario:count")
+  @Operation(summary = "Scenario resource statistics", operationId = "kanban:dataassets:scenario:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/scenarios")
@@ -78,7 +78,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.scenarioResourcesStatistics(dto));
   }
 
-  @Operation(description = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:task:count")
+  @Operation(summary = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:task:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task")
@@ -87,7 +87,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.taskResourcesStatistics(dto));
   }
 
-  @Operation(description = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:script:count")
+  @Operation(summary = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:script:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script")
@@ -98,7 +98,7 @@ public class KanbanDataAssetsRest {
 
   // Plan -> Do in funcResourcesStatistics() and taskResourcesStatistics() with main resources
 
-  @Operation(description = "Mock resources statistics", operationId = "kanban:dataassets:mock:count")
+  @Operation(summary = "Mock resources statistics", operationId = "kanban:dataassets:mock:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/mock")
@@ -107,7 +107,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.mockResourcesStatistics(dto));
   }
 
-  @Operation(description = "Data resources statistics", operationId = "kanban:dataassets:data:count")
+  @Operation(summary = "Data resources statistics", operationId = "kanban:dataassets:data:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/data")
@@ -116,7 +116,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.dataResourcesStatistics(dto));
   }
 
-  @Operation(description = "Query the data assets ranking", operationId = "kanban:dataassets:growthtrend")
+  @Operation(summary = "Query the data assets ranking", operationId = "kanban:dataassets:growthtrend")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

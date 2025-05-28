@@ -35,7 +35,7 @@ public class TaskFollowRest {
   @Resource
   private TaskFollowFacade taskFollowFacade;
 
-  @Operation(description = "Add the follow of task", operationId = "task:follow:add")
+  @Operation(summary = "Add the follow of task", operationId = "task:follow:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Follow successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.add(id));
   }
 
-  @Operation(description = "Cancel the follow of task", operationId = "task:follow:cancel")
+  @Operation(summary = "Cancel the follow of task", operationId = "task:follow:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskFollowRest {
     taskFollowFacade.cancel(id);
   }
 
-  @Operation(description = "Cancel all the follows of task", operationId = "task:follow:cancel:all")
+  @Operation(summary = "Cancel all the follows of task", operationId = "task:follow:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class TaskFollowRest {
     taskFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Query the follow list of task", operationId = "task:follow:search")
+  @Operation(summary = "Query the follow list of task", operationId = "task:follow:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
@@ -74,7 +74,7 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.search(dto));
   }
 
-  @Operation(description = "Query the follow number of task", operationId = "task:follow:count")
+  @Operation(summary = "Query the follow number of task", operationId = "task:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/follow/count")

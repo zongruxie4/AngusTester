@@ -29,7 +29,7 @@ public class ExecMonitorInnerRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(description = "Start debug execution by monitor.", operationId = "exec:debug:monitor:start:inner")
+  @Operation(summary = "Start debug execution by monitor.", operationId = "exec:debug:monitor:start:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully")
   })
@@ -39,7 +39,7 @@ public class ExecMonitorInnerRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(description = "Query the detail of monitor debug execution.", operationId = "exec:debug:monitor:detail:inner")
+  @Operation(summary = "Query the detail of monitor debug execution.", operationId = "exec:debug:monitor:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

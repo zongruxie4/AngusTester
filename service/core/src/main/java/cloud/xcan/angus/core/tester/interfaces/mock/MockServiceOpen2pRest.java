@@ -29,7 +29,7 @@ public class MockServiceOpen2pRest {
   private MockServiceOpen2pFacade mockServiceOpen2pFacade;
 
   @Unused
-  @Operation(description = "Query the info of mock service", operationId = "mock:service:info:openapi2p")
+  @Operation(summary = "Query the info of mock service", operationId = "mock:service:info:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

@@ -38,7 +38,7 @@ public class ServicesCompRest {
   @Resource
   private ServicesCompFacade servicesCompFacade;
 
-  @Operation(description =
+  @Operation(summary =
       "Replace the OpenAPI component of services. For more details on the Components Object, "
           + "please see: [OpenAPI Specification#Components Object](https://swagger.io/specification/#components-object).", operationId = "services:comp:replace")
   @ApiResponses(value = {
@@ -53,7 +53,7 @@ public class ServicesCompRest {
     return ApiLocaleResult.success(servicesCompFacade.replace(serviceId, type, key, component));
   }
 
-  @Operation(description =
+  @Operation(summary =
       "Delete services OpenAPI components by type. If the component keys parameter is empty, "
           + "all components under the type will be deleted.", operationId = "services:comp:deleteByType")
   @ApiResponses(value = {
@@ -68,7 +68,7 @@ public class ServicesCompRest {
     servicesCompFacade.deleteByType(serviceId, type, keys);
   }
 
-  @Operation(description = "Delete services OpenAPI components by reference", operationId = "services:comp:deleteByRef")
+  @Operation(summary = "Delete services OpenAPI components by reference", operationId = "services:comp:deleteByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })
@@ -80,7 +80,7 @@ public class ServicesCompRest {
     servicesCompFacade.deleteByRef(serviceId, refs);
   }
 
-  @Operation(description = "Delete all OpenAPI components of the services", operationId = "services:comp:all:delete")
+  @Operation(summary = "Delete all OpenAPI components of the services", operationId = "services:comp:all:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })
@@ -91,7 +91,7 @@ public class ServicesCompRest {
     servicesCompFacade.deleteAll(serviceId);
   }
 
-  @Operation(description = "Query services OpenAPI component by reference", operationId = "services:comp:detailByRef")
+  @Operation(summary = "Query services OpenAPI component by reference", operationId = "services:comp:detailByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
@@ -102,7 +102,7 @@ public class ServicesCompRest {
     return ApiLocaleResult.success(servicesCompFacade.detailByRef(serviceId, ref));
   }
 
-  @Operation(description = "Query components of the specified type in the services", operationId = "services:comp:listByType")
+  @Operation(summary = "Query components of the specified type in the services", operationId = "services:comp:listByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
@@ -116,7 +116,7 @@ public class ServicesCompRest {
         servicesCompFacade.listByType(serviceId, types, keys, ignoreModel));
   }
 
-  @Operation(description = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listByRef")
+  @Operation(summary = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
@@ -128,7 +128,7 @@ public class ServicesCompRest {
     return ApiLocaleResult.success(servicesCompFacade.listByRef(serviceId, refs, ignoreModel));
   }
 
-  @Operation(description = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listAll")
+  @Operation(summary = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listAll")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })

@@ -42,7 +42,7 @@ public class ExecInnerRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(description = "Create execution by script id.", operationId = "exec:byScript:add:inner")
+  @Operation(summary = "Create execution by script id.", operationId = "exec:byScript:add:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -51,7 +51,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(description = "Start execution.", operationId = "exec:start:inner")
+  @Operation(summary = "Start execution.", operationId = "exec:start:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Start successfully")
   })
@@ -60,7 +60,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(description = "Stop execution.", operationId = "exec:stop:inner")
+  @Operation(summary = "Stop execution.", operationId = "exec:stop:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stop successfully")
   })
@@ -69,7 +69,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(description = "Query the detail of execution.", operationId = "exec:detail:inner")
+  @Operation(summary = "Query the detail of execution.", operationId = "exec:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -79,7 +79,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.detail(id));
   }
 
-  @Operation(description = "Query the basic information of execution.", operationId = "exec:info")
+  @Operation(summary = "Query the basic information of execution.", operationId = "exec:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/{id}/info")
@@ -89,7 +89,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.info(id, joinSampleSummary));
   }
 
-  @Operation(description = "Query the basic information of executions.", operationId = "exec:list:info")
+  @Operation(summary = "Query the basic information of executions.", operationId = "exec:list:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/info")
@@ -99,7 +99,7 @@ public class ExecInnerRest {
     return ApiLocaleResult.success(execFacade.listInfo(ids, joinSampleSummary));
   }
 
-  @Operation(description = "Query the basic information of executions.", operationId = "exec:list:info:bySource")
+  @Operation(summary = "Query the basic information of executions.", operationId = "exec:list:info:bySource")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/info/bySource")

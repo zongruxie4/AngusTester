@@ -36,7 +36,7 @@ public class MockApisOpen2pRest {
   @Resource
   private MockApisOpen2pFacade mockApisOpen2pFacade;
 
-  @Operation(description = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
+  @Operation(summary = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @PostMapping(value = "/apis/counter")
@@ -45,7 +45,7 @@ public class MockApisOpen2pRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
+  @Operation(summary = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/service/{id}")
@@ -54,7 +54,7 @@ public class MockApisOpen2pRest {
     return ApiLocaleResult.success(mockApisOpen2pFacade.mockService(id));
   }
 
-  @Operation(description = "Query the list of mock apis", operationId = "mock:apis:detail:openapi2p")
+  @Operation(summary = "Query the list of mock apis", operationId = "mock:apis:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis")

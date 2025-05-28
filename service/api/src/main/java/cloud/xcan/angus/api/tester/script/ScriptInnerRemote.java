@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
 public interface ScriptInnerRemote {
 
-  @Operation(description = "Query the detail of script", operationId = "script:detail:inner")
+  @Operation(summary = "Query the detail of script", operationId = "script:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -34,7 +34,7 @@ public interface ScriptInnerRemote {
   ApiLocaleResult<ScriptDetailVo> detail(
       @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id);
 
-  @Operation(description = "Query the info of script", operationId = "script:info:inner")
+  @Operation(summary = "Query the info of script", operationId = "script:info:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -42,7 +42,7 @@ public interface ScriptInnerRemote {
   ApiLocaleResult<ScriptInfoVo> info(
       @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id);
 
-  @Operation(description = "Query the info of scripts", operationId = "script:infos:inner")
+  @Operation(summary = "Query the info of scripts", operationId = "script:infos:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -51,7 +51,7 @@ public interface ScriptInnerRemote {
       @Parameter(name = "ids", description = "Script ids", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids);
 
-  @Operation(description = "Query the list of script info", operationId = "script:info:list:inner")
+  @Operation(summary = "Query the list of script info", operationId = "script:info:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

@@ -49,7 +49,7 @@ public class ScenarioRest {
   @Resource
   private ScenarioFacade scenarioFacade;
 
-  @Operation(description = "Add scenario", operationId = "scenario:add")
+  @Operation(summary = "Add scenario", operationId = "scenario:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +58,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.add(dto));
   }
 
-  @Operation(description = "Update scenario", operationId = "scenario:update")
+  @Operation(summary = "Update scenario", operationId = "scenario:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -69,7 +69,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace scenario or create if it doesn't exist", operationId = "scenario:replace")
+  @Operation(summary = "Replace scenario or create if it doesn't exist", operationId = "scenario:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -77,7 +77,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.replace(dto));
   }
 
-  @Operation(description = "Move the scenario to another dir", operationId = "scenario:move")
+  @Operation(summary = "Move the scenario to another dir", operationId = "scenario:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Moved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -89,7 +89,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone scenario", operationId = "scenario:clone")
+  @Operation(summary = "Clone scenario", operationId = "scenario:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -101,7 +101,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.clone(id));
   }
 
-  @Operation(description = "Import the inner scenario example", operationId = "scenario:example:import")
+  @Operation(summary = "Import the inner scenario example", operationId = "scenario:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -111,7 +111,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete scenario", operationId = "scenario:delete")
+  @Operation(summary = "Delete scenario", operationId = "scenario:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -121,7 +121,7 @@ public class ScenarioRest {
     scenarioFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of scenario", operationId = "scenario:detail")
+  @Operation(summary = "Query the detail of scenario", operationId = "scenario:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -131,7 +131,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of scenario", operationId = "scenario:list")
+  @Operation(summary = "Query the list of scenario", operationId = "scenario:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -141,7 +141,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.list(ids));
   }
 
-  @Operation(description = "Query the basic information list of scenario", operationId = "scenario:list")
+  @Operation(summary = "Query the basic information list of scenario", operationId = "scenario:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -150,7 +150,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the basic information list of scenario", operationId = "scenario:search")
+  @Operation(summary = "Fulltext search the basic information list of scenario", operationId = "scenario:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

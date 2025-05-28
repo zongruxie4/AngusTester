@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @FeignClient(name = "${xcan.service.angustester:XCAN-ANGUSTESTER.BOOT}")
 public interface ScriptRemote {
 
-  @Operation(description = "Add script", operationId = "script:add")
+  @Operation(summary = "Add script", operationId = "script:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)

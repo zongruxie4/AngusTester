@@ -35,7 +35,7 @@ public class ScenarioFavoriteRest {
   @Resource
   private ScenarioFavouriteFacade scenarioFavouriteFacade;
 
-  @Operation(description = "Add the favourite of scenario", operationId = "scenario:favourite:add")
+  @Operation(summary = "Add the favourite of scenario", operationId = "scenario:favourite:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class ScenarioFavoriteRest {
     return ApiLocaleResult.success(scenarioFavouriteFacade.add(id));
   }
 
-  @Operation(description = "Cancel the favourite of scenario", operationId = "scenario:favourite:delete")
+  @Operation(summary = "Cancel the favourite of scenario", operationId = "scenario:favourite:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class ScenarioFavoriteRest {
     scenarioFavouriteFacade.cancel(id);
   }
 
-  @Operation(description = "Cancel all the favorites of scenario", operationId = "scenario:favourite:delete:all")
+  @Operation(summary = "Cancel all the favorites of scenario", operationId = "scenario:favourite:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class ScenarioFavoriteRest {
     scenarioFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Query the favourite list of scenario", operationId = "scenario:favourite:search")
+  @Operation(summary = "Query the favourite list of scenario", operationId = "scenario:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -74,7 +74,7 @@ public class ScenarioFavoriteRest {
     return ApiLocaleResult.success(scenarioFavouriteFacade.search(dto));
   }
 
-  @Operation(description = "Query the favourite number of scenario", operationId = "scenario:favourite:count")
+  @Operation(summary = "Query the favourite number of scenario", operationId = "scenario:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/favourite/count")

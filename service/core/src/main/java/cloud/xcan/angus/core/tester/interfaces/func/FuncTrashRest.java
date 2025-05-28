@@ -34,7 +34,7 @@ public class FuncTrashRest {
   @Resource
   private FuncTrashFacade funcTrashFacade;
 
-  @Operation(description = "Clear the trash of functional testing", operationId = "func:trash:clear")
+  @Operation(summary = "Clear the trash of functional testing", operationId = "func:trash:clear")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
@@ -43,7 +43,7 @@ public class FuncTrashRest {
     funcTrashFacade.clear(id);
   }
 
-  @Operation(description = "Clear all the trash of functional testing", operationId = "func:trash:clear:all")
+  @Operation(summary = "Clear all the trash of functional testing", operationId = "func:trash:clear:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -52,7 +52,7 @@ public class FuncTrashRest {
     funcTrashFacade.clearAll(projectId);
   }
 
-  @Operation(description = "Back the functional testing from the trash", operationId = "func:trash:back")
+  @Operation(summary = "Back the functional testing from the trash", operationId = "func:trash:back")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
@@ -62,7 +62,7 @@ public class FuncTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Back all the functional testing from the trash", operationId = "func:trash:back:all")
+  @Operation(summary = "Back all the functional testing from the trash", operationId = "func:trash:back:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
@@ -72,7 +72,7 @@ public class FuncTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the number of functional testing", operationId = "func:trash:count")
+  @Operation(summary = "Query the number of functional testing", operationId = "func:trash:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @ResponseStatus(HttpStatus.OK)
@@ -82,7 +82,7 @@ public class FuncTrashRest {
     return ApiLocaleResult.success(funcTrashFacade.count(projectId));
   }
 
-  @Operation(description = "Fulltext search the trash of functional testing", operationId = "func:trash:search")
+  @Operation(summary = "Fulltext search the trash of functional testing", operationId = "func:trash:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

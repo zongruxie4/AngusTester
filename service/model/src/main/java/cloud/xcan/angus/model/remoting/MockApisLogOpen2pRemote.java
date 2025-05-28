@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface MockApisLogOpen2pRemote {
 
-  @Operation(description = "Add the request logs of mock apis", operationId = "mock:apis:log:add:openapi2p")
+  @Operation(summary = "Add the request logs of mock apis", operationId = "mock:apis:log:add:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @Headers({"Authorization: Bearer {token}", "Content-Type: application/json"})

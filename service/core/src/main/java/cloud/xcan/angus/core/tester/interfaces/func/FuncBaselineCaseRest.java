@@ -42,7 +42,7 @@ public class FuncBaselineCaseRest {
   @Resource
   private FuncBaselineCaseFacade funcBaselineCaseFacade;
 
-  @Operation(description = "Add the baseline of test cases", operationId = "func:baseline:case:add")
+  @Operation(summary = "Add the baseline of test cases", operationId = "func:baseline:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +54,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the baseline of test cases", operationId = "func:baseline:case:delete")
+  @Operation(summary = "Delete the baseline of test cases", operationId = "func:baseline:case:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class FuncBaselineCaseRest {
     funcBaselineCaseFacade.delete(baselineId, caseIds);
   }
 
-  @Operation(description = "Query the baseline detail of test cases", operationId = "func:baseline:case:detail")
+  @Operation(summary = "Query the baseline detail of test cases", operationId = "func:baseline:case:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -76,7 +76,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.detail(baselineId, caseId));
   }
 
-  @Operation(description = "Query the baseline list of test cases", operationId = "func:baseline:case:list")
+  @Operation(summary = "Query the baseline list of test cases", operationId = "func:baseline:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{baselineId}/case")
@@ -86,7 +86,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.list(baselineId, dto));
   }
 
-  @Operation(description = "Fulltext search list the of baseline test cases", operationId = "func:baseline:case:search")
+  @Operation(summary = "Fulltext search list the of baseline test cases", operationId = "func:baseline:case:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{baselineId}/case/search")
@@ -96,7 +96,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.search(baselineId, false, dto));
   }
 
-  @Operation(description = "Export the test cases of baseline", operationId = "func:baseline:case:export")
+  @Operation(summary = "Export the test cases of baseline", operationId = "func:baseline:case:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

@@ -47,7 +47,7 @@ public class TaskSprintRest {
   @Resource
   private TaskSprintFacade taskSprintFacade;
 
-  @Operation(description = "Add task sprint", operationId = "task:sprint:add")
+  @Operation(summary = "Add task sprint", operationId = "task:sprint:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.add(dto));
   }
 
-  @Operation(description = "Update task sprint", operationId = "task:sprint:update")
+  @Operation(summary = "Update task sprint", operationId = "task:sprint:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -67,7 +67,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace task sprint", operationId = "task:sprint:replace")
+  @Operation(summary = "Replace task sprint", operationId = "task:sprint:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -78,7 +78,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.replace(dto));
   }
 
-  @Operation(description = "Start task sprint", operationId = "task:sprint:start")
+  @Operation(summary = "Start task sprint", operationId = "task:sprint:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -90,7 +90,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "End task sprint", operationId = "task:sprint:end")
+  @Operation(summary = "End task sprint", operationId = "task:sprint:end")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "End successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -102,7 +102,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Block task sprint", operationId = "task:sprint:block")
+  @Operation(summary = "Block task sprint", operationId = "task:sprint:block")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Block successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -114,7 +114,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone task sprint", operationId = "task:sprint:clone")
+  @Operation(summary = "Clone task sprint", operationId = "task:sprint:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -125,7 +125,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.clone(id));
   }
 
-  @Operation(description = "Move task sprint to another project", operationId = "task:sprint:move")
+  @Operation(summary = "Move task sprint to another project", operationId = "task:sprint:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Moved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -138,7 +138,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Restart the task of sprint", operationId = "task:sprint:task:restart")
+  @Operation(summary = "Restart the task of sprint", operationId = "task:sprint:task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -150,7 +150,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reopen the task of sprint", operationId = "task:sprint:task:reopen")
+  @Operation(summary = "Reopen the task of sprint", operationId = "task:sprint:task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -162,7 +162,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete task sprint", operationId = "task:sprint:delete")
+  @Operation(summary = "Delete task sprint", operationId = "task:sprint:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -172,7 +172,7 @@ public class TaskSprintRest {
     taskSprintFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of task sprint", operationId = "task:sprint:detail")
+  @Operation(summary = "Query the detail of task sprint", operationId = "task:sprint:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -182,7 +182,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of task sprint", operationId = "task:sprint:list")
+  @Operation(summary = "Query the list of task sprint", operationId = "task:sprint:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -191,7 +191,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of task sprint", operationId = "task:sprint:search")
+  @Operation(summary = "Fulltext search the list of task sprint", operationId = "task:sprint:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

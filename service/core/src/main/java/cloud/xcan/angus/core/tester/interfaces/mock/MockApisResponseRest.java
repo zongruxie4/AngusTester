@@ -42,7 +42,7 @@ public class MockApisResponseRest {
   @Resource
   private MockApisResponseFacade mockApisResponseFacade;
 
-  @Operation(description = "Add the response of mock apis", operationId = "mock:apis:response:add")
+  @Operation(summary = "Add the response of mock apis", operationId = "mock:apis:response:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class MockApisResponseRest {
     return ApiLocaleResult.success(mockApisResponseFacade.add(apisId, dto));
   }
 
-  @Operation(description = "Replace the response of mock apis", operationId = "mock:apis:response:replace")
+  @Operation(summary = "Replace the response of mock apis", operationId = "mock:apis:response:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping("/{apisId}/response")
@@ -64,7 +64,7 @@ public class MockApisResponseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the response of mock apis", operationId = "mock:apis:response:delete")
+  @Operation(summary = "Delete the response of mock apis", operationId = "mock:apis:response:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{apisId}/response")
@@ -75,7 +75,7 @@ public class MockApisResponseRest {
     mockApisResponseFacade.delete(apisId, responseIds);
   }
 
-  @Operation(description = "Query the response of mock apis", operationId = "mock:apis:response:all")
+  @Operation(summary = "Query the response of mock apis", operationId = "mock:apis:response:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

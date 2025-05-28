@@ -41,7 +41,7 @@ public class NodeDomainDnsRest {
   @Resource
   private NodeDomainDnsFacade nodeDomainDnsFacade;
 
-  @Operation(description = "Add the dns of node domain", operationId = "node:domain:dns:add")
+  @Operation(summary = "Add the dns of node domain", operationId = "node:domain:dns:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -50,7 +50,7 @@ public class NodeDomainDnsRest {
     return ApiLocaleResult.success(nodeDomainDnsFacade.add(dto));
   }
 
-  @Operation(description = "Update the dns of node domain", operationId = "node:domain:dns:update")
+  @Operation(summary = "Update the dns of node domain", operationId = "node:domain:dns:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -61,7 +61,7 @@ public class NodeDomainDnsRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the dns of node domain", operationId = "node:domain:dns:delete")
+  @Operation(summary = "Delete the dns of node domain", operationId = "node:domain:dns:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -71,7 +71,7 @@ public class NodeDomainDnsRest {
     nodeDomainDnsFacade.delete(id);
   }
 
-  @Operation(description = "Query the list of node domain", operationId = "node:domain:dns:list")
+  @Operation(summary = "Query the list of node domain", operationId = "node:domain:dns:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping

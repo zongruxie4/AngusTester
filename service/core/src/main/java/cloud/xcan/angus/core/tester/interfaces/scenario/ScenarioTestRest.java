@@ -45,7 +45,7 @@ public class ScenarioTestRest {
   @Resource
   private ScenarioTestFacade scenarioTestFacade;
 
-  @Operation(description =
+  @Operation(summary =
       "Enable or disable the functionality, performance, stability testing of scenario."
           + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis.", operationId = "scenario:test:enabled")
   @ApiResponses(value = {
@@ -61,7 +61,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find")
+  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -72,7 +72,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success(scenarioTestFacade.testEnabledFind(scenario));
   }
 
-  @Operation(description = "The testing scenario summary the functionality, performance, stability testing of project", operationId = "project:test:scenario:count")
+  @Operation(summary = "The testing scenario summary the functionality, performance, stability testing of project", operationId = "project:test:scenario:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -84,7 +84,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success(scenarioTestFacade.countProjectTestScenarios(projectId, dto));
   }
 
-  @Operation(description = "Configure and generate functionality, performance, stability testing tasks of scenario, which will override the configuration when the task exists", operationId = "scenario:test:task:generate")
+  @Operation(summary = "Configure and generate functionality, performance, stability testing tasks of scenario, which will override the configuration when the task exists", operationId = "scenario:test:task:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Configure and generate successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -98,7 +98,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Restart the existing functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:restart")
+  @Operation(summary = "Restart the existing functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Restarted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -109,7 +109,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reopen the existing functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:reopen")
+  @Operation(summary = "Reopen the existing functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Reopened successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -120,7 +120,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:delete")
+  @Operation(summary = "Delete the functionality, performance, stability testing tasks of scenario", operationId = "scenario:test:task:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -131,7 +131,7 @@ public class ScenarioTestRest {
     scenarioTestFacade.testTaskDelete(scenarioId, testTypes);
   }
 
-  @Operation(description = "Query all server configurations of the scenario", operationId = "scenario:test:schema:server:all")
+  @Operation(summary = "Query all server configurations of the scenario", operationId = "scenario:test:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -142,7 +142,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success(scenarioTestFacade.serverList(scenarioId));
   }
 
-  @Operation(description = "Create the scenario testing execution. Note: Only HTTP servers is supported", operationId = "scenario:test:exec:add")
+  @Operation(summary = "Create the scenario testing execution. Note: Only HTTP servers is supported", operationId = "scenario:test:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -155,7 +155,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the test results of scenario", operationId = "scenario:test:result:detail")
+  @Operation(summary = "Query the test results of scenario", operationId = "scenario:test:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/scenario/{id}/test/result")

@@ -49,7 +49,7 @@ public class IndicatorStabilityRest {
   private IndicatorStabilityFacade indicatorStabilityFacade;
 
   @Unused
-  @Operation(description = "Add the indicator of stability", operationId = "indicator:stability:add")
+  @Operation(summary = "Add the indicator of stability", operationId = "indicator:stability:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +58,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success(indicatorStabilityFacade.add(dto));
   }
 
-  @Operation(description = "Replace the indicator of stability", operationId = "indicator:stability:replace")
+  @Operation(summary = "Replace the indicator of stability", operationId = "indicator:stability:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -69,7 +69,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the stability indicator", operationId = "indicator:stability:delete")
+  @Operation(summary = "Delete the stability indicator", operationId = "indicator:stability:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,7 +80,7 @@ public class IndicatorStabilityRest {
     indicatorStabilityFacade.delete(ids);
   }
 
-  @Operation(description = "Delete the stability indicator of target", operationId = "indicator:stability:target:delete")
+  @Operation(summary = "Delete the stability indicator of target", operationId = "indicator:stability:target:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -91,7 +91,7 @@ public class IndicatorStabilityRest {
     indicatorStabilityFacade.deleteByTarget(targetType, targetId);
   }
 
-  @Operation(description = "Query the indicator detail of stability", operationId = "indicator:stability:detail")
+  @Operation(summary = "Query the indicator detail of stability", operationId = "indicator:stability:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -102,7 +102,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success(indicatorStabilityFacade.detail(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator detail of stability, return to default configuration when not set", operationId = "indicator:stability:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of stability, return to default configuration when not set", operationId = "indicator:stability:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -113,7 +113,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success(indicatorStabilityFacade.detailOrDefault(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator list of stability", operationId = "indicator:stability:list")
+  @Operation(summary = "Query the indicator list of stability", operationId = "indicator:stability:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/stability")
@@ -121,7 +121,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success(indicatorStabilityFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the indicator of stability", operationId = "indicator:stability:search")
+  @Operation(summary = "Fulltext search the indicator of stability", operationId = "indicator:stability:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/stability/search")

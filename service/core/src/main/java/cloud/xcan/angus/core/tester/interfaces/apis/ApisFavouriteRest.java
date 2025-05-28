@@ -35,7 +35,7 @@ public class ApisFavouriteRest {
   @Resource
   private ApisFavouriteFacade apisFavouriteFacade;
 
-  @Operation(description = "Add the favourite of apis", operationId = "apis:favourite:add")
+  @Operation(summary = "Add the favourite of apis", operationId = "apis:favourite:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Favourite successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class ApisFavouriteRest {
     return ApiLocaleResult.success(apisFavouriteFacade.add(apiId));
   }
 
-  @Operation(description = "Cancel the favourite of apis", operationId = "apis:favourite:cancel")
+  @Operation(summary = "Cancel the favourite of apis", operationId = "apis:favourite:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Canceled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -57,7 +57,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancel(apiId);
   }
 
-  @Operation(description = "Cancel all the favourite of apis", operationId = "apis:favourite:cancel:all")
+  @Operation(summary = "Cancel all the favourite of apis", operationId = "apis:favourite:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -67,7 +67,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Fulltext search apis favourite", operationId = "apis:favourite:search")
+  @Operation(summary = "Fulltext search apis favourite", operationId = "apis:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -76,7 +76,7 @@ public class ApisFavouriteRest {
     return ApiLocaleResult.success(apisFavouriteFacade.search(dto));
   }
 
-  @Operation(description = "Query the favourite number of apis", operationId = "apis:favourite:count")
+  @Operation(summary = "Query the favourite number of apis", operationId = "apis:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/favourite/count")

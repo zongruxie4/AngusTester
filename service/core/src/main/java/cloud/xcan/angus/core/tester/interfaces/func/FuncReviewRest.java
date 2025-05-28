@@ -45,7 +45,7 @@ public class FuncReviewRest {
   @Resource
   private FuncReviewFacade funcReviewFacade;
 
-  @Operation(description = "Add the review of functional testing", operationId = "func:review:add")
+  @Operation(summary = "Add the review of functional testing", operationId = "func:review:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +54,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.add(dto));
   }
 
-  @Operation(description = "Update the review of functional testing", operationId = "func:review:update")
+  @Operation(summary = "Update the review of functional testing", operationId = "func:review:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -65,7 +65,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the review of functional testing", operationId = "func:review:replace")
+  @Operation(summary = "Replace the review of functional testing", operationId = "func:review:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -76,7 +76,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.replace(dto));
   }
 
-  @Operation(description = "Start the review of functional testing", operationId = "func:review:start")
+  @Operation(summary = "Start the review of functional testing", operationId = "func:review:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -88,7 +88,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "End the review of functional testing", operationId = "func:review:end")
+  @Operation(summary = "End the review of functional testing", operationId = "func:review:end")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "End successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -100,7 +100,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Block the review of functional testing", operationId = "func:review:block")
+  @Operation(summary = "Block the review of functional testing", operationId = "func:review:block")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Block successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -112,7 +112,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone the review of functional testing", operationId = "func:review:clone")
+  @Operation(summary = "Clone the review of functional testing", operationId = "func:review:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -123,7 +123,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.clone(id));
   }
 
-  @Operation(description = "Reset the review result of functional testing", operationId = "func:review:case:result:reset")
+  @Operation(summary = "Reset the review result of functional testing", operationId = "func:review:case:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -135,7 +135,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Restart the review result of functional testing", operationId = "func:review:case:result:restart")
+  @Operation(summary = "Restart the review result of functional testing", operationId = "func:review:case:result:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -147,7 +147,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the review of functional testing", operationId = "func:review:delete")
+  @Operation(summary = "Delete the review of functional testing", operationId = "func:review:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -157,7 +157,7 @@ public class FuncReviewRest {
     funcReviewFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of testing review", operationId = "func:review:detail")
+  @Operation(summary = "Query the detail of testing review", operationId = "func:review:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -167,7 +167,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of testing review", operationId = "func:review:list")
+  @Operation(summary = "Query the list of testing review", operationId = "func:review:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -176,7 +176,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of testing review", operationId = "func:review:search")
+  @Operation(summary = "Fulltext search the list of testing review", operationId = "func:review:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

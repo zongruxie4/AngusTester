@@ -29,7 +29,7 @@ public class ServicesTestInnerRest {
   @Resource
   private ServicesTestFacade servicesTestFacade;
 
-  @Operation(description = "The testing apis summary the functionality, performance, stability testing of service", operationId = "services:test:apis:count:inner")
+  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of service", operationId = "services:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -41,7 +41,7 @@ public class ServicesTestInnerRest {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
-  @Operation(description = "The testing apis summary the functionality, performance, stability testing of project", operationId = "project:test:apis:count:inner")
+  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of project", operationId = "project:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

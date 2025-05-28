@@ -33,7 +33,7 @@ public class AngusScriptRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(description = "Add script by angus model", operationId = "script:angus:add")
+  @Operation(summary = "Add script by angus model", operationId = "script:angus:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +44,7 @@ public class AngusScriptRest {
     return ApiLocaleResult.success(scriptFacade.angusAdd(projectId, dto));
   }
 
-  @Operation(description = "Replace script by angus model", operationId = "script:angus:replace")
+  @Operation(summary = "Replace script by angus model", operationId = "script:angus:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping("/{id}")
@@ -55,7 +55,7 @@ public class AngusScriptRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the script detail of angus model", operationId = "script:angus:detail")
+  @Operation(summary = "Query the script detail of angus model", operationId = "script:angus:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

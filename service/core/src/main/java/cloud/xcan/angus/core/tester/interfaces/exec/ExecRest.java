@@ -54,7 +54,7 @@ public class ExecRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(description = "Create execution by script content.", operationId = "exec:byContent:add")
+  @Operation(summary = "Create execution by script content.", operationId = "exec:byContent:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -64,7 +64,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptContent(dto));
   }
 
-  @Operation(description = "Create execution by script arguments.", operationId = "exec:byArgs:add")
+  @Operation(summary = "Create execution by script arguments.", operationId = "exec:byArgs:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -74,7 +74,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptArgs(dto));
   }
 
-  @Operation(description = "Create execution by script id.", operationId = "exec:byScript:add")
+  @Operation(summary = "Create execution by script id.", operationId = "exec:byScript:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -84,7 +84,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(description = "Replace execution configuration.", operationId = "exec:config:replace")
+  @Operation(summary = "Replace execution configuration.", operationId = "exec:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully")
   })
@@ -96,7 +96,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace execution script configuration.", operationId = "exec:script:config:replace")
+  @Operation(summary = "Replace execution script configuration.", operationId = "exec:script:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully")
   })
@@ -108,7 +108,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Start execution.", operationId = "exec:start")
+  @Operation(summary = "Start execution.", operationId = "exec:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Start successfully")
   })
@@ -117,7 +117,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(description = "Stop execution.", operationId = "exec:stop")
+  @Operation(summary = "Stop execution.", operationId = "exec:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stop successfully")
   })
@@ -126,7 +126,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(description = "Delete executions.", operationId = "exec:delete")
+  @Operation(summary = "Delete executions.", operationId = "exec:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -135,7 +135,7 @@ public class ExecRest {
     execFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of execution.", operationId = "exec:detail")
+  @Operation(summary = "Query the detail of execution.", operationId = "exec:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -145,7 +145,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.detail(id));
   }
 
-  @Operation(description = "Query the basic information of execution", operationId = "exec:info")
+  @Operation(summary = "Query the basic information of execution", operationId = "exec:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -155,7 +155,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.info(id, true));
   }
 
-  @Operation(description = "Query the actual script of execution", operationId = "exec:script")
+  @Operation(summary = "Query the actual script of execution", operationId = "exec:script")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -165,7 +165,7 @@ public class ExecRest {
     return ApiLocaleResult.successData(execFacade.script(id));
   }
 
-  @Operation(description = "Query all testing server configurations of the execution, only Http plugin is supported", operationId = "exec:server:all")
+  @Operation(summary = "Query all testing server configurations of the execution, only Http plugin is supported", operationId = "exec:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -176,7 +176,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.serverList(id));
   }
 
-  @Operation(description = "Query the list of execution", operationId = "exec:list")
+  @Operation(summary = "Query the list of execution", operationId = "exec:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -184,7 +184,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of execution", operationId = "exec:search")
+  @Operation(summary = "Fulltext search the list of execution", operationId = "exec:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

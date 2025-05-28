@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface MockApisOpen2pRemote {
 
-  @Operation(description = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
+  @Operation(summary = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @Headers("Authorization: Bearer {token}")
@@ -24,7 +24,7 @@ public interface MockApisOpen2pRemote {
   ApiLocaleResult<MockApisServiceInfoVo> mockService(@Param("token") String token,
       @Param("id") Long id);
 
-  @Operation(description = "Query the list of mock apis", operationId = "mock:apis:detail:openapi2p")
+  @Operation(summary = "Query the list of mock apis", operationId = "mock:apis:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @Headers("Authorization: Bearer {token}")
@@ -33,7 +33,7 @@ public interface MockApisOpen2pRemote {
       @QueryMap MockApisDetailDto dto);
 
   // Note: PATCH method is not supported by @RequestLine
-  @Operation(description = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
+  @Operation(summary = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully")})
   @Headers({"Authorization: Bearer {token}", "Content-Type: application/json"})

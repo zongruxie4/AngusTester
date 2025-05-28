@@ -51,7 +51,7 @@ public class ApisDesignRest {
   @Resource
   private ApisDesignFacade apisDesignFacade;
 
-  @Operation(description = "Add the design of apis", operationId = "apis:design:add")
+  @Operation(summary = "Add the design of apis", operationId = "apis:design:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -60,7 +60,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.add(dto));
   }
 
-  @Operation(description = "Replace the name of apis design", operationId = "apis:design:name:replace")
+  @Operation(summary = "Replace the name of apis design", operationId = "apis:design:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -70,7 +70,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the design content of apis", operationId = "apis:design:content:replace")
+  @Operation(summary = "Replace the design content of apis", operationId = "apis:design:content:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -80,7 +80,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Release the design of apis", operationId = "apis:design:release")
+  @Operation(summary = "Release the design of apis", operationId = "apis:design:release")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Release successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -91,7 +91,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone the design of apis", operationId = "apis:design:clone")
+  @Operation(summary = "Clone the design of apis", operationId = "apis:design:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -101,7 +101,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.clone(id));
   }
 
-  @Operation(description = "Generate the services of designed apis", operationId = "apis:design:services:generate")
+  @Operation(summary = "Generate the services of designed apis", operationId = "apis:design:services:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -112,7 +112,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Import the apis design", operationId = "apis:design:import")
+  @Operation(summary = "Import the apis design", operationId = "apis:design:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -122,7 +122,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.imports(dto));
   }
 
-  @Operation(description = "Delete the design of apis", operationId = "apis:design:delete")
+  @Operation(summary = "Delete the design of apis", operationId = "apis:design:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
@@ -134,7 +134,7 @@ public class ApisDesignRest {
     apisDesignFacade.delete(ids);
   }
 
-  @Operation(description = "Query the sharing detail of apis", operationId = "space:design:detail")
+  @Operation(summary = "Query the sharing detail of apis", operationId = "space:design:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -144,7 +144,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.detail(id));
   }
 
-  @Operation(description = "Query the design list of apis", operationId = "apis:design:list")
+  @Operation(summary = "Query the design list of apis", operationId = "apis:design:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -153,7 +153,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the design of apis", operationId = "apis:design:search")
+  @Operation(summary = "Fulltext search the design of apis", operationId = "apis:design:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -162,7 +162,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.search(dto));
   }
 
-  @Operation(description = "Export the designed OpenAPI specification of apis", operationId = "apis:design:export")
+  @Operation(summary = "Export the designed OpenAPI specification of apis", operationId = "apis:design:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @GetMapping(value = "/export")

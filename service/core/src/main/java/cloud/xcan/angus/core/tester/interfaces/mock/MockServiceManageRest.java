@@ -33,7 +33,7 @@ public class MockServiceManageRest {
   @Resource
   private MockServiceManageFacade mockServiceMangeFacade;
 
-  @Operation(description = "Start mock service by agent.", operationId = "mock:service:manage:start")
+  @Operation(summary = "Start mock service by agent.", operationId = "mock:service:manage:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -42,7 +42,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.start(dto));
   }
 
-  @Operation(description = "Stop mock service by agent.", operationId = "mock:service:manage:stop")
+  @Operation(summary = "Stop mock service by agent.", operationId = "mock:service:manage:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -51,7 +51,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.stop(dto));
   }
 
-  @Operation(description = "Query mock service status by agent.", operationId = "mock:service:manage:status")
+  @Operation(summary = "Query mock service status by agent.", operationId = "mock:service:manage:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -60,7 +60,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.status(dto));
   }
 
-  @Operation(description = "Sync mock service apis by agent", operationId = "mock:service:apis:manage:sync")
+  @Operation(summary = "Sync mock service apis by agent", operationId = "mock:service:apis:manage:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully sync")
   })
@@ -69,7 +69,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.syncApis(dto));
   }
 
-  @Operation(description = "Delete mock service apis by agent", operationId = "mock:service:apis:manage:delete")
+  @Operation(summary = "Delete mock service apis by agent", operationId = "mock:service:apis:manage:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully deleted")
   })

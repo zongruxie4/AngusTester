@@ -41,7 +41,7 @@ public class IndicatorFuncRest {
   @Resource
   private IndicatorFuncFacade indicatorFuncFacade;
 
-  @Operation(description = "Add the indicator of functionality", operationId = "indicator:func:add")
+  @Operation(summary = "Add the indicator of functionality", operationId = "indicator:func:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -50,7 +50,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.add(dto));
   }
 
-  @Operation(description = "Replace the indicator of functionality or throw 404 when it doesn't exist", operationId = "indicator:func:replace")
+  @Operation(summary = "Replace the indicator of functionality or throw 404 when it doesn't exist", operationId = "indicator:func:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -61,7 +61,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the functionality indicator of target", operationId = "indicator:func:target:delete")
+  @Operation(summary = "Delete the functionality indicator of target", operationId = "indicator:func:target:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -73,7 +73,7 @@ public class IndicatorFuncRest {
     indicatorFuncFacade.deleteByTarget(targetType, targetId);
   }
 
-  @Operation(description = "Query the indicator detail of functionality", operationId = "indicator:func:detail")
+  @Operation(summary = "Query the indicator detail of functionality", operationId = "indicator:func:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -85,7 +85,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.detail(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator detail of functionality, return to default configuration when not set", operationId = "indicator:func:audit:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of functionality, return to default configuration when not set", operationId = "indicator:func:audit:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -97,7 +97,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.detailOrDefault(targetType, targetId));
   }
 
-  @Operation(description = "Query the indicator list of functionality", operationId = "indicator:func:list")
+  @Operation(summary = "Query the indicator list of functionality", operationId = "indicator:func:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
@@ -105,7 +105,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the indicator of functionality", operationId = "indicator:func:search")
+  @Operation(summary = "Fulltext search the indicator of functionality", operationId = "indicator:func:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func/search")

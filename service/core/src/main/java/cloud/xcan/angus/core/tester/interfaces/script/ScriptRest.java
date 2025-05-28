@@ -60,7 +60,7 @@ public class ScriptRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(description = "Add script", operationId = "script:add")
+  @Operation(summary = "Add script", operationId = "script:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -69,7 +69,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.add(dto));
   }
 
-  @Operation(description = "Update script", operationId = "script:update")
+  @Operation(summary = "Update script", operationId = "script:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -80,7 +80,7 @@ public class ScriptRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace script", operationId = "script:replace")
+  @Operation(summary = "Replace script", operationId = "script:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -88,7 +88,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.replace(dto));
   }
 
-  @Operation(description = "Clone script", operationId = "script:clone")
+  @Operation(summary = "Clone script", operationId = "script:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -99,7 +99,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.clone(id));
   }
 
-  @Operation(description = "Import script", operationId = "script:import")
+  @Operation(summary = "Import script", operationId = "script:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -108,7 +108,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner script example", operationId = "script:example:import")
+  @Operation(summary = "Import the inner script example", operationId = "script:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -118,7 +118,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete scripts", operationId = "script:delete")
+  @Operation(summary = "Delete scripts", operationId = "script:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -128,7 +128,7 @@ public class ScriptRest {
     scriptFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of script", operationId = "script:detail")
+  @Operation(summary = "Query the detail of script", operationId = "script:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -138,7 +138,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.detail(id));
   }
 
-  @Operation(description = "Query the info of script", operationId = "script:info")
+  @Operation(summary = "Query the info of script", operationId = "script:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -148,7 +148,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(description = "Query the info of script", operationId = "script:infos")
+  @Operation(summary = "Query the info of script", operationId = "script:infos")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -160,7 +160,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.infos(ids));
   }
 
-  @Operation(description = "Query the targets of script", operationId = "script:target:info")
+  @Operation(summary = "Query the targets of script", operationId = "script:target:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -170,7 +170,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(description = "Query the list of script", operationId = "script:list")
+  @Operation(summary = "Query the list of script", operationId = "script:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -180,7 +180,7 @@ public class ScriptRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(description = "Query the list of script info", operationId = "script:info:list")
+  @Operation(summary = "Query the list of script info", operationId = "script:info:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -191,7 +191,7 @@ public class ScriptRest {
     return assembleInfoAllowImportSampleStatus(result);
   }
 
-  @Operation(description = "Fulltext search the list of script", operationId = "script:search")
+  @Operation(summary = "Fulltext search the list of script", operationId = "script:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -202,7 +202,7 @@ public class ScriptRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(description = "Export script", operationId = "script:export")
+  @Operation(summary = "Export script", operationId = "script:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

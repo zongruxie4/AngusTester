@@ -73,7 +73,7 @@ public class TaskRest {
   @Resource
   private TaskFacade taskFacade;
 
-  @Operation(description = "Create task", operationId = "task:add")
+  @Operation(summary = "Create task", operationId = "task:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -82,7 +82,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.add(dto));
   }
 
-  @Operation(description = "Update task", operationId = "task:update")
+  @Operation(summary = "Update task", operationId = "task:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -95,7 +95,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace task", operationId = "task:replace")
+  @Operation(summary = "Replace task", operationId = "task:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -108,7 +108,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the name of task", operationId = "task:name:replace")
+  @Operation(summary = "Replace the name of task", operationId = "task:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -121,7 +121,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Move the task to another sprint", operationId = "task:move")
+  @Operation(summary = "Move the task to another sprint", operationId = "task:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Move successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -132,7 +132,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the type of task", operationId = "task:type:replace")
+  @Operation(summary = "Replace the type of task", operationId = "task:type:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -145,7 +145,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the bug level of task", operationId = "task:bugLevel:replace")
+  @Operation(summary = "Replace the bug level of task", operationId = "task:bugLevel:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -158,7 +158,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the bug level of task", operationId = "task:missingBug:replace")
+  @Operation(summary = "Replace the bug level of task", operationId = "task:missingBug:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -171,7 +171,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the assignees of task", operationId = "task:assignee:replace")
+  @Operation(summary = "Replace the assignees of task", operationId = "task:assignee:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -184,7 +184,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the confirmor of task", operationId = "task:confirmor:replace")
+  @Operation(summary = "Replace the confirmor of task", operationId = "task:confirmor:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -197,7 +197,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the tags of task", operationId = "task:tags:replace")
+  @Operation(summary = "Replace the tags of task", operationId = "task:tags:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -210,7 +210,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the deadline of task", operationId = "task:deadline:replace")
+  @Operation(summary = "Replace the deadline of task", operationId = "task:deadline:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -223,7 +223,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the priority of task", operationId = "task:priority:replace")
+  @Operation(summary = "Replace the priority of task", operationId = "task:priority:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -236,7 +236,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the software version of task", operationId = "task:softwareVersion:replace")
+  @Operation(summary = "Replace the software version of task", operationId = "task:softwareVersion:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -249,7 +249,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the eval workload of task", operationId = "task:evalWorkload:replace")
+  @Operation(summary = "Replace the eval workload of task", operationId = "task:evalWorkload:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -262,7 +262,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the actual workload of task", operationId = "task:actualWorkload:replace")
+  @Operation(summary = "Replace the actual workload of task", operationId = "task:actualWorkload:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -275,7 +275,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the description of task", operationId = "task:description:replace")
+  @Operation(summary = "Replace the description of task", operationId = "task:description:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -288,7 +288,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace attachment the task", operationId = "task:attachment:replace")
+  @Operation(summary = "Replace attachment the task", operationId = "task:attachment:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -301,7 +301,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Start task", operationId = "task:start")
+  @Operation(summary = "Start task", operationId = "task:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -313,7 +313,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel task", operationId = "task:cancel")
+  @Operation(summary = "Cancel task", operationId = "task:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Canceled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -325,7 +325,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Modify task as processed", operationId = "task:processed")
+  @Operation(summary = "Modify task as processed", operationId = "task:processed")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modify successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -337,7 +337,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Confirm the process result of task", operationId = "task:process:result:confirm")
+  @Operation(summary = "Confirm the process result of task", operationId = "task:process:result:confirm")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Confirmed successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -354,7 +354,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Complete the task", operationId = "task:complete")
+  @Operation(summary = "Complete the task", operationId = "task:complete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Completed successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -370,7 +370,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Modify the subtasks of the task", operationId = "task:subtask:set")
+  @Operation(summary = "Modify the subtasks of the task", operationId = "task:subtask:set")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Set successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -383,7 +383,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel the subtasks of the task", operationId = "task:subtask:cancel")
+  @Operation(summary = "Cancel the subtasks of the task", operationId = "task:subtask:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cancel successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -397,7 +397,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the not associated subtask list of task", operationId = "task:notAssociated:subtask:list")
+  @Operation(summary = "Query the not associated subtask list of task", operationId = "task:notAssociated:subtask:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/subtask/notAssociated")
@@ -407,7 +407,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.notAssociatedSubtask(id, moduleId));
   }
 
-  @Operation(description = "Associate the tasks of the task", operationId = "task:association:task:add")
+  @Operation(summary = "Associate the tasks of the task", operationId = "task:association:task:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Set successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -420,7 +420,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel the association tasks of the task", operationId = "task:association:task:cancel")
+  @Operation(summary = "Cancel the association tasks of the task", operationId = "task:association:task:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cancel successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -434,7 +434,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the not associated tasks list of task", operationId = "task:notAssociated:task:list")
+  @Operation(summary = "Query the not associated tasks list of task", operationId = "task:notAssociated:task:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/task/notAssociated")
@@ -445,7 +445,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.notAssociatedTask(id, moduleId, taskType));
   }
 
-  @Operation(description = "Associate the cases of the task", operationId = "task:association:case:add")
+  @Operation(summary = "Associate the cases of the task", operationId = "task:association:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Set successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -458,7 +458,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Cancel the association cases of the task", operationId = "task:association:case:cancel")
+  @Operation(summary = "Cancel the association cases of the task", operationId = "task:association:case:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cancel successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -472,7 +472,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the not associated cases list of task", operationId = "task:notAssociated:case:list")
+  @Operation(summary = "Query the not associated cases list of task", operationId = "task:notAssociated:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/case/notAssociated")
@@ -482,7 +482,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.notAssociatedCase(id, moduleId));
   }
 
-  @Operation(description = "Restart task", operationId = "task:restart")
+  @Operation(summary = "Restart task", operationId = "task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successful retest"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -493,7 +493,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Reopen task", operationId = "task:reopen")
+  @Operation(summary = "Reopen task", operationId = "task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successful reopen"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -504,7 +504,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Import the tasks", operationId = "task:import")
+  @Operation(summary = "Import the tasks", operationId = "task:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -513,7 +513,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner task example", operationId = "task:example:import")
+  @Operation(summary = "Import the inner task example", operationId = "task:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -523,7 +523,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete tasks", operationId = "task:delete")
+  @Operation(summary = "Delete tasks", operationId = "task:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -533,7 +533,7 @@ public class TaskRest {
     taskFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of task", operationId = "task:detail")
+  @Operation(summary = "Query the detail of task", operationId = "task:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -543,7 +543,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of task", operationId = "task:list")
+  @Operation(summary = "Query the list of task", operationId = "task:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -551,7 +551,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of task", operationId = "task:search")
+  @Operation(summary = "Fulltext search the list of task", operationId = "task:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -559,7 +559,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.search(false, dto));
   }
 
-  @Operation(description = "Export the tasks by conditions", operationId = "task:export")
+  @Operation(summary = "Export the tasks by conditions", operationId = "task:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })

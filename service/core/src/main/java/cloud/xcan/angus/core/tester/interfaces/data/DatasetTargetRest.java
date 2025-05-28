@@ -41,7 +41,7 @@ public class DatasetTargetRest {
   @Resource
   private DatasetTargetFacade datasetTargetFacade;
 
-  @Operation(description = "Add target dataset", operationId = "data:target:dataset:add")
+  @Operation(summary = "Add target dataset", operationId = "data:target:dataset:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class DatasetTargetRest {
     return ApiLocaleResult.success(datasetTargetFacade.add(targetId, targetType, datasetIds));
   }
 
-  @Operation(description = "Delete target datasets", operationId = "data:target:dataset:delete")
+  @Operation(summary = "Delete target datasets", operationId = "data:target:dataset:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class DatasetTargetRest {
     datasetTargetFacade.delete(targetId, targetType, datasetIds);
   }
 
-  @Operation(description = "Query the list of target datasets", operationId = "data:dataset:target:list")
+  @Operation(summary = "Query the list of target datasets", operationId = "data:dataset:target:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/target/{targetId}/{targetType}/dataset")
@@ -75,7 +75,7 @@ public class DatasetTargetRest {
     return ApiLocaleResult.success(datasetTargetFacade.list(targetId, targetType));
   }
 
-  @Operation(description = "Query the list of dataset targets", operationId = "data:dataset:target:list")
+  @Operation(summary = "Query the list of dataset targets", operationId = "data:dataset:target:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/dataset/{datasetId}/target")
@@ -84,7 +84,7 @@ public class DatasetTargetRest {
     return ApiLocaleResult.success(datasetTargetFacade.listTarget(datasetId));
   }
 
-  @Operation(description = "Preview the values of target datasets", operationId = "data:target:dataset:value:preview")
+  @Operation(summary = "Preview the values of target datasets", operationId = "data:target:dataset:value:preview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/target/{targetId}/{targetType}/dataset/value/preview")

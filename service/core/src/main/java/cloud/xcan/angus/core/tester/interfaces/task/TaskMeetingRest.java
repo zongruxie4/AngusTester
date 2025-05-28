@@ -42,7 +42,7 @@ public class TaskMeetingRest {
   @Resource
   private TaskMeetingFacade taskMeetingFacade;
 
-  @Operation(description = "Add task meeting", operationId = "task:meeting:add")
+  @Operation(summary = "Add task meeting", operationId = "task:meeting:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -51,7 +51,7 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success(taskMeetingFacade.add(dto));
   }
 
-  @Operation(description = "Update task meeting", operationId = "task:meeting:update")
+  @Operation(summary = "Update task meeting", operationId = "task:meeting:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -62,7 +62,7 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace task meeting", operationId = "task:meeting:replace")
+  @Operation(summary = "Replace task meeting", operationId = "task:meeting:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -73,7 +73,7 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success(taskMeetingFacade.replace(dto));
   }
 
-  @Operation(description = "Delete task meeting", operationId = "task:meeting:delete")
+  @Operation(summary = "Delete task meeting", operationId = "task:meeting:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -83,7 +83,7 @@ public class TaskMeetingRest {
     taskMeetingFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of task meeting", operationId = "task:meeting:detail")
+  @Operation(summary = "Query the detail of task meeting", operationId = "task:meeting:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -93,7 +93,7 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success(taskMeetingFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of task meeting", operationId = "task:meeting:list")
+  @Operation(summary = "Query the list of task meeting", operationId = "task:meeting:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -102,7 +102,7 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success(taskMeetingFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of task meeting", operationId = "task:meeting:search")
+  @Operation(summary = "Fulltext search the list of task meeting", operationId = "task:meeting:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

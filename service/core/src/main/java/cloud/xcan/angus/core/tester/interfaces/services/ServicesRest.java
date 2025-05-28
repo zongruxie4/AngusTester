@@ -51,7 +51,7 @@ public class ServicesRest {
   @Resource
   private ServicesFacade serviceFacade;
 
-  @Operation(description = "Add services", operationId = "services:add")
+  @Operation(summary = "Add services", operationId = "services:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -60,7 +60,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.add(dto));
   }
 
-  @Operation(description = "Replace the name of services", operationId = "services:name:replace")
+  @Operation(summary = "Replace the name of services", operationId = "services:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -73,7 +73,7 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Modify services status. Note: When modifying a services, "
+  @Operation(summary = "Modify services status. Note: When modifying a services, "
       + "all services and apis status under the services will be synchronously modified.", operationId = "services:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
@@ -87,7 +87,7 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone services", operationId = "services:clone")
+  @Operation(summary = "Clone services", operationId = "services:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned clone"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -99,7 +99,7 @@ public class ServicesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Import the apis to services", operationId = "services:import")
+  @Operation(summary = "Import the apis to services", operationId = "services:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -108,7 +108,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.imports(dto));
   }
 
-  @Operation(description = "Import the inner services example", operationId = "services:example:import")
+  @Operation(summary = "Import the inner services example", operationId = "services:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -118,7 +118,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.importExample(projectId));
   }
 
-  @Operation(description = "Delete services", operationId = "services:delete")
+  @Operation(summary = "Delete services", operationId = "services:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -128,7 +128,7 @@ public class ServicesRest {
     serviceFacade.delete(id);
   }
 
-  @Operation(description = "Query the detail of services", operationId = "services:detail")
+  @Operation(summary = "Query the detail of services", operationId = "services:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -140,7 +140,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.detail(id, joinSchema));
   }
 
-  @Operation(description = "Query the Mock service information associated with a services", operationId = "services:association:mock:service")
+  @Operation(summary = "Query the Mock service information associated with a services", operationId = "services:association:mock:service")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/association/mock/service")
@@ -149,7 +149,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.associationMockService(id));
   }
 
-  @Operation(description = "Query the list of services", operationId = "services:list")
+  @Operation(summary = "Query the list of services", operationId = "services:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -158,7 +158,7 @@ public class ServicesRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(description = "Fulltext search the services", operationId = "services:search")
+  @Operation(summary = "Fulltext search the services", operationId = "services:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -169,7 +169,7 @@ public class ServicesRest {
   }
 
   @DoInFuture("Limit the number of exports")
-  @Operation(description = "Export the apis from services", operationId = "services:export")
+  @Operation(summary = "Export the apis from services", operationId = "services:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @PostMapping(value = "/export")

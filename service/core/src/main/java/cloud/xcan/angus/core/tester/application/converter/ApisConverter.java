@@ -5,10 +5,13 @@ import static cloud.xcan.angus.remote.search.SearchCriteria.equal;
 import static cloud.xcan.angus.remote.search.SearchCriteria.greaterThanEqual;
 import static cloud.xcan.angus.remote.search.SearchCriteria.in;
 import static cloud.xcan.angus.remote.search.SearchCriteria.lessThanEqual;
+import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_OPENAPI_DOC_DESC_LENGTH;
+import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_OPENAPI_SUMMARY_LENGTH;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.convert;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.lengthSafe;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.isLastMonth;
 import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.isLastWeek;
@@ -56,7 +59,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -259,8 +261,9 @@ public class ApisConverter {
         .setEndpoint(nullSafe(operation.endpoint, ""))
         .setCurrentServer(currentServer)
         .setTags(operation.getTags())
-        .setSummary(operation.getSummary())
-        .setDescription(operation.getDescription())
+        .setSummary(lengthSafe(nullSafe(operation.getSummary(), operation.getDescription()),
+            MAX_OPENAPI_SUMMARY_LENGTH))
+        .setDescription(lengthSafe(operation.getDescription(), MAX_OPENAPI_DOC_DESC_LENGTH))
         .setExternalDocs(operation.getExternalDocs())
         .setOperationId(operation.getOperationId())
         .setParameters(operation.getParameters())

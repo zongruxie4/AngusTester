@@ -35,7 +35,7 @@ public class FuncCaseFollowRest {
   @Resource
   private FuncCaseFollowFacade funcCaseFollowFacade;
 
-  @Operation(description = "Add the follow of case", operationId = "func:case:follow:add")
+  @Operation(summary = "Add the follow of case", operationId = "func:case:follow:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Follow successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class FuncCaseFollowRest {
     return ApiLocaleResult.success(funcCaseFollowFacade.add(caseId));
   }
 
-  @Operation(description = "Cancel the follow of case", operationId = "func:case:follow:cancel")
+  @Operation(summary = "Cancel the follow of case", operationId = "func:case:follow:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class FuncCaseFollowRest {
     funcCaseFollowFacade.cancel(caseId);
   }
 
-  @Operation(description = "Cancel all the follows of case", operationId = "func:case:follow:cancel:All")
+  @Operation(summary = "Cancel all the follows of case", operationId = "func:case:follow:cancel:All")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class FuncCaseFollowRest {
     funcCaseFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(description = "Fulltext search case follow", operationId = "func:case:follow:search")
+  @Operation(summary = "Fulltext search case follow", operationId = "func:case:follow:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
@@ -74,7 +74,7 @@ public class FuncCaseFollowRest {
     return ApiLocaleResult.success(funcCaseFollowFacade.search(dto));
   }
 
-  @Operation(description = "Query the follow number of case", operationId = "func:case:follow:count")
+  @Operation(summary = "Query the follow number of case", operationId = "func:case:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query number succeeded")})
   @GetMapping("/follow/count")

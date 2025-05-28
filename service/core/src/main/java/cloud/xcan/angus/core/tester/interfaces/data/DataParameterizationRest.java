@@ -25,7 +25,7 @@ public class DataParameterizationRest {
   @Resource
   private DataParameterizationFacade dataParameterizationFacade;
 
-  @Operation(description = "Preview the variables and datasets values of API, API_CASE, SCENARIO", operationId = "target:parameter:data:value")
+  @Operation(summary = "Preview the variables and datasets values of API, API_CASE, SCENARIO", operationId = "target:parameter:data:value")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{targetId}/{targetType}/parameter/data/value")

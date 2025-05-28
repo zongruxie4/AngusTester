@@ -27,7 +27,7 @@ public class KanbanCtoRest {
   @Resource
   private KanbanCtoFacade kanbanCtoFacade;
 
-  @Operation(description = "Task efficiency statistics overview for cto", operationId = "kanban:cto:task:overview")
+  @Operation(summary = "Task efficiency statistics overview for cto", operationId = "kanban:cto:task:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task/overview")
@@ -36,7 +36,7 @@ public class KanbanCtoRest {
     return ApiLocaleResult.success(kanbanCtoFacade.taskCtoOverview(dto));
   }
 
-  @Operation(description = "Case statistics overview for cto", operationId = "kanban:cto:case:overview")
+  @Operation(summary = "Case statistics overview for cto", operationId = "kanban:cto:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/overview")

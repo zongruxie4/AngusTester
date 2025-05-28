@@ -33,7 +33,7 @@ public class AnalysisCommonRest {
   @Resource
   private AnalysisCommonFacade analysisAngusFacade;
 
-  @Operation(description = "Scenario creation resources count statistics", operationId = "analysis:scenario:resources:count")
+  @Operation(summary = "Scenario creation resources count statistics", operationId = "analysis:scenario:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/scenario/resources/count")
@@ -42,7 +42,7 @@ public class AnalysisCommonRest {
     return ApiLocaleResult.success(analysisAngusFacade.scenarioResourcesStatistics(dto));
   }
 
-  @Operation(description = "Query the test results of scenario", operationId = "analysis:scenario:test:result:count")
+  @Operation(summary = "Query the test results of scenario", operationId = "analysis:scenario:test:result:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/scenario/test/result/count")
@@ -51,7 +51,7 @@ public class AnalysisCommonRest {
     return ApiLocaleResult.success(analysisAngusFacade.testResult(dto));
   }
 
-  @Operation(description = "Script creation resources count statistics", operationId = "analysis:script:resources:count")
+  @Operation(summary = "Script creation resources count statistics", operationId = "analysis:script:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script/resources/count")
@@ -60,7 +60,7 @@ public class AnalysisCommonRest {
     return ApiLocaleResult.success(analysisAngusFacade.scriptResourcesStatistics(dto));
   }
 
-  @Operation(description = "Script resources count statistics", operationId = "analysis:script:count")
+  @Operation(summary = "Script resources count statistics", operationId = "analysis:script:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script/count")
@@ -69,7 +69,7 @@ public class AnalysisCommonRest {
     return ApiLocaleResult.success(analysisAngusFacade.scriptCountStatistics(dto));
   }
 
-  @Operation(description = "Mock service resources and mock status count statistics", operationId = "analysis:mock:service:count")
+  @Operation(summary = "Mock service resources and mock status count statistics", operationId = "analysis:mock:service:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/mock/service/count")
@@ -78,7 +78,7 @@ public class AnalysisCommonRest {
     return ApiLocaleResult.success(analysisAngusFacade.mockServiceCountStatistics(dto));
   }
 
-  @Operation(description = "Data creation resources statistics", operationId = "analysis:data:resources:count")
+  @Operation(summary = "Data creation resources statistics", operationId = "analysis:data:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/data/resources")

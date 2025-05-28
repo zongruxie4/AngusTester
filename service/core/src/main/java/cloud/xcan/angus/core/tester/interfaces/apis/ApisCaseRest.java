@@ -52,7 +52,7 @@ public class ApisCaseRest {
   @Resource
   private ApisCaseFacade apisCaseFacade;
 
-  @Operation(description = "Add apis functional test cases", operationId = "apis:case:add")
+  @Operation(summary = "Add apis functional test cases", operationId = "apis:case:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -62,7 +62,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success(apisCaseFacade.add(dto));
   }
 
-  @Operation(description = "Update apis functional test cases", operationId = "apis:case:update")
+  @Operation(summary = "Update apis functional test cases", operationId = "apis:case:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -74,7 +74,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace apis functional test cases", operationId = "apis:case:replace")
+  @Operation(summary = "Replace apis functional test cases", operationId = "apis:case:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")})
   @PutMapping
@@ -84,7 +84,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the name of apis functional test cases", operationId = "apis:case:name:replace")
+  @Operation(summary = "Replace the name of apis functional test cases", operationId = "apis:case:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -97,7 +97,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable the functional test cases", operationId = "func:case:enabled")
+  @Operation(summary = "Enable or disable the functional test cases", operationId = "func:case:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -110,7 +110,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Force synchronize the functional test cases to script", operationId = "func:case:script:sync")
+  @Operation(summary = "Force synchronize the functional test cases to script", operationId = "func:case:script:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -122,7 +122,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Clone the apis functional test cases", operationId = "apis:case:clone")
+  @Operation(summary = "Clone the apis functional test cases", operationId = "apis:case:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Clone successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -133,7 +133,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success(apisCaseFacade.clone(ids));
   }
 
-  @Operation(description = "Delete apis functional test cases", operationId = "apis:case:delete")
+  @Operation(summary = "Delete apis functional test cases", operationId = "apis:case:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -143,7 +143,7 @@ public class ApisCaseRest {
     apisCaseFacade.delete(ids);
   }
 
-  @Operation(description = "Query the detail of apis functional test cases", operationId = "apis:case:detail")
+  @Operation(summary = "Query the detail of apis functional test cases", operationId = "apis:case:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -153,7 +153,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success(apisCaseFacade.detail(id));
   }
 
-  @Operation(description = "Query the list of apis functional test cases", operationId = "apis:case:list")
+  @Operation(summary = "Query the list of apis functional test cases", operationId = "apis:case:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -162,7 +162,7 @@ public class ApisCaseRest {
     return ApiLocaleResult.success(apisCaseFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the list of apis functional test cases", operationId = "apis:case:search")
+  @Operation(summary = "Fulltext search the list of apis functional test cases", operationId = "apis:case:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

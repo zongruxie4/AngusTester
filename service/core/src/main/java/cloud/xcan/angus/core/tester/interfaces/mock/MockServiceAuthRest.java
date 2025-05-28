@@ -42,7 +42,7 @@ public class MockServiceAuthRest {
   @Resource
   private MockServiceAuthFacade mockServiceAuthFacade;
 
-  @Operation(description = "Add the authorization of mock service", operationId = "mock:service:auth:add")
+  @Operation(summary = "Add the authorization of mock service", operationId = "mock:service:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success(mockServiceAuthFacade.add(serviceId, dto));
   }
 
-  @Operation(description = "Replace the authorization of mock service", operationId = "mock:service:auth:replace")
+  @Operation(summary = "Replace the authorization of mock service", operationId = "mock:service:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -66,7 +66,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Enable or disable the authorization of mock service", operationId = "mock:service:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of mock service", operationId = "mock:service:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -79,7 +79,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query authorization status of mock service", operationId = "mock:service:auth:status")
+  @Operation(summary = "Query authorization status of mock service", operationId = "mock:service:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -90,7 +90,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success(mockServiceAuthFacade.status(serviceId));
   }
 
-  @Operation(description = "Delete the authorization of mock service", operationId = "mock:service:auth:delete")
+  @Operation(summary = "Delete the authorization of mock service", operationId = "mock:service:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -100,7 +100,7 @@ public class MockServiceAuthRest {
     mockServiceAuthFacade.delete(id);
   }
 
-  @Operation(description = "Query the user authorization permission of mock datasource", operationId = "mock:service:user:auth")
+  @Operation(summary = "Query the user authorization permission of mock datasource", operationId = "mock:service:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -113,7 +113,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success(mockServiceAuthFacade.userAuth(serviceId, userId, admin));
   }
 
-  @Operation(description = "Check the user authorization permission of mock service", operationId = "mock:service:auth:check")
+  @Operation(summary = "Check the user authorization permission of mock service", operationId = "mock:service:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -126,7 +126,7 @@ public class MockServiceAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Query the authorization list of mock service", operationId = "mock:service:auth:list")
+  @Operation(summary = "Query the authorization list of mock service", operationId = "mock:service:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{id}/auth")

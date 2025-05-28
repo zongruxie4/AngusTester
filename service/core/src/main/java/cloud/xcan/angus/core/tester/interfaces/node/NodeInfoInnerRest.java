@@ -36,7 +36,7 @@ public class NodeInfoInnerRest {
   @Resource
   private NodeInfoFacade nodeInfoFacade;
 
-  @Operation(description = "Delete nodes information.", operationId = "node:info:delete:inner")
+  @Operation(summary = "Delete nodes information.", operationId = "node:info:delete:inner")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = NODE_INFO_DELETE_DOOR_ENDPOINT)
@@ -46,7 +46,7 @@ public class NodeInfoInnerRest {
     nodeInfoFacade.delete(ids);
   }
 
-  @Operation(description = "Query the online agent node by door api.", operationId = "node:info:agent:online:inner")
+  @Operation(summary = "Query the online agent node by door api.", operationId = "node:info:agent:online:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = NODE_ONLINE_ENDPOINT_PREFIX)
@@ -55,7 +55,7 @@ public class NodeInfoInnerRest {
     return ApiLocaleResult.success(nodeInfoFacade.agentOnlineNode(ids));
   }
 
-  @Operation(description = "Query the installation cmd of node agent by door api.", operationId = "node:agent:install:cmd:inner")
+  @Operation(summary = "Query the installation cmd of node agent by door api.", operationId = "node:agent:install:cmd:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = AGENT_INSTALL_DOOR_ENDPOINT)

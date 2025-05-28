@@ -48,7 +48,7 @@ public class ApisUnarchivedRest {
   @Resource
   private ApisUnarchivedFacade apisUnarchivedFacade;
 
-  @Operation(description = "Add the unarchived apis", operationId = "apis:unarchived:add")
+  @Operation(summary = "Add the unarchived apis", operationId = "apis:unarchived:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +58,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.add(dto));
   }
 
-  @Operation(description = "Update the unarchived apis", operationId = "apis:unarchived:update")
+  @Operation(summary = "Update the unarchived apis", operationId = "apis:unarchived:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -70,7 +70,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Replace the name of unarchived apis", operationId = "apis:unarchived:name:replace")
+  @Operation(summary = "Replace the name of unarchived apis", operationId = "apis:unarchived:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -82,7 +82,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(description = "Delete the unarchived apis", operationId = "apis:unarchived:delete")
+  @Operation(summary = "Delete the unarchived apis", operationId = "apis:unarchived:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -92,7 +92,7 @@ public class ApisUnarchivedRest {
     apisUnarchivedFacade.delete(id);
   }
 
-  @Operation(description = "Delete all the unarchived apis", operationId = "apis:unarchived:delete:all")
+  @Operation(summary = "Delete all the unarchived apis", operationId = "apis:unarchived:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -101,7 +101,7 @@ public class ApisUnarchivedRest {
     apisUnarchivedFacade.deleteAll();
   }
 
-  @Operation(description = "Query the detail of unarchived apis", operationId = "apis:unarchived:detail")
+  @Operation(summary = "Query the detail of unarchived apis", operationId = "apis:unarchived:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -111,7 +111,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.detail(id));
   }
 
-  @Operation(description = "Query the number of unarchived apis", operationId = "apis:unarchived:count")
+  @Operation(summary = "Query the number of unarchived apis", operationId = "apis:unarchived:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/count")
@@ -120,7 +120,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.count(projectId));
   }
 
-  @Operation(description = "Query the list of unarchived apis", operationId = "apis:unarchived:list")
+  @Operation(summary = "Query the list of unarchived apis", operationId = "apis:unarchived:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -129,7 +129,7 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.list(dto));
   }
 
-  @Operation(description = "Fulltext search the unarchived apis", operationId = "apis:unarchived:search")
+  @Operation(summary = "Fulltext search the unarchived apis", operationId = "apis:unarchived:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")

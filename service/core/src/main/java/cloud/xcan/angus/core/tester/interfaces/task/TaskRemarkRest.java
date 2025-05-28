@@ -36,7 +36,7 @@ public class TaskRemarkRest {
   @Resource
   private TaskRemarkFacade taskRemarkFacade;
 
-  @Operation(description = "Add the remark of task", operationId = "task:remark:add")
+  @Operation(summary = "Add the remark of task", operationId = "task:remark:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskRemarkRest {
     return ApiLocaleResult.success(taskRemarkFacade.add(dto));
   }
 
-  @Operation(description = "Delete the remark of task", operationId = "task:remark:delete")
+  @Operation(summary = "Delete the remark of task", operationId = "task:remark:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskRemarkRest {
     taskRemarkFacade.delete(id);
   }
 
-  @Operation(description = "Query the list of task remark", operationId = "task:remark:list")
+  @Operation(summary = "Query the list of task remark", operationId = "task:remark:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
