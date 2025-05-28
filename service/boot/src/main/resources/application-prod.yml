@@ -162,5 +162,5 @@ logging:
   level:
     org: WARN
     com: WARN
-
+    org.springdoc: error
 

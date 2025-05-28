@@ -173,4 +173,4 @@ logging:
   level:
     org: INFO
     com: INFO
-
+    org.springdoc: error

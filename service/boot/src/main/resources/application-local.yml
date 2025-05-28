@@ -162,3 +162,4 @@ logging:
     org.hibernate.engine.QueryParameters: debug
     org.hibernate.engine.query.HQLQueryPlan: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.springdoc: error

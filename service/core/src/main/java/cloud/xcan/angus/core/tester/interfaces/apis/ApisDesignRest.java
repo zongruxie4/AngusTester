@@ -157,7 +157,8 @@ public class ApisDesignRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisDesignVo>> search(@Valid ApisDesignSearchDto dto) {
+  public ApiLocaleResult<PageResult<ApisDesignVo>> search(
+      @Valid @ParameterObject ApisDesignSearchDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.search(dto));
   }
 
