@@ -4,7 +4,6 @@ import cloud.xcan.angus.core.tester.infra.iaas.InstanceChargeType;
 import cloud.xcan.angus.validator.EnumPart;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,9 +14,8 @@ import lombok.experimental.Accessors;
 /**
  * @author wjl
  */
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class NodePurchaseDto {
 

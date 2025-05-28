@@ -5,15 +5,13 @@ import cloud.xcan.angus.remote.PageQuery;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class ServicesAuthSearchDto extends PageQuery {
 

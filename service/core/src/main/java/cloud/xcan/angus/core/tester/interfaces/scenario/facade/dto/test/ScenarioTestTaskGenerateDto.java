@@ -16,9 +16,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class ScenarioTestTaskGenerateDto {
 

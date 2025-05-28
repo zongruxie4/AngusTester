@@ -9,7 +9,6 @@ import cloud.xcan.angus.validator.EnumPart;
 import cloud.xcan.angus.validator.TimeValueRange;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -18,9 +17,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class StabilityAddDto {
 

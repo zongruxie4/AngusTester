@@ -4,7 +4,6 @@ import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_OPT_CASE_NUM;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,9 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class FuncReviewCaseAddDto {
 

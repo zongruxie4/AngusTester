@@ -15,9 +15,8 @@ import lombok.experimental.Accessors;
 /**
  * @author XiaoLong Liu
  */
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class MockApisResponseAddDto {
 

@@ -28,9 +28,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class ApisUnarchivedAddDto {
 

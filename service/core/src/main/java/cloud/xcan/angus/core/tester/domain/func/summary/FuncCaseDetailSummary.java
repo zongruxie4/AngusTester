@@ -15,7 +15,6 @@ import cloud.xcan.angus.remote.NameJoinField;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Transient;
-import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,9 +22,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class FuncCaseDetailSummary {
 

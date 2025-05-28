@@ -8,16 +8,14 @@ import cloud.xcan.angus.remote.PageQuery;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.extension.ApisProtocol;
-import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class ApisCaseFindDto extends PageQuery {
 

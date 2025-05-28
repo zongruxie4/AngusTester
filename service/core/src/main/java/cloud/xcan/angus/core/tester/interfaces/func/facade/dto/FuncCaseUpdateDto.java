@@ -15,7 +15,6 @@ import cloud.xcan.angus.core.tester.domain.func.cases.CaseTestStep;
 import cloud.xcan.angus.validator.EditorContentLength;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -29,9 +28,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class FuncCaseUpdateDto {
 

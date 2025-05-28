@@ -32,7 +32,8 @@ public class ActivityRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
-  public ApiLocaleResult<PageResult<ActivityDetailVo>> list(@Valid @ParameterObject ActivityFindDto dto) {
+  public ApiLocaleResult<PageResult<ActivityDetailVo>> list(
+      @Valid @ParameterObject ActivityFindDto dto) {
     return ApiLocaleResult.success(activityFacade.list(dto));
   }
 
@@ -40,7 +41,8 @@ public class ActivityRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ActivityDetailVo>> search(@Valid @ParameterObject ActivitySearchDto dto) {
+  public ApiLocaleResult<PageResult<ActivityDetailVo>> search(
+      @Valid @ParameterObject ActivitySearchDto dto) {
     return ApiLocaleResult.success(activityFacade.search(dto));
   }
 

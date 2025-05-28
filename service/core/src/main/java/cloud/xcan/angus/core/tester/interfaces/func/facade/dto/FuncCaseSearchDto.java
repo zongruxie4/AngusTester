@@ -11,7 +11,6 @@ import cloud.xcan.angus.spec.http.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.extension.ApisProtocol;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -20,9 +19,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class FuncCaseSearchDto extends PageQuery {
 

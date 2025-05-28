@@ -10,7 +10,6 @@ import cloud.xcan.angus.api.enums.NodeRole;
 import cloud.xcan.angus.validator.Port;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.Getter;
@@ -18,9 +17,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class NodeUpdateDto {
 

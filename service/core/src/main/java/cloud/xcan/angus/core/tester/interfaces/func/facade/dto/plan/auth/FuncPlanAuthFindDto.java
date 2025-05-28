@@ -4,15 +4,13 @@ import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-@Valid
-@Setter
 @Getter
+@Setter
 
 public class FuncPlanAuthFindDto extends PageQuery {
 

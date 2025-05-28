@@ -2,14 +2,12 @@ package cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-@Valid
-@Setter
 @Getter
+@Setter
 public class CaseTesterWorkStatisticsDto {
 
   @NotNull

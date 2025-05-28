@@ -9,7 +9,6 @@ import cloud.xcan.angus.spec.unit.TimeValue;
 import cloud.xcan.angus.validator.TimeValueRange;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
@@ -18,9 +17,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Range;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class ApisTestScriptGenerateDto {
 

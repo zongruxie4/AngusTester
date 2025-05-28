@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.node.dns.DnsRecordType;
 import cloud.xcan.angus.validator.IPv4;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,9 +15,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-@Valid
-@Setter
 @Getter
+@Setter
 @Accessors(chain = true)
 public class NodeDomainDnsAddDto {
 
