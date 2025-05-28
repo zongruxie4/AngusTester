@@ -23,6 +23,8 @@ import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -108,8 +110,9 @@ public class MockServiceRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(value = "/file/import", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ApiLocaleResult<IdKey<Long, Object>> fileImport(@Valid MockServiceFileImportDto dto) {
+  @PostMapping(value = "/file/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ApiLocaleResult<IdKey<Long, Object>> fileImport(
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object")) @Valid MockServiceFileImportDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.fileImport(dto));
   }
 
@@ -160,7 +163,8 @@ public class MockServiceRest {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ApiLocaleResult<?> imports(@Valid MockServiceImportDto dto) {
+  public ApiLocaleResult<?> imports(
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object")) @Valid MockServiceImportDto dto) {
     mockServiceFacade.imports(dto);
     return ApiLocaleResult.success();
   }

@@ -48,7 +48,7 @@ public class ApisDesign extends TenantAuditingEntity<Apis, Long> implements Acti
   private String designSourceName;
 
   public boolean hasLatestContent(){
-    return released && designSource.isSynchronousService() && nonNull(designSourceId);
+    return released && nonNull(designSourceId);
   }
 
   @Override

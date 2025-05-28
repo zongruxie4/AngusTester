@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.application.converter;
 
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesign;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignSource;
+import cloud.xcan.angus.core.tester.domain.services.Services;
 
 public class ApisDesignConverter {
 
@@ -12,4 +13,12 @@ public class ApisDesignConverter {
         .setOpenapiSpecVersion(designDb.getOpenapiSpecVersion())
         .setOpenapi(designDb.getOpenapi()).setDesignSource(ApisDesignSource.MANUAL_CREATED);
   }
+
+  public static ApisDesign assocToDomain(Services services) {
+    return new ApisDesign().setProjectId(services.getProjectId())
+        .setName(services.getName()).setReleased(true)
+        .setOpenapiSpecVersion("3.0.1")
+        .setDesignSource(ApisDesignSource.SYNCHRONOUS_SERVICE);
+  }
+
 }

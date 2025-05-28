@@ -17,6 +17,8 @@ import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -101,11 +103,22 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.clone(id));
   }
 
+  @Operation(summary = "Design existing service and apis", operationId = "apis:design:services:generate")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+  @PutMapping("/services/{id}/associate")
+  public ApiLocaleResult<?> servicesAssociate(
+      @Parameter(name = "id", description = "Apis service id", required = true) @PathVariable("id") Long serviceId) {
+    apisDesignFacade.servicesAssociate(serviceId);
+    return ApiLocaleResult.success();
+  }
+
   @Operation(summary = "Generate the services of designed apis", operationId = "apis:design:services:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
-  @PutMapping("/{id}/services/generate")
+  @PutMapping("/{id}/services/assoc")
   public ApiLocaleResult<?> servicesGenerate(
       @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
     apisDesignFacade.servicesGenerate(id);
@@ -118,7 +131,7 @@ public class ApisDesignRest {
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<IdKey<Long, Object>> imports(
-      @Valid @ParameterObject ApisDesignImportDto dto) {
+      @Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE), schema = @Schema(type = "object")) @Valid ApisDesignImportDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.imports(dto));
   }
 

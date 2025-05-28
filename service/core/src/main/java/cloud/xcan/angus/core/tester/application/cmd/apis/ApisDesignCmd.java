@@ -22,6 +22,8 @@ public interface ApisDesignCmd {
 
   IdKey<Long, Object> clone(Long id);
 
+  void servicesAssociate(Long serviceId);
+
   void servicesGenerate(Long id);
 
   IdKey<Long, Object> imports(Long projectId, String name, String content, MultipartFile file);
@@ -31,4 +33,5 @@ public interface ApisDesignCmd {
   File export(Long id, SchemaFormat format);
 
   void deleteByServiceIdIn(Collection<Long> serviceIds);
+
 }

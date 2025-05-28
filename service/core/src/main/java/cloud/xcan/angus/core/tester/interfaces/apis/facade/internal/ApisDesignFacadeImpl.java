@@ -74,14 +74,19 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
   }
 
   @Override
+  public void servicesAssociate(Long serviceId) {
+    apisDesignCmd.servicesAssociate(serviceId);
+  }
+
+  @Override
   public void servicesGenerate(Long id) {
     apisDesignCmd.servicesGenerate(id);
   }
 
   @Override
   public IdKey<Long, Object> imports(ApisDesignImportDto dto) {
-    return apisDesignCmd.imports(dto.getProjectId(), dto.getName(),
-        dto.getContent(), dto.getFile());
+    return apisDesignCmd.imports(dto.getProjectId(), dto.getName(), dto.getContent(),
+        dto.getFile());
   }
 
   @Override
@@ -107,7 +112,7 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
   @Override
   public PageResult<ApisDesignVo> search(ApisDesignSearchDto dto) {
     Page<ApisDesignInfo> page = apisDesignSearch.search(
-       getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
+        getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisDesignAssembler::toVo);
   }
 

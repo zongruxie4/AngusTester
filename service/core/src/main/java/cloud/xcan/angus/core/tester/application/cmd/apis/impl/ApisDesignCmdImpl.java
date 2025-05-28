@@ -5,7 +5,9 @@ import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.angus.core.tester.application.converter.ApisDesignConverter.assocToDomain;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_OAS_DESIGN_NOT_FOUND;
+import static cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignSource.SYNCHRONOUS_SERVICE;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.convertImportFile;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.writeExportFile;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
@@ -28,6 +30,7 @@ import cloud.xcan.angus.core.tester.application.converter.ApisDesignConverter;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
+import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesSchemaQuery;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesign;
@@ -76,6 +79,9 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
+
+  @Resource
+  private ServicesQuery servicesQuery;
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
@@ -226,6 +232,30 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
   @Transactional(rollbackOn = Exception.class)
   @Override
+  public void servicesAssociate(Long serviceId) {
+    new BizTemplate<Void>() {
+      Services servicesDb;
+
+      @Override
+      protected void checkParams() {
+        // Check and Find
+        servicesDb = servicesQuery.checkAndFind(serviceId);
+        // Check the view services permission
+        servicesAuthQuery.checkViewAuth(getUserId(), serviceId);
+      }
+
+      @Override
+      protected Void process() {
+        ApisDesign design = assocToDomain(servicesDb);
+        add0(design);
+        activityCmd.add(toActivity(API_DESIGN, design, ActivityType.CREATED));
+        return null;
+      }
+    }.execute();
+  }
+
+  @Transactional(rollbackOn = Exception.class)
+  @Override
   public void servicesGenerate(Long id) {
     new BizTemplate<Void>() {
       ApisDesign designDb;
@@ -256,6 +286,10 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
               servicesSchemaQuery.checkAndGetApisParseProvider(ApiImportSource.OPENAPI)
                   .parse(designDb.getOpenapi()));
         }
+
+        designDb.setDesignSource(SYNCHRONOUS_SERVICE).setDesignSourceId(services.getId());
+        apisDesignRepo.save(designDb);
+
         activityCmd.add(toActivity(SERVICE, services, ActivityType.CREATED));
         return null;
       }
@@ -352,7 +386,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     apisDesignRepo.deleteByDesignSourceIdIn(
-        ApisDesignSource.SYNCHRONOUS_SERVICE.getValue(), serviceIds);
+        SYNCHRONOUS_SERVICE.getValue(), serviceIds);
   }
 
   private IdKey<Long, Object> addClone(OpenAPI openApi, Long projectId, String name) {

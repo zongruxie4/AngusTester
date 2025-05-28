@@ -38,7 +38,7 @@ public class MockServiceFileImportDto {
   @Schema(description = "Import the source of the mock service", example = "OPENAPI", requiredMode = RequiredMode.REQUIRED)
   private ApiImportSource importType;
 
-  @Schema(description = "Apis document file, the apis documents file and text must specify one, and only import file when both exist")
+  @Schema(type = "string", format = "binary", description = "Apis document file, the apis documents file and text must specify one, and only import file when both exist")
   private MultipartFile file;
 
   @Schema(description = "Apis document text, the apis documents file and text must specify one, and only import file when both exist")

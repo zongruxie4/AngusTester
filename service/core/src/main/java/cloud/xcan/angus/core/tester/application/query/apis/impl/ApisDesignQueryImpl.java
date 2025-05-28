@@ -25,6 +25,7 @@ import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -125,7 +126,7 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Override
   public void setServicesName(ApisDesign design) {
-    if (design.getDesignSource().isSynchronousService() && nonNull(design.getDesignSourceId())) {
+    if (nonNull(design.getDesignSourceId())) {
       Services services = servicesQuery.find0(design.getDesignSourceId());
       if (nonNull(services)) {
         design.setDesignSourceName(services.getName());
@@ -135,8 +136,8 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Override
   public void setServicesName(List<ApisDesignInfo> designs) {
-    Set<Long> servicesIds = designs.stream().filter(x -> x.getDesignSource().isSynchronousService())
-        .map(ApisDesignInfo::getDesignSourceId).collect(Collectors.toSet());
+    Set<Long> servicesIds = designs.stream().map(ApisDesignInfo::getDesignSourceId)
+        .filter(Objects::nonNull).collect(Collectors.toSet());
     if (!servicesIds.isEmpty()) {
       Map<Long, Services> servicesMap = servicesQuery.find0ByIds(servicesIds).stream()
           .collect(Collectors.toMap(Services::getId, x -> x));

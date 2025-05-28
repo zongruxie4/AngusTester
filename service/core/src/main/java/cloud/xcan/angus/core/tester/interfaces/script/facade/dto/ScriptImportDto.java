@@ -32,7 +32,7 @@ public class ScriptImportDto {
   @Schema(description = "Script name", example = "script-01")
   private String name;
 
-  @Schema(description = "Script file") // TODO 10MB
+  @Schema(type = "string", format = "binary", description = "Script file") // TODO 10MB
   private MultipartFile file;
 
   @Length(max = ANGUS_SCRIPT_LENGTH) // 10MB

@@ -27,6 +27,8 @@ public interface ApisDesignFacade {
 
   IdKey<Long, Object> clone(Long id);
 
+  void servicesAssociate(Long serviceId);
+
   void servicesGenerate(Long id);
 
   IdKey<Long, Object> imports(ApisDesignImportDto dto);

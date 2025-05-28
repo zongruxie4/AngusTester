@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade.dto;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author XiaoLong Liu
  */
-@Valid
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -32,7 +30,7 @@ public class TaskImportDto {
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
   @NotNull
-  @Schema(description = "Import task file, only support excel file.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(type = "string", format = "binary", description = "Import task file, only support excel file.", requiredMode = RequiredMode.REQUIRED)
   private MultipartFile file;
 
 }

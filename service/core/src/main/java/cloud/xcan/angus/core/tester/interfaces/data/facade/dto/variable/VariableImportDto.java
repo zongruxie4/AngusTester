@@ -27,7 +27,7 @@ public class VariableImportDto {
   @Schema(description = "Variable specification content. Variable definition string content in json or yaml format.")
   private String content;
 
-  @Schema(description = "Variable specification file. Variable definition file in json or yaml format.")
+  @Schema(type = "string", format = "binary", description = "Variable specification file. Variable definition file in json or yaml format.")
   private MultipartFile file;
 
 }
