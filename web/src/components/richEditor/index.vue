@@ -15,7 +15,8 @@ interface Props {
   mode: 'edit'|'view';
   height: number;
   options?: {[key: string]: any};
-  toolbarOptions?: string[]
+  toolbarOptions?: string[];
+  emptyText: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,7 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   mode: 'edit',
   height: 200,
   options: () => ({}),
-  toolbarOptions: undefined
+  toolbarOptions: undefined,
+  emptyText: ''
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -50,10 +52,11 @@ onMounted(() => {
         } else {
           contents.value = values || [];
         }
+        isQuillValue.value = true;
       } else {
+        isQuillValue.value = false;
         contents.value = [];
       }
-      isQuillValue.value = true;
     } catch {
       isQuillValue.value = false;
     } finally {
@@ -102,7 +105,7 @@ defineExpose({
 </script>
 <template>
   <template v-if="!isQuillValue && props.mode === 'view' && loaded">
-    <Browser :value="props.value" />
+    <Browser :value="props.value" :emptyText="props.emptyText" />
   </template>
   <template v-else-if="loaded">
     <div :class="{'fixed z-999 bg-white left-0 top-0 bottom-0 right-0 flex flex-col': isMax}">
