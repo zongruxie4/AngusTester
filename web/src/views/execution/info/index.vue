@@ -3,12 +3,11 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Select, Spin } from '@xcan-angus/vue-ui';
+import YAML from 'yaml';
 
 import { Exception, ExecObj } from './PropsType';
 import { exec } from 'src/api/ctrl';
 
-import YAML from 'yaml';
-import { emit } from 'process';
 
 const ExecSetting = defineAsyncComponent(() => import('@/views/execution/info/setting/index.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/views/execution/info/log/index.vue'));
@@ -21,12 +20,15 @@ const ServiceConfig = defineAsyncComponent(() => import('@/views/execution/info/
 interface Props {
   execId?: string;
   showBackBtn: boolean;
-  monicaEditorStyle: {[key: string]:string}
+  monicaEditorStyle: {[key: string]:string};
+  scriptType?: string;
+
 }
 const props = withDefaults(defineProps<Props>(), {
   execId: undefined,
   showBackBtn: true,
-  monicaEditorStyle: () => ({})
+  monicaEditorStyle: () => ({}),
+  scriptType: undefined
 });
 const emit = defineEmits<{(e: 'del'):void}>();
 
@@ -95,7 +97,26 @@ const getInfo = (data) => {
   setException();
 };
 
+
+
 onMounted(async () => {
+  if (!id) {
+    const scriptTypeMsgConfig = {
+      TEST_PERFORMANCE: '性能测试',
+      TEST_STABILITY: '稳定性测试',
+      TEST_FUNCTIONALITY: '功能能测试',
+      TEST_CUSTOMIZATION: '自定义测试',
+    }
+    if (props.scriptType) {
+      detail.value = {
+        scriptType: {
+          value: props.scriptType,
+          message: scriptTypeMsgConfig[props.scriptType] || ''
+        }
+      }
+    }
+    return;
+  }
   await getDetail();
   setException();
 });
@@ -256,7 +277,7 @@ const setException = () => {
       @change="topTabsChange">
       <template #rightExtra>
         <template v-if="topActiveKey === '1'">
-          <template v-if="detail && ['CREATED','STOPPED','FAILED','COMPLETED','TIMEOUT'].includes(detail?.status.value) && detail?.hasOperationPermission">
+          <template v-if="detail && ['CREATED','STOPPED','FAILED','COMPLETED','TIMEOUT'].includes(detail?.status?.value) && detail?.hasOperationPermission">
             <Button
               size="small"
               type="link"
@@ -268,7 +289,7 @@ const setException = () => {
               启动
             </Button>
           </template>
-          <template v-if="detail && ['PENDING','RUNNING'].includes(detail?.status.value) && detail?.hasOperationPermission">
+          <template v-if="detail && ['PENDING','RUNNING'].includes(detail?.status?.value) && detail?.hasOperationPermission">
             <Button
               type="link"
               size="small"
@@ -311,15 +332,15 @@ const setException = () => {
         tab="执行详情">
         <Performance
           v-if="detail && ['TEST_PERFORMANCE','TEST_STABILITY', 'MOCK_DATA', 'TEST_CUSTOMIZATION'].includes(detail.scriptType.value)"
-          ref="performanceRef"
           v-model:loading="loading"
+          ref="performanceRef"
           :detail="detail"
           :exception="exception"
           @loaded="getInfo" />
         <FuncTest
           v-else-if="detail && detail.scriptType.value==='TEST_FUNCTIONALITY'"
-          ref="funcRef"
           v-model:loading="loading"
+          ref="funcRef"
           :execInfo="detail"
           :exception="exception"
           @loaded="getInfo" />

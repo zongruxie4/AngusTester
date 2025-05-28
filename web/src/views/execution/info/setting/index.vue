@@ -92,8 +92,8 @@ const saveSetting = async () => {
     <div style="max-width: 1440px;">
       <ExecSettingForm
         ref="execSettingFormRef"
-        :scriptType="props.scriptInfo.type"
-        :scriptInfo="props.scriptInfo" />
+        :scriptType="props?.scriptInfo?.type"
+        :scriptInfo="props?.scriptInfo" />
       <div class="flex pl-3.5 mt-10 pb-8">
         <Button
           size="small"

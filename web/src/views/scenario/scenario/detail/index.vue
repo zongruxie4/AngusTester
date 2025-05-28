@@ -222,6 +222,7 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="funcExecId"
+          scriptType="TEST_FUNCTIONALITY"
           @del="handleDel" />
         <NoData
           v-else
@@ -230,39 +231,35 @@ onMounted(() => {
       </TabPane>
       <TabPane key="perf" tab="性能测试">
         <Execdetail
-          v-if="perfExecId"
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="perfExecId"
+          scriptType="TEST_PERFORMANCE"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
       </TabPane>
       <TabPane key="stability" tab="稳定性测试">
         <Execdetail
-          v-if="stabilityExecId"
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="stabilityExecId"
+          scriptType="TEST_STABILITY"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" tab="自定义测试">
         <Execdetail
-          v-if="customExecId"
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="customExecId"
+          scriptType="TEST_CUSTOMIZATION"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="task" tab="测试任务">
         <Task :scenarioId="props.data?.scenarioId" :projectId="props.projectId" />

@@ -1081,7 +1081,7 @@ watch(() => props.detail, async (newValue) => {
     return;
   }
 
-  if (['CREATED', 'PENDING', 'RUNNING'].includes(newValue.status.value) && !hasStartDate.value) {
+  if (['CREATED', 'PENDING', 'RUNNING'].includes(newValue?.status?.value) && !hasStartDate.value) {
     // 执行和调度中 更新数据
     emit('update:loading', true);
     isLoaded.value = false;
