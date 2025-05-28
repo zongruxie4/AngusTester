@@ -2,14 +2,16 @@
 
 interface Props {
     value:string;
+    emptyText: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  value: ''
+  value: '',
+  emptyText: ''
 });
 
 </script>
 <template>
-  <div v-html="props.value"></div>
+  <div v-html="props.value || props.emptyText" :class="{'text-sub-content leading-5.5': !props.value}"></div>
 <!--  <RichBrowser :value="props.value" contentStyle="body{font-size: 12px;margin:0; };.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before{color:#BFBFBF;font-size:12px;}" />-->
 </template>

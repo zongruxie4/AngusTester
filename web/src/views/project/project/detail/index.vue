@@ -226,10 +226,9 @@ watch(() => props.projectId, newValue => {
 
             <FormItem label="描述:">
               <div class="text-3">
-                <!-- {{ formData.description }} -->
                 <RichEditor
-                  v-if="formData.description"
                   :value="formData.description"
+                  emptyText="无描述~"
                   mode="view" />
               </div>
             </FormItem>
