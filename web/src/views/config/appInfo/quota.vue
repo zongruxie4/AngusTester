@@ -20,7 +20,7 @@ const columns = [
   },
   {
     title: '默认配额',
-    dataIndex: 'defaults'
+    dataIndex: 'default0'
   },
   {
     title: '允许上限',

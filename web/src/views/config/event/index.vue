@@ -74,7 +74,7 @@ const loadEnums = async () => {
 };
 
 const loadEventNoticeTypeByEventCode = async () => {
-  const [error, { data }] = await event.getEventNoticeType();
+  const [error, { data }] = await setting.getEventNoticeType();
   if (error) {
     return;
   }

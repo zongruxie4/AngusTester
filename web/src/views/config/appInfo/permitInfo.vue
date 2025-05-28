@@ -31,7 +31,7 @@ const columnsPriv = [[
   },
   {
     label: '许可编号',
-    dataIndex: 'lcsNo'
+    dataIndex: 'licenseNo'
   },
   {
     label: '许可发行日期',
