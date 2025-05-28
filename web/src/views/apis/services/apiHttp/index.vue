@@ -1683,11 +1683,11 @@ provide('selectHandle', closeDrawer);
             <RadioButton value="doc">文档</RadioButton>
           </RadioGroup>
 
-          <div>
+          <div class="inline-flex items-center space-x-3">
             <Button
               type="link"
               size="small"
-              class="mr-3 hover:text-status-orange  text-status-orange !bg-board-orange"
+              class="hover:text-status-orange  text-status-orange !bg-board-orange"
               @click="handleShare">
               <Icon icon="icon-fenxiang" class="mr-2" />
               分享
