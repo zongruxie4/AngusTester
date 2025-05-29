@@ -32,6 +32,7 @@ import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSync;
 import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSyncRepo;
 import cloud.xcan.angus.core.utils.CoreUtils;
+import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.core.models.AuthorizationValue;
@@ -273,7 +274,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
       // Save sync result
       servicesSchemaCmd.openapiReplace(serviceId, true, false, content,
           projectSync.getStrategyWhenDuplicated(), projectSync.getDeleteWhenNotExisted(),
-          ApiSource.SYNC, null, true, projectSync.getName());
+          ApiSource.SYNC, ApiImportSource.OPENAPI, true, projectSync.getName());
       projectSync.setSyncSuccess(true);
       projectSync.setSyncFailureCause(null);
     } catch (Exception e) {
