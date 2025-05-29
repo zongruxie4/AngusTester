@@ -448,6 +448,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               :searchParams="searchParams"
               :allData="state.allData"
               :groupedBy="state.groupedBy"
+              :order="state.order"
               :serviceId="props.serviceId"
               :updateData="updateApiData"
               class="w-full flex-1 overflow-y-auto overflow-x-hidden"

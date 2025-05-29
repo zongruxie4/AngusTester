@@ -21,6 +21,10 @@ interface Props {
   spinning: boolean;
   updateData:(value:{id:string;auth:boolean;})=>void;
   groupedBy?: string;
+  order?: {
+    orderBy:string,
+    orderSort: 'DESC'|'ASC'
+  }
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -578,7 +582,18 @@ watch(() => [props.allData, props.groupedBy], () => {
         }
       }
     });
-    Object.entries(resultObj).forEach(([key, list]) => {
+    const tagsArr = Object.keys(resultObj);
+    if (props.order?.orderBy === 'summary') {
+      tagsArr.sort((a, b) => {
+        if (props.order?.orderSort === 'DESC') {
+          return b.toLowerCase().localeCompare(a.toLowerCase());
+        } else {
+          return a.toLowerCase().localeCompare(b.toLowerCase());
+        }
+      });
+    }
+    tagsArr.forEach((key => {
+      const list = resultObj[key];
       data.value.push({
         type: 'group',
         tag: 'key',
@@ -587,7 +602,7 @@ watch(() => [props.allData, props.groupedBy], () => {
         childrenNum: list.length,
         key
       }, ...list);
-    });
+    }));
   }
 }, {
   immediate: true
