@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { Arrow, Colon, Icon, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { http, PUB_TESTER } from '@xcan-angus/tools';
+import { getDataByProxy } from '@/api/proxyRequest';
 
 interface Props {
   execId: string;
@@ -34,8 +34,7 @@ const execLogErr = ref(false);
 const errorText = ref();
 const loadExecLog = async () => {
   emit('update:loading', true);
-  const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
-  const [error, res] = await http.get(url, {}, { timeout: 0 });
+  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
   emit('update:loading', false);
   if (error) {
     execLogErr.value = true;

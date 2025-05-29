@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
-import { http } from '@xcan-angus/tools';
 import { Select, Icon, Arrow, Colon, Tooltip } from '@xcan-angus/vue-ui';
+import { getDataByProxy } from '@/api/proxyRequest/index';
 
 interface Props {
   execId: string;
@@ -21,13 +21,14 @@ const emit = defineEmits<{(e: 'update:loading', value: boolean): void}>();
 
 const nodeId = ref<string>();
 const nodeIp = ref<string>();
+const nodePort = ref<string>('6807');
 
 const execLogContent = ref();
 const execLogPath = ref('');
 const execLogErr = ref(false);
 const loadExecLog = async () => {
   emit('update:loading', true);
-  const [error, res] = await http.get(`http://${nodeIp.value}:6807/actuator/runner/log/${props.execId}`);
+  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value || '6807'}/actuator/runner/log/${props.execId}`);
   emit('update:loading', false);
   if (error) {
     execLogErr.value = true;
@@ -65,6 +66,7 @@ watch(() => props.execId, (newValue) => {
   if (newValue) {
     nodeId.value = props.execNodes[0].id;
     nodeIp.value = props.execNodes[0].ip;
+    nodePort.value = props.execNodes[0].port;
     loadExecLog();
   }
 }, {
