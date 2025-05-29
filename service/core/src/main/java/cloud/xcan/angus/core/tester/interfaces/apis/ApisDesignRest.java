@@ -103,7 +103,7 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.clone(id));
   }
 
-  @Operation(summary = "Design existing service and apis", operationId = "apis:design:services:generate")
+  @Operation(summary = "Associate existing service and apis design", operationId = "apis:design:services:associate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
@@ -118,7 +118,7 @@ public class ApisDesignRest {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
-  @PutMapping("/{id}/services/assoc")
+  @PutMapping("/{id}/services/generate")
   public ApiLocaleResult<?> servicesGenerate(
       @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
     apisDesignFacade.servicesGenerate(id);
