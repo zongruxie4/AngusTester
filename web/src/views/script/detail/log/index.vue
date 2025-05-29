@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { Colon, IconDownload, NoData, Spin } from '@xcan-angus/vue-ui';
-import { http, PUB_TESTER } from '@xcan-angus/tools';
+import { getDataByProxy } from '@/api/proxyRequest/index';
 
 interface Props {
   execId:string;
@@ -30,9 +30,9 @@ const errorText = ref();
 
 const loading = ref(!!props.execNode?.id);
 const loadExecLog = async () => {
-  const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
+  // const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
   loading.value = true;
-  const [error, res] = await http.get(url, {}, { timeout: 0 });
+  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
   loading.value = false;
   if (error) {
     execLogErr.value = true;
