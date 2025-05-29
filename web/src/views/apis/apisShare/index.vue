@@ -110,7 +110,7 @@ provide('readyState', readyState);
   </div>
   <template v-else-if="openapi">
     <rapi-doc
-      :spec-rrl="openapi"
+      :spec-url="openapi"
       specIsContent="true"
       style="padding: 20px;"
       renderStyle="read"
