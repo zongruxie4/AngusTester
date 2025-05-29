@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.findAllRef0;
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
@@ -10,7 +11,6 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.tester.application.converter.ServicesCompConverter;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesCompQuery;
@@ -175,7 +175,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
       return null;
     }
     T t = OPENAPI_MAPPER.readValue(model, clz);
-    ProtocolAssert.assertNotNull(t, "The component model is not in a valid format");
+    assertNotNull(t, "The component model is not in a valid format");
     return t;
   }
 }
