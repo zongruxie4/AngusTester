@@ -187,7 +187,6 @@ const columns = [
     title: '名称',
     dataIndex: 'name',
     ellipsis: true,
-    width: 230,
     sorter: true
   },
   {
@@ -203,6 +202,7 @@ const columns = [
     dataIndex: 'createdBy',
     width: 100,
     sorter: true,
+    ellipsis: true,
     customRender: ({ record }) => {
       return record.createdByName;
     }
@@ -210,7 +210,7 @@ const columns = [
   {
     title: '分享范围',
     dataIndex: 'shareScope',
-    width: 120,
+    width: 100,
     customRender: ({ text }) => text?.message
   },
   {
@@ -228,21 +228,24 @@ const columns = [
   {
     title: '查看次数',
     dataIndex: 'viewNum',
-    width: 100
+    width: 80
   },
   {
     title: '备注',
-    dataIndex: 'remark'
+    dataIndex: 'remark',
+    ellipsis: true,
+    width: 100,
   },
   {
     title: '最后修改人',
     dataIndex: 'lastModifiedByName',
+    ellipsis: true,
     width: 100
   },
   {
     title: '最后修改时间',
     dataIndex: 'lastModifiedDate',
-    width: 160
+    width: 140
   },
   {
     title: '操作',
@@ -289,6 +292,10 @@ const columns = [
                     @click="handleEnterShare(record.id)">
                     {{ record.name }}
                   </Button>
+                </template>
+                <template v-if="column.dataIndex === 'remark'">
+                  <template v-if="record.remark">{{record.remark}}</template>
+                  <span v-else class="text-sub-content">无~</span>
                 </template>
                 <template v-if="column.dataIndex === 'isExpired'">
                   <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? '已过期' : '未过期' }}</Tag>

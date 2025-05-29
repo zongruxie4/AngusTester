@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<Props>(), {
   designId: ''
 });
 
-const openApiDesignRef = ref();
 const designInfo = ref<{[key: string]: string}>({});
 const designContent = ref();
 let openAPIDesignInstance;
@@ -35,6 +34,7 @@ const getDesignInfo = async () => {
 };
 
 const updateContent = async () => {
+  debugger;
   if (typeof openAPIDesignInstance?.updateData === 'function') {
     openAPIDesignInstance.updateData();
   }
@@ -61,11 +61,13 @@ const releaseDesign = async ()  => {
 onMounted(async () => {
   await getDesignContent();
   await getDesignInfo();
-  openAPIDesignInstance = new OpenApiDesign();
+  openAPIDesignInstance = new OpenApiDesign({
+    defaultFontSize: 12
+  });
 })
 </script>
 <template>
-<div ref="openApiDesignRef" class="h-full">
+<div class="h-full text-3">
   <component is="open-api-design" :open-api-doc="designContent">
     <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
       <Tag color="green" class="text-3.5 rounded-full">{{designInfo.openapiSpecVersion}}</Tag>

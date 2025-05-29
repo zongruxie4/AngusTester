@@ -50,7 +50,11 @@ const cancel = () => {
 
 const ok = async () => {
   formRef.value.validate().then(async () => {
-    const [error] = await apis.importDesign({...formState.value, projectId: props.projectId});
+    const formData = new FormData();
+    formData.append('projectId', props.projectId);
+    formData.append('name', formState.value.name);
+    formData.append('content', formState.value.content);
+    const [error] = await apis.importDesign(formData);
     if (error) {
       return;
     }

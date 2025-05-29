@@ -287,8 +287,8 @@ export default class API {
     return http.get(`${baseUrl}/design/${designId}`);
   }
 
-  deleteDesign (designId: string) : Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/design/${designId}`);
+  deleteDesign (designIds: string[]) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/design`, {ids: designIds});
   }
 
   exportDesign (params: {id: string, format: 'json'|'yaml'}, axioConf = {}): Promise<[Error | null, any]> {
@@ -307,7 +307,7 @@ export default class API {
     return http.put(`${baseUrl}/design/${designId}/services/generate`);
   }
 
-  importDesign (params: {projectId: string, name: string, content: string}): Promise<[Error | null, any]> {
+  importDesign (params:FormData): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/design/import`, params);
   }
 

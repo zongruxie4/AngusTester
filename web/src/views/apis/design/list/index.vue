@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 
 import { DesignInfo } from '../PropsType';
@@ -73,7 +73,7 @@ const toDelete = async (data: DesignInfo) => {
     content: `确定删除设计【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await apis.deleteDesign(id);
+      const [error] = await apis.deleteDesign([id]);
       if (error) {
         return;
       }
@@ -211,7 +211,6 @@ const columns = [
     title: '名称',
     dataIndex: 'name',
     ellipsis: true,
-    width: 200,
     sorter: true
   },
   {
@@ -237,31 +236,32 @@ const columns = [
     dataIndex: 'designSourceName',
     width: 100,
     ellipsis: true,
+    customRender: ({text}) => {
+      return text || '--';
+    }
   },
   {
     title: '添加人',
-    dataIndex: 'createdBy',
+    dataIndex: 'createdByAvatar',
     width: 100,
-    sorter: true,
-    customRender: ({ record }) => {
-      return record.createdByName;
-    }
+    sorter: true
   },
   {
     title: '添加时间',
     dataIndex: 'createdDate',
-    width: 160,
+    width: 140,
     sorter: true
   },
   {
     title: '最后修改人',
     dataIndex: 'lastModifiedByName',
-    width: 100
+    width: 100,
+    ellipsis: true,
   },
   {
     title: '最后修改时间',
     dataIndex: 'lastModifiedDate',
-    width: 160
+    width: 140
   },
   {
     title: '操作',
@@ -302,13 +302,13 @@ const columns = [
               @change="tableChange">
               <template #bodyCell="{column, record}">
                 <template v-if="column.dataIndex === 'name'">
-                  <Button
-                    type="link"
-                    size="small"
-                    class="px-0"
-                    @click="handleEnterDesign(record)">
-                    {{ record.name }}
-                  </Button>
+                  <a class="text-blue-1 truncate" @click="handleEnterDesign(record)">{{ record.name }}</a>
+                </template>
+                <template v-if="column.dataIndex === 'createdByAvatar'">
+                  <div class="inline-flex items-center truncate">
+                    <Image type="avatar" class="w-6 rounded-full mr-1" :src="record.createdByAvatar" />
+                    <span class="flex-1 truncate" :tite="record.createdByName">{{record.createdByName}}</span>
+                  </div>
                 </template>
                 <template v-if="column.dataIndex=== 'released'">
                   <Tag v-if="record.released" color="success">已发布</Tag>
@@ -355,7 +355,7 @@ const columns = [
                     size="small"
                     :disabled="!!record.designSourceId"
                     @click="generateService(record)">
-                    <Icon icon="icon-shengchengshuju" />
+                    <Icon icon="icon-fuwu" />
                     生成服务
                   </Button>
                   <Button
