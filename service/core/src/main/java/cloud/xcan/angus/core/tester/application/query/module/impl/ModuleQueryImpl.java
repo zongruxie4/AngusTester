@@ -23,7 +23,6 @@ import cloud.xcan.angus.core.tester.domain.module.ModuleRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -106,7 +105,7 @@ public class ModuleQueryImpl implements ModuleQuery {
 
   @Override
   public List<Module> checkAndFind(Collection<Long> ids) {
-    if (ObjectUtils.isEmpty(ids)) {
+    if (isEmpty(ids)) {
       return null;
     }
     List<Module> modules = moduleRepo.findAllById(ids);
@@ -150,13 +149,13 @@ public class ModuleQueryImpl implements ModuleQuery {
   @Override
   public List<Module> findAndAllParent(Collection<Module> modules) {
     List<Module> allModules = new ArrayList<>();
-    if (ObjectUtils.isNotEmpty(modules)) {
+    if (isNotEmpty(modules)) {
       allModules.addAll(modules);
       Set<Long> parentModuleIds = modules.stream().filter(Module::hasParent)
           .map(Module::getPid).collect(Collectors.toSet());
       do {
         List<Module> parentModules = moduleRepo.findAllById(parentModuleIds);
-        if (ObjectUtils.isNotEmpty(parentModules)) {
+        if (isNotEmpty(parentModules)) {
           allModules.addAll(parentModules);
           parentModuleIds = parentModules.stream().filter(Module::hasParent)
               .map(Module::getPid).collect(Collectors.toSet());
@@ -178,11 +177,11 @@ public class ModuleQueryImpl implements ModuleQuery {
     do {
       // Find sub modules
       projectModuleSubs = moduleRepo.findByProjectIdAndPidIn(projectId, moduleIds);
-      if (ObjectUtils.isNotEmpty(projectModuleSubs)) {
+      if (isNotEmpty(projectModuleSubs)) {
         allModuleAndSub.addAll(projectModuleSubs);
         moduleIds = projectModuleSubs.stream().map(Module::getId).collect(Collectors.toList());
       }
-    } while (ObjectUtils.isNotEmpty(projectModuleSubs));
+    } while (isNotEmpty(projectModuleSubs));
     return allModuleAndSub;
   }
 
@@ -193,11 +192,11 @@ public class ModuleQueryImpl implements ModuleQuery {
 
   @Override
   public Map<String, Module> checkAndFindByName(Long projectId, Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<Module> casesDb = moduleRepo.findByProjectIdAndNameIn(projectId, names);
-    if (ObjectUtils.isEmpty(casesDb)) {
+    if (isEmpty(casesDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "Module");
     }
     if (names.size() != casesDb.size()) {
@@ -221,7 +220,7 @@ public class ModuleQueryImpl implements ModuleQuery {
   public void checkUpdateNameExists(Long projectId, Collection<Module> modules) {
     List<Module> modulesDb = moduleRepo.findByProjectIdAndNameIn(
         projectId, modules.stream().map(Module::getName).collect(Collectors.toList()));
-    if (ObjectUtils.isEmpty(modulesDb)) {
+    if (isEmpty(modulesDb)) {
       return;
     }
     for (Module module : modules) {

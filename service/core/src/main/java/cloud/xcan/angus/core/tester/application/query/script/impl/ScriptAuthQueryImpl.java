@@ -30,7 +30,6 @@ import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuthCurrent;
 import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuthRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -353,10 +352,10 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
         .collect(Collectors.groupingBy(ScriptAuth::getScriptId));
     for (Long id : authMap.keySet()) {
       List<ScriptAuth> values = authMap.get(id);
-      if (ObjectUtils.isNotEmpty(values)) {
+      if (isNotEmpty(values)) {
         List<ScriptPermission> permissions = values.stream()
             .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
-        if (ObjectUtils.isNotEmpty(permissions) && permissions.contains(permission)) {
+        if (isNotEmpty(permissions) && permissions.contains(permission)) {
           continue;
         }
       }
@@ -434,7 +433,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     Map<Long, Set<ScriptPermission>> authPermissionMap = new HashMap<>();
     for (Long id : authMap.keySet()) {
       List<ScriptAuth> values = authMap.get(id);
-      if (ObjectUtils.isNotEmpty(values)) {
+      if (isNotEmpty(values)) {
         Set<ScriptPermission> permissions = values.stream()
             .flatMap(o -> o.getAuths().stream()).collect(Collectors.toSet());
         authPermissionMap.put(id, permissions);

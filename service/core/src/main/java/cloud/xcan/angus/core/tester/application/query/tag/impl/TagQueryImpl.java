@@ -3,10 +3,10 @@ package cloud.xcan.angus.core.tester.application.query.tag.impl;
 import static cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource.AngusTesterTag;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.groupingBy;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 import cloud.xcan.angus.api.manager.SettingTenantQuotaManager;
 import cloud.xcan.angus.core.biz.Biz;
@@ -114,11 +114,11 @@ public class TagQueryImpl implements TagQuery {
 
   @Override
   public Map<String, List<Tag>> checkAndFindByName(Long projectId, Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<Tag> casesDb = tagRepo.findByProjectIdAndNameIn(projectId, names);
-    if (ObjectUtils.isEmpty(casesDb)) {
+    if (isEmpty(casesDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "CaseTag");
     }
     if (names.size() != casesDb.size()) {
@@ -169,12 +169,11 @@ public class TagQueryImpl implements TagQuery {
   public boolean hasModifyTag(Long id, List<TagTarget> tagTargets) {
     Set<Long> caseTagIdsDb = tagTargetRepo.findTagIdByTargetId(id);
     // Clear tagTargets in db
-    if (ObjectUtils.isEmpty(tagTargets)) {
+    if (isEmpty(tagTargets)) {
       return !caseTagIdsDb.isEmpty();
     }
     // Change tagTargets
-    Set<Long> tagsIds = tagTargets.stream().map(TagTarget::getTagId)
-        .collect(Collectors.toSet());
+    Set<Long> tagsIds = tagTargets.stream().map(TagTarget::getTagId).collect(Collectors.toSet());
 
     assertNotEmpty(tagsIds, "tagsIds is required");
     if (tagsIds.size() != caseTagIdsDb.size()) {
@@ -187,10 +186,11 @@ public class TagQueryImpl implements TagQuery {
 
   @Override
   public void setEditPermission(Set<SearchCriteria> criteria, List<Tag> tags) {
-    if (ObjectUtils.isEmpty(tags)) {
+    if (isEmpty(tags)) {
       return;
     }
     String projectId = CriteriaUtils.findFirstValue(criteria, "projectId");
+    assert projectId != null;
     boolean hasEditPermission = projectQuery.hasEditPermission(Long.parseLong(projectId));
     tags.forEach(module -> module.setHasEditPermission(hasEditPermission));
   }
@@ -204,7 +204,7 @@ public class TagQueryImpl implements TagQuery {
       Map<Long, List<TagTarget>> taskTagMap = tagTargetRepo.findAllByTargetIdIn(
               ress.stream().map(ResourceTagAssoc::getId).collect(Collectors.toList()))
           .stream().collect(groupingBy(TagTarget::getTargetId));
-      if (ObjectUtils.isEmpty(taskTagMap)) {
+      if (isEmpty(taskTagMap)) {
         return;
       }
       ress.forEach(x -> x.setTagTargets((taskTagMap.get(x.getId()))));

@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.indicator.impl;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.INDICATOR_UPDATE;
 import static cloud.xcan.angus.core.tester.domain.indicator.IndicatorType.PERF;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -21,7 +22,6 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityResource;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,7 +120,7 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
       @Override
       protected Void process() {
         List<IndicatorPerf> perfs = indicatorPerfRepo.findAllById(ids);
-        if (ObjectUtils.isNotEmpty(perfs)) {
+        if (isNotEmpty(perfs)) {
           indicatorPerfRepo.deleteAll(perfs);
 
           saveActivity(perfs);

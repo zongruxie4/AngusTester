@@ -80,7 +80,6 @@ import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -418,7 +417,7 @@ public class TaskConverter {
             : new Progress().setCompleted(
                     task.getSubTasks().stream().filter(x -> x.getStatus().isFinished()).count())
                 .setTotal(task.getSubTasks().size()))
-        .setSubTaskInfos(ObjectUtils.isNotEmpty(task.getSubTasks()) ? task.getSubTasks().stream()
+        .setSubTaskInfos(isNotEmpty(task.getSubTasks()) ? task.getSubTasks().stream()
             .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
         .setRefTaskInfos(
             isNotEmpty(task.getAssocTasks()) ? task.getAssocTasks().stream()
@@ -624,7 +623,7 @@ public class TaskConverter {
             ? getLocalDateTime(row[createdDateIdx]) : LocalDateTime.now());
         List<String> taskTags = isNotEmpty(row[tagsIdx])
             ? List.of(row[tagsIdx].split("##")) : null;
-        if (ObjectUtils.isNotEmpty(taskTags)) {
+        if (isNotEmpty(taskTags)) {
           task.setTagTargets(taskTags.stream().filter(x -> nonNull(tagsMap.get(x)))
               .map(x -> new TagTarget().setId(uidGenerator.getUID())
                       .setTargetId(task.getId()).setTargetType(CombinedTargetType.TASK)
@@ -634,14 +633,14 @@ public class TaskConverter {
         }
         List<String> taskNames0 = isNotEmpty(row[tasksIdx])
             ? List.of(row[tasksIdx].split("##")) : null;
-        if (ObjectUtils.isNotEmpty(taskNames0)) {
+        if (isNotEmpty(taskNames0)) {
           task.setRefTaskIds(new LinkedHashSet<>(
               taskNames0.stream().filter(x -> nonNull(tasksMap.get(x)))
                   .map(x -> tasksMap.get(x).get(0).getId()).collect(Collectors.toList())));
         }
         List<String> caseNames0 = isNotEmpty(row[casesIdx])
             ? List.of(row[casesIdx].split("##")) : null;
-        if (ObjectUtils.isNotEmpty(caseNames0)) {
+        if (isNotEmpty(caseNames0)) {
           task.setRefCaseIds(new LinkedHashSet<>(
               caseNames0.stream().filter(x -> nonNull(casesMap.get(x)))
                   .map(x -> casesMap.get(x).get(0).getId()).collect(Collectors.toList())));

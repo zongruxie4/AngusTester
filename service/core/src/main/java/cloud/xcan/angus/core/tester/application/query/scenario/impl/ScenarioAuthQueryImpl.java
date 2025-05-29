@@ -28,7 +28,6 @@ import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioAuthRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioPermission;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -283,10 +282,10 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
         .collect(Collectors.groupingBy(ScenarioAuth::getScenarioId));
     for (Long sceId : authMap.keySet()) {
       List<ScenarioAuth> values = authMap.get(sceId);
-      if (ObjectUtils.isNotEmpty(values)) {
+      if (isNotEmpty(values)) {
         List<ScenarioPermission> scePermissions = values.stream()
             .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
-        if (ObjectUtils.isNotEmpty(scePermissions) && scePermissions.contains(permission)) {
+        if (isNotEmpty(scePermissions) && scePermissions.contains(permission)) {
           continue;
         }
       }

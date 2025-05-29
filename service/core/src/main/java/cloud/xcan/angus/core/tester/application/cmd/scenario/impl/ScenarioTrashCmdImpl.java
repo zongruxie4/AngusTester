@@ -21,7 +21,6 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrash;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrashRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
@@ -139,7 +138,7 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
         List<ScenarioTrash> allTrashes = getAllTrashesByProjectId(projectId);
 
         // Bach scenario
-        if (ObjectUtils.isNotEmpty(allTrashes)) {
+        if (isNotEmpty(allTrashes)) {
           List<Long> scenarioIds = allTrashes.stream()
               .map(ScenarioTrash::getTargetId).collect(Collectors.toList());
 

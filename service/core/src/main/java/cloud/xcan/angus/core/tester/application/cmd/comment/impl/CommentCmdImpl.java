@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.comment.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.FUNC_CASE;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TASK;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.Biz;
@@ -20,7 +21,6 @@ import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.comment.Comment;
 import cloud.xcan.angus.core.tester.domain.comment.CommentRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,7 +140,7 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
     commentRepo.deleteAll(subComments);
     for (Comment comment : subComments) {
       List<Comment> allByPid = commentRepo.findAllByPid(comment.getId());
-      if (ObjectUtils.isNotEmpty(allByPid)) {
+      if (isNotEmpty(allByPid)) {
         deleteSubComment(allByPid);
       }
     }

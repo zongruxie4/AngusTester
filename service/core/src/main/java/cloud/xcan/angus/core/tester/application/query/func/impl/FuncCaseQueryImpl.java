@@ -189,7 +189,6 @@ import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -1528,11 +1527,11 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   @Override
   public Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long planId, Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<FuncCaseInfo> caseDb = funcCaseInfoRepo.findByPlanIdAndNameIn(planId, names);
-    if (ObjectUtils.isEmpty(caseDb)) {
+    if (isEmpty(caseDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "FuncCase");
     }
     if (names.size() != caseDb.size()) {

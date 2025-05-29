@@ -112,7 +112,6 @@ import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -225,7 +224,6 @@ import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.annotations.NonNullable;
 import cloud.xcan.angus.spec.principal.Principal;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -1761,18 +1759,18 @@ public class TaskQueryImpl implements TaskQuery {
     List<Task> tasks = taskRepo.findAllById(ids);
     Set<Long> idsDb = tasks.stream().map(Task::getId).collect(Collectors.toSet());
     refTaskIds.removeAll(idsDb);
-    ProtocolAssert.assertResourceNotFound(isEmpty(refTaskIds), refTaskIds, "Task");
+    assertResourceNotFound(isEmpty(refTaskIds), refTaskIds, "Task");
     return tasks;
   }
 
   @Override
   public Map<String, List<TaskInfo>> checkAndFindByProjectAndName(Long projectId,
       Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<TaskInfo> taskDb = taskInfoRepo.findByProjectIdAndNameIn(projectId, names);
-    if (ObjectUtils.isEmpty(taskDb)) {
+    if (isEmpty(taskDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "Task");
     }
     if (names.size() != taskDb.size()) {
@@ -1786,11 +1784,11 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Override
   public Map<String, List<TaskInfo>> checkAndFindByPlanAndName(Long sprintId, Set<String> names) {
-    if (ObjectUtils.isEmpty(names)) {
+    if (isEmpty(names)) {
       return emptyMap();
     }
     List<TaskInfo> taskDb = taskInfoRepo.findBySprintIdAndNameIn(sprintId, names);
-    if (ObjectUtils.isEmpty(taskDb)) {
+    if (isEmpty(taskDb)) {
       throw ResourceNotFound.of(names.iterator().next(), "Task");
     }
     if (names.size() != taskDb.size()) {
@@ -1973,11 +1971,11 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Override
   public void checkTaskExists(List<Long> reqTaskIds, List<Task> taskDbs) {
-    ProtocolAssert.assertResourceNotFound(isNotEmpty(taskDbs), reqTaskIds, "Task");
+    assertResourceNotFound(isNotEmpty(taskDbs), reqTaskIds, "Task");
     Map<Long, Task> taskMap = taskDbs.stream().collect(Collectors.toMap(Task::getId, o -> o));
     reqTaskIds.forEach(reqId -> {
       Task taskDb = taskMap.get(reqId);
-      ProtocolAssert.assertResourceNotFound(nonNull(taskDb), reqId, "Task");
+      assertResourceNotFound(nonNull(taskDb), reqId, "Task");
     });
   }
 

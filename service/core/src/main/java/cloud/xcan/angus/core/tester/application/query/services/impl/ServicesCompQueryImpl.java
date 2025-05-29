@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.findAllRef0;
 import static cloud.xcan.angus.core.tester.domain.apis.converter.ApiResponseConverter.OPENAPI_MAPPER;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
@@ -17,7 +18,6 @@ import cloud.xcan.angus.core.tester.domain.services.comp.ServicesComp;
 import cloud.xcan.angus.core.tester.domain.services.comp.ServicesCompRepo;
 import cloud.xcan.angus.core.tester.domain.services.comp.ServicesCompType;
 import cloud.xcan.angus.core.tester.infra.util.RefResolver;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.parser.reference.ReferenceUtils;
@@ -68,7 +68,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
           try {
             refs = RefResolver.findPropertyValues(comp.getModel(), "$ref");
             Map<String, String> allRefModels = new HashMap<>();
-            if (ObjectUtils.isNotEmpty(refs)) {
+            if (isNotEmpty(refs)) {
               Map<String, String> compModelMap = comps.stream()
                   .collect(Collectors.toMap(ServicesComp::getRef, ServicesComp::getModel));
               findAllRef0(allRefModels, refs, compModelMap);
@@ -95,7 +95,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
       @Override
       protected List<ServicesComp> process() {
         List<ServicesComp> cached = servicesCompQuery.findByServiceId(serviceId);
-        return ObjectUtils.isEmpty(keys)
+        return isEmpty(keys)
             ? cached.stream().filter(x -> types.contains(x.getType())).collect(Collectors.toList())
             : cached.stream().filter(x -> types.contains(x.getType()) && keys.contains(x.getKey()))
                 .collect(Collectors.toList());
@@ -147,7 +147,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
   @Deprecated
   public Components findOpenAPIComponents(Long serviceId) {
     List<ServicesComp> comps = servicesCompQuery.findByServiceId(serviceId);
-    if (ObjectUtils.isEmpty(comps)) {
+    if (isEmpty(comps)) {
       return null;
     }
     return ServicesCompConverter.toOpenApiComp(comps.stream()
@@ -156,9 +156,9 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
 
   @Override
   public void checkRefFormat(String ref) {
-    ProtocolAssert.assertTrue(ReferenceUtils.isLocalRefToComponents(ref),
+    assertTrue(ReferenceUtils.isLocalRefToComponents(ref),
         "Only local reference components are supported");
-    ProtocolAssert.assertTrue(ref.split("/").length == 4,
+    assertTrue(ref.split("/").length == 4,
         "The parameter ref format is invalid, it must be: #/components/{type}/{key}");
   }
 

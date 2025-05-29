@@ -1,9 +1,10 @@
 package cloud.xcan.angus.core.tester.infra.metricsds.domain.usage;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+
 import cloud.xcan.angus.core.tester.infra.metricsds.ShardingTable;
 import cloud.xcan.angus.spec.experimental.CsvConverter;
 import cloud.xcan.angus.spec.experimental.EntitySupport;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -65,7 +66,7 @@ public class NodeUsage extends EntitySupport<NodeUsage, Long> {
 
     @Override
     public Cpu fromString(String... cvs) {
-      if (ObjectUtils.isEmpty(cvs)) {
+      if (isEmpty(cvs)) {
         return null;
       }
       String[] usages = cvs[0].split(",");
@@ -133,7 +134,7 @@ public class NodeUsage extends EntitySupport<NodeUsage, Long> {
 
     @Override
     public Memory fromString(String... cvs) {
-      if (ObjectUtils.isEmpty(cvs)) {
+      if (isEmpty(cvs)) {
         return null;
       }
       String[] usages = cvs[0].split(",");
@@ -205,7 +206,7 @@ public class NodeUsage extends EntitySupport<NodeUsage, Long> {
 
     @Override
     public FileSystem fromString(String... cvs) {
-      if (ObjectUtils.isEmpty(cvs)) {
+      if (isEmpty(cvs)) {
         return null;
       }
       String[] usages = cvs[0].split(",");

@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioAuth;
@@ -15,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.auth.ScenarioA
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.auth.ScenarioAuthVo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class ScenarioAuthAssembler {
   public static ScenarioAuth addDtoToDomain(Long id, ScenarioAuthAddDto dto) {
     Set<ScenarioPermission> permissions = new HashSet<>();
     permissions.add(ScenarioPermission.VIEW);
-    if (ObjectUtils.isNotEmpty(dto.getPermissions())) {
+    if (isNotEmpty(dto.getPermissions())) {
       permissions.addAll(dto.getPermissions());
     }
     return new ScenarioAuth().setScenarioId(id).setCreator(false)

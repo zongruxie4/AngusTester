@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintPermission;
@@ -15,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.auth.TaskSp
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.auth.TaskSprintAuthVo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class TaskSprintAuthAssembler {
 
   public static TaskSprintAuth addDtoToDomain(Long sprintId, TaskSprintAuthAddDto dto) {
     Set<TaskSprintPermission> permissions = new HashSet<>();
-    if (ObjectUtils.isNotEmpty(dto.getPermissions())) {
+    if (isNotEmpty(dto.getPermissions())) {
       permissions.addAll(dto.getPermissions());
     }
     return new TaskSprintAuth()

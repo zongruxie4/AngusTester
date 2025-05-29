@@ -55,7 +55,6 @@ import cloud.xcan.angus.spec.experimental.Assert;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import cloud.xcan.angus.spec.utils.NetworkUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import cloud.xcan.angus.spec.utils.StringUtils;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
@@ -686,7 +685,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   private void addNodeRoles(List<Node> nodes) {
     List<NodeRole> roles = new ArrayList<>();
     for (Node node : nodes) {
-      if (ObjectUtils.isNotEmpty(node.getRoles())) {
+      if (isNotEmpty(node.getRoles())) {
         roles.addAll(node.getRoles().stream()
             .map(x -> new NodeRole().setNodeId(node.getId()).setRole(x.getValue())).toList());
       }
@@ -697,7 +696,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   private void replaceNodeRoles(List<Node> nodes) {
     List<NodeRole> roles = new ArrayList<>();
     for (Node node : nodes) {
-      if (ObjectUtils.isNotEmpty(node.getRoles())) {
+      if (isNotEmpty(node.getRoles())) {
         roles.addAll(node.getRoles().stream()
             .map(x -> new NodeRole().setNodeId(node.getId()).setRole(x.getValue())).toList());
       }

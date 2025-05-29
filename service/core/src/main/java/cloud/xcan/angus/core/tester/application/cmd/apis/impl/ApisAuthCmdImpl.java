@@ -8,6 +8,8 @@ import static cloud.xcan.angus.core.tester.application.converter.ActivityConvert
 import static cloud.xcan.angus.core.tester.application.converter.ApisAuthConverter.toApisCreatorAuth;
 import static cloud.xcan.angus.core.tester.application.converter.ServicesAuthConverter.toServicesViewPermission;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
@@ -29,13 +31,11 @@ import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.auth.ServicesAuth;
 import cloud.xcan.angus.core.tester.domain.services.auth.ServicesAuthRepo;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,12 +94,12 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
         // Determine and initialize parent project view permissions
         List<ServicesAuth> projectAuths = addParentViewPermission(auth);
-        if (ObjectUtils.isNotEmpty(projectAuths)) {
+        if (isNotEmpty(projectAuths)) {
           servicesAuthRepo.batchInsert0(projectAuths);
         }
 
         // Add grant permission activity
-        if (Objects.nonNull(auth.getCreator()) && !auth.getCreator()) {
+        if (nonNull(auth.getCreator()) && !auth.getCreator()) {
           activityCmd.add(toActivity(API, apiInfoDb, ActivityType.AUTH, authObjectName));
         }
         return idKey;

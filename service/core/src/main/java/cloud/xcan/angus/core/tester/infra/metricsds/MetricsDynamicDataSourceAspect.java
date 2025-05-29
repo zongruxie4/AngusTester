@@ -4,6 +4,7 @@ import static cloud.xcan.angus.core.tester.infra.metricsds.MetricsDataSourceConf
 import static cloud.xcan.angus.core.tester.infra.metricsds.MetricsDataSourceConfiguration.METRICS_DATASOURCE_SUFFIX;
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.safeStringValue;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -13,7 +14,6 @@ import cloud.xcan.angus.core.jpa.multitenancy.TenantEntity;
 import cloud.xcan.angus.core.tester.infra.metricsds.MetricsDataSourceContextHolder.Shard;
 import cloud.xcan.angus.core.tester.infra.metricsds.config.MetricsDataSourceProperties;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -145,7 +145,7 @@ public class MetricsDynamicDataSourceAspect {
           // Find in first filter
         } else if (values[i] instanceof GenericSpecification gs) {
           Set<SearchCriteria> criteries = gs.getCriteria();
-          if (ObjectUtils.isNotEmpty(criteries)) {
+          if (isNotEmpty(criteries)) {
             Optional<SearchCriteria> criteriaOptional = criteries.stream()
                 .filter(c -> c.getKey().equals(anno.tableField())).findFirst();
             criteriaOptional.ifPresent(criteria -> map

@@ -4,6 +4,7 @@ import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGener
 import static cloud.xcan.angus.metrics.ExecMetrics.EXT_KEY_CONTENT1;
 import static cloud.xcan.angus.metrics.ExecMetrics.EXT_KEY_CONTENT2;
 import static cloud.xcan.angus.metrics.ExecMetrics.EXT_KEY_SAMPLE_RESULT_CONTENT;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSample;
@@ -11,7 +12,6 @@ import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleCont
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleErrorCause;
 import cloud.xcan.angus.metrics.ExecMetrics;
 import cloud.xcan.angus.spec.utils.JsonUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -86,7 +86,7 @@ public class ExecMetricsConverter {
       boolean finish) {
     List<ExecSampleErrorCause> execMetrics = new ArrayList<>();
     for (ExecMetrics sample : sampleMetrics) {
-      if (ObjectUtils.isNotEmpty(sample.getErrorCause())) {
+      if (isNotEmpty(sample.getErrorCause())) {
         for (Map<String, String> content : sample.getErrorCause()) {
           ExecSampleErrorCause metrics = new ExecSampleErrorCause();
           Entry<String, String> entry = content.entrySet().stream().findFirst().orElse(null);
@@ -119,7 +119,7 @@ public class ExecMetricsConverter {
       Long execId, Long now, boolean finish) {
     List<ExecSampleContent> execMetrics = new ArrayList<>();
     for (ExecMetrics sample : sampleMetrics) {
-      if (ObjectUtils.isNotEmpty(sample.getSampleResultContent())) {
+      if (isNotEmpty(sample.getSampleResultContent())) {
         execMetrics.addAll(sample.getSampleResultContent().entrySet().stream().map(x -> {
           ExecSampleContent metrics = new ExecSampleContent();
           metrics.setTenantId(tenantId);
@@ -139,7 +139,7 @@ public class ExecMetricsConverter {
         }).collect(Collectors.toList()));
       }
 
-      if (ObjectUtils.isNotEmpty(sample.getExtContent1())) {
+      if (isNotEmpty(sample.getExtContent1())) {
         execMetrics.addAll(sample.getExtContent1().entrySet().stream().map(x -> {
           ExecSampleContent metrics = new ExecSampleContent();
           metrics.setTenantId(tenantId);
@@ -158,7 +158,7 @@ public class ExecMetricsConverter {
         }).collect(Collectors.toList()));
       }
 
-      if (ObjectUtils.isNotEmpty(sample.getExtContent2())) {
+      if (isNotEmpty(sample.getExtContent2())) {
         execMetrics.addAll(sample.getExtContent2().entrySet().stream().map(x -> {
           ExecSampleContent metrics = new ExecSampleContent();
           metrics.setTenantId(tenantId);

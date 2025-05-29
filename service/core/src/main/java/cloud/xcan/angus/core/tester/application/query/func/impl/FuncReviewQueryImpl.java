@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.func.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.FuncCaseConverter.getCommonCreatorResourcesFilter;
 import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.FUNC_REVIEW_NAME_REPEATED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.REVIEW_NOT_STARTED;
@@ -17,7 +18,6 @@ import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
@@ -124,12 +124,10 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   @Override
   public List<FuncReview> checkAndFind(Collection<Long> ids) {
     List<FuncReview> reviews = funcReviewRepo.findAllById(ids);
-    ProtocolAssert.assertResourceNotFound(isNotEmpty(reviews), ids.iterator().next(),
-        "FuncReview");
+    assertResourceNotFound(isNotEmpty(reviews), ids.iterator().next(), "FuncReview");
     if (ids.size() != reviews.size()) {
       for (FuncReview review : reviews) {
-        ProtocolAssert.assertResourceNotFound(ids.contains(review.getId()), review.getId(),
-            "FuncReview");
+        assertResourceNotFound(ids.contains(review.getId()), review.getId(), "FuncReview");
       }
     }
     return reviews;

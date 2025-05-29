@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.infra.metricsds;
 
 import static cloud.xcan.angus.core.utils.PrincipalContextUtils.getOptTenantId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.spring.SpringContextHolder;
@@ -8,7 +9,6 @@ import cloud.xcan.angus.core.tester.domain.shard.ShardTables;
 import cloud.xcan.angus.core.tester.domain.shard.ShardTablesRepo;
 import cloud.xcan.angus.core.tester.infra.metricsds.config.MetricsDataSourceProperties;
 import cloud.xcan.angus.idgen.UidGenerator;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -136,7 +136,7 @@ public class TableSchemaManager {
    */
   private List<String> reloadByTenantId(long tenantId) {
     List<ShardTables> shardTables = shardTablesRepo.findByTableNameLike(String.valueOf(tenantId));
-    return ObjectUtils.isEmpty(shardTables) ? null
+    return isEmpty(shardTables) ? null
         : shardTables.stream().map(ShardTables::getTableName).collect(
             Collectors.toList());
   }

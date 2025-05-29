@@ -63,7 +63,6 @@ import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.vo.IdAndNameVo;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -391,7 +390,7 @@ public class FuncCaseConverter {
         .setTestRemark(case0.getTestRemark())
         .setTestResultHandleDate(case0.getTestResultHandleDate())
         .setAttachments(case0.getAttachments())
-        .setTags(ObjectUtils.isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
+        .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
             .collect(Collectors.toList()) : Collections.emptyList())
         .setAssocTasks(case0.getAssocTasks())

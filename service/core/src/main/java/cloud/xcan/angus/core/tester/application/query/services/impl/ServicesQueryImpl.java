@@ -1,5 +1,8 @@
 package cloud.xcan.angus.core.tester.application.query.services.impl;
 
+import static cloud.xcan.angus.core.biz.BizAssert.assertTrue;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.ServicesConverter.toServicesSummary;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_APIS_NOT_BELONG_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NAME_REPEATED_T;
@@ -16,7 +19,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.core.biz.Biz;
-import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.biz.ProtocolAssert;
@@ -196,12 +198,10 @@ public class ServicesQueryImpl implements ServicesQuery {
   @Override
   public List<Services> checkAndFind(Set<Long> serviceIds) {
     List<Services> services = servicesRepo.findAllById(serviceIds);
-    ProtocolAssert.assertResourceNotFound(isNotEmpty(services), serviceIds.iterator().next(),
-        "Services");
+    assertResourceNotFound(isNotEmpty(services), serviceIds.iterator().next(), "Services");
     if (serviceIds.size() != services.size()) {
       for (Services project : services) {
-        ProtocolAssert.assertResourceNotFound(serviceIds.contains(project.getId()), project.getId(),
-            "Services");
+        assertResourceNotFound(serviceIds.contains(project.getId()), project.getId(), "Services");
       }
     }
     return services;
@@ -241,15 +241,13 @@ public class ServicesQueryImpl implements ServicesQuery {
   @Override
   public void checkNameExists(long projectId, String name) {
     // Include logic deleted project
-    Long nameAndCreatedByExist =
-        servicesRepo.countAll0ByNameAndAndProjectId(name, projectId);
-    ProtocolAssert.assertResourceExisted(nameAndCreatedByExist < 1, SERVICE_NAME_REPEATED_T,
-        new Object[]{name});
+    Long nameAndCreatedByExist = servicesRepo.countAll0ByNameAndAndProjectId(name, projectId);
+    assertResourceExisted(nameAndCreatedByExist < 1, SERVICE_NAME_REPEATED_T, new Object[]{name});
   }
 
   @Override
   public void checkPublishStatus(Services serviceDb) {
-    BizAssert.assertTrue(isNull(serviceDb.getStatus())
+    assertTrue(isNull(serviceDb.getStatus())
             || !serviceDb.getStatus().isReleased(), SERVICE_PUBLISHED_CANNOT_MODIFY_CODE,
         SERVICE_PUBLISHED_CANNOT_MODIFY_T, new Object[]{serviceDb.getName()});
   }
@@ -275,9 +273,8 @@ public class ServicesQueryImpl implements ServicesQuery {
   @Override
   public void setSafeCloneName(Services service) {
     String saltName = randomAlphanumeric(3);
-    String clonedName =
-        servicesRepo.existsByName(service.getName() + "-Copy") ? service.getName() + "-Copy."
-            + saltName : service.getName() + "-Copy";
+    String clonedName = servicesRepo.existsByName(service.getName() + "-Copy")
+        ? service.getName() + "-Copy." + saltName : service.getName() + "-Copy";
     clonedName = clonedName.length() > MAX_NAME_LENGTH_X2 ? clonedName.substring(0,
         MAX_NAME_LENGTH_X2 - 3) + saltName : clonedName;
     service.setName(clonedName);

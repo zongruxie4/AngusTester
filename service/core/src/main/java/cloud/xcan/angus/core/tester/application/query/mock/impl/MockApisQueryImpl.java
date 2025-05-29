@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_APIS_ASSOC_APIS_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_APIS_NAME_EXISTED_T;
@@ -202,7 +204,7 @@ public class MockApisQueryImpl implements MockApisQuery {
     List<MockApis> services = mockApisRepo.findAllById(reqApisIds);
     Set<Long> serviceIds = services.stream().map(MockApis::getId).collect(Collectors.toSet());
     reqApisIds.removeAll(serviceIds);
-    ProtocolAssert.assertResourceNotFound(isEmpty(reqApisIds), reqApisIds, "MockApis");
+    assertResourceNotFound(isEmpty(reqApisIds), reqApisIds, "MockApis");
     return services;
   }
 
@@ -210,7 +212,7 @@ public class MockApisQueryImpl implements MockApisQuery {
   public void checkAddNameExists(Long serviceId, List<MockApis> apis) {
     List<String> existedNames = mockApisRepo.findSummariesByMockServiceIdAndSummaryIn(
         serviceId, apis.stream().map(MockApis::getName).collect(Collectors.toSet()));
-    ProtocolAssert.assertResourceExisted(existedNames.size() < 1, existedNames, "MockApis");
+    assertResourceExisted(existedNames.isEmpty(), existedNames, "MockApis");
   }
 
   @Override
@@ -225,7 +227,7 @@ public class MockApisQueryImpl implements MockApisQuery {
     if (isNotEmpty(existedApis)) {
       for (MockApis existedApi : existedApis) {
         for (MockApis api : apis) {
-          ProtocolAssert.assertResourceExisted(!Objects.equals(existedApi.getName(), api.getName())
+          assertResourceExisted(!Objects.equals(existedApi.getName(), api.getName())
                   || existedApi.getId().equals(api.getId()), MOCK_APIS_NAME_EXISTED_T,
               new Object[]{api.getName()});
         }
@@ -241,7 +243,7 @@ public class MockApisQueryImpl implements MockApisQuery {
     if (isNotEmpty(existedApis)) {
       for (MockApis existedApi : existedApis) {
         for (MockApis api : apis) {
-          ProtocolAssert.assertResourceExisted(!existedApi.sameIdentityAs(api),
+          assertResourceExisted(!existedApi.sameIdentityAs(api),
               MOCK_APIS_OPERATION_EXISTED_T, new Object[]{api.getMethod(), api.getEndpoint()});
         }
       }
@@ -255,7 +257,7 @@ public class MockApisQueryImpl implements MockApisQuery {
     if (isNotEmpty(existedApis)) {
       for (MockApis existedApi : existedApis) {
         for (MockApis api : apis) {
-          ProtocolAssert.assertResourceExisted(!existedApi.sameIdentityAs(api)
+          assertResourceExisted(!existedApi.sameIdentityAs(api)
                   || existedApi.getId().equals(api.getId()), MOCK_APIS_OPERATION_EXISTED_T,
               new Object[]{api.getMethod(), api.getEndpoint()});
         }

@@ -17,6 +17,7 @@ import static cloud.xcan.angus.model.script.ScriptSource.SERVICE_SECURITY;
 import static cloud.xcan.angus.model.script.ScriptSource.SERVICE_SMOKE;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Collections.singletonList;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -47,7 +48,6 @@ import cloud.xcan.angus.model.element.http.ApisCaseType;
 import cloud.xcan.angus.model.script.TestType;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.model.script.pipeline.Arguments;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.annotation.Resource;
 import java.util.List;
@@ -263,7 +263,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
             tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
                 .collect(Collectors.toList());
           }
-          if (ObjectUtils.isNotEmpty(tasksDb)) {
+          if (isNotEmpty(tasksDb)) {
             taskCmd.retest0ByTarget(restart, tasksDb);
           }
         }

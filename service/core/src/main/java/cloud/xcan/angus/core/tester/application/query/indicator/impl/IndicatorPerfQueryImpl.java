@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.indicator.impl;
 
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.IndicatorPerfConverter.toIndicatorPerf;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL_CODE;
@@ -13,7 +14,6 @@ import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorPerfConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
@@ -49,7 +49,7 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
       @Override
       protected IndicatorPerf process() {
         IndicatorPerf perfDb = indicatorPerfRepo.findByTargetIdAndTargetType(targetId, targetType);
-        ProtocolAssert.assertResourceNotFound(isNotEmpty(perfDb), targetId, "IndicatorPerf");
+        assertResourceNotFound(isNotEmpty(perfDb), targetId, "IndicatorPerf");
         assembleTargetName(perfDb, targetType, targetId);
         return perfDb;
       }

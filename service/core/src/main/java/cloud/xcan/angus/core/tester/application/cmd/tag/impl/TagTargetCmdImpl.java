@@ -30,7 +30,6 @@ import cloud.xcan.angus.core.tester.domain.tag.TagTargetRepo;
 import cloud.xcan.angus.core.tester.domain.task.Task;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.utils.CoreUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -199,7 +198,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
   @Override
   public void addCase(List<FuncCase> cases) {
     List<TagTarget> tagTargets = getFuncCaseTagTargets(cases);
-    if (ObjectUtils.isNotEmpty(tagTargets)) {
+    if (isNotEmpty(tagTargets)) {
       tagQuery.checkAndFind(tagTargets.stream()
           .map(TagTarget::getTagId).collect(Collectors.toList()));
       batchInsert0(tagTargets);
@@ -209,7 +208,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
   @Override
   public void updateCase(List<FuncCase> cases) {
     List<TagTarget> tagTargets = getFuncCaseTagTargets(cases);
-    if (ObjectUtils.isNotEmpty(tagTargets)) {
+    if (isNotEmpty(tagTargets)) {
       tagQuery.checkAndFind(tagTargets.stream()
           .map(TagTarget::getTagId).collect(Collectors.toList()));
       replace0(tagTargets);
@@ -317,18 +316,18 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
     // Exclude existing assignees
     List<TagTarget> newAddTags = new ArrayList<>(tagTargets);
-    if (ObjectUtils.isNotEmpty(tagDbs)) {
+    if (isNotEmpty(tagDbs)) {
       newAddTags.removeAll(tagDbs);
 
       // Tags to be deleted
       // Fix: Unspecified tags are deleted for task
       List<TagTarget> deletedTags = deleteUnsetTags(tagTargets, tagDbs);
-      if (ObjectUtils.isNotEmpty(deletedTags)) {
+      if (isNotEmpty(deletedTags)) {
         tagTargetRepo.deleteAll(deletedTags);
       }
     }
 
-    if (ObjectUtils.isNotEmpty(newAddTags)) {
+    if (isNotEmpty(newAddTags)) {
       // Add tags
       batchInsert0(newAddTags);
     }

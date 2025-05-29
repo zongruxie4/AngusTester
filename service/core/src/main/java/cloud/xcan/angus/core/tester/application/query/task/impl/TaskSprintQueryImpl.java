@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.task.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstAndRemove;
 import static cloud.xcan.angus.core.tester.application.converter.TaskSprintConverter.getSprintCreatorResourcesFilter;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_DATE_RANGE_ERROR_T;
@@ -25,7 +26,6 @@ import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.api.pojo.Progress;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -157,11 +157,10 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   @Override
   public List<TaskSprint> checkAndFind(Collection<Long> ids) {
     List<TaskSprint> sprints = taskSprintRepo.findAllById(ids);
-    ProtocolAssert.assertResourceNotFound(isNotEmpty(sprints), ids.iterator().next(), "Sprint");
+    assertResourceNotFound(isNotEmpty(sprints), ids.iterator().next(), "Sprint");
     if (ids.size() != sprints.size()) {
       for (TaskSprint sprint : sprints) {
-        ProtocolAssert.assertResourceNotFound(ids.contains(sprint.getId()), sprint.getId(),
-            "Sprint");
+        assertResourceNotFound(ids.contains(sprint.getId()), sprint.getId(), "Sprint");
       }
     }
     return sprints;

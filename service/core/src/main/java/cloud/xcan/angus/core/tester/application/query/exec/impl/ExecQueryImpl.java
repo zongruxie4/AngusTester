@@ -93,7 +93,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -328,7 +327,7 @@ public class ExecQueryImpl implements ExecQuery {
             ? settingManager.setting(SettingKey.TESTER_EVENT).getTesterEvent()
             : settingTenant.getTesterEventData();
     return eventData.stream()
-        .filter(x -> ObjectUtils.isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).
+        .filter(x -> isNotEmpty(x.getEventCode()) && isNotEmpty(x.getNoticeTypes())).
         collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));
   }
 

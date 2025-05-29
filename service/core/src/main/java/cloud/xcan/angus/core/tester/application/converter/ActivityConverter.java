@@ -26,7 +26,6 @@ import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.spec.locale.EnumValueMessage;
 import cloud.xcan.angus.spec.principal.Principal;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,7 +97,7 @@ public class ActivityConverter {
    */
   private static String getDescription(CombinedTargetType targetType, ActivityType activityType,
       Object[] params) {
-    if (ObjectUtils.isEmpty(params)) {
+    if (isEmpty(params)) {
       return message(activityType.getDescMessageKey(),
           new Object[]{targetType.getMessage()}, getDefaultLanguage().toLocale());
     }
@@ -123,7 +122,7 @@ public class ActivityConverter {
    */
   private static String getDetail(CombinedTargetType targetType, ActivityResource resource,
       ActivityType activityType, Object[] params) {
-    if (ObjectUtils.isEmpty(params)) {
+    if (isEmpty(params)) {
       return message(activityType.getDetailMessageKey(),
           new Object[]{targetType.getMessage(), "[" + resource.getName() + "]"
               , getDefaultLanguage().toLocale()});

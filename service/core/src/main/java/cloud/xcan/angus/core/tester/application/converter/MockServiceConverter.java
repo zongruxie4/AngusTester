@@ -8,10 +8,10 @@ import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isCloudServiceEd
 import static cloud.xcan.angus.spec.locale.MessageHolder.message;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static io.swagger.v3.oas.models.extension.ExtensionKey.VALUE_KEY;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import cloud.xcan.angus.agent.message.mockservice.StartCmdParam;
 import cloud.xcan.angus.agent.message.mockservice.StopCmdParam;
@@ -43,7 +43,6 @@ import cloud.xcan.angus.spec.http.ContentType;
 import cloud.xcan.angus.spec.http.HttpHeader;
 import cloud.xcan.angus.spec.http.HttpResponseHeader;
 import cloud.xcan.angus.spec.utils.JsonUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import cloud.xcan.angus.spec.utils.StringUtils;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.media.MediaType;
@@ -57,9 +56,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @author XiaoLong Liu
- */
 public class MockServiceConverter {
 
   public static void setReplaceInfo(MockService serviceDb, MockService service) {
@@ -121,11 +117,11 @@ public class MockServiceConverter {
     for (Apis api : apis) {
       MockApis mockApi = toAssocMockApi(uidGenerator, service, api);
       api.setMockApisId(mockApi.getId());
-      if (ObjectUtils.isNotEmpty(api.getResponses())) {
+      if (isNotEmpty(api.getResponses())) {
         int priority = api.getResponses().size();
         for (Entry<String, ApiResponse> entry : api.getResponses().entrySet()) {
           List<HttpHeader> headers = new ArrayList<>();
-          if (ObjectUtils.isNotEmpty(entry.getValue().getHeaders())) {
+          if (isNotEmpty(entry.getValue().getHeaders())) {
             for (Entry<String, Header> headerEntry : entry.getValue().getHeaders().entrySet()) {
               // @DoInFuture("Write response examples to extensions during import and definition")
               String value = isEmpty(headerEntry.getValue().getExtensions())
@@ -135,10 +131,10 @@ public class MockServiceConverter {
             }
           }
 
-          if (ObjectUtils.isNotEmpty(entry.getValue().getContent())) {
+          if (isNotEmpty(entry.getValue().getContent())) {
             for (Entry<String, MediaType> mediaTypeEntry : entry.getValue().getContent()
                 .entrySet()) {
-              if (ObjectUtils.isEmpty(mediaTypeEntry.getKey())) {
+              if (isEmpty(mediaTypeEntry.getKey())) {
                 continue;
               }
               if (mediaTypeEntry.getKey().startsWith(ContentType.TYPE_JSON)) {
@@ -174,17 +170,17 @@ public class MockServiceConverter {
     String body = isEmpty(mediaTypeEntry.getValue().getExtensions()) ? "" :
         mediaTypeEntry.getValue().getExtensions().getOrDefault(VALUE_KEY, "").toString();
     try {
-      if (ObjectUtils.isEmpty(body)) {
+      if (isEmpty(body)) {
         Object example = nonNull(mediaTypeEntry.getValue().getExample())
             ? mediaTypeEntry.getValue().getExample()
-            : ObjectUtils.isNotEmpty(mediaTypeEntry.getValue().getExamples()) ? mediaTypeEntry
+            : isNotEmpty(mediaTypeEntry.getValue().getExamples()) ? mediaTypeEntry
                 .getValue().getExamples().values().iterator().next() : null;
         if (mediaTypeEntry.getKey().startsWith(ContentType.TYPE_JSON)) {
           if (nonNull(example)) {
             body = JsonUtils.toJson(example);
           } else if (nonNull(mediaTypeEntry.getValue().getSchema())) {
             String key = mediaTypeEntry.getValue().getSchema().get$ref();
-            Schema schema = isNotEmpty(key) && ObjectUtils.isNotEmpty(apis.getResolvedRefModels())
+            Schema schema = isNotEmpty(key) && isNotEmpty(apis.getResolvedRefModels())
                 && apis.getResolvedRefModels().containsKey(key) ?
                 JsonUtils.convert(apis.getResolvedRefModels().get(key), Schema.class)
                 : mediaTypeEntry.getValue().getSchema();

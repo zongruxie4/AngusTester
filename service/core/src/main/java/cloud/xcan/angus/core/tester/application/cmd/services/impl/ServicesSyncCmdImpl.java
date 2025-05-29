@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.services.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_SYNC_CONFIG_NOT_FOUND;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SYNC_CONFIG_ADD;
@@ -8,6 +9,8 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SYNC_CON
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SYNC_CONFIG_UPDATE;
 import static cloud.xcan.angus.extension.angustester.api.utils.OpenApiParser.checkAndParseOpenApi;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.lengthSafe;
 import static java.util.Objects.nonNull;
@@ -16,7 +19,6 @@ import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.pojo.auth.SimpleHttpAuth;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
@@ -31,7 +33,6 @@ import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSync;
 import cloud.xcan.angus.core.tester.domain.services.sync.ServicesSyncRepo;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.remote.message.ProtocolException;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.core.models.AuthorizationValue;
 import jakarta.annotation.Resource;
@@ -136,7 +137,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
         // Add sync
         List<ServicesSync> addSyncs = new ArrayList<>(syncs);
         CoreUtils.removeAll(addSyncs, existedSyncsDb);
-        if (ObjectUtils.isNotEmpty(addSyncs)) {
+        if (isNotEmpty(addSyncs)) {
           batchInsert0(addSyncs);
 
           // Save activity information when configuration is added
@@ -146,7 +147,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
         }
 
         // Replace syncs
-        if (ObjectUtils.isNotEmpty(existedSyncsDb)) {
+        if (isNotEmpty(existedSyncsDb)) {
           Map<String, ServicesSync> nameSyncMap = syncs.stream()
               .collect(Collectors.toMap(ServicesSync::getName, x -> x));
           for (ServicesSync syncDb : existedSyncsDb) {
@@ -160,11 +161,11 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
         }
 
         // Delete syncs
-        if (ObjectUtils.isNotEmpty(allSyncsDb)) {
+        if (isNotEmpty(allSyncsDb)) {
           List<ServicesSync> deletedSyncs = new ArrayList<>(allSyncsDb);
           CoreUtils.removeAll(deletedSyncs, syncs);
 
-          if (ObjectUtils.isNotEmpty(deletedSyncs)) {
+          if (isNotEmpty(deletedSyncs)) {
             servicesSyncRepo.deleteByServiceIdAndNameIn(serviceId,
                 deletedSyncs.stream().map(ServicesSync::getName).collect(Collectors.toList()));
             // Save activity information when configuration is deleted
@@ -191,8 +192,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
         syncsDb = servicesSyncQuery.find(serviceId,
             /*Note:: When the name of this method is null, the number of collection elements will be 1*/
             Collections.singleton(name));
-        ProtocolAssert.assertResourceNotFound(syncsDb, SERVICE_SYNC_CONFIG_NOT_FOUND,
-            new Object[]{});
+        assertResourceNotFound(syncsDb, SERVICE_SYNC_CONFIG_NOT_FOUND, new Object[]{});
       }
 
       @Override
@@ -204,8 +204,8 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
         ServicesSync failure = syncsDb.stream().filter(x -> !x.getSyncSuccess()).findFirst()
             .orElse(null);
         if (nonNull(failure)) {
-          throw ProtocolException
-              .of(String.format("[%s]%s", failure.getName(), failure.getSyncFailureCause()));
+          throw ProtocolException.of(String.format("[%s]%s", failure.getName(),
+              failure.getSyncFailureCause()));
         }
         return null;
       }
@@ -226,7 +226,7 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
       @Override
       protected OpenAPI process() {
         // Check the is OpenApi document
-        List<AuthorizationValue> auths0 = ObjectUtils.isEmpty(auths) ? null
+        List<AuthorizationValue> auths0 = isEmpty(auths) ? null
             : auths.stream().map(x -> new AuthorizationValue()
                     .type("apiKey").keyName(x.getKeyName()).value(x.getValue()))
                 .collect(Collectors.toList());

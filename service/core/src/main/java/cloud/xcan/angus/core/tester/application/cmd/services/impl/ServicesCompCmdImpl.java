@@ -25,7 +25,6 @@ import cloud.xcan.angus.core.tester.domain.services.comp.ServicesCompType;
 import cloud.xcan.angus.l2cache.spring.RedisCaffeineCacheManager;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.Components;
 import jakarta.annotation.Resource;
 import java.util.Collection;
@@ -227,7 +226,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesComps")
   @Override
   public void deleteByServiceIdAndRefIn(Long serviceId, Collection<String> refs) {
-    if (ObjectUtils.isNotEmpty(refs)) {
+    if (isNotEmpty(refs)) {
       serviceCompRepo.deleteByServiceIdAndRefIn(serviceId, refs);
     } else {
       serviceCompRepo.deleteByServiceId(serviceId);

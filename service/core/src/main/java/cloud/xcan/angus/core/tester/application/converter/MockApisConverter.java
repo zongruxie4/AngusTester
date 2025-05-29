@@ -24,7 +24,6 @@ import cloud.xcan.angus.model.element.mock.apis.MockResponseContent;
 import cloud.xcan.angus.spec.http.HttpHeader;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import cloud.xcan.angus.spec.http.HttpResponseHeader;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.media.MediaType;
@@ -154,7 +153,7 @@ public class MockApisConverter {
       if (isNotEmpty(entry.getValue().getHeaders())) {
         for (Entry<String, Header> headerEntry : entry.getValue().getHeaders().entrySet()) {
           // @DoInFuture("Write response examples to extensions during import and definition")
-          String value = ObjectUtils.isEmpty(headerEntry.getValue().getExtensions())
+          String value = isEmpty(headerEntry.getValue().getExtensions())
               ? "" : headerEntry.getValue().getExtensions()
               .getOrDefault(VALUE_KEY, "").toString();
           headers.add(new HttpHeader(headerEntry.getKey(), value));

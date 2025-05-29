@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.query.scenario.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SCENARIO;
 import static cloud.xcan.angus.api.commonlink.EventUtils.assembleAngusTesterUserNoticeEvent;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioConverter.countCreationScenario;
 import static cloud.xcan.angus.core.tester.application.converter.ScenarioConverter.toScenarioDetailSummary;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SCE_NAME_REPEATED_T;
@@ -29,7 +30,6 @@ import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -245,14 +245,14 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   @Override
   public Script checkAndFindScenarioScript(Long id) {
     Script script = scriptQuery.findScriptByScenarioId(id);
-    ProtocolAssert.assertResourceNotFound(script, id, "ScenarioScript");
+    assertResourceNotFound(script, id, "ScenarioScript");
     return script;
   }
 
   @Override
   public ScriptInfo checkAndFindScenarioScriptInfo(Long id) {
     ScriptInfo script = scriptQuery.findScriptInfoByScenarioId(id);
-    ProtocolAssert.assertResourceNotFound(script, id, "ScenarioScript");
+    assertResourceNotFound(script, id, "ScenarioScript");
     return script;
   }
 

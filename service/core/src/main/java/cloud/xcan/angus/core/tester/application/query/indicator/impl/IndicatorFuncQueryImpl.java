@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.query.indicator.impl;
 
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.tester.application.converter.IndicatorFuncConverter.toIndicatorFunc;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.INDICATOR_GET_PLATFORM_FAIL_CODE;
@@ -13,7 +14,6 @@ import cloud.xcan.angus.api.commonlink.setting.tenant.SettingTenant;
 import cloud.xcan.angus.api.manager.SettingTenantManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.converter.IndicatorFuncConverter;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
@@ -49,7 +49,7 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
       @Override
       protected IndicatorFunc process() {
         IndicatorFunc funcDb = indicatorFuncRepo.findByTargetIdAndTargetType(targetId, targetType);
-        ProtocolAssert.assertResourceNotFound(isNotEmpty(funcDb), targetId, "IndicatorFunc");
+        assertResourceNotFound(isNotEmpty(funcDb), targetId, "IndicatorFunc");
         assembleTargetName(funcDb, targetType, targetId);
         return funcDb;
       }

@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler;
 
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
@@ -10,7 +11,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.follow.TaskFollow
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.follow.TaskFollowDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.remote.search.SearchOperation;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.List;
 
 
@@ -40,7 +40,7 @@ public class TaskFollowAssembler {
       if (dto.containsKey("taskName", SearchOperation.MATCH_END)
           || dto.containsKey("taskName", SearchOperation.MATCH)) {
         List<SearchCriteria> matchFilter = dto.findByKey("taskName");
-        if (ObjectUtils.isNotEmpty(matchFilter)) {
+        if (isNotEmpty(matchFilter)) {
           dto.setTaskName(matchFilter.get(0).getValue().toString());
         }
       }

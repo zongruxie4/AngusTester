@@ -27,7 +27,6 @@ import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanRepo;
 import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuthRepo;
 import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrash;
 import cloud.xcan.angus.core.tester.domain.func.trash.FuncTrashRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -237,7 +236,7 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
     List<Long> planIds = trashes.stream().filter(d -> d.getTargetType().isPlan())
         .map(FuncTrash::getTargetId).collect(Collectors.toList());
-    if (ObjectUtils.isNotEmpty(planIds)) {
+    if (isNotEmpty(planIds)) {
       List<Long> planCaseIds = funcCaseRepo.findAll0IdByPlanIdIn(planIds);
       if (isNotEmpty(planCaseIds)) {
         allCaseIds.addAll(planCaseIds);
@@ -250,11 +249,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
     List<Long> caseIds = trashes.stream().filter(d -> d.getTargetType().isCase())
         .map(FuncTrash::getTargetId).collect(Collectors.toList());
-    if (ObjectUtils.isNotEmpty(caseIds)) {
+    if (isNotEmpty(caseIds)) {
       allCaseIds.addAll(caseIds);
     }
 
-    if (ObjectUtils.isNotEmpty(allCaseIds)) {
+    if (isNotEmpty(allCaseIds)) {
       funcCaseCmd.delete0(allCaseIds);
       funcTrashRepo.deleteByTargetIdIn(allCaseIds);
     }

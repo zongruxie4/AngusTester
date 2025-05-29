@@ -2,6 +2,8 @@ package cloud.xcan.angus.core.tester.application.query.mock.impl;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX;
 import static cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource.AngusTesterMockServiceApis;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_ASSOC_SERVICE_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.MOCK_SERVICE_DOMAIN_IN_USE_T;
@@ -29,7 +31,6 @@ import cloud.xcan.angus.api.enums.AuthObjectType;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.repository.summary.SummaryQueryRegister;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceManageCmd;
@@ -423,7 +424,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     List<MockService> mockService = mockServiceRepo.findAllById(ids);
     Set<Long> serviceIds = mockService.stream().map(MockService::getId).collect(toSet());
     ids.removeAll(serviceIds);
-    ProtocolAssert.assertResourceNotFound(isEmpty(ids), ids, "MockService");
+    assertResourceNotFound(isEmpty(ids), ids, "MockService");
     return mockService;
   }
 
@@ -432,15 +433,14 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     List<MockServiceInfo> mockService = mockServiceInfoRepo.findAllById(ids);
     Set<Long> serviceIds = mockService.stream().map(MockServiceInfo::getId).collect(toSet());
     ids.removeAll(serviceIds);
-    ProtocolAssert.assertResourceNotFound(isEmpty(ids), ids, "MockService");
+    assertResourceNotFound(isEmpty(ids), ids, "MockService");
     return mockService;
   }
 
   @Override
   public void checkNameExists(String name) {
     long count = mockServiceRepo.countByName(name);
-    ProtocolAssert.assertResourceExisted(count < 1,
-        MOCK_SERVICE_NAME_EXISTED_T, new Object[]{name});
+    assertResourceExisted(count < 1, MOCK_SERVICE_NAME_EXISTED_T, new Object[]{name});
   }
 
   /**

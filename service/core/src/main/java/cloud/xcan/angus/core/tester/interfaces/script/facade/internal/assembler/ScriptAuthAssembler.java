@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.angus.api.commonlink.script.ScriptPermission;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
@@ -15,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.auth.ScriptAuthU
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.auth.ScriptAuthVo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class ScriptAuthAssembler {
   public static ScriptAuth addDtoToDomain(Long id, ScriptAuthAddDto dto) {
     Set<ScriptPermission> permissions = new HashSet<>();
     permissions.add(ScriptPermission.VIEW);
-    if (ObjectUtils.isNotEmpty(dto.getPermissions())) {
+    if (isNotEmpty(dto.getPermissions())) {
       permissions.addAll(dto.getPermissions());
     }
     return new ScriptAuth().setScriptId(id).setCreator(false)

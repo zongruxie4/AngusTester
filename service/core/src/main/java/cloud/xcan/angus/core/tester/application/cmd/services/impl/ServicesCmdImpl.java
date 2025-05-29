@@ -63,7 +63,6 @@ import cloud.xcan.angus.remote.ExceptionLevel;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.angus.spec.utils.FileUtils;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
@@ -573,7 +572,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     indicatorStabilityCmd.deleteAllByTarget(allIds, SERVICE);
     // NOOP:: Do not delete associated test tasks
     List<Long> apisIds = apisRepo.findAll0IdByServiceIdIn(allIds);
-    if (ObjectUtils.isNotEmpty(apisIds)) {
+    if (isNotEmpty(apisIds)) {
       apisCmd.delete0(apisIds);
     }
     // NOOP:: Delete projects and components ref -> Deleted in apisCmd.delete0(apisIds)

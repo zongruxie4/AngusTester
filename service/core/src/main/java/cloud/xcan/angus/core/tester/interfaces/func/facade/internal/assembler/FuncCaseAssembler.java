@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.InputStreamResource;
 
@@ -374,7 +373,7 @@ public class FuncCaseAssembler {
     if (isNotEmpty(listVo.getSteps())) {
       StringBuilder stringBuilder = new StringBuilder();
       for (CaseTestStep step : listVo.getSteps()) {
-        if (ObjectUtils.isNotEmpty(step.getExpectedResult())) {
+        if (isNotEmpty(step.getExpectedResult())) {
           stringBuilder.append(stringSafe(step.getStep())).append("##")
               .append(step.getExpectedResult());
         } else {

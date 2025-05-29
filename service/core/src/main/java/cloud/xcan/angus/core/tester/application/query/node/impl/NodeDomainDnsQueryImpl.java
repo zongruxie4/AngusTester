@@ -1,10 +1,10 @@
 package cloud.xcan.angus.core.tester.application.query.node.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.DOMAIN_DNS_NAME_REPEATED_T;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.tester.application.query.node.NodeDomainDnsQuery;
 import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDns;
 import cloud.xcan.angus.core.tester.domain.node.dns.NodeDomainDnsRepo;
@@ -53,16 +53,14 @@ public class NodeDomainDnsQueryImpl implements NodeDomainDnsQuery {
   public void checkAddNameExists(Long domainId, String name) {
     // Include logic deleted project
     Long nameCount = nodeDomainDnsRepo.countByDomainIdAndName(domainId, name);
-    ProtocolAssert.assertResourceExisted(nameCount < 1,
-        DOMAIN_DNS_NAME_REPEATED_T, new Object[]{name});
+    assertResourceExisted(nameCount < 1, DOMAIN_DNS_NAME_REPEATED_T, new Object[]{name});
   }
 
   @Override
   public void checkUpdateNameExists(Long id, Long domainId, String name) {
     // Include logic deleted project
     Long nameCount = nodeDomainDnsRepo.countByDomainIdAndNameAndIdNot(domainId, name, id);
-    ProtocolAssert.assertResourceExisted(nameCount < 1,
-        DOMAIN_DNS_NAME_REPEATED_T, new Object[]{name});
+    assertResourceExisted(nameCount < 1, DOMAIN_DNS_NAME_REPEATED_T, new Object[]{name});
   }
 }
 

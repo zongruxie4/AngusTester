@@ -1,5 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
+
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanAuth;
@@ -15,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.auth.FuncPlanAuthU
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.auth.FuncPlanAuthVo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class FuncPlanAuthAssembler {
 
   public static FuncPlanAuth addDtoToDomain(Long planId, FuncPlanAuthAddDto dto) {
     Set<FuncPlanPermission> permissions = new HashSet<>();
-    if (ObjectUtils.isNotEmpty(dto.getPermissions())) {
+    if (isNotEmpty(dto.getPermissions())) {
       permissions.addAll(dto.getPermissions());
     }
     return new FuncPlanAuth().setPlanId(planId)

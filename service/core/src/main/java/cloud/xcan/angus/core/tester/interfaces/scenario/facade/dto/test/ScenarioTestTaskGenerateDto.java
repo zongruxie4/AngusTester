@@ -6,7 +6,6 @@ import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.model.script.TestType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;

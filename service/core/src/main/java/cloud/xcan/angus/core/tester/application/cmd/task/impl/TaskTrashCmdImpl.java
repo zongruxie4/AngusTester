@@ -27,7 +27,6 @@ import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintRepo;
 import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuthRepo;
 import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
 import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrashRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -238,7 +237,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
     List<Long> sprintIds = trashes.stream().filter(d -> d.getTargetType().isSprint())
         .map(TaskTrash::getTargetId).collect(Collectors.toList());
-    if (ObjectUtils.isNotEmpty(sprintIds)) {
+    if (isNotEmpty(sprintIds)) {
       List<Long> sprintCaseIds = taskInfoRepo.findAll0SprintIdsByIdIn(sprintIds);
       if (isNotEmpty(sprintCaseIds)) {
         allTaskIds.addAll(sprintCaseIds);
@@ -251,11 +250,11 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
     List<Long> taskIds = trashes.stream().filter(d -> d.getTargetType().isTask())
         .map(TaskTrash::getTargetId).collect(Collectors.toList());
-    if (ObjectUtils.isNotEmpty(taskIds)) {
+    if (isNotEmpty(taskIds)) {
       allTaskIds.addAll(taskIds);
     }
 
-    if (ObjectUtils.isNotEmpty(allTaskIds)) {
+    if (isNotEmpty(allTaskIds)) {
       taskCmd.delete0(allTaskIds);
       taskTrashRepo.deleteByTargetIdIn(allTaskIds);
     }

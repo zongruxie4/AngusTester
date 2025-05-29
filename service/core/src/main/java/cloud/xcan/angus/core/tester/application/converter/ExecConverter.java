@@ -16,6 +16,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 import cloud.xcan.angus.api.commonlink.exec.ExecStatus;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
@@ -33,7 +34,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.ObjectUtils;
 
 public class ExecConverter {
 
@@ -156,7 +156,7 @@ public class ExecConverter {
   public static void replaceOptionalConfig(Exec execDb, String name, Long iterations,
       TimeValue duration, Integer thread, Integer priority, Boolean ignoreAssertions,
       StartMode startMode, LocalDateTime startAtDate, TimeValue reportInterval) {
-    if (ObjectUtils.isNotEmpty(name)) {
+    if (isNotEmpty(name)) {
       execDb.setName(name);
     }
     if (nonNull(iterations)) {

@@ -22,7 +22,6 @@ import cloud.xcan.angus.core.tester.domain.activity.ActivityType;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrash;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrashRepo;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -160,7 +159,7 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
   }
 
   private void deleteAssociation(List<Long> projectIds) {
-    if (ObjectUtils.isNotEmpty(projectIds)) {
+    if (isNotEmpty(projectIds)) {
       projectRepo.updateNameByProjectId(projectIds, String.format("-%d", currentTimeMillis()));
       // TODO Stop deleting project job data processing
     }

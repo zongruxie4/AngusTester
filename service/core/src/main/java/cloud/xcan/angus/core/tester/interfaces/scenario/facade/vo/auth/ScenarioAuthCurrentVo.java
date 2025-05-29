@@ -1,7 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.auth;
 
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
+
 import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioPermission;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class ScenarioAuthCurrentVo {
   private LinkedHashSet<ScenarioPermission> permissions;
 
   public void addPermissions(Collection<ScenarioPermission> permissions0) {
-    if (ObjectUtils.isEmpty(permissions0)) {
+    if (isEmpty(permissions0)) {
       return;
     }
     if (permissions == null) {

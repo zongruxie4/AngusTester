@@ -47,7 +47,6 @@ import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.model.element.mock.apis.MockResponse;
 import cloud.xcan.angus.model.remoting.dto.MockApisRequestCountDto.Counter;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -640,7 +639,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
 
   @Override
   public void counterUpdate(Map<Long, Counter> hasValueApisCounter) {
-    if (ObjectUtils.isNotEmpty(hasValueApisCounter)) {
+    if (isNotEmpty(hasValueApisCounter)) {
       for (Entry<Long, Counter> entry : hasValueApisCounter.entrySet()) {
         //    long pushbackNum = counter.pushbackNum.longValue();
         //    long simulateErrorNum = HttpStatus.resolve(log.getResponseStatus()).isError() ? 1 : 0;

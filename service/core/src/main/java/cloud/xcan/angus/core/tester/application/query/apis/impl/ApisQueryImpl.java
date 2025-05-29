@@ -2,6 +2,7 @@ package cloud.xcan.angus.core.tester.application.query.apis.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.angus.api.commonlink.EventUtils.assembleAngusTesterUserNoticeEvent;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.countCreationApis;
@@ -47,7 +48,6 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -95,7 +95,6 @@ import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.http.HttpMethod;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
-import cloud.xcan.angus.spec.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -642,12 +641,11 @@ public class ApisQueryImpl implements ApisQuery {
       List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
           serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
               .collect(Collectors.toList()));
-      if (ObjectUtils.isNotEmpty(servicesApisDb)) {
+      if (isNotEmpty(servicesApisDb)) {
         for (ApisBaseInfo apiDb : servicesApisDb) {
           for (Apis api : serviceApisMap.get(serviceId)) {
-            ProtocolAssert.assertResourceExisted(
-                !Objects.equals(api.getMethod(), apiDb.getMethod()) ||
-                    !Objects.equals(api.getEndpoint(), apiDb.getEndpoint()), APIS_OPERATION_EXISTED,
+            assertResourceExisted(!Objects.equals(api.getMethod(), apiDb.getMethod())
+                    || !Objects.equals(api.getEndpoint(), apiDb.getEndpoint()), APIS_OPERATION_EXISTED,
                 new Object[]{api.getMethod() + " " + emptySafe(api.getEndpoint(), "\"\"")});
           }
         }
@@ -683,7 +681,7 @@ public class ApisQueryImpl implements ApisQuery {
     if (isNotEmpty(servicesApisDb)) {
       for (ApisBaseInfo apiDb : servicesApisDb) {
         for (Apis api : apis) {
-          ProtocolAssert.assertResourceExisted(
+          assertResourceExisted(
               !Objects.equals(api.getMethod(), apiDb.getMethod())
                   || !Objects.equals(api.getEndpoint(), apiDb.getEndpoint())
                   || Objects.equals(api.getId(), apiDb.getId()), APIS_OPERATION_EXISTED,
@@ -849,7 +847,7 @@ public class ApisQueryImpl implements ApisQuery {
     assembleApiServers(apis, servers);
     // Assemble parent service and service config servers
     // assembleParentProjectServers(servers, apis.getId());
-    if (ObjectUtils.isNotEmpty(parentServers)) {
+    if (isNotEmpty(parentServers)) {
       servers.addAll(parentServers);
     }
     apis.setAvailableServers(servers);
@@ -860,7 +858,7 @@ public class ApisQueryImpl implements ApisQuery {
     if (apis.isAuthSchemaRef()) {
       ServicesComp comp = servicesCompQuery.detailByRef(apis.getServiceId(),
           apis.getAuthentication().get$ref());
-      if (isNull(comp)){
+      if (isNull(comp)) {
         log.warn("ServicesComp `{}` not found", apis.getAuthentication().get$ref());
         return;
       }
