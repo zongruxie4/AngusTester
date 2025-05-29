@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.apis.impl;
 
+import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignQuery;
@@ -25,6 +26,9 @@ public class ApisDesignSearchImpl implements ApisDesignSearch {
   @Resource
   private ApisDesignQuery apisDesignQuery;
 
+  @Resource
+  private UserManager userManager;
+
   @Override
   public Page<ApisDesignInfo> search(Set<SearchCriteria> criteria, PageRequest pageable,
       String... matches) {
@@ -41,6 +45,7 @@ public class ApisDesignSearchImpl implements ApisDesignSearch {
             ApisDesignInfo.class, matches);
         if (page.hasContent()) {
           apisDesignQuery.setServicesName(page.getContent());
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
         }
         return page;
       }

@@ -32,7 +32,8 @@ public class ApisDesignAssembler {
         .setDesignSourceId(design.getDesignSourceId())
         .setDesignSourceName(design.getDesignSourceName())
         .setTenantId(design.getTenantId())
-        .setCreatedBy(design.getCreatedBy()).setCreatedDate(design.getCreatedDate())
+        .setCreatedBy(design.getCreatedBy())
+        .setCreatedDate(design.getCreatedDate())
         .setLastModifiedBy(design.getLastModifiedBy())
         .setLastModifiedDate(design.getLastModifiedDate());
   }
@@ -46,7 +47,10 @@ public class ApisDesignAssembler {
         .setDesignSourceId(design.getDesignSourceId())
         .setDesignSourceName(design.getDesignSourceName())
         .setTenantId(design.getTenantId())
-        .setCreatedBy(design.getCreatedBy()).setCreatedDate(design.getCreatedDate())
+        .setCreatedBy(design.getCreatedBy())
+        .setCreatedByName(design.getCreatedByName())
+        .setCreatedByAvatar(design.getAvatar())
+        .setCreatedDate(design.getCreatedDate())
         .setLastModifiedBy(design.getLastModifiedBy())
         .setLastModifiedDate(design.getLastModifiedDate());
   }

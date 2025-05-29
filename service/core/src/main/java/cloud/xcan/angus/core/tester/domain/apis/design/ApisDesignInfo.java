@@ -42,6 +42,10 @@ public class ApisDesignInfo extends TenantAuditingEntity<Apis, Long> implements 
 
   @Transient
   private String designSourceName;
+  @Transient
+  private String createdByName;
+  @Transient
+  private String avatar;
 
   public boolean hasLatestContent(){
     return released && nonNull(designSourceId);

@@ -73,6 +73,10 @@ public class ApisShare extends TenantAuditingEntity<ApisShare, Long> {
   private String openapi;
   @Transient
   private String url;
+  @Transient
+  private String createdByName;
+  @Transient
+  private String avatar;
 
   public Boolean isNotExpired() {
     return Objects.isNull(expiredDate) || expiredDate.isAfter(LocalDateTime.now());
