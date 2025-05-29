@@ -73,6 +73,7 @@ const schedulingLogItem = computed(() => {
 const nodeSelectChange = (_nodeId, options) => {
   nodeId.value = _nodeId;
   nodeIp.value = options?.publicIp || options.ip;
+  debugger;
   loadExecLog();
 };
 
@@ -81,6 +82,9 @@ watch(() => props.execId, (newValue) => {
     nodeId.value = props.execNodes[0]?.id;
     nodeIp.value = props.execNodes[0]?.publicIp || props.execNodes[0]?.ip;
     nodePort.value = props.execNodes[0]?.agentPort || '6807';
+    if (!nodeId.value) {
+      return;
+    }
     loadExecLog();
   }
 }, {
@@ -131,6 +135,7 @@ const downloadLog = (type:'scheduling' | 'exec') => {
 
 const refreshExecLog = (event) => {
   event.preventDefault();
+  debugger;
   loadExecLog();
 };
 
@@ -239,7 +244,7 @@ const refreshExecLog = (event) => {
                     <span>{{ execLogPath }}</span>
                   </div>
                 </template>
-                <template v-else>
+                <template v-else-if="execLogErr">
                   <span v-if="!loading" class="text-rule">{{ errorText || `无访问代理信息，连接失败地址：http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
                 </template>
               </div>
