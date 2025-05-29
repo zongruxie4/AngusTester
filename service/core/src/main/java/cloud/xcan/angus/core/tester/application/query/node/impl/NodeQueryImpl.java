@@ -183,10 +183,17 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   @Override
+  public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled, int size) {
+    return getNodes(nodeIds, role, enabled, size, null);
+  }
+
+  @Override
   public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
       int size, Long tenantId) {
     Set<SearchCriteria> filters = new HashSet<>();
-    filters.add(SearchCriteria.equal("tenantId", tenantId));
+    if (nonNull(tenantId)) {
+      filters.add(SearchCriteria.equal("tenantId", tenantId));
+    }
     if (isNotEmpty(nodeIds)) {
       filters.add(SearchCriteria.in("id", nodeIds));
     }

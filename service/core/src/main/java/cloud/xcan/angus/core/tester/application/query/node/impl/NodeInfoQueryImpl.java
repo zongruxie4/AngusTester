@@ -579,10 +579,11 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
   }
 
   @Override
-  public Map<Long, Node> getNodeMap(Set<Long> nodeIds, boolean trial) {
-    List<Node> nodes = nodeQuery.getNodes(nodeIds, null, null,
-        QUERY_MAX_EXEC_NODES, trial ? OWNER_TENANT_ID : getOptTenantId());
-    return isEmpty(nodes) ? null : nodes.stream().collect(toMap(Node::getId, x -> x));
+  public Map<Long, Node> getNodeMap(Set<Long> nodeIds) {
+    return new TenantAwareProcessor().call(() -> {
+      List<Node> nodes = nodeQuery.getNodes(nodeIds, null, null, QUERY_MAX_EXEC_NODES);
+      return isEmpty(nodes) ? null : nodes.stream().collect(toMap(Node::getId, x -> x));
+    }, getOptTenantId());
   }
 
   @Override

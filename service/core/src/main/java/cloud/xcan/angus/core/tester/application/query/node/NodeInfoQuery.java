@@ -40,7 +40,7 @@ public interface NodeInfoQuery {
 
   Set<Long> getLiveNodeIds(Collection<Long> nodeIds, long latestLiveNodeInterval);
 
-  Map<Long, Node> getNodeMap(Set<Long> nodeIds, boolean trial);
+  Map<Long, Node> getNodeMap(Set<Long> nodeIds);
 
   List<Node> getValidExecNodeVoMap(Set<Long> nodeIds, int size, Long tenantId);
 

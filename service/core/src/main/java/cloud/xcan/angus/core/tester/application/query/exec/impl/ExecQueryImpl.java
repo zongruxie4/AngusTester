@@ -382,7 +382,7 @@ public class ExecQueryImpl implements ExecQuery {
     }
     Set<Long> nodeIds = getAllNodeIds(configuration);
     if (isNotEmpty(nodeIds)) {
-      Map<Long, Node> scriptMap = nodeInfoQuery.getNodeMap(nodeIds, trial);
+      Map<Long, Node> scriptMap = nodeInfoQuery.getNodeMap(nodeIds);
       if (isNotEmpty(scriptMap)) {
         if (isNotEmpty(configuration.getNodeSelectors().getAvailableNodeIds())) {
           for (Long nodeId : configuration.getNodeSelectors().getAvailableNodeIds()) {
@@ -560,7 +560,7 @@ public class ExecQueryImpl implements ExecQuery {
   public void setExecNodeInfo(Exec exec) {
     Set<Long> nodeIds = getAllNodeIds(exec);
     if (isNotEmpty(nodeIds)) {
-      Map<Long, Node> nodeMap = nodeInfoQuery.getNodeMap(nodeIds, exec.isTrial());
+      Map<Long, Node> nodeMap = nodeInfoQuery.getNodeMap(nodeIds);
       if (isNotEmpty(nodeMap)) {
         if (isNotEmpty(exec.getAvailableNodeIds())) {
           Set<Long> availableNodesIds = exec.getAvailableNodeIds();
