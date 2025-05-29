@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, provide, watch } from 'vue';
-import { cookie, site, PUB_TESTER } from '@xcan-angus/tools';
+import { cookie, site } from '@xcan-angus/tools';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon } from '@xcan-angus/vue-ui';
@@ -110,21 +110,21 @@ provide('readyState', readyState);
   </div>
   <template v-else-if="openapi">
     <rapi-doc
-      :specUrl="openapi"
-      :specIsContent="true"
+      :spec-rrl="openapi"
+      specIsContent="true"
       style="padding: 20px;"
       renderStyle="read"
       theme="light"
       headerColor="#fff"
       updateRoute="false"
       navBgColor="#fff"
-      :showInfo="displayOptions.includeServiceInfo"
+      :show-info="displayOptions.includeServiceInfo"
       bgColor="#fff"
       allowSpecUrlLoad="false"
-      :allowSpecFileLoad="false"
+      allowSpecFileLoad="false"
       allowSpecFileDownload="false"
-      :allowTry="displayOptions.allowDebug"
-      :schemaStyle="displayOptions.schemaStyle"
+      :allow-try="displayOptions.allowDebug"
+      :schema-style="displayOptions.schemaStyle"
       showHeader="false"
       schemaExpandLevel="20">
     </rapi-doc>
