@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.script.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValue;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findInfoScope;
@@ -476,10 +477,10 @@ public class ScriptQueryImpl implements ScriptQuery {
 
   @Override
   public void checkSourceAddScriptExist(Script script) {
-    ProtocolAssert.assertNotNull(script.getType(), "Script type is null");
-    ProtocolAssert.assertNotNull(script.getSource(), "Script source is null");
+    assertNotNull(script.getType(), "Script type is null");
+    assertNotNull(script.getSource(), "Script source is null");
     if (script.getSource().isUnique()) {
-      ProtocolAssert.assertNotNull(script.getSourceId(), "Script source id is null");
+      assertNotNull(script.getSourceId(), "Script source id is null");
       if (scriptRepo.existsBySourceIdAndSourceAndType(script.getSourceId(), script.getSource(),
           script.getType())) {
         throw ResourceExisted.of(script.getType().getMessage(), script.getSource().getMessage());
@@ -489,10 +490,10 @@ public class ScriptQueryImpl implements ScriptQuery {
 
   @Override
   public void checkSourceUpdateScriptExist(Script script) {
-    ProtocolAssert.assertNotNull(script.getId(), "Script id is null");
-    ProtocolAssert.assertNotNull(script.getType(), "Script type id is null");
+    assertNotNull(script.getId(), "Script id is null");
+    assertNotNull(script.getType(), "Script type id is null");
     if (script.getSource().isUnique()) {
-      ProtocolAssert.assertNotNull(script.getSourceId(), "Script source id is null");
+      assertNotNull(script.getSourceId(), "Script source id is null");
       if (scriptRepo.existsBySourceIdAndSourceAndTypeAndIdNot(script.getSourceId(),
           script.getSource(), script.getType(), script.getId())) {
         throw ResourceExisted.of(script.getType().getMessage(), script.getSource().getMessage());

@@ -4,6 +4,7 @@ import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
+import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -51,6 +52,9 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
+
+  @Resource
+  private UserManager userManager;
 
   @Override
   public ApisDesign detail(Long id) {
@@ -102,6 +106,7 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
         Page<ApisDesignInfo> page = apisDesignInfoRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           setServicesName(page.getContent());
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
         }
         return page;
       }

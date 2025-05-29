@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.exec.impl;
 
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotNull;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ExecSampleConverter.mergeToFirst;
 import static cloud.xcan.angus.model.AngusConstant.SAMPLE_TOTAL_NAME;
@@ -15,7 +16,6 @@ import static java.util.Objects.nonNull;
 
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.page.FixedPageImpl;
@@ -736,7 +736,7 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
 
     if (isNull(nodeFilter)) {
       // Important: Paging and merging based on first node as timestamp!!!
-      ProtocolAssert.assertNotNull(firstSampleNode, "Exec node is missing");
+      assertNotNull(firstSampleNode, "Exec node is missing");
       spec.getCriteria().add(SearchCriteria.equal("nodeId", firstSampleNode));
     }
 

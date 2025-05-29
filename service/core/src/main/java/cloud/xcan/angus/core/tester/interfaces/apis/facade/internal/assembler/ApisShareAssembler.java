@@ -38,25 +38,44 @@ public class ApisShareAssembler {
         .setBaseUrl(dto.getBaseUrl());
   }
 
-  public static ApisShareVo toVo(ApisShare share) {
-    return new ApisShareVo().setId(share.getId()).setName(share.getName())
-        .setRemark(share.getRemark()).setExpiredDate(share.getExpiredDate())
-        .setDisplayOptions(share.getDisplayOptions()).setShareScope(share.getShareScope())
-        .setServicesId(share.getServicesId()).setApisIds(share.getApisIds())
-        .setUrl(share.getUrl()).setViewNum(share.getViewNum())
-        .setExpired(!share.isNotExpired()).setCreatedBy(share.getCreatedBy())
-        .setCreatedDate(share.getCreatedDate()).setLastModifiedBy(share.getLastModifiedBy())
-        .setLastModifiedDate(share.getLastModifiedDate());
+  public static ApisShareViewVo toShareDetailVo(ApisShare share) {
+    return new ApisShareViewVo()
+        .setId(share.getId())
+        .setName(share.getName())
+        .setRemark(share.getRemark())
+        .setExpiredDate(share.getExpiredDate())
+        .setDisplayOptions(share.getDisplayOptions())
+        .setShareScope(share.getShareScope())
+        .setServicesId(share.getServicesId())
+        .setApisIds(share.getApisIds())
+        .setViewNum(share.getViewNum())
+        .setExpired(!share.isNotExpired())
+        .setCreatedBy(share.getCreatedBy())
+        .setCreatedDate(share.getCreatedDate())
+        .setUrl(share.getUrl())
+        .setOpenapi(share.getOpenapi())
+        .setApiProxy(share.getApiProxy());
   }
 
-  public static ApisShareViewVo toShareDetailVo(ApisShare share) {
-    return new ApisShareViewVo().setId(share.getId()).setName(share.getName())
-        .setRemark(share.getRemark()).setExpiredDate(share.getExpiredDate())
-        .setDisplayOptions(share.getDisplayOptions()).setShareScope(share.getShareScope())
-        .setServicesId(share.getServicesId()).setApisIds(share.getApisIds())
-        .setViewNum(share.getViewNum()).setExpired(!share.isNotExpired())
-        .setCreatedBy(share.getCreatedBy()).setCreatedDate(share.getCreatedDate())
-        .setUrl(share.getUrl()).setOpenapi(share.getOpenapi()).setApiProxy(share.getApiProxy());
+  public static ApisShareVo toVo(ApisShare share) {
+    return new ApisShareVo()
+        .setId(share.getId())
+        .setName(share.getName())
+        .setRemark(share.getRemark())
+        .setExpiredDate(share.getExpiredDate())
+        .setDisplayOptions(share.getDisplayOptions())
+        .setShareScope(share.getShareScope())
+        .setServicesId(share.getServicesId())
+        .setApisIds(share.getApisIds())
+        .setUrl(share.getUrl())
+        .setViewNum(share.getViewNum())
+        .setExpired(!share.isNotExpired())
+        .setCreatedBy(share.getCreatedBy())
+        .setCreatedByName(share.getCreatedByName())
+        .setCreatedByAvatar(share.getAvatar())
+        .setCreatedDate(share.getCreatedDate())
+        .setLastModifiedBy(share.getLastModifiedBy())
+        .setLastModifiedDate(share.getLastModifiedDate());
   }
 
   public static GenericSpecification<ApisShare> getSpecification(ApisShareFindDto dto) {

@@ -10,6 +10,7 @@ import static cloud.xcan.angus.spec.utils.StringUtils.format;
 
 import cloud.xcan.angus.api.gm.setting.SettingUserInnerRemote;
 import cloud.xcan.angus.api.gm.setting.vo.UserApiProxyVo;
+import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -38,6 +39,9 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
+
+  @Resource
+  private UserManager userManager;
 
   @Resource
   private SettingUserInnerRemote settingUserInnerRemote;
@@ -69,7 +73,11 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
       @Override
       protected Page<ApisShare> process() {
-        return apisShareRepo.findAll(spec, pageable);
+        Page<ApisShare> page = apisShareRepo.findAll(spec, pageable);
+        if (page.hasContent()){
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
+        }
+        return page;
       }
     }.execute();
   }
