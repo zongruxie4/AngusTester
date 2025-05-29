@@ -6,18 +6,14 @@ export default class API {
     baseUrl = prefix + '/mock';
   }
 
-  // mock 函数
-  // 获取所有函数
   loadFunction (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/functions`);
   }
 
-  // 调用函数获取真实值
   loadFunctionValue (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/text/data/batch`, params);
   }
 
-  // 函数测试
   addFunctionBatch (params: {function:string, iterations: number, name:string}[]): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/function/batch`, params);
   }
@@ -41,8 +37,6 @@ export default class API {
   resetInstance (id:string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/service/${id}/instance/sync`);
   }
-
-  // mock api
 
   loadMockApisSearch (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/search`, params);
@@ -96,20 +90,19 @@ export default class API {
     return http.post(`${baseUrl}/service/${mockServiceId}/example/apis/import`);
   }
 
-  // mock 服务
   loadServices (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/service/search`, params);
   }
 
-  addService (params: any): Promise<[Error | null, any]> { // 手动创建Mock服务
+  addService (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/service`, params);
   }
 
-  addAngusService (params: any): Promise<[Error | null, any]> { // 导入已有服务
+  addAngusService (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/service/association/services`, params);
   }
 
-  addFileService (params: any): Promise<[Error | null, any]> { // 文件导入MOck
+  addFileService (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/service/file/import`, params);
   }
 
@@ -196,7 +189,6 @@ export default class API {
     return http.del(`${baseUrl}/service/auth/${id}`);
   }
 
-  // mock数据
   mockData (params: {configuration: Record<string, any>; mockData: Record<string, any>}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/data/script`, params);
   }

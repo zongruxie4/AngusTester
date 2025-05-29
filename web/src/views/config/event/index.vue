@@ -8,7 +8,7 @@ import { enumLoader } from '@xcan-angus/tools';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event } from '@/api/event';
-import { analysis } from '@/api/aas';
+import { analysis } from 'src/api/auth';
 import { setting } from '@/api/comm';
 
 const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));

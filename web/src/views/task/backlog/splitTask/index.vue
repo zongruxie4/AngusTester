@@ -19,7 +19,7 @@ import { Button, Checkbox } from 'ant-design-vue';
 import { TESTER, utils, duration } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
-import { ai } from '@/api/aas';
+import { ai } from 'src/api/auth';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../PropsType';

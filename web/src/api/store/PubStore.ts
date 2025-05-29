@@ -6,8 +6,7 @@ export default class API {
     baseUrl = prefix + '/store';
   }
 
-  // 获取节点 订单 id
-  getGoodsVersion (goodsCode = 'AngusLoad'): Promise<[Error | null, any]> {
+  getGoodsVersion (goodsCode = 'AngusTester'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/goods/${goodsCode}/online`);
   }
 }

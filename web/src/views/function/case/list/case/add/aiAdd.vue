@@ -21,7 +21,7 @@ import { enumLoader, TESTER, upload, utils } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
-import { ai } from '@/api/aas';
+import { ai } from 'src/api/auth';
 
 import { useI18n } from 'vue-i18n';
 import { FormState } from './PropsType';

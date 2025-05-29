@@ -1,9 +1,8 @@
 import { GM } from '@xcan-angus/tools';
 
-import AuthPolicy from './AuthPolicy';
 import Auth from './Auth';
 import App from './App';
-import Setting from './setting';
+import Setting from './Setting';
 import Ai from './Ai';
 import Analysis from './Analysis';
 import Dept from './Dept';
@@ -12,7 +11,6 @@ import Group from './Group';
 
 const baseUrl = GM;
 
-export const authPolicy = new AuthPolicy(baseUrl);
 export const appInfo = new App(baseUrl);
 export const auth = new Auth(baseUrl);
 export const setting = new Setting(GM);

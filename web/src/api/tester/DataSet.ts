@@ -6,7 +6,6 @@ export default class API {
     baseUrl = prefix + '/dataset';
   }
 
-  // 获取变量列表
   loadDataSetList (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params);
   }

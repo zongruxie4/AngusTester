@@ -6,7 +6,6 @@ export default class API {
     baseUrl = prefix + '/edition';
   }
 
-  // 获取系统信息
   getSysEdition (goodsCode = 'AngusTester'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/installed?goodsCode=${goodsCode}`);
   }

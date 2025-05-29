@@ -12,10 +12,6 @@ export default class API {
     return http.get(`${baseUrl}/${key}`);
   }
 
-  loadSampleList (): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/API_SAMPLE`);
-  }
-
   getProxy (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/apis/proxy`);
   }
@@ -26,14 +22,6 @@ export default class API {
 
   patchClientUrl (params = { url: '' }): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/user/apis/proxy`, params);
-  }
-
-  loadOtherPermissions (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/tenant/data/permission`, params);
-  }
-
-  editPermissions (params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/tenant/data/permission`, params);
   }
 
   loadDataList (): Promise<[Error | null, any]> {

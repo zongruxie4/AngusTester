@@ -26,7 +26,6 @@ export default class API {
     return http.post(`${baseUrl}/stop`, params);
   }
 
-  // 执行测试结果
   loadExecTestResult (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/test/result`);
   }

@@ -6,27 +6,22 @@ export default class API {
     baseUrl = prefix + '/script';
   }
 
-  // 获取脚本列表
   loadScriptList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/search`, params, axiosConfig);
   }
 
-  // 获取脚本列表操作权限
   loadScriptListAuth (scriptIds:string[]): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/auth/current?admin=true`, { scriptIds });
   }
 
-  // 添加
   add (params = {}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}`, params);
   }
 
-  // 更新
   update (params = {}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}`, params);
   }
 
-  // 删除
   delete (ids: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, { ids });
   }

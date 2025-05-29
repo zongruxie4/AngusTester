@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
-import { user, dept, group } from '@/api/aas';
+import { user, dept, group } from 'src/api/auth';
 
 import { treeData } from './config';
 

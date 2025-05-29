@@ -159,7 +159,6 @@ export default class API {
     return http.put(`${baseUrl}/${id}/schema/info`, params);
   }
 
-  // 服务常用资源
   getCompData (id: string, types: string[], keys?: string[], config?:any, ignoreModel = true): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/comp/type`, {
       types,
@@ -168,17 +167,14 @@ export default class API {
     }, config);
   }
 
-  // 服务配置的 tagSelector
   getTags (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/schema/tag`);
   }
 
-  // 修改服务 schema 安全需求
   updateSchemaSecurity (id: string, security: Record<string, string[]>[]) {
     return http.put(`${baseUrl}/${id}/schema/securityRequirement/all`, security);
   }
 
-  // 获取服务 安全需求
   loadSecurity (id: string) {
     return http.get(`${baseUrl}/${id}/schema/securityRequirement`);
   }
@@ -211,7 +207,6 @@ export default class API {
     return http.del(`${baseUrl}/${id}/comp`, { refs });
   }
 
-  // 查询ref详情
   getRefInfo (id:string, ref:string, config?:Record<string, any>): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/comp/ref`, { ref }, config);
   }
@@ -220,27 +215,22 @@ export default class API {
     return http.put(`${baseUrl}/${id}/schema/server/${serverId}/apis/sync`);
   }
 
-  // 生成测试脚本
   putApiScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/test/script/generate`, params);
   }
 
-  // 删除测试脚本
   delApiScript (id: string, testTypes: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/test/script`, { testTypes });
   }
 
-  // 更新测试脚本
   updateApiScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/test/script/update`, params);
   }
 
-  // 获取服务权限信息
   getCurrentAuth (id: string, admin = true): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/user/auth/current`, { admin });
   }
 
-  // 导入服务样例 TODO 功能已删除
   importServicesSamples ():Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/example/import`);
   }

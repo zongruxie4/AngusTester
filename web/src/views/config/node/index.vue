@@ -129,7 +129,6 @@ const changeForm = (val) => {
   handleSearch();
 };
 
-// 查询
 const handleSearch = () => {
   pagination.current = 1;
   handleRefreshList();
@@ -148,24 +147,20 @@ const gotoBuy = async () => {
   }
 };
 
-// 排序
 const sort = ({ orderBy, orderSort }) => {
   params.orderBy = orderBy;
   params.orderSort = orderSort;
   handleRefreshList();
 };
 
-// 刷新列表
 const handleRefreshList = async () => {
   await loadList();
 };
 
-// 添加
 const handleAdd = () => {
   nodeListRef.value.add();
 };
 
-// 取消
 const deleteItem = ():void => {
   // state.nodeList.shift();
 };

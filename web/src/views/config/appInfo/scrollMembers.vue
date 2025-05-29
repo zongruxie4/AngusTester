@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { duration, GM } from '@xcan-angus/tools';
 
-import { auth } from '@/api/aas';
+import { auth } from 'src/api/auth';
 import { Params, Policy, TableData } from './interface';
 
 interface Props {

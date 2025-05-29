@@ -11,7 +11,6 @@ export default class API {
   }
 
   getNodeNetwork (id: string): Promise<[Error | null, any]> {
-    // return http.get(`${baseUrl}/${id}/metrics/network`, param);
     return http.get(`${baseUrl}/${id}/metrics/network/info`);
   }
 

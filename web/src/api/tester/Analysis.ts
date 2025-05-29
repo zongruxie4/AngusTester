@@ -6,15 +6,9 @@ export default class API {
     baseUrl = prefix + '/analysis';
   }
 
-  // 查询项目下接口数据统计
   loadProStatistics (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/resources`, params);
   }
-
-  // // 查询项目统计
-  // loadStatistics (params): Promise<[error | null, any]> {
-  //   return http.get(`${baseUrl}/apis/association/creation`, params);
-  // }
 
   loadScriptCount (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/script/count`, params);
@@ -48,7 +42,6 @@ export default class API {
     return http.get(`${baseUrl}/func/resources/count`, params);
   }
 
-  // 查询主页统计
   loadScenarioStatistics (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/association/creation`, params);
   }
