@@ -233,22 +233,22 @@ const columns = [
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,
-    width: 100
+    width: '15%'
   },
   {
     title: '规范版本',
     dataIndex: 'openapiSpecVersion',
-    width: 60
+    width: '8%'
   },
   {
     title: '状态',
     dataIndex: 'released',
-    width: 100
+    width: '8%'
   },
   {
     title: '来源',
     dataIndex: 'designSource',
-    width: 100,
+    width: '8%',
     customRender: ({text}) => {
       return text?.message || '--';
     }
@@ -256,7 +256,7 @@ const columns = [
   {
     title: '关联服务',
     dataIndex: 'designSourceName',
-    width: 100,
+    width: '10%',
     ellipsis: true,
     customRender: ({text}) => {
       return text || '--';
@@ -265,30 +265,33 @@ const columns = [
   {
     title: '添加人',
     dataIndex: 'createdByAvatar',
-    width: 100,
+    width: '8%',
     sorter: true
   },
   {
     title: '添加时间',
     dataIndex: 'createdDate',
-    width: 140,
+    width: '10%',
     sorter: true
   },
   {
     title: '最后修改人',
     dataIndex: 'lastModifiedByName',
-    width: 100,
+    width: '10%',
+    groupName: 'lastModifiedByName',
     ellipsis: true,
   },
   {
     title: '最后修改时间',
     dataIndex: 'lastModifiedDate',
-    width: 140
+    groupName: 'lastModifiedByName',
+    hide: true,
+    width: '10%'
   },
   {
     title: '操作',
     dataIndex: 'actions',
-    width: 160
+    width: '15%'
   }
 ];
 const moreButton = (record) => {

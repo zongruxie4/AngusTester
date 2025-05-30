@@ -186,69 +186,70 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name',
+    width: '15%',
     ellipsis: true,
     sorter: true
   },
   {
     title: '状态',
     dataIndex: 'isExpired',
-    width: 80
-    // customRender: ({text}) => {
-    //   return text ? '已过期' : '未过期'
-    // }
+    width: '8%',
   },
   {
     title: '分享人',
     dataIndex: 'createdByAvatar',
-    width: 100,
+    width: '8%',
     sorter: true,
     ellipsis: true,
   },
   {
     title: '分享范围',
     dataIndex: 'shareScope',
-    width: 100,
+    width: '8%',
     customRender: ({ text }) => text?.message
   },
   {
     title: '分享日期',
     dataIndex: 'createdDate',
-    width: 160,
+    width: '8%',
     sorter: true
   },
   {
     title: '到期日期',
     dataIndex: 'expiredDate',
-    width: 160,
+    width: '8%',
     sorter: true,
     customRender: ({text}) => text || '--'
   },
   {
     title: '查看次数',
     dataIndex: 'viewNum',
-    width: 80
+    width: '8%'
   },
   {
     title: '备注',
     dataIndex: 'remark',
     ellipsis: true,
-    width: 100,
+    width: '12%'
   },
   {
     title: '最后修改人',
     dataIndex: 'lastModifiedByName',
+    groupName: 'lastModifiedByName',
     ellipsis: true,
-    width: 100
+    width: '8%'
   },
   {
     title: '最后修改时间',
     dataIndex: 'lastModifiedDate',
-    width: 140
+    groupName: 'lastModifiedByName',
+    hide: true,
+    width: '8%'
   },
   {
     title: '操作',
     dataIndex: 'actions',
-    width: 200
+    width: '15%'
   }
 ];
 </script>
