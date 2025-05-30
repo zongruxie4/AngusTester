@@ -4,6 +4,8 @@ import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getCachedUidGenerator;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.angus.core.tester.application.converter.ServicesSchemaConverter.toClonedSchema;
+import static cloud.xcan.angus.core.tester.application.converter.ServicesSchemaConverter.toInitProjectSchema;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_DOC_CHANGE_REMINDER;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
@@ -411,19 +413,19 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   @Override
   public void init(Services services) {
-    insert0(ServicesSchemaConverter.toInitProjectSchema(services, null));
+    insert0(toInitProjectSchema(services, null));
   }
 
   @Override
   public void init(Services services, OpenAPI openAPI) {
-    insert0(ServicesSchemaConverter.toInitProjectSchema(services, openAPI));
+    insert0(toInitProjectSchema(services, openAPI));
   }
 
   @Override
   public void clone(Long clonedServiceId, Long serviceId) {
     ServicesSchema schemaDb = servicesSchemaQuery.findByServiceId(clonedServiceId);
     if (nonNull(schemaDb)) {
-      insert0(ServicesSchemaConverter.toClonedSchema(schemaDb, serviceId));
+      insert0(toClonedSchema(schemaDb, serviceId));
     }
   }
 

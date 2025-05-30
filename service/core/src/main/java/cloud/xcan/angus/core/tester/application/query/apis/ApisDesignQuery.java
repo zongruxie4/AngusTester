@@ -22,6 +22,8 @@ public interface ApisDesignQuery {
 
   ApisDesignInfo checkAndFindInfo(Long id);
 
+  void checkServiceExisted(Long serviceId);
+
   void setServicesName(ApisDesign design);
 
   void setServicesName(List<ApisDesignInfo> designs);
