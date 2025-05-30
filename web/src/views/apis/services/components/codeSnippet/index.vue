@@ -10,6 +10,7 @@ import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
 import { clipboard } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
+import JSONToSchema from 'json-to-schema' ;
 
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { apis } from 'src/api/tester';
@@ -138,7 +139,7 @@ const getCodeContent = async () => {
   if (parameter.requestBody) {
     parameter.requestBody = deepDelAttrFromObj(parameter.requestBody, ['$ref']);
   }
-  const apiDefinition = new Oas({ ...parameter, servers: [parameter.currentServer] });
+
   const query = {};
   const path = {};
   const header = {};
@@ -169,6 +170,7 @@ const getCodeContent = async () => {
     // body = new FormData();
     body = {};
     const formContent = parameter.requestBody.content['multipart/form-data']?.schema?.properties || {};
+
     Object.keys(formContent).forEach((key) => {
       if (formContent[key].format === 'binary') {
         if (formContent[key].type === 'string') {
@@ -197,6 +199,9 @@ const getCodeContent = async () => {
         body[key] = formContent[key];
       }
     });
+    parameter.requestBody.content['multipart/form-data'].schema = JSONToSchema(body);
+
+
   } else if (contentType === 'application/octet-stream' || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
     body = parameter.requestBody?.content[contentType]?.schema?.[valueKey];
   } else {
@@ -215,7 +220,19 @@ const getCodeContent = async () => {
     } else {
       body = undefined;
     }
+    try {
+      body = JSON.parse(body)
+    } catch {}
+    if (body && typeof body === 'object') {
+      parameter.requestBody.content[contentType].schema = JSONToSchema(body);
+    } else if (body && typeof body === 'string') {
+      parameter.requestBody.content[contentType].schema = {
+        type: 'string'
+      };
+    }
   }
+  const apiDefinition = new Oas({ ...parameter, servers: [parameter.currentServer] });
+
 
   const formData = {
     query,
@@ -238,6 +255,7 @@ const getCodeContent = async () => {
   const queryString = qs.stringify(query);
   parameter.path = (parameter.endpoint || '') + (queryString ? '?' + queryString : '');
   parameter.url = server;
+
   const { code } = await oasToSnippet(apiDefinition, parameter, formData, auth, language.value);
   codeContent.value = code;
 };
