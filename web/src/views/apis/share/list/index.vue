@@ -243,6 +243,7 @@ const columns = [
     title: '最后修改时间',
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
+    hide: true,
     width: '8%'
   },
   {
