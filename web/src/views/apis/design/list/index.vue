@@ -233,7 +233,7 @@ const columns = [
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,
-    width: '15%'
+    width: '16%'
   },
   {
     title: '规范版本',
@@ -265,7 +265,7 @@ const columns = [
   {
     title: '添加人',
     dataIndex: 'createdByAvatar',
-    width: '8%',
+    width: '10%',
     sorter: true
   },
   {
@@ -291,7 +291,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'actions',
-    width: '15%'
+    width: '12%'
   }
 ];
 const moreButton = (record) => {
