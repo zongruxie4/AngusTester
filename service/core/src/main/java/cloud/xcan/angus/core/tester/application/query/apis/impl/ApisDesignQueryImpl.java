@@ -132,9 +132,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Override
   public void checkServiceExisted(Long serviceId) {
-    ApisDesignInfo design = apisDesignInfoRepo.findByDesignSourceId(serviceId)
-        .orElse(new ApisDesignInfo());
-    assertResourceExisted(design, APIS_SERVICE_DESIGN_EXISTED_T, new Object[]{design.getName()});
+    ApisDesignInfo design = apisDesignInfoRepo.findByDesignSourceId(serviceId);
+    if (nonNull(design)) {
+      assertResourceExisted(design, APIS_SERVICE_DESIGN_EXISTED_T, new Object[]{design.getName()});
+    }
   }
 
   @Override
