@@ -11,8 +11,8 @@ import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
 import { clipboard } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema' ;
+import { ApiUtils  } from '@xcan-angus/vue-ui';
 
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { apis } from 'src/api/tester';
 import cIcon from './image/c.png';
 import cSharpIcon from './image/csharp.png';
@@ -26,6 +26,8 @@ import pythonIcon from './image/python.png';
 import rubyIcon from './image/ruby.png';
 import shellIcon from './image/shell.png';
 import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
+
+const { API_EXTENSION_KEY } = ApiUtils;
 
 interface Props {
   id: string;
@@ -41,7 +43,7 @@ const supportedLanguages = getSupportedLanguages();
 const getParameter = inject('getParameter', () => ({} as Record<string, any>));
 const apiInfo = ref<{[key:string]: any}>({});
 const languageStr = ['shell', 'php', 'javascript', 'node', 'java', 'cplusplus', 'csharp', 'c', 'python', 'ruby', 'go'];
-const { valueKey, serverSourceKey, fileNameKey } = API_EXTENSION_KEY;
+const { valueKey, serverSourceKey, fileNameKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
 const codeOptions = ref<any[]>([]);
 const getCodeOptions = () => {
   Object.keys(supportedLanguages).forEach(l => {
@@ -247,11 +249,45 @@ const getCodeContent = async () => {
   };
   // const url = server.url + parameter.endpoint;
 
-  const auth = parameter.authentication?.type
-    ? {
-        [parameter.authentication.type]: parameter.authentication.scheme
+  // const auth = parameter.authentication?.type
+  //   ? {
+  //       [parameter.authentication.type]: parameter.authentication.scheme
+  //     }
+  //   : {};
+  const auth: Record<string, number | string | {
+    pass?: string;
+    user?: string;
+  }> = {};
+  if ( parameter.authentication?.type) {
+    parameter.authentication = {
+      ...parameter.authentication,
+      ...(parameter.authentication?.extensions || {})
+    }
+    if (parameter.authentication?.type === 'http') {
+        if (parameter.authentication.scheme === 'bearer') {
+          auth.Authorization = parameter.authentication[valueKey];
+        } else {
+          auth.Authorization = {
+            user: parameter.authentication.name,
+            pass: parameter.authentication[valueKey],
+          }
+        }
+
+    } else if (parameter.authentication?.type === 'oauth2') {
+      if (parameter.authentication[newTokenKey]) {
+        if (parameter.authentication[oAuth2Key] === 'password') {
+          auth.access_token = parameter.authentication.flows?.password?.[oAuth2Token] || ''
+        }
+        if (parameter.authentication[oAuth2Key] === 'clientCredentials') {
+          auth.access_token = parameter.authentication.flows?.clientCredentials?.[oAuth2Token] || ''
+        }
+      } else {
+        auth.access_token = parameter.authentication[oAuth2Token] || ''
       }
-    : {};
+
+    }
+  }
+
   const queryString = qs.stringify(query);
   parameter.path = (parameter.endpoint || '') + (queryString ? '?' + queryString : '');
   parameter.url = server;

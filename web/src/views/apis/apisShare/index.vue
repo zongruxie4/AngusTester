@@ -3,7 +3,7 @@ import { onMounted, ref, defineAsyncComponent, provide, watch } from 'vue';
 import { cookie, site } from '@xcan-angus/tools';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
-import { Icon } from '@xcan-angus/vue-ui';
+import { Icon, Spin } from '@xcan-angus/vue-ui';
 import '@xcan-angus/rapidoc';
 import { shareApis } from 'src/api/tester';
 
@@ -19,6 +19,7 @@ const displayOptions = ref({
   includeServiceInfo: false,
   schemaStyle: 'TABLE'
 });
+const loading = ref(false);
 
 const apiProxy = ref();
 const currentProxy = ref({});
@@ -48,10 +49,12 @@ const connectWs = () => {
 const responseErr = ref();
 
 const loadData = async () => {
+  loading.value = true;
   const [error, { data }] = await shareApis.getApiShareInfo({
     id: id.value,
     pat: pat.value
   });
+  loading.value = false;
   responseErr.value = '';
   if (error) {
     responseErr.value = error.message;
@@ -105,45 +108,48 @@ provide('readyState', readyState);
 
 </script>
 <template>
-  <div v-if="(viewData && viewData.expired) || responseErr" class="text-center text-5 font-semibold h-40 leading-40">
-    {{ responseErr || '分享已过期' }}
-  </div>
-  <template v-else-if="openapi">
-    <rapi-doc
-      :spec-url="openapi"
-      specIsContent="true"
-      style="padding: 20px;"
-      renderStyle="read"
-      theme="light"
-      headerColor="#fff"
-      updateRoute="false"
-      navBgColor="#fff"
-      :show-info="displayOptions.includeServiceInfo"
-      bgColor="#fff"
-      allowSpecUrlLoad="false"
-      allowSpecFileLoad="false"
-      allowSpecFileDownload="false"
-      :allow-try="displayOptions.allowDebug"
-      :schema-style="displayOptions.schemaStyle"
-      showHeader="false"
-      schemaExpandLevel="20">
-    </rapi-doc>
-    <div v-if="apiProxy && displayOptions.allowDebug" class="absolute top-10 right-0 flex text-3 z-9">
-      <div
-        class="w-9 h-max transform-gpu translate-y-0.75 space-y-0.5"
-        @click="toggleSpread">
+  <Spin :spinning="loading" class="h-full">
+    <div v-if="(viewData && viewData.expired) || responseErr" class="text-center text-5 font-semibold h-40 leading-40">
+      {{ responseErr || '分享已过期' }}
+    </div>
+    <template v-else-if="openapi">
+      <rapi-doc
+        :spec-url="openapi"
+        specIsContent="true"
+        style="padding: 20px;"
+        renderStyle="read"
+        theme="light"
+        headerColor="#fff"
+        updateRoute="false"
+        navBgColor="#fff"
+        :show-info="displayOptions.includeServiceInfo"
+        bgColor="#fff"
+        allowSpecUrlLoad="false"
+        allowSpecFileLoad="false"
+        allowSpecFileDownload="false"
+        :allow-try="displayOptions.allowDebug"
+        :schema-style="displayOptions.schemaStyle"
+        showHeader="false"
+        schemaExpandLevel="20">
+      </rapi-doc>
+      <div v-if="apiProxy && displayOptions.allowDebug" class="absolute top-10 right-0 flex text-3 z-9">
         <div
-          class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer">
-          <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
-          <span style="writing-mode: vertical-lr;" class="mt-1">代理</span>
+          class="w-9 h-max transform-gpu translate-y-0.75 space-y-0.5"
+          @click="toggleSpread">
+          <div
+            class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer">
+            <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
+            <span style="writing-mode: vertical-lr;" class="mt-1">代理</span>
+          </div>
+        </div>
+        <div
+          class="bg-white border-orange-bg rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-2 flex flex-col"
+          :class="[spread ? 'w-200 border p-3' : 'w-0 border-0']"
+          style="height: 160px;">
+          <Agent />
         </div>
       </div>
-      <div
-        class="bg-white border-orange-bg rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-2 flex flex-col"
-        :class="[spread ? 'w-200 border p-3' : 'w-0 border-0']"
-        style="height: 160px;">
-        <Agent />
-      </div>
-    </div>
-  </template>
+    </template>
+  </Spin>
+
 </template>

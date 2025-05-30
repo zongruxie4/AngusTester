@@ -257,10 +257,7 @@ const columns = [
     title: '关联服务',
     dataIndex: 'designSourceName',
     width: '10%',
-    ellipsis: true,
-    customRender: ({text}) => {
-      return text || '--';
-    }
+    ellipsis: true
   },
   {
     title: '添加人',
@@ -368,6 +365,12 @@ const moreButton = (record) => {
                 <template v-if="column.dataIndex=== 'released'">
                   <Tag v-if="record.released" color="success">已发布</Tag>
                   <Tag v-else color="default">草稿</Tag>
+                </template>
+                <template v-if="column.dataIndex === 'designSourceName'">
+                  <RouterLink v-if="record.designSourceId" class="text-blue-1" :to="`/apis#services?id=${record.designSourceId}&value=group&name=${record.designSourceName}`">{{ record.designSourceName }}</RouterLink>
+                  <template v-else>
+                    --
+                  </template>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
