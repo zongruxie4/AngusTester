@@ -217,17 +217,18 @@ onMounted(() => {
       class="flex-1">
       <TabPane key="func" tab="功能测试">
         <Execdetail
-          v-if="funcExecId"
+          v-if="sceanrioData"
           class="p-0"
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
           :execId="funcExecId"
           scriptType="TEST_FUNCTIONALITY"
+          :plugin="sceanrioData?.plugin"
           @del="handleDel" />
-        <NoData
-          v-else
-          size="small"
-          class="mt-25" />
+<!--        <NoData-->
+<!--          v-else-->
+<!--          size="small"-->
+<!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" tab="性能测试">
         <Execdetail
