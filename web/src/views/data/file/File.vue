@@ -139,7 +139,7 @@ const getActionAuth = async () => {
     return;
   }
   const { data = {} } = res;
-  const authData = data.spaceAuthFlag
+  const authData = data.spaceAuth
     ? (data.permissions || []).map(auth => auth.value)
     : SPACE_PERMISSIONS;
   downloadAuth.value = authData.includes('OBJECT_READ');

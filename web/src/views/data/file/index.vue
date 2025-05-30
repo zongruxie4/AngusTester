@@ -82,7 +82,7 @@ const loadDataAuth = async (list) => {
   }
   const authList = res.data || {};
   dataList.value.forEach(space => {
-    space.auth = authList[space.id].spaceAuthFlag
+    space.auth = authList[space.id].spaceAuth
       ? (authList[space.id].permissions || []).map(auth => auth.value)
       : SPACE_PERMISSIONS;
   });

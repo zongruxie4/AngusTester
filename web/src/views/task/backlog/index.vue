@@ -900,7 +900,7 @@ const loadPermissions = async (id: string) => {
 
 const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {
   const sprintId = data.sprintId;
-  const sprintAuthFlag = data.sprintAuthFlag;
+  const sprintAuth = data.sprintAuth;
 
   const permissions = sprintPermissionsMap.value.get(sprintId) || [];
   const { currentAssociateType } = data;
@@ -908,11 +908,11 @@ const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {
   const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
 
   if (key === 'edit' || key === 'move' || key === 'split') {
-    return isAdministrator || permissions.includes('MODIFY_TASK') || !sprintAuthFlag;
+    return isAdministrator || permissions.includes('MODIFY_TASK') || !sprintAuth;
   }
 
   if (key === 'delete') {
-    return isAdministrator || permissions.includes('DELETE_TASK') || !sprintAuthFlag;
+    return isAdministrator || permissions.includes('DELETE_TASK') || !sprintAuth;
   }
 };
 

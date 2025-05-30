@@ -245,14 +245,14 @@ const loadScriptListAuth = async (ids: string[]) => {
   }
 
   const map: {
-    [key: string]: { permissions: { value: PermissionKey; message: string }[]; scriptAuthFlag: boolean; }
+    [key: string]: { permissions: { value: PermissionKey; message: string }[]; scriptAuth: boolean; }
   } = res?.data;
   if (map) {
     for (const key in map) {
-      const { scriptAuthFlag, permissions } = map[key];
+      const { scriptAuth, permissions } = map[key];
       let list: PermissionKey[] = [];
       const values = permissions.map(item => item.value);
-      if (isAdmin.value || scriptAuthFlag === false) {
+      if (isAdmin.value || scriptAuth === false) {
         list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
         if (values.includes('GRANT')) {
           list.push('GRANT');

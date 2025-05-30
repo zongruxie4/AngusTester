@@ -170,22 +170,22 @@ const getCaseInfo = async (id: string) => {
   await getPlanAuth(data.planId);
   caseAuth.value[data.id] = getActionAuth(planAuthList.value);
   if (caseAuth.value[data.id].includes('resetTestResult')) {
-    if (!funcPlanAuthFlag.value) {
+    if (!funcPlanAuth.value) {
       caseAuth.value[data.id] = caseAuth.value[data.id].filter(i => i !== 'resetTestResult');
     }
   }
   if (caseAuth.value[data.id].includes('retestResult')) {
-    if (!funcPlanAuthFlag.value && userInfo?.id !== data.testerId) {
+    if (!funcPlanAuth.value && userInfo?.id !== data.testerId) {
       caseAuth.value[data.id] = caseAuth.value[data.id].filter(i => i !== 'retestResult');
     }
   }
 };
 
 const planAuthList = ref<string[]>([]);
-const funcPlanAuthFlag = ref(true);
+const funcPlanAuth = ref(true);
 const getPlanAuth = async (planId) => {
   if (isAdmin.value) {
-    funcPlanAuthFlag.value = true;
+    funcPlanAuth.value = true;
     planAuthList.value = CASE_PROJECT_PERMISSIONS;
     return;
   }
@@ -193,13 +193,13 @@ const getPlanAuth = async (planId) => {
   if (error) {
     return;
   }
-  if (data.funcPlanAuthFlag) {
-    funcPlanAuthFlag.value = true;
+  if (data.funcPlanAuth) {
+    funcPlanAuth.value = true;
     planAuthList.value = data.permissions.map(item => {
       return item.value;
     });
   } else {
-    funcPlanAuthFlag.value = false;
+    funcPlanAuth.value = false;
     planAuthList.value = CASE_PROJECT_PERMISSIONS;
   }
   if (props.userInfo?.id === caseDetail.value.testerId && !planAuthList.value.includes('TEST')) {

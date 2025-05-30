@@ -281,10 +281,10 @@ const loadScriptListAuth = async (id: string) => {
 
   const item = res?.data?.[id];
   if (item) {
-    const { scriptAuthFlag, permissions } = item;
+    const { scriptAuth, permissions } = item;
     let list: PermissionKey[] = [];
     const values = permissions.map(item => item.value);
-    if (isAdmin.value || scriptAuthFlag === false) {
+    if (isAdmin.value || scriptAuth === false) {
       list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
       if (values.includes('GRANT')) {
         list.push('GRANT');

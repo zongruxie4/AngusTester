@@ -601,7 +601,7 @@ const menuItemsMap = computed(() => {
   const data = taskInfo.value;
   if (data) {
     const status = data.status?.value;
-    const { currentAssociateType, confirmorId, assigneeId, favouriteFlag, followFlag, sprintAuthFlag } = data;
+    const { currentAssociateType, confirmorId, assigneeId, favouriteFlag, followFlag, sprintAuth } = data;
 
     const userId = props.userInfo?.id;
     const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
@@ -619,21 +619,21 @@ const menuItemsMap = computed(() => {
         name: '编辑',
         key: 'edit',
         icon: 'icon-shuxie',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuthFlag,
+        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
         hide: true
       },
       {
         name: '删除',
         key: 'delete',
         icon: 'icon-qingchu',
-        disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuthFlag,
+        disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
         hide: true
       },
       {
         name: '拆分',
         key: 'split',
         icon: 'icon-guanlianziyuan',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuthFlag,
+        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
         hide: true
       }
     ];
@@ -701,7 +701,7 @@ const menuItemsMap = computed(() => {
         name: '取消',
         key: 'cancel',
         icon: 'icon-zhongzhi2',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuthFlag,
+        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
         hide: false
       });
     }
@@ -746,7 +746,7 @@ const menuItemsMap = computed(() => {
       name: '移动',
       key: 'move',
       icon: 'icon-yidong',
-      disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuthFlag,
+      disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
       hide: false
     });
 

@@ -67,11 +67,9 @@ const deleteTaskVisible = ref(false);
 const exportVisible = ref(false);
 const execTestVisible = ref(false);
 
-// 场景权限列表
 const permissionMap = ref<{
   [key: string]: {
-    scenarioAuthFlag: boolean;
-    scenarioDirAuthFlag: boolean;
+    scenarioAuth: boolean;
     permissions: MenuItemPermission[];
   }
 }>({});
@@ -446,7 +444,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 @mouseenter="mouseenterHandler(record)"
                 @mouseleave="mouseleaveHandler">
                 <Button
-                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('TEST')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuth && !permissionMap[record.id].permissions?.includes('TEST')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -456,7 +454,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </Button>
 
                 <Button
-                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('MODIFY')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuth && !permissionMap[record.id].permissions?.includes('MODIFY')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -467,7 +465,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </Button>
 
                 <Button
-                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuthFlag && !permissionMap[record.id].permissions?.includes('VIEW')"
+                  :disabled="record.auth && permissionMap[record.id] && permissionMap[record.id].scenarioAuth && !permissionMap[record.id].permissions?.includes('VIEW')"
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
@@ -479,7 +477,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 <Dropdown
                   :noAuth="!record.auth"
                   :permissions="permissionMap[record.id]?.permissions"
-                  :authFlagKey="['scenarioAuthFlag']"
+                  :authFlagKey="['scenarioAuth']"
                   :menuItems="dropdownMenuItemsMap[record.id]"
                   @click="menuItemClick($event.key, record)">
                   <Button
