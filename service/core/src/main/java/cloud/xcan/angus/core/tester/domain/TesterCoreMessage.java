@@ -76,8 +76,9 @@ public interface TesterCoreMessage extends TesterApisMessage {
   /*<******************Apis#Follow(ATS270 ~ ATS279)******************>*/
   String APIS_FOLLOW_REPEATED_T = "xcm.tester.apis.follow.repeated.t";
 
-
-  /*<******************Apis#Unarchived(ATS280 ~ ATS299)******************>*/
+  /*<******************Apis#Design(ATS280 ~ ATS299)******************>*/
+  String APIS_DESIGN_SERVICE_EXISTED_T = "xcm.tester.apis.design.service.existed.t";
+  String APIS_SERVICE_DESIGN_EXISTED_T = "xcm.tester.apis.service.design.existed.t";
 
   /*******************Apis#case(ATS300 ~ ATS349)******************>*/
   String APIS_CASE_NAME_REPEATED_T = "xcm.tester.apis.case.name.existed.t";

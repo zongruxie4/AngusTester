@@ -3,9 +3,11 @@ package cloud.xcan.angus.core.tester.application.cmd.apis.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API_DESIGN;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.SERVICE;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertNotEmpty;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.application.converter.ApisDesignConverter.assocToDomain;
+import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_DESIGN_SERVICE_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_OAS_DESIGN_NOT_FOUND;
 import static cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignSource.SYNCHRONOUS_SERVICE;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.convertImportFile;
@@ -188,8 +190,8 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       protected Void process() {
         if (designDb.hasLatestContent()) {
           servicesSchemaCmd.openapiReplace(designDb.getDesignSourceId(), false, false,
-              designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true, ApiSource.SYNC,
-              null, false, null);
+              designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true, ApiSource.EDITOR,
+              ApiImportSource.OPENAPI, true, null);
         }
         designDb.setReleased(true);
         apisDesignRepo.save(designDb);
@@ -240,6 +242,8 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       protected void checkParams() {
         // Check and Find
         servicesDb = servicesQuery.checkAndFind(serviceId);
+        // Check duplicate association
+        apisDesignQuery.checkServiceExisted(serviceId);
         // Check the view services permission
         servicesAuthQuery.checkViewAuth(getUserId(), serviceId);
       }
@@ -264,6 +268,12 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       protected void checkParams() {
         // Check the design exists
         designDb = apisDesignQuery.checkAndFind(id);
+        // Check duplicate generate
+        if (nonNull(designDb.getDesignSourceId())){
+          Services servicesDb = servicesQuery.checkAndFind(designDb.getDesignSourceId());
+          assertResourceExisted(designDb.getDesignSourceId(), APIS_DESIGN_SERVICE_EXISTED_T,
+              new Object[]{servicesDb.getName()});
+        }
         // Check the project member permission
         projectMemberQuery.checkMember(getUserId(), designDb.getProjectId());
       }
@@ -282,9 +292,15 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
         if (isEmpty(designDb.getOpenapi())) {
           servicesSchemaCmd.init(services);
         } else {
-          servicesSchemaCmd.init(services,
+          OpenAPI openAPI =
               servicesSchemaQuery.checkAndGetApisParseProvider(ApiImportSource.OPENAPI)
-                  .parse(designDb.getOpenapi()));
+                  .parse(designDb.getOpenapi());
+          servicesSchemaCmd.init(services, openAPI);
+          if (isNotEmpty(openAPI.getPaths())) {
+            servicesSchemaCmd.openapiReplace(services.getId(), true, false,
+                designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true,
+                ApiSource.EDITOR, ApiImportSource.OPENAPI, true, null);
+          }
         }
 
         designDb.setDesignSource(SYNCHRONOUS_SERVICE).setDesignSourceId(services.getId());
