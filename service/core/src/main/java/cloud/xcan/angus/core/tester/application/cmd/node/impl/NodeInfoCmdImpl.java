@@ -62,6 +62,9 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
   private NodeInfoQuery nodeInfoQuery;
 
   @Resource
+  private NodeInfoCmd nodeInfoCmd;
+
+  @Resource
   private NodeAgentCmdProperties agentProperties;
 
   @Resource
@@ -103,10 +106,10 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     return new BizTemplate<AgentInstallCmd>(false) {
       final Long tenantId = getOptTenantId();
 
-
       @Override
       protected AgentInstallCmd process() {
-        NodeInfo nodeInfo = getAndInitNodeInfo();
+        NodeInfo nodeInfo = nodeInfoCmd.initAgentNodeInfo(tenantId, nodeId);
+        nodeInfoCmd.saveAgentAuthInfo(tenantId, nodeId, nodeInfo);
         return getAgentInstallCmd(nodeInfo);
       }
 
@@ -128,22 +131,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
             );
       }
 
-      private NodeInfo getAndInitNodeInfo() {
-        Optional<NodeInfo> nodeInfo = nodeInfoRepo.findById(nodeId);
-        if (nodeInfo.isPresent() && Objects.nonNull(nodeInfo.get().getAgentAuth())) {
-          return nodeInfo.get();
-        }
-        NodeInfo initNodeInfo = new NodeInfo();
-        if (nodeInfo.isPresent()) {
-          initNodeInfo = nodeInfo.get();
-        }
-        initNodeInfo.setTenantId(tenantId);
-        initNodeInfo.setId(nodeId);
-        initNodeInfo.setAgentAuth(genOpen2pAuthToken(tenantId, nodeId));
-        initNodeInfo.setLastModifiedDate(LocalDateTime.now());
-        nodeInfoRepo.save(initNodeInfo);
-        return initNodeInfo;
-      }
+
 
       /**
        * curl -s http://192.168.0.102:1805/filepxy/pubapi/v1/object/download/install-agent.sh?id=96204965327929444 -o install-agent.sh --retry 3 -m 120
@@ -250,6 +238,8 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
       }
     }.execute();
   }
+
+
 
   @Override
   public void clearRunner(List<NodeInfo> nodeInfos) {
@@ -359,12 +349,35 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         .saveToDisk();
   }
 
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public NodeInfo initAgentNodeInfo(Long tenantId, Long nodeId) {
+    Optional<NodeInfo> nodeInfo = nodeInfoRepo.findById(nodeId);
+    if (nodeInfo.isPresent() && nonNull(nodeInfo.get().getAgentAuth())) {
+      return nodeInfo.get();
+    }
+    NodeInfo initNodeInfo = new NodeInfo();
+    if (nodeInfo.isPresent()) {
+      initNodeInfo = nodeInfo.get();
+    }
+    initNodeInfo.setTenantId(tenantId);
+    initNodeInfo.setId(nodeId);
+    initNodeInfo.setLastModifiedDate(LocalDateTime.now());
+    nodeInfoRepo.save(initNodeInfo);
+    return initNodeInfo;
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void saveAgentAuthInfo(Long tenantId, Long nodeId, NodeInfo nodeInfo) {
+    nodeInfo.setAgentAuth(genOpen2pAuthToken(tenantId, nodeId));
+    nodeInfoRepo.save(nodeInfo);
+  }
 
   /**
    * Generate openapi2p client for applyTenantId
    */
-  @Override
-  public AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId) {
+  private AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId) {
     ClientSignupDto signupDto = new ClientSignupDto()
         .setSignupBiz(Client2pSignupBiz.AGENT)
         .setTenantId(tenantId)
@@ -382,5 +395,4 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         .setClientSecret(signupVo.getClientSecret())
         .setAccessToken(signInVo.getAccessToken());
   }
-
 }

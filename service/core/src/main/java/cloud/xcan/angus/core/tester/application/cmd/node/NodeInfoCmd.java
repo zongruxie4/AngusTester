@@ -37,7 +37,7 @@ public interface NodeInfoCmd {
 
   void configureAgentAuth() throws Exception;
 
-  AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId);
+  NodeInfo initAgentNodeInfo(Long tenantId, Long nodeId);
 
-
+  void saveAgentAuthInfo(Long tenantId, Long nodeId, NodeInfo nodeInfo);
 }
