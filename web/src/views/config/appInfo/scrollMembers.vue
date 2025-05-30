@@ -213,10 +213,10 @@ const selectMember = (id: string) => {
 
 const getTenantTypeName = (record) => {
   const result: string[] = [];
-  if (record?.currentDefaultFlag) {
+  if (record?.currentDefault) {
     result.push('应用默认授权');
   }
-  if (record?.openAuthFlag) {
+  if (record?.openAuth) {
     result.push('开通授权');
   }
   return result.join(',');

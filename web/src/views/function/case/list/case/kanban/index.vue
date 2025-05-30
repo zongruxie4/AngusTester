@@ -74,7 +74,7 @@ const isAdmin = inject('isAdmin', ref(false));
 const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks'>('basic');
 
 const planPermissionsMap = ref<Map<string, PlanPermissionKey[]>>(new Map());
-const planAuthFlagMap = ref({});
+const planAuthMap = ref({});
 
 const testResultList = ref<{ message: string; value: TestResult }[]>([]);
 const caseList = ref<CaseInfo[]>([]);
@@ -225,12 +225,12 @@ const loadData = async () => {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
       planPermissionsMap.value.set(id, (data[id]?.permissions || []).map(i => i.value));
-      planAuthFlagMap.value[id] = data[id].funcPlanAuthFlag;
+      planAuthMap.value[id] = data[id].funcPlanAuth;
     }
   } else {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
-      planAuthFlagMap.value[id] = true;
+      planAuthMap.value[id] = true;
       planPermissionsMap.value.set(id, [
         'ADD',
         'VIEW',
@@ -1231,7 +1231,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: '重新测试',
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthFlagMap.value[item.planId]) && item.testerId !== userInfo?.id,
+            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]) && item.testerId !== userInfo?.id,
             hide: false
           });
 
@@ -1252,7 +1252,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: '重置测试结果',
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
-            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthFlagMap.value[item.planId]),
+            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]),
             hide: false,
             tip: '将用例更新为`待测试`，相关统计计数和状态会被清除。'
           });

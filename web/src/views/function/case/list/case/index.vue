@@ -640,12 +640,12 @@ const tableAction = computed(() => {
     }
     action.auth[_case.id] = getActionAuth((planAuthMap.value[_case.planId]?.permissions || [])); // getActionAuth(planAuthList.value);
     if (action.auth[_case.id].includes('resetTestResult')) {
-      if (!planAuthMap.value[_case.planId].funcPlanAuthFlag) {
+      if (!planAuthMap.value[_case.planId].funcPlanAuth) {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'resetTestResult');
       }
     }
     if (action.auth[_case.id].includes('retestResult')) {
-      if (!planAuthMap.value[_case.planId].funcPlanAuthFlag && userInfo?.id !== _case.testerId) {
+      if (!planAuthMap.value[_case.planId].funcPlanAuth && userInfo?.id !== _case.testerId) {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'retestResult');
       }
     }
@@ -841,18 +841,15 @@ const handleAiAdd = () => {
   aiAddVisible.value = true;
 };
 
-// 添加接口用例model visible
-// const addApiVisible = ref(false);
-
 const planAuthMap = ref<{[id: string]: {
-  funcPlanAuthFlag: boolean;
+  funcPlanAuth: boolean;
   permissions: string[];
 }}>({});
 const getPlanAuth = async () => {
   if (isAdmin.value) {
     caseList.value.forEach(i => {
       planAuthMap.value[i.planId] = {
-        funcPlanAuthFlag: true,
+        funcPlanAuth: true,
         permissions: CASE_PROJECT_PERMISSIONS
       };
     });
@@ -876,7 +873,7 @@ const getPlanAuth = async () => {
       permissions: (data[planId].permissions || []).map(i => i.value)
     };
   });
-  // if (data.funcPlanAuthFlag) {
+  // if (data.funcPlanAuth) {
   //   planAuthList.value = data.permissions.map(item => {
   //     return item.value;
   //   });
@@ -962,7 +959,7 @@ watch(() => selectedRowKeys.value, (newValue) => {
 
   const selectList = list.filter(item => newValue.includes(item.id));
   if (selectList.some(_case => {
-    if (planAuthMap.value[_case.planId].funcPlanAuthFlag) {
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
       return !(planAuthMap.value[_case.planId]?.permissions || []).includes('MODIFY_CASE');
     }
     return false;
@@ -970,7 +967,7 @@ watch(() => selectedRowKeys.value, (newValue) => {
     batchDisabled.value.move = true;
   }
   if (selectList.some(_case => {
-    if (planAuthMap.value[_case.planId].funcPlanAuthFlag) {
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
       return !planAuthMap.value[_case.planId]?.permissions?.includes('DELETE_CASE');
     }
     return false;
@@ -982,7 +979,7 @@ watch(() => selectedRowKeys.value, (newValue) => {
     if ((_case?.review && _case?.reviewStatus.value !== 'PASSED') || ['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case.testResult.value)) {
       return true;
     }
-    if (planAuthMap.value[_case.planId].funcPlanAuthFlag) {
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
       return !planAuthMap.value[_case.planId]?.permissions?.includes('TEST');
     }
     return false;
