@@ -186,7 +186,7 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name',
-    width: '20%',
+    width: '15%',
     ellipsis: true,
     sorter: true
   },
@@ -249,7 +249,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'actions',
-    width: '12%'
+    width: '15%'
   }
 ];
 </script>
