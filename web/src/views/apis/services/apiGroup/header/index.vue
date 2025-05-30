@@ -173,6 +173,7 @@ const configuringAuthHeader = () => {
 const setSortType = ({ orderBy, orderSort }:{orderBy:string;orderSort:string}):void => {
   emit('update:orderBy', orderBy);
   emit('update:orderSort', orderSort);
+  localStorage.setItem(`${props.serviceId}_order`, JSON.stringify({ orderBy, orderSort }));
 };
 
 const handleAddHost = () => {
@@ -341,8 +342,8 @@ onBeforeUnmount(() => {
         </Dropdown>
       </template>
       <DropdownSort
-        orderSort="DESC"
-        orderBy="createdDate"
+        v-model:orderSort="props.orderSort"
+        v-model:orderBy="props.orderBy"
         :menuItems="enumList.sortList"
         @click="setSortType">
         <Button

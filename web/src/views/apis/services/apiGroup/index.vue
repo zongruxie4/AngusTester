@@ -56,6 +56,7 @@ const pageType = ref<'default' | 'success' | undefined>('success');
 const projectAuths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
 
 const localGroupBy = localStorage.getItem(`${props.serviceId}_groupBy`);
+const localOrder = localStorage.getItem(`${props.serviceId}_order`);
 const scrollListData = ref<any[]>([]);
 const state = reactive<StateType>({
   drawerComp: [],
@@ -63,7 +64,7 @@ const state = reactive<StateType>({
   dataSource: [],
   id: '', // 接口Id
   name: '',
-  order: {
+  order: localOrder ? JSON.parse(localOrder) : {
     orderBy: undefined,
     orderSort: undefined
   },
