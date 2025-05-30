@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
 import { clipboard } from '@xcan-angus/tools';
 import { apis } from '@/api/tester';
 
@@ -199,13 +199,10 @@ const columns = [
   },
   {
     title: '分享人',
-    dataIndex: 'createdBy',
+    dataIndex: 'createdByAvatar',
     width: 100,
     sorter: true,
     ellipsis: true,
-    customRender: ({ record }) => {
-      return record.createdByName;
-    }
   },
   {
     title: '分享范围',
@@ -223,7 +220,8 @@ const columns = [
     title: '到期日期',
     dataIndex: 'expiredDate',
     width: 160,
-    sorter: true
+    sorter: true,
+    customRender: ({text}) => text || '--'
   },
   {
     title: '查看次数',
@@ -292,6 +290,13 @@ const columns = [
                     @click="handleEnterShare(record.id)">
                     {{ record.name }}
                   </Button>
+                </template>
+                <template v-if="column.dataIndex === 'createdByAvatar'">
+                  <div class="inline-flex items-center ">
+                    <Image type="avatar" class="w-4 rounded-full mr-1" :src="record.createdByAvatar" />
+                    <span class="flex-1 truncate" :title="record.createdByName">{{record.createdByName}}</span>
+                  </div>
+
                 </template>
                 <template v-if="column.dataIndex === 'remark'">
                   <template v-if="record.remark">{{record.remark}}</template>

@@ -129,7 +129,7 @@ const iterationNum = computed(() => {
 const planRequestNum = computed(() => {
   const _iterationNum = +planIterationNum.value;
   let httpNum = 0;
-  const pipelines = props.execInfo.task.pipelines;
+  const pipelines = props.execInfo?.task?.pipelines;
   if (pipelines?.length) {
     httpNum = pipelines.filter(item => item.target === 'HTTP' && item.enabled).length;
   }

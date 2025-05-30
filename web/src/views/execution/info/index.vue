@@ -22,13 +22,15 @@ interface Props {
   showBackBtn: boolean;
   monicaEditorStyle: {[key: string]:string};
   scriptType?: string;
+  plugin?: string;
 
 }
 const props = withDefaults(defineProps<Props>(), {
   execId: undefined,
   showBackBtn: true,
   monicaEditorStyle: () => ({}),
-  scriptType: undefined
+  scriptType: undefined,
+  plugin: undefined
 });
 const emit = defineEmits<{(e: 'del'):void}>();
 
@@ -114,7 +116,13 @@ onMounted(async () => {
           message: scriptTypeMsgConfig[props.scriptType] || ''
         }
       }
+      if (props.plugin) {
+        detail.value.plugin = props.plugin
+      }
+      console.log(detail.value)
     }
+
+
     return;
   }
   await getDetail();
