@@ -15,13 +15,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const designInfo = ref<{[key: string]: string}>({});
 const designContent = ref();
-let openAPIDesignInstance;
+let openAPIDesignInstance = ref();
 
 const getDesignContent = async () => {
   const [error, resp] = await apis.exportDesign({format: 'json', id: props.designId});
   if (error) {
     return
   }
+
   designContent.value = JSON.stringify(resp?.data || {});
 }
 
@@ -34,13 +35,12 @@ const getDesignInfo = async () => {
 };
 
 const updateContent = async () => {
-  debugger;
-  if (typeof openAPIDesignInstance?.updateData === 'function') {
-    openAPIDesignInstance.updateData();
+  if (typeof openAPIDesignInstance.value?.updateData === 'function') {
+    openAPIDesignInstance.value.updateData();
   }
 
-  const content = (openAPIDesignInstance && typeof openAPIDesignInstance.getDocApi === 'function')
-    ? openAPIDesignInstance.getDocApi()
+  const content = (openAPIDesignInstance && typeof openAPIDesignInstance.value.getDocApi === 'function')
+    ? openAPIDesignInstance.value.getDocApi()
     : designContent.value;
   const [error] = await apis.putDesignContent({id: props.designId, openapi: JSON.stringify(content)});
   if (error) {
@@ -59,16 +59,17 @@ const releaseDesign = async ()  => {
 }
 
 onMounted(async () => {
+  console.log('onMounted')
   await getDesignContent();
   await getDesignInfo();
-  openAPIDesignInstance = new OpenApiDesign({
+  openAPIDesignInstance.value = new OpenApiDesign({
     defaultFontSize: 12
   });
 })
 </script>
 <template>
 <div class="h-full text-3">
-  <component is="open-api-design" :open-api-doc="designContent">
+  <component v-if="openAPIDesignInstance" :is="openAPIDesignInstance.compName" :open-api-doc="designContent">
     <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
       <Tag color="green" class="text-3.5 rounded-full">{{designInfo.openapiSpecVersion}}</Tag>
       <div class="text-5 font-medium">{{designInfo.name}}</div>
