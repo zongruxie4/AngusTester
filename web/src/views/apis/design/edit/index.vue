@@ -82,8 +82,8 @@ const addOk = async () => {
     ...formState.value,
     projectId: props.projectId
   });
+  loading.value = false;
   if (error) {
-    loading.value = false;
     return;
   }
   emits('ok');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
+import {AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown} from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 
 import { DesignInfo } from '../PropsType';
@@ -28,6 +28,7 @@ const Introduce = defineAsyncComponent(() => import('@/views/apis/design/list/in
 const EditModal = defineAsyncComponent(() => import('@/views/apis/design/edit/index.vue'));
 const ExportModal = defineAsyncComponent(() => import('@/views/apis/design/export/index.vue'));
 const ImportModal = defineAsyncComponent(() => import('@/views/apis/design/import/index.vue'));
+const ImportServiceModal = defineAsyncComponent(() => import('@/views/apis/design/importService/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const addTabPane = inject<(keys: string[]) => void>('addTabPane', () => ({}));
@@ -39,6 +40,7 @@ const editVisible = ref(false);
 const selectDesignId = ref();
 const exportVisible = ref(false);
 const importVisible = ref(false);
+const importServiceVisible = ref(false);
 
 const searchPanelParams = ref({
   orderBy: undefined,
@@ -155,6 +157,10 @@ const importDesign = () => {
   importVisible.value = true;
 };
 
+const importService = () => {
+  importServiceVisible.value = true;
+};
+
 const editDesign = (record: {id?: string} = {}) => {
   selectDesignId.value = record?.id;
   editVisible.value = true;
@@ -202,6 +208,21 @@ const handleEnterDesign = async (record) => {
   })
 };
 
+const handleDesign = (record: {id: string; name: string; url?: string}, key) => {
+  switch (key) {
+    case 'clone':
+      return cloneDesign(record);
+    case 'publish':
+      return releaseDesign(record);
+    case 'generate':
+      return generateService(reocrd);
+    case 'delete':
+      return toDelete(reocrd);
+    default:
+      return;
+  }
+}
+
 const handleImportOk = () => {
   loadData();
 };
@@ -211,7 +232,8 @@ const columns = [
     title: '名称',
     dataIndex: 'name',
     ellipsis: true,
-    sorter: true
+    sorter: true,
+    width: 100
   },
   {
     title: '规范版本',
@@ -266,9 +288,38 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'actions',
-    width: 420
+    width: 160
   }
 ];
+const moreButton = (record) => {
+  return [
+  {
+    key: 'clone',
+    name: '克隆',
+    icon: 'icon-fuzhi'
+  },
+  {
+    key: 'export',
+    name: '导出',
+    icon: 'icon-daochu1'
+  },
+  {
+    key: 'publish',
+    name: '发布',
+    icon: 'icon-fabu'
+  },
+  {
+    key: 'generate',
+    name: '生成服务',
+    icon: 'icon-fuwu',
+    disabled: !!record.designSourceId
+  },
+  {
+    key: 'delete',
+    name: '删除',
+    icon: 'icon-qingchu'
+  }
+]};
 </script>
 
 <template>
@@ -292,7 +343,8 @@ const columns = [
             @change="searchChange"
             @refresh="refresh"
             @add="editDesign"
-            @import="importDesign"/>
+            @import="importDesign"
+            @importService="importService"/>
           <NoData v-if="dataList.length === 0" class="flex-1" />
           <template v-else>
             <Table
@@ -329,42 +381,45 @@ const columns = [
                     <Icon icon="icon-sheji" />
                     设计
                   </Button>
-                  <Button
-                    type="text"
-                    size="small"
-                    @click="cloneDesign(record)">
-                    <Icon icon="icon-fuzhi" />
-                    克隆
-                  </Button>
-                  <Button
-                    type="text"
-                    size="small"
-                    @click="exportDesign(record)">
-                    <Icon icon="icon-daochu1"  />
-                    导出
-                  </Button>
-                  <Button
-                    type="text"
-                    size="small"
-                    @click="releaseDesign(record)">
-                    <Icon icon="icon-fabu"  />
-                    发布
-                  </Button>
-                  <Button
-                    type="text"
-                    size="small"
-                    :disabled="!!record.designSourceId"
-                    @click="generateService(record)">
-                    <Icon icon="icon-fuwu" />
-                    生成服务
-                  </Button>
-                  <Button
-                    type="text"
-                    size="small"
-                    @click="toDelete(record)">
-                    <Icon icon="icon-qingchu" class="mr-1" />
-                    删除
-                  </Button>
+                  <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
+                    <Icon icon="icon-gengduo" class="ml-1" />
+                  </Dropdown>
+<!--                  <Button-->
+<!--                    type="text"-->
+<!--                    size="small"-->
+<!--                    @click="cloneDesign(record)">-->
+<!--                    <Icon icon="icon-fuzhi" />-->
+<!--                    克隆-->
+<!--                  </Button>-->
+<!--                  <Button-->
+<!--                    type="text"-->
+<!--                    size="small"-->
+<!--                    @click="exportDesign(record)">-->
+<!--                    <Icon icon="icon-daochu1"  />-->
+<!--                    导出-->
+<!--                  </Button>-->
+<!--                  <Button-->
+<!--                    type="text"-->
+<!--                    size="small"-->
+<!--                    @click="releaseDesign(record)">-->
+<!--                    <Icon icon="icon-fabu"  />-->
+<!--                    发布-->
+<!--                  </Button>-->
+<!--                  <Button-->
+<!--                    type="text"-->
+<!--                    size="small"-->
+<!--                    :disabled="!!record.designSourceId"-->
+<!--                    @click="generateService(record)">-->
+<!--                    <Icon icon="icon-fuwu" />-->
+<!--                    生成服务-->
+<!--                  </Button>-->
+<!--                  <Button-->
+<!--                    type="text"-->
+<!--                    size="small"-->
+<!--                    @click="toDelete(record)">-->
+<!--                    <Icon icon="icon-qingchu" class="mr-1" />-->
+<!--                    删除-->
+<!--                  </Button>-->
                 </template>
               </template>
             </Table>
@@ -387,6 +442,12 @@ const columns = [
     <AsyncComponent :visible="importVisible">
       <ImportModal
         v-model:visible="importVisible"
+        :projectId="props.projectId"
+        @ok="handleImportOk"/>
+    </AsyncComponent>
+    <AsyncComponent :visible="importServiceVisible">
+      <ImportServiceModal
+        v-model:visible="importServiceVisible"
         :projectId="props.projectId"
         @ok="handleImportOk"/>
     </AsyncComponent>

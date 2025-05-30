@@ -32,7 +32,9 @@ const emits = defineEmits<{(e: 'change', value: {
 }):void,
  (e: 'refresh'):void;
  (e: 'add'):void;
- (e: 'import'):void}>();
+ (e: 'import'):void;
+ (e: 'importService')}>();
+
 const tenantInfo = inject('tenantInfo', ref({ id: '' }));
 
 const searchPanelRef = ref();
@@ -244,6 +246,11 @@ const add = () => {
 const importDesign = () => {
   emits('import');
 }
+
+const importService = () => {
+  emits('importService');
+}
+
 onMounted(() => {
 });
 </script>
@@ -280,6 +287,14 @@ onMounted(() => {
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
           <span>添加设计</span>
+        </Button>
+
+        <Button
+          type="primary"
+          size="small"
+          @click="importService">
+          <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
+          <span>导入服务</span>
         </Button>
 
         <Button

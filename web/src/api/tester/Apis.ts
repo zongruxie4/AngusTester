@@ -314,4 +314,8 @@ export default class API {
   putDesignContent (params: {id: string, openapi: string}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/design/content`, params);
   }
+
+  addDesignByService (serviceId) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/design/services/${serviceId}/associate`);
+  }
 }
