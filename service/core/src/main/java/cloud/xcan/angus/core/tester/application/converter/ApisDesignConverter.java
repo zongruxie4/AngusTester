@@ -18,6 +18,7 @@ public class ApisDesignConverter {
     return new ApisDesign().setProjectId(services.getProjectId())
         .setName(services.getName()).setReleased(true)
         .setOpenapiSpecVersion("3.0.1")
+        .setDesignSourceId(services.getId())
         .setDesignSource(ApisDesignSource.SYNCHRONOUS_SERVICE);
   }
 
