@@ -7,5 +7,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface ApisDesignInfoRepo extends BaseRepository<ApisDesignInfo, Long> {
 
-  ApisDesignInfo findByDesignSourceId(Long serviceId);
+  Optional<ApisDesignInfo> findByDesignSourceId(Long serviceId);
 }

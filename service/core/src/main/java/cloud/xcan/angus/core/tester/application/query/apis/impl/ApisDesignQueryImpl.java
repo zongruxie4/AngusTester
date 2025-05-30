@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.apis.impl;
 
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceExisted;
-import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_DESIGN_SERVICE_EXISTED_T;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.APIS_SERVICE_DESIGN_EXISTED_T;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.nonNull;
@@ -10,7 +9,6 @@ import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
@@ -134,7 +132,8 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Override
   public void checkServiceExisted(Long serviceId) {
-    ApisDesignInfo design = apisDesignInfoRepo.findByDesignSourceId(serviceId);
+    ApisDesignInfo design = apisDesignInfoRepo.findByDesignSourceId(serviceId)
+        .orElse(new ApisDesignInfo());
     assertResourceExisted(design, APIS_SERVICE_DESIGN_EXISTED_T, new Object[]{design.getName()});
   }
 
