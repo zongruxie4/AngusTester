@@ -57,6 +57,7 @@
     "html3pdf": "^0.12.2",
     "js-base64": "^3.7.5",
     "js-beautify": "^1.14.8",
+    "json-to-schema": "^0.0.2",
     "jsonpath-plus": "^7.2.0",
     "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
