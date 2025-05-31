@@ -104,7 +104,7 @@ const chartsOption:EChartsOption = {
     },
     {
       orient: 'vertical',
-      left: 540,
+      left: 640,
       top: '25%',
       itemHeight: 12,
       itemWidth: 12,
