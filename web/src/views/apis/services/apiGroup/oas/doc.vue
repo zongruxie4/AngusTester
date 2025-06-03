@@ -32,6 +32,7 @@ const loadData = async () => {
     return;
   }
   openapiMetaDataStr.value = data;
+  window.specUrl = openapiMetaDataStr;
 
   openapiMetaData.value = JSON.parse(data || '{}');
   openapiYamlData.value = YAML.stringify(openapiMetaData.value, null, 2);

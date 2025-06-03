@@ -64,6 +64,7 @@ const loadData = async () => {
   openapi.value = data.openapi;
   displayOptions.value = data.displayOptions;
   apiProxy.value = data.apiProxy;
+  window.specUrl = openapi.value;
 
   if (displayOptions.value.allowDebug) {
     Object.keys(apiProxy.value || {}).forEach(key => {
@@ -114,7 +115,7 @@ provide('readyState', readyState);
     </div>
     <template v-else-if="openapi">
       <rapi-doc
-        :spec-url="openapi"
+        spec-url="true"
         specIsContent="true"
         style="padding: 20px;"
         renderStyle="read"
