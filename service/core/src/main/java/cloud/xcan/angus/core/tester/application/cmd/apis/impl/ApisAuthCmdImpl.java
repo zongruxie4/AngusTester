@@ -72,7 +72,7 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check the api exists
+        // Check the api existed
         apiInfoDb = apisQuery.checkAndFindBasicInfo(auth.getApisId());
         // Check the add creator permissions
         assertTrue(!apiInfoDb.getCreatedBy().equals(auth.getAuthObjectId()),
@@ -132,13 +132,12 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
         // Check the Auth existed
         authDb = apisAuthQuery.checkAndFind(auth.getId());
         // Check the modify creator permissions
-        assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
-            FORBID_AUTH_CREATOR);
-        // Check the api exists
+        assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
+        // Check the api existed
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
         // Check the current user have api authorization permissions
         apisAuthQuery.checkGrantAuth(getUserId(), authDb.getApisId());
-        // Check the authorization object exists
+        // Check the authorization object existed
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
       }
@@ -167,11 +166,11 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check the api auth exists
+        // Check the api auth existed
         authDb = apisAuthQuery.checkAndFind(id);
         // Check the modify creator permissions
         assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        // Check the api exists
+        // Check the api existed
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
         // Check the user have api authorization permissions
         apisAuthQuery.checkGrantAuth(getUserId(), authDb.getApisId());
