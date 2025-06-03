@@ -5,8 +5,6 @@ import dayjs from 'dayjs';
 import { http } from '@xcan-angus/tools';
 import { useI18n } from 'vue-i18n';
 
-// type Filters = { key: string, value: string | boolean | string[], op: string; };
-
 interface Props {
   geteway:string,
   resource:string,
@@ -35,22 +33,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const BarChartParam = defineAsyncComponent(() => import('./barChartParam.vue'));
 const PieChart = defineAsyncComponent(() => import('./pieChart.vue'));
-// const bar = defineAsyncComponent(() => import('@/components/bar/index.vue'));
 const LineChart = defineAsyncComponent(() => import('./lineChart.vue'));
 
 const { t } = useI18n();
-
-/**
- * /uc/api/v1/list/customization/summary接口参数说明（统计接口）
- * 开启loadCountGroup()查看具体可传的参数,以下部分参数必须按照loadCountGroup接口返回传参（返回的值以下统称结果）
- * resource: 结果summaryQuery里每一项的name（对应数据库真实表）,有多少种name表示当前服务下分多少种统计（eg:User、Dept、Group、Tenant ）
- * groupByColumns: 结果summaryQuery里每一项的groupByColumns（对应数据库表的字段）,目前分为时间范围类型和其他类型，
- * 备注：时间范围类型统计多以柱状图或折线图展示，其他类型暂以饼图统计；
- * aggregates[0].column: 结果summaryQuery里每一项的aggregateColumns（聚合字段）,通常统计传id即可 其他参数参考结果
- * aggregates[0].function：统计类型 默认COUNT，其他参数参考/uc/api/v1/list/customization/summary接口
- * groupBy：分组类型，即按什么分组 具体参数参考/uc/api/v1/list/customization/summary接口
- * 备注：以上参数只支持结果里返回的，具体返回结构咨询后端
- */
 
 const datePicker = ref([]);
 const dateChange = (value) => {
@@ -130,23 +115,13 @@ const userFilter = ref<{
     value: string
   }[]>([]);
 
-/**
- * 用户饼图统计参数
- * resource:对应数据库真实,有多少种name表示当前服务下分多少种统计（eg:User、Dept、Group、Tenant ）
- * groupByColumns: groupByColumns对应数据库表的字段,目前分为时间范围类型和其他类型，
- * aggregates[0].column: 通常统计传id即可
- * aggregates[0].function：统计类型 默认COUNT，其他参数参考/uc/api/v1/list/customization/summary接口
- * groupBy：分组类型，即按什么分组 具体参数参考/uc/api/v1/list/customization/summary接口
- * 备注：以上参数只支持结果里返回的，具体返回结构咨询后端
- */
-// 饼图公共参数
 const publicParams = {
   'aggregates[0].column': 'id',
   'aggregates[0].function': 'COUNT',
   groupBy: 'STATUS',
   name: props.resource
 };
-const pieloading = ref(true); // 饼图统计是否加载完成
+const pieLoading = ref(true);
 const pieChartData = ref<PieData []>([]);
 const loadCount = async () => {
   const params = {
@@ -163,7 +138,7 @@ const loadCount = async () => {
   });
 
   const [error, { data }] = await http.get(`${props.geteway}/analysis/customization/summary`, params);
-  pieloading.value = false;
+  pieLoading.value = false;
   if (error) {
     return;
   }
@@ -269,12 +244,11 @@ const setEnumDatasource = (cloum, res, dataSource) => {
   dataSource.push(_dataSource);
 };
 
-// 柱状图数据
 const barChartData = ref<BarData>({} as BarData);
 const getDefaultDateRangeType = () => {
   return ['DAY', t('day')];
 };
-// 默认查询单位
+
 const dateRangeType = ref(getDefaultDateRangeType());
 
 const getDefaultDateFilters = () => {
@@ -292,10 +266,9 @@ const getDefaultDateFilters = () => {
   ];
 };
 
-// 默认查询时间范围单位
 const dateFilters = ref(getDefaultDateFilters());
-const barLoading = ref(true); // 柱图统计是否加载完成
-// 请求柱状图数据
+const barLoading = ref(true);
+
 const loadDateCount = async () => {
   const params = {
     groupByColumns: 'opt_date',
@@ -317,7 +290,6 @@ const loadDateCount = async () => {
   setBarCharCount(data);
 };
 
-// 设置柱状图默认数据
 const setBarChartDefault = () => {
   barChartData.value.xData = [];
   barChartData.value.yData = [];
@@ -350,7 +322,6 @@ const setBarChartDefault = () => {
   barChartData.value.unit = `${t('时间单位')}: ${dateRangeType.value[1]}`;
 };
 
-// 设置柱状图数据
 const setBarCharCount = (data:Record<string, any>) => {
   if (!data) {
     setBarChartDefault();
@@ -421,22 +392,16 @@ watch(() => props.searchParams, newValue => {
       @selectDate="selectDate"
       @dateChange="dateChange" />
     <div
-      v-if="!pieloading"
-      class="flex"
+      v-if="!pieLoading"
+      class="flex w-full"
       style="height: calc(100% - 28px);">
-      <!-- <bar
-        class="mr-5 w-1/2"
-        :title="barChartData?.title"
-        :unit="barChartData?.unit"
-        :xData="barChartData?.xData"
-        :yData="barChartData?.yData" /> -->
       <LineChart
-        class="mr-5 w-1/2"
+        class="w-1/2"
         :title="barChartData?.title"
         :unit="barChartData?.unit"
         :xData="barChartData?.xData"
         :yData="barChartData?.yData" />
-      <div class="flex justify-center flex-none w-1/2">
+      <div class="flex w-1/2">
         <PieChart
           v-for="item in pieChartData"
           :key="item.key"
@@ -449,15 +414,3 @@ watch(() => props.searchParams, newValue => {
     </div>
   </div>
 </template>
-<style scoped>
-.statistics-container.show-statistics {
-  height: 236px;
-  opacity: 1;
-}
-
-.statistics-container {
-  height: 0;
-  transition: all 300ms linear 0ms;
-  opacity: 0;
-}
-</style>

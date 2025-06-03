@@ -109,7 +109,7 @@ const columns = [
   {
     title: t('活动人'),
     dataIndex: 'fullName',
-    width: '8%',
+    width: '10%',
     ellipsis: true
   },
   {
@@ -128,23 +128,23 @@ const columns = [
     width: '8%'
   },
   {
-    title: '项目名称',
+    title: '所属项目',
     dataIndex: 'projectName',
     groupName: 'project',
-    width: '16%',
+    width: '15%',
     ellipsis: true
   },
   {
-    title: '项目ID',
+    title: '所属项目ID',
     dataIndex: 'projectId',
     groupName: 'project',
     hide: true,
-    width: '11%'
+    width: '15%'
   },
   {
-    title: t('资源ID'),
+    title: t('操作资源ID'),
     dataIndex: 'targetId',
-    width: '11%',
+    width: '17%',
     groupName: 'source',
     hide: true,
     customCell: () => {
@@ -152,14 +152,15 @@ const columns = [
     }
   },
   {
-    title: t('资源名称'),
+    title: t('操作资源'),
     dataIndex: 'targetName',
-    width: '20%',
+    width: '17%',
     ellipsis: true,
     groupName: 'source'
   },
   {
-    title: t('操作描述'),
+    title: t('活动内容'),
+    width: '40%',
     dataIndex: 'detail'
   }
 ];

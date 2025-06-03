@@ -39,7 +39,7 @@ public class CtrlOpen2pRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Ping an controller for bind validator.", operationId = "ctrl:ping")
+  @Operation(summary = "Ping an controller for bind validator.", operationId = "ctrl:ping:open2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Ping successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -48,7 +48,7 @@ public class CtrlOpen2pRest {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Query and elect controller.", operationId = "ctrl:discovery")
+  @Operation(summary = "Query and elect controller.", operationId = "ctrl:discovery:open2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -57,7 +57,7 @@ public class CtrlOpen2pRest {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Query the connections info of controller.", operationId = "ctrl:connections:info")
+  @Operation(summary = "Query the connections info of controller.", operationId = "ctrl:connections:info:open2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
