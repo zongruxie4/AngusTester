@@ -164,7 +164,7 @@ const getCodeContent = async () => {
   const formParam = {};
   if (contentType === 'application/x-www-form-urlencoded') {
     Object.entries(parameter.requestBody?.content['application/x-www-form-urlencoded']?.schema?.properties || {}).forEach(arr => {
-      formParam[arr[0]] = arr[1];
+      formParam[arr[0]] = arr[1]?.[valueKey];
     });
   }
   let body;
