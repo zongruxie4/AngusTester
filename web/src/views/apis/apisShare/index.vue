@@ -17,7 +17,7 @@ const openapi = ref();
 const displayOptions = ref({
   allowDebug: false,
   includeServiceInfo: false,
-  schemaStyle: 'TABLE'
+  schemaStyle: 'table'
 });
 const loading = ref(false);
 
@@ -63,6 +63,7 @@ const loadData = async () => {
   viewData.value = data;
   openapi.value = data.openapi;
   displayOptions.value = data.displayOptions;
+  displayOptions.value.schemaStyle = displayOptions.value.schemaStyle.toLowerCase();
   apiProxy.value = data.apiProxy;
   window.specUrl = openapi.value;
 
@@ -110,6 +111,7 @@ provide('readyState', readyState);
 </script>
 <template>
   <Spin :spinning="loading" class="h-full">
+    {{displayOptions.schemaStyle}}
     <div v-if="(viewData && viewData.expired) || responseErr" class="text-center text-5 font-semibold h-40 leading-40">
       {{ responseErr || '分享已过期' }}
     </div>
@@ -118,7 +120,6 @@ provide('readyState', readyState);
         spec-url="true"
         specIsContent="true"
         style="padding: 20px;"
-        renderStyle="read"
         theme="light"
         headerColor="#fff"
         updateRoute="false"
