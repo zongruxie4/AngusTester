@@ -111,7 +111,6 @@ provide('readyState', readyState);
 </script>
 <template>
   <Spin :spinning="loading" class="h-full">
-    {{displayOptions.schemaStyle}}
     <div v-if="(viewData && viewData.expired) || responseErr" class="text-center text-5 font-semibold h-40 leading-40">
       {{ responseErr || '分享已过期' }}
     </div>
