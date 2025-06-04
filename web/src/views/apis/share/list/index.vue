@@ -305,7 +305,6 @@ const columns = [
                 </template>
                 <template v-if="column.dataIndex === 'isExpired'">
                   <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? '已过期' : '未过期' }}</Tag>
-                  <!-- <span :class="[record.expired ? 'text-status-error1' : 'text-status-success']">{{ record.expired ? '已过期' : '未过期' }}</span> -->
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button

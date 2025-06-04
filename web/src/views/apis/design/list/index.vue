@@ -390,42 +390,6 @@ const moreButton = (record) => {
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
                     <Icon icon="icon-gengduo" class="ml-1" />
                   </Dropdown>
-<!--                  <Button-->
-<!--                    type="text"-->
-<!--                    size="small"-->
-<!--                    @click="cloneDesign(record)">-->
-<!--                    <Icon icon="icon-fuzhi" />-->
-<!--                    克隆-->
-<!--                  </Button>-->
-<!--                  <Button-->
-<!--                    type="text"-->
-<!--                    size="small"-->
-<!--                    @click="exportDesign(record)">-->
-<!--                    <Icon icon="icon-daochu1"  />-->
-<!--                    导出-->
-<!--                  </Button>-->
-<!--                  <Button-->
-<!--                    type="text"-->
-<!--                    size="small"-->
-<!--                    @click="releaseDesign(record)">-->
-<!--                    <Icon icon="icon-fabu"  />-->
-<!--                    发布-->
-<!--                  </Button>-->
-<!--                  <Button-->
-<!--                    type="text"-->
-<!--                    size="small"-->
-<!--                    :disabled="!!record.designSourceId"-->
-<!--                    @click="generateService(record)">-->
-<!--                    <Icon icon="icon-fuwu" />-->
-<!--                    生成服务-->
-<!--                  </Button>-->
-<!--                  <Button-->
-<!--                    type="text"-->
-<!--                    size="small"-->
-<!--                    @click="toDelete(record)">-->
-<!--                    <Icon icon="icon-qingchu" class="mr-1" />-->
-<!--                    删除-->
-<!--                  </Button>-->
                 </template>
               </template>
             </Table>
