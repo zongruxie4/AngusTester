@@ -96,6 +96,7 @@ public class ApisConverter {
         .setAuth(apisDb.getAuth())
         .setServiceAuth(serviceDb.getAuth())
         .setSecurity(apisDb.getSecurity())
+        .setSecured(nonNull(apisDb.getSecurity()))
         .setTestFunc(apisDb.getTestFunc())
         .setTestFuncPassed(apisDb.getTestFuncPassed())
         .setTestFuncFailureMessage(apisDb.getTestFuncFailureMessage())
