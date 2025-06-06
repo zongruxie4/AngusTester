@@ -265,17 +265,8 @@ const customRow = (record) => {
           drawerRef.value.close();
         }
         selectedRowKey.value = '';
-        // selectedRow.value = undefined;
-        // caseDetailVisible.value = false;
       } else {
         selectedRowKey.value = record.id;
-        // selectedRow.value = record;
-        // caseDetailVisible.value = true;
-        // nextTick(() => {
-        //   if (!activeMenuKey.value) {
-        //     drawerRef.value.open('steps');
-        //   }
-        // })
       }
     }
   };
@@ -300,7 +291,6 @@ watch(() => selectedRowKey.value, newValue => {
 
 const onCloseDrawer = () => {
   selectedRowKey.value = '';
-  // caseDetailVisible.value = false;
 };
 
 const onCheckedChange = (e, id: string) => {
@@ -309,17 +299,6 @@ const onCheckedChange = (e, id: string) => {
     selectCaseIds.value.push(id);
   } else {
     selectCaseIds.value = selectCaseIds.value.filter(i => i !== id);
-  }
-};
-const checkeAll = (e) => {
-  if (e.target.checked) {
-    caseList.value.forEach(record => {
-      if (!selectCaseIds.value.includes(record.id)) {
-        selectCaseIds.value.push(record.id);
-      }
-    });
-  } else {
-    selectCaseIds.value = [];
   }
 };
 
@@ -342,7 +321,6 @@ const handleReviewOk = () => {
   loadData(reviewId.value);
 };
 
-// 删除用例
 const delCase = async (record) => {
   modal.confirm({
     title: `确认取消评审用例【${record?.caseInfo?.name || ''}】吗？`,
@@ -359,7 +337,6 @@ const delCase = async (record) => {
   });
 };
 
-// 重新开始评审
 const reStart = async (record) => {
   modal.confirm({
     title: '重新开始评审',
@@ -374,7 +351,6 @@ const reStart = async (record) => {
   });
 };
 
-// 重置评审
 const reset = async (record) => {
   modal.confirm({
     title: '重置评审',
@@ -546,15 +522,6 @@ const menuItems = [
                 </div>
               </div>
             </div>
-            <!-- <div class="flex leading-8 h-8 pr-2">
-              <label class="w-16">评审说明：</label>
-              <div v-if="dataSource?.description" class="flex-1">
-                {{ dataSource?.description }}
-              </div>
-              <div v-else class="text-sub-content">
-                暂无说明~
-            </div>
-            </div> -->
           </div>
         </div>
 
