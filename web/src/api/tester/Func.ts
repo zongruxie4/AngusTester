@@ -81,7 +81,7 @@ export default class API {
   }
 
   startReview (reviewId: string): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/review/${reviewId.value}/start`);
+    return http.patch(`${baseUrl}/review/${reviewId}/start`);
   }
 
   restartReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
