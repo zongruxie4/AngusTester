@@ -15,7 +15,7 @@ xcan:
   api-log:
     enabled: true
     userRequest:
-      enabled: false
+      enabled: true
       printLevel: FULL
     systemRequest:
       enabled: true
