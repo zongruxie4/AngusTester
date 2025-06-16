@@ -49,7 +49,7 @@ export type CaseInfo = {
     developerName: string;
     reviewerName: string;
     name: string;
-    overdueFlag: boolean;
+    overdue: boolean;
     code: string;
     deadlineDate: string;
     review: boolean;

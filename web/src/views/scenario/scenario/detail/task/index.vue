@@ -138,7 +138,7 @@ const emptyTextStyle = {
             {{ record.name }}
           </RouterLink>
           <span
-            v-if="record.overdueFlag"
+            v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
             <span class="inline-block transform-gpu scale-90">已逾期</span>

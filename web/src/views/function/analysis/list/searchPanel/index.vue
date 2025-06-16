@@ -62,7 +62,7 @@ const searchPanelRef = ref();
 // 保存快速搜索转换后的时间
 const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
 const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
-const overdueFlag = ref(false); // 逾期
+const overdue = ref(false); // 逾期
 const moduleFlag = ref(false); // 按模块分组
 
 const sprintSelectVisible = ref(false);
@@ -165,7 +165,7 @@ const menuItemClick = (data: MenuItem) => {
     }
 
     // 关闭逾期
-    overdueFlag.value = false;
+    overdue.value = false;
 
     // // 清空选中的迭代
     // checkedSprintId.value = undefined;
@@ -299,8 +299,8 @@ const searchPanelChange = (data: { key: string; op: string; value: string }[], _
 const getData = () => {
   // 包装数据
   const _filters: { key: string; op: string; value: boolean | string | string[] }[] = cloneDeep(filters.value);
-  if (overdueFlag.value) {
-    _filters.push({ key: 'overdueFlag', op: 'EQUAL', value: true });
+  if (overdue.value) {
+    _filters.push({ key: 'overdue', op: 'EQUAL', value: true });
   }
 
   if (checkedSprintId.value) {
@@ -407,9 +407,9 @@ const initialize = async () => {
     }
 
     if (Object.prototype.hasOwnProperty.call(dbData, 'b')) {
-      overdueFlag.value = dbData.b || false;
+      overdue.value = dbData.b || false;
     } else {
-      overdueFlag.value = false;
+      overdue.value = false;
     }
 
     // 从迭代跳转过来，需要替换为该迭代
@@ -525,7 +525,7 @@ const resetSearchPanel = () => {
 const resetData = () => {
   quickDateMap.value.clear();
   selectedMenuMap.value.clear();
-  overdueFlag.value = false;
+  overdue.value = false;
 
   sprintSelectVisible.value = false;
   selectedSprint.value = undefined;
@@ -583,7 +583,7 @@ onMounted(async () => {
   watch(
     [
       () => filters.value,
-      () => overdueFlag.value,
+      () => overdue.value,
       () => checkedSprintId.value,
       () => checkedTagIds.value.length,
       () => targetParentIdFilter.value,
@@ -595,7 +595,7 @@ onMounted(async () => {
     ], () => {
       const _filters = filters.value;
       if (!(_filters.length ||
-        overdueFlag.value ||
+        overdue.value ||
         // !!checkedSprintId.value ||
         // !!checkedTagIds.value.length ||
         !!targetParentIdFilter.value.value ||
@@ -717,8 +717,8 @@ onMounted(async () => {
           dbData.a = cloneDeep(_filters);
         }
 
-        if (overdueFlag.value) {
-          dbData.b = overdueFlag.value;
+        if (overdue.value) {
+          dbData.b = overdue.value;
         }
 
         if (checkedSprintId.value) {

@@ -365,7 +365,7 @@ const testers = computed(() => {
                 是否逾期
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _case?.overdueFlag?'是':'否' }}
+                {{ _case?.overdue?'是':'否' }}
               </div>
             </div>
 

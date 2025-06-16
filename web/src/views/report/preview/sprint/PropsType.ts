@@ -226,7 +226,7 @@ export type ReportContent = {
                     value: string;
                     message: string
                 };
-                overdueFlag: boolean;
+                overdue: boolean;
                 moduleName: string;
                 failNum: string;
                 totalNum: string;
@@ -252,7 +252,7 @@ export type ReportContent = {
                     value: string;
                     message: string
                 };
-                confirmTaskFlag: boolean;
+                confirmTask: boolean;
                 createdBy: string;
                 createdByName: string;
                 lastModifiedBy: string;

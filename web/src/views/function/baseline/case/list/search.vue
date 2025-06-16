@@ -201,7 +201,7 @@ const testFailNum = ref(''); // 失败次数
 const testFailScope = ref<FilterOp>('EQUAL'); // 失败次数op
 const reviewNum = ref(''); // 评审次数
 const reviewNumScope = ref<FilterOp>('EQUAL'); // 评审次数op
-const overdueFlag = ref(false);
+const overdue = ref(false);
 
 const setParamsAndLoadData = () => {
   params.value.pageNo = 1;
@@ -312,8 +312,8 @@ const getQuickDate = (type) => {
   return [_startDate ? _startDate.format('YYYY-MM-DD HH:mm:ss') : '', _endDate ? _endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
 };
 
-const overdueFlagChange = (_val) => {
-  overdueFlag.value = _val;
+const overdueChange = (_val) => {
+  overdue.value = _val;
   setParamsAndLoadData();
 };
 
@@ -375,7 +375,7 @@ const quickSearchChange = (types: string[], allType: boolean) => {
       testNum.value = '';
       testFailNum.value = '';
       reviewNum.value = '';
-      overdueFlag.value = false;
+      overdue.value = false;
       if (_filters?.length) {
         const ohtersParams = _filters;
         if (ohtersParams.length) {
@@ -477,9 +477,9 @@ const setParamsFilters = () => {
     othersData.push({ key: 'reviewNum', op: reviewNumScope.value, value: reviewNum.value });
   }
 
-  if (overdueFlag.value) {
+  if (overdue.value) {
     othersData.push({
-      key: 'overdueFlag',
+      key: 'overdue',
       op: 'EQUAL',
       value: true
     });
@@ -538,10 +538,10 @@ const handleAddCase = () => {
           <span>已逾期</span>
           <Colon class="mr-2" />
           <Switch
-            :checked="overdueFlag"
+            :checked="overdue"
             size="small"
             class="w-8"
-            @change="overdueFlagChange" />
+            @change="overdueChange" />
         </div>
         <TagList
           ref="tagListRef"

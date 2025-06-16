@@ -122,7 +122,7 @@ const assignees = computed(() => {
                 是否逾期
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _task?.overdueFlag?'是':'否' }}
+                {{ _task?.overdue?'是':'否' }}
               </div>
             </div>
 
@@ -156,7 +156,7 @@ const assignees = computed(() => {
                 是否确认任务
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _task?.confirmTaskFlag?'是':'否' }}
+                {{ _task?.confirmTask?'是':'否' }}
               </div>
             </div>
 

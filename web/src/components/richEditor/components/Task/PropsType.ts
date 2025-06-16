@@ -102,8 +102,8 @@ export interface TaskInfo {
     //         message: string
     //     }
     // ],
-    // confirmTaskFlag: true,
-    // overdueFlag: false,
+    // confirmTask: true,
+    // overdue: false,
     // createdBy: string,
     // createdByName: string,
     // createdDate: string,

@@ -445,7 +445,7 @@ const infoColumns = [
           <div class="flex items-center">
             <TestResult :value="text" />
             <div
-              v-if="props.dataSource?.overdueFlag"
+              v-if="props.dataSource?.overdue"
               class="border border-status-error rounded px-0.5 ml-5"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span>已逾期</span>

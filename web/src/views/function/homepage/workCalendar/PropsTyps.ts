@@ -44,7 +44,7 @@ export type DataItem = {
     execDate: string;
     failNum: string;
     totalNum: string;
-    overdueFlag: false;
+    overdue: false;
     createdBy: string;
     createdByName: string;
     createdDate: string;

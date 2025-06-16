@@ -44,7 +44,7 @@ const loadData = async () => {
 const getList = (current: Dayjs) => {
   const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
   if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => !item.overdueFlag);
+    return dataMap.value[dateString].filter(item => !item.overdue);
   }
 
   return [];
@@ -53,7 +53,7 @@ const getList = (current: Dayjs) => {
 const getOverdueList = (current: Dayjs) => {
   const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
   if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => item.overdueFlag);
+    return dataMap.value[dateString].filter(item => item.overdue);
   }
 
   return [];

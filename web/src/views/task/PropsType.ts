@@ -39,7 +39,7 @@ export type TaskInfo = {
     code: string;
     commentNum: string;
     completedDate: string;
-    confirmTaskFlag: boolean;
+    confirmTask: boolean;
     confirmedDate: string;
     moduleId: string;
     moduleName: string;
@@ -76,7 +76,7 @@ export type TaskInfo = {
     lastModifiedByName: string;
     lastModifiedDate: string;
     name: string;
-    overdueFlag: boolean;
+    overdue: boolean;
     priority: {
         message: string;
         value: 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM';

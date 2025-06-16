@@ -103,8 +103,8 @@ export type ReportContent = {
             failNum: string;
             totalNum: string;
             description: string;
-            confirmTaskFlag: true;
-            overdueFlag: false;
+            confirmTask: true;
+            overdue: false;
             commentNum: string;
             createdBy: string;
             createdByName: string;

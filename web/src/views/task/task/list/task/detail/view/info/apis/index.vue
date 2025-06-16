@@ -293,7 +293,7 @@ const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []
 const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const evalWorkload = computed(() => props.dataSource?.evalWorkload);
 const actualWorkload = computed(() => props.dataSource?.actualWorkload);
-const overdueFlag = computed(() => props.dataSource?.overdueFlag);
+const overdue = computed(() => props.dataSource?.overdue);
 const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
 const failNum = computed(() => +(props.dataSource?.failNum || 0));
 const onePassText = computed(() => {
@@ -373,7 +373,7 @@ const onePassText = computed(() => {
             <div class="flex items-center">
               <TaskStatus :value="status" />
               <span
-                v-if="overdueFlag"
+                v-if="overdue"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                 <span class="inline-block transform-gpu scale-90">已逾期</span>

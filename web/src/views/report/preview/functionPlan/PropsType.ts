@@ -244,7 +244,7 @@ export type ReportContent = {
                     message: string;
                 };
                 testResultHandleDate: string;
-                overdueFlag: boolean;
+                overdue: boolean;
                 moduleName: string;
                 failNum: string;
                 totalNum: string;

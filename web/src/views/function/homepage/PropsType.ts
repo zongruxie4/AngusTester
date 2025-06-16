@@ -55,7 +55,7 @@ export type CaseItem = {
         message: string;
     };
     deadlineDate: string;
-    overdueFlag: boolean;
+    overdue: boolean;
     evalWorkloadMethod: {
         value: string;
         message: string;

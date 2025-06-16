@@ -147,9 +147,9 @@ const searchData = ref<Filters[]>([]);
 
 const selectedTypes = ref<string[]>([]);
 
-const overdueFlag = ref(false);
-const overdueFlagChange = (_val) => {
-  overdueFlag.value = _val;
+const overdue = ref(false);
+const overdueChange = (_val) => {
+  overdue.value = _val;
   setParamsAndLoadData();
 };
 
@@ -233,9 +233,9 @@ const setParamsFilters = () => {
       }
     );
   }
-  if (overdueFlag.value) {
+  if (overdue.value) {
     othersData.push({
-      key: 'overdueFlag',
+      key: 'overdue',
       op: 'EQUAL',
       value: true
     });
@@ -309,7 +309,7 @@ const quickSearchChange = (types: string[], allType: boolean) => {
       testNum.value = '';
       testFailNum.value = '';
       reviewNum.value = '';
-      overdueFlag.value = false;
+      overdue.value = false;
       // planId.value = '';
       // tagIds.value = [];
       if (_filters?.length) {
@@ -433,7 +433,7 @@ const init = async () => {
     const _otherFilters: Filters[] = [];
     for (let i = 0; i < _cacheFilters.length; i++) {
       const item = _cacheFilters[i] as Filters;
-      if (['planId', 'tagId', 'overdueFlag', 'testNum', 'testFailNum', 'reviewNum'].includes(item.key)) {
+      if (['planId', 'tagId', 'overdue', 'testNum', 'testFailNum', 'reviewNum'].includes(item.key)) {
         if (item.key === 'planId') {
           planId.value = item.value as string;
         }
@@ -443,8 +443,8 @@ const init = async () => {
           tagIds.value = Array.from(set);
         }
 
-        if (item.key === 'overdueFlag') {
-          overdueFlag.value = item.value as boolean;
+        if (item.key === 'overdue') {
+          overdue.value = item.value as boolean;
         }
 
         if (item.key === 'testNum') {
@@ -1735,10 +1735,10 @@ defineExpose({
               <span>已逾期</span>
               <Colon class="mr-2" />
               <Switch
-                :checked="overdueFlag"
+                :checked="overdue"
                 size="small"
                 class="w-8"
-                @change="overdueFlagChange" />
+                @change="overdueChange" />
             </div>
             <div class="h-7 leading-7 mb-3 mr-5">
               <span class="text-3 text-theme-content">

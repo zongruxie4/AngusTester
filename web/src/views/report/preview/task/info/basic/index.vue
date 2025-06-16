@@ -117,7 +117,7 @@ const onePassText = computed(() => {
           是否逾期
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ task?.overdueFlag ? '是' : '否' }}
+          {{ task?.overdue ? '是' : '否' }}
         </div>
       </div>
 

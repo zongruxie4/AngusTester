@@ -131,7 +131,7 @@ export type ReportContent = {
                 moduleId: string;
                 moduleName: string;
                 name: string;
-                overdueFlag: boolean;
+                overdue: boolean;
                 planId: string;
                 planName: string;
                 priority: {
@@ -522,7 +522,7 @@ export type ReportContent = {
                 canceledDate: string;
                 code: string;
                 completedDate: string;
-                confirmTaskFlag: boolean;
+                confirmTask: boolean;
                 confirmedDate: string;
                 confirmorId: string;
                 confirmorName: string;
@@ -556,7 +556,7 @@ export type ReportContent = {
                 moduleId: string;
                 moduleName: string;
                 name: string;
-                overdueFlag: boolean;
+                overdue: boolean;
                 priority: {
                     value: 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM';
                     message: string;

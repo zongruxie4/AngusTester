@@ -793,7 +793,7 @@ const delCase = (caseItem, idx) => {
                         {{ record.name }}
                       </div>
                       <div
-                        v-if="record.overdueFlag"
+                        v-if="record.overdue"
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
                         <span class="inline-block transform-gpu">已逾期</span>

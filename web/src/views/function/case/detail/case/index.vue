@@ -832,7 +832,7 @@ onBeforeUnmount(() => {
             <div class="flex items-center">
               <TestResult :value="text" />
               <div
-                v-if="caseDetail?.overdueFlag"
+                v-if="caseDetail?.overdue"
                 class="border border-status-error rounded px-0.5 ml-5"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                 已逾期

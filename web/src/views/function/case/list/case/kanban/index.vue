@@ -1381,7 +1381,7 @@ const checkedCaseId = computed(() => {
                 <IconTask :value="element.testResult.value" class="mr-1.5" />
                 <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
                 <span
-                  v-if="element.overdueFlag"
+                  v-if="element.overdue"
                   class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                   style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                   <span class="inline-block transform-gpu scale-90">已逾期</span>
@@ -1522,7 +1522,7 @@ const checkedCaseId = computed(() => {
                       <IconTask :value="element.testResult.value" class="mr-1.5" />
                       <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
                       <span
-                        v-if="element.overdueFlag"
+                        v-if="element.overdue"
                         class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                         <span class="inline-block transform-gpu scale-90">已逾期</span>

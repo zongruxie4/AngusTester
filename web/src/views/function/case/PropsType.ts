@@ -41,7 +41,7 @@ export type CaseInfoObj = {
   code: string;
   priority: EnumType;
   deadlineDate: string;
-  overdueFlag: boolean;
+  overdue: boolean;
   evalWorkloadMethod: EnumType;
   evalWorkload: string | null;
   actualWorkload: string | null;
