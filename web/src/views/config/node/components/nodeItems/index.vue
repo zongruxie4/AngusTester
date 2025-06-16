@@ -874,12 +874,12 @@ defineExpose({ add, startInterval });
                 :columns="installConfigColumns">
                 <template #tenantId="{text}">
                   <div class="flex items-center">
-                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)">复制 <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
+                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)"> <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
                   </div>
                 </template>
                 <template #deviceId="{text}">
                   <div class="flex items-center">
-                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)">复制 <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
+                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)"> <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
                   </div>
                 </template>
                 <template #ctrlAccessToken="{text}">
