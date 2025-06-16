@@ -20,7 +20,7 @@ public interface CtrlConstant {
   int BROADCAST_CTRL_REQUEST_TIMEOUT = 120 * 1000;
 
   /**
-   * Used by angus agent and runner.
+   * Used by AngusAgent and runner.
    */
   String OPEN2P_DISCOVER_URI_PREFIX = "/openapi2p/v1/ctrl";
   String OPEN2P_DISCOVER_CONN_INFO_ENDPOINT = OPEN2P_DISCOVER_URI_PREFIX + "/connections/info";

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Election based on number of tasks being processed and ctrl node resource usage.
  * <p>
- * Used by angus agent.
+ * Used by AngusAgent.
  */
 @Tag(name = "CtrlOpen2p", description = "Private Environment AngusCtrl API - On-premises controller status monitoring and agent connection management")
 @Validated
