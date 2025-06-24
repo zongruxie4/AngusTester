@@ -57,6 +57,7 @@ import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_DB_NAME;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_DB_PASSWORD;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_DB_PORT;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_DB_USER;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.TESTER_WEBSITE;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.VITE_GM_URL_PREFIX;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.VITE_TESTER_URL_PREFIX;
 import static cloud.xcan.angus.core.utils.CoreUtils.getResourceFileContent;
@@ -152,8 +153,17 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
     envs.put(GM_HOST, getInstallGMHost());
     envs.put(GM_PORT, getInstallGMPort());
 
+    String gmApisUrlPrefix = getGMApisUrlPrefix();
     envs.put(GM_APIS_URL_PREFIX, getGMApisUrlPrefix());
-    envs.put(TESTER_APIS_SERVER_URL, getTesterApisUrlPrefix());
+    System.out.println("Set GM_APIS_URL_PREFIX to " + gmApisUrlPrefix);
+
+    String testerApisUrlPrefix = getTesterApisUrlPrefix();
+    envs.put(TESTER_APIS_SERVER_URL, testerApisUrlPrefix);
+    System.out.println("Set TESTER_APIS_SERVER_URL to " + testerApisUrlPrefix);
+
+    String testerWebSite = getTesterWebsite();
+    envs.put(TESTER_WEBSITE, testerWebSite);
+    System.out.println("Set TESTER_WEBSITE to " + testerWebSite);
 
     InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
     if (installType.isShared()) {
