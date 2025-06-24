@@ -14,11 +14,13 @@ import static cloud.xcan.angus.core.spring.env.AbstractEnvLoader.appName;
 import static cloud.xcan.angus.core.spring.env.AbstractEnvLoader.envs;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getFinalTenantId;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getFinalTenantName;
+import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getGMApisUrlPrefix;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getGMWebsite;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallGMHost;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallGMPort;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getInstallTesterHost;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getProductInfo;
+import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getTesterApisUrlPrefix;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getTesterWebsite;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.localDCaches;
 import static cloud.xcan.angus.core.spring.env.EnvHelper.getEnum;
@@ -150,8 +152,8 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
     envs.put(GM_HOST, getInstallGMHost());
     envs.put(GM_PORT, getInstallGMPort());
 
-    envs.put(GM_APIS_URL_PREFIX, getGMWebsite());
-    envs.put(TESTER_APIS_SERVER_URL, getTesterWebsite());
+    envs.put(GM_APIS_URL_PREFIX, getGMApisUrlPrefix());
+    envs.put(TESTER_APIS_SERVER_URL, getTesterApisUrlPrefix());
 
     InstallType installType = getEnum(INSTALL_TYPE, InstallType.class, InstallType.SHARED);
     if (installType.isShared()) {
