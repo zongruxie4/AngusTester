@@ -33,7 +33,7 @@ public class ApisAssembler {
 
   public static Apis archiveDtoToDomain(ApisArchiveDto dto) {
     Apis apis = new Apis()
-        .setUnarchiveId(dto.getUnarchiveId())
+        .setUnarchivedId(dto.getUnarchivedId())
         .setSource(ApiSource.CREATED)
         .setImportSource(null)
         .setServiceId(dto.getServiceId())
@@ -155,7 +155,7 @@ public class ApisAssembler {
         .setDatasetActionOnEOF(dto.getDatasetActionOnEOF())
         .setDatasetSharingMode(dto.getDatasetSharingMode());
     if (isNull(dto.getId())) {
-      apis.setUnarchiveId(dto.getUnarchiveId())
+      apis.setUnarchivedId(dto.getUnarchivedId())
           .setSource(ApiSource.CREATED)
           .setImportSource(null)
           .setAuth(nullSafe(dto.getAuth(), false))

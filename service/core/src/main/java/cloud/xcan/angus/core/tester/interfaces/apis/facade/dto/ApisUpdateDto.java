@@ -42,7 +42,7 @@ import org.hibernate.validator.constraints.Length;
 public class ApisUpdateDto {
 
   @NotNull
-  @Schema(description = "Apis id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Api id", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@Schema(example = "1") -> Instead by move
@@ -55,39 +55,48 @@ public class ApisUpdateDto {
   private HttpMethod method;
 
   /**
-   * Note:: Cannot include query parameters when saving.
-   *
    * @see io.swagger.v3.oas.models.Paths#keySet()
    */
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(example = "/comm/api/v1/country/{id}")
+  @Schema(description = "Api endpoint. Note: Cannot include query parameters when saving.", example = "/comm/api/v1/country/{id}")
   private String endpoint;
 
   /////////////////////////OpenAPI Document//////////////////////////
+  @Schema(description = "Api OpenAPI tags.")
   private List<String> tags;
 
   @Length(max = MAX_OPENAPI_SUMMARY_LENGTH)
+  @Schema(description = "Api summary or name", example = "Add user api")
   private String summary;
 
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
+  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation.")
   private String description;
 
+  @Schema(description = "Allows referencing an external resource for extended documentation. See [OpenAPI External Documentation Object](https://swagger.io/specification/v3/#external-documentation-object)")
   private ExternalDocumentation externalDocs;
 
   @Length(max = MAX_CODE_LENGTH_X5)
+  @Schema(description = "The name of an existing, resolvable OAS operation, as defined with a unique operationId.")
   private String operationId;
 
   @Size(max = MAX_PARAM_SIZE)
+  @Schema(description = "Api request parameters. See [OpenAPI Parameter Object](https://swagger.io/specification/v3/#parameter-object)")
   private List<Parameter> parameters;
 
+  @Schema(description = "Api request body. See [OpenAPI Request Body Object](https://swagger.io/specification/v3/#request-body-object)")
   private RequestBody requestBody;
 
+  @Schema(description = "Api responses. See [OpenAPI Response Object](https://swagger.io/specification/v3/#response-object)")
   private Map<String, ApiResponse> responses;
 
+  @Schema(description = "Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation. Default value is false.")
   private Boolean deprecated;
 
+  @Schema(description = "A declaration of which security mechanisms can be used for this apis. See [OpenAPI Security Requirement Object](https://swagger.io/specification/v3/#security-requirement-object)")
   private List<SecurityRequirement> security;
 
+  @Schema(description = "Provides connection information between the current API and the target server. See [OpenAPI Server Object](https://swagger.io/specification/v3/#server-object)")
   private Server currentServer;
 
   /**
@@ -97,13 +106,16 @@ public class ApisUpdateDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
+  @Schema(description = "Extension fields allow users to customize business extension attributes.")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 
+  @Schema(description = "Defines a security scheme that can be used by the operations. See [OpenAPI Security Scheme Object](https://swagger.io/specification/v3/#security-scheme-object)")
   private SecurityScheme authentication;
 
   @Valid
   @Size(max = MAX_PARAM_SIZE)
+  @Schema(description = "Configure interface execution result assertion. See [AngusTester Http Assertion](https://www.xcan.cloud/en/docs/tester/specification/content/task/elements/http)")
   private List<Assertion<HttpExtraction>> assertions;
 
   //Fix:: Security Bug

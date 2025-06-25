@@ -1,5 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.dto;
 
+import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_OPENAPI_DOC_DESC_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_PARAM_SIZE;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_URL_LENGTH_X4;
 
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.HashMap;
@@ -59,11 +61,14 @@ public class ApisUnarchivedAddDto {
   /**
    * @see Operation#getSummary()
    */
+  @Schema(description = "Api summary or name", example = "Add user api")
   private String summary;
 
   /**
    * @see Operation#getDescription()
    */
+  @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
+  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation.")
   private String description;
 
   //  private ExternalDocumentation externalDocs;
@@ -71,16 +76,20 @@ public class ApisUnarchivedAddDto {
   //  private String operationId;
 
   @Size(max = MAX_PARAM_SIZE)
+  @Schema(description = "Api request parameters. See [OpenAPI Parameter Object](https://swagger.io/specification/v3/#parameter-object)")
   private List<Parameter> parameters;
 
+  @Schema(description = "Api request body. See [OpenAPI Request Body Object](https://swagger.io/specification/v3/#request-body-object)")
   private RequestBody requestBody;
 
+  @Schema(description = "Api responses. See [OpenAPI Response Object](https://swagger.io/specification/v3/#response-object)")
   private Map<String, ApiResponse> responses;
 
   //  private Boolean deprecated;
 
   //  private List<SecurityRequirement> security;
 
+  @Schema(description = "Provides connection information between the current API and the target server. See [OpenAPI Server Object](https://swagger.io/specification/v3/#server-object)")
   private Server currentServer;
 
   /**
@@ -90,13 +99,16 @@ public class ApisUnarchivedAddDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
+  @Schema(description = "Extension fields allow users to customize business extension attributes.")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 
+  @Schema(description = "Defines a security scheme that can be used by the operations. See [OpenAPI Security Scheme Object](https://swagger.io/specification/v3/#security-scheme-object)")
   private SecurityScheme authentication;
 
   @Valid
   @Size(max = MAX_PARAM_SIZE)
+  @Schema(description = "Configure interface execution result assertion. See [AngusTester Http Assertion](https://www.xcan.cloud/en/docs/tester/specification/content/task/elements/http)")
   private List<Assertion<HttpExtraction>> assertions;
 
 }
