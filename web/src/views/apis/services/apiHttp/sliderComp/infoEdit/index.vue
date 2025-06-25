@@ -174,7 +174,7 @@ const save = async () => {
     const params = { ...formParams, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, externalDocs };
     isLoading.value = true;
     const [error, res] = isUnarchivedApi.value && state.id
-      ? await apis.addApi([{ ...params, unarchiveId: state.id }])
+      ? await apis.addApi([{ ...params, unarchivedId: state.id }])
       : isUnarchivedApi.value && !state.id
         ? await apis.putApi([{ ...params }])
         : await apis.updateApi([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);

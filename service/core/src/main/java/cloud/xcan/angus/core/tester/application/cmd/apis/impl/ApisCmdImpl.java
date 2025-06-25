@@ -266,7 +266,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        Set<Long> unarchiveIds = assembleUnarchivedInfo(apis, servicesDb);
+        Set<Long> unarchivedIds = assembleUnarchivedInfo(apis, servicesDb);
 
         // Add unarchived apis
         List<IdKey<Long, Object>> idKeys = add(apis, servicesDb, false);
@@ -276,7 +276,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
             archiveActivityParams(apis, servicesDb)));
 
         // Delete unarchived apis
-        apisUnarchivedRepo.deleteAllByCreatedByAndIdIn(getUserId(), unarchiveIds);
+        apisUnarchivedRepo.deleteAllByCreatedByAndIdIn(getUserId(), unarchivedIds);
         return idKeys;
       }
     }.execute();
@@ -1214,16 +1214,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
   @NotNull
   private Set<Long> assembleUnarchivedInfo(List<Apis> apis, Services servicesDb) {
-    Set<Long> unarchiveIds = apis.stream().map(Apis::getUnarchiveId)
+    Set<Long> unarchivedIds = apis.stream().map(Apis::getUnarchivedId)
         .filter(Objects::nonNull).collect(Collectors.toSet());
-    if (isNotEmpty(unarchiveIds)) {
-      List<ApisUnarchived> unarchivedApis = checkAndGetUnarchived(unarchiveIds);
+    if (isNotEmpty(unarchivedIds)) {
+      List<ApisUnarchived> unarchivedApis = checkAndGetUnarchived(unarchivedIds);
       // If the apis parameters queryParams, requestBodyData... are empty when archiving,
       // set the corresponding parameter value in the unarchived api to the current apis
       Map<Long, ApisUnarchived> unarchivedMap = unarchivedApis.stream()
           .collect(Collectors.toMap(ApisUnarchived::getId, o -> o));
       apis.forEach(api -> {
-        ApisUnarchived apisUnarchived = unarchivedMap.get(api.getUnarchiveId());
+        ApisUnarchived apisUnarchived = unarchivedMap.get(api.getUnarchivedId());
         if (nonNull(apisUnarchived)) {
           ApisConverter.assembleUnarchivedInfo(api, apisUnarchived);
         }
@@ -1234,19 +1234,19 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           api.setProjectId(servicesDb.getProjectId());
         }
     );
-    return unarchiveIds;
+    return unarchivedIds;
   }
 
   @NotNull
-  private List<ApisUnarchived> checkAndGetUnarchived(Set<Long> unarchiveIds) {
-    // Query unarchive apis
+  private List<ApisUnarchived> checkAndGetUnarchived(Set<Long> unarchivedIds) {
+    // Query unarchived apis
     List<ApisUnarchived> unarchivedApisDb = apisUnarchivedRepo.findAllByCreatedByAndIdIn(
-        getUserId(), unarchiveIds);
-    assertResourceNotFound(unarchivedApisDb, unarchiveIds.iterator().next(), "UnarchiveApi");
+        getUserId(), unarchivedIds);
+    assertResourceNotFound(unarchivedApisDb, unarchivedIds.iterator().next(), "UnarchiveApi");
 
     Set<Long> unarchivedExistIds = unarchivedApisDb.stream()
         .map(ApisUnarchived::getId).filter(Objects::nonNull).collect(Collectors.toSet());
-    Set<Long> unarchiveRequestIds = new HashSet<>(unarchiveIds);
+    Set<Long> unarchiveRequestIds = new HashSet<>(unarchivedIds);
     unarchiveRequestIds.removeAll(unarchivedExistIds);
     assertResourceNotFound(unarchiveRequestIds.isEmpty(), unarchiveRequestIds, "UnarchiveApi");
     return unarchivedApisDb;

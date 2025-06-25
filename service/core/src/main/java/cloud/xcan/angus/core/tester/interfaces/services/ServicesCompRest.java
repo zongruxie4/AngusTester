@@ -116,7 +116,7 @@ public class ServicesCompRest {
         servicesCompFacade.listByType(serviceId, types, keys, ignoreModel));
   }
 
-  @Operation(summary = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listByRef")
+  @Operation(summary = "Query services components by reference. ", operationId = "services:comp:listByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
@@ -128,7 +128,7 @@ public class ServicesCompRest {
     return ApiLocaleResult.success(servicesCompFacade.listByRef(serviceId, refs, ignoreModel));
   }
 
-  @Operation(summary = "Query services components by reference. Note: `If the service type also returns the parent project server configuration`.", operationId = "services:comp:listAll")
+  @Operation(summary = "Query services components by reference. ", operationId = "services:comp:listAll")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })

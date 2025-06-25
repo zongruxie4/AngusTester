@@ -340,7 +340,7 @@ public class Apis extends TenantAuditingEntity<Apis, Long> implements ActivityRe
   @Transient
   private Boolean follow;
   @Transient
-  private Long unarchiveId;
+  private Long unarchivedId;
   @Transient
   private String createdByName;
   @Transient
