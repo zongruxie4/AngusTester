@@ -47,6 +47,8 @@ public class ApisShareVo {
 
   private boolean isExpired;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   private String createdByName;

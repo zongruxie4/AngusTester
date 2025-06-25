@@ -70,6 +70,7 @@ public class ApisShareAssembler {
         .setUrl(share.getUrl())
         .setViewNum(share.getViewNum())
         .setExpired(!share.isNotExpired())
+        .setTenantId(share.getTenantId())
         .setCreatedBy(share.getCreatedBy())
         .setCreatedByName(share.getCreatedByName())
         .setCreatedByAvatar(share.getAvatar())
