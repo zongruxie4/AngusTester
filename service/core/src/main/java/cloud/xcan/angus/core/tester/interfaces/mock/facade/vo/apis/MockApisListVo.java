@@ -54,6 +54,8 @@ public class MockApisListVo {
 
   private long exceptionNum;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

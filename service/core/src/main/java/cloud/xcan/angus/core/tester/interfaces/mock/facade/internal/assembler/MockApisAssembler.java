@@ -106,6 +106,7 @@ public class MockApisAssembler {
         .setApisEndpoint(apis.getApisEndpoint())
         .setResponses(nonNull(apis.getResponses()) ? apis.getResponses().stream()
             .map(MockApisAssembler::toMockApiResponseInfoVo).collect(Collectors.toList()) : null)
+        .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
         .setLastModifiedBy(apis.getLastModifiedBy())
@@ -141,13 +142,14 @@ public class MockApisAssembler {
         .setSimulateErrorNum(apis.getSimulateErrorNum())
         .setExceptionNum(apis.getExceptionNum())
         .setSuccessNum(apis.getSuccessNum())
+        .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
         .setLastModifiedBy(apis.getLastModifiedBy())
         .setLastModifiedDate(apis.getLastModifiedDate());
   }
 
-  public static MockApisServiceInfoVo toMockServiceDetailVo(MockService service) {
+  public static MockApisServiceInfoVo toMockApisServiceInfoVo(MockService service) {
     return new MockApisServiceInfoVo()
         .setId(service.getId())
         .setProjectId(service.getProjectId())

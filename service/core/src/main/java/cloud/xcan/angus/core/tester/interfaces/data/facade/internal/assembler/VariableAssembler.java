@@ -77,6 +77,7 @@ public class VariableAssembler {
         .setValue(variable.getValue())
         .setPasswordValue(variable.getPasswordValue())
         .setExtraction(variable.getExtraction())
+        .setTenantId(variable.getTenantId())
         .setCreatedBy(variable.getCreatedBy())
         .setCreatedDate(variable.getCreatedDate())
         .setLastModifiedBy(variable.getLastModifiedBy())

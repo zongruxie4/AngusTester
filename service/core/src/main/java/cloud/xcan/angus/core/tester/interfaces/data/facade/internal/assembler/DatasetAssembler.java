@@ -63,6 +63,7 @@ public class DatasetAssembler {
         .setDataSource(ParameterizationDataSource.of(dataset.getExtraction()))
         .setParameters(dataset.getParameters())
         .setExtraction(dataset.getExtraction())
+        .setTenantId(dataset.getTenantId())
         .setCreatedBy(dataset.getCreatedBy())
         .setCreatedDate(dataset.getCreatedDate())
         .setLastModifiedBy(dataset.getLastModifiedBy())

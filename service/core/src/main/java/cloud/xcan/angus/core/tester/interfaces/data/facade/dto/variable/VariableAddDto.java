@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable;
 
-import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_DESC_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_PARAM_VALUE_LENGTH;
@@ -11,12 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -48,13 +45,4 @@ public class VariableAddDto {
   @Schema(description = "Extraction rules configuration")
   private DefaultExtraction extraction;
 
-  private Long createdBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime createdDate;
-
-  private Long lastModifiedBy;
-
-  @DateTimeFormat(pattern = DATE_FMT)
-  private LocalDateTime lastModifiedDate;
 }

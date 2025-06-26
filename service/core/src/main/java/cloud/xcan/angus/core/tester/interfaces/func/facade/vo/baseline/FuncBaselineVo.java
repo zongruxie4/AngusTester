@@ -25,6 +25,8 @@ public class FuncBaselineVo {
 
   private String description;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   //@NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

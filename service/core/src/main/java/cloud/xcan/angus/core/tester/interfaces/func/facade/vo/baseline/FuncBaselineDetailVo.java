@@ -28,6 +28,8 @@ public class FuncBaselineDetailVo {
 
   private LinkedHashSet<Long> caseIds;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

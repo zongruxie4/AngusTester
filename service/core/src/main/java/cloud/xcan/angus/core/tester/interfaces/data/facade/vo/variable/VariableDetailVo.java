@@ -33,6 +33,8 @@ public class VariableDetailVo {
 
   private DefaultExtraction extraction;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

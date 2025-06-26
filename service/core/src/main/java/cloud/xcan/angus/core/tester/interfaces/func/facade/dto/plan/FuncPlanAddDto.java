@@ -91,7 +91,7 @@ public class FuncPlanAddDto {
 
   ///////////// Other setting /////////////
 
-  @Schema(description = "Use case prefix", example = "EXAMPLE_")
+  @Schema(description = "Use case prefix, modification is not allowed after setting", example = "EXAMPLE_")
   @Length(max = MAX_KEY_LENGTH)
   private String casePrefix;
 

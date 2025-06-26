@@ -276,6 +276,7 @@ public class ApisAssembler {
         .setAvatar(apis.getAvatar())
         .setFavourite(apis.getFavourite())
         .setFollow(apis.getFollow())
+        .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedByName(apis.getCreatedByName())
         .setCreatedDate(apis.getCreatedDate())

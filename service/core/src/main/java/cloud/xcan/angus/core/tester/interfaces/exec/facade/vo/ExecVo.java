@@ -111,6 +111,8 @@ public class ExecVo {
   @NameJoinField(id = "execBy", repository = "commonUserBaseRepo")
   private String execByName;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

@@ -90,6 +90,3 @@ public class ScenarioDetailVo {
   private LocalDateTime lastModifiedDate;
 
 }
-
-
-

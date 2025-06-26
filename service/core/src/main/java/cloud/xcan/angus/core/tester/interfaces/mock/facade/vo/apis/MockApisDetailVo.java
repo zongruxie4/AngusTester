@@ -72,6 +72,8 @@ public class MockApisDetailVo {
 
   private List<MockApiResponseInfoVo> responses;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")
