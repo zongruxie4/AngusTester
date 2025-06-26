@@ -265,7 +265,7 @@ onMounted(() => {
               </div>
             </FormItem>
             <FormItem
-              label="名称"
+              label="项目名称"
               name="name"
               class="input_select"
               required>
@@ -328,7 +328,7 @@ onMounted(() => {
                 <Icon icon="icon-tishi1" class="text-tips text-3.5" />
               </Popover>
             </FormItem>
-            <FormItem label="成员" class="input_select" required >
+            <FormItem label="项目成员" class="input_select" required >
               <RadioGroup
                 v-model:value="memberType"
                 buttonStyle="solid"
@@ -387,7 +387,7 @@ onMounted(() => {
               </div>
             </FormItem>
             <FormItem
-              label="描述"
+              label="项目描述"
               name="description"
               :rules="[{validator: validateDesc}]">
               <RichEditor
@@ -485,7 +485,7 @@ onMounted(() => {
                 </div>
               </FormItem>
               <FormItem
-                label="名称"
+                label="项目名称"
                 name="name"
                 class="input_select"
                 required>
@@ -515,7 +515,7 @@ onMounted(() => {
                 </Popover>
               </FormItem>
               <FormItem
-                label="时间"
+                label="时间计划"
                 name="dateRange"
                 class="input_select"
                 required>
@@ -535,7 +535,7 @@ onMounted(() => {
                 </Popover>
               </FormItem>
 
-              <FormItem label="成员" class="input_select" required>
+              <FormItem label="项目成员" class="input_select" required>
                 <RadioGroup
                   v-model:value="memberType"
                   buttonStyle="solid"
@@ -595,7 +595,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                label="描述"
+                label="项目描述"
                 name="description"
                 :rules="[{validator: validateDesc}]">
                 <RichEditor
