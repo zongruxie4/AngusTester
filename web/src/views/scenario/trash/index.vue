@@ -224,7 +224,7 @@ const emptyTextStyle = {
         </Input>
         <div class="flex-1 truncate text-theme-sub-content space-x-1 ml-2">
           <Icon icon="icon-tishi1" class="text-3.5 text-tips" />
-          <span>只允许管理员、删除人还原和删除回收站。</span>
+          <span>只允许管理员和删除人还原或彻底删除回收站数据。</span>
         </div>
       </div>
       <div class="space-x-2.5">
