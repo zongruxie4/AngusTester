@@ -659,7 +659,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="时间"
+        label="时间计划"
         name="date"
         :rules="{ required: true, validator: validateDate, trigger: 'change' }">
         <DatePicker

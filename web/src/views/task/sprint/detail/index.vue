@@ -273,7 +273,7 @@ const meetings = computed(() => {
 
           <div class="w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>时间</span>
+              <span>时间计划</span>
               <Colon class="w-1" />
             </div>
 
