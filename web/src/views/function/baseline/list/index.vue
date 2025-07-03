@@ -284,10 +284,10 @@ const sortMenuItems: {
                   <div
                     class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
                     <Icon
-                      v-if="item.establishedFlag"
+                      v-if="item.established"
                       icon="icon-duihao-copy"
                       class="mr-1" />
-                    <div>{{ item.establishedFlag ? '已建立' : '未建立' }}</div>
+                    <div>{{ item.established ? '已建立' : '未建立' }}</div>
                   </div>
                 </div>
               </div>
@@ -345,7 +345,7 @@ const sortMenuItems: {
                   </RouterLink>
 
                   <Button
-                    v-if="!item.establishedFlag"
+                    v-if="!item.established"
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"

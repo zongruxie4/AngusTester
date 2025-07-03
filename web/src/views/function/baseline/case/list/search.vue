@@ -7,11 +7,11 @@ import { duration } from '@xcan-angus/tools';
 import dayjs from 'dayjs';
 
 interface Props {
-  establishedFlag: boolean;
+  established: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  establishedFlag: false
+  established: false
 });
 
 const emits = defineEmits<{
@@ -551,7 +551,7 @@ const handleAddCase = () => {
       </div>
       <div class="flex-1 text-right">
         <Button
-          :disabled="props.establishedFlag"
+          :disabled="props.established"
           size="small"
           type="primary"
           @click="handleAddCase">

@@ -111,11 +111,11 @@ const menuItems = computed(() => [
     name: '我修改的'
   },
   {
-    key: 'establishedFlag=1',
+    key: 'established=1',
     name: '已建立'
   },
   {
-    key: 'establishedFlag=0',
+    key: 'established=0',
     name: '未建立'
   },
   {
@@ -139,7 +139,7 @@ const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}
 const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
 const assocKeys = ['ownerId'];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-const establishedFlagKeys = ['establishedFlag=1', 'establishedFlag=0'];
+const establishedKeys = ['established=1', 'established=0'];
 
 const formatDateString = (key: string) => {
   let startDate: Dayjs | undefined;
@@ -246,8 +246,8 @@ const menuItemClick = (data) => {
     if (timeKeys.includes(key)) {
       timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
       selectedMenuMap.value[key] = true;
-    } else if (establishedFlagKeys.includes(key)) {
-      establishedFlagKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
+    } else if (establishedKeys.includes(key)) {
+      establishedKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
       selectedMenuMap.value[key] = true;
     } else {
       selectedMenuMap.value[key] = true;
@@ -259,10 +259,10 @@ const menuItemClick = (data) => {
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
-    } else if (establishedFlagKeys.includes(key)) {
+    } else if (establishedKeys.includes(key)) {
       const value = !!(+key.split('=')[1]);
       return {
-        key: 'establishedFlag',
+        key: 'established',
         op: 'EQUAL',
         value
       };

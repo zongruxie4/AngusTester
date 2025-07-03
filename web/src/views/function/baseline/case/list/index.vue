@@ -204,7 +204,7 @@ onMounted(() => {
     </div>
     <div class="flex-1">
       <Search
-        :establishedFlag="baselineInfo?.establishedFlag"
+        :established="baselineInfo?.established"
         @handleAddCase="handleAddCase"
         @change="handleSearchChange" />
       <Table

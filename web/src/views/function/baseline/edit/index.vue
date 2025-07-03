@@ -483,7 +483,7 @@ const editFlag = computed(() => {
               class="w-50"
               @change="onKeywordChange" />
             <Button
-              :disabled="!formState.planId || dataSource?.establishedFlag"
+              :disabled="!formState.planId || dataSource?.established"
               size="small"
               type="primary"
               @click="addBaselineCase">

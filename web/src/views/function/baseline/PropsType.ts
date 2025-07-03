@@ -1,5 +1,5 @@
 export type BaselineInfo = {
-  establishedFlag: boolean;
+  established: boolean;
   name: string;
   id?: string;
   description?: string;
