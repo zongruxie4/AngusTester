@@ -826,7 +826,7 @@ const autoSize = {
       size="small"
       layout="horizontal">
       <FormItem
-        label="名称"
+        label="计划名称"
         name="name"
         :rules="{ required: true, message: '请输入计划名称' }">
         <Input
@@ -860,7 +860,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="时间"
+        label="时间计划"
         name="date"
         :rules="{ required: true, validator: validateDate, trigger: 'change' }">
         <DatePicker

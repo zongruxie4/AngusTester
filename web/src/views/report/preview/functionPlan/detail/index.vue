@@ -52,7 +52,7 @@ const testerResponsibilities = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            名称
+            计划名称
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.name }}
@@ -93,7 +93,7 @@ const testerResponsibilities = computed(() => {
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            计划时间
+            时间计划
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.startDate }} 至 {{ plan?.deadlineDate }}
