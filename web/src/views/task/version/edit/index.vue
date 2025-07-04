@@ -129,7 +129,7 @@ onMounted(async () => {
       <FormItem
         required
         name="name"
-        label="新版本名称">
+        label="版本名称">
         <Input
           v-model:value="formState.name"
           :maxlength="40"
