@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.task.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.TASK_SPRINT;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_STATUS_MISMATCH_T;
@@ -231,7 +232,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
         taskSprintAuthQuery.checkModifySprintAuth(getUserId(), id);
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(sprintDb.getStatus().allowStart(), TASK_SPRINT_STATUS_MISMATCH_T,
+        assertTrue(sprintDb.getStatus().allowStart(), TASK_SPRINT_STATUS_MISMATCH_T,
             new Object[]{sprintDb.getStatus(), IN_PROGRESS});
       }
 
@@ -261,7 +262,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
         taskSprintAuthQuery.checkModifySprintAuth(getUserId(), id);
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(sprintDb.getStatus().allowEnd(), TASK_SPRINT_STATUS_MISMATCH_T,
+        assertTrue(sprintDb.getStatus().allowEnd(), TASK_SPRINT_STATUS_MISMATCH_T,
             new Object[]{sprintDb.getStatus(), COMPLETED});
 
         // Check the tasks is completed
@@ -294,7 +295,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
         taskSprintAuthQuery.checkModifySprintAuth(getUserId(), id);
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(sprintDb.getStatus().allowBlock(), TASK_SPRINT_STATUS_MISMATCH_T,
+        assertTrue(sprintDb.getStatus().allowBlock(), TASK_SPRINT_STATUS_MISMATCH_T,
             new Object[]{sprintDb.getStatus(), BLOCKED});
       }
 
@@ -346,7 +347,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
         sprintDb = taskSprintQuery.checkAndFind(id);
 
         // Check if the movement position has changed
-        ProtocolAssert.assertTrue(!sprintDb.getProjectId().equals(targetProjectId),
+        assertTrue(!sprintDb.getProjectId().equals(targetProjectId),
             "The moving position has not changed");
 
         // Check the project exists
