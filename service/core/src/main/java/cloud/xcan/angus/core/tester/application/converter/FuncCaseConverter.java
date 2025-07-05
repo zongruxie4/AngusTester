@@ -102,7 +102,7 @@ public class FuncCaseConverter {
       case0.setProjectId(planDb.getProjectId())
           .setPlanAuth(planDb.getAuth())
           .setEvalWorkloadMethod(planDb.getEvalWorkloadMethod());
-      case0.setUnplanned(!planDb.getStatus().isStarted());
+      case0.setUnplanned(planDb.getStatus().isStarted());
       case0.setCreatedBy(nullSafe(case0.getCreatedBy(), getUserId()))
           .setCreatedDate(nullSafe(case0.getCreatedDate(), LocalDateTime.now()));
     }
@@ -624,7 +624,8 @@ public class FuncCaseConverter {
     return testSteps;
   }
 
-  public static void assembleTimeSeriesByFormat(Map<BurnDownResourceType, BurnDownChartCount> chartMap,
+  public static void assembleTimeSeriesByFormat(
+      Map<BurnDownResourceType, BurnDownChartCount> chartMap,
       List<FuncCaseEfficiencySummary> validCases, LocalDateTime safeCreatedDateStart,
       LocalDateTime safeCreatedDateEnd) {
     List<String> days = new ArrayList<>();
@@ -768,7 +769,7 @@ public class FuncCaseConverter {
     Map<FuncPlanStatus, List<FuncReview>> statusMap = reviews.stream()
         .collect(Collectors.groupingBy(FuncReview::getStatus));
     for (FuncPlanStatus value : FuncPlanStatus.values()) {
-      if (value.isSupportInReview()){
+      if (value.isSupportInReview()) {
         result.getReviewByStatus().put(value, statusMap.getOrDefault(value, emptyList()).size());
       }
     }
@@ -910,7 +911,7 @@ public class FuncCaseConverter {
       LocalDateTime startDate, LocalDateTime endDate, Set<Long> testerIds) {
     Set<SearchCriteria> filters = getCaseResourcesFilter(
         projectId, planId, startDate, endDate);
-    if (isNotEmpty(testerIds)){
+    if (isNotEmpty(testerIds)) {
       filters.add(in("testerId", testerIds));
     }
     return filters;
@@ -920,7 +921,7 @@ public class FuncCaseConverter {
       LocalDateTime startDate, LocalDateTime endDate, Set<Long> createdByIds) {
     Set<SearchCriteria> filters = getCaseResourcesFilter(projectId,
         planId, startDate, endDate);
-    if (isNotEmpty(createdByIds)){
+    if (isNotEmpty(createdByIds)) {
       filters.add(in("createdBy", createdByIds));
     }
     return filters;
