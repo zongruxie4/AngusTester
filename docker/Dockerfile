@@ -20,8 +20,7 @@ ENV TESTER_PORT=8901
 # Define application directory and create non-root user
 ENV APP_HOME=/opt/AngusTester
 RUN adduser -D angus && \
-    mkdir -p ${APP_HOME}/conf \
-             ${APP_HOME}/plugins && \
+    mkdir -p ${APP_HOME} && \
     chown -R angus:angus ${APP_HOME}
 
 # Copy application files from builder stage
@@ -41,8 +40,8 @@ VOLUME ["${APP_HOME}/conf", "${APP_HOME}/data", "${APP_HOME}/logs", "${APP_HOME}
 EXPOSE ${TESTER_PORT}
 
 # Health check configuration
-HEALTHCHECK --interval=30s --timeout=3s \
+HEALTHCHECK --interval=15s --timeout=3s \
   CMD wget -qO- http://localhost:${TESTER_PORT}/actuator/health || exit 1
 
 # Application entry point
-ENTRYPOINT ["./startup-tester.sh"]
+CMD ["./startup-tester.sh", "--daemon=false"]
