@@ -32,6 +32,14 @@
     </fileSet>
 
     <fileSet>
+      <directory>${project.parent.basedir}/service/boot/target</directory>
+      <includes>
+        <include>Dockerfile</include>
+      </includes>
+      <outputDirectory>.</outputDirectory>
+    </fileSet>
+
+    <fileSet>
       <directory>${project.parent.basedir}/service/extension/dist</directory>
       <includes>
         <include>*.zip</include>
