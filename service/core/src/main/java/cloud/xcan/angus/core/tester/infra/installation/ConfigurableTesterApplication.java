@@ -504,7 +504,7 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
 
     JDBCUtils.executeUpdate(gmConnection,
         "UPDATE c_setting_tenant SET server_api_proxy_data=? WHERE tenant_id=?",
-        Arrays.asList(String.format("{\"enabled\":true,\"url\":\"%s\"}", domain), tenantId)
+        Arrays.asList(String.format("{\"enabled\":true,\"url\":\"%s/angusProxy\"}", domain), tenantId)
     );
     // @formatter:off
   }

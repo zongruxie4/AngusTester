@@ -6,6 +6,8 @@ xcan:
   mockService:
     domainSuffix: ${MOCK_SERVICE_DOMAIN_SUFFIX:mock.com}
     testerApisUrlPrefix: ${TESTER_APIS_SERVER_URL}
+  service:
+    storage: ${GM_APIS_URL_PREFIX:XCAN-ANGUSGM.BOOT}
   datasource:
     extra:
       dbType: '@databaseType@'
