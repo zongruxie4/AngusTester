@@ -1,0 +1,24 @@
+# mkdir -p /opt/AngusTester && cd /opt/AngusTester
+# mkdir /opt/AngusTester/{conf,data,logs,plugins,tmp}
+# docker compose -f tester.yml up -d
+services:
+  angustester:
+    image: xcancloud/angustester-enterprise:1.0.0
+    container_name: angustester
+    restart: unless-stopped
+    volumes:
+      - ./conf:/opt/AngusTester/conf
+      - ./data:/opt/AngusTester/data
+      - ./logs:/opt/AngusTester/logs
+      - ./plugins:/opt/AngusTester/plugins
+      - ./tmp:/opt/AngusTester/tmp
+    ports:
+      - "8901:8901"
+      - "6806:6806"
+    environment:
+      TZ: ${TIMEZONE:-UTC}
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "wget -q -O - http://127.0.0.1:8901/actuator/health | grep '\"status\":\"UP\"'" ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
