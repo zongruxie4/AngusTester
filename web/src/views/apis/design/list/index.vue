@@ -215,9 +215,12 @@ const handleDesign = (record: {id: string; name: string; url?: string}, key) => 
     case 'publish':
       return releaseDesign(record);
     case 'generate':
-      return generateService(reocrd);
+      return generateService(record);
     case 'delete':
-      return toDelete(reocrd);
+      return toDelete(record);
+    case 'export':
+       exportDesign(record);
+       break;
     default:
       return;
   }
