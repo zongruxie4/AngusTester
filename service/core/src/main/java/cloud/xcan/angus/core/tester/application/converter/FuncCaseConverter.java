@@ -172,10 +172,10 @@ public class FuncCaseConverter {
         .setOwnerId(currentUserId)
         .setTesterResponsibilities(getTesterResponsibilities(plan, users))
         .setDeleted(false)
-        .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
+        .setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS))
         .setTenantId(getOptTenantId())
         .setCreatedBy(currentUserId)
-        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
+        .setCreatedDate(LocalDateTime.now())
         .setLastModifiedBy(currentUserId)
         .setLastModifiedDate(LocalDateTime.now());
   }
@@ -195,9 +195,8 @@ public class FuncCaseConverter {
       FuncCase case0, FuncPlan plan, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime createdDate = now.minusHours(random.nextInt(SAMPLE_BEFORE_HOURS));
     LocalDateTime deadlineDate = now.plusHours(random.nextInt(SAMPLE_AFTER_HOURS));
-    LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
+    LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     CaseTestResult result = nullSafe(case0.getTestResult(), CaseTestResult.PENDING);
     case0.setId(id).setProjectId(projectId)
@@ -213,9 +212,9 @@ public class FuncCaseConverter {
         .setTestResultHandleDate(result.isFinished() ? finishedDate : null)
         .setTenantId(getOptTenantId())
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
-        .setCreatedDate(createdDate)
+        .setCreatedDate(now)
         .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(result.isFinished() ? finishedDate : createdDate);
+        .setLastModifiedDate(result.isFinished() ? finishedDate : now);
   }
 
   public static void assembleExampleFuncReview(Long projectId, Long id,

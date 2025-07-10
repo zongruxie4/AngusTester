@@ -192,9 +192,9 @@ public class TaskConverter {
         .setOwnerId(currentUserId)
         .setTenantId(projectDb.getTenantId())
         .setDeleted(false)
-        .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS))
+        .setDeadlineDate(LocalDateTime.now().plusHours(SAMPLE_AFTER_HOURS))
         .setCreatedBy(currentUserId)
-        .setCreatedDate(LocalDateTime.now().minusHours(SAMPLE_BEFORE_HOURS))
+        .setCreatedDate(LocalDateTime.now())
         .setLastModifiedBy(currentUserId)
         .setLastModifiedDate(LocalDateTime.now());
   }
@@ -203,9 +203,8 @@ public class TaskConverter {
       TaskSprint sprint, List<User> users) {
     Random random = new Random();
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime createdDate = now.minusHours(random.nextInt(SAMPLE_BEFORE_HOURS));
     LocalDateTime deadlineDate = now.plusHours(random.nextInt(SAMPLE_AFTER_HOURS));
-    LocalDateTime finishedDate = createdDate.plusHours(random.nextInt(24));
+    LocalDateTime finishedDate = now.plusHours(random.nextInt(24));
     finishedDate = finishedDate.isBefore(now) ? now.plusMinutes(1) : finishedDate;
     TaskStatus status = nullSafe(task.getStatus(), TaskStatus.PENDING);
     task.setId(id).setCode(getTaskCode())
@@ -219,9 +218,9 @@ public class TaskConverter {
         .setStatus(status).setCompletedDate((status.isFinished() ? finishedDate : null))
         .setTenantId(projectDb.getTenantId()).setDeleted(false)
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
-        .setCreatedDate(createdDate).setDeadlineDate(deadlineDate)
+        .setCreatedDate(now).setDeadlineDate(deadlineDate)
         .setLastModifiedBy(users.get(random.nextInt(users.size())).getId())
-        .setLastModifiedDate(status.isFinished() ? finishedDate : createdDate);
+        .setLastModifiedDate(status.isFinished() ? finishedDate : now);
   }
 
   public static @NotNull SoftwareVersion assembleExampleTaskSoftwareVersion(Project projectDb,
