@@ -23,6 +23,7 @@ import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoad
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getTesterApisUrlPrefix;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.getTesterWebsite;
 import static cloud.xcan.angus.core.spring.env.ConfigurableApplicationAndEnvLoader.localDCaches;
+import static cloud.xcan.angus.core.spring.env.EnvHelper.getBoolean;
 import static cloud.xcan.angus.core.spring.env.EnvHelper.getEnum;
 import static cloud.xcan.angus.core.spring.env.EnvHelper.getInt;
 import static cloud.xcan.angus.core.spring.env.EnvHelper.getString;
@@ -43,6 +44,7 @@ import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_HOST;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.GM_PORT;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.INSTALL_APPS;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.INSTALL_TYPE;
+import static cloud.xcan.angus.core.spring.env.EnvKeys.PROXY_STARTUP_IN_TESTER;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.REDIS_DEPLOYMENT;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.REDIS_HOST;
 import static cloud.xcan.angus.core.spring.env.EnvKeys.REDIS_NODES;
@@ -265,6 +267,11 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
     // Configure the website of AngusGM
     updateApplicationWebsite();
 
+    // Configure the request proxy
+    if (getBoolean(PROXY_STARTUP_IN_TESTER, false)){
+      updateApiProxyServer(tenantId);
+    }
+
     // Config application statics resources
     // Note: Move first and then configure static resources, keeping the original static resource configuration template unchanged
     saveWebStaticsEnv();
@@ -481,6 +488,23 @@ public class ConfigurableTesterApplication implements ConfigurableApplication {
     // @formatter:on
     JDBCUtils.executeUpdate(gmConnection, "UPDATE app SET url=? WHERE code=?",
         Arrays.asList(getTesterWebsite(), TESTER_SERVICE)
+    );
+    // @formatter:off
+  }
+
+  private void updateApiProxyServer(Long tenantId) throws Exception {
+    // @formatter:on
+    String website = getTesterWebsite();
+    String domain = website.startsWith("https")
+        ? website.replaceFirst("https://", "wss://")
+        : (website.startsWith("http://")
+            ? website.replaceFirst("http://", "ws://")
+            : "ws://" + website
+        );
+
+    JDBCUtils.executeUpdate(gmConnection,
+        "UPDATE c_setting_tenant SET server_api_proxy_data=? WHERE tenant_id=?",
+        Arrays.asList(String.format("{\"enabled\":true,\"url\":\"%s\"}", domain), tenantId)
     );
     // @formatter:off
   }
