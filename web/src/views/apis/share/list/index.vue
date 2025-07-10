@@ -209,17 +209,20 @@ const columns = [
     customRender: ({ text }) => text?.message
   },
   {
-    title: '分享日期',
-    dataIndex: 'createdDate',
-    width: '8%',
-    sorter: true
-  },
-  {
     title: '到期日期',
     dataIndex: 'expiredDate',
-    width: '8%',
+    width: '9%',
     sorter: true,
-    customRender: ({text}) => text || '--'
+    customRender: ({text}) => text || '--',
+    groupName: 'date',
+  },
+  {
+    title: '分享日期',
+    dataIndex: 'createdDate',
+    width: '9%',
+    sorter: true,
+    groupName: 'date',
+    hide: true
   },
   {
     title: '查看次数',
