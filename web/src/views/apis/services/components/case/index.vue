@@ -176,34 +176,37 @@ watch(() => props.id, newValue => {
 </script>
 <template>
   <div class="h-full">
-    <div class="flex items-center space-x-2 mt-2 max-w-100">
+    <div class=" space-x-2 mt-2 max-w-100" :class="[props.layout === 'horizontal' ? '' : 'flex items-center']">
       <Input
         v-model:value="keywords"
         :allowClear="true"
         placeholder="查询名称"
         @change="onKeywordChange" />
       <Hints :text="`当前已添加${caseData?.length}个用例，每个接口最大支持100条用例。`" class="mt-2" />
-      <Button
-        type="primary"
-        size="small"
-        :disabled="loading"
-        @click="addOrEditCase">
-        添加用例
-      </Button>
-      <Button
-        type="primary"
-        size="small"
-        :disabled="loading || !caseData.length"
-        @click="execAll">
-        执行测试
-      </Button>
-      <Button
-        type="primary"
-        size="small"
-        :loading="loading"
-        @click="loadCaseData">
-        <IconRefresh />
-      </Button>
+      <div class="space-x-2">
+        <Button
+          type="primary"
+          size="small"
+          :disabled="loading"
+          @click="addOrEditCase">
+          添加用例
+        </Button>
+        <Button
+          type="primary"
+          size="small"
+          :disabled="loading || !caseData.length"
+          @click="execAll">
+          执行测试
+        </Button>
+        <Button
+          type="primary"
+          size="small"
+          :loading="loading"
+          @click="loadCaseData">
+          <IconRefresh />
+        </Button>
+      </div>
+
     </div>
     <Spin :spinning="loading">
       <div class="flex" :class="[props.layout === 'horizontal' ? 'flex-col' : 'flex-wrap']">
