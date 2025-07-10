@@ -352,3 +352,8 @@ onMounted(async () => {
     </Form>
   </div>
 </template>
+<style scoped>
+.ant-form :deep(.ant-form-item) label {
+  height: 28px;
+}
+</style>

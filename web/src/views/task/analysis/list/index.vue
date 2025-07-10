@@ -220,7 +220,6 @@ onBeforeUnmount(() => {
         v-model:templateData="templateData"
         v-model:templateDesc="templateDesc"
         class="w-50 h-full overflow-y-auto bg-gray-1" />
-
       <div
         v-show="dataList.length"
         ref="dataListWrapRef"
