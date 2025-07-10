@@ -26,8 +26,8 @@ export default class API {
     return http.post(`${baseUrl}/${params.id}/clone`);
   }
 
-  exportServices (params: any): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/export`, params);
+  exportServices (params: any, conf = {}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/export`, params, conf);
   }
 
   loadServicesMockService (id: string): Promise<[Error | null, any]> {
