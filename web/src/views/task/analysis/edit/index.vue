@@ -344,6 +344,7 @@ onMounted(async () => {
           v-model:value="formData.customRange"
           type="date-range"
           class="mt-2" />
+
       </FormItem>
 
       <FormItem
@@ -356,7 +357,7 @@ onMounted(async () => {
   </div>
 </template>
 <style scoped>
-.ant-form :deep(.input-item) label {
+.ant-form :deep(.ant-form-item) label {
   height: 28px;
 }
 </style>
