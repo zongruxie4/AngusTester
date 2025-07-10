@@ -335,7 +335,7 @@ const loadProjectServers = async (serviceId) => {
   if (error) {
     return;
   }
-  availableServers.value = resp.data || [];
+  availableServers.value = (resp.data || []).map(i => ({...i, ...(i.extensions || {})}));
 };
 
 const loadingInfo = ref(false);
@@ -410,7 +410,7 @@ const loadApiInfo = async (): Promise<void> => {
   if (isUnarchivedApi.value) {
     currentServer.value = res.data?.currentServer || { url: '' };
   } else {
-    const availableServersFromPro = res.data?.availableServers || [];
+    const availableServersFromPro = (res.data?.availableServers || []).map(i => ({...i, ...(i.extensions || {})}));
     if (availableServersFromPro.length) {
       currentServer.value = availableServersFromPro.find(i => i[serverSourceKey] === 'CURRENT_REQUEST') || availableServersFromPro[0];
     } else {

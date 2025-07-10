@@ -292,33 +292,13 @@ const serverListOpt = computed(() => {
         enumKey="HttpMethod" />
       <Divider type="vertical" class="h-auto mx-0" />
       <Dropdown :visible="showServerListDrop && !!serverListOpt.length">
-        <Tooltip
-          :visible="stepVisible && stepKey === 'debugApiOne'"
-          :overlayStyle="{ 'min-width': '240px' }"
-          placement="bottomLeft"
-          destroyTooltipOnHide>
-          <template #title>
-            <div class="p-2 text-3">
-              <div class="text-4 text-text-title">{{ stepContent.title }}</div>
-              <div class="mt-2">{{ stepContent.content }}</div>
-              <div class="flex justify-end mt-5">
-                <Button
-                  size="small"
-                  type="primary"
-                  @click="guideStep('debugApiTwo')">
-                  下一步
-                </Button>
-              </div>
-            </div>
-          </template>
-          <ServerInput
-            v-model:value="serverValue"
-            :valueObj="currentHttpServer"
-            class="w-1/3"
-            @enterPress="handleServerEnter"
-            @focus="handleFocus"
-            @handleBlur="handleServerBlur" />
-        </Tooltip>
+        <ServerInput
+          v-model:value="serverValue"
+          :valueObj="currentHttpServer"
+          class="w-1/3"
+          @enterPress="handleServerEnter"
+          @focus="handleFocus"
+          @handleBlur="handleServerBlur" />
         <template #overlay>
           <div class="px-3.5 py-3.5 text-3 bg-white rounded leading-5 space-y-4" style="box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;">
             <div v-if="props.defaultCurrentServer?.url">
