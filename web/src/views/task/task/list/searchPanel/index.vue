@@ -1158,21 +1158,6 @@ const searchOptions = [
     enumKey: 'Priority'
   },
   {
-    type: 'select-enum',
-    valueKey: 'testType',
-    placeholder: '选择测试类型',
-    enumKey: 'TestType'
-  },
-  {
-    type: 'select',
-    action: `${TESTER}/module/search`,
-    params: { projectId: props.projectId },
-    valueKey: 'moduleId',
-    showSearch: true,
-    placeholder: '选择所属模块',
-    fieldNames: { label: 'name', value: 'id' }
-  },
-  {
     type: 'select-user',
     valueKey: 'assigneeId',
     placeholder: '选择经办人',
@@ -1201,6 +1186,21 @@ const searchOptions = [
     valueKey: 'lastModifiedBy',
     placeholder: '选择最后修改人',
     fieldNames: { label: 'fullName', value: 'id' }
+  },
+  {
+    type: 'select-enum',
+    valueKey: 'testType',
+    placeholder: '选择测试类型',
+    enumKey: 'TestType'
+  },
+  {
+    type: 'select',
+    action: `${TESTER}/module/search`,
+    params: { projectId: props.projectId },
+    valueKey: 'moduleId',
+    showSearch: true,
+    placeholder: '选择所属模块',
+    fieldNames: { label: 'name', value: 'id' }
   },
   {
     type: 'select-enum',

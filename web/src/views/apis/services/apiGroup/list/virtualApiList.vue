@@ -181,6 +181,7 @@ const mockAuth = computed(() => {
 });
 
 const handleSpread = (group, index) => {
+  groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
   if (groupSpreadMap.value[group.key]) {
     const idx = props.dataSource.findIndex(i => i.key === group.key);
     const arr = props.dataSource.slice(idx + 1, idx + 1 + group.childrenNum);
@@ -273,7 +274,8 @@ const handleSpread = (group, index) => {
       </ListItem>
       <template v-else>
         <div
-          class="h-11.5 border mb-3 w-full flex items-center">
+          class="h-11.5 border mb-3 w-full flex items-center"
+          @click="handleSpread(item, index)">
           <div v-if="groupedBy === 'createdBy'" class="flex items-center flex-1 px-2">
             <Image
               type="avatar"
@@ -298,10 +300,7 @@ const handleSpread = (group, index) => {
             <span class="w-20 block h-7 text-center rounded text-white leading-7" :class="bgColor[item.method]">{{ item.method }}</span>
           </div>
           <p class="px-2"><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p>
-          <Arrow
-            v-model:open="groupSpreadMap[item.key]"
-            class="mr-3"
-            @change="handleSpread(item, index)" />
+          <Icon icon="icon-xiangshang-copy" class="mr-3 transition-all" :class="{'rotate-90': groupSpreadMap[item.key]}" />
         </div>
       </template>
     </template>
