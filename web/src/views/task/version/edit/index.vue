@@ -82,7 +82,7 @@ const addOk = async () => {
 
 const editOk = async () => {
   loading.value = true;
-  const [error] = await software.updataVersion({
+  const [error] = await software.updateVersion({
     ...formState.value,
     id: props.versionId
   });

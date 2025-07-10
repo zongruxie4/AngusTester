@@ -18,7 +18,7 @@ export default class API {
     return http.post(`${baseUrl}/version`, params);
   }
 
-  updataVersion (params = {}): Promise<[Error | null, any]> {
+  updateVersion (params = {}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/version`, params);
   }
 
@@ -27,7 +27,7 @@ export default class API {
   }
 
   updateStatus (versionId: string, params): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/version/${versionId}/status`, params, {
+    return http.put(`${baseUrl}/version/${versionId}/status`, params, {
       paramsType: true
     });
   }
