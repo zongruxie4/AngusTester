@@ -882,6 +882,11 @@ defineExpose({ add, startInterval });
                     <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)"> <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
                   </div>
                 </template>
+                <template #serverCtrlUrlPrefix="{text}">
+                  <div class="flex items-center">
+                    <span>{{text}}</span> <Button type="link" size="small" @click="copyContent(text)"> <Icon icon="icon-fuzhi" class="ml-0.5" /></Button>
+                  </div>
+                </template>
                 <template #ctrlAccessToken="{text}">
                   <div class="flex items-center">
                     <span>{{showInstallCtrlAccessTokenMap[state.id] ? text : '******'}}</span>

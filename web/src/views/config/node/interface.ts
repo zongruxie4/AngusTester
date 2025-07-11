@@ -23,6 +23,10 @@ export const installConfigColumns = [
       label: '设备ID'
     },
     {
+      dataIndex: 'serverCtrlUrlPrefix',
+      label: '控制器地址'
+    },
+    {
       dataIndex: 'ctrlAccessToken',
       label: '设备访问令牌'
     }
