@@ -17,8 +17,3 @@ services:
       - "6806:6806"
     environment:
       TZ: ${TIMEZONE:-UTC}
-    healthcheck:
-      test: [ "CMD", "sh", "-c", "wget -q -O - http://127.0.0.1:8901/actuator/health | grep '\"status\":\"UP\"'" ]
-      interval: 15s
-      timeout: 5s
-      retries: 3
