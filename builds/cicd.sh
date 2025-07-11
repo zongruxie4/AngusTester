@@ -280,10 +280,14 @@ cd_by_module(){
 cd_private_edition(){
   if [ -n "$hosts" ]; then
     echo "INFO: Starting deployment to hosts: ${hosts}"
-    IFS=',' read -ra HOST_LIST <<< "$hosts"
-    for host in "${HOST_LIST[@]}"; do
-        deploy_private_edition
+    OLD_IFS="$IFS"
+    IFS=','
+
+    for host in $hosts; do
+      deploy_private_edition
     done
+
+    IFS="$OLD_IFS"
   else
     echo "INFO: No hosts specified, skipping deployment"
   fi
