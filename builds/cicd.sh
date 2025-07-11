@@ -189,7 +189,7 @@ npm_build () {
 
   echo "INFO: npm run build:env start"
   env0=${env##*.};
-  editionType0="${editionType##*.}"; editionType0="${editionType0^^}"
+  editionType0=$(echo "${editionType##*.}" | tr '[:lower:]' '[:upper:]')
   echo "INFO: npm build deployEnv=${env0} , editionType=${editionType0}"
   npm run build:env -- --env=${env0} --edition_type=${editionType0}
   if [ $? -ne 0 ]; then
