@@ -258,8 +258,11 @@ ci_private_edition(){
 cd_by_module(){
   if [ -n "$hosts" ]; then
     echo "INFO: Starting deployment to hosts: ${hosts}"
-    IFS=',' read -ra HOST_LIST <<< "$hosts"
-    for host in "${HOST_LIST[@]}"; do
+
+    OLD_IFS="$IFS"
+    IFS=','
+
+    for host in $hosts; do
       if echo "$module" | grep -q "service"; then
         deploy_service
       fi
@@ -267,6 +270,8 @@ cd_by_module(){
         deploy_web
       fi
     done
+
+    IFS="$OLD_IFS"
   else
     echo "INFO: No hosts specified, skipping deployment"
   fi
