@@ -16,6 +16,7 @@
 
   <modules>
     <module>import-apis</module>
+    <module>text-translate</module>
   </modules>
 
   <properties>
