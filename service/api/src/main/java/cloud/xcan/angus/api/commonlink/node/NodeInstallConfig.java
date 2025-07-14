@@ -9,10 +9,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class NodeInstallConfig {
 
-  private String ctrlAccessToken;
-
   private Long tenantId;
 
   private Long deviceId;
+
+  private String serverCtrlUrlPrefix;
+
+  private String ctrlAccessToken;
 
 }

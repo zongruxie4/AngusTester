@@ -127,6 +127,7 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
             .setWindowsOfflineInstallSteps(buildWindowsOfflineInstallSteps(nodeInfo))
             .setInstallConfig(new NodeInstallConfig()
                 .setTenantId(tenantId).setDeviceId(nodeInfo.getId())
+                .setServerCtrlUrlPrefix(agentProperties.getServerCtrlUrlPrefix())
                 .setCtrlAccessToken(nodeInfo.getAgentAuth().getAccessToken())
             );
       }

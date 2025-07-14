@@ -31,7 +31,7 @@ public interface ExecRepo extends BaseRepository<Exec, Long> {
   /**
    * Note: Test results are not updated to 1 when they do not need to be updated
    */
-  @Query(value = "SELECT * FROM exec WHERE update_test_result = 1 AND sync_test_result = 0 AND status IN ('COMPLETED', 'FAILED') LIMIT ?1", nativeQuery = true)
+  @Query(value = "SELECT * FROM exec WHERE update_test_result = 1 AND sync_test_result = 0 AND status IN ('COMPLETED') LIMIT ?1", nativeQuery = true)
   List<Exec> findUpdateResultTask(int count);
 
   @Query(value = "SELECT * FROM exec WHERE actual_start_date <= ?1 AND status = 'RUNNING' LIMIT ?2", nativeQuery = true)
