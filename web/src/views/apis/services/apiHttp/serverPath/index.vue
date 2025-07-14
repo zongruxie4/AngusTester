@@ -376,6 +376,7 @@ const serverListOpt = computed(() => {
         v-model:value="apiUri"
         :maxlength="globalConfigs.VITE_URI_MAX_LENGTH"
         :allowClear="false"
+        trim
         class="input-container min-w-25"
         placeholder="接口路径，以 “ / ” 起始"
         size="default"
