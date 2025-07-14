@@ -329,9 +329,8 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             .parse(decompressedContent);
 
         // Update schema
-        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.IGNORE,
-            false,
-            null, null, false, null);
+        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, strategyWhenDuplicated,
+            deleteWhenNotExisted, apiSource, importSource, mergeSchema, syncName);
         return null;
       }
     }.execute();
