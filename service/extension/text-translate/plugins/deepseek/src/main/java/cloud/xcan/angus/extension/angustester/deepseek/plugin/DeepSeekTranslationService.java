@@ -1,6 +1,8 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
+import cloud.xcan.angus.extension.angustester.deepseek.api.RetryableException;
 import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import cloud.xcan.angus.plugin.api.Extension;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
@@ -15,6 +17,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +65,7 @@ public class DeepSeekTranslationService implements TranslationService {
 
   @Override
   public String translate(String text, SupportedLanguage targetLanguage) {
-    return translate(text, null, targetLanguage);
+    return translate(text, DEFAULT_SOURCE_LANGUAGE, targetLanguage);
   }
 
   @Override
@@ -69,8 +73,9 @@ public class DeepSeekTranslationService implements TranslationService {
       SupportedLanguage targetLanguage) {
     // Create retryable translation task
     Callable<String> translationTask = () -> {
-      HttpRequest request = buildRequest(text, MessageHolder.message(targetLanguage.getMessageKey(),
-          Locale.ENGLISH));
+      HttpRequest request = buildRequest(text,
+          MessageHolder.message(sourceLanguage.getMessageKey(), Locale.ENGLISH),
+          MessageHolder.message(targetLanguage.getMessageKey(), Locale.ENGLISH));
       return executeRequest(request);
     };
 
@@ -81,6 +86,11 @@ public class DeepSeekTranslationService implements TranslationService {
       throw new RuntimeException("Translation failed after " + config.getMaxRetries() + " attempts",
           e);
     }
+  }
+
+  @Override
+  public TranslationServiceProvider getProvider() {
+    return TranslationServiceProvider.DeepSeek;
   }
 
   /**
@@ -119,28 +129,31 @@ public class DeepSeekTranslationService implements TranslationService {
     throw new Exception("Max retries exceeded", lastError);
   }
 
-  private HttpRequest buildRequest(String text, String targetLanguage) {
-    String requestBody = String.format("{\n"
-        + "    \"messages\": [\n"
-        + "        {\n"
-        + "            \"content\": \"%s\",\n"
-        + "            \"role\": \"system\"\n"
-        + "        },\n"
-        + "        {\n"
-        + "            \"content\": \"%s\",\n"
-        + "            \"role\": \"user\"\n"
-        + "        }\n"
-        + "    ],\n"
-        + "    \"model\": \"deepseek-chat\"\n"
-        + "}", config.getPromptTemplate().replace("{targetLanguage}", targetLanguage), text
-    );
+  private HttpRequest buildRequest(String text, String sourceLanguage, String targetLanguage) {
+    JSONObject requestBody = new JSONObject();
+    requestBody.put("model", "deepseek-chat");
+
+    JSONArray messages = new JSONArray();
+    JSONObject systemMessage = new JSONObject();
+    systemMessage.put("role", "system");
+    String prompt = config.getPromptTemplate().replace("{sourceLanguage}", targetLanguage);
+    prompt = prompt.replace("{targetLanguage}", targetLanguage);
+    systemMessage.put("content", prompt);
+    messages.put(systemMessage);
+
+    JSONObject userMessage = new JSONObject();
+    userMessage.put("role", "user");
+    userMessage.put("content", text);
+    messages.put(userMessage);
+
+    requestBody.put("messages", messages);
 
     return HttpRequest.newBuilder()
         .uri(URI.create(config.getApiEndpoint()))
         .header("Authorization", "Bearer " + config.getApiKey())
         .header("Content-Type", "application/json")
         .timeout(Duration.ofSeconds(config.getTimeoutSeconds()))
-        .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+        .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
         .build();
   }
 
@@ -151,10 +164,12 @@ public class DeepSeekTranslationService implements TranslationService {
     // Check for server errors (5xx) or rate limits (429)
     int statusCode = response.statusCode();
     if (statusCode >= 500 || statusCode == 429) {
+      log.error("Translation failed, status={}, response={}", statusCode, response.body());
       throw new RetryableException("API returned retryable status: " + statusCode);
     }
 
     if (statusCode != 200) {
+      log.error("Translation failed, status={}, response={}", statusCode, response.body());
       throw new RuntimeException("API request failed: " + response.body());
     }
 
@@ -174,13 +189,4 @@ public class DeepSeekTranslationService implements TranslationService {
     this.config = config;
   }
 
-  /**
-   * Custom exception for retryable errors
-   */
-  private static class RetryableException extends RuntimeException {
-
-    public RetryableException(String message) {
-      super(message);
-    }
-  }
 }

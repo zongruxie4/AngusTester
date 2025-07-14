@@ -8,8 +8,12 @@ import cloud.xcan.angus.spec.locale.SupportedLanguage;
  */
 public interface TranslationService extends ExtensionPoint {
 
+  SupportedLanguage DEFAULT_SOURCE_LANGUAGE = SupportedLanguage.en;
+
   String translate(String text, SupportedLanguage targetLanguage);
 
   String translate(String text, SupportedLanguage sourceLanguage, SupportedLanguage targetLanguage);
+
+  TranslationServiceProvider getProvider();
 
 }
