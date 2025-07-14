@@ -163,6 +163,12 @@
 
       <dependency>
         <groupId>cloud.xcan.angus</groupId>
+        <artifactId>xcan-angustester.extension-text-translate-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.angus</groupId>
         <artifactId>xcan-angusgm.api</artifactId>
         <version>${xcan-angusgm.api.version}</version>
       </dependency>

@@ -38,9 +38,13 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchemaRepo;
+import cloud.xcan.angus.core.tester.infra.util.OpenAPITranslator;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import cloud.xcan.angus.l2cache.spring.RedisCaffeineCacheManager;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import cloud.xcan.angus.spec.utils.GzipUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -296,27 +300,16 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
    * deletion; Additionally, if the user has not modified or saved, do not submit the request to the
    * backend interface.
    */
-  @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
-  @Transactional(rollbackFor = Exception.class)
   @Override
   public void openapiReplace(Long serviceId, Boolean forced, boolean gzipCompression,
       String content, StrategyWhenDuplicated strategyWhenDuplicated, boolean deleteWhenNotExisted,
       ApiSource apiSource, ApiImportSource importSource, boolean mergeSchema, String syncName) {
     new BizTemplate<Void>() {
-      ServicesSchema serviceSchemaDb;
-      Services serviceDb;
       String decompressedContent;
       OpenAPI openApi;
 
       @Override
       protected void checkParams() {
-        // Check and find project schema
-        // projectSchemaDb = projectSchemaQuery.checkAndFind(serviceId); -> Fix:: After the first successful import, the query project document is empty.
-        serviceSchemaDb = servicesSchemaQuery.checkAndFind(serviceId);
-        serviceDb = servicesQuery.checkAndFind(serviceId);
-        // Check the modify project permission
-        servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
-
         // Decompress OpenAPI documentation
         try {
           decompressedContent = gzipCompression ? GzipUtils.decompress(content) : content;
@@ -328,10 +321,41 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
       @Override
       protected Void process() {
         // Check the content is valid OpenAPI documents
-        openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
+        openApi = servicesSchemaQuery.checkAndGetApisParser(
                 importSource.isWideOpenapi() ? ApiImportSource.OPENAPI : importSource)
             .parse(decompressedContent);
 
+        // Update schema
+        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.IGNORE,
+            false,
+            null, null, false, null);
+        return null;
+      }
+    }.execute();
+  }
+
+  @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public void openapiReplace(Long serviceId, Boolean forced,
+      OpenAPI openApi, StrategyWhenDuplicated strategyWhenDuplicated, boolean deleteWhenNotExisted,
+      ApiSource apiSource, ApiImportSource importSource, boolean mergeSchema, String syncName) {
+    new BizTemplate<Void>() {
+      ServicesSchema serviceSchemaDb;
+      Services serviceDb;
+
+      @Override
+      protected void checkParams() {
+        // Check and find project schema
+        // projectSchemaDb = projectSchemaQuery.checkAndFind(serviceId); -> Fix:: After the first successful import, the query project document is empty.
+        serviceSchemaDb = servicesSchemaQuery.checkAndFind(serviceId);
+        serviceDb = servicesQuery.checkAndFind(serviceId);
+        // Check the modify project permission
+        servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+      }
+
+      @Override
+      protected Void process() {
         // Update project schema
         // Warn:: Multiple files importing the same project will be overwritten by the last imported file
         servicesSchemaCmd.updateSchema(serviceId, serviceSchemaDb, openApi, mergeSchema,
@@ -399,13 +423,35 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
         }
 
         // Add editor activity
-        if (ApiSource.EDITOR.equals(apiSource)) {
+        if (isNull(apiSource) || ApiSource.EDITOR.equals(apiSource)) {
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_OPENAPI_UPDATED));
         } else if (ApiSource.SYNC.equals(apiSource)) {
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_OPENAPI_SYNC));
         } else if (ApiSource.IMPORT.equals(apiSource)) {
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.IMPORT));
         }
+        return null;
+      }
+    }.execute();
+  }
+
+  @Override
+  public void translate(Long serviceId, SupportedLanguage sourceLanguage,
+      SupportedLanguage targetLanguage) {
+    new BizTemplate<Void>() {
+      @Override
+      protected Void process() {
+        TranslationService translationService = servicesSchemaQuery.checkAndGetTranslationService(
+            TranslationServiceProvider.DeepSeek);
+        OpenAPI openApi = servicesSchemaQuery.openapiDetail0(serviceId, null, false);
+        OpenAPITranslator translator = new OpenAPITranslator(
+            translationService, sourceLanguage, targetLanguage
+        );
+        translator.translateOpenAPI(openApi);
+
+        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.IGNORE,
+            false,
+            null, null, false, null);
         return null;
       }
     }.execute();

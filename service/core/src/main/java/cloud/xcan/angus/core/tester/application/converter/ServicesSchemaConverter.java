@@ -134,8 +134,8 @@ public class ServicesSchemaConverter {
           List<Tag> tags = new ArrayList<>(openApi.getTags());
           tags.addAll(schemaDb.getTags());
           List<Tag> removeDuplicate = tags.stream()
-              .collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(
-                  Comparator.comparing(Tag::getName))), ArrayList::new));
+              .collect(Collectors.collectingAndThen(Collectors.toCollection(()
+                  -> new TreeSet<>(Comparator.comparing(Tag::getName))), ArrayList::new));
           schemaDb.setTags(removeDuplicate);
         } else {
           schemaDb.setTags(openApi.getTags());

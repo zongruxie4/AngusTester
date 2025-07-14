@@ -5,6 +5,8 @@ import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.toSchemaApis;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_IMPORT_APIS_PLUGIN_CODE;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_IMPORT_APIS_PLUGIN_T;
+import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_TEXT_TRANSLATE_PLUGIN;
+import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.SERVICE_NO_TEXT_TRANSLATE_PLUGIN_CODE;
 import static cloud.xcan.angus.extension.angustester.api.utils.OpenApiParser.checkAndParseOpenApi;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
@@ -32,7 +34,9 @@ import cloud.xcan.angus.core.tester.domain.services.schema.ServiceServer;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchemaRepo;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
-import cloud.xcan.angus.extension.angustester.api.ApisParseProvider;
+import cloud.xcan.angus.extension.angustester.api.ApisParser;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.GzipUtils;
@@ -328,29 +332,55 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
   }
 
   @Override
-  public ApisParseProvider checkAndGetApisParseProvider(ApiImportSource importSource) {
-    ApisParseProvider enabledApisParseProvider = null;
-    Map<String, ApisParseProvider> providerMap = null;
+  public ApisParser checkAndGetApisParser(ApiImportSource importSource) {
+    ApisParser targetApisParser = null;
+    Map<String, ApisParser> providerMap = null;
     try {
       //Fix:: Dependency injection On linux
-      providerMap = SpringContextHolder.getCtx().getBeansOfType(ApisParseProvider.class);
+      providerMap = SpringContextHolder.getCtx().getBeansOfType(ApisParser.class);
     } catch (Exception e) {
       // NOOP
     }
     if (nonNull(providerMap) && isNotEmpty(providerMap.values())) {
-      for (ApisParseProvider provider : providerMap.values()) {
-        if (nonNull(provider.getSource()) && provider.getSource().equals(importSource)) {
-          enabledApisParseProvider = provider;
+      for (ApisParser parser : providerMap.values()) {
+        if (nonNull(parser.getSource()) && parser.getSource().equals(importSource)) {
+          targetApisParser = parser;
           break;
         }
       }
     }
-    if (isNull(enabledApisParseProvider)) {
+    if (isNull(targetApisParser)) {
       // No apis parse plugin available
       throw SysException.of(SERVICE_NO_IMPORT_APIS_PLUGIN_CODE,
           SERVICE_NO_IMPORT_APIS_PLUGIN_T, new Object[]{importSource});
     }
-    return enabledApisParseProvider;
+    return targetApisParser;
+  }
+
+  @Override
+  public TranslationService checkAndGetTranslationService(TranslationServiceProvider provider) {
+    TranslationService targetTranslationService = null;
+    Map<String, TranslationService> providerMap = null;
+    try {
+      //Fix:: Dependency injection On linux
+      providerMap = SpringContextHolder.getCtx().getBeansOfType(TranslationService.class);
+    } catch (Exception e) {
+      // NOOP
+    }
+    if (nonNull(providerMap) && isNotEmpty(providerMap.values())) {
+      for (TranslationService service : providerMap.values()) {
+        if (nonNull(service.getProvider()) && service.getProvider().equals(provider)) {
+          targetTranslationService = service;
+          break;
+        }
+      }
+    }
+    if (isNull(targetTranslationService)) {
+      // No text translate plugin available
+      throw SysException.of(SERVICE_NO_TEXT_TRANSLATE_PLUGIN_CODE,
+          SERVICE_NO_TEXT_TRANSLATE_PLUGIN, new Object[]{provider});
+    }
+    return targetTranslationService;
   }
 
   @Override

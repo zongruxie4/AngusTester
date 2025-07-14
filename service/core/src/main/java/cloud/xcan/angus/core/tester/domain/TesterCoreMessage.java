@@ -114,6 +114,9 @@ public interface TesterCoreMessage extends TesterApisMessage {
   String SERVICE_NO_IMPORT_APIS_PLUGIN_CODE = "ATS359";
   String SERVICE_NO_IMPORT_APIS_PLUGIN_T = "xcm.tester.service.no.importApis.plugin.error.t";
 
+  String SERVICE_NO_TEXT_TRANSLATE_PLUGIN_CODE = "ATS360";
+  String SERVICE_NO_TEXT_TRANSLATE_PLUGIN = "xcm.tester.service.no.textTranslate.plugin.error";
+
   /*<******************Services#Auth(ATS380 ~ ATS394)******************>*/
   String SERVICE_NO_AUTH_CODE = "ATS380";
   String SERVICE_NO_AUTH = "xcm.tester.service.no.auth.t";

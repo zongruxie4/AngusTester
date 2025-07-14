@@ -159,7 +159,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       @Override
       protected Void process() {
         designDb.setReleased(false);
-        OpenAPI osa = servicesSchemaQuery.checkAndGetApisParseProvider(ApiImportSource.OPENAPI)
+        OpenAPI osa = servicesSchemaQuery.checkAndGetApisParser(ApiImportSource.OPENAPI)
             .parse(openapi);
         designDb.setOpenapi(Json31.pretty(osa));
         apisDesignRepo.save(designDb);
@@ -293,7 +293,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
           servicesSchemaCmd.init(services);
         } else {
           OpenAPI openAPI =
-              servicesSchemaQuery.checkAndGetApisParseProvider(ApiImportSource.OPENAPI)
+              servicesSchemaQuery.checkAndGetApisParser(ApiImportSource.OPENAPI)
                   .parse(designDb.getOpenapi());
           servicesSchemaCmd.init(services, openAPI);
           if (isNotEmpty(openAPI.getPaths())) {
@@ -326,7 +326,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       @Override
       protected IdKey<Long, Object> process() {
         if (isNotEmpty(content)) {
-          OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
+          OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParser(
               ApiImportSource.OPENAPI).parse(content);
           return addClone(openApi, projectId, name);
         }
@@ -334,7 +334,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
         if (nonNull(file)) {
           try {
             File importFile = convertImportFile(file);
-            OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParseProvider(
+            OpenAPI openApi = servicesSchemaQuery.checkAndGetApisParser(
                 ApiImportSource.OPENAPI).parse(FileUtils.readFileToString(importFile, UTF_8));
             return addClone(openApi, projectId, name);
           } catch (IOException e) {
@@ -390,7 +390,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
         String content = "";
         if (isNotEmpty(designDb.getOpenapi())) {
           content = isNotEmpty(designDb.getOpenapi()) && format.isYaml()
-              ? Yaml31.pretty(servicesSchemaQuery.checkAndGetApisParseProvider(
+              ? Yaml31.pretty(servicesSchemaQuery.checkAndGetApisParser(
               ApiImportSource.OPENAPI).parse(designDb.getOpenapi()))
               : designDb.getOpenapi();
         }

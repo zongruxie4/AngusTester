@@ -15,6 +15,7 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.schema.ApisSc
 import cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesSchemaAssembler;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceSchemaDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceServerVo;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -171,5 +172,11 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
   public String openapiDetail(Long serviceId, ApisSchemaOpenApiDto dto) {
     return servicesSchemaQuery.openapiDetail(serviceId, dto.getApiIds(),
         dto.getFormat(), dto.isGzipCompression(), dto.isOnlyApisComponents());
+  }
+
+  @Override
+  public void translate(Long id, SupportedLanguage sourceLanguage,
+      SupportedLanguage targetLanguage) {
+    servicesSchemaCmd.translate(id, sourceLanguage, targetLanguage);
   }
 }

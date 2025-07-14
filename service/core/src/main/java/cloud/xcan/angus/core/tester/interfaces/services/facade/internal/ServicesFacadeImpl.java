@@ -35,6 +35,7 @@ import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.experimental.IdKey;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
