@@ -47,6 +47,7 @@ import cloud.xcan.angus.l2cache.spring.RedisCaffeineCacheManager;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
+import cloud.xcan.angus.spec.thread.MultiTaskThreadPool;
 import cloud.xcan.angus.spec.utils.GzipUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -459,8 +460,10 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
         );
         translator.translateOpenAPI(openApi);
 
-        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.IGNORE,
+        servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.COVER,
             false, null, null, false, null);
+
+        // TODO Notify the user that the translation is complete
         return null;
       }
     }.execute();

@@ -16,6 +16,7 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assemble
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceSchemaDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceServerVo;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
+import cloud.xcan.angus.spec.thread.MultiTaskThreadPool;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -40,6 +41,9 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
 
   @Resource
   private VariableQuery variableQuery;
+
+  @Resource
+  private MultiTaskThreadPool taskThreadPool;
 
   @Override
   public void infoReplace(Long serviceId, Info info) {
@@ -177,6 +181,8 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
   @Override
   public void translate(Long id, SupportedLanguage sourceLanguage,
       SupportedLanguage targetLanguage) {
-    servicesSchemaCmd.translate(id, sourceLanguage, targetLanguage);
+    taskThreadPool.execute(() -> {
+      servicesSchemaCmd.translate(id, sourceLanguage, targetLanguage);
+    });
   }
 }

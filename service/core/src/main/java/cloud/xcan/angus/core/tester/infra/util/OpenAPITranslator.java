@@ -188,6 +188,8 @@ public class OpenAPITranslator {
         value -> operation.setTags(List.of(value.split(","))));
 
     translateField(httpMethod + ".summary", operation::getSummary, operation::setSummary);
+    translateField(httpMethod + ".description", operation::getDescription, operation::setDescription);
+
     translateExternalDocs(operation.getExternalDocs());
 
     // Process parameters
@@ -353,8 +355,7 @@ public class OpenAPITranslator {
    * @param getter  Function to get original value
    * @param setter  Function to set translated value
    */
-  private void translateField(String fieldId,
-      Supplier<String> getter,
+  private void translateField(String fieldId, Supplier<String> getter,
       java.util.function.Consumer<String> setter) {
     String original = getter.get();
     if (original == null || original.trim().isEmpty()) {

@@ -9,7 +9,7 @@ public class DeepSeekConfig {
 
   private String apiKey;
   private String apiEndpoint = "https://api.deepseek.com/chat/completions";
-  private String promptTemplate = "Translate the {sourceLanguage} text in the document of the OpenAPI specification below into the corresponding {targetLanguage}. Note: Code blocks, document formats, etc. should not be translated";
+  private String promptTemplate = "Translate the {sourceLanguage} text in the document of the OpenAPI specification below into the corresponding {targetLanguage}. Note: 1. Code blocks, document formats, etc. should not be translated; 2. If there is no translatable text, output the original content.";
   private int maxRetries = 3;
   private long initialRetryDelayMs = 1000;
   private double backoffFactor = 2.0;

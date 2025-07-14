@@ -134,7 +134,7 @@ public class DeepSeekTranslationService implements TranslationService {
     JSONArray messages = new JSONArray();
     JSONObject systemMessage = new JSONObject();
     systemMessage.put("role", "system");
-    String prompt = config.getPromptTemplate().replace("{sourceLanguage}", targetLanguage);
+    String prompt = config.getPromptTemplate().replace("{sourceLanguage}", sourceLanguage);
     prompt = prompt.replace("{targetLanguage}", targetLanguage);
     systemMessage.put("content", prompt);
     messages.put(systemMessage);
