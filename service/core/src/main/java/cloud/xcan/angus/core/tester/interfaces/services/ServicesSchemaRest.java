@@ -367,8 +367,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.successData(servicesSchemaFacade.openapiDetail(serviceId, dto));
   }
 
-  @Operation(summary = "Modify services status. Note: When modifying a services, "
-      + "all services and apis status under the services will be synchronously modified.", operationId = "services:schema:translate")
+  @Operation(summary = "OpenAP specification text translation.", operationId = "services:schema:translate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")

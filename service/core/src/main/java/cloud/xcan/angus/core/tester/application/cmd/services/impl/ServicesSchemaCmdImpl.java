@@ -22,6 +22,7 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
+import cloud.xcan.angus.core.spring.env.EnvHelper;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCmd;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCompCmd;
@@ -43,6 +44,7 @@ import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
 import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import cloud.xcan.angus.l2cache.spring.RedisCaffeineCacheManager;
+import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import cloud.xcan.angus.spec.utils.GzipUtils;
@@ -441,8 +443,16 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     new BizTemplate<Void>() {
       @Override
       protected Void process() {
+        System.setProperty("deepseek.api.key", EnvHelper.getString("DEEPSEEK_TRANSLATION_API_KEY"));
+
         TranslationService translationService = servicesSchemaQuery.checkAndGetTranslationService(
             TranslationServiceProvider.DeepSeek);
+        try {
+          translationService.loadConfig();
+        } catch (Exception e) {
+          throw new SysException(e.getMessage());
+        }
+
         OpenAPI openApi = servicesSchemaQuery.openapiDetail0(serviceId, null, false);
         OpenAPITranslator translator = new OpenAPITranslator(
             translationService, sourceLanguage, targetLanguage
@@ -450,8 +460,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
         translator.translateOpenAPI(openApi);
 
         servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.IGNORE,
-            false,
-            null, null, false, null);
+            false, null, null, false, null);
         return null;
       }
     }.execute();
