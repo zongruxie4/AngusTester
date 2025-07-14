@@ -1,5 +1,6 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
+import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
 import java.util.Properties;
 
 /**
@@ -40,22 +41,17 @@ public class AliyunConfig {
   }
 
   // Load configuration from Properties
-  public static AliyunConfig fromProperties(Properties prop) {
+  public AliyunConfig fromProperties(Setting setting) {
     AliyunConfig config = new AliyunConfig();
-    config.apiKey = prop.getProperty("api.key", "");
-    config.apiSecret = prop.getProperty("api.secret", "");
-    config.apiEndpoint = prop.getProperty("api.endpoint", config.apiEndpoint);
+    this.apiKey = setting.getString("api.key", "");
+    this.apiSecret = setting.getString("api.secret", "");
+    this.apiEndpoint = setting.getString("api.endpoint", this.apiEndpoint);
 
     // Retry configuration
-    config.maxRetries = Integer.parseInt(
-        prop.getProperty("retry.max", String.valueOf(config.maxRetries)));
-    config.initialRetryDelayMs = Long.parseLong(
-        prop.getProperty("retry.initialDelayMs", String.valueOf(config.initialRetryDelayMs)));
-    config.backoffFactor = Double.parseDouble(
-        prop.getProperty("retry.backoffFactor", String.valueOf(config.backoffFactor)));
-    config.timeoutSeconds = Integer.parseInt(
-        prop.getProperty("timeout.seconds", String.valueOf(config.timeoutSeconds)));
-
+    this.maxRetries = setting.getInt("max.retries", this.maxRetries);
+    this.initialRetryDelayMs = setting.getLong("retry.initialDelayMs", this.initialRetryDelayMs);
+    this.backoffFactor = setting.getDouble("retry.backoffFactor", this.backoffFactor);
+    this.timeoutSeconds = setting.getInt("timeout.seconds", this.timeoutSeconds);
     return config;
   }
 

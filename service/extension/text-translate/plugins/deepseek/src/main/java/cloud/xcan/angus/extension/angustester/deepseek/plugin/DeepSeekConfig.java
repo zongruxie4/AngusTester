@@ -1,5 +1,6 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
+import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
 import java.util.Properties;
 
 /**
@@ -34,23 +35,17 @@ public class DeepSeekConfig {
   }
 
   // Load configuration from Properties
-  public static DeepSeekConfig fromProperties(Properties prop) {
-    DeepSeekConfig config = new DeepSeekConfig();
-    config.apiKey = prop.getProperty("api.key", "");
-    config.apiEndpoint = prop.getProperty("api.endpoint", config.apiEndpoint);
-    config.promptTemplate = prop.getProperty("prompt.template", config.promptTemplate);
+  public DeepSeekConfig fromProperties(Setting setting) {
+    this.apiKey = setting.getString("api.key", "");
+    this.apiEndpoint = setting.getString("api.endpoint", this.apiEndpoint);
+    this.promptTemplate = setting.getString("prompt.template", this.promptTemplate);
 
     // Retry configuration
-    config.maxRetries = Integer.parseInt(
-        prop.getProperty("retry.max", String.valueOf(config.maxRetries)));
-    config.initialRetryDelayMs = Long.parseLong(
-        prop.getProperty("retry.initialDelayMs", String.valueOf(config.initialRetryDelayMs)));
-    config.backoffFactor = Double.parseDouble(
-        prop.getProperty("retry.backoffFactor", String.valueOf(config.backoffFactor)));
-    config.timeoutSeconds = Integer.parseInt(
-        prop.getProperty("timeout.seconds", String.valueOf(config.timeoutSeconds)));
-
-    return config;
+    this.maxRetries = setting.getInt("max.retries", this.maxRetries);
+    this.initialRetryDelayMs = setting.getLong("retry.initialDelayMs", this.initialRetryDelayMs);
+    this.backoffFactor = setting.getDouble("retry.backoffFactor", this.backoffFactor);
+    this.timeoutSeconds = setting.getInt("timeout.seconds", this.timeoutSeconds);
+    return this;
   }
 
   // Getters and Setters

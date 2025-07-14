@@ -7,6 +7,7 @@ import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
 import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import cloud.xcan.angus.plugin.api.Extension;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
+import cloud.xcan.angus.spec.setting.AppSettingHelper;
 import com.aliyun.alimt20181012.Client;
 import com.aliyun.alimt20181012.models.TranslateRequest;
 import com.aliyun.alimt20181012.models.TranslateResponse;
@@ -32,7 +33,6 @@ public class AliyunTranslationService implements TranslationService {
       AliyunTranslationService.class.getName());
   private static final String DEFAULT_CONFIG_FILE = "translation.properties";
 
-
   private AliyunConfig config;
   private Client client;
   private final ObjectMapper jsonMapper = new ObjectMapper();
@@ -57,17 +57,8 @@ public class AliyunTranslationService implements TranslationService {
 
   // Load configuration from properties file
   private AliyunConfig loadConfigFromProperties() {
-    try (var input = getClass().getClassLoader().getResourceAsStream(DEFAULT_CONFIG_FILE)) {
-      if (input == null) {
-        throw new IllegalStateException("Configuration file not found: " + DEFAULT_CONFIG_FILE);
-      }
-
-      Properties prop = new Properties();
-      prop.load(input);
-      return AliyunConfig.fromProperties(prop);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to load configuration", e);
-    }
+    return new AliyunConfig().fromProperties(
+        AppSettingHelper.getSetting(DEFAULT_CONFIG_FILE, AliyunTranslationService.class));
   }
 
   @Override

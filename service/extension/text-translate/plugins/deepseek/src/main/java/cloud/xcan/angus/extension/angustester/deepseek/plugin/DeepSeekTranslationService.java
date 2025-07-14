@@ -6,6 +6,7 @@ import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServicePro
 import cloud.xcan.angus.plugin.api.Extension;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
+import cloud.xcan.angus.spec.setting.AppSettingHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
@@ -14,7 +15,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import org.json.JSONArray;
@@ -50,17 +50,8 @@ public class DeepSeekTranslationService implements TranslationService {
 
   // Load configuration from properties file
   private DeepSeekConfig loadConfigFromProperties() {
-    try (var input = getClass().getClassLoader().getResourceAsStream(DEFAULT_CONFIG_FILE)) {
-      if (input == null) {
-        throw new IllegalStateException("Configuration file not found: " + DEFAULT_CONFIG_FILE);
-      }
-
-      Properties prop = new Properties();
-      prop.load(input);
-      return DeepSeekConfig.fromProperties(prop);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to load configuration", e);
-    }
+    return new DeepSeekConfig().fromProperties(
+        AppSettingHelper.getSetting(DEFAULT_CONFIG_FILE, DeepSeekTranslationService.class));
   }
 
   @Override
