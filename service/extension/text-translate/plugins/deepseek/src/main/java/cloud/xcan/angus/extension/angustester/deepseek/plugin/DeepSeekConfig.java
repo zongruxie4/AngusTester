@@ -1,7 +1,6 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
 import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
-import java.util.Properties;
 
 /**
  * Configuration holder for DeepSeek translation service
@@ -36,15 +35,16 @@ public class DeepSeekConfig {
 
   // Load configuration from Properties
   public DeepSeekConfig fromProperties(Setting setting) {
-    this.apiKey = setting.getString("api.key", "");
-    this.apiEndpoint = setting.getString("api.endpoint", this.apiEndpoint);
-    this.promptTemplate = setting.getString("prompt.template", this.promptTemplate);
+    this.apiKey = setting.getString("deepseek.api.key", "");
+    this.apiEndpoint = setting.getString("deepseek.api.endpoint", this.apiEndpoint);
+    this.promptTemplate = setting.getString("deepseek.prompt.template", this.promptTemplate);
 
     // Retry configuration
-    this.maxRetries = setting.getInt("max.retries", this.maxRetries);
-    this.initialRetryDelayMs = setting.getLong("retry.initialDelayMs", this.initialRetryDelayMs);
-    this.backoffFactor = setting.getDouble("retry.backoffFactor", this.backoffFactor);
-    this.timeoutSeconds = setting.getInt("timeout.seconds", this.timeoutSeconds);
+    this.maxRetries = setting.getInt("deepseek.max.retries", this.maxRetries);
+    this.initialRetryDelayMs = setting.getLong("deepseek.retry.initialDelayMs",
+        this.initialRetryDelayMs);
+    this.backoffFactor = setting.getDouble("deepseek.retry.backoffFactor", this.backoffFactor);
+    this.timeoutSeconds = setting.getInt("deepseek.timeout.seconds", this.timeoutSeconds);
     return this;
   }
 

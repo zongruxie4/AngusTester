@@ -1,7 +1,6 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
 import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
-import java.util.Properties;
 
 /**
  * Configuration holder for Aliyun translation service
@@ -43,15 +42,15 @@ public class AliyunConfig {
   // Load configuration from Properties
   public AliyunConfig fromProperties(Setting setting) {
     AliyunConfig config = new AliyunConfig();
-    this.apiKey = setting.getString("api.key", "");
-    this.apiSecret = setting.getString("api.secret", "");
-    this.apiEndpoint = setting.getString("api.endpoint", this.apiEndpoint);
+    this.apiKey = setting.getString("aliyun.api.key", "");
+    this.apiSecret = setting.getString("aliyun.api.secret", "");
+    this.apiEndpoint = setting.getString("aliyun.api.endpoint", this.apiEndpoint);
 
     // Retry configuration
-    this.maxRetries = setting.getInt("max.retries", this.maxRetries);
-    this.initialRetryDelayMs = setting.getLong("retry.initialDelayMs", this.initialRetryDelayMs);
-    this.backoffFactor = setting.getDouble("retry.backoffFactor", this.backoffFactor);
-    this.timeoutSeconds = setting.getInt("timeout.seconds", this.timeoutSeconds);
+    this.maxRetries = setting.getInt("aliyun.max.retries", this.maxRetries);
+    this.initialRetryDelayMs = setting.getLong("aliyun.retry.initialDelayMs", this.initialRetryDelayMs);
+    this.backoffFactor = setting.getDouble("aliyun.retry.backoffFactor", this.backoffFactor);
+    this.timeoutSeconds = setting.getInt("aliyun.timeout.seconds", this.timeoutSeconds);
     return config;
   }
 

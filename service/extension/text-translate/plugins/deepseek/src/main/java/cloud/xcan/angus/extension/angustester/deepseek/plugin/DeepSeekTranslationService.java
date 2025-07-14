@@ -7,6 +7,7 @@ import cloud.xcan.angus.plugin.api.Extension;
 import cloud.xcan.angus.spec.locale.MessageHolder;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import cloud.xcan.angus.spec.setting.AppSettingHelper;
+import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
@@ -30,14 +31,16 @@ public class DeepSeekTranslationService implements TranslationService {
 
   private static final Logger log = LoggerFactory.getLogger(
       DeepSeekTranslationService.class.getName());
-  private static final String DEFAULT_CONFIG_FILE = "translation.properties";
+  private static final String DEFAULT_CONFIG_FILE = "deepseek-translation.properties";
 
   private DeepSeekConfig config;
+  private Setting settings;
+
   private final ObjectMapper jsonMapper = new ObjectMapper();
 
   // SPI-compatible constructor (uses properties file)
   public DeepSeekTranslationService() {
-    this.config = loadConfigFromProperties();
+    loadConfig();
   }
 
   // Programmatic configuration constructor
@@ -46,12 +49,6 @@ public class DeepSeekTranslationService implements TranslationService {
       throw new IllegalArgumentException("API key must be provided");
     }
     this.config = config;
-  }
-
-  // Load configuration from properties file
-  private DeepSeekConfig loadConfigFromProperties() {
-    return new DeepSeekConfig().fromProperties(
-        AppSettingHelper.getSetting(DEFAULT_CONFIG_FILE, DeepSeekTranslationService.class));
   }
 
   @Override
@@ -82,6 +79,16 @@ public class DeepSeekTranslationService implements TranslationService {
   @Override
   public TranslationServiceProvider getProvider() {
     return TranslationServiceProvider.DeepSeek;
+  }
+
+  // Load configuration from properties file and envs
+  @Override
+  public void loadConfig() {
+    if (this.settings == null) {
+      this.settings = AppSettingHelper.getSetting(DEFAULT_CONFIG_FILE,
+          DeepSeekTranslationService.class);
+    }
+    this.config = new DeepSeekConfig().fromProperties(settings);
   }
 
   /**
