@@ -123,7 +123,7 @@ const storageKeyChange = () => {
 };
 
 const handleEditSuccess = () => {
-  refreshListNotify.value += 0;
+  refreshListNotify.value += 1;
 };
 
 onMounted(() => {

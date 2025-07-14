@@ -27,6 +27,7 @@ const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/co
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/assocCase/index.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/attachment/index.vue'));
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
+const toolbarOptions = ['color', 'weight'];
 
 const defaultCaseInfo = ref();
 
@@ -87,7 +88,7 @@ const cancel = () => {
 const nameClass = computed(() => {
   if (baseCase.value && compareCase.value) {
     if (baseCase.value.name !== compareCase.value.name) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
     return '';
   }
@@ -103,7 +104,7 @@ const descriptionClass = computed(() => {
       return 'bg-status-add';
     }
     if (baseCase.value?.description !== compareCase.value?.description) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
     return '';
   }
@@ -119,7 +120,7 @@ const preconditionClass = computed(() => {
       return 'bg-status-add';
     }
     if (baseCase.value?.precondition !== compareCase.value?.precondition) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
     return '';
   }
@@ -132,13 +133,13 @@ const stepsClass = computed(() => {
   } else if (baseCase.value?.steps?.length && !compareCase.value?.steps?.length) {
     return 'bg-status-del';
   } else if (!!baseCase.value?.steps?.length && (baseCase.value?.steps?.length !== compareCase.value?.steps?.length)) {
-    return 'bg-status-modify';
+    return 'bg-blue-active';
   } else if (!!baseCase.value?.steps?.length && (baseCase.value?.steps?.length === compareCase.value?.steps?.length)) {
     const isModify = baseCase.value.steps.some((item, idx) => {
       return (item.expectedResult !== compareCase.value.steps[idx].expectedResult) || (item.step !== compareCase.value.steps[idx].step);
     });
     if (isModify) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
   } else {
     return '';
@@ -151,11 +152,11 @@ const taskClass = computed(() => {
   } else if (baseCase.value?.refTaskInfos?.length && !compareCase.value?.refTaskInfos?.length) {
     return 'bg-status-del';
   } else if (!!baseCase.value?.refTaskInfos?.length && (baseCase.value?.refTaskInfos?.length !== compareCase.value?.refTaskInfos?.length)) {
-    return 'bg-status-modify';
+    return 'bg-blue-active';
   } else if (!!baseCase.value?.refTaskInfos?.length && (baseCase.value?.refTaskInfos?.length === compareCase.value?.refTaskInfos?.length)) {
     const different = _.differenceBy(baseCase.value.refTaskInfos?.length, compareCase.value.refTaskInfos, 'id');
     if (different?.length) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
   } else {
     return '';
@@ -168,11 +169,11 @@ const caseClass = computed(() => {
   } else if (baseCase.value?.refCaseInfos?.length && !compareCase.value?.refCaseInfos?.length) {
     return 'bg-status-del';
   } else if (!!baseCase.value?.refCaseInfos?.length && (baseCase.value?.refCaseInfos?.length !== compareCase.value.refCaseInfos?.length)) {
-    return 'bg-status-modify';
+    return 'bg-blue-active';
   } else if (!!baseCase.value?.refCaseInfos?.length && (baseCase.value?.refCaseInfos?.length === compareCase.value.refCaseInfos?.length)) {
     const different = _.differenceBy(baseCase.value.refCaseInfos?.length, compareCase.value.refCaseInfos, 'id');
     if (different?.length) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
   } else {
     return '';
@@ -185,11 +186,11 @@ const attachmentClass = computed(() => {
   } else if (baseCase.value?.attachmentsData?.length && !compareCase.value?.attachmentsData?.length) {
     return 'bg-status-del';
   } else if (!!baseCase.value?.attachmentsData?.length && (baseCase.value?.attachmentsData?.length !== compareCase.value.attachmentsData?.length)) {
-    return 'bg-status-modify';
+    return 'bg-blue-active';
   } else if (!!baseCase.value?.attachmentsData?.length && (baseCase.value?.attachmentsDataE?.length === compareCase.value.attachmentsData?.length)) {
     const different = _.differenceBy(baseCase.value.attachmentsData?.length, compareCase.value.attachmentsData, 'id');
     if (different?.length) {
-      return 'bg-status-modify';
+      return 'bg-blue-active';
     }
   } else {
     return '';
@@ -248,7 +249,7 @@ onMounted(() => {
 
         <div class="inline-flex items-center space-x-1">
           <span>修改</span>
-          <span class="w-4 h-4 inline-block bg-status-modify"></span>
+          <span class="w-4 h-4 inline-block bg-blue-active"></span>
         </div>
       </div>
       <div class="flex leading-10 border-b border-t mt-2">
@@ -325,12 +326,24 @@ onMounted(() => {
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCase?.precondition">
-            {{ baseCase?.precondition }}
+            <RichEditor
+              v-model:value="baseCase.precondition"
+              mode="view"
+              :toolbarOptions="toolbarOptions"
+              :options="{theme: 'bubble'}"
+              class="step-content"
+              height="auto" />
           </div>
         </div>
         <div class="flex-1 border-r px-2  flex justify-between" :class="preconditionClass">
           <div v-if="compareCase?.description">
-            {{ compareCase?.precondition }}
+            <RichEditor
+              v-model:value="compareCase.precondition"
+              mode="view"
+              :toolbarOptions="toolbarOptions"
+              :options="{theme: 'bubble'}"
+              class="step-content"
+              height="auto" />
           </div>
         </div>
       </div>
@@ -348,13 +361,25 @@ onMounted(() => {
             </div>
             <div v-for="(step, idx) in baseCase.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
-              <div class="flex-1 px-2 border-r py-2">{{ step.step }}</div>
-              <div class="flex-1 px-2 py-2">{{ step.expectedResult }}</div>
+              <div class="flex-1 px-2 border-r py-2">
+                <RichEditor
+                  v-model:value="step.step"
+                  mode="view"
+                  :toolbarOptions="toolbarOptions"
+                  :options="{theme: 'bubble'}"
+                  class="step-content"
+                  height="auto"/>
+              </div>
+              <div class="flex-1 px-2 py-2">
+                <RichEditor
+                  v-model:value="step.expectedResult"
+                  mode="view"
+                  :toolbarOptions="toolbarOptions"
+                  :options="{theme: 'bubble'}"
+                  class="step-content"
+                  height="auto"/>
+              </div>
             </div>
-            <!-- <CaseStep
-              :showOutBorder="false"
-              :defaultValue="baseCase.steps"
-              :readonly="true" /> -->
           </div>
         </div>
         <div class="flex-1 border-r" :class="stepsClass">
@@ -366,13 +391,25 @@ onMounted(() => {
             </div>
             <div v-for="(step, idx) in compareCase.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
-              <div class="flex-1 px-2 border-r py-2">{{ step.step }}</div>
-              <div class="flex-1 px-2 py-2">{{ step.expectedResult }}</div>
+              <div class="flex-1 px-2 border-r py-2">
+                <RichEditor
+                  v-model:value="step.step"
+                  mode="view"
+                  :toolbarOptions="toolbarOptions"
+                  :options="{theme: 'bubble'}"
+                  class="step-content"
+                  height="auto"/>
+              </div>
+              <div class="flex-1 px-2 py-2">
+                <RichEditor
+                  v-model:value="step.expectedResult"
+                  mode="view"
+                  :toolbarOptions="toolbarOptions"
+                  :options="{theme: 'bubble'}"
+                  class="step-content"
+                  height="auto"/>
+              </div>
             </div>
-            <!-- <CaseStep
-              :showOutBorder="false"
-              :defaultValue="compareCase.steps"
-              :readonly="true" /> -->
           </div>
         </div>
       </div>
