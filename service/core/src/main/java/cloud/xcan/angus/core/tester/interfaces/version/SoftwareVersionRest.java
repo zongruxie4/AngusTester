@@ -50,7 +50,7 @@ public class SoftwareVersionRest {
   @Resource
   private SoftwareVersionFacade softwareVersionFacade;
 
-  @Operation(summary = "Add task software version", operationId = "software:version:add")
+  @Operation(summary = "Add software version", operationId = "software:version:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -59,7 +59,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.add(dto));
   }
 
-  @Operation(summary = "Update task software version", operationId = "software:version:update")
+  @Operation(summary = "Update software version", operationId = "software:version:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -70,7 +70,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace task software version", operationId = "software:version:replace")
+  @Operation(summary = "Replace software version", operationId = "software:version:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -94,7 +94,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Merge task software version", operationId = "software:version:merge")
+  @Operation(summary = "Merge software version", operationId = "software:version:merge")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -106,7 +106,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete task software version", operationId = "software:version:delete")
+  @Operation(summary = "Delete software version", operationId = "software:version:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -116,7 +116,7 @@ public class SoftwareVersionRest {
     softwareVersionFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of task software version", operationId = "software:version:detail")
+  @Operation(summary = "Query the detail of software version", operationId = "software:version:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -126,7 +126,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of task software version", operationId = "software:version:list")
+  @Operation(summary = "Query the list of software version", operationId = "software:version:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -135,7 +135,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the list of task software version", operationId = "software:version:search")
+  @Operation(summary = "Fulltext search the list of software version", operationId = "software:version:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
