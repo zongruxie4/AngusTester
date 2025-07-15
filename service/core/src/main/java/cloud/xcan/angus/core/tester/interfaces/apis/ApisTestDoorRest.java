@@ -28,7 +28,7 @@ public class ApisTestDoorRest {
   @Resource
   private ApisTestFacade apisTestFacade;
 
-  @Operation(summary = "Find enabled functionality, performance, stability testing type of apis", operationId = "apis:test:enabled:find:inner")
+  @Operation(summary = "Find enabled testing type of api", operationId = "apis:test:enabled:find:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

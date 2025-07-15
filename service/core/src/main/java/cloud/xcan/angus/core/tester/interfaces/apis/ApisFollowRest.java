@@ -65,7 +65,7 @@ public class ApisFollowRest {
     apisFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search apis follow", operationId = "apis:follow:search")
+  @Operation(summary = "Fulltext search the follow of api", operationId = "apis:follow:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
@@ -74,9 +74,9 @@ public class ApisFollowRest {
     return ApiLocaleResult.success(apisFollowFacade.search(dto));
   }
 
-  @Operation(summary = "Query the follow number of apis", operationId = "apis:follow:count")
+  @Operation(summary = "Query the follow count of apis", operationId = "apis:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
