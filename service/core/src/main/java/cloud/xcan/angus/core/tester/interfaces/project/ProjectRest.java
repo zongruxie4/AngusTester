@@ -76,7 +76,7 @@ public class ProjectRest {
     return ApiLocaleResult.success(projectFacade.replace(dto));
   }
 
-  @Operation(summary = "Import the inner project example", operationId = "project:example:import")
+  @Operation(summary = "Import the project example", operationId = "project:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
