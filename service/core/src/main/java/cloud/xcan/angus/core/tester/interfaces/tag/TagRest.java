@@ -65,7 +65,7 @@ public class TagRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import the inner tag example", operationId = "tag:example:import")
+  @Operation(summary = "Import the tag examples", operationId = "tag:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

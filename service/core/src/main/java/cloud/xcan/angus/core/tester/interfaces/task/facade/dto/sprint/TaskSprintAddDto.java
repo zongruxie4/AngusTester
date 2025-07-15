@@ -61,13 +61,13 @@ public class TaskSprintAddDto {
   private List<Attachment> attachments;
 
   @Length(max = MAX_REMARK_LENGTH_X10)
-  @Schema(description = "Acceptance criteria for sprint. Clearly define the specific conditions and standards for software product delivery. ")
+  @Schema(description = "Acceptance criteria for sprint. Clearly define the specific conditions and standards for software product delivery")
   private String acceptanceCriteria;
 
   @Length(max = MAX_REMARK_LENGTH_X10)
   @Schema(description =
       "Other sprint information. This is the other description of the sprint. Additional details such as sprint strategies, "
-          + "risk assessment, and management. ")
+          + "risk assessment, and management")
   private String otherInformation;
 
 }

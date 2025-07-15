@@ -35,8 +35,8 @@ public class TaskTestRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{taskType}/{targetId}/test/association")
   public ApiLocaleResult<Map<ScriptType, List<TaskAssocVo>>> assocList(
-      @Parameter(name = "taskType", description = "Task type, allowable values: API_TEST, SCENARIO_TEST", required = true) @PathVariable("taskType") TaskType taskType,
-      @Parameter(name = "targetId", description = "Associated apis or scenario id", required = true) @PathVariable("targetId") Long targetId) {
+      @Parameter(name = "taskType", description = "Task type", required = true) @PathVariable("taskType") TaskType taskType,
+      @Parameter(name = "targetId", description = "Associated api or scenario id", required = true) @PathVariable("targetId") Long targetId) {
     return ApiLocaleResult.success(taskTestFacade.assocList(taskType, targetId));
   }
 
@@ -45,8 +45,8 @@ public class TaskTestRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{taskType}/{targetId}/{testType}/result")
   public ApiLocaleResult<ExecTestResultDetailSummary> testResult(
-      @Parameter(name = "taskType", description = "Task type, allowable values: API_TEST, SCENARIO_TEST", required = true) @PathVariable("taskType") TaskType taskType,
-      @Parameter(name = "targetId", description = "Associated apis or scenario id", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "taskType", description = "Task type", required = true) @PathVariable("taskType") TaskType taskType,
+      @Parameter(name = "targetId", description = "Associated api or scenario id", required = true) @PathVariable("targetId") Long targetId,
       @Parameter(name = "testType", description = "Test type", required = true) @PathVariable("testType") TestType testType) {
     return ApiLocaleResult.success(taskTestFacade.testResult(taskType, targetId, testType));
   }

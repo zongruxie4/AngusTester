@@ -220,7 +220,8 @@ public class TaskRest {
   @PutMapping("/{id}/deadline/{deadline}")
   public ApiLocaleResult<?> replaceDeadline(
       @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "deadline", description = "Task deadline", required = true) @PathVariable("deadline") @DateTimeFormat(pattern = DATE_FMT) LocalDateTime deadlineDate) {
+      @Parameter(name = "deadline", description = "Task deadline", required = true)
+      @PathVariable("deadline") @DateTimeFormat(pattern = DATE_FMT) LocalDateTime deadlineDate) {
     taskFacade.replaceDeadline(id, deadlineDate);
     return ApiLocaleResult.success();
   }

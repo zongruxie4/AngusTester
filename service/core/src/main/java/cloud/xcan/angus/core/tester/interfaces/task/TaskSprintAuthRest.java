@@ -76,7 +76,7 @@ public class TaskSprintAuthRest {
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
       @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     taskSprintAuthFacade.enabled(sprintId, enabled);
     return ApiLocaleResult.success();
   }
@@ -124,11 +124,10 @@ public class TaskSprintAuthRest {
   public ApiLocaleResult<TaskSprintAuthCurrentVo> currentUserAuth(
       @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
       @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
-    return ApiLocaleResult
-        .success(taskSprintAuthFacade.currentUserAuth(sprintId, admin));
+    return ApiLocaleResult.success(taskSprintAuthFacade.currentUserAuth(sprintId, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of task sprint, the administrator permission is included", operationId = "task:sprint:auth:check")
+  @Operation(summary = "Check the user authorization or administrator permission of task sprint", operationId = "task:sprint:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -136,7 +135,8 @@ public class TaskSprintAuthRest {
   public ApiLocaleResult<?> authCheck(
       @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
       @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Task sprint authorized permission", required = true) @PathVariable("authPermission") TaskSprintPermission permission) {
+      @Parameter(name = "authPermission", description = "Task sprint authorized permission", required = true)
+      @PathVariable("authPermission") TaskSprintPermission permission) {
     taskSprintAuthFacade.authCheck(sprintId, permission, userId);
     return ApiLocaleResult.success();
   }

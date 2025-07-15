@@ -60,7 +60,7 @@ public class ServicesTestRest {
   @PutMapping("/services/{id}/test/enabled")
   public ApiLocaleResult<?> testEnabled(
       @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
-      @Valid @NotEmpty @Parameter(description = "Apis test type, allowable values: PERFORMANCE, FUNCTIONAL, STABILITY", required = true) @RequestParam(value = "testTypes") HashSet<TestType> testTypes,
+      @Valid @NotEmpty @Parameter(description = "Apis test type", required = true) @RequestParam(value = "testTypes") HashSet<TestType> testTypes,
       @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     servicesTestFacade.testEnabled(serviceId, testTypes, enabled);
     return ApiLocaleResult.success();
@@ -121,7 +121,8 @@ public class ServicesTestRest {
   @PutMapping("/services/{id}/test/task/generate")
   public ApiLocaleResult<?> generate(
       @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "taskSprintId", description = "Task sprint id, it is required for agile project management") @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
+      @Parameter(name = "taskSprintId", description = "Task sprint id, it is required for agile project management")
+      @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
       @Valid @NotEmpty @RequestBody Set<ServicesTestTaskGenerateDto> dto) {
     servicesTestFacade.testTaskGenerate(serviceId, taskSprintId, dto);
     return ApiLocaleResult.success();
