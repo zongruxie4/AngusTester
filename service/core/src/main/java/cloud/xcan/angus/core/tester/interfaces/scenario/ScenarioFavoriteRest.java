@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioFavourite", description = "Test Scenario Favorites Management - Quick-access mechanism for bookmarking frequently used test scenario")
+@Tag(name = "ScenarioFavourite", description = "Scenario Favorites Management - Quick-access mechanism for bookmarking frequently used test scenario")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -74,9 +74,9 @@ public class ScenarioFavoriteRest {
     return ApiLocaleResult.success(scenarioFavouriteFacade.search(dto));
   }
 
-  @Operation(summary = "Query the favourite number of scenario", operationId = "scenario:favourite:count")
+  @Operation(summary = "Query the favourite count of scenario", operationId = "scenario:favourite:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

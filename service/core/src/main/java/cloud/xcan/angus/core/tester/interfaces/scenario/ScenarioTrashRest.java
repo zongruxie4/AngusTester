@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioTrash", description = "Scenario Recycle Bin Management - Temporary storage for deleted scenario with restore capabilities and permanent deletion controls")
+@Tag(name = "ScenarioTrash", description = "Scenario Recycle Bin Management - "
+    + "Temporary storage for deleted scenario with restore capabilities and permanent deletion controls")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/trash")
@@ -34,7 +35,7 @@ public class ScenarioTrashRest {
   @Resource
   private ScenarioTrashFacade trashScenarioFacade;
 
-  @Operation(summary = "Clear the trash of scenario or dir", operationId = "scenario:trash:clear")
+  @Operation(summary = "Clear the trash of scenario", operationId = "scenario:trash:clear")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")

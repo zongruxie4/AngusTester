@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioAuth", description = "Test Scenario Authorization Management - Unified entry for managing data access permissions of test scenario")
+@Tag(name = "ScenarioAuth", description = "Scenario Authorization Management - Unified entry for managing data access permissions of test scenario")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -76,7 +76,7 @@ public class ScenarioAuthRest {
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
       @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     scenarioAuthFacade.enabled(scenarioId, enabled);
     return ApiLocaleResult.success();
   }
@@ -102,7 +102,7 @@ public class ScenarioAuthRest {
     scenarioAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth")
+  @Operation(summary = "Query the user authorization permission of scenario", operationId = "scenario:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -115,7 +115,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.userAuth(scenarioId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission of scenario and throw 404 when scenario doesn't exist", operationId = "scenario:user:auth:current")
+  @Operation(summary = "Query the current user authorization permissions of scenario", operationId = "scenario:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -127,7 +127,7 @@ public class ScenarioAuthRest {
     return ApiLocaleResult.success(scenarioAuthFacade.currentUserAuth(scenarioId, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of scenario, the administrator permission is included", operationId = "scenario:auth:check")
+  @Operation(summary = "Check the user authorization or administrator permission of scenario", operationId = "scenario:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
@@ -135,7 +135,8 @@ public class ScenarioAuthRest {
   public ApiLocaleResult<?> authCheck(
       @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
       @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Scenario authorized permission", required = true) @PathVariable("authPermission") ScenarioPermission permission) {
+      @Parameter(name = "authPermission", description = "Scenario authorized permission", required = true)
+      @PathVariable("authPermission") ScenarioPermission permission) {
     scenarioAuthFacade.authCheck(scenarioId, permission, userId);
     return ApiLocaleResult.success();
   }

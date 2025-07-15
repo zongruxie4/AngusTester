@@ -56,7 +56,7 @@ public class ScenarioTestRest {
   public ApiLocaleResult<?> testEnabled(
       @Parameter(name = "id", required = true) @PathVariable("id") Long scenarioId,
       @Valid @NotEmpty @Parameter(description = "Apis test type, allowable values: PERFORMANCE, FUNCTIONAL, STABILITY", required = true) @RequestParam(value = "testTypes") HashSet<TestType> testTypes,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     scenarioTestFacade.testEnabled(scenarioId, testTypes, enabled);
     return ApiLocaleResult.success();
   }
