@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AngusScript", description = "Angus Script Configuration - Configure and manage test scripts adhering to the AngusMeter specification for standardized testing workflows")
+@Tag(name = "AngusScript", description = "Angus Script Configuration - "
+    + "Configure and manage test scripts adhering to the AngusMeter specification for standardized testing workflows")
 @Validated
 @RestController
 @RequestMapping("/api/v1/angus/script")

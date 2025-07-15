@@ -78,7 +78,7 @@ public class ScriptAuthRest {
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
       @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     scriptAuthFacade.enabled(scriptId, enabled);
     return ApiLocaleResult.success();
   }
@@ -141,7 +141,7 @@ public class ScriptAuthRest {
     return ApiLocaleResult.success(scriptAuthFacade.currentUserAuths(scriptIds, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of script, the administrator permission is included", operationId = "script:auth:check")
+  @Operation(summary = "Check the user authorization or administrator permission of script", operationId = "script:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
