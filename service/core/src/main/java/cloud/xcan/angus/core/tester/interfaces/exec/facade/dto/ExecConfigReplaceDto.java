@@ -55,12 +55,12 @@ public class ExecConfigReplaceDto {
       + "such as apis, use cases, and scenarios. The default is false")
   private Boolean updateTestResult;
 
-  @Schema(description = "Set the execution mode, including two options: IMMEDIATELY and TIMING. "
-      + "In IMMEDIATELY mode, the task will be scheduled and executed immediately. "
+  @Schema(description = "Set the execution mode, including two options: IMMEDIATELY and TIMING"
+      + "In IMMEDIATELY mode, the task will be scheduled and executed immediately"
       + "In TIMING mode, the task will be scheduled and executed at the designated startDate", required = true)
   private StartMode startMode;
 
-  @Schema(description = "The desired scheduled execution time for the task. "
+  @Schema(description = "The desired scheduled execution time for the task"
       + "If not set or if the time is less than the current time, it will be immediately scheduled for execution")
   private LocalDateTime startAtDate;
 

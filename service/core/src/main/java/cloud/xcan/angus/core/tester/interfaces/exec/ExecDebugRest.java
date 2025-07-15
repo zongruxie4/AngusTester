@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecDebug", description = "Scenario & Script Debugging API - Execution debugging and result inspection interface")
+@Tag(name = "ExecutionDebug", description = "Scenario & Script Debugging API - Execution debugging and result inspection interface")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec/debug")

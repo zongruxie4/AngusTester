@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecResult", description = "User Test Results API - End-user access to test artifacts: services, interfaces, executions, scripts, scenarios")
+@Tag(name = "ExecutionResult", description = "User Test Results API - End-user access to test artifacts: services, interfaces, executions, scripts, scenarios")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec")

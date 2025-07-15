@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Used by report generate job.
- */
-@Tag(name = "ExecResultInner", description = "Internal Test Results API - Service internal access to test artifacts: services, interfaces, executions, scripts, scenarios")
+
+@Tag(name = "ExecutionResultInner", description = "Internal Test Results API - Service internal access to test artifacts: services, interfaces, executions, scripts, scenarios")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec")

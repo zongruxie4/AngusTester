@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecSampleInner", description = "Internal Execution Sampling API - Service internal detailed execution sampling data access")
+@Tag(name = "ExecutionSampleInner", description = "Internal Execution Sampling API - Service internal detailed execution sampling data access")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec")
@@ -44,8 +44,8 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryTotal(id));
   }
 
-  @Operation(summary = "Query the summary list of execution sampling. "
-      + "Values format: duration,errors,iterations,n,operations,transactions,readBytes,writeBytes,ops,tps,brps,bwps,tranMean,tranMin,tranMax,tranP50,tranP75,tranP90,tranP95,tranP99,tranP999,errorRate,threadPoolSize,threadPoolActiveSize,threadMaxPoolSize,extCounter1,extCounter2,extCounter3,extGauge1,extGauge2,extGauge3",
+  @Operation(summary = "Query the summary list of execution sampling",
+      description = "Values format: duration,errors,iterations,n,operations,transactions,readBytes,writeBytes,ops,tps,brps,bwps,tranMean,tranMin,tranMax,tranP50,tranP75,tranP90,tranP95,tranP99,tranP999,errorRate,threadPoolSize,threadPoolActiveSize,threadMaxPoolSize,extCounter1,extCounter2,extCounter3,extGauge1,extGauge2,extGauge3",
       operationId = "exec:sample:summary:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})

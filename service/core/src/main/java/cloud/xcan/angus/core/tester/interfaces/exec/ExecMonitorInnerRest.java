@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecDebugInner", description = "Execution Scenario Monitoring (Internal) API - Internal service integration for scenario execution monitoring")
+@Tag(name = "ExecutionDebugInner", description = "Execution Scenario Monitoring (Internal) API - Internal service integration for scenario execution monitoring")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec/debug")

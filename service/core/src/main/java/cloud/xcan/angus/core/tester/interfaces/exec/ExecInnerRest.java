@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecInner", description = "Internal Execution API - Service-to-service scenario/script execution and result query")
+@Tag(name = "ExecutionInner", description = "Internal Execution API - Service-to-service scenario/script execution and result query")
 @Validated
 @RestController
 public class ExecInnerRest {
