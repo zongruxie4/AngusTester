@@ -24,7 +24,7 @@ public class NodeRunnerQueryDto {
   @Schema(requiredMode = RequiredMode.REQUIRED)
   private Long nodeId;
 
-  @Schema(description = "Is it a free node? Default is true.")
+  @Schema(description = "Is it a free node? Default is true")
   private Boolean freeNode = true;
 
 }

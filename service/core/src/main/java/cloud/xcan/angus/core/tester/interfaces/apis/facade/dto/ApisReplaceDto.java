@@ -63,14 +63,14 @@ public class ApisReplaceDto {
    * @see io.swagger.v3.oas.models.Paths#keySet()
    */
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(description = "Api endpoint. Note: Cannot include query parameters when saving.", example = "/comm/api/v1/country/{id}")
+  @Schema(description = "Api endpoint. Note: Cannot include query parameters when saving", example = "/comm/api/v1/country/{id}")
   private String endpoint;
 
   /////////////////////////OpenAPI Document//////////////////////////
   /**
    * @see Operation#getTags()
    */
-  @Schema(description = "Api OpenAPI tags.")
+  @Schema(description = "Api OpenAPI tags")
   private List<String> tags;
 
   /**
@@ -84,14 +84,14 @@ public class ApisReplaceDto {
    * @see Operation#getDescription()
    */
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
-  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation.")
+  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation")
   private String description;
 
   @Schema(description = "Allows referencing an external resource for extended documentation. See [OpenAPI External Documentation Object](https://swagger.io/specification/v3/#external-documentation-object)")
   private ExternalDocumentation externalDocs;
 
   @Length(max = MAX_CODE_LENGTH_X5)
-  @Schema(description = "The name of an existing, resolvable OAS operation, as defined with a unique operationId.")
+  @Schema(description = "The name of an existing, resolvable OAS operation, as defined with a unique operationId")
   private String operationId;
 
   @Size(max = MAX_PARAM_SIZE)
@@ -104,7 +104,7 @@ public class ApisReplaceDto {
   @Schema(description = "Api responses. See [OpenAPI Response Object](https://swagger.io/specification/v3/#response-object)")
   private Map<String, ApiResponse> responses;
 
-  @Schema(description = "Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation. Default value is false.")
+  @Schema(description = "Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation. Default value is false")
   private Boolean deprecated;
 
   @Schema(description = "A declaration of which security mechanisms can be used for this apis. See [OpenAPI Security Requirement Object](https://swagger.io/specification/v3/#security-requirement-object)")
@@ -120,7 +120,7 @@ public class ApisReplaceDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
-  @Schema(description = "Extension fields allow users to customize business extension attributes.")
+  @Schema(description = "Extension fields allow users to customize business extension attributes")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 
@@ -135,10 +135,10 @@ public class ApisReplaceDto {
   @Schema(description = "Whether to enable authorization control, default disabled")
   private Boolean auth;
 
-  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`.")
+  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`")
   private ActionOnEOF datasetActionOnEOF;
 
-  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`.")
+  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`")
   private SharingMode datasetSharingMode;
 
   @Schema(description = "Whether to enable functional testing, default enabled")
@@ -155,7 +155,7 @@ public class ApisReplaceDto {
   private Long ownerId;
 
   @NotNull
-  @Schema(description = "Api status.", example = "DEV_COMPLETED", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Api status", example = "DEV_COMPLETED", requiredMode = RequiredMode.REQUIRED)
   private ApiStatus status;
 }
 

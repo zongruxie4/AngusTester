@@ -33,7 +33,7 @@ public class MockServiceManageRest {
   @Resource
   private MockServiceManageFacade mockServiceMangeFacade;
 
-  @Operation(summary = "Start mock service by agent.", operationId = "mock:service:manage:start")
+  @Operation(summary = "Start mock service by agent", operationId = "mock:service:manage:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -42,7 +42,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.start(dto));
   }
 
-  @Operation(summary = "Stop mock service by agent.", operationId = "mock:service:manage:stop")
+  @Operation(summary = "Stop mock service by agent", operationId = "mock:service:manage:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })
@@ -51,7 +51,7 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.stop(dto));
   }
 
-  @Operation(summary = "Query mock service status by agent.", operationId = "mock:service:manage:status")
+  @Operation(summary = "Query mock service status by agent", operationId = "mock:service:manage:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Successfully processed")
   })

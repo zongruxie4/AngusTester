@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncBaselineCase", description = "Test Baseline-Case Associations - Interface for managing relationships between functional test baselines and corresponding test cases.")
+@Tag(name = "FuncBaselineCase", description = "Test Baseline-Case Associations - Interface for managing relationships between functional test baselines and corresponding test cases")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/baseline")

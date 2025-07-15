@@ -34,22 +34,22 @@ public class ApisTestScriptGenerateDto {
   private Long iterations = 1L;
 
   @Min(1)
-  @Schema(description = "Maximum number of threads. When there are multiple nodes, they will be evenly distributed to each node.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Maximum number of threads. When there are multiple nodes, they will be evenly distributed to each node", requiredMode = RequiredMode.REQUIRED)
   private int threads = 1;
 
   //@NotNull
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds."/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds"/*, requiredMode = RequiredMode.REQUIRED*/)
   private TimeValue duration;
 
   @Min(0L)
-  @Schema(description="Adjust ramp up thread number, specify during performance testing and the value does not exceed the threads.")
+  @Schema(description="Adjust ramp up thread number, specify during performance testing and the value does not exceed the threads")
   private Integer rampUpThreads;
 
-  @Schema(description = "Adjust ramp up thread interval, specify during performance testing the value does not exceed the duration.")
+  @Schema(description = "Adjust ramp up thread interval, specify during performance testing the value does not exceed the duration")
   private TimeValue rampUpInterval;
 
-  @Schema(description = "Whether to ignore assertions. If not ignored, handle as sampling error when assertion fails.")
+  @Schema(description = "Whether to ignore assertions. If not ignored, handle as sampling error when assertion fails")
   private Boolean ignoreAssertions;
 
   /**
@@ -57,13 +57,13 @@ public class ApisTestScriptGenerateDto {
    */
   @Schema(description =
       "When there are associated resources, will the test results be updated to the associated resources, "
-          + "such as apis, use cases, and scenarios. The default is false.")
+          + "such as apis, use cases, and scenarios. The default is false")
   private Boolean updateTestResult;
 
   @Schema(description = "Is the generated script subject to permission control? "
       + "When it is subject to permission control, by default, it is only visible to and accessible by the owner with full permissions, "
       + "Other users need to be manually authorized through \"Scripts\" -> \"Authorization\". "
-      + "When it is not subject to permission control, it is visible and accessible to all users.")
+      + "When it is not subject to permission control, it is visible and accessible to all users")
   private Boolean auth;
 
   @Override

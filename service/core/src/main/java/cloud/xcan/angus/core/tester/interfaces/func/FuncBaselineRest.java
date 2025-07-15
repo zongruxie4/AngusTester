@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncBaseline", description = "Functional Test Baseline Management - Defining and recording standard/reference attributes of functional test cases (e.g., pass/fail criteria, priority levels).")
+@Tag(name = "FuncBaseline", description = "Functional Test Baseline Management - Defining and recording standard/reference attributes of functional test cases (e.g., pass/fail criteria, priority levels)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/baseline")

@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnalysisFunc", description = "Test Resource analytics - - Aggregated analytics for functional testing resources (plan, case, progress, etc).")
+@Tag(name = "AnalysisFunc", description = "Test Resource analytics - - Aggregated analytics for functional testing resources (plan, case, progress, etc)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/func")

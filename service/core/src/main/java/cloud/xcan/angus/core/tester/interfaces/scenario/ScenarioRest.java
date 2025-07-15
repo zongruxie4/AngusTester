@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario", description = "Scenario Design and Orchestration Management - Visually design and manage complex test workflows through a UI-driven interface.")
+@Tag(name = "Scenario", description = "Scenario Design and Orchestration Management - Visually design and manage complex test workflows through a UI-driven interface")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")

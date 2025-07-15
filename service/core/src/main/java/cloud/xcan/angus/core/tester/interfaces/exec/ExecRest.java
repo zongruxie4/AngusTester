@@ -54,7 +54,7 @@ public class ExecRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(summary = "Create execution by script content.", operationId = "exec:byContent:add")
+  @Operation(summary = "Create execution by script content", operationId = "exec:byContent:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -64,7 +64,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptContent(dto));
   }
 
-  @Operation(summary = "Create execution by script arguments.", operationId = "exec:byArgs:add")
+  @Operation(summary = "Create execution by script arguments", operationId = "exec:byArgs:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -74,7 +74,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScriptArgs(dto));
   }
 
-  @Operation(summary = "Create execution by script id.", operationId = "exec:byScript:add")
+  @Operation(summary = "Create execution by script id", operationId = "exec:byScript:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Created successfully")
   })
@@ -84,7 +84,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(summary = "Replace execution configuration.", operationId = "exec:config:replace")
+  @Operation(summary = "Replace execution configuration", operationId = "exec:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully")
   })
@@ -96,7 +96,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace execution script configuration.", operationId = "exec:script:config:replace")
+  @Operation(summary = "Replace execution script configuration", operationId = "exec:script:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully")
   })
@@ -108,7 +108,7 @@ public class ExecRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Start execution.", operationId = "exec:start")
+  @Operation(summary = "Start execution", operationId = "exec:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Start successfully")
   })
@@ -117,7 +117,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(summary = "Stop execution.", operationId = "exec:stop")
+  @Operation(summary = "Stop execution", operationId = "exec:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stop successfully")
   })
@@ -126,7 +126,7 @@ public class ExecRest {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(summary = "Delete executions.", operationId = "exec:delete")
+  @Operation(summary = "Delete executions", operationId = "exec:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
@@ -135,7 +135,7 @@ public class ExecRest {
     execFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of execution.", operationId = "exec:detail")
+  @Operation(summary = "Query the detail of execution", operationId = "exec:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

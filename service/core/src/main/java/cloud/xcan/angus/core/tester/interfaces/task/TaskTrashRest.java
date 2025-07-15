@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskTrash", description = "Task Recycle Bin Management - Temporary storage for deleted task with restore capabilities and permanent deletion controls.")
+@Tag(name = "TaskTrash", description = "Task Recycle Bin Management - Temporary storage for deleted task with restore capabilities and permanent deletion controls")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/trash")

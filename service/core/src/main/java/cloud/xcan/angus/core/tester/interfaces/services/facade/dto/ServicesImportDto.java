@@ -25,11 +25,11 @@ public class ServicesImportDto {
   @Schema(description = "Project ID, required when creating a service")
   private Long projectId;
 
-  @Schema(description = "Import services id. Importing existing projects is required, create new services if serviceId is empty.")
+  @Schema(description = "Import services id. Importing existing projects is required, create new services if serviceId is empty")
   private Long serviceId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Import services name. The name is required when importing a new services.")
+  @Schema(description = "Import services name. The name is required when importing a new services")
   private String serviceName;
 
   @NotNull
@@ -37,12 +37,12 @@ public class ServicesImportDto {
   private ApiImportSource importSource;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api.", example = "COVER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api", example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
   @NotNull
   @Schema(example = "false", requiredMode = RequiredMode.REQUIRED,
-      description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data.")
+      description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data")
   private Boolean deleteWhenNotExisted;
 
   @Schema(description = "Apis specification content. API definition string content in json or yaml format, multiple files import is not supported")

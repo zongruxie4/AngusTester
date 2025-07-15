@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "MockApisOpen2p", description = "Mock Definition Sync - Internal endpoints for querying and synchronizing mock interface definitions across AngusMockService instances.")
+@Tag(name = "MockApisOpen2p", description = "Mock Definition Sync - Internal endpoints for querying and synchronizing mock interface definitions across AngusMockService instances")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock")

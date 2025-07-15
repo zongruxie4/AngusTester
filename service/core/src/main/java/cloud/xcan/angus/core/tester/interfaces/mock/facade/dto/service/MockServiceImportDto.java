@@ -18,16 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class MockServiceImportDto {
 
   @NotNull
-  @Schema(description = "Import mock service id.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Import mock service id", requiredMode = RequiredMode.REQUIRED)
   private Long mockServiceId;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api.", example = "COVER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api", example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
   @NotNull
   @Schema(example = "false", requiredMode = RequiredMode.REQUIRED,
-      description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data.")
+      description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data")
   private Boolean deleteWhenNotExisted;
 
   @Schema(description = "Apis specification content. API definition string content in json or yaml format, multiple files import is not supported")

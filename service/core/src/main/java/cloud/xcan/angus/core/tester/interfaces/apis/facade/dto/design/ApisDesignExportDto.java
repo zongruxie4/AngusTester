@@ -18,7 +18,7 @@ public class ApisDesignExportDto {
   @Schema(description = "Design ID", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
-  @Schema(allowableValues = "yaml, json", description = "OpenAPI document format. Available values yaml or json, the default value is yaml.")
+  @Schema(allowableValues = "yaml, json", description = "OpenAPI document format. Available values yaml or json, the default value is yaml")
   private SchemaFormat format = SchemaFormat.yaml;
 }
 

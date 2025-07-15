@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeDomainDns", description = "Cloud DNS Resolution - Dynamic management of subdomain DNS records (e.g., AliCloud DNS resolution rules).")
+@Tag(name = "NodeDomainDns", description = "Cloud DNS Resolution - Dynamic management of subdomain DNS records (e.g., AliCloud DNS resolution rules)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node/domain/dns")

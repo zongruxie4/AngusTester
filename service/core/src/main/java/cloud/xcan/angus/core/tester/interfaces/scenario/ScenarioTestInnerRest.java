@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioTestInner", description = "Scenario Testing (Internal) - Internal system APIs for managing and auditing automated test scenario executions.")
+@Tag(name = "ScenarioTestInner", description = "Scenario Testing (Internal) - Internal system APIs for managing and auditing automated test scenario executions")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -31,7 +31,7 @@ public class ScenarioTestInnerRest {
   @Resource
   private ScenarioTestFacade scenarioTestFacade;
 
-  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find:inner")
+  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario", operationId = "scenario:test:enabled:find:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

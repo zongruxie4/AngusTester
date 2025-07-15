@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisCase", description = "API Test Case Management - For storing and managing interface testing cases and assertion rules.")
+@Tag(name = "ApisCase", description = "API Test Case Management - For storing and managing interface testing cases and assertion rules")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/case")

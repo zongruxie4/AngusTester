@@ -19,13 +19,13 @@ public class VariableImportDto {
   private Long projectId;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api.", example = "COVER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api", example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
-  @Schema(description = "Variable specification content. Variable definition string content in json or yaml format.")
+  @Schema(description = "Variable specification content. Variable definition string content in json or yaml format")
   private String content;
 
-  @Schema(type = "string", format = "binary", description = "Variable specification file. Variable definition file in json or yaml format.")
+  @Schema(type = "string", format = "binary", description = "Variable specification file. Variable definition file in json or yaml format")
   private MultipartFile file;
 
 }

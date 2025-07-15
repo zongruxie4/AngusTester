@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesComp", description = "OpenAPI Component Management - Centralized management of OpenAPI components (schemas, responses, security schemes) across services.")
+@Tag(name = "ServicesComp", description = "OpenAPI Component Management - Centralized management of OpenAPI components (schemas, responses, security schemes) across services")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -40,7 +40,7 @@ public class ServicesCompRest {
 
   @Operation(summary =
       "Replace the OpenAPI component of services. For more details on the Components Object, "
-          + "please see: [OpenAPI Specification#Components Object](https://swagger.io/specification/#components-object).", operationId = "services:comp:replace")
+          + "please see: [OpenAPI Specification#Components Object](https://swagger.io/specification/#components-object)", operationId = "services:comp:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")
   })
@@ -55,7 +55,7 @@ public class ServicesCompRest {
 
   @Operation(summary =
       "Delete services OpenAPI components by type. If the component keys parameter is empty, "
-          + "all components under the type will be deleted.", operationId = "services:comp:deleteByType")
+          + "all components under the type will be deleted", operationId = "services:comp:deleteByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })

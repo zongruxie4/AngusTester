@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "MockServiceOpen2p", description = "Mock Instance Config Query - Internal endpoints for querying mock service instance configurations.")
+@Tag(name = "MockServiceOpen2p", description = "Mock Instance Config Query - Internal endpoints for querying mock service instance configurations")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock/service")

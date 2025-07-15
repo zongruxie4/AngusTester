@@ -66,7 +66,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task", description = "R&D and Testing Task Management - A unified management entry for all tasks related to R&D and testing.")
+@Tag(name = "Task", description = "R&D and Testing Task Management - A unified management entry for all tasks related to R&D and testing")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")

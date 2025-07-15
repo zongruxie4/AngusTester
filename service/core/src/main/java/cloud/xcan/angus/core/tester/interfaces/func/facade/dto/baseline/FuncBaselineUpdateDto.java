@@ -14,10 +14,10 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncBaselineUpdateDto {
 
-  @Schema(description="It is required to add a baseline.")
+  @Schema(description="It is required to add a baseline")
   private Long id;
 
-  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters.")
+  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters")
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 
@@ -29,7 +29,7 @@ public class FuncBaselineUpdateDto {
   private String description;
 
   //@Size(max = MAX_OPT_CASE_NUM)
-  //@Schema(description="It is valid to add a baseline.")
+  //@Schema(description="It is valid to add a baseline")
   //private LinkedHashSet<Long> caseIds;
 
 }

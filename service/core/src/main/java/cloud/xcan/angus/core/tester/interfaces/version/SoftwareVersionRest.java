@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "SoftwareVersion", description =
     "Management Software Versions in Projects - Unified access entry for managing software versions within projects, "
-        + "helping teams keep track of different releases and maintain version control effectively.")
+        + "helping teams keep track of different releases and maintain version control effectively")
 @Validated
 @RestController
 @RequestMapping("/api/v1/software/version")

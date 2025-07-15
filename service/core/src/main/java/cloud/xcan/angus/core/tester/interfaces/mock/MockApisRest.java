@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockApis", description = "Mock API Management - Unified management portal for creating, simulating, and organizing mock APIs.")
+@Tag(name = "MockApis", description = "Mock API Management - Unified management portal for creating, simulating, and organizing mock APIs")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/apis")

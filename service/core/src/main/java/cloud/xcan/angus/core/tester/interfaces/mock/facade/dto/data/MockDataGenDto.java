@@ -32,7 +32,7 @@ public class MockDataGenDto {
 
   @Valid
   @NotNull
-  @Schema(description = "Common configuration parameters for script execution.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Common configuration parameters for script execution", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Valid

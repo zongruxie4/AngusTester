@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorFunc", description = "Functional Test Indicator Management - Configure and manage functional test types (smoke testing, security testing) and their evaluation criteria.")
+@Tag(name = "IndicatorFunc", description = "Functional Test Indicator Management - Configure and manage functional test types (smoke testing, security testing) and their evaluation criteria")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")

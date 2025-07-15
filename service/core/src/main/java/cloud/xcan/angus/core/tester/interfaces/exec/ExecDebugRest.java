@@ -32,7 +32,7 @@ public class ExecDebugRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(summary = "Start execution debug.", operationId = "exec:debug:start")
+  @Operation(summary = "Start execution debug", operationId = "exec:debug:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully")
   })
@@ -41,7 +41,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.start(dto));
   }
 
-  @Operation(summary = "Start debug execution by script.", operationId = "exec:debug:script:start")
+  @Operation(summary = "Start debug execution by script", operationId = "exec:debug:script:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully")
   })
@@ -51,7 +51,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScript(dto));
   }
 
-  @Operation(summary = "Start debug execution by scenario.", operationId = "exec:debug:scenario:start")
+  @Operation(summary = "Start debug execution by scenario", operationId = "exec:debug:scenario:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully")
   })
@@ -61,7 +61,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScenario(dto));
   }
 
-  @Operation(summary = "Start debug execution by monitor.", operationId = "exec:debug:monitor:start")
+  @Operation(summary = "Start debug execution by monitor", operationId = "exec:debug:monitor:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Started successfully")
   })
@@ -71,7 +71,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(summary = "Query the detail of script debug execution.", operationId = "exec:debug:script:detail")
+  @Operation(summary = "Query the detail of script debug execution", operationId = "exec:debug:script:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -81,7 +81,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.scriptDetail(id));
   }
 
-  @Operation(summary = "Query the detail of scenario debug execution.", operationId = "exec:debug:scenario:detail")
+  @Operation(summary = "Query the detail of scenario debug execution", operationId = "exec:debug:scenario:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -91,7 +91,7 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.scenarioDetail(id));
   }
 
-  @Operation(summary = "Query the detail of monitor debug execution.", operationId = "exec:debug:monitor:detail")
+  @Operation(summary = "Query the detail of monitor debug execution", operationId = "exec:debug:monitor:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

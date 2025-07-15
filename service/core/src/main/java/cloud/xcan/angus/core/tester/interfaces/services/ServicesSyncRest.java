@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesSync", description = "OpenAPI Document Sync - Synchronize service implementations with Swagger/OpenAPI documentation.")
+@Tag(name = "ServicesSync", description = "OpenAPI Document Sync - Synchronize service implementations with Swagger/OpenAPI documentation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

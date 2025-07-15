@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesTest", description = "API Test and Analytics (User) - Configure and analyze user-initiated API test and results.")
+@Tag(name = "ServicesTest", description = "API Test and Analytics (User) - Configure and analyze user-initiated API test and results")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -52,7 +52,7 @@ public class ServicesTestRest {
 
   @Operation(summary =
       "Enable or disable the functionality, performance, stability testing of service apis. "
-          + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis.", operationId = "services:test:enabled")
+          + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis", operationId = "services:test:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

@@ -21,14 +21,14 @@ import lombok.experimental.Accessors;
 public class MockApisResponseReplaceDto {
 
   @NotEmpty
-  @Schema(description = "Mock response name, the name must be unique.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock response name, the name must be unique", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Valid
   @Schema(description =
       "Specifies the matching request conditions that need to be met in order to return the current response. "
           + "Note: When multiple responses that meet the conditions are matched, the one with the highest priority will be returned. If no matching conditions are configured or the priorities "
-          + "are the same, the first one (the one configured first) will be returned.")
+          + "are the same, the first one (the one configured first) will be returned")
   private MatchRequest match;
 
   @Valid

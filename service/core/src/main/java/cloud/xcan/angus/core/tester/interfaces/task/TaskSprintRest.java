@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "TaskSprint", description =
     "Task Sprint Management - Provides a dedicated entry point for managing the iterations of tasks, "
-        + "enabling teams to track progress and make adjustments throughout the development cycle.")
+        + "enabling teams to track progress and make adjustments throughout the development cycle")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")

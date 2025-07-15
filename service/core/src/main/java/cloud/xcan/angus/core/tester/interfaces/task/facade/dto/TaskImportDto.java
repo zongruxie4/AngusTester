@@ -25,12 +25,12 @@ public class TaskImportDto {
   private Long sprintId;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api.",
+  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api",
       example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
   @NotNull
-  @Schema(type = "string", format = "binary", description = "Import task file, only support excel file.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(type = "string", format = "binary", description = "Import task file, only support excel file", requiredMode = RequiredMode.REQUIRED)
   private MultipartFile file;
 
 }

@@ -36,7 +36,7 @@ public class VariableUpdateDto {
   private String description;
 
   @Length(max = MAX_PARAM_VALUE_LENGTH)
-  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction.")
+  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction")
   private String value;
 
   @Schema(description = "Is the password type value, default `false`")

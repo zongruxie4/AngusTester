@@ -32,7 +32,7 @@ public class FuncPlanAddDto {
   private Long projectId;
 
   @NotBlank
-  @Schema(description = "Plan name, Brief Overview of the Plan, supporting up to 200 characters.", example = "Example plan", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Plan name, Brief Overview of the Plan, supporting up to 200 characters", example = "Example plan", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 
@@ -40,23 +40,23 @@ public class FuncPlanAddDto {
   public Boolean auth;
 
   @NotNull
-  @Schema(description = "Plan start date, Determine the start times of the testing activities to ensure completion within the project cycle.", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Plan start date, Determine the start times of the testing activities to ensure completion within the project cycle", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime startDate;
 
   @NotNull
-  @Schema(description = "Plan deadline date, Determine the end times of the testing activities to ensure completion within the project cycle.", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Plan deadline date, Determine the end times of the testing activities to ensure completion within the project cycle", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime deadlineDate;
 
   @NotNull
   @Schema(description =
       "Owner id. By assigning a responsible person to the plan, clarify the accountability and authority for testing, "
-          + "facilitating task completion and progress control. Responsibilities include problem resolution, progress promotion, team collaboration, risk identification, and management.", requiredMode = RequiredMode.REQUIRED)
+          + "facilitating task completion and progress control. Responsibilities include problem resolution, progress promotion, team collaboration, risk identification, and management", requiredMode = RequiredMode.REQUIRED)
   private Long ownerId;
 
   @NotEmpty
   @Schema(description =
       "Specify the testers involved in this test plan; only authorized testers are allowed to participate. "
-          + "Define the roles of testers, outlining their responsibilities within the testing scope to avoid ambiguity and task omission.", requiredMode = RequiredMode.REQUIRED)
+          + "Define the roles of testers, outlining their responsibilities within the testing scope to avoid ambiguity and task omission", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashMap<Long, @Length(max = MAX_REMARK_LENGTH_X4) String> testerResponsibilities;
 
   @NotEmpty
@@ -70,7 +70,7 @@ public class FuncPlanAddDto {
   @EditorContentLength
   @Schema(description =
       "Testing objectives for testing plan. Specify the specific purposes and expected outcomes of the testing activities, "
-          + "helping the testing team focus on core testing objectives.", requiredMode = RequiredMode.REQUIRED)
+          + "helping the testing team focus on core testing objectives", requiredMode = RequiredMode.REQUIRED)
   private String testingObjectives;
 
   @EditorContentLength
@@ -85,7 +85,7 @@ public class FuncPlanAddDto {
 
   @Schema(description =
       "Plan attachments. Additional documents and information, such as requirement specifications, reference materials and standards, "
-          + "system architecture diagrams, testing specifications, technical documents, etc.")
+          + "system architecture diagrams, testing specifications, technical documents, etc")
   @Size(max = MAX_ATTACHMENT_NUM_X2)
   private List<Attachment> attachments;
 

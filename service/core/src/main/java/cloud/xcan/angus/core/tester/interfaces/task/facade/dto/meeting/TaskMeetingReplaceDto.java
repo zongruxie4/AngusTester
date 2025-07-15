@@ -34,11 +34,11 @@ public class TaskMeetingReplaceDto {
   private Long sprintId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Meeting subject.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting subject", requiredMode = RequiredMode.REQUIRED)
   private String subject;
 
   @NotNull
-  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes", requiredMode = RequiredMode.REQUIRED)
   private TaskMeetingType type;
 
   @NotEmpty

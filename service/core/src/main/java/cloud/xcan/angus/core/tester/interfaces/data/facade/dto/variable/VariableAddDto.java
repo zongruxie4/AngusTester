@@ -33,7 +33,7 @@ public class VariableAddDto {
   @Schema(description = "Variable description")
   private String description;
 
-  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction.")
+  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction")
   @Length(max = MAX_PARAM_VALUE_LENGTH)
   private String value;
 

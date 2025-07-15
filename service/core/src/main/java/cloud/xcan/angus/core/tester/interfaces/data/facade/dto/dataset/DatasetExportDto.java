@@ -23,7 +23,7 @@ public class DatasetExportDto extends PageQuery {
   @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Dataset ids. Note: All the datasets wil be exported if ids are empty.")
+  @Schema(description = "Dataset ids. Note: All the datasets wil be exported if ids are empty")
   @Size(max = MAX_BATCH_SIZE)
   private LinkedHashSet<Long> ids;
 

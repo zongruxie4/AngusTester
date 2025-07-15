@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services", description = "Api Service Registry - Unified lifecycle management for API services.")
+@Tag(name = "Services", description = "Api Service Registry - Unified lifecycle management for API services")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -77,7 +77,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Modify services status. Note: When modifying a services, "
-      + "all services and apis status under the services will be synchronously modified.", operationId = "services:status:update")
+      + "all services and apis status under the services will be synchronously modified", operationId = "services:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")

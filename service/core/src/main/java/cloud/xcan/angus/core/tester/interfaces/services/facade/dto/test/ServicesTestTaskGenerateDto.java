@@ -38,7 +38,7 @@ public class ServicesTestTaskGenerateDto {
   private LocalDateTime deadlineDate;
 
   //  @Min(1)
-  //  @Schema(description = "Maximum number of threads. When there are multiple nodes, they will be evenly distributed to each node.", requiredMode = RequiredMode.REQUIRED)
+  //  @Schema(description = "Maximum number of threads. When there are multiple nodes, they will be evenly distributed to each node", requiredMode = RequiredMode.REQUIRED)
   //  private int threads = 1;
 
   //  @NotNull

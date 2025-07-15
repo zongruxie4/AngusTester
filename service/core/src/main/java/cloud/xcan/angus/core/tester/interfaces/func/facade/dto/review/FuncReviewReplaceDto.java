@@ -31,7 +31,7 @@ public class FuncReviewReplaceDto {
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Review name, Brief Overview of the review, supporting up to 200 characters.", example = "Example review", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Review name, Brief Overview of the review, supporting up to 200 characters", example = "Example review", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotNull
@@ -45,7 +45,7 @@ public class FuncReviewReplaceDto {
   @Size(max = MAX_ATTACHMENT_NUM_X2)
   @Schema(description =
       "Review attachments. Additional documents and information, such as requirement specifications, reference materials and standards, "
-          + "system architecture diagrams, testing specifications, technical documents, etc.")
+          + "system architecture diagrams, testing specifications, technical documents, etc")
   private List<Attachment> attachments;
 
   @EditorContentLength

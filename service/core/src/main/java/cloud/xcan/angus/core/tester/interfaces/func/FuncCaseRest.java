@@ -60,7 +60,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncCase", description = "Test Case Information Management - Centralized control for maintaining test case details (steps, expected results, preconditions).")
+@Tag(name = "FuncCase", description = "Test Case Information Management - Centralized control for maintaining test case details (steps, expected results, preconditions)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/case")

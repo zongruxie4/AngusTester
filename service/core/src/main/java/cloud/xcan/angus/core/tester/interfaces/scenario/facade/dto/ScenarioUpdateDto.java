@@ -31,7 +31,7 @@ public class ScenarioUpdateDto {
 
   //@NotBlank
   //@Length(max = MAX_NAME_LENGTH)
-  //@Schema(description = "Name of the scenario execution plugin.", example = "Http", requiredMode = RequiredMode.REQUIRED)
+  //@Schema(description = "Name of the scenario execution plugin", example = "Http", requiredMode = RequiredMode.REQUIRED)
   //private String pluginName;
 
   @Length(max = MAX_DESC_LENGTH_X4)

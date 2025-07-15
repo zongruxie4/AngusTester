@@ -193,7 +193,7 @@ public class ExecDetailVo {
         && nonNull(task) && nonNull(task.getMockData().getSettings())
         && task.getMockData().getSettings().getLocation().hasLocalFile()) {
       NodeInfo nodeInfo = execNodes.get(0);
-      String fileName = MOCK_DATA_FILE_BASE + "."
+      String fileName = MOCK_DATA_FILE_BASE + ""
           + task.getMockData().getSettings().getFormat().toLowerCase();
       // http://192.168.0.101:6807/actuator/runner/result/download/data.csv?execId=258350834134438525
       return String.format("http://%s:%s/actuator/runner/result/download/%s?execId=%s",
@@ -206,7 +206,7 @@ public class ExecDetailVo {
     if (status.isCompleted() && isNotEmpty(execNodes) && scriptType.isMockData()
         && nonNull(task) && nonNull(task.getMockData().getSettings())
         && task.getMockData().getSettings().getLocation().hasLocalFile()) {
-      return MOCK_DATA_FILE_BASE + "."
+      return MOCK_DATA_FILE_BASE + ""
           + task.getMockData().getSettings().getFormat().toLowerCase();
     }
     return null;

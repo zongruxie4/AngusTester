@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskFavourite", description = "Task Favorites Management - Quick-access mechanism for bookmarking frequently used task.")
+@Tag(name = "TaskFavourite", description = "Task Favorites Management - Quick-access mechanism for bookmarking frequently used task")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")

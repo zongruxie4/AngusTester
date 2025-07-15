@@ -67,10 +67,10 @@ public class ApisCaseDetailVo {
 
   private List<Assertion<HttpExtraction>> assertions;
 
-  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`.")
+  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`")
   private ActionOnEOF datasetActionOnEOF;
 
-  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`.")
+  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`")
   private SharingMode datasetSharingMode;
 
   private Boolean apisDeleted;

@@ -37,11 +37,11 @@ public class ProjectUpdateDto {
   private Long ownerId;
 
   @Schema(description = "Project start date, Determine the start times of the research and testing activities"
-      + " to ensure completion within the project cycle.", example = "2023-06-10 00:00:00")
+      + " to ensure completion within the project cycle", example = "2023-06-10 00:00:00")
   private LocalDateTime startDate;
 
   @Schema(description = "Project deadline date, Determine the end times of the research and testing activities"
-      + " to ensure completion within the project cycle.", example = "2029-06-20 00:00:00")
+      + " to ensure completion within the project cycle", example = "2029-06-20 00:00:00")
   private LocalDateTime deadlineDate;
 
   @Schema(description = "Project description")

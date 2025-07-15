@@ -44,19 +44,19 @@ public class ProjectReplaceDto {
 
   @NotNull
   @Schema(description = "Project start date, Determine the start times of the research and testing activities"
-      + " to ensure completion within the project cycle.", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
+      + " to ensure completion within the project cycle", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime startDate;
 
   @NotNull
   @Schema(description = "Project deadline date, Determine the end times of the research and testing activities"
-      + " to ensure completion within the project cycle.", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
+      + " to ensure completion within the project cycle", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime deadlineDate;
 
   @Schema(description = "Project description")
   @EditorContentLength
   private String description;
 
-  @Schema(description = "Whether to import project example data, effective only when creating a new project.")
+  @Schema(description = "Whether to import project example data, effective only when creating a new project")
   private boolean importExample = false;
 
   @NotNull

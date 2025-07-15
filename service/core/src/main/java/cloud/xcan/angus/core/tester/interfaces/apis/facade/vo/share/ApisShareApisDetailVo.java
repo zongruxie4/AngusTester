@@ -69,7 +69,7 @@ public class ApisShareApisDetailVo {
 
   private List<SecurityRequirement> security;
 
-  @Schema(description = "Available server urls. The data source includes the current request server, api servers, and parent services servers.")
+  @Schema(description = "Available server urls. The data source includes the current request server, api servers, and parent services servers")
   private List<Server> availableServers;
 
   private Map<String, Object> extensions;

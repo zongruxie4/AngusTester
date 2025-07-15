@@ -52,7 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Apis", description = "API Metadata Management - Central registry for maintaining interface debug value, schema definitions, and version history.")
+@Tag(name = "Apis", description = "API Metadata Management - Central registry for maintaining interface debug value, schema definitions, and version history")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
@@ -183,7 +183,7 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete servers of the apis. Delete the servers of apis by url.", operationId = "apis:schema:server:delete")
+  @Operation(summary = "Delete servers of the apis. Delete the servers of apis by url", operationId = "apis:schema:server:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -198,7 +198,7 @@ public class ApisRest {
 
   @Operation(summary =
       "Query the server configuration of apis. Note: `The data source includes "
-          + "the current api request server, api servers configuration, and parent services servers configuration`.", operationId = "apis:schema:server:all")
+          + "the current api request server, api servers configuration, and parent services servers configuration`", operationId = "apis:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Api not found")

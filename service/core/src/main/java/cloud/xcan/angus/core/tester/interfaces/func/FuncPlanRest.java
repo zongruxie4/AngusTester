@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncPlan", description = "Test Plan Configuration - Core interface for creating/maintaining test plans that define testing scope, methodology, resources, etc.")
+@Tag(name = "FuncPlan", description = "Test Plan Configuration - Core interface for creating/maintaining test plans that define testing scope, methodology, resources, etc")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")

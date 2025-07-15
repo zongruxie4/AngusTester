@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisDesign", description = "OpenAPI Design Governance - Standardization hub for API specification development, version control, and compliance monitoring.")
+@Tag(name = "ApisDesign", description = "OpenAPI Design Governance - Standardization hub for API specification development, version control, and compliance monitoring")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/design")

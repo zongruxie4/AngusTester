@@ -22,7 +22,7 @@ public class MockDataScriptGenDto {
   @Schema(description = "Script id. Generate a new script when the script ID is empty")
   private Long scriptId;
 
-  @Schema(description = "Project id. It is required to add scripts.")
+  @Schema(description = "Project id. It is required to add scripts")
   private Long projectId;
 
   @NotEmpty
@@ -32,7 +32,7 @@ public class MockDataScriptGenDto {
 
   @Valid
   @NotNull
-  @Schema(description = "Common configuration parameters for script execution.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Common configuration parameters for script execution", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Valid
