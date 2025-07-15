@@ -1,6 +1,6 @@
 package cloud.xcan.angus.extension.angustester.deepseek.plugin;
 
-import java.util.Properties;
+import cloud.xcan.angus.spec.setting.AppSettingHelper.Setting;
 
 /**
  * Configuration holder for DeepSeek translation service
@@ -9,7 +9,7 @@ public class DeepSeekConfig {
 
   private String apiKey;
   private String apiEndpoint = "https://api.deepseek.com/chat/completions";
-  private String promptTemplate = "Please translate the following to {targetLanguage} with accurate technical terms";
+  private String promptTemplate = "Translate the {sourceLanguage} text in the document of the OpenAPI specification below into the corresponding {targetLanguage}. Note: 1. Code blocks, document formats, etc. should not be translated; 2. If there is no translatable text, output the original content.";
   private int maxRetries = 3;
   private long initialRetryDelayMs = 1000;
   private double backoffFactor = 2.0;
@@ -34,23 +34,18 @@ public class DeepSeekConfig {
   }
 
   // Load configuration from Properties
-  public static DeepSeekConfig fromProperties(Properties prop) {
-    DeepSeekConfig config = new DeepSeekConfig();
-    config.apiKey = prop.getProperty("api.key", "");
-    config.apiEndpoint = prop.getProperty("api.endpoint", config.apiEndpoint);
-    config.promptTemplate = prop.getProperty("prompt.template", config.promptTemplate);
+  public DeepSeekConfig fromProperties(Setting setting) {
+    this.apiKey = setting.getString("deepseek.api.key", "");
+    this.apiEndpoint = setting.getString("deepseek.api.endpoint", this.apiEndpoint);
+    this.promptTemplate = setting.getString("deepseek.prompt.template", this.promptTemplate);
 
     // Retry configuration
-    config.maxRetries = Integer.parseInt(
-        prop.getProperty("retry.max", String.valueOf(config.maxRetries)));
-    config.initialRetryDelayMs = Long.parseLong(
-        prop.getProperty("retry.initialDelayMs", String.valueOf(config.initialRetryDelayMs)));
-    config.backoffFactor = Double.parseDouble(
-        prop.getProperty("retry.backoffFactor", String.valueOf(config.backoffFactor)));
-    config.timeoutSeconds = Integer.parseInt(
-        prop.getProperty("timeout.seconds", String.valueOf(config.timeoutSeconds)));
-
-    return config;
+    this.maxRetries = setting.getInt("deepseek.max.retries", this.maxRetries);
+    this.initialRetryDelayMs = setting.getLong("deepseek.retry.initialDelayMs",
+        this.initialRetryDelayMs);
+    this.backoffFactor = setting.getDouble("deepseek.retry.backoffFactor", this.backoffFactor);
+    this.timeoutSeconds = setting.getInt("deepseek.timeout.seconds", this.timeoutSeconds);
+    return this;
   }
 
   // Getters and Setters

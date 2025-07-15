@@ -5,7 +5,9 @@ import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServiceServer;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
-import cloud.xcan.angus.extension.angustester.api.ApisParseProvider;
+import cloud.xcan.angus.extension.angustester.api.ApisParser;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationService;
+import cloud.xcan.angus.extension.angustester.deepseek.api.TranslationServiceProvider;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Collection;
@@ -41,7 +43,9 @@ public interface ServicesSchemaQuery {
 
   void checkValidServer(List<Server> servers);
 
-  ApisParseProvider checkAndGetApisParseProvider(ApiImportSource importSource);
+  ApisParser checkAndGetApisParser(ApiImportSource importSource);
+
+  TranslationService checkAndGetTranslationService(TranslationServiceProvider provider);
 
   @NotNull
   List<Apis> parseOpenApis(String content);

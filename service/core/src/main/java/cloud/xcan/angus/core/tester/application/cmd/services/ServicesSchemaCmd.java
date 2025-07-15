@@ -5,6 +5,7 @@ import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -33,6 +34,12 @@ public interface ServicesSchemaCmd {
   void openapiReplace(Long serviceId, Boolean forced, boolean gzipCompression,
       String content, StrategyWhenDuplicated strategyWhenDuplicated, boolean deleteWhenNotExisted,
       ApiSource apiSource, ApiImportSource importSource, boolean mergeSchema, String syncName);
+
+  void openapiReplace(Long serviceId, Boolean forced,
+      OpenAPI openApi, StrategyWhenDuplicated strategyWhenDuplicated, boolean deleteWhenNotExisted,
+      ApiSource apiSource, ApiImportSource importSource, boolean mergeSchema, String syncName);
+
+  void translate(Long id, SupportedLanguage sourceLanguage, SupportedLanguage targetLanguage);
 
   void init(Services services);
 

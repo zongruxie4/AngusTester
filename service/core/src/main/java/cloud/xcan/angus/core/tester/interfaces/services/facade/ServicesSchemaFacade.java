@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.interfaces.services.facade;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.schema.ApisSchemaOpenApiDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceSchemaDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceServerVo;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -62,5 +63,7 @@ public interface ServicesSchemaFacade {
       String content);
 
   String openapiDetail(Long serviceId, ApisSchemaOpenApiDto dto);
+
+  void translate(Long id, SupportedLanguage sourceLanguage, SupportedLanguage targetLanguage);
 
 }

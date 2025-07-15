@@ -16,6 +16,7 @@ import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.experimental.IdKey;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -62,6 +62,7 @@ import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.ExceptionLevel;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.experimental.IdKey;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import cloud.xcan.angus.spec.utils.FileUtils;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;

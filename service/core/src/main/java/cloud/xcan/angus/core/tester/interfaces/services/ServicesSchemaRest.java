@@ -6,6 +6,7 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.schema.ApisSc
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceSchemaDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.schema.ServiceServerVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
+import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -363,5 +365,19 @@ public class ServicesSchemaRest {
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
       @ParameterObject ApisSchemaOpenApiDto dto) {
     return ApiLocaleResult.successData(servicesSchemaFacade.openapiDetail(serviceId, dto));
+  }
+
+  @Operation(summary = "OpenAP specification text translation.", operationId = "services:schema:translate")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Modified successfully"),
+      @ApiResponse(responseCode = "404", description = "Resource not found")
+  })
+  @PatchMapping("/{id}/translate")
+  public ApiLocaleResult<?> translate(
+      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "sourceLanguage", description = "Source language", required = true) @RequestParam("sourceLanguage") SupportedLanguage sourceLanguage,
+      @Parameter(name = "targetLanguage", description = "Target language", required = true) @RequestParam("targetLanguage") SupportedLanguage targetLanguage) {
+    servicesSchemaFacade.translate(id, sourceLanguage, targetLanguage);
+    return ApiLocaleResult.success();
   }
 }
