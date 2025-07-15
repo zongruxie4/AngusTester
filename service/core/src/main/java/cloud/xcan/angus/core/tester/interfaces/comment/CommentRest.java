@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Comment", description = "AngusTester Resource Comments - Unified entry point for managing and querying reviews/comments on AngusTester resources (e.g., test cases, tasks)")
+@Tag(name = "Comment", description = "Resource Comments Management - Unified entry point for managing and querying reviews/comments on AngusTester resources (e.g., test cases, tasks)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/comment")

@@ -72,9 +72,9 @@ public class FuncTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the number of functional testing", operationId = "func:trash:count")
+  @Operation(summary = "Query the count of functional testing", operationId = "func:trash:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count(

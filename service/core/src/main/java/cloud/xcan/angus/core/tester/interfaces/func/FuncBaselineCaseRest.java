@@ -86,7 +86,7 @@ public class FuncBaselineCaseRest {
     return ApiLocaleResult.success(funcBaselineCaseFacade.list(baselineId, dto));
   }
 
-  @Operation(summary = "Fulltext search list the of baseline test cases", operationId = "func:baseline:case:search")
+  @Operation(summary = "Fulltext search the baseline of test cases", operationId = "func:baseline:case:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/{baselineId}/case/search")

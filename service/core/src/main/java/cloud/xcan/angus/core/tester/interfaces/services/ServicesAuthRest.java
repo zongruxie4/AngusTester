@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesAuth", description = "Service Authorization Management - "
+@Tag(name = "ServicesAuthorization", description = "Service Authorization Management - "
     + "Unified entry for managing data access permissions of api service")
 @Validated
 @RestController

@@ -517,7 +517,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner task example", operationId = "task:example:import")
+  @Operation(summary = "Import the task example", operationId = "task:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

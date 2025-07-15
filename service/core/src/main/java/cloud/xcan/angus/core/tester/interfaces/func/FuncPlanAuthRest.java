@@ -78,7 +78,7 @@ public class FuncPlanAuthRest {
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
       @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     funcPlanAuthFacade.enabled(planId, enabled);
     return ApiLocaleResult.success();
   }
@@ -141,7 +141,7 @@ public class FuncPlanAuthRest {
     return ApiLocaleResult.success(funcPlanAuthFacade.currentUserAuths(planIds, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of functional test plan, the administrator permission is included", operationId = "func:plan:auth:check")
+  @Operation(summary = "Check the user authorization or administrator permission", operationId = "func:plan:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)

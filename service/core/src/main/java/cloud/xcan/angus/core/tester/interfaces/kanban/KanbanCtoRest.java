@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanCto", description = "CTO-Level R&D & Test Analytics - Executive dashboard endpoints for CTO to view key R&D task progress and functional test KPIs")
+@Tag(name = "Kanban - CTO", description = "CTO-Level R&D & Test Analytics - Executive dashboard endpoints for CTO to view key R&D task progress and functional test KPIs")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/cto")

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Election based on number of tasks being processed and ctrl node resource usage.
  */
-@Tag(name = "Ctrl", description = "AngusCtrl Controller Status API - Controller health checks, leadership election, and agent connectivity monitoring")
+@Tag(name = "Controller", description = "Controller Status API - Controller health checks, leadership election, and agent connectivity monitoring")
 @Validated
 @RestController
 @RequestMapping(value = "/api/v1/ctrl")

@@ -66,7 +66,7 @@ public class FuncCaseFavouriteRest {
     funcCaseFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search case favourite", operationId = "func:case:favourite:search")
+  @Operation(summary = "Fulltext search the favourite of case", operationId = "func:case:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -75,9 +75,9 @@ public class FuncCaseFavouriteRest {
     return ApiLocaleResult.success(funcCaseFavouriteFacade.search(dto));
   }
 
-  @Operation(summary = "Query the favourite number of case", operationId = "func:case:favourite:count")
+  @Operation(summary = "Query the favourite count of case", operationId = "func:case:favourite:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

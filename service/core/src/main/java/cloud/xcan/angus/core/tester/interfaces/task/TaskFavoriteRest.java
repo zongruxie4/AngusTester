@@ -74,9 +74,9 @@ public class TaskFavoriteRest {
     return ApiLocaleResult.success(taskFavouriteFacade.search(dto));
   }
 
-  @Operation(summary = "Query the favourite number of task", operationId = "task:favourite:count")
+  @Operation(summary = "Query the favourite count of task", operationId = "task:favourite:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

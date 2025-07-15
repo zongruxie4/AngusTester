@@ -81,7 +81,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.replace(dto));
   }
 
-  @Operation(summary = "Modify task software version status", operationId = "software:version:status:modify")
+  @Operation(summary = "Modify software version status", operationId = "software:version:status:modify")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

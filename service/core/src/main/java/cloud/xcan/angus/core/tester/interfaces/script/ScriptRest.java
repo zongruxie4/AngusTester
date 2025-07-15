@@ -112,7 +112,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner script example", operationId = "script:example:import")
+  @Operation(summary = "Import the script example", operationId = "script:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

@@ -73,8 +73,8 @@ public class ScenarioTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the number of all scenario trash", operationId = "scenario:trash:count")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Query number succeeded")})
+  @Operation(summary = "Query the count of all scenario trash", operationId = "scenario:trash:count")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count(

@@ -102,7 +102,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.clone(id));
   }
 
-  @Operation(summary = "Import the inner scenario example", operationId = "scenario:example:import")
+  @Operation(summary = "Import the scenario example", operationId = "scenario:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

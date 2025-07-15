@@ -74,9 +74,9 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.search(dto));
   }
 
-  @Operation(summary = "Query the follow number of task", operationId = "task:follow:count")
+  @Operation(summary = "Query the follow count of task", operationId = "task:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
