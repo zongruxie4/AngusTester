@@ -35,7 +35,7 @@ public class ExecSampleInnerRest {
   @Resource
   private ExecSampleFacade execSampleFacade;
 
-  @Operation(summary = "Query the total summary information of the last sampling execution.", operationId = "exec:sample:summary:total:inner")
+  @Operation(summary = "Query the total summary information of the last sampling execution", operationId = "exec:sample:summary:total:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/summary/total")
@@ -56,7 +56,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.summaryList(id, dto));
   }
 
-  @Operation(summary = "Query the score (RT) list of execution sampling.", operationId = "exec:sample:score:list:inner")
+  @Operation(summary = "Query the score (RT) list of execution sampling", operationId = "exec:sample:score:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/score")
@@ -66,7 +66,7 @@ public class ExecSampleInnerRest {
     return ApiLocaleResult.success(execSampleFacade.scoreList(id, dto));
   }
 
-  @Operation(summary = "Query the throughput list of execution sampling.", operationId = "exec:sample:score:list:inner")
+  @Operation(summary = "Query the throughput list of execution sampling", operationId = "exec:sample:score:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/throughput")

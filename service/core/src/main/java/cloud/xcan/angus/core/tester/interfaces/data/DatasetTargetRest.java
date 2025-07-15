@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataDatasetTarget", description = "Test Dataset Associations - Management interface for establishing and maintaining links between test datasets and test resources (APIs/scenarios).")
+@Tag(name = "DataDatasetTarget", description = "Test Dataset Associations - Management interface for establishing and maintaining links between test datasets and test resources (APIs/scenarios)")
 @Validated
 @RestController
 @RequestMapping("/api/v1")

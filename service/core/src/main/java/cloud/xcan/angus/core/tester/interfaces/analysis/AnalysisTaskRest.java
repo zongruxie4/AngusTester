@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnalysisTask", description = "Test Resource analytics - - Aggregated analytics for R&D tasks (sprint, backlog, task, bug, progress, etc).")
+@Tag(name = "AnalysisTask", description = "Test Resource analytics - - Aggregated analytics for R&D tasks (sprint, backlog, task, bug, progress, etc)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/task")

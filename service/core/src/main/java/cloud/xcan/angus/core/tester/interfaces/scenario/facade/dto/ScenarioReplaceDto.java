@@ -31,7 +31,7 @@ public class ScenarioReplaceDto {
 
   @NotBlank
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Name of the scenario execution plugin.", example = "Http", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Name of the scenario execution plugin", example = "Http", requiredMode = RequiredMode.REQUIRED)
   private String plugin;
 
   @Length(max = MAX_DESC_LENGTH_X4)

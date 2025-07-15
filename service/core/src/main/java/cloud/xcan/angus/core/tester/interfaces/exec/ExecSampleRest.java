@@ -35,7 +35,7 @@ public class ExecSampleRest {
   @Resource
   private ExecSampleFacade execSampleFacade;
 
-  @Operation(summary = "Query the total summary information of the last sampling execution.", operationId = "exec:sample:summary:total")
+  @Operation(summary = "Query the total summary information of the last sampling execution", operationId = "exec:sample:summary:total")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/summary/total")
@@ -56,7 +56,7 @@ public class ExecSampleRest {
     return ApiLocaleResult.success(execSampleFacade.summaryList(id, dto));
   }
 
-  @Operation(summary = "Query the score (RT) list of execution sampling.", operationId = "exec:sample:score:list")
+  @Operation(summary = "Query the score (RT) list of execution sampling", operationId = "exec:sample:score:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/score")
@@ -66,7 +66,7 @@ public class ExecSampleRest {
     return ApiLocaleResult.success(execSampleFacade.scoreList(id, dto));
   }
 
-  @Operation(summary = "Query the throughput list of execution sampling.", operationId = "exec:sample:score:list")
+  @Operation(summary = "Query the throughput list of execution sampling", operationId = "exec:sample:score:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/throughput")
@@ -76,7 +76,7 @@ public class ExecSampleRest {
     return ApiLocaleResult.success(execSampleFacade.throughputList(id, dto));
   }
 
-  @Operation(summary = "Query the thread list of execution sampling.", operationId = "exec:sample:thread:list")
+  @Operation(summary = "Query the thread list of execution sampling", operationId = "exec:sample:thread:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/thread")
@@ -86,7 +86,7 @@ public class ExecSampleRest {
     return ApiLocaleResult.success(execSampleFacade.threadList(id, dto));
   }
 
-  @Operation(summary = "Query the errors list of execution sampling.", operationId = "exec:sample:error:list")
+  @Operation(summary = "Query the errors list of execution sampling", operationId = "exec:sample:error:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/sample/error")

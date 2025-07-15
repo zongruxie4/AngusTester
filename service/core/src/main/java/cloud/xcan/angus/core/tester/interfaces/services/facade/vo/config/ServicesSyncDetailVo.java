@@ -20,26 +20,26 @@ public class ServicesSyncDetailVo {
 
   //private Long id;
 
-  @Schema(description = "Synchronization services id.")
+  @Schema(description = "Synchronization services id")
   private Long serviceId;
 
-  @Schema(example = "AAS Door Apis", description = "Synchronization info naming. Services synchronization info naming, must be unique.")
+  @Schema(example = "AAS Door Apis", description = "Synchronization info naming. Services synchronization info naming, must be unique")
   private String name;
 
-  @Schema(example = "http://192.168.0.101:1807/v2/api-docs?group=Api", description = "Synchronize OpenAPI docs url. After configured, the apis will be read from that address to the current services.")
+  @Schema(example = "http://192.168.0.101:1807/v2/api-docs?group=Api", description = "Synchronize OpenAPI docs url. After configured, the apis will be read from that address to the current services")
   private String apiDocsUrl;
 
-  @Schema(example = "COVER", description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api.")
+  @Schema(example = "COVER", description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api")
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
-  @Schema(example = "false", description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data.")
+  @Schema(example = "false", description = "The delete flag when not existed. Whether to delete a local api when it does not exist in the current synchronized data")
   private Boolean deleteWhenNotExisted;
 
   @Valid
-  @Schema(description = "Authentication configuration. It is required when the synchronization url is protected.")
+  @Schema(description = "Authentication configuration. It is required when the synchronization url is protected")
   private List<SimpleHttpAuth> auths;
 
-  @Schema(description = "Last synchronization success flag.", example = "false")
+  @Schema(description = "Last synchronization success flag", example = "false")
   private Boolean syncSuccess;
 
   /**
@@ -48,7 +48,7 @@ public class ServicesSyncDetailVo {
   @Schema(description = "The reason for the last synchronization failure", example = "Api resource not found")
   private String syncFailureCause;
 
-  @Schema(description = "Last synchronization date.")
+  @Schema(description = "Last synchronization date")
   private LocalDateTime lastSyncDate;
 
   private Long lastModifiedBy;

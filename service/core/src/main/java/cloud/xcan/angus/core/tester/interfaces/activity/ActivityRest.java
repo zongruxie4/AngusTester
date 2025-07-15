@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Activity", description = "User Activity Auditing - APIs for querying and analyzing user activity logs (resource access, and operational events) with granular filters and audit trail exports.")
+@Tag(name = "Activity", description = "User Activity Auditing - APIs for querying and analyzing user activity logs (resource access, and operational events) with granular filters and audit trail exports")
 @Validated
 @RestController
 @RequestMapping("/api/v1/activity")

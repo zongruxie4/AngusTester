@@ -13,7 +13,7 @@ public class DeepSeekConfig {
   private int maxRetries = 3;
   private long initialRetryDelayMs = 1000;
   private double backoffFactor = 2.0;
-  private int timeoutSeconds = 15;
+  private int timeoutSeconds = 60;
 
   public DeepSeekConfig() {
   }
@@ -40,7 +40,7 @@ public class DeepSeekConfig {
     this.promptTemplate = setting.getString("deepseek.prompt.template", this.promptTemplate);
 
     // Retry configuration
-    this.maxRetries = setting.getInt("deepseek.max.retries", this.maxRetries);
+    this.maxRetries = setting.getInt("deepseek.retry.max", this.maxRetries);
     this.initialRetryDelayMs = setting.getLong("deepseek.retry.initialDelayMs",
         this.initialRetryDelayMs);
     this.backoffFactor = setting.getDouble("deepseek.retry.backoffFactor", this.backoffFactor);

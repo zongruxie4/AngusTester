@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockData", description = "Generate test data and debug dependencies via JMock rules.")
+@Tag(name = "MockData", description = "Generate test data and debug dependencies via JMock rules")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")

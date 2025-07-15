@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisTestInner", description = "Internal API Testing - Service internal apis testing query entrance.")
+@Tag(name = "ApisTestInner", description = "Internal API Testing - Service internal apis testing query entrance")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/apis")
@@ -28,7 +28,7 @@ public class ApisTestDoorRest {
   @Resource
   private ApisTestFacade apisTestFacade;
 
-  @Operation(summary = "Find enabled functionality, performance, stability testing type of apis.", operationId = "apis:test:enabled:find:inner")
+  @Operation(summary = "Find enabled functionality, performance, stability testing type of apis", operationId = "apis:test:enabled:find:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

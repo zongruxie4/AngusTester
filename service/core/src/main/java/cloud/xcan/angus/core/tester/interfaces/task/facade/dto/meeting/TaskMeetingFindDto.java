@@ -34,10 +34,10 @@ public class TaskMeetingFindDto extends PageQuery {
   private Long moderatorId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Meeting subject.")
+  @Schema(description = "Meeting subject")
   private String subject;
 
-  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes.")
+  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes")
   private TaskMeetingType type;
 
   private Long createdBy;

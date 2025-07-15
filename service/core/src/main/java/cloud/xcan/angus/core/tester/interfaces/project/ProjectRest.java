@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Project", description = "Project Management - Work unit for end-to-end project coordination, "
-    + "including resource allocation, test planning, task tracking, requirement management, and workflow automation.")
+    + "including resource allocation, test planning, task tracking, requirement management, and workflow automation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/project")
@@ -84,7 +84,7 @@ public class ProjectRest {
   public ApiLocaleResult<IdKey<Long, Object>> importExample(
       @Parameter(name = "name", description = "Project name") @RequestParam(value = "name", required = false) String name,
       @Parameter(name = "type", description = "Project type", required = true) @RequestParam("type") ProjectType type,
-      @Parameter(name = "dataTypes", description = "Example data types. Import all example data when empty.")
+      @Parameter(name = "dataTypes", description = "Example data types. Import all example data when empty")
       @RequestParam(value = "dataTypes", required = false) Set<ExampleDataType> dataTypes) {
     return ApiLocaleResult.success(projectFacade.importExample(name, type, dataTypes));
   }

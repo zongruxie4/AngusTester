@@ -24,7 +24,7 @@ public class VariableValuePreviewDto {
   private String name;
 
   @Length(max = MAX_PARAM_VALUE_LENGTH)
-  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction.")
+  @Schema(description = "Required when non extraction type variable, the value of extraction type will be automatically set after extraction")
   private String value;
 
   @Valid

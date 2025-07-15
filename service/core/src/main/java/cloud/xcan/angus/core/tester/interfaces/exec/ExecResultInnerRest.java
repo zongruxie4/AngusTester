@@ -33,7 +33,7 @@ public class ExecResultInnerRest {
   @Resource
   private ExecResultFacade execResultFacade;
 
-  @Operation(summary = "Query the execution test result.", operationId = "exec:result:detail:inner")
+  @Operation(summary = "Query the execution test result", operationId = "exec:result:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -43,7 +43,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.execResult(execId));
   }
 
-  @Operation(summary = "Query the apis execution test result by script type.", operationId = "exec:apis:result:byScriptType:inner")
+  @Operation(summary = "Query the apis execution test result by script type", operationId = "exec:apis:result:byScriptType:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -54,7 +54,7 @@ public class ExecResultInnerRest {
     return ApiLocaleResult.success(execResultFacade.apisResultByScriptType(apiId, scriptType));
   }
 
-  @Operation(summary = "Query the execution test result of apis.", operationId = "exec:apis:result:all:inner")
+  @Operation(summary = "Query the execution test result of apis", operationId = "exec:apis:result:all:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/apis/{apiId}/result")

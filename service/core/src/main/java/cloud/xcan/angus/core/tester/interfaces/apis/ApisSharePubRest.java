@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "ApisSharePub", description = "API Sharing Public Query - Public access entry for shared service and apis.")
+@Tag(name = "ApisSharePub", description = "API Sharing Public Query - Public access entry for shared service and apis")
 @Validated
 @RestController
 @RequestMapping("/pubapi/v1/apis/share")

@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Module", description = "Software Module Management - APIs for modular system architecture design, enabling creation/organization of independent functional units.")
+@Tag(name = "Module", description = "Software Module Management - APIs for modular system architecture design, enabling creation/organization of independent functional units")
 @Validated
 @RestController
 @RequestMapping("/api/v1/module")

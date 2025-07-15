@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockApisLog", description = "Mock Log Analytics and Query - Query and analyze mock interface request logs and statistical metrics (success/failure rates, latency distributions).")
+@Tag(name = "MockApisLog", description = "Mock Log Analytics and Query - Query and analyze mock interface request logs and statistical metrics (success/failure rates, latency distributions)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")

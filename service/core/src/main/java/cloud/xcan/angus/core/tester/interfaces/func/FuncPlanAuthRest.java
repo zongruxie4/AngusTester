@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncPlanAuth", description = "Test Plan Authorization Management - Unified entry for managing data access permissions of test plans, their linked cases, and baseline references.")
+@Tag(name = "FuncPlanAuth", description = "Test Plan Authorization Management - Unified entry for managing data access permissions of test plans, their linked cases, and baseline references")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")

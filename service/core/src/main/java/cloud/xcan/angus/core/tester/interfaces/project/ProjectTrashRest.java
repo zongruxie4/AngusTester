@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "ProjectTrash", description = "Project Recycle Bin Management - Temporary storage for "
-    + "deleted projects with restore capabilities and permanent deletion controls.")
+    + "deleted projects with restore capabilities and permanent deletion controls")
 @Validated
 @RestController
 @RequestMapping("/api/v1/project/trash")

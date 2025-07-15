@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataVariable", description = "Test Variable Definitions - Unified interface for declaring and maintaining test variables (e.g., environment variables, global parameters).")
+@Tag(name = "DataVariable", description = "Test Variable Definitions - Unified interface for declaring and maintaining test variables (e.g., environment variables, global parameters)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/variable")

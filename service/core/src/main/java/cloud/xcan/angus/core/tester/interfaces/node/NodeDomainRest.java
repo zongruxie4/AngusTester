@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeDomain", description = "Cloud Subdomain Registry - Lifecycle management of subdomains for cloud service nodes (e.g., AliCloud hosted zones).")
+@Tag(name = "NodeDomain", description = "Cloud Subdomain Registry - Lifecycle management of subdomains for cloud service nodes (e.g., AliCloud hosted zones)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node/domain")

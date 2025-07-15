@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioTest", description = "User Scenario Testing - End-user interfaces for executing and tracking custom test scenarios.")
+@Tag(name = "ScenarioTest", description = "User Scenario Testing - End-user interfaces for executing and tracking custom test scenarios")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -46,8 +46,8 @@ public class ScenarioTestRest {
   private ScenarioTestFacade scenarioTestFacade;
 
   @Operation(summary =
-      "Enable or disable the functionality, performance, stability testing of scenario."
-          + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis.", operationId = "scenario:test:enabled")
+      "Enable or disable the functionality, performance, stability testing of scenario"
+          + "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis", operationId = "scenario:test:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -61,7 +61,7 @@ public class ScenarioTestRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario.", operationId = "scenario:test:enabled:find")
+  @Operation(summary = "Find enabled functionality, performance, stability testing type of scenario", operationId = "scenario:test:enabled:find")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

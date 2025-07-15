@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioFollow", description = "Test Scenario Watchlist/Subscriptions - Notification management interface for receiving alerts when subscribed test scenario are modified.")
+@Tag(name = "ScenarioFollow", description = "Test Scenario Watchlist/Subscriptions - Notification management interface for receiving alerts when subscribed test scenario are modified")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")

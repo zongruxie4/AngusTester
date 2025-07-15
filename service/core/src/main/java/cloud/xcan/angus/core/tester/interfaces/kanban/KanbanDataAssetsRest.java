@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanDataAssets", description = "Business Data Growth Analytics - Query platform-wide business data growth trends and categorical statistics.")
+@Tag(name = "KanbanDataAssets", description = "Business Data Growth Analytics - Query platform-wide business data growth trends and categorical statistics")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/dataassets")

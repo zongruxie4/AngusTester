@@ -36,7 +36,7 @@ public class CtrlRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Ping an controller for bind validator.", operationId = "ctrl:ping")
+  @Operation(summary = "Ping an controller for bind validator", operationId = "ctrl:ping")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Ping successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -45,7 +45,7 @@ public class CtrlRest {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Query and elect controller.", operationId = "ctrl:discovery")
+  @Operation(summary = "Query and elect controller", operationId = "ctrl:discovery")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -54,7 +54,7 @@ public class CtrlRest {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Query the connections info of controller.", operationId = "ctrl:connections:info")
+  @Operation(summary = "Query the connections info of controller", operationId = "ctrl:connections:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)

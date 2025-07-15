@@ -18,10 +18,10 @@ public class MockServiceExportDto {
   @Schema(description = "Export mock service id", requiredMode = RequiredMode.REQUIRED)
   private Long mockServiceId;
 
-  @Schema(description = "Export apis ids. Specify the apis to export when scope is by `APIS`, export all when not specified.")
+  @Schema(description = "Export apis ids. Specify the apis to export when scope is by `APIS`, export all when not specified")
   private Set<Long> mockApiIds;
 
-  @Schema(allowableValues = "yaml, json", description = "Mock apis document format. Available values yaml or json, the default value is yaml.")
+  @Schema(allowableValues = "yaml, json", description = "Mock apis document format. Available values yaml or json, the default value is yaml")
   private SchemaFormat format = SchemaFormat.yaml;
 
 }

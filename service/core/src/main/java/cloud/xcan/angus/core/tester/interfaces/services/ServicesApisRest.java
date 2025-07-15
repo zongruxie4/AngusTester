@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesApis", description = "Service Apis Params - Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service.")
+@Tag(name = "ServicesApis", description = "Service Apis Params - Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

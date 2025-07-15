@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockServiceAuth", description = "Mock Service Access Control - Manage data permissions and authorization policies for mock services.")
+@Tag(name = "MockServiceAuth", description = "Mock Service Access Control - Manage data permissions and authorization policies for mock services")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/service")

@@ -22,7 +22,7 @@ public class VariableExportDto extends PageQuery {
   @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Variable ids. Note: All the variables wil be exported if ids are empty.")
+  @Schema(description = "Variable ids. Note: All the variables wil be exported if ids are empty")
   @Size(max = MAX_BATCH_SIZE)
   private LinkedHashSet<Long> ids;
 

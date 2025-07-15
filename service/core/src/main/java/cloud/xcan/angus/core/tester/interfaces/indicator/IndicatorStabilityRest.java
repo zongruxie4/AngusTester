@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorStability", description = "Stability Test Indicator Management - Configure stability test profiles (duration, concurrency, error tolerance).")
+@Tag(name = "IndicatorStability", description = "Stability Test Indicator Management - Configure stability test profiles (duration, concurrency, error tolerance)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")

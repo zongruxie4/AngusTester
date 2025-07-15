@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataDataset", description = "Test Dataset Management - Centralized control interface for creating, editing, and organizing complete test datasets.")
+@Tag(name = "DataDataset", description = "Test Dataset Management - Centralized control interface for creating, editing, and organizing complete test datasets")
 @Validated
 @RestController
 @RequestMapping("/api/v1/dataset")

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScriptAuth", description = "Test Script Authorization Management - Unified entry for managing data access permissions of test script.")
+@Tag(name = "ScriptAuth", description = "Test Script Authorization Management - Unified entry for managing data access permissions of test script")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")

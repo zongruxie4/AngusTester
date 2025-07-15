@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisUnarchived", description = "Personal Workspace (Unarchived) - Private staging area for managing uncommitted APIs and personal development artifacts.")
+@Tag(name = "ApisUnarchived", description = "Personal Workspace (Unarchived) - Private staging area for managing uncommitted APIs and personal development artifacts")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/unarchived")

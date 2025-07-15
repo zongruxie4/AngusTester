@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskSprintAuth", description = "Task Sprint Authorization Management - Unified entry for managing data access permissions of task sprint.")
+@Tag(name = "TaskSprintAuth", description = "Task Sprint Authorization Management - Unified entry for managing data access permissions of task sprint")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")

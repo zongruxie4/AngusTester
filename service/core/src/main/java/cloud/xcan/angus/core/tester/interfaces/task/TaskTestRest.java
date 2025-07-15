@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskTest", description = "Task Associations Resource Query - Query resources and test results associated with specific task.")
+@Tag(name = "TaskTest", description = "Task Associations Resource Query - Query resources and test results associated with specific task")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")

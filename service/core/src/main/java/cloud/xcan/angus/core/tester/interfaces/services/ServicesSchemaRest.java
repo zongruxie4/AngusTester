@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@io.swagger.v3.oas.annotations.tags.Tag(name = "ServicesSchema", description = "API Metadata and Schema Management - Manage OpenAPI metadata and JSON Schema definitions with synchronization capabilities.")
+@io.swagger.v3.oas.annotations.tags.Tag(name = "ServicesSchema", description = "API Metadata and Schema Management - Manage OpenAPI metadata and JSON Schema definitions with synchronization capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -45,7 +45,7 @@ public class ServicesSchemaRest {
   private ServicesSchemaFacade servicesSchemaFacade;
 
   @Operation(summary = "Replace the services schema info. Provides metadata about the API. "
-      + "Note: `Metadata is required for an OpenAPI document, so it cannot be deleted after adding it`.", operationId = "services:schema:info:replace")
+      + "Note: `Metadata is required for an OpenAPI document, so it cannot be deleted after adding it`", operationId = "services:schema:info:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -69,7 +69,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Replace the services referencing for external documentation. "
-      + "Allows referencing an external resource for extended documentation for OpenAPI document.", operationId = "services:schema:externalDoc:replace")
+      + "Allows referencing an external resource for extended documentation for OpenAPI document", operationId = "services:schema:externalDoc:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -240,7 +240,7 @@ public class ServicesSchemaRest {
 
   @Operation(summary =
       "Replace tag of the services. Note: `The order of the tags can be used to reflect on their order by the parsing tools`. "
-          + "Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic.", operationId = "services:schema:tag:replace")
+          + "Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized randomly or based on the tools' logic", operationId = "services:schema:tag:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -256,7 +256,7 @@ public class ServicesSchemaRest {
   @Operation(summary =
       "Replace all tags of the services. Note: `The order of the tags can be used to reflect on their order by the parsing tools`. "
           + "Not all tags that are used by the Operation Object must be declared. The tags that are not declared MAY be organized "
-          + "randomly or based on the tools' logic.", operationId = "services:schema:tag:all:replace")
+          + "randomly or based on the tools' logic", operationId = "services:schema:tag:all:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Services not found")
@@ -367,7 +367,7 @@ public class ServicesSchemaRest {
     return ApiLocaleResult.successData(servicesSchemaFacade.openapiDetail(serviceId, dto));
   }
 
-  @Operation(summary = "OpenAP specification text translation.", operationId = "services:schema:translate")
+  @Operation(summary = "OpenAP specification text translation", operationId = "services:schema:translate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")

@@ -38,7 +38,7 @@ public class StabilityAddDto {
 
   @NotNull
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 5 minutes.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 5 minutes", requiredMode = RequiredMode.REQUIRED)
   private TimeValue duration;
 
   @Min(1)

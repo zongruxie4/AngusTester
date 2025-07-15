@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "AnalysisCustomization", description =
     "Customized definition statistical analysis implementation apis, "
-        + "used to query supported analysis resource definition information and to retrieve analysis and statistical information.")
+        + "used to query supported analysis resource definition information and to retrieve analysis and statistical information")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/customization")

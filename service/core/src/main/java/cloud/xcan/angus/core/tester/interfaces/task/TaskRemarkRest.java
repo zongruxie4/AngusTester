@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskRemark", description = "Task Remark Management - A unified management entry for all task remarks.")
+@Tag(name = "TaskRemark", description = "Task Remark Management - A unified management entry for all task remarks")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/remark")

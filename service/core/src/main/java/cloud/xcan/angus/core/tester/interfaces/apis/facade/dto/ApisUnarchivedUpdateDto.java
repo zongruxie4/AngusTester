@@ -60,7 +60,7 @@ public class ApisUnarchivedUpdateDto {
   private String summary;
 
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
-  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation.")
+  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation")
   private String description;
 
   //  private ExternalDocumentation externalDocs;
@@ -91,7 +91,7 @@ public class ApisUnarchivedUpdateDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
-  @Schema(description = "Extension fields allow users to customize business extension attributes.")
+  @Schema(description = "Extension fields allow users to customize business extension attributes")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 

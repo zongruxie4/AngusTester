@@ -39,14 +39,14 @@ public class PerfAddDto {
 
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
   @NotNull
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds.", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds", requiredMode = RequiredMode.REQUIRED)
   private TimeValue duration;
 
   @Min(0)
-  @Schema(description = "Adjust ramp up thread number, the value does not exceed the threads.")
+  @Schema(description = "Adjust ramp up thread number, the value does not exceed the threads")
   private Integer rampUpThreads;
 
-  @Schema(description = "Adjust ramp up time interval, the value does not exceed the duration.")
+  @Schema(description = "Adjust ramp up time interval, the value does not exceed the duration")
   private TimeValue rampUpInterval;
 
   @Min(1)

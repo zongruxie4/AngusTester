@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioMonitorHistory", description = "Scenario Monitoring History Query - Query historical monitoring records for specific scenarios, including metrics, alerts, and resolution timelines.")
+@Tag(name = "ScenarioMonitorHistory", description = "Scenario Monitoring History Query - Query historical monitoring records for specific scenarios, including metrics, alerts, and resolution timelines")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor/history")

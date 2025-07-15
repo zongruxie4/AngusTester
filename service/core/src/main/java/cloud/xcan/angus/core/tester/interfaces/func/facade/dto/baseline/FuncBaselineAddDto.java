@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.Length;
 public class FuncBaselineAddDto {
 
   @NotBlank
-  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters.")
+  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters")
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 

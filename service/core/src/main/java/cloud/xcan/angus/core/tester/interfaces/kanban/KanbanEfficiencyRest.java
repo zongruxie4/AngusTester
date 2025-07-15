@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanEfficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness.")
+@Tag(name = "KanbanEfficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/efficiency")

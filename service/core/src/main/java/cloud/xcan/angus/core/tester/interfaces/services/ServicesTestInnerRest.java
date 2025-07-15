@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - Internal query endpoints for API test execution statistics (success rates, latency percentiles).")
+@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - Internal query endpoints for API test execution statistics (success rates, latency percentiles)")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")

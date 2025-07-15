@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorPerf", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds).")
+@Tag(name = "IndicatorPerf", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
