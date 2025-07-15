@@ -26,7 +26,7 @@ public class MockApisResponseAddDto {
 
   @Valid
   @Schema(description =
-      "Specifies the matching request conditions that need to be met in order to return the current response. "
+      "Specifies the matching request conditions that need to be met in order to return the current response"
           + "Note: When multiple responses that meet the conditions are matched, the one with the highest priority will be returned")
   private MatchRequest match;
 

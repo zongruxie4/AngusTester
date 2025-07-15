@@ -93,7 +93,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success(mockServiceFacade.replace(dto));
   }
 
-  @Operation(summary = "Sync the service setting and apis to mock service instance", operationId = "mock:service:instance:sync")
+  @Operation(summary = "Synchronize the service setting and apis to mock service instance", operationId = "mock:service:instance:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -116,7 +116,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success(mockServiceFacade.fileImport(dto));
   }
 
-  @Operation(summary = "Generate associated mock service based on the services", operationId = "mock:service:services:association:add")
+  @Operation(summary = "Generate associated mock service based on the service", operationId = "mock:service:services:association:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Associated successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -126,7 +126,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success(mockServiceFacade.servicesAssoc(dto));
   }
 
-  @Operation(summary = "Associated mock service based on the services", operationId = "mock:service:services:association:update")
+  @Operation(summary = "Associated mock service based on the service", operationId = "mock:service:services:association:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Associated successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -169,7 +169,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import the inner mock service example", operationId = "mock:service:example:import")
+  @Operation(summary = "Import the mock service example", operationId = "mock:service:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -179,7 +179,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success(mockServiceFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Import the inner mock apis example", operationId = "mock:service:apis:example:import")
+  @Operation(summary = "Import the mock apis example", operationId = "mock:service:apis:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -190,7 +190,7 @@ public class MockServiceRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the association between mock service and project", operationId = "mock:service:association:delete")
+  @Operation(summary = "Delete the association between mock service and api service", operationId = "mock:service:association:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}/association")

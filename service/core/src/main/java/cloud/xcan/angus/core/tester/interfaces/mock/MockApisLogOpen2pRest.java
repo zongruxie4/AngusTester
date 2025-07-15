@@ -30,7 +30,7 @@ public class MockApisLogOpen2pRest {
   @Resource
   private MockApisLogOpen2pFacade mockApisLogOpen2pFacade;
 
-  @Operation(summary = "Add the request logs of mock apis", operationId = "mock:apis:log:add:openapi2p")
+  @Operation(summary = "Add mock apis request logs", operationId = "mock:apis:log:add:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @PostMapping(value = "/apis/log")

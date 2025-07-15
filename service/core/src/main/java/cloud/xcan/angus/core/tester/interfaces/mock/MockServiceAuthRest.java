@@ -74,7 +74,7 @@ public class MockServiceAuthRest {
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
       @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     mockServiceAuthFacade.enabled(serviceId, enabled);
     return ApiLocaleResult.success();
   }

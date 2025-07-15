@@ -104,7 +104,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Sync the apis to mock service instance", operationId = "mock:apis:instance:sync")
+  @Operation(summary = "Synchronize the apis to mock service instance", operationId = "mock:apis:instance:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -151,7 +151,7 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the association between mock apis and apis", operationId = "mock:apis:association:delete")
+  @Operation(summary = "Delete the association between mock apis and service apis", operationId = "mock:apis:association:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/association")

@@ -43,7 +43,7 @@ public class MockDataRest {
   private MockDataFacade mockDataFacade;
 
   @Operation(summary = "Generate data based on mock function expressions", operationId = "mock:function:data")
-  @ApiResponse(responseCode = "200", description = "Successfully generated data")
+  @ApiResponse(responseCode = "200", description = "Generated Successfully")
   @PostMapping(value = "/function/data")
   public ApiLocaleResult<List<Object>> mockFunc(
       @Valid @Length(max = MAX_MOCK_FUNC_LENGTH) @RequestParam("function") @Parameter(name = "function", description = "Mock function expression", required = true) String function,
