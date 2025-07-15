@@ -181,7 +181,7 @@ const mockAuth = computed(() => {
 });
 
 const handleSpread = (group, index) => {
-  groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
+  // groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
   if (groupSpreadMap.value[group.key]) {
     const idx = props.dataSource.findIndex(i => i.key === group.key);
     const arr = props.dataSource.slice(idx + 1, idx + 1 + group.childrenNum);
@@ -189,6 +189,11 @@ const handleSpread = (group, index) => {
   } else {
     showData.value.splice(index + 1, group.childrenNum);
   }
+};
+
+const handleClickSpread = (group, index) => {
+  groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
+  handleSpread(group, index);
 };
 
 </script>
@@ -275,7 +280,7 @@ const handleSpread = (group, index) => {
       <template v-else>
         <div
           class="h-11.5 border mb-3 w-full flex items-center"
-          @click="handleSpread(item, index)">
+          @click="handleClickSpread(item, index)">
           <div v-if="groupedBy === 'createdBy'" class="flex items-center flex-1 px-2">
             <Image
               type="avatar"
