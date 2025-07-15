@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ForkJoinPool;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,6 +86,8 @@ public class OpenAPITranslator {
     translateField("info.title", info::getTitle, info::setTitle);
     translateField("info.description", info::getDescription, info::setDescription);
     translateField("info.summary", info::getSummary, info::setSummary);
+
+    log.info("translated info: {}", info);
   }
 
   // Translate External Documentation
@@ -95,6 +98,8 @@ public class OpenAPITranslator {
 
     translateField("externalDocs.description", externalDocs::getDescription,
         externalDocs::setDescription);
+
+    log.info("translated external docs: {}", externalDocs);
   }
 
   // Translate Servers list
@@ -116,6 +121,8 @@ public class OpenAPITranslator {
         });
       }
     });
+
+    log.info("translated servers: {}", servers);
   }
 
   // Translate Tags list
@@ -123,6 +130,8 @@ public class OpenAPITranslator {
     if (tags == null) {
       return;
     }
+
+    log.info("translated tags: {}", tags);
 
     // Process tags in parallel
     tags.parallelStream().forEach(tag -> {
@@ -175,6 +184,8 @@ public class OpenAPITranslator {
       translateOperation(pathItem.getPatch(), "patch");
       translateOperation(pathItem.getTrace(), "trace");
     });
+
+    log.info("translated paths size: {}", paths.size());
   }
 
   // Translate API operation
@@ -241,6 +252,8 @@ public class OpenAPITranslator {
         }
       });
     }
+
+    log.info("translated operation: {}", operation);
   }
 
   // Translate parameter
@@ -264,6 +277,8 @@ public class OpenAPITranslator {
       components.getSchemas().entrySet().parallelStream().forEach(entry -> {
         translateSchemaFields(entry.getValue(), "component.schema");
       });
+
+      log.info("translated schemas component: {}", components);
     }
 
     // Process responses in parallel
@@ -279,6 +294,8 @@ public class OpenAPITranslator {
           });
         }
       });
+
+      log.info("translated responses component: {}", components);
     }
 
     // Process parameters in parallel
@@ -286,6 +303,7 @@ public class OpenAPITranslator {
       components.getParameters().entrySet().parallelStream().forEach(entry -> {
         translateParameter(entry.getValue());
       });
+      log.info("translated parameters component: {}", components);
     }
 
     // Process request bodies in parallel
@@ -302,6 +320,8 @@ public class OpenAPITranslator {
           });
         }
       });
+
+      log.info("translated request bodies component: {}", components);
     }
 
     // Process headers in parallel
@@ -317,6 +337,8 @@ public class OpenAPITranslator {
           });
         }
       });
+
+      log.info("translated headers component: {}", components);
     }
 
     // Process security schemes in parallel
@@ -326,7 +348,10 @@ public class OpenAPITranslator {
             entry.getValue()::getDescription,
             entry.getValue()::setDescription);
       });
+
+      log.info("translated security component: {}", components);
     }
+
   }
 
   // Translate schema fields
@@ -355,8 +380,7 @@ public class OpenAPITranslator {
    * @param getter  Function to get original value
    * @param setter  Function to set translated value
    */
-  private void translateField(String fieldId, Supplier<String> getter,
-      java.util.function.Consumer<String> setter) {
+  private void translateField(String fieldId, Supplier<String> getter, Consumer<String> setter) {
     String original = getter.get();
     if (original == null || original.trim().isEmpty()) {
       return;
