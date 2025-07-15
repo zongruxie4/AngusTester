@@ -32,7 +32,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorFunc", description = "Functional Test Indicator Management - Configure and manage functional test types (smoke testing, security testing) and their evaluation criteria")
+@Tag(name = "Indicator - FunctionalTest", description = "Functional Test Indicator Management - "
+    + "Configure and manage functional test types (smoke testing, security testing) and their evaluation criteria")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -50,7 +51,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the indicator of functionality or throw 404 when it doesn't exist", operationId = "indicator:func:replace")
+  @Operation(summary = "Replace the indicator of functionality", operationId = "indicator:func:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -85,7 +86,7 @@ public class IndicatorFuncRest {
     return ApiLocaleResult.success(indicatorFuncFacade.detail(targetType, targetId));
   }
 
-  @Operation(summary = "Query the indicator detail of functionality, return to default configuration when not set", operationId = "indicator:func:audit:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of functionality", description = "Note: Return to default configuration when not set", operationId = "indicator:func:audit:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

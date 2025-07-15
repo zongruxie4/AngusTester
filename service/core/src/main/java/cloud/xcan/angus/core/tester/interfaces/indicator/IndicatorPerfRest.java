@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorPerf", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds)")
+@Tag(name = "Indicator - PerformanceTest", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -50,7 +50,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the indicator of performance or throw 404 when it doesn't exist", operationId = "indicator:perf:replace")
+  @Operation(summary = "Replace the indicator of performance", operationId = "indicator:perf:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -85,7 +85,7 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success(indicatorPerfFacade.detail(targetType, targetId));
   }
 
-  @Operation(summary = "Query the indicator detail of performance, return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of performance", description = "Note: Return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
