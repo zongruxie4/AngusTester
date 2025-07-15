@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesComp", description = "OpenAPI Component Management - Centralized management of OpenAPI components (schemas, responses, security schemes) across services")
+@Tag(name = "ServicesComponent", description = "Service OpenAPI Component Management - "
+    + "Centralized management of OpenAPI components (schemas, responses, security schemes) across services")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -38,77 +39,80 @@ public class ServicesCompRest {
   @Resource
   private ServicesCompFacade servicesCompFacade;
 
-  @Operation(summary =
-      "Replace the OpenAPI component of services. For more details on the Components Object, "
-          + "please see: [OpenAPI Specification#Components Object](https://swagger.io/specification/#components-object)", operationId = "services:comp:replace")
+  @Operation(summary = "Replace the service OpenAPI components",
+      description =
+          "Replace the OpenAPI component of service. For more details on the Components Object, "
+              + "please see: [OpenAPI Specification#Components Object](https://swagger.io/specification/#components-object)",
+      operationId = "services:comp:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully")
   })
   @PutMapping("/{serviceId}/comp/{type}/{key}")
   public ApiLocaleResult<IdKey<Long, Object>> replace(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "type", description = "Component type", required = true) @PathVariable("type") ServicesCompType type,
       @Parameter(name = "key", description = "Component key", required = true) @PathVariable("key") String key,
       @RequestBody @NotEmpty @Length(max = MAX_PARAM_CONTENT_LENGTH) String component) {
     return ApiLocaleResult.success(servicesCompFacade.replace(serviceId, type, key, component));
   }
 
-  @Operation(summary =
-      "Delete services OpenAPI components by type. If the component keys parameter is empty, "
-          + "all components under the type will be deleted", operationId = "services:comp:deleteByType")
+  @Operation(summary = "Delete the service OpenAPI components by type",
+      description = "Delete the OpenAPI components by type of service. If the component keys parameter is empty, "
+          + "all components under the type will be deleted",
+      operationId = "services:comp:deleteByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/comp/{type}")
   public void deleteByType(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "type", description = "Component type", required = true) @PathVariable("type") ServicesCompType type,
       @Parameter(name = "keys", description = "Component keys", required = false) @RequestParam(required = false) Set<String> keys) {
     servicesCompFacade.deleteByType(serviceId, type, keys);
   }
 
-  @Operation(summary = "Delete services OpenAPI components by reference", operationId = "services:comp:deleteByRef")
+  @Operation(summary = "Delete the service OpenAPI components by reference", operationId = "services:comp:deleteByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/comp")
   public void deleteByRef(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "refs", description = "Component references", required = true) @RequestParam("refs") Set<String> refs) {
     servicesCompFacade.deleteByRef(serviceId, refs);
   }
 
-  @Operation(summary = "Delete all OpenAPI components of the services", operationId = "services:comp:all:delete")
+  @Operation(summary = "Delete all OpenAPI components of the service", operationId = "services:comp:all:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")
   })
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/comp/all")
   public void deleteAll(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId) {
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId) {
     servicesCompFacade.deleteAll(serviceId);
   }
 
-  @Operation(summary = "Query services OpenAPI component by reference", operationId = "services:comp:detailByRef")
+  @Operation(summary = "Query the service OpenAPI component by reference", operationId = "services:comp:detailByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
   @GetMapping("/{serviceId}/comp/ref")
   public ApiLocaleResult<ServicesCompDetailVo> detailByRef(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "ref", description = "Component reference", required = true) String ref) {
     return ApiLocaleResult.success(servicesCompFacade.detailByRef(serviceId, ref));
   }
 
-  @Operation(summary = "Query components of the specified type in the services", operationId = "services:comp:listByType")
+  @Operation(summary = "Query the service OpenAPI components of the specified type", operationId = "services:comp:listByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
   @GetMapping("/{serviceId}/comp/type")
   public ApiLocaleResult<List<ServicesCompDetailVo>> listByType(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "types", description = "Component types", required = true) @RequestParam(required = true) Set<ServicesCompType> types,
       @Parameter(name = "keys", description = "Component keys", required = false) @RequestParam(required = false) Set<String> keys,
       @Parameter(name = "ignoreModel", description = "Ignore query model, default false", required = false) @RequestParam(required = false) Boolean ignoreModel) {
@@ -116,25 +120,25 @@ public class ServicesCompRest {
         servicesCompFacade.listByType(serviceId, types, keys, ignoreModel));
   }
 
-  @Operation(summary = "Query services components by reference. ", operationId = "services:comp:listByRef")
+  @Operation(summary = "Query the service OpenAPI components by reference", operationId = "services:comp:listByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
   @GetMapping("/{serviceId}/comp")
   public ApiLocaleResult<List<ServicesCompDetailVo>> listByRef(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "refs", description = "Component references", required = true) Set<String> refs,
       @Parameter(name = "ignoreModel", description = "Ignore query model, default false", required = false) @RequestParam(required = false) Boolean ignoreModel) {
     return ApiLocaleResult.success(servicesCompFacade.listByRef(serviceId, refs, ignoreModel));
   }
 
-  @Operation(summary = "Query services components by reference. ", operationId = "services:comp:listAll")
+  @Operation(summary = "Query the service OpenAPI components by reference", operationId = "services:comp:listAll")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")
   })
   @GetMapping("/{serviceId}/comp/all")
   public ApiLocaleResult<List<ServicesCompDetailVo>> listAll(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
       @Parameter(name = "ignoreModel", description = "Ignore query model, default false", required = false) @RequestParam(required = false) Boolean ignoreModel) {
     return ApiLocaleResult.success(servicesCompFacade.listAll(serviceId, ignoreModel));
   }

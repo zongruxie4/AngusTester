@@ -16,7 +16,6 @@ import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,7 +53,7 @@ public class ServicesRest {
   @Resource
   private ServicesFacade serviceFacade;
 
-  @Operation(summary = "Add services", operationId = "services:add")
+  @Operation(summary = "Add service", operationId = "services:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -63,20 +62,20 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the name of services", operationId = "services:name:replace")
+  @Operation(summary = "Replace the name of service", operationId = "services:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
   })
   @PutMapping("/{id}/name")
   public ApiLocaleResult<?> rename(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "name", description = "New services name", required = true) @RequestParam(value = "name") String name) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "name", description = "New service name", required = true) @RequestParam(value = "name") String name) {
     serviceFacade.rename(id, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Modify services status. Note: When modifying a services, "
+  @Operation(summary = "Modify services status", description = "If modifying a services, "
       + "all services and apis status under the services will be synchronously modified", operationId = "services:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Modified successfully"),
@@ -84,25 +83,25 @@ public class ServicesRest {
   })
   @PatchMapping("/{id}/status")
   public ApiLocaleResult<?> statusUpdate(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "status", description = "Services status", required = true) @RequestParam("status") ApiStatus status) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "status", description = "Service status", required = true) @RequestParam("status") ApiStatus status) {
     serviceFacade.statusUpdate(id, status);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone services", operationId = "services:clone")
+  @Operation(summary = "Clone service", operationId = "services:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Cloned clone"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/clone")
   public ApiLocaleResult<?> clone(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long id) {
     serviceFacade.clone(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import the apis to services", operationId = "services:import")
+  @Operation(summary = "Import the apis to service", operationId = "services:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -112,7 +111,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner services example", operationId = "services:example:import")
+  @Operation(summary = "Import the service example", operationId = "services:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -122,29 +121,29 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete services", operationId = "services:delete")
+  @Operation(summary = "Delete service", operationId = "services:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long id) {
     serviceFacade.delete(id);
   }
 
-  @Operation(summary = "Query the detail of services", operationId = "services:detail")
+  @Operation(summary = "Query the detail of service", operationId = "services:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ServicesDetailVo> detail(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long id,
       @Parameter(name = "joinSchema", description = "Whether to associate services schema information flag", required = false)
       @RequestParam(name = "joinSchema", required = false) Boolean joinSchema) {
     return ApiLocaleResult.success(serviceFacade.detail(id, joinSchema));
   }
 
-  @Operation(summary = "Query the Mock service information associated with a services", operationId = "services:association:mock:service")
+  @Operation(summary = "Query the mock service information associated with the service", operationId = "services:association:mock:service")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/association/mock/service")
@@ -153,7 +152,7 @@ public class ServicesRest {
     return ApiLocaleResult.success(serviceFacade.associationMockService(id));
   }
 
-  @Operation(summary = "Query the list of services", operationId = "services:list")
+  @Operation(summary = "Query the list of service", operationId = "services:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
@@ -162,7 +161,7 @@ public class ServicesRest {
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(summary = "Fulltext search the services", operationId = "services:search")
+  @Operation(summary = "Fulltext search the service", operationId = "services:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/search")
@@ -173,7 +172,7 @@ public class ServicesRest {
   }
 
   @DoInFuture("Limit the number of exports")
-  @Operation(summary = "Export the apis from services", operationId = "services:export")
+  @Operation(summary = "Export the apis from service", operationId = "services:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Exported Successfully")})
   @PostMapping(value = "/export")
