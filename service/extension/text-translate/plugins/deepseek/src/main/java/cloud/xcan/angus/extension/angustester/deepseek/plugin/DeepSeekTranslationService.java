@@ -156,7 +156,7 @@ public class DeepSeekTranslationService implements TranslationService {
   }
 
   private String executeRequest(HttpRequest request) throws Exception {
-    HttpClient client = HttpClient.newHttpClient();
+    HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(6)).build();
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
     // Check for server errors (5xx) or rate limits (429)
