@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataDatasource", description = "Entry point for executing JDBC-based tests and managing referenced data sources (e.g., database connections)")
+@Tag(name = "Datasource", description = "Entry point for executing JDBC-based tests and managing referenced data sources (e.g., database connections)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/data/datasource")

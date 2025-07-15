@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataVariable", description = "Test Variable Definitions - Unified interface for declaring and maintaining test variables (e.g., environment variables, global parameters)")
+@Tag(name = "Variable", description = "Test Variable Definitions - Unified interface for declaring and maintaining test variables (e.g., environment variables, global parameters)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/variable")
@@ -106,7 +106,7 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner variable example", operationId = "data:variable:example:import")
+  @Operation(summary = "Import the variable example", operationId = "data:variable:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)
