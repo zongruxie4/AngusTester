@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnalysisTask", description = "Test Resource analytics - - Aggregated analytics for R&D tasks (sprint, backlog, task, bug, progress, etc)")
+@Tag(name = "Analysis - TaskResources", description = "Task Resources analytics - - Aggregated analytics for R&D tasks (sprint, backlog, task, bug, progress, etc)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/task")
@@ -58,7 +58,8 @@ public class AnalysisTaskRest {
   @Resource
   private AnalysisTaskFacade analysisAngusTaskFacade;
 
-  @Operation(summary = "The count of tasks creation statistics. Task and associated module, plan and tag creation resources count statistics", operationId = "analysis:task:resources:count")
+  @Operation(summary = "The count of tasks creation statistics",
+      description = "Task and associated module, plan and tag creation resources count statistics", operationId = "analysis:task:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resources/count")

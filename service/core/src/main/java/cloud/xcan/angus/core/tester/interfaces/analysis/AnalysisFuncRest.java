@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnalysisFunc", description = "Test Resource analytics - - Aggregated analytics for functional testing resources (plan, case, progress, etc)")
+@Tag(name = "Analysis - FunctionalTestResources", description = "Functional Test Resources Analytics - - Aggregated analytics for functional testing resources (plan, case, progress, etc)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/func")
@@ -59,7 +59,9 @@ public class AnalysisFuncRest {
   @Resource
   private AnalysisFuncFacade analysisAngusFuncFacade;
 
-  @Operation(summary = "The count of cases creation statistics. Cases and associated plan, tag, and module creation count statistics", operationId = "analysis:func:resources:count")
+  @Operation(summary = "The count of cases creation statistics",
+      description = "Cases and associated plan, tag, and module creation count statistics",
+      operationId = "analysis:func:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/resources/count")

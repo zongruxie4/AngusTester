@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnalysisCommon", description = "Public Resource Analytics - Aggregated analytics for shared infrastructure resources (scenario, script, data, etc)")
+@Tag(name = "Analysis - Common", description = "Public Resource Analytics - Aggregated analytics for shared infrastructure resources (scenario, script, data, etc)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")

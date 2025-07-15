@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * It will automatically invalid after being consolidated to other package.
  */
-@Tag(name = "AnalysisCustomization", description =
+@Tag(name = "Analysis - Customization", description =
     "Customized definition statistical analysis implementation apis, "
         + "used to query supported analysis resource definition information and to retrieve analysis and statistical information")
 @Validated
