@@ -1917,7 +1917,7 @@ provide('selectHandle', closeDrawer);
                       v-show="activeMenu === 'cookie'"
                       class="px-5"
                       :dataSource="responseState?.cookie"
-                      :host="currentServer.url" />
+                      :host="getServerData(currentServer)" />
                     <ApiAssert
                       v-show="activeMenu === 'assert'"
                       class="px-5"
