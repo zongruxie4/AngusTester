@@ -123,7 +123,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success(funcReviewFacade.clone(id));
   }
 
-  @Operation(summary = "Reset the review result of functional testing", operationId = "func:review:case:result:reset")
+  @Operation(summary = "Reset the review result of functional testing", operationId = "func:review:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -135,7 +135,7 @@ public class FuncReviewRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restart the review result of functional testing", operationId = "func:review:case:result:restart")
+  @Operation(summary = "Restart the review result of functional testing", operationId = "func:review:result:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")

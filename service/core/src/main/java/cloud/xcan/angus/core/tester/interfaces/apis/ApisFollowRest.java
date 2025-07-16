@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisFollow", description = "API Watchlist/Subscriptions - Used by event management system for tracking changes to monitored API resources")
+@Tag(name = "ApisFollow", description = "API Follow Management - Used by event management system for tracking changes to monitored API resources")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
