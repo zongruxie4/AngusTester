@@ -201,7 +201,7 @@ onMounted(() => {
         :colon="false"
         class="w-320"
         :model="projectData"
-        :labelCol="{ style: {width: '60px'} }">
+        :labelCol="{ style: {width: '70px'} }">
         <div class="flex space-x-10">
           <div class="flex flex-col space-y-4 w-40 h-100 cursor-pointer ">
             <div
@@ -275,25 +275,7 @@ onMounted(() => {
                 :maxlength="100">
               </Input>
             </FormItem>
-            <FormItem
-              label="负责人"
-              name="ownerId"
-              required
-              class="relative input_select">
-              <SelectUser
-                v-model:value="projectData.ownerId"
-                size="small"
-                placeholder="请选择项目负责人"
-                :allowClear="false" />
-              <Popover placement="right">
-                <template #content>
-                  <div class="max-w-100">
-                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
-              </Popover>
-            </FormItem>
+
             <FormItem
               label="时间计划"
               name="dateRange"
@@ -314,7 +296,26 @@ onMounted(() => {
                 <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
               </Popover>
             </FormItem>
-            <FormItem label="导入示例">
+            <FormItem
+              label="负责人"
+              name="ownerId"
+              required
+              class="relative input_select">
+              <SelectUser
+                v-model:value="projectData.ownerId"
+                size="small"
+                placeholder="请选择项目负责人"
+                :allowClear="false" />
+              <Popover placement="right">
+                <template #content>
+                  <div class="max-w-100">
+                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
+              </Popover>
+            </FormItem>
+            <FormItem label="导入示例" class="import-example-label">
               <RadioGroup
                 v-model:value="projectData.importExample"
                 :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
@@ -457,7 +458,7 @@ onMounted(() => {
           :colon="false"
           class="w-300 pb-10"
           :model="projectData"
-          :labelCol="{ style: {width: '60px'} }">
+          :labelCol="{ style: {width: '70px'} }">
           <div class="flex space-x-10">
             <div class="w-170">
               <FormItem label=" ">
@@ -495,25 +496,7 @@ onMounted(() => {
                   :maxlength="100">
                 </Input>
               </FormItem>
-              <FormItem
-                label="负责人"
-                name="ownerId"
-                required
-                class="relative input_select">
-                <SelectUser
-                  v-model:value="projectData.ownerId"
-                  size="small"
-                  placeholder="请选择项目负责人"
-                  :allowClear="false" />
-                <Popover placement="right">
-                  <template #content>
-                    <div class="max-w-100">
-                      通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
-                    </div>
-                  </template>
-                  <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
-                </Popover>
-              </FormItem>
+
               <FormItem
                 label="时间计划"
                 name="dateRange"
@@ -529,6 +512,26 @@ onMounted(() => {
                   <template #content>
                     <div class="max-w-100">
                       时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
+                </Popover>
+              </FormItem>
+
+              <FormItem
+                label="负责人"
+                name="ownerId"
+                required
+                class="relative input_select">
+                <SelectUser
+                  v-model:value="projectData.ownerId"
+                  size="small"
+                  placeholder="请选择项目负责人"
+                  :allowClear="false" />
+                <Popover placement="right">
+                  <template #content>
+                    <div class="max-w-100">
+                      通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
@@ -675,7 +678,11 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-  :deep(.ant-form) .input_select .ant-form-item-label > label {
+  :deep(.ant-form) .ant-form-item-label > label {
     @apply h-7;
   }
+  :deep(.ant-form) .import-example-label .ant-form-item-label > label {
+    @apply h-8;
+  }
+
 </style>

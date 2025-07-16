@@ -324,30 +324,10 @@ const modalTitle = computed(() => {
             :maxlength="100">
           </Input>
         </FormItem>
+
+
         <FormItem
-          name="ownerId"
-          :rules="[{ required: true, message: '请输入负责人'}]">
-          <template #label>
-            <div class="flex items-center">
-              <span>负责人</span>
-              <Popover placement="right">
-                <template #content>
-                  <div class="max-w-100">
-                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
-              </Popover>
-            </div>
-          </template>
-          <SelectUser
-            v-model:value="formData.ownerId"
-            size="small"
-            placeholder="请选择项目负责人"
-            :allowClear="false" />
-        </FormItem>
-        <FormItem
-          label="时间"
+          label="时间计划"
           name="dateRange"
           :rules="[{ required: true, message: '请输入时间'}]">
           <template #label>
@@ -369,6 +349,29 @@ const modalTitle = computed(() => {
             class="w-full"
             type="date-range">
           </DatePicker>
+        </FormItem>
+
+        <FormItem
+          name="ownerId"
+          :rules="[{ required: true, message: '请输入负责人'}]">
+          <template #label>
+            <div class="flex items-center">
+              <span>负责人</span>
+              <Popover placement="right">
+                <template #content>
+                  <div class="max-w-100">
+                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
+              </Popover>
+            </div>
+          </template>
+          <SelectUser
+            v-model:value="formData.ownerId"
+            size="small"
+            placeholder="请选择项目负责人"
+            :allowClear="false" />
         </FormItem>
 
         <FormItem>
