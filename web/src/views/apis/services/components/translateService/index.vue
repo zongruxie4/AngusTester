@@ -38,8 +38,8 @@ const submit = () => {
       if (error) {
         return;
       }
-      emits('update:visible', false);
       notification.success('翻译完成');
+      emits('update:visible', false);
   });
 };
 
@@ -70,7 +70,7 @@ onMounted(() => {
       OpenAPI翻译说明
     </div>
 
-    <div class="grid-container text-3.5 leading-7 mt-2">
+    <div class="grid-container leading-7 mt-2">
       <div class="bg-gray-bg p-4 rounded border">
         <div class="font-semibold">使用场景</div>
         <ul class="list-disc pl-4">
@@ -125,19 +125,22 @@ onMounted(() => {
          </template>
        </TreeSelect>
      </FormItem>
-     <FormItem label="原语言">
-       <SelectEnum
-          v-model:value="formData.sourceLanguage"
-          enumKey="SupportedLanguage">
+      <div class="flex items-center space-x-2">
+        <FormItem label="原语言" class="flex-1 mb-0">
+          <SelectEnum
+            v-model:value="formData.sourceLanguage"
+            enumKey="SupportedLanguage">
 
-       </SelectEnum>
-     </FormItem>
-     <FormItem label="目标语言">
-       <SelectEnum
-         v-model:value="formData.targetLanguage"
-         enumKey="SupportedLanguage">
-       </SelectEnum>
-     </FormItem>
+          </SelectEnum>
+        </FormItem>
+        <FormItem label="目标语言" class="flex-1">
+          <SelectEnum
+            v-model:value="formData.targetLanguage"
+            enumKey="SupportedLanguage">
+          </SelectEnum>
+        </FormItem>
+      </div>
+
    </Form>
   </div>
   <div class="text-center space-x-3 mt-3">
