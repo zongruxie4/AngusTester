@@ -25,6 +25,10 @@ const formData = ref<{
 
 const loading = ref(false);
 
+const handleServiceId = (serviceId) => {
+  formData.value.serviceId = serviceId;
+};
+
 const submit = () => {
   formRef.value.validate().then(async () => {
     const {serviceId, ...params} = formData.value;
@@ -44,13 +48,14 @@ const cancel = () => {
 };
 
 onMounted(() => {
-
   watch(() => props.visible, (newValue) => {
     if (newValue) {
       loading.value = false;
+      formData.value.serviceId = props.service?.id;
     }
-  })
-
+  }, {
+    immediate: true
+  });
 });
  </script>
  <template>
@@ -105,7 +110,8 @@ onMounted(() => {
          :fieldNames="{children:'children', label:'name', value: 'id'}"
          placeholder="请选择服务"
          :virtual="false"
-         size="small">
+         size="small"
+         @change="handleServiceId">
          <template #title="{name, targetType}">
            <div
              class="flex items-center"
