@@ -65,7 +65,7 @@ public class DatasetTargetRest {
     datasetTargetFacade.delete(targetId, targetType, datasetIds);
   }
 
-  @Operation(summary = "Query the list of target datasets", operationId = "data:dataset:target:list")
+  @Operation(summary = "Query the list of target datasets", operationId = "data:target:dataset:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/target/{targetId}/{targetType}/dataset")

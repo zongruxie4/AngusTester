@@ -51,7 +51,7 @@ public class MockApisLogRest {
     return ApiLocaleResult.success(mockApisLogFacade.list(mockServiceId, dto));
   }
 
-  @Operation(summary = "Search mock apis request logs", operationId = "mock:service:apis:log:list")
+  @Operation(summary = "Search mock apis request logs", operationId = "mock:service:apis:log:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/service/{mockServiceId}/apis/log/search")

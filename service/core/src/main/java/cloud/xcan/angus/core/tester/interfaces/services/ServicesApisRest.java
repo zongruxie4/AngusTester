@@ -105,7 +105,7 @@ public class ServicesApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Update api authentication", operationId = "apis:parameter:update")
+  @Operation(summary = "Update api authentication", operationId = "apis:authentication:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

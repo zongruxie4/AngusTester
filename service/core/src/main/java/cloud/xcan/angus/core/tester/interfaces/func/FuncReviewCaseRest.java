@@ -70,7 +70,7 @@ public class FuncReviewCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Reset the result of review case result", operationId = "func:review:case:result:reset")
+  @Operation(summary = "Reset the review result of case", operationId = "func:review:case:result:reset")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Updated successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")

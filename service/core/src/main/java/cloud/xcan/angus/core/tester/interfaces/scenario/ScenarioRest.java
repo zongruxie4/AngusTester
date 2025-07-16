@@ -132,7 +132,7 @@ public class ScenarioRest {
     return ApiLocaleResult.success(scenarioFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of scenario", operationId = "scenario:list")
+  @Operation(summary = "Query the list of scenario", operationId = "scenario:list:byIds")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
