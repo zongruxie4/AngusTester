@@ -202,7 +202,7 @@ onMounted(() => {
         class="w-320"
         :model="projectData"
         :labelCol="{ style: {width: '70px'} }">
-        <div class="flex space-x-10">
+        <div class="flex space-x-7">
           <div class="flex flex-col space-y-4 w-40 h-100 cursor-pointer ">
             <div
               class="flex-1 flex flex-col items-center justify-around space-y-3  px-2 rounded py-4 border ant-card-hoverable relative"
