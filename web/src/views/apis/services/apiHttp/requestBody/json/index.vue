@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
-import { Icon, Input, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
+import {clipboard, utils} from '@xcan-angus/tools';
+import {Icon, Input, Select, SelectSchema, ParamInput, notification} from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -13,12 +13,12 @@ import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { services } from 'src/api/tester';
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
+import {ParamsItem} from "@/views/apis/services/apiHttp/requestParam/interface";
 
 const ajv = new Ajv();
 addFormats(ajv);
 const { valueKey } = API_EXTENSION_KEY;
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
 interface Item {
@@ -303,6 +303,17 @@ const handleValueBlur = (dom, item) => {
   emitHandle();
 };
 
+const copyValue = async (data: ParamsItem) => {
+  let text = data[valueKey];
+  if (typeof text !== 'string') {
+    text = JSON.stringify(text);
+  }
+
+  clipboard.toClipboard(text).then(() => {
+    notification.success('成功复制值到剪贴板');
+  });
+};
+
 watch(() => props.pType, () => {
   const childrenSchema = props.pType === 'array' ? (props.schema || {}) : (props.schema.properties || {});
   dataSource.value = transJsonToList(props.data, -1, 1, [], childrenSchema, props.schema);
@@ -411,10 +422,12 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
       :error="validateValue(item[valueKey], item)"
       @blur="handleValueBlur($event, item)" />
     <Button
-      v-if="archivedId"
+      type="primary"
       size="small"
-      class="invisible">
-      <Icon icon="icon-bianliang" />
+      title="复制值"
+      class="ml-2"
+      @click="copyValue(item)">
+      <Icon icon="icon-fuzhi" />
     </Button>
     <Button
       size="small"
