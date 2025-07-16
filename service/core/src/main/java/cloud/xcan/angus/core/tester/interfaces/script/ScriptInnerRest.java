@@ -30,7 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScriptInner", description = "Script Query (Internal) - Internal system APIs for programmatic retrieval of test script metadata and execution records")
+@Tag(name = "ScriptInner", description = "Script Query (Internal) - "
+    + "Internal system APIs for programmatic retrieval of test script metadata and execution records")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/script")

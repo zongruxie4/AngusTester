@@ -60,9 +60,9 @@ public class MockServiceManageRest {
     return ApiLocaleResult.success(mockServiceMangeFacade.status(dto));
   }
 
-  @Operation(summary = "Sync mock service apis by agent", operationId = "mock:service:apis:manage:sync")
+  @Operation(summary = "Synchronize mock service apis by agent", operationId = "mock:service:apis:manage:sync")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successfully sync")
+      @ApiResponse(responseCode = "200", description = "Synchronized Successfully")
   })
   @PostMapping(value = "/apis/manage/sync")
   public ApiLocaleResult<SimpleCommandResult> syncApis(@Valid @RequestBody MockServiceApisSyncDto dto) {

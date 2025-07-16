@@ -29,7 +29,7 @@ public class ApisSharePubRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(summary = "Query the sharing detail of apis", operationId = "apis:share:view:pub")
+  @Operation(summary = "Query the sharing detail of api", operationId = "apis:share:view:pub")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Sharing does not exist")})

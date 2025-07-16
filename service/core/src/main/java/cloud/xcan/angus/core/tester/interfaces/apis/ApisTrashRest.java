@@ -72,9 +72,9 @@ public class ApisTrashRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the number of all services and api trash", operationId = "apis:trash:count")
+  @Operation(summary = "Query the count of all service and api trash", operationId = "apis:trash:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count(

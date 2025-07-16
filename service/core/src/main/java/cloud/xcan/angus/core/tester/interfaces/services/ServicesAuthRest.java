@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesAuth", description = "Services Authorization Management - Unified entry for managing data access permissions of api service")
+@Tag(name = "ServicesAuthorization", description = "Service Authorization Management - "
+    + "Unified entry for managing data access permissions of api service")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -44,18 +45,18 @@ public class ServicesAuthRest {
   @Resource
   private ServicesAuthFacade servicesAuthFacade;
 
-  @Operation(summary = "Add the authorization of services", operationId = "services:auth:add")
+  @Operation(summary = "Add the authorization of service", operationId = "services:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
       @Valid @RequestBody ServicesAddAuthDto dto) {
     return ApiLocaleResult.success(servicesAuthFacade.add(projectId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of services", operationId = "services:auth:replace")
+  @Operation(summary = "Replace the authorization of service", operationId = "services:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -68,7 +69,7 @@ public class ServicesAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the authorization of services", operationId = "services:auth:delete")
+  @Operation(summary = "Delete the authorization of service", operationId = "services:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -78,81 +79,81 @@ public class ServicesAuthRest {
     servicesAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Enable or disable the authorization of services", operationId = "services:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of service", operationId = "services:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     servicesAuthFacade.enabled(projectId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of services", operationId = "services:auth:status")
+  @Operation(summary = "Query the authorization status of service", operationId = "services:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId) {
     return ApiLocaleResult.success(servicesAuthFacade.status(projectId));
   }
 
-  @Operation(summary = "Enable or disable the authorization of services apis", operationId = "services:apis:auth:enabled")
+  @Operation(summary = "Enable or disable the authorization of service apis", operationId = "services:apis:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/apis/auth/enabled")
   public ApiLocaleResult<?> apisEnabled(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     servicesAuthFacade.apisEnabled(projectId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth")
+  @Operation(summary = "Query the user authorization permissions of service", operationId = "services:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<ServicesPermission>> userAuth(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "userId", description = "User Id", required = true) @PathVariable("userId") Long userId,
       @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
     return ApiLocaleResult.success(servicesAuthFacade.userAuth(projectId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission of services and throw 404 when services doesn't exist", operationId = "services:user:auth:current")
+  @Operation(summary = "Query the current user authorization permissions of service", operationId = "services:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/auth/current")
   public ApiLocaleResult<ServiceAuthCurrentVo> currentUserAuth(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
       @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
     return ApiLocaleResult.success(servicesAuthFacade.currentUserAuth(projectId, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of services, the administrator permission is included", operationId = "services:auth:check")
+  @Operation(summary = "Check the user authorization or administrator permission of services", operationId = "services:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Resource existed")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "services id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Service id", required = true) @PathVariable("id") Long projectId,
       @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
       @Parameter(name = "authPermission", description = "Services authorized permission", required = true) @PathVariable("authPermission") ServicesPermission authPermission) {
     servicesAuthFacade.authCheck(projectId, authPermission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of services authorization", operationId = "services:auth:list")
+  @Operation(summary = "Query the list of service authorization", operationId = "services:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/auth")

@@ -48,7 +48,7 @@ public class FuncReviewUpdateDto {
   @EditorContentLength
   @Schema(description =
       "Other review information. This is the other description of the testing review. Additional details such as testing strategies, "
-          + "risk assessment, and management. ")
+          + "risk assessment, and management")
   private String description;
 
 }

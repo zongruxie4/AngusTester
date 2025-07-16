@@ -53,7 +53,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Script", description = "Unified Script Management - Centralized management hub for AngusTester test scripts, including lifecycle controls and dependency mapping")
+@Tag(name = "Script", description = "Unified Script Management - "
+    + "Centralized management hub for AngusTester test scripts, including lifecycle controls and dependency mapping")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")
@@ -111,7 +112,7 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner script example", operationId = "script:example:import")
+  @Operation(summary = "Import the script example", operationId = "script:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

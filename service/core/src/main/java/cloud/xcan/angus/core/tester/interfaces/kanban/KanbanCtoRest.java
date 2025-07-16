@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanCto", description = "CTO-Level R&D & Test Analytics - Executive dashboard endpoints for CTO to view key R&D task progress and functional test KPIs")
+@Tag(name = "Kanban - CTO", description = "CTO-Level R&D & Test Analytics - Executive dashboard endpoints for CTO to view key R&D task progress and functional test KPIs")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/cto")
@@ -27,7 +27,7 @@ public class KanbanCtoRest {
   @Resource
   private KanbanCtoFacade kanbanCtoFacade;
 
-  @Operation(summary = "Task efficiency statistics overview for cto", operationId = "kanban:cto:task:overview")
+  @Operation(summary = "Task efficiency statistics overview for CTO", operationId = "kanban:cto:task:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task/overview")
@@ -36,7 +36,7 @@ public class KanbanCtoRest {
     return ApiLocaleResult.success(kanbanCtoFacade.taskCtoOverview(dto));
   }
 
-  @Operation(summary = "Case statistics overview for cto", operationId = "kanban:cto:case:overview")
+  @Operation(summary = "Case statistics overview for CTO", operationId = "kanban:cto:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/overview")

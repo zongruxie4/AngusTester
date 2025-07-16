@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "IndicatorStability", description = "Stability Test Indicator Management - Configure stability test profiles (duration, concurrency, error tolerance)")
+@Tag(name = "Indicator - StabilityTest", description = "Stability Test Indicator Management - Configure stability test profiles (duration, concurrency, error tolerance)")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -102,7 +102,7 @@ public class IndicatorStabilityRest {
     return ApiLocaleResult.success(indicatorStabilityFacade.detail(targetType, targetId));
   }
 
-  @Operation(summary = "Query the indicator detail of stability, return to default configuration when not set", operationId = "indicator:stability:detailOrDefault")
+  @Operation(summary = "Query the indicator detail of stability", description = "Note: Return to default configuration when not set", operationId = "indicator:stability:detailOrDefault")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

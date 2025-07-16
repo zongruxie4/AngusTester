@@ -39,7 +39,7 @@ public class DatasetReplaceDto {
 
   @NotEmpty
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Parameters definition. ", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Parameters definition", requiredMode = RequiredMode.REQUIRED)
   private List<DatasetParameter> parameters;
 
   @Valid

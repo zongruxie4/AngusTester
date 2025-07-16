@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanDataAssets", description = "Business Data Growth Analytics - Query platform-wide business data growth trends and categorical statistics")
+@Tag(name = "Kanban - DataAssets", description = "Business Data Growth Analytics - Query platform-wide business data growth trends and categorical statistics")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/dataassets")
@@ -51,7 +51,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.growthTrend(dto));
   }
 
-  @Operation(summary = "Cases and associated plan, tag, and module resource statistics", operationId = "kanban:dataassets:func:count")
+  @Operation(summary = "Functional testing resources statistics", operationId = "kanban:dataassets:func:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/func")
@@ -60,7 +60,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.funcResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Apis and services resource statistics", operationId = "kanban:dataassets:apis:count")
+  @Operation(summary = "Api resources statistics", operationId = "kanban:dataassets:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/apis")
@@ -69,7 +69,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.apisResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Scenario resource statistics", operationId = "kanban:dataassets:scenario:count")
+  @Operation(summary = "Scenario resources statistics", operationId = "kanban:dataassets:scenario:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/scenarios")
@@ -78,7 +78,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.scenarioResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:task:count")
+  @Operation(summary = "Task resources statistics", operationId = "kanban:dataassets:task:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/task")
@@ -87,7 +87,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.taskResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Task and associated module, plan and tag resources statistics", operationId = "kanban:dataassets:script:count")
+  @Operation(summary = "Script resources statistics", operationId = "kanban:dataassets:script:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/script")
@@ -116,7 +116,7 @@ public class KanbanDataAssetsRest {
     return ApiLocaleResult.success(kanbanDataAssetsFacade.dataResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Query the data assets ranking", operationId = "kanban:dataassets:growthtrend")
+  @Operation(summary = "Query data asset contribution ranking", operationId = "kanban:dataassets:ranking")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

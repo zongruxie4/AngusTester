@@ -141,7 +141,7 @@ springdoc:
         email: technical_support@xcan.cloud
       license:
         name: GPL-3.0
-        url: https://github.com/xcancloud/AngusGM/blob/main/LICENSE
+        url: https://github.com/xcancloud/AngusTester/blob/main/LICENSE
       description: >
         ## API Specification
         

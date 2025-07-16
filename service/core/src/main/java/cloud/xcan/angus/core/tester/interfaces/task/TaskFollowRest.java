@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskFollow", description = "Task Watchlist/Subscriptions - Notification management interface for receiving alerts when subscribed task are modified")
+@Tag(name = "TaskFollow", description = "Task Follow Management - Notification management interface for receiving alerts when subscribed task are modified")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -74,9 +74,9 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.search(dto));
   }
 
-  @Operation(summary = "Query the follow number of task", operationId = "task:follow:count")
+  @Operation(summary = "Query the follow count of task", operationId = "task:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

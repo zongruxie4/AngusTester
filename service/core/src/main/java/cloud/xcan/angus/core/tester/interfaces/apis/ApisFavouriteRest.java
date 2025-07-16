@@ -67,7 +67,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search apis favourite", operationId = "apis:favourite:search")
+  @Operation(summary = "Fulltext search the favourite of api", operationId = "apis:favourite:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/favourite/search")
@@ -76,9 +76,9 @@ public class ApisFavouriteRest {
     return ApiLocaleResult.success(apisFavouriteFacade.search(dto));
   }
 
-  @Operation(summary = "Query the favourite number of apis", operationId = "apis:favourite:count")
+  @Operation(summary = "Query the favourite count of apis", operationId = "apis:favourite:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

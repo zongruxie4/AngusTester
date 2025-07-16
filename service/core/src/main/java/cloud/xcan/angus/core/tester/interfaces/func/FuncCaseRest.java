@@ -376,7 +376,7 @@ public class FuncCaseRest {
     return ApiLocaleResult.success(funcCaseFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner functional test cases example", operationId = "func:case:example:import")
+  @Operation(summary = "Import the functional test cases example", operationId = "func:case:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

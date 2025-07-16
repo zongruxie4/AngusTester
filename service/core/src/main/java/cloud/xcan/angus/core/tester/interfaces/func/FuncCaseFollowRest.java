@@ -65,7 +65,7 @@ public class FuncCaseFollowRest {
     funcCaseFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search case follow", operationId = "func:case:follow:search")
+  @Operation(summary = "Fulltext search the follow of case", operationId = "func:case:follow:search")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/follow/search")
@@ -74,9 +74,9 @@ public class FuncCaseFollowRest {
     return ApiLocaleResult.success(funcCaseFollowFacade.search(dto));
   }
 
-  @Operation(summary = "Query the follow number of case", operationId = "func:case:follow:count")
+  @Operation(summary = "Query the follow count of case", operationId = "func:case:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

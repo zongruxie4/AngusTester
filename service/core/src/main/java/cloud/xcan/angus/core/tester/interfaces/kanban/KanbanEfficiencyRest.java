@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "KanbanEfficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness")
+@Tag(name = "Kanban - Efficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/efficiency")
@@ -36,7 +36,7 @@ public class KanbanEfficiencyRest {
     return ApiLocaleResult.success(kanbanEfficiencyFacade.taskEfficiencyOverview(dto));
   }
 
-  @Operation(summary = "Case efficiency statistics overview", operationId = "kanban:efficiency:case:overview")
+  @Operation(summary = "Testing efficiency statistics overview", operationId = "kanban:efficiency:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping("/case/overview")

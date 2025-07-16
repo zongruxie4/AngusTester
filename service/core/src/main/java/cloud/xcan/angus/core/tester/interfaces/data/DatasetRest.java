@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataDataset", description = "Test Dataset Management - Centralized control interface for creating, editing, and organizing complete test datasets")
+@Tag(name = "Dataset", description = "Test Dataset Management - Centralized control interface for creating, editing, and organizing complete test datasets")
 @Validated
 @RestController
 @RequestMapping("/api/v1/dataset")
@@ -108,7 +108,7 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner dataset example", operationId = "data:dataset:example:import")
+  @Operation(summary = "Import the dataset example", operationId = "data:dataset:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

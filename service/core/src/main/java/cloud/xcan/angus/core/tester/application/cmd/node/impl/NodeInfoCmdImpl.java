@@ -18,10 +18,10 @@ import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
 import cloud.xcan.angus.api.commonlink.node.NodeInstallConfig;
 import cloud.xcan.angus.api.gm.client.ClientSignInnerRemote;
 import cloud.xcan.angus.api.gm.client.ClientSignPubRemote;
-import cloud.xcan.angus.api.gm.client.dto.ClientSignInDto;
-import cloud.xcan.angus.api.gm.client.dto.ClientSignupDto;
-import cloud.xcan.angus.api.gm.client.vo.ClientSignVo;
-import cloud.xcan.angus.api.gm.client.vo.ClientSignupVo;
+import cloud.xcan.angus.api.gm.client.dto.AuthClientSignInDto;
+import cloud.xcan.angus.api.gm.client.dto.AuthClientSignupDto;
+import cloud.xcan.angus.api.gm.client.vo.AuthClientSignVo;
+import cloud.xcan.angus.api.gm.client.vo.AuthClientSignupVo;
 import cloud.xcan.angus.api.manager.TenantManager;
 import cloud.xcan.angus.api.pojo.auth.AgentAuth;
 import cloud.xcan.angus.core.biz.Biz;
@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -379,18 +378,18 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
    * Generate openapi2p client for applyTenantId
    */
   private AgentAuth genOpen2pAuthToken(Long tenantId, Long nodeId) {
-    ClientSignupDto signupDto = new ClientSignupDto()
+    AuthClientSignupDto signupDto = new AuthClientSignupDto()
         .setSignupBiz(Client2pSignupBiz.AGENT)
         .setTenantId(tenantId)
         .setTenantName(getTenantName())
         .setResourceId(nodeId);
-    ClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto).orElseContentThrow();
+    AuthClientSignupVo signupVo = clientSignInnerRemote.signupByDoor(signupDto).orElseContentThrow();
 
-    ClientSignInDto signInDto = new ClientSignInDto()
+    AuthClientSignInDto signInDto = new AuthClientSignInDto()
         .setClientId(signupVo.getClientId())
         .setClientSecret(signupVo.getClientSecret())
         .setScope(SIGN2P_TOKEN_CLIENT_SCOPE);
-    ClientSignVo signInVo = clientSignPubRemote.signin(signInDto).orElseContentThrow();
+    AuthClientSignVo signInVo = clientSignPubRemote.signin(signInDto).orElseContentThrow();
 
     return new AgentAuth().setClientId(signupVo.getClientId())
         .setClientSecret(signupVo.getClientSecret())

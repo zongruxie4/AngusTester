@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - Internal query endpoints for API test execution statistics (success rates, latency percentiles)")
+@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - "
+    + "Internal query endpoints for API test execution statistics (success rates, latency percentiles)")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -29,7 +30,7 @@ public class ServicesTestInnerRest {
   @Resource
   private ServicesTestFacade servicesTestFacade;
 
-  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of service", operationId = "services:test:apis:count:inner")
+  @Operation(summary = "The api testing count of service", operationId = "services:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
@@ -41,7 +42,7 @@ public class ServicesTestInnerRest {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
-  @Operation(summary = "The testing apis summary the functionality, performance, stability testing of project", operationId = "project:test:apis:count:inner")
+  @Operation(summary = "The api testing count of project", operationId = "project:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})

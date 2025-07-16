@@ -38,7 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioMonitor", description = "Scenario Monitoring Config - Configure and manage monitoring rules to track system health at the API level, enabling proactive issue detection and remediation")
+@Tag(name = "ScenarioMonitor", description = "Scenario Monitoring Config - "
+    + "Configure and manage monitoring rules to track system health at the API level, enabling proactive issue detection and remediation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor")

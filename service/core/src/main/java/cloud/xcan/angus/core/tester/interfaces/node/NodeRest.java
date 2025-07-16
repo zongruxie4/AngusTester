@@ -77,7 +77,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the name of services", operationId = "services:name:replace")
+  @Operation(summary = "Replace the name of node", operationId = "node:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -90,7 +90,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Stop nodes, only stopping purchased cloud nodes is supported", operationId = "node:stop")
+  @Operation(summary = "Stop Nodes", description = "Note: Only stopping purchased cloud nodes is supported", operationId = "node:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stop successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -102,7 +102,7 @@ public class NodeRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restart nodes, only restart of purchased cloud nodes is supported", operationId = "node:restart")
+  @Operation(summary = "Restart nodes", description = "Note: Only restart of purchased cloud nodes is supported", operationId = "node:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Restarted successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")
@@ -194,7 +194,7 @@ public class NodeRest {
     return ApiLocaleResult.success(nodeFacade.count(dto));
   }
 
-  @Operation(summary = "Query the list of mock service instances in the node", operationId = "node:mock:service:list")
+  @Operation(summary = "Query the mock service instances in the node", operationId = "node:mock:service:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/mock/service")

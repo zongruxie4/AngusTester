@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>
  * Used by AngusAgent.
  */
-@Tag(name = "CtrlOpen2p", description = "Private Environment AngusCtrl API - On-premises controller status monitoring and agent connection management")
+@Tag(name = "ControllerOpen2p", description = "Private Environment Controller API - On-premises controller status monitoring and agent connection management")
 @Validated
 @RestController
 @RequestMapping(OPEN2P_DISCOVER_URI_PREFIX)

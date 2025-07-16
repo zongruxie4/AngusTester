@@ -39,7 +39,7 @@ public class DatasetUpdateDto {
   private String description;
 
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Parameters definition. ")
+  @Schema(description = "Parameters definition")
   private List<DatasetParameter> parameters;
 
   @Valid

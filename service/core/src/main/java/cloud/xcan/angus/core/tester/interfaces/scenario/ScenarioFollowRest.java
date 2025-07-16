@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioFollow", description = "Test Scenario Watchlist/Subscriptions - Notification management interface for receiving alerts when subscribed test scenario are modified")
+@Tag(name = "ScenarioFollow", description = "Scenario Follow Management - Notification management interface for receiving alerts when subscribed test scenario are modified")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -74,9 +74,9 @@ public class ScenarioFollowRest {
     return ApiLocaleResult.success(scenarioFollowFacade.search(dto));
   }
 
-  @Operation(summary = "Query the follow number of scenario", operationId = "scenario:follow:count")
+  @Operation(summary = "Query the follow count of scenario", operationId = "scenario:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query number succeeded")})
+      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
       @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {

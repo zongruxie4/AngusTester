@@ -220,7 +220,8 @@ public class TaskRest {
   @PutMapping("/{id}/deadline/{deadline}")
   public ApiLocaleResult<?> replaceDeadline(
       @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "deadline", description = "Task deadline", required = true) @PathVariable("deadline") @DateTimeFormat(pattern = DATE_FMT) LocalDateTime deadlineDate) {
+      @Parameter(name = "deadline", description = "Task deadline", required = true)
+      @PathVariable("deadline") @DateTimeFormat(pattern = DATE_FMT) LocalDateTime deadlineDate) {
     taskFacade.replaceDeadline(id, deadlineDate);
     return ApiLocaleResult.success();
   }
@@ -516,7 +517,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the inner task example", operationId = "task:example:import")
+  @Operation(summary = "Import the task example", operationId = "task:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Imported successfully")})
   @ResponseStatus(HttpStatus.OK)

@@ -43,11 +43,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisCase", description = "API Test Case Management - For storing and managing interface testing cases and assertion rules")
+@Tag(name = "ApisUseCases", description = "API Test Use Cases Management - For storing and managing interface testing cases and assertion rules")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/case")
-public class ApisCaseRest {
+public class ApisUseCasesRest {
 
   @Resource
   private ApisCaseFacade apisCaseFacade;
@@ -105,7 +105,7 @@ public class ApisCaseRest {
   @PatchMapping("/enabled")
   public ApiLocaleResult<?> enabled(
       @Valid @NotEmpty @Parameter(name = "ids", description = "Case ids", required = true) @RequestParam(value = "ids") Set<Long> ids,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled(true) or Disabled(false)", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     apisCaseFacade.enabled(ids, enabled);
     return ApiLocaleResult.success();
   }

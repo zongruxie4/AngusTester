@@ -55,7 +55,7 @@ public class FuncPlanAddDto {
 
   @NotEmpty
   @Schema(description =
-      "Specify the testers involved in this test plan; only authorized testers are allowed to participate. "
+      "Specify the testers involved in this test plan; only authorized testers are allowed to participate"
           + "Define the roles of testers, outlining their responsibilities within the testing scope to avoid ambiguity and task omission", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashMap<Long, @Length(max = MAX_REMARK_LENGTH_X4) String> testerResponsibilities;
 
@@ -63,7 +63,7 @@ public class FuncPlanAddDto {
   @EditorContentLength
   @Schema(description =
       "Testing scope for testing plan. Define the specific content and extent covered by the testing activities, "
-          + "including which functional modules, platforms, versions, etc. ", requiredMode = RequiredMode.REQUIRED)
+          + "including which functional modules, platforms, versions, etc", requiredMode = RequiredMode.REQUIRED)
   private String testingScope;
 
   @NotEmpty
@@ -74,13 +74,13 @@ public class FuncPlanAddDto {
   private String testingObjectives;
 
   @EditorContentLength
-  @Schema(description = "Acceptance criteria for testing plan. Clearly define the specific conditions and standards for software product delivery. ")
+  @Schema(description = "Acceptance criteria for testing plan. Clearly define the specific conditions and standards for software product delivery")
   private String acceptanceCriteria;
 
   @EditorContentLength
   @Schema(description =
       "Other plan information. This is the other description of the testing plan. Additional details such as testing strategies, "
-          + "risk assessment, and management. ")
+          + "risk assessment, and management")
   private String otherInformation;
 
   @Schema(description =

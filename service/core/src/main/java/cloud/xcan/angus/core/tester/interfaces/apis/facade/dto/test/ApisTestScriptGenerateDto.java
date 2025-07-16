@@ -62,7 +62,7 @@ public class ApisTestScriptGenerateDto {
 
   @Schema(description = "Is the generated script subject to permission control? "
       + "When it is subject to permission control, by default, it is only visible to and accessible by the owner with full permissions, "
-      + "Other users need to be manually authorized through \"Scripts\" -> \"Authorization\". "
+      + "Other users need to be manually authorized through \"Scripts\" -> \"Authorization\""
       + "When it is not subject to permission control, it is visible and accessible to all users")
   private Boolean auth;
 

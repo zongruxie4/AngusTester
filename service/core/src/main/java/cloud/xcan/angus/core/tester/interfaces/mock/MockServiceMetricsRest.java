@@ -28,7 +28,7 @@ public class MockServiceMetricsRest {
   @Resource
   private MockServiceMetricsFacade mockServiceMetricsFacade;
 
-  @Operation(summary = "Query the list of mock service sampling(JvmMemory,JvmProcessor)", operationId = "mock:sample")
+  @Operation(summary = "Query the list of mock service metrics", operationId = "mock:service:metrics")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping(value = "/{id}/metrics")
