@@ -294,4 +294,10 @@ export default class API {
   toggleTestEnabled (serviceId: string, enabled: boolean, params, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${serviceId}/test/enabled?enabled=${enabled}`, params, axiosConf);
   }
+
+  translate (serviceId: string, queryParams: {sourceLanguage: string, targetLanguage: string}) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${serviceId}/translate`, queryParams, {
+      paramsType: true
+    });
+  }
 }

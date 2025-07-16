@@ -2,15 +2,21 @@
 import { ref,  onMounted } from 'vue';
 import {IconText, Modal, SelectEnum, TreeSelect } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Button } from 'ant-design-vue';
-import { TESTER } from "@xcan-angus/tools";
+import { TESTER } from '@xcan-angus/tools';
+import { services } from '@/api/tester';
 
 const props = withDefaults(defineProps<{visible: boolean, serviceId: string, projectId: string}>(), {
   visible: false,
   projectId: '',
 });
+const emits = defineEmits<{(e: 'update:visible', value: boolean)}>()
 const formRef = ref();
 
-const formData = ref({
+const formData = ref<{
+  serviceId?: string;
+  sourceLanguage: 'zh_CN'| 'en',
+  targetLanguage: 'zh_CN'| 'en',
+}>({
   serviceId: undefined,
   sourceLanguage: 'zh_CN',
   targetLanguage: 'en'
@@ -18,7 +24,11 @@ const formData = ref({
 
 const submit = () => {
   formRef.value.validate().then(async () => {
-  debugger;
+    const {serviceId, ...params} = formData.value;
+      const [error] = await services.translate(serviceId as string, {...params})
+      if (!error) {
+        emits('update:visible', false);
+      }
   });
 };
 
