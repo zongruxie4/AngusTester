@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, ParamInput, notification  } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 
-import { services, variable as variableApi } from 'src/api/tester';
+import { services } from 'src/api/tester';
 import { ParamsItem, paramsTypeOpt } from './interface';
 import { getDefaultParams } from '../interface';
 import { deepDelAttrFromObj, getParamsByUri, getUriByParams, validateType } from '../utils';
-import { API_EXTENSION_KEY, getModelDataByRef, variableNameReg } from '@/views/apis/utils';
+import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import JsonContent from '../requestBody/json/index.vue';
 import { itemTypes } from '../requestBody/json/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+import { clipboard } from "@xcan-angus/tools";
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
-// const exportVariableFlagKey = API_EXTENSION_KEY.exportVariableFlagKey;
-
 interface Props {
   value: ParamsItem[],
   apiUri?: string
@@ -29,7 +28,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
 // eslint-disable-next-line func-call-spacing
@@ -173,24 +171,16 @@ const changeSchema = (schema, item, index) => {
   changeEmit(index, temp);
 };
 
-// 记录当前变量 loading 数据；
-const setVariableLoading = reactive({});
-// 设为变量
-const setToVariable = async (data: ParamsItem): void => {
-  if (setVariableLoading[data.name]) {
-    return;
+
+const copyValue = async (data: ParamsItem) => {
+  let text = data[valueKey];
+  if (typeof text !== 'string') {
+    text = JSON.stringify(text);
   }
-  setVariableLoading[data.name] = true;
-  if (!variableNameReg.test(data.name as string)) {
-    notification.warning('名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等');
-    return;
-  }
-  const value = typeof data[valueKey] === 'object' ? JSON.stringify(data[valueKey]) : data[valueKey];
-  const [error] = await variableApi.addVariables({ targetId: archivedId.value, name: data.name, scope: 'CURRENT', targetType: 'API', enabled: true, value });
-  setVariableLoading[data.name] = false;
-  if (!error) {
-    notification.success('设置变量成功');
-  }
+
+  clipboard.toClipboard(text).then(() => {
+    notification.success('成功复制值到剪贴板');
+  });
 };
 
 // 删除
@@ -450,16 +440,14 @@ defineExpose({
             @blur="handleValueBlur($event, index, item)" />
           <Input v-else disabled />
         </div>
-        <!-- <Button
-          v-if="archivedId"
+        <Button
           type="primary"
           size="small"
-          title="设为变量"
+          title="复制值"
           class="ml-2"
-          :disabled="!item.name || setVariableLoading[item.name]"
-          @click="setToVariable(item)">
-          <Icon icon="icon-bianliang" />
-        </Button> -->
+          @click="copyValue(item)">
+          <Icon icon="icon-fuzhi" />
+        </Button>
         <Button
           size="small"
           class="ml-2"

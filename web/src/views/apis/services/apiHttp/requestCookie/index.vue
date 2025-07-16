@@ -14,6 +14,7 @@ import { itemTypes } from './interface';
 import { deepDelAttrFromObj, validateType } from '../utils';
 import JsonContent from '../requestBody/json/index.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+import {clipboard} from "@xcan-angus/tools";
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
@@ -116,23 +117,15 @@ const handleChecked = (e:ChangeEvent, index:number, data: ParamsItem) => {
   }
 };
 
-const setVariableLoading = reactive({});
-// 设为变量
-const setToVariable = async (data: ParamsItem): void => {
-  if (setVariableLoading[data.name]) {
-    return;
+const copyValue = async (data: ParamsItem) => {
+  let text = data[valueKey];
+  if (typeof text !== 'string') {
+    text = JSON.stringify(text);
   }
-  setVariableLoading[data.name] = true;
-  if (!variableNameReg.test(data.name as string)) {
-    notification.warning('名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等');
-    return;
-  }
-  const value = typeof data[valueKey] === 'object' ? JSON.stringify(data[valueKey]) : data[valueKey];
-  const [error] = await variableApi.addVariables({ name: data.name, targetId: archivedId.value, scope: 'CURRENT', targetType: 'API', enabled: true, value });
-  setVariableLoading[data.name] = false;
-  if (!error) {
-    notification.success('设置变量成功');
-  }
+
+  clipboard.toClipboard(text).then(() => {
+    notification.success('成功复制值到剪贴板');
+  });
 };
 
 // 同步给父级
@@ -323,15 +316,14 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
             @blur="handleValueBlur($event, index, item)" />
           <Input v-else disabled />
         </div>
-        <!-- <Button
-          v-if="archivedId"
-          title="设为变量"
+        <Button
           type="primary"
           size="small"
-          :disabled="!item.name || setVariableLoading[item.name]"
-          @click="setToVariable(item)">
-          <Icon icon="icon-bianliang" />
-        </Button> -->
+          title="复制值"
+          class="ml-2"
+          @click="copyValue(item)">
+          <Icon icon="icon-fuzhi" />
+        </Button>
         <Button
           size="small"
           :disabled="!['array', 'object'].includes(item.schema.type) || (item.schema.type === 'object' && item.$ref)"
