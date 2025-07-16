@@ -93,6 +93,12 @@ export const actions = [
     disabled: false
   },
   {
+    name: '翻译',
+    icon: 'icon-yuyan',
+    key: 'translate',
+    disabled: false
+  },
+  {
     name: '克隆',
     icon: 'icon-fuzhi',
     key: 'clone',

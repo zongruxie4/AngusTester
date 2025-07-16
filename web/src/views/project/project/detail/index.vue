@@ -172,15 +172,17 @@ watch(() => props.projectId, newValue => {
                 {{ formData.name }}
               </div>
             </FormItem>
-            <FormItem label="负责人:" name="ownerId">
-              <div class="text-3">
-                {{ formData.ownerName }}
+
+
+            <FormItem label="时间计划:">
+              <div v-if="formData.startDate" class="text-3">
+                {{ dayjs(formData.startDate).format('YYYY-MM-DD') }} - {{ dayjs(formData.deadlineDate).format('YYYY-MM-DD') || '' }}
               </div>
             </FormItem>
 
-            <FormItem label="时间:">
-              <div v-if="formData.startDate" class="text-3">
-                {{ dayjs(formData.startDate).format('YYYY-MM-DD') }} - {{ dayjs(formData.deadlineDate).format('YYYY-MM-DD') || '' }}
+            <FormItem label="负责人:" name="ownerId">
+              <div class="text-3">
+                {{ formData.ownerName }}
               </div>
             </FormItem>
 
@@ -277,3 +279,8 @@ watch(() => props.projectId, newValue => {
     </Tabs>
   </div>
 </template>
+<style scoped>
+:deep(.ant-form) .ant-form-item-label > label {
+  @apply h-7;
+}
+</style>
