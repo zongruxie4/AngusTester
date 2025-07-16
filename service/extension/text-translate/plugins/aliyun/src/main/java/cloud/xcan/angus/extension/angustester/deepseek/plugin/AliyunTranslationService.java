@@ -107,7 +107,7 @@ public class AliyunTranslationService implements TranslationService {
         attempt++;
 
         if (attempt > config.getMaxRetries()) {
-          log.warn("Translation attempt {} failed", attempt);
+          log.error("Translation attempt {} failed", attempt);
           break;
         }
 

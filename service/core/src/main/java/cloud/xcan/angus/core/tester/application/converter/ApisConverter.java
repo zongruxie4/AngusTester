@@ -13,6 +13,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.lengthSafe;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.nullSafe;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.stringSafe;
 import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.isLastMonth;
 import static cloud.xcan.angus.spec.utils.WorkingTimeCalculator.isLastWeek;
 import static java.util.Collections.emptyList;
@@ -262,8 +263,8 @@ public class ApisConverter {
         .setEndpoint(nullSafe(operation.endpoint, ""))
         .setCurrentServer(currentServer)
         .setTags(operation.getTags())
-        .setSummary(lengthSafe(nullSafe(operation.getSummary(), operation.getDescription()),
-            MAX_OPENAPI_SUMMARY_LENGTH))
+        .setSummary(lengthSafe(nullSafe(operation.getSummary(),
+                stringSafe(operation.getDescription())), MAX_OPENAPI_SUMMARY_LENGTH))
         .setDescription(lengthSafe(operation.getDescription(), MAX_OPENAPI_DOC_DESC_LENGTH))
         .setExternalDocs(operation.getExternalDocs())
         .setOperationId(operation.getOperationId())
@@ -393,7 +394,7 @@ public class ApisConverter {
   public static void assembleSchemaToUpdateApis(Apis apisDb, Apis openApis) {
     // Note:: Will not modify currentServer and authentication.
     apisDb.setTags(openApis.getTags())
-        .setSummary(openApis.getSummary())
+        .setSummary(stringSafe(openApis.getSummary()))
         .setDescription(openApis.getDescription())
         .setExternalDocs(openApis.getExternalDocs())
         .setOperationId(openApis.getOperationId())

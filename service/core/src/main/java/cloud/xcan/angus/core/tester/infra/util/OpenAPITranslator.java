@@ -253,7 +253,7 @@ public class OpenAPITranslator {
       });
     }
 
-    log.info("translated operation: {}", operation);
+    log.info("translated operation: {}", operation.getOperationId());
   }
 
   // Translate parameter
@@ -278,7 +278,7 @@ public class OpenAPITranslator {
         translateSchemaFields(entry.getValue(), "component.schema");
       });
 
-      log.info("translated schemas component: {}", components);
+      log.info("translated schemas component: {}", components.getSchemas().size());
     }
 
     // Process responses in parallel
@@ -295,7 +295,7 @@ public class OpenAPITranslator {
         }
       });
 
-      log.info("translated responses component: {}", components);
+      log.info("translated responses component: {}", components.getResponses().size());
     }
 
     // Process parameters in parallel
@@ -303,7 +303,7 @@ public class OpenAPITranslator {
       components.getParameters().entrySet().parallelStream().forEach(entry -> {
         translateParameter(entry.getValue());
       });
-      log.info("translated parameters component: {}", components);
+      log.info("translated parameters component: {}", components.getParameters().size());
     }
 
     // Process request bodies in parallel
@@ -321,7 +321,7 @@ public class OpenAPITranslator {
         }
       });
 
-      log.info("translated request bodies component: {}", components);
+      log.info("translated request bodies component: {}", components.getRequestBodies().size());
     }
 
     // Process headers in parallel
@@ -338,7 +338,7 @@ public class OpenAPITranslator {
         }
       });
 
-      log.info("translated headers component: {}", components);
+      log.info("translated headers component: {}", components.getHeaders().size());
     }
 
     // Process security schemes in parallel
@@ -349,7 +349,7 @@ public class OpenAPITranslator {
             entry.getValue()::setDescription);
       });
 
-      log.info("translated security component: {}", components);
+      log.info("translated security component: {}", components.getSecuritySchemes().size());
     }
 
   }
