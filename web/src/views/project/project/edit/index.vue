@@ -296,39 +296,42 @@ onMounted(() => {
                 <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
               </Popover>
             </FormItem>
-            <FormItem
-              label="负责人"
-              name="ownerId"
-              required
-              class="relative input_select">
-              <SelectUser
-                v-model:value="projectData.ownerId"
-                size="small"
-                placeholder="请选择项目负责人"
-                :allowClear="false" />
-              <Popover placement="right">
-                <template #content>
-                  <div class="max-w-100">
-                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
-              </Popover>
-            </FormItem>
-            <FormItem label="导入示例" class="import-example-label">
-              <RadioGroup
-                v-model:value="projectData.importExample"
-                :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
-              </RadioGroup>
-              <Popover placement="right">
-                <template #content>
-                  <div class="max-w-100">
-                    导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips text-3.5" />
-              </Popover>
-            </FormItem>
+            <div class="flex items-center space-x-3">
+              <FormItem
+                label="负责人"
+                name="ownerId"
+                required
+                class="relative input_select flex-1">
+                <SelectUser
+                  v-model:value="projectData.ownerId"
+                  size="small"
+                  placeholder="请选择项目负责人"
+                  :allowClear="false" />
+                <Popover placement="right">
+                  <template #content>
+                    <div class="max-w-100">
+                      通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
+                </Popover>
+              </FormItem>
+              <FormItem label="导入示例" class="import-example-label  flex-1 !mb-5 !ml-10">
+                <RadioGroup
+                  v-model:value="projectData.importExample"
+                  :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
+                </RadioGroup>
+                <Popover placement="right">
+                  <template #content>
+                    <div class="max-w-100">
+                      导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="text-tips text-3.5" />
+                </Popover>
+              </FormItem>
+            </div>
+
             <FormItem label="项目成员" class="input_select" required >
               <RadioGroup
                 v-model:value="memberType"
