@@ -5,7 +5,7 @@ import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { TESTER, download, site, utils, cookie, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { createPdf } from '@xcan-angus/rapipdf';
+// import { createPdf } from '@xcan-angus/rapipdf';
 
 type ProjectService = {
   id: string;
@@ -39,6 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
   selectedNode: undefined,
   id: undefined
 });
+
+let createPdf;
+const importCreatPdf = () => {
+  import('@xcan-angus/rapipdf').then((res) => {
+    createPdf = res.createPdf;
+  });
+}
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
@@ -359,6 +366,9 @@ const formatTypes = computed(() => [{
 onMounted(async () => {
   accessToken.value = cookie.get('access_token');
   docOrigin.value = await site.getUrl('apis');
+  if (props.type === 'API') {
+    importCreatPdf();
+  }
 });
 
 </script>
