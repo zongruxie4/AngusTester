@@ -26,6 +26,7 @@ const GenTestScript = defineAsyncComponent(() => import('@/components/script/gen
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/delModal/index.vue'));
 const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
 const BatchModify = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/index.vue'));
+const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'))
 
 const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/createServicesModal/index.vue'));
 const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/localImport/index.vue'));
@@ -258,6 +259,9 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
         content: '删除服务会删除服务下接口，以及关联关注、收藏、指标、变量等信息，请确认是否删除？'
       });
       break;
+    case 'translate':
+      setTranslate(item);
+      break;
     case 'rename':
       leftDrawerRef.value.edit(item, `${TESTER}/services/${item.id}/name`, {});
       break;
@@ -356,6 +360,7 @@ const reopenTestTask = (item) => {
   reopenContent.value = `将服务下所有已结束的任务状态更新为"待测试"， 不清理统计计数和状态。您确认重新打开测试任务【${item.name}】吗？`;
 };
 
+const translateVisible = ref(false);
 const execTestVisible = ref(false);
 const selectedId = ref<string>();
 const execTips = ref<string>();
@@ -423,6 +428,12 @@ const createServiceOrProject = (type = 'SERVICE', pid = '-1') => {
 const select = (item) => {
   modalsConfig.activeId = item.id;
   addTabPane({ ...item, _id: item.id + 'group', value: 'group' });
+};
+
+const selectedService = ref();
+const setTranslate = (item) => {
+  translateVisible.value = true;
+  selectedService.value = {id: item.id, name: item.name}
 };
 
 // 克隆
@@ -1084,5 +1095,12 @@ const importSamples = async () => {
       :title="execModalTitle"
       :tips="execTips"
       :okAction="okAction" />
+  </AsyncComponent>
+
+  <AsyncComponent :visible="translateVisible">
+    <TranslateModal
+      v-model:visible="translateVisible"
+      :service="selectedService"
+      :projectId="projectInfo?.id"/>
   </AsyncComponent>
 </template>

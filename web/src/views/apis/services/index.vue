@@ -32,7 +32,7 @@ const DataModel = defineAsyncComponent(() => import('@/views/apis/services/dataM
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/securityTestResult/index.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/homepage/quickStarted.vue'));
-// const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'))
+
 
 const route = useRoute();
 const router = useRouter();

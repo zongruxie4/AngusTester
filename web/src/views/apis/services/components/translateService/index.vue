@@ -1,12 +1,13 @@
  <script lang="ts" setup>
-import { ref,  onMounted } from 'vue';
-import {IconText, Modal, SelectEnum, TreeSelect } from '@xcan-angus/vue-ui';
+import { ref, watch, onMounted } from 'vue';
+import {IconText, Modal, SelectEnum, TreeSelect, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
 import { services } from '@/api/tester';
 
-const props = withDefaults(defineProps<{visible: boolean, serviceId: string, projectId: string}>(), {
+const props = withDefaults(defineProps<{visible: boolean, service?: {id: string, name: string}, projectId: string}>(), {
   visible: false,
+  service: undefined,
   projectId: '',
 });
 const emits = defineEmits<{(e: 'update:visible', value: boolean)}>()
@@ -22,17 +23,33 @@ const formData = ref<{
   targetLanguage: 'en'
 })
 
+const loading = ref(false);
+
 const submit = () => {
   formRef.value.validate().then(async () => {
     const {serviceId, ...params} = formData.value;
-      const [error] = await services.translate(serviceId as string, {...params})
-      if (!error) {
-        emits('update:visible', false);
+    loading.value = true;
+    const [error] = await services.translate(serviceId as string, {...params})
+    loading.value = false
+      if (error) {
+        return;
       }
+      emits('update:visible', false);
+      notification.success('翻译完成');
   });
 };
 
+const cancel = () => {
+  emits('update:visible', false);
+};
+
 onMounted(() => {
+
+  watch(() => props.visible, (newValue) => {
+    if (newValue) {
+      loading.value = false;
+    }
+  })
 
 });
  </script>
@@ -82,7 +99,7 @@ onMounted(() => {
       :model="formData">
      <FormItem label="接口服务" name="serviceId" :rules="[{required: true, message: '请选择服务'}]">
        <TreeSelect
-         v-model:value="formData.serviceId"
+         :defaultValue="props.service"
          :action="`${TESTER}/services/search?projectId=${props.projectId}&hasPermission=ADD`"
          :allowClear="false"
          :fieldNames="{children:'children', label:'name', value: 'id'}"
@@ -118,7 +135,8 @@ onMounted(() => {
    </Form>
   </div>
   <div class="text-center space-x-3 mt-3">
-    <Button>
+    <Button
+      @click="cancel">
       取消
     </Button>
     <Button
