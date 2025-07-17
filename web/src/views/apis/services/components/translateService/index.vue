@@ -63,15 +63,16 @@ onMounted(() => {
   title="翻译"
   :visible="props.visible"
   :footer="false"
-  :width="800">
+  :width="800"
+  @cancel="cancel">
   <!-- 上方：OpenAPI翻译说明 -->
   <div>
-    <div class="text-4 font-medium">
+    <div class="text-3.5 font-medium -mt-2">
       OpenAPI翻译说明
     </div>
 
     <div class="grid-container leading-7 mt-2">
-      <div class="bg-gray-bg p-4 rounded border">
+      <div class="bg-gray-bg p-2 rounded border">
         <div class="font-semibold">使用场景</div>
         <ul class="list-disc pl-4">
           <li>为多语言API文档提供支持</li>
@@ -81,7 +82,7 @@ onMounted(() => {
         </ul>
       </div>
 
-      <div class="bg-gray-bg p-4 rounded border">
+      <div class="bg-gray-bg p-2 rounded border">
         <div class="font-semibold">注意事项</div>
         <ul class="list-disc pl-4">
           <li>AngusTester默认会使用DeepSeek进行翻译</li>
@@ -95,7 +96,7 @@ onMounted(() => {
 
   <!-- 下方：OpenAPI翻译配置 -->
   <div class="configuration-section mt-3">
-    <div class="text-4 font-medium">OpenAPI翻译配置</div>
+    <div class="text-3.5 font-medium">OpenAPI翻译配置</div>
 
     <Form
       ref="formRef"
@@ -143,7 +144,7 @@ onMounted(() => {
 
    </Form>
   </div>
-  <div class="text-center space-x-3 mt-3">
+  <div class="text-center space-x-3 mt-8">
     <Button
       @click="cancel">
       取消

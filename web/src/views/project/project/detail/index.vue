@@ -186,7 +186,7 @@ watch(() => props.projectId, newValue => {
               </div>
             </FormItem>
 
-            <FormItem label="成员:">
+            <FormItem label="成员:" class="member-item">
               <Tabs size="small" class="-mt-1.5">
                 <TabPane key="user" tab="用户">
                   <div class="flex flex-1 flex-wrap">
@@ -226,7 +226,7 @@ watch(() => props.projectId, newValue => {
               </Tabs>
             </FormItem>
 
-            <FormItem label="描述:">
+            <FormItem label="描述:" class="desc-item">
               <RichEditor
                 :value="formData.description"
                 emptyText="无描述~"
@@ -281,6 +281,9 @@ watch(() => props.projectId, newValue => {
 </template>
 <style scoped>
 :deep(.ant-form) .ant-form-item-label > label {
-  @apply h-7;
+  @apply h-8;
+}
+:deep(.ant-form) .member-item .ant-form-item-label > label {
+  @apply h-6;
 }
 </style>
