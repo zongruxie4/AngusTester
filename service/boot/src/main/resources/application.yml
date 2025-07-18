@@ -46,29 +46,6 @@ xcan:
       defaultPenetrationExpiration: 300000
       expires: { setting: 7200000, settingTenant: 7200000, servicesSchema: 7200000, servicesComps: 7200000 }
       topic: j2cache:angus
-  swagger:
-    enabled: true
-    description: AngusTester Boot Api
-    version: v1
-    license: ${info.app.license}
-    licenseUrl: ${info.app.licenseUrl}
-    contact:
-      name: '@organization.name@'
-      url: '@organization.url@'
-      email: dev@xcan.cloud
-  validator:
-    enabled: true
-    extraMessages:
-      - classpath:/i18n/messages-tester-model
-      - classpath:/i18n/messages-tester-api
-      - classpath:/i18n/messages-tester-core
-      - classpath:/i18n/messages-tester-import-api
-      - classpath:/i18n/messages-tester-commercial
-      - classpath:/i18n/messages-meter-model
-      - classpath:/i18n/messages-meter-validator
-      - classpath:/i18n/messages-gm-api
-      - classpath:/i18n/messages-ess-api
-      - classpath:/i18n/messages-storage-api
   iaas:
     aliyun:
       ecs:
@@ -99,8 +76,8 @@ spring:
     name: '@artifactId@'
   profiles:
     active: '@profile.active@'
-  jmx:
-    enabled: true
+  messages:
+    basename: i18n/messages-infra-spec,i18n/messages-infra-remote,i18n/messages-tester-model,i18n/messages-tester-api,i18n/messages-tester-core,i18n/messages-tester-import-api,i18n/messages-tester-commercial,i18n/messages-meter-model,i18n/messages-meter-validator,i18n/messages-gm-api,i18n/messages-ess-api,i18n/messages-storage-api
   jackson:
     defaultPropertyInclusion: always
     dateFormat: ${JACKSON_DATE_FORMAT:yyyy-MM-dd HH:mm:ss}
