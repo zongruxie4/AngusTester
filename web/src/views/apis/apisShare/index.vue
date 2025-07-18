@@ -118,6 +118,7 @@ provide('readyState', readyState);
         spec-is-content="true"
         style="padding: 20px;"
         theme="light"
+        render-style="focused"
         header-color="#fff"
         update-route="false"
         navBgColor="#fff"

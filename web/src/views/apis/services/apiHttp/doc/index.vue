@@ -55,6 +55,7 @@ onMounted(async () => {
       showHeader="true"
       showInfo="true"
       theme="light"
+      render-style="focused"
       updateRoute="false">
       <!-- Delete the default logo at the top -->
       <Button
