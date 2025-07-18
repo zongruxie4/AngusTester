@@ -122,12 +122,6 @@ const columns = [
     }
   },
   {
-    title: t('活动类型'),
-    dataIndex: 'targetType',
-    customRender: ({ text }) => text?.message,
-    width: '8%'
-  },
-  {
     title: '所属项目',
     dataIndex: 'projectName',
     groupName: 'project',
@@ -140,6 +134,12 @@ const columns = [
     groupName: 'project',
     hide: true,
     width: '15%'
+  },
+  {
+    title: t('资源类型'),
+    dataIndex: 'targetType',
+    customRender: ({ text }) => text?.message,
+    width: '8%'
   },
   {
     title: t('操作资源ID'),
