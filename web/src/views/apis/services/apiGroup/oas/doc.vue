@@ -67,7 +67,6 @@ defineExpose({
       v-if="docOrigin"
       :spec-url="openapiMetaDataStr"
       spec-is-content="true"
-      render-style="read"
       theme="light"
       render-style="focused"
       header-color="#fff"
