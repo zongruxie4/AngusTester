@@ -14,9 +14,11 @@ import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.convertIm
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.writeExportFile;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
+import static cloud.xcan.angus.spec.utils.ObjectUtils.isBlank;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.api.commonlink.apis.StrategyWhenDuplicated;
@@ -269,7 +271,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
         // Check the design exists
         designDb = apisDesignQuery.checkAndFind(id);
         // Check duplicate generate
-        if (nonNull(designDb.getDesignSourceId())){
+        if (nonNull(designDb.getDesignSourceId())) {
           Services servicesDb = servicesQuery.checkAndFind(designDb.getDesignSourceId());
           assertResourceExisted(designDb.getDesignSourceId(), APIS_DESIGN_SERVICE_EXISTED_T,
               new Object[]{servicesDb.getName()});
@@ -388,11 +390,16 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
       protected File process() {
         // Write exported OpenAPI to file
         String content = "";
-        if (isNotEmpty(designDb.getOpenapi())) {
-          content = isNotEmpty(designDb.getOpenapi()) && format.isYaml()
-              ? Yaml31.pretty(servicesSchemaQuery.checkAndGetApisParser(
-              ApiImportSource.OPENAPI).parse(designDb.getOpenapi()))
-              : designDb.getOpenapi();
+        if (isBlank(designDb.getOpenapi()) && designDb.getDesignSource().isSynchronousService()) {
+          content = servicesSchemaQuery.openapiDetail(designDb.getDesignSourceId(), null, format,
+              false, false);
+        } else {
+          if (isNotBlank(designDb.getOpenapi())) {
+            content = isNotEmpty(designDb.getOpenapi()) && format.isYaml()
+                ? Yaml31.pretty(servicesSchemaQuery.checkAndGetApisParser(
+                ApiImportSource.OPENAPI).parse(designDb.getOpenapi()))
+                : designDb.getOpenapi();
+          }
         }
         return writeExportFile(designDb.getName() + "." + format.name(), content);
       }
