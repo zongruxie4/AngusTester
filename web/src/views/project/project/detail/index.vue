@@ -167,7 +167,7 @@ watch(() => props.projectId, newValue => {
                   :src="DefaultProjectPng" />
               </div>
             </FormItem>
-            <FormItem label="名称:" name="name">
+            <FormItem label="项目名称:" name="name">
               <div class="text-3">
                 {{ formData.name }}
               </div>
@@ -186,7 +186,7 @@ watch(() => props.projectId, newValue => {
               </div>
             </FormItem>
 
-            <FormItem label="成员:" class="member-item">
+            <FormItem label="项目成员:" class="member-item">
               <Tabs size="small" class="-mt-1.5">
                 <TabPane key="user" tab="用户">
                   <div class="flex flex-1 flex-wrap">
@@ -226,7 +226,7 @@ watch(() => props.projectId, newValue => {
               </Tabs>
             </FormItem>
 
-            <FormItem label="描述:" class="desc-item">
+            <FormItem label="项目描述:" class="desc-item">
               <RichEditor
                 :value="formData.description"
                 emptyText="无描述~"
