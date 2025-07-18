@@ -69,6 +69,7 @@ defineExpose({
       spec-is-content="true"
       render-style="read"
       theme="light"
+      render-style="focused"
       header-color="#fff"
       update-route="false"
       nav-bg-color="#fff"
