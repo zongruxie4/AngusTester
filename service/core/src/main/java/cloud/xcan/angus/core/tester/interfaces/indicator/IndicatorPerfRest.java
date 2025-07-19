@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorPerfFac
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -103,14 +102,6 @@ public class IndicatorPerfRest {
   @GetMapping("/perf")
   public ApiLocaleResult<PageResult<PerfListVo>> list(@Valid @ParameterObject PerfFindDto dto) {
     return ApiLocaleResult.success(indicatorPerfFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the indicator of performance", operationId = "indicator:perf:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/perf/search")
-  public ApiLocaleResult<PageResult<PerfListVo>> search(@Valid @ParameterObject PerfSearchDto dto) {
-    return ApiLocaleResult.success(indicatorPerfFacade.search(dto));
   }
 
 }

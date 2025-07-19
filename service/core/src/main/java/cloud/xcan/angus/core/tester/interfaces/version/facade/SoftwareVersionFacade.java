@@ -4,7 +4,6 @@ import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionAddDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionFindDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionVo;
@@ -29,7 +28,5 @@ public interface SoftwareVersionFacade {
   SoftwareVersionDetailVo detail(Long id);
 
   PageResult<SoftwareVersionVo> list(SoftwareVersionFindDto dto);
-
-  PageResult<SoftwareVersionVo> search(SoftwareVersionSearchDto dto);
 
 }

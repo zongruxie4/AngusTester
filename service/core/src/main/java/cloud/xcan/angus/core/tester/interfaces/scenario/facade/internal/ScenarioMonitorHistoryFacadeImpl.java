@@ -33,7 +33,7 @@ public class ScenarioMonitorHistoryFacadeImpl implements ScenarioMonitorHistoryF
   @Override
   public PageResult<ScenarioMonitorHistoryListVo> list(ScenarioMonitorHistoryFindDto dto) {
     Page<ScenarioMonitorHistoryInfo> page = scenarioMonitorHistoryQuery
-        .find(getSpecification(dto), dto.tranPage());
+        .list(getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, ScenarioMonitorHistoryAssembler::toListVo);
   }
 }

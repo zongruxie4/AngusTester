@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -85,12 +84,4 @@ public class FuncReviewAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(FuncReviewSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy")
-        .matchSearchFields("name", "description")
-        .build();
-  }
 }

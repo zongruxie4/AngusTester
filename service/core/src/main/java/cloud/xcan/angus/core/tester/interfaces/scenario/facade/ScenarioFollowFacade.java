@@ -13,7 +13,7 @@ public interface ScenarioFollowFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<ScenarioFollowDetailVo> search(ScenarioFollowFindDto dto);
+  PageResult<ScenarioFollowDetailVo> list(ScenarioFollowFindDto dto);
 
   Long count(Long projectId);
 

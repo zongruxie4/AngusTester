@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface TaskFavouriteQuery {
 
-  Page<TaskFavouriteP> search(Long projectId, String name, PageRequest pageable);
+  Page<TaskFavouriteP> list(Long projectId, String name, PageRequest pageable);
 
   Long count(Long projectId);
 

@@ -5,7 +5,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BATCH_SIZE;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
@@ -149,15 +148,6 @@ public class ScenarioRest {
   public ApiLocaleResult<PageResult<ScenarioListVo>> list(
       @Valid @ParameterObject ScenarioInfoFindDto dto) {
     return ApiLocaleResult.success(scenarioFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the basic information list of scenario", operationId = "scenario:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScenarioListVo>> search(
-      @Valid @ParameterObject ScenarioInfoSearchDto dto) {
-    return ApiLocaleResult.success(scenarioFacade.search(dto));
   }
 
 }

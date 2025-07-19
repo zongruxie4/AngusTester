@@ -20,7 +20,7 @@ public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {
   private ApisFavouriteRepo apisFavouriteRepo;
 
   @Override
-  public Page<ApisFavouriteP> search(Long projectId, String apisName, PageRequest pageable) {
+  public Page<ApisFavouriteP> list(Long projectId, String apisName, PageRequest pageable) {
     return new BizTemplate<Page<ApisFavouriteP>>() {
 
       @Override

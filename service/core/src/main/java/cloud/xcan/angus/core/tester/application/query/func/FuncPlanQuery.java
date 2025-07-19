@@ -11,13 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface FuncPlanQuery {
 
   FuncPlan detail(Long id);
 
-  Page<FuncPlan> find(GenericSpecification<FuncPlan> spec, Pageable pageable);
+  Page<FuncPlan> list(GenericSpecification<FuncPlan> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<FuncCaseInfo> notReviewed(Long planId, Long moduleId, Long reviewId);
 

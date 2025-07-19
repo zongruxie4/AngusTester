@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface DatasetQuery {
 
@@ -21,7 +21,8 @@ public interface DatasetQuery {
 
   Map<String, String> valuePreview(List<Long> ids);
 
-  Page<Dataset> find(GenericSpecification<Dataset> spec, Pageable pageable);
+  Page<Dataset> list(GenericSpecification<Dataset> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<Dataset> findByProjectAndIds(Long projectId, LinkedHashSet<Long> ids);
 

@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.Variable
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.variable.VariableDetailVo;
@@ -150,14 +149,6 @@ public class VariableRest {
   @GetMapping
   public ApiLocaleResult<PageResult<VariableDetailVo>> list(@Valid VariableFindDto dto) {
     return ApiLocaleResult.success(variableFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of variables", operationId = "data:variable:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<VariableDetailVo>> search(@Valid VariableSearchDto dto) {
-    return ApiLocaleResult.success(variableFacade.search(dto));
   }
 
   @Operation(summary = "Export the variables", operationId = "data:variable:export")

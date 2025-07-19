@@ -4,7 +4,6 @@ import static cloud.xcan.angus.api.commonlink.TesterConstant.MAX_OPT_CASE_NUM;
 
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncBaselineCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -83,17 +82,7 @@ public class FuncBaselineCaseRest {
   public ApiLocaleResult<PageResult<FuncCaseListVo>> list(
       @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
       @Valid @ParameterObject FuncCaseFindDto dto) {
-    return ApiLocaleResult.success(funcBaselineCaseFacade.list(baselineId, dto));
-  }
-
-  @Operation(summary = "Fulltext search the baseline of test cases", operationId = "func:baseline:case:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/{baselineId}/case/search")
-  public ApiLocaleResult<PageResult<FuncCaseListVo>> search(
-      @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
-      @Valid @ParameterObject FuncCaseSearchDto dto) {
-    return ApiLocaleResult.success(funcBaselineCaseFacade.search(baselineId, false, dto));
+    return ApiLocaleResult.success(funcBaselineCaseFacade.list(false, baselineId, dto));
   }
 
   @Operation(summary = "Export the test cases of baseline", operationId = "func:baseline:case:export")
@@ -103,7 +92,7 @@ public class FuncBaselineCaseRest {
   @GetMapping(value = "/{baselineId}/case/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
       @Parameter(name = "baselineId", description = "Baseline ID", required = true) @PathVariable("baselineId") Long baselineId,
-      @Valid @ParameterObject FuncCaseSearchDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject FuncCaseFindDto dto, HttpServletResponse response) {
     return funcBaselineCaseFacade.export(baselineId, dto, response);
   }
 

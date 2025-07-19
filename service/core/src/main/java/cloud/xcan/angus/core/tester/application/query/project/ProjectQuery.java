@@ -6,7 +6,7 @@ import cloud.xcan.angus.core.tester.domain.project.Project;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface ProjectQuery {
 
@@ -16,7 +16,8 @@ public interface ProjectQuery {
 
   Project detail(Long id);
 
-  Page<Project> find(GenericSpecification<Project> spec, Pageable pageable);
+  Page<Project> list(GenericSpecification<Project> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   boolean isAgile(Long id);
 

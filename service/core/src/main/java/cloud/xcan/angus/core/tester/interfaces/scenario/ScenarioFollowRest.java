@@ -55,7 +55,7 @@ public class ScenarioFollowRest {
     scenarioFollowFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all the follows of scenario", operationId = "scenario:follow:cancel:all")
+  @Operation(summary = "Cancel all follows of the scenario", operationId = "scenario:follow:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class ScenarioFollowRest {
     scenarioFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query the follow list of scenario", operationId = "scenario:follow:search")
+  @Operation(summary = "Query follow list of the scenario", operationId = "scenario:follow:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/follow/search")
-  public ApiLocaleResult<PageResult<ScenarioFollowDetailVo>> search(
+  @GetMapping("/follow")
+  public ApiLocaleResult<PageResult<ScenarioFollowDetailVo>> list(
       @Valid @ParameterObject ScenarioFollowFindDto dto) {
-    return ApiLocaleResult.success(scenarioFollowFacade.search(dto));
+    return ApiLocaleResult.success(scenarioFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query the follow count of scenario", operationId = "scenario:follow:count")
+  @Operation(summary = "Query follow count of the scenario", operationId = "scenario:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")

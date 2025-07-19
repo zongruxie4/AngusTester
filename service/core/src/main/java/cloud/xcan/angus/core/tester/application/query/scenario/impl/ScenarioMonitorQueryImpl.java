@@ -24,6 +24,7 @@ import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioMonitorQu
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitor;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHistoryInfo;
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorRepo;
+import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorSearchRepo;
 import cloud.xcan.angus.core.tester.domain.setting.NoticeSetting;
 import cloud.xcan.angus.remote.info.IdAndName;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
@@ -44,6 +45,9 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
 
   @Resource
   private ScenarioMonitorRepo scenarioMonitorRepo;
+
+  @Resource
+  private ScenarioMonitorSearchRepo scenarioMonitorSearchRepo;
 
   @Resource
   private ScenarioMonitorHistoryQuery scenarioMonitorHistoryQuery;
@@ -75,13 +79,16 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
   }
 
   @Override
-  public Page<ScenarioMonitor> find(GenericSpecification<ScenarioMonitor> spec,
-      PageRequest pageable) {
+  public Page<ScenarioMonitor> list(GenericSpecification<ScenarioMonitor> spec,
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ScenarioMonitor>>() {
 
       @Override
       protected Page<ScenarioMonitor> process() {
-        Page<ScenarioMonitor> page = scenarioMonitorRepo.findAll(spec, pageable);
+        Page<ScenarioMonitor> page = fullTextSearch
+            ? scenarioMonitorSearchRepo.find(spec.getCriteria(), pageable,
+            ScenarioMonitor.class, match)
+            : scenarioMonitorRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           assembleScenarioMonitorCount(page);
         }

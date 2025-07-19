@@ -22,6 +22,7 @@ import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetQuery;
 import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import cloud.xcan.angus.core.tester.domain.data.dataset.DatasetRepo;
+import cloud.xcan.angus.core.tester.domain.data.dataset.DatasetSearchRepo;
 import cloud.xcan.angus.extraction.DatasetExtractor;
 import cloud.xcan.angus.model.element.ActionOnEOF;
 import cloud.xcan.angus.model.element.dataset.DatasetParameter;
@@ -41,13 +42,16 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class DatasetQueryImpl implements DatasetQuery {
 
   @Resource
   private DatasetRepo datasetRepo;
+
+  @Resource
+  private DatasetSearchRepo datasetSearchRepo;
 
   @Resource
   private CommonQuery commonQuery;
@@ -149,12 +153,15 @@ public class DatasetQueryImpl implements DatasetQuery {
   }
 
   @Override
-  public Page<Dataset> find(GenericSpecification<Dataset> spec, Pageable pageable) {
+  public Page<Dataset> list(GenericSpecification<Dataset> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Dataset>>() {
 
       @Override
       protected Page<Dataset> process() {
-        return datasetRepo.findAll(spec, pageable);
+        return fullTextSearch
+            ? datasetSearchRepo.find(spec.getCriteria(), pageable, Dataset.class, match)
+            : datasetRepo.findAll(spec, pageable);
       }
     }.execute();
   }

@@ -13,7 +13,7 @@ public interface ScenarioFavouriteFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<ScenarioFavouriteDetailVo> search(ScenarioFavouriteFindDto dto);
+  PageResult<ScenarioFavouriteDetailVo> list(ScenarioFavouriteFindDto dto);
 
   Long count(Long projectId);
 

@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedListVo;
@@ -125,15 +124,6 @@ public class ApisUnarchivedAssembler {
         .orderByFields("endpoint", "createdDate", "createdBy", "id")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ApisUnarchivedSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id")
-        .matchSearchFields("summary", "endpoint")
-        .orderByFields("endpoint", "createdDate", "createdBy", "id")
-        .build();
   }
 
 }

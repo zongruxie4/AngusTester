@@ -13,7 +13,8 @@ public interface FuncReviewCaseQuery {
 
   FuncReviewCase detail(Long caseId);
 
-  Page<FuncReviewCase> list(GenericSpecification<FuncReviewCase> spec, PageRequest pageable);
+  Page<FuncReviewCase> list(GenericSpecification<FuncReviewCase> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   void checkReviewCaseValid(FuncReview funcReviewDb, List<FuncCaseInfo> funcCasesDb);
 

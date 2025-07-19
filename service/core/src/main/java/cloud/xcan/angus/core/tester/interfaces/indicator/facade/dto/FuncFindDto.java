@@ -21,12 +21,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class FuncFindDto extends PageQuery {
 
+  @Schema(description = "Functionality indicator id")
+  private Long id;
+
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"SERVICE", "API"})
   @Schema(allowableValues = "SERVICE,API", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
-  @Schema(description = "Required when app administrators query all Functionality indicator")
+  @Schema(description = "Required when app administrators query all functionality indicator")
   private Boolean admin;
 
   @Length(max = MAX_NAME_LENGTH)

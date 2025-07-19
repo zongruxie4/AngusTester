@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncReviewFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -174,15 +173,6 @@ public class FuncReviewRest {
   public ApiLocaleResult<PageResult<FuncReviewDetailVo>> list(
       @Valid @ParameterObject FuncReviewFindDto dto) {
     return ApiLocaleResult.success(funcReviewFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of testing review", operationId = "func:review:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncReviewDetailVo>> search(
-      @Valid @ParameterObject FuncReviewSearchDto dto) {
-    return ApiLocaleResult.success(funcReviewFacade.search(dto));
   }
 
 }

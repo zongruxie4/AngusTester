@@ -9,13 +9,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface FuncReviewQuery {
 
   FuncReview detail(Long id);
 
-  Page<FuncReview> find(GenericSpecification<FuncReview> spec, Pageable pageable);
+  Page<FuncReview> find(GenericSpecification<FuncReview> spec, PageRequest pageable
+      , boolean fullTextSearch, String[] match);
 
   List<FuncReview> findByPlanIds(HashSet<Long> planIds);
 
@@ -40,6 +41,5 @@ public interface FuncReviewQuery {
   List<FuncReview> getReviewCreatedSummaries(Long projectId, Long planId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,
       Long creatorOrgId);
-
 
 }

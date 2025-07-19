@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseListVo;
@@ -160,15 +159,6 @@ public class ApisUseCasesRest {
   public ApiLocaleResult<PageResult<ApisCaseListVo>> list(
       @Valid @ParameterObject ApisCaseFindDto dto) {
     return ApiLocaleResult.success(apisCaseFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of apis functional test cases", operationId = "apis:case:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisCaseListVo>> search(
-      @Valid @ParameterObject ApisCaseSearchDto dto) {
-    return ApiLocaleResult.success(apisCaseFacade.search(dto));
   }
 
 }

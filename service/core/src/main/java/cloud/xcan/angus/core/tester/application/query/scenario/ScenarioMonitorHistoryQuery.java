@@ -12,7 +12,7 @@ public interface ScenarioMonitorHistoryQuery {
 
   ScenarioMonitorHistory detail(Long id);
 
-  Page<ScenarioMonitorHistoryInfo> find(GenericSpecification<ScenarioMonitorHistoryInfo> spec,
+  Page<ScenarioMonitorHistoryInfo> list(GenericSpecification<ScenarioMonitorHistoryInfo> spec,
       PageRequest pageable);
 
   List<ScenarioMonitorHistoryInfo> findInfoById(Collection<Long> monitorIds);

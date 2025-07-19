@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.domain.data.variables.VariableTarget;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableAddDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.variable.VariableDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.variable.VariableExportVo;
@@ -103,17 +102,6 @@ public class VariableAssembler {
         .matchSearchFields("name")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(VariableSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
-        .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy",
-            "lastModifiedDate")
-        .inAndNotFields("id", "name")
-        .matchSearchFields("name")
-        .build();
   }
 
 }

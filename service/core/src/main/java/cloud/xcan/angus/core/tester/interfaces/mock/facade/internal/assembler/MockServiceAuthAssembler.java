@@ -13,7 +13,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.auth.Servi
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.auth.ServiceAuthGroupDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.auth.ServiceAuthUserDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.auth.ServiceAuthVo;
-import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,20 +40,11 @@ public class MockServiceAuthAssembler {
   }
 
   public static ServiceAuthVo toDetailVo(MockServiceAuth serviceAuth) {
-    ServiceAuthVo vo;
-    switch (serviceAuth.getAuthObjectType()) {
-      case USER:
-        vo = new ServiceAuthUserDetailVo();
-        break;
-      case GROUP:
-        vo = new ServiceAuthGroupDetailVo();
-        break;
-      case DEPT:
-        vo = new ServiceAuthDeptDetailVo();
-        break;
-      default:
-        throw ResourceNotFound.of(serviceAuth.getAuthObjectType().getMessage());
-    }
+    ServiceAuthVo vo = switch (serviceAuth.getAuthObjectType()) {
+      case USER -> new ServiceAuthUserDetailVo();
+      case GROUP -> new ServiceAuthGroupDetailVo();
+      case DEPT -> new ServiceAuthDeptDetailVo();
+    };
     vo.setId(serviceAuth.getId());
     vo.setPermissions(serviceAuth.getAuths());
     vo.setAuthObjectType(serviceAuth.getAuthObjectType());
@@ -63,8 +53,7 @@ public class MockServiceAuthAssembler {
     return vo;
   }
 
-  public static GenericSpecification<MockServiceAuth> getSpecification(Long serviceId,
-      ServiceAuthFindDto dto) {
+  public static GenericSpecification<MockServiceAuth> getSpecification(ServiceAuthFindDto dto) {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
         .orderByFields("id", "createdDate")

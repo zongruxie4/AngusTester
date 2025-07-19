@@ -11,7 +11,8 @@ public interface ScenarioMonitorQuery {
 
   ScenarioMonitor detail(Long id);
 
-  Page<ScenarioMonitor> find(GenericSpecification<ScenarioMonitor> spec, PageRequest pageable);
+  Page<ScenarioMonitor> list(GenericSpecification<ScenarioMonitor> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   void assembleScenarioMonitorCount(Page<ScenarioMonitor> page);
 

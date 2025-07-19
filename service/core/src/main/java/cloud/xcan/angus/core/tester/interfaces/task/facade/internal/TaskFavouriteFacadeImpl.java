@@ -41,8 +41,8 @@ public class TaskFavouriteFacadeImpl implements TaskFavouriteFacade {
   }
 
   @Override
-  public PageResult<TaskFavouriteDetailVo> search(TaskFavouriteFindDto dto) {
-    Page<TaskFavouriteP> page = taskFavouriteQuery.search(
+  public PageResult<TaskFavouriteDetailVo> list(TaskFavouriteFindDto dto) {
+    Page<TaskFavouriteP> page = taskFavouriteQuery.list(
         dto.getProjectId(), dto.getTaskName(), dto.tranPage());
     return buildVoPageResult(page, TaskFavoriteAssembler::toDetailVo);
   }

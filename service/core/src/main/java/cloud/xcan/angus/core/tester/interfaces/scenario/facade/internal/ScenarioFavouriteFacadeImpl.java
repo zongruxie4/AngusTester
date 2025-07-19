@@ -41,9 +41,9 @@ public class ScenarioFavouriteFacadeImpl implements ScenarioFavouriteFacade {
   }
 
   @Override
-  public PageResult<ScenarioFavouriteDetailVo> search(ScenarioFavouriteFindDto dto) {
+  public PageResult<ScenarioFavouriteDetailVo> list(ScenarioFavouriteFindDto dto) {
     Page<ScenarioFavourite> page = scenarioFavouriteQuery
-        .search(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
+        .list(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
     return buildVoPageResult(page, ScenarioFavoriteAssembler::toDetailVo);
   }
 

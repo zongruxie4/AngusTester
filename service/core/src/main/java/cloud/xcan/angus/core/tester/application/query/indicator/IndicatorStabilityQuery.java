@@ -12,10 +12,11 @@ public interface IndicatorStabilityQuery {
 
   IndicatorStability detailOrDefault(CombinedTargetType targetType, Long targetId);
 
-  Page<IndicatorStability> list(GenericSpecification<IndicatorStability> spec,
-      PageRequest pageable, Class<IndicatorStability> clz);
+  Page<IndicatorStability> list(GenericSpecification<IndicatorStability> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   IndicatorStability find0(Long targetId, CombinedTargetType targetType);
+
 
 }
 

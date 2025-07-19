@@ -22,6 +22,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncRepo;
+import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncSearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
 
   @Resource
   private IndicatorFuncListRepo indicatorFuncListRepo;
+
+  @Resource
+  private IndicatorFuncSearchRepo indicatorPerfSearchRepo;
 
   @Resource
   private SettingTenantManager settingTenantManager;
@@ -82,17 +86,18 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
   }
 
   @Override
-  public Page<IndicatorFunc> list(GenericSpecification<IndicatorFunc> spec,
-      PageRequest pageable, Class<IndicatorFunc> clz) {
+  public Page<IndicatorFunc> list(GenericSpecification<IndicatorFunc> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<IndicatorFunc>>() {
-
       @Override
       protected Page<IndicatorFunc> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
 
-        return indicatorFuncListRepo.find(spec.getCriteria(),
-            pageable, clz, IndicatorFuncConverter::objectArrToFunc, null);
+        return fullTextSearch ? indicatorPerfSearchRepo.find(spec.getCriteria(),
+            pageable, IndicatorFunc.class, IndicatorFuncConverter::objectArrToFunc, match)
+            : indicatorFuncListRepo.find(spec.getCriteria(),
+                pageable, IndicatorFunc.class, IndicatorFuncConverter::objectArrToFunc, null);
       }
     }.execute();
   }
@@ -102,7 +107,8 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
     return indicatorFuncRepo.findByTargetIdAndTargetType(targetId, targetType);
   }
 
-  private void assembleTargetName(IndicatorFunc func, CombinedTargetType targetType, Long targetId) {
+  private void assembleTargetName(IndicatorFunc func, CombinedTargetType targetType,
+      Long targetId) {
     CombinedTarget combinedTarget = commonQuery.getCombinedTarget(targetType, targetId, true);
     func.setTargetName(combinedTarget.getTargetName());
   }

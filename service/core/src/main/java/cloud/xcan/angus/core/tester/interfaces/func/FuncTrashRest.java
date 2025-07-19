@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.func;
 
 
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.trash.FuncTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.trash.FuncTrashFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.trash.FuncTrashDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -82,13 +82,13 @@ public class FuncTrashRest {
     return ApiLocaleResult.success(funcTrashFacade.count(projectId));
   }
 
-  @Operation(summary = "Fulltext search the trash of functional testing", operationId = "func:trash:search")
+  @Operation(summary = "Fulltext search the trash of functional testing", operationId = "func:trash:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncTrashDetailVo>> search(
-      @Valid @ParameterObject FuncTrashSearchDto dto) {
-    return ApiLocaleResult.success(funcTrashFacade.search(dto));
+  @GetMapping
+  public ApiLocaleResult<PageResult<FuncTrashDetailVo>> list(
+      @Valid @ParameterObject FuncTrashFindDto dto) {
+    return ApiLocaleResult.success(funcTrashFacade.list(dto));
   }
 
 }

@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFollowCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseFollowQuery;
 import cloud.xcan.angus.core.tester.domain.func.follow.FuncCaseFollowP;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncCaseFollowFacade;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.follow.FuncCaseFollowSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.follow.FuncCaseFollowFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseFollowAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.follow.FuncCaseFollowDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -41,9 +41,9 @@ public class FuncCaseFollowFacadeImpl implements FuncCaseFollowFacade {
   }
 
   @Override
-  public PageResult<FuncCaseFollowDetailVo> search(FuncCaseFollowSearchDto dto) {
+  public PageResult<FuncCaseFollowDetailVo> list(FuncCaseFollowFindDto dto) {
     Page<FuncCaseFollowP> page = funcCaseFollowQuery
-        .search(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
+        .list(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
     return buildVoPageResult(page, FuncCaseFollowAssembler::toDetailVo);
   }
 

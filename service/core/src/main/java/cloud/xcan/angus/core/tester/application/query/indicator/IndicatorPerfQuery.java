@@ -12,8 +12,8 @@ public interface IndicatorPerfQuery {
 
   IndicatorPerf detailOrDefault(CombinedTargetType targetType, Long targetId);
 
-  Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec, PageRequest pageable,
-      Class<IndicatorPerf> clz);
+  Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec,
+      PageRequest pageRequest, boolean fullTextSearch, String[] match);
 
   IndicatorPerf find0(Long targetId, CombinedTargetType targetType);
 

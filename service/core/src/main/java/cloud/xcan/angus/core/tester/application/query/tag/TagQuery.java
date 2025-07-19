@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface TagQuery {
 
   Tag detail(Long id);
 
-  Page<Tag> find(GenericSpecification<Tag> spec, Pageable pageable);
+  Page<Tag> list(GenericSpecification<Tag> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   void checkExists(List<TagTarget> tags);
 
@@ -39,4 +40,5 @@ public interface TagQuery {
   void setEditPermission(Set<SearchCriteria> criteria, List<Tag> tags);
 
   void setTags(List<? extends ResourceTagAssoc<?, ?>> ress);
+
 }

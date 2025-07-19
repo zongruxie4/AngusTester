@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShare;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareAddVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareViewVo;
@@ -89,12 +88,4 @@ public class ApisShareAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ApisShareSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "createdBy", "createdDate", "expiredDate", "name")
-        .matchSearchFields("name", "remark")
-        .build();
-  }
 }

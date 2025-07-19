@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.apis;
 
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFavouriteFacade;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.favourite.ApisFavouriteDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -57,7 +57,7 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancel(apiId);
   }
 
-  @Operation(summary = "Cancel all the favourite of apis", operationId = "apis:favourite:cancel:all")
+  @Operation(summary = "Cancel all favourite of the apis", operationId = "apis:favourite:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -67,16 +67,16 @@ public class ApisFavouriteRest {
     apisFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search the favourite of api", operationId = "apis:favourite:search")
+  @Operation(summary = "Query favourite list of the apis", operationId = "apis:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/favourite/search")
-  public ApiLocaleResult<PageResult<ApisFavouriteDetailVo>> search(
-      @Valid @ParameterObject ApisFavouriteSearchDto dto) {
-    return ApiLocaleResult.success(apisFavouriteFacade.search(dto));
+  @GetMapping("/favourite")
+  public ApiLocaleResult<PageResult<ApisFavouriteDetailVo>> list(
+      @Valid @ParameterObject ApisFavouriteFindDto dto) {
+    return ApiLocaleResult.success(apisFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Query the favourite count of apis", operationId = "apis:favourite:count")
+  @Operation(summary = "Query favourite count of the apis", operationId = "apis:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")

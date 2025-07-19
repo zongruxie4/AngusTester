@@ -83,7 +83,7 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
                   target.setTargetType(API_CASE);
                   target.setDatasetId(x.getTargetId());
                   return target;
-                }).collect(Collectors.toList()));
+                }).toList());
               }
             }
           }

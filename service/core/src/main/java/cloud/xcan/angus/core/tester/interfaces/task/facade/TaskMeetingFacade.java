@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingVo;
@@ -23,7 +22,5 @@ public interface TaskMeetingFacade {
   TaskMeetingDetailVo detail(Long id);
 
   PageResult<TaskMeetingVo> list(TaskMeetingFindDto dto);
-
-  PageResult<TaskMeetingVo> search(TaskMeetingSearchDto dto);
 
 }

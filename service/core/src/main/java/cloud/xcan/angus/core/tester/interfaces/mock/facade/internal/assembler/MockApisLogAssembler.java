@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLog;
 import cloud.xcan.angus.core.tester.domain.mock.apis.log.MockApisLogInfo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.log.MockApisLogFindDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.log.MockApisLogSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.log.MockApisLogDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.log.MockApisLogListVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -89,12 +88,4 @@ public class MockApisLogAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(MockApisLogSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "createdDate")
-        .matchSearchFields("summary", "endpoint")
-        .build();
-  }
 }

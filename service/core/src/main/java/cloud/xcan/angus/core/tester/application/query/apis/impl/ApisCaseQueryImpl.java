@@ -28,6 +28,7 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCase;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseInfo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseInfoRepo;
+import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseRepo;
 import cloud.xcan.angus.core.tester.domain.services.comp.ServicesComp;
 import cloud.xcan.angus.core.tester.infra.util.RefResolver;
@@ -45,16 +46,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
+@Slf4j
 @Biz
 public class ApisCaseQueryImpl implements ApisCaseQuery {
 
-  private static final Logger log = LoggerFactory.getLogger(ApisCaseQueryImpl.class);
   @Resource
   private ApisCaseRepo apisCaseRepo;
 
@@ -63,6 +63,9 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
 
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
+
+  @Resource
+  private ApisCaseInfoSearchRepo apisCaseInfoSearchRepo;
 
   @Resource
   private ServicesCompQuery servicesCompQuery;
@@ -93,7 +96,8 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
   }
 
   @Override
-  public Page<ApisCaseInfo> list(GenericSpecification<ApisCaseInfo> spec, Pageable pageable) {
+  public Page<ApisCaseInfo> list(GenericSpecification<ApisCaseInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisCaseInfo>>() {
 
       @Override
@@ -102,7 +106,9 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
         criteria.add(equal("apisDeleted", false));
 
         // Assemble mainClass table
-        Page<ApisCaseInfo> page = apisCaseInfoRepo.findAll(spec, pageable);
+        Page<ApisCaseInfo> page = fullTextSearch
+            ? apisCaseInfoSearchRepo.find(criteria, pageable, ApisCaseInfo.class, match)
+            : apisCaseInfoRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           // Set apis deleted flag
           setInfoApisNameAndDeleted(page.getContent());
@@ -194,11 +200,11 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
   }
 
   @Override
-  public void checkExistedCaseType(Long apisId, List<ApisCase> cases){
+  public void checkExistedCaseType(Long apisId, List<ApisCase> cases) {
     if (isNotEmpty(cases)) {
       for (ApisCase aCase : cases) {
         assertResourceExisted(!aCase.getType().isUnique()
-            || !apisCaseInfoRepo.existsByApisIdAndType(apisId, aCase.getType()),
+                || !apisCaseInfoRepo.existsByApisIdAndType(apisId, aCase.getType()),
             String.format("Apis[%s] %s type case is Existed", apisId, aCase.getType().getValue()));
       }
     }
@@ -298,7 +304,7 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
     if (case0.isAuthSchemaRef()) {
       ServicesComp comp = servicesCompQuery.detailByRef(case0.getServicesId(),
           case0.getAuthentication().get$ref());
-      if (isNull(comp)){
+      if (isNull(comp)) {
         log.warn("ServicesComp `{}` not found", case0.getAuthentication().get$ref());
         return;
       }

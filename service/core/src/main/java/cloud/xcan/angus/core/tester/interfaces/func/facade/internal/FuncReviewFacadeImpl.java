@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler.toDetailVo;
@@ -12,13 +11,11 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncReviewCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncReviewSearch;
 import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncReviewFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.FuncReviewUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewDetailVo;
@@ -37,9 +34,6 @@ public class FuncReviewFacadeImpl implements FuncReviewFacade {
 
   @Resource
   private FuncReviewQuery funcReviewQuery;
-
-  @Resource
-  private FuncReviewSearch funcReviewSearch;
 
   @Override
   public IdKey<Long, Object> add(FuncReviewAddDto dto) {
@@ -100,15 +94,8 @@ public class FuncReviewFacadeImpl implements FuncReviewFacade {
   @NameJoin
   @Override
   public PageResult<FuncReviewDetailVo> list(FuncReviewFindDto dto) {
-    Page<FuncReview> page = funcReviewQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, FuncReviewAssembler::toDetailVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<FuncReviewDetailVo> search(FuncReviewSearchDto dto) {
-    Page<FuncReview> page = funcReviewSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        FuncReview.class, getMatchSearchFields(dto.getClass()));
+    Page<FuncReview> page = funcReviewQuery.find(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncReviewAssembler::toDetailVo);
   }
 

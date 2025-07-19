@@ -1,8 +1,9 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler;
 
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrash;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashListDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.trash.ScenarioTrashDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Set;
@@ -23,13 +24,14 @@ public class ScenarioTrashAssembler {
         .setDeletedDate(trash.getDeletedDate());
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ScenarioTrashSearchDto dto) {
+  public static GenericSpecification<ScenarioTrash> getSpecification(ScenarioTrashListDto dto) {
     // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
+    Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "deletedDate")
         .orderByFields("id", "deletedDate")
         .matchSearchFields("targetName")
         .build();
+    return new GenericSpecification<>(filters);
   }
 
 }

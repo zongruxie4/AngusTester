@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncBaselineFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineVo;
@@ -112,15 +111,6 @@ public class FuncBaselineRest {
   public ApiLocaleResult<PageResult<FuncBaselineVo>> list(
       @Valid @ParameterObject FuncBaselineFindDto dto) {
     return ApiLocaleResult.success(funcBaselineFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of baseline", operationId = "func:baseline:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncBaselineVo>> search(
-      @Valid @ParameterObject FuncBaselineSearchDto dto) {
-    return ApiLocaleResult.success(funcBaselineFacade.search(dto));
   }
 
 }

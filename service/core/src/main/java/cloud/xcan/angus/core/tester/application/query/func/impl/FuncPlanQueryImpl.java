@@ -42,6 +42,7 @@ import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.func.cases.count.PlanCaseNum;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanRepo;
+import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanSearchRepo;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
@@ -63,13 +64,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class FuncPlanQueryImpl implements FuncPlanQuery {
 
   @Resource
   private FuncPlanRepo funcPlanRepo;
+
+  @Resource
+  private FuncPlanSearchRepo funcPlanSearchRepo;
 
   @Resource
   private FuncCaseRepo funcCaseRepo;
@@ -120,7 +124,8 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   }
 
   @Override
-  public Page<FuncPlan> find(GenericSpecification<FuncPlan> spec, Pageable pageable) {
+  public Page<FuncPlan> list(GenericSpecification<FuncPlan> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<FuncPlan>>() {
       @Override
       protected void checkParams() {
@@ -137,7 +142,9 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
         // Set authorization conditions when you are not an administrator or only query yourself
         // checkAndSetAuthObjectIdCriteria(criteria); -> All project members are visible
 
-        Page<FuncPlan> page = funcPlanRepo.findAll(spec, pageable);
+        Page<FuncPlan> page = fullTextSearch
+            ? funcPlanSearchRepo.find(criteria, pageable, FuncPlan.class, match)
+            : funcPlanRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           Set<Long> planIds = page.getContent().stream().map(FuncPlan::getId)
               .collect(Collectors.toSet());
@@ -181,10 +188,10 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
         Set<SearchCriteria> filters = new HashSet<>();
         filters.add(SearchCriteria.equal("planId", planId));
         filters.add(SearchCriteria.notEqual("reviewStatus", ReviewStatus.PASSED.getValue()));
-        if (nonNull(moduleId)){
+        if (nonNull(moduleId)) {
           filters.add(SearchCriteria.equal("moduleId", moduleId));
         }
-        if (isNotEmpty(excludeCaseIds)){
+        if (isNotEmpty(excludeCaseIds)) {
           filters.add(SearchCriteria.notIn("id", excludeCaseIds));
         }
 
@@ -216,10 +223,10 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       protected List<FuncCaseInfo> process() {
         Set<SearchCriteria> filters = new HashSet<>();
         filters.add(SearchCriteria.equal("planId", planId));
-        if (nonNull(moduleId)){
+        if (nonNull(moduleId)) {
           filters.add(SearchCriteria.equal("moduleId", moduleId));
         }
-        if (nonNull(funcBaselineDb) && isNotEmpty(funcBaselineDb.getCaseIds())){
+        if (nonNull(funcBaselineDb) && isNotEmpty(funcBaselineDb.getCaseIds())) {
           filters.add(SearchCriteria.notIn("id", funcBaselineDb.getCaseIds()));
         }
 

@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.baseline.FuncBaselineUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineVo;
@@ -26,7 +25,5 @@ public interface FuncBaselineFacade {
   FuncBaselineDetailVo detail(Long id);
 
   PageResult<FuncBaselineVo> list(FuncBaselineFindDto dto);
-
-  PageResult<FuncBaselineVo> search(FuncBaselineSearchDto dto);
 
 }

@@ -41,9 +41,9 @@ public class TaskFollowFacadeImpl implements TaskFollowFacade {
   }
 
   @Override
-  public PageResult<TaskFollowDetailVo> search(TaskFollowFindDto dto) {
+  public PageResult<TaskFollowDetailVo> list(TaskFollowFindDto dto) {
     judgeMatchFilter(dto);
-    Page<TaskFollowP> page = taskFollowQuery.search(dto.getProjectId(),
+    Page<TaskFollowP> page = taskFollowQuery.list(dto.getProjectId(),
         dto.getTaskName(), dto.tranPage());
     return buildVoPageResult(page, TaskFollowAssembler::toDetailVo);
   }

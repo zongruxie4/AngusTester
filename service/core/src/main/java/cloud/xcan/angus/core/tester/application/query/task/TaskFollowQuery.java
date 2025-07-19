@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface TaskFollowQuery {
 
-  Page<TaskFollowP> search(Long projectId, String name, PageRequest pageable);
+  Page<TaskFollowP> list(Long projectId, String name, PageRequest pageable);
 
   Long count(Long projectId);
 

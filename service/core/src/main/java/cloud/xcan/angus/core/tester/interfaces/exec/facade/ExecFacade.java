@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecAddByScriptDt
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecConfigReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecScriptConfigReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStopDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecDetailVo;
@@ -54,7 +53,5 @@ public interface ExecFacade {
   List<Server> serverList(Long id);
 
   PageResult<ExecVo> list(ExecFindDto dto);
-
-  PageResult<ExecVo> search(ExecSearchDto dto);
 
 }

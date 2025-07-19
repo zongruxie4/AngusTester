@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockApisFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisAddDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.MockApisDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.MockApisListVo;
@@ -189,15 +188,4 @@ public class MockApisRest {
     PageResult<MockApisListVo> result = mockApisFacade.list(dto);
     return assembleAllowImportSampleStatus(result);
   }
-
-  @Operation(summary = "Fulltext search the list of mock apis", operationId = "mock:apis:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<MockApisListVo>> search(
-      @Valid @ParameterObject MockApisSearchDto dto) {
-    PageResult<MockApisListVo> result = mockApisFacade.search(dto);
-    return assembleAllowImportSampleStatus(result);
-  }
-
 }

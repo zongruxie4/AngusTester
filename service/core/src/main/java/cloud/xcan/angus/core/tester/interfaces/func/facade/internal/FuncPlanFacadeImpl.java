@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler.toDetailVo;
@@ -13,14 +12,12 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncPlanCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncPlanQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncPlanSearch;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlan;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncPlanFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncPlanAssembler;
@@ -43,9 +40,6 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
 
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
-  @Resource
-  private FuncPlanSearch funcPlanSearch;
 
   @Override
   public IdKey<Long, Object> add(FuncPlanAddDto dto) {
@@ -107,15 +101,8 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
   @NameJoin
   @Override
   public PageResult<FuncPlanDetailVo> list(FuncPlanFindDto dto) {
-    Page<FuncPlan> page = funcPlanQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, FuncPlanAssembler::toDetailVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<FuncPlanDetailVo> search(FuncPlanSearchDto dto) {
-    Page<FuncPlan> page = funcPlanSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), FuncPlan.class, getMatchSearchFields(dto.getClass()));
+    Page<FuncPlan> page = funcPlanQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncPlanAssembler::toDetailVo);
   }
 

@@ -19,9 +19,6 @@ import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-/**
- * @author XiaoLong Liu
- */
 @Component
 public class TaskRemarkFacadeImpl implements TaskRemarkFacade {
 

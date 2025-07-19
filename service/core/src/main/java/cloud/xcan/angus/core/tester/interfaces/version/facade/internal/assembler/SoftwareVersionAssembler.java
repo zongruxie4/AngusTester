@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.domain.version.SoftwareVersionStatus;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionAddDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionFindDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionVo;
@@ -70,16 +69,6 @@ public class SoftwareVersionAssembler {
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(SoftwareVersionSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "createdDate")
-        .inAndNotFields("id", "status", "name")
-        .matchSearchFields("name", "description")
-        .build();
   }
 
 }

@@ -22,6 +22,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfRepo;
+import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfSearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
 
   @Resource
   private IndicatorPerfListRepo indicatorPerfListRepo;
+
+  @Resource
+  private IndicatorPerfSearchRepo indicatorPerfSearchRepo;
 
   @Resource
   private SettingTenantManager settingTenantManager;
@@ -82,8 +86,8 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
   }
 
   @Override
-  public Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec,
-      PageRequest pageable, Class<IndicatorPerf> clz) {
+  public Page<IndicatorPerf> list(GenericSpecification<IndicatorPerf> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<IndicatorPerf>>() {
 
       @Override
@@ -91,8 +95,11 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
 
-        return indicatorPerfListRepo.find(spec.getCriteria(),
-            pageable, clz, IndicatorPerfConverter::objectArrToPerf, null);
+        return fullTextSearch ?
+            indicatorPerfSearchRepo.find(spec.getCriteria(), pageable, IndicatorPerf.class,
+                IndicatorPerfConverter::objectArrToPerf, match)
+            : indicatorPerfListRepo.find(spec.getCriteria(),
+                pageable, IndicatorPerf.class, IndicatorPerfConverter::objectArrToPerf, null);
       }
     }.execute();
   }

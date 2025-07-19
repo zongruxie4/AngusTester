@@ -20,7 +20,7 @@ public class TaskFollowQueryImpl implements TaskFollowQuery {
   private TaskFollowRepo taskFollowRepo;
 
   @Override
-  public Page<TaskFollowP> search(Long projectId, String name, PageRequest pageable) {
+  public Page<TaskFollowP> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<TaskFollowP>>() {
 
       @Override

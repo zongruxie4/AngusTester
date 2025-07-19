@@ -8,21 +8,32 @@ import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TRASH_NO_CLE
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static java.util.Objects.isNull;
 
+import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.exception.BizException;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTrashQuery;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrash;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrashRepo;
+import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrashSearchRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
 
   @Resource
   private ScenarioTrashRepo scenarioTrashRepo;
+
+  @Resource
+  private ScenarioTrashSearchRepo scenarioTrashSearchRepo;
+
+  @Resource
+  private UserManager userManager;
 
   @Override
   public Long count(Long projectId) {
@@ -32,6 +43,28 @@ public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
       protected Long process() {
         return isNull(projectId) ? scenarioTrashRepo.count()
             : scenarioTrashRepo.countByProjectId(projectId);
+      }
+    }.execute();
+  }
+
+  @Override
+  public Page<ScenarioTrash> list(GenericSpecification<ScenarioTrash> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
+    return new BizTemplate<Page<ScenarioTrash>>() {
+
+      @Override
+      protected Page<ScenarioTrash> process() {
+        Page<ScenarioTrash> page = fullTextSearch
+            ? scenarioTrashSearchRepo.find(spec.getCriteria(), pageable, ScenarioTrash.class, match)
+            : scenarioTrashRepo.findAll(spec, pageable);
+        if (!page.isEmpty()) {
+          // Set user name and avatar
+          userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
+              "createdByAvatar");
+          userManager.setUserNameAndAvatar(page.getContent(), "deletedBy", "deletedByName",
+              "deletedByAvatar");
+        }
+        return page;
       }
     }.execute();
   }

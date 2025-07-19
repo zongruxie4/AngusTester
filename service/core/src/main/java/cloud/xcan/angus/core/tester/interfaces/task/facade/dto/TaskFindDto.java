@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.dto;
 
 import static cloud.xcan.angus.spec.SpecConstant.DateFormat.DATE_FMT;
+import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BID_LENGTH;
 
 import cloud.xcan.angus.api.enums.Priority;
 import cloud.xcan.angus.api.enums.Result;
@@ -18,12 +19,14 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 public class TaskFindDto extends PageQuery {
+
 
   @NotNull
   @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
@@ -35,6 +38,7 @@ public class TaskFindDto extends PageQuery {
   @Schema(description = "Task name")
   private String name;
 
+  @Length(max = MAX_BID_LENGTH)
   @Schema(description = "Task code")
   private String code;
 

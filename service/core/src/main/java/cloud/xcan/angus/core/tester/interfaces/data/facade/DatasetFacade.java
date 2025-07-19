@@ -5,7 +5,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetEx
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.dataset.DatasetDetailVo;
@@ -40,8 +39,6 @@ public interface DatasetFacade {
   LinkedHashMap<String, List<String>> valuePreview(DatasetValuePreviewDto dto);
 
   PageResult<DatasetDetailVo> list(DatasetFindDto dto);
-
-  PageResult<DatasetDetailVo> search(DatasetSearchDto dto);
 
   ResponseEntity<Resource> export(DatasetExportDto dto, HttpServletResponse response);
 

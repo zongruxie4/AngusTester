@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.mock.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.fileImportDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler.servicesAssocDtoToDomain;
@@ -18,7 +17,6 @@ import cloud.xcan.angus.agent.message.mockservice.StopVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.mock.MockServiceCmd;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
-import cloud.xcan.angus.core.tester.application.query.mock.MockServiceSearch;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockServiceFacade;
@@ -28,7 +26,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServi
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceImportDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceServicesAssocDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler;
@@ -57,9 +54,6 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
 
   @Resource
   private MockServiceQuery mockServiceQuery;
-
-  @Resource
-  private MockServiceSearch mockServiceSearch;
 
   @Override
   public IdKey<Long, Object> add(MockServiceAddDto dto) {
@@ -147,15 +141,8 @@ public class MockServiceFacadeImpl implements MockServiceFacade {
   @NameJoin
   @Override
   public PageResult<MockServiceListVo> list(MockServiceFindDto dto) {
-    Page<MockServiceInfo> page = mockServiceQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, MockServiceAssembler::toServiceListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<MockServiceListVo> search(MockServiceSearchDto dto) {
-    Page<MockServiceInfo> page = mockServiceSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        MockServiceInfo.class, getMatchSearchFields(dto.getClass()));
+    Page<MockServiceInfo> page = mockServiceQuery.find(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, MockServiceAssembler::toServiceListVo);
   }
 

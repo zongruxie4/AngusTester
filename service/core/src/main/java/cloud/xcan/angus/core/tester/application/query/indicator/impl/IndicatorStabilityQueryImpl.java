@@ -20,6 +20,7 @@ import cloud.xcan.angus.core.tester.domain.CombinedTarget;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityRepo;
+import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilitySearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,9 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
 
   @Resource
   private IndicatorStabilityListRepo indicatorStabilityListRepo;
+
+  @Resource
+  private IndicatorStabilitySearchRepo indicatorStabilitySearchRepo;
 
   @Resource
   private SettingTenantManager settingTenantManager;
@@ -72,7 +76,8 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
         // Query the default stability indicators of the platform
         try {
           SettingTenant setting = settingTenantManager.checkAndFindSetting(getOptTenantId());
-          IndicatorStability stability = toIndicatorStability(setting.getStabilityData(), targetId, targetType);
+          IndicatorStability stability = toIndicatorStability(setting.getStabilityData(),
+              targetId, targetType);
           assembleTargetName(stability, targetType, targetId);
           return stability;
         } catch (Exception e) {
@@ -84,15 +89,18 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
 
   @Override
   public Page<IndicatorStability> list(GenericSpecification<IndicatorStability> spec,
-      PageRequest pageable, Class<IndicatorStability> clz) {
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<IndicatorStability>>() {
 
       @Override
       protected Page<IndicatorStability> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        return indicatorStabilityListRepo.find(spec.getCriteria(), pageable, clz,
-            IndicatorStabilityConverter::objectArrToStability, null);
+        return fullTextSearch
+            ? indicatorStabilitySearchRepo.find(spec.getCriteria(), pageable,
+            IndicatorStability.class, IndicatorStabilityConverter::objectArrToStability, match)
+            : indicatorStabilityListRepo.find(spec.getCriteria(), pageable,
+                IndicatorStability.class, IndicatorStabilityConverter::objectArrToStability, null);
       }
     }.execute();
   }

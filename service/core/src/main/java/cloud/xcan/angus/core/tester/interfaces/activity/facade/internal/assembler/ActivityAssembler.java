@@ -4,7 +4,6 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.interfaces.activity.facade.dto.ActivityFindDto;
-import cloud.xcan.angus.core.tester.interfaces.activity.facade.dto.ActivitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.activity.facade.vo.ActivityDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Set;
@@ -36,13 +35,4 @@ public class ActivityAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ActivitySearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "optDate")
-        .orderByFields("id", "optDate")
-        .matchSearchFields("targetName", "detail")
-        .inAndNotFields("mainTargetId", "parentTargetId", "targetId", "targetType")
-        .build();
-  }
 }

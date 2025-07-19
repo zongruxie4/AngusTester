@@ -1,15 +1,14 @@
 package cloud.xcan.angus.core.tester.interfaces.project.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectTrashAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectTrashAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.project.ProjectTrashCmd;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectTrashQuery;
-import cloud.xcan.angus.core.tester.application.query.project.ProjectTrashSearch;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrash;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.ProjectTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashFindto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.internal.assembler.ProjectTrashAssembler;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.trash.ProjectTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -25,9 +24,6 @@ public class ProjectTrashFacadeImpl implements ProjectTrashFacade {
 
   @Resource
   private ProjectTrashQuery projectTrashQuery;
-
-  @Resource
-  private ProjectTrashSearch projectTrashSearch;
 
   @Override
   public void clear(Long id) {
@@ -55,9 +51,9 @@ public class ProjectTrashFacadeImpl implements ProjectTrashFacade {
   }
 
   @Override
-  public PageResult<ProjectTrashDetailVo> search(ProjectTrashSearchDto dto) {
-    Page<ProjectTrash> page = projectTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        ProjectTrash.class, getMatchSearchFields(dto.getClass()));
+  public PageResult<ProjectTrashDetailVo> list(ProjectTrashFindto dto) {
+    Page<ProjectTrash> page = projectTrashQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ProjectTrashAssembler::toDetailVo);
   }
 

@@ -6,13 +6,11 @@ import cloud.xcan.angus.core.tester.domain.task.meeting.TaskMeeting;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Set;
-import org.springframework.data.jpa.domain.Specification;
 
 public class TaskMeetingAssembler {
 
@@ -86,7 +84,7 @@ public class TaskMeetingAssembler {
         .setLastModifiedDate(meeting.getLastModifiedDate());
   }
 
-  public static Specification<TaskMeeting> getSpecification(TaskMeetingFindDto dto) {
+  public static GenericSpecification<TaskMeeting> getSpecification(TaskMeetingFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id", "createdDate")
@@ -94,15 +92,6 @@ public class TaskMeetingAssembler {
         .matchSearchFields("subject")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(TaskMeetingSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "subject", "createdBy", "createdDate", "lastModifiedBy")
-        .matchSearchFields("subject")
-        .build();
   }
 
 }

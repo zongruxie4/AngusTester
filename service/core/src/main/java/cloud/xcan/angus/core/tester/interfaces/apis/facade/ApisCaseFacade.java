@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseListVo;
@@ -34,7 +33,5 @@ public interface ApisCaseFacade {
   ApisCaseDetailVo detail(Long id);
 
   PageResult<ApisCaseListVo> list(ApisCaseFindDto dto);
-
-  PageResult<ApisCaseListVo> search(ApisCaseSearchDto dto);
 
 }

@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade;
 
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.favourite.FuncCaseFavouriteDetailVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -13,7 +13,7 @@ public interface FuncCaseFavouriteFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<FuncCaseFavouriteDetailVo> search(FuncCaseFavouriteSearchDto dto);
+  PageResult<FuncCaseFavouriteDetailVo> list(FuncCaseFavouriteFindDto dto);
 
   Long count(Long projectId);
 }

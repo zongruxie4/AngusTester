@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface ScriptQuery {
 
@@ -33,9 +33,11 @@ public interface ScriptQuery {
   ScriptResourcesCreationCount creationStatistics(Long projectId, AuthObjectType creatorObjectType,
       Long creatorObjectId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd);
 
-  Page<ScriptInfo> find(GenericSpecification<ScriptInfo> spec, Pageable pageable);
+  Page<ScriptInfo> list(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
-  Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, Pageable pageable);
+  Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   void safeScenarioQuery(Set<SearchCriteria> criteria);
 
@@ -88,6 +90,5 @@ public interface ScriptQuery {
   void setScriptSourceName(Script script);
 
   void setScriptSourceName(List<ScriptInfo> scriptInfos);
-
 
 }

@@ -1,15 +1,14 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskTrashAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskTrashAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskTrashCmd;
 import cloud.xcan.angus.core.tester.application.query.task.TaskTrashQuery;
-import cloud.xcan.angus.core.tester.application.query.task.TaskTrashSearch;
 import cloud.xcan.angus.core.tester.domain.task.trash.TaskTrash;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.trash.TaskTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.trash.TaskTrashListDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskTrashAssembler;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.trash.TaskTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -25,9 +24,6 @@ public class TaskTrashFacadeImpl implements TaskTrashFacade {
 
   @Resource
   private TaskTrashQuery taskTrashQuery;
-
-  @Resource
-  private TaskTrashSearch taskTrashSearch;
 
   @Override
   public void clear(Long id) {
@@ -55,9 +51,9 @@ public class TaskTrashFacadeImpl implements TaskTrashFacade {
   }
 
   @Override
-  public PageResult<TaskTrashDetailVo> search(TaskTrashSearchDto dto) {
-    Page<TaskTrash> page = taskTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        TaskTrash.class, getMatchSearchFields(dto.getClass()));
+  public PageResult<TaskTrashDetailVo> list(TaskTrashListDto dto) {
+    Page<TaskTrash> page = taskTrashQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskTrashAssembler::toDetailVo);
   }
 

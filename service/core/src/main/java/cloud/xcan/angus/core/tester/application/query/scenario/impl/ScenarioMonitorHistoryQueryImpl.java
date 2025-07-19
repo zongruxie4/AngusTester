@@ -36,8 +36,8 @@ public class ScenarioMonitorHistoryQueryImpl implements ScenarioMonitorHistoryQu
   }
 
   @Override
-  public Page<ScenarioMonitorHistoryInfo> find(GenericSpecification<ScenarioMonitorHistoryInfo> spec,
-      PageRequest pageable) {
+  public Page<ScenarioMonitorHistoryInfo> list(
+      GenericSpecification<ScenarioMonitorHistoryInfo> spec, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioMonitorHistoryInfo>>() {
 
       @Override

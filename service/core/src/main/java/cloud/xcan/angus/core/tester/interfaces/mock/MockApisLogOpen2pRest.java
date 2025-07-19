@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author XiaoLong Liu
- */
+
 @Tag(name = "MockApisLogOpen2p", description = "Upload Mock Request Logs - Internal endpoints for storing mock request/response logs within AngusMockService")
 @Validated
 @RestController

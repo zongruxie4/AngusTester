@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignSource;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -66,13 +65,4 @@ public class ApisDesignAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ApisDesignSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("name")
-        .orderByFields("id", "name", "createdBy", "createdDate", "lastModifiedBy",
-            "lastModifiedDate")
-        .build();
-  }
 }

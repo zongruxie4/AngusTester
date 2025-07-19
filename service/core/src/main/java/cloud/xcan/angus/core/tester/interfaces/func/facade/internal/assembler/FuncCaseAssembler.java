@@ -24,7 +24,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseResultModifyDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReviewDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseExportListVo;
@@ -417,19 +416,6 @@ public class FuncCaseAssembler {
         .matchSearchFields("name", "description", "code")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(FuncCaseSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate",
-            "reviewDate", "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
-        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
-            "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
-            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
-        .matchSearchFields("name", "description", "code")
-        .build();
   }
 
 }

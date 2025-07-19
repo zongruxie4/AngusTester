@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toAddTask;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler.toReplaceTask;
@@ -26,7 +25,6 @@ import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
-import cloud.xcan.angus.core.tester.application.query.task.TaskSearch;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.task.Task;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
@@ -43,7 +41,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
@@ -83,9 +80,6 @@ public class TaskFacadeImpl implements TaskFacade {
 
   @Resource
   private TaskQuery taskQuery;
-
-  @Resource
-  private TaskSearch taskSearch;
 
   @Resource
   private FuncCaseQuery funcCaseQuery;
@@ -303,16 +297,9 @@ public class TaskFacadeImpl implements TaskFacade {
 
   @NameJoin
   @Override
-  public PageResult<TaskListVo> list(TaskFindDto dto) {
-    Page<Task> page = taskQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, TaskAssembler::toListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<TaskListVo> search(boolean export, TaskSearchDto dto) {
-    Page<Task> page = taskSearch.search(export, getSearchCriteria(dto),
-        dto.tranPage(), getMatchSearchFields(dto.getClass()));
+  public PageResult<TaskListVo> list(boolean export, TaskFindDto dto) {
+    Page<Task> page = taskQuery.list(export, getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskAssembler::toListVo);
   }
 
@@ -322,7 +309,7 @@ public class TaskFacadeImpl implements TaskFacade {
    */
   @DoInFuture("Limit the number of export tasks")
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(TaskSearchDto dto,
+  public ResponseEntity<org.springframework.core.io.Resource> export(TaskFindDto dto,
       HttpServletResponse response) {
     List<TaskListExportVo> data = getExportTaskData(dto);
     String fileName = "TaskListExport-" + System.currentTimeMillis() + ".xlsx";
@@ -331,9 +318,9 @@ public class TaskFacadeImpl implements TaskFacade {
   }
 
   @NotNull
-  private List<TaskListExportVo> getExportTaskData(TaskSearchDto dto) {
+  private List<TaskListExportVo> getExportTaskData(TaskFindDto dto) {
     dto.setPageSize(500);
-    PageResult<TaskListVo> page = joinSupplier.execute(() -> search(true, dto));
+    PageResult<TaskListVo> page = joinSupplier.execute(() -> list(true, dto));
     // 500 reads per time, with a maximum support for exporting MAX_REPORT_ROWS.
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
@@ -341,7 +328,7 @@ public class TaskFacadeImpl implements TaskFacade {
         .collect(Collectors.toList());
     while (page.getList().size() >= 500) {
       dto.setPageNo(dto.getPageNo() + 1);
-      page = search(true, dto);
+      page = list(true, dto);
       if (!page.isEmpty()) {
         data.addAll(page.getList().stream().map(TaskAssembler::toTaskVo).toList());
       }

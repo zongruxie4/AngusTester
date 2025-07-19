@@ -37,10 +37,10 @@ public interface ApisQuery {
   List<Apis> listDetail(HashSet<Long> ids, Boolean resolveRef);
 
   Page<ApisBasicInfo> findByServiceId(Long serviceId, GenericSpecification<ApisBasicInfo> spec,
-      PageRequest pageable, Class<ApisBasicInfo> clz);
+      PageRequest pageable, boolean fullTextSearch, String[] match);
 
   Page<ApisBasicInfo> list(GenericSpecification<ApisBasicInfo> spec, PageRequest pageable,
-      Class<ApisBasicInfo> clz);
+      boolean fullTextSearch, String[] match);
 
   List<Server> serverList(Long id);
 

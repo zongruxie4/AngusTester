@@ -24,6 +24,7 @@ import cloud.xcan.angus.core.tester.application.query.func.FuncReviewQuery;
 import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery;
 import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewRepo;
+import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewSearchRepo;
 import cloud.xcan.angus.core.tester.domain.func.review.ReviewCaseNum;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
@@ -43,7 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class FuncReviewQueryImpl implements FuncReviewQuery {
@@ -53,6 +54,9 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
 
   @Resource
   private FuncReviewCaseRepo funcReviewCaseRepo;
+
+  @Resource
+  private FuncReviewSearchRepo funcReviewSearchRepo;
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
@@ -85,7 +89,8 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
   }
 
   @Override
-  public Page<FuncReview> find(GenericSpecification<FuncReview> spec, Pageable pageable) {
+  public Page<FuncReview> find(GenericSpecification<FuncReview> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<FuncReview>>() {
       @Override
       protected void checkParams() {
@@ -95,7 +100,9 @@ public class FuncReviewQueryImpl implements FuncReviewQuery {
 
       @Override
       protected Page<FuncReview> process() {
-        Page<FuncReview> page = funcReviewRepo.findAll(spec, pageable);
+        Page<FuncReview> page = fullTextSearch
+            ? funcReviewSearchRepo.find(spec.getCriteria(), pageable, FuncReview.class, match)
+            : funcReviewRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           Set<Long> reviewIds = page.getContent().stream().map(FuncReview::getId)
               .collect(Collectors.toSet());

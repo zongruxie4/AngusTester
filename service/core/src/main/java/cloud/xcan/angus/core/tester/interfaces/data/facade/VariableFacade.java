@@ -5,7 +5,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.Variable
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.variable.VariableDetailVo;
@@ -39,8 +38,6 @@ public interface VariableFacade {
   String valuePreview(VariableValuePreviewDto dto);
 
   PageResult<VariableDetailVo> list(VariableFindDto dto);
-
-  PageResult<VariableDetailVo> search(VariableSearchDto dto);
 
   ResponseEntity<Resource> export(VariableExportDto dto, HttpServletResponse response);
 

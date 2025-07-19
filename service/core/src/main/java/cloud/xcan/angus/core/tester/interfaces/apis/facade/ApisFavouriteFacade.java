@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.favourite.ApisFavouriteDetailVo;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
@@ -13,7 +13,7 @@ public interface ApisFavouriteFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<ApisFavouriteDetailVo> search(ApisFavouriteSearchDto dto);
+  PageResult<ApisFavouriteDetailVo> list(ApisFavouriteFindDto dto);
 
   Long count(Long projectId);
 }

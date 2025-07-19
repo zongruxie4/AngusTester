@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.addToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler.toDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
@@ -12,8 +11,6 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisDesignCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignQuery;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisDesignSearch;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisDesignFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignAddDto;
@@ -21,7 +18,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesign
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignImportDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignUpdateNameDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisDesignAssembler;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignDetailVo;
@@ -44,9 +40,6 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
 
   @Resource
   private ApisDesignQuery apisDesignQuery;
-
-  @Resource
-  private ApisDesignSearch apisDesignSearch;
 
   @Override
   public IdKey<Long, Object> add(ApisDesignAddDto dto) {
@@ -103,16 +96,8 @@ public class ApisDesignFacadeImpl implements ApisDesignFacade {
   @NameJoin
   @Override
   public PageResult<ApisDesignVo> list(ApisDesignFindDto dto) {
-    Page<ApisDesignInfo> page = apisDesignQuery.list(
-        getSpecification(dto), dto.tranPage(), ApisBasicInfo.class);
-    return buildVoPageResult(page, ApisDesignAssembler::toVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ApisDesignVo> search(ApisDesignSearchDto dto) {
-    Page<ApisDesignInfo> page = apisDesignSearch.search(
-        getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
+    Page<ApisDesignInfo> page = apisDesignQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisDesignAssembler::toVo);
   }
 

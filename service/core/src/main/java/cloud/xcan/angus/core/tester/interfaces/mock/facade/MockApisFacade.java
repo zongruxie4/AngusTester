@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.mock.facade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisAddDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.MockApisDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.MockApisListVo;
@@ -40,7 +39,5 @@ public interface MockApisFacade {
   MockApisDetailVo detail(Long id);
 
   PageResult<MockApisListVo> list(MockApisFindDto dto);
-
-  PageResult<MockApisListVo> search(MockApisSearchDto dto);
 
 }

@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BATCH_SIZE;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisShareFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareAddVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareVo;
@@ -93,15 +92,6 @@ public class ApisShareRest {
   public ApiLocaleResult<PageResult<ApisShareVo>> list(
       @Valid @ParameterObject ApisShareFindDto dto) {
     return ApiLocaleResult.success(apisShareFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the sharing of api", operationId = "apis:share:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisShareVo>> search(
-      @Valid @ParameterObject ApisShareSearchDto dto) {
-    return ApiLocaleResult.success(apisShareFacade.search(dto));
   }
 
 }

@@ -20,10 +20,10 @@ public interface ScenarioQuery {
 
   void check(Long id);
 
-  List<Scenario> list(Set<Long> ids);
+  List<Scenario> findByIds(Set<Long> ids);
 
-  Page<Scenario> find(GenericSpecification<Scenario> spec, PageRequest pageable,
-      Class<Scenario> clz);
+  Page<Scenario> list(GenericSpecification<Scenario> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   ScenarioResourcesCreationCount creationStatistics(Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,

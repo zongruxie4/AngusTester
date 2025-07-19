@@ -17,6 +17,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchivedListRepo;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchivedRepo;
+import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchivedSearchRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import jakarta.annotation.Resource;
@@ -25,7 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 @Slf4j
@@ -38,6 +39,9 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
   @Resource
   private ApisUnarchivedListRepo apisUnarchivedListRepo;
+
+  @Resource
+  private ApisUnarchivedSearchRepo apisUnarchivedSearchRepo;
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
@@ -66,8 +70,8 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
   }
 
   @Override
-  public Page<ApisUnarchived> find(GenericSpecification<ApisUnarchived> spec,
-      Pageable pageable, Class<ApisUnarchived> clz) {
+  public Page<ApisUnarchived> list(GenericSpecification<ApisUnarchived> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisUnarchived>>() {
       @Override
       protected void checkParams() {
@@ -79,8 +83,11 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
       protected Page<ApisUnarchived> process() {
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(SearchCriteria.equal("createdBy", getUserId()));
-        return apisUnarchivedListRepo.find(criteria, pageable, clz,
-            ApisConverter::objectArrToApisUnarchived, null);
+        return fullTextSearch
+            ? apisUnarchivedSearchRepo.find(criteria, pageable, ApisUnarchived.class,
+            ApisConverter::objectArrToApisUnarchived, match)
+            : apisUnarchivedListRepo.find(criteria, pageable, ApisUnarchived.class,
+                ApisConverter::objectArrToApisUnarchived, null);
       }
     }.execute();
   }

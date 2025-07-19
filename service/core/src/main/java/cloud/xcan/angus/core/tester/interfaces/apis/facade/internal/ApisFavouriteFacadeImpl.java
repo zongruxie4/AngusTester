@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.application.cmd.apis.ApisFavouriteCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisFavouriteQuery;
 import cloud.xcan.angus.core.tester.domain.apis.favourite.ApisFavouriteP;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFavouriteFacade;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.favourite.ApisFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisFavouriteAssembler;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.favourite.ApisFavouriteDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -41,8 +41,8 @@ public class ApisFavouriteFacadeImpl implements ApisFavouriteFacade {
   }
 
   @Override
-  public PageResult<ApisFavouriteDetailVo> search(ApisFavouriteSearchDto dto) {
-    Page<ApisFavouriteP> page = apisFavouriteQuery.search(dto.getProjectId(),
+  public PageResult<ApisFavouriteDetailVo> list(ApisFavouriteFindDto dto) {
+    Page<ApisFavouriteP> page = apisFavouriteQuery.list(dto.getProjectId(),
         dto.getApisName(), dto.tranPage());
     return buildVoPageResult(page, ApisFavouriteAssembler::toDetailVo);
   }

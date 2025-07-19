@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.addToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.replaceToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler.toDetailVo;
@@ -12,13 +11,11 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskMeetingCmd;
 import cloud.xcan.angus.core.tester.application.query.task.TaskMeetingQuery;
-import cloud.xcan.angus.core.tester.application.query.task.TaskMeetingSearch;
 import cloud.xcan.angus.core.tester.domain.task.meeting.TaskMeeting;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskMeetingFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskMeetingAssembler;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingDetailVo;
@@ -34,9 +31,6 @@ public class TaskMeetingFacadeImpl implements TaskMeetingFacade {
 
   @Resource
   private TaskMeetingQuery taskMeetingQuery;
-
-  @Resource
-  private TaskMeetingSearch taskMeetingSearch;
 
   @Resource
   private TaskMeetingCmd taskMeetingCmd;
@@ -69,15 +63,9 @@ public class TaskMeetingFacadeImpl implements TaskMeetingFacade {
   @NameJoin
   @Override
   public PageResult<TaskMeetingVo> list(TaskMeetingFindDto dto) {
-    Page<TaskMeeting> page = taskMeetingQuery.find(getSpecification(dto), dto.tranPage());
+    Page<TaskMeeting> page = taskMeetingQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskMeetingAssembler::toVo);
   }
 
-  @NameJoin
-  @Override
-  public PageResult<TaskMeetingVo> search(TaskMeetingSearchDto dto) {
-    Page<TaskMeeting> page = taskMeetingSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        TaskMeeting.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(page, TaskMeetingAssembler::toVo);
-  }
 }

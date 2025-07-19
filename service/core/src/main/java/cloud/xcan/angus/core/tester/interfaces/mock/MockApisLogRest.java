@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.mock;
 
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.MockApisLogFacade;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.log.MockApisLogFindDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.log.MockApisLogSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.log.MockApisLogDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.log.MockApisLogListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -51,13 +50,4 @@ public class MockApisLogRest {
     return ApiLocaleResult.success(mockApisLogFacade.list(mockServiceId, dto));
   }
 
-  @Operation(summary = "Search mock apis request logs", operationId = "mock:service:apis:log:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/service/{mockServiceId}/apis/log/search")
-  public ApiLocaleResult<PageResult<MockApisLogListVo>> search(
-      @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
-      @Valid @ParameterObject MockApisLogSearchDto dto) {
-    return ApiLocaleResult.success(mockApisLogFacade.search(mockServiceId, dto));
-  }
 }

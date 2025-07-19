@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.tester.domain.apis.cases.ApisCaseInfo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.cases.ApisCaseUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.cases.ApisCaseListVo;
@@ -152,16 +151,6 @@ public class ApisCaseAssembler {
         .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ApisCaseSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("createdDate", "lastModifiedDate")
-        .inAndNotFields("id")
-        .orderByFields("id", "createdDate", "lastModifiedDate")
-        .matchSearchFields("name", "description")
-        .build();
   }
 
 }

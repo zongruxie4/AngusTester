@@ -13,7 +13,7 @@ public interface TaskFollowFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<TaskFollowDetailVo> search(TaskFollowFindDto dto);
+  PageResult<TaskFollowDetailVo> list(TaskFollowFindDto dto);
 
   Long count(Long projectId);
 

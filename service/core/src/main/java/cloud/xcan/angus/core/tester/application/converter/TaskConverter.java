@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.converter;
 
 import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_AFTER_HOURS;
-import static cloud.xcan.angus.api.commonlink.TesterConstant.SAMPLE_BEFORE_HOURS;
 import static cloud.xcan.angus.core.spring.SpringContextHolder.getBean;
 import static cloud.xcan.angus.core.tester.application.cmd.task.impl.TaskCmdImpl.getTaskCode;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyPropertiesIgnoreNull;

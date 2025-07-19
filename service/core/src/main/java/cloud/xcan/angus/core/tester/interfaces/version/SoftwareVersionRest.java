@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.version.facade.SoftwareVersionFac
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionAddDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionFindDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.dto.SoftwareVersionUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.version.facade.vo.SoftwareVersionVo;
@@ -133,15 +132,6 @@ public class SoftwareVersionRest {
   public ApiLocaleResult<PageResult<SoftwareVersionVo>> list(
       @Valid @ParameterObject SoftwareVersionFindDto dto) {
     return ApiLocaleResult.success(softwareVersionFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of software version", operationId = "software:version:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<SoftwareVersionVo>> search(
-      @Valid @ParameterObject SoftwareVersionSearchDto dto) {
-    return ApiLocaleResult.success(softwareVersionFacade.search(dto));
   }
 
 }

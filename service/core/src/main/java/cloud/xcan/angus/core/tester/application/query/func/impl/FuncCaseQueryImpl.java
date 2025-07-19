@@ -118,6 +118,7 @@ import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoListRepo;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoRepo;
+import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseRepo;
 import cloud.xcan.angus.core.tester.domain.func.cases.count.BackloggedOverview;
 import cloud.xcan.angus.core.tester.domain.func.cases.count.BurnDownChartOverview;
@@ -206,7 +207,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -221,6 +222,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   @Resource
   private FuncCaseInfoListRepo funcCaseInfoListRepo;
+
+  @Resource
+  private FuncCaseInfoSearchRepo funcCaseInfoSearchRepo;
 
   @Resource
   private FuncPlanRepo funcPlanRepo;
@@ -318,7 +322,8 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   @Override
-  public Page<FuncCaseInfo> list(GenericSpecification<FuncCaseInfo> spec, Pageable pageable) {
+  public Page<FuncCaseInfo> list(boolean export, GenericSpecification<FuncCaseInfo> spec,
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<FuncCaseInfo>>() {
       @Override
       protected void checkParams() {
@@ -336,8 +341,9 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         funcPlanQuery.checkAndSetAuthObjectIdCriteria(criteria);
 
         // Assemble mainClass table
-        Page<FuncCaseInfo> page = funcCaseInfoListRepo.find(criteria, pageable,
-            FuncCaseInfo.class, null);
+        Page<FuncCaseInfo> page = fullTextSearch
+            ? funcCaseInfoSearchRepo.find(criteria, pageable, FuncCaseInfo.class, match)
+            : funcCaseInfoListRepo.find(criteria, pageable, FuncCaseInfo.class, null);
 
         if (page.hasContent()) {
           if (isUserAction()) {
@@ -357,6 +363,19 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
           tagQuery.setTags(page.getContent());
           // Set progress
           setCaseInfoProgress(page.getContent());
+
+          if (export) {
+            List<Long> caseIds = page.getContent().stream().map(FuncCaseInfo::getId)
+                .collect(Collectors.toList());
+            Map<Long, FuncCase> caseMap = funcCaseRepo.findAllById(caseIds).stream()
+                .collect(Collectors.toMap(FuncCase::getId, x -> x));
+            for (FuncCaseInfo caseInfo : page.getContent()) {
+              caseInfo.setPrecondition(caseMap.get(caseInfo.getId()).getPrecondition());
+              caseInfo.setSteps(caseMap.get(caseInfo.getId()).getSteps());
+            }
+            // Set reference tasks and cases
+            taskFuncCaseQuery.setAssocForCase(page.getContent());
+          }
         }
         return page;
       }

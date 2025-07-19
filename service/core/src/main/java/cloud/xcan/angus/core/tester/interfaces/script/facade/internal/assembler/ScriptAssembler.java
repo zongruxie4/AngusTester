@@ -18,7 +18,6 @@ import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptImportDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.angus.model.script.ScriptSource;
@@ -232,17 +231,6 @@ public class ScriptAssembler {
         .matchSearchFields("name", "description", "extSearchMerge", "plugin")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ScriptSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
-        .orderByFields("id", "name", "type", "source", "plugin",
-            "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate")
-        .inAndNotFields("id", "type", "source", "sourceId", "tag", "createdBy")
-        .matchSearchFields("name", "description", "extSearchMerge", "plugin")
-        .build();
   }
 
 }

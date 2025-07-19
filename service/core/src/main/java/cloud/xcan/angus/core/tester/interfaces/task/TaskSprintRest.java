@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskSprintFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.TaskSprintDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -189,15 +188,6 @@ public class TaskSprintRest {
   public ApiLocaleResult<PageResult<TaskSprintDetailVo>> list(
       @Valid @ParameterObject TaskSprintFindDto dto) {
     return ApiLocaleResult.success(taskSprintFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of task sprint", operationId = "task:sprint:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskSprintDetailVo>> search(
-      @Valid @ParameterObject TaskSprintSearchDto dto) {
-    return ApiLocaleResult.success(taskSprintFacade.search(dto));
   }
 
 }

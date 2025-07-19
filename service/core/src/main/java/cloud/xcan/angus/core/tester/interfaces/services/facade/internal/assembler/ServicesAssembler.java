@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.schema.ServicesSchema;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesAddDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesFindDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServiceVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesDetailVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
@@ -89,16 +88,6 @@ public class ServicesAssembler {
       apiResult.getExt().put("allowImportSamples", true);
     }
     return apiResult;
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ServicesSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .inAndNotFields("id")
-        .rangeSearchFields("id")
-        .orderByFields("id", "name", "createdBy", "createdDate")
-        .matchSearchFields("name")
-        .build();
   }
 
   public static GenericSpecification<Services> getSpecification(ServicesFindDto dto) {

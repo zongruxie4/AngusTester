@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.apis;
 
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFollowFacade;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.follow.ApisFollowSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.follow.ApisFollowFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.follow.ApisFollowDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -55,7 +55,7 @@ public class ApisFollowRest {
     apisFollowFacade.cancel(apiId);
   }
 
-  @Operation(summary = "Cancel all the follows of apis", operationId = "apis:follow:cancel:All")
+  @Operation(summary = "Cancel all follows of the apis", operationId = "apis:follow:cancel:All")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class ApisFollowRest {
     apisFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search the follow of api", operationId = "apis:follow:search")
+  @Operation(summary = "Query follow list of the apis", operationId = "apis:follow:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/follow/search")
-  public ApiLocaleResult<PageResult<ApisFollowDetailVo>> search(
-      @Valid @ParameterObject ApisFollowSearchDto dto) {
-    return ApiLocaleResult.success(apisFollowFacade.search(dto));
+  @GetMapping("/follow")
+  public ApiLocaleResult<PageResult<ApisFollowDetailVo>> list(
+      @Valid @ParameterObject ApisFollowFindDto dto) {
+    return ApiLocaleResult.success(apisFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query the follow count of apis", operationId = "apis:follow:count")
+  @Operation(summary = "Query follow count of the apis", operationId = "apis:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")

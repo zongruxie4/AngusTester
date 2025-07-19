@@ -14,7 +14,8 @@ public interface FuncBaselineQuery {
 
   FuncBaseline detail(Long id);
 
-  Page<FuncBaselineInfo> find(GenericSpecification<FuncBaselineInfo> spec, PageRequest pageable);
+  Page<FuncBaselineInfo> find(GenericSpecification<FuncBaselineInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   FuncBaseline checkAndFind(Long id);
 
@@ -23,6 +24,7 @@ public interface FuncBaselineQuery {
   List<FuncBaseline> checkAndFind(Collection<Long> ids);
 
   List<FuncBaseline> getBaselineCreatedSummaries(Long projectId, Long planId,
-      LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,
-      Long creatorOrgId);
+      LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
+      AuthObjectType creatorOrgType, Long creatorOrgId);
+
 }

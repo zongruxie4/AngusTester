@@ -8,15 +8,15 @@ import cloud.xcan.angus.model.element.http.ApisCaseType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface ApisCaseQuery {
 
   ApisCase detail(Long id);
 
-  Page<ApisCaseInfo> list(GenericSpecification<ApisCaseInfo> spec, Pageable pageable);
+  Page<ApisCaseInfo> list(GenericSpecification<ApisCaseInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<ApisCase> findByApisId(Long apisId);
 
@@ -46,7 +46,6 @@ public interface ApisCaseQuery {
 
   void setApisAndServiceInfo(List<ApisCase> cases);
 
-  @NotNull
   Map<String, String> findCaseAllRef(ApisCase caseDb);
 
   void setAndGetRefAuthentication(ApisCase case0);

@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseImportDto
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseResultModifyDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReviewDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTesterReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseUpdateDto;
@@ -94,10 +93,8 @@ public interface FuncCaseFacade {
 
   List<FuncCaseReviewVo> reviewList(Long id);
 
-  PageResult<FuncCaseListVo> list(FuncCaseFindDto dto);
+  PageResult<FuncCaseListVo> list(boolean export, FuncCaseFindDto dto);
 
-  PageResult<FuncCaseListVo> search(boolean export, FuncCaseSearchDto dto);
-
-  ResponseEntity<Resource> export(FuncCaseSearchDto dto, HttpServletResponse response);
+  ResponseEntity<Resource> export(FuncCaseFindDto dto, HttpServletResponse response);
 
 }

@@ -4,7 +4,6 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -24,8 +23,6 @@ public interface IndicatorPerfFacade {
   PerfVo detail(CombinedTargetType targetType, Long targetId);
 
   PerfVo detailOrDefault(CombinedTargetType targetType, Long targetId);
-
-  PageResult<PerfListVo> search(PerfSearchDto dto);
 
   PageResult<PerfListVo> list(PerfFindDto dto);
 

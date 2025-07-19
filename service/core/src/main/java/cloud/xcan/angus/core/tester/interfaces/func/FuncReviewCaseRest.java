@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncReviewCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -122,14 +121,4 @@ public class FuncReviewCaseRest {
       @Valid @ParameterObject FuncReviewCaseFindDto dto) {
     return ApiLocaleResult.success(funcReviewCaseFacade.list(dto));
   }
-
-  @Operation(summary = "Fulltext the functional case info list of review", operationId = "func:review:case:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncReviewCaseVo>> search(
-      @Valid @ParameterObject FuncReviewCaseSearchDto dto) {
-    return ApiLocaleResult.success(funcReviewCaseFacade.search(dto));
-  }
-
 }

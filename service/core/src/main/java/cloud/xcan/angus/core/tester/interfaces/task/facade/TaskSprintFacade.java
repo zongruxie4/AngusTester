@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.TaskSprintDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -37,7 +36,5 @@ public interface TaskSprintFacade {
   TaskSprintDetailVo detail(Long id);
 
   PageResult<TaskSprintDetailVo> list(TaskSprintFindDto dto);
-
-  PageResult<TaskSprintDetailVo> search(TaskSprintSearchDto dto);
 
 }

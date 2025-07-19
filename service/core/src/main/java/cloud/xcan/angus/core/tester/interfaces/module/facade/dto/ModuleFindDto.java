@@ -21,24 +21,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Accessors(chain = true)
 public class ModuleFindDto extends AbstractQuery {
-
   private Long id;
 
   @NotNull
   @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Length(max = MAX_NAME_LENGTH)
-  private String name;
-
   @Schema(name = "Parent module ID")
   private Long pid;
+
+  @Length(max = MAX_NAME_LENGTH)
+  private String name;
 
   private Integer sequence;
 
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
-
 
   @Override
   @JsonIgnore
@@ -53,4 +51,5 @@ public class ModuleFindDto extends AbstractQuery {
   public OrderSort getDefaultOrderSort() {
     return OrderSort.ASC;
   }
+
 }

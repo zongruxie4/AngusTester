@@ -27,6 +27,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import cloud.xcan.angus.core.tester.domain.project.ProjectListRepo;
 import cloud.xcan.angus.core.tester.domain.project.ProjectRepo;
+import cloud.xcan.angus.core.tester.domain.project.ProjectSearchRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -36,7 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class ProjectQueryImpl implements ProjectQuery {
@@ -46,6 +47,9 @@ public class ProjectQueryImpl implements ProjectQuery {
 
   @Resource
   private ProjectListRepo projectListRepo;
+
+  @Resource
+  private ProjectSearchRepo projectSearchRepo;
 
   @Resource
   private ProjectMemberQuery projectMemberQuery;
@@ -104,7 +108,8 @@ public class ProjectQueryImpl implements ProjectQuery {
   }
 
   @Override
-  public Page<Project> find(GenericSpecification<Project> spec, Pageable pageable) {
+  public Page<Project> list(GenericSpecification<Project> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Project>>() {
 
       @Override
@@ -114,17 +119,19 @@ public class ProjectQueryImpl implements ProjectQuery {
 
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
-        Page<Project> projectPage = projectListRepo.find(criteria, pageable, Project.class, null);
-        if (projectPage.hasContent()) {
-          projectMemberQuery.setMembers(projectPage.getContent());
+        Page<Project> page = fullTextSearch
+            ? projectSearchRepo.find(criteria, pageable, Project.class, match)
+            : projectListRepo.find(criteria, pageable, Project.class, null);
+        if (page.hasContent()) {
+          projectMemberQuery.setMembers(page.getContent());
         }
-        return projectPage;
+        return page;
       }
     }.execute();
   }
 
   @Override
-  public boolean isAgile(Long id){
+  public boolean isAgile(Long id) {
     return projectRepo.countAgileById(id) > 0;
   }
 

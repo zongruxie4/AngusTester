@@ -31,6 +31,7 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisOperationP;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisRepo;
+import cloud.xcan.angus.core.tester.domain.mock.apis.MockApisSearchRepo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponse;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponseRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
@@ -46,7 +47,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 @SummaryQueryRegister(name = "MockApis", table = "mock_apis",
@@ -60,6 +61,9 @@ public class MockApisQueryImpl implements MockApisQuery {
 
   @Resource
   private MockApisResponseRepo apisResponseRepo;
+
+  @Resource
+  private MockApisSearchRepo mockApisSearchRepo;
 
   @Resource
   private CommonQuery commonQuery;
@@ -165,7 +169,8 @@ public class MockApisQueryImpl implements MockApisQuery {
   }
 
   @Override
-  public Page<MockApis> find(GenericSpecification<MockApis> spec, Pageable pageable) {
+  public Page<MockApis> list(GenericSpecification<MockApis> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<MockApis>>() {
       MockServiceInfo mockServiceDb;
 
@@ -181,7 +186,9 @@ public class MockApisQueryImpl implements MockApisQuery {
 
       @Override
       protected Page<MockApis> process() {
-        Page<MockApis> page = mockApisRepo.findAll(spec, pageable);
+        Page<MockApis> page = fullTextSearch
+            ? mockApisSearchRepo.find(spec.getCriteria(), pageable, MockApis.class, match)
+            : mockApisRepo.findAll(spec, pageable);
         if (page.isEmpty()) {
           return page;
         }

@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetEx
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.dataset.DatasetDetailVo;
@@ -156,23 +155,13 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the list of datasets", operationId = "data:dataset:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<DatasetDetailVo>> search(
-      @Valid @ParameterObject DatasetSearchDto dto) {
-    return ApiLocaleResult.success(datasetFacade.search(dto));
-  }
-
   @Operation(summary = "Export the datasets", operationId = "data:dataset:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Exported successfully")
   })
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid @ParameterObject DatasetExportDto dto,
-      HttpServletResponse response) {
+      @Valid @ParameterObject DatasetExportDto dto, HttpServletResponse response) {
     return datasetFacade.export(dto, response);
   }
 

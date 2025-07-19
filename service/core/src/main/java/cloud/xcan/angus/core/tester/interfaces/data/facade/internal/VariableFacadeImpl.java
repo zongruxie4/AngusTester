@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.data.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.getResourceResponseEntity;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler.toDetailVo;
@@ -15,7 +14,6 @@ import static java.lang.System.currentTimeMillis;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.data.VariableCmd;
 import cloud.xcan.angus.core.tester.application.query.data.VariableQuery;
-import cloud.xcan.angus.core.tester.application.query.data.VariableSearch;
 import cloud.xcan.angus.core.tester.domain.data.variables.Variable;
 import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.VariableFacade;
@@ -24,7 +22,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.Variable
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.variable.VariableValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.VariableAssembler;
@@ -49,9 +46,6 @@ public class VariableFacadeImpl implements VariableFacade {
 
   @Resource
   private VariableQuery variableQuery;
-
-  @Resource
-  private VariableSearch variableSearch;
 
   @Override
   public IdKey<Long, Object> add(VariableAddDto dto) {
@@ -105,15 +99,8 @@ public class VariableFacadeImpl implements VariableFacade {
   @NameJoin
   @Override
   public PageResult<VariableDetailVo> list(VariableFindDto dto) {
-    Page<Variable> page = variableQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, VariableAssembler::toDetailVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<VariableDetailVo> search(VariableSearchDto dto) {
-    Page<Variable> page = variableSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), Variable.class, getMatchSearchFields(dto.getClass()));
+    Page<Variable> page = variableQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, VariableAssembler::toDetailVo);
   }
 

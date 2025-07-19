@@ -5,7 +5,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesign
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignImportDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignUpdateNameDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignVo;
@@ -38,8 +37,6 @@ public interface ApisDesignFacade {
   ApisDesignDetailVo detail(Long id);
 
   PageResult<ApisDesignVo> list(ApisDesignFindDto dto);
-
-  PageResult<ApisDesignVo> search(ApisDesignSearchDto dto);
 
   ResponseEntity<org.springframework.core.io.Resource> export(ApisDesignExportDto dto,
       HttpServletResponse response);

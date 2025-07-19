@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ScenarioFavouriteQuery {
 
-  Page<ScenarioFavourite> search(Long projectId, String name, PageRequest pageable);
+  Page<ScenarioFavourite> list(Long projectId, String name, PageRequest pageable);
 
   Long count(Long projectId);
 }

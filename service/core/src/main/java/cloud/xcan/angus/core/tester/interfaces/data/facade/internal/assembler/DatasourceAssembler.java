@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.domain.data.datasource.Datasource;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceAddDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceTestDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.datasource.DatasourceDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.datasource.DatasourceVo;
@@ -106,12 +105,4 @@ public class DatasourceAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(DatasourceSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "lastModifiedDate")
-        .orderByFields("id", "lastModifiedDate")
-        .matchSearchFields("name")
-        .build();
-  }
 }

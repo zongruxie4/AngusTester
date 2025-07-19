@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitor;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorFindDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorListVo;
@@ -89,16 +88,6 @@ public class ScenarioMonitorAssembler {
         .orderByFields("id", "name", "status", "createdDate", "createdBy", "lastModifiedBy")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ScenarioMonitorSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .inAndNotFields("id")
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("name", "description")
-        .orderByFields("id", "name", "status", "createdDate", "createdBy", "lastModifiedBy")
-        .build();
   }
 
 }

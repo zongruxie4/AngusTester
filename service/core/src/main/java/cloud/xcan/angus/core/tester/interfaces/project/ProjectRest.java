@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.project.facade.ProjectFacade;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -137,15 +136,6 @@ public class ProjectRest {
   public ApiLocaleResult<PageResult<ProjectDetailVo>> list(
       @Valid @ParameterObject ProjectFindDto dto) {
     return ApiLocaleResult.success(projectFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of project", operationId = "project:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ProjectDetailVo>> search(
-      @Valid @ParameterObject ProjectSearchDto dto) {
-    return ApiLocaleResult.success(projectFacade.search(dto));
   }
 
 }

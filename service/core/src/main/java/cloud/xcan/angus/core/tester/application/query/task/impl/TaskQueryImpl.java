@@ -149,6 +149,7 @@ import cloud.xcan.angus.core.tester.domain.task.TaskInfo;
 import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskListRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskRepo;
+import cloud.xcan.angus.core.tester.domain.task.TaskSearchRepo;
 import cloud.xcan.angus.core.tester.domain.task.TaskStatus;
 import cloud.xcan.angus.core.tester.domain.task.TaskType;
 import cloud.xcan.angus.core.tester.domain.task.cases.CaseTestHit;
@@ -259,6 +260,9 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Resource
   private TaskListRepo taskListRepo;
+
+  @Resource
+  private TaskSearchRepo taskSearchRepo;
 
   @Resource
   private TagQuery tagQuery;
@@ -398,7 +402,8 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   @Override
-  public Page<Task> find(GenericSpecification<Task> spec, PageRequest pageable) {
+  public Page<Task> list(boolean export, GenericSpecification<Task> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Task>>() {
       @Override
       protected void checkParams() {
@@ -412,7 +417,9 @@ public class TaskQueryImpl implements TaskQuery {
         spec.getCriteria().add(SearchCriteria.equal("sprintDeleted", false));
 
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        Page<Task> page = taskListRepo.find(spec.getCriteria(), pageable, Task.class, null);
+        Page<Task> page = fullTextSearch
+            ? taskSearchRepo.find(spec.getCriteria(), pageable, Task.class, match)
+            : taskListRepo.find(spec.getCriteria(), pageable, Task.class, null);
 
         if (page.hasContent()) {
           if (isUserAction()) {
@@ -434,6 +441,11 @@ public class TaskQueryImpl implements TaskQuery {
           // Set assignee name and avatar
           userManager.setUserNameAndAvatar(page.getContent(),
               "assigneeId", "assigneeName", "assigneeAvatar");
+
+          if (export) {
+            // Set reference tasks and cases
+            taskFuncCaseQuery.setAssocForTask(page.getContent());
+          }
         }
         return page;
       }

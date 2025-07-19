@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler.toDetail;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
@@ -9,14 +8,12 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncReviewCaseCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseSearch;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncReviewCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncReviewCaseAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseVo;
@@ -38,9 +35,6 @@ public class FuncReviewCaseFacadeImpl implements FuncReviewCaseFacade {
 
   @Resource
   private FuncReviewCaseQuery funcReviewCaseQuery;
-
-  @Resource
-  private FuncReviewCaseSearch funcReviewCaseSearch;
 
   @Resource
   private FuncCaseFacade funcCaseFacade;
@@ -84,15 +78,9 @@ public class FuncReviewCaseFacadeImpl implements FuncReviewCaseFacade {
   @NameJoin
   @Override
   public PageResult<FuncReviewCaseVo> list(FuncReviewCaseFindDto dto) {
-    Page<FuncReviewCase> page = funcReviewCaseQuery.list(getSpecification(dto), dto.tranPage());
+    Page<FuncReviewCase> page = funcReviewCaseQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncReviewCaseAssembler::toListVo);
   }
 
-  @NameJoin
-  @Override
-  public PageResult<FuncReviewCaseVo> search(FuncReviewCaseSearchDto dto) {
-    Page<FuncReviewCase> page = funcReviewCaseSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        FuncReviewCase.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(page, FuncReviewCaseAssembler::toListVo);
-  }
 }

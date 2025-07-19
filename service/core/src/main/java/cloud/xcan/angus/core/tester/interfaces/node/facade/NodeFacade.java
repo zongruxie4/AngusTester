@@ -8,7 +8,6 @@ import cloud.xcan.angus.api.tester.node.dto.NodeRenewDto;
 import cloud.xcan.angus.api.tester.node.vo.NodeDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeTestDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.vo.NodeMockServiceListVo;
@@ -55,8 +54,5 @@ public interface NodeFacade {
   List<NodeMockServiceListVo> mockServiceList(Long id);
 
   PageResult<NodeDetailVo> list(NodeFindDto dto);
-
-  PageResult<NodeDetailVo> search(NodeSearchDto dto);
-
 
 }

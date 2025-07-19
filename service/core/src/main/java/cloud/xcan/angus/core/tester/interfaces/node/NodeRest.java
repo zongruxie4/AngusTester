@@ -10,7 +10,6 @@ import cloud.xcan.angus.api.tester.node.vo.NodeDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeFacade;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeTestDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.vo.NodeMockServiceListVo;
@@ -209,15 +208,6 @@ public class NodeRest {
   @GetMapping
   public ApiLocaleResult<PageResult<NodeDetailVo>> list(@Valid @ParameterObject NodeFindDto dto) {
     return ApiLocaleResult.success(nodeFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of node", operationId = "node:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<NodeDetailVo>> search(
-      @Valid @ParameterObject NodeSearchDto dto) {
-    return ApiLocaleResult.success(nodeFacade.search(dto));
   }
 
 }

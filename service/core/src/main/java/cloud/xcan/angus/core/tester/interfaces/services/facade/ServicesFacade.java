@@ -5,13 +5,11 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesAddDt
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesExportDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesImportDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServiceVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesDetailVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import org.springframework.core.io.Resource;
@@ -38,8 +36,6 @@ public interface ServicesFacade {
   MockServiceDetailVo associationMockService(Long id);
 
   PageResult<ServiceVo> list(ServicesFindDto dto);
-
-  PageResult<ServiceVo> search(ServicesSearchDto dto);
 
   ResponseEntity<Resource> export(ServicesExportDto dto, HttpServletResponse response);
 

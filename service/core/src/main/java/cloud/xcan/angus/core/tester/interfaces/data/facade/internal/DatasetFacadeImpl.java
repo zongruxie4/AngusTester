@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.data.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.infra.util.AngusTesterUtils.getResourceResponseEntity;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler.toDetailVo;
@@ -15,7 +14,6 @@ import static java.lang.System.currentTimeMillis;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.data.DatasetCmd;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetQuery;
-import cloud.xcan.angus.core.tester.application.query.data.DatasetSearch;
 import cloud.xcan.angus.core.tester.domain.data.dataset.Dataset;
 import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.DatasetFacade;
@@ -24,7 +22,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetEx
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetImportDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetValuePreviewDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasetAssembler;
@@ -50,9 +47,6 @@ public class DatasetFacadeImpl implements DatasetFacade {
 
   @Resource
   private DatasetQuery datasetQuery;
-
-  @Resource
-  private DatasetSearch datasetSearch;
 
   @Override
   public IdKey<Long, Object> add(DatasetAddDto dto) {
@@ -105,21 +99,14 @@ public class DatasetFacadeImpl implements DatasetFacade {
   @NameJoin
   @Override
   public PageResult<DatasetDetailVo> list(DatasetFindDto dto) {
-    Page<Dataset> page = datasetQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, DatasetAssembler::toDetailVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<DatasetDetailVo> search(DatasetSearchDto dto) {
-    Page<Dataset> page = datasetSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), Dataset.class, getMatchSearchFields(dto.getClass()));
+    Page<Dataset> page = datasetQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, DatasetAssembler::toDetailVo);
   }
 
   @Override
-  public ResponseEntity<org.springframework.core.io.Resource> export(DatasetExportDto dto,
-      HttpServletResponse response) {
+  public ResponseEntity<org.springframework.core.io.Resource> export(
+      DatasetExportDto dto, HttpServletResponse response) {
     ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
     List<Dataset> variables = datasetQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
     return getResourceResponseEntity(String.format("ExportDatasets-%s", currentTimeMillis()),

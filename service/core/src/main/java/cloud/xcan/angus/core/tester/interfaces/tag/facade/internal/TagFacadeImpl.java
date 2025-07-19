@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.tag.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler.toListVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
@@ -9,12 +8,10 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.tag.TagCmd;
 import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
-import cloud.xcan.angus.core.tester.application.query.tag.TagSearch;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.TagFacade;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagAddDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagFindDto;
-import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.internal.assembler.TagAssembler;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.vo.TagVo;
@@ -35,9 +32,6 @@ public class TagFacadeImpl implements TagFacade {
 
   @Resource
   private TagQuery tagQuery;
-
-  @Resource
-  private TagSearch tagSearch;
 
   @Override
   public List<IdKey<Long, Object>> add(TagAddDto dto) {
@@ -69,15 +63,8 @@ public class TagFacadeImpl implements TagFacade {
   @NameJoin
   @Override
   public PageResult<TagVo> list(TagFindDto dto) {
-    Page<Tag> page = tagQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, TagAssembler::toListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<TagVo> search(TagSearchDto dto) {
-    Page<Tag> page = tagSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), Tag.class, getMatchSearchFields(dto.getClass()));
+    Page<Tag> page = tagQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TagAssembler::toListVo);
   }
 

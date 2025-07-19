@@ -29,7 +29,7 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
   private ScenarioRepo scenarioRepo;
 
   @Override
-  public Page<ScenarioFavourite> search(Long projectId, String name, PageRequest pageable) {
+  public Page<ScenarioFavourite> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioFavourite>>() {
 
       @Override

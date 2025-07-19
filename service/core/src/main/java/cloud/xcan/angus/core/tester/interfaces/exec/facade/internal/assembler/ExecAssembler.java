@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecVo;
@@ -162,18 +161,6 @@ public class ExecAssembler {
         .orderByFields("id", "createdDate", "startDate", "lastModifiedDate", "actualStartDate",
             "endDate", "priority")
         .build());
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ExecSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .matchSearchFields("name", "plugin", "extSearchMerge")
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate", "startDate",
-            "actualStartDate", "endDate", "priority")
-        .inAndNotFields("id", "name", "plugin", "priority", "status")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "startDate", "actualStartDate",
-            "endDate", "priority")
-        .build();
   }
 
 }

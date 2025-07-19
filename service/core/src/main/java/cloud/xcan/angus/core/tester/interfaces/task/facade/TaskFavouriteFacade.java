@@ -13,7 +13,7 @@ public interface TaskFavouriteFacade {
 
   void cancelAll(Long projectId);
 
-  PageResult<TaskFavouriteDetailVo> search(TaskFavouriteFindDto dto);
+  PageResult<TaskFavouriteDetailVo> list(TaskFavouriteFindDto dto);
 
   Long count(Long projectId);
 

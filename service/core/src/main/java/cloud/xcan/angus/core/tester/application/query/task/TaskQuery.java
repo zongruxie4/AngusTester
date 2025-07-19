@@ -50,7 +50,8 @@ public interface TaskQuery {
 
   TaskCount countStatistics(Set<SearchCriteria> criteria);
 
-  Page<Task> find(GenericSpecification<Task> spec, PageRequest pageable);
+  Page<Task> list(boolean export, GenericSpecification<Task> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<TaskInfo> notAssociatedSubtask(Long id, Long moduleId);
 

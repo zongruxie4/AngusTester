@@ -5,7 +5,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BATCH_SIZE;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFacade;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisScopeDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesApisInfoListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -195,16 +194,6 @@ public class ServicesApisRest {
       @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisFindDto dto) {
     return ApiLocaleResult.success(apisFacade.listApis(serviceId, dto));
-  }
-
-  @Operation(summary = "Fulltext search the HTTP and WebSocket apis", operationId = "services:apis:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/{serviceId}/apis/search")
-  public ApiLocaleResult<PageResult<ServicesApisInfoListVo>> searchApis(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @ParameterObject ServicesApisSearchDto dto) {
-    return ApiLocaleResult.success(apisFacade.searchApis(serviceId, dto));
   }
 
 }

@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorFuncFac
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -104,14 +103,6 @@ public class IndicatorFuncRest {
   @GetMapping("/func")
   public ApiLocaleResult<PageResult<FuncListVo>> list(@Valid @ParameterObject FuncFindDto dto) {
     return ApiLocaleResult.success(indicatorFuncFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the indicator of functionality", operationId = "indicator:func:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/func/search")
-  public ApiLocaleResult<PageResult<FuncListVo>> search(@Valid @ParameterObject FuncSearchDto dto) {
-    return ApiLocaleResult.success(indicatorFuncFacade.search(dto));
   }
 
 }

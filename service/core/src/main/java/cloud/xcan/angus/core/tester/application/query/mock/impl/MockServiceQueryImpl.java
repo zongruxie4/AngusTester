@@ -55,6 +55,7 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceCount;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfoRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceRepo;
+import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceSearchRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceSource;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceStatus;
 import cloud.xcan.angus.core.tester.domain.mock.service.auth.MockServiceAuth;
@@ -81,7 +82,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -95,6 +95,9 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
   @Resource
   private MockServiceInfoRepo mockServiceInfoRepo;
+
+  @Resource
+  private MockServiceSearchRepo mockServiceSearchRepo;
 
   @Resource
   private MockApisResponseRepo mockApisResponseRepo;
@@ -259,7 +262,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
   @Override
   public Page<MockServiceInfo> find(GenericSpecification<MockServiceInfo> spec,
-      Pageable pageable) {
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<MockServiceInfo>>() {
       @Override
       protected void checkParams() {
@@ -269,17 +272,17 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       @Override
       protected Page<MockServiceInfo> process() {
-        Page<MockServiceInfo> page = mockServiceInfoRepo.findAll(spec, pageable);
+        Page<MockServiceInfo> page = fullTextSearch
+            ? mockServiceSearchRepo.find(spec.getCriteria(), pageable, MockServiceInfo.class, match)
+            : mockServiceInfoRepo.findAll(spec, pageable);
         if (page.isEmpty()) {
           return page;
         }
 
         // Set mock service status
         setMockServiceInfoStatus(page.getContent());
-
         // Set the current user service permissions
         setMockServiceInfoCurrentAuths(page.getContent());
-
         // Set node info
         setInfoNodeInfo(page.getContent());
         return page;
@@ -697,9 +700,9 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
   private CheckPortVo checkPort(Long nodeId, String nodeIp, int port) {
     List<CheckPortVo> result = nodeInfoQuery.checkPort(
-            new NodeAgentCheckPortDto().setBroadcast(true)
-                .setCmdParams(List.of(new CheckPortCmdParam().setDeviceId(nodeId)
-                    .setServerIp(nodeIp).setServerPort(port))));
+        new NodeAgentCheckPortDto().setBroadcast(true)
+            .setCmdParams(List.of(new CheckPortCmdParam().setDeviceId(nodeId)
+                .setServerIp(nodeIp).setServerPort(port))));
     return result.get(0);
   }
 

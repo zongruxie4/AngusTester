@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -85,15 +84,6 @@ public class ProjectAssembler {
         .matchSearchFields("name")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ProjectSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id")
-        .orderByFields("id", "name", "createdBy", "createdDate")
-        .matchSearchFields("name", "description")
-        .build();
   }
 
 }

@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintStatus;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.TaskSprintDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -116,13 +115,4 @@ public class TaskSprintAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(TaskSprintSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "startDate", "deadlineDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy"
-            , "startDate", "deadlineDate")
-        .matchSearchFields("name", "description")
-        .build();
-  }
 }

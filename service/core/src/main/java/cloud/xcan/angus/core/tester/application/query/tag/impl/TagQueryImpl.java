@@ -18,6 +18,7 @@ import cloud.xcan.angus.core.tester.application.query.tag.TagQuery;
 import cloud.xcan.angus.core.tester.domain.ResourceTagAssoc;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.domain.tag.TagRepo;
+import cloud.xcan.angus.core.tester.domain.tag.TagSearchRepo;
 import cloud.xcan.angus.core.tester.domain.tag.TagTarget;
 import cloud.xcan.angus.core.tester.domain.tag.TagTargetRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
@@ -31,13 +32,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class TagQueryImpl implements TagQuery {
 
   @Resource
   private TagRepo tagRepo;
+
+  @Resource
+  private TagSearchRepo tagSearchRepo;
 
   @Resource
   private TagTargetRepo tagTargetRepo;
@@ -62,12 +66,14 @@ public class TagQueryImpl implements TagQuery {
   }
 
   @Override
-  public Page<Tag> find(GenericSpecification<Tag> spec, Pageable pageable) {
+  public Page<Tag> list(GenericSpecification<Tag> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Tag>>() {
-
       @Override
       protected Page<Tag> process() {
-        Page<Tag> page = tagRepo.findAll(spec, pageable);
+        Page<Tag> page = fullTextSearch
+            ? tagSearchRepo.find(spec.getCriteria(), pageable, Tag.class, match)
+            : tagRepo.findAll(spec, pageable);
         setEditPermission(spec.getCriteria(), page.getContent());
         return page;
       }

@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.services.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstValueAndRemove;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.toDetailVo;
 import static cloud.xcan.angus.core.tester.interfaces.services.facade.internal.assembler.ServicesAssembler.toVo;
@@ -18,7 +17,6 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.cmd.services.ServicesCmd;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
-import cloud.xcan.angus.core.tester.application.query.services.ServicesSearch;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.MockServiceAssembler;
@@ -28,14 +26,12 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesAddDt
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesExportDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesImportDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServiceVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesDetailVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.experimental.IdKey;
-import cloud.xcan.angus.spec.locale.SupportedLanguage;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -57,9 +53,6 @@ public class ServicesFacadeImpl implements ServicesFacade {
 
   @Resource
   private ServicesQuery servicesQuery;
-
-  @Resource
-  private ServicesSearch servicesSearch;
 
   @Resource
   private MockServiceQuery mockServiceQuery;
@@ -122,17 +115,9 @@ public class ServicesFacadeImpl implements ServicesFacade {
   @Override
   public PageResult<ServiceVo> list(ServicesFindDto dto) {
     GenericSpecification<Services> spec = getSpecification(dto);
-    Page<Services> page = servicesQuery.list(spec, dto.tranPage());
+    Page<Services> page = servicesQuery.list(spec, dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return joinAssocStatus(page, spec.getCriteria());
-  }
-
-  @Override
-  public PageResult<ServiceVo> search(ServicesSearchDto dto) {
-    Set<SearchCriteria> criteria = getSearchCriteria(dto);
-    // Set authorization conditions when you are not an administrator or only query yourself
-    Page<Services> page = servicesSearch.search(criteria, dto.tranPage(),
-        getMatchSearchFields(dto.getClass()));
-    return joinAssocStatus(page, criteria);
   }
 
   @Override

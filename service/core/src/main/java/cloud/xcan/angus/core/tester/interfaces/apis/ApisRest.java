@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisArchiveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUpdateDto;
@@ -281,15 +280,6 @@ public class ApisRest {
   public ApiLocaleResult<PageResult<ApisInfoListVo>> list(
       @Valid @ParameterObject ApisInfoFindDto dto) {
     return ApiLocaleResult.success(apisFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the basic information of api", operationId = "apis:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisInfoListVo>> search(
-      @Valid @ParameterObject ApisInfoSearchDto dto) {
-    return ApiLocaleResult.success(apisFacade.search(dto));
   }
 
   @Operation(summary = "Export the OpenAPI specification of api", operationId = "apis:openapi:export")

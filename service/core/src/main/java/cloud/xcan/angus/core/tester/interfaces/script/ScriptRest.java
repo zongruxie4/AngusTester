@@ -15,7 +15,6 @@ import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.ScriptFacade;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptImportDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -193,17 +192,6 @@ public class ScriptRest {
       @Valid @ParameterObject ScriptFindDto dto) {
     PageResult<ScriptInfoListVo> result = scriptFacade.infoList(dto);
     return assembleInfoAllowImportSampleStatus(result);
-  }
-
-  @Operation(summary = "Fulltext search the list of script", operationId = "script:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScriptListVo>> search(
-      @Valid @ParameterObject ScriptSearchDto dto) {
-    PageResult<ScriptListVo> result = scriptFacade.search(dto);
-    return assembleAllowImportSampleStatus(result);
   }
 
   @Operation(summary = "Export script", operationId = "script:export")

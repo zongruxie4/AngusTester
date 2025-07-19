@@ -5,7 +5,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskMeetingFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.meeting.TaskMeetingUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.meeting.TaskMeetingVo;
@@ -100,15 +99,6 @@ public class TaskMeetingRest {
   public ApiLocaleResult<PageResult<TaskMeetingVo>> list(
       @Valid @ParameterObject TaskMeetingFindDto dto) {
     return ApiLocaleResult.success(taskMeetingFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of task meeting", operationId = "task:meeting:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskMeetingVo>> search(
-      @Valid @ParameterObject TaskMeetingSearchDto dto) {
-    return ApiLocaleResult.success(taskMeetingFacade.search(dto));
   }
 
 }

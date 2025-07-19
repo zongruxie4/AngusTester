@@ -25,7 +25,7 @@ public class MockServiceMetricsAssembler {
         .rangeSearchFields("timestamp")
         .timestampStringToLong(true)
         .build();
-    return new GenericSpecification<>(filters);
+    return new GenericSpecification<JvmServiceUsage>(filters);
   }
 
 }

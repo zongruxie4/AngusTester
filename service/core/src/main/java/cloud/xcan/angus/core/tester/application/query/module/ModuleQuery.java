@@ -13,7 +13,7 @@ public interface ModuleQuery {
 
   Module detail(Long id);
 
-  List<Module> find(GenericSpecification<Module> spec);
+  List<Module> find(GenericSpecification<Module> spec, boolean fullTextSearch, String[] match);
 
   List<Module> checkAndFind(Long projectId, Collection<Long> moduleIds);
 
@@ -42,4 +42,5 @@ public interface ModuleQuery {
   void checkQuota(int incr);
 
   void setEditPermission(Set<SearchCriteria> criteria, List<Module> allModules);
+
 }

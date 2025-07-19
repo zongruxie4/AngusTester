@@ -5,7 +5,6 @@ import cloud.xcan.angus.core.tester.interfaces.data.facade.DatasourceFacade;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceAddDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceTestDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.datasource.DatasourceDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.datasource.DatasourceTestVo;
@@ -111,12 +110,4 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the list of data datasource", operationId = "data:datasource:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<DatasourceVo>> search(
-      @Valid @ParameterObject DatasourceSearchDto dto) {
-    return ApiLocaleResult.success(datasourceFacade.search(dto));
-  }
 }

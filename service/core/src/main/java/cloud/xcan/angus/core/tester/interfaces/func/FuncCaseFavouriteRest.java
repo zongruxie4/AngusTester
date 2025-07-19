@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.func;
 
 
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncCaseFavouriteFacade;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.favourite.FuncCaseFavouriteDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -56,7 +56,7 @@ public class FuncCaseFavouriteRest {
     funcCaseFavouriteFacade.cancel(caseId);
   }
 
-  @Operation(summary = "Cancel all the favourite of case", operationId = "func:case:favourite:cancel:all")
+  @Operation(summary = "Cancel all favourite of the case", operationId = "func:case:favourite:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -66,16 +66,16 @@ public class FuncCaseFavouriteRest {
     funcCaseFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search the favourite of case", operationId = "func:case:favourite:search")
+  @Operation(summary = "Query favourite of the case", operationId = "func:case:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/favourite/search")
-  public ApiLocaleResult<PageResult<FuncCaseFavouriteDetailVo>> search(
-      @ParameterObject FuncCaseFavouriteSearchDto dto) {
-    return ApiLocaleResult.success(funcCaseFavouriteFacade.search(dto));
+  @GetMapping("/favourite")
+  public ApiLocaleResult<PageResult<FuncCaseFavouriteDetailVo>> list(
+      @ParameterObject FuncCaseFavouriteFindDto dto) {
+    return ApiLocaleResult.success(funcCaseFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Query the favourite count of case", operationId = "func:case:favourite:count")
+  @Operation(summary = "Query favourite count of the case", operationId = "func:case:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")

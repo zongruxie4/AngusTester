@@ -24,7 +24,6 @@ import cloud.xcan.angus.core.tester.application.cmd.node.NodeCmd;
 import cloud.xcan.angus.core.tester.application.query.mock.MockServiceQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeInfoQuery;
 import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
-import cloud.xcan.angus.core.tester.application.query.node.NodeSearch;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
@@ -32,7 +31,6 @@ import cloud.xcan.angus.core.tester.interfaces.node.facade.NodeFacade;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeInfoFindDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeTestDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.internal.assembler.NodeAssembler;
@@ -59,9 +57,6 @@ public class NodeFacadeImpl implements NodeFacade {
 
   @Resource
   private NodeQuery nodeQuery;
-
-  @Resource
-  private NodeSearch nodeSearch;
 
   @Resource
   private NodeInfoQuery nodeInfoQuery;
@@ -172,7 +167,8 @@ public class NodeFacadeImpl implements NodeFacade {
   @NameJoin
   @Override
   public PageResult<NodeDetailVo> list(NodeFindDto dto) {
-    Page<Node> page = nodeQuery.find(NodeAssembler.getSpecification(dto), dto.tranPage());
+    Page<Node> page = nodeQuery.list(NodeAssembler.getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     boolean isAdmin = isAdmin();
     PageResult<NodeDetailVo> detailPage = buildVoPageResult(page, x -> toDetailVo(x, isAdmin));
     if (nonNull(page) && !page.hasContent()) {
@@ -182,20 +178,6 @@ public class NodeFacadeImpl implements NodeFacade {
     if (isApi()) {
       completePageNodeInfo(detailPage);
     }
-    return detailPage;
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<NodeDetailVo> search(NodeSearchDto dto) {
-    Page<Node> page = nodeSearch.search(NodeAssembler.getSearchCriteria(dto),
-        dto.tranPage(), Node.class, getMatchSearchFields(dto.getClass()));
-    boolean isAdmin = isAdmin();
-    PageResult<NodeDetailVo> detailPage = buildVoPageResult(page, x -> toDetailVo(x, isAdmin));
-    if (nonNull(page) && !page.hasContent()) {
-      return detailPage;
-    }
-    completePageNodeInfo(detailPage);
     return detailPage;
   }
 

@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface VariableQuery {
 
@@ -19,7 +19,8 @@ public interface VariableQuery {
 
   Map<String, String> valuePreview(List<Long> ids);
 
-  Page<Variable> find(GenericSpecification<Variable> spec, Pageable pageable);
+  Page<Variable> list(GenericSpecification<Variable> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<Server> findServerByServiceId(Long serviceId);
 
@@ -40,6 +41,5 @@ public interface VariableQuery {
   void checkUpdateNameExists(Variable variable);
 
   void setSafeCloneName(Variable clonedVariable);
-
 
 }

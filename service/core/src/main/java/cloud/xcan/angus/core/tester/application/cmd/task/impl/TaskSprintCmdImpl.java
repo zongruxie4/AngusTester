@@ -18,7 +18,6 @@ import static java.util.Objects.nonNull;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
-import cloud.xcan.angus.core.biz.ProtocolAssert;
 import cloud.xcan.angus.core.biz.cmd.CommCmd;
 import cloud.xcan.angus.core.jpa.repository.BaseRepository;
 import cloud.xcan.angus.core.tester.application.cmd.activity.ActivityCmd;

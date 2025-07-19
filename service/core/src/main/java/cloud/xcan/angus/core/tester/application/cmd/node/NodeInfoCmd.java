@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.cmd.node;
 
 import cloud.xcan.angus.api.commonlink.node.AgentInstallCmd;
-import cloud.xcan.angus.api.pojo.auth.AgentAuth;
 import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeRunnerKillDto;
 import java.util.Collection;

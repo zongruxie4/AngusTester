@@ -355,7 +355,7 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
       @Override
       protected Void process() {
-        List<ApisDesignInfo> designs = apisDesignQuery.findbyIds(ids);
+        List<ApisDesignInfo> designs = apisDesignQuery.findByIds(ids);
         for (ApisDesignInfo design : designs) {
           if (design.getDesignSource().isSynchronousService()
               && nonNull(design.getDesignSourceId())) {

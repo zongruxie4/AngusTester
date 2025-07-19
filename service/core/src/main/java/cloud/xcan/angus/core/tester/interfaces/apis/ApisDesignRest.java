@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesign
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignImportDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.design.ApisDesignUpdateNameDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.design.ApisDesignVo;
@@ -164,15 +163,6 @@ public class ApisDesignRest {
   public ApiLocaleResult<PageResult<ApisDesignVo>> list(
       @Valid @ParameterObject ApisDesignFindDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the design of apis", operationId = "apis:design:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisDesignVo>> search(
-      @Valid @ParameterObject ApisDesignSearchDto dto) {
-    return ApiLocaleResult.success(apisDesignFacade.search(dto));
   }
 
   @Operation(summary = "Export the designed OpenAPI specification of apis", operationId = "apis:design:export")

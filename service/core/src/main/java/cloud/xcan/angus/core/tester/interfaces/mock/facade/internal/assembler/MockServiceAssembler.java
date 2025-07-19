@@ -15,7 +15,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServi
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceFileImportDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceServicesAssocDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.MockServiceDetailVo;
@@ -192,15 +191,6 @@ public class MockServiceAssembler {
         .matchSearchFields("name", "extSearchMerge")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(MockServiceSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .orderByFields("id", "createdDate")
-        .matchSearchFields("name", "extSearchMerge")
-        .build();
   }
 
 }

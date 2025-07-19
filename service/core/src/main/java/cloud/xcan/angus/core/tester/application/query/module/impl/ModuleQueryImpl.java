@@ -6,6 +6,7 @@ import static cloud.xcan.angus.spec.utils.ObjectUtils.distinctByKey;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNull;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Objects.nonNull;
 
@@ -20,6 +21,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.module.Module;
 import cloud.xcan.angus.core.tester.domain.module.ModuleRepo;
+import cloud.xcan.angus.core.tester.domain.module.ModuleSearchRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.JpaSort;
@@ -40,6 +43,9 @@ public class ModuleQueryImpl implements ModuleQuery {
 
   @Resource
   private ModuleRepo moduleRepo;
+
+  @Resource
+  private ModuleSearchRepo moduleSearchRepo;
 
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
@@ -53,7 +59,6 @@ public class ModuleQueryImpl implements ModuleQuery {
   @Override
   public Module detail(Long id) {
     return new BizTemplate<Module>() {
-
       @Override
       protected Module process() {
         Module module = checkAndFind(id);
@@ -64,7 +69,8 @@ public class ModuleQueryImpl implements ModuleQuery {
   }
 
   @Override
-  public List<Module> find(GenericSpecification<Module> spec) {
+  public List<Module> find(GenericSpecification<Module> spec, boolean fullTextSearch,
+      String[] match) {
     return new BizTemplate<List<Module>>() {
       @Override
       protected void checkParams() {
@@ -74,11 +80,16 @@ public class ModuleQueryImpl implements ModuleQuery {
 
       @Override
       protected List<Module> process() {
-        List<Module> modules = moduleRepo.findAll(spec,
-            PageRequest.of(0, 10000, JpaSort.by(Order.asc("id")))).getContent();
-        List<Module> allModules = findAndAllParent(modules);
-        setEditPermission(spec.getCriteria(), allModules);
-        return allModules;
+        PageRequest pageable = PageRequest.of(0, 10000, JpaSort.by(Order.asc("id")));
+        Page<Module> page = fullTextSearch
+            ? moduleSearchRepo.find(spec.getCriteria(), pageable, Module.class, match)
+            : moduleRepo.findAll(spec, pageable);
+
+        if (page.hasContent()) {
+          List<Module> allModules = findAndAllParent(page.getContent());
+          setEditPermission(spec.getCriteria(), allModules);
+        }
+        return emptyList();
       }
     }.execute();
   }

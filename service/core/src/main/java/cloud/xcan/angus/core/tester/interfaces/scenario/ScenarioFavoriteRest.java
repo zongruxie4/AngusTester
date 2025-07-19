@@ -55,7 +55,7 @@ public class ScenarioFavoriteRest {
     scenarioFavouriteFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all the favorites of scenario", operationId = "scenario:favourite:delete:all")
+  @Operation(summary = "Cancel all favorites of the scenario", operationId = "scenario:favourite:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class ScenarioFavoriteRest {
     scenarioFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query the favourite list of scenario", operationId = "scenario:favourite:search")
+  @Operation(summary = "Query favourite list of the scenario", operationId = "scenario:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/favourite/search")
-  public ApiLocaleResult<PageResult<ScenarioFavouriteDetailVo>> search(
+  @GetMapping("/favourite")
+  public ApiLocaleResult<PageResult<ScenarioFavouriteDetailVo>> list(
       @Valid @ParameterObject ScenarioFavouriteFindDto dto) {
-    return ApiLocaleResult.success(scenarioFavouriteFacade.search(dto));
+    return ApiLocaleResult.success(scenarioFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Query the favourite count of scenario", operationId = "scenario:favourite:count")
+  @Operation(summary = "Query favourite count of the scenario", operationId = "scenario:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")

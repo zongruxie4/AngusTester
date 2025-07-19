@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.data.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler.testDtoToDatasource;
@@ -12,13 +11,11 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.data.DatasourceCmd;
 import cloud.xcan.angus.core.tester.application.query.data.DatasourceQuery;
-import cloud.xcan.angus.core.tester.application.query.data.DatasourceSearch;
 import cloud.xcan.angus.core.tester.domain.data.datasource.Datasource;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.DatasourceFacade;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceAddDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.datasource.DatasourceTestDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.internal.assembler.DatasourceAssembler;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.datasource.DatasourceDetailVo;
@@ -38,9 +35,6 @@ public class DatasourceFacadeImpl implements DatasourceFacade {
 
   @Resource
   private DatasourceQuery datasourceQuery;
-
-  @Resource
-  private DatasourceSearch datasourceSearch;
 
   @Override
   public IdKey<Long, Object> add(DatasourceAddDto dto) {
@@ -81,16 +75,9 @@ public class DatasourceFacadeImpl implements DatasourceFacade {
   @NameJoin
   @Override
   public PageResult<DatasourceVo> list(DatasourceFindDto dto) {
-    Page<Datasource> page = datasourceQuery.find(
-        getSpecification(dto), dto.tranPage());
+    Page<Datasource> page = datasourceQuery.find(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, DatasourceAssembler::toVo);
   }
 
-  @NameJoin
-  @Override
-  public PageResult<DatasourceVo> search(DatasourceSearchDto dto) {
-    Page<Datasource> page = datasourceSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), Datasource.class, getMatchSearchFields(dto.getClass()));
-    return buildVoPageResult(page, DatasourceAssembler::toVo);
-  }
 }

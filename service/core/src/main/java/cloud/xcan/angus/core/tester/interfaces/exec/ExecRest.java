@@ -12,7 +12,6 @@ import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecAddByScriptDt
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecConfigReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecScriptConfigReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStopDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecDetailVo;
@@ -182,14 +181,6 @@ public class ExecRest {
   @GetMapping
   public ApiLocaleResult<PageResult<ExecVo>> list(@Valid @ParameterObject ExecFindDto dto) {
     return ApiLocaleResult.success(execFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of execution", operationId = "exec:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ExecVo>> search(@Valid @ParameterObject ExecSearchDto dto) {
-    return ApiLocaleResult.success(execFacade.search(dto));
   }
 
 }

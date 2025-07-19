@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.plan.FuncPlanDetailVo;
@@ -37,8 +36,6 @@ public interface FuncPlanFacade {
   FuncPlanDetailVo detail(Long id);
 
   PageResult<FuncPlanDetailVo> list(FuncPlanFindDto dto);
-
-  PageResult<FuncPlanDetailVo> search(FuncPlanSearchDto dto);
 
   List<FuncCaseListVo> notReviewed(Long id, Long moduleId, Long reviewId);
 

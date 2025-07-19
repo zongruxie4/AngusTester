@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal;
 
+import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler.toIndicatorStabilityVo;
@@ -11,13 +11,11 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorStabilityCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilityQuery;
-import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorStabilitySearch;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorStabilityFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorStabilityAssembler;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
@@ -37,9 +35,6 @@ public class IndicatorStabilityFacadeImpl implements IndicatorStabilityFacade {
 
   @Resource
   private IndicatorStabilityQuery indicatorStabilityQuery;
-
-  @Resource
-  private IndicatorStabilitySearch indicatorStabilitySearch;
 
   @Override
   public IdKey<Long, Object> add(StabilityAddDto dto) {
@@ -74,16 +69,8 @@ public class IndicatorStabilityFacadeImpl implements IndicatorStabilityFacade {
   @NameJoin
   @Override
   public PageResult<StabilityListVo> list(StabilityFindDto dto) {
-    Page<IndicatorStability> page = indicatorStabilityQuery
-        .list(getSpecification(dto), dto.tranPage(), IndicatorStability.class);
-    return buildVoPageResult(page, IndicatorStabilityAssembler::toListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<StabilityListVo> search(StabilitySearchDto dto) {
-    Page<IndicatorStability> page = indicatorStabilitySearch
-        .search(getSearchCriteria(dto), dto.tranPage(), IndicatorStability.class);
+    Page<IndicatorStability> page = indicatorStabilityQuery.list(getSpecification(dto),
+        dto.tranPage(), dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, IndicatorStabilityAssembler::toListVo);
   }
 

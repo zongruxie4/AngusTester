@@ -7,9 +7,11 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import cloud.xcan.angus.api.manager.UserManager;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.data.DatasourceQuery;
 import cloud.xcan.angus.core.tester.domain.data.datasource.Datasource;
 import cloud.xcan.angus.core.tester.domain.data.datasource.DatasourceRepo;
+import cloud.xcan.angus.core.tester.domain.data.datasource.DatasourceSearchRepo;
 import cloud.xcan.angus.jdbc.pool.SimpleConnectionPool;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
@@ -18,8 +20,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 @Slf4j
@@ -27,6 +28,9 @@ public class DatasourceQueryImpl implements DatasourceQuery {
 
   @Resource
   private DatasourceRepo mockDatasourceRepo;
+
+  @Resource
+  private DatasourceSearchRepo mockDatasourceSearchRepo;
 
   @Resource
   private UserManager userManager;
@@ -49,15 +53,14 @@ public class DatasourceQueryImpl implements DatasourceQuery {
   }
 
   @Override
-  public Page<Datasource> find(Specification<Datasource> spec, Pageable pageable) {
+  public Page<Datasource> find(GenericSpecification<Datasource> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Datasource>>() {
       @Override
-      protected void checkParams() {
-      }
-
-      @Override
       protected Page<Datasource> process() {
-        Page<Datasource> page = mockDatasourceRepo.findAll(spec, pageable);
+        Page<Datasource> page = fullTextSearch
+            ? mockDatasourceSearchRepo.find(spec.getCriteria(), pageable, Datasource.class, match)
+            : mockDatasourceRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           userManager.setUserNameAndAvatar(page.getContent(), "lastModifiedBy",
               "lastModifiedByName", "avatar");
@@ -89,7 +92,7 @@ public class DatasourceQueryImpl implements DatasourceQuery {
     if (isNotEmpty(datasource.getDriverClassName())) {
       try {
         SimpleConnectionPool.checkDriverExists(datasource.getDriverClassName());
-      }catch (Exception e) {
+      } catch (Exception e) {
         throw new SQLException("Driver class not found: " + e.getMessage());
       }
     }

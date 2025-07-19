@@ -1,15 +1,14 @@
 package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioTrashAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioTrashAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioTrashCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTrashQuery;
-import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioTrashSearch;
 import cloud.xcan.angus.core.tester.domain.scenario.trash.ScenarioTrash;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashListDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioTrashAssembler;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.trash.ScenarioTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -25,9 +24,6 @@ public class ScenarioTrashFacadeImpl implements ScenarioTrashFacade {
 
   @Resource
   private ScenarioTrashQuery scenarioTrashQuery;
-
-  @Resource
-  private ScenarioTrashSearch scenarioTrashSearch;
 
   @Override
   public void clear(Long id) {
@@ -55,9 +51,9 @@ public class ScenarioTrashFacadeImpl implements ScenarioTrashFacade {
   }
 
   @Override
-  public PageResult<ScenarioTrashDetailVo> search(ScenarioTrashSearchDto dto) {
-    Page<ScenarioTrash> page = scenarioTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        ScenarioTrash.class, getMatchSearchFields(dto.getClass()));
+  public PageResult<ScenarioTrashDetailVo> list(ScenarioTrashListDto dto) {
+    Page<ScenarioTrash> page = scenarioTrashQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ScenarioTrashAssembler::toDetailVo);
   }
 

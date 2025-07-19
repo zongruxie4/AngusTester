@@ -9,13 +9,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface TaskSprintQuery {
 
   TaskSprint detail(Long id);
 
-  Page<TaskSprint> find(GenericSpecification<TaskSprint> spec, Pageable pageable);
+  Page<TaskSprint> list(GenericSpecification<TaskSprint> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   TaskSprint findLeastByProjectId(Long projectId);
 

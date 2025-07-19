@@ -37,6 +37,7 @@ import cloud.xcan.angus.core.tester.domain.task.TaskInfoRepo;
 import cloud.xcan.angus.core.tester.domain.task.count.SprintTaskNum;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintRepo;
+import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprintSearchRepo;
 import cloud.xcan.angus.core.tester.infra.persistence.mysql.master.task.TaskRepoMysql;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.remote.message.ProtocolException;
@@ -57,13 +58,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 public class TaskSprintQueryImpl implements TaskSprintQuery {
 
   @Resource
   private TaskSprintRepo taskSprintRepo;
+
+  @Resource
+  private TaskSprintSearchRepo taskSprintSearchRepo;
 
   @Resource
   private TaskInfoRepo taskInfoRepo;
@@ -112,7 +116,8 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   }
 
   @Override
-  public Page<TaskSprint> find(GenericSpecification<TaskSprint> spec, Pageable pageable) {
+  public Page<TaskSprint> list(GenericSpecification<TaskSprint> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<TaskSprint>>() {
       @Override
       protected void checkParams() {
@@ -128,7 +133,9 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
         // Set authorization conditions when you are not an administrator or only query yourself
         // checkAndSetAuthObjectIdCriteria(criteria); -> All project members are visible
 
-        Page<TaskSprint> page = taskSprintRepo.findAll(spec, pageable);
+        Page<TaskSprint> page = fullTextSearch
+            ? taskSprintSearchRepo.find(criteria, pageable, TaskSprint.class, match)
+            : taskSprintRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           Set<Long> sprintIds = page.getContent().stream().map(TaskSprint::getId)
               .collect(Collectors.toSet());

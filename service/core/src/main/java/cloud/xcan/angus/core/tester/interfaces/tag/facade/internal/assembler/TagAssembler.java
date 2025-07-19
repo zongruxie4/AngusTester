@@ -4,7 +4,6 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.tag.Tag;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagFindDto;
-import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.vo.TagVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -35,15 +34,6 @@ public class TagAssembler {
         .orderByFields("id", "createdDate")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(TagSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("name")
-        .orderByFields("id", "createdDate")
-        .build();
   }
 
 }

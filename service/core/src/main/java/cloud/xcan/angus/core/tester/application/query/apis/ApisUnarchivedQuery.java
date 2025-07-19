@@ -4,7 +4,7 @@ import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.domain.apis.unarchived.ApisUnarchived;
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface ApisUnarchivedQuery {
 
@@ -12,8 +12,8 @@ public interface ApisUnarchivedQuery {
 
   Long count(Long projectId);
 
-  Page<ApisUnarchived> find(GenericSpecification<ApisUnarchived> spec,
-      Pageable pageable, Class<ApisUnarchived> clz);
+  Page<ApisUnarchived> list(GenericSpecification<ApisUnarchived> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   ApisUnarchived checkAndFind(Long id);
 

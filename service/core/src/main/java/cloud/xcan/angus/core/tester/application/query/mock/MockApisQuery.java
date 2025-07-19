@@ -9,7 +9,7 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface MockApisQuery {
 
@@ -17,7 +17,8 @@ public interface MockApisQuery {
 
   List<MockApis> info0(Long serviceId, String method, String endpoint);
 
-  Page<MockApis> find(GenericSpecification<MockApis> spec, Pageable pageable);
+  Page<MockApis> list(GenericSpecification<MockApis> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   MockApis checkAndFind(Long id);
 

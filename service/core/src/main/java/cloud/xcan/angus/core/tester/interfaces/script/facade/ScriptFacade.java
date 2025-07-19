@@ -10,7 +10,6 @@ import cloud.xcan.angus.api.tester.script.vo.ScriptInfosVo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptImportDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.angus.model.script.AngusScript;
@@ -54,8 +53,6 @@ public interface ScriptFacade {
   PageResult<ScriptListVo> list(ScriptFindDto dto);
 
   PageResult<ScriptInfoListVo> infoList(ScriptFindDto dto);
-
-  PageResult<ScriptListVo> search(ScriptSearchDto dto);
 
   ResponseEntity<Resource> export(Long id, ScriptFormat format, HttpServletResponse response);
 

@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.scenario;
 
 
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.trash.ScenarioTrashListDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.trash.ScenarioTrashDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -82,13 +82,13 @@ public class ScenarioTrashRest {
     return ApiLocaleResult.success(trashScenarioFacade.count(projectId));
   }
 
-  @Operation(summary = "Fulltext search the trash of scenario", operationId = "scenario:trash:search")
+  @Operation(summary = "Query trash list of the scenario", operationId = "scenario:trash:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScenarioTrashDetailVo>> search(
-      @Valid @ParameterObject ScenarioTrashSearchDto dto) {
-    return ApiLocaleResult.success(trashScenarioFacade.search(dto));
+  @GetMapping
+  public ApiLocaleResult<PageResult<ScenarioTrashDetailVo>> list(
+      @Valid @ParameterObject ScenarioTrashListDto dto) {
+    return ApiLocaleResult.success(trashScenarioFacade.list(dto));
   }
 
 }

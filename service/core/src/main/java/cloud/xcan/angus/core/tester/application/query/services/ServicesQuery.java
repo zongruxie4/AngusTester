@@ -18,7 +18,8 @@ public interface ServicesQuery {
 
   Services detail(Long id, Boolean joinSchema);
 
-  Page<Services> list(GenericSpecification<Services> spec, PageRequest pageRequest);
+  Page<Services> list(GenericSpecification<Services> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   MockService associationMockService(Long id);
 

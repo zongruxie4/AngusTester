@@ -38,6 +38,7 @@ import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfoListRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfoRepo;
+import cloud.xcan.angus.core.tester.domain.script.ScriptInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.script.ScriptRepo;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptCount;
 import cloud.xcan.angus.core.tester.domain.script.count.ScriptResourcesCreationCount;
@@ -70,7 +71,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Slf4j
 @SummaryQueryRegister(name = "Script", table = "script", groupByColumns = {/*"created_date", */
@@ -86,6 +87,9 @@ public class ScriptQueryImpl implements ScriptQuery {
 
   @Resource
   private ScriptInfoListRepo scriptInfoListRepo;
+
+  @Resource
+  private ScriptInfoSearchRepo scriptInfoSearchRepo;
 
   @Resource
   private ScriptTagRepo scriptTagRepo;
@@ -233,7 +237,8 @@ public class ScriptQueryImpl implements ScriptQuery {
   }
 
   @Override
-  public Page<ScriptInfo> find(GenericSpecification<ScriptInfo> spec, Pageable pageable) {
+  public Page<ScriptInfo> list(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ScriptInfo>>() {
       @Override
       protected void checkParams() {
@@ -249,8 +254,9 @@ public class ScriptQueryImpl implements ScriptQuery {
 
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        Page<ScriptInfo> pages = scriptInfoListRepo.find(spec.getCriteria(), pageable,
-            ScriptInfo.class, null);
+        Page<ScriptInfo> pages = fullTextSearch
+            ? scriptInfoSearchRepo.find(spec.getCriteria(), pageable, ScriptInfo.class, match)
+            : scriptInfoListRepo.find(spec.getCriteria(), pageable, ScriptInfo.class, null);
         if (pages.isEmpty()) {
           return pages;
         }
@@ -268,7 +274,8 @@ public class ScriptQueryImpl implements ScriptQuery {
   }
 
   @Override
-  public Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, Pageable pageable) {
+  public Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ScriptInfo>>() {
       @Override
       protected void checkParams() {

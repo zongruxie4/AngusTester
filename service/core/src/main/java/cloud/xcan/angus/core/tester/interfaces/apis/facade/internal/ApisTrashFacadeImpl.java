@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTrashAssembler.getSearchCriteria;
+import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTrashAssembler.getSpecification;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
@@ -9,11 +9,10 @@ import cloud.xcan.angus.api.commonlink.ApisTargetType;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisTrashCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisTrashQuery;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisTrashSearch;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfo;
 import cloud.xcan.angus.core.tester.domain.apis.trash.ApisTrash;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.trash.ApisTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.trash.ApisTrashFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisTrashAssembler;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.trash.ApisTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -33,9 +32,6 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
 
   @Resource
   private ApisTrashQuery apisTrashQuery;
-
-  @Resource
-  private ApisTrashSearch apisTrashSearch;
 
   @Resource
   private ApisQuery apisQuery;
@@ -66,13 +62,12 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
   }
 
   @Override
-  public PageResult<ApisTrashDetailVo> search(ApisTrashSearchDto dto) {
-    Page<ApisTrash> page = apisTrashSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        ApisTrash.class, getMatchSearchFields(dto.getClass()));
+  public PageResult<ApisTrashDetailVo> list(ApisTrashFindDto dto) {
+    Page<ApisTrash> page = apisTrashQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     if (page.isEmpty()) {
       return PageResult.empty();
     }
-
     PageResult<ApisTrashDetailVo> detailPage
         = buildVoPageResult(page, ApisTrashAssembler::toDetailVo);
     if (ApisTargetType.API.equals(dto.getTargetType())) {
@@ -82,9 +77,9 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
   }
 
   private void setApiMethodAndUri(Page<ApisTrash> trashPage, PageResult<ApisTrashDetailVo> page) {
-    List<ApisTrash> trashs = trashPage.getContent();
+    List<ApisTrash> trash = trashPage.getContent();
     List<ApisBaseInfo> apis = apisQuery.findBase0ByIdIn(
-        trashs.stream().map(ApisTrash::getTargetId).collect(Collectors.toList()));
+        trash.stream().map(ApisTrash::getTargetId).collect(Collectors.toList()));
     Map<Long, ApisBaseInfo> apisMap = apis.stream()
         .collect(Collectors.toMap(ApisBaseInfo::getId, Function.identity()));
     for (ApisTrashDetailVo apisDetailVo : page.getList()) {

@@ -47,7 +47,6 @@ import cloud.xcan.angus.l2cache.spring.RedisCaffeineCacheManager;
 import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.annotations.DoInFuture;
 import cloud.xcan.angus.spec.locale.SupportedLanguage;
-import cloud.xcan.angus.spec.thread.MultiTaskThreadPool;
 import cloud.xcan.angus.spec.utils.GzipUtils;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

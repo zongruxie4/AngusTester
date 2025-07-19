@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFunc;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.FuncSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.FuncVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -85,15 +84,4 @@ public class IndicatorFuncAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(FuncSearchDto dto) {
-    if (Objects.nonNull(dto.getAdmin()) && dto.getAdmin()) {
-      dto.getFilters().add(SearchCriteria.equal("admin", "true"));
-    }
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .matchSearchFields("targetName")
-        .rangeSearchFields("id", "createdDate")
-        .inAndNotFields("id", "targetType")
-        .build();
-  }
 }

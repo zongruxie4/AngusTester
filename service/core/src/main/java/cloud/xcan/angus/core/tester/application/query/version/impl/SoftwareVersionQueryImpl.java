@@ -67,7 +67,8 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
   }
 
   @Override
-  public Page<SoftwareVersion> find(GenericSpecification<SoftwareVersion> spec, PageRequest pageable) {
+  public Page<SoftwareVersion> list(GenericSpecification<SoftwareVersion> spec,
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<SoftwareVersion>>() {
 
       @Override
@@ -124,7 +125,7 @@ public class SoftwareVersionQueryImpl implements SoftwareVersionQuery {
       for (SoftwareVersion versionDb : versionsDb) {
         if (versionTasks.containsKey(versionDb.getName())) {
           versionDb.setProgress(assembleTaskProgressCount0(versionTasks.get(versionDb.getName())));
-        }else {
+        } else {
           versionDb.setProgress(new ProgressCount());
         }
       }

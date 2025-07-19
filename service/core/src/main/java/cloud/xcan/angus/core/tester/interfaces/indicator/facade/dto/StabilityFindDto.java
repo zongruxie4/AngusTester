@@ -21,6 +21,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class StabilityFindDto extends PageQuery {
 
+  @Schema(description = "Perf indicator id")
+  private Long id;
+
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"API", "SCENARIO"})
   @Schema(allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)

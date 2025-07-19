@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_BATCH_SIZE;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.TagFacade;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagAddDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagFindDto;
-import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.vo.TagVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -23,7 +22,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -103,11 +101,4 @@ public class TagRest {
     return ApiLocaleResult.success(tagFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the tag", operationId = "tag:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TagVo>> search(@Valid @ParameterObject TagSearchDto dto) {
-    return ApiLocaleResult.success(tagFacade.search(dto));
-  }
 }

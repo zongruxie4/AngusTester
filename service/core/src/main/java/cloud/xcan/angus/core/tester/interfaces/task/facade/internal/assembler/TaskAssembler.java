@@ -28,7 +28,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskAssocVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.TaskDetailVo;
@@ -453,17 +452,4 @@ public class TaskAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(TaskSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .matchSearchFields("name", "code")
-        .rangeSearchFields("startDate", "deadlineDate", "confirmedDate", "completedDate",
-            "processedDate", "canceledDate", "execDate", "createdDate", "lastModifiedDate",
-            "failNum", "totalNum", "evalWorkload", "actualWorkload")
-        .inAndNotFields("id", "tagId", "status", "assigneeId", "confirmorId", "moduleId")
-        .orderByFields("id", "name", "code", "createdDate", "taskType", "testType", "bugLevel",
-            "startDate", "deadlineDate", "priority", "status", "evalWorkload", "actualWorkload",
-            "failNum", "totalNum", "execStatus", "execResult", "moduleId")
-        .build();
-  }
 }

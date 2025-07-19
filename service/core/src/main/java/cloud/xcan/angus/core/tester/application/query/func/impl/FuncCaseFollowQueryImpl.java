@@ -20,7 +20,7 @@ public class FuncCaseFollowQueryImpl implements FuncCaseFollowQuery {
   private FuncCaseFollowRepo funcCaseFollowRepo;
 
   @Override
-  public Page<FuncCaseFollowP> search(Long projectId, String name, PageRequest pageable) {
+  public Page<FuncCaseFollowP> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<FuncCaseFollowP>>() {
 
       @Override

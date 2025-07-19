@@ -16,14 +16,12 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisArchiveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisInfoListVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.mock.ApisAssocMockApiVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisFindDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesApisInfoListVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import java.util.Objects;
@@ -335,19 +333,6 @@ public class ApisAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ServicesApisSearchDto dto) {
-    if (Objects.nonNull(dto.getAdmin()) && dto.getAdmin()) {
-      dto.getFilters().add(SearchCriteria.equal("admin", "true"));
-    }
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .inAndNotFields("protocol", "id")
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("summary", "endpoint", "extSearchMerge")
-        .orderByFields("endpoint", "createdDate", "createdBy", "id", "summary")
-        .build();
-  }
-
   public static GenericSpecification<ApisBasicInfo> getSpecification(ApisInfoFindDto dto) {
     // Build the final filters
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
@@ -357,16 +342,6 @@ public class ApisAssembler {
         .orderByFields("endpoint", "createdDate", "createdBy", "id", "summary")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(ApisInfoSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .inAndNotFields("protocol", "id")
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("summary", "endpoint", "extSearchMerge")
-        .orderByFields("endpoint", "createdDate", "createdBy", "id", "summary")
-        .build();
   }
 
 }

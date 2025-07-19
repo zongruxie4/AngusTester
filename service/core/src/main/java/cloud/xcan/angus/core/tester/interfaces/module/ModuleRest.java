@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.module.facade.ModuleFacade;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleAddDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleFindDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleTreeVo;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleVo;
@@ -115,14 +114,6 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the software module of project", operationId = "module:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<List<ModuleVo>> search(@Valid @ParameterObject ModuleSearchDto dto) {
-    return ApiLocaleResult.success(moduleFacade.search(dto));
-  }
-
   @Operation(summary = "Query the software module tree of project", operationId = "module:tree")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
@@ -131,12 +122,4 @@ public class ModuleRest {
     return ApiLocaleResult.success(moduleFacade.tree(dto));
   }
 
-  @Operation(summary = "Fulltext search the software module tree of project", operationId = "module:tree:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/tree/search")
-  public ApiLocaleResult<List<ModuleTreeVo>> treeSearch(
-      @Valid @ParameterObject ModuleSearchDto dto) {
-    return ApiLocaleResult.success(moduleFacade.treeSearch(dto));
-  }
 }

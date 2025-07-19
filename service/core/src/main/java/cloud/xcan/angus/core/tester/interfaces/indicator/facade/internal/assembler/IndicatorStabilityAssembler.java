@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStability;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -104,16 +103,6 @@ public class IndicatorStabilityAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(StabilitySearchDto dto) {
-    if (Objects.nonNull(dto.getAdmin()) && dto.getAdmin()) {
-      dto.getFilters().add(SearchCriteria.equal("admin", "true"));
-    }
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .matchSearchFields("targetName")
-        .rangeSearchFields("id", "createdDate")
-        .build();
-  }
 }
 
 

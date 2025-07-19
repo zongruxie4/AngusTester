@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioMonitorFa
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorFindDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorListVo;
@@ -118,15 +117,6 @@ public class ScenarioMonitorRest {
   public ApiLocaleResult<PageResult<ScenarioMonitorListVo>> list(
       @Valid @ParameterObject ScenarioMonitorFindDto dto) {
     return ApiLocaleResult.success(scenarioMonitorFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of scenario monitor", operationId = " scenario:monitor:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ScenarioMonitorListVo>> search(
-      @Valid @ParameterObject ScenarioMonitorSearchDto dto) {
-    return ApiLocaleResult.success(scenarioMonitorFacade.search(dto));
   }
 
 }

@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.task.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler.toDetailVo;
@@ -12,13 +11,11 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.task.TaskSprintCmd;
 import cloud.xcan.angus.core.tester.application.query.task.TaskSprintQuery;
-import cloud.xcan.angus.core.tester.application.query.task.TaskSprintSearch;
 import cloud.xcan.angus.core.tester.domain.task.sprint.TaskSprint;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskSprintFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.sprint.TaskSprintUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskSprintAssembler;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.sprint.TaskSprintDetailVo;
@@ -38,9 +35,6 @@ public class TaskSprintFacadeImpl implements TaskSprintFacade {
 
   @Resource
   private TaskSprintQuery taskSprintQuery;
-
-  @Resource
-  private TaskSprintSearch taskSprintSearch;
 
   @Override
   public IdKey<Long, Object> add(TaskSprintAddDto dto) {
@@ -106,15 +100,8 @@ public class TaskSprintFacadeImpl implements TaskSprintFacade {
   @NameJoin
   @Override
   public PageResult<TaskSprintDetailVo> list(@Valid TaskSprintFindDto dto) {
-    Page<TaskSprint> page = taskSprintQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, TaskSprintAssembler::toDetailVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<TaskSprintDetailVo> search(@Valid TaskSprintSearchDto dto) {
-    Page<TaskSprint> page = taskSprintSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        TaskSprint.class, getMatchSearchFields(dto.getClass()));
+    Page<TaskSprint> page = taskSprintQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, TaskSprintAssembler::toDetailVo);
   }
 

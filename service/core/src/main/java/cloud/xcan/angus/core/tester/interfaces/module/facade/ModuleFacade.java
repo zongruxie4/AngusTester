@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.module.facade;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleAddDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleFindDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.dto.ModuleUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleTreeVo;
 import cloud.xcan.angus.core.tester.interfaces.module.facade.vo.ModuleVo;
@@ -25,12 +24,8 @@ public interface ModuleFacade {
 
   ModuleVo detail(Long id);
 
-  List<ModuleVo> list(ModuleFindDto findDto);
-
-  List<ModuleVo> search(ModuleSearchDto dto);
+  List<ModuleVo> list(ModuleFindDto dto);
 
   List<ModuleTreeVo> tree(ModuleFindDto dto);
-
-  List<ModuleTreeVo> treeSearch(ModuleSearchDto dto);
 
 }

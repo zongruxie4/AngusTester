@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseFavouriteCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseFavouriteQuery;
 import cloud.xcan.angus.core.tester.domain.func.favourite.FuncCaseFavouriteP;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncCaseFavouriteFacade;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.favourite.FuncCaseFavouriteFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseFavouriteAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.favourite.FuncCaseFavouriteDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -41,9 +41,9 @@ public class FuncCaseFavouriteFacadeImpl implements FuncCaseFavouriteFacade {
   }
 
   @Override
-  public PageResult<FuncCaseFavouriteDetailVo> search(FuncCaseFavouriteSearchDto dto) {
+  public PageResult<FuncCaseFavouriteDetailVo> list(FuncCaseFavouriteFindDto dto) {
     Page<FuncCaseFavouriteP> page = funcCaseFavouriteQuery
-        .search(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
+        .list(dto.getProjectId(), dto.getCaseName(), dto.tranPage());
     return buildVoPageResult(page, FuncCaseFavouriteAssembler::toDetailVo);
   }
 

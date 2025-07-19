@@ -11,7 +11,6 @@ import cloud.xcan.angus.core.tester.domain.data.dataset.DatasetTarget;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetAddDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetFindDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.dto.dataset.DatasetUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.dataset.DatasetDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.data.facade.vo.dataset.DatasetExportVo;
@@ -98,17 +97,6 @@ public class DatasetAssembler {
         .matchSearchFields("name")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(DatasetSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "lastModifiedDate")
-        .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy",
-            "lastModifiedDate")
-        .inAndNotFields("id", "name")
-        .matchSearchFields("name")
-        .build();
   }
 
 }

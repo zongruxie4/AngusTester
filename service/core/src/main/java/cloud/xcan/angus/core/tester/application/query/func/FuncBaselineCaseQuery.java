@@ -11,8 +11,9 @@ public interface FuncBaselineCaseQuery {
 
   List<FuncBaselineCase> detail(Long caseId);
 
-  Page<FuncBaselineCaseInfo> list(Long baselineId,
-      GenericSpecification<FuncBaselineCaseInfo> spec, PageRequest pageable);
+  Page<FuncBaselineCaseInfo> list(boolean export, Long baselineId,
+      GenericSpecification<FuncBaselineCaseInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<FuncBaselineCase> checkAndFind(Long caseId);
 

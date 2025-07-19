@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.exec.facade.internal;
 
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.exec.facade.internal.assembler.ExecAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.exec.facade.internal.assembler.ExecAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.exec.facade.internal.assembler.ExecAssembler.toExecDetailVo;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
@@ -13,7 +12,6 @@ import cloud.xcan.angus.agent.message.runner.RunnerStopVo;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.exec.ExecCmd;
 import cloud.xcan.angus.core.tester.application.query.exec.ExecQuery;
-import cloud.xcan.angus.core.tester.application.query.exec.ExecSearch;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.ExecFacade;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecAddByArgsDto;
@@ -22,7 +20,6 @@ import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecAddByScriptDt
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecConfigReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecScriptConfigReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStartDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecStopDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.internal.assembler.ExecAssembler;
@@ -49,9 +46,6 @@ public class ExecFacadeImpl implements ExecFacade {
 
   @Resource
   private ExecQuery execQuery;
-
-  @Resource
-  private ExecSearch execSearch;
 
   @Override
   public IdKey<Long, Object> addByScriptContent(ExecAddByContentDto dto) {
@@ -141,15 +135,8 @@ public class ExecFacadeImpl implements ExecFacade {
   @NameJoin
   @Override
   public PageResult<ExecVo> list(ExecFindDto dto) {
-    Page<ExecInfo> page = execQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, ExecAssembler::toExecVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ExecVo> search(ExecSearchDto dto) {
-    Page<ExecInfo> page = execSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), ExecInfo.class, getMatchSearchFields(dto.getClass()));
+    Page<ExecInfo> page = execQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ExecAssembler::toExecVo);
   }
 

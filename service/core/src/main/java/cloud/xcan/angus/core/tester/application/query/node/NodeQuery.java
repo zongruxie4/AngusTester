@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
 public interface NodeQuery {
@@ -18,7 +18,8 @@ public interface NodeQuery {
 
   Long count(Specification<Node> spec);
 
-  Page<Node> find(GenericSpecification<Node> spec, Pageable pageable);
+  Page<Node> list(GenericSpecification<Node> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<Node> findByRole(NodeRole nodeRole);
 
@@ -59,7 +60,6 @@ public interface NodeQuery {
   Map<Long, Set<NodeRole>> getNodeRoles(List<Long> nodeIds);
 
   void setNodeRoles(List<Node> nodes);
-
 
 }
 

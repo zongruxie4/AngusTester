@@ -14,6 +14,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectQuery;
 import cloud.xcan.angus.core.tester.domain.activity.Activity;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityListRepo;
 import cloud.xcan.angus.core.tester.domain.activity.ActivityRepo;
+import cloud.xcan.angus.core.tester.domain.activity.ActivitySearchRepo;
 import cloud.xcan.angus.core.tester.domain.activity.summary.ActivitySummary;
 import cloud.xcan.angus.core.tester.domain.project.Project;
 import jakarta.annotation.Resource;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @Biz
 @SummaryQueryRegister(name = "Activity", table = "activity", groupByColumns = {"opt_date",
@@ -35,19 +36,24 @@ public class ActivityQueryImpl implements ActivityQuery {
   private ActivityListRepo activityListRepo;
 
   @Resource
+  private ActivitySearchRepo activitySearchRepo;
+
+  @Resource
   private ProjectQuery projectQuery;
 
   @Resource
   private UserManager userManager;
 
   @Override
-  public Page<Activity> find(GenericSpecification<Activity> spec, Pageable pageable) {
+  public Page<Activity> find(GenericSpecification<Activity> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Activity>>() {
 
       @Override
       protected Page<Activity> process() {
-        Page<Activity> page = activityListRepo.find(spec.getCriteria(), pageable,
-            Activity.class, null);
+        Page<Activity> page = fullTextSearch
+            ? activitySearchRepo.find(spec.getCriteria(), pageable, Activity.class, match)
+            : activityListRepo.find(spec.getCriteria(), pageable, Activity.class, null);
         if (page.hasContent()) {
           setProjectName(page);
           userManager.setUserNameAndAvatar(page.getContent(), "userId", "fullName", "avatar");

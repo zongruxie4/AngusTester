@@ -6,7 +6,6 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisUnarchivedFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedListVo;
@@ -129,12 +128,4 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.list(dto));
   }
 
-  @Operation(summary = "Fulltext search the unarchived api", operationId = "apis:unarchived:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ApisUnarchivedListVo>> search(
-      @Valid @ParameterObject ApisUnarchivedSearchDto dto) {
-    return ApiLocaleResult.success(apisUnarchivedFacade.search(dto));
-  }
 }

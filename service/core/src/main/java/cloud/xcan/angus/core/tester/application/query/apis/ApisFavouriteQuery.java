@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ApisFavouriteQuery {
 
-  Page<ApisFavouriteP> search(Long projectId, String apisName, PageRequest pageable);
+  Page<ApisFavouriteP> list(Long projectId, String apisName, PageRequest pageable);
 
   Long count(Long projectId);
 }

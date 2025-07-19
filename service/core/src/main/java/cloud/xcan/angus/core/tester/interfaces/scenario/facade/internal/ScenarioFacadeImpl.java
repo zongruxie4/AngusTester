@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler.toDetailVo;
@@ -12,12 +11,10 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.scenario.ScenarioCmd;
 import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioQuery;
-import cloud.xcan.angus.core.tester.application.query.scenario.ScenarioSearch;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.ScenarioFacade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.internal.assembler.ScenarioAssembler;
@@ -40,9 +37,6 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
 
   @Resource
   private ScenarioQuery scenarioQuery;
-
-  @Resource
-  private ScenarioSearch scenarioSearch;
 
   @Override
   public IdKey<Long, Object> add(ScenarioAddDto dto) {
@@ -88,22 +82,15 @@ public class ScenarioFacadeImpl implements ScenarioFacade {
   @NameJoin
   @Override
   public List<ScenarioListVo> list(Set<Long> ids) {
-    return scenarioQuery.list(ids).stream().map(ScenarioAssembler::toListVo)
+    return scenarioQuery.findByIds(ids).stream().map(ScenarioAssembler::toListVo)
         .collect(Collectors.toList());
   }
 
   @NameJoin
   @Override
   public PageResult<ScenarioListVo> list(ScenarioInfoFindDto dto) {
-    Page<Scenario> page = scenarioQuery.find(getSpecification(dto), dto.tranPage(), Scenario.class);
-    return buildVoPageResult(page, ScenarioAssembler::toListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ScenarioListVo> search(ScenarioInfoSearchDto dto) {
-    Page<Scenario> page = scenarioSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        Scenario.class, getMatchSearchFields(dto.getClass()));
+    Page<Scenario> page = scenarioQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ScenarioAssembler::toListVo);
   }
 

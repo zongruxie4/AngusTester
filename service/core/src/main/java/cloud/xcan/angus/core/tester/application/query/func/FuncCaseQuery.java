@@ -37,13 +37,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 public interface FuncCaseQuery {
 
   FuncCase detail(Long id);
 
-  Page<FuncCaseInfo> list(GenericSpecification<FuncCaseInfo> spec, Pageable pageable);
+  Page<FuncCaseInfo> list(boolean export, GenericSpecification<FuncCaseInfo> spec,
+      PageRequest pageable, boolean fullTextSearch, String[] match);
 
   List<FuncCaseInfo> notAssociatedCaseInTask(Long id, Long moduleId);
 

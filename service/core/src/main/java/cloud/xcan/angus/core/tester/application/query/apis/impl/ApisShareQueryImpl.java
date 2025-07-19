@@ -19,6 +19,7 @@ import cloud.xcan.angus.core.tester.application.query.apis.ApisShareQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesSchemaQuery;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShare;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareRepo;
+import cloud.xcan.angus.core.tester.domain.apis.share.ApisShareSearchRepo;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
@@ -36,6 +37,9 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
   @Resource
   private ApisShareRepo apisShareRepo;
+
+  @Resource
+  private ApisShareSearchRepo apisShareSearchRepo;
 
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
@@ -67,14 +71,16 @@ public class ApisShareQueryImpl implements ApisShareQuery {
   }
 
   @Override
-  public Page<ApisShare> find(GenericSpecification<ApisShare> spec,
-      PageRequest pageable) {
+  public Page<ApisShare> list(GenericSpecification<ApisShare> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisShare>>() {
 
       @Override
       protected Page<ApisShare> process() {
-        Page<ApisShare> page = apisShareRepo.findAll(spec, pageable);
-        if (page.hasContent()){
+        Page<ApisShare> page = fullTextSearch
+            ? apisShareSearchRepo.find(spec.getCriteria(), pageable, ApisShare.class, match)
+            : apisShareRepo.findAll(spec, pageable);
+        if (page.hasContent()) {
           userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
         }
         return page;

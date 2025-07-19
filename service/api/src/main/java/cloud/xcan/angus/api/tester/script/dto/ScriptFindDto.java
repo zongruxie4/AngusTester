@@ -9,6 +9,7 @@ import cloud.xcan.angus.model.script.ScriptSource;
 import cloud.xcan.angus.model.script.configuration.ScriptType;
 import cloud.xcan.angus.remote.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class ScriptFindDto extends PageQuery {
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", required = true)
+  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   private Long serviceId;

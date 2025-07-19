@@ -13,7 +13,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
@@ -110,10 +109,8 @@ public interface TaskFacade {
 
   TaskDetailVo detail(Long id);
 
-  PageResult<TaskListVo> list(TaskFindDto dto);
+  PageResult<TaskListVo> list(boolean export, TaskFindDto dto);
 
-  PageResult<TaskListVo> search(boolean export, TaskSearchDto dto);
-
-  ResponseEntity<Resource> export(TaskSearchDto dto, HttpServletResponse response);
+  ResponseEntity<Resource> export(TaskFindDto dto, HttpServletResponse response);
 
 }

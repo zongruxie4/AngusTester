@@ -30,7 +30,8 @@ public interface ExecQuery {
 
   List<Server> findServers(Long id);
 
-  Page<ExecInfo> find(GenericSpecification<ExecInfo> spec, PageRequest pageable);
+  Page<ExecInfo> list(GenericSpecification<ExecInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<ExecInfo> findByNodeId(Long id);
 

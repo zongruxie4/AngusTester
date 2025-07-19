@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareViewDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.share.ApisShareAddVo;
@@ -22,8 +21,6 @@ public interface ApisShareFacade {
   ApisShareVo detail(Long id);
 
   PageResult<ApisShareVo> list(ApisShareFindDto dto);
-
-  PageResult<ApisShareVo> search(ApisShareSearchDto dto);
 
   ApisShareViewVo view(ApisShareViewDto dto);
 

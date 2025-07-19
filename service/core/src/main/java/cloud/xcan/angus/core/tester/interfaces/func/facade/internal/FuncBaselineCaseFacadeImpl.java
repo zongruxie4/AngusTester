@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncBaselineCaseAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncBaselineCaseAssembler.toDetailVo;
-import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toCaseListExportResource;
 import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import static cloud.xcan.angus.core.utils.CoreUtils.copyProperties;
@@ -21,10 +20,8 @@ import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncBaselineCaseCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncBaselineCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncBaselineCaseSearch;
 import cloud.xcan.angus.core.tester.application.query.func.FuncBaselineQuery;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncCaseSearch;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCaseInfo;
@@ -32,7 +29,6 @@ import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncBaselineCaseFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncBaselineCaseAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseDetailVo;
@@ -47,7 +43,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -64,13 +59,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
   private FuncBaselineCaseQuery funcBaselineCaseQuery;
 
   @Resource
-  private FuncBaselineCaseSearch funcBaselineCaseSearch;
-
-  @Resource
   private FuncCaseQuery funcCaseQuery;
-
-  @Resource
-  private FuncCaseSearch funcCaseSearch;
 
   @Resource
   private FuncBaselineQuery funcBaselineQuery;
@@ -126,45 +115,27 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
   }
 
   @Override
-  public PageResult<FuncCaseListVo> list(Long baselineId, FuncCaseFindDto dto) {
+  public PageResult<FuncCaseListVo> list(boolean export, Long baselineId, FuncCaseFindDto dto) {
     FuncBaseline baselineDb = funcBaselineQuery.checkAndFind(baselineId);
     if (isEmpty(baselineDb.getCaseIds())) {
       return PageResult.empty();
     }
     if (baselineDb.getEstablished()) {
-      Page<FuncBaselineCaseInfo> page = funcBaselineCaseQuery.list(baselineId,
-          getSpecification(dto), dto.tranPage());
+      Page<FuncBaselineCaseInfo> page = funcBaselineCaseQuery.list(export, baselineId,
+          getSpecification(dto), dto.tranPage(), dto.fullTextSearch,
+          getMatchSearchFields(dto.getClass()));
       return buildVoPageResult(page, FuncBaselineCaseAssembler::toListVo);
     }
     GenericSpecification<FuncCaseInfo> spc = FuncCaseAssembler.getSpecification(dto);
     spc.getCriteria().add(SearchCriteria.in("id", baselineDb.getCaseIds()));
-    Page<FuncCaseInfo> page = funcCaseQuery.list(spc, dto.tranPage());
-    return buildVoPageResult(page, FuncCaseAssembler::toListVo);
-  }
-
-  @Override
-  public PageResult<FuncCaseListVo> search(Long baselineId, boolean export,
-      FuncCaseSearchDto dto) {
-    FuncBaseline baselineDb = funcBaselineQuery.checkAndFind(baselineId);
-    if (isEmpty(baselineDb.getCaseIds())) {
-      return PageResult.empty();
-    }
-    if (baselineDb.getEstablished()) {
-      Page<FuncBaselineCaseInfo> page = funcBaselineCaseSearch.search(baselineId,
-          export, getSearchCriteria(dto), dto.tranPage(), FuncBaselineCaseInfo.class,
-          getMatchSearchFields(dto.getClass()));
-      return buildVoPageResult(page, FuncBaselineCaseAssembler::toListVo);
-    }
-    Set<SearchCriteria> criteria = getSearchCriteria(dto);
-    criteria.add(SearchCriteria.in("id", baselineDb.getCaseIds()));
-    Page<FuncCaseInfo> page = funcCaseSearch.search(export, criteria, dto.tranPage(),
-        FuncCaseInfo.class, getMatchSearchFields(dto.getClass()));
+    Page<FuncCaseInfo> page = funcCaseQuery.list(export, spc, dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncCaseAssembler::toListVo);
   }
 
   @Override
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      Long baselineId, FuncCaseSearchDto dto, HttpServletResponse response) {
+      Long baselineId, FuncCaseFindDto dto, HttpServletResponse response) {
     List<FuncCaseExportListVo> data = getExportFuncCaseData(baselineId, dto);
     String fileName = "BaselineCaseListExport-" + System.currentTimeMillis() + ".xlsx";
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM, fileName,
@@ -172,10 +143,10 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
   }
 
   @NotNull
-  private List<FuncCaseExportListVo> getExportFuncCaseData(Long baselineId, FuncCaseSearchDto dto) {
+  private List<FuncCaseExportListVo> getExportFuncCaseData(Long baselineId, FuncCaseFindDto dto) {
     dto.setPageSize(200);
     PageResult<FuncCaseListVo> page = joinSupplier.execute(
-        () -> search(baselineId, true, dto));
+        () -> list(true, baselineId, dto));
     // 500 reads per time, with a maximum support for exporting MAX_REPORT_ROWS.
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
@@ -183,7 +154,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
         .collect(Collectors.toList());
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
-      page = search(baselineId, true, dto);
+      page = list(true, baselineId, dto);
       if (!page.isEmpty()) {
         data.addAll(page.getList().stream().map(FuncCaseAssembler::toListVo).toList());
       }

@@ -23,7 +23,6 @@ import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.infra.iaas.InstanceChargeType;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeAddDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodePurchaseDto;
-import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.dto.NodeUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.node.facade.vo.NodeMockServiceListVo;
 import cloud.xcan.angus.remote.dto.EnabledOrDisabledDto;
@@ -217,15 +216,6 @@ public class NodeAssembler {
         .orderByFields("id", "createdDate")
         .build();
     return new GenericSpecification<>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(NodeSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "instanceExpiredDate")
-        .matchSearchFields("name", "extSearchMerge")
-        .orderByFields("id", "createdDate")
-        .build();
   }
 
 }

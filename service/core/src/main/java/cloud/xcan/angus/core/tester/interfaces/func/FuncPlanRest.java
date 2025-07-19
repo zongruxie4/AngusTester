@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncPlanFacade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.plan.FuncPlanDetailVo;
@@ -175,15 +174,6 @@ public class FuncPlanRest {
   public ApiLocaleResult<PageResult<FuncPlanDetailVo>> list(
       @Valid @ParameterObject FuncPlanFindDto dto) {
     return ApiLocaleResult.success(funcPlanFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of testing plan", operationId = "func:plan:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncPlanDetailVo>> search(
-      @Valid @ParameterObject FuncPlanSearchDto dto) {
-    return ApiLocaleResult.success(funcPlanFacade.search(dto));
   }
 
   @Operation(summary = "Query the not reviewed case list of testing plan", operationId = "func:plan:case:notReviewed:list")

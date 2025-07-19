@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServi
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceImportDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceServicesAssocDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.MockServiceDetailVo;
@@ -57,8 +56,6 @@ public interface MockServiceFacade {
   MockServiceDetailVo detail(Long id);
 
   PageResult<MockServiceListVo> list(MockServiceFindDto dto);
-
-  PageResult<MockServiceListVo> search(MockServiceSearchDto dto);
 
   ResponseEntity<Resource> export(MockServiceExportDto dto, HttpServletResponse response);
 

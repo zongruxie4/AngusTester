@@ -4,7 +4,6 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -26,7 +25,5 @@ public interface IndicatorStabilityFacade {
   StabilityVo detailOrDefault(CombinedTargetType targetType, Long targetId);
 
   PageResult<StabilityListVo> list(StabilityFindDto dto);
-
-  PageResult<StabilityListVo> search(StabilitySearchDto dto);
 
 }

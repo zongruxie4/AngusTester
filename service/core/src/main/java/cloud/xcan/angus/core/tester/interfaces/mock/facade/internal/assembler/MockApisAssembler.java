@@ -12,7 +12,6 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisAddDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.apis.MockApisUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.apis.MockApisListVo;
 import cloud.xcan.angus.model.remoting.vo.MockApiResponseInfoVo;
@@ -199,14 +198,4 @@ public class MockApisAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(MockApisSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "requestNum", "pushbackNum", "simulateErrorNum",
-            "successNum", "exceptionNum")
-        .orderByFields("id", "createdDate", "requestNum", "pushbackNum", "simulateErrorNum",
-            "successNum", "exceptionNum")
-        .matchSearchFields("summary", "endpoint")
-        .build();
-  }
 }

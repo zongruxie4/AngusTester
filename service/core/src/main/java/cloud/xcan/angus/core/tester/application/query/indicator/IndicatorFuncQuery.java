@@ -13,7 +13,7 @@ public interface IndicatorFuncQuery {
   IndicatorFunc detailOrDefault(CombinedTargetType targetType, Long targetId);
 
   Page<IndicatorFunc> list(GenericSpecification<IndicatorFunc> spec, PageRequest pageable,
-      Class<IndicatorFunc> clz);
+      boolean fullTextSearch, String[] match);
 
   IndicatorFunc find0(Long targetId, CombinedTargetType targetType);
 

@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -72,14 +71,4 @@ public class FuncReviewCaseAssembler {
     return new GenericSpecification<>(filters);
   }
 
-
-  public static Set<SearchCriteria> getSearchCriteria(FuncReviewCaseSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("reviewDate")
-        .inAndNotFields("id", "reviewId", "planId", "reviewerId")
-        .orderByFields("id", "reviewId", "planId", "reviewerId", "reviewDate", "createdDate")
-        .matchSearchFields("caseName", "caseCode")
-        .build();
-  }
 }

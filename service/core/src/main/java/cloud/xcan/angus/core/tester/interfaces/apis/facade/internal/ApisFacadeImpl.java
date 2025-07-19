@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.toAssocMockApis;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisAssembler.toDetailVo;
@@ -11,7 +10,6 @@ import static java.util.Objects.isNull;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisQuery;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisSearch;
 import cloud.xcan.angus.core.tester.domain.apis.Apis;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
@@ -19,7 +17,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisArchiveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUpdateDto;
@@ -31,7 +28,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisInfoListVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.mock.ApisAssocMockApiVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisScopeDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesApisInfoListVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.PageResult;
@@ -58,9 +54,6 @@ public class ApisFacadeImpl implements ApisFacade {
 
   @Resource
   private ApisQuery apisQuery;
-
-  @Resource
-  private ApisSearch apisSearch;
 
   @Override
   public List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dto) {
@@ -234,15 +227,7 @@ public class ApisFacadeImpl implements ApisFacade {
   @Override
   public PageResult<ServicesApisInfoListVo> listApis(Long serviceId, ServiceApisFindDto dto) {
     Page<ApisBasicInfo> page = apisQuery.findByServiceId(serviceId, getSpecification(dto),
-        dto.tranPage(), ApisBasicInfo.class);
-    return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ServicesApisInfoListVo> searchApis(Long serviceId, ServicesApisSearchDto dto) {
-    Page<ApisBasicInfo> page = apisSearch.searchByServiceId(serviceId,
-        getSearchCriteria(dto), dto.tranPage(), getMatchSearchFields(dto.getClass()));
+        dto.tranPage(), dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisAssembler::toServiceApisVo);
   }
 
@@ -250,15 +235,7 @@ public class ApisFacadeImpl implements ApisFacade {
   @Override
   public PageResult<ApisInfoListVo> list(ApisInfoFindDto dto) {
     Page<ApisBasicInfo> page = apisQuery.list(getSpecification(dto),
-        dto.tranPage(), ApisBasicInfo.class);
-    return buildVoPageResult(page, ApisAssembler::toApisVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ApisInfoListVo> search(ApisInfoSearchDto dto) {
-    Page<ApisBasicInfo> page = apisSearch.search(getSearchCriteria(dto),
-        dto.tranPage(), getMatchSearchFields(dto.getClass()));
+        dto.tranPage(), dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisAssembler::toApisVo);
   }
 

@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorStabili
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilityReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.StabilitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.StabilityVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
@@ -119,14 +118,6 @@ public class IndicatorStabilityRest {
   @GetMapping("/stability")
   public ApiLocaleResult<PageResult<StabilityListVo>> list(@Valid @ParameterObject StabilityFindDto dto) {
     return ApiLocaleResult.success(indicatorStabilityFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the indicator of stability", operationId = "indicator:stability:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/stability/search")
-  public ApiLocaleResult<PageResult<StabilityListVo>> search(@Valid @ParameterObject StabilitySearchDto dto) {
-    return ApiLocaleResult.success(indicatorStabilityFacade.search(dto));
   }
 
 }

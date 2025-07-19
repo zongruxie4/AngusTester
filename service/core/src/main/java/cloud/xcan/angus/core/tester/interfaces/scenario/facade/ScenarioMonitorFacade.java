@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorFindDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.monitor.ScenarioMonitorUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.monitor.ScenarioMonitorListVo;
@@ -26,7 +25,5 @@ public interface ScenarioMonitorFacade {
   ScenarioMonitorDetailVo detail(Long id);
 
   PageResult<ScenarioMonitorListVo> list(ScenarioMonitorFindDto dto);
-
-  PageResult<ScenarioMonitorListVo> search(ScenarioMonitorSearchDto dto);
 
 }

@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.application.query.apis;
 
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesign;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfo;
 import java.util.HashSet;
@@ -14,9 +13,9 @@ public interface ApisDesignQuery {
   ApisDesign detail(Long id);
 
   Page<ApisDesignInfo> list(GenericSpecification<ApisDesignInfo> spec, PageRequest pageable,
-      Class<ApisBasicInfo> clz);
+      boolean fullTextSearch, String[] match);
 
-  List<ApisDesignInfo> findbyIds(HashSet<Long> ids);
+  List<ApisDesignInfo> findByIds(HashSet<Long> ids);
 
   ApisDesign checkAndFind(Long id);
 

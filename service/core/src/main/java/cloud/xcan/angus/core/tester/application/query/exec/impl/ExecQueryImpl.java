@@ -63,6 +63,7 @@ import cloud.xcan.angus.core.tester.domain.exec.Exec;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoListRepo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecInfoRepo;
+import cloud.xcan.angus.core.tester.domain.exec.ExecInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.exec.ExecRepo;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
@@ -113,6 +114,9 @@ public class ExecQueryImpl implements ExecQuery {
 
   @Resource
   private ExecInfoListRepo execInfoListRepo;
+
+  @Resource
+  private ExecInfoSearchRepo execInfoSearchRepo;
 
   @Resource
   private ExecSampleQuery execSampleQuery;
@@ -249,7 +253,8 @@ public class ExecQueryImpl implements ExecQuery {
 
   @SneakyThrow0(level = "WARN") // Check exec quota in running
   @Override
-  public Page<ExecInfo> find(GenericSpecification<ExecInfo> spec, PageRequest pageable) {
+  public Page<ExecInfo> list(GenericSpecification<ExecInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ExecInfo>>() {
       String projectId;
 
@@ -261,8 +266,9 @@ public class ExecQueryImpl implements ExecQuery {
 
       @Override
       protected Page<ExecInfo> process() {
-        Page<ExecInfo> page = execInfoListRepo.find(spec.getCriteria(), pageable,
-            ExecInfo.class, null);
+        Page<ExecInfo> page = fullTextSearch
+            ? execInfoSearchRepo.find(spec.getCriteria(), pageable, ExecInfo.class, match)
+            : execInfoListRepo.find(spec.getCriteria(), pageable, ExecInfo.class, null);
         if (page.hasContent()) {
           setExecInfoScriptName(page.getContent());
           setExecInfoCurrentOperationPermission(page.getContent());

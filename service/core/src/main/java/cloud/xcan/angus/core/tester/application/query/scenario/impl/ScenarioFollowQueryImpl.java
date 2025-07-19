@@ -29,7 +29,7 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
   private ScenarioRepo scenarioRepo;
 
   @Override
-  public Page<ScenarioFollow> search(Long projectId, String name, PageRequest pageable) {
+  public Page<ScenarioFollow> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioFollow>>() {
 
       @Override

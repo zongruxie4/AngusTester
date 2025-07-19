@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUnarchivedUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisUnarchivedListVo;
@@ -27,7 +26,5 @@ public interface ApisUnarchivedFacade {
   Long count(Long projectId);
 
   PageResult<ApisUnarchivedListVo> list(ApisUnarchivedFindDto dto);
-
-  PageResult<ApisUnarchivedListVo> search(ApisUnarchivedSearchDto dto);
 
 }

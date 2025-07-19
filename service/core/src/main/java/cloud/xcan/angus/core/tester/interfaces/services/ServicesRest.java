@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesAddDt
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesExportDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesImportDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServiceVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesDetailVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
@@ -158,16 +157,6 @@ public class ServicesRest {
   @GetMapping
   public ApiLocaleResult<PageResult<ServiceVo>> list(@Valid @ParameterObject ServicesFindDto dto) {
     PageResult<ServiceVo> result = serviceFacade.list(dto);
-    return assembleAllowImportSampleStatus(result);
-  }
-
-  @Operation(summary = "Fulltext search the service", operationId = "services:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ServiceVo>> search(
-      @Valid @ParameterObject ServicesSearchDto dto) {
-    PageResult<ServiceVo> result = serviceFacade.search(dto);
     return assembleAllowImportSampleStatus(result);
   }
 

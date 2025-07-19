@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.activity;
 
 import cloud.xcan.angus.core.tester.interfaces.activity.facade.ActivityFacade;
 import cloud.xcan.angus.core.tester.interfaces.activity.facade.dto.ActivityFindDto;
-import cloud.xcan.angus.core.tester.interfaces.activity.facade.dto.ActivitySearchDto;
 import cloud.xcan.angus.core.tester.interfaces.activity.facade.vo.ActivityDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -35,15 +34,6 @@ public class ActivityRest {
   public ApiLocaleResult<PageResult<ActivityDetailVo>> list(
       @Valid @ParameterObject ActivityFindDto dto) {
     return ApiLocaleResult.success(activityFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of activity", operationId = "activity:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ActivityDetailVo>> search(
-      @Valid @ParameterObject ActivitySearchDto dto) {
-    return ApiLocaleResult.success(activityFacade.search(dto));
   }
 
 }

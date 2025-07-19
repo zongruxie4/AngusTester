@@ -74,7 +74,7 @@ public class MockServiceAuthFacadeImpl implements MockServiceAuthFacade {
   @NameJoin
   public PageResult<ServiceAuthVo> list(Long serviceId, ServiceAuthFindDto dto) {
     Page<MockServiceAuth> page = mockServiceAuthQuery
-        .find(serviceId, getSpecification(serviceId, dto), dto.tranPage());
+        .find(serviceId, getSpecification(dto), dto.tranPage());
     return buildVoPageResult(page, MockServiceAuthAssembler::toDetailVo);
   }
 

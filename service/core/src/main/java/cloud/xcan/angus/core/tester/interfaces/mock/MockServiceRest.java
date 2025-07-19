@@ -12,7 +12,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServi
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceFindDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceImportDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceServicesAssocDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.dto.service.MockServiceUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.mock.facade.vo.service.MockServiceDetailVo;
@@ -238,15 +237,6 @@ public class MockServiceRest {
   public ApiLocaleResult<PageResult<MockServiceListVo>> list(
       @Valid @ParameterObject MockServiceFindDto dto) {
     return ApiLocaleResult.success(mockServiceFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of mock service", operationId = "mock:service:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<MockServiceListVo>> search(
-      @Valid @ParameterObject MockServiceSearchDto dto) {
-    return ApiLocaleResult.success(mockServiceFacade.search(dto));
   }
 
   @DoInFuture("Limit the number of exports")

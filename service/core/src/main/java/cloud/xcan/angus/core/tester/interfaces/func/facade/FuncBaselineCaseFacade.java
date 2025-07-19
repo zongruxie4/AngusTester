@@ -1,7 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.func.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -18,10 +17,8 @@ public interface FuncBaselineCaseFacade {
 
   FuncCaseDetailVo detail(Long baselineId, Long caseId);
 
-  PageResult<FuncCaseListVo> list(Long baselineId, FuncCaseFindDto dto);
+  PageResult<FuncCaseListVo> list(boolean export, Long baselineId, FuncCaseFindDto dto);
 
-  PageResult<FuncCaseListVo> search(Long baselineId, boolean export, FuncCaseSearchDto dto);
-
-  ResponseEntity<Resource> export(Long baselineId, FuncCaseSearchDto dto, HttpServletResponse response);
+  ResponseEntity<Resource> export(Long baselineId, FuncCaseFindDto dto, HttpServletResponse response);
 
 }

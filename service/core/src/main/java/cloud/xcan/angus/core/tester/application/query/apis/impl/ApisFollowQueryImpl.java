@@ -20,7 +20,7 @@ public class ApisFollowQueryImpl implements ApisFollowQuery {
   private ApisFollowRepo apisFollowRepo;
 
   @Override
-  public Page<ApisFollowP> search(Long projectId, String name, PageRequest pageable) {
+  public Page<ApisFollowP> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ApisFollowP>>() {
 
       @Override

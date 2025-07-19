@@ -41,9 +41,9 @@ public class ScenarioFollowFacadeImpl implements ScenarioFollowFacade {
   }
 
   @Override
-  public PageResult<ScenarioFollowDetailVo> search(ScenarioFollowFindDto dto) {
+  public PageResult<ScenarioFollowDetailVo> list(ScenarioFollowFindDto dto) {
     Page<ScenarioFollow> page = scenarioFollowQuery
-        .search(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
+        .list(dto.getProjectId(), dto.getScenarioName(), dto.tranPage());
     return buildVoPageResult(page, ScenarioFollowAssembler::toDetailVo);
   }
 

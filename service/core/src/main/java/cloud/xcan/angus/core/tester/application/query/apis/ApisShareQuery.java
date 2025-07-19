@@ -11,7 +11,8 @@ public interface ApisShareQuery {
 
   ApisShare detail(Long id);
 
-  Page<ApisShare> find(GenericSpecification<ApisShare> spec, PageRequest pageable);
+  Page<ApisShare> list(GenericSpecification<ApisShare> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   ApisShare view(Long sid, String pat);
 

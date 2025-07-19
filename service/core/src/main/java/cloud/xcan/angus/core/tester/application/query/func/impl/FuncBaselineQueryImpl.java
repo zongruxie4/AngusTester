@@ -14,6 +14,7 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaseline;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineInfo;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineInfoRepo;
+import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineRepo;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -31,6 +32,9 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
   @Resource
   private FuncBaselineRepo funcBaselineRepo;
+
+  @Resource
+  private FuncBaselineInfoSearchRepo funcBaselineInfoSearchRepo;
 
   @Resource
   private FuncBaselineInfoRepo funcBaselineInfoRepo;
@@ -60,7 +64,7 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
   @Override
   public Page<FuncBaselineInfo> find(GenericSpecification<FuncBaselineInfo> spec,
-      PageRequest pageable) {
+      PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<FuncBaselineInfo>>() {
       @Override
       protected void checkParams() {
@@ -70,7 +74,10 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
       @Override
       protected Page<FuncBaselineInfo> process() {
-        Page<FuncBaselineInfo> page = funcBaselineInfoRepo.findAll(spec, pageable);
+        Page<FuncBaselineInfo> page = fullTextSearch
+            ? funcBaselineInfoSearchRepo.find(spec.getCriteria(), pageable,
+            FuncBaselineInfo.class, match)
+            : funcBaselineInfoRepo.findAll(spec, pageable);
 
         if (page.hasContent()) {
           // Set user name and avatar

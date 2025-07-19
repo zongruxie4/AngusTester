@@ -20,7 +20,7 @@ public class FuncCaseFavouriteQueryImpl implements FuncCaseFavouriteQuery {
   private FuncCaseFavouriteRepo funcCaseFavouriteRepo;
 
   @Override
-  public Page<FuncCaseFavouriteP> search(Long projectId, String name, PageRequest pageable) {
+  public Page<FuncCaseFavouriteP> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<FuncCaseFavouriteP>>() {
 
       @Override

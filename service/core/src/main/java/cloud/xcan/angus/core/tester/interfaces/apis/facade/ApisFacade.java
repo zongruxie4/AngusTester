@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisArchiveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisExportDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.ApisUpdateDto;
@@ -14,7 +13,6 @@ import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.ApisInfoListVo;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.mock.ApisAssocMockApiVo;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisFindDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServiceApisScopeDto;
-import cloud.xcan.angus.core.tester.interfaces.services.facade.dto.ServicesApisSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.services.facade.vo.ServicesApisInfoListVo;
 import cloud.xcan.angus.model.apis.ApiStatus;
 import cloud.xcan.angus.remote.PageResult;
@@ -90,11 +88,7 @@ public interface ApisFacade {
 
   PageResult<ServicesApisInfoListVo> listApis(Long servicesId, ServiceApisFindDto dto);
 
-  PageResult<ServicesApisInfoListVo> searchApis(Long servicesId, ServicesApisSearchDto dto);
-
   PageResult<ApisInfoListVo> list(ApisInfoFindDto dto);
-
-  PageResult<ApisInfoListVo> search(ApisInfoSearchDto dto);
 
   ResponseEntity<Resource> export(Long id, ApisExportDto dto, HttpServletResponse response);
 

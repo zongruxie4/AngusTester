@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.func;
 
 
 import cloud.xcan.angus.core.tester.interfaces.func.facade.FuncCaseFollowFacade;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.follow.FuncCaseFollowSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.follow.FuncCaseFollowFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.follow.FuncCaseFollowDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -55,7 +55,7 @@ public class FuncCaseFollowRest {
     funcCaseFollowFacade.cancel(caseId);
   }
 
-  @Operation(summary = "Cancel all the follows of case", operationId = "func:case:follow:cancel:All")
+  @Operation(summary = "Cancel all follows of the case", operationId = "func:case:follow:cancel:All")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class FuncCaseFollowRest {
     funcCaseFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Fulltext search the follow of case", operationId = "func:case:follow:search")
+  @Operation(summary = "Query follow list of the case", operationId = "func:case:follow:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/follow/search")
-  public ApiLocaleResult<PageResult<FuncCaseFollowDetailVo>> search(
-      @Valid @ParameterObject FuncCaseFollowSearchDto dto) {
-    return ApiLocaleResult.success(funcCaseFollowFacade.search(dto));
+  @GetMapping("/follow")
+  public ApiLocaleResult<PageResult<FuncCaseFollowDetailVo>> list(
+      @Valid @ParameterObject FuncCaseFollowFindDto dto) {
+    return ApiLocaleResult.success(funcCaseFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query the follow count of case", operationId = "func:case:follow:count")
+  @Operation(summary = "Query follow count of the case", operationId = "func:case:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")

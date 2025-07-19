@@ -14,6 +14,7 @@ import cloud.xcan.angus.core.tester.domain.func.cases.FuncCaseInfo;
 import cloud.xcan.angus.core.tester.domain.func.review.FuncReview;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
+import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseSearchRepo;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -31,6 +32,9 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
 
   @Resource
   private FuncReviewCaseRepo funcReviewCaseRepo;
+
+  @Resource
+  private FuncReviewCaseSearchRepo funcReviewCaseSearchRepo;
 
   @Resource
   private FuncCaseQuery funcCaseQuery;
@@ -53,8 +57,8 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   }
 
   @Override
-  public Page<FuncReviewCase> list(GenericSpecification<FuncReviewCase> spec,
-      PageRequest pageable) {
+  public Page<FuncReviewCase> list(GenericSpecification<FuncReviewCase> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<FuncReviewCase>>() {
 
       @Override
@@ -62,7 +66,9 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(equal("lastReview", true));
 
-        Page<FuncReviewCase> page = funcReviewCaseRepo.findAll(spec, pageable);
+        Page<FuncReviewCase> page = fullTextSearch
+            ? funcReviewCaseSearchRepo.find(criteria, pageable, FuncReviewCase.class, match)
+            : funcReviewCaseRepo.findAll(spec, pageable);
         setCaseInfo(page.getContent());
         return page;
       }
@@ -108,7 +114,7 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
 
   @Override
   public void setCaseInfo(List<FuncReviewCase> reviewCases) {
-    if (isNotEmpty(reviewCases)){
+    if (isNotEmpty(reviewCases)) {
       Map<Long, FuncCaseInfo> caseInfoMap = funcCaseQuery.checkAndFindInfo(
               reviewCases.stream().map(FuncReviewCase::getCaseId).collect(
                   Collectors.toList())).stream()

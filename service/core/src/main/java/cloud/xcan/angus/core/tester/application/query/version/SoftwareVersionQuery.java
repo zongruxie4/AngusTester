@@ -11,7 +11,8 @@ public interface SoftwareVersionQuery {
 
   SoftwareVersion detail(Long id);
 
-  Page<SoftwareVersion> find(GenericSpecification<SoftwareVersion> spec, PageRequest pageable);
+  Page<SoftwareVersion> list(GenericSpecification<SoftwareVersion> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   SoftwareVersion checkAndFind(Long id);
 
@@ -22,4 +23,5 @@ public interface SoftwareVersionQuery {
   void checkNotExits(Long projectId, String name);
 
   void setVersionProgress(List<SoftwareVersion> versionsDb);
+
 }

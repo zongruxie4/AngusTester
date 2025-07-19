@@ -1,7 +1,7 @@
 package cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal;
 
+import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.replaceDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler.toIndicatorPerfVo;
@@ -11,13 +11,11 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.indicator.IndicatorPerfCmd;
 import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfQuery;
-import cloud.xcan.angus.core.tester.application.query.indicator.IndicatorPerfSearch;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.IndicatorPerfFacade;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.internal.assembler.IndicatorPerfAssembler;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfVo;
@@ -37,9 +35,6 @@ public class IndicatorPerfFacadeImpl implements IndicatorPerfFacade {
 
   @Resource
   private IndicatorPerfQuery indicatorPerfQuery;
-
-  @Resource
-  private IndicatorPerfSearch indicatorPerfSearch;
 
   @Override
   public IdKey<Long, Object> add(PerfAddDto dto) {
@@ -74,18 +69,11 @@ public class IndicatorPerfFacadeImpl implements IndicatorPerfFacade {
   @NameJoin
   @Override
   public PageResult<PerfListVo> list(PerfFindDto dto) {
-    Page<IndicatorPerf> page = indicatorPerfQuery
-        .list(getSpecification(dto), dto.tranPage(), IndicatorPerf.class);
+    Page<IndicatorPerf> page = indicatorPerfQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, IndicatorPerfAssembler::toApisPerfListVo);
   }
 
-  @NameJoin
-  @Override
-  public PageResult<PerfListVo> search(PerfSearchDto dto) {
-    Page<IndicatorPerf> page = indicatorPerfSearch.search(
-        getSearchCriteria(dto), dto.tranPage(), IndicatorPerf.class);
-    return buildVoPageResult(page, IndicatorPerfAssembler::toApisPerfListVo);
-  }
 }
 
 

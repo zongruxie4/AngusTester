@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto;
 
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_DESC_LENGTH_X4;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_KEY_LENGTH;
-import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH;
 import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
 import cloud.xcan.angus.model.script.AngusScript;

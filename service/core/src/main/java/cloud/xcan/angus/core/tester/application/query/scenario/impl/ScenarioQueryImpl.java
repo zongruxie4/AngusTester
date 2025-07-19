@@ -46,6 +46,7 @@ import cloud.xcan.angus.core.tester.domain.exec.ExecInfo;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioListRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.ScenarioRepo;
+import cloud.xcan.angus.core.tester.domain.scenario.ScenarioSearchRepo;
 import cloud.xcan.angus.core.tester.domain.scenario.count.ScenarioResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.scenario.favorite.ScenarioFavourite;
 import cloud.xcan.angus.core.tester.domain.scenario.favorite.ScenarioFavouriteRepo;
@@ -83,6 +84,9 @@ public class ScenarioQueryImpl implements ScenarioQuery {
 
   @Resource
   private ScenarioListRepo scenarioListRepo;
+
+  @Resource
+  private ScenarioSearchRepo scenarioSearchRepo;
 
   @Resource
   private ScriptQuery scriptQuery;
@@ -155,7 +159,7 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   @Override
-  public List<Scenario> list(Set<Long> ids) {
+  public List<Scenario> findByIds(Set<Long> ids) {
     return new BizTemplate<List<Scenario>>() {
 
       @Override
@@ -166,8 +170,8 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   @Override
-  public Page<Scenario> find(GenericSpecification<Scenario> spec,
-      PageRequest pageable, Class<Scenario> clz) {
+  public Page<Scenario> list(GenericSpecification<Scenario> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Scenario>>() {
       @Override
       protected void checkParams() {
@@ -182,8 +186,11 @@ public class ScenarioQueryImpl implements ScenarioQuery {
 
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
-        Page<Scenario> page = scenarioListRepo.find(criteria, pageable, clz,
-            ScenarioConverter::objectArrToScenario, null);
+        Page<Scenario> page = fullTextSearch
+            ? scenarioSearchRepo.find(criteria, pageable, Scenario.class,
+            ScenarioConverter::objectArrToScenario, match)
+            : scenarioListRepo.find(criteria, pageable, Scenario.class,
+                ScenarioConverter::objectArrToScenario, null);
 
         if (page.hasContent()) {
           if (isUserAction()) {

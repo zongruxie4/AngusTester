@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerf;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfAddDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfFindDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.indicator.facade.dto.PerfSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfListVo;
 import cloud.xcan.angus.core.tester.interfaces.indicator.facade.vo.PerfVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -93,15 +92,4 @@ public class IndicatorPerfAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(PerfSearchDto dto) {
-    if (Objects.nonNull(dto.getAdmin()) && dto.getAdmin()) {
-      dto.getFilters().add(SearchCriteria.equal("admin", "true"));
-    }
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .matchSearchFields("targetName")
-        .rangeSearchFields("id", "createdDate")
-        .inAndNotFields("id", "targetType")
-        .build();
-  }
 }

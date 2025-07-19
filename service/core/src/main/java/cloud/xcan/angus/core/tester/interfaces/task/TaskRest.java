@@ -19,7 +19,6 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskMoveDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskWorkloadReplaceDto;
@@ -552,15 +551,7 @@ public class TaskRest {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<TaskListVo>> list(@Valid @ParameterObject TaskFindDto dto) {
-    return ApiLocaleResult.success(taskFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of task", operationId = "task:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskListVo>> search(@Valid @ParameterObject TaskSearchDto dto) {
-    return ApiLocaleResult.success(taskFacade.search(false, dto));
+    return ApiLocaleResult.success(taskFacade.list(false, dto));
   }
 
   @Operation(summary = "Export the tasks by conditions", operationId = "task:export")
@@ -569,7 +560,7 @@ public class TaskRest {
   })
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid @ParameterObject TaskSearchDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject TaskFindDto dto, HttpServletResponse response) {
     return taskFacade.export(dto, response);
   }
 

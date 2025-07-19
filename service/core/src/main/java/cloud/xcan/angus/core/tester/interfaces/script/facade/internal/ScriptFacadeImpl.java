@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.script.facade.internal;
 
-import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.containsKey;
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.addDtoToDomain;
 import static cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler.importDtoToDomain;
@@ -24,21 +23,18 @@ import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.cmd.script.ScriptCmd;
 import cloud.xcan.angus.core.tester.application.query.script.ScriptQuery;
-import cloud.xcan.angus.core.tester.application.query.script.ScriptSearch;
 import cloud.xcan.angus.core.tester.domain.script.Script;
 import cloud.xcan.angus.core.tester.domain.script.ScriptFormat;
 import cloud.xcan.angus.core.tester.domain.script.ScriptInfo;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.ScriptFacade;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptImportDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.dto.ScriptUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.internal.assembler.ScriptAssembler;
 import cloud.xcan.angus.core.tester.interfaces.script.facade.vo.ScriptListVo;
 import cloud.xcan.angus.model.script.AngusScript;
 import cloud.xcan.angus.parser.AngusParser;
 import cloud.xcan.angus.remote.PageResult;
-import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
 import jakarta.annotation.Resource;
@@ -59,9 +55,6 @@ public class ScriptFacadeImpl implements ScriptFacade {
 
   @Resource
   private ScriptQuery scriptQuery;
-
-  @Resource
-  private ScriptSearch scriptSearch;
 
   @Resource
   private ScriptCmd scriptCmd;
@@ -138,7 +131,8 @@ public class ScriptFacadeImpl implements ScriptFacade {
   public PageResult<ScriptListVo> list(ScriptFindDto dto) {
     GenericSpecification<ScriptInfo> spec = ScriptAssembler.getSpecification(dto);
     boolean queryAll = spec.getCriteria().isEmpty();
-    Page<ScriptInfo> page = scriptQuery.find(spec, dto.tranPage());
+    Page<ScriptInfo> page = scriptQuery.list(spec, dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     if (page.isEmpty()) {
       PrincipalContext.addExtension("queryAllEmpty", queryAll);
       return PageResult.empty();
@@ -150,27 +144,13 @@ public class ScriptFacadeImpl implements ScriptFacade {
   public PageResult<ScriptInfoListVo> infoList(ScriptFindDto dto) {
     GenericSpecification<ScriptInfo> spec = ScriptAssembler.getSpecification(dto);
     boolean queryAll = spec.getCriteria().isEmpty();
-    Page<ScriptInfo> page = scriptQuery.infoList(spec, dto.tranPage());
+    Page<ScriptInfo> page = scriptQuery.infoList(spec, dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     if (page.isEmpty()) {
       PrincipalContext.addExtension("queryAllEmpty", queryAll);
       return PageResult.empty();
     }
     return buildVoPageResult(page, ScriptAssembler::toScriptInfoListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ScriptListVo> search(ScriptSearchDto dto) {
-    Set<SearchCriteria> filters = ScriptAssembler.getSearchCriteria(dto);
-    boolean queryAll = filters.isEmpty()
-        || (filters.size() == 1 && containsKey(filters, "infoScope"));
-    Page<ScriptInfo> page = scriptSearch.search(filters, dto.tranPage(), ScriptInfo.class,
-        getMatchSearchFields(dto.getClass()));
-    if (page.isEmpty()) {
-      PrincipalContext.addExtension("queryAllEmpty", queryAll);
-      return PageResult.empty();
-    }
-    return buildVoPageResult(page, ScriptAssembler::toScriptListVo);
   }
 
   @SneakyThrows

@@ -55,7 +55,7 @@ public class TaskFollowRest {
     taskFollowFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all the follows of task", operationId = "task:follow:cancel:all")
+  @Operation(summary = "Cancel all follows of the task", operationId = "task:follow:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class TaskFollowRest {
     taskFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query the follow list of task", operationId = "task:follow:search")
+  @Operation(summary = "Query follow list of the task", operationId = "task:follow:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/follow/search")
-  public ApiLocaleResult<PageResult<TaskFollowDetailVo>> search(
+  @GetMapping("/follow")
+  public ApiLocaleResult<PageResult<TaskFollowDetailVo>> list(
       @Valid @ParameterObject TaskFollowFindDto dto) {
-    return ApiLocaleResult.success(taskFollowFacade.search(dto));
+    return ApiLocaleResult.success(taskFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query the follow count of task", operationId = "task:follow:count")
+  @Operation(summary = "Query follow count of the task", operationId = "task:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/follow/count")

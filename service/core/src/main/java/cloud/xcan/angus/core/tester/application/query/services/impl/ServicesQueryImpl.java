@@ -41,6 +41,7 @@ import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.core.tester.domain.services.ServicesListRepo;
 import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
+import cloud.xcan.angus.core.tester.domain.services.ServicesSearchRepo;
 import cloud.xcan.angus.core.tester.domain.services.summary.ServicesSummary;
 import cloud.xcan.angus.model.services.ApisTestCount;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
@@ -67,6 +68,9 @@ public class ServicesQueryImpl implements ServicesQuery {
 
   @Resource
   private ServicesListRepo servicesListRepo;
+
+  @Resource
+  private ServicesSearchRepo servicesSearchRepo;
 
   @Resource
   private ApisTestQuery apisTestQuery;
@@ -116,15 +120,17 @@ public class ServicesQueryImpl implements ServicesQuery {
   }
 
   @Override
-  public Page<Services> list(GenericSpecification<Services> spec, PageRequest pageable) {
+  public Page<Services> list(GenericSpecification<Services> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Services>>() {
 
       @Override
       protected Page<Services> process() {
         spec.getCriteria().add(SearchCriteria.equal("deleted", 0));
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        Page<Services> page = servicesListRepo.find(spec.getCriteria(), pageable,
-            Services.class, null);
+        Page<Services> page = fullTextSearch
+            ? servicesSearchRepo.find(spec.getCriteria(), pageable, Services.class, match)
+            : servicesListRepo.find(spec.getCriteria(), pageable, Services.class, null);
         setApisNum(page.getContent(), spec.getCriteria());
         return page;
       }

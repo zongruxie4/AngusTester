@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.project;
 
 
 import cloud.xcan.angus.core.tester.interfaces.project.facade.ProjectTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashFindto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.trash.ProjectTrashDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -78,13 +78,13 @@ public class ProjectTrashRest {
     return ApiLocaleResult.success(projectTrashFacade.count());
   }
 
-  @Operation(summary = "Fulltext search the trash of project", operationId = "project:trash:search")
+  @Operation(summary = "Query trash list of the project", operationId = "project:trash:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<ProjectTrashDetailVo>> search(
-      @Valid @ParameterObject ProjectTrashSearchDto dto) {
-    return ApiLocaleResult.success(projectTrashFacade.search(dto));
+  @GetMapping
+  public ApiLocaleResult<PageResult<ProjectTrashDetailVo>> list(
+      @Valid @ParameterObject ProjectTrashFindto dto) {
+    return ApiLocaleResult.success(projectTrashFacade.list(dto));
   }
 
 }

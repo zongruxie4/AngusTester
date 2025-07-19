@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.tag.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagAddDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagFindDto;
-import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.dto.TagUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.tag.facade.vo.TagVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -23,7 +22,5 @@ public interface TagFacade {
   TagVo detail(Long id);
 
   PageResult<TagVo> list(TagFindDto findDto);
-
-  PageResult<TagVo> search(TagSearchDto dto);
 
 }

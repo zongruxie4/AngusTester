@@ -55,7 +55,7 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all the favorites of task", operationId = "task:favourite:delete:all")
+  @Operation(summary = "Cancel all favorites of the task", operationId = "task:favourite:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,16 +65,16 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query the favourite list of task", operationId = "task:favourite:search")
+  @Operation(summary = "Query favourite list of the task", operationId = "task:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/favourite/search")
-  public ApiLocaleResult<PageResult<TaskFavouriteDetailVo>> search(
+  @GetMapping("/favourite")
+  public ApiLocaleResult<PageResult<TaskFavouriteDetailVo>> list(
       @Valid @ParameterObject TaskFavouriteFindDto dto) {
-    return ApiLocaleResult.success(taskFavouriteFacade.search(dto));
+    return ApiLocaleResult.success(taskFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Query the favourite count of task", operationId = "task:favourite:count")
+  @Operation(summary = "Query favourite count of the task", operationId = "task:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Query count succeeded")})
   @GetMapping("/favourite/count")

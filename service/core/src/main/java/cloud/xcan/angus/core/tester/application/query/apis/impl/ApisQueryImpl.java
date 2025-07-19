@@ -69,6 +69,7 @@ import cloud.xcan.angus.core.tester.domain.apis.ApisBaseInfoRepo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfoRepo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisInfoListRepo;
+import cloud.xcan.angus.core.tester.domain.apis.ApisInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.apis.ApisRepo;
 import cloud.xcan.angus.core.tester.domain.apis.count.ApisResourcesCreationCount;
 import cloud.xcan.angus.core.tester.domain.apis.favourite.ApisFavourite;
@@ -133,6 +134,9 @@ public class ApisQueryImpl implements ApisQuery {
 
   @Resource
   private ApisBasicInfoRepo apisBasicInfoRepo;
+
+  @Resource
+  private ApisInfoSearchRepo apisInfoSearchRepo;
 
   @Resource
   private ApisFavouriteRepo favouriteRepo;
@@ -342,7 +346,8 @@ public class ApisQueryImpl implements ApisQuery {
 
   @Override
   public Page<ApisBasicInfo> findByServiceId(Long serviceId,
-      GenericSpecification<ApisBasicInfo> spec, PageRequest pageable, Class<ApisBasicInfo> clz) {
+      GenericSpecification<ApisBasicInfo> spec, PageRequest pageable, boolean fullTextSearch,
+      String[] match) {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
       protected void checkParams() {
@@ -357,14 +362,14 @@ public class ApisQueryImpl implements ApisQuery {
         criteria.add(equal("deleted", false));
         criteria.add(equal("serviceDeleted", false));
 
-        return list0(criteria, pageable, clz);
+        return list0(criteria, pageable, fullTextSearch, match);
       }
     }.execute();
   }
 
   @Override
   public Page<ApisBasicInfo> list(GenericSpecification<ApisBasicInfo> spec, PageRequest pageable,
-      Class<ApisBasicInfo> clz) {
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
       protected void checkParams() {
@@ -378,17 +383,20 @@ public class ApisQueryImpl implements ApisQuery {
         criteria.add(equal("deleted", false));
         criteria.add(equal("serviceDeleted", false));
 
-        return list0(criteria, pageable, clz);
+        return list0(criteria, pageable, fullTextSearch, match);
       }
     }.execute();
   }
 
   private Page<ApisBasicInfo> list0(Set<SearchCriteria> criteria, PageRequest pageable,
-      Class<ApisBasicInfo> clz) {
+      boolean fullTextSearch, String[] match) {
     // Set authorization conditions when you are not an administrator or only query yourself
     commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
-    Page<ApisBasicInfo> page = apisInfoListRepo.find(criteria, pageable, clz,
-        ApisConverter::objectArrToApis, null);
+    Page<ApisBasicInfo> page = fullTextSearch
+        ? apisInfoSearchRepo.find(criteria, pageable, ApisBasicInfo.class,
+        ApisConverter::objectArrToApis, match)
+        : apisInfoListRepo.find(criteria, pageable, ApisBasicInfo.class,
+            ApisConverter::objectArrToApis, null);
 
     if (page.hasContent()) {
       if (isUserAction()) {

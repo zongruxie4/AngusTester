@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
@@ -145,15 +144,6 @@ public class ScenarioAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(ScenarioInfoSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .inAndNotFields("id")
-        .rangeSearchFields("id", "createdDate")
-        .matchSearchFields("name", "description", "extSearchMerge")
-        .orderByFields("id", "name", "createdDate", "createdBy", "lastModifiedBy")
-        .build();
-  }
 }
 
 

@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.apis.facade.internal;
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.addDtoToDomain;
-import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.toShareAddVo;
 import static cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler.toShareDetailVo;
@@ -13,12 +12,10 @@ import static cloud.xcan.angus.core.utils.CoreUtils.buildVoPageResult;
 import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.apis.ApisShareCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisShareQuery;
-import cloud.xcan.angus.core.tester.application.query.apis.ApisShareSearch;
 import cloud.xcan.angus.core.tester.domain.apis.share.ApisShare;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisShareFacade;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareAddDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareFindDto;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.share.ApisShareViewDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisShareAssembler;
@@ -36,9 +33,6 @@ public class ApisShareFacadeImpl implements ApisShareFacade {
 
   @Resource
   private ApisShareQuery apisShareQuery;
-
-  @Resource
-  private ApisShareSearch apisShareSearch;
 
   @Resource
   private ApisShareCmd apisShareCmd;
@@ -68,15 +62,8 @@ public class ApisShareFacadeImpl implements ApisShareFacade {
   @NameJoin
   @Override
   public PageResult<ApisShareVo> list(ApisShareFindDto dto) {
-    Page<ApisShare> page = apisShareQuery.find(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, ApisShareAssembler::toVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<ApisShareVo> search(ApisShareSearchDto dto) {
-    Page<ApisShare> page = apisShareSearch.search(getSearchCriteria(dto), dto.tranPage(),
-        ApisShare.class, getMatchSearchFields(dto.getClass()));
+    Page<ApisShare> page = apisShareQuery.list(getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, ApisShareAssembler::toVo);
   }
 

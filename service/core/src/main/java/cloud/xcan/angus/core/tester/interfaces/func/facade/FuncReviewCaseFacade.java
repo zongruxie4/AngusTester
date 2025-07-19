@@ -3,7 +3,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.review.cases.FuncReviewCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.review.FuncReviewCaseVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -27,6 +26,4 @@ public interface FuncReviewCaseFacade {
   FuncReviewCaseDetailVo detail(Long id);
 
   PageResult<FuncReviewCaseVo> list(FuncReviewCaseFindDto dto);
-
-  PageResult<FuncReviewCaseVo> search(FuncReviewCaseSearchDto dto);
 }

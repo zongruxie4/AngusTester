@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import org.springframework.data.domain.PageRequest;
 
 public interface MockServiceQuery {
 
@@ -31,7 +30,8 @@ public interface MockServiceQuery {
 
   void check(Long id);
 
-  Page<MockServiceInfo> find(GenericSpecification<MockServiceInfo> spec, Pageable pageable);
+  Page<MockServiceInfo> find(GenericSpecification<MockServiceInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match);
 
   List<MockServiceInfo> findByNodeId(Long id);
 

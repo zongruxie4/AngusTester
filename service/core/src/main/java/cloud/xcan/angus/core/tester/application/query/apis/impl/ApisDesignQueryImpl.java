@@ -15,10 +15,10 @@ import cloud.xcan.angus.core.tester.application.query.project.ProjectMemberQuery
 import cloud.xcan.angus.core.tester.application.query.services.ServicesAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesQuery;
 import cloud.xcan.angus.core.tester.application.query.services.ServicesSchemaQuery;
-import cloud.xcan.angus.core.tester.domain.apis.ApisBasicInfo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesign;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfoRepo;
+import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignRepo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
@@ -42,6 +42,9 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Resource
   private ApisDesignInfoRepo apisDesignInfoRepo;
+
+  @Resource
+  private ApisDesignInfoSearchRepo apisDesignInfoSearchRepo;
 
   @Resource
   private ServicesQuery servicesQuery;
@@ -94,8 +97,8 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
   }
 
   @Override
-  public Page<ApisDesignInfo> list(GenericSpecification<ApisDesignInfo> spec,
-      PageRequest pageable, Class<ApisBasicInfo> clz) {
+  public Page<ApisDesignInfo> list(GenericSpecification<ApisDesignInfo> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisDesignInfo>>() {
       @Override
       protected void checkParams() {
@@ -105,7 +108,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
       @Override
       protected Page<ApisDesignInfo> process() {
-        Page<ApisDesignInfo> page = apisDesignInfoRepo.findAll(spec, pageable);
+        Page<ApisDesignInfo> page = fullTextSearch
+            ? apisDesignInfoSearchRepo.find(spec.getCriteria(), pageable,
+            ApisDesignInfo.class, match)
+            : apisDesignInfoRepo.findAll(spec, pageable);
         if (page.hasContent()) {
           setServicesName(page.getContent());
           userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
@@ -116,7 +122,7 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
   }
 
   @Override
-  public List<ApisDesignInfo> findbyIds(HashSet<Long> ids) {
+  public List<ApisDesignInfo> findByIds(HashSet<Long> ids) {
     return apisDesignInfoRepo.findAllById(ids);
   }
 

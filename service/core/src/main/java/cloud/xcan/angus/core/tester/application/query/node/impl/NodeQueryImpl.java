@@ -40,6 +40,7 @@ import cloud.xcan.angus.core.tester.application.query.node.NodeQuery;
 import cloud.xcan.angus.core.tester.domain.node.Node;
 import cloud.xcan.angus.core.tester.domain.node.NodeListRepo;
 import cloud.xcan.angus.core.tester.domain.node.NodeRepo;
+import cloud.xcan.angus.core.tester.domain.node.NodeSearchRepo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRoleRepo;
 import cloud.xcan.angus.core.utils.PrincipalContextUtils;
 import cloud.xcan.angus.model.result.command.SimpleCommandResult;
@@ -56,7 +57,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
 @Biz
@@ -69,6 +70,9 @@ public class NodeQueryImpl implements NodeQuery {
 
   @Resource
   private NodeListRepo nodeListRepo;
+
+  @Resource
+  private NodeSearchRepo nodeSearchRepo;
 
   @Resource
   private NodeRoleRepo nodeRoleRepo;
@@ -98,7 +102,6 @@ public class NodeQueryImpl implements NodeQuery {
   @Override
   public Long count(Specification<Node> spec) {
     return new BizTemplate<Long>() {
-
       @Override
       protected Long process() {
         return nodeRepo.count(spec);
@@ -107,9 +110,9 @@ public class NodeQueryImpl implements NodeQuery {
   }
 
   @Override
-  public Page<Node> find(GenericSpecification<Node> spec, Pageable pageable) {
+  public Page<Node> list(GenericSpecification<Node> spec, PageRequest pageable,
+      boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<Node>>() {
-
       @Override
       protected Page<Node> process() {
         if (isTenantClient()) {
@@ -119,7 +122,9 @@ public class NodeQueryImpl implements NodeQuery {
         Page<Node> page = null;
         Long tenantId0 = getTenantId(spec);
         if (isPrivateEdition() || hasOwnNodes(tenantId0)) {
-          page = nodeListRepo.find(spec.getCriteria(), pageable, Node.class, null);
+          page = fullTextSearch
+              ? nodeSearchRepo.find(spec.getCriteria(), pageable, Node.class, match)
+              : nodeListRepo.find(spec.getCriteria(), pageable, Node.class, null);
         } else if (isUserAction()) {
           PrincipalContext.addExtension("isFreeNodes", true);
           page = getFreeWhenNonNodes(findFirstValue(spec.getCriteria(), "role"));

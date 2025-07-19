@@ -1,6 +1,6 @@
 package cloud.xcan.angus.core.tester.interfaces.project.facade;
 
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.trash.ProjectTrashFindto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.trash.ProjectTrashDetailVo;
 import cloud.xcan.angus.remote.PageResult;
 
@@ -16,6 +16,6 @@ public interface ProjectTrashFacade {
 
   Long count();
 
-  PageResult<ProjectTrashDetailVo> search(ProjectTrashSearchDto dto);
+  PageResult<ProjectTrashDetailVo> list(ProjectTrashFindto dto);
 
 }

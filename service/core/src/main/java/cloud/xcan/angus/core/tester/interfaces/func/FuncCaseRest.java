@@ -13,7 +13,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseImportDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseResultModifyDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTesterReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseUpdateDto;
@@ -442,16 +441,7 @@ public class FuncCaseRest {
   @GetMapping
   public ApiLocaleResult<PageResult<FuncCaseListVo>> list(
       @Valid @ParameterObject FuncCaseFindDto dto) {
-    return ApiLocaleResult.success(funcCaseFacade.list(dto));
-  }
-
-  @Operation(summary = "Fulltext search the list of functional test cases", operationId = "func:case:search")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<FuncCaseListVo>> search(
-      @Valid @ParameterObject FuncCaseSearchDto dto) {
-    return ApiLocaleResult.success(funcCaseFacade.search(false, dto));
+    return ApiLocaleResult.success(funcCaseFacade.list(false, dto));
   }
 
   @Operation(summary = "Export the functional test cases by conditions", operationId = "func:case:export")
@@ -460,7 +450,7 @@ public class FuncCaseRest {
   })
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Valid @ParameterObject FuncCaseSearchDto dto, HttpServletResponse response) {
+      @Valid @ParameterObject FuncCaseFindDto dto, HttpServletResponse response) {
     return funcCaseFacade.export(dto, response);
   }
 }

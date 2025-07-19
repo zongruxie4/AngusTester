@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.tester.domain.func.plan.FuncPlanStatus;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanAddDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanFindDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.plan.FuncPlanUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.plan.FuncPlanDetailVo;
 import cloud.xcan.angus.remote.search.SearchCriteria;
@@ -127,13 +126,4 @@ public class FuncPlanAssembler {
     return new GenericSpecification<>(filters);
   }
 
-  public static Set<SearchCriteria> getSearchCriteria(FuncPlanSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("id", "createdDate", "startDate", "deadlineDate")
-        .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy"
-            , "startDate", "deadlineDate")
-        .matchSearchFields("name", "other_information")
-        .build();
-  }
 }

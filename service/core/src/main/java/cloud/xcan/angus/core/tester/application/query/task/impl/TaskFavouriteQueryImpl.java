@@ -20,7 +20,7 @@ public class TaskFavouriteQueryImpl implements TaskFavouriteQuery {
   private TaskFavouriteRepo taskFavouriteRepo;
 
   @Override
-  public Page<TaskFavouriteP> search(Long projectId, String name, PageRequest pageable) {
+  public Page<TaskFavouriteP> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<TaskFavouriteP>>() {
 
       @Override

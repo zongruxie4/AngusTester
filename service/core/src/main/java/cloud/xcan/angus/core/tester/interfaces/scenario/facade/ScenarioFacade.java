@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.scenario.facade;
 
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioAddDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoFindDto;
-import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioInfoSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.ScenarioUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.vo.ScenarioDetailVo;
@@ -33,7 +32,5 @@ public interface ScenarioFacade {
   List<ScenarioListVo> list(Set<Long> ids);
 
   PageResult<ScenarioListVo> list(ScenarioInfoFindDto dto);
-
-  PageResult<ScenarioListVo> search(ScenarioInfoSearchDto dto);
 
 }

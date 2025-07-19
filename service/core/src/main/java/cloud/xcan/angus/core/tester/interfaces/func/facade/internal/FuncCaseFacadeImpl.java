@@ -2,7 +2,6 @@ package cloud.xcan.angus.core.tester.interfaces.func.facade.internal;
 
 
 import static cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder.getMatchSearchFields;
-import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSearchCriteria;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.getSpecification;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toCaseListExportResource;
 import static cloud.xcan.angus.core.tester.interfaces.func.facade.internal.assembler.FuncCaseAssembler.toDetailVo;
@@ -21,7 +20,6 @@ import cloud.xcan.angus.core.biz.NameJoin;
 import cloud.xcan.angus.core.tester.application.cmd.func.FuncCaseCmd;
 import cloud.xcan.angus.core.tester.application.cmd.tag.TagTargetCmd;
 import cloud.xcan.angus.core.tester.application.query.func.FuncCaseQuery;
-import cloud.xcan.angus.core.tester.application.query.func.FuncCaseSearch;
 import cloud.xcan.angus.core.tester.application.query.func.FuncReviewCaseRecordQuery;
 import cloud.xcan.angus.core.tester.application.query.task.TaskQuery;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
@@ -37,7 +35,6 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseImportDto
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseResultModifyDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseReviewDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTagReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseTesterReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseUpdateDto;
@@ -76,9 +73,6 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
 
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
-  @Resource
-  private FuncCaseSearch funcCaseSearch;
 
   @Resource
   private TaskQuery taskQuery;
@@ -270,16 +264,9 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
 
   @NameJoin
   @Override
-  public PageResult<FuncCaseListVo> list(FuncCaseFindDto dto) {
-    Page<FuncCaseInfo> page = funcCaseQuery.list(getSpecification(dto), dto.tranPage());
-    return buildVoPageResult(page, FuncCaseAssembler::toListVo);
-  }
-
-  @NameJoin
-  @Override
-  public PageResult<FuncCaseListVo> search(boolean export, FuncCaseSearchDto dto) {
-    Page<FuncCaseInfo> page = funcCaseSearch.search(export, getSearchCriteria(dto),
-        dto.tranPage(), FuncCaseInfo.class, getMatchSearchFields(dto.getClass()));
+  public PageResult<FuncCaseListVo> list(boolean export, FuncCaseFindDto dto) {
+    Page<FuncCaseInfo> page = funcCaseQuery.list(export, getSpecification(dto), dto.tranPage(),
+        dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
     return buildVoPageResult(page, FuncCaseAssembler::toListVo);
   }
 
@@ -289,7 +276,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
    */
   @Override
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      FuncCaseSearchDto dto, HttpServletResponse response) {
+      FuncCaseFindDto dto, HttpServletResponse response) {
     List<FuncCaseExportListVo> data = getExportFuncCaseData(dto);
     String fileName = "CaseListExport-" + System.currentTimeMillis() + ".xlsx";
     return buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM, fileName,
@@ -297,9 +284,9 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   }
 
   @NotNull
-  private List<FuncCaseExportListVo> getExportFuncCaseData(FuncCaseSearchDto dto) {
+  private List<FuncCaseExportListVo> getExportFuncCaseData(FuncCaseFindDto dto) {
     dto.setPageSize(200);
-    PageResult<FuncCaseListVo> page = joinSupplier.execute(() -> search(true, dto));
+    PageResult<FuncCaseListVo> page = joinSupplier.execute(() -> list(true, dto));
     // 500 reads per time, with a maximum support for exporting MAX_REPORT_ROWS.
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
@@ -307,7 +294,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
         .collect(Collectors.toList());
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
-      page = search(true, dto);
+      page = list(true, dto);
       if (!page.isEmpty()) {
         data.addAll(page.getList().stream().map(FuncCaseAssembler::toListVo).toList());
       }

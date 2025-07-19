@@ -2,7 +2,7 @@ package cloud.xcan.angus.core.tester.interfaces.task;
 
 
 import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskTrashFacade;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.trash.TaskTrashSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.trash.TaskTrashListDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.vo.trash.TaskTrashDetailVo;
 import cloud.xcan.angus.remote.ApiLocaleResult;
 import cloud.xcan.angus.remote.PageResult;
@@ -82,13 +82,13 @@ public class TaskTrashRest {
     return ApiLocaleResult.success(trashTaskFacade.count(projectId));
   }
 
-  @Operation(summary = "Fulltext search the trash of task or sprint", operationId = "task:trash:search")
+  @Operation(summary = "Query trash list of task or sprint", operationId = "task:trash:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
-  @GetMapping("/search")
-  public ApiLocaleResult<PageResult<TaskTrashDetailVo>> search(
-      @Valid @ParameterObject TaskTrashSearchDto dto) {
-    return ApiLocaleResult.success(trashTaskFacade.search(dto));
+  @GetMapping
+  public ApiLocaleResult<PageResult<TaskTrashDetailVo>> list(
+      @Valid @ParameterObject TaskTrashListDto dto) {
+    return ApiLocaleResult.success(trashTaskFacade.list(dto));
   }
 
 }

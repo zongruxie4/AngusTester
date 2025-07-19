@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.jpa.criteria.SearchCriteriaBuilder;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
 import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCaseInfo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseFindDto;
-import cloud.xcan.angus.core.tester.interfaces.func.facade.dto.FuncCaseSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineCaseDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.baseline.FuncBaselineCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.internal.assembler.TaskAssembler;
@@ -137,19 +136,6 @@ public class FuncBaselineCaseAssembler {
         .matchSearchFields("name", "description", "code")
         .build();
     return new GenericSpecification<FuncBaselineCaseInfo>(filters);
-  }
-
-  public static Set<SearchCriteria> getSearchCriteria(FuncCaseSearchDto dto) {
-    // Build the final filters
-    return new SearchCriteriaBuilder<>(dto)
-        .rangeSearchFields("deadlineDate", "createdDate", "lastModifiedDate",
-            "reviewDate", "testResultHandleDate", "reviewNum", "testNum", "testFailNum")
-        .inAndNotFields("id", "tagId", "testResult", "testerId", "developerId")
-        .orderByFields("id", "createdDate", "lastModifiedDate", "priority",
-            "deadlineDate", "reviewStatus", "reviewNum", "testerId", "developerId", "reviewerId",
-            "testNum", "testFailNum", "testResult", "reviewDate", "testResultHandleDate")
-        .matchSearchFields("name", "description", "code")
-        .build();
   }
 
 }

@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.domain.project.ProjectType;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectAddDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectFindDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectSearchDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.dto.ProjectUpdateDto;
 import cloud.xcan.angus.core.tester.interfaces.project.facade.vo.ProjectDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -33,7 +32,5 @@ public interface ProjectFacade {
   List<UserInfo> userMember(Long id);
 
   PageResult<ProjectDetailVo> list(ProjectFindDto dto);
-
-  PageResult<ProjectDetailVo> search(ProjectSearchDto dto);
 
 }

@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.application.cmd.apis.ApisFollowCmd;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisFollowQuery;
 import cloud.xcan.angus.core.tester.domain.apis.follow.ApisFollowP;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.ApisFollowFacade;
-import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.follow.ApisFollowSearchDto;
+import cloud.xcan.angus.core.tester.interfaces.apis.facade.dto.follow.ApisFollowFindDto;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.internal.assembler.ApisFollowAssembler;
 import cloud.xcan.angus.core.tester.interfaces.apis.facade.vo.follow.ApisFollowDetailVo;
 import cloud.xcan.angus.remote.PageResult;
@@ -41,8 +41,8 @@ public class ApisFollowFacadeImpl implements ApisFollowFacade {
   }
 
   @Override
-  public PageResult<ApisFollowDetailVo> search(ApisFollowSearchDto dto) {
-    Page<ApisFollowP> page = apisFollowQuery.search(dto.getProjectId(),
+  public PageResult<ApisFollowDetailVo> list(ApisFollowFindDto dto) {
+    Page<ApisFollowP> page = apisFollowQuery.list(dto.getProjectId(),
         dto.getApisName(), dto.tranPage());
     return buildVoPageResult(page, ApisFollowAssembler::toDetailVo);
   }
