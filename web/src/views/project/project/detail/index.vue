@@ -280,10 +280,8 @@ watch(() => props.projectId, newValue => {
   </div>
 </template>
 <style scoped>
-:deep(.ant-form) .ant-form-item-label > label {
+
+:deep(.ant-form) .desc-item .ant-form-item-label > label {
   @apply h-8;
-}
-:deep(.ant-form) .member-item .ant-form-item-label > label {
-  @apply h-6;
 }
 </style>
