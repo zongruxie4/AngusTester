@@ -274,7 +274,7 @@ defineExpose({
       <div class="flex space-x-2 justify-between">
         <Select
           v-if="props.visible && props.projectId"
-          :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+          :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           :allowClear="false"
           :fieldNames="{ label: 'name', value: 'id'}"
           :defaultActiveFirstOption="true"

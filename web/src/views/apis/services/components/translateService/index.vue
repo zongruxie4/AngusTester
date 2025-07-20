@@ -106,7 +106,7 @@ onMounted(() => {
      <FormItem label="接口服务" name="serviceId" :rules="[{required: true, message: '请选择服务'}]">
        <TreeSelect
          :defaultValue="props.service"
-         :action="`${TESTER}/services/search?projectId=${props.projectId}&hasPermission=ADD`"
+         :action="`${TESTER}/services?projectId=${props.projectId}&hasPermission=ADD&fullTextSearch=true`"
          :allowClear="false"
          :fieldNames="{children:'children', label:'name', value: 'id'}"
          placeholder="请选择服务"

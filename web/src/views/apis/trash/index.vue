@@ -43,7 +43,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await apis.delAllTrash(params);
+  const [error] = await apis.deleteAllTrash(params);
   if (error) {
     loading.value = false;
     return;

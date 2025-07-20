@@ -11,7 +11,7 @@ export default class API {
   }
 
   getSourceList (params:{pageNo:number, pageSize:number, [key: string]: any}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/datasource/search`, params);
+    return http.get(`${baseUrl}/datasource`, { ...params, fullTextSearch: true });
   }
 
   getSourceTable (id:string | undefined): Promise<[Error | null, any]> {

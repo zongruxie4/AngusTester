@@ -6,7 +6,7 @@ export default class User {
     baseUrl = prefix + '/user';
   }
 
-  searchList<T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  getUserList<T> (params: T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, params);
   }
 }

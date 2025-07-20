@@ -5,7 +5,7 @@ import { Grid, Modal, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { GM } from '@xcan-angus/tools';
 
-import { appInfo } from 'src/api/auth';
+import { appInfo } from 'src/api/gm';
 
 interface Props {
   visible: boolean;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, reactive, ref } from 'vue';
 import { Icon, IconRefresh, Table } from '@xcan-angus/vue-ui';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 
 const tenantInfo = inject('tenantInfo', ref());
 
@@ -40,7 +40,7 @@ const dataSource = ref([]);
 const loadData = async () => {
   loading.value = true;
   const { current, pageSize } = pagination;
-  const [error, res] = await setting.loadQuotaList({ appCode: 'AngusTester', tenantId: tenantInfo.value.id, pageNo: current, pageSize });
+  const [error, res] = await setting.getQuotaList({ appCode: 'AngusTester', tenantId: tenantInfo.value.id, pageNo: current, pageSize });
   loading.value = false;
   if (error) {
     return;

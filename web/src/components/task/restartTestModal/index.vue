@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const OK_API_MAP = {
-  API: apis.retest,
+  API: apis.restartTestTask,
   SERVICE: services.resetTest,
   SCENARIO: scenario.reStart
 };

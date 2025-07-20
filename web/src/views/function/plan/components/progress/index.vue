@@ -28,7 +28,7 @@ const loadData = async () => {
     planId: props.planId,
     projectId: props.projectId
   };
-  const [error, { data = [] }] = await analysis.loadFuncTesterProgress(params);
+  const [error, { data = [] }] = await analysis.getFuncTesterProgress(params);
   if (error) {
     return;
   }

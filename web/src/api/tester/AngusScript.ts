@@ -6,7 +6,7 @@ export default class API {
     baseUrl = prefix + '/angus';
   }
 
-  loadDetail (id: string): Promise<[Error | null, any]> {
+  getDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/script/${id}`);
   }
 }

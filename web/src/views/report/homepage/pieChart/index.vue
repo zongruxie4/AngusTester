@@ -200,7 +200,7 @@ const resizeHandler = () => {
 const dataSource = ref({});
 const total = ref(0);
 const loadChartData = async () => {
-  const [error, { data = {} }] = await analysis.loadCustomizationSummary({
+  const [error, { data = {} }] = await analysis.getCustomizationSummary({
     projectId: props.projectId,
     name: 'Report',
     groupBy: 'STATUS',

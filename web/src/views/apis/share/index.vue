@@ -90,7 +90,7 @@ const hashChange = async (hash: string) => {
       });
     } else {
       if (!id) {
-        const [_error, { data = {} }] = await apis.loadShareList({
+        const [_error, { data = {} }] = await apis.getShareList({
           projectId: props.projectId,
           name
         });

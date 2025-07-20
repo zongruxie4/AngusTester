@@ -11,7 +11,7 @@ export default class API {
   }
 
   loadAllocateList (params:any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   del (params: string): Promise<[Error | null, any]> {
@@ -35,11 +35,11 @@ export default class API {
   }
 
   loadScenarioDirList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/scenario/search`, { ...params, targetType: 'DIR' });
+    return http.get(`${baseUrl}/scenario`, { ...params, targetType: 'DIR', fullTextSearch: true });
   }
 
   loadScenarioSceneList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/scenario/search`, { ...params, targetType: 'SCENARIO' });
+    return http.get(`${baseUrl}/scenario`, { ...params, targetType: 'SCENARIO', fullTextSearch: true });
   }
 
   deleteScenario (id: string): Promise<[Error | null, any]> {

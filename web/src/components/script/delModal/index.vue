@@ -40,7 +40,7 @@ const handleDel = async () => {
     return;
   }
   loading.value = true;
-  const [error] = await (props.type === 'API' ? apis.delApiScript(props.id, checked.value) : services.delApiScript(props.id, checked.value));
+  const [error] = await (props.type === 'API' ? apis.deleteTestScript(props.id, checked.value) : services.delApiScript(props.id, checked.value));
   if (error) {
     return;
   }

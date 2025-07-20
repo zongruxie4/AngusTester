@@ -6,7 +6,7 @@ export default class Group {
     baseUrl = prefix + '/group';
   }
 
-  searchList<T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  getGroupList<T> (params: T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, params);
   }
 }

@@ -7,7 +7,7 @@ export default class API {
   }
 
   loadScenario (params: {[key: string]: any}, axiosConfig = {}):Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params, axiosConfig);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   patchScripts (params: {dirId: string, id: string, name: string, scriptYaml?: string}): Promise<[Error | null, any]> {
@@ -145,7 +145,7 @@ export default class API {
   }
 
   searchMonitor (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/monitor/search`, params);
+    return http.get(`${baseUrl}/monitor`, { ...params, fullTextSearch: true });
   }
 
   getMonitorInfo (monitorId: string): Promise<[Error | null, any]> {
@@ -181,6 +181,6 @@ export default class API {
   }
 
   searchTrash (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/trash/search`, params);
+    return http.get(`${baseUrl}/trash`, { ...params, fullTextSearch: true });
   }
 }

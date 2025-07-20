@@ -5,7 +5,7 @@ import { enumLoader } from '@xcan-angus/tools';
 import { Button } from 'ant-design-vue';
 
 import ExpandGrid from './expandGrid.vue';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 import { splitDuration } from '@/utils/utils';
 
 const editable = ref(false);
@@ -44,7 +44,7 @@ const handleEditPerform = () => {
 };
 
 const loadPerInfo = async () => {
-  const [error, res] = await setting.loadPerfIndicator();
+  const [error, res] = await setting.getPerfIndicator();
   if (error) {
     return;
   }

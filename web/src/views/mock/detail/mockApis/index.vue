@@ -29,7 +29,7 @@ import { debounce } from 'throttle-debounce';
 
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from 'src/api/tester';
-import { setting } from 'src/api/auth';
+import { setting } from 'src/api/comm';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './PropsType';
 
 interface Props {
@@ -499,7 +499,7 @@ const del = async (id: string) => {
 
         notification.success('删除成功');
 
-        if (typeof scrollRef.value?.del === 'function') {
+        if (typeof scrollRef.value?.delete === 'function') {
           if (apiIds.value.length === 1) {
             scrollRef.value.pureDel(id);
           } else {
@@ -507,7 +507,7 @@ const del = async (id: string) => {
           }
         }
       } else {
-        if (typeof scrollRef.value?.del === 'function') {
+        if (typeof scrollRef.value?.delete === 'function') {
           scrollRef.value.pureDel(id);
         }
       }
@@ -1121,7 +1121,7 @@ const loadServiceInfo = async () => {
 
 const readyState = ref(-1);
 const loadProxyUrl = async () => {
-  const [error, resp] = await setting.getApiProxy();
+  const [error, resp] = await setting.getUserApiProxy();
   if (error) {
     return;
   }

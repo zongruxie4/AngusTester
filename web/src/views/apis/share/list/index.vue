@@ -111,7 +111,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await apis.loadShareList({ ...params });
+  const [error, res] = await apis.getShareList({ ...params });
   loaded.value = true;
   loading.value = false;
 
@@ -162,7 +162,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
     });
     return;
   }
-  const [error, { data }] = await apis.loadShareInfo(record.id);
+  const [error, { data }] = await apis.getShareDetail(record.id);
   if (error) {
     return;
   }
@@ -173,7 +173,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
 };
 
 const handleEnterShare = async (shareId: string) => {
-  const [error, { data }] = await apis.loadShareInfo(shareId);
+  const [error, { data }] = await apis.getShareDetail(shareId);
   if (error) {
     return;
   }

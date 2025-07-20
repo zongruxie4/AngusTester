@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { enumLoader } from '@xcan-angus/tools';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 
-import { event } from '@/api/event';
+import { event } from '@/api/gm';
 
 interface Options {
   address: string,
@@ -58,7 +58,7 @@ const channelValus = reactive({
 });
 
 const loadCurrentChannels = async () => {
-  const [error, res] = await event.loadCurrentChannels(props.id);
+  const [error, res] = await event.getCurrentChannels(props.id);
   if (error) {
     return;
   }
@@ -75,7 +75,7 @@ const dingtalkOptions = ref<Options[]>([]);
 const wechatOptions = ref<Options[]>([]);
 
 const loadReceiveSettingDetail = async (key: string) => {
-  const [error, res] = await event.loadReceiveSettingDetail(key);
+  const [error, res] = await event.getChannelDetail(key);
   if (error || !res.data) {
     return [];
   }
@@ -131,7 +131,7 @@ const handleOk = async () => {
   for (const eventType of selectetType.value) {
     ids = ids.concat(channelValus[eventType]);
   }
-  const [error] = await event.saveReceiveSetting({ id: props.id, channelIds: ids });
+  const [error] = await event.saveChannelSetting({ id: props.id, channelIds: ids });
   if (error) {
     return;
   }

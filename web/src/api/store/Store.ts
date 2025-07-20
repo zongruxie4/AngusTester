@@ -7,6 +7,6 @@ export default class API {
   }
 
   getStoreList <T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/cloud/goods/search`, params);
+    return http.get(`${baseUrl}/cloud/goods`, { ...params, fullTextSearch: true });
   }
 }

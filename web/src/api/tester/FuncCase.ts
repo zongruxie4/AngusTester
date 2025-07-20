@@ -7,15 +7,15 @@ export default class API {
   }
 
   loadFuncCase (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   loadFavourite (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/favourite/search`, params);
+    return http.get(`${baseUrl}/favourite`, { ...params, fullTextSearch: true });
   }
 
   loadFollow (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/follow/search`, params);
+    return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
   }
 
   updateCase (params): Promise<[Error | null, any]> {

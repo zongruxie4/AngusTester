@@ -13,5 +13,4 @@ export default class API {
   getMetrics (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/metrics`);
   }
-
 }

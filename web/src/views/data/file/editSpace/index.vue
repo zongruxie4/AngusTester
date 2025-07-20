@@ -53,7 +53,7 @@ const loadDetail = async () => {
     return;
   }
 
-  const [error, { data }] = await space.loadDetail(id);
+  const [error, { data }] = await space.getDetail(id);
   if (error) {
     return;
   }

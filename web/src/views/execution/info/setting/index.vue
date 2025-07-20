@@ -76,7 +76,7 @@ const saveSetting = async () => {
   };
 
   emit('update:loading', true);
-  const [error] = await exec.updateExecSetting(props.execId, params);
+  const [error] = await exec.putScriptConfig(props.execId, params);
   emit('update:loading', false);
   if (error) {
     return;

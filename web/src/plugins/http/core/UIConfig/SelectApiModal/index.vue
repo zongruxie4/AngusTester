@@ -103,7 +103,7 @@ const ok = async (key:'link'|'copy') => {
   const ids = checkedApiIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
-    const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.loadInfo(id, true, { silence: false });
+    const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getDetail(id, true, { silence: false });
     if (error) {
       coping.value = false;
       linking.value = false;
@@ -167,8 +167,7 @@ const apiAction = computed(() => {
   if (!serviceId.value) {
     return undefined;
   }
-
-  return `${TESTER}/services/${serviceId.value}/apis/search`;
+  return `${TESTER}/services/${serviceId.value}/apis`;
 });
 
 const apiParams = computed(() => {

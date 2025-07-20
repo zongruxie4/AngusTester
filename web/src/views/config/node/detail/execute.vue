@@ -43,7 +43,7 @@ const dataSource = ref<{[key: string]: string}[]>([]);
 
 watch(() => props.id, async newValue => {
   if (newValue) {
-    const [error, { data }] = await nodeCtrl.getNodeExec(props.id);
+    const [error, { data }] = await nodeCtrl.getExecInfo(props.id);
     if (error) {
       return;
     }

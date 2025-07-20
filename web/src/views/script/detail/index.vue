@@ -9,7 +9,7 @@ import { Button } from 'ant-design-vue';
 
 import { script } from 'src/api/tester';
 import { exec } from 'src/api/ctrl';
-import { ai } from 'src/api/auth';
+import { ai } from 'src/api/gm';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
 import { PermissionKey, ScriptInfo } from '../PropsType';
 
@@ -338,7 +338,7 @@ const handleExec = async () => {
   }
 
   loading.value = true;
-  const [error] = await exec.addExecByScript({ scriptId: scriptId.value });
+  const [error] = await exec.addByScript({ scriptId: scriptId.value });
   loading.value = false;
   if (error) {
     return;
@@ -349,7 +349,7 @@ const handleExec = async () => {
 
 const loadDebugInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await exec.loadDebugScriptInfo(scriptId.value);
+  const [error, { data }] = await exec.getDebugScriptInfo(scriptId.value);
   loading.value = false;
   if (error || !data) {
     return;

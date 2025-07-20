@@ -31,7 +31,7 @@ const target = ref<{targetSpaceId?: string, targetDirectoryId?: string}>({});
 
 const treeData = ref<TreeProps['treeData']>([]);
 const loadSpace = async () => {
-  const [error, res = { data: {} }] = await space.getSpaceList({ appCode: 'AngusTester', pageSize: store.state.maxPageSize, projectId: projectId.value });
+  const [error, res = { data: {} }] = await space.getList({ appCode: 'AngusTester', pageSize: store.state.maxPageSize, projectId: projectId.value });
   if (error) {
     return;
   }
@@ -41,7 +41,7 @@ const loadSpace = async () => {
 const onLoadData:TreeProps['loadData'] = treeNode => {
   const spaceId = treeNode.type?.value === 'DIRECTORY' ? treeNode.spaceId : treeNode.id;
   const parentDirectoryId = treeNode.type?.value === 'DIRECTORY' ? treeNode.id : '-1';
-  return space.getFiles({ spaceId, parentDirectoryId, filters: [{ key: 'type', value: 'DIRECTORY', op: 'EQUAL' }], pageSize: store.state.maxPageSize, pageNo: 1 })
+  return space.getFileList({ spaceId, parentDirectoryId, filters: [{ key: 'type', value: 'DIRECTORY', op: 'EQUAL' }], pageSize: store.state.maxPageSize, pageNo: 1 })
     .then(([error, res]) => {
       if (error) {
         return;

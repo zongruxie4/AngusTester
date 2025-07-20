@@ -7,7 +7,7 @@ export default class API {
   }
 
   searchTree<T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/tree/search`, params);
+    return http.get(`${baseUrl}/tree`, { ...params, fullTextSearch: true });
   }
 
   addModule <T> (params: T): Promise<[Error | null, any]> {

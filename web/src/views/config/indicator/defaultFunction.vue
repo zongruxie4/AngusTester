@@ -4,7 +4,7 @@ import { Icon, IndicatorAssert } from '@xcan-angus/vue-ui';
 import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
 import { enumLoader } from '@xcan-angus/tools';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 
 // 冒烟测试指标选项
 const smokeEnumOpt = ref<{value: string; label: string}[]>([]);
@@ -24,7 +24,7 @@ const loadIndicatorEnum = async () => {
 
 // 获取默认指标
 const loadIndicatorData = async () => {
-  const [error, { data }] = await setting.loadFuncIndicator();
+  const [error, { data }] = await setting.getFuncIndicator();
   if (error) {
     return;
   }

@@ -23,7 +23,7 @@ const activeTab = ref('func');
 const dataSource = ref();
 
 const loadApisResult = async () => {
-  const [error, { data }] = await exec.loadApiExecRes(props.apisId);
+  const [error, { data }] = await exec.getApiTestResult(props.apisId);
   if (error) {
     return;
   }

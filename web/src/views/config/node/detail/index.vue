@@ -238,7 +238,7 @@ const installAgen = async () => {
     return;
   }
 
-  state.infos.installAgent = true;
+  state.infos.geAgentInstallationCmd = true;
 };
 
 // 手动安装步骤
@@ -247,7 +247,7 @@ const getInstallStep = async () => {
     foldInstallAgent();
     return;
   }
-  const [error, res] = await nodeInfo.installAgent({ id: id.value });
+  const [error, res] = await nodeInfo.geAgentInstallationCmd({ id: id.value });
   if (error) {
     return;
   }
@@ -284,7 +284,7 @@ const enableNode = async () => {
 
 // 资源使用 ->cpu 内存 文件系统 交换区
 const loadMetrics = async () => {
-  const [error, res] = await nodeCtrl.getNodeMetrics(id.value);
+  const [error, res] = await nodeCtrl.getLatestMetrics(id.value);
   if (error) {
     return;
   }
@@ -363,7 +363,7 @@ const onDeviceNameChange = (value) => {
 
 // 资源使用 ->网络
 const loadNetwork = async () => {
-  const [error, res] = await nodeCtrl.getNodeNetwork(id.value);
+  const [error, res] = await nodeCtrl.getNetworkInfoMetrics(id.value);
   if (error) {
     return;
   }
@@ -956,7 +956,7 @@ const loadEchartData = async () => {
   if (activeTab.value === 'disk') {
     if (!diskNames.value.length) {
       // loadingChartData.value = true;
-      const [error, res] = await nodeCtrl.getDiskName(id.value);
+      const [error, res] = await nodeCtrl.getDiskInfoMetrics(id.value);
       if (error) {
         return;
       }
@@ -983,7 +983,7 @@ const loadEchartData = async () => {
   if (activeTab.value === 'network') {
     if (!networkNames.value.length) {
       // loadingChartData.value = true;
-      const [error, res] = await nodeCtrl.getNetworkName(id.value);
+      const [error, res] = await nodeCtrl.getNetworkInfoMetrics(id.value);
       if (error) {
         return;
       }
@@ -1112,7 +1112,7 @@ onMounted(async () => {
 });
 
 const getOnlineInstallTip = (node) => {
-  if (node.infos.installAgent) {
+  if (node.infos.geAgentInstallationCmd) {
     return '已安装';
   }
   if (!isAdmin.value) {

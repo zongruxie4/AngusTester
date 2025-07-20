@@ -60,7 +60,7 @@ const recoverHandler = async (data: TrashItem) => {
 
 const deleteHandler = async (data: TrashItem) => {
   emit('update:spinning', true);
-  const [error] = await apis.delTrash(data.id);
+  const [error] = await apis.deleteTrash(data.id);
   if (error) {
     emit('update:spinning', false);
     return;
@@ -105,7 +105,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await apis.getTrashData(params);
+  const [error, res] = await apis.getTrashList(params);
   loaded.value = true;
   emit('update:spinning', false);
   if (error) {

@@ -102,10 +102,10 @@ const save = () => {
       return;
     }
     const [error, resp] = isUnarchived.value && props.id
-      ? await apis.addApi([{ ...apiInfo, ...params, unarchivedId: props.id }])
+      ? await apis.add([{ ...apiInfo, ...params, unarchivedId: props.id }])
       : props.id
-        ? await apis.updateApi([{ ...apiInfo, ...params, id: props.id }])
-        : await apis.putApi([{ ...apiInfo, ...params }]);
+        ? await apis.update([{ ...apiInfo, ...params, id: props.id }])
+        : await apis.put([{ ...apiInfo, ...params }]);
     if (error) {
       return;
     }
@@ -199,7 +199,7 @@ onMounted(async () => {
     <FormItem label="所属服务" name="serviceId">
       <TreeSelect
         v-model:defaultValue="defaultProject"
-        :action="`${TESTER}/services/search?projectId=${projectInfo.id}&hasPermission=ADD`"
+        :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')||!isUnarchived"
         :fieldNames="{children:'children', label:'name', value: 'id'}"

@@ -6,51 +6,75 @@ export default class API {
     baseUrl = prefix + '/analysis';
   }
 
-  loadProStatistics (params) : Promise<[Error | null, any]> {
+  getList <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  delete (ids: string[]) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids });
+  }
+
+  refresh (analysisId: string) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${analysisId}/refresh`);
+  }
+
+  getDetail (analysisId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${analysisId}`);
+  }
+
+  add <T> (params: T) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}`, params);
+  }
+
+  update <T> (params: T) : Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}`, params);
+  }
+
+  getApisStatistics (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/resources`, params);
   }
 
-  loadScriptCount (params) : Promise<[Error | null, any]> {
+  getScriptCount (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/script/count`, params);
   }
 
-  loadCustomizationSummary (params) : Promise<[Error | null, any]> {
+  getCustomizationSummary (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/customization/summary`, params);
   }
 
-  loadFuncCaseCount (params) : Promise<[Error | null, any]> {
+  getFuncCaseCount (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/case/count`, params);
   }
 
-  loadFuncPlanBurndown (planId: string): Promise<[Error | null, any]> {
+  getFuncPlanBurndown (planId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/plan/${planId}/burndown`);
   }
 
-  loadFuncTesterWorkSummary (params) : Promise<[Error | null, any]> {
+  getFuncTesterWorkSummary (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/tester/work/summary`, params);
   }
 
-  loadFuncTesterBurndown (params) : Promise<[Error | null, any]> {
+  getFuncTesterBurndown (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/tester/burndown`, params);
   }
 
-  loadFuncTesterProgress (params) : Promise<[Error | null, any]> {
+  getFuncTesterProgress (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/tester/progress`, params);
   }
 
-  loadFuncResourceCount (params) : Promise<[Error | null, any]> {
+  getFuncResourceCount (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/resources/count`, params);
   }
 
-  loadScenarioStatistics (params): Promise<[Error | null, any]> {
+  getScenarioStatistics (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/association/creation`, params);
   }
 
-  loadScenarioResourceCount (params) : Promise<[Error | null, any]> {
+  getScenarioResourceCount (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/resources/count`, params);
   }
 
-  loadTaskCount (params): Promise<[Error | null, any]> {
+  getTaskCountSummary (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/task/summary`, params);
   }
 
@@ -62,11 +86,11 @@ export default class API {
     return http.get(`${baseUrl}/mock/service/count?mockServiceId=${mockServiceId}`);
   }
 
-  loadFuncWork (projectId: string): Promise<[Error | null, any]> {
+  getFuncWork (projectId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/func/project/${projectId}/work`);
   }
 
-  loadDataStatistics (params) : Promise<[Error | null, any]> {
+  getDataStatistics (params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/data/resources`, params);
   }
 
@@ -88,29 +112,5 @@ export default class API {
 
   getTaskAssigneeBurndown <T> (params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/task/assignee/burndown`, params);
-  }
-
-  searchList <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
-  }
-
-  deleteAnalysis (ids: string[]) : Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, { ids });
-  }
-
-  refreshContent (analysisId: string) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${analysisId}/refresh`);
-  }
-
-  getAnalysisInfo (analysisId: string) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${analysisId}`);
-  }
-
-  addAnalysis <T> (params: T) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}`, params);
-  }
-
-  updateAnalysis <T> (params: T) : Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}`, params);
   }
 }

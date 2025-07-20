@@ -359,7 +359,7 @@ const perfLoadList = async (_pageNo?: number, filters?: { key: string; op: strin
     perfListParams.value.filters = filters;
   }
 
-  const [error, { data = { list: [], total: 0 } }] = await exec.getAggregateData(props.detail?.id, perfListParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getSummaryList(props.detail?.id, perfListParams.value);
   if (error) {
     emit('update:loading', false);
     clearTimer();
@@ -874,7 +874,7 @@ const computedOhtersValue = () => {
 };
 
 const loadErrorCount = async () => {
-  const [counterErr, counterRes] = await exec.loadErrorCounterLatest(props.detail?.id);
+  const [counterErr, counterRes] = await exec.getLatestErrorCounter(props.detail?.id);
   if (counterErr) {
     emit('update:loading', false);
     clearTimer();
@@ -945,7 +945,7 @@ const loadSampleErrorContent = async (_pageNo?: number) => {
     errParams.value.filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(errTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
   }
 
-  const [error, { data = { list: [], total: 0 } }] = await exec.loadSampleErrorContent(props.detail?.id, errParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getErrorContent(props.detail?.id, errParams.value);
   if (error) {
     emit('update:loading', false);
     clearTimer();
@@ -966,7 +966,7 @@ const loadSampleErrorContent = async (_pageNo?: number) => {
 const statusCodeData = ref({});
 // 请求状态码 状态码不展示历史
 const loadStatusCodeData = async () => {
-  const [error, { data }] = await exec.loadStatusCodeData(props.detail?.id);
+  const [error, { data }] = await exec.getStatusCodeCountByGroup(props.detail?.id);
   if (error) {
     emit('update:loading', false);
     clearTimer();

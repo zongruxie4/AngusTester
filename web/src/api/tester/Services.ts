@@ -6,8 +6,8 @@ export default class API {
     baseUrl = prefix + '/services';
   }
 
-  loadList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params, axiosConfig);
+  getList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   loadInfo (params: string): Promise<[Error | null, any]> {
@@ -79,9 +79,9 @@ export default class API {
     return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
+  // TODO
   loadApis (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
-    const { id, ...param } = params;
-    return http.get(`${baseUrl}/${id}/apis/search`, param, axiosConfig);
+    return http.get(`${baseUrl}/${id}/apis`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   resetTest (id: string): Promise<[Error | null, any]> {

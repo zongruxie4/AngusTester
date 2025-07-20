@@ -29,7 +29,3 @@ public class ActivityFacadeImpl implements ActivityFacade {
   }
 
 }
-
-
-
-

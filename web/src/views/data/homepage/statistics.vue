@@ -47,7 +47,7 @@ const loadMyStatistics = async (): Promise<void> => {
     creatorObjectId: props.userInfo?.id,
     projectId: props.projectId
   };
-  const [error, res] = await analysis.loadDataStatistics(params);
+  const [error, res] = await analysis.getDataStatistics(params);
   loading.value = false;
   if (error || utils._typeof(res?.data) !== 'object') {
     return;
@@ -65,7 +65,7 @@ const loadAllStatistics = async (): Promise<void> => {
   const params = {
     projectId: props.projectId
   };
-  const [error, res] = await analysis.loadDataStatistics(params);
+  const [error, res] = await analysis.getDataStatistics(params);
   loading.value = false;
   if (error || utils._typeof(res?.data) !== 'object') {
     return;

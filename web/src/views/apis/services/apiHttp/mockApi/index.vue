@@ -120,7 +120,7 @@ const cancel = () => {
 };
 
 const loadApiInfo = async (_id) => {
-  const [error, { data }] = await apis.loadInfo(_id);
+  const [error, { data }] = await apis.getDetail(_id);
   if (error) {
     return;
   }
@@ -246,7 +246,7 @@ const format = (data) => {
               <Select
                 v-model:value="selectedMockApiId"
                 :disabled="!mockServiceId"
-                :action="`${TESTER}/mock/apis/search`"
+                :action="`${TESTER}/mock/apis`"
                 :params="mockApiParams"
                 :fieldNames="{label:'summary',value:'id'}"
                 class="w-full"

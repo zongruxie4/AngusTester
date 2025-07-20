@@ -6,24 +6,20 @@ export default class API {
     baseUrl = prefix + '/exec';
   }
 
-  addExecByScript (params): Promise<[Error | null, any]> {
+  addByScript (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/byscript`, params);
   }
 
-  editExecByScript (id:string, params): Promise<[Error | null, any]> {
+  putScriptConfig (id:string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/script/config`, params);
   }
 
-  loadExecList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  getList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, params);
   }
 
-  updateExec (id:string, params:any): Promise<[Error | null, any]> {
+  putConfig (id:string, params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/config`, params);
-  }
-
-  updateExecSetting (id:string, params:any): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/script/config`, params);
   }
 
   restart (params:any): Promise<[Error | null, any]> {
@@ -34,12 +30,8 @@ export default class API {
     return http.post(`${baseUrl}/stop`, params);
   }
 
-  del (ids:any): Promise<[Error | null, any]> {
+  delete (ids:any): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, ids, { dataType: true });
-  }
-
-  loadEInExecuteList (params:{filters:Record<string, any>[]}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params, { silence: true });
   }
 
   getDetail (id:string): Promise<[Error | null, any]> {
@@ -50,79 +42,79 @@ export default class API {
     return http.get(`${baseUrl}/${id}/info`);
   }
 
-  loadScriptByExecId (id:string): Promise<[Error | null, any]> {
+  getScriptByExecId (id:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/script`);
   }
 
-  getAggregateData (id:string, params): Promise<[Error | null, any]> {
+  getSummaryList (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/summary/list`, params);
   }
 
-  loadThroughputData (id:string, params): Promise<[Error | null, any]> {
+  getThroughput (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/throughput`, params);
   }
 
-  loadThreadData (id:string, params): Promise<[Error | null, any]> {
+  getThread (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/thread`, params);
   }
 
-  loadTResponseTimeData (id:string, params): Promise<[Error | null, any]> {
+  getResponseTime (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/score`, params);
   }
 
-  loadErrorData (id:string, params): Promise<[Error | null, any]> {
+  getError (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/error`, params);
   }
 
-  loadErrorCounterLatest (id:string): Promise<[Error | null, any]> {
+  getLatestErrorCounter (id:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/errors/counter/latest`);
   }
 
-  loadSampleErrorContent (id:string, params): Promise<[Error | null, any]> {
+  getErrorContent (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/error/content`, params);
   }
 
-  loadRequestStatusCodeData (id:string, params): Promise<[Error | null, any]> {
+  getLatestStatusCodeCount (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/extension/counter/latest`, params);
   }
 
-  loadStatusCodeData (id:string): Promise<[Error | null, any]> {
+  getStatusCodeCountByGroup (id:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/extension/counter/map1/latest`);
   }
 
-  loadSummary (id:string, taskName:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/summary/${taskName}`);
-  }
-
-  loadMetricsScore (id:string, params:{pageNo:number, pageSize:number}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/score`, params, { silence: true });
-  }
-
-  loadMetricsSummaries (id:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/metrics/summaries`);
-  }
-
-  loadExtensionContent (id:string, params): Promise<[Error | null, any]> {
+  getSampleExtensionContent (id:string, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/sample/extension/content`, params);
   }
 
-  loadExecTestResult (execId:string): Promise<[Error | null, any]> {
+  getSummaryMetricsByTask (id:string, taskName:string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/metrics/summary/${taskName}`);
+  }
+
+  getScoreMetrics (id:string, params:{pageNo:number, pageSize:number}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/metrics/score`, params, { silence: true });
+  }
+
+  getSummariesMetrics (id:string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/metrics/summaries`);
+  }
+
+  getExecResult (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/result`);
   }
 
-  loadApiExecTestResult (apisId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
+  getApiTestResultByType (apisId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/${apisId}/${scriptType}/result`);
   }
 
-  loadScenarioTestResult (scenarioId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
+  getScenarioTestResult (scenarioId: string, scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'|'TEST_FUNCTIONAL'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/scenario/${scenarioId}/${scriptType}/result`);
   }
 
-  loadServiceTestResult (serviceId: string): Promise<[Error | null, any]> {
+  getServiceTestResult (serviceId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/service/${serviceId}/result`);
   }
 
-  loadApiExecRes (apisId: string) : Promise<[Error | null, any]> {
+  getApiTestResult (apisId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/apis/${apisId}/result`);
   }
 
@@ -130,7 +122,7 @@ export default class API {
     return http.post(`${baseUrl}/debug/script/start`, params);
   }
 
-  loadDebugScriptInfo (scriptId: string) : Promise<[Error | null, any]> {
+  getDebugScriptInfo (scriptId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/debug/script/${scriptId}`);
   }
 }

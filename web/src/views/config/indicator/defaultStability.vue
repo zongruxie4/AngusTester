@@ -7,7 +7,7 @@ import { Button } from 'ant-design-vue';
 import { splitDuration } from '@/utils/utils';
 
 import ExpandGrid from './expandGrid.vue';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 
 const editable = ref(false);
 const visible = ref(true);
@@ -65,7 +65,7 @@ const loadPercentileOpt = async () => {
 };
 
 const loadInfo = async () => {
-  const [error, res] = await setting.loadStabilityIndicator();
+  const [error, res] = await setting.getStabilityIndicator();
   if (error) {
     return;
   }

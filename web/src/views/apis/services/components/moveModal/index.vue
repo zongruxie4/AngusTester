@@ -105,7 +105,7 @@ const parent = computed(() => {
     :visible="props.visible"
     :fieldNames="fieldNames"
     :rootNode="false"
-    :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+    :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
     subTitle="选择要移动到的服务"
     :hints="hints"
     :moveAction="getMoveAction"

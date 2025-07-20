@@ -19,7 +19,7 @@ const ScenarioResult = defineAsyncComponent(() => import('./scenarioResult.vue')
 const testResult = ref({});
 const loadApiTestResult = async () => {
   const { scriptSourceId, scriptType } = props.execInfo;
-  const [error, { data = {} }] = await exec.loadApiExecTestResult(scriptSourceId, scriptType.value);
+  const [error, { data = {} }] = await exec.getApiTestResultByType(scriptSourceId, scriptType.value);
   if (error) {
     return;
   }
@@ -28,7 +28,7 @@ const loadApiTestResult = async () => {
 
 const loadScenarioTestResult = async () => {
   const { scriptSourceId, scriptType } = props.execInfo;
-  const [error, { data = {} }] = await exec.loadScenarioTestResult(scriptSourceId, scriptType.value);
+  const [error, { data = {} }] = await exec.getScenarioTestResult(scriptSourceId, scriptType.value);
   if (error) {
     return;
   }

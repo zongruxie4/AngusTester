@@ -98,7 +98,7 @@ const submit = async () => {
   }
   const params = [perfData, stabilityData, funcData].filter(Boolean);
   if (props.setType === 'create') {
-    const [error] = await (props.type === 'API' ? apis.putApiScript(props.id, params) : services.putApiScript(props.id, params));
+    const [error] = await (props.type === 'API' ? apis.generateTestScript(props.id, params) : services.putApiScript(props.id, params));
     submitting.value = false;
     if (error) {
       return;
@@ -106,7 +106,7 @@ const submit = async () => {
     notification.success('生成测试脚本成功，请在“脚本”中查看详情');
     cancel();
   } else {
-    const [error] = await (props.type === 'API' ? apis.updateApiScript(props.id, params) : services.updateApiScript(props.id, params));
+    const [error] = await (props.type === 'API' ? apis.updateTestScript(props.id, params) : services.updateApiScript(props.id, params));
     submitting.value = false;
     if (error) {
       return;

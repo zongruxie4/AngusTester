@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
 import { Select, Icon, Arrow, Colon, Tooltip } from '@xcan-angus/vue-ui';
-import { getDataByProxy } from '@/api/proxyRequest/index';
+import { getDataByProxy } from '@/api/proxy/index';
 
 interface Props {
   execId: string;

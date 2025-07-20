@@ -31,7 +31,7 @@ const selectApis = (data:{projectId:string;apiIds:string[], _apiOptions, checked
   mockServiceId.value = data.projectId;
   if (data.projectId) {
     scrollProps.value = {
-      action: `${TESTER}/mock/apis/search?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
+      action: `${TESTER}/mock/apis?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
       params: undefined
     };
   }
@@ -75,7 +75,7 @@ const treeProps = ref({
 });
 const mockServiceId = ref();
 const scrollProps = ref({
-  action: `${TESTER}/mock/apis/search?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
+  action: `${TESTER}/mock/apis?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
   params: undefined
 });
 
@@ -102,12 +102,12 @@ watch(() => props.visible, (newValue) => {
       }
     };
     scrollProps.value = {
-      action: `${TESTER}/mock/apis/search?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
+      action: `${TESTER}/mock/apis?mockServiceId=${props.mockService ? props.mockService.id : mockServiceId.value}`,
       params: undefined
     };
   } else {
     treeProps.value = {
-      action: `${TESTER}/mock/service/search`,
+      action: `${TESTER}/mock/service`,
       params: {
         // hasPermission: 'EXPORT',
         admin: true,

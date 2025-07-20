@@ -7,11 +7,11 @@ export default class API {
   }
 
   loadStabilityList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/stability/search`, params);
+    return http.get(`${baseUrl}/stability`, { ...params, fullTextSearch: true });
   }
 
   loadPerfList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/perf/search`, params);
+    return http.get(`${baseUrl}/perf`, { ...params, fullTextSearch: true });
   }
 
   addStability (params = {}): Promise<[Error | null, any]> {

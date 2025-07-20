@@ -7,8 +7,8 @@ export default class AuthPolicy {
     baseUrl = prefix + '/auth';
   }
 
-  getAuthPolicy (params): Promise<[Error|null, any]> {
-    return http.get(`${baseUrl}/policy/search`, params);
+  getAuthPolicyList (params): Promise<[Error|null, any]> {
+    return http.get(`${baseUrl}/policy`, params);
   }
 
   getUserPolicy (userId:string): Promise<[Error|null, any]> {

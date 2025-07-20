@@ -27,7 +27,7 @@ const formState = ref({
 const scriptInfo = ref();
 const pluginType = ref();
 const selectScript = async (value:string) => {
-  const [error, { data }] = await angusScript.loadDetail(value);
+  const [error, { data }] = await angusScript.getDetail(value);
   if (error) {
     return;
   }
@@ -121,7 +121,7 @@ const saveSetting = async () => {
   }
 
   loading.value = true;
-  const [error] = route.params.id ? await exec.editExecByScript(route.params.id as string, params) : await exec.addExecByScript(params);
+  const [error] = route.params.id ? await exec.putScriptConfig(route.params.id as string, params) : await exec.addByScript(params);
   loading.value = false;
   if (error) {
     return;

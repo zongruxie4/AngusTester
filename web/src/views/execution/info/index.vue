@@ -51,7 +51,7 @@ const scriptInfo = ref();
 const scriptYamlStr = ref('');
 
 const loadscriptContent = async () => {
-  const [error, { data }] = await exec.loadScriptByExecId(id);
+  const [error, { data }] = await exec.getScriptByExecId(id);
   if (error) {
     return;
   }
@@ -208,7 +208,7 @@ const handleDelete = async (item:ExecObj) => {
     content: `确定删除【${item.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await exec.del([item.id]);
+      const [error] = await exec.delete([item.id]);
       loading.value = false;
       if (error) {
         return;

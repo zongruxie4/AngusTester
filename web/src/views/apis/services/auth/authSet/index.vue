@@ -125,7 +125,7 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
 const switchChange = async (checked: boolean, id: string) => {
   const isApi = dataMap.value[id].isApi;
   enabledLoadingMap.value[id] = true;
-  const [error] = await (isApi ? apis.updateAuthFlag({ id, enabled: checked }) : services.updateAuthEnabled({ id, enabled: checked }));
+  const [error] = await (isApi ? apis.enabledAuth({ id, enabled: checked }) : services.updateAuthEnabled({ id, enabled: checked }));
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -166,7 +166,7 @@ const checkChange = async (permissions: string[], id: string) => {
   const authId = permissionsMap.value[id]?.id;
   if (!permissions.length) {
     updatingMap[id] = true;
-    const [error] = await (isApi ? apis.delAuth(authId as string) : services.delAuth(authId as string));
+    const [error] = await (isApi ? apis.deleteAuth(authId as string) : services.delAuth(authId as string));
     updatingMap[id] = false;
     if (error) {
       return;
@@ -300,7 +300,7 @@ const loadApiAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await apis.loadApiAuthority(params, axiosConfig);
+  const [error, { data = { list: [] } }] = await apis.getAuthList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -428,7 +428,7 @@ const loadProjectTree = async () => {
   };
   const params = getProjectTreeParams();
   loading.value = true;
-  const [error, { data }] = await services.loadList(params, axiosConfig);
+  const [error, { data }] = await services.getList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;

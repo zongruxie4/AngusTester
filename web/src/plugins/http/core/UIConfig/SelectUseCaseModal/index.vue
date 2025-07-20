@@ -121,7 +121,7 @@ const ok = async (key:'link'|'copy') => {
   const ids = checkedUseCaseIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
-    const [error, { data }]:[Error|null, { data: UseCaseInfo }] = await apis.loadCaseInfo(id, { silence: false });
+    const [error, { data }]:[Error|null, { data: UseCaseInfo }] = await apis.getCaseDetail(id, { silence: false });
     if (error) {
       coping.value = false;
       linking.value = false;

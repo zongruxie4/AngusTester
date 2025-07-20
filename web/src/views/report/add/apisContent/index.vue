@@ -39,7 +39,7 @@ contentTreeData.forEach(item => {
 });
 
 const loadServiceId = async () => {
-  const [error, { data }] = await apis.loadInfo(apisId.value);
+  const [error, { data }] = await apis.getDetail(apisId.value);
   if (error) {
     return;
   }
@@ -90,7 +90,7 @@ defineExpose({
         v-model:value="serviceId"
         placeholder="选择服务"
         :disabled="!props.projectId || props.disabled"
-        :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
         :lazy="false"
         :defaultActiveFirstOption="true"
         :fieldNames="fieldNames"
@@ -105,7 +105,7 @@ defineExpose({
         :showSearch="true"
         :error="valid && !apisId"
         :disabled="!projectId || props.disabled"
-        :action="`${TESTER}/apis/search?projectId=${props.projectId}&serviceId=${serviceId}`"
+        :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${serviceId}&fullTextSearch=true`"
         :lazy="false"
         :defaultActiveFirstOption="true"
         :fieldNames="apisFieldNames"

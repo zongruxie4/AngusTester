@@ -28,7 +28,7 @@ const getDesignContent = async () => {
 }
 
 const getDesignInfo = async () => {
-  const [error, resp] = await apis.getDesignInfo(props.designId);
+  const [error, resp] = await apis.getDesignDetail(props.designId);
   if (error) {
     return
   }

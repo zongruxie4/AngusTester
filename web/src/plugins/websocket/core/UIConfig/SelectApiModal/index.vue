@@ -34,7 +34,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     linking.value = true;
   }
-  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.loadInfo(checkedId.value, true);
+  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getDetail(checkedId.value, true);
   coping.value = false;
   linking.value = false;
   if (error) {
@@ -71,7 +71,7 @@ const inputProps = {
 
 const scrollProps = {
   action: (id: string) => {
-    return `${TESTER}/project/${id}/apis/search`;
+    return `${TESTER}/project/${id}/apis`;
   },
   params: {
     filters: [{ key: 'protocol', op: 'IN', value: ['ws', 'wss'] }]

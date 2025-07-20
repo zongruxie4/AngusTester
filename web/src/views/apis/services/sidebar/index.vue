@@ -708,7 +708,7 @@ const tipMap = {
 const scrollProps = computed(() => {
   return {
     lineHeight: 36,
-    action: `${TESTER}/services/search`,
+    action: `${TESTER}/services`,
     params: params.value
   };
 });

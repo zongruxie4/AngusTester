@@ -76,7 +76,7 @@ const total = ref(0);
 const loadService = async () => {
   loading.value = true;
   const _params = props.type === 'SERVICE' ? { ...params.value, exportFlag: true, admin: true } : { ...params.value, exportFlag: true };
-  const [error, { data }] = await services.loadList({ ..._params, projectId: projectInfo.value.id });
+  const [error, { data }] = await services.getList({ ..._params, projectId: projectInfo.value.id });
   loading.value = false;
   if (error) { return; }
 
@@ -432,7 +432,7 @@ onMounted(async () => {
             <TreeSelect
               ref="treeRef"
               :allowClear="true"
-              :action="`${TESTER}/services/search?projectId=${projectInfo.id}`"
+              :action="`${TESTER}/services?projectId=${projectInfo.id}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
               placeholder="请选择服务"
               showSearch

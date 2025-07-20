@@ -39,7 +39,7 @@ export default class API {
   }
 
   loadMockApisSearch (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/apis/search`, params);
+    return http.get(`${baseUrl}/apis`, { ...params, fullTextSearch: true });
   }
 
   loadMockApis (params: any): Promise<[Error | null, any]> {
@@ -91,7 +91,7 @@ export default class API {
   }
 
   loadServices (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/service/search`, params);
+    return http.get(`${baseUrl}/service`, { ...params, fullTextSearch: true });
   }
 
   addService (params: any): Promise<[Error | null, any]> {
@@ -159,7 +159,7 @@ export default class API {
   }
 
   loadMockApiLogs (serviceId: string, params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/service/${serviceId}/apis/log/search`, params);
+    return http.get(`${baseUrl}/service/${serviceId}/apis/log`, { ...params, fullTextSearch: true });
   }
 
   loadServiceAuth (serviceId: string, params: any): Promise<[Error | null, any]> {

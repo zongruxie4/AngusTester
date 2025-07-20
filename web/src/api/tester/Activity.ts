@@ -6,7 +6,7 @@ export default class API {
     baseUrl = prefix + '/activity';
   }
 
-  loadActivities (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, params);
+  getActivityList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 }

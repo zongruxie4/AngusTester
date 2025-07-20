@@ -560,7 +560,7 @@ const loadData = () => {
 };
 
 const loadCaseCount = async (): Promise<void> => {
-  const [error, { data }] = await analysis.loadFuncCaseCount({ ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data }] = await analysis.getFuncCaseCount({ ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
   if (error) {
     return;
   }

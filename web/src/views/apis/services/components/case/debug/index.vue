@@ -284,7 +284,7 @@ const serviceId = ref();
 // 接口详情
 const loadApiInfo = async (apisId) => {
   bodyRef.value && bodyRef.value.resetBodyData();
-  const [error, resp] = await apis.loadInfo(apisId, true);
+  const [error, resp] = await apis.getDetail(apisId, true);
   if (error) {
     return;
   }

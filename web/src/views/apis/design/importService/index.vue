@@ -61,7 +61,7 @@ const ok = async () => {
       :model="formState">
       <FormItem name="serviceId" label="服务" required class="leading-8">
         <TreeSelect
-          :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+          :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label:'name', value: 'id'}"
           placeholder="请选择所属服务"
           :virtual="false"

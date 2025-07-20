@@ -11,7 +11,7 @@ export default class API {
   }
 
   getApisList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share/apis/search`, params);
+    return http.get(`${baseUrl}/share/apis`, { ...params, fullTextSearch: true });
   }
 
   getApiInfo (params: {id: string, password?: string, sid: string, spt: string}): Promise<[Error | null, any]> {

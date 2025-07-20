@@ -43,7 +43,7 @@ const scrollChange = (data:UnarchivedItem[]) => {
 
 const toDelete = async (value:UnarchivedItem) => {
   const id = value.id;
-  const [error] = await apis.delUnarchived(id);
+  const [error] = await apis.deleteUnarchived(id);
   if (error) {
     return;
   }
@@ -57,13 +57,13 @@ const toDelete = async (value:UnarchivedItem) => {
 };
 
 const scrollDelete = (id:string) => {
-  if (typeof scrollRef.value?.del === 'function') {
+  if (typeof scrollRef.value?.delete === 'function') {
     scrollRef.value.del(id);
   }
 };
 
 const deleteAll = async () => {
-  const [error] = await apis.delAllUnarchived();
+  const [error] = await apis.deleteAllUnarchived();
   if (error) {
     return;
   }

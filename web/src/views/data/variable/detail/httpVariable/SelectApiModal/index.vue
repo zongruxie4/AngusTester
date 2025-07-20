@@ -47,15 +47,14 @@ const okButtonProps = computed(() => {
 });
 
 const serviceAction = computed(() => {
-  return `${TESTER}/services/search?projectId=${props.projectId}`;
+  return `${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`;
 });
 
 const apisAction = computed(() => {
   if (serviceId.value) {
-    return `${TESTER}/apis/search?projectId=${props.projectId}&serviceId=${serviceId.value}`;
+    return `${TESTER}/apis?projectId=${props.projectId}&serviceId=${serviceId.value}&fullTextSearch=true`;
   }
-
-  return `${TESTER}/apis/search?projectId=${props.projectId}`;
+  return `${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`;
 });
 </script>
 

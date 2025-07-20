@@ -18,7 +18,7 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 
 import Sidebar from '@/views/apis/services/sidebar/index.vue';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 import { IPane } from './PropsType';
 
 type MenuKey = 'homepage' | 'services' | 'trash';
@@ -116,7 +116,7 @@ const updateWs = () => {
 };
 
 const loadProxyUrl = async () => {
-  const [error, { data }] = await setting.getProxy();
+  const [error, { data }] = await setting.getUserApiProxy();
   if (error) {
     return;
   }
@@ -190,7 +190,7 @@ const updateTabPane = (data: IPane) => {
 };
 
 const replaceTabPane = (key: string, data: { key: string }) => {
-  if (typeof tabRef.value?.replace === 'function') {
+  if (typeof tabRef.value?.put === 'function') {
     tabRef.value.replace(key, data);
   }
 };

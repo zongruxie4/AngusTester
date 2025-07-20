@@ -62,7 +62,7 @@ const loadList = async (loadMore = false) => {
     spaceId: props.id,
     filters: remark.value ? [{ value: remark.value, key: 'remark', op: 'MATCH_END' }] : undefined
   };
-  const [error, res = { data: { list: [] } }] = await space.loadSharedList(params);
+  const [error, res = { data: { list: [] } }] = await space.getSharedList(params);
   if (error) {
     return;
   }
@@ -79,7 +79,7 @@ const loadList = async (loadMore = false) => {
 };
 // 删除分享
 const delShare = async (id:string) => {
-  const [error] = await space.delShare([id]);
+  const [error] = await space.deleteShare([id]);
   if (error) {
     return;
   }

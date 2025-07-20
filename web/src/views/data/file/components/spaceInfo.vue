@@ -32,7 +32,7 @@ const dataSource = ref({});
 const loading = ref(false);
 const loadInfo = async () => {
   loading.value = true;
-  const [error, res] = await (props.type === 'space' ? space.loadDetail(props.id) : props.pubapi ? pubSpace.getFileInfo(props.id) : space.getFileDetail(props.id));
+  const [error, res] = await (props.type === 'space' ? space.getDetail(props.id) : props.pubapi ? pubSpace.getFileInfo(props.id) : space.getFileDetail(props.id));
   loading.value = false;
   if (error) {
     return;

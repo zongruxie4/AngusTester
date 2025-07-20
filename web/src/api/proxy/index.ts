@@ -1,11 +1,11 @@
-import { PUB_TESTER, http } from "@xcan-angus/tools";
+import { PUB_TESTER, http } from '@xcan-angus/tools';
 
 /**
  * 将直连URL转换为代理URL
  * @param {string} directUrl 直连URL，例如：http://ip:port/actuator/runner/log/123?aa=11
  * @returns {string} 代理URL
  */
-function convertToProxyUrl(directUrl):string {
+function convertToProxyUrl (directUrl):string {
   try {
     // 解析原始URL
     const url = new URL(directUrl);
@@ -23,17 +23,13 @@ function convertToProxyUrl(directUrl):string {
     const targetAddr = `${url.origin}`;
     searchParams.set('targetAddr', targetAddr);
 
-    return `${proxyUrl}${pathName}?${searchParams.toString()}`
+    return `${proxyUrl}${pathName}?${searchParams.toString()}`;
   } catch (e) {
-    console.error('URL转换失败:', e);
     return directUrl; // 如果转换失败，返回原始URL
   }
 }
 
-
-export const getDataByProxy =  async (directUrl: string, params = {}, axiosConf = {}) : Promise<[Error | null, any]> => {
+export const getDataByProxy = async (directUrl: string, params = {}, axiosConf = {}) : Promise<[Error | null, any]> => {
   const fetchUrl = convertToProxyUrl(directUrl);
   return http.get(fetchUrl, params, axiosConf);
-}
-
-
+};

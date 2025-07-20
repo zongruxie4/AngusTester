@@ -29,7 +29,7 @@ const loadData = async (): Promise<void> => {
   const params = {
     projectId: props.projectId
   };
-  const [error, res] = await analysis.loadFuncResourceCount(params);
+  const [error, res] = await analysis.getFuncResourceCount(params);
   loading.value = false;
   if (error) {
     return;

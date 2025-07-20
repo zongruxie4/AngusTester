@@ -48,7 +48,7 @@ const onCheckAllChange = e => {
 // };
 
 const loadList = async () => {
-  const [error, { data }] = await apis.searchList({
+  const [error, { data }] = await apis.getList({
     ...params.value,
     pageSize: 2000,
     pageNo: 1,

@@ -91,7 +91,7 @@ const disabled = computed(() => {
 const loadInfo = async () => {
   const [error, res] = isUnarchivedApi.value
     ? await unarchived.loadInfo(state.id)
-    : await apis.loadInfo(state.id);
+    : await apis.getDetail(state.id);
   if (error) {
     return;
   }
@@ -174,10 +174,10 @@ const save = async () => {
     const params = { ...formParams, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, externalDocs };
     isLoading.value = true;
     const [error, res] = isUnarchivedApi.value && state.id
-      ? await apis.addApi([{ ...params, unarchivedId: state.id }])
+      ? await apis.add([{ ...params, unarchivedId: state.id }])
       : isUnarchivedApi.value && !state.id
-        ? await apis.putApi([{ ...params }])
-        : await apis.updateApi([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);
+        ? await apis.put([{ ...params }])
+        : await apis.update([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);
     isLoading.value = false;
     if (error) {
       return;
@@ -302,7 +302,7 @@ onMounted(() => {
       <FormItem label="所属服务" name="serviceId">
         <TreeSelect
           v-model:defaultValue="defaultProject"
-          :action="`${TESTER}/services/search?projectId=${projectInfo.id}&hasPermission=ADD`"
+          :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
           :allowClear="false"
           :disabled="disabled || !isUnarchivedApi"
           :fieldNames="{children:'children', label:'name', value: 'id'}"

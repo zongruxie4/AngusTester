@@ -7,7 +7,7 @@ import { duration, TESTER } from '@xcan-angus/tools';
 import DOMPurify from 'dompurify';
 
 import { activity } from 'src/api/tester';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 
 import SearchPanel from '@/views/project/activity/searchPanel/index.vue';
 
@@ -54,7 +54,7 @@ const getList = async () => {
     return;
   }
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await activity.loadActivities(params.value);
+  const [error, { data = { list: [], total: 0 } }] = await activity.getActivityList(params.value);
   loading.value = false;
   if (error) {
     return;

@@ -7,7 +7,7 @@ export default class API {
   }
 
   loadScriptList (params = {}, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params, axiosConfig);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   loadScriptListAuth (scriptIds:string[]): Promise<[Error | null, any]> {

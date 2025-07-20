@@ -127,7 +127,7 @@ const delSecurity = async (subIdx, idx) => {
 
 const saveApi = (params) => {
   if (props.type === 'API') {
-    return apis.updateApi([{ id: props.id, security: params }]);
+    return apis.update([{ id: props.id, security: params }]);
   } else {
     return services.updateSchemaSecurity(props.id, params);
   }

@@ -40,7 +40,7 @@ const loadCloudDiskPayUrl = async () => {
 
 const load = async () => {
   state.loading = true;
-  const [error, res] = await space.loadDetail(props.id);
+  const [error, res] = await space.getDetail(props.id);
   state.loading = false;
   if (error) {
     return;

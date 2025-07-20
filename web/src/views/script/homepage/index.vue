@@ -271,7 +271,7 @@ const loadScriptListAuth = async (ids: string[]) => {
 
 const loadResourcesData = async () => {
   const params = { filters: filters.value, projectId: projectId.value };
-  const [error, res] = await analysis.loadScriptCount(params);
+  const [error, res] = await analysis.getScriptCount(params);
   if (error) {
     return false;
   }

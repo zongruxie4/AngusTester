@@ -12,27 +12,27 @@ export default class API {
     return http.get(`${baseUrl}/${key}`);
   }
 
-  getProxy (): Promise<[Error | null, any]> {
+  getUserApiProxy () : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/apis/proxy`);
   }
 
-  putProxy (params: {name: string}): Promise<[Error | null, any]> {
+  enabledUserApiProxy (params: {name: string}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/user/apis/proxy/enabled`, params);
   }
 
-  patchClientUrl (params = { url: '' }): Promise<[Error | null, any]> {
+  patchUserApiProxyUrl (params = { url: '' }): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/user/apis/proxy`, params);
   }
 
-  loadDataList (): Promise<[Error | null, any]> {
+  getTenantApiProxy (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/apis/proxy`);
   }
 
-  putProxySetting (params:{enabled:boolean, url:string}): Promise<[Error | null, any]> {
+  updateTenantApiProxy (params:{enabled:boolean, url:string}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/tenant/apis/proxy`, params);
   }
 
-  loadPerfIndicator (): Promise<[Error | null, any]> {
+  getPerfIndicator (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/indicator/perf`);
   }
 
@@ -40,7 +40,7 @@ export default class API {
     return http.put(`${baseUrl}/tenant/indicator/perf`, params);
   }
 
-  loadStabilityIndicator (): Promise<[Error | null, any]> {
+  getStabilityIndicator (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/indicator/stability`);
   }
 
@@ -48,7 +48,7 @@ export default class API {
     return http.put(`${baseUrl}/tenant/indicator/stability`, params);
   }
 
-  loadFuncIndicator (): Promise<[Error | null, any]> {
+  getFuncIndicator (): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/indicator/func`);
   }
 
@@ -56,11 +56,11 @@ export default class API {
     return http.put(`${baseUrl}/tenant/indicator/func`, params);
   }
 
-  loadQuotaList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/tenant/quota/search`, params);
+  getQuotaList (params = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/tenant/quota`, params);
   }
 
-  loadQuotaByName (resourceName: string): Promise<[Error | null, any]> {
+  getQuotaByName (resourceName: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tenant/quota/${resourceName}`);
   }
 

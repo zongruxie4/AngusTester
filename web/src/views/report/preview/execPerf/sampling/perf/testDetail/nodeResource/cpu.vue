@@ -192,7 +192,7 @@ const cpuloaded = ref(false);
 const loadCpuEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam();
-  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -341,7 +341,7 @@ const getChartTimerParam = (params = {}) => {
 const loadCputimerData = async () => {
   emit('loadingChange', true);
   const params = getChartTimerParam();
-  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, params);
+  const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, params);
   emit('loadingChange', false);
   if (error) {
     return;

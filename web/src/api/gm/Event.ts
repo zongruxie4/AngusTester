@@ -6,32 +6,27 @@ export default class API {
     baseUrl = prefix + '/event';
   }
 
-  loadStatistics (): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/exec/statistics`);
-  }
-
-  loadPushConfigList (params = {}): Promise<[Error | null, any]> {
+  getCurrentTemplateList (params = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/template/current`, { ...params, bigBizKey: 'AngusTester' });
   }
 
-  loadPushRecordList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, { ...params, bigBizKey: 'AngusTester' });
+  getRecordList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, bigBizKey: 'AngusTester' });
   }
 
-  loadReceiveSettingDetail (channelType:string): Promise<[Error|null, any]> {
+  getChannelDetail (channelType:string): Promise<[Error|null, any]> {
     return http.get(`${baseUrl}/channel/channel/${channelType}`);
   }
 
-  saveReceiveSetting (params: {id:string, channelIds:string[]}): Promise<[Error|null, any]> {
+  saveChannelSetting (params: {id:string, channelIds:string[]}): Promise<[Error|null, any]> {
     return http.put(`${baseUrl}/template/channel`, params);
   }
 
-  loadCurrentChannels (id: string): Promise<[Error|null, any]> {
+  getCurrentChannels (id: string): Promise<[Error|null, any]> {
     return http.get(`${baseUrl}/template/${id}/current`);
   }
 
   putReceiver (params: {id: string, noticeTypes: string[], receiverIds: string[], receiverTypes: string[]}): Promise<[Error|null, any]> {
     return http.put(`${baseUrl}/template/receiver`, params);
   }
-
 }

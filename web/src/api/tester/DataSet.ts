@@ -7,7 +7,7 @@ export default class API {
   }
 
   loadDataSetList (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   del (ids: string[]): Promise<[Error | null, any]> {

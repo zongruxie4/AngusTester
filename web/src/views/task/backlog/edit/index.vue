@@ -816,7 +816,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               :rules="{ required: true, message: '请选择服务' }">
               <Select
                 v-model:value="formState.targetParentId"
-                :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+                :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 :readonly="!!props.taskId"
                 :lazy="false"
@@ -849,7 +849,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   internal
                   placeholder="请选择接口"
                   :fieldNames="{ label: 'summary', value: 'id' }"
-                  :action="`${TESTER}/apis/search?projectId=${props.projectId}&serviceId=${formState.targetParentId}`"
+                  :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
               </FormItem>
 

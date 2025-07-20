@@ -6,7 +6,7 @@ export default class Dept {
     baseUrl = prefix + '/dept';
   }
 
-  searchList<T> (params: T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+  getDeptList<T> (params: T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, params);
   }
 }

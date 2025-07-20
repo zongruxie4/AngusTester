@@ -7,7 +7,7 @@ export default class API {
   }
 
   search (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   updateTag (params): Promise<[Error | null, any]> {

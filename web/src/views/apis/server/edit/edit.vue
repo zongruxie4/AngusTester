@@ -610,7 +610,7 @@ defineExpose({
           style="width:300px;"
           :fieldNames="{label:'name',value:'id'}"
           :error="serviceIdError"
-          :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+          :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           @change="serviceIdChange" />
       </div>
       <Tooltip title="服务器所属接口服务">

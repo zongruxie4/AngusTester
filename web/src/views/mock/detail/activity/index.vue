@@ -46,7 +46,7 @@ const getList = async () => {
     return;
   }
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await activity.loadActivities(params.value);
+  const [error, { data = { list: [], total: 0 } }] = await activity.getActivityList(params.value);
   loading.value = false;
   if (error) {
     return;

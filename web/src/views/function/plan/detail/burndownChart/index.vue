@@ -66,7 +66,7 @@ const burnDownEchartsConfig = {
 };
 
 const loadChartData = async () => {
-  const [error, { data }] = await analysis.loadFuncPlanBurndown(props.planId);
+  const [error, { data }] = await analysis.getFuncPlanBurndown(props.planId);
   if (error) {
     return;
   }

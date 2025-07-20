@@ -77,7 +77,7 @@ const burnDownEchartsConfig = {
 };
 
 const loadChartData = async () => {
-  const [error, { data }] = await analysis.loadFuncTesterBurndown({
+  const [error, { data }] = await analysis.getFuncTesterBurndown({
     projectId: projectId.value,
     userId: props.userInfo?.id
   });

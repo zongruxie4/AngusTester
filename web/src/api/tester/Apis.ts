@@ -6,32 +6,40 @@ export default class API {
     baseUrl = prefix + '/apis';
   }
 
-  patchClone (params:string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${params}/clone`, { id: params });
-  }
-
-  patchMove (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/move`, params);
-  }
-
-  del (params: { ids: string[] }): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, params);
-  }
-
-  loadInfo (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}`, { resolveRef }, axiosConf);
-  }
-
-  putApi (params:any): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}`, params);
-  }
-
-  addApi (params:any): Promise<[Error | null, any]> {
+  add (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/archive`, params);
   }
 
-  updateApi (params:any): Promise<[Error | null, any]> {
+  put (params:any): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}`, params);
+  }
+
+  update (params:any): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
+  }
+
+  clone (params:string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${params}/clone`, { id: params });
+  }
+
+  move (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/move`, params);
+  }
+
+  patchStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${id}/status?status=${status}`);
+  }
+
+  delete (params: { ids: string[] }): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, params);
+  }
+
+  getDetail (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}`, { resolveRef }, axiosConf);
+  }
+
+  getList (params: any): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   addFavourite (params:any): Promise<[Error | null, any]> {
@@ -42,16 +50,32 @@ export default class API {
     return http.del(`${baseUrl}/${id}/favourite`, {});
   }
 
+  cancelAllFavourite (): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/favourite`, {});
+  }
+
+  loadFavouriteList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/favourite`, { ...params, fullTextSearch: true });
+  }
+
+  addFollow (id:string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${id}/follow`);
+  }
+
+  cancelFollow (id:string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${id}/follow`, {});
+  }
+
+  loadWatchList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
+  }
+
+  cancelWatchAll (): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/follow`, {});
+  }
+
   updatePerf (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/perf?id=${params.id}`, params);
-  }
-
-  delNotArchiveList (): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/archive`);
-  }
-
-  searchList (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
   }
 
   cancelPerf (id:string): Promise<[Error | null, any]> {
@@ -62,62 +86,50 @@ export default class API {
     return http.get(`${baseUrl}/${id}/perf`);
   }
 
-  addNewApi (params:any): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}`, params);
-  }
-
-  loadApiAuthority (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/auth`, params, axiosConfig);
-  }
-
-  updateAuthFlag (params: any): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
-  }
-
   addAuth (id: string, params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/auth`, params);
   }
 
-  addWatch (id:string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${id}/follow`);
-  }
-
-  cancelWatch (id:string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/follow`, {});
+  enabledAuth (params: any): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${params.id}/auth/enabled?enabled=${params.enabled}`);
   }
 
   updateAuth (authId: string, params: any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/auth/${authId}`, params);
   }
 
-  delAuth (authId: string): Promise<[Error | null, any]> {
+  deleteAuth (authId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/auth/${authId}`);
   }
 
-  retest (id: string): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${id}/test/task/restart`);
+  getAuthList (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
-  reOpen (id: string): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${id}/test/task/reopen`);
-  }
-
-  deleteTest (id: string, testTypes: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}/test/task`, { testTypes });
-  }
-
-  loadActionAuth ({ id = '', userId = '' }): Promise<[Error | null, any]> {
+  getUserAuth ({ id = '', userId = '' }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/user/${userId}/auth`);
   }
 
-  loadUserAuth (id: string, admin = true): Promise<[Error | null, any]> {
+  getCurrentAuth (id: string, admin = true): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/user/auth/current`, { admin });
   }
 
-  checkAuth ({ id = '', authPermission = '', userId = '' }): Promise<[Error | null, any]> {
+  checkAuthPermission ({ id = '', authPermission = '', userId = '' }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/auth/${authPermission}/check`, {
       userId
     });
+  }
+
+  restartTestTask (id: string): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${id}/test/task/restart`);
+  }
+
+  reopenTestTask (id: string): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${id}/test/task/reopen`);
+  }
+
+  deleteTestTask (id: string, testTypes: string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${id}/test/task`, { testTypes });
   }
 
   addCase (params: {[key: string]: any}): Promise<[Error | null, any]> {
@@ -125,11 +137,11 @@ export default class API {
     return http.post(`${baseUrl}/${apisId}/case`, param);
   }
 
-  addApisCase (params: any[] = []): Promise<[Error | null, any]> {
+  addCases (params: any[] = []): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/case`, params);
   }
 
-  loadCaseInfo (caseId: string, axiosConf = {}): Promise<[Error | null, any]> {
+  getCaseDetail (caseId: string, axiosConf = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/case/${caseId}`, null, axiosConf);
   }
 
@@ -137,13 +149,12 @@ export default class API {
     return http.patch(`${baseUrl}/case`, params);
   }
 
-  replaceCase (params:any[] = []): Promise<[Error | null, any]> {
+  putCase (params:any[] = []): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/case`, params);
   }
 
   loadApiCases (params): Promise<[Error | null, any]> {
-    const { ...param } = params;
-    return http.get(`${baseUrl}/case/search`, param);
+    return http.get(`${baseUrl}/case`, { ...params, fullTextSearch: true });
   }
 
   delCase (caseIds: string[]): Promise<[Error | null, any]> {
@@ -179,18 +190,6 @@ export default class API {
     return http.put(`${baseUrl}/case/${params.id}/priority?priority=${params.priority}`);
   }
 
-  cancelAllFavourite (): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/favourite`, {});
-  }
-
-  loadShareList (params:any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share/search`, params);
-  }
-
-  loadShareInfo (id: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share/${id}`);
-  }
-
   addShare (params:any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/share`, params);
   }
@@ -203,24 +202,12 @@ export default class API {
     return http.patch(`${baseUrl}/share`, params);
   }
 
-  loadWatchList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/follow/search`, params);
+  getShareList (params:any): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/share`, { ...params, fullTextSearch: true });
   }
 
-  cancelWatchAll (): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/follow`, {});
-  }
-
-  loadFavouriteList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/favourite/search`, params);
-  }
-
-  loadApiInfoList (ids:string[]): Promise<[Error | null, any]> {
-    return http.get(baseUrl + '/list/detail', { ids });
-  }
-
-  patchStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${id}/status?status=${status}`);
+  getShareDetail (id: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/share/${id}`);
   }
 
   addMockApiByApiId (apisId: string, params:{mockServiceId:string, summary?:string}): Promise<[Error | null, any]> {
@@ -231,27 +218,27 @@ export default class API {
     return http.get(`${baseUrl}/${apisId}/association/mock/apis`);
   }
 
-  putApiScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
+  generateTestScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/test/script/generate`, params);
   }
 
-  delApiScript (id: string, testTypes: string[]): Promise<[Error | null, any]> {
+  deleteTestScript (id: string, testTypes: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/test/script`, { testTypes });
   }
 
-  updateApiScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
+  updateTestScript (id: string, params: {duration: string; priority: string; testType: string; threads: string}[]): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/test/script/update`, params);
   }
 
-  getTrashData (params: {targetType: 'API'|'SERVICE', [key: string]: any}) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/trash/search`, { ...params });
+  getTrashList (params: {targetType: 'API'|'SERVICE', [key: string]: any}) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/trash`, { ...params, fullTextSearch: true });
   }
 
-  delTrash (id: string) : Promise<[Error | null, any]> {
+  deleteTrash (id: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash/${id}`);
   }
 
-  delAllTrash <T> (params: T) : Promise<[Error | null, any]> {
+  deleteAllTrash <T> (params: T) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash`, params);
   }
 
@@ -263,16 +250,16 @@ export default class API {
     return http.patch(`${baseUrl}/trash/${id}/back`);
   }
 
-  delUnarchived (id: string) : Promise<[Error | null, any]> {
+  deleteUnarchived (id: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived/${id}`);
   }
 
-  delAllUnarchived () : Promise<[Error | null, any]> {
+  deleteAllUnarchived () : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived`);
   }
 
   getDesignList <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/design/search`, params, axioConf);
+    return http.get(`${baseUrl}/design`, { ...params, fullTextSearch: true }, axioConf);
   }
 
   addDesign <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {
@@ -283,7 +270,7 @@ export default class API {
     return http.put(`${baseUrl}/design`, params, axioConf);
   }
 
-  getDesignInfo (designId: string) : Promise<[Error | null, any]> {
+  getDesignDetail (designId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/design/${designId}`);
   }
 

@@ -7,7 +7,7 @@ export default class API {
   }
 
   searchList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/version/search`, params);
+    return http.get(`${baseUrl}/version`, { ...params, fullTextSearch: true });
   }
 
   delete (params = {}): Promise<[Error | null, any]> {

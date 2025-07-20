@@ -49,7 +49,7 @@ const loadData = async (): Promise<void> => {
     creatorObjectType: 'USER',
     creatorObjectId: props.userInfo?.id
   };
-  const [error, res] = await analysis.loadFuncResourceCount(params);
+  const [error, res] = await analysis.getFuncResourceCount(params);
   loading.value = false;
   if (error) {
     return;

@@ -74,7 +74,7 @@ defineExpose({
         placeholder="选择服务"
         :error="valid && !serviceId"
         :disabled="!props.projectId || props.disabled"
-        :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
         :lazy="false"
         :defaultActiveFirstOption="true"
         :fieldNames="fieldNames"

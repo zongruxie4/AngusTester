@@ -102,7 +102,7 @@ const resetApiDebug = () => {
 };
 
 const loadApiResolveModel = async () => {
-  const [error, resp] = await apis.loadInfo(props.apisId, true);
+  const [error, resp] = await apis.getDetail(props.apisId, true);
   if (error) {
     return;
   }
@@ -118,7 +118,7 @@ const defaultDescription = ref('');
 const caseInfoData = ref();
 const getCaseInfo = async () => {
   const resolvedRefModels = await loadApiResolveModel();
-  const [error, { data }] = await apis.loadCaseInfo(props.caseId);
+  const [error, { data }] = await apis.getCaseDetail(props.caseId);
   if (error) {
     return;
   }
@@ -201,7 +201,7 @@ const editSave = async (closeModal = true) => {
     return;
   }
 
-  const [error] = await apis.replaceCase([{ id: props.caseId, ...params }]);
+  const [error] = await apis.putCase([{ id: props.caseId, ...params }]);
   loading.value = false;
   if (error) {
     return;
@@ -213,7 +213,7 @@ const editSave = async (closeModal = true) => {
 const addSave = async (closeModal = false) => {
   loading.value = true;
   const params = await getParams();
-  const [error] = await apis.addApisCase([params]);
+  const [error] = await apis.addCases([params]);
   loading.value = false;
   if (error) {
     return;

@@ -59,7 +59,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await apis.loadShareInfo(id);
+  const [error, res] = await apis.getShareDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -74,7 +74,7 @@ const loadData = async (id: string) => {
     name, remark, expiredDate, displayOptions, shareScope: shareScope.value, servicesId, apisIds
   };
   if (apisIds?.length) {
-    const [error, { data }] = await apis.loadShareList({
+    const [error, { data }] = await apis.getShareList({
       projectId: props.projectId,
       filters: [{ value: apisIds, op: 'IN', key: 'id' }],
       pageSize: 1000
@@ -155,7 +155,7 @@ const addOk = async () => {
     loading.value = false;
     return;
   }
-  const [_error1, resp] = await apis.loadShareInfo(data.id);
+  const [_error1, resp] = await apis.getShareDetail(data.id);
   loading.value = false;
   if (resp.data) {
     toClipboard(`分享“${resp.data.name}”，访问地址：${resp.data.url}`).then(() => {
@@ -311,7 +311,7 @@ const schemaStyleOpt = [
           required>
           <Select
             v-model:value="formState.servicesId"
-            :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             placeholder="选择服务"
             :fieldNames="{value: 'id', label: 'name'}"
             @change="handleServiceChange" />

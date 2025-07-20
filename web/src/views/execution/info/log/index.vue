@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { Arrow, Colon, Icon, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { getDataByProxy } from '@/api/proxyRequest';
+import { getDataByProxy } from 'src/api/proxy';
 
 interface Props {
   execId: string;

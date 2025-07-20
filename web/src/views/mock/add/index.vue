@@ -332,7 +332,7 @@ onMounted(async () => {
               <FormItem name="serviceId">
                 <Select
                   :value="selectProjectId"
-                  :action="`${TESTER}/services/search?projectId=${projectId}&queryHasMockServiceFlag=true`"
+                  :action="`${TESTER}/services?projectId=${projectId}&queryHasMockServiceFlag=true&fullTextSearch=true`"
                   :fieldNames="{label:'name',value:'id'}"
                   :format="treeSelectFormat"
                   showSearch

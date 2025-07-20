@@ -7,11 +7,12 @@ export default class API {
   }
 
   loadNodes (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
+  // TODO DELETE
   loadList (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   add (params): Promise<[Error | null, any]> {

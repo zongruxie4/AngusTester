@@ -59,7 +59,7 @@ const loadScriptTypeEnum = async () => {
 };
 
 const loadNodeQuota = async () => {
-  const [error, { data }] = await setting.loadQuotaByName('AngusTesterNode');
+  const [error, { data }] = await setting.getQuotaByName('AngusTesterNode');
   if (error) {
     return;
   }
@@ -738,7 +738,7 @@ const sortMenus = [
           <Select
             v-if="isServiceTargetType"
             :value="scriptSourceIdFilter.value"
-            :action="`${TESTER}/services/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择服务"
@@ -749,7 +749,7 @@ const sortMenus = [
           <Select
             v-if="isAPITargetType"
             :value="scriptSourceIdFilter.value"
-            :action="`${TESTER}/apis/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
             placeholder="选择接口"

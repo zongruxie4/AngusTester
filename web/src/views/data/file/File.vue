@@ -115,7 +115,7 @@ const renameBlur = async (record: SourceType) => {
     return;
   }
 
-  const [error] = await space.fileRename({ id, name });
+  const [error] = await space.renameFile({ id, name });
   if (error) {
     return;
   }
@@ -134,7 +134,7 @@ const deleteAuth = ref(true);
 
 // 获取当前空间下读写对象权限
 const getActionAuth = async () => {
-  const [error, res] = await space.getAuth({ id: spaceId.value });
+  const [error, res] = await space.getCurrentAuth({ id: spaceId.value });
   if (error) {
     return;
   }
@@ -163,7 +163,7 @@ const getList = async () => {
   };
   loading.value = true;
 
-  const [error, res = { data: { list: [] } }] = await space.getFiles(params);
+  const [error, res = { data: { list: [] } }] = await space.getFileList(params);
   loading.value = false;
   if (error) {
     return;
@@ -258,7 +258,7 @@ const delConfirm = (fileList = state.selectedRowKeys) => {
 };
 
 const delFile = async (ids: (string | number)[]) => {
-  const [error] = await space.delFile(ids);
+  const [error] = await space.deleteFile(ids);
   if (error) {
     return;
   }
@@ -303,7 +303,7 @@ const copyDownloadUrl = async (record) => {
     // clipboard.toClipboard(url).then(() => {
     //   notification.success('复制链接成功');
     // });
-    const [error, { data }] = await space.getFileUrl({ objectId: record.id });
+    const [error, { data }] = await space.getQuickShareUrl({ objectId: record.id });
     if (error) {
       return;
     }
@@ -409,7 +409,7 @@ onBeforeUnmount(() => {
 });
 
 const loadPath = async () => {
-  const [error, res = { data: {} }] = await space.getPathChain(parentDirectoryId.value);
+  const [error, res = { data: {} }] = await space.getFileNavigation(parentDirectoryId.value);
   if (error) {
     return;
   }

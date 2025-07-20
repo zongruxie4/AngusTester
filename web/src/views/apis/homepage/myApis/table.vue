@@ -116,7 +116,7 @@ const loadData = async () => {
       params.followBy = props.params.followBy;
     }
   }
-  const [error, res] = await apis.searchList(params);
+  const [error, res] = await apis.getList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -136,7 +136,7 @@ const deleteHandler = (data: ApiItem) => {
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
-      const [error] = await apis.del(params);
+      const [error] = await apis.delete(params);
       if (error) {
         return;
       }
@@ -172,7 +172,7 @@ const cancelFavourite = async (data: ApiItem) => {
 
 const cancelFollow = async (data: ApiItem) => {
   loading.value = true;
-  const [error] = await apis.cancelWatch(data.id);
+  const [error] = await apis.cancelFollow(data.id);
   loading.value = false;
   if (error) {
     return;

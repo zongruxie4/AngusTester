@@ -193,7 +193,7 @@ const delNode = (state) => {
 
 // 安装 代理按钮禁用提示
 const getOnlineInstallTip = (node) => {
-  if (node.installAgent) {
+  if (node.geAgentInstallationCmd) {
     return '已安装';
   }
   if (props.isAdmin) {
@@ -243,7 +243,7 @@ const showInstallStep = async (state) => {
     foldInstallAgent(state);
     return;
   }
-  const [error, res] = await nodeInfo.installAgent({ id: state.id });
+  const [error, res] = await nodeInfo.geAgentInstallationCmd({ id: state.id });
   if (error) {
     return;
   }
@@ -333,12 +333,12 @@ const nodeNameBlur = async (name, id) => {
 
 // 网络接口
 const loadNodeNetWork = (id) => {
-  return nodeCtrl.getNodeNetwork(id);
+  return nodeCtrl.getNetworkInfoMetrics(id);
 };
 
 // 资源接口
 const loadNodeMetrics = (id) => {
-  return nodeCtrl.getNodeMetrics(id);
+  return nodeCtrl.getLatestMetrics(id);
 };
 
 // 请求多个节点网络数据

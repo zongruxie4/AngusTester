@@ -6,7 +6,7 @@ import { debounce } from 'throttle-debounce';
 import { Icon, Input, notification } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/tools';
 
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 import apple from './assets/images/apple.png';
 import windows from './assets/images/windows.png';
 import linux from './assets/images/linux.png';
@@ -54,7 +54,7 @@ const testLint = () => {
 
 const loadDataList = async () => {
   loading.value = true;
-  const [error, { data = {} }] = await setting.loadDataList();
+  const [error, { data = {} }] = await setting.getTenantApiProxy();
   loading.value = false;
   if (error || !data) {
     return;
@@ -78,7 +78,7 @@ const patchPorxySetting = async (params) => {
   }
 
   loading.value = true;
-  const [error] = await setting.putProxySetting(params);
+  const [error] = await setting.updateTenantApiProxy(params);
   loading.value = false;
   if (error) {
     return;

@@ -7,7 +7,7 @@ export default class API {
   }
 
   loadProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   loadMyProject (userId: string, params: {[key: string]: any} = {}): Promise<[Error | null, any]> {
@@ -35,11 +35,11 @@ export default class API {
   }
 
   searchProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/search`, params);
+    return http.del(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   searchTrash (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/trash/search?infoScope=DETAIL`, params);
+    return http.get(`${baseUrl}/trash`, { ...params, infoScope: 'DETAIL', fullTextSearch: true });
   }
 
   getTrashCount (): Promise<[Error | null, any]> {

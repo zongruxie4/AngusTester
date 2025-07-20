@@ -260,7 +260,7 @@ const cpuloaded = ref(false);
 const loadCpuEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam();
-  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -361,7 +361,7 @@ const networkloaded = ref(false);
 const loadNetworkEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
-  const [error, res] = await nodeCtrl.getNetworkData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getNetworkMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -479,7 +479,7 @@ const memoryloaded = ref(false);
 const loadMemoryEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam();
-  const [error, res] = await nodeCtrl.getMemoryData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getMemoryMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -591,7 +591,7 @@ const diskloaded = ref(false);
 const loadDiskEchartData = async () => {
   emit('loadingChange', true);
   const param = getChartParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
-  const [error, res] = await nodeCtrl.getDiskData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getDiskMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -779,7 +779,7 @@ watch(() => activeTab.value, async () => {
   if (activeTab.value === 'network') {
     if (!networkNames.value.length) {
       emit('loadingChange', true);
-      const [error, { data }] = await nodeCtrl.getNetworkName(currrentNodeId.value);
+      const [error, { data }] = await nodeCtrl.getNetworkInfoMetrics(currrentNodeId.value);
       emit('loadingChange', false);
       if (!error) {
         // networkNames.value = data;
@@ -815,7 +815,7 @@ watch(() => activeTab.value, async () => {
   if (activeTab.value === 'disk') {
     if (!diskNames.value.length) {
       emit('loadingChange', true);
-      const [error, res] = await nodeCtrl.getDiskName(currrentNodeId.value);
+      const [error, res] = await nodeCtrl.getDiskInfoMetrics(currrentNodeId.value);
       emit('loadingChange', false);
       if (error) {
         return;
@@ -876,7 +876,7 @@ const getChartTimerParam = (params = {}) => {
 const loadCputimerData = async () => {
   emit('loadingChange', true);
   const params = getChartTimerParam();
-  const [error, res] = await nodeCtrl.getCpuData(currrentNodeId.value, params);
+  const [error, res] = await nodeCtrl.getCpuMetrics(currrentNodeId.value, params);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -893,7 +893,7 @@ const loadCputimerData = async () => {
 const loadNetworkTimerData = async () => {
   emit('loadingChange', true);
   const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }] });
-  const [error, res] = await nodeCtrl.getNetworkData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getNetworkMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -910,7 +910,7 @@ const loadNetworkTimerData = async () => {
 const loadMemoryTimerData = async () => {
   emit('loadingChange', true);
   const param = getChartTimerParam();
-  const [error, res] = await nodeCtrl.getMemoryData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getMemoryMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -927,7 +927,7 @@ const loadMemoryTimerData = async () => {
 const loadDiskTimerData = async () => {
   emit('loadingChange', true);
   const param = getChartTimerParam({ filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }] });
-  const [error, res] = await nodeCtrl.getDiskData(currrentNodeId.value, param);
+  const [error, res] = await nodeCtrl.getDiskMetrics(currrentNodeId.value, param);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -1025,7 +1025,7 @@ const restart = async (nodeChange = false) => {
     if (activeTab.value === 'network') {
       if (!networkNames.value.length || nodeChange) {
         emit('loadingChange', true);
-        const [error, { data }] = await nodeCtrl.getNetworkName(currrentNodeId.value);
+        const [error, { data }] = await nodeCtrl.getNetworkInfoMetrics(currrentNodeId.value);
         emit('loadingChange', false);
         if (!error) {
           const _networkNames: {label: string, value: string}[] = [];
@@ -1050,7 +1050,7 @@ const restart = async (nodeChange = false) => {
     if (activeTab.value === 'disk') {
       if (!networkNames.value.length || nodeChange) {
         emit('loadingChange', true);
-        const [error, res] = await nodeCtrl.getDiskName(currrentNodeId.value);
+        const [error, res] = await nodeCtrl.getDiskInfoMetrics(currrentNodeId.value);
         emit('loadingChange', false);
         if (error) {
           return;

@@ -7,7 +7,7 @@ export default class API {
   }
 
   loadTaskList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   addTag (names: string[]): Promise<[Error | null, any]> {
@@ -160,11 +160,11 @@ export default class API {
   }
 
   searchTrashTask <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/trash/search`, params);
+    return http.get(`${baseUrl}/trash`, { ...params, fullTextSearch: true });
   }
 
   searchSprints <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/sprint/search`, params);
+    return http.get(`${baseUrl}/sprint`, { ...params, fullTextSearch: true });
   }
 
   putSprint <T> (params: T): Promise<[Error | null, any]> {
@@ -272,6 +272,6 @@ export default class API {
   }
 
   searchMeeting <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/meeting/search`, params);
+    return http.get(`${baseUrl}/meeting`, { ...params, fullTextSearch: true });
   }
 }

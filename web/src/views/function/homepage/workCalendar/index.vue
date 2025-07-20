@@ -32,7 +32,7 @@ const loadData = async () => {
     userId: userId.value,
     planId: props.planId
   };
-  const [error, res] = await analysis.loadFuncTesterWorkSummary(params);
+  const [error, res] = await analysis.getFuncTesterWorkSummary(params);
   loaded.value = true;
   if (error) {
     return;

@@ -323,7 +323,7 @@ const getModelFromRef = async (ref) => {
 
 // 获取当前 api 的操作权限
 const loadApiAuth = async () => {
-  const [error, res] = await apis.loadUserAuth(props.id as string);
+  const [error, res] = await apis.getCurrentAuth(props.id as string);
   if (error) {
     return;
   }
@@ -346,7 +346,7 @@ const loadApiInfo = async (): Promise<void> => {
   if (isUnarchivedApi.value) {
     result = await unarchived.loadInfo(props.id as string);
   } else {
-    result = await apis.loadInfo(props.id as string);
+    result = await apis.getDetail(props.id as string);
   }
   loadingInfo.value = false;
   const [error, res] = result;
@@ -1552,7 +1552,7 @@ const autoSave = async () => {
     }
     params.parameters = travelXcValueToString(params.parameters);
     params.requestBody = travelXcValueToString(params.requestBody);
-    const [error] = await apis.updateApi([params]);
+    const [error] = await apis.update([params]);
     initParams = JSON.parse(JSON.stringify(params));
     if (error) {
       return;

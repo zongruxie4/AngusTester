@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Radio } from 'ant-design-vue';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 import { Icon, Input } from '@xcan-angus/vue-ui';
 import { type AgentValue } from './PropsTypes';
 
@@ -50,7 +50,7 @@ const tipsMap = {
 const agent = ref<AgentValue>('NO_PROXY');
 
 const loadProxy = async () => {
-  const [error, res = { data: {} }] = await setting.getProxy();
+  const [error, res = { data: {} }] = await setting.getUserApiProxy();
   if (error) {
     return;
   }
@@ -69,7 +69,7 @@ const loadProxy = async () => {
 
 const changeProxy = async (event) => {
   const value = event.target.value;
-  const [error] = await setting.putProxy({ name: value });
+  const [error] = await setting.enabledUserApiProxy({ name: value });
   if (error) {
     return;
   }
@@ -104,7 +104,7 @@ const saveUrl = async (agent) => {
     return;
   }
   loading.value = true;
-  const [error] = await setting.patchClientUrl({ url: agent.url });
+  const [error] = await setting.patchUserApiProxyUrl({ url: agent.url });
   loading.value = false;
   if (error) {
     return;

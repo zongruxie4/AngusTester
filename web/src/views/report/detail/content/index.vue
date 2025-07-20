@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
-import { user, dept, group } from 'src/api/auth';
+import { user, dept, group } from 'src/api/gm';
 
 import { treeData } from './config';
 
@@ -38,7 +38,7 @@ const creatorTypeConfig = {
 const creatorObjectName = ref();
 const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
   if (creatorObjectType === 'USER') {
-    const [error, { data }] = await user.searchList({ id: creatorObjectId });
+    const [error, { data }] = await user.getUserList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -47,7 +47,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     return;
   }
   if (creatorObjectType === 'dept') {
-    const [error, { data }] = await dept.searchList({ id: creatorObjectId });
+    const [error, { data }] = await dept.getDeptList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -56,7 +56,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     return;
   }
   if (creatorObjectType === 'GROUP') {
-    const [error, { data }] = await group.searchList({ id: creatorObjectId });
+    const [error, { data }] = await group.getGroupList({ id: creatorObjectId });
     if (error) {
       return;
     }
@@ -107,7 +107,7 @@ const loadCaseName = async (caseId) => {
 };
 
 const loadServiceAndApisName = async (apisId) => {
-  const [error, { data }] = await apis.loadInfo(apisId);
+  const [error, { data }] = await apis.getDetail(apisId);
   if (error) {
     return;
   }

@@ -21,7 +21,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean) }>();
 
 const OK_API_MAP = {
   SERVICE: services.deleteTest,
-  API: apis.deleteTest,
+  API: apis.deleteTestTask,
   SCENARIO: scenario.deleteTest
 };
 

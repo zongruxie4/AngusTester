@@ -46,7 +46,7 @@ const handleChecked = (_checkedKeys, { checked, node }) => {
 const onLoadData:TreeProps['loadData'] = treeNode => {
   const spaceId = props.spaceId;
   const parentDirectoryId = treeNode.type === 'DIRECTORY' ? treeNode.id : '-1';
-  return space.getFiles({ spaceId, parentDirectoryId, pageSize: store.state.maxPageSize, pageNo: 1 })
+  return space.getFileList({ spaceId, parentDirectoryId, pageSize: store.state.maxPageSize, pageNo: 1 })
     .then(([error, res]) => {
       if (error) {
         return;
@@ -125,7 +125,7 @@ let initParams = {};
 
 // 分享记录信息
 const loadShareInfo = async () => {
-  const [error, res = { data: {} }] = await space.loadShareInfo(props.id);
+  const [error, res = { data: {} }] = await space.getShareDetail(props.id);
   if (error) {
     return;
   }

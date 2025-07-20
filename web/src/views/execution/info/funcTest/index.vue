@@ -61,7 +61,7 @@ const loadExecContent = async () => {
   const pageSize = 50;
   const tempList: any[] = [];
   const load = async (pageNo = 1) => {
-    const [error, res] = await exec.loadExtensionContent(props.execInfo.id, { pageNo, pageSize, extField: 'SampleResultContent' });
+    const [error, res] = await exec.getSampleExtensionContent(props.execInfo.id, { pageNo, pageSize, extField: 'SampleResultContent' });
     if (error) {
       emit('update:loading', false);
       return;

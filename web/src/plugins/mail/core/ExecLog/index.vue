@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { Colon, NoData, IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { getDataByProxy } from '@/api/proxyRequest/index';
+import { getDataByProxy } from '@/api/proxy/index';
 
 interface Props {
   execId:string;

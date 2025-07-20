@@ -7,7 +7,7 @@ export default class API {
   }
 
   searchPlan (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/search`, params);
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   putFuncPlan (params) : Promise<[Error | null, any]> {

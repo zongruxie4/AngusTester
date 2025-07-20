@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, watch } from 'vue';
-import { setting } from '@/api/comm';
+import { setting } from '@/api/gm';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 
 const readyState = inject('readyState', ref(-1));
@@ -49,7 +49,7 @@ const loadProxy = async () => {
       };
     });
   } else {
-    const [error, res = { data: {} }] = await setting.getProxy();
+    const [error, res = { data: {} }] = await setting.getUserApiProxy();
     if (error) {
       return;
     }
@@ -67,7 +67,7 @@ const loadProxy = async () => {
 };
 
 const changeProxy = async (value) => {
-  const [error] = await setting.putProxy({ name: value });
+  const [error] = await setting.enabledUserApiProxy({ name: value });
   if (error) {
     return;
   }

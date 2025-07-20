@@ -11,7 +11,7 @@ export default class API {
   }
 
   getFileList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share/object/search`, params);
+    return http.get(`${baseUrl}/share/object`, params);
   }
 
   getFileInfo (id: string): Promise<[Error | null, any]> {

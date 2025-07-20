@@ -55,7 +55,7 @@ const loadList = async (loadMore = false) => {
     targetId: props.id,
     targetType: props.type
   };
-  const [error, res = { data: { list: [] } }] = await apis.loadShareList(params);
+  const [error, res = { data: { list: [] } }] = await apis.getShareList(params);
   if (error) {
     return;
   }

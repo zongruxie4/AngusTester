@@ -103,7 +103,7 @@ const loadApiList = async () => {
 // 加载分享历史列表
 const loadSharedList = async () => {
   const params = { targetId: props.id, targetType: props.type };
-  const [error, { data = { list: [] } }] = await apis.loadShareList(params);
+  const [error, { data = { list: [] } }] = await apis.getShareList(params);
   if (error || !data?.list?.length) {
     return;
   }

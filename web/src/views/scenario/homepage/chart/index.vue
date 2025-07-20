@@ -23,7 +23,7 @@ const dataSource = ref<ResourceInfo>();
 
 const loadData = async () => {
   const params = { projectId: props.projectId };
-  const [error, res] = await analysis.loadScenarioResourceCount(params);
+  const [error, res] = await analysis.getScenarioResourceCount(params);
   if (error) {
     return;
   }

@@ -20,7 +20,7 @@ const selectFile = ref();
 // 空间数据
 const spaceData = ref([]);
 const loadSpaceData = async () => {
-  const [error, data] = await space.getSpaceList({ pageSize: 1000, pageNo: 1, appCode: 'AngusTester' });
+  const [error, data] = await space.getList({ pageSize: 1000, pageNo: 1, appCode: 'AngusTester' });
   if (error) {
     return;
   }
@@ -34,7 +34,7 @@ const loadFile:TreeProps['loadData'] = (node) => {
       return;
     }
     const { spaceId, dirId } = node.dataRef;
-    space.getFiles({ spaceId: spaceId, parentDirectoryId: dirId, pageSize: 1000, pageNo: 1 })
+    space.getFileList({ spaceId: spaceId, parentDirectoryId: dirId, pageSize: 1000, pageNo: 1 })
       .then(data => {
         const [error, resp] = data;
         if (error) {

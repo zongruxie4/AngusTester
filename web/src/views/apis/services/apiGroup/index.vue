@@ -229,7 +229,7 @@ const ploadProjectAuthInfo = async () => {
 
 // 获取 api 操作权限
 const getApiAuth = async () => {
-  const [error, { data = [] }] = await apis.loadUserAuth(state.id);
+  const [error, { data = [] }] = await apis.getCurrentAuth(state.id);
   if (error) {
     return;
   }

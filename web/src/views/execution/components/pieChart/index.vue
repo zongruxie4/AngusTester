@@ -106,7 +106,7 @@ const pieloading = ref(true); // 饼图统计是否加载完成
 const pieChartData = ref<PieData[]>([]);
 const loadCount = async () => {
   const params = { ...publicParams, groupByColumns: groupByGroup.value.map(item => item.key), projectId: projectId.value };
-  const [error, { data }] = await analysis.loadCustomizationSummary(params);
+  const [error, { data }] = await analysis.getCustomizationSummary(params);
   pieloading.value = false;
   if (error) {
     return;

@@ -92,7 +92,7 @@ const toSelectApi = () => {
 
 const selectApiOk = async (ids: string[]) => {
   selectApiVisible.value = false;
-  const [error, res] = await apis.loadInfo(ids[0], true);
+  const [error, res] = await apis.getDetail(ids[0], true);
   if (error) {
     return;
   }

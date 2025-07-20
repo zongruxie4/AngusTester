@@ -187,7 +187,7 @@ const searchOptions = [
     valueKey: 'serviceId',
     allowClear: true,
     fieldNames: { label: 'name', value: 'id' },
-    action: `${TESTER}/services/search?projectId=${props.projectId}`
+    action: `${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`
   }
 ];
 </script>

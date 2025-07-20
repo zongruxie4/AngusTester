@@ -39,7 +39,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await apis.getDesignInfo(id);
+  const [error, res] = await apis.getDesignDetail(id);
   loading.value = false;
   if (error) {
     return;

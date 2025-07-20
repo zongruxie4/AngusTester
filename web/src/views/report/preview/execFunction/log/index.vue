@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { getDataByProxy } from "@/api/proxyRequest/index";
+import { getDataByProxy } from "@/api/proxy/index";
 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
 

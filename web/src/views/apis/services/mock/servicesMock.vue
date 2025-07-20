@@ -228,7 +228,7 @@ onMounted(async () => {
           </FormItem>
           <FormItem name="serviceId">
             <TreeSelect
-              :action="`${TESTER}/services/search?`"
+              :action="`${TESTER}/services?&fullTextSearch=true`"
               :fieldNames="{label:'name',value:'id'}"
               :defaultValue="serviceInfo"
               :virtual="false"

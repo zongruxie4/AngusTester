@@ -255,7 +255,7 @@ const edit = (value:DataSourceType):void => {
 
 // 克隆
 const patchClone = async (id:string) => {
-  const [error] = await apis.patchClone(id);
+  const [error] = await apis.clone(id);
   if (error) {
     return;
   }
@@ -278,7 +278,7 @@ const deleteConfirm = (id: string) => {
 
 const deleteInterface = async (id: string): Promise<void> => {
   loading.value = true;
-  const [error] = await apis.del({ ids: [id] });
+  const [error] = await apis.delete({ ids: [id] });
   loading.value = false;
   if (error) {
     return;
@@ -406,7 +406,7 @@ const cancelFavourite = async (id:string) => {
 
 // 增加关注
 const addWatch = async (id:string) => {
-  const [error] = await apis.addWatch(id);
+  const [error] = await apis.addFollow(id);
   if (error) {
     return;
   }
@@ -422,7 +422,7 @@ const addWatch = async (id:string) => {
 
 // 取消关注
 const cancelWatch = async (id:string) => {
-  const [error] = await apis.cancelWatch(id);
+  const [error] = await apis.cancelFollow(id);
   if (error) {
     return;
   }
@@ -629,7 +629,7 @@ watch(() => [props.allData, props.groupedBy], () => {
     <template v-if="!showGroupList1">
       <Scroll
         v-model:spinning="loading"
-        :action="`${TESTER}/services/${props.serviceId}/apis/search?infoScope=DETAIL`"
+        :action="`${TESTER}/services/${props.serviceId}/apis?infoScope=DETAIL&fullTextSearch=true`"
         class="h-full scroll-wrapper"
         :lineHeight="58"
         :notify="notify"

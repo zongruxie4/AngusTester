@@ -27,15 +27,15 @@ export default class API {
   }
 
   searchTrash (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/trash/search`, params);
+    return http.get(`${baseUrl}/trash`, { ...params, fullTextSearch: true });
   }
 
   searchReview (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/review/search`, params);
+    return http.get(`${baseUrl}/review`, { ...params, fullTextSearch: true });
   }
 
   putReview (params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/review`, params);
+    return http.put(`${baseUrl}/review`, { ...params, fullTextSearch: true });
   }
 
   addReview (params): Promise<[Error | null, any]> {

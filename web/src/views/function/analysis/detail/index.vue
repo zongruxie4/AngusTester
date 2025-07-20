@@ -42,7 +42,7 @@ const ResourceCreation = defineAsyncComponent(() => import('./resourceCreation/i
 const dataSource = ref({});
 
 const loadAnalysisInfo = async (id) => {
-  const [error, { data }] = await analysis.getAnalysisInfo(id);
+  const [error, { data }] = await analysis.getDetail(id);
   if (error) {
     return;
   }

@@ -7,9 +7,9 @@ import DOMPurify from 'dompurify';
 import { enumLoader } from '@xcan-angus/tools';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
-import { event } from '@/api/event';
-import { analysis } from 'src/api/auth';
-import { setting } from '@/api/comm';
+import { event } from '@/api/gm';
+import { analysis } from 'src/api/gm';
+import { setting } from '@/api/gm';
 
 const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));
 const ExpandHead = defineAsyncComponent(() => import('./expand-head.vue'));
@@ -112,7 +112,7 @@ const loadStatistics = async () => {
 
 const loadPushConfigList = async () => {
   configLoading.value = true;
-  const [error, res] = await event.loadPushConfigList({
+  const [error, res] = await event.getCurrentTemplateList({
     appCode: 'AngusTester',
     pageSize: 2000
   });
@@ -136,7 +136,7 @@ const loadPushRecordList = async () => {
     return;
   }
   recordLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await event.loadPushRecordList({ ...params, filters: searchParams.value, appCode: 'AngusTester' });
+  const [error, { data = { list: [], total: 0 } }] = await event.getRecordList({ ...params, filters: searchParams.value, appCode: 'AngusTester' });
   recordLoading.value = false;
   if (error) {
     return;

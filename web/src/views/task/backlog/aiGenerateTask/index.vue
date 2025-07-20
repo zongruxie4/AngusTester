@@ -19,7 +19,7 @@ import { TESTER, utils, duration } from '@xcan-angus/tools';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { task } from '@/api/tester';
-import { ai } from 'src/api/auth';
+import { ai } from 'src/api/gm';
 
 import { TaskInfo } from '../../PropsType';
 
