@@ -681,11 +681,6 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-  :deep(.ant-form) .ant-form-item-label > label {
-    @apply h-7;
-  }
-  :deep(.ant-form) .import-example-label .ant-form-item-label > label {
-    @apply h-8;
-  }
+
 
 </style>
