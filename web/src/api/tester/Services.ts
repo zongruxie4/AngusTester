@@ -79,9 +79,8 @@ export default class API {
     return http.get(`${baseUrl}/auth`, params, axiosConfig);
   }
 
-  // TODO
   loadApis (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/apis`, { ...params, fullTextSearch: true }, axiosConfig);
+    return http.get(`${baseUrl}/${params.id}/apis`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   resetTest (id: string): Promise<[Error | null, any]> {

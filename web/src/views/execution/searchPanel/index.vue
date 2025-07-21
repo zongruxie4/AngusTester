@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie, TESTER, duration, site, enumLoader } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { setting } from '@/api/comm/index';
+import { setting } from '@/api/gm';
 
 import { MenuItem } from './PropsType';
 
