@@ -26,7 +26,7 @@ const BaselineCompare = defineAsyncComponent(() => import('@/views/function/base
 const planId = ref();
 
 const loadBaseLineInfo = async () => {
-  const [error, res] = await func.getBaselineInfo(props.data.id);
+  const [error, res] = await func.getBaselineDetail(props.data.id);
   if (error) {
     return;
   }

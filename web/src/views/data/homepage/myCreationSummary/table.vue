@@ -36,7 +36,7 @@ const router = useRouter();
 
 const loadDataApiConfig = {
   dataSource: dataApi.getList,
-  space: space.getList,
+  space: space.getSpaceList,
   dataSet: dataSet.loadDataSetList,
   variable: variable.loadVariablesList
 };

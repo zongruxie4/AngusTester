@@ -54,7 +54,7 @@ const loadData = async () => {
   const params = getParams();
   tableLoading.value = true;
 
-  const [error, resp] = await space.getList({ ...params, appCode: 'AngusTester', admin: true, projectId: projectId.value });
+  const [error, resp] = await space.getSpaceList({ ...params, appCode: 'AngusTester', admin: true, projectId: projectId.value });
   tableLoading.value = false;
   if (error) {
     return;
@@ -76,7 +76,7 @@ const loadData = async () => {
 
 const loadDataAuth = async (list) => {
   const ids = list.map(space => space.id);
-  const [error, res] = await space.getCurrentAuthList({ ids, admin: true });
+  const [error, res] = await space.getSpaceCurrentAuthList({ ids, admin: true });
   if (error) {
     return;
   }
@@ -114,7 +114,7 @@ const delConfirm = (record) => {
     content: `确认删除【${record.name}】？`,
     onOk () {
       return new Promise<void>((resolve, reject) => {
-        space.delete(record.id).then(([error]) => {
+        space.deleteSpace(record.id).then(([error]) => {
           if (error) {
             // eslint-disable-next-line prefer-promise-reject-errors
             reject();
@@ -135,11 +135,6 @@ const delConfirm = (record) => {
 
 // 分享
 const shareVisible = ref(false);
-// const share = (record) => {
-//   selectId.value = record.id;
-//   selectName.value = record.name;
-//   shareVisible.value = true;
-// };
 
 // 权限
 const authModalVisible = ref(false);
@@ -211,7 +206,7 @@ const authFlagChange = ({ auth }:{auth:boolean}) => {
 
 // 保存弹窗内 空间信息
 const saveSpace = async (form) => {
-  const [error] = await (form.id ? space.patch({ ...form }) : space.add({ ...form, projectId: projectId.value }));
+  const [error] = await (form.id ? space.patchSpace({ ...form }) : space.addSpace({ ...form, projectId: projectId.value }));
   if (error) {
     return;
   }

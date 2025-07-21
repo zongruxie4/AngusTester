@@ -191,7 +191,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await func.getReview(id);
+  const [error, res] = await func.getReviewDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -212,7 +212,7 @@ const loadData = async (id: string) => {
 
 const loadCaseList = async (id: string) => {
   const { current, pageSize } = pagination.value;
-  const [error, { data }] = await func.searchReviewCase({
+  const [error, { data }] = await func.getReviewCaseList({
     reviewId: id,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     reviewStatus: reviewStatus.value,
@@ -273,7 +273,7 @@ const customRow = (record) => {
 };
 
 const loadCaseContentInfo = async () => {
-  const [error, { data }] = await func.getReviewCase(selectedRowKey.value);
+  const [error, { data }] = await func.getReviewCaseDetail(selectedRowKey.value);
   if (error) {
     return;
   }

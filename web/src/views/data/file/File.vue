@@ -134,7 +134,7 @@ const deleteAuth = ref(true);
 
 // 获取当前空间下读写对象权限
 const getActionAuth = async () => {
-  const [error, res] = await space.getCurrentAuth({ id: spaceId.value });
+  const [error, res] = await space.getSpaceCurrentAuth({ id: spaceId.value });
   if (error) {
     return;
   }

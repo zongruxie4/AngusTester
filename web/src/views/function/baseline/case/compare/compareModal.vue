@@ -50,7 +50,7 @@ const resetData = () => {
 };
 
 const loadBaseCase = async () => {
-  const [error, { data }] = await func.getCaseInfoInBaseline(props.baselineId, props.caseId);
+  const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, props.caseId);
   if (error) {
     return;
   }
@@ -67,7 +67,7 @@ const loadBaseCase = async () => {
 };
 
 const loadCompareCase = async () => {
-  const [error, { data }] = await func.getCaseInfoInBaseline(props.comparelineId, props.caseId);
+  const [error, { data }] = await func.getBaselineCaseDetail(props.comparelineId, props.caseId);
   if (error) {
     return;
   }

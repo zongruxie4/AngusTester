@@ -6,24 +6,24 @@ export default class API {
     baseUrl = prefix + '/space';
   }
 
-  getList (params: {[key: string]: any}, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
-  }
-
-  add (params: {name: string, quotaSize: number, remark?: string, bizKey?: string}): Promise<[Error | null, any]> {
+  addSpace (params: {name: string, quotaSize: number, remark?: string, bizKey?: string}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}`, params);
   }
 
-  patch (params: {id: string, name?: string, quotaSize?: number, remark?: string, bizKey?: string}): Promise<[Error | null, any]> {
+  patchSpace (params: {id: string, name?: string, quotaSize?: number, remark?: string, bizKey?: string}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
   }
 
-  getDetail (id: string): Promise<[Error | null, any]> {
+  deleteSpace (id: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids: [id] });
+  }
+
+  getSpaceDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
 
-  delete (id: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, { ids: [id] });
+  getSpaceList (params: {[key: string]: any}, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
   getFileList (params: {spaceId: string, filters?: Record<string, any>[], pageSize: number, pageNo: number, parentDirectoryId?: string, orderSort?: string, orderBy?: string}): Promise<[Error | null, any]> {
@@ -55,31 +55,31 @@ export default class API {
     return http.patch(`${baseUrl}/object/move`, params);
   }
 
-  putAuth (authId: string, params: {permissions: string[]}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/auth/${authId}`, params);
-  }
-
-  enabledAuth (spaceId: string, enabled: boolean): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${spaceId}/auth/enabled?enabled=${enabled}`);
-  }
-
-  getAuthList (params, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/auth`, params, axiosConfig);
-  }
-
-  addAuth (spaceId: string, param): Promise<[Error | null, any]> {
+  addSpaceAuth (spaceId: string, param): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${spaceId}/auth`, param);
   }
 
-  deleteAuth (params): Promise<[Error | null, any]> {
+  putSpaceAuth (authId: string, params: {permissions: string[]}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/auth/${authId}`, params);
+  }
+
+  enabledSpaceAuth (spaceId: string, enabled: boolean): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${spaceId}/auth/enabled?enabled=${enabled}`);
+  }
+
+  getSpaceAuthList (params, axiosConfig = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/auth`, params, axiosConfig);
+  }
+
+  deleteSpaceAuth (params): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/auth/${params.id}`);
   }
 
-  getCurrentAuth ({ id = '' }): Promise<[Error | null, any]> {
+  getSpaceCurrentAuth ({ id = '' }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/user/auth/current`, { admin: true });
   }
 
-  getCurrentAuthList (params: {ids: string[], admin: boolean }): Promise<[Error | null, any]> {
+  getSpaceCurrentAuthList (params: {ids: string[], admin: boolean }): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/auth/current`, params);
   }
 

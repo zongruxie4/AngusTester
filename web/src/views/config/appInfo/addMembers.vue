@@ -5,7 +5,7 @@ import { Grid, Modal, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { GM } from '@xcan-angus/tools';
 
-import { appInfo } from 'src/api/gm';
+import { app } from 'src/api/gm';
 
 interface Props {
   visible: boolean;
@@ -60,7 +60,7 @@ const handleOk = () => {
 };
 // 加入部门
 const addDepts = async (params:{orgIds:string[], policyIds:string[]}): Promise<void> => {
-  const [err] = await appInfo.addDepts(props.appId, params);
+  const [err] = await app.addAuthDept(props.appId, params);
   if (err) {
     emit('update', false);
     return;
@@ -70,7 +70,7 @@ const addDepts = async (params:{orgIds:string[], policyIds:string[]}): Promise<v
 };
 // 加入用户
 const addUsers = async (params:{orgIds:string[], policyIds:string[]}): Promise<void> => {
-  const [err] = await appInfo.addUsers(props.appId, params);
+  const [err] = await app.addAuthUser(props.appId, params);
   if (err) {
     emit('update', false);
     return;
@@ -80,7 +80,7 @@ const addUsers = async (params:{orgIds:string[], policyIds:string[]}): Promise<v
 };
 // 加入组
 const addGroups = async (params:{orgIds:string[], policyIds:string[]}): Promise<void> => {
-  const [err] = await appInfo.addGroups(props.appId, params);
+  const [err] = await app.addAuthGroup(props.appId, params);
   if (err) {
     emit('update', false);
     return;

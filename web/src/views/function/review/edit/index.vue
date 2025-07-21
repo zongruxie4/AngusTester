@@ -239,7 +239,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await func.getReview(id);
+  const [error, res] = await func.getReviewDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -376,7 +376,7 @@ const handleChangePlanId = () => {
 };
 
 const loadCaseList = async () => {
-  const [error, { data }] = await func.searchReviewCase({
+  const [error, { data }] = await func.getReviewCaseList({
     reviewId: reviewId.value,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     pageNo: pagination.value.current,

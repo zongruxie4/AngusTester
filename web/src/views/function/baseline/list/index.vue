@@ -78,7 +78,7 @@ const toDelete = async (data: BaselineInfo) => {
     content: `确定删除基线【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await func.batchDelBaseline([id]);
+      const [error] = await func.deleteBaseline([id]);
       if (error) {
         return;
       }
@@ -113,7 +113,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await func.searchBaseline(params);
+  const [error, res] = await func.getBaselineList(params);
   loaded.value = true;
   loading.value = false;
 

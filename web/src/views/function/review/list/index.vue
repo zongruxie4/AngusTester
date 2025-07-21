@@ -64,7 +64,7 @@ const searchChange = (data) => {
 
 const setTableData = async (id: string, index: number) => {
   loading.value = true;
-  const [error, res] = await func.getReview(id);
+  const [error, res] = await func.getReviewDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -162,7 +162,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await func.searchReview(params);
+  const [error, res] = await func.getReviewList(params);
   loaded.value = true;
   loading.value = false;
 
@@ -224,7 +224,7 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
 
-  return await func.getCurrentReviewAuthByPlanId(id, params);
+  return await func.getReviewAuthByPlanId(id, params);
 };
 
 const reset = () => {
