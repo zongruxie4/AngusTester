@@ -192,7 +192,7 @@ const useCaseAction = computed(() => {
     return undefined;
   }
 
-  return `${TESTER}/apis/case/search?apisId=${checkedApiId.value}`;
+  return `${TESTER}/apis/case?apisId=${checkedApiId.value}`;
 });
 
 const useCaseParams = computed(() => {
@@ -258,115 +258,6 @@ watch(() => props.visible, () => {
       :visible="props.visible"
       :projectId="projectInfo.id"
       @change="changeSelectCase" />
-    <!-- <div class="h-full text-3 leading-5 text-theme-content">
-      <div class="flex items-center mb-5">
-        <div class="flex items-center flex-shrink-0 w-20.5">
-          <IconRequired />
-          <span>所属服务</span>
-        </div>
-        <Select
-          v-if="props.visible"
-          ref="dirTreeSelectRef"
-          :action="`${TESTER}/services/search?projectId=${projectInfo.id}`"
-          :allowClear="true"
-          :fieldNames="{ label: 'name', value: 'id'}"
-          placeholder="请选择服务"
-          showSearch
-          class="w-1/2"
-          @change="dirChange">
-          <template #title="{ name }">
-            <div class="flex items-center leading-6.5 h-6.5 space-x-1.5">
-              <IconText
-                style="width: 16px;height: 16px;background-color: rgb(162, 222, 236);"
-                text="S"
-                class="flex-shrink-0" />
-              <div :title="name" class="flex-1 truncate">{{ name }}</div>
-            </div>
-          </template>
-        </Select>
-      </div>
-
-      <div class="flex items-center mb-5">
-        <div class="flex items-center flex-shrink-0 w-20.5">
-          <IconRequired />
-          <span>接口</span>
-        </div>
-        <Select
-          :allowClear="true"
-          :action="`${TESTER}/services/${serviceId}/apis/search`"
-          :fieldNames="{ label: 'summary', value: 'id' }"
-          :disabled="!serviceId"
-          placeholder="请选择接口"
-          showSearch
-          class="w-1/2"
-          @change="planChange">
-          <template #title="{ summary }">
-            <div class="flex items-center leading-6.5 h-6.5 space-x-1.5">
-              <div :title="summary" class="flex-1 truncate">{{ summary }}</div>
-            </div>
-          </template>
-        </Select>
-      </div>
-
-      <div style="height: calc(100% - 138px);" class="pt-3.5 px-3.5 space-y-3 border rounded border-theme-text-box">
-        <Input
-          :value="inputValue"
-          :allowClear="true"
-          placeholder="查询用例名称"
-          trim
-          @change="inputChange">
-          <template #suffix>
-            <Icon icon="icon-sousuo" />
-          </template>
-        </Input>
-
-        <div style="height: calc(100% - 38px);">
-          <div class="bg-table-header flex items-center px-2.5 h-8 leading-5 rounded space-x-3">
-            <div class="w-4 h-5 flex items-center justify-center flex-shrink-0"></div>
-            <div class="flex-shrink-0 w-13.75">方法</div>
-            <div style="flex:1 1 45%">URL</div>
-            <div style="flex:1 1 55%">名称</div>
-          </div>
-
-          <Scroll
-            style="height: calc(100% - 32px);"
-            :action="useCaseAction"
-            :lineHeight="32"
-            :params="useCaseParams"
-            class="py-1"
-            @change="scrollChange">
-            <div
-              v-for="item in useCaseList"
-              :key="item.id"
-              :class="{'api-item-disabled':item.disabled}"
-              class="api-item flex items-center h-7 px-2.5 leading-5 mb-1 rounded space-x-3 cursor-pointer">
-              <div class="w-4 h-5 flex items-center justify-center flex-shrink-0">
-                <Checkbox
-                  :disabled="item.disabled"
-                  :checked="checkedUseCaseIds.includes(item.id)"
-                  class="checkbox-box-white"
-                  @change="checkChange($event,item)" />
-              </div>
-              <HttpMethodText class="flex-shrink-0 w-13.75" :value="item.method" />
-              <div
-                :title="item.endpoint"
-                style="flex:1 1 45%"
-                class="flex items-center truncate">
-                {{ item.endpoint }}
-              </div>
-              <div
-                :title="item.name"
-                style="flex:1 1 55%"
-                class="flex items-center truncate">
-                <div class="flex-1 truncate">{{ item.name }}</div>
-                <div v-if="props.linkIds.has(item.id)" class="flex-shrink-0 text-theme-placeholder">（已引用）</div>
-              </div>
-            </div>
-          </Scroll>
-        </div>
-      </div>
-    </div> -->
-
     <template #footer>
       <div class="flex items-center justify-end">
         <Button

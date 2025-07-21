@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Input, Select, IconRequired, IconCopy, IconText } from '@xcan-angus/vue-ui';
+import { Input, IconRequired, IconCopy } from '@xcan-angus/vue-ui';
 
 export interface Props {
   value: {
@@ -45,12 +45,6 @@ const nameChange = (event: { target: { value: string; } }) => {
   const value = event.target.value;
   name.value = value;
   nameError.value = false;
-};
-
-const dirIdChange = (value: string, option:{name:string;}) => {
-  dirId.value = value;
-  dirName.value = option.name;
-  dirIdError.value = false;
 };
 
 const descriptionChange = (event: { target: { value: string; } }) => {
@@ -144,8 +138,6 @@ const id = computed(() => {
   return props.value?.id;
 });
 
-const selectAction = '/altester/api/v1/scenario/dir/search/tree';
-const selectParams = { orderBy: 'createdDate', orderSort: 'DESC' };
 const fieldNames = { label: 'name', value: 'id' };
 
 defineExpose({ isValid, getData });
@@ -174,28 +166,6 @@ defineExpose({ isValid, getData });
         placeholder="最大支持200个字符"
         trim
         @change="nameChange" />
-    </div>
-    <div class="space-y-0.5">
-      <div class="flex items-center">
-        <IconRequired />
-        <span>所属目录</span>
-      </div>
-      <Select
-        :action="selectAction"
-        :value="dirId"
-        :error="dirIdError"
-        :fieldNames="fieldNames"
-        :params="selectParams"
-        :defaultOptions="dirDefaultOptions"
-        class="w-full"
-        @change="dirIdChange">
-        <template #option="record">
-          <div class="flex items-center leading-6.5 h-6.5 space-x-1.5">
-            <IconText style="width: 16px;height: 16px;" class="flex-shrink-0" />
-            <div :title="record.name" class="flex-1 truncate">{{ record.name }}</div>
-          </div>
-        </template>
-      </Select>
     </div>
     <div v-if="scriptName" class="space-y-0">
       <div class="flex items-center">

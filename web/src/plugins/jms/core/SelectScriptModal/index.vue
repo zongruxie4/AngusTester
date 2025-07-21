@@ -101,7 +101,7 @@ const scrollParams = computed(() => {
   return params;
 });
 
-const action = `${TESTER}/script/search`;
+const action = `${TESTER}/script`;
 </script>
 <template>
   <Modal

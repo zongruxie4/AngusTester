@@ -152,7 +152,7 @@ const params = computed(() => {
     </div>
     <Scroll
       v-model:spinning="loading"
-      :action="`${TESTER}/apis/share/search`"
+      :action="`${TESTER}/apis/share`"
       :params="params"
       :lineHeight="56"
       :transition="false"
