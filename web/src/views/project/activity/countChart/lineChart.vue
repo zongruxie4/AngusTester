@@ -38,7 +38,6 @@ const initCharts = () => {
   if (!chartsRef.value) {
     return;
   }
-  // echarts.registerTheme(tenantInfo.value.preference.themeCode, tenantInfo.value.preference.themeCode === 'dark' ? DarkTheme : GrayTheme);
   myChart = echarts.init(chartsRef.value, tenantInfo.value.preference.themeCode, { renderer: 'canvas' });
   myChart.setOption(chartsOption);
   window.addEventListener('resize', () => {
@@ -71,18 +70,6 @@ const chartsOption = {
     axisPointer: {
       type: 'shadow'
     }
-    // formatter: function (params) {
-    //   let res = `<div style='margin-bottom:5px;width:100%;font-size: 12px;min-width:100px;color:#8C8C8C;color:var(--content-text-title);'>
-    //                 ${params.name}</div>`;
-    //   res += `<div style="font-size: 14px;line-height: 16px;display:flex;justify-content: space-between;align-items: center;">
-    //                      <div style="display:flex;align-items: center;">
-    //                     <div style="width:6px;height:6px;border-radius:12px;background-color:rgba(45, 142, 255, 1);margin-right:4px;"></div>
-    //                     <span style="font-size:12px;color:var(--content-text-content);">${props.title}</span>
-    //                     </div>
-    //                     <span style="font-size:12px;margin-left:8px;color:var(--content-text-content);">${params.value}</span>
-    //                     </div>`;
-    //   return res;
-    // }
   },
   xAxis: [
     {
