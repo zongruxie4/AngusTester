@@ -62,7 +62,7 @@ const permissions = ref<string[]>([]);
 const oldFormState = ref<FormState>();
 const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
 const formState = ref<FormState>({
-  planId: '',
+  planId: undefined,
   description: '',
   name: '',
   ownerId: props.userInfo?.id,
