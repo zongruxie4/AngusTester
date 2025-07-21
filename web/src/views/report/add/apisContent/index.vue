@@ -39,7 +39,7 @@ contentTreeData.forEach(item => {
 });
 
 const loadServiceId = async () => {
-  const [error, { data }] = await apis.getDetail(apisId.value);
+  const [error, { data }] = await apis.getApiDetail(apisId.value);
   if (error) {
     return;
   }

@@ -116,7 +116,7 @@ const loadData = async () => {
       params.followBy = props.params.followBy;
     }
   }
-  const [error, res] = await apis.getList(params);
+  const [error, res] = await apis.getApiList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -136,7 +136,7 @@ const deleteHandler = (data: ApiItem) => {
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
-      const [error] = await apis.delete(params);
+      const [error] = await apis.deleteApi(params);
       if (error) {
         return;
       }

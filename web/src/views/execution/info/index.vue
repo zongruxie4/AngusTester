@@ -60,7 +60,7 @@ const loadscriptContent = async () => {
 
 const getDetail = async () => {
   loading.value = true;
-  const [error, { data }] = await exec.getDetail(id);
+  const [error, { data }] = await exec.getExecDetail(id);
 
   if (error) {
     loading.value = false;
@@ -177,7 +177,7 @@ const handleStop = async (item:ExecObj) => {
     id: item.id
   };
   loading.value = true;
-  const [error, { data }] = await exec.stop(_params);
+  const [error, { data }] = await exec.stopExec(_params);
   loading.value = false;
   if (error) {
     if (error?.message) {
@@ -208,7 +208,7 @@ const handleDelete = async (item:ExecObj) => {
     content: `确定删除【${item.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await exec.delete([item.id]);
+      const [error] = await exec.deleteExec([item.id]);
       loading.value = false;
       if (error) {
         return;

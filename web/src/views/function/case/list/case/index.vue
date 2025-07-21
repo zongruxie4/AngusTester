@@ -578,7 +578,7 @@ const loadCaseList = async (): Promise<void> => {
   }
 
   updateLoading(true);
-  const [error, { data = { list: [], total: 0 } }] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data = { list: [], total: 0 } }] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
   firstloading.value = false;
   if (error) {
     updateLoading(false);
@@ -820,7 +820,7 @@ const caseInfo = ref<CaseInfoObj>();
 const firstCase = ref<CaseInfoObj>();
 const getCaseInfo = async (id: string) => {
   updateLoading(true);
-  const [error, { data }] = await funcCase.getCaseInfo(id);
+  const [error, { data }] = await funcCase.getCaseDetail(id);
   updateLoading(false);
   if (error) {
     return;
@@ -1071,7 +1071,7 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 // 重置测试
 const hanldeResetTestResults = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await funcCase.resetResult([rowData.id]);
+  const [error] = await funcCase.resetCaseResult([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -1083,7 +1083,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
 // 重置评审
 const handleResetReviewResult = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = await funcCase.resetReview([rowData.id]);
+  const [error] = await funcCase.resetReviewCase([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -1204,7 +1204,7 @@ const handleSetREsultBlocked = async (value) => {
       testResult: 'BLOCKED'
     }
   ];
-  const [error] = await funcCase.updateResult(params);
+  const [error] = await funcCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -1220,7 +1220,7 @@ const handleSetREsultCanceled = async (value) => {
       testResult: 'CANCELED'
     }
   ];
-  const [error] = await funcCase.updateResult(params);
+  const [error] = await funcCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -1327,7 +1327,7 @@ const handleUploadOk = () => {
 // 收藏
 const handleFavourite = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.favouriteCase(rowData.id);
+  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
@@ -1339,7 +1339,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
 
 const handleFollow = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.followCase(rowData.id);
+  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;

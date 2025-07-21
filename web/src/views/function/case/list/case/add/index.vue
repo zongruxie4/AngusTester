@@ -71,7 +71,7 @@ const oldFormState = ref<FormState>();
 
 const detail = ref<CaseInfoObj>();
 const getCaseInfo = async () => {
-  const [error, { data }] = await funcCase.getCaseInfo(props.editCase.id);
+  const [error, { data }] = await funcCase.getCaseDetail(props.editCase.id);
   if (error) {
     return;
   }

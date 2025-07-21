@@ -102,7 +102,7 @@ const resetApiDebug = () => {
 };
 
 const loadApiResolveModel = async () => {
-  const [error, resp] = await apis.getDetail(props.apisId, true);
+  const [error, resp] = await apis.getApiDetail(props.apisId, true);
   if (error) {
     return;
   }

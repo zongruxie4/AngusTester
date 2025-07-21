@@ -277,7 +277,7 @@ const save = async () => {
   if (props.valueObj.unarchived) {
     drawerRef.value.open('saveUnarchived');
   } else {
-    const [error] = await apis.update([params]);
+    const [error] = await apis.updateApi([params]);
     if (error) {
       return;
     }
@@ -314,7 +314,7 @@ const loadApiInfo = async () => {
   if (!props.id) {
     return;
   }
-  const [error, resp] = await (props.valueObj.unarchived ? unarchived.loadInfo(props.id) : apis.getDetail(props.id));
+  const [error, resp] = await (props.valueObj.unarchived ? unarchived.loadInfo(props.id) : apis.getApiDetail(props.id));
   if (error) {
     return;
   }

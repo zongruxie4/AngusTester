@@ -91,7 +91,7 @@ const disabled = computed(() => {
 const loadInfo = async () => {
   const [error, res] = isUnarchivedApi.value
     ? await unarchived.loadInfo(state.id)
-    : await apis.getDetail(state.id);
+    : await apis.getApiDetail(state.id);
   if (error) {
     return;
   }
@@ -174,10 +174,10 @@ const save = async () => {
     const params = { ...formParams, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, externalDocs };
     isLoading.value = true;
     const [error, res] = isUnarchivedApi.value && state.id
-      ? await apis.add([{ ...params, unarchivedId: state.id }])
+      ? await apis.addApi([{ ...params, unarchivedId: state.id }])
       : isUnarchivedApi.value && !state.id
-        ? await apis.put([{ ...params }])
-        : await apis.update([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);
+        ? await apis.putApi([{ ...params }])
+        : await apis.updateApi([{ ...formParams, externalDocs, ownerId, summary, operationId, serviceId, description, tags, status, deprecated, id: state.id }]);
     isLoading.value = false;
     if (error) {
       return;

@@ -64,7 +64,7 @@ const handleBlur = () => {
 };
 
 const loadPlanList = async () => {
-  const [error, res] = await funcPlan.getPlanInfo(props.planId);
+  const [error, res] = await funcPlan.getPlanDetail(props.planId);
   if (error) {
     return;
   }

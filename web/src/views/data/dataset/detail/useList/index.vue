@@ -165,7 +165,7 @@ const refresh = () => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await dataSet.getTarget(props.id);
+  const [error, res] = await dataSet.getDataSetTarget(props.id);
   loading.value = false;
   loaded.value = true;
   if (error) {

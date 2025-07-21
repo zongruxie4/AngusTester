@@ -29,7 +29,7 @@ const emit = defineEmits<{(e: 'change', value: { [key: string]: any }): void }>(
 
 const getDetail = async () => {
   loading.value = true;
-  const [error, { data }] = await exec.getDetail(props.execInfo.id);
+  const [error, { data }] = await exec.getExecDetail(props.execInfo.id);
 
   if (error) {
     loading.value = false;

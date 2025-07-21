@@ -93,7 +93,7 @@ const rankIcon = {
 const rankingData = ref<{userId: string; fullName: string; avatar: string; count: string}[]>([]);
 // 排名数据
 const loadRankData = async () => {
-  const [error, { data = {} }] = await kanban.loadRankData({ ...params.value });
+  const [error, { data = {} }] = await kanban.getRanking({ ...params.value });
   if (error) {
     return;
   }
@@ -108,7 +108,7 @@ const loadRankData = async () => {
 
 // 增长趋势数据
 const loadGrowthTrendData = async () => {
-  const [error, { data = {} }] = await kanban.loadGrowthTrend({ ...params.value, category: targetType.value });
+  const [error, { data = {} }] = await kanban.getGrowthTrend({ ...params.value, category: targetType.value });
   if (error) {
     return;
   }
@@ -215,7 +215,7 @@ const increaseEchartConfig = {
 
 // 用例数据
 const loadCase = async () => {
-  const [error, { data = {} }] = await kanban.loadCase({ ...params.value });
+  const [error, { data = {} }] = await kanban.getTesting({ ...params.value });
   if (error) {
     return;
   }
@@ -409,7 +409,7 @@ const casePieEchartsConfig = {
 
 // 接口数据
 const loadApis = async () => {
-  const [error, { data = {} }] = await kanban.loadApi({ ...params.value });
+  const [error, { data = {} }] = await kanban.getApis({ ...params.value });
   if (error) {
     return;
   }
@@ -646,7 +646,7 @@ const loadTask = async () => {
   if (!proTypeShowMap.value.showTask) {
     return;
   }
-  const [error, { data = {} }] = await kanban.loadTask({ ...params.value });
+  const [error, { data = {} }] = await kanban.getTask({ ...params.value });
   if (error) {
     return;
   }
@@ -1055,7 +1055,7 @@ const interationPieEchartsConfig = {
 
 // 场景数据
 const loadScenario = async () => {
-  const [error, { data = {} }] = await kanban.loadScenario({ ...params.value });
+  const [error, { data = {} }] = await kanban.getScenario({ ...params.value });
   if (error) {
     return;
   }
@@ -1168,7 +1168,7 @@ const scenairoPieChartsConfig = {
 
 // 脚本数据
 const loadScript = async () => {
-  const [error, { data = {} }] = await kanban.loadScript({ ...params.value });
+  const [error, { data = {} }] = await kanban.getScript({ ...params.value });
   if (error) {
     return;
   }
@@ -1315,7 +1315,7 @@ const reportBarChartsConfig = {
 const reportTotal = ref(0);
 // mock数据
 const loadMock = async () => {
-  const [error, { data = {} }] = await kanban.loadMock({ ...params.value });
+  const [error, { data = {} }] = await kanban.getMock({ ...params.value });
   if (error) {
     return;
   }
@@ -1335,7 +1335,7 @@ const mockData = reactive({
 
 // 数据数据
 const loadData = async () => {
-  const [error, { data = {} }] = await kanban.loadData({ ...params.value });
+  const [error, { data = {} }] = await kanban.getData({ ...params.value });
   if (error) {
     return;
   }

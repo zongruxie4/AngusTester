@@ -119,7 +119,7 @@ const toDelete = (data: DataSetItem) => {
     content: `确定删除数据集【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await dataSet.del([id]);
+      const [error] = await dataSet.deleteDataSet([id]);
       if (error) {
         return;
       }
@@ -182,7 +182,7 @@ const toBatchDelete = () => {
     async onOk () {
       const ids = selectedRowKeys;
       loading.value = true;
-      const [error] = await dataSet.del(ids);
+      const [error] = await dataSet.deleteDataSet(ids);
       loading.value = false;
       if (error) {
         return;
@@ -311,7 +311,7 @@ const loadData = async () => {
   // }
 
   loading.value = true;
-  const [error, res] = await dataSet.loadDataSetList(params);
+  const [error, res] = await dataSet.getDataSetList(params);
   loaded.value = true;
   loading.value = false;
   if (params.filters?.length) {

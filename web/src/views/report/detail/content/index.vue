@@ -91,7 +91,7 @@ const loadTaskName = async (taskId) => {
 };
 
 const loadPlanName = async (planId) => {
-  const [error, { data }] = await funcPlan.getPlanInfo(planId);
+  const [error, { data }] = await funcPlan.getPlanDetail(planId);
   if (error) {
     return;
   }
@@ -99,7 +99,7 @@ const loadPlanName = async (planId) => {
 };
 
 const loadCaseName = async (caseId) => {
-  const [error, { data }] = await funcCase.getCaseInfo(caseId);
+  const [error, { data }] = await funcCase.getCaseDetail(caseId);
   if (error) {
     return;
   }
@@ -107,7 +107,7 @@ const loadCaseName = async (caseId) => {
 };
 
 const loadServiceAndApisName = async (apisId) => {
-  const [error, { data }] = await apis.getDetail(apisId);
+  const [error, { data }] = await apis.getApiDetail(apisId);
   if (error) {
     return;
   }
@@ -132,7 +132,7 @@ const loadScenarioName = async (scenarioId) => {
 };
 
 const loadExecName = async (execId) => {
-  const [error, { data }] = await exec.getDetail(execId);
+  const [error, { data }] = await exec.getExecDetail(execId);
   if (error) {
     return;
   }

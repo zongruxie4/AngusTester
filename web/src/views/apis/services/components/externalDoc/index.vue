@@ -34,7 +34,7 @@ const cancel = () => {
 
 const saveDoc = async () => {
   const externalDocs = { ...props.data, url: url.value, description: description.value };
-  const [error] = await apis.update([{ id: props.id, externalDocs }]);
+  const [error] = await apis.updateApi([{ id: props.id, externalDocs }]);
   if (error) {
     return;
   }

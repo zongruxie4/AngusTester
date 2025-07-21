@@ -332,7 +332,7 @@ const toDebug = async () => {
 
 const createTest = async () => {
   loading.value = true;
-  const [error] = await exec.addByScript({
+  const [error] = await exec.addExecByScript({
     scriptId: scriptId.value
   });
   loading.value = false;

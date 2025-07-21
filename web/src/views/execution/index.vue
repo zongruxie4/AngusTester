@@ -172,7 +172,7 @@ const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
     loading.value = true;
   }
   refinshLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.getList(params);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getExecList(params);
   refinshLoading.value = false;
   if (isRefinsh) {
     loading.value = false;
@@ -242,7 +242,7 @@ const loadDataList = async (): Promise<void> => {
   }
 
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.getList(params);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getExecList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -319,7 +319,7 @@ const editName = async (name: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { name });
+  const [error] = await exec.putExecConfig(item.id, { name });
   loading.value = false;
   if (error) {
     return;
@@ -348,7 +348,7 @@ const editThread = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { thread: value });
+  const [error] = await exec.putExecConfig(item.id, { thread: value });
   loading.value = false;
   if (error) {
     return;
@@ -373,7 +373,7 @@ const editDuration = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { duration: value });
+  const [error] = await exec.putExecConfig(item.id, { duration: value });
   loading.value = false;
   if (error) {
     return;
@@ -398,7 +398,7 @@ const editIterations = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { iterations: value });
+  const [error] = await exec.putExecConfig(item.id, { iterations: value });
   loading.value = false;
   if (error) {
     return;
@@ -426,7 +426,7 @@ const editPriority = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { priority: value });
+  const [error] = await exec.putExecConfig(item.id, { priority: value });
   loading.value = false;
   if (error) {
     return;
@@ -451,7 +451,7 @@ const editReportInterval = async (value: string, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { reportInterval: value });
+  const [error] = await exec.putExecConfig(item.id, { reportInterval: value });
   loading.value = false;
   if (error) {
     return;
@@ -468,7 +468,7 @@ const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { ignoreAssertions: value });
+  const [error] = await exec.putExecConfig(item.id, { ignoreAssertions: value });
   loading.value = false;
   if (error) {
     return;
@@ -485,7 +485,7 @@ const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
   }
 
   loading.value = true;
-  const [error] = await exec.putConfig(item.id, { updateTestResult: value });
+  const [error] = await exec.putExecConfig(item.id, { updateTestResult: value });
   loading.value = false;
   if (error) {
     return;
@@ -514,7 +514,7 @@ const handleRestart = async (item: ExecuteListObj) => {
   };
 
   loading.value = true;
-  const [error, { data }] = await exec.start(params);
+  const [error, { data }] = await exec.startExec(params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -555,7 +555,7 @@ const handleStop = async (item: ExecuteListObj) => {
     id: item.id
   };
   loading.value = true;
-  const [error, { data }] = await exec.stop(params);
+  const [error, { data }] = await exec.stopExec(params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -594,7 +594,7 @@ const handleDelete = async (item: ExecuteListObj) => {
     content: `确定删除【${item.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await exec.delete([item.id], { dataType: true });
+      const [error] = await exec.deleteExec([item.id], { dataType: true });
       loading.value = false;
       if (error) {
         return;

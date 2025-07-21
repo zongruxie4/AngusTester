@@ -122,7 +122,7 @@ const batchExec = async () => {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(exec.addByScript({ scriptId: ids[i] }, { silence: true }));
+        promises.push(exec.addExecByScript({ scriptId: ids[i] }, { silence: true }));
       }
 
       Promise.all(promises).then((res: [Error | null, any][]) => {
@@ -213,7 +213,7 @@ const tableChange = (pagination: { current: number; pageSize: number; }, _filter
 
 const toCreateExec = async (data: ScriptInfo) => {
   emit('update:loading', true);
-  const [error] = await exec.addByScript({ scriptId: data.id });
+  const [error] = await exec.addExecByScript({ scriptId: data.id });
   emit('update:loading', false);
   if (error) {
     return;

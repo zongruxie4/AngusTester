@@ -1083,7 +1083,7 @@ const params = computed(() => {
 const overViewData = ref<{[key: string]: string}>({});
 
 const loadData = async () => {
-  const [error, { data = {} }] = await (props.countType === 'task' ? kanban.loadTaskOverView({ ...params.value }) : kanban.loadCaseOverView({ ...params.value }));
+  const [error, { data = {} }] = await (props.countType === 'task' ? kanban.getTaskOverView({ ...params.value }) : kanban.getTestingOverView({ ...params.value }));
   if (error) {
     return;
   }

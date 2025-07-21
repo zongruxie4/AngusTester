@@ -233,7 +233,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
     return;
   }
   favouriteLoading.value = true;
-  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.favouriteCase(rowData.id);
+  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
@@ -250,7 +250,7 @@ const handleFollow = async (rowData: CaseListObj) => {
     return;
   }
   followLoading.value = true;
-  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.followCase(rowData.id);
+  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
@@ -330,7 +330,7 @@ const handleSetREsultBlocked = async (value) => {
       testResult: 'BLOCKED'
     }
   ];
-  const [error] = await funcCase.updateResult(params);
+  const [error] = await funcCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -346,7 +346,7 @@ const handleSetREsultCanceled = async (value) => {
       testResult: 'CANCELED'
     }
   ];
-  const [error] = await funcCase.updateResult(params);
+  const [error] = await funcCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -360,7 +360,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetResult([rowData.id]);
+  const [error] = await funcCase.resetCaseResult([rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -376,7 +376,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetReview([rowData.id]);
+  const [error] = await funcCase.resetReviewCase([rowData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;

@@ -107,7 +107,7 @@ const cencelProjcetMock = async () => {
 };
 
 const loadApiInfo = async (_id) => {
-  const [error, { data }] = await apis.getDetail(_id);
+  const [error, { data }] = await apis.getApiDetail(_id);
   if (error) {
     return;
   }

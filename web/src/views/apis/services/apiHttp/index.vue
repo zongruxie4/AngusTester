@@ -306,7 +306,7 @@ const changeSetting = (data: Setting): void => {
 };
 
 const handleStatusChange = async (value: string) => {
-  const [error] = await apis.patchStatus({ status: value, id: props.id });
+  const [error] = await apis.patchApiStatus({ status: value, id: props.id });
   if (error) {
     return;
   }
@@ -346,7 +346,7 @@ const loadApiInfo = async (): Promise<void> => {
   if (isUnarchivedApi.value) {
     result = await unarchived.loadInfo(props.id as string);
   } else {
-    result = await apis.getDetail(props.id as string);
+    result = await apis.getApiDetail(props.id as string);
   }
   loadingInfo.value = false;
   const [error, res] = result;
@@ -1552,7 +1552,7 @@ const autoSave = async () => {
     }
     params.parameters = travelXcValueToString(params.parameters);
     params.requestBody = travelXcValueToString(params.requestBody);
-    const [error] = await apis.update([params]);
+    const [error] = await apis.updateApi([params]);
     initParams = JSON.parse(JSON.stringify(params));
     if (error) {
       return;

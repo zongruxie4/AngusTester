@@ -87,7 +87,7 @@ const loadAnalysisList = async () => {
   const params = getParams();
 
   loading.value = true;
-  const [error, { data }] = await analysis.getList({
+  const [error, { data }] = await analysis.getAnalysisList({
     ...params
   });
   loading.value = false;
@@ -115,7 +115,7 @@ const delAnalysis = (data) => {
   modal.confirm({
     content: `确认删除分析【${data.name}】吗？`,
     onOk () {
-      return analysis.delete([data.id])
+      return analysis.deleteAnalysis([data.id])
         .then(() => {
           notification.success('删除成功');
           pagination.pageNo = 1;
@@ -129,7 +129,7 @@ const updateSnapShot = (data) => {
   modal.confirm({
     content: `确认更新分析【${data.name}】的快照内容吗？`,
     onOk () {
-      return analysis.refresh(data.id)
+      return analysis.refreshAnalysis(data.id)
         .then(([error]) => {
           if (error) {
             return;

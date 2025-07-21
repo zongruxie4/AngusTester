@@ -134,7 +134,7 @@ const loadEnum = async () => {
 const loadData = async () => {
   const params = getParams();
   emit('loadingChange', true);
-  const [error, res] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ...params });
+  const [error, res] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params });
   if (error) {
     resetData();
     emit('loadingChange', false);
@@ -152,7 +152,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ..._params });
+      const [_error, _res] = await funcCase.getCaseList({ infoScope: 'DETAIL', ..._params });
       if (_error) {
         emit('loadingChange', false);
         return;
@@ -676,7 +676,7 @@ const toChecked = async (caseInfo: CaseInfo, index:number, groupKey:string) => {
   }
 
   loadingChange(true);
-  const [error, res] = await funcCase.getCaseInfo(id);
+  const [error, res] = await funcCase.getCaseDetail(id);
   loadingChange(false);
   if (error) {
     return;
@@ -787,7 +787,7 @@ const editOk = async (id:string) => {
   const testResult = selectedTestResult.value as TestResult;
 
   emit('loadingChange', true);
-  const [, res] = await funcCase.getCaseInfo(id);
+  const [, res] = await funcCase.getCaseDetail(id);
   emit('loadingChange', false);
   if (res) {
     caseDataMap.value[testResult][index] = res.data;
@@ -819,7 +819,7 @@ const toDelete = (data: CaseInfo) => {
 
 const toFavourite = async (data: CaseInfo, index: number, testResult: TestResult) => {
   emit('loadingChange', true);
-  const [error] = await funcCase.favouriteCase(data.id);
+  const [error] = await funcCase.AddFavouriteCase(data.id);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -843,7 +843,7 @@ const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: Test
 
 const toFollow = async (data: CaseInfo, index: number, testResult: TestResult) => {
   emit('loadingChange', true);
-  const [error] = await funcCase.followCase(data.id);
+  const [error] = await funcCase.addFollowCase(data.id);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -960,7 +960,7 @@ const addTaskOk = async (data) => {
 
   notification.success('已关联该Bug任务');
   // 更新该条数据
-  const [_error, _res] = await funcCase.getCaseInfo(selectedCaseInfo.value?.id);
+  const [_error, _res] = await funcCase.getCaseDetail(selectedCaseInfo.value?.id);
   if (_error) {
     return;
   }
@@ -996,7 +996,7 @@ const toRetest = async (data: CaseInfo, notificationFlag = true, errorCallback?:
 const toResetTestResult = async (data: CaseInfo) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.resetResult([id]);
+  const [error] = await funcCase.resetCaseResult([id]);
   emit('loadingChange', false);
   if (error) {
     return;
@@ -1010,7 +1010,7 @@ const toResetTestResult = async (data: CaseInfo) => {
 const toBlock = async (data: CaseInfo, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.updateResult([{ id, testResult: 'BLOCKED' }]);
+  const [error] = await funcCase.updateCaseResult([{ id, testResult: 'BLOCKED' }]);
   emit('loadingChange', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -1029,7 +1029,7 @@ const toBlock = async (data: CaseInfo, notificationFlag = true, errorCallback?:(
 const toCancel = async (data: CaseInfo, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.updateResult([{ id, testResult: 'CANCELED' }], { dataType: true });
+  const [error] = await funcCase.updateCaseResult([{ id, testResult: 'CANCELED' }], { dataType: true });
   emit('loadingChange', false);
   if (error) {
     if (typeof errorCallback === 'function') {

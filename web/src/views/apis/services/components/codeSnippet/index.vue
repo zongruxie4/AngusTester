@@ -350,7 +350,7 @@ const replaceSchemaRef = (api = {}) => {
 };
 
 const loadApiParams = async () => {
-  const [error, resp] = await apis.getDetail(props.id, true);
+  const [error, resp] = await apis.getApiDetail(props.id, true);
   if (error) {
     return;
   }

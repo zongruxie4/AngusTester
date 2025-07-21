@@ -6,39 +6,39 @@ export default class API {
     baseUrl = prefix + '/apis';
   }
 
-  add (params:any): Promise<[Error | null, any]> {
+  addApi (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/archive`, params);
   }
 
-  put (params:any): Promise<[Error | null, any]> {
+  putApi (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}`, params);
   }
 
-  update (params:any): Promise<[Error | null, any]> {
+  updateApi (params:any): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
   }
 
-  clone (params:string): Promise<[Error | null, any]> {
+  cloneApi (params:string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${params}/clone`, { id: params });
   }
 
-  move (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
+  moveApi (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/move`, params);
   }
 
-  patchStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
+  patchApiStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/status?status=${status}`);
   }
 
-  delete (params: { ids: string[] }): Promise<[Error | null, any]> {
+  deleteApi (params: { ids: string[] }): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, params);
   }
 
-  getDetail (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
+  getApiDetail (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`, { resolveRef }, axiosConf);
   }
 
-  getList (params: any): Promise<[Error | null, any]> {
+  getApiList (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 

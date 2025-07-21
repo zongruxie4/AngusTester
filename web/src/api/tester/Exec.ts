@@ -6,35 +6,35 @@ export default class API {
     baseUrl = prefix + '/exec';
   }
 
-  addByScript (params: {scriptId: string}, axiosConf = {}) : Promise<[Error | null, any]> {
+  addExecByScript (params: {scriptId: string}, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/byscript`, params, axiosConf);
   }
 
-  putConfig (execId:string, params): Promise<[Error | null, any]> {
+  putExecConfig (execId:string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${execId}/config`, params);
   }
 
-  putScriptConfig (execId: string, params): Promise<[Error | null, any]> {
+  putExecScriptConfig (execId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${execId}/script/config`, params);
   }
 
-  start (params): Promise<[Error | null, any]> {
+  startExec (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/start`, params);
   }
 
-  stop (params): Promise<[Error | null, any]> {
+  stopExec (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/stop`, params);
   }
 
-  delete (execIds: string[], axiosConf = {}): Promise<[Error | null, any]> {
+  deleteExec (execIds: string[], axiosConf = {}): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, execIds, axiosConf);
   }
 
-  getDetail (execId:string): Promise<[Error | null, any]> {
+  getExecDetail (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}`);
   }
 
-  getList (params): Promise<[Error | null, any]> {
+  getExecList (params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 

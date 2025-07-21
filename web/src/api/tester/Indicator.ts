@@ -6,14 +6,6 @@ export default class API {
     baseUrl = prefix + '/indicator';
   }
 
-  loadStabilityList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/stability`, { ...params, fullTextSearch: true });
-  }
-
-  loadPerfList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/perf`, { ...params, fullTextSearch: true });
-  }
-
   addStability (params = {}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/stability`, params);
   }
@@ -30,11 +22,11 @@ export default class API {
     return http.patch(`${baseUrl}/perf`, params);
   }
 
-  delStability (ids: string[]): Promise<[Error | null, any]> {
+  deleteStability (ids: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/stability`, { ids });
   }
 
-  delPerf (ids: string[]): Promise<[Error | null, any]> {
+  deletePerf (ids: string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/perf`, { ids });
   }
 
@@ -46,11 +38,19 @@ export default class API {
     return http.get(`${baseUrl}/${targetType}/${id}/stability`);
   }
 
-  loadPerf (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
+  getStabilityList (params = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/stability`, { ...params, fullTextSearch: true });
+  }
+
+  getPerfList (params = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/perf`, { ...params, fullTextSearch: true });
+  }
+
+  getDefaultPerf (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${id}/perf/detailOrDefault`);
   }
 
-  loadStability (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
+  getDefaultStability (id: string, targetType?: 'API' | 'PROJECT' | 'SERVICE' | 'SCENARIO'): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${id}/stability/detailOrDefault`);
   }
 

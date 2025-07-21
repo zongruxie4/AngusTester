@@ -93,7 +93,7 @@ const loadExecContent = async (id: string) => {
 
 const loadExecInfo = async (id: string) => {
   loading.value = true;
-  const [error, res] = await exec.getDetail(id);
+  const [error, res] = await exec.getExecDetail(id);
   loading.value = false;
   if (error) {
     return;
