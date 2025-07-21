@@ -72,7 +72,7 @@ const toDelete = async (data: ShareInfo) => {
     content: `确定删除分享【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await apis.delShare(id);
+      const [error] = await apis.deleteShare(id);
       if (error) {
         return;
       }

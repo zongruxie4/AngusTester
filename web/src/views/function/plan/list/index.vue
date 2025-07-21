@@ -105,7 +105,7 @@ const viewWrokCalendar = (data: PlanInfo) => {
 };
 
 const setTableData = async (id: string, index: number) => {
-  const [error, res] = await funcPlan.getPlanInfo(id);
+  const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -293,7 +293,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await funcPlan.searchPlan(params);
+  const [error, res] = await funcPlan.getPlanList(params);
   loaded.value = true;
   loading.value = false;
 

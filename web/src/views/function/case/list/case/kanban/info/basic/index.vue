@@ -202,7 +202,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await funcCase.getCaseInfo(id);
+  const [error, res] = await funcCase.getCaseDetail(id);
   loadingChange(false);
   if (error) {
     return;

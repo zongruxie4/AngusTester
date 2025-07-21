@@ -6,48 +6,43 @@ export default class API {
     baseUrl = prefix + '/node';
   }
 
-  loadNodes (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  // TODO DELETE
-  loadList (params: any): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  add (params): Promise<[Error | null, any]> {
+  addNode (params): Promise<[Error | null, any]> {
     return http.post(baseUrl, params);
   }
 
-  update (params): Promise<[Error | null, any]> {
+  updateNode (params): Promise<[Error | null, any]> {
     return http.patch(baseUrl, params);
   }
 
-  delete (params: any): Promise<[Error | null, any]> {
+  deleteNode (params: any): Promise<[Error | null, any]> {
     return http.del(baseUrl, params);
   }
 
-  installAgent (params: any): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${params.id}/agent/install`, params);
-  }
-
-  enable (params: Array<any>): Promise<[Error | null, any]> {
+  enableNode (params: Array<any>): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/enabled`, params);
   }
 
-  test (params: any): Promise<[Error | null, any]> {
+  testNodeConnection (params: any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/test`, params);
   }
 
-  detail (id: string): Promise<[Error | null, any]> {
+  getNodeDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`, {});
   }
 
-  restartProxy (id: string): Promise<[Error | null, any]> {
+  getNodeList (params: any): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  installNodeAgent (params: any): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${params.id}/agent/install`, params);
+  }
+
+  restartNodeAgent (id: string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/agent/restart`);
   }
 
-  loadRunnerProcess (params): Promise<[Error | null, any]> {
+  getRunnerProcess (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/info/runner/process`, params, { paramsType: true });
   }
 

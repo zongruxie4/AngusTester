@@ -20,7 +20,7 @@ export default {
   },
   actions: {
     async loadTaskInfo ({ commit }, id:string):Promise<void> {
-      const [error, { data = {} }] = await task.loadTaskInfo(id);
+      const [error, { data = {} }] = await task.getTaskDetail(id);
       if (error) {
         return;
       }

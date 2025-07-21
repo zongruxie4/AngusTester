@@ -66,7 +66,7 @@ const replaceApiVariable = async (
     return;
   }
 
-  const [error, { data: _data = [] }] = await variable.getVariables({
+  const [error, { data: _data = [] }] = await variable.getVariableValue({
     names: uniq(variableNames),
     targetId: id,
     targetType: 'API'

@@ -143,7 +143,7 @@ const getParams = () => {
 const loadData = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, resp] = await project.loadProject(params);
+  const [error, resp] = await project.getProjectList(params);
   loading.value = false;
   if (error) {
     return;
@@ -199,7 +199,7 @@ const delProject = (data: Project) => {
   modal.confirm({
     content: `确定删除项目【${data.name}】吗？`,
     async onOk () {
-      const [error] = await project.delProject(data.id);
+      const [error] = await project.deleteProject(data.id);
       if (error) {
         return;
       }

@@ -35,7 +35,7 @@ const reportTypeObj = computed(() => {
 });
 
 const loadReportDetail = async () => {
-  const [error, { data }] = await reportApi.getReportInfo(reportId.value);
+  const [error, { data }] = await reportApi.getReportDetail(reportId.value);
   if (error) {
     return;
   }

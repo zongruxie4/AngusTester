@@ -5,7 +5,7 @@ import { getBodyDefaultItem, getDefaultParams, ParamsItem } from './interface';
 import { mock } from 'src/api/tester';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { uniq } from 'lodash-es';
-import { target } from '@/api/tester';
+import { paramTarget } from '@/api/tester';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 const ajv = new Ajv();
@@ -116,7 +116,7 @@ const getQueryStrFromParameter = (data) => {
 };
 
 const getAllFuncNames = async () => {
-  const [error, res] = await mock.loadFunction();
+  const [error, res] = await mock.getAllFunction();
   if (error) {
     return;
   }
@@ -184,7 +184,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
     }
   });
   if (allParams.some(i => i.func) || funcStrs.length) {
-    const [error, resp] = await mock.loadFunctionValue([...allParams.filter(i => i.func).map(i => ({ text: i[valueKey], iterations: 1 })), ...funcStrs.map(i => ({ text: i, iterations: 1 }))]);
+    const [error, resp] = await mock.generateFunctionValue([...allParams.filter(i => i.func).map(i => ({ text: i[valueKey], iterations: 1 })), ...funcStrs.map(i => ({ text: i, iterations: 1 }))]);
     if (!error) {
       const response = resp.data || [];
       paramLists.forEach(parameters => {
@@ -213,7 +213,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
   let variableValues = [];
   if (variableNames.length) {
     // const [error, resp] = await variable.getVariableValue(uniq(variableNames), apiId);
-    const [error, resp] = await target.getParamsVariableValue(apiId);
+    const [error, resp] = await paramTarget.getParamsVariableValue(apiId);
     if (!error) {
       // const response = (resp.data || []).map(i => {
       //   return {

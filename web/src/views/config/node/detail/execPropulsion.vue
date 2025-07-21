@@ -25,7 +25,7 @@ const loadNodeProcess = async () => {
   if (loading.value) {
     return;
   }
-  const [error, { data = {} }] = await node.loadRunnerProcess({
+  const [error, { data = {} }] = await node.getRunnerProcess({
     nodeId: props.nodeId,
     broadcast: true
   });

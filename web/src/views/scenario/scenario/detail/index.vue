@@ -37,7 +37,7 @@ const authPermissions = ref<string[]>([]);
 const sceanrioData = ref();
 
 const loadScenarioDetail = async () => {
-  const [error, { data }] = await scenario.loadInfo(props.data?.scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(props.data?.scenarioId);
   if (error) {
     return;
   }
@@ -51,7 +51,7 @@ const loadScenarioDetail = async () => {
 };
 
 const loadPermissions = async () => {
-  const [_error, { data }] = await scenario.loadScenePermissions(props.data?.scenarioId);
+  const [_error, { data }] = await scenario.getCurrentScenarioAuth(props.data?.scenarioId);
   authPermissions.value = (data?.permissions || []).map(i => i.value);
 };
 
@@ -83,7 +83,7 @@ const toAuth = () => {
 const followLoading = ref(false);
 const handleFollow = async () => {
   followLoading.value = true;
-  const [error] = await (sceanrioData.value.followFlag ? scenario.delFollowScenario(props.data?.scenarioId) : scenario.addFollowScript(props.data?.scenarioId));
+  const [error] = await (sceanrioData.value.followFlag ? scenario.deleteScenarioFollow(props.data?.scenarioId) : scenario.addScenarioFollow(props.data?.scenarioId));
   followLoading.value = false;
   if (error) {
     return;
@@ -99,7 +99,7 @@ const handleFollow = async () => {
 const favouriteLoading = ref(false);
 const handleFavourite = async () => {
   favouriteLoading.value = true;
-  const [error] = await (sceanrioData.value.favouriteFlag ? scenario.delFavoriteScript(props.data?.scenarioId) : scenario.addFavoriteScript(props.data?.scenarioId));
+  const [error] = await (sceanrioData.value.favouriteFlag ? scenario.deleteScenarioFavorite(props.data?.scenarioId) : scenario.addScenarioFavorite(props.data?.scenarioId));
   favouriteLoading.value = false;
   if (error) {
     return;

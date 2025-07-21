@@ -78,7 +78,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await dataSet.loadDataSetList(params);
+  const [error, res] = await dataSet.getDataSetList(params);
   loaded.value = true;
   loading.value = false;
 

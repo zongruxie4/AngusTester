@@ -14,7 +14,7 @@ import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
 
-import { apis, services, unarchived } from 'src/api/tester';
+import { apis, services } from 'src/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';
 import { getDefaultParams } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
@@ -306,7 +306,7 @@ const changeSetting = (data: Setting): void => {
 };
 
 const handleStatusChange = async (value: string) => {
-  const [error] = await apis.patchStatus({ status: value, id: props.id });
+  const [error] = await apis.patchApiStatus({ status: value, id: props.id });
   if (error) {
     return;
   }
@@ -344,9 +344,9 @@ const loadApiInfo = async (): Promise<void> => {
   let result;
   loadingInfo.value = true;
   if (isUnarchivedApi.value) {
-    result = await unarchived.loadInfo(props.id as string);
+    result = await apis.getUnarchivedApiDetail(props.id as string);
   } else {
-    result = await apis.getDetail(props.id as string);
+    result = await apis.getApiDetail(props.id as string);
   }
   loadingInfo.value = false;
   const [error, res] = result;
@@ -1552,7 +1552,7 @@ const autoSave = async () => {
     }
     params.parameters = travelXcValueToString(params.parameters);
     params.requestBody = travelXcValueToString(params.requestBody);
-    const [error] = await apis.update([params]);
+    const [error] = await apis.updateApi([params]);
     initParams = JSON.parse(JSON.stringify(params));
     if (error) {
       return;

@@ -152,7 +152,7 @@ const loadData = async (): Promise<void> => {
   }
 
   loading.value = true;
-  const [error, res] = await scenario.loadScenario(params);
+  const [error, res] = await scenario.getScenarioList(params);
   loaded.value = true;
   loading.value = false;
   errorMessage.value = undefined;

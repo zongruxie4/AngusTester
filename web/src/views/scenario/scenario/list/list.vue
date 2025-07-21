@@ -88,7 +88,7 @@ const mouseenterHandler = async (data: SceneInfo) => {
   const id = data.id;
   const timestamp = permissionMap.value[id] ? 1000 : 300;
   actionTimer = setTimeout(async () => {
-    const [error, { data }] = await scenario.loadScenePermissions(id);
+    const [error, { data }] = await scenario.getCurrentScenarioAuth(id);
     if (error) {
       return;
     }
@@ -125,7 +125,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
 
 const cancelFavourite = async (id: string) => {
   loading.value = true;
-  const [error] = await scenario.delFavoriteScript(id);
+  const [error] = await scenario.deleteScenarioFavorite(id);
   loading.value = false;
   if (error) {
     return;
@@ -139,7 +139,7 @@ const cancelFavourite = async (id: string) => {
 
 const cancelFollow = async (id: string) => {
   loading.value = true;
-  const [error] = await scenario.delFollowScenario(id);
+  const [error] = await scenario.deleteScenarioFollow(id);
   loading.value = false;
   if (error) {
     return;
@@ -211,7 +211,7 @@ const toExport = (data: SceneInfo) => {
 
 const toFavourite = async (id: string) => {
   loading.value = true;
-  const [error] = await scenario.addFavoriteScript(id);
+  const [error] = await scenario.addScenarioFavorite(id);
   loading.value = false;
   if (error) {
     return;
@@ -225,7 +225,7 @@ const toFavourite = async (id: string) => {
 
 const toFollow = async (id: string) => {
   loading.value = true;
-  const [error] = await scenario.addFollowScript(id);
+  const [error] = await scenario.addScenarioFollow(id);
   loading.value = false;
   if (error) {
     return;

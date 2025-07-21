@@ -6,28 +6,64 @@ export default class API {
     baseUrl = prefix + '/task';
   }
 
-  loadTaskList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  addTag (names: string[]): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/tag`, names);
-  }
-
   addTask (parmas): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}`, parmas);
   }
 
-  editTask (id: string, parmas): Promise<[Error | null, any]> {
+  putTask (id: string, parmas): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}`, parmas);
-  }
-
-  editTaskName (id: string, name: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/name?name=${name}`);
   }
 
   updateTask (taskId: string, parmas): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${taskId}`, parmas);
+  }
+
+  getTaskDetail (id: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}`);
+  }
+
+  getTaskList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  moveTask<T> (params: T) {
+    return http.patch(`${baseUrl}/move`, params, { paramsType: false });
+  }
+
+  startTask (id: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/start`);
+  }
+
+  cancelTask (id: string, option = {}): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/cancel`, null, option);
+  }
+
+  completeTask (id: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/complete`);
+  }
+
+  deleteTask (ids: string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids });
+  }
+
+  processedTask (id: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/processed`);
+  }
+
+  confirmTask (id: string, status: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/result/${status}/confirm`);
+  }
+
+  reopenTask (id: string): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${id}/reopen`);
+  }
+
+  restartTask (id: string): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/${id}/restart`);
+  }
+
+  editTaskName (id: string, name: string): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/name?name=${name}`);
   }
 
   editTaskDescription (id: string, parmas: {description: string}): Promise<[Error | null, any]> {
@@ -50,7 +86,7 @@ export default class API {
     return http.put(`${baseUrl}/${id}/assignee`, parmas);
   }
 
-  editConfirmors (id: string, parmas: { confirmorId: string|null }): Promise<[Error | null, any]> {
+  editTaskConfirmor (id: string, parmas: { confirmorId: string|null }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/confirmor`, parmas);
   }
 
@@ -62,68 +98,48 @@ export default class API {
     return http.put(`${baseUrl}/${id}/type?type=${taskType}`);
   }
 
-  updateAttachment (id: string, parmas: { attachments: { name: string, url: string }[] }): Promise<[Error | null, any]> {
+  editTaskAttachment (id: string, parmas: { attachments: { name: string, url: string }[] }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/attachment`, parmas);
   }
 
-  editTagsApi (id: string, parmas: { tagIds: string[] | null }): Promise<[Error | null, any]> {
+  editTaskTags (id: string, parmas: { tagIds: string[] | null }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/tag`, parmas);
   }
 
-  moveTask<T> (params: T) {
-    return http.patch(`${baseUrl}/move`, params, { paramsType: false });
+  importTask (param: FormData) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/import`, param);
   }
 
-  loadTaskInfo (id: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}`);
+  associationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/task`, {
+      assocTaskIds
+    }, axiosConf);
   }
 
-  startProcessing (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/start`);
+  cancelAssociationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/task/cancel`, {
+      assocTaskIds
+    }, axiosConf);
   }
 
-  cancelTask (id: string, option = {}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/cancel`, null, option);
+  associationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/case`, {
+      assocCaseIds
+    }, axiosConf);
   }
 
-  completeTask (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/complete`);
-  }
-
-  deleteTask (ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, { ids });
-  }
-
-  processedTask (id: string): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/processed`);
-  }
-
-  reopenTask (id: string): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${id}/reopen`);
-  }
-
-  restartTask (id: string): Promise<[Error | null, any]> {
-    return http.patch(`${baseUrl}/${id}/restart`);
-  }
-
-  loadTaskRemark (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/remark`, params);
+  cancelAssociationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${taskId}/association/case/cancel`, {
+      assocCaseIds
+    }, axiosConf);
   }
 
   addTaskRemark (params: { taskId: string, content: string }): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/remark`, params);
   }
 
-  delTaskRemark (remarkId: string): Promise<[Error | null, any]> {
+  deleteTaskRemark (remarkId: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/remark/${remarkId}`);
-  }
-
-  confirmTask (id: string, status: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/result/${status}/confirm`);
-  }
-
-  updateResult (id, result: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/process/result/${result}`);
   }
 
   favouriteTask (id:string, option?: {[key: string]: any}): Promise<[Error | null, any]> {
@@ -147,7 +163,7 @@ export default class API {
     return http.del(`${baseUrl}/trash/${taskId}`);
   }
 
-  deleteAllTrash (params: {projectId: string}) : Promise<[Error | null, any]> {
+  deleteAllTrashTask (params: {projectId: string}) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash`, params);
   }
 
@@ -155,31 +171,31 @@ export default class API {
     return http.patch(`${baseUrl}/trash/${taskId}/back`);
   }
 
-  backTrashAllTask (params: {projectId: string}) : Promise<[Error | null, any]> {
+  backAllTrashTask (params: {projectId: string}) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/back`, params, { paramsType: true });
   }
 
-  searchTrashTask <T> (params: T) : Promise<[Error | null, any]> {
+  getTrashTaskList <T> (params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/trash`, { ...params, fullTextSearch: true });
-  }
-
-  searchSprints <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/sprint`, { ...params, fullTextSearch: true });
-  }
-
-  putSprint <T> (params: T): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/sprint`, params);
   }
 
   addSprint <T> (params: T): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/sprint`, params);
   }
 
-  getSprintInfo (sprintId: string) : Promise<[Error | null, any]> {
+  putSprint <T> (params: T): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/sprint`, params);
+  }
+
+  getSprintDetail (sprintId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}`);
   }
 
-  delSprint (sprintId: string) : Promise<[Error | null, any]> {
+  getSprintList <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/sprint`, { ...params, fullTextSearch: true });
+  }
+
+  deleteSprint (sprintId: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/sprint/${sprintId}`);
   }
 
@@ -227,51 +243,23 @@ export default class API {
     return http.put(`${baseUrl}/${taskId}/subtask/cancel`, params, { paramsType: true });
   }
 
-  importTask (param: FormData) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/import`, param);
-  }
-
-  associationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${taskId}/association/task`, {
-      assocTaskIds
-    }, axiosConf);
-  }
-
-  cancelAssociationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${taskId}/association/task/cancel`, {
-      assocTaskIds
-    }, axiosConf);
-  }
-
-  associationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${taskId}/association/case`, {
-      assocCaseIds
-    }, axiosConf);
-  }
-
-  cancelAssociationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${taskId}/association/case/cancel`, {
-      assocCaseIds
-    }, axiosConf);
+  addMeeting <T> (params: T) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/meeting`, params);
   }
 
   updateMeeting <T> (params: T) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/meeting`, params);
   }
 
-  addMeeting <T> (params: T) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/meeting`, params);
-  }
-
   deleteMeeting (meetingId: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/meeting/${meetingId}`);
   }
 
-  getMeetingInfo (meetingId: string) : Promise<[Error | null, any]> {
+  getMeetingDetail (meetingId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/meeting/${meetingId}`);
   }
 
-  searchMeeting <T> (params: T) : Promise<[Error | null, any]> {
+  getMeetingList <T> (params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/meeting`, { ...params, fullTextSearch: true });
   }
 }

@@ -6,35 +6,35 @@ export default class API {
     baseUrl = prefix + '/software';
   }
 
-  searchList (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/version`, { ...params, fullTextSearch: true });
-  }
-
-  delete (params = {}): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/version`, params);
-  }
-
-  addVersion (params = {}): Promise<[Error | null, any]> {
+  addSoftwareVersion (params = {}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/version`, params);
   }
 
-  updateVersion (params = {}): Promise<[Error | null, any]> {
+  updateSoftwareVersion (params = {}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/version`, params);
   }
 
-  getVersionInfo (versionId: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/version/${versionId}`);
-  }
-
-  updateStatus (versionId: string, params): Promise<[Error | null, any]> {
+  updateSoftwareVersionStatus (versionId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/version/${versionId}/status`, params, {
       paramsType: true
     });
   }
 
-  merge (params = {}): Promise<[Error | null, any]> {
+  deleteSoftwareVersion (params = {}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/version`, params);
+  }
+
+  mergeSoftwareVersion (params = {}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/version/merge`, params, {
       paramsType: true
     });
+  }
+
+  getSoftwareVersionDetail (versionId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/version/${versionId}`);
+  }
+
+  getSoftwareVersionList (params = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/version`, { ...params, fullTextSearch: true });
   }
 }

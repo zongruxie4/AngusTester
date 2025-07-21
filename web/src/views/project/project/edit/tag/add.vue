@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { ButtonProps } from 'ant-design-vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { tagApi } from '@/api/tester';
+import { tag } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -33,7 +33,7 @@ const ok = async () => {
     names: [name],
     projectId: props.projectId
   };
-  const [error, res] = await tagApi.addTag(params);
+  const [error, res] = await tag.addTag(params);
   okButtonProps.value.loading = false;
   if (error) {
     return;

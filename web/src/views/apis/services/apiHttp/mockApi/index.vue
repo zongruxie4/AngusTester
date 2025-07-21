@@ -60,7 +60,7 @@ const selectedMockApiId = ref();
 const relatedLoading = ref(false);
 const relatedMockServiceApi = async () => {
   relatedLoading.value = true;
-  const [error] = await mock.addApiMockServiceApi(selectedMockApiId.value, props.id);
+  const [error] = await mock.assocMockApi(selectedMockApiId.value, props.id);
   relatedLoading.value = false;
   if (error) {
     return;
@@ -100,7 +100,7 @@ const mockServiceCount = [
 
 const cencelProjcetMock = async () => {
   loading.value = true;
-  const [error] = await mock.cancelMockApi([mockApiInfo.value.id]);
+  const [error] = await mock.cancelMockApiAssoc([mockApiInfo.value.id]);
   loading.value = false;
   if (error) { return; }
   notification.success('取消关联成功');
@@ -120,7 +120,7 @@ const cancel = () => {
 };
 
 const loadApiInfo = async (_id) => {
-  const [error, { data }] = await apis.getDetail(_id);
+  const [error, { data }] = await apis.getApiDetail(_id);
   if (error) {
     return;
   }

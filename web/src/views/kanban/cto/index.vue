@@ -1121,7 +1121,7 @@ const reviewStatusConfig = {
 };
 
 const loadData = async () => {
-  const [error, { data = {} }] = await (props.countType === 'task' ? kanban.loadTaskCto({ ...params.value }) : kanban.loadCaseCto({ ...params.value }));
+  const [error, { data = {} }] = await (props.countType === 'task' ? kanban.getTaskCto({ ...params.value }) : kanban.getTestingCto({ ...params.value }));
   if (error) {
     return;
   }

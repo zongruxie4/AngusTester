@@ -155,7 +155,7 @@ const getDetail = async () => {
     return;
   }
   loading.value = true;
-  const [error, { data }] = await exec.getDetail(route.params.id as string);
+  const [error, { data }] = await exec.getExecDetail(route.params.id as string);
   loading.value = false;
   if (error) {
     return;

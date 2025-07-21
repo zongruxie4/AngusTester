@@ -94,7 +94,7 @@ const handleSave = () => {
     }
 
     const updateParams = { id: projectDetail.value?.mockServiceId, apiIds: formState.value.apiIds };
-    const [error, { data }] = projectDetail.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addAngusService(addParams);
+    const [error, { data }] = projectDetail.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
     notification.success(projectDetail.value?.mockServiceId ? '更新成功' : '添加成功');

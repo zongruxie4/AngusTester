@@ -171,31 +171,12 @@ const getDefaultLineConfig = () => {
   };
 };
 
-// const getChartParam = ({ filters = [] as {[key: string]: string}[] } = {}) => {
-//   const param:any = {
-//     ...pagination,
-//     orderSort: 'ASC'
-//   };
-//   param.filters = filters;
-//   if (timestempStart.value && timestempEnd.value) {
-//     param.filters.push({
-//       key: 'timestamp',
-//       op: 'LESS_THAN_EQUAL',
-//       value: timestempEnd.value
-//     }, {
-//       key: 'timestamp',
-//       op: 'GREATER_THAN_EQUAL',
-//       value: timestempStart.value
-//     });
-//   }
-//   return param;
-// };
 
 const loadingInfo = ref(true);
 // 获取节点基本信息
 const loadInfo = async () => {
   loadingInfo.value = true;
-  const [error, res] = await node.detail(id.value);
+  const [error, res] = await node.getNodeDetail(id.value);
   loadingInfo.value = false;
   if (error) {
     return;
@@ -221,7 +202,7 @@ const installing = ref(false); // 代理安装中
 // 安装代理
 const installAgen = async () => {
   installing.value = true;
-  const [error] = await node.installAgent({ id: id.value });
+  const [error] = await node.installNodeAgent({ id: id.value });
   installing.value = false;
   if (error) {
     if (typeof error.data !== 'object') {
@@ -274,7 +255,7 @@ const enableding = ref(false); // 启用、禁用中
 // 启用 禁用
 const enableNode = async () => {
   enableding.value = true;
-  const [error] = await node.enable([{ enabled: !state.infos.enabled, id: id.value }]);
+  const [error] = await node.enableNode([{ enabled: !state.infos.enabled, id: id.value }]);
   enableding.value = false;
   if (error) {
     return;
@@ -1124,7 +1105,7 @@ const delNode = () => {
   modal.confirm({
     content: `确定删除节点【${state.infos.name}】吗?`,
     onOk: async () => {
-      const [error] = await node.delete({ ids: [id.value] });
+      const [error] = await node.deleteNode({ ids: [id.value] });
       if (error) {
         return;
       }
@@ -1245,7 +1226,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 <Icon icon="icon-qingchu" class="mr-1" />
                 <span>删除</span>
               </Button>
-              <Tooltip v-if="state.infos.installAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
+              <Tooltip v-if="state.infos.installNodeAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
                 <Button
                   :disabled="true"
                   :loading="installing"
@@ -1257,7 +1238,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               </Tooltip>
               <Button
                 v-else
-                :disabled="state.infos.installAgent || !isAdmin"
+                :disabled="state.infos.installNodeAgent || !isAdmin"
                 :loading="installing"
                 class="node-action-btn"
                 @click="installAgen">

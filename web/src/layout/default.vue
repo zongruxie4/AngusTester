@@ -45,7 +45,7 @@ let timer: NodeJS.Timeout;
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await project.loadMyProject(userInfo.value?.id);
+  const [error, res] = await project.getJoinedProject(userInfo.value?.id);
   loading.value = false;
   if (error) {
     return;

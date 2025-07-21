@@ -648,7 +648,7 @@ const toChecked = async (id: string, data?: SprintInfo) => {
 
 const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
   taskInfoLoadingSet.value.add(id);
-  const [error, res] = await task.loadTaskInfo(id);
+  const [error, res] = await task.getTaskDetail(id);
   taskInfoLoadingSet.value.delete(id);
   if (error) {
     return;
@@ -735,7 +735,7 @@ const loadTaskListById = async (id: string, pageNo: number) => {
   Object.assign(params, (sortParamMap.value[id] || {}));
 
   loading.value = true;
-  const [error, res] = await task.loadTaskList(params);
+  const [error, res] = await task.getTaskList(params);
   loading.value = false;
   if (error) {
     return;
@@ -806,7 +806,7 @@ const loadSprintList = async () => {
     pageSize: PAGE_SIZE
   };
   loading.value = true;
-  const [error, res] = await task.searchSprints(params);
+  const [error, res] = await task.getSprintList(params);
   loading.value = false;
   if (error) {
     return;
@@ -856,7 +856,7 @@ const loadBacklogList = async (pageNo: number) => {
   params.backlog = true;
   Object.assign(params, backlogSort.value || {});
   loading.value = true;
-  const [error, res] = await task.loadTaskList(params);
+  const [error, res] = await task.getTaskList(params);
   loading.value = false;
   backlogLoaded.value = true;
   if (error) {

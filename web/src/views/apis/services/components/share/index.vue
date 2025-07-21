@@ -72,7 +72,7 @@ const loadList = async (loadMore = false) => {
 };
 // 删除分享
 const delShare = async (id:string) => {
-  const [error] = await apis.delShare(id);
+  const [error] = await apis.deleteShare(id);
   if (error) {
     return;
   }

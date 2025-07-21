@@ -72,7 +72,7 @@ const getFunParamsValue = (param:ParamsItem[][], allFuncNames):Promise<ParamsIte
   });
   return new Promise((resolve) => {
     if (allParams.some(i => i.func)) {
-      mock.loadFunctionValue({ iterations: 1, texts: allParams.filter(i => i.func).map(i => getTextValue(i.value)) }).then(resp => {
+      mock.generateFunctionValue({ iterations: 1, texts: allParams.filter(i => i.func).map(i => getTextValue(i.value)) }).then(resp => {
         const [error, res] = resp;
         if (error) {
           // eslint-disable-next-line prefer-promise-reject-errors

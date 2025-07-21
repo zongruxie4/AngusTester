@@ -160,7 +160,7 @@ defineExpose({
     <FormItem label="选择Mock节点" :rules="{ required: true, message:'请选择节点' }">
       <Select
         v-model:value="formState.nodeId"
-        :action="`${TESTER}/node/search`"
+        :action="`${TESTER}/node`"
         :lazy="false"
         defaultActiveFirstOption
         :fieldNames="{value: 'id', label: 'name'}" />

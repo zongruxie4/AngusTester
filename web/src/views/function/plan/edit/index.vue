@@ -263,7 +263,7 @@ const editOk = async () => {
 
   const params = getParams();
   loading.value = true;
-  const [error] = await funcPlan.putFuncPlan(params);
+  const [error] = await funcPlan.putPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -283,7 +283,7 @@ const editOk = async () => {
 const addOk = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await funcPlan.addFuncPlan(params);
+  const [error, res] = await funcPlan.addPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -477,7 +477,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await funcPlan.getPlanInfo(id);
+  const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -622,7 +622,7 @@ const loadPermissions = async (id: string) => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, res] = await project.getMemberUser(props.projectId);
+  const [error, res] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }

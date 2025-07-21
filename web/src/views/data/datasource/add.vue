@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { IconRequired, Input, Modal, notification, SelectEnum } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { dataApi } from 'src/api/tester';
+import { dataSource } from 'src/api/tester';
 
 interface Props {
   visible: boolean;
@@ -67,7 +67,7 @@ const edit = async () => {
   };
 
   loading.value = true;
-  const [error] = await dataApi.put(params);
+  const [error] = await dataSource.putDataSource(params);
   loading.value = false;
   if (error) {
     return;
@@ -82,7 +82,7 @@ const add = async () => {
     return;
   }
   loading.value = true;
-  const [error] = await dataApi.add({ ...formState.value, projectId: projectId.value });
+  const [error] = await dataSource.addDataSource({ ...formState.value, projectId: projectId.value });
   loading.value = false;
   if (error) {
     return;

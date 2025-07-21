@@ -127,7 +127,7 @@ const confirmorBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editConfirmors(taskId.value, { confirmorId: value as string });
+  const [error] = await task.editTaskConfirmor(taskId.value, { confirmorId: value as string });
   emit('loadingChange', false);
   if (error) {
     if (typeof confirmorRef.value?.focus === 'function') {

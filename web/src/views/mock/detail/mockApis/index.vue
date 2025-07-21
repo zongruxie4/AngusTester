@@ -404,7 +404,7 @@ const buttonDropdownClick = ({ key }: { key: 'copyApi' | 'linkApi' | 'import' | 
 
 const copyApiOk = async ({ id }) => {
   apiCopyConfirmLoading.value = true;
-  const [error, { data }] = await mock.copyApiMockServiceApi(props.id, id);
+  const [error, { data }] = await mock.copyApiToMock(props.id, id);
   apiCopyConfirmLoading.value = false;
   if (error) {
     return;
@@ -422,7 +422,7 @@ const copyApiOk = async ({ id }) => {
 
 const linkApiOk = async ({ id }) => {
   apiLinkConfirmLoading.value = true;
-  const [error, { data }] = await mock.postApiMockServiceApi(props.id, id);
+  const [error, { data }] = await mock.assocApiToMock(props.id, id);
   apiLinkConfirmLoading.value = false;
   if (error) {
     return;
@@ -550,7 +550,7 @@ const refreshInstance = () => {
     content: '刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。',
     async onOk () {
       loading.value = true;
-      const [error] = await mock.syncMockApiInstance(mockAPIId.value!);
+      const [error] = await mock.syncApiInstanceConfig(mockAPIId.value!);
       loading.value = false;
       if (error) {
         return;
@@ -936,7 +936,7 @@ const loadApiInfo = async () => {
   }
 
   loading.value = true;
-  const [error, { data }] = await mock.loadMockApiInfo(id);
+  const [error, { data }] = await mock.getMockApiDetail(id);
   if (error) {
     loading.value = false;
     return;
@@ -959,7 +959,7 @@ const loadApiResponse = async () => {
   loading.value = true;
   // 修复响应数据量大渲染慢而loading不显示问题
   setTimeout(async () => {
-    const [error, { data }]: [Error | null, { data: ResponseInfo[] }] = await mock.loadMockApiResponse(id);
+    const [error, { data }]: [Error | null, { data: ResponseInfo[] }] = await mock.getMockApiResponse(id);
     if (!error) {
       resetMockApiResponse();
       if (!data?.length) {
@@ -1097,7 +1097,7 @@ const setResponseData = (data: ResponseInfo[]) => {
 
 // ---- CreateForm end ----
 const loadServiceInfo = async () => {
-  const [error, res] = await mock.loadServiceInfo(props.id);
+  const [error, res] = await mock.getServiceDetail(props.id);
   if (error) {
     return;
   }

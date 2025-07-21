@@ -122,7 +122,7 @@ const getModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {
@@ -133,7 +133,7 @@ const getModuleTreeData = async () => {
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('loadingChange', true);
-  const [error, res] = await task.loadTaskInfo(id);
+  const [error, res] = await task.getTaskDetail(id);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id };
@@ -357,7 +357,7 @@ const tagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTagsApi(taskId.value, { tagIds: ids });
+  const [error] = await task.editTaskTags(taskId.value, { tagIds: ids });
   emit('loadingChange', false);
   tagEditFlag.value = false;
   if (error) {

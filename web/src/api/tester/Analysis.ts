@@ -6,28 +6,28 @@ export default class API {
     baseUrl = prefix + '/analysis';
   }
 
-  getList <T> (params: T) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  delete (ids: string[]) : Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, { ids });
-  }
-
-  refresh (analysisId: string) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${analysisId}/refresh`);
-  }
-
-  getDetail (analysisId: string) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${analysisId}`);
-  }
-
-  add <T> (params: T) : Promise<[Error | null, any]> {
+  addAnalysis <T> (params: T) : Promise<[Error | null, any]> {
     return http.post(`${baseUrl}`, params);
   }
 
-  update <T> (params: T) : Promise<[Error | null, any]> {
+  updateAnalysis <T> (params: T) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
+  }
+
+  deleteAnalysis (ids: string[]) : Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, { ids });
+  }
+
+  refreshAnalysis (analysisId: string) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${analysisId}/refresh`);
+  }
+
+  getAnalysisDetail (analysisId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${analysisId}`);
+  }
+
+  getAnalysisList <T> (params: T) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
   getApisStatistics (params) : Promise<[Error | null, any]> {

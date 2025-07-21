@@ -102,10 +102,10 @@ const save = () => {
       return;
     }
     const [error, resp] = isUnarchived.value && props.id
-      ? await apis.add([{ ...apiInfo, ...params, unarchivedId: props.id }])
+      ? await apis.addApi([{ ...apiInfo, ...params, unarchivedId: props.id }])
       : props.id
-        ? await apis.update([{ ...apiInfo, ...params, id: props.id }])
-        : await apis.put([{ ...apiInfo, ...params }]);
+        ? await apis.updateApi([{ ...apiInfo, ...params, id: props.id }])
+        : await apis.putApi([{ ...apiInfo, ...params }]);
     if (error) {
       return;
     }

@@ -48,7 +48,7 @@ const handelRoload = () => {
 const relatedLoading = ref(false);
 const relatedMockService = async () => {
   relatedLoading.value = true;
-  const [error] = await mock.addServicesMockService(selectedMockServiceId.value, props.id);
+  const [error] = await mock.assocMockService(selectedMockServiceId.value, props.id);
   relatedLoading.value = false;
   if (error) {
     return;
@@ -116,7 +116,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
 
 const cencelProjcetMock = async () => {
   loading.value = true;
-  const [error] = await mock.cancelServiceMock(mockServiceInfo.value.id);
+  const [error] = await mock.cancelMockServiceAssoc(mockServiceInfo.value.id);
   loading.value = false;
   if (error) { return; }
   notification.success('取消关联成功');

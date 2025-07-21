@@ -71,7 +71,7 @@ const onFinish = async (addBug = false) => {
         }
       ];
   loading.value = true;
-  const [error] = await funcCase.putResult(params);
+  const [error] = await funcCase.putCaseResult(params);
   loading.value = false;
   if (error) {
     return;

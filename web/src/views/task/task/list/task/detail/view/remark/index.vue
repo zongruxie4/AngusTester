@@ -40,7 +40,7 @@ const editorChange = (value: string) => {
 };
 
 const toDelete = async (id: string) => {
-  const [error] = await task.delTaskRemark(id);
+  const [error] = await task.deleteTaskRemark(id);
   if (error) {
     return;
   }

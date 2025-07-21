@@ -337,7 +337,7 @@ const delCase = async (record) => {
   });
 };
 
-const reStart = async (record) => {
+const restart = async (record) => {
   modal.confirm({
     title: '重新开始评审',
     content: `确认重新开始评审用例【${record?.caseInfo?.name || ''}】吗？`,
@@ -590,7 +590,7 @@ const menuItems = [
                     :disabled="!permissions.includes('REVIEW') || record.reviewStatus?.value === 'PENDING' || dataSource?.status?.value === 'PENDING'"
                     type="text"
                     size="small"
-                    @click.stop="reStart(record)">
+                    @click.stop="restart(record)">
                     <Icon icon="icon-zhongxinkaishi" class="mr-1" />
                     重新评审
                   </Button>

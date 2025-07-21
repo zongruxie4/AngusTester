@@ -98,7 +98,7 @@ const loadList = async () => {
     pageNo: current
   });
   loading.value = true;
-  const [error, res] = await node.loadList(param);
+  const [error, res] = await node.getNodeList(param);
   loading.value = false;
   if (error) {
     return;

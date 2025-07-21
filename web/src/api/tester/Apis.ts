@@ -6,39 +6,39 @@ export default class API {
     baseUrl = prefix + '/apis';
   }
 
-  add (params:any): Promise<[Error | null, any]> {
+  addApi (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/archive`, params);
   }
 
-  put (params:any): Promise<[Error | null, any]> {
+  putApi (params:any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}`, params);
   }
 
-  update (params:any): Promise<[Error | null, any]> {
+  updateApi (params:any): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}`, params);
   }
 
-  clone (params:string): Promise<[Error | null, any]> {
+  cloneApi (params:string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${params}/clone`, { id: params });
   }
 
-  move (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
+  moveApi (params: {apiIds: string[], targetProjectId: string}): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/move`, params);
   }
 
-  patchStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
+  patchApiStatus ({ id = '', status = '' }): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/status?status=${status}`);
   }
 
-  delete (params: { ids: string[] }): Promise<[Error | null, any]> {
+  deleteApi (params: { ids: string[] }): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, params);
   }
 
-  getDetail (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
+  getApiDetail (id:string, resolveRef = false, axiosConf = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`, { resolveRef }, axiosConf);
   }
 
-  getList (params: any): Promise<[Error | null, any]> {
+  getApiList (params: any): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
@@ -54,20 +54,12 @@ export default class API {
     return http.del(`${baseUrl}/favourite`, {});
   }
 
-  loadFavouriteList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/favourite`, { ...params, fullTextSearch: true });
-  }
-
   addFollow (id:string): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/follow`);
   }
 
   cancelFollow (id:string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/follow`, {});
-  }
-
-  loadWatchList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
   }
 
   cancelWatchAll (): Promise<[Error | null, any]> {
@@ -186,15 +178,11 @@ export default class API {
     return http.put(`${baseUrl}/case/${params.id}/name?name=${params.name}`);
   }
 
-  updateCasePriority (params: {id: string, priority: string}): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/case/${params.id}/priority?priority=${params.priority}`);
-  }
-
   addShare (params:any): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/share`, params);
   }
 
-  delShare (id:string): Promise<[Error | null, any]> {
+  deleteShare (id:string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/share`, { ids: [id] });
   }
 
@@ -250,12 +238,32 @@ export default class API {
     return http.patch(`${baseUrl}/trash/${id}/back`);
   }
 
-  deleteUnarchived (id: string) : Promise<[Error | null, any]> {
+  addUnarchivedApi (params: any): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/unarchived`, params.dto);
+  }
+
+  updateUnarchivedApi (params: any): Promise<[Error | null, any]> {
+    return http.patch(`${baseUrl}/unarchived/${params.dto?.[0].id}`, params.dto);
+  }
+
+  deleteUnarchivedApi (id: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived/${id}`);
   }
 
-  deleteAllUnarchived () : Promise<[Error | null, any]> {
+  deleteAllUnarchivedApi () : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/unarchived`);
+  }
+
+  getUnarchivedApiDetail (id: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/unarchived/${id}`);
+  }
+
+  getUnarchivedApiList (params: any): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/unarchived`, { ...params, fullTextSearch: true });
+  }
+
+  getUnarchivedApiCount (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/unarchived/count`, params);
   }
 
   getDesignList <T> (params: T, axioConf = {}): Promise<[Error | null, any]> {

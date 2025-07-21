@@ -200,7 +200,7 @@ const toStart = async () => {
   }
 
   const { id } = taskInfo.value;
-  const [error] = await task.startProcessing(id);
+  const [error] = await task.startTask(id);
   if (error) {
     return;
   }
@@ -360,7 +360,7 @@ const fetchNewData = async (pageNo: number) => {
 
   params.pageNo = pageNo;
   const queryStr = http.getURLSearchParams(params, true);
-  const [error, res] = await task.loadTaskList(params);
+  const [error, res] = await task.getTaskList(params);
   if (error) {
     return;
   }
@@ -429,7 +429,7 @@ const refreshComment = () => {
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   const id = props.id;
   loading.value = true;
-  const [error, res] = await task.loadTaskInfo(id);
+  const [error, res] = await task.getTaskDetail(id);
   loading.value = false;
   if (error) {
     if (error.ext?.eKey === 'resource_not_found') {

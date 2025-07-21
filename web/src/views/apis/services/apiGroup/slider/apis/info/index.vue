@@ -109,7 +109,7 @@ const loadInfo = async () => {
     return;
   }
   const params = props.id;
-  const [error, res] = await apis.getDetail(params);
+  const [error, res] = await apis.getApiDetail(params);
   if (error) {
     return;
   }
@@ -144,7 +144,7 @@ const handleNameBlur = async (event) => {
     toggleEditName();
     return;
   }
-  const [error] = await apis.update([{ id: props.id, summary: event.target.value }]);
+  const [error] = await apis.updateApi([{ id: props.id, summary: event.target.value }]);
   if (error) {
     return;
   }
@@ -171,7 +171,7 @@ const handleOperationIdBlur = async (event) => {
     return;
   }
 
-  const [error] = await apis.update([{ id: props.id, operationId: event.target.value }]);
+  const [error] = await apis.updateApi([{ id: props.id, operationId: event.target.value }]);
   if (error) {
     return;
   }
@@ -194,7 +194,7 @@ const ownerNameBlur = () => {
   toggleownerName();
 };
 const handleOwnerIdChange = async (value, option) => {
-  const [error] = await apis.update([{ id: props.id, ownerId: value }]);
+  const [error] = await apis.updateApi([{ id: props.id, ownerId: value }]);
   if (error) {
     return;
   }
@@ -221,7 +221,7 @@ const handleSaveDesc = async (value) => {
     descriptionModalVisible.value = false;
     return;
   }
-  const [error] = await apis.update([{ id: props.id, description: value }]);
+  const [error] = await apis.updateApi([{ id: props.id, description: value }]);
   if (error) {
     return;
   }
@@ -234,7 +234,7 @@ const editDeprecated = ref(false);
 const deprecatedInputRef = ref();
 let defaultDeprecated;
 const handleDeprecatedChange = async (value) => {
-  const [error] = await apis.update([{ id: props.id, deprecated: value }]);
+  const [error] = await apis.updateApi([{ id: props.id, deprecated: value }]);
   if (error) {
     return;
   }
@@ -259,7 +259,7 @@ const authFlagChange = ({ auth }:{auth:boolean}) => {
 };
 
 const selectStatus = async (value, options) => {
-  const [error] = await apis.patchStatus({ id: props.id, status: value });
+  const [error] = await apis.patchApiStatus({ id: props.id, status: value });
   if (error) {
     return;
   }

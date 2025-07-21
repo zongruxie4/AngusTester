@@ -75,7 +75,7 @@ const scenarioName = ref();
 const execName = ref();
 
 const loadSprintName = async (sprintId) => {
-  const [error, { data }] = await task.getSprintInfo(sprintId);
+  const [error, { data }] = await task.getSprintDetail(sprintId);
   if (error) {
     return;
   }
@@ -83,7 +83,7 @@ const loadSprintName = async (sprintId) => {
 };
 
 const loadTaskName = async (taskId) => {
-  const [error, { data }] = await task.loadTaskInfo(taskId);
+  const [error, { data }] = await task.getTaskDetail(taskId);
   if (error) {
     return;
   }
@@ -91,7 +91,7 @@ const loadTaskName = async (taskId) => {
 };
 
 const loadPlanName = async (planId) => {
-  const [error, { data }] = await funcPlan.getPlanInfo(planId);
+  const [error, { data }] = await funcPlan.getPlanDetail(planId);
   if (error) {
     return;
   }
@@ -99,7 +99,7 @@ const loadPlanName = async (planId) => {
 };
 
 const loadCaseName = async (caseId) => {
-  const [error, { data }] = await funcCase.getCaseInfo(caseId);
+  const [error, { data }] = await funcCase.getCaseDetail(caseId);
   if (error) {
     return;
   }
@@ -107,7 +107,7 @@ const loadCaseName = async (caseId) => {
 };
 
 const loadServiceAndApisName = async (apisId) => {
-  const [error, { data }] = await apis.getDetail(apisId);
+  const [error, { data }] = await apis.getApiDetail(apisId);
   if (error) {
     return;
   }
@@ -124,7 +124,7 @@ const loadServiceName = async (serviceId) => {
 };
 
 const loadScenarioName = async (scenarioId) => {
-  const [error, { data }] = await scenario.loadInfo(scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
     return;
   }
@@ -132,7 +132,7 @@ const loadScenarioName = async (scenarioId) => {
 };
 
 const loadExecName = async (execId) => {
-  const [error, { data }] = await exec.getDetail(execId);
+  const [error, { data }] = await exec.getExecDetail(execId);
   if (error) {
     return;
   }

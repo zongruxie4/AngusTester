@@ -93,7 +93,7 @@ const formData = computed(() => {
 });
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getMemberUser(projectInfo.value.id);
+  const [error, { data }] = await project.getProjectMember(projectInfo.value.id);
   if (error) {
     return;
   }

@@ -139,7 +139,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await scenario.searchMonitor(params);
+  const [error, res] = await scenario.getMonitorList(params);
   loaded.value = true;
   loading.value = false;
 
@@ -165,7 +165,7 @@ const loadData = async () => {
 };
 
 const getScenarioDetail = async (scenarioId) => {
-  const [error, { data }] = await scenario.loadInfo(scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
     return;
   }

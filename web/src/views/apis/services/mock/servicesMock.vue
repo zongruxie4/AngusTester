@@ -48,7 +48,7 @@ const formState = ref<{
 const loading = ref(false);
 const loadInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await mock.loadServiceInfo(serviceInfo.value?.mockServiceId);
+  const [error, { data }] = await mock.getServiceDetail(serviceInfo.value?.mockServiceId);
   loading.value = false;
   if (error) { return; }
   mockServiceInfo.value = JSON.parse(JSON.stringify(data));
@@ -63,7 +63,7 @@ const loadInfo = async () => {
 const checkedIds = ref<string[]>([]);
 const loadServiceApiIds = async () => {
   loading.value = true;
-  const [error, { data }] = await mock.loadServiceApiIds(serviceInfo.value?.mockServiceId);
+  const [error, { data }] = await mock.getServiceApiIds(serviceInfo.value?.mockServiceId);
   loading.value = false;
   if (error) { return; }
   const apiIds = data?.length ? data : [];
@@ -118,7 +118,7 @@ const handleSave = () => {
     };
 
     const updateParams = { id: serviceInfo.value?.mockServiceId, apiIds: formState.value.apiIds };
-    const [error] = serviceInfo.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addAngusService(addParams);
+    const [error] = serviceInfo.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
     notification.success(serviceInfo.value?.mockServiceId ? '更新成功' : '添加成功');

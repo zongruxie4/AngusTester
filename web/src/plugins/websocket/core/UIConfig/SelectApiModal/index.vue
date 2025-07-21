@@ -34,7 +34,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     linking.value = true;
   }
-  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getDetail(checkedId.value, true);
+  const [error, { data }]:[Error|null, { data: ApiInfo }] = await apis.getApiDetail(checkedId.value, true);
   coping.value = false;
   linking.value = false;
   if (error) {

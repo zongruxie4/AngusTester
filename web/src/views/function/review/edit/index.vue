@@ -356,7 +356,7 @@ const loadPermissions = async (id: string) => {
 const members = ref<{id: string; fullName: string; value: string; label: string}[]>([]);
 
 const loadMembers = async () => {
-  const [error, res] = await project.getMemberUser(props.projectId);
+  const [error, res] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }

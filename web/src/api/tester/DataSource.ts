@@ -6,19 +6,19 @@ export default class API {
     baseUrl = prefix + '/data';
   }
 
-  add (params): Promise<[Error | null, any]> {
+  addDataSource (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/datasource`, params);
   }
 
-  put (params): Promise<[Error | null, any]> {
+  putDataSource (params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/datasource`, params);
   }
 
-  delete (id:string): Promise<[Error | null, any]> {
+  deleteDataSource (id:string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/datasource/${id}`);
   }
 
-  getList (params:{pageNo:number, pageSize:number, [key: string]: any}): Promise<[Error | null, any]> {
+  getDataSourceList (params:{pageNo:number, pageSize:number, [key: string]: any}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/datasource`, { ...params, fullTextSearch: true });
   }
 

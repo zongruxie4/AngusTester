@@ -65,7 +65,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await variable.previewValue(props.dataSource, { silence: true });
+  const [error, res] = await variable.previewVariableValue(props.dataSource, { silence: true });
   loading.value = false;
   if (error) {
     errorMessage.value = error.message;

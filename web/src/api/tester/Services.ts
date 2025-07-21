@@ -83,11 +83,11 @@ export default class API {
     return http.get(`${baseUrl}/${params.id}/apis`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
-  resetTest (id: string): Promise<[Error | null, any]> {
+  resetTestTask (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/test/task/restart`);
   }
 
-  reOpen (id: string): Promise<[Error | null, any]> {
+  reopenTestTask (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/test/task/reopen`);
   }
 

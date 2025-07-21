@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
-import { dataApi, dataSet, variable } from 'src/api/tester';
+import { dataSource, dataSet, variable } from 'src/api/tester';
 import { space } from '@/api/storage';
 
 import { getCurrentPage } from '@/utils/utils';
@@ -35,17 +35,17 @@ const emit = defineEmits<{
 const router = useRouter();
 
 const loadDataApiConfig = {
-  dataSource: dataApi.getList,
+  dataSource: dataSource.getDataSourceList,
   space: space.getSpaceList,
-  dataSet: dataSet.loadDataSetList,
-  variable: variable.loadVariablesList
+  dataSet: dataSet.getDataSetList,
+  variable: variable.getVariablesList
 };
 
 const delDataApicConfig = {
-  dataSource: dataApi.delete,
-  space: space.delete,
-  dataSet: dataSet.del,
-  variable: variable.delVariables
+  dataSource: dataSource.deleteDataSource,
+  space: space.deleteSpace,
+  dataSet: dataSet.deleteDataSet,
+  variable: variable.deleteVariables
 };
 const appInfo = inject('appInfo', ref({ code: '' }));
 

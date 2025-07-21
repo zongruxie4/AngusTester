@@ -149,8 +149,8 @@ const saveNode = async () => {
     validated.value = false;
     showTested.value = false;
     const response = await (!nodeParams.id
-      ? node.add([{ ...nodeParams }])
-      : node.update([{ ...nodeParams }]));
+      ? node.addNode([{ ...nodeParams }])
+      : node.updateNode([{ ...nodeParams }]));
     const [error] = response;
     if (error) {
       return;
@@ -182,7 +182,7 @@ const delNode = (state) => {
   modal.confirm({
     content: `确定删除节点【${state.name}】吗?`,
     onOk: async () => {
-      const [error] = await node.delete({ ids: state.id });
+      const [error] = await node.deleteNode({ ids: state.id });
       if (error) {
         return;
       }
@@ -207,7 +207,7 @@ const installAgent = async (state) => {
     return;
   }
   installingMap[state.id] = true;
-  const [error] = await node.installAgent({ id: state.id });
+  const [error] = await node.installNodeAgent({ id: state.id });
   installingMap[state.id] = false;
   if (error) {
     // if (error.data.linuxOfflineInstallCmd || error.data.windowsOfflineInstallCmd) {
@@ -264,7 +264,7 @@ const showInstallStep = async (state) => {
 // 重启代理
 const restartProxy = async (state) => {
   restartingMap[state.id] = true;
-  const [error] = await node.restartProxy(state.id);
+  const [error] = await node.restartNodeAgent(state.id);
   if (error) {
     restartingMap[state.id] = false;
     return;
@@ -278,7 +278,7 @@ const restartProxy = async (state) => {
 // 禁用
 const enable = async (state) => {
   enabledingMap[state.id] = true;
-  const [error] = await node.enable([{ enabled: !state.enabled, id: state.id }]);
+  const [error] = await node.enableNode([{ enabled: !state.enabled, id: state.id }]);
   enabledingMap[state.id] = false;
   if (error) {
     return;
@@ -289,7 +289,7 @@ const enable = async (state) => {
 // 测试链接
 const test = async () => {
   const { ip, password, sshPort, username, publicIp } = nodeParams;
-  const [error] = await node.test({ ip: publicIp || ip, password, sshPort: Number(sshPort), username });
+  const [error] = await node.testNodeConnection({ ip: publicIp || ip, password, sshPort: Number(sshPort), username });
   showTested.value = true;
   if (error) {
     testSuccess.value = false;
@@ -318,7 +318,7 @@ const nodeNameBlur = async (name, id) => {
     return;
   }
 
-  const [error] = await node.update([{ id, name: editNameValue.value }]);
+  const [error] = await node.updateNode([{ id, name: editNameValue.value }]);
   if (error) {
     return;
   }

@@ -92,7 +92,7 @@ defineExpose({
         showSearch
         :defaultOptions="defaultSpace"
         :lazy="false"
-        :action="`${STORAGE}/space/search?projectId=${projectInfo?.id}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
+        :action="`${STORAGE}/space?projectId=${projectInfo?.id}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
         :params="selectParams"
         :fieldNames="{label: 'name', value: 'id'}"
         @change="onSpaceChaneg" />

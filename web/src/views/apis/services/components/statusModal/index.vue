@@ -29,7 +29,7 @@ const publishTipConfig = {
 
 const setStatusApiConfig = {
   SERVICE: services.patchStatus,
-  API: apis.patchStatus
+  API: apis.patchApiStatus
 };
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'confirm', value: {value: string, message: string}):void}>();
 

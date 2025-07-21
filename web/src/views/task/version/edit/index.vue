@@ -34,7 +34,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await software.getVersionInfo(id);
+  const [error, res] = await software.getSoftwareVersionDetail(id);
 
   loading.value = false;
   if (error) {
@@ -68,7 +68,7 @@ const ok = async () => {
 
 const addOk = async () => {
   loading.value = true;
-  const [error] = await software.addVersion({
+  const [error] = await software.addSoftwareVersion({
     ...formState.value,
     projectId: props.projectId
   });
@@ -82,7 +82,7 @@ const addOk = async () => {
 
 const editOk = async () => {
   loading.value = true;
-  const [error] = await software.updateVersion({
+  const [error] = await software.updateSoftwareVersion({
     ...formState.value,
     id: props.versionId
   });

@@ -59,7 +59,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await project.delAllTrash(params);
+  const [error] = await project.deleteAllTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -90,7 +90,7 @@ const recoverHandler = async (data:TrashItem) => {
 
 const deleteHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await project.delTrash(data.id);
+  const [error] = await project.deleteTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -133,7 +133,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await project.searchTrash(params);
+  const [error, res] = await project.getTrashList(params);
   loaded.value = true;
   loading.value = false;
   if (error) {

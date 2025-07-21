@@ -102,7 +102,7 @@ const loadData = async () => {
       params.followBy = props.params.followBy;
     }
   }
-  const [error, res] = await scenario.loadScenario(params);
+  const [error, res] = await scenario.getScenarioList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -137,7 +137,7 @@ const deleteHandler = (data: SceneItem) => {
 
 const cancelFavourite = async (data: SceneItem) => {
   loading.value = true;
-  const [error] = await scenario.delFavoriteScript(data.id);
+  const [error] = await scenario.deleteScenarioFavorite(data.id);
   loading.value = false;
   if (error) {
     return;
@@ -153,7 +153,7 @@ const cancelFavourite = async (data: SceneItem) => {
 
 const cancelFollow = async (data: SceneItem) => {
   loading.value = true;
-  const [error] = await scenario.delFollowScenario(data.id);
+  const [error] = await scenario.deleteScenarioFollow(data.id);
   loading.value = false;
   if (error) {
     return;

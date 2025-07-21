@@ -24,7 +24,7 @@ const taskList = ref([]);
 const loadTasks = async () => {
   const { current, pageSize } = pagination.value;
   loading.value = true;
-  const [error, { data }] = await task.loadTaskList({
+  const [error, { data }] = await task.getTaskList({
     projectId: props.projectId,
     taskType: 'SCENARIO_TEST',
     filters: [{ value: props.scenarioId, op: 'EQUAL', key: 'targetId' }],

@@ -6,19 +6,19 @@ export default class API {
     baseUrl = prefix + '/func/plan';
   }
 
-  searchPlan (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  putFuncPlan (params) : Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}`, params);
-  }
-
-  addFuncPlan (params) : Promise<[Error | null, any]> {
+  addPlan (params) : Promise<[Error | null, any]> {
     return http.post(`${baseUrl}`, params);
   }
 
-  getPlanInfo (planId: string): Promise<[Error | null, any]> {
+  putPlan (params) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}`, params);
+  }
+
+  getPlanList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  getPlanDetail (planId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}`);
   }
 

@@ -55,7 +55,7 @@ const logTextParam = reactive({
 const fileList = ref<{label: string; value: string}[]>([]);
 
 const loadIp = async () => {
-  const [error, { data }] = await mock.loadServiceInfo(props.id);
+  const [error, { data }] = await mock.getServiceDetail(props.id);
   if (error) {
     return;
   }

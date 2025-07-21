@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, AsyncComponent, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/tools';
 import qs from 'qs';
-import { target } from '@/api/tester';
+import { paramTarget } from '@/api/tester';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
@@ -172,7 +172,7 @@ const replaceApiVariable = async (
   //   targetId: id,
   //   targetType: 'API'
   // });
-  const [_error, { data: _data = {} }] = await target.getParamsVariableValue(apisId);
+  const [_error, { data: _data = {} }] = await paramTarget.getParamsVariableValue(apisId);
   const variableValues = _data || {};
 
   parameters = JSON.parse(JSON.stringify(parameters || []).replace(variableRegReplace, target => {

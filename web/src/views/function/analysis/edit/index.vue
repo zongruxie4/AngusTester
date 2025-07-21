@@ -86,7 +86,7 @@ const formData = ref({
 const saving = ref(false);
 
 const loadAnalysisInfo = async (id) => {
-  const [error, { data }] = await analysis.getDetail(id);
+  const [error, { data }] = await analysis.getAnalysisDetail(id);
   if (error) {
     return;
   }
@@ -153,8 +153,8 @@ const save = async () => {
     const params = getParams();
     saving.value = true;
     const [error] = await (!params.id
-      ? analysis.add({ ...params })
-      : analysis.update({
+      ? analysis.addAnalysis({ ...params })
+      : analysis.updateAnalysis({
         ...params
       }));
     saving.value = false;

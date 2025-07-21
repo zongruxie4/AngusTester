@@ -96,7 +96,7 @@ const loadNodes = async () => {
     pageSize: store.state.maxPageSize,
     filters: [{ key: 'role', op: 'EQUAL', value: 'MOCK_SERVICE' }]
   };
-  const [error, res] = await node.loadNodes(params);
+  const [error, res] = await node.getNodeList(params);
   if (error) { return; }
   state.nodeOptions = res.data.list.map(item => ({ value: item.id, label: `${item.name}(${item.ip})` }));
 };
@@ -227,7 +227,7 @@ const handleSave = () => {
       }
     }
     loading.value = true;
-    const [error] = activeTab.value === 0 ? await mock.addService(params) : activeTab.value === 1 ? await mock.addAngusService(params) : await mock.addFileService(formData);
+    const [error] = activeTab.value === 0 ? await mock.addService(params) : activeTab.value === 1 ? await mock.addServiceByAssoc(params) : await mock.addServiceFromFile(formData);
     loading.value = false;
     if (error) { return; }
     notification.success('添加成功');

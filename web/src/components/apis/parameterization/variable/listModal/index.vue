@@ -83,7 +83,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await variable.loadVariablesList(params);
+  const [error, res] = await variable.getVariablesList(params);
   loaded.value = true;
   loading.value = false;
 
@@ -152,7 +152,7 @@ const loadData = async () => {
 const loadValue = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error, res] = await variable.previewValue({ id: data.id }, { silence: true });
+  const [error, res] = await variable.previewVariableValue({ id: data.id }, { silence: true });
   loading.value = false;
   if (error) {
     errorMessageMap.value.set(id, error.message);

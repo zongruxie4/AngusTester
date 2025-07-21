@@ -143,7 +143,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await task.getMeetingInfo(id);
+  const [error, res] = await task.getMeetingDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -213,7 +213,7 @@ const setFormData = (data: MeetingInfo) => {
 const members = ref<{ fullName: string, id: string; }[]>([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getMemberUser(props.projectId);
+  const [error, { data }] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }

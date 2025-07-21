@@ -120,7 +120,7 @@ const toVisibility = (data: VariableItem) => {
 const loadValue = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error, res] = await variable.previewValue({ id: data.id }, { silence: true });
+  const [error, res] = await variable.previewVariableValue({ id: data.id }, { silence: true });
   loading.value = false;
   if (error) {
     errorMessageMap.value.set(id, error.message);
@@ -159,7 +159,7 @@ const toDelete = (data: VariableItem) => {
     content: `确定删除变量【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await variable.delVariables([id]);
+      const [error] = await variable.deleteVariables([id]);
       if (error) {
         return;
       }
@@ -220,7 +220,7 @@ const toBatchDelete = () => {
     async onOk () {
       const ids = selectedRowKeys;
       loading.value = true;
-      const [error] = await variable.delVariables(ids);
+      const [error] = await variable.deleteVariables(ids);
       loading.value = false;
       if (error) {
         return;
@@ -357,7 +357,7 @@ const loadData = async () => {
   // }
 
   loading.value = true;
-  const [error, res] = await variable.loadVariablesList(params);
+  const [error, res] = await variable.getVariablesList(params);
   loaded.value = true;
   loading.value = false;
   if (params.filters?.length) {

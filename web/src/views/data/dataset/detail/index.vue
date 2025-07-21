@@ -69,7 +69,7 @@ const toDelete = () => {
     content: `确定删除数据集【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await dataSet.del([id]);
+      const [error] = await dataSet.deleteDataSet([id]);
       if (error) {
         return;
       }
@@ -126,7 +126,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await dataSet.getDataSetInfo(id);
+  const [error, res] = await dataSet.getDataSetDetail(id);
   loading.value = false;
   loaded.value = true;
   if (error) {

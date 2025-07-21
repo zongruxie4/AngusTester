@@ -167,7 +167,7 @@ const viewModeChange = () => {
 };
 
 const refreshDoc = () => {
-  if (typeof openapiRef.value?.loadData === 'function') {
+  if (typeof openapiRef.value?.getData === 'function') {
     openapiRef.value.loadData();
   }
 };

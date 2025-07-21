@@ -211,7 +211,7 @@ const getList = async () => {
     return;
   }
   tableLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await mock0.loadMockApisSearch(tableParams.value);
+  const [error, { data = { list: [], total: 0 } }] = await mock0.getMockApiList(tableParams.value);
   tableLoading.value = false;
   if (error) {
     return;

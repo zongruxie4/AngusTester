@@ -61,7 +61,7 @@ const loadTestIndicator = async () => {
   if (!props.id) {
     return;
   }
-  const [perfErr, perfData] = await indicator.loadPerf(props.id, props.type);
+  const [perfErr, perfData] = await indicator.getDefaultPerf(props.id, props.type);
   if (perfErr) {
     notification.error(perfErr.message);
   } else {
@@ -70,7 +70,7 @@ const loadTestIndicator = async () => {
     perfTestData.rampUpThreads = perfData.data.rampUpThreads;
     perfTestData.rampUpInterval = perfData.data.rampUpInterval;
   }
-  const [stabilityErr, stabilityData] = await indicator.loadStability(props.id, props.type);
+  const [stabilityErr, stabilityData] = await indicator.getDefaultStability(props.id, props.type);
   if (stabilityErr) {
     notification.error(stabilityErr.message);
   } else {

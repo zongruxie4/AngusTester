@@ -202,7 +202,7 @@ const handleClick = (event:string, data:DataSourceType) => {
     case 'reTest':
       restartTestTask(data);
       break;
-    case 'reOpen':
+    case 'reopen':
       reopenTestTask(data);
       break;
     case 'deleteTask':
@@ -255,7 +255,7 @@ const edit = (value:DataSourceType):void => {
 
 // 克隆
 const patchClone = async (id:string) => {
-  const [error] = await apis.clone(id);
+  const [error] = await apis.cloneApi(id);
   if (error) {
     return;
   }
@@ -278,7 +278,7 @@ const deleteConfirm = (id: string) => {
 
 const deleteInterface = async (id: string): Promise<void> => {
   loading.value = true;
-  const [error] = await apis.delete({ ids: [id] });
+  const [error] = await apis.deleteApi({ ids: [id] });
   loading.value = false;
   if (error) {
     return;

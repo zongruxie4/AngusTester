@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Arrow, AsyncComponent, Colon, Icon, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Collapse, CollapsePanel, Popconfirm, Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { enumLoader, TESTER, http } from '@xcan-angus/tools';
-import { target } from '@/api/tester';
+import { paramTarget } from '@/api/tester';
 
 import { DataSetItem } from './PropsType';
 
@@ -118,7 +118,7 @@ const selectedVariablesOk = async (data: DataSetItem[]) => {
 
   const ids = data.map((item) => item.id);
   loading.value = true;
-  const [error] = await target.addDataSet(props.targetId, props.targetType, ids);
+  const [error] = await paramTarget.addDataSet(props.targetId, props.targetType, ids);
   loading.value = false;
   if (error) {
     return;
@@ -130,7 +130,7 @@ const selectedVariablesOk = async (data: DataSetItem[]) => {
 const toDelete = async (data: DataSetItem) => {
   const id = data.id;
   loading.value = true;
-  const [error] = await target.deleteDataSet(`${TESTER}/target/${props.targetId}/${props.targetType}/dataset`, [id], { dataType: true });
+  const [error] = await paramTarget.deleteDataSet(`${TESTER}/target/${props.targetId}/${props.targetType}/dataset`, [id], { dataType: true });
   loading.value = false;
   if (error) {
     return;
@@ -141,7 +141,7 @@ const toDelete = async (data: DataSetItem) => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await target.getDataSet(props.targetId, props.targetType);
+  const [error, res] = await paramTarget.getDataSet(props.targetId, props.targetType);
   loading.value = false;
   loaded.value = true;
   if (error) {

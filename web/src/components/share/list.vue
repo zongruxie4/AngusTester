@@ -38,7 +38,7 @@ const getList = (data:ListType[]) => {
 // 删除分享
 const delShare = async (id:string) => {
   loading.value = true;
-  const [error] = await apis.delShare(id);
+  const [error] = await apis.deleteShare(id);
   loading.value = false;
   if (error) {
     return;
@@ -152,7 +152,7 @@ const params = computed(() => {
     </div>
     <Scroll
       v-model:spinning="loading"
-      :action="`${TESTER}/apis/share/search`"
+      :action="`${TESTER}/apis/share`"
       :params="params"
       :lineHeight="56"
       :transition="false"

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button, Popconfirm } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconCopy, Spin, Table } from '@xcan-angus/vue-ui';
-import { target, variable } from '@/api/tester';
+import { paramTarget, variable } from '@/api/tester';
 
 import { VariableItem } from './PropsType';
 
@@ -49,7 +49,7 @@ const selectedVariablesOk = async (data: VariableItem[]) => {
 
   const ids = data.map((item) => item.id);
   loading.value = true;
-  const [error] = await target.addVariable(props.targetId, props.targetType, ids);
+  const [error] = await paramTarget.addVariable(props.targetId, props.targetType, ids);
   loading.value = false;
   if (error) {
     return;
@@ -87,7 +87,7 @@ const loadValue = async (data: VariableItem) => {
   }
 
   loading.value = true;
-  const [error, res] = await variable.previewValue(params, { silence: true });
+  const [error, res] = await variable.previewVariableValue(params, { silence: true });
   loading.value = false;
   if (error) {
     errorMessageMap.value.set(id, error.message);
@@ -103,7 +103,7 @@ const loadValue = async (data: VariableItem) => {
 const toDelete = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error] = await target.delVariable(props.targetId, props.targetType, [id], { dataType: true });
+  const [error] = await paramTarget.deleteVariable(props.targetId, props.targetType, [id], { dataType: true });
   loading.value = false;
   if (error) {
     return;
@@ -116,7 +116,7 @@ const toDelete = async (data: VariableItem) => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await target.getVariable(props.targetId, props.targetType);
+  const [error, res] = await paramTarget.getVariable(props.targetId, props.targetType);
   loading.value = false;
   loaded.value = true;
   if (error) {

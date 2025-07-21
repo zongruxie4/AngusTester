@@ -131,7 +131,7 @@ const getData = async (value: 'before' | 'after') => {
   value === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectInfo.value?.id };
-  const [listError, listRes] = await funcCase.loadFuncCase({ infoScope: 'DETAIL', ...params });
+  const [listError, listRes] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params });
   if (listError) {
     return;
   }
@@ -159,7 +159,7 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const getCaseInfo = async (id: string) => {
   destroyInactiveTabPane.value = true;
   emits('update:loading', true);
-  const [error, { data }] = await funcCase.getCaseInfo(id);
+  const [error, { data }] = await funcCase.getCaseDetail(id);
   emits('update:loading', false);
   if (error) {
     return;

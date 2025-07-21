@@ -83,7 +83,7 @@ const getModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {
@@ -429,7 +429,7 @@ const createHandler = async (continueFlag = false) => {
 const editHandler = async () => {
   loading.value = true;
   const params = getParams();
-  const [error] = await task.editTask(props.taskId as string, params);
+  const [error] = await task.putTask(props.taskId as string, params);
   loading.value = false;
   if (error) {
     return;
@@ -448,7 +448,7 @@ const cancel = () => {
 
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   loading.value = true;
-  const [error, res] = await task.loadTaskInfo(props.taskId);
+  const [error, res] = await task.getTaskDetail(props.taskId);
   loading.value = false;
   if (error || !res?.data) {
     return { id: props.taskId! };

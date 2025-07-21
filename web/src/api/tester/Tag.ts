@@ -6,8 +6,8 @@ export default class API {
     baseUrl = prefix + '/tag';
   }
 
-  search (params = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  addTag (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}`, params);
   }
 
   updateTag (params): Promise<[Error | null, any]> {
@@ -18,7 +18,7 @@ export default class API {
     return http.del(`${baseUrl}`, { ids });
   }
 
-  addTag (params): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}`, params);
+  getTagList (params = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 }

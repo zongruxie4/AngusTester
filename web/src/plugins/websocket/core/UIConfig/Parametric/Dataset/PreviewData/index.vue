@@ -94,7 +94,7 @@ const loadData = async () => {
   };
 
   loading.value = true;
-  const [error, res] = await dataSet.previewValue(params, { silence: true });
+  const [error, res] = await dataSet.previewDataSetValue(params, { silence: true });
   loading.value = false;
   loaded.value = true;
   columns.value = [];

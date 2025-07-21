@@ -134,7 +134,7 @@ const loadData = async () => {
       params.testResult = props.params.testResult;
     }
   }
-  const [error, res] = await funcCase.loadFuncCase(params);
+  const [error, res] = await funcCase.getCaseList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {

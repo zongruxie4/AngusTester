@@ -3,6 +3,7 @@ import { cookie } from '@xcan-angus/tools';
 import enMessages from './en';
 import zhMessages from './zh_CN';
 
+// TODO 存在多个重复类
 class UseI18n {
   private localeCookie:string;
   private messages:{[key:string]:any};

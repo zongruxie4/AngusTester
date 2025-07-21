@@ -6,7 +6,7 @@ export default class API {
     baseUrl = prefix + '/module';
   }
 
-  searchTree<T> (params: T): Promise<[Error | null, any]> {
+  getModuleTree<T> (params: T): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/tree`, { ...params, fullTextSearch: true });
   }
 
@@ -18,7 +18,7 @@ export default class API {
     return http.patch(`${baseUrl}`, params);
   }
 
-  delModule <T> (params: T) : Promise<[Error | null, any]> {
+  deleteModule <T> (params: T) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, params);
   }
 }

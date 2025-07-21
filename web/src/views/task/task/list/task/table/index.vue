@@ -534,7 +534,7 @@ const toDeleteFollow = async (data: TaskInfo) => {
 
 const toStart = async (data: TaskInfo) => {
   const id = data.id;
-  const [error] = await task.startProcessing(id);
+  const [error] = await task.startTask(id);
   if (error) {
     return;
   }
@@ -636,7 +636,7 @@ const toCopyHref = (data: TaskInfo) => {
 
 const loadData = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await task.loadTaskInfo(id);
+  const [error, res] = await task.getTaskDetail(id);
   emit('update:loading', false);
   if (error || !res?.data) {
     return { id };

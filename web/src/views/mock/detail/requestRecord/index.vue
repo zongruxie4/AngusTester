@@ -36,7 +36,7 @@ const tableList = ref<any[]>([]);
 const loading = ref(false);
 const getUserList = async function () {
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadMockApiLogs(props.id, params.value);
+  const [error, { data = { list: [], total: 0 } }] = await mock.loadMockApiLogList(props.id, params.value);
   loading.value = false;
   if (error) {
     return;
@@ -72,7 +72,7 @@ const getDetail = async (id: string) => {
   requestInfo.value = {};
   responseColumns.value = [[]];
   responseInfo.value = {};
-  const [error, { data }] = await mock.loadMockApiLogInfo(id);
+  const [error, { data }] = await mock.getMockApiLogDetail(id);
   if (error) {
     return;
   }

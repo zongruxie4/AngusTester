@@ -19,8 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const OK_API_MAP = {
   API: apis.restartTestTask,
-  SERVICE: services.resetTest,
-  SCENARIO: scenario.reStart
+  SERVICE: services.resetTestTask,
+  SCENARIO: scenario.restartTestTask
 };
 
 // eslint-disable-next-line func-call-spacing

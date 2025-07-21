@@ -70,7 +70,7 @@ const toDelete = () => {
     content: `确定删除变量【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await variable.delVariables([id]);
+      const [error] = await variable.deleteVariables([id]);
       if (error) {
         return;
       }
@@ -127,7 +127,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await variable.getVariableInfo(id);
+  const [error, res] = await variable.getVariableDetail(id);
   loading.value = false;
   loaded.value = true;
   if (error) {

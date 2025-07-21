@@ -6,16 +6,12 @@ export default class API {
     baseUrl = prefix + '/func/case';
   }
 
-  loadFuncCase (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  addCase (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}`, params);
   }
 
-  loadFavourite (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/favourite`, { ...params, fullTextSearch: true });
-  }
-
-  loadFollow (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
+  putCase (params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}`, params);
   }
 
   updateCase (params): Promise<[Error | null, any]> {
@@ -26,47 +22,27 @@ export default class API {
     return http.del(`${baseUrl}`, caseIds, { dataType: true });
   }
 
-  putCase (params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}`, params);
-  }
-
-  addCase (params): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}`, params);
-  }
-
-  cancelFavouriteCase (caseId: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${caseId}/favourite`);
-  }
-
-  favouriteCase (caseId: string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${caseId}/favourite`);
-  }
-
-  followCase (caseId: string): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${caseId}/follow`);
-  }
-
-  cancelFollowCase (caseId: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${caseId}/follow`);
-  }
-
   cloneCase (caseIds: string[]): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/clone`, caseIds);
   }
 
-  getCaseInfo (CaseId: string): Promise<[Error | null, any]> {
+  getCaseDetail (CaseId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${CaseId}`);
   }
 
-  putResult (params): Promise<[Error | null, any]> {
+  getCaseList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  putCaseResult (params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/result`, params);
   }
 
-  updateResult (params): Promise<[Error | null, any]> {
+  updateCaseResult (params): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/result`, params);
   }
 
-  resetResult (caseIds: string[]): Promise<[Error | null, any]> {
+  resetCaseResult (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/result/reset`, caseIds, { dataType: true });
   }
 
@@ -74,7 +50,7 @@ export default class API {
     return http.put(`${baseUrl}/review`, params);
   }
 
-  resetReview (caseIds: string[]): Promise<[Error | null, any]> {
+  resetReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/reset`, caseIds, { dataType: true });
   }
 
@@ -136,5 +112,29 @@ export default class API {
 
   cancelAssociationTask (caseId: string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${caseId}/association/task/cancel`, params);
+  }
+
+  AddFavouriteCase (caseId: string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${caseId}/favourite`);
+  }
+
+  addFollowCase (caseId: string): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${caseId}/follow`);
+  }
+
+  cancelFavouriteCase (caseId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${caseId}/favourite`);
+  }
+
+  cancelFollowCase (caseId: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${caseId}/follow`);
+  }
+
+  getFavouriteList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/favourite`, { ...params, fullTextSearch: true });
+  }
+
+  getFollowList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/follow`, { ...params, fullTextSearch: true });
   }
 }

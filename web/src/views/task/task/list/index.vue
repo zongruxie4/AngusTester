@@ -122,7 +122,7 @@ const loadData = async () => {
 
   loading.value = false;
   const params = getParams();
-  const [error, res] = await task.loadTaskList({ ...params, moduleId: moduleId.value });
+  const [error, res] = await task.getTaskList({ ...params, moduleId: moduleId.value });
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -443,7 +443,7 @@ const setTableData = (data: Partial<TaskInfo>) => {
 const moduleTreeData = ref([{ name: '无模块任务', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId,
     filters: keywords
       ? [{

@@ -65,7 +65,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await scenario.getMonitorInfo(id);
+  const [error, res] = await scenario.getMonitorDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -84,7 +84,7 @@ const loadData = async (id: string) => {
 const scenarioData = ref({});
 // 获取场景详情
 const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await scenario.loadInfo(scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
     return;
   }
@@ -94,7 +94,7 @@ const loadScenarioPlugin = async (scenarioId: string) => {
 
 // 历史执行记录
 const loadHistoryList = async (id) => {
-  const [error, { data }] = await scenario.getMonitorHistory({
+  const [error, { data }] = await scenario.getMonitorHistoryList({
     monitorId: id,
     pageSize: 100,
     pageNo: 1
@@ -120,7 +120,7 @@ const changeHistory = (history: {id: string; execId: string}) => {
 // 执行记录内容
 const loadExecData = async () => {
   loadHIstoryContent.value = true;
-  const [error, { data }] = await scenario.getExecInfoByMonitorHistoryId(currentHistoyId.value);
+  const [error, { data }] = await scenario.getMonitorHistoryDetail(currentHistoyId.value);
   loadHIstoryContent.value = false;
   if (error) {
     return;

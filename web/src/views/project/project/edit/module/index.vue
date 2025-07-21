@@ -117,7 +117,7 @@ const loadData = async (remainder = 0, _params?:{}) => {
     params = { ...params, ..._params };
   }
 
-  const [error, res] = await modules.searchTree(params);
+  const [error, res] = await modules.getModuleTree(params);
   loading.value = false;
   loaded.value = true;
 
@@ -198,7 +198,7 @@ const toDelete = (data: TagItem) => {
       const id = data.id;
       const params = { ids: [id] };
       loading.value = true;
-      const [error] = await modules.delModule(params);
+      const [error] = await modules.deleteModule(params);
       loading.value = false;
       if (error) {
         return;
