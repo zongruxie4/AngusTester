@@ -11,7 +11,7 @@ type MenuItem = {
   url: string;
   show: true;
   breadcrumb: [
-    { id:string;name: 'Mock'; path: '/mockservice'; },
+    { id:string;name: 'Mock'; path: '/apis#mock'; },
     { id:string;name: string; path?:string; }
   ]
 }
@@ -29,7 +29,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/apis`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '1001' },
+      { name: 'Mock', path: '/apis#mock', id: '1001' },
       { name: '接口', id: '1002' }
     ]
   },
@@ -40,7 +40,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/request`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '2001' },
+      { name: 'Mock', path: '/apis#mock', id: '2001' },
       { name: '请求', id: '2002' }
     ]
   },
@@ -51,7 +51,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/log`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '2001' },
+      { name: 'Mock', path: '/apis#mock', id: '2001' },
       { name: '日志', id: '6002' }
     ]
   },
@@ -62,7 +62,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/activity`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '3001' },
+      { name: 'Mock', path: '/apis#mock', id: '3001' },
       { name: '活动', id: '3002' }
     ]
   },
@@ -73,7 +73,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/monitor`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '4001' },
+      { name: 'Mock', path: '/apis#mock', id: '4001' },
       { name: '监控', id: '4002' }
     ]
   },
@@ -84,7 +84,7 @@ const menuItems:MenuItem[] = [
     url: `/mockservice/${id}/setting`,
     show: true,
     breadcrumb: [
-      { name: 'Mock', path: '/mockservice', id: '5001' },
+      { name: 'Mock', path: '/apis#mock', id: '5001' },
       { name: '设置', id: '5002' }
     ]
   }

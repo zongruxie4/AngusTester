@@ -835,7 +835,7 @@ const saveResponse = async (id: string, isUpdateFlag: boolean) => {
 };
 
 const goback = () => {
-  router.push('/mockservice');
+  router.push('/apis#mock');
 };
 
 const deleteResponse = (index: number, id: string) => {

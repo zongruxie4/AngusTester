@@ -496,6 +496,7 @@ const searchPanelRef = ref();
 onMounted(() => {
   watch(() => projectId.value, newValue => {
     if (newValue) {
+      debugger;
       if (route.query.sid) {
         nextTick(() => {
           searchPanelRef.value.setConfigs([{ valueKey: 'name', value: route.query.sid }]);

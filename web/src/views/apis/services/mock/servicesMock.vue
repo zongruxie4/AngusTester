@@ -122,7 +122,7 @@ const handleSave = () => {
     loading.value = false;
     if (error) { return; }
     notification.success(serviceInfo.value?.mockServiceId ? '更新成功' : '添加成功');
-    router.push('/mockservice');
+    router.push('/apis#mock');
   }, () => { /** */ });
 };
 

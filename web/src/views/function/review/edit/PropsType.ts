@@ -1,5 +1,5 @@
 export type FormState = {
-  planId: string;
+  planId?: string;
   deadlineDate: string;
   caseIds?: string[],
   participantIds?: string[]
