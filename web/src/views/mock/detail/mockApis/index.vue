@@ -29,7 +29,7 @@ import { debounce } from 'throttle-debounce';
 
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from 'src/api/tester';
-import { setting } from 'src/api/comm';
+import { setting } from 'src/api/gm';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './PropsType';
 
 interface Props {
