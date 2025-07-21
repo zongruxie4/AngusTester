@@ -57,7 +57,7 @@ const searchInputChange = debounce(duration.search, (event: { target: { value: s
 
 const switchChange = async (checked: boolean, id: string) => {
   enabledLoadingMap.value[id] = true;
-  const [error] = await space.enabledAuth(id, checked);
+  const [error] = await space.enabledSpaceAuth(id, checked);
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -92,7 +92,7 @@ const checkChange = async (permissions: string[], id: string) => {
   const authId = permissionsMap.value[id]?.id;
   if (!permissions.length) {
     updatingMap[id] = true;
-    const [error] = await space.deleteAuth(authId);
+    const [error] = await space.deleteSpaceAuth(authId);
     updatingMap[id] = false;
     if (error) {
       return;
@@ -104,7 +104,7 @@ const checkChange = async (permissions: string[], id: string) => {
 
   if (authId) {
     updatingMap[id] = true;
-    const [error] = await space.putAuth(authId, { permissions });
+    const [error] = await space.putSpaceAuth(authId, { permissions });
     updatingMap[id] = false;
     if (error) {
       return;
@@ -117,7 +117,7 @@ const checkChange = async (permissions: string[], id: string) => {
   // 没有进行过授权
   updatingMap[id] = true;
   const params = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
-  const [error, { data = { id: '' } }] = await space.addAuth(id, params);
+  const [error, { data = { id: '' } }] = await space.addSpaceAuth(id, params);
   updatingMap[id] = false;
   if (error) {
     return;
@@ -147,7 +147,7 @@ const loadAuths = async (ids: string[]) => {
   };
 
   loading.value = true;
-  const [error, { data = { list: [] } }] = await space.getAuthList(params, axiosConfig);
+  const [error, { data = { list: [] } }] = await space.getSpaceAuthList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;
@@ -221,7 +221,7 @@ const loadData = async () => {
 
   const params = getParams();
   loading.value = true;
-  const [error, { data }] = await space.getList(params, axiosConfig);
+  const [error, { data }] = await space.getSpaceList(params, axiosConfig);
   if (error || !data) {
     loading.value = false;
     return;

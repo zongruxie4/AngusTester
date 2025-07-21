@@ -31,7 +31,7 @@ const target = ref<{targetSpaceId?: string, targetDirectoryId?: string}>({});
 
 const treeData = ref<TreeProps['treeData']>([]);
 const loadSpace = async () => {
-  const [error, res = { data: {} }] = await space.getList({ appCode: 'AngusTester', pageSize: store.state.maxPageSize, projectId: projectId.value });
+  const [error, res = { data: {} }] = await space.getSpaceList({ appCode: 'AngusTester', pageSize: store.state.maxPageSize, projectId: projectId.value });
   if (error) {
     return;
   }

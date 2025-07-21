@@ -93,7 +93,7 @@ const selectCaseOk = async (caseIds: string[] = []) => {
 
 const loadBaseLineCaseList = async () => {
   const { current, pageSize } = pagination.value;
-  const [error, { data }] = await func.searchBaselineCase(props.baselineId, {
+  const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
     moduleId: moduleId.value,
     projectId: props.projectId,
     pageNo: current,
@@ -148,7 +148,7 @@ const putCustom = (record) => {
       } else {
         selectedRowKey.value = record.id;
         // selectCaseInfo.value = record;
-        const [error, { data }] = await func.getCaseInfoInBaseline(props.baselineId, record.id);
+        const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, record.id);
         if (error) {
           selectCaseInfo.value = record;
           return;
@@ -173,7 +173,7 @@ const handleSearchChange = (params) => {
 };
 
 const loadBaseLineData = async () => {
-  const [error, res] = await func.getBaselineInfo(props.baselineId);
+  const [error, res] = await func.getBaselineDetail(props.baselineId);
   if (error) {
     return;
   }

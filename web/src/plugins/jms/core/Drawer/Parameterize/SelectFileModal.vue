@@ -20,7 +20,7 @@ const selectFile = ref();
 // 空间数据
 const spaceData = ref([]);
 const loadSpaceData = async () => {
-  const [error, data] = await space.getList({ pageSize: 1000, pageNo: 1, appCode: 'AngusTester' });
+  const [error, data] = await space.getSpaceList({ pageSize: 1000, pageNo: 1, appCode: 'AngusTester' });
   if (error) {
     return;
   }

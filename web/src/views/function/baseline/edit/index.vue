@@ -143,7 +143,7 @@ const toDelete = async () => {
     async onOk () {
       const id = data.id;
       loading.value = true;
-      const [error] = await func.deleteBaseline(id);
+      const [error] = await func.deleteBaseline([id]);
       loading.value = false;
       if (error) {
         return;
@@ -166,7 +166,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await func.getBaselineInfo(id);
+  const [error, res] = await func.getBaselineDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -260,7 +260,7 @@ const handleChangePlanId = () => {
 };
 
 const loadCaseList = async () => {
-  const [error, { data }] = await func.searchBaselineCase(baselineId.value, {
+  const [error, { data }] = await func.getBaselineCaseList(baselineId.value, {
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize,
@@ -326,7 +326,7 @@ const delCase = async (record: BaselineCaseInfo) => {
     modal.confirm({
       title: `确认删除【${record.name}】吗？`,
       async onOk () {
-        const [error] = await func.deleteBaselineCaseByCaseIdInBaseline([record.id]);
+        const [error] = await func.deleteBaselineCaseById([record.id]);
         if (error) {
           return;
         }

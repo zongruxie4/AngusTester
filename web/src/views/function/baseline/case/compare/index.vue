@@ -41,7 +41,7 @@ const compareLine = computed(() => {
 });
 
 const loadBaseLineList = async () => {
-  const [error, { data }] = await func.searchBaseline({
+  const [error, { data }] = await func.getBaselineList({
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -55,7 +55,7 @@ const loadBaseLineList = async () => {
 };
 
 const loadBaseCase = async () => {
-  const [error, { data }] = await func.searchCaseInBaseline(props.baselineId, {
+  const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -70,7 +70,7 @@ const loadBaseCase = async () => {
 };
 
 const loadCompareCase = async () => {
-  const [error, { data }] = await func.searchCaseInBaseline(compareLineId.value, {
+  const [error, { data }] = await func.getBaselineCaseList(compareLineId.value, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId

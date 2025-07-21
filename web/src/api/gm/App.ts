@@ -6,7 +6,7 @@ export default class API {
     baseUrl = prefix + '/app';
   }
 
-  loadAppInfo (params = {}): Promise<[Error | null, any]> {
+  getAppList (params = {}): Promise<[Error | null, any]> {
     return http.get(baseUrl, params);
   }
 
@@ -14,43 +14,43 @@ export default class API {
     return http.patch(baseUrl, [params]);
   }
 
-  loadAppAuth (id:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${id}/auth/account/current`);
-  }
-
-  loadDeptList<T> (appId:string, params:T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${appId}/auth/dept`, params);
-  }
-
-  loadGroupList<T> (appId:string, params:T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${appId}/auth/group`, params);
-  }
-
-  loadUserList<T> (appId:string, params:T): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${appId}/auth/user`, params);
-  }
-
-  deleteUser (appId:string, userIds:string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${appId}/user/auth`, { userIds: userIds });
-  }
-
-  deleteDept (appId:string, deptIds:string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${appId}/dept/auth`, { deptIds: deptIds });
-  }
-
-  deleteGroup (appId:string, groupIds:string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${appId}/group/auth`, { groupIds: groupIds });
-  }
-
-  addDepts (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${appId}/dept/policy/auth`, params);
-  }
-
-  addUsers (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
+  addAuthUser (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${appId}/user/policy/auth`, params);
   }
 
-  addGroups (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
+  addAuthDept (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/${appId}/dept/policy/auth`, params);
+  }
+
+  addAuthGroup (appId:string, params:{orgIds:string[], policyIds:string[]}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${appId}/group/policy/auth`, params);
+  }
+
+  getAuthAccount (id:string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${id}/auth/account/current`);
+  }
+
+  getAuthUserList<T> (appId:string, params:T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${appId}/auth/user`, params);
+  }
+
+  getAuthDeptList<T> (appId:string, params:T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${appId}/auth/dept`, params);
+  }
+
+  getAuthGroupList<T> (appId:string, params:T): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${appId}/auth/group`, params);
+  }
+
+  deleteAuthUser (appId:string, userIds:string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${appId}/user/auth`, { userIds: userIds });
+  }
+
+  deleteAuthDept (appId:string, deptIds:string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${appId}/dept/auth`, { deptIds: deptIds });
+  }
+
+  deleteAuthGroup (appId:string, groupIds:string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${appId}/group/auth`, { groupIds: groupIds });
   }
 }

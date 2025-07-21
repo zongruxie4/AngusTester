@@ -12,7 +12,7 @@ import Setting from './Setting';
 
 const baseUrl = GM;
 
-export const appInfo = new App(baseUrl);
+export const app = new App(baseUrl);
 export const auth = new Auth(baseUrl);
 export const ai = new Ai(baseUrl);
 export const analysis = new Analysis(baseUrl);
