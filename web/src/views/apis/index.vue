@@ -95,8 +95,8 @@ provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.upd
 
 const menuItems = [
   { name: '主页', icon: 'icon-zhuye', key: 'homepage' },
-  { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
   { name: '服务', icon: 'icon-fuwuxinxi', key: 'services' },
+  { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
   { name: '设计', icon: 'icon-sheji', key: 'design'},
   { name: '分享', icon: 'icon-fenxiang', key: 'share' },
   { name: '服务器', icon: 'icon-host', key: 'server' },
