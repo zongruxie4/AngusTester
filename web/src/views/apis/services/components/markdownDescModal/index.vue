@@ -56,11 +56,7 @@ const bodyStyle = {
     wrapClassName="api-desc-markdown-modal"
     @cancel="cancelEditDescription"
     @ok="saveDescription">
-    <div
-      :class="{ 'border': isEdit }"
-      class="flex items-start h-full rounded border-solid border-border-divider">
-      <EasyMd ref="easyMdRef" :value="description" />
-    </div>
+    <EasyMd ref="easyMdRef" :value="description" class="h-full overflow-auto" />
   </Modal>
 </template>
 <style>
