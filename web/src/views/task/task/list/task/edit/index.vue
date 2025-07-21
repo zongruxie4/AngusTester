@@ -83,7 +83,7 @@ const getModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {

@@ -30,7 +30,7 @@ const allFunction = ref([]);
 let functionPromise;
 const getAllFunctions = async () => {
   if (!allFunction.value.length && !functionPromise) {
-    functionPromise = mock.loadFunction();
+    functionPromise = mock.getAllFunction();
   }
   if (functionPromise) {
     functionPromise.then(([error, res]) => {

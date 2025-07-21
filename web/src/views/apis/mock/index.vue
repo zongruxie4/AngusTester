@@ -62,7 +62,7 @@ const getList = async () => {
     return;
   }
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadServices({ ...params.value, projectId: projectId.value });
+  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ ...params.value, projectId: projectId.value });
   loading.value = false;
   if (error) {
     return;
@@ -135,7 +135,7 @@ const updateStatusById = (id) => {
 };
 
 const getListById = async (id) => {
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadServices({ filters: [{ key: 'id', value: [id], op: 'IN' }], projectId: projectId.value });
+  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ filters: [{ key: 'id', value: [id], op: 'IN' }], projectId: projectId.value });
   if (error) {
     return;
   }
@@ -270,7 +270,7 @@ const updateStatusByIds = (ids) => {
 };
 
 const getListByIds = async (ids:string[]) => {
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadServices({ filters: [{ key: 'id', value: ids, op: 'IN' }], projectId: projectId.value });
+  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ filters: [{ key: 'id', value: ids, op: 'IN' }], projectId: projectId.value });
   if (error) {
     return;
   }
@@ -331,7 +331,7 @@ const forceDelete = (record: MockServiceObj) => {
     content: '确定强制删除吗？',
     async onOk () {
       loading.value = true;
-      const [error] = await mock.deleteForceService([record.id]);
+      const [error] = await mock.deleteServiceByForce([record.id]);
       loading.value = false;
       if (error) {
         return;
@@ -437,7 +437,7 @@ const handleUpdateStatus = async (item:MockServiceObj) => {
 };
 
 const getStopResById = async (id) => {
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadServices({ filters: [{ key: 'id', value: id, op: 'EQUAL' }], projectId: projectId.value });
+  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ filters: [{ key: 'id', value: id, op: 'EQUAL' }], projectId: projectId.value });
   if (error) {
     return;
   }
@@ -482,7 +482,7 @@ const handleResetInstance = async (item:MockServiceObj) => {
     content: '刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。',
     async onOk () {
       loading.value = true;
-      const [error] = await mock.resetInstance(item.id);
+      const [error] = await mock.syncServiceInstanceConfig(item.id);
       loading.value = false;
       if (error) {
         return;

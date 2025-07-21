@@ -30,7 +30,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok')
 
 const treeData = ref<any[]>([]);
 const loadTreeData = async () => {
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {

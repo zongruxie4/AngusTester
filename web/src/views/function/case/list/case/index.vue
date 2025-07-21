@@ -895,7 +895,7 @@ const loadEnums = async () => {
 const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: projectInfo.value?.id,
     filters: keywords
       ? [{

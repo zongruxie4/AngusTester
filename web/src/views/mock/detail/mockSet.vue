@@ -54,7 +54,7 @@ const mockServiceInfo = ref();
 const loading = ref(false);
 const loadInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await mock.loadServiceInfo(props.id);
+  const [error, { data }] = await mock.getServiceDetail(props.id);
   loading.value = false;
   if (error) { return; }
   mockServiceInfo.value = JSON.parse(JSON.stringify(data));

@@ -116,7 +116,7 @@ const getQueryStrFromParameter = (data) => {
 };
 
 const getAllFuncNames = async () => {
-  const [error, res] = await mock.loadFunction();
+  const [error, res] = await mock.getAllFunction();
   if (error) {
     return;
   }
@@ -184,7 +184,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
     }
   });
   if (allParams.some(i => i.func) || funcStrs.length) {
-    const [error, resp] = await mock.loadFunctionValue([...allParams.filter(i => i.func).map(i => ({ text: i[valueKey], iterations: 1 })), ...funcStrs.map(i => ({ text: i, iterations: 1 }))]);
+    const [error, resp] = await mock.generateFunctionValue([...allParams.filter(i => i.func).map(i => ({ text: i[valueKey], iterations: 1 })), ...funcStrs.map(i => ({ text: i, iterations: 1 }))]);
     if (!error) {
       const response = resp.data || [];
       paramLists.forEach(parameters => {

@@ -443,7 +443,7 @@ const setTableData = (data: Partial<TaskInfo>) => {
 const moduleTreeData = ref([{ name: '无模块任务', id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId,
     filters: keywords
       ? [{

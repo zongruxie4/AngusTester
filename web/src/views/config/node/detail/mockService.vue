@@ -56,7 +56,7 @@ const columns = [
 const servieData = ref([]);
 const loadServiceData = async () => {
   const { current, pageSize } = pagination.value;
-  const [error, { data = { list: [], total: 0 } }] = await mock.loadServices({ nodeId: props.nodeId, projectId: projectId.value, pageNo: current, pageSize });
+  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ nodeId: props.nodeId, projectId: projectId.value, pageNo: current, pageSize });
   if (error) {
     return;
   }

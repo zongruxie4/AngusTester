@@ -213,7 +213,7 @@ const setFormData = (data: MeetingInfo) => {
 const members = ref<{ fullName: string, id: string; }[]>([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getMemberUser(props.projectId);
+  const [error, { data }] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }

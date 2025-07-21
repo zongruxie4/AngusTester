@@ -304,7 +304,7 @@ const setTesterForMe = () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getMemberUser(projectInfo.value?.id);
+  const [error, { data }] = await project.getProjectMember(projectInfo.value?.id);
   if (error) {
     return;
   }
@@ -365,7 +365,7 @@ const getModuleTreeData = async () => {
   if (!projectInfo.value?.id) {
     return;
   }
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: projectInfo.value.id
   });
   if (error) {

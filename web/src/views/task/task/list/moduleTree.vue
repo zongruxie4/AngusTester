@@ -113,7 +113,7 @@ const toDelete = (data: TagItem) => {
       const id = data.id;
       const params = { ids: [id] };
       loading.value = true;
-      const [error] = await modules.delModule(params);
+      const [error] = await modules.deleteModule(params);
       loading.value = false;
       if (error) {
         return;

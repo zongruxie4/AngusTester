@@ -151,7 +151,7 @@ const ok = async () => {
     const { dateRange, ...otherProject } = formData.value;
     const [error] = !formData.value.id
       ? await project.addProject({ ...otherProject, type: projectType.value, startDate: dateRange[0], deadlineDate: dateRange[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
-      : await project.replaceProject({ ...otherProject, type: projectType.value, startDate: dateRange[0], deadlineDate: dateRange[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
+      : await project.putProject({ ...otherProject, type: projectType.value, startDate: dateRange[0], deadlineDate: dateRange[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
     loading.value = false;
     if (error) {
       return;

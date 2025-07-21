@@ -102,7 +102,7 @@ const toDelete = (data: TagItem) => {
       const id = data.id;
       const params = { ids: [id] };
       loading.value = true;
-      const [error] = await modules.delModule(params);
+      const [error] = await modules.deleteModule(params);
       loading.value = false;
       if (error) {
         return;
@@ -233,7 +233,7 @@ const travelTreeData = (treeData, callback = (item) => item) => {
 const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
 
 const loadDataList = async () => {
-  const [error, { data }] = await modules.searchTree({
+  const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {

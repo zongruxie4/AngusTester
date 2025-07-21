@@ -114,7 +114,7 @@ const ok = async () => {
     const { USER, DEPT, GROUP } = members.value;
     const [error] = !formData.value.id
       ? await project.addProject({ ...formData.value, memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
-      : await project.replaceProject({ ...formData.value, memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
+      : await project.putProject({ ...formData.value, memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
     loading.value = false;
     if (error) {
       return;

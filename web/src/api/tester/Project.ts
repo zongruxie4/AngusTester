@@ -6,19 +6,11 @@ export default class API {
     baseUrl = prefix + '/project';
   }
 
-  loadProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
-  }
-
-  loadMyProject (userId: string, params: {[key: string]: any} = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/user/${userId}/joined`, params);
-  }
-
   addProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
     return http.post(baseUrl, params);
   }
 
-  replaceProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
+  putProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
     return http.put(baseUrl, params);
   }
 
@@ -26,19 +18,27 @@ export default class API {
     return http.patch(baseUrl, params);
   }
 
+  deleteProject (id: string): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/${id}`);
+  }
+
   getProjectDetail (id: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
 
-  delProject (id: string): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/${id}`);
+  getProjectList (params: {[key: string]: any}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
-  searchProject (params: {[key: string]: any}): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, { ...params, fullTextSearch: true });
+  getJoinedProject (userId: string, params: {[key: string]: any} = {}): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/user/${userId}/joined`, params);
   }
 
-  searchTrash (params: {[key: string]: any}): Promise<[Error | null, any]> {
+  getProjectMember (projectId: string) : Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${projectId}/member/user`);
+  }
+
+  getTrashList (params: {[key: string]: any}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/trash`, { ...params, infoScope: 'DETAIL', fullTextSearch: true });
   }
 
@@ -46,11 +46,11 @@ export default class API {
     return http.get(`${baseUrl}/trash/count`);
   }
 
-  delAllTrash (params = {}): Promise<[Error | null, any]> {
+  deleteAllTrash (params = {}): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash`, params);
   }
 
-  delTrash (id: string): Promise<[Error | null, any]> {
+  deleteTrash (id: string): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash/${id}`);
   }
 
@@ -60,9 +60,5 @@ export default class API {
 
   backTrash (id: string): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${id}/back`);
-  }
-
-  getMemberUser (projectId: string) : Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${projectId}/member/user`);
   }
 }
