@@ -358,7 +358,7 @@ const fieldNames = {
                 value: 'id',
                 label: 'name'
               }"
-              :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`">
+              :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`">
             </Select>
             <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
           </div>

@@ -126,7 +126,7 @@ const refCaseIds = computed(() => {
         :maxTagCount="10"
         :maxTagTextLength="15"
         :maxTags="20"
-        :action="`${TESTER}/func/case/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
         placeholder="最多可关联20个用例"
         mode="multiple"

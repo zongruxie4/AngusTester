@@ -135,15 +135,6 @@ watch([() => projectId.value, () => props.serviceId, () => params.value], () => 
           </div>
         </div>
       </CheckboxGroup>
-      <!-- <Scroll
-        v-if="props.serviceId"
-        style="height: 300px;"
-        :lineHeight="30"
-        :action="`${TESTER}/apis/search?serviceId=${props.serviceId}&projectId=${projectId}`"
-        :params="params"
-        @change="getList">
-
-      </Scroll> -->
       <Divider class="my-2" />
       <Checkbox
         :checked="(checkedList.length > 0 && checkedList.length === dataList.length)"

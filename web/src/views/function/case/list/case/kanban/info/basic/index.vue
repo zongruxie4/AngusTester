@@ -321,7 +321,7 @@ const infoColumns = [
                 :maxTags="5"
                 placeholder="添加标签数量1~5个"
                 :class="{'border-error':tagsIds && tagsIds.length > 5 }"
-                :action="`${TESTER}/tag/search?projectId=${projectId}`"
+                :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                 mode="multiple"
                 size="small"
                 class="w-full"

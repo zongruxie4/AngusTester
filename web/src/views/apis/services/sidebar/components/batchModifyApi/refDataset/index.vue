@@ -31,7 +31,7 @@ const fieldNames = {
       v-model:value="names"
       class="w-100"
       :fieldNames="fieldNames"
-      :action="`${TESTER}/dataset/search?projectId=${props.projectId}`"
+      :action="`${TESTER}/dataset?projectId=${props.projectId}&fullTextSearch=true`"
       mode="multiple" />
   </div>
 </template>

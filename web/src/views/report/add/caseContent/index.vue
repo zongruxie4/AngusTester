@@ -89,7 +89,7 @@ defineExpose({
         allowClear
         class="w-72"
         placeholder="选择计划"
-        :action="`${TESTER}/func/plan/search?projectId=${props.projectId || ''}`"
+        :action="`${TESTER}/func/plan?projectId=${props.projectId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="handleSprintChange">
       </Select>
@@ -107,7 +107,7 @@ defineExpose({
         allowClear
         class="w-72"
         placeholder="选择用例"
-        :action="`${TESTER}/func/case/search?projectId=${props.projectId}&planId=${planId || ''}`"
+        :action="`${TESTER}/func/case?projectId=${props.projectId}&planId=${planId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
     </div>

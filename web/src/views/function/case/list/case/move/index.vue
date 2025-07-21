@@ -72,7 +72,7 @@ const format = (data) => {
         class="flex-1">
         <Select
           v-model:value="formState.targetPlanId"
-          :action="`${TESTER}/func/plan/search?projectId=${projectInfo.id}`"
+          :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
           :fieldNames="{ value: 'id', label: 'name' }"
           :format="format"
           showSearch

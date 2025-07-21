@@ -96,7 +96,7 @@ const format = (data) => {
       <div class="mr-2">选择迭代</div>
       <Select
         v-model:value="selectedId"
-        :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
         :fieldNames="{ value: 'id', label: 'name' }"
         :format="format"
         :additionalOption="defaultOptions"

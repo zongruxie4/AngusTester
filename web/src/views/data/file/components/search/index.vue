@@ -60,7 +60,7 @@ const handleVisible = (visible) => {
       :fieldNames="{label: 'name', value: 'id'}"
       :params="params"
       class="w-40 ml-5"
-      :action="`${STORAGE}/space/object/search`"
+      :action="`${STORAGE}/space/object?fullTextSearch=true`"
       @change="handleChange"
       @dropdownVisibleChange="handleVisible" />
   </div>

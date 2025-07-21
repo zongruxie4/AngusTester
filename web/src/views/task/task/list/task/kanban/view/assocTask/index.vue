@@ -115,7 +115,7 @@ const refTaskIds = computed(() => {
         :maxTagCount="10"
         :maxTagTextLength="15"
         :maxTags="20"
-        :action="`${TESTER}/task/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
         placeholder="最多可关联20个任务"
         mode="multiple"

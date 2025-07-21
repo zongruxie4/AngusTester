@@ -536,7 +536,7 @@ const searchoptions = [
   {
     valueKey: 'nodeId',
     type: 'select',
-    action: `${TESTER}/node/search`,
+    action: `${TESTER}/node?fullTextSearch=true`,
     maxlength: 100,
     fieldNames: { label: 'name', value: 'id' },
     showSearch: true,

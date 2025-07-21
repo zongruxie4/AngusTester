@@ -215,7 +215,7 @@ onMounted(async () => {
             <Select
               v-model:value="formState.nodeId"
               :disabled="serviceInfo?.mockServiceId"
-              :action="`${TESTER}/node/search?`"
+              :action="`${TESTER}/node?fullTextSearch=true`"
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               showSearch
@@ -228,7 +228,7 @@ onMounted(async () => {
           </FormItem>
           <FormItem name="serviceId">
             <TreeSelect
-              :action="`${TESTER}/services?&fullTextSearch=true`"
+              :action="`${TESTER}/services?fullTextSearch=true`"
               :fieldNames="{label:'name',value:'id'}"
               :defaultValue="serviceInfo"
               :virtual="false"

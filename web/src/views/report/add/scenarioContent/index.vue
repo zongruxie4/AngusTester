@@ -76,7 +76,7 @@ defineExpose({
         :showSearch="true"
         :error="valid && !scenarioId"
         :disabled="!props.projectId || props.disabled"
-        :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
         :lazy="false"
         :defaultActiveFirstOption="true"
         :fieldNames="fieldNames"

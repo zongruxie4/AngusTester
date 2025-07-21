@@ -67,7 +67,7 @@ const edit = async () => {
   };
 
   loading.value = true;
-  const [error] = await dataApi.editSource(params);
+  const [error] = await dataApi.put(params);
   loading.value = false;
   if (error) {
     return;
@@ -82,7 +82,7 @@ const add = async () => {
     return;
   }
   loading.value = true;
-  const [error] = await dataApi.addSource({ ...formState.value, projectId: projectId.value });
+  const [error] = await dataApi.add({ ...formState.value, projectId: projectId.value });
   loading.value = false;
   if (error) {
     return;

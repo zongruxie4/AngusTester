@@ -90,7 +90,7 @@ defineExpose({
         :showSearch="true"
         :error="valid && !execId"
         :disabled="!props.projectId || props.disabled"
-        :action="`${TESTER}/exec/search?projectId=${props.projectId}&scriptType=TEST_FUNCTIONALITY`"
+        :action="`${TESTER}/exec?projectId=${props.projectId}&scriptType=TEST_FUNCTIONALITY&fullTextSearch=true`"
         :params="execParams"
         :lazy="false"
         :defaultActiveFirstOption="true"

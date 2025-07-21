@@ -44,7 +44,7 @@ const execResult = ref<ExecResult>();
 
 const loadExecResult = async (id: string) => {
   loading.value = true;
-  const [error, res] = await exec.getExecResult(id);
+  const [error, res] = await exec.getResult(id);
   loading.value = false;
   if (error) {
     return;
@@ -93,7 +93,7 @@ const loadExecContent = async (id: string) => {
 
 const loadExecInfo = async (id: string) => {
   loading.value = true;
-  const [error, res] = await exec.getExecInfo(id);
+  const [error, res] = await exec.getDetail(id);
   loading.value = false;
   if (error) {
     return;

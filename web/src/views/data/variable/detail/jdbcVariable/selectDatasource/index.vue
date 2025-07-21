@@ -49,7 +49,7 @@ const okButtonProps = computed(() => {
 });
 
 const apisAction = computed(() => {
-  return `${TESTER}/data/datasource/search?projectId=${props.projectId}`;
+  return `${TESTER}/data/datasource?projectId=${props.projectId}&fullTextSearch=true`;
 });
 </script>
 

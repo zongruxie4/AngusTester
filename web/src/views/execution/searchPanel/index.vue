@@ -597,18 +597,11 @@ const searchOptions = [
   {
     valueKey: 'scriptId',
     type: 'select',
-    action: `${TESTER}/script/search?projectId=${props.projectId}`,
+    action: `${TESTER}/script?projectId=${props.projectId}&fullTextSearch=true`,
     fieldNames: { label: 'name', value: 'id' },
     placeholder: '选择脚本',
     maxlength: 100
   },
-  // {
-  //   valueKey: 'scriptType',
-  //   type: 'select-enum',
-  //   enumKey: 'ScriptType',
-  //   placeholder: '选择脚本类型',
-  //   excludes: (option:{value:string}) => option.value === 'MOCK_APIS'
-  // },
   {
     valueKey: 'priority'
   },
@@ -769,7 +762,7 @@ const sortMenus = [
           <Select
             v-if="isScenarioTargetType"
             :value="scriptSourceIdFilter.value"
-            :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择场景"

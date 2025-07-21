@@ -45,7 +45,7 @@ const searchPanelOptions = [
     type: 'select',
     allowClear: true,
     placeholder: '选择场景名称',
-    action: `${TESTER}/scenario/search?projectId=${props.projectId}`,
+    action: `${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`,
     fieldNames: { value: 'id', label: 'name' }
   },
   {

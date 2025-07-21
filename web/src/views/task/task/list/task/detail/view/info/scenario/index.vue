@@ -682,7 +682,7 @@ const onePassText = computed(() => {
                 :maxTagTextLength="15"
                 :maxTags="5"
                 :allowClear="false"
-                :action="`${TESTER}/task/tag/search?projectId=${props.projectId}`"
+                :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
                 internal
                 placeholder="最多可添加5个标签"

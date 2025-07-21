@@ -823,7 +823,7 @@ const zoomInFlagCacheKey = computed(() => {
                 internal
                 placeholder="请选择场景"
                 :fieldNames="{ label: 'name', value: 'id' }"
-                :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+                :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
             </FormItem>
             <FormItem
@@ -1039,7 +1039,7 @@ const zoomInFlagCacheKey = computed(() => {
             :rules="{ required: true, message: '请选择所属迭代' }">
             <Select
               v-model:value="formState.sprintId"
-              :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               :readonly="!!props.taskId"
               showSearch
@@ -1081,7 +1081,7 @@ const zoomInFlagCacheKey = computed(() => {
               :readonly="true"
               :value="props.parentTaskId"
               :fieldNames="{ label: 'name', value: 'id' }"
-              :action="`${TESTER}/task/search?projectId=${props.projectId}`">
+              :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
               <template #option="record">
                 <div class="flex items-center">
                   <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
@@ -1098,7 +1098,7 @@ const zoomInFlagCacheKey = computed(() => {
               placeholder="请选择父任务"
               :excludes="taskIdExcludes"
               :fieldNames="{ label: 'name', value: 'id' }"
-              :action="`${TESTER}/task/search?projectId=${props.projectId}`">
+              :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
               <template #option="record">
                 <div class="flex items-center">
                   <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
@@ -1194,7 +1194,7 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTagTextLength="15"
               :maxTags="5"
               :allowClear="false"
-              :action="`${TESTER}/tag/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
               placeholder="最多可添加5个标签"
               mode="multiple"
               notFoundContent="请联系管理员，前往”应用管理“-”任务管理“-”任务标签“配置任务标签。" />
@@ -1213,7 +1213,7 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTagCount="10"
               :maxTagTextLength="15"
               :maxTags="20"
-              :action="`${TESTER}/task/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
               placeholder="最多可关联20个任务"
               mode="multiple">
               <template #option="record">
@@ -1246,7 +1246,7 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTagCount="10"
               :maxTagTextLength="15"
               :maxTags="20"
-              :action="`${TESTER}/func/case/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
               placeholder="最多可关联20个用例"
               mode="multiple">
               <template #option="record">

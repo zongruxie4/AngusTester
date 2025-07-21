@@ -132,7 +132,7 @@ const loadScenarioName = async (scenarioId) => {
 };
 
 const loadExecName = async (execId) => {
-  const [error, { data }] = await exec.getExecInfo(execId);
+  const [error, { data }] = await exec.getDetail(execId);
   if (error) {
     return;
   }

@@ -146,7 +146,7 @@ defineExpose({
     <Scroll
       ref="scrollRef"
       v-model:spinning="loading"
-      :action="`${TESTER}/apis/unarchived/search`"
+      :action="`${TESTER}/apis/unarchived?fullTextSearch=true`"
       :params="params"
       :lineHeight="32"
       :notify="notify"

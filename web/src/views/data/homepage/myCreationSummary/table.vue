@@ -35,14 +35,14 @@ const emit = defineEmits<{
 const router = useRouter();
 
 const loadDataApiConfig = {
-  dataSource: dataApi.getSourceList,
+  dataSource: dataApi.getList,
   space: space.getList,
   dataSet: dataSet.loadDataSetList,
   variable: variable.loadVariablesList
 };
 
 const delDataApicConfig = {
-  dataSource: dataApi.deleteSource,
+  dataSource: dataApi.delete,
   space: space.delete,
   dataSet: dataSet.del,
   variable: variable.delVariables

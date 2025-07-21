@@ -170,7 +170,7 @@ const viewTypeOpt = [
             allowClear
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
-            :action="projectId ? `${TESTER}/task/sprint/search?projectId=${projectId}` : undefined"
+            :action="projectId ? `${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true` : undefined"
             placeholder="请选择迭代" />
 
           <Select
@@ -180,7 +180,7 @@ const viewTypeOpt = [
             allowClear
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
-            :action="projectId ? `${TESTER}/func/plan/search?projectId=${projectId}` : undefined"
+            :action="projectId ? `${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true` : undefined"
             placeholder="请选择计划" />
         </template>
 

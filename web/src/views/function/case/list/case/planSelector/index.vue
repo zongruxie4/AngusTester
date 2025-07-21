@@ -112,7 +112,7 @@ defineExpose({
         placeholder="选择计划"
         showSearch
         :fieldNames="{ label: 'name', value: 'id' }"
-        :action="`${TESTER}/func/plan/search?projectId=${projectInfo.id}`"
+        :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
         @change="selectChange"
         @blur="handleBlur" />
     </template>

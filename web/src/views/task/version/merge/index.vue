@@ -81,7 +81,7 @@ const fieldNames = {
           :fieldNames="fieldNames"
           :lazy="false"
           :defaultActiveFirstOption="true"
-          :action="`${TESTER}/software/version/search?projectId=${projectId}`" />
+          :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
       </FormItem>
       <FormItem
         required
@@ -93,7 +93,7 @@ const fieldNames = {
           :fieldNames="fieldNames"
           :lazy="false"
           :defaultActiveFirstOption="true"
-          :action="`${TESTER}/software/version/search?projectId=${projectId}`" />
+          :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
       </FormItem>
     </Form>
   </Modal>

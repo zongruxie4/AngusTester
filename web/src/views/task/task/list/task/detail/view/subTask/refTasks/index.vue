@@ -90,7 +90,7 @@ const taskIdExcludes = (data: { id: string }) => {
         class="flex-1"
         :excludes="taskIdExcludes"
         :fieldNames="{ label: 'name', value: 'id' }"
-        :action="`${TESTER}/task/search?projectId=${props.projectId}`">
+        :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
         <template #option="record">
           <div class="flex items-center">
             <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />

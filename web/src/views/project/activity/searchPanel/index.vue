@@ -77,7 +77,7 @@ const searchPanelOptions = [
     type: 'select',
     placeholder: '选择项目',
     allowClear: true,
-    action: `${TESTER}/project/search`,
+    action: `${TESTER}/project?fullTextSearch=true`,
     fieldNames: {
       value: 'id',
       label: 'name'

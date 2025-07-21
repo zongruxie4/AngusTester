@@ -39,7 +39,7 @@ const BG_COLOR = {
   <Scroll
     ref="scrollRef"
     :params="params"
-    :action="`${TESTER}/exec/search?projectId=${props.projectId}&scriptId=${props.scriptId}`"
+    :action="`${TESTER}/exec?projectId=${props.projectId}&scriptId=${props.scriptId}&fullTextSearch=true`"
     class="scroll-container"
     @change="scrollChange">
     <div class="group-container space-y-7.5">

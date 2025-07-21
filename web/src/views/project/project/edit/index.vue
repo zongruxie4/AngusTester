@@ -361,7 +361,7 @@ onMounted(() => {
                   v-model:value="members.USER"
                   :showSearch="true"
                   placeholder="选择用户"
-                  :action="`${GM}/user/search`"
+                  :action="`${GM}/user?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsUser"
                   mode="multiple"
                   :fieldNames="{ label: 'fullName', value: 'id' }">
@@ -372,7 +372,7 @@ onMounted(() => {
                   v-model:value="members.DEPT"
                   placeholder="选择部门"
                   :showSearch="true"
-                  :action="`${GM}/dept/search`"
+                  :action="`${GM}/dept?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsDept"
                   mode="multiple"
                   :fieldNames="{ label: 'name', value: 'id' }">
@@ -383,7 +383,7 @@ onMounted(() => {
                   v-model:value="members.GROUP"
                   placeholder="选择组"
                   :showSearch="true"
-                  :action="`${GM}/group/search`"
+                  :action="`${GM}/group?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsGroup"
                   mode="multiple"
                   :fieldNames="{ label: 'name', value: 'id' }">
@@ -570,7 +570,7 @@ onMounted(() => {
                     v-model:value="members.USER"
                     :showSearch="true"
                     placeholder="选择用户"
-                    :action="`${GM}/user/search`"
+                    :action="`${GM}/user?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsUser"
                     mode="multiple"
                     :fieldNames="{ label: 'fullName', value: 'id' }">
@@ -581,7 +581,7 @@ onMounted(() => {
                     v-model:value="members.DEPT"
                     placeholder="选择部门"
                     :showSearch="true"
-                    :action="`${GM}/dept/search`"
+                    :action="`${GM}/dept?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsDept"
                     mode="multiple"
                     :fieldNames="{ label: 'name', value: 'id' }">
@@ -592,7 +592,7 @@ onMounted(() => {
                     v-model:value="members.GROUP"
                     placeholder="选择组"
                     :showSearch="true"
-                    :action="`${GM}/group/search`"
+                    :action="`${GM}/group?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsGroup"
                     mode="multiple"
                     :fieldNames="{ label: 'name', value: 'id' }">

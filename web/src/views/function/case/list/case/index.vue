@@ -1523,15 +1523,6 @@ const searchOptions = computed(() => [
     type: 'input',
     allowClear: true
   },
-  // !enabledGroup.value && {
-  //   valueKey: 'moduleId',
-  //   placeholder: '选择或查询所属模块',
-  //   type: 'tree-select',
-  //   action: `${TESTER}/module/search?projectId=${projectInfo.value.id}`,
-  //   showSearch: true,
-  //   allowClear: true,
-  //   fieldNames: { value: 'id', label: 'name' }
-  // },
   {
     placeholder: '选择添加人',
     valueKey: 'createdBy',

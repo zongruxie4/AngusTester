@@ -708,7 +708,7 @@ const searchOptions = [
           <Select
             v-if="isScenarioSource"
             :value="sourceIdFilter.value"
-            :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择场景"

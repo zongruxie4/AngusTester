@@ -308,7 +308,7 @@ const toDebug = async () => {
     scriptType: type
   };
 
-  const [error, { data }] = await exec.startDebug(`${TESTER}/exec/debug/scenario/start`, params);
+  const [error, { data }] = await exec.startScenarioDebug(`${TESTER}/exec/debug/scenario/start`, params);
   loading.value = false;
   if (error) {
     debugHttpError.value = {
@@ -328,7 +328,7 @@ const toDebug = async () => {
 
 const createTest = async () => {
   loading.value = true;
-  const [error] = await exec.execByScript({
+  const [error] = await exec.addByScript({
     scriptId: scriptId.value
   });
   loading.value = false;
@@ -960,7 +960,7 @@ const loadDebugInfo = async () => {
     return;
   }
 
-  const [error, { data }] = await exec.loadDebugScenarioInfo(id);
+  const [error, { data }] = await exec.getScenarioDebugDetail(id);
   if (error) {
     return;
   }

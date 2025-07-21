@@ -1195,7 +1195,7 @@ const searchOptions = [
   },
   {
     type: 'select',
-    action: `${TESTER}/module/search`,
+    action: `${TESTER}/module?fullTextSearch=true`,
     params: { projectId: props.projectId },
     valueKey: 'moduleId',
     showSearch: true,
@@ -1410,7 +1410,7 @@ const sortMenuItems = [
             showSearch
             autofocus
             :fieldNames="fieldNames"
-            :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
             @change="sprintChange"
             @blur="sprintBlur" />
 
@@ -1444,7 +1444,7 @@ const sortMenuItems = [
             showSearch
             autofocus
             :fieldNames="fieldNames"
-            :action="`${TESTER}/tag/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
             @change="tagChange"
             @blur="tagBlur" />
 
@@ -1570,7 +1570,7 @@ const sortMenuItems = [
           <Select
             v-if="isScenarioTest"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择选择场景"

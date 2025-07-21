@@ -71,7 +71,7 @@ const ok = () => {
         class="w-100"
         :showSearch="true"
         placeholder="选择用户"
-        :action="`${GM}/user/search`"
+        :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }"
         @change="setCreator">
       </Select>
@@ -81,7 +81,7 @@ const ok = () => {
         class="w-100"
         placeholder="选择部门"
         :showSearch="true"
-        :action="`${GM}/dept/search`"
+        :action="`${GM}/dept?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="setCreator">
       </Select>
@@ -91,7 +91,7 @@ const ok = () => {
         class="w-100"
         placeholder="选择组"
         :showSearch="true"
-        :action="`${GM}/group/search`"
+        :action="`${GM}/group?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="setCreator">
       </Select>

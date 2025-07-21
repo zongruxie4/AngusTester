@@ -323,7 +323,7 @@ const editFlag = computed(() => {
         label="监控场景">
         <Select
           v-model:value="formState.scenarioId"
-          :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+          :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label: 'name', value: 'id'}"
           :disabled="!!props?.data?.id"
           placeholder="选择场景"
@@ -440,7 +440,7 @@ const editFlag = computed(() => {
                   allowClear
                   class="w-50"
                   placeholder="选择用户"
-                  :action="`${GM}/user/search`"
+                  :action="`${GM}/user?fullTextSearch=true`"
                   :fieldNames="{ label: 'fullName', value: 'id' }"
                   @change="handleChangeOrgs">
                 </Select>
@@ -455,7 +455,7 @@ const editFlag = computed(() => {
                   allowClear
                   :lazy="false"
                   :showSearch="true"
-                  :action="`${GM}/dept/search`"
+                  :action="`${GM}/dept?fullTextSearch=true`"
                   :fieldNames="{ label: 'name', value: 'id' }"
                   @change="handleChangeOrgs">
                 </Select>
@@ -470,7 +470,7 @@ const editFlag = computed(() => {
                   allowClear
                   :lazy="false"
                   :showSearch="true"
-                  :action="`${GM}/group/search`"
+                  :action="`${GM}/group?fullTextSearch=true`"
                   :fieldNames="{ label: 'name', value: 'id' }"
                   @change="handleChangeOrgs">
                 </Select>

@@ -198,7 +198,7 @@ const format = (data) => {
           </RadioGroup>
           <Select
             v-model:value="mockServiceId"
-            :action="`${TESTER}/mock/service/search?projectId=${projectInfo?.id}`"
+            :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
             :fieldNames="{label:'name',value:'id'}"
             :maxlength="100"
             placeholder="请选择Mock服务"

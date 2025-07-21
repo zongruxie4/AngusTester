@@ -6,44 +6,60 @@ export default class API {
     baseUrl = prefix + '/exec';
   }
 
-  searchList (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  addByScript (params: {scriptId: string}, axiosConf = {}) : Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/byscript`, params, axiosConf);
   }
 
   putConfig (execId:string, params): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${execId}/config`, params);
   }
 
-  deleteExec (execIds: string[], axiosConf = {}): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}`, execIds, axiosConf);
+  putScriptConfig (execId: string, params): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${execId}/script/config`, params);
   }
 
-  startExec (params): Promise<[Error | null, any]> {
+  start (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/start`, params);
   }
 
-  stopExec (params): Promise<[Error | null, any]> {
+  stop (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/stop`, params);
   }
 
-  loadExecTestResult (execId:string): Promise<[Error | null, any]> {
+  delete (execIds: string[], axiosConf = {}): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}`, execIds, axiosConf);
+  }
+
+  getDetail (execId:string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${execId}`);
+  }
+
+  getList (params): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
+  }
+
+  startScenarioDebug (params): Promise<[Error | null, any]> {
+    return http.post(`${baseUrl}/debug/scenario/start`, params);
+  }
+
+  getScenarioDebugDetail (scenarioId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/debug/scenario/${scenarioId}`);
+  }
+
+  getTestServer (execId: string): Promise<[Error | null, any]> {
+    return http.get(`${baseUrl}/${execId}/test/server`);
+  }
+
+  getTestResult (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/test/result`);
   }
 
-  getExecResult (execId:string): Promise<[Error | null, any]> {
+  getResult (execId:string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/result`);
-  }
-
-  getExecInfo (execId:string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${execId}`);
   }
 
   getSampleExtensionContent <T> (execId: string, params: T) : Promise<string[]> {
     return http.get(`${baseUrl}/${execId}/sample/extension/content`, params);
-  }
-
-  execByScript (params: {scriptId: string}, axiosConf = {}) : Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/byscript`, params, axiosConf);
   }
 
   getScenarioResult (scenarioId: string): Promise<[Error | null, any]> {
@@ -64,21 +80,5 @@ export default class API {
 
   getSampleExtensionCountMapLatest (execId: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${execId}/sample/extension/counter/map1/latest`);
-  }
-
-  getTestServer (execId: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${execId}/test/server`);
-  }
-
-  startDebug (params): Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/debug/scenario/start`, params);
-  }
-
-  loadDebugScenarioInfo (scenarioId: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/debug/scenario/${scenarioId}`);
-  }
-
-  putScriptConfig (execId: string, params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${execId}/script/config`, params);
   }
 }

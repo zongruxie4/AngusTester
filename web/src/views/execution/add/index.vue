@@ -233,7 +233,7 @@ const scriptTypeExcludes = (option) => {
               showSearch
               :params="scriptParams"
               :disabled="!!route.params.id"
-              :action="`${TESTER}/script/search?projectId=${projectId}`"
+              :action="`${TESTER}/script?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{label: 'name', value: 'id'}"
               :placeholder="t('请选择脚本')"
               @change="selectScript" />

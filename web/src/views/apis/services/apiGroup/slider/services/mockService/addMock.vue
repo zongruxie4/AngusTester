@@ -203,7 +203,7 @@ onMounted(async () => {
               <Select
                 v-model:value="formState.nodeId"
                 :disabled="projectDetail?.mockServiceId"
-                :action="`${TESTER}/node/search?`"
+                :action="`${TESTER}/node?fullTextSearch=true`"
                 :fieldNames="{label:'name',value:'id'}"
                 :maxlength="100"
                 showSearch

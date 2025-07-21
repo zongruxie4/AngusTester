@@ -172,7 +172,7 @@ const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
     loading.value = true;
   }
   refinshLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.searchList(params);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getList(params);
   refinshLoading.value = false;
   if (isRefinsh) {
     loading.value = false;
@@ -242,7 +242,7 @@ const loadDataList = async (): Promise<void> => {
   }
 
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.searchList(params);
+  const [error, { data = { list: [], total: 0 } }] = await exec.getList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {
@@ -514,7 +514,7 @@ const handleRestart = async (item: ExecuteListObj) => {
   };
 
   loading.value = true;
-  const [error, { data }] = await exec.startExec(params);
+  const [error, { data }] = await exec.start(params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -555,7 +555,7 @@ const handleStop = async (item: ExecuteListObj) => {
     id: item.id
   };
   loading.value = true;
-  const [error, { data }] = await exec.stopExec(params);
+  const [error, { data }] = await exec.stop(params);
   loading.value = false;
   if (error) {
     let errMessage;
@@ -594,7 +594,7 @@ const handleDelete = async (item: ExecuteListObj) => {
     content: `确定删除【${item.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await exec.deleteExec([item.id], { dataType: true });
+      const [error] = await exec.delete([item.id], { dataType: true });
       loading.value = false;
       if (error) {
         return;

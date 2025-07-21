@@ -61,7 +61,7 @@ const handleCancel = () => {
 };
 
 const treeProps = ref({
-  action: `${TESTER}/mock/service/search`,
+  action: `${TESTER}/mock/service?fullTextSearch=true`,
   disabled: !!props.mockService,
   params: {
     // hasPermission: 'EXPORT',
@@ -89,7 +89,7 @@ watch(() => props.visible, (newValue) => {
   mockServiceId.value = undefined;
   if (props.mockService) {
     treeProps.value = {
-      action: `${TESTER}/mock/service/search`,
+      action: `${TESTER}/mock/service?fullTextSearch=true`,
       disabled: !!props.mockService,
       params: {
         // hasPermission: 'EXPORT',

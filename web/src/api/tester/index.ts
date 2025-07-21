@@ -19,7 +19,7 @@ import ShareApis from './ShareApis';
 import Exec from './Exec';
 import FuncCase from './FuncCase';
 import Kanban from './Kanban';
-import Data from './Data';
+import Data from './DataSource';
 import DataSet from './DataSet';
 import Module from './Module';
 import Software from './Software';

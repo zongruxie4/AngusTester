@@ -586,7 +586,7 @@ const delCase = (caseItem, idx) => {
                 :rules="{required:true,message:'请选择所属计划'}">
                 <Select
                   v-model:value="formState.planId"
-                  :action="`${TESTER}/func/plan/search?projectId=${projectInfo.id}`"
+                  :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
                   :fieldNames="{ value: 'id', label: 'name' }"
                   :lazy="false"
                   defaultActiveFirstOption
@@ -758,7 +758,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagTextLength="15"
                   :maxTags="5"
                   :allowClear="false"
-                  :action="`${TESTER}/tag/search?projectId=${projectInfo.id}`"
+                  :action="`${TESTER}/tag?projectId=${projectInfo.id}&fullTextSearch=true`"
                   placeholder="选择或查询标签"
                   mode="multiple">
                   <template #option="item">
@@ -783,7 +783,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagCount="10"
                   :maxTagTextLength="15"
                   :maxTags="20"
-                  :action="`${TESTER}/task/search?projectId=${projectInfo.id}`"
+                  :action="`${TESTER}/task?projectId=${projectInfo.id}&fullTextSearch=true`"
                   placeholder="最多可关联20个任务"
                   mode="multiple">
                   <template #option="record">
@@ -816,7 +816,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagCount="10"
                   :maxTagTextLength="15"
                   :maxTags="20"
-                  :action="`${TESTER}/func/case/search?projectId=${projectInfo.id}`"
+                  :action="`${TESTER}/func/case?projectId=${projectInfo.id}&fullTextSearch=true`"
                   placeholder="最多可关联20个用例"
                   mode="multiple">
                   <template #option="record">

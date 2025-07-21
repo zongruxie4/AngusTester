@@ -547,7 +547,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
               <Select
                 v-model:value="formState.planId"
                 :disabled="!!props.editCase"
-                :action="`${TESTER}/func/plan/search?projectId=${projectInfo.id}`"
+                :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 :params="planParams"
                 :lazy="false"
@@ -748,7 +748,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagTextLength="15"
                 :maxTags="5"
                 :allowClear="false"
-                :action="`${TESTER}/tag/search?projectId=${projectInfo.id}`"
+                :action="`${TESTER}/tag?projectId=${projectInfo.id}&fullTextSearch=true`"
                 placeholder="选择或查询标签"
                 mode="multiple">
                 <template #option="item">
@@ -773,7 +773,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagCount="10"
                 :maxTagTextLength="15"
                 :maxTags="20"
-                :action="`${TESTER}/task/search?projectId=${projectInfo.id}`"
+                :action="`${TESTER}/task?projectId=${projectInfo.id}&fullTextSearch=true`"
                 placeholder="最多可关联20个任务"
                 mode="multiple">
                 <template #option="record">
@@ -806,7 +806,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagCount="10"
                 :maxTagTextLength="15"
                 :maxTags="20"
-                :action="`${TESTER}/func/case/search?projectId=${projectInfo.id}`"
+                :action="`${TESTER}/func/case?projectId=${projectInfo.id}&fullTextSearch=true`"
                 placeholder="最多可关联20个用例"
                 mode="multiple">
                 <template #option="record">

@@ -118,7 +118,7 @@ watch(() => props.visible, newValue => {
         <Select
           v-model:value="formData.planId"
           :disabled="!projectId"
-          :action="`${TESTER}/func/plan/search?projectId=${projectId}`"
+          :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
           placeholder="选择计划"

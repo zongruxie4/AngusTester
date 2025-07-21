@@ -231,7 +231,7 @@ const format = (data) => {
             @cancel="cancel">
             <Select
               v-model:value="mockServiceId"
-              :action="`${TESTER}/mock/service/search?projectId=${projectInfo?.id}`"
+              :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               class="w-full mb-4"

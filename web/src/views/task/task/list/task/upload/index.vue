@@ -121,7 +121,7 @@ watch(() => props.visible, newValue => {
           v-model:value="formData.sprintId"
           allowClear
           :disabled="!projectId"
-          :action="`${TESTER}/task/sprint/search?projectId=${projectId}`"
+          :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
           placeholder="选择迭代"

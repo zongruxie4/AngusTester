@@ -559,7 +559,7 @@ const sortMenus = [
           <Select
             v-if="isProjectTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/project/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/project?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择项目"
@@ -602,7 +602,7 @@ const sortMenus = [
           <Select
             v-if="isTaskTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/task/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择任务"
@@ -613,7 +613,7 @@ const sortMenus = [
           <Select
             v-if="isSprintTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择迭代"
@@ -624,7 +624,7 @@ const sortMenus = [
           <Select
             v-if="isPlanTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/func/plan/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择计划"
@@ -635,7 +635,7 @@ const sortMenus = [
           <Select
             v-if="isCaseTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/func/case/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择用例"
@@ -646,7 +646,7 @@ const sortMenus = [
           <Select
             v-if="isExecutionTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/exec/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/exec?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择执行"
@@ -657,7 +657,7 @@ const sortMenus = [
           <Select
             v-if="isScenarioTargetType"
             :value="targetIdFilter.value"
-            :action="`${TESTER}/scenario/search?projectId=${props.projectId}`"
+            :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
             placeholder="选择场景"

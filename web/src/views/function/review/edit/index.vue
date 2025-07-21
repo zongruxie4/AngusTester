@@ -576,7 +576,7 @@ const editFlag = computed(() => {
           v-model:value="formState.planId"
           size="small"
           :disabled="!!reviewId"
-          :action="`${TESTER}/func/plan/search?projectId=${props.projectId}&review=true`"
+          :action="`${TESTER}/func/plan?projectId=${props.projectId}&review=true&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
           :placeholder="'选择测试计划'"
           @change="handleChangePlanId" />

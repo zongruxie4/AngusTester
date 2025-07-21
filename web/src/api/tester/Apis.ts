@@ -275,7 +275,7 @@ export default class API {
   }
 
   deleteDesign (designIds: string[]) : Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/design`, {ids: designIds});
+    return http.del(`${baseUrl}/design`, { ids: designIds });
   }
 
   exportDesign (params: {id: string, format: 'json'|'yaml'}, axioConf = {}): Promise<[Error | null, any]> {

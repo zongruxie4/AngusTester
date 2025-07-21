@@ -57,7 +57,7 @@ const getList = async () => {
     return;
   }
   loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await dataApi.getSourceList({ ...params.value, projectId: projectId.value });
+  const [error, { data = { list: [], total: 0 } }] = await dataApi.getList({ ...params.value, projectId: projectId.value });
   loading.value = false;
   isFirstLoad.value = false;
   if (error) {
@@ -102,7 +102,7 @@ const handleDel = (record) => {
     content: `确定【${record.name}】吗？`,
     async onOk () {
       loading.value = true;
-      const [error] = await dataApi.deleteSource(record.id);
+      const [error] = await dataApi.delete(record.id);
       loading.value = false;
       if (error) {
         return;
@@ -120,7 +120,7 @@ const testLink = async (record) => {
   }
   loading.value = true;
   dataMap.value[record.id].testLoading = true;
-  const [error, { data }] = await dataApi.testSourceById(record.id);
+  const [error, { data }] = await dataApi.testById(record.id);
   dataMap.value[record.id].testLoading = false;
   loading.value = false;
   if (error) {

@@ -544,7 +544,7 @@ const onePassText = computed(() => {
               v-show="sprintEditFlag"
               ref="sprintRef"
               v-model:value="sprintValue"
-              :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
               placeholder="选择或查询迭代"
@@ -790,7 +790,7 @@ const onePassText = computed(() => {
               :maxTagCount="5"
               :maxTagTextLength="15"
               :maxTags="5"
-              :action="`${TESTER}/task/tag/search?projectId=${props.projectId}`"
+              :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
               allowClear
               placeholder="最多可添加5个标签"

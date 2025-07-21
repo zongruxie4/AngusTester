@@ -77,5 +77,4 @@ export default class API {
   cancelScenePerf (id: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/SCENARIO/${id}/perf/cancel`);
   }
-
 }

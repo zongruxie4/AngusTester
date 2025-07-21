@@ -125,7 +125,7 @@ defineExpose({
         :lazy="false"
         :defaultActiveFirstOption="true"
         placeholder="选择迭代"
-        :action="`${TESTER}/task/sprint/search?projectId=${props.projectId}`"
+        :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
     </div>
@@ -143,7 +143,7 @@ defineExpose({
         allowClear
         class="w-50"
         placeholder="选择用户"
-        :action="`${GM}/user/search`"
+        :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }">
       </Select>
 
@@ -154,7 +154,7 @@ defineExpose({
         class="w-50"
         allowClear
         :showSearch="true"
-        :action="`${GM}/dept/search`"
+        :action="`${GM}/dept?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
 
@@ -165,7 +165,7 @@ defineExpose({
         class="w-50"
         allowClear
         :showSearch="true"
-        :action="`${GM}/group/search`"
+        :action="`${GM}/group?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
       <Hints text="用于输出指定组织或人员项目报告。" />

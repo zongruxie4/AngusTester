@@ -59,7 +59,7 @@ export default class API {
   }
 
   searchReviewCase (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/review/case/search`, params);
+    return http.get(`${baseUrl}/review/case`, { ...params, fullTextSearch: true });
   }
 
   addReviewCase (params): Promise<[Error | null, any]> {
@@ -93,7 +93,7 @@ export default class API {
   }
 
   searchBaseline (params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/baseline/search`, params);
+    return http.get(`${baseUrl}/baseline`, { ...params, fullTextSearch: true });
   }
 
   updateBaseline (params): Promise<[Error | null, any]> {
@@ -131,7 +131,7 @@ export default class API {
   }
 
   searchBaselineCase (baselineId: string, params): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/baseline/${baselineId}/case/search`, params);
+    return http.get(`${baseUrl}/baseline/${baselineId}/case`, { ...params, fullTextSearch: true });
   }
 
   deleteBaselineCase (baselineId: string, caseIds: string): Promise<[Error | null, any]> {

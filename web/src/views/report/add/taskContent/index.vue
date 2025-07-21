@@ -90,7 +90,7 @@ defineExpose({
         allowClear
         class="w-72"
         placeholder="选择迭代"
-        :action="`${TESTER}/task/sprint/search?projectId=${props.projectId || ''}`"
+        :action="`${TESTER}/task/sprint?projectId=${props.projectId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="handleSprintChange">
       </Select>
@@ -111,7 +111,7 @@ defineExpose({
         allowClear
         class="w-72"
         placeholder="选择任务"
-        :action="`${TESTER}/task/search?projectId=${props.projectId}&sprintId=${sprintId || ''}`"
+        :action="`${TESTER}/task?projectId=${props.projectId}&sprintId=${sprintId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
     </div>
