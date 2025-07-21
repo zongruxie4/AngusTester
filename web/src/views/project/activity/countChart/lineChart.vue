@@ -8,8 +8,6 @@ import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/compone
 import { LineChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { computed } from '@vue/reactivity';
-// import DarkTheme from '../statisticsPanel/echartsDark.json';
-// import GrayTheme from '../statisticsPanel/echartsGray.json';
 
 interface Props {
   title:string

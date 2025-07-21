@@ -14,9 +14,6 @@ import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import DarkTheme from '@/assets/echartsDark.json';
-import GrayTheme from '@/assets/echartsGray.json';
-
 interface Props {
   title:string;
   unit:string;
@@ -54,7 +51,6 @@ const initCharts = () => {
   if (!chartsRef.value) {
     return;
   }
-  echarts.registerTheme(tenantInfo.value.preference.themeCode, tenantInfo.value.preference.themeCode === 'dark' ? DarkTheme : GrayTheme);
   myChart = echarts.init(chartsRef.value, tenantInfo.value.preference.themeCode, { renderer: 'canvas' });
   myChart.setOption(chartsOption);
   window.addEventListener('resize', () => {
