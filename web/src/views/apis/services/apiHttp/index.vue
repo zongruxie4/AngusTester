@@ -14,7 +14,7 @@ import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
 
-import { apis, services, unarchived } from 'src/api/tester';
+import { apis, services } from 'src/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';
 import { getDefaultParams } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
@@ -344,7 +344,7 @@ const loadApiInfo = async (): Promise<void> => {
   let result;
   loadingInfo.value = true;
   if (isUnarchivedApi.value) {
-    result = await unarchived.loadInfo(props.id as string);
+    result = await apis.getUnarchivedApiDetail(props.id as string);
   } else {
     result = await apis.getApiDetail(props.id as string);
   }

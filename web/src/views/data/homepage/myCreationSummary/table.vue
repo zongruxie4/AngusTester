@@ -38,14 +38,14 @@ const loadDataApiConfig = {
   dataSource: dataSource.getDataSourceList,
   space: space.getSpaceList,
   dataSet: dataSet.getDataSetList,
-  variable: variable.loadVariablesList
+  variable: variable.getVariablesList
 };
 
 const delDataApicConfig = {
   dataSource: dataSource.deleteDataSource,
   space: space.deleteSpace,
   dataSet: dataSet.deleteDataSet,
-  variable: variable.delVariables
+  variable: variable.deleteVariables
 };
 const appInfo = inject('appInfo', ref({ code: '' }));
 

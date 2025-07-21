@@ -33,7 +33,7 @@ const inputChange = debounce(duration.search, () => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await task.backTrashAllTask(params);
+  const [error] = await task.backAllTrashTask(params);
   if (error) {
     loading.value = false;
     return;
@@ -45,7 +45,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await task.deleteAllTrash(params);
+  const [error] = await task.deleteAllTrashTask(params);
   if (error) {
     loading.value = false;
     return;

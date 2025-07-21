@@ -117,7 +117,7 @@ const loadData = async () => {
   //   params.filters = filters.value;
   // }
 
-  const [error, res] = await task.searchMeeting(params);
+  const [error, res] = await task.getMeetingList(params);
   loaded.value = true;
   loading.value = false;
 

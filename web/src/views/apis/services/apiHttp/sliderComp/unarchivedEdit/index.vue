@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, inject, reactive, ref, watch } from 'vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
-import { unarchived } from 'src/api/tester';
+import { apis } from 'src/api/tester';
 import { Button, Form, FormItem } from 'ant-design-vue';
 
 interface Props {
@@ -59,7 +59,7 @@ const setUnarchivedApiInfo = inject('setUnarchivedApiInfo', (info) => (info));
 const userInfo = inject('tenantInfo', ref({ id: '', fullName: '' }));
 
 const loadInfo = async () => {
-  const [error, res] = await unarchived.loadInfo(state.id);
+  const [error, res] = await unarchived.getUnarchivedApiDetail(state.id);
   if (error) {
     return;
   }
@@ -105,8 +105,8 @@ const save = async () => {
     const params = { ...formParams, summary, description, projectId: projectInfo.value?.id };
     isLoading.value = true;
     const [error, res] = isUnarchivedApi.value && state.id
-      ? await unarchived.updateApi({ dto: [{ ...params }] })
-      : await unarchived.addApi({ dto: [{ ...params }] });
+      ? await apis.updateUnarchivedApi({ dto: [{ ...params }] })
+      : await apis.addUnarchivedApi({ dto: [{ ...params }] });
     isLoading.value = false;
     if (error) {
       return;

@@ -83,7 +83,7 @@ const refresh = () => {
 };
 
 const setTableData = async (id: string, index: number) => {
-  const [error, res] = await task.getSprintInfo(id);
+  const [error, res] = await task.getSprintDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -180,7 +180,7 @@ const toDelete = async (data: SprintInfo) => {
     content: `确定删除迭代【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await task.delSprint(id);
+      const [error] = await task.deleteSprint(id);
       if (error) {
         return;
       }
@@ -286,7 +286,7 @@ const loadData = async () => {
     ...searchPanelParams
   };
 
-  const [error, res] = await task.searchSprints(params);
+  const [error, res] = await task.getSprintList(params);
   loaded.value = true;
   loading.value = false;
 

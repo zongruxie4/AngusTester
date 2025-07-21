@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
-import { target, apis } from '@/api/tester';
+import { paramTarget, apis } from '@/api/tester';
 
 import { UseCaseInfo } from './PropsType';
 
@@ -132,7 +132,7 @@ const ok = async (key:'link'|'copy') => {
       data.caseId = id;
     }
     // 查询变量
-    const [_error, { data: _data }] = await target.getVariable(apisId.value, 'API', { silence: false });
+    const [_error, { data: _data }] = await paramTarget.getVariable(apisId.value, 'API', { silence: false });
     if (_error) {
       coping.value = false;
       linking.value = false;
@@ -148,7 +148,7 @@ const ok = async (key:'link'|'copy') => {
     });
 
     // 查询数据集
-    const [_error2, { data: _data2 }] = await target.getDataSet(apisId.value, 'API', { silence: false });
+    const [_error2, { data: _data2 }] = await paramTarget.getDataSet(apisId.value, 'API', { silence: false });
     if (_error2) {
       coping.value = false;
       linking.value = false;

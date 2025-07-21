@@ -75,7 +75,7 @@ const scenarioName = ref();
 const execName = ref();
 
 const loadSprintName = async (sprintId) => {
-  const [error, { data }] = await task.getSprintInfo(sprintId);
+  const [error, { data }] = await task.getSprintDetail(sprintId);
   if (error) {
     return;
   }
@@ -83,7 +83,7 @@ const loadSprintName = async (sprintId) => {
 };
 
 const loadTaskName = async (taskId) => {
-  const [error, { data }] = await task.loadTaskInfo(taskId);
+  const [error, { data }] = await task.getTaskDetail(taskId);
   if (error) {
     return;
   }

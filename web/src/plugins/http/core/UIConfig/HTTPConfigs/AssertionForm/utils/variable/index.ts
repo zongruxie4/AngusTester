@@ -30,7 +30,7 @@ const load = async (id:string, names:string[]):Promise<null|{
   value: string;
 }[]> => {
   // const [error, { data }] = await http.getVariables({ names, targetId: id, targetType: 'API' });
-  const [error, { data }] = await variable.getVariables({ names, targetId: id, targetType: 'API' });
+  const [error, { data }] = await variable.getVariableValue({ names, targetId: id, targetType: 'API' });
   if (error) {
     return null;
   }

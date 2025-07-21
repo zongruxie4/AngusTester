@@ -92,7 +92,7 @@ const loadPermissions = async (id: string) => {
 
 const loadData = async (id: string) => {
   loading.value = true;
-  const [error, res] = await task.getSprintInfo(id);
+  const [error, res] = await task.getSprintDetail(id);
   loading.value = false;
   if (error) {
     return;

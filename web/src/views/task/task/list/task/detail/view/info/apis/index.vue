@@ -239,7 +239,7 @@ const tagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTagsApi(taskId.value, { tagIds: ids });
+  const [error] = await task.editTaskTags(taskId.value, { tagIds: ids });
   emit('loadingChange', false);
   tagEditFlag.value = false;
   if (error) {

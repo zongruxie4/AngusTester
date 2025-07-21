@@ -9,7 +9,7 @@ import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import { apis, unarchived } from 'src/api/tester';
+import { apis } from 'src/api/tester';
 import { API_AUTH_CODE } from '@/views/apis/PropsType';
 import { formatBytes } from '@/utils/utils';
 import ApiServer from '@/views/apis/services/apiWebSocket/server/index.vue';
@@ -314,7 +314,7 @@ const loadApiInfo = async () => {
   if (!props.id) {
     return;
   }
-  const [error, resp] = await (props.valueObj.unarchived ? unarchived.loadInfo(props.id) : apis.getApiDetail(props.id));
+  const [error, resp] = await (props.valueObj.unarchived ? apis.getUnarchivedApiDetail(props.id) : apis.getApiDetail(props.id));
   if (error) {
     return;
   }

@@ -3,7 +3,7 @@ import { inject, onMounted, reactive, ref } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 
-import { unarchived } from 'src/api/tester';
+import { apis } from 'src/api/tester';
 
 interface Props {
   getParameter: any;
@@ -61,8 +61,8 @@ const save = () => {
 
     const { currentServer, method, parameters, protocol, requestBody, endpoint } = apiInfo;
     const [error, resp] = props.id
-      ? await unarchived.updateApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, id: props.id, projectId: projectInfo.value?.id }] })
-      : await unarchived.addApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, projectId: projectInfo.value?.id }] });
+      ? await apis.updateUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, id: props.id, projectId: projectInfo.value?.id }] })
+      : await apis.addUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, projectId: projectInfo.value?.id }] });
     if (error) {
       return;
     }

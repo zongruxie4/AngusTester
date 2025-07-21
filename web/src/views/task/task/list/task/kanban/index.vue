@@ -130,7 +130,7 @@ const loadEnum = async () => {
 const loadData = async () => {
   const params = getParams();
   emit('update:loading', true);
-  const [error, res] = await task.loadTaskList(params);
+  const [error, res] = await task.getTaskList(params);
   if (error) {
     resetData();
     emit('update:loading', false);
@@ -148,7 +148,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await task.loadTaskList(_params);
+      const [_error, _res] = await task.getTaskList(_params);
       if (_error) {
         emit('update:loading', false);
         return;
@@ -260,7 +260,7 @@ const loadPermissions = async (id: string) => {
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await task.loadTaskInfo(id);
+  const [error, res] = await task.getTaskDetail(id);
   emit('update:loading', false);
   if (error || !res?.data) {
     return { id };
@@ -639,7 +639,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
 const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.startProcessing(id);
+  const [error] = await task.startTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {

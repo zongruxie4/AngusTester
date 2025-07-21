@@ -67,7 +67,7 @@ const ok = async () => {
   formData.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
   formData.append('projectId', props.projectId);
   loading.value = true;
-  const [error] = await variable.importVariable(formData);
+  const [error] = await variable.importVariables(formData);
   loading.value = false;
   if (error) {
     uploadErrorMsg.value = error.message;

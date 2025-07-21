@@ -58,7 +58,7 @@ const selectChange = (ids:string[]) => {
 
 const loadData = async (): Promise<Partial<TaskInfo>> => {
   emit('loadingChange', true);
-  const [error, res] = await task.loadTaskInfo(taskId.value);
+  const [error, res] = await task.getTaskDetail(taskId.value);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id: taskId.value };

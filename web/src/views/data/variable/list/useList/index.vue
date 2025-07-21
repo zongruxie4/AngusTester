@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { http, TESTER } from '@xcan-angus/tools';
 import { SourceItem } from '../../PropsType';
-import { target, variable } from '@/api/tester';
+import { paramTarget, variable } from '@/api/tester';
 
 type Props = {
   id: string;
@@ -32,7 +32,7 @@ const toDelete = (data: SourceItem) => {
     async onOk () {
       loading.value = true;
       const params = [props.id];
-      const [error] = await target.deleteVariable(data.targetId, data.targetType?.value, params, { dataType: true });
+      const [error] = await paramTarget.deleteVariable(data.targetId, data.targetType?.value, params, { dataType: true });
       loading.value = false;
       if (error) {
         return;
@@ -82,7 +82,7 @@ const toBatchDelete = () => {
       for (let i = 0; i < num; i++) {
         const data = dataList.value.find((item) => item.targetId === ids[i]);
         if (data) {
-          const _promise = target.deleteVariable(data.targetId, data.targetType?.value, params, { dataType: true, silence: true });
+          const _promise = paramTarget.deleteVariable(data.targetId, data.targetType?.value, params, { dataType: true, silence: true });
           promises.push(_promise);
         }
       }
@@ -165,7 +165,7 @@ const refresh = () => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await variable.getTargetDetail(props.id);
+  const [error, res] = await variable.getVariableTargetDetail(props.id);
   loading.value = false;
   loaded.value = true;
   if (error) {

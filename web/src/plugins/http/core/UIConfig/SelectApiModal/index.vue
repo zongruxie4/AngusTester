@@ -4,7 +4,7 @@ import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-a
 import { Button } from 'ant-design-vue';
 import { TESTER, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
-import { apis, target } from '@/api/tester';
+import { apis, paramTarget } from '@/api/tester';
 
 import { ApiInfo } from './PropsType';
 
@@ -115,7 +115,7 @@ const ok = async (key:'link'|'copy') => {
     }
 
     // 查询变量
-    const [_error, { data: _data }] = await target.getVariable(id, 'API', { silence: false });
+    const [_error, { data: _data }] = await paramTarget.getVariable(id, 'API', { silence: false });
     if (_error) {
       coping.value = false;
       linking.value = false;
@@ -131,7 +131,7 @@ const ok = async (key:'link'|'copy') => {
     });
 
     // 查询数据集
-    const [_error2, { data: _data2 }] = await target.getDataSet(id, 'API', { silence: false });
+    const [_error2, { data: _data2 }] = await paramTarget.getDataSet(id, 'API', { silence: false });
     if (_error2) {
       coping.value = false;
       linking.value = false;

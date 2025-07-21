@@ -88,7 +88,7 @@ const updateAttachments = async (data:{name:string;url:string}[]) => {
     attachments: data
   };
   loading.value = true;
-  const [error] = await task.updateAttachment(taskId.value, params);
+  const [error] = await task.editTaskAttachment(taskId.value, params);
   loading.value = false;
   if (error) {
     return;

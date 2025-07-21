@@ -5,7 +5,7 @@ import { TESTER, localStore, utils, duration } from '@xcan-angus/tools';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 
-import { services, unarchived } from 'src/api/tester';
+import { services, apis } from 'src/api/tester';
 import { actions, ModalsConfig, ServiceProject } from './PropsType';
 
 type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';
@@ -639,7 +639,7 @@ const searchChange = debounce(duration.search, (key: 'trash'|'unarchived', value
 });
 
 const loadUnarchivedCount = async () => {
-  const [error, res] = await unarchived.loadCount({ projectId: projectInfo?.value?.id });
+  const [error, res] = await apis.getUnarchivedApiCount({ projectId: projectInfo?.value?.id });
   if (error) {
     return;
   }

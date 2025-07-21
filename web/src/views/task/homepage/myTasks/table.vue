@@ -138,7 +138,7 @@ const getParams = () => {
 const loadData = async () => {
   const params = getParams();
   loading.value = true;
-  const [error, res] = await task.loadTaskList(params);
+  const [error, res] = await task.getTaskList(params);
   loading.value = false;
   loaded.value = true;
   if (error) {

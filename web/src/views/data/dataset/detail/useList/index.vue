@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 
 import { SourceItem } from '../../PropsType';
-import { dataSet, target } from '@/api/tester';
+import { dataSet, paramTarget } from '@/api/tester';
 
 type Props = {
   id: string;
@@ -32,7 +32,7 @@ const toDelete = (data: SourceItem) => {
     async onOk () {
       loading.value = true;
       const params = [props.id];
-      const [error] = await target.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true });
+      const [error] = await paramTarget.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true });
       loading.value = false;
       if (error) {
         return;
@@ -82,7 +82,7 @@ const toBatchDelete = () => {
       for (let i = 0; i < num; i++) {
         const data = dataList.value.find((item) => item.targetId === ids[i]);
         if (data) {
-          const _promise = target.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true, silence: true });
+          const _promise = paramTarget.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true, silence: true });
           promises.push(_promise);
         }
       }

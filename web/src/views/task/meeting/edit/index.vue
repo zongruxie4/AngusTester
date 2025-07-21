@@ -143,7 +143,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await task.getMeetingInfo(id);
+  const [error, res] = await task.getMeetingDetail(id);
   loading.value = false;
   if (error) {
     return;

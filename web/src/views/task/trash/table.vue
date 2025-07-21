@@ -105,7 +105,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await task.searchTrashTask(params);
+  const [error, res] = await task.getTrashTaskList(params);
   loaded.value = true;
   emit('update:spinning', false);
   if (error) {
