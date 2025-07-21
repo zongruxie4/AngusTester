@@ -225,10 +225,10 @@ onMounted(() => {
           scriptType="TEST_FUNCTIONALITY"
           :plugin="sceanrioData?.plugin"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" tab="性能测试">
         <Execdetail
@@ -245,10 +245,10 @@ onMounted(() => {
           :execId="stabilityExecId"
           scriptType="TEST_STABILITY"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" tab="自定义测试">
         <Execdetail
@@ -257,10 +257,10 @@ onMounted(() => {
           :execId="customExecId"
           scriptType="TEST_CUSTOMIZATION"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="task" tab="测试任务">
         <Task :scenarioId="props.data?.scenarioId" :projectId="props.projectId" />

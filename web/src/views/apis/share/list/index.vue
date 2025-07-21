@@ -193,14 +193,14 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'isExpired',
-    width: '8%',
+    width: '8%'
   },
   {
     title: '分享人',
     dataIndex: 'createdByAvatar',
     width: '8%',
     sorter: true,
-    ellipsis: true,
+    ellipsis: true
   },
   {
     title: '分享范围',
@@ -213,8 +213,8 @@ const columns = [
     dataIndex: 'expiredDate',
     width: '9%',
     sorter: true,
-    customRender: ({text}) => text || '--',
-    groupName: 'date',
+    customRender: ({ text }) => text || '--',
+    groupName: 'date'
   },
   {
     title: '分享日期',
@@ -297,13 +297,15 @@ const columns = [
                 </template>
                 <template v-if="column.dataIndex === 'createdByAvatar'">
                   <div class="inline-flex items-center ">
-                    <Image type="avatar" class="w-4 rounded-full mr-1" :src="record.createdByAvatar" />
-                    <span class="flex-1 truncate" :title="record.createdByName">{{record.createdByName}}</span>
+                    <Image
+                      type="avatar"
+                      class="w-4 rounded-full mr-1"
+                      :src="record.createdByAvatar" />
+                    <span class="flex-1 truncate" :title="record.createdByName">{{ record.createdByName }}</span>
                   </div>
-
                 </template>
                 <template v-if="column.dataIndex === 'remark'">
-                  <template v-if="record.remark">{{record.remark}}</template>
+                  <template v-if="record.remark">{{ record.remark }}</template>
                   <span v-else class="text-sub-content">无~</span>
                 </template>
                 <template v-if="column.dataIndex === 'isExpired'">

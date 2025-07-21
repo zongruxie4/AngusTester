@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch, computed } from 'vue';
-import {  Hints, Input, Modal, Select, notification } from '@xcan-angus/vue-ui';
-import { Form, FormItem  } from 'ant-design-vue';
+import { Hints, Input, Modal, Select, notification } from '@xcan-angus/vue-ui';
+import { Form, FormItem } from 'ant-design-vue';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -28,8 +28,6 @@ const formState = ref({
   openapiSpecVersion: '3.0.1'
 });
 
-
-
 const loading = ref(false);
 const formRef = ref();
 
@@ -49,16 +47,14 @@ const loadData = async (id: string) => {
   if (!data) {
     return;
   }
-  const { name,  openapiSpecVersion} = data;
+  const { name, openapiSpecVersion } = data;
   formState.value = {
     name, openapiSpecVersion
   };
-
 };
 
 const selectApiId = ref();
 const selectApis = ref<any[]>([]);
-
 
 const cancel = () => {
   formRef.value.resetFields();
@@ -123,7 +119,7 @@ onMounted(async () => {
   }, { immediate: true });
 });
 
-const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({value: i, label: i}));
+const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ value: i, label: i }));
 
 </script>
 <template>
@@ -152,15 +148,17 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({valu
           :maxlength="100"
           placeholder="输入设计名称，最多可输入100字符" />
       </FormItem>
-      <FormItem label="版本" name="openapiSpecVersion" required>
+      <FormItem
+        label="版本"
+        name="openapiSpecVersion"
+        required>
         <div class="flex items-center space-x-2">
           <Select
             v-model:value="formState.openapiSpecVersion"
             class="flex-1"
-            :options="versionOpt"/>
+            :options="versionOpt" />
           <Hints text="OpenAPI文档规范版本号，默认3.0.1。" />
         </div>
-
       </FormItem>
     </Form>
   </Modal>

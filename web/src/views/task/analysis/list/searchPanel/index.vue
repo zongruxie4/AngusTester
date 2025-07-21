@@ -925,7 +925,7 @@ const sortMenuItems = [
         <Button
           class="flex-shrink-0 flex items-center"
           size="small"
-          @click="toRefresh" >
+          @click="toRefresh">
           <IconRefresh class="text-4 flex-shrink-0" />
           刷新
         </Button>

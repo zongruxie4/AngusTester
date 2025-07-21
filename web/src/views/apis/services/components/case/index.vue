@@ -206,7 +206,6 @@ watch(() => props.id, newValue => {
           <IconRefresh />
         </Button>
       </div>
-
     </div>
     <Spin :spinning="loading">
       <div class="flex" :class="[props.layout === 'horizontal' ? 'flex-col' : 'flex-wrap']">

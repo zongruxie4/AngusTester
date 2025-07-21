@@ -78,7 +78,10 @@ provide('updateRefreshNotify', updateRefreshNotify);
 
     <div class="flex-shrink-0 pt-8 h-full w-right">
       <Introduction class="mb-5" />
-      <ActivityTimeline v-if="projectId" :userInfo="props.userInfo" :projectId="props.projectId" />
+      <ActivityTimeline
+        v-if="projectId"
+        :userInfo="props.userInfo"
+        :projectId="props.projectId" />
     </div>
   </div>
 </template>

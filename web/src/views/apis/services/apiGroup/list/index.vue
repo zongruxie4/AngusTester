@@ -592,7 +592,7 @@ watch(() => [props.allData, props.groupedBy], () => {
         }
       });
     }
-    tagsArr.forEach((key => {
+    tagsArr.forEach(key => {
       const list = resultObj[key];
       data.value.push({
         type: 'group',
@@ -602,7 +602,7 @@ watch(() => [props.allData, props.groupedBy], () => {
         childrenNum: list.length,
         key
       }, ...list);
-    }));
+    });
   }
 }, {
   immediate: true

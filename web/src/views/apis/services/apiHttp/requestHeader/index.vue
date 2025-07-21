@@ -14,7 +14,7 @@ import { itemTypes } from './interface';
 import { deepDelAttrFromObj, validateType } from '../utils';
 import JsonContent from '../requestBody/json/index.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import {clipboard} from "@xcan-angus/tools";
+import { clipboard } from '@xcan-angus/tools';
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
@@ -156,7 +156,6 @@ const handleChecked = (e:ChangeEvent, index:number, data: ParamsItem) => {
 //     notification.success('设置变量成功');
 //   }
 // };
-
 
 const copyValue = async (data: ParamsItem) => {
   let text = data[valueKey];

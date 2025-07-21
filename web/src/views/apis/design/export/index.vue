@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {  Modal, } from '@xcan-angus/vue-ui';
-import {  RadioGroup  } from 'ant-design-vue';
+import { Modal } from '@xcan-angus/vue-ui';
+import { RadioGroup } from 'ant-design-vue';
 import { download, TESTER } from '@xcan-angus/tools';
 
 interface Props {
@@ -11,13 +11,13 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
-  designId: undefined,
+  designId: undefined
 });
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
 
 const loading = ref(false);
-const exportTypeOpt = ['json', 'yaml'].map(i => ({value: i, label: i}));
+const exportTypeOpt = ['json', 'yaml'].map(i => ({ value: i, label: i }));
 
 const formState = ref({
   format: 'json'
@@ -25,14 +25,14 @@ const formState = ref({
 
 const cancel = () => {
   emits('update:visible', false);
-}
+};
 
 const ok = () => {
   download(`${TESTER}/apis/design/export?id=${props.designId}&format=${formState.value.format}`)
     .then(() => {
-      cancel()
+      cancel();
     });
-}
+};
 
 </script>
 <template>

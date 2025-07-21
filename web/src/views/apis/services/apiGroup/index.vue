@@ -64,10 +64,12 @@ const state = reactive<StateType>({
   dataSource: [],
   id: '', // 接口Id
   name: '',
-  order: localOrder ? JSON.parse(localOrder) : {
-    orderBy: undefined,
-    orderSort: undefined
-  },
+  order: localOrder
+    ? JSON.parse(localOrder)
+    : {
+        orderBy: undefined,
+        orderSort: undefined
+      },
   serviceId: '',
   showGroupList: !!(localGroupBy && localGroupBy !== ''),
   groupedBy: localStorage.getItem(`${props.serviceId}_groupBy`) || '',

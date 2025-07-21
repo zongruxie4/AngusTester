@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {Modal, notification, IconText, TreeSelect } from '@xcan-angus/vue-ui';
-import {  Form, FormItem, } from 'ant-design-vue';
+import { Modal, notification, IconText, TreeSelect } from '@xcan-angus/vue-ui';
+import { Form, FormItem } from 'ant-design-vue';
 import { apis } from '@/api/tester';
-import { TESTER } from "@xcan-angus/tools";
+import { TESTER } from '@xcan-angus/tools';
 
 interface Props {
   visible: boolean;
@@ -25,7 +25,7 @@ const formState = ref({
 
 const handleServiceChange = (serviceId) => {
   formState.value.serviceId = serviceId;
-}
+};
 
 const cancel = () => {
   emits('update:visible', false);
@@ -42,7 +42,7 @@ const ok = async () => {
     notification.success('导入成功');
     cancel();
     emits('ok');
-  })
+  });
 };
 
 </script>
@@ -59,7 +59,11 @@ const ok = async () => {
     <Form
       ref="formRef"
       :model="formState">
-      <FormItem name="serviceId" label="服务" required class="leading-8">
+      <FormItem
+        name="serviceId"
+        label="服务"
+        required
+        class="leading-8">
         <TreeSelect
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label:'name', value: 'id'}"
@@ -83,5 +87,3 @@ const ok = async () => {
     </Form>
   </Modal>
 </template>
-
-

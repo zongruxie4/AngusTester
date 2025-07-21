@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import {AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 
 import { DesignInfo } from '../PropsType';
@@ -166,37 +166,37 @@ const editDesign = (record: {id?: string} = {}) => {
   editVisible.value = true;
 };
 
-const exportDesign = (record: {id: string; name: string; url?: string})  => {
+const exportDesign = (record: {id: string; name: string; url?: string}) => {
   selectDesignId.value = record.id;
   exportVisible.value = true;
-}
+};
 
-const cloneDesign = async (record: {id: string; name: string; url?: string})  => {
+const cloneDesign = async (record: {id: string; name: string; url?: string}) => {
   const [error] = await apis.cloneDesign(record.id);
   if (error) {
     return;
   }
   notification.success('克隆成功');
   loadData();
-}
+};
 
-const releaseDesign = async (record: {id: string; name: string; url?: string})  => {
+const releaseDesign = async (record: {id: string; name: string; url?: string}) => {
   const [error] = await apis.releaseDesign(record.id);
   if (error) {
     return;
   }
   notification.success('发布成功');
   loadData();
-}
+};
 
-const generateService = async (record: {id: string; name: string; url?: string})  => {
+const generateService = async (record: {id: string; name: string; url?: string}) => {
   const [error] = await apis.generateServiceFromDesign(record.id);
   if (error) {
     return;
   }
   notification.success('已生成服务');
   loadData();
-}
+};
 
 const handleEnterDesign = async (record) => {
   addTabPane({
@@ -205,7 +205,7 @@ const handleEnterDesign = async (record) => {
     value: 'designDocContent',
     name: record.name,
     data: { _id: record.id, ...record }
-  })
+  });
 };
 
 const handleDesign = (record: {id: string; name: string; url?: string}, key) => {
@@ -219,12 +219,11 @@ const handleDesign = (record: {id: string; name: string; url?: string}, key) => 
     case 'delete':
       return toDelete(record);
     case 'export':
-       exportDesign(record);
-       break;
+      exportDesign(record);
+      break;
     default:
-      return;
   }
-}
+};
 
 const handleImportOk = () => {
   loadData();
@@ -252,7 +251,7 @@ const columns = [
     title: '来源',
     dataIndex: 'designSource',
     width: '8%',
-    customRender: ({text}) => {
+    customRender: ({ text }) => {
       return text?.message || '--';
     }
   },
@@ -279,7 +278,7 @@ const columns = [
     dataIndex: 'lastModifiedByName',
     width: '10%',
     groupName: 'lastModifiedByName',
-    ellipsis: true,
+    ellipsis: true
   },
   {
     title: '最后修改时间',
@@ -296,33 +295,34 @@ const columns = [
 ];
 const moreButton = (record) => {
   return [
-  {
-    key: 'clone',
-    name: '克隆',
-    icon: 'icon-fuzhi'
-  },
-  {
-    key: 'export',
-    name: '导出',
-    icon: 'icon-daochu1'
-  },
-  {
-    key: 'publish',
-    name: '发布',
-    icon: 'icon-fabu'
-  },
-  {
-    key: 'generate',
-    name: '生成服务',
-    icon: 'icon-fuwu',
-    disabled: !!record.designSourceId
-  },
-  {
-    key: 'delete',
-    name: '删除',
-    icon: 'icon-qingchu'
-  }
-]};
+    {
+      key: 'clone',
+      name: '克隆',
+      icon: 'icon-fuzhi'
+    },
+    {
+      key: 'export',
+      name: '导出',
+      icon: 'icon-daochu1'
+    },
+    {
+      key: 'publish',
+      name: '发布',
+      icon: 'icon-fabu'
+    },
+    {
+      key: 'generate',
+      name: '生成服务',
+      icon: 'icon-fuwu',
+      disabled: !!record.designSourceId
+    },
+    {
+      key: 'delete',
+      name: '删除',
+      icon: 'icon-qingchu'
+    }
+  ];
+};
 </script>
 
 <template>
@@ -347,7 +347,7 @@ const moreButton = (record) => {
             @refresh="refresh"
             @add="editDesign"
             @import="importDesign"
-            @importService="importService"/>
+            @importService="importService" />
           <NoData v-if="dataList.length === 0" class="flex-1" />
           <template v-else>
             <Table
@@ -361,8 +361,11 @@ const moreButton = (record) => {
                 </template>
                 <template v-if="column.dataIndex === 'createdByAvatar'">
                   <div class="inline-flex items-center truncate">
-                    <Image type="avatar" class="w-6 rounded-full mr-1" :src="record.createdByAvatar" />
-                    <span class="flex-1 truncate" :tite="record.createdByName">{{record.createdByName}}</span>
+                    <Image
+                      type="avatar"
+                      class="w-6 rounded-full mr-1"
+                      :src="record.createdByAvatar" />
+                    <span class="flex-1 truncate" :tite="record.createdByName">{{ record.createdByName }}</span>
                   </div>
                 </template>
                 <template v-if="column.dataIndex=== 'released'">
@@ -370,7 +373,12 @@ const moreButton = (record) => {
                   <Tag v-else color="default">草稿</Tag>
                 </template>
                 <template v-if="column.dataIndex === 'designSourceName'">
-                  <RouterLink v-if="record.designSourceId" class="text-blue-1" :to="`/apis#services?id=${record.designSourceId}&value=group&name=${record.designSourceName}`">{{ record.designSourceName }}</RouterLink>
+                  <RouterLink
+                    v-if="record.designSourceId"
+                    class="text-blue-1"
+                    :to="`/apis#services?id=${record.designSourceId}&value=group&name=${record.designSourceName}`">
+                    {{ record.designSourceName }}
+                  </RouterLink>
                   <template v-else>
                     --
                   </template>
@@ -380,7 +388,7 @@ const moreButton = (record) => {
                     type="text"
                     size="small"
                     @click="editDesign(record)">
-                    <Icon icon="icon-bianji"  />
+                    <Icon icon="icon-bianji" />
                     编辑
                   </Button>
                   <Button
@@ -416,13 +424,13 @@ const moreButton = (record) => {
       <ImportModal
         v-model:visible="importVisible"
         :projectId="props.projectId"
-        @ok="handleImportOk"/>
+        @ok="handleImportOk" />
     </AsyncComponent>
     <AsyncComponent :visible="importServiceVisible">
       <ImportServiceModal
         v-model:visible="importServiceVisible"
         :projectId="props.projectId"
-        @ok="handleImportOk"/>
+        @ok="handleImportOk" />
     </AsyncComponent>
   </div>
 </template>

@@ -305,7 +305,10 @@ const handleClickSpread = (group, index) => {
             <span class="w-20 block h-7 text-center rounded text-white leading-7" :class="bgColor[item.method]">{{ item.method }}</span>
           </div>
           <p class="px-2"><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p>
-          <Icon icon="icon-xiangshang-copy" class="mr-3 transition-all" :class="{'rotate-90': groupSpreadMap[item.key]}" />
+          <Icon
+            icon="icon-xiangshang-copy"
+            class="mr-3 transition-all"
+            :class="{'rotate-90': groupSpreadMap[item.key]}" />
         </div>
       </template>
     </template>

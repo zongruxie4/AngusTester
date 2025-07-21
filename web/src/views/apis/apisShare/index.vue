@@ -114,21 +114,21 @@ provide('readyState', readyState);
     </div>
     <template v-else-if="openapi">
       <rapi-doc
-        :spec-url="openapi"
-        spec-is-content="true"
+        :specUrl="openapi"
+        specIsContent="true"
         style="padding: 20px;"
         theme="light"
-        render-style="focused"
-        header-color="#fff"
-        update-route="false"
+        renderStyle="focused"
+        headerColor="#fff"
+        updateRoute="false"
         navBgColor="#fff"
-        :show-info="displayOptions.includeServiceInfo"
+        :showInfo="displayOptions.includeServiceInfo"
         bgColor="#fff"
         allowSpecUrlLoad="false"
         allowSpecFileLoad="false"
         allowSpecFileDownload="false"
-        :allow-try="displayOptions.allowDebug"
-        :schema-style="displayOptions.schemaStyle"
+        :allowTry="displayOptions.allowDebug"
+        :schemaStyle="displayOptions.schemaStyle"
         showHeader="false"
         schemaExpandLevel="20">
       </rapi-doc>
@@ -151,5 +151,4 @@ provide('readyState', readyState);
       </div>
     </template>
   </Spin>
-
 </template>

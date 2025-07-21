@@ -368,7 +368,7 @@ onMounted(() => {
                   :toolbarOptions="toolbarOptions"
                   :options="{theme: 'bubble'}"
                   class="step-content"
-                  height="auto"/>
+                  height="auto" />
               </div>
               <div class="flex-1 px-2 py-2">
                 <RichEditor
@@ -377,7 +377,7 @@ onMounted(() => {
                   :toolbarOptions="toolbarOptions"
                   :options="{theme: 'bubble'}"
                   class="step-content"
-                  height="auto"/>
+                  height="auto" />
               </div>
             </div>
           </div>
@@ -398,7 +398,7 @@ onMounted(() => {
                   :toolbarOptions="toolbarOptions"
                   :options="{theme: 'bubble'}"
                   class="step-content"
-                  height="auto"/>
+                  height="auto" />
               </div>
               <div class="flex-1 px-2 py-2">
                 <RichEditor
@@ -407,7 +407,7 @@ onMounted(() => {
                   :toolbarOptions="toolbarOptions"
                   :options="{theme: 'bubble'}"
                   class="step-content"
-                  height="auto"/>
+                  height="auto" />
               </div>
             </div>
           </div>

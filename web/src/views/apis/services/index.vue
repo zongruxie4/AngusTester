@@ -33,7 +33,6 @@ const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/servi
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/homepage/quickStarted.vue'));
 
-
 const route = useRoute();
 const router = useRouter();
 

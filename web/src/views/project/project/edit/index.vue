@@ -8,7 +8,7 @@ import {
   RadioButton,
   RadioGroup,
   TabPane,
-  Tabs,
+  Tabs
 } from 'ant-design-vue';
 import { DatePicker, Icon, Image, Input, notification, Select, SelectUser, Cropper } from '@xcan-angus/vue-ui';
 import { GM } from '@xcan-angus/tools';
@@ -80,7 +80,7 @@ const uploadOption = {
   mode: 'contain',
   preW: 0,
   limitMinSize: [100, 100]
-}
+};
 
 const defaultOptionsUser = ref<{ [key: string]: any }>({});
 const defaultOptionsDept = ref<{ [key: string]: any }>({});
@@ -332,7 +332,10 @@ onMounted(() => {
               </FormItem>
             </div>
 
-            <FormItem label="项目成员" class="input_select" required >
+            <FormItem
+              label="项目成员"
+              class="input_select"
+              required>
               <RadioGroup
                 v-model:value="memberType"
                 buttonStyle="solid"
@@ -541,7 +544,10 @@ onMounted(() => {
                 </Popover>
               </FormItem>
 
-              <FormItem label="项目成员" class="input_select" required>
+              <FormItem
+                label="项目成员"
+                class="input_select"
+                required>
                 <RadioGroup
                   v-model:value="memberType"
                   buttonStyle="solid"
@@ -681,6 +687,5 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-
 
 </style>

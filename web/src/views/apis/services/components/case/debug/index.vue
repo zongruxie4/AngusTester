@@ -192,7 +192,7 @@ const responseState = reactive({
 const analysisApiParam = async (data) => {
   const { endpoint, parameters, requestBody, authentication, assertions, resolvedRefModels, serviceId } = data || {};
 
-  authenticationParam.value = authentication ? {...authentication, ...(authentication.extensions || {} )}  : { type: null };
+  authenticationParam.value = authentication ? { ...authentication, ...(authentication.extensions || {}) } : { type: null };
   assertionsParam.value = (assertions || []).map(item => ({
     ...item,
     assertionCondition: item.assertionCondition?.value,
