@@ -96,4 +96,5 @@ onMounted(async () => {
 </div>
 </template>
 <style scoped>
+@import 'open-api-designer/style.css';
 </style>

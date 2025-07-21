@@ -63,7 +63,7 @@ defineExpose({
     <textarea ref="textareaRef" ></textarea>
   </div>
 </template>
-<style>
+<style scoped>
 .preview-wrapper > .EasyMDEContainer > .editor-toolbar[role="toolbar"]{
   display: none;
 }
@@ -80,6 +80,6 @@ defineExpose({
 .revert-style pre,
 .revert-style code,
 .revert-style li {
-  all:revert;
+  all:revert !important;
 }
 </style>
