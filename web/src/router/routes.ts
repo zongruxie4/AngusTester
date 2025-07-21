@@ -129,7 +129,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/execution/info/index.vue')
       },
       {
-        path: '/mockservice',
+        path: '/apis#mock',
         component: () => import('@/views/mock/index.vue')
       },
       {
@@ -139,14 +139,14 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumb: [
             {
               name: 'Mock',
-              path: '/mockservice'
+              path: '/apis#mock'
             },
             { name: '添加' }
           ]
         }
       },
       {
-        path: '/mockservice',
+        path: '/apis#mock',
         component: () => import('@/views/mock/detail/index.vue'),
         children: [
           {

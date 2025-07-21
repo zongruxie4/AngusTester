@@ -231,7 +231,7 @@ const handleSave = () => {
     loading.value = false;
     if (error) { return; }
     notification.success('添加成功');
-    router.push('/mockservice');
+    router.push('/apis#mock');
   }, () => { /** */ });
 };
 

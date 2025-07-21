@@ -129,7 +129,7 @@ onMounted(() => {
       return;
     }
 
-    menuList.value = setMenuAttr(newValue);
+    menuList.value = setMenuAttr(newValue.filter(i => i.code !== 'Mock'));
 
     if (menuList.value?.length) {
       const currentMenu = menuList.value?.find(item => {
