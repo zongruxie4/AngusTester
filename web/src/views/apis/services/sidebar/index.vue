@@ -286,7 +286,7 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
     case 'reTest':
       restartTestTask(item);
       break;
-    case 'reOpen':
+    case 'reopen':
       reopenTestTask(item);
       break;
     case 'deleteTask':

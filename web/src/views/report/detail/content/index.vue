@@ -124,7 +124,7 @@ const loadServiceName = async (serviceId) => {
 };
 
 const loadScenarioName = async (scenarioId) => {
-  const [error, { data }] = await scenario.loadInfo(scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
     return;
   }

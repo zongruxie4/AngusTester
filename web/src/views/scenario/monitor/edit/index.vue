@@ -174,7 +174,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await scenario.getMonitorInfo(id);
+  const [error, res] = await scenario.getMonitorDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -244,7 +244,7 @@ const setFormData = (data: MonitorInfo) => {
 
 // 获取场景详情
 const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await scenario.loadInfo(scenarioId);
+  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
     return;
   }

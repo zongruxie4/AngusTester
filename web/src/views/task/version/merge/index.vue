@@ -33,7 +33,7 @@ const cancel = () => {
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
-    const [error] = await software.merge({
+    const [error] = await software.mergeSoftwareVersion({
       ...formState.value
     });
     loading.value = false;

@@ -175,7 +175,7 @@ const getParams = () => {
 const loadScriptList = async () => {
   loading.value = false;
   const params = getParams();
-  const [error, res] = await script.loadScriptList(params);
+  const [error, res] = await script.getScriptList(params);
   loaded.value = true;
   if (error) {
     loading.value = false;
@@ -238,7 +238,7 @@ const loadScriptListAuth = async (ids: string[]) => {
     return;
   }
 
-  const [error, res] = await script.loadScriptListAuth(ids);
+  const [error, res] = await script.getScriptCurrentAuth(ids);
   loading.value = false;
   if (error) {
     return false;

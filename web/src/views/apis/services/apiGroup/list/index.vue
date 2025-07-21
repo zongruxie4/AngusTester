@@ -202,7 +202,7 @@ const handleClick = (event:string, data:DataSourceType) => {
     case 'reTest':
       restartTestTask(data);
       break;
-    case 'reOpen':
+    case 'reopen':
       reopenTestTask(data);
       break;
     case 'deleteTask':

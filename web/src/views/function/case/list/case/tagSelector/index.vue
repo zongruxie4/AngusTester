@@ -3,7 +3,7 @@ import { inject, ref, watch } from 'vue';
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/tools';
 import { Icon, Select } from '@xcan-angus/vue-ui';
-import { tagApi } from '@/api/tester';
+import { tag } from '@/api/tester';
 
 interface Props {
   tagIds: string[];
@@ -52,7 +52,7 @@ const handleBlur = () => {
 };
 
 const getCacheTagList = async () => {
-  const [error, { data }] = await tagApi.search({ projectId: projectInfo.value.id, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
+  const [error, { data }] = await tag.getTagList({ projectId: projectInfo.value.id, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
   if (error) {
     return;
   }

@@ -43,7 +43,7 @@ const inputChange = debounce(duration.search, () => {
 const recoverAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await scenario.backAllTrash(params);
+  const [error] = await scenario.backAllScenarioTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -57,7 +57,7 @@ const recoverAll = async () => {
 const deleteAll = async () => {
   loading.value = true;
   const params = { projectId: props.projectId };
-  const [error] = await scenario.deleteAllTrash(params);
+  const [error] = await scenario.deleteAllScenarioTrash(params);
   if (error) {
     loading.value = false;
     return;
@@ -75,7 +75,7 @@ const toRefresh = () => {
 
 const recoverHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await scenario.backTrash(data.id);
+  const [error] = await scenario.backScenarioTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -88,7 +88,7 @@ const recoverHandler = async (data:TrashItem) => {
 
 const deleteHandler = async (data:TrashItem) => {
   loading.value = true;
-  const [error] = await scenario.deleteTrash(data.id);
+  const [error] = await scenario.deleteScenarioTrash(data.id);
   if (error) {
     loading.value = false;
     return;
@@ -131,7 +131,7 @@ const loadData = async () => {
     params.orderSort = orderSort.value;
   }
 
-  const [error, res] = await scenario.searchTrash(params);
+  const [error, res] = await scenario.getScenarioTrashList(params);
   loaded.value = true;
   loading.value = false;
   if (error) {

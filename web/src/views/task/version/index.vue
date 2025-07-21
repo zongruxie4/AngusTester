@@ -90,7 +90,7 @@ const hashChange = async (hash: string) => {
       });
     } else {
       if (!id) {
-        const [_error, { data = {} }] = await software.searchList({
+        const [_error, { data = {} }] = await software.getSoftwareVersionList({
           projectId: props.projectId,
           name
         });

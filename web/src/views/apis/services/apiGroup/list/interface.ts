@@ -152,7 +152,7 @@ export const ButtonGroup = [
       },
       {
         name: '重新打开测试任务',
-        key: 'reOpen',
+        key: 'reopen',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-zhongxindakaiceshirenwu',

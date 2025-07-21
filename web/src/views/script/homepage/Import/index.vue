@@ -130,7 +130,7 @@ const handleOk = async () => {
     }
 
     loading.value = true;
-    const [error] = await script.import(formData);
+    const [error] = await script.importScript(formData);
     loading.value = false;
     if (error) {
       return;

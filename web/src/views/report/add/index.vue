@@ -165,7 +165,7 @@ const resetData = () => {
 
 // 回显数据
 const loadReportById = async () => {
-  const [error, { data }] = await reportApi.getReportInfo(reportId.value);
+  const [error, { data }] = await reportApi.getReportDetail(reportId.value);
   if (error) {
     return;
   }

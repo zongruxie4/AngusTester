@@ -103,7 +103,7 @@ const loadValue = async (data: VariableItem) => {
 const toDelete = async (data: VariableItem) => {
   const id = data.id;
   loading.value = true;
-  const [error] = await target.delVariable(props.targetId, props.targetType, [id], { dataType: true });
+  const [error] = await target.deleteVariable(props.targetId, props.targetType, [id], { dataType: true });
   loading.value = false;
   if (error) {
     return;

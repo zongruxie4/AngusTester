@@ -350,7 +350,7 @@ export const actions = [
       },
       {
         name: '重新打开测试任务',
-        key: 'reOpen',
+        key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         permission: 'TEST',
         disabled: false,

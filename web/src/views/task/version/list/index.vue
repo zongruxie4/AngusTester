@@ -72,7 +72,7 @@ const toDelete = async (data: VersionInfo) => {
     content: `确定删除版本【${data.name}】吗？`,
     async onOk () {
       const id = data.id;
-      const [error] = await software.delete([id]);
+      const [error] = await software.deleteSoftwareVersion([id]);
       if (error) {
         return;
       }
@@ -109,7 +109,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await software.searchList({ ...params });
+  const [error, res] = await software.getSoftwareVersionList({ ...params });
   loaded.value = true;
   loading.value = false;
 
@@ -160,7 +160,7 @@ const changeStatus = async (status, record) => {
   modal.confirm({
     content: `确认修改版本状态为 “${status.name}” 吗？`,
     async onOk () {
-      const [error] = await software.updateStatus(record.id, {
+      const [error] = await software.updateSoftwareVersionStatus(record.id, {
         status: status.key
       });
       if (error) {

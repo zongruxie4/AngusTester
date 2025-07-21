@@ -58,7 +58,7 @@ const checkChange = (event:{target:{checked:boolean}}, id:string) => {
 const ok = async () => {
   // 查询
   loading.value = true;
-  const [error, { data }] = await script.loadDetail(checkedId.value);
+  const [error, { data }] = await script.getScriptDetail(checkedId.value);
   loading.value = false;
   if (error) {
     return;

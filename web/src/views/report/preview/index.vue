@@ -116,7 +116,7 @@ const loadExecInfo = async (id: string) => {
 
 const loadReportDetail = async (id: string) => {
   loading.value = true;
-  const [error, res] = await report.getReportInfo(id);
+  const [error, res] = await report.getReportDetail(id);
   loading.value = false;
   if (error) {
     return;
@@ -137,7 +137,7 @@ const loadReportDetail = async (id: string) => {
 
 const loadReportContent = async (id: string) => {
   loading.value = true;
-  const [error, res] = await report.getWideContent(id, {
+  const [error, res] = await report.getReportWideContent(id, {
     recordId: recordId.value
   });
   loading.value = false;

@@ -18,8 +18,4 @@ export default class API {
     const { id, ...param } = params;
     return http.get(`${baseUrl}/share/apis/${id}`, param);
   }
-
-  getFuncs (): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/share/function/template`);
-  }
 }

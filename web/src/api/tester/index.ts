@@ -58,5 +58,5 @@ export const software = new Software(baseUrl);
 export const target = new Target(baseUrl);
 export const report = new Report(baseUrl);
 export const funcPlan = new FuncPlan(baseUrl);
-export const tagApi = new Tag(baseUrl);
+export const tag = new Tag(baseUrl);
 export const func = new Func(baseUrl);

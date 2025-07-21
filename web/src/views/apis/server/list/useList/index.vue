@@ -32,7 +32,7 @@ const toDelete = (data: SourceItem) => {
     async onOk () {
       loading.value = true;
       const params = [props.id];
-      const [error] = await target.delVariable(data.targetId, data.targetType?.value, params);
+      const [error] = await target.deleteVariable(data.targetId, data.targetType?.value, params);
       loading.value = false;
       if (error) {
         return;
@@ -82,7 +82,7 @@ const toBatchDelete = () => {
       for (let i = 0; i < num; i++) {
         const data = dataList.value.find((item) => item.targetId === ids[i]);
         if (data) {
-          const _promise = target.delVariable(data.targetId, data.targetType?.value, params);
+          const _promise = target.deleteVariable(data.targetId, data.targetType?.value, params);
           promises.push(_promise);
         }
       }

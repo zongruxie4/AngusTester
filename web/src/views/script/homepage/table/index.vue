@@ -176,7 +176,7 @@ const batchDelete = async () => {
     async onOk () {
       emit('update:loading', true);
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const [error] = await script.delete(ids);
+      const [error] = await script.deleteScript(ids);
       emit('update:loading', false);
       if (error) {
         return;
@@ -197,7 +197,7 @@ const batchExport = async () => {
 
 const importDemo = async () => {
   emit('update:loading', true);
-  const [error] = await script.importDemo();
+  const [error] = await script.importScriptDemo();
   emit('update:loading', false);
   if (error) {
     return;
@@ -229,7 +229,7 @@ const toAuth = (data: ScriptInfo) => {
 
 const toClone = async (data: ScriptInfo) => {
   emit('update:loading', true);
-  const [error] = await script.clone(data.id);
+  const [error] = await script.cloneScript(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -248,7 +248,7 @@ const toDelete = async (data: ScriptInfo) => {
     async onOk () {
       const id = data.id;
       emit('update:loading', true);
-      const [error] = await script.delete([id]);
+      const [error] = await script.deleteScript([id]);
       emit('update:loading', false);
       if (error) {
         return;

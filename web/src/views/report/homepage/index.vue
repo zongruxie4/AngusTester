@@ -133,7 +133,7 @@ const loadDataList = async () => {
   }
 
   loading.value = true;
-  const [error, { data = {} }] = await report.searchList(params);
+  const [error, { data = {} }] = await report.getReportList(params);
   loading.value = false;
   if (error) {
     return;
@@ -173,7 +173,7 @@ const deleteReport = (report) => {
     title: '删除报告',
     content: `确认删除报告【${report.name}】吗？`,
     onOk () {
-      return report.delete([report.id]).then((resp) => {
+      return report.deleteReport([report.id]).then((resp) => {
         const [error] = resp;
         if (error) {
           return;
@@ -189,7 +189,7 @@ const deleteReport = (report) => {
 
 // 获取分享 getShareToken
 const getShareToken = async (report) => {
-  const [error, { data }] = await report.getShareToken(report.id);
+  const [error, { data }] = await report.getReportShareToken(report.id);
   if (error) {
     notification.error('获取token失败');
     return;

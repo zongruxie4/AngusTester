@@ -39,7 +39,7 @@ const loadVersionData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await software.getVersionInfo(id);
+  const [error, res] = await software.getSoftwareVersionDetail(id);
   loading.value = false;
   if (error) {
     return;

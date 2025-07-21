@@ -206,7 +206,7 @@ const generateOk = () => {
 const addScript = async (formData) => {
   const scriptYaml = contentType.value === 'json' ? YAML.stringify(YAML.parse(scriptValue.value)) : scriptValue.value;
   loading.value = true;
-  const [error, res] = await script.add({ ...formData, content: scriptYaml, projectId: projectId.value });
+  const [error, res] = await script.addScript({ ...formData, content: scriptYaml, projectId: projectId.value });
   loading.value = false;
   if (error) {
     return;
@@ -221,7 +221,7 @@ const addScript = async (formData) => {
 const updateScript = async (formData) => {
   const scriptYaml = contentType.value === 'json' ? YAML.stringify(YAML.parse(scriptValue.value)) : scriptValue.value;
   loading.value = true;
-  const [error] = await script.update({ ...formData, content: scriptYaml, id: scriptId.value, projectId: projectId.value });
+  const [error] = await script.updateScript({ ...formData, content: scriptYaml, id: scriptId.value, projectId: projectId.value });
   loading.value = false;
   if (error) {
     return;
@@ -252,7 +252,7 @@ const updateScript = async (formData) => {
 // 获取脚本详情
 const loadScript = async () => {
   loading.value = true;
-  const [error, res] = await script.loadDetail(scriptId.value);
+  const [error, res] = await script.getScriptDetail(scriptId.value);
   if (error) {
     loading.value = false;
     return;
@@ -273,7 +273,7 @@ const loadScriptListAuth = async (id: string) => {
   permissionList.value = [];
 
   loading.value = true;
-  const [error, res] = await script.loadScriptListAuth([id]);
+  const [error, res] = await script.getScriptCurrentAuth([id]);
   loading.value = false;
   if (error) {
     return;
@@ -306,7 +306,7 @@ const handleDelete = async () => {
     content: '确定删除吗？',
     async onOk () {
       loading.value = true;
-      const [error] = await script.delete([scriptId.value]);
+      const [error] = await script.deleteScript([scriptId.value]);
       loading.value = false;
       if (error) {
         return;
@@ -320,7 +320,7 @@ const handleDelete = async () => {
 
 const handleClone = async () => {
   loading.value = true;
-  const [error] = await script.clone(scriptId.value);
+  const [error] = await script.cloneScript(scriptId.value);
   loading.value = false;
   if (error) {
     return;

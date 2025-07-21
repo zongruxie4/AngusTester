@@ -76,7 +76,7 @@ const columns = [
 const recordData = ref<Record[]>([]);
 
 const loadRecord = async () => {
-  const [error, { data }] = await report.loadReportRecord({
+  const [error, { data }] = await report.getReportRecord({
     projectId: props.projectId,
     reportId: props.reportId
   });
@@ -99,7 +99,7 @@ const delRecord = (record: Record) => {
     title: '删除报告记录',
     content: `确认删除报告记录【${record.reportName}】吗？`,
     onOk () {
-      return report.deleteReocrd([record.id])
+      return report.deleteReportRecord([record.id])
         .then((resp) => {
           const [error] = resp;
           if (error) {
