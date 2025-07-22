@@ -14,7 +14,8 @@ const setCode = (code: number) => {
 };
 
 const startupGuard = (): void => {
-  guard.navigationGuard(router, app.menuList, setCode, true);// debugMode为true，开启调试模式，不校验路由权限
+  // debugMode is true, turn on debug mode, do not check routing permissions
+  guard.navigationGuard(router, app.menuList, setCode, true);
 };
 
 export { startupGuard };

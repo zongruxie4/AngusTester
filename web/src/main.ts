@@ -7,7 +7,6 @@ import store from '@/store';
 
 import '@xcan-angus/vue-ui/style.css';
 
-
 import 'tailwindcss/base.css';
 import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
@@ -42,7 +41,7 @@ const bootstrap = async () => {
     return;
   }
 
-  app.initialize({ code: 'at' }).then((res) => {
+  app.initialize({ code: 'tester' }).then((res) => {
     preference.initialize(res.preference).then(async () => {
       startupGuard();
       const locale = 'zh_CN';
