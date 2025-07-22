@@ -165,8 +165,8 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="unplannedTaskRef" class="flex-1 h-40"></div>
-    <div ref="unplannedWorkloadRef" class="flex-1 h-40"></div>
+    <div ref="unplannedTaskRef" class="flex-1 h-45"></div>
+    <div ref="unplannedWorkloadRef" class="flex-1 h-45"></div>
   </div>
 </template>
 <style scoped>

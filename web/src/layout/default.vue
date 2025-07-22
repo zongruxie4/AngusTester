@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref, w
 import { Dropdown } from 'ant-design-vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
-  Breadcrumb, HeaderLogo, HeaderMessage, HeaderNavigator, HeaderPersonalCenter, HeaderSearch, Icon, IconRefresh,
+  Breadcrumb, HeaderLogo, HeaderMessage, HeaderNavigator, HeaderPersonalCenter, HeaderSearch, HeaderLanguagePreference, Icon, IconRefresh,
   Image, Input, Notice, notification, Spin
 } from '@xcan-angus/vue-ui';
 import { app, duration, localStore } from '@xcan-angus/tools';
@@ -150,7 +150,7 @@ onMounted(async () => {
 
 const headerMenus = computed(() => {
   // console.log(app.menuList);
-  return app.menuList?.filter(item => !['Projects', 'Config', !proTypeShowMap.value.showTask ? 'Task' : ''].includes(item.code)) || [];
+  return app.menuList?.filter(item => !['Projects', 'Config', !proTypeShowMap.value?.showTask ? 'Task' : ''].includes(item.code)) || [];
 });
 
 const projectMenus = computed(() => {
@@ -309,6 +309,7 @@ provide('getNewCurrentProject', loadData);
         {{ app.codeMap.get('OfficialWebsite')?.showName }}
       </a>
     </template>
+    <HeaderLanguagePreference class="px-3"/>
     <HeaderMessage class="mr-5 flex-shrink-0 flex-grow-0 basis-auto" />
     <HeaderPersonalCenter class="flex-shrink-0 flex-grow-0 basis-auto" />
   </div>
