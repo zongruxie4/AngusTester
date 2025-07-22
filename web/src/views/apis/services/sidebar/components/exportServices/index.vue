@@ -45,7 +45,7 @@ const importCreatPdf = () => {
   import('@xcan-angus/rapipdf').then((res) => {
     createPdf = res.createPdf;
   });
-}
+};
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
@@ -371,7 +371,7 @@ onMounted(async () => {
   }
 });
 
-/* TODO 导出类型：APIS、API、SERVICE、SERVICES 是GM中接口和服务复用组件吗？*/
+/* TODO 导出类型：APIS、API、SERVICE、SERVICES 是GM中接口和服务复用组件吗？ */
 </script>
 <template>
   <Modal

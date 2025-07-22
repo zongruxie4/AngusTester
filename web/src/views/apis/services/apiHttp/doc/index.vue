@@ -24,7 +24,6 @@ const docOrigin = ref();
 const accessToken = ref();
 const isPrivate = ref();
 
-
 const exportVisible = ref(false);
 const handleExportdoc = () => {
   exportVisible.value = true;
@@ -41,7 +40,7 @@ onMounted(async () => {
   <div class="">
     <rapi-doc
       v-if="docOrigin"
-      :spec-url="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      :specUrl="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
       allowSpecFileDownload="false"
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"

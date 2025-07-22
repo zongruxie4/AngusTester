@@ -245,11 +245,11 @@ const add = () => {
 
 const importDesign = () => {
   emits('import');
-}
+};
 
 const importService = () => {
   emits('importService');
-}
+};
 
 onMounted(() => {
 });

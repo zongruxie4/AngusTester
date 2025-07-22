@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, Select, SelectSchema, ParamInput, notification  } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 
@@ -13,7 +13,7 @@ import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import JsonContent from '../requestBody/json/index.vue';
 import { itemTypes } from '../requestBody/json/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import { clipboard } from "@xcan-angus/tools";
+import { clipboard } from '@xcan-angus/tools';
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
@@ -170,7 +170,6 @@ const changeSchema = (schema, item, index) => {
   const temp = { ...item, schema };
   changeEmit(index, temp);
 };
-
 
 const copyValue = async (data: ParamsItem) => {
   let text = data[valueKey];

@@ -2,7 +2,7 @@
 import Oas from 'oas';
 import qs from 'qs';
 import { inject, ref, watch } from 'vue';
-import { notification, Select, FormatHighlight } from '@xcan-angus/vue-ui';
+import { notification, Select, FormatHighlight, ApiUtils } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import { Button, RadioGroup } from 'ant-design-vue';
 // import { supportedLanguages, oasToSnippet } from '@readme/oas-to-snippet';
@@ -10,8 +10,7 @@ import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
 import { clipboard } from '@xcan-angus/tools';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import JSONToSchema from 'json-to-schema' ;
-import { ApiUtils  } from '@xcan-angus/vue-ui';
+import JSONToSchema from 'json-to-schema';
 
 import { apis } from 'src/api/tester';
 import cIcon from './image/c.png';
@@ -202,8 +201,6 @@ const getCodeContent = async () => {
       }
     });
     parameter.requestBody.content['multipart/form-data'].schema = JSONToSchema(body);
-
-
   } else if (contentType === 'application/octet-stream' || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
     body = parameter.requestBody?.content[contentType]?.schema?.[valueKey];
   } else {
@@ -223,7 +220,7 @@ const getCodeContent = async () => {
       body = undefined;
     }
     try {
-      body = JSON.parse(body)
+      body = JSON.parse(body);
     } catch {}
     if (body && typeof body === 'object') {
       parameter.requestBody.content[contentType].schema = JSONToSchema(body);
@@ -234,7 +231,6 @@ const getCodeContent = async () => {
     }
   }
   const apiDefinition = new Oas({ ...parameter, servers: [parameter.currentServer] });
-
 
   const formData = {
     query,
@@ -258,33 +254,31 @@ const getCodeContent = async () => {
     pass?: string;
     user?: string;
   }> = {};
-  if ( parameter.authentication?.type) {
+  if (parameter.authentication?.type) {
     parameter.authentication = {
       ...parameter.authentication,
       ...(parameter.authentication?.extensions || {})
-    }
+    };
     if (parameter.authentication?.type === 'http') {
-        if (parameter.authentication.scheme === 'bearer') {
-          auth.Authorization = parameter.authentication[valueKey];
-        } else {
-          auth.Authorization = {
-            user: parameter.authentication.name,
-            pass: parameter.authentication[valueKey],
-          }
-        }
-
+      if (parameter.authentication.scheme === 'bearer') {
+        auth.Authorization = parameter.authentication[valueKey];
+      } else {
+        auth.Authorization = {
+          user: parameter.authentication.name,
+          pass: parameter.authentication[valueKey]
+        };
+      }
     } else if (parameter.authentication?.type === 'oauth2') {
       if (parameter.authentication[newTokenKey]) {
         if (parameter.authentication[oAuth2Key] === 'password') {
-          auth.access_token = parameter.authentication.flows?.password?.[oAuth2Token] || ''
+          auth.access_token = parameter.authentication.flows?.password?.[oAuth2Token] || '';
         }
         if (parameter.authentication[oAuth2Key] === 'clientCredentials') {
-          auth.access_token = parameter.authentication.flows?.clientCredentials?.[oAuth2Token] || ''
+          auth.access_token = parameter.authentication.flows?.clientCredentials?.[oAuth2Token] || '';
         }
       } else {
-        auth.access_token = parameter.authentication[oAuth2Token] || ''
+        auth.access_token = parameter.authentication[oAuth2Token] || '';
       }
-
     }
   }
 
@@ -401,7 +395,7 @@ watch(() => props.id, async () => {
       <RadioGroup
         v-model:value="language[1]"
         class="inline-block"
-        :options="langFuncs"/>
+        :options="langFuncs" />
       <div>
         <Button
           type="link"
@@ -428,7 +422,6 @@ watch(() => props.id, async () => {
           :dataType="language[0]">
         </FormatHighlight>
       </div>
-
     </div>
   </div>
 </template>

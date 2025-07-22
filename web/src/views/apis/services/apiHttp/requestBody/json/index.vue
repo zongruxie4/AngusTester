@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import {clipboard, utils} from '@xcan-angus/tools';
-import {Icon, Input, Select, SelectSchema, ParamInput, notification} from '@xcan-angus/vue-ui';
+import { clipboard, utils } from '@xcan-angus/tools';
+import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -13,7 +13,7 @@ import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { services } from 'src/api/tester';
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
-import {ParamsItem} from "@/views/apis/services/apiHttp/requestParam/interface";
+import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 
 const ajv = new Ajv();
 addFormats(ajv);

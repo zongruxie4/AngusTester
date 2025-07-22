@@ -56,7 +56,10 @@ const bodyStyle = {
     wrapClassName="api-desc-markdown-modal"
     @cancel="cancelEditDescription"
     @ok="saveDescription">
-    <EasyMd ref="easyMdRef" :value="description" class="h-full overflow-auto" />
+    <EasyMd
+      ref="easyMdRef"
+      :value="description"
+      class="h-full overflow-auto" />
   </Modal>
 </template>
 <style>

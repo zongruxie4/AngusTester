@@ -26,7 +26,7 @@ const GenTestScript = defineAsyncComponent(() => import('@/components/script/gen
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/delModal/index.vue'));
 const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
 const BatchModify = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/index.vue'));
-const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'))
+const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'));
 
 const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/createServicesModal/index.vue'));
 const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/localImport/index.vue'));
@@ -433,7 +433,7 @@ const select = (item) => {
 const selectedService = ref();
 const setTranslate = (item) => {
   translateVisible.value = true;
-  selectedService.value = {id: item.id, name: item.name}
+  selectedService.value = { id: item.id, name: item.name };
 };
 
 // 克隆
@@ -1101,6 +1101,6 @@ const importSamples = async () => {
     <TranslateModal
       v-model:visible="translateVisible"
       :service="selectedService"
-      :projectId="projectInfo?.id"/>
+      :projectId="projectInfo?.id" />
   </AsyncComponent>
 </template>

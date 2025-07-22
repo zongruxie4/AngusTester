@@ -8,7 +8,6 @@ import YAML from 'yaml';
 import { Exception, ExecObj } from './PropsType';
 import { exec } from 'src/api/ctrl';
 
-
 const ExecSetting = defineAsyncComponent(() => import('@/views/execution/info/setting/index.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/views/execution/info/log/index.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
@@ -99,29 +98,26 @@ const getInfo = (data) => {
   setException();
 };
 
-
-
 onMounted(async () => {
   if (!id) {
     const scriptTypeMsgConfig = {
       TEST_PERFORMANCE: '性能测试',
       TEST_STABILITY: '稳定性测试',
       TEST_FUNCTIONALITY: '功能能测试',
-      TEST_CUSTOMIZATION: '自定义测试',
-    }
+      TEST_CUSTOMIZATION: '自定义测试'
+    };
     if (props.scriptType) {
       detail.value = {
         scriptType: {
           value: props.scriptType,
           message: scriptTypeMsgConfig[props.scriptType] || ''
         }
-      }
+      };
       if (props.plugin) {
-        detail.value.plugin = props.plugin
+        detail.value.plugin = props.plugin;
       }
-      console.log(detail.value)
+      console.log(detail.value);
     }
-
 
     return;
   }
@@ -340,15 +336,15 @@ const setException = () => {
         tab="执行详情">
         <Performance
           v-if="detail && ['TEST_PERFORMANCE','TEST_STABILITY', 'MOCK_DATA', 'TEST_CUSTOMIZATION'].includes(detail.scriptType.value)"
-          v-model:loading="loading"
           ref="performanceRef"
+          v-model:loading="loading"
           :detail="detail"
           :exception="exception"
           @loaded="getInfo" />
         <FuncTest
           v-else-if="detail && detail.scriptType.value==='TEST_FUNCTIONALITY'"
-          v-model:loading="loading"
           ref="funcRef"
+          v-model:loading="loading"
           :execInfo="detail"
           :exception="exception"
           @loaded="getInfo" />

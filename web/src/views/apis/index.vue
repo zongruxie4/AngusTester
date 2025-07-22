@@ -95,13 +95,12 @@ provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.upd
 
 const menuItems = [
   { name: '主页', icon: 'icon-zhuye', key: 'homepage' },
-  { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
   { name: '服务', icon: 'icon-fuwuxinxi', key: 'services' },
-  { name: '设计', icon: 'icon-sheji', key: 'design'},
+  { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
+  { name: '设计', icon: 'icon-sheji', key: 'design' },
   { name: '分享', icon: 'icon-fenxiang', key: 'share' },
   { name: '服务器', icon: 'icon-host', key: 'server' },
-  { name: '回收站', icon: 'icon-qingchu', key: 'trash' },
-
+  { name: '回收站', icon: 'icon-qingchu', key: 'trash' }
 ];
 </script>
 
@@ -127,7 +126,7 @@ const menuItems = [
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
-        :refreshNotify="homepageRefreshNotify"/>
+        :refreshNotify="homepageRefreshNotify" />
     </template>
     <template #share>
       <Share
@@ -152,7 +151,7 @@ const menuItems = [
       <Design
         :projectId="projectId"
         :userInfo="userInfo"
-        :appInfo="appInfo"/>
+        :appInfo="appInfo" />
     </template>
   </LeftMenu>
 </template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {Modal, Input, notification, Icon } from '@xcan-angus/vue-ui';
-import {  Form, FormItem, Upload  } from 'ant-design-vue';
+import { Modal, Input, notification, Icon } from '@xcan-angus/vue-ui';
+import { Form, FormItem, Upload } from 'ant-design-vue';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -32,17 +32,17 @@ const handleFile = async (fileObj) => {
     formState.value.content = e.target.result;
     fileList.value = [{
       name: file.name,
-      status: 'done',
+      status: 'done'
     }];
-    formRef.value.validate(['content'])
+    formRef.value.validate(['content']);
   };
-  reader.readAsText(file)
+  reader.readAsText(file);
 };
 
 const delFile = () => {
   fileList.value = [];
   formState.value.content = undefined;
-}
+};
 
 const cancel = () => {
   emits('update:visible', false);
@@ -63,7 +63,7 @@ const ok = async () => {
     notification.success('导入成功');
     cancel();
     emits('ok');
-  })
+  });
 };
 
 </script>
@@ -80,13 +80,19 @@ const ok = async () => {
     <Form
       ref="formRef"
       :model="formState">
-      <FormItem name="name" label="名称" required>
+      <FormItem
+        name="name"
+        label="名称"
+        required>
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          placeholder="输入设计名称, 限制100个字符"/>
+          placeholder="输入设计名称, 限制100个字符" />
       </FormItem>
-      <FormItem name="content" label="文件" :rules="[{required: true, message: '请上传文件'}]">
+      <FormItem
+        name="content"
+        label="文件"
+        :rules="[{required: true, message: '请上传文件'}]">
         <Upload
           v-model:fileList="fileList"
           class="w-full"
@@ -95,7 +101,7 @@ const ok = async () => {
           @remove="delFile">
           <div v-show="!formState.content" class="border border-dashed rounded p-4 flex flex-col items-center justify-around space-y-2 text-3 border-blue-1">
             <Icon icon="icon-daoru" class="text-blue-hover" />
-            <span class="text-blue-hover" >上传文件</span>
+            <span class="text-blue-hover">上传文件</span>
             <div class="text-text-sub-content">
               点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M
             </div>
@@ -110,4 +116,3 @@ const ok = async () => {
   @apply block;
 }
 </style>
-

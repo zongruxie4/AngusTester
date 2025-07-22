@@ -7,9 +7,8 @@ import DOMPurify from 'dompurify';
 import { enumLoader } from '@xcan-angus/tools';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
-import { event } from '@/api/gm';
+import { event, setting } from '@/api/gm';
 import { analysis } from 'src/api/gm';
-import { setting } from '@/api/gm';
 
 const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));
 const ExpandHead = defineAsyncComponent(() => import('./expand-head.vue'));

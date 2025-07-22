@@ -77,7 +77,7 @@ onMounted(() => {
           scriptType="TEST_FUNCTIONALITY"
           @del="handleDel" />
 
-<!--        <NoData size="small" class="mt-25" />-->
+        <!--        <NoData size="small" class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" tab="性能测试">
         <Execdetail
@@ -86,10 +86,10 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           scriptType="TEST_PERFORMANCE"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="stability" tab="稳定性测试">
         <Execdetail
@@ -98,10 +98,10 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           scriptType="TEST_STABILITY"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" tab="自定义测试">
         <Execdetail
@@ -110,10 +110,10 @@ onMounted(() => {
           :monicaEditorStyle="{height: '600px'}"
           scriptType="TEST_CUSTOMIZATION"
           @del="handleDel" />
-<!--        <NoData-->
-<!--          v-else-->
-<!--          size="small"-->
-<!--          class="mt-25" />-->
+        <!--        <NoData-->
+        <!--          v-else-->
+        <!--          size="small"-->
+        <!--          class="mt-25" />-->
       </TabPane>
       <TabPane
         v-if="proTypeShowMap.showTask"
