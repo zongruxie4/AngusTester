@@ -37,6 +37,7 @@
     "@readme/oas-to-snippet": "^24.0.2",
     "@xcan-angus/easymde-enhanced": "^1.0.0",
     "@xcan-angus/frappe-gantt": "^1.0.0",
+    "@xcan-angus/infra": "^1.0.0",
     "@xcan-angus/postman-to-openapi": "^1.0.0",
     "@xcan-angus/quill": "^2.0.3",
     "@xcan-angus/rapidoc": "^1.0.0",

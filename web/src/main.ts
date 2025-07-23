@@ -1,6 +1,7 @@
 import { createApp, defineAsyncComponent } from 'vue';
-import { createI18n } from 'vue-i18n';
-import { app, preference, http } from '@xcan-angus/tools';
+// import { createI18n } from 'vue-i18n';
+import { app, preference, http, cookie } from '@xcan-angus/tools';
+import { I18n } from '@xcan-angus/infra';
 
 import router, { startupGuard } from '@/router';
 import store from '@/store';
@@ -12,6 +13,17 @@ import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
 
+const getDefaultLanguage = () => {
+  let navigatorLang = navigator.language;
+  if (navigatorLang.startsWith('zh')) {
+    navigatorLang = 'zh_CN'
+  } else if (navigatorLang.startsWith('en')){
+    navigatorLang = 'en'
+  }
+
+  return cookie.get('localeCookie') || navigatorLang
+};
+
 const bootstrap = async () => {
   await app.check();
   await http.create();
@@ -19,9 +31,9 @@ const bootstrap = async () => {
   const path = window.location.pathname;
   const sharePaths = ['/share/file', '/apis/share'];
   if (sharePaths.includes(path)) {
-    const locale = 'zh_CN';
+    const locale = getDefaultLanguage();
     const messages = (await import(`./locales/${locale}/index.js`)).default;
-    const i18n = createI18n({
+    const i18n = I18n.setupI18n({
       locale,
       legacy: false,
       messages: {
@@ -44,9 +56,9 @@ const bootstrap = async () => {
   app.initialize({ code: 'tester' }).then((res) => {
     preference.initialize(res.preference).then(async () => {
       startupGuard();
-      const locale = 'zh_CN';
+      const locale = getDefaultLanguage();
       const messages = (await import(`./locales/${locale}/index.js`)).default;
-      const i18n = createI18n({
+      const i18n = I18n.setupI18n({
         locale,
         legacy: false,
         messages: {
