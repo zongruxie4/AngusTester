@@ -862,7 +862,11 @@ const ifExceedSize = () => {
   return formFileSize.value + fileSize.value > globalConfigs.VITE_MAX_FILE_SIZE;
 };
 
-defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate, getModelResolve, ifExceedSize });
+const ifExceedRequestSize = () => {
+  return formFileSize.value + fileSize.value > globalConfigs.VITE_MAX_WS_REQUEST_SIZE;
+};
+
+defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate, getModelResolve, ifExceedSize, ifExceedRequestSize });
 </script>
 <template>
   <div>
