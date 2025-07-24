@@ -1273,7 +1273,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <TabPane key="linux" tab="Linux或者Mac系统自动安装步骤">
                 <div class="text-3">必须以root用户执行脚本, 安装目录为脚本所在目录</div>
                 <div class="text-3">
-                  安装方式1：
+                  安装方式1：<Icon icon="icon-fuzhi" class="cursor-pointer text-3.5 text-blue-1" @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd)" />
                   <p class="install-step whitespace-pre-line">
                     {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
@@ -1691,5 +1691,12 @@ const activeKey = ref<'source' | 'proxy'>('source');
 .ant-radio-group.ant-radio-group-small :deep(.ant-radio-wrapper) {
   @apply text-3;
 }
+
+.install-step {
+  @apply px-3 py-1.5 my-2 leading-6;
+
+  background-color: #f6f6f6;
+}
+
 
 </style>
