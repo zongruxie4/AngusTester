@@ -49,28 +49,20 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
 
   @Resource
   private ApisTrashRepo apisTrashRepo;
-
   @Resource
   private ApisTrashQuery apisTrashQuery;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private ApisCmd apisCmd;
-
   @Resource
   private ServicesRepo servicesRepo;
-
   @Resource
   private ServicesCmd servicesCmd;
-
   @Resource
   private VariableRepo variablesRepo;
-
   @Resource
   private ActivityCmd activityCmd;
 

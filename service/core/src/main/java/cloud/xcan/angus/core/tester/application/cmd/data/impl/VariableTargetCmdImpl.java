@@ -40,13 +40,10 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
 
   @Resource
   private VariableRepo variableRepo;
-
   @Resource
   private VariableTargetRepo variableTargetRepo;
-
   @Resource
   private VariableTargetQuery variableTargetQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

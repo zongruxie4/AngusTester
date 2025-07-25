@@ -40,16 +40,12 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
 
   @Resource
   private DatasetRepo datasetRepo;
-
   @Resource
   private DatasetTargetRepo datasetTargetRepo;
-
   @Resource
   private DatasetTargetQuery datasetTargetQuery;
-
   @Resource
   private VariableTargetQuery variableTargetQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

@@ -89,31 +89,22 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
 
   @Resource
   private ExecTestResultRepo execTestResultRepo;
-
   @Resource
   private ExecTestCaseResultRepo execTestCaseResultRepo;
-
   @Resource
   private ExecSampleQuery execSampleQuery;
-
   @Resource
   private ExecSampleExtcQuery execSampleExtcQuery;
-
   @Resource
   private NodeUsageQuery nodeUsageQuery;
-
   @Resource
   private CachedUidGenerator uidGenerator;
-
   @Resource
   private ExecTestCmd execTestCmd;
-
   @Resource
   private IndicatorFuncQuery indicatorFuncQuery;
-
   @Resource
   private IndicatorPerfQuery indicatorPerfQuery;
-
   @Resource
   private IndicatorStabilityQuery indicatorStabilityQuery;
 

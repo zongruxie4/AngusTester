@@ -127,76 +127,52 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisAuthCmd apisAuthCmd;
-
   @Resource
   private ApisUnarchivedRepo apisUnarchivedRepo;
-
   @Resource
   private ApisTrashCmd trashApisCmd;
-
   @Resource
   private ApisAuthRepo apisAuthRepo;
-
   @Resource
   private ApisCaseCmd apisCaseCmd;
-
   @Resource
   private ApisFavouriteRepo apisFavoriteRepo;
-
   @Resource
   private ApisFollowRepo apisFollowRepo;
-
   @Resource
   private IndicatorPerfCmd indicatorPerfCmd;
-
   @Resource
   private IndicatorStabilityCmd indicatorStabilityCmd;
-
   @Resource
   private VariableQuery variableQuery;
-
   @Resource
   private VariableTargetRepo variableTargetRepo;
-
   @Resource
   private VariableTargetCmd variableTargetCmd;
-
   @Resource
   private DatasetQuery datasetQuery;
-
   @Resource
   private DatasetTargetRepo datasetTargetRepo;
-
   @Resource
   private DatasetTargetCmd datasetTargetCmd;
-
   @Resource
   private MockApisCmd mockApisCmd;
-
   @Resource
   private MockApisRepo mockApisRepo;
-
   @Resource
   private ScriptCmd scriptCmd;
 
@@ -213,8 +189,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       @Override
       protected void checkParams() {
         Set<Long> serviceIds = apis.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        assertSingleService(serviceIds,
-            "Only batch adding apis with one service is allowed");
+        assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
 
         // Check the release apis permission
         servicesAuthQuery.checkAddAuth(getUserId(), serviceIds.iterator().next());
@@ -321,8 +296,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Note: service id is not allowed modify
         // Check the allowing operations on a single service
         Set<Long> serviceIds = apisDbs.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        assertSingleService(serviceIds,
-            "Only batch updating apis with one service is allowed");
+        assertSingleService(serviceIds,"Only batch updating apis with one service is allowed");
 
         // Check the owner exists
         // Prevent user sync failure after user deletion
@@ -389,8 +363,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           // Check the allowing operations on a single service
           Set<Long> serviceIds = addApis.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
-          assertSingleService(serviceIds,
-              "Only batch adding apis with one service is allowed");
+          assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
         }
 
         // Note: service id is not allowed modify
@@ -404,8 +377,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           // Check the allowing operations on a single service
           Set<Long> serviceIds = updateApisDbs.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
-          assertSingleService(serviceIds,
-              "Only batch updating apis with one service is allowed");
+          assertSingleService(serviceIds, "Only batch updating apis with one service is allowed");
 
           // Check the operation is not repeated
           apisQuery.checkServiceApisOperationNotExisted(updateApis, updateApisDbs,
@@ -558,8 +530,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // Check the move one service is allowed
         Set<Long> serviceIds = apisDb.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        assertSingleService(serviceIds,
-            "Only batch move apis with one service is allowed");
+        assertSingleService(serviceIds, "Only batch move apis with one service is allowed");
 
         // Check if the movement position has changed
         assertTrue(!apisDb.get(0).getServiceId().equals(targetServiceId),
@@ -596,7 +567,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // NOOP: Init apis creator to view parent service and service permissions by WEB-UI
 
-        // Add move apis activity
+        // Add move api activity
         List<Activity> activities = toActivities(API, apisDb, MOVED_TO, targetServiceDb.getName());
         activityCmd.addAll(activities);
 

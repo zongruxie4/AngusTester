@@ -89,52 +89,36 @@ public class ApisTestCmdImpl implements ApisTestCmd {
 
   @Resource
   private TaskCmd taskCmd;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisCaseCmd apisCaseCmd;
-
   @Resource
   private ApisCaseQuery apisCaseQuery;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private IndicatorFuncQuery indicatorFuncQuery;
-
   @Resource
   private IndicatorPerfQuery indicatorPerfQuery;
-
   @Resource
   private IndicatorStabilityQuery indicatorStabilityQuery;
-
   @Resource
   private VariableTargetQuery variableTargetQuery;
-
   @Resource
   private DatasetTargetQuery datasetTargetQuery;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private ApisTestCmd apisTestCmd;
-
   @Resource
   private ExecCmd execCmd;
 

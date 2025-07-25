@@ -72,16 +72,12 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
   @Resource
   private VariableRepo variablesRepo;
-
   @Resource
   private VariableTargetRepo variableTargetRepo;
-
   @Resource
   private VariableQuery variableQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

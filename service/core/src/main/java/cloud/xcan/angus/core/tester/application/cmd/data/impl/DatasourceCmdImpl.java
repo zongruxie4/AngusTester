@@ -35,13 +35,10 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
 
   @Resource
   private DatasourceRepo datasourceRepo;
-
   @Resource
   private DatasourceQuery datasourceQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
 

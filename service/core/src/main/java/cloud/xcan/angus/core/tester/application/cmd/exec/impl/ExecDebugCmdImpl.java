@@ -96,37 +96,26 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
   @Resource
   private ExecDebugRepo execDebugRepo;
-
   @Resource
   private ExecDebugQuery execDebugQuery;
-
   @Resource
   private ExecQuery execQuery;
-
   @Resource
   private NodeQuery nodeQuery;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private ExecSampleRepo execSampleRepo;
-
   @Resource
   private ExecSampleErrorCauseRepo execSampleErrorsRepo;
-
   @Resource
   private ExecSampleContentRepo execSampleExtcRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ObjectMapper objectMapper;
-
   @Resource
   private DiscoveryClient discoveryClient;
-
   @Resource
   private ApplicationInfo appInfo;
 

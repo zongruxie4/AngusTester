@@ -40,6 +40,12 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * API authorization management command implementation.
+ * <p>
+ * Provides methods for adding, replacing, deleting, enabling/disabling, and batch operations on
+ * API authorizations.
+ */
 @Slf4j
 @Biz
 public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuthCmd {

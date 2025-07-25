@@ -1187,28 +1187,4 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     return this.execRepo;
   }
 
-    /**
-     * Try to acquire a distributed lock for execution.
-     * <p>
-     * Returns true if lock acquired, false otherwise. Logs warning if not acquired.
-     */
-    private boolean tryAcquireLock(String lockKey, String execId, List<RunnerRunVo> results, String ignoreMessage) {
-        boolean locked = distributedLock.tryLock(lockKey, execId, 2, TimeUnit.MINUTES);
-        if (!locked) {
-            log.warn(ignoreMessage);
-            results.add(RunnerRunVo.fail(execId, ignoreMessage));
-        }
-        return locked;
-    }
-
-    /**
-     * Release a distributed lock and log if exception occurs.
-     */
-    private void releaseLockWithLog(String lockKey, String execId) {
-        try {
-            distributedLock.releaseLock(lockKey, execId);
-        } catch (Exception e) {
-            log.error("Failed to release lock for execId {}: {}", execId, e.getMessage());
-        }
-    }
 }

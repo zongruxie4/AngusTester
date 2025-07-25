@@ -30,7 +30,6 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
 
   @Resource
   private ApisUnarchivedRepo apisUnarchivedRepo;
-
   @Resource
   private ApisUnarchivedQuery apisUnarchivedQuery;
 
