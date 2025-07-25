@@ -30,9 +30,13 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing dataset associations with APIs and scenarios.
+ * <p>
+ * Provides methods for adding and deleting dataset associations, including activity logging and permission checks.
+ */
 @Biz
-public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implements
-    DatasetTargetCmd {
+public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implements DatasetTargetCmd {
 
   @Resource
   private DatasetRepo datasetRepo;
@@ -49,10 +53,14 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add dataset associations to a target (API or scenario).
+   * <p>
+   * Validates project, permission, and quota. Inserts associations and logs activities if required.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> datasetIds,
-      boolean saveActivity) {
+  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> datasetIds, boolean saveActivity) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       final CombinedTargetType type = CombinedTargetType.valueOf(targetType);
       Long projectId;
@@ -96,10 +104,14 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
     }.execute();
   }
 
+  /**
+   * Delete dataset associations from a target (API or scenario).
+   * <p>
+   * Validates permission, deletes associations, and logs activities if required.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Long targetId, String targetType, Set<Long> datasetIds,
-      boolean saveActivity) {
+  public void delete(Long targetId, String targetType, Set<Long> datasetIds, boolean saveActivity) {
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
@@ -124,6 +136,11 @@ public class DatasetTargetCmdImpl extends CommCmd<DatasetTarget, Long> implement
     }.execute();
   }
 
+  /**
+   * Get the repository for DatasetTarget entity.
+   * <p>
+   * @return the DatasetTargetRepo instance
+   */
   @Override
   protected BaseRepository<DatasetTarget, Long> getRepository() {
     return this.datasetTargetRepo;

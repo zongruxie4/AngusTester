@@ -23,6 +23,12 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing datasources.
+ * <p>
+ * Provides methods for adding, replacing, testing, and deleting datasources.
+ * Handles permission checks, name uniqueness, quota validation, and connection testing.
+ */
 @Biz
 @Slf4j
 public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements DatasourceCmd {
@@ -39,6 +45,11 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * Add a new datasource.
+   * <p>
+   * Validates project membership, name uniqueness, and quota. Inserts the datasource.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Datasource datasource) {
@@ -63,6 +74,12 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a datasource.
+   * <p>
+   * Adds a new datasource if ID is null, otherwise updates the existing datasource.
+   * Validates database immutability and name uniqueness.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(Datasource datasource) {
@@ -100,7 +117,11 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
     }.execute();
   }
 
-  //@Transactional(rollbackFor = Exception.class)
+  /**
+   * Test datasource connection by configuration.
+   * <p>
+   * Attempts to connect to the datasource using provided configuration and sets connection status.
+   */
   @Override
   public Datasource testByConfig(Datasource datasource) {
     return new BizTemplate<Datasource>() {
@@ -122,6 +143,11 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
     }.execute();
   }
 
+  /**
+   * Test datasource connection by ID.
+   * <p>
+   * Finds the datasource by ID, attempts to connect, and sets connection status.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public Datasource testById(Long id) {
@@ -149,6 +175,11 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
     }.execute();
   }
 
+  /**
+   * Delete a datasource by ID.
+   * <p>
+   * Deletes the datasource from the repository.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -165,6 +196,11 @@ public class DatasourceCmdImpl extends CommCmd<Datasource, Long> implements Data
     }.execute();
   }
 
+  /**
+   * Get the repository for Datasource entity.
+   * <p>
+   * @return the DatasourceRepo instance
+   */
   @Override
   protected BaseRepository<Datasource, Long> getRepository() {
     return this.datasourceRepo;

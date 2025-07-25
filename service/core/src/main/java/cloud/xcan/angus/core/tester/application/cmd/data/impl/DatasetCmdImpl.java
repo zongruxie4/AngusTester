@@ -59,6 +59,12 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Command implementation for managing datasets.
+ * <p>
+ * Provides methods for adding, updating, replacing, cloning, importing, and deleting datasets.
+ * Handles permission checks, name uniqueness, quota validation, activity logging, and batch operations.
+ */
 @Slf4j
 @Biz
 public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd {
@@ -78,6 +84,12 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new dataset.
+   * <p>
+   * Validates project membership, required parameters, name uniqueness, and tenant quota.
+   * Inserts the dataset and logs the creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Dataset dataset) {
@@ -105,6 +117,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Update an existing dataset.
+   * <p>
+   * Validates dataset existence, project ID, and name uniqueness. Updates the dataset and logs the update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(Dataset dataset) {
@@ -133,6 +150,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a dataset.
+   * <p>
+   * Adds a new dataset if ID is null, otherwise updates the existing dataset.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(Dataset dataset) {
@@ -151,6 +173,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Clone a batch of datasets.
+   * <p>
+   * Validates dataset existence, clones datasets with unique names, inserts them, and logs clone activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> clone(HashSet<Long> ids) {
@@ -182,6 +209,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Import datasets from content or file.
+   * <p>
+   * Validates project membership and file presence, parses content, inserts datasets, and logs import activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> imports(Long projectId,
@@ -227,8 +259,9 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Import example datasets for a project.
+   * <p>
+   * Loads sample datasets, parses content, and inserts them for the specified project.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -250,6 +283,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Delete a batch of datasets.
+   * <p>
+   * Deletes datasets and their targets, and logs delete activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -272,6 +310,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }.execute();
   }
 
+  /**
+   * Parse datasets from script content.
+   * <p>
+   * Parses JSON or YAML content, validates dataset structure, handles duplicates according to strategy, and returns valid datasets.
+   */
   private @NotNull List<Dataset> parseVariablesFromScript(Long projectId,
       StrategyWhenDuplicated strategyWhenDuplicated, String finalContent) {
     // Parse angus datasets script
@@ -310,6 +353,11 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
         x -> toDataset(projectId, x)).collect(Collectors.toList());
   }
 
+  /**
+   * Get the repository for Dataset entity.
+   * <p>
+   * @return the DatasetRepo instance
+   */
   @Override
   protected BaseRepository<Dataset, Long> getRepository() {
     return this.datasetRepo;

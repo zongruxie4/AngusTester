@@ -30,9 +30,13 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing variable associations with APIs and scenarios.
+ * <p>
+ * Provides methods for adding and deleting variable associations, including activity logging and permission checks.
+ */
 @Biz
-public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> implements
-    VariableTargetCmd {
+public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> implements VariableTargetCmd {
 
   @Resource
   private VariableRepo variableRepo;
@@ -46,10 +50,14 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add variable associations to a target (API or scenario).
+   * <p>
+   * Validates resource support, project, permission, and quota. Inserts associations and logs activities if required.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> variableIds,
-      boolean saveActivity) {
+  public List<IdKey<Long, Object>> add(Long targetId, String targetType, Set<Long> variableIds, boolean saveActivity) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       final CombinedTargetType type = CombinedTargetType.valueOf(targetType);
       Long projectId;
@@ -95,10 +103,14 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
     }.execute();
   }
 
+  /**
+   * Delete variable associations from a target (API or scenario).
+   * <p>
+   * Validates permission, deletes associations, and logs activities if required.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void delete(Long targetId, String targetType, Set<Long> variableIds,
-      boolean saveActivity) {
+  public void delete(Long targetId, String targetType, Set<Long> variableIds, boolean saveActivity) {
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
@@ -124,6 +136,11 @@ public class VariableTargetCmdImpl extends CommCmd<VariableTarget, Long> impleme
     }.execute();
   }
 
+  /**
+   * Get the repository for VariableTarget entity.
+   * <p>
+   * @return the VariableTargetRepo instance
+   */
   @Override
   protected BaseRepository<VariableTarget, Long> getRepository() {
     return this.variableTargetRepo;

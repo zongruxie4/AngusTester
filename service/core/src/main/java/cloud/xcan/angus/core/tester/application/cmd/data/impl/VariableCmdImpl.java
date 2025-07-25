@@ -60,6 +60,12 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Command implementation for managing variables.
+ * <p>
+ * Provides methods for adding, updating, replacing, cloning, importing, and deleting variables.
+ * Handles permission checks, name uniqueness, quota validation, activity logging, and batch operations.
+ */
 @Slf4j
 @Biz
 public class VariableCmdImpl extends CommCmd<Variable, Long> implements VariableCmd {
@@ -79,6 +85,12 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new variable.
+   * <p>
+   * Validates project membership, required parameters, name uniqueness, and tenant quota.
+   * Inserts the variable and logs the creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Variable variable) {
@@ -106,6 +118,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Update an existing variable.
+   * <p>
+   * Validates variable existence, project ID, and name uniqueness. Updates the variable and logs the update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(Variable variable) {
@@ -134,6 +151,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a variable.
+   * <p>
+   * Adds a new variable if ID is null, otherwise updates the existing variable.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(Variable variable) {
@@ -159,6 +181,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Clone a batch of variables.
+   * <p>
+   * Validates variable existence, clones variables with unique names, inserts them, and logs clone activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> clone(HashSet<Long> ids) {
@@ -190,6 +217,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Import variables from content or file.
+   * <p>
+   * Validates project membership and file presence, parses content, inserts variables, and logs import activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> imports(Long projectId,
@@ -258,6 +290,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Delete a batch of variables.
+   * <p>
+   * Deletes variables and their targets, and logs delete activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -280,6 +317,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }.execute();
   }
 
+  /**
+   * Parse variables from script content.
+   * <p>
+   * Parses JSON or YAML content, validates variable structure, handles duplicates according to strategy, and returns valid variables.
+   */
   private @NotNull List<Variable> parseVariablesFromScript(Long projectId,
       StrategyWhenDuplicated strategyWhenDuplicated, String finalContent) {
     // Parse angus variables script
@@ -317,6 +359,11 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     return validVariables.stream().map(x -> toVariable(projectId, x)).collect(Collectors.toList());
   }
 
+  /**
+   * Get the repository for Variable entity.
+   * <p>
+   * @return the VariableRepo instance
+   */
   @Override
   protected BaseRepository<Variable, Long> getRepository() {
     return this.variablesRepo;
