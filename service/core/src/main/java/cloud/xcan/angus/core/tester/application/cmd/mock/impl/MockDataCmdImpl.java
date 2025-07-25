@@ -29,6 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Command implementation for mock data generation.
+ * <p>
+ * Provides methods for generating mock function and text data, and managing mock data scripts.
+ * <p>
+ * Ensures batch operations, error handling, and integration with script and execution commands.
+ */
 @Biz
 public class MockDataCmdImpl implements MockDataCmd {
 
@@ -44,6 +51,11 @@ public class MockDataCmdImpl implements MockDataCmd {
   @Resource
   private ExecCmd execCmd;
 
+  /**
+   * Generate mock function data for a given function and iteration count.
+   * <p>
+   * Returns a list of generated values.
+   */
   @Override
   public List<Object> mockFunc(String function, int iterations) {
     return new BizTemplate<List<Object>>() {
@@ -55,6 +67,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Generate mock function data in batch for multiple functions.
+   * <p>
+   * Returns a list of mock function data objects.
+   */
   @Override
   public List<MockFuncData> mockFuncInBatch(List<MockFuncRequest> functions) {
     return new BizTemplate<List<MockFuncData>>() {
@@ -71,6 +88,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Generate mock text data for a given text and iteration count.
+   * <p>
+   * Returns a list of generated text values.
+   */
   @Override
   public List<String> mockText(String text, int iterations) {
     return new BizTemplate<List<String>>() {
@@ -82,6 +104,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Generate mock text data in batch for multiple texts.
+   * <p>
+   * Returns a list of mock text data objects.
+   */
   @Override
   public List<MockTextData> mockTextInBatch(List<MockTextRequest> texts) {
     return new BizTemplate<List<MockTextData>>() {
@@ -98,6 +125,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Add or update a mock data script.
+   * <p>
+   * Generates or updates a script for mock data and returns its ID.
+   */
   @Override
   public IdKey<Long, Object> dataScriptAdd(Long scriptId, Long projectId, String plugin,
       Configuration configuration, MockData mockData) {
@@ -123,6 +155,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * View the YAML representation of a mock data script.
+   * <p>
+   * Returns the YAML string for the generated script.
+   */
   @Override
   public String dataScriptView(String plugin, Configuration configuration, MockData mockData) {
     return new BizTemplate<String>() {
@@ -139,6 +176,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Generate data by executing a mock data script.
+   * <p>
+   * Adds or updates the script, then triggers execution and returns the execution result ID.
+   */
   @Override
   public IdKey<Long, Object> dataGen(Long scriptId, Long projectId, String plugin,
       Configuration configuration, MockData mockData) {
@@ -154,6 +196,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }.execute();
   }
 
+  /**
+   * Internal: Generate mock function data for a given function and iteration count.
+   * <p>
+   * Handles exceptions and returns a list of generated values.
+   */
   @NotNull
   public List<Object> mockFunc0(int iterations, String mockFunc) {
     try {
@@ -167,6 +214,11 @@ public class MockDataCmdImpl implements MockDataCmd {
     }
   }
 
+  /**
+   * Internal: Generate mock text data for a given text and iteration count.
+   * <p>
+   * Handles exceptions and returns a list of generated text values.
+   */
   @NotNull
   private List<String> mockText0(int iterations, String text) {
     try {

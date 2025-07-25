@@ -33,10 +33,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for mock service authorization management.
+ * <p>
+ * Provides methods for adding, replacing, enabling/disabling, and deleting mock service authorizations.
+ * <p>
+ * Ensures permission checks, duplicate prevention, and activity logging.
  */
-@Biz
 @Slf4j
+@Biz
 public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> implements
     MockServiceAuthCmd {
 
@@ -58,6 +62,13 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new authorization for a mock service.
+   * <p>
+   * Checks service existence, permission, and duplicate authorization before adding.
+   * <p>
+   * Logs grant permission activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(MockServiceAuth auth) {
@@ -96,6 +107,13 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
     }.execute();
   }
 
+  /**
+   * Replace (update) an existing authorization for a mock service.
+   * <p>
+   * Checks existence, permission, and updates authorization details.
+   * <p>
+   * Logs modification activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(MockServiceAuth serviceAuth) {
@@ -135,6 +153,13 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
     }.execute();
   }
 
+  /**
+   * Enable or disable authorization control for a mock service.
+   * <p>
+   * Checks existence and permission before updating authorization status.
+   * <p>
+   * Logs enable/disable activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(Long serviceId, boolean enabled) {
@@ -161,6 +186,13 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
     }.execute();
   }
 
+  /**
+   * Delete an authorization for a mock service.
+   * <p>
+   * Checks existence and permission before deleting authorization.
+   * <p>
+   * Logs cancel activity and deletes the authorization.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -204,6 +236,11 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
     }.execute();
   }
 
+  /**
+   * Add creator authorization for a batch of mock services.
+   * <p>
+   * Batch inserts creator authorizations for the specified services.
+   */
   @Override
   public void addCreatorAuth(Set<Long> serviceIds) {
     List<MockServiceAuth> serviceAuths = new ArrayList<>();
@@ -211,6 +248,11 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
     batchInsert(serviceAuths, "authObjectId");
   }
 
+  /**
+   * Get the repository for mock service authorizations.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<MockServiceAuth, Long> getRepository() {
     return this.mockServiceAuthRepo;

@@ -112,8 +112,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Biz
+/**
+ * Command implementation for mock service management.
+ * <p>
+ * Provides methods for adding, updating, replacing, importing, associating, starting, stopping, and deleting mock services.
+ * <p>
+ * Ensures permission checks, activity logging, distributed coordination, and batch operations with transaction management.
+ */
 @Slf4j
+@Biz
 public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements MockServiceCmd {
 
   @Resource
@@ -191,6 +198,13 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   @Value("${xcan.mockService.testerApisUrlPrefix}")
   private String mockServiceTesterApisUrlPrefix;
 
+  /**
+   * Add a new mock service.
+   * <p>
+   * Checks member permissions, name uniqueness, node and domain validity, agent status, port availability, and quota.
+   * <p>
+   * Adds DNS if cloud edition, sets default permissions, and logs creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(MockService service) {
@@ -250,6 +264,13 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Update an existing mock service.
+   * <p>
+   * Checks existence, name uniqueness, permission, and domain validity before updating.
+   * <p>
+   * Syncs service settings to instance and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(MockService service) {
@@ -299,6 +320,13 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     mockServiceRepo.save(CoreUtils.copyPropertiesIgnoreNull(service, serviceDb));
   }
 
+  /**
+   * Replace (add or update) a mock service.
+   * <p>
+   * Checks existence, name uniqueness, permission, and domain validity before replacing.
+   * <p>
+   * Syncs service settings to instance and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(MockService service) {
@@ -373,6 +401,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Import a mock service from file or text.
+   * <p>
+   * Checks input validity, parses and adds service, APIs, and responses, and logs import activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> fileImport(MockService service) {
@@ -424,7 +457,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   }
 
   /**
-   * Note: Each mock service can only be associated with one project/service.
+   * Associate a mock service with a project/service.
+   * <p>
+   * Checks existence, permission, and association validity before associating and adding APIs/responses.
+   * <p>
+   * Logs association activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -506,6 +543,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Start a batch of mock services.
+   * <p>
+   * Checks existence and permission, starts services, and logs start activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<StartVo> start(HashSet<Long> ids) {
@@ -538,6 +580,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Stop a batch of mock services.
+   * <p>
+   * Checks existence and permission, stops services, and logs stop activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<StopVo> stop(HashSet<Long> ids) {
@@ -564,6 +611,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Import APIs for a mock service from file or text.
+   * <p>
+   * Checks existence and permission, parses and adds APIs/responses, and logs import activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void imports(Long id, StrategyWhenDuplicated strategyWhenDuplicated,
@@ -688,8 +740,9 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Import an example mock service and its APIs.
+   * <p>
+   * Adds a sample mock service, sets default permissions, and imports example APIs.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -722,6 +775,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Import example APIs for a mock service.
+   * <p>
+   * Imports sample APIs and responses for the specified mock service.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void importApisExample(Long id) {
@@ -736,6 +794,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Export mock APIs and responses to a file in the specified format.
+   * <p>
+   * Checks existence and permission, serializes APIs/responses, and logs export activity.
+   */
   @Override
   public File export(Long mockServiceId, Set<Long> mockApiIds, SchemaFormat format) {
     return new BizTemplate<File>() {
@@ -796,6 +859,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Delete association between a mock service and a project/service.
+   * <p>
+   * Checks existence and permission, removes associations, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void associationDelete(Long id) {
@@ -823,6 +891,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Delete a batch of mock services.
+   * <p>
+   * Checks permission, stops services, deletes DNS, and removes all related data.
+   */
   @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
   @Override
   public void delete(HashSet<Long> ids, Boolean force) {
@@ -863,6 +936,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     }.execute();
   }
 
+  /**
+   * Add mock APIs and responses for a mock service.
+   * <p>
+   * Assembles and inserts mock APIs and responses in batch.
+   */
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public List<MockApis> addMockApisAndResponses(MockService service, List<Apis> apis) {
@@ -964,6 +1042,11 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
     mockApisResponseRepo.deleteAllByMockServiceIdIn(ids);
   }
 
+  /**
+   * Get the repository for mock services.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<MockService, Long> getRepository() {
     return mockServiceRepo;

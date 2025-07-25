@@ -37,7 +37,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for mock API response management.
+ * <p>
+ * Provides methods for adding, replacing, and deleting mock API responses.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
 @Biz
 @Slf4j
@@ -69,7 +73,11 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
   private CommonQuery commonQuery;
 
   /**
-   * Add a single apis response
+   * Add a batch of mock API responses for a given API.
+   * <p>
+   * Checks API and service existence, permission, response ID consistency, name uniqueness, and quota.
+   * <p>
+   * Logs activity and synchronizes responses to service instance.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -127,7 +135,9 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
   }
 
   /**
-   * Add multiple apis responses
+   * Add a batch of mock API responses (no transaction).
+   * <p>
+   * Checks name uniqueness, deletes existing associations, and inserts responses.
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
@@ -145,7 +155,9 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
   }
 
   /**
-   * Note: It is a full replacement.
+   * Replace (add or update) all responses for a given API.
+   * <p>
+   * Checks existence, permission, response ID consistency, and quota, then replaces responses.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -234,6 +246,11 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
     }
   }
 
+  /**
+   * Delete a batch of mock API responses by API ID and response IDs.
+   * <p>
+   * Checks existence, permission, and deletes responses, then synchronizes to service instance.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long apisId, HashSet<Long> responseIds) {
@@ -271,6 +288,11 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
     mockApisResponseRepo.deleteAllByMockApisIdAndIdIn(apisId, responseIds);
   }
 
+  /**
+   * Get the repository for mock API responses.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<MockApisResponse, Long> getRepository() {
     return this.mockApisResponseRepo;

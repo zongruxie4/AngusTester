@@ -16,7 +16,11 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for mock API log management.
+ * <p>
+ * Provides methods for adding mock API logs.
+ * <p>
+ * Ensures permission checks and repository access.
  */
 @Biz
 public class MockApisLogCmdImpl extends CommCmd<MockApisLog, Long> implements MockApisLogCmd {
@@ -27,6 +31,11 @@ public class MockApisLogCmdImpl extends CommCmd<MockApisLog, Long> implements Mo
   @Resource
   private MockApisCmd mockApisCmd;
 
+  /**
+   * Add a mock API log entry.
+   * <p>
+   * Checks if the call is from /openapi2p and inserts the log.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add0(MockApisLog log) {
@@ -38,6 +47,11 @@ public class MockApisLogCmdImpl extends CommCmd<MockApisLog, Long> implements Mo
     return insert(log);
   }
 
+  /**
+   * Get the repository for mock API logs.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<MockApisLog, Long> getRepository() {
     return this.mockApisLogRepo;

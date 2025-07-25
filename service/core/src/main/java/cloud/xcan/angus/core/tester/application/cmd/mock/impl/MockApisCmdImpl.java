@@ -60,6 +60,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for mock API management.
+ * <p>
+ * Provides methods for adding, updating, replacing, cloning, moving, associating, and deleting mock APIs.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Slf4j
 @Biz
 public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApisCmd {
@@ -97,6 +104,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
   @Resource
   private MockServiceManageCmd mockServiceManageCmd;
 
+  /**
+   * Add a batch of mock APIs to a mock service.
+   * <p>
+   * Checks service existence, permission, name/operation uniqueness, quota, and associations.
+   * <p>
+   * Logs creation activity and synchronizes APIs to service instance.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(List<MockApis> mockApis, boolean saveActivity) {
@@ -170,6 +184,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }
   }
 
+  /**
+   * Update a batch of mock APIs.
+   * <p>
+   * Checks existence, service, permission, name/operation uniqueness, and updates APIs.
+   * <p>
+   * Logs update activity and synchronizes APIs to service instance.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<MockApis> mockApis) {
@@ -231,6 +252,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     mockApisRepo.saveAll(CoreUtils.batchCopyPropertiesIgnoreNull(mockApis, apisDb));
   }
 
+  /**
+   * Replace (add or update) a batch of mock APIs.
+   * <p>
+   * Checks existence, service, permission, name/operation uniqueness, and replaces APIs.
+   * <p>
+   * Logs replace activity and synchronizes APIs to service instance.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> replace(List<MockApis> mockApis) {
@@ -318,6 +346,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     mockApisRepo.saveAll(updatedApisDb);
   }
 
+  /**
+   * Clone a mock API and its responses.
+   * <p>
+   * Checks existence and permission, clones API and responses, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -354,6 +387,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }.execute();
   }
 
+  /**
+   * Move a batch of mock APIs to another mock service.
+   * <p>
+   * Checks existence, target service, permission, and updates service association.
+   * <p>
+   * Logs move activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void move(HashSet<Long> ids, Long targetServiceId) {
@@ -440,6 +480,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }.execute();
   }
 
+  /**
+   * Associate a mock API with an existing API.
+   * <p>
+   * Checks existence, permission, and updates association.
+   * <p>
+   * Logs association activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> copyApisAdd(Long mockServiceId, Long apisId) {
@@ -476,7 +523,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
   }
 
   /**
-   * Note: Each mock API can only be associated with one apis.
+   * Associate a mock API with an existing API.
+   * <p>
+   * Checks existence, permission, and updates association.
+   * <p>
+   * Logs association activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -516,6 +567,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }.execute();
   }
 
+  /**
+   * Associate a mock API with an existing API.
+   * <p>
+   * Checks existence, permission, and updates association.
+   * <p>
+   * Logs association activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void assocApisUpdate(Long mockApisId, Long apisId) {
@@ -554,6 +612,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }.execute();
   }
 
+  /**
+   * Disassociate a batch of mock APIs from APIs.
+   * <p>
+   * Checks existence, permission, and removes associations.
+   * <p>
+   * Logs disassociation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void assocDelete(HashSet<Long> ids) {
@@ -584,6 +649,13 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }.execute();
   }
 
+  /**
+   * Delete a batch of mock APIs.
+   * <p>
+   * Checks existence, service, permission, and deletes APIs and responses.
+   * <p>
+   * Logs delete activity and synchronizes APIs to service instance.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -653,6 +725,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }
   }
 
+  /**
+   * Add mock API responses for a given API.
+   * <p>
+   * Converts API responses to mock API responses and saves them.
+   */
   @Override
   public void addMockApisResponses(MockApis mockApi, Apis apis, Long mockServiceId) {
     if (isNotEmpty(apis.getResponses())) {
@@ -666,6 +743,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }
   }
 
+  /**
+   * Add imported mock APIs and their responses to a mock service.
+   * <p>
+   * Converts imported APIs and responses, and saves them in batch.
+   */
   @Override
   public void addImportedMockApisAndResponses(MockService mockServiceDb,
       List<cloud.xcan.angus.model.element.mock.apis.MockApis> angusMockApis) {
@@ -696,6 +778,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }
   }
 
+  /**
+   * Synchronize added mock APIs to the service instance.
+   * <p>
+   * Handles exceptions and logs errors if synchronization fails.
+   */
   @Override
   public void syncAddedApisToServiceInstance(MockService service, List<MockApis> apis) {
     if (isNotEmpty(apis)) {
@@ -714,6 +801,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     mockServiceManageCmd.syncApis(syncDto);
   }
 
+  /**
+   * Synchronize deleted mock APIs to the service instance.
+   * <p>
+   * Handles exceptions and logs errors if synchronization fails.
+   */
   @Override
   public void syncDeletedApisToServiceInstance(MockService service, List<MockApis> apis) {
     if (isNotEmpty(apis)) {
@@ -726,6 +818,11 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
     }
   }
 
+  /**
+   * Get the repository for mock APIs.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<MockApis, Long> getRepository() {
     return this.mockApisRepo;

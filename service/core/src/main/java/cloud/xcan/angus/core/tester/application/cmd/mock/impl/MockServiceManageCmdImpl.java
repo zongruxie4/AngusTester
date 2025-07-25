@@ -58,6 +58,13 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
+/**
+ * Command implementation for mock service instance management.
+ * <p>
+ * Provides methods for starting, stopping, querying status, synchronizing, and deleting mock service instances.
+ * <p>
+ * Ensures distributed coordination, error handling, and integration with agent nodes.
+ */
 @Slf4j
 @Biz
 public class MockServiceManageCmdImpl implements MockServiceManageCmd {
@@ -77,6 +84,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
   @Resource
   private ObjectMapper objectMapper;
 
+  /**
+   * Start mock service instances on specified nodes.
+   * <p>
+   * Handles local and remote node coordination, error handling, and activity logging.
+   */
   @Override
   public List<StartVo> start(MockServiceStartDto dto) {
     List<StartVo> results = new ArrayList<>();
@@ -162,6 +174,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     return results;
   }
 
+  /**
+   * Stop mock service instances on specified nodes.
+   * <p>
+   * Handles local and remote node coordination, error handling, and activity logging.
+   */
   @Override
   public List<StopVo> stop(MockServiceStopDto dto) {
     List<StopVo> results = new ArrayList<>();
@@ -249,6 +266,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     return results;
   }
 
+  /**
+   * Query status of mock service instances on specified nodes.
+   * <p>
+   * Handles local and remote node coordination, error handling, and returns status results.
+   */
   @Override
   public List<StatusVo> status(MockServiceStatusDto dto) {
     List<StatusVo> results = new ArrayList<>();
@@ -334,7 +356,9 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
   }
 
   /**
-   * Note: Single node command.
+   * Synchronize mock APIs to a single node or broadcast to all nodes.
+   * <p>
+   * Handles distributed coordination and error handling.
    */
   @Override
   public SimpleCommandResult syncApis(MockServiceApisSyncDto dto) {
@@ -392,7 +416,9 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
   }
 
   /**
-   * Note: Single node command.
+   * Delete mock APIs from a single node or broadcast to all nodes.
+   * <p>
+   * Handles distributed coordination and error handling.
    */
   @Override
   public SimpleCommandResult deleteApis(MockServiceApisDeleteDto dto) {
@@ -449,7 +475,9 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
   }
 
   /**
-   * In order to remove the mock service, the status will be stopped.
+   * Delete mock service metrics for specified service IDs.
+   * <p>
+   * Removes all metrics data associated with the given service IDs.
    */
   private void deleteMockServiceMetrics(MockServiceStopDto dto) {
     Set<Long> serviceIds = dto.getCmdParams().stream().map(StopCmdParam::getServiceId)
@@ -459,6 +487,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Push start command to agent node.
+   * <p>
+   * Sends start command to the specified agent node and returns results.
+   */
   private List<StartVo> pushStartCmd2Agent(List<StartCmdParam> nodeCmds, Long nodeId,
       ChannelRouter router) throws Exception {
     StartDto startDto = StartDto.of(nodeCmds);
@@ -473,6 +506,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Broadcast start command to remote controllers.
+   * <p>
+   * Sends start command to all remote controllers and returns results.
+   */
   private List<StartVo> broadcastStart2RemoteCtrl(MockServiceStartDto dto, String remoteUrl) {
     try {
       Response response = doHttpPostRequest(dto, remoteUrl);
@@ -504,6 +542,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Push stop command to agent node.
+   * <p>
+   * Sends stop command to the specified agent node and returns results.
+   */
   private List<StopVo> pushStopCmd2Agent(List<StopCmdParam> nodeCmds, Long nodeId,
       ChannelRouter router) throws Exception {
     StopDto stopDto = StopDto.of(nodeCmds);
@@ -519,6 +562,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Broadcast stop command to remote controllers.
+   * <p>
+   * Sends stop command to all remote controllers and returns results.
+   */
   private List<StopVo> broadcastStop2RemoteCtrl(MockServiceStopDto dto, String remoteUrl) {
     try {
       Response response = doHttpPostRequest(dto, remoteUrl);
@@ -550,6 +598,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Push status command to agent node.
+   * <p>
+   * Sends status command to the specified agent node and returns results.
+   */
   private List<StatusVo> pushStatusCmd2Agent(List<StatusCmdParam> nodeCmds, Long nodeId,
       ChannelRouter router) throws Exception {
     StatusDto statusDto = StatusDto.of(nodeCmds);
@@ -564,6 +617,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Broadcast status command to remote controllers.
+   * <p>
+   * Sends status command to all remote controllers and returns results.
+   */
   private List<StatusVo> broadcastStatus2RemoteCtrl(MockServiceStatusDto dto, String remoteUrl) {
     try {
       Response response = doHttpPostRequest(dto, remoteUrl);
@@ -595,6 +653,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Push sync APIs command to agent node.
+   * <p>
+   * Sends sync APIs command to the specified agent node and returns result.
+   */
   private SimpleCommandResult pushSyncApisCmd2Agent(MockApisSyncDto nodeCmds, Long nodeId,
       ChannelRouter router) throws Exception {
     ReplyMessage result = nodeInfoQuery.pushAgentMessage(AgentCommandType.MOCK_SERVICE_APIS_SYNC,
@@ -606,6 +669,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Broadcast sync APIs command to remote controllers.
+   * <p>
+   * Sends sync APIs command to all remote controllers and returns result.
+   */
   private SimpleCommandResult broadcastSyncApis2RemoteCtrl(MockServiceApisSyncDto dto,
       String remoteUrl) {
     try {
@@ -621,6 +689,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Push delete APIs command to agent node.
+   * <p>
+   * Sends delete APIs command to the specified agent node and returns result.
+   */
   private SimpleCommandResult pushDeleteApisCmd2Agent(MockApisDeleteDto nodeCmds, Long nodeId,
       ChannelRouter router) throws Exception {
     ReplyMessage result = nodeInfoQuery.pushAgentMessage(AgentCommandType.MOCK_SERVICE_APIS_DELETE,
@@ -632,6 +705,11 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     }
   }
 
+  /**
+   * Broadcast delete APIs command to remote controllers.
+   * <p>
+   * Sends delete APIs command to all remote controllers and returns result.
+   */
   private SimpleCommandResult broadcastDeleteApis2RemoteCtrl(MockServiceApisDeleteDto dto,
       String remoteUrl) {
     try {
