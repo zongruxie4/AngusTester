@@ -29,6 +29,13 @@ import jakarta.annotation.Resource;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for scenario authorization management.
+ * <p>
+ * Provides methods for adding, replacing, enabling/disabling, and deleting scenario authorizations.
+ * <p>
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements ScenarioAuthCmd {
 
@@ -50,6 +57,13 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new authorization for a scenario.
+   * <p>
+   * Checks scenario existence, permission, and duplicate authorization before adding.
+   * <p>
+   * Logs grant permission activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(ScenarioAuth auth) {
@@ -86,6 +100,13 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Replace (update) an existing authorization for a scenario.
+   * <p>
+   * Checks existence, permission, and updates authorization details.
+   * <p>
+   * Logs modification activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(ScenarioAuth auth) {
@@ -124,6 +145,13 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Delete an authorization for a scenario.
+   * <p>
+   * Checks existence and permission before deleting authorization.
+   * <p>
+   * Logs cancel activity and deletes the authorization.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long scenarioId) {
@@ -166,6 +194,13 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Enable or disable authorization control for a scenario.
+   * <p>
+   * Checks existence and permission before updating authorization status.
+   * <p>
+   * Logs enable/disable activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(Long id, Boolean enabled) {
@@ -192,6 +227,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Add creator authorization for a scenario.
+   * <p>
+   * Batch inserts creator authorizations for the specified scenario.
+   */
   @Override
   public void addCreatorAuth(Set<Long> creatorIds, Long scenarioId) {
     // Allow modification of new authorization
@@ -201,6 +241,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     batchInsert(toScenarioCreatorAuths(creatorIds, scenarioId, uidGenerator), "authObjectId");
   }
 
+  /**
+   * Move creator authorization for a scenario.
+   * <p>
+   * Removes and re-inserts creator authorizations for the specified scenario.
+   */
   @Override
   public void moveCreatorAuth(Set<Long> creatorIds, Long scenarioId) {
     // Exists scenario move from scenario to parent dir
@@ -211,6 +256,11 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
     batchInsert(toScenarioCreatorAuths(creatorIds, scenarioId, uidGenerator), "authObjectId");
   }
 
+  /**
+   * Get the repository for scenario authorizations.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ScenarioAuth, Long> getRepository() {
     return this.scenarioAuthRepo;

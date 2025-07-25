@@ -21,6 +21,13 @@ import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Command implementation for scenario monitor history management.
+ * <p>
+ * Provides methods for running and recording scenario monitor histories.
+ * <p>
+ * Ensures execution log retrieval, error handling, and history retention.
+ */
 @Slf4j
 @Biz
 public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistory, Long>
@@ -32,6 +39,11 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
   @Resource
   private ExecDebugCmd execDebugCmd;
 
+  /**
+   * Run a scenario monitor and record its history.
+   * <p>
+   * Executes the monitor, records results and logs, and retains a maximum number of history records.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public ScenarioMonitorHistory run(ScenarioMonitor monitor) {
@@ -60,6 +72,11 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
     return history;
   }
 
+  /**
+   * Get the repository for scenario monitor histories.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ScenarioMonitorHistory, Long> getRepository() {
     return scenarioMonitorHistoryRepo;

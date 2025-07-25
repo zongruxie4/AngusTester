@@ -23,14 +23,19 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for scenario follow management.
+ * <p>
+ * Provides methods for adding, canceling, and batch canceling scenario follows.
+ * <p>
+   * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> implements
     ScenarioFollowCmd {
 
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
-
-  @Resource
   private ScenarioQuery scenarioQuery;
 
   @Resource
@@ -39,6 +44,13 @@ public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> impleme
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a follow for a scenario.
+   * <p>
+   * Checks scenario existence, permission, and duplicate before adding.
+   * <p>
+   * Logs follow activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(ScenarioFollow follow) {
@@ -70,6 +82,13 @@ public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Cancel a follow for a scenario.
+   * <p>
+   * Checks scenario existence before canceling.
+   * <p>
+   * Logs cancel follow activity if deletion is successful.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long id) {
@@ -93,6 +112,11 @@ public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Cancel all follows for the current user, optionally by project.
+   * <p>
+   * Cancels all follows for the user across all projects or within a specific project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -110,6 +134,11 @@ public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Get the repository for scenario follows.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ScenarioFollow, Long> getRepository() {
     return this.scenarioFollowRepo;

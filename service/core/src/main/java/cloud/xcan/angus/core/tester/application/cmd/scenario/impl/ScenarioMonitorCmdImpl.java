@@ -48,25 +48,18 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
   @Resource
   private ScenarioMonitorRepo scenarioMonitorRepo;
-
   @Resource
   private ScenarioMonitorHistoryRepo scenarioMonitorHistoryRepo;
-
   @Resource
   private ScenarioMonitorHistoryCmd scenarioMonitorHistoryCmd;
-
   @Resource
   private ScenarioMonitorQuery scenarioMonitorQuery;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

@@ -51,7 +51,11 @@ import javax.annotation.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for scenario test management.
+ * <p>
+ * Provides methods for enabling/disabling, generating, retesting, deleting, and executing scenario test tasks.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
  */
 @Biz
 public class ScenarioTestCmdImpl implements ScenarioTestCmd {
@@ -83,6 +87,11 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
   @Resource
   private ExecCmd execCmd;
 
+  /**
+   * Enable or disable scenario test types.
+   * <p>
+   * Checks existence and permission, updates test type status, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void testEnabled(Long scenarioId, Set<TestType> testTypes, Boolean enabled) {
@@ -119,6 +128,11 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
     }.execute();
   }
 
+  /**
+   * Generate scenario test tasks.
+   * <p>
+   * Checks permission and generates test tasks, logging activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void testTaskGenerate(Long scenarioId, @Nullable Long sprintId, List<Task> tasks) {
@@ -145,10 +159,9 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
   }
 
   /**
-   * Retest the task or reopen the task
-   *
-   * @param scenarioId  Scenario ID
-   * @param restart Restart is true, Reopen is false
+   * Retest or reopen scenario test tasks.
+   * <p>
+   * Checks existence and permission, filters tasks, and logs activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -187,6 +200,11 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
     }.execute();
   }
 
+  /**
+   * Delete scenario test tasks by type.
+   * <p>
+   * Checks existence and permission, deletes tasks, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void testTaskDelete(Long scenarioId, Set<TestType> testTypes) {
@@ -220,6 +238,11 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
     }.execute();
   }
 
+  /**
+   * Add execution servers to a scenario test.
+   * <p>
+   * Checks existence and permission, updates script server configuration, and triggers execution.
+   */
   @Override
   public void testExecAdd(Long scenarioId, List<Server> servers) {
     new BizTemplate<Void>() {

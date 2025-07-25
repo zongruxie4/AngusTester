@@ -56,6 +56,13 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for scenario management.
+ * <p>
+ * Provides methods for adding, updating, replacing, importing, deleting, cloning, and moving scenarios.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements ScenarioCmd {
 
@@ -107,6 +114,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new scenario.
+   * <p>
+   * Checks project membership, quota, name uniqueness, and script before inserting.
+   * <p>
+   * Initializes creator authorization and logs creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Scenario scenario) {
@@ -160,6 +174,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     }.execute();
   }
 
+  /**
+   * Update an existing scenario.
+   * <p>
+   * Checks existence, permission, name uniqueness, and script before updating.
+   * <p>
+   * Updates scenario, logs update activity, and sends modification event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(Scenario scenario) {
@@ -205,6 +226,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a scenario.
+   * <p>
+   * Checks existence, permission, name uniqueness, and script before replacing.
+   * <p>
+   * Replaces scenario, logs update activity, and sends modification event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(Scenario scenario) {
@@ -307,6 +335,11 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     }.execute();*/
   }
 
+  /**
+   * Clone a scenario and its script.
+   * <p>
+   * Checks existence and permission, clones scenario and script, and logs activity.
+   */
   @Override
   public IdKey<Long, Object> clone(Long id) {
     return new BizTemplate<IdKey<Long, Object>>() {
@@ -339,8 +372,9 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Import example scenarios for a project.
+   * <p>
+   * Parses example scripts, adds scenarios, and logs creation activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -361,6 +395,11 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     }.execute();
   }
 
+  /**
+   * Delete a scenario by ID (logic delete).
+   * <p>
+   * Checks existence and permission, marks scenario as deleted, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -401,9 +440,10 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Physically delete, External calling biz must ensure data authed and secured!
+   * Physically delete scenarios and all related data (external use must ensure data security).
+   * <p>
+   * Deletes scenarios, scripts, authorizations, favorites, follows, indicators, and associations.
    */
-  //@Transactional(rollbackFor = Exception.class)
   @Override
   public void delete0(List<Long> ids) {
     // Delete scenario
@@ -427,6 +467,11 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     // scenarioTestCmd.delete0(ids);
   }
 
+  /**
+   * Get the repository for scenarios.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<Scenario, Long> getRepository() {
     return this.scenarioRepo;

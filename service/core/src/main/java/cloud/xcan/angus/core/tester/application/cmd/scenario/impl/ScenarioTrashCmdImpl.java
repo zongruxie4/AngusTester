@@ -27,6 +27,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for scenario trash management.
+ * <p>
+ * Provides methods for adding, clearing, restoring, and deleting scenario trash records.
+ * <p>
+ * Ensures permission checks, cascading operations, and batch processing with transaction management.
+ */
 @Biz
 public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implements ScenarioTrashCmd {
 
@@ -45,11 +52,21 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a batch of scenario trash records.
+   * <p>
+   * Batch inserts scenario trash records for persistence.
+   */
   @Override
   public void add0(List<ScenarioTrash> trashes) {
     batchInsert0(trashes);
   }
 
+  /**
+   * Clear a single scenario trash record and its associations.
+   * <p>
+   * Checks existence and permission, deletes trash and associated data.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clear(Long id) {
@@ -76,6 +93,11 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
     }.execute();
   }
 
+  /**
+   * Clear all scenario trash records for a project and their associations.
+   * <p>
+   * Deletes all trash and associated data for the specified project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clearAll(Long projectId) {
@@ -102,6 +124,11 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
     }.execute();
   }
 
+  /**
+   * Restore a single scenario from trash.
+   * <p>
+   * Checks existence and permission, restores scenario, and deletes trash record.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void back(Long id) {
@@ -128,6 +155,11 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
     }.execute();
   }
 
+  /**
+   * Restore all scenarios from trash for a project.
+   * <p>
+   * Restores all scenarios and deletes all trash records for the specified project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void backAll(Long projectId) {
@@ -153,12 +185,22 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
     }.execute();
   }
 
+  /**
+   * Delete associations for a batch of scenarios (internal helper).
+   * <p>
+   * Deletes all related scenario data for the given scenario IDs.
+   */
   private void deleteAssociation(List<Long> scenarioIds) {
     if (isNotEmpty(scenarioIds)) {
       scenarioCmd.delete0(scenarioIds);
     }
   }
 
+  /**
+   * Get all trash records for a project and user (internal helper).
+   * <p>
+   * Returns all trash records for the specified project and current user (or all if admin).
+   */
   private List<ScenarioTrash> getAllTrashesByProjectId(Long projectId) {
     Long currentUserId = getUserId();
     List<ScenarioTrash> trashDbs;
@@ -172,6 +214,11 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
     return trashDbs;
   }
 
+  /**
+   * Get the repository for scenario trash records.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ScenarioTrash, Long> getRepository() {
     return this.scenarioTrashRepo;

@@ -82,24 +82,18 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
 
   @Resource
   private NodeRepo nodeRepo;
-
   @Resource
   private NodeQuery nodeQuery;
-
   @Resource
   private NodeRoleCmd nodeRoleCmd;
-
   @Resource
   private EcsClient ecsClient;
-
-  @Resource
-  private OrderInnerRemote orderInnerRemote;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private NodeInfoCmd nodeInfoCmd;
+  @Resource
+  private OrderInnerRemote orderInnerRemote;
 
   /**
    * Add a batch of nodes.

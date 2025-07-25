@@ -23,6 +23,13 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for scenario favorite management.
+ * <p>
+ * Provides methods for adding, canceling, and batch canceling scenario favorites.
+ * <p>
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> implements
     ScenarioFavouriteCmd {
@@ -39,6 +46,13 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a favorite for a scenario.
+   * <p>
+   * Checks scenario existence, permission, and duplicate before adding.
+   * <p>
+   * Logs favorite activity.
+   */
   @Override
   public IdKey<Long, Object> add(ScenarioFavourite favorite) {
     return new BizTemplate<IdKey<Long, Object>>() {
@@ -71,6 +85,13 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
     }.execute();
   }
 
+  /**
+   * Cancel a favorite for a scenario.
+   * <p>
+   * Checks scenario existence before canceling.
+   * <p>
+   * Logs cancel favorite activity if deletion is successful.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long id) {
@@ -94,6 +115,11 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
     }.execute();
   }
 
+  /**
+   * Cancel all favorites for the current user, optionally by project.
+   * <p>
+   * Cancels all favorites for the user across all projects or within a specific project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -111,6 +137,11 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
     }.execute();
   }
 
+  /**
+   * Get the repository for scenario favorites.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ScenarioFavourite, Long> getRepository() {
     return this.scenarioFavoriteRepo;
