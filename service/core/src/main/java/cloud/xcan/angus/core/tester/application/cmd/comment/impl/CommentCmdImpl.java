@@ -25,27 +25,34 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing comments on tasks and functional cases.
+ * <p>
+ * Provides methods for adding and deleting comments, including recursive deletion of sub-comments.
+ * Handles permission checks, quota validation, activity logging, and notification events.
+ */
 @Biz
 public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd {
 
   @Resource
   private CommentRepo commentRepo;
-
   @Resource
   private CommentQuery commentQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new comment to a task or functional case.
+   * <p>
+   * Validates quota, target existence, and comment hierarchy. Inserts the comment, updates comment count,
+   * logs activity, and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public Comment add(Comment comment) {
@@ -93,6 +100,11 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
     }.execute();
   }
 
+  /**
+   * Delete a comment and all its sub-comments recursively.
+   * <p>
+   * Validates permission, deletes the comment and its sub-comments, logs activity, and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -136,6 +148,11 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
     }.execute();
   }
 
+  /**
+   * Recursively delete all sub-comments for a given list of comments.
+   * <p>
+   * This is a private helper method used during comment deletion.
+   */
   private void deleteSubComment(List<Comment> subComments) {
     commentRepo.deleteAll(subComments);
     for (Comment comment : subComments) {
@@ -146,6 +163,11 @@ public class CommentCmdImpl extends CommCmd<Comment, Long> implements CommentCmd
     }
   }
 
+  /**
+   * Get the repository for Comment entity.
+   * <p>
+   * @return the CommentRepo instance
+   */
   @Override
   protected BaseRepository<Comment, Long> getRepository() {
     return this.commentRepo;
