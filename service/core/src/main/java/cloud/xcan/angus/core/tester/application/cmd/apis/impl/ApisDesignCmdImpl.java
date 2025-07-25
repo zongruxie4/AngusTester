@@ -60,39 +60,42 @@ import java.util.HashSet;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Command implementation for managing API design documents.
+ * <p>
+ * Provides methods for adding, updating, cloning, associating, generating, importing, exporting, and deleting API designs.
+ * Handles permission checks, content validation, and activity logging.
+ */
 @Biz
 public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements ApisDesignCmd {
 
   @Resource
   private ApisDesignRepo apisDesignRepo;
-
   @Resource
   private ApisDesignInfoRepo apisDesignInfoRepo;
-
   @Resource
   private ApisDesignQuery apisDesignQuery;
-
   @Resource
   private ServicesCmd servicesCmd;
-
   @Resource
   private ServicesSchemaCmd servicesSchemaCmd;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
 
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new API design document.
+   * <p>
+   * Validates project membership, inserts the design, and logs the creation activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public IdKey<Long, Object> add(ApisDesign design) {
@@ -112,11 +115,21 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Add a new API design document without activity logging.
+   * <p>
+   * Directly inserts the design.
+   */
   @Override
   public IdKey<Long, Object> add0(ApisDesign design) {
     return insert(design);
   }
 
+  /**
+   * Update the name of an API design document.
+   * <p>
+   * Validates permission, updates the name, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void updateName(Long id, String name) {
@@ -144,6 +157,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Replace the OpenAPI content of a design document.
+   * <p>
+   * Validates permission, updates content, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void replaceContent(Long id, String openapi) {
@@ -172,6 +190,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Release an API design document.
+   * <p>
+   * Validates permission and content, releases the design, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void release(Long id) {
@@ -204,6 +227,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Clone an API design document.
+   * <p>
+   * Validates permission, clones the design, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -234,6 +262,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Associate a service with an API design document.
+   * <p>
+   * Validates permission, checks for duplicates, associates the service, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void servicesAssociate(Long serviceId) {
@@ -260,6 +293,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Generate a service from an API design document.
+   * <p>
+   * Validates permission, generates the service, and logs the activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void servicesGenerate(Long id) {
@@ -314,6 +352,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Import an API design document from content or file.
+   * <p>
+   * Validates permission, parses content, inserts the design, and logs the import activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public IdKey<Long, Object> imports(Long projectId, String name, String content,
@@ -348,6 +391,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Delete a batch of API design documents.
+   * <p>
+   * Validates permission, deletes designs, and logs the delete activity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void delete(HashSet<Long> ids) {
@@ -372,6 +420,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Export an API design document to a file.
+   * <p>
+   * Validates permission, writes content to file, and returns the file.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public File export(Long id, SchemaFormat format) {
@@ -406,6 +459,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Delete all API design documents by service IDs.
+   * <p>
+   * Physically deletes all designs for the given services.
+   */
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     apisDesignRepo.deleteByDesignSourceIdIn(
@@ -423,6 +481,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     return idKey;
   }
 
+  /**
+   * Get the repository for ApisDesign entity.
+   * <p>
+   * @return the ApisDesignRepo instance
+   */
   @Override
   protected BaseRepository<ApisDesign, Long> getRepository() {
     return apisDesignRepo;

@@ -18,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for managing unarchived APIs.
+ * <p>
+ * Provides methods for adding, updating, renaming, and deleting unarchived APIs.
+ * Handles permission checks and batch operations.
  */
 @Slf4j
 @Biz
@@ -32,7 +35,9 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
   private ApisUnarchivedQuery apisUnarchivedQuery;
 
   /**
-   * Add unarchived http or websocket apis. `Related projects and api owner are not supported.`
+   * Add unarchived APIs in batch.
+   * <p>
+   * Inserts unarchived APIs, does not support related projects and API owner.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -46,6 +51,11 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
     }.execute();
   }
 
+  /**
+   * Update unarchived APIs in batch.
+   * <p>
+   * Validates permission and updates unarchived APIs.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<ApisUnarchived> apis) {
@@ -63,6 +73,11 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
     }.execute();
   }
 
+  /**
+   * Rename an unarchived API.
+   * <p>
+   * Validates permission and updates the name.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -84,7 +99,9 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
   }
 
   /**
-   * Delete my unarchive apis.
+   * Delete unarchived APIs.
+   * <p>
+   * Deletes all or a single unarchived API for the current user.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -103,6 +120,11 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
     }.execute();
   }
 
+  /**
+   * Get the repository for ApisUnarchived entity.
+   * <p>
+   * @return the ApisUnarchivedRepo instance
+   */
   @Override
   protected BaseRepository<ApisUnarchived, Long> getRepository() {
     return this.apisUnarchivedRepo;

@@ -33,30 +33,35 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing API and service shares.
+ * <p>
+ * Provides methods for adding, updating, deleting, and incrementing view count of shares.
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisShareCmd {
 
   @Resource
   private ApisShareRepo apisShareRepo;
-
   @Resource
   private ApisShareQuery apisShareQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new share for an API or service.
+   * <p>
+   * Validates permission, inserts share, and logs the creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public ApisShare add(ApisShare share) {
@@ -100,6 +105,11 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
     }.execute();
   }
 
+  /**
+   * Update an existing share.
+   * <p>
+   * Validates share existence, updates share, checks permission, and logs the update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(ApisShare share) {
@@ -126,6 +136,11 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
     }.execute();
   }
 
+  /**
+   * Delete a batch of shares.
+   * <p>
+   * Validates share existence, deletes shares, checks permission, and logs the delete activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -154,6 +169,11 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
     }.execute();
   }
 
+  /**
+   * Increment the view count of a share.
+   * <p>
+   * Increments the view count for the specified share.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void incrView(Long id) {
@@ -186,6 +206,11 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
     }
   }
 
+  /**
+   * Get the repository for ApisShare entity.
+   * <p>
+   * @return the ApisShareRepo instance
+   */
   @Override
   protected BaseRepository<ApisShare, Long> getRepository() {
     return apisShareRepo;

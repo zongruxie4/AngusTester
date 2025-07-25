@@ -44,6 +44,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing API test cases.
+ * <p>
+ * Provides methods for adding, updating, replacing, renaming, enabling/disabling, cloning, deleting, and syncing API cases.
+ * Ensures permission checks, name uniqueness, quota validation, and activity logging.
+ */
 @Biz
 public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCaseCmd {
 
@@ -68,6 +74,12 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a batch of API cases for a single API.
+   * <p>
+   * Validates API existence, permission, case type uniqueness, name duplication, and quota.
+   * Inserts cases, synchronizes with scripts, and logs creation activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(List<ApisCase> cases) {
@@ -111,7 +123,9 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   }
 
   /**
-   * Note: Synchronous update script content is not included.
+   * Add cases for a specific API without synchronizing script content.
+   * <p>
+   * Only inserts cases and logs creation activities.
    */
   @Override
   public void add(Long apisId, List<ApisCase> cases) {
@@ -124,6 +138,12 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     activityCmd.addAll(toActivities(API_CASE, cases, ActivityType.CREATED));
   }
 
+  /**
+   * Update a batch of API cases.
+   * <p>
+   * Validates case existence, API, permission, and name duplication.
+   * Updates cases, synchronizes with scripts, and logs update activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<ApisCase> cases) {
@@ -165,6 +185,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a batch of API cases.
+   * <p>
+   * Handles both new and existing cases, validates all constraints, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(List<ApisCase> cases) {
@@ -227,6 +252,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Rename an API case.
+   * <p>
+   * Validates name uniqueness and permission, updates the case, synchronizes with scripts, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -265,6 +295,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Enable or disable a batch of API cases.
+   * <p>
+   * Validates permission, updates status, synchronizes with scripts, and logs the activity.
+   */
   @Override
   public void enabled(Set<Long> ids, Boolean enabled) {
     new BizTemplate<Void>() {
@@ -302,6 +337,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Synchronize all cases of an API to script.
+   * <p>
+   * Validates permission and synchronizes cases if present.
+   */
   @Override
   public void syncToScript(Long apisId) {
     new BizTemplate<Void>() {
@@ -326,6 +366,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Clone a batch of API cases.
+   * <p>
+   * Validates permission, clones cases, synchronizes with scripts, and logs clone activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> clone(Set<Long> ids) {
@@ -371,6 +416,11 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Delete a batch of API cases.
+   * <p>
+   * Validates permission, updates delete status, synchronizes with scripts, and logs delete activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -415,11 +465,21 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
     }.execute();
   }
 
+  /**
+   * Delete all cases by API IDs.
+   * <p>
+   * Physically deletes all cases for the given APIs.
+   */
   @Override
   public void deleteByApisIdIn(List<Long> apiIds) {
     apisCaseRepo.deleteByApisIdIn(apiIds);
   }
 
+  /**
+   * Get the repository for ApisCase entity.
+   * <p>
+   * @return the ApisCaseRepo instance
+   */
   @Override
   protected BaseRepository<ApisCase, Long> getRepository() {
     return this.apisCaseRepo;

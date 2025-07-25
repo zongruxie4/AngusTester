@@ -23,21 +23,29 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing API favorites.
+ * <p>
+ * Provides methods for adding, canceling, and batch canceling API favorites.
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implements ApisFavouriteCmd {
 
   @Resource
   private ApisFavouriteRepo apisFavouriteRepo;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add an API to favorites.
+   * <p>
+   * Validates API existence, permission, and duplicate, inserts favorite, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(ApisFavourite favourite) {
@@ -70,6 +78,11 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
     }.execute();
   }
 
+  /**
+   * Cancel an API favorite.
+   * <p>
+   * Validates API existence, deletes favorite, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long apisId) {
@@ -93,6 +106,11 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
     }.execute();
   }
 
+  /**
+   * Cancel all API favorites for a project or user.
+   * <p>
+   * Deletes all favorites for the given project or user.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -110,6 +128,11 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
     }.execute();
   }
 
+  /**
+   * Get the repository for ApisFavourite entity.
+   * <p>
+   * @return the ApisFavouriteRepo instance
+   */
   @Override
   protected BaseRepository<ApisFavourite, Long> getRepository() {
     return this.apisFavouriteRepo;

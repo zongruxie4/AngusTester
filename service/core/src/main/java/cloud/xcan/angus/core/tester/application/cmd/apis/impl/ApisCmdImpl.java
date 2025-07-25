@@ -3,6 +3,7 @@ package cloud.xcan.angus.core.tester.application.cmd.apis.impl;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.API;
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.MOCK_APIS;
 import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
@@ -113,6 +114,13 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing APIs.
+ * <p>
+ * Provides methods for adding, updating, replacing, renaming, archiving, moving, status updating,
+ * and deleting APIs. Handles permission checks, quota validation, activity logging, and related
+ * resource management.
+ */
 @Biz
 @Slf4j
 public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
@@ -192,13 +200,20 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   @Resource
   private ScriptCmd scriptCmd;
 
+  /**
+   * Add a batch of APIs to a service.
+   * <p>
+   * Validates that all APIs belong to the same service, checks permission, duplication, quota, and
+   * owner. Inserts APIs, initializes creator permissions, and logs creation activities if
+   * required.
+   */
   @Override
   public List<IdKey<Long, Object>> add(List<Apis> apis, Services servicesDb, boolean saveActivity) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
         Set<Long> serviceIds = apis.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(serviceIds.size() == 1,
+        assertSingleService(serviceIds,
             "Only batch adding apis with one service is allowed");
 
         // Check the release apis permission
@@ -238,7 +253,8 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         for (Apis api : apis) {
           ApisConverter.assembleApiAuthInfo(api, servicesDb);
           Set<Long> creatorIds = new HashSet<>();
-          creatorIds.add(PrincipalContextUtils.isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
+          creatorIds.add(
+              PrincipalContextUtils.isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
           // Current services creator authorization
           creatorIds.add(servicesDb.getCreatedBy());
           apisAuths.addAll(ApisAuthConverter.toApisCreatorAuth(api, creatorIds));
@@ -249,7 +265,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
-   * Archive the http or websocket apis.
+   * Archive a batch of APIs (HTTP or WebSocket).
+   * <p>
+   * Validates service, archives APIs, logs activities, and deletes unarchived records.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -282,6 +300,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Update a batch of APIs.
+   * <p>
+   * Validates APIs, service, owner, duplication, permission, and status. Updates APIs and logs
+   * activities if required.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<Apis> apis, boolean saveActivity) {
@@ -297,7 +321,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Note: service id is not allowed modify
         // Check the allowing operations on a single service
         Set<Long> serviceIds = apisDbs.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(serviceIds.size() == 1,
+        assertSingleService(serviceIds,
             "Only batch updating apis with one service is allowed");
 
         // Check the owner exists
@@ -344,6 +368,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a batch of APIs.
+   * <p>
+   * Handles both new and existing APIs, validates all constraints, archives new APIs, updates
+   * existing ones, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> replace(List<Apis> apis) {
@@ -359,7 +389,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           // Check the allowing operations on a single service
           Set<Long> serviceIds = addApis.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
-          ProtocolAssert.assertTrue(serviceIds.size() == 1,
+          assertSingleService(serviceIds,
               "Only batch adding apis with one service is allowed");
         }
 
@@ -374,7 +404,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           // Check the allowing operations on a single service
           Set<Long> serviceIds = updateApisDbs.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
-          ProtocolAssert.assertTrue(serviceIds.size() == 1,
+          assertSingleService(serviceIds,
               "Only batch updating apis with one service is allowed");
 
           // Check the operation is not repeated
@@ -425,6 +455,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Rename an API.
+   * <p>
+   * Validates permission and status, updates the name, and logs the activity. Note: Published APIs
+   * cannot be renamed.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -462,6 +498,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Clone an API.
+   * <p>
+   * Validates permission, clones the API with a unique name, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -494,6 +535,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Move a batch of APIs to another service.
+   * <p>
+   * Validates service, APIs, permission, and quota. Updates service ID, manages creator
+   * permissions, and logs activities. After moving, permissions and references are re-initialized.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void move(List<Long> apiIds, Long targetServiceId) {
@@ -507,15 +554,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         targetServiceDb = servicesQuery.checkAndFind(targetServiceId);
 
         // Check and get apis exists
-        List<Apis> apisDb = apisQuery.checkAndFind(apiIds);
+        apisDb = apisQuery.checkAndFind(apiIds);
 
         // Check the move one service is allowed
         Set<Long> serviceIds = apisDb.stream().map(Apis::getServiceId).collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(serviceIds.size() == 1,
+        assertSingleService(serviceIds,
             "Only batch move apis with one service is allowed");
 
         // Check if the movement position has changed
-        ProtocolAssert.assertTrue(!apisDb.get(0).getServiceId().equals(targetServiceId),
+        assertTrue(!apisDb.get(0).getServiceId().equals(targetServiceId),
             "The moving position has not changed");
 
         // Check the services add auth
@@ -549,7 +596,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // NOOP: Init apis creator to view parent service and service permissions by WEB-UI
 
-        // Add move api activity
+        // Add move apis activity
         List<Activity> activities = toActivities(API, apisDb, MOVED_TO, targetServiceDb.getName());
         activityCmd.addAll(activities);
 
@@ -566,6 +613,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Update the status of an API.
+   * <p>
+   * Validates permission, updates status, and logs the activity. Note: Published APIs require
+   * release permission, others require modify permission.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void statusUpdate(Long apiId, ApiStatus status) {
@@ -600,6 +653,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Replace the server configuration of an API.
+   * <p>
+   * Validates permission and status, updates server, and logs the activity. Only allowed for
+   * unpublished APIs.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void serverReplace(Long id, Server server) {
@@ -641,6 +700,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Replace all server configurations of an API.
+   * <p>
+   * Validates permission and status, updates servers, and logs the activity. Only allowed for
+   * unpublished APIs.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void serverReplaceAll(Long id, List<Server> servers) {
@@ -666,6 +731,12 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Delete specified server configurations from an API.
+   * <p>
+   * Validates permission and status, deletes servers, and logs the activity. Only allowed for
+   * unpublished APIs.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void serverDelete(Long id, Set<String> serverUrls) {
@@ -695,11 +766,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch add parameters to APIs.
+   * <p>
+   * Validates service and permission, adds parameters, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void addParameters(Long serviceId, ServiceApisScope modifyScope,
-      String matchEndpointRegex, HttpMethod matchMethod, Set<Long> selectedApisIds,
-      Set<String> filterTags, List<Parameter> parameters) {
+  public void addParameters(Long serviceId, ServiceApisScope modifyScope, String matchEndpointRegex,
+      HttpMethod matchMethod, Set<Long> selectedApisIds, Set<String> filterTags,
+      List<Parameter> parameters) {
     new BizTemplate<Void>() {
       List<Apis> serviceApisDb;
 
@@ -733,6 +809,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch update parameters of APIs.
+   * <p>
+   * Validates service and permission, updates parameters, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void updateParameters(Long serviceId, ServiceApisScope modifyScope,
@@ -780,6 +861,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch delete parameters from APIs.
+   * <p>
+   * Validates service and permission, deletes parameters, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void deleteParameters(Long serviceId, ServiceApisScope modifyScope,
@@ -821,6 +907,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch enable or disable parameters of APIs.
+   * <p>
+   * Validates service and permission, updates parameter status, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enableParameters(Long serviceId, ServiceApisScope modifyScope,
@@ -874,11 +965,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch update authentication for APIs.
+   * <p>
+   * Validates service and permission, updates authentication, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void updateAuth(Long serviceId, ServiceApisScope modifyScope,
-      String matchEndpointRegex, HttpMethod matchMethod, Set<Long> selectedApisIds,
-      Set<String> filterTags, SecurityScheme authentication) {
+  public void updateAuth(Long serviceId, ServiceApisScope modifyScope, String matchEndpointRegex,
+      HttpMethod matchMethod, Set<Long> selectedApisIds, Set<String> filterTags,
+      SecurityScheme authentication) {
     new BizTemplate<Void>() {
       List<Apis> serviceApisDb;
 
@@ -901,11 +997,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch update server for APIs.
+   * <p>
+   * Validates service and permission, updates server, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void updateServer(Long serviceId, ServiceApisScope modifyScope,
-      String matchEndpointRegex, HttpMethod matchMethod, Set<Long> selectedApisIds,
-      Set<String> filterTags, Server server) {
+  public void updateServer(Long serviceId, ServiceApisScope modifyScope, String matchEndpointRegex,
+      HttpMethod matchMethod, Set<Long> selectedApisIds, Set<String> filterTags, Server server) {
     new BizTemplate<Void>() {
       List<Apis> serviceApisDb;
 
@@ -928,6 +1028,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch add variable references to APIs.
+   * <p>
+   * Validates service and permission, adds variable references, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void addVariableReference(Long serviceId, ServiceApisScope modifyScope,
@@ -959,6 +1064,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch delete variable references from APIs.
+   * <p>
+   * Validates service and permission, deletes variable references, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void deleteVariableReference(Long serviceId, ServiceApisScope modifyScope,
@@ -990,6 +1100,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch add dataset references to APIs.
+   * <p>
+   * Validates service and permission, adds dataset references, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void addDatasetReference(Long serviceId, ServiceApisScope modifyScope,
@@ -1020,6 +1135,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch delete dataset references from APIs.
+   * <p>
+   * Validates service and permission, deletes dataset references, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void deleteDatasetReference(Long serviceId, ServiceApisScope modifyScope,
@@ -1051,6 +1171,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Associate a mock API with an API.
+   * <p>
+   * Validates permission, generates mock API and responses, and logs the association activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> assocMockApisAdd(Long id, Long mockServiceId, String summary) {
@@ -1090,6 +1215,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Export an API as an OpenAPI document.
+   * <p>
+   * Supports multiple formats and logs the export activity.
+   */
   @Override
   public ResponseEntity<org.springframework.core.io.Resource> export(Long id, SchemaFormat format,
       HttpServletResponse response) {
@@ -1112,6 +1242,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     }.execute();
   }
 
+  /**
+   * Batch logical delete APIs.
+   * <p>
+   * Validates permission and status, updates delete status, logs activities, and adds to trash.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> apiIds, boolean checkPermission) {
@@ -1199,6 +1334,11 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     // apisTestCmd.delete0(apiIds);
   }
 
+  /**
+   * Batch update APIs from schema sync.
+   * <p>
+   * Updates APIs from schema and logs activities.
+   */
   @Override
   public void updateSyncApis(Map<String, Apis> updatedApisDbMap, Map<String, Apis> openApisMap) {
     for (String uniqueKey : updatedApisDbMap.keySet()) {
@@ -1260,6 +1400,21 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     return params;
   }
 
+  /**
+   * Assert that all APIs belong to a single service.
+   * <p>
+   * Throws an exception if the set size is not 1.
+   */
+  private void assertSingleService(Set<Long> serviceIds, String message) {
+      assertTrue(serviceIds.size() == 1, message);
+  }
+
+  /**
+   * Get the repository for Apis entity.
+   * <p>
+   *
+   * @return the ApisRepo instance
+   */
   @Override
   protected BaseRepository<Apis, Long> getRepository() {
     return this.apisRepo;

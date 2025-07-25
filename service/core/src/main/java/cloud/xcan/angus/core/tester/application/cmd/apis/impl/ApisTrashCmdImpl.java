@@ -38,6 +38,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing API and service trash (recycle bin).
+ * <p>
+ * Provides methods for adding, clearing, restoring, and deleting trash records.
+ * Handles permission checks, association cleanup, and activity logging.
+ */
 @Biz
 public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTrashCmd {
 
@@ -69,11 +75,21 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   private ActivityCmd activityCmd;
 
   //@Transactional(rollbackFor = Exception.class)
+  /**
+   * Add trash records in batch.
+   * <p>
+   * Inserts trash records for APIs or services.
+   */
   @Override
   public void add0(List<ApisTrash> trashes) {
     batchInsert0(trashes);
   }
 
+  /**
+   * Clear a single trash record and its associations.
+   * <p>
+   * Validates permission, deletes trash, cleans up associations, and skips activity logging.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clear(Long id) {
@@ -100,6 +116,11 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     }.execute();
   }
 
+  /**
+   * Clear all trash records for a project.
+   * <p>
+   * Deletes all trash and associations for the given project, skips activity logging.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clearAll(Long projectId) {
@@ -127,6 +148,11 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     }.execute();
   }
 
+  /**
+   * Restore a single trash record.
+   * <p>
+   * Validates permission, restores APIs or services, and logs the restore activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void back(Long id) {
@@ -154,6 +180,11 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     }.execute();
   }
 
+  /**
+   * Restore all trash records for a project.
+   * <p>
+   * Restores all APIs or services for the given project, skips activity logging.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void backAll(Long projectId) {
@@ -276,6 +307,11 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     return trashDbs;
   }
 
+  /**
+   * Get the repository for ApisTrash entity.
+   * <p>
+   * @return the ApisTrashRepo instance
+   */
   @Override
   protected BaseRepository<ApisTrash, Long> getRepository() {
     return this.apisTrashRepo;

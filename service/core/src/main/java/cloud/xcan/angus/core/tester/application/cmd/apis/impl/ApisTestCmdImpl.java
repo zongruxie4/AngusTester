@@ -79,7 +79,10 @@ import javax.annotation.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author XiaoLong Liu
+ * Command implementation for managing API test execution and scripts.
+ * <p>
+ * Provides methods for enabling/disabling tests, generating scripts, managing test tasks, and synchronizing cases.
+ * Handles permission checks, activity logging, and integration with related modules.
  */
 @Biz
 public class ApisTestCmdImpl implements ApisTestCmd {
@@ -135,6 +138,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   @Resource
   private ExecCmd execCmd;
 
+  /**
+   * Enable or disable test types for an API.
+   * <p>
+   * Validates permission, updates test flags, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void testEnabled(Long apisId, Set<TestType> testTypes, boolean enabled) {
@@ -171,8 +179,9 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   }
 
   /**
-   * When the api test script does not exist, the corresponding script will be generated. If the
-   * test script already exists, the current test information will be ignore.
+   * Generate test scripts for an API if not already present.
+   * <p>
+   * Validates permission and generates scripts if needed.
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
@@ -202,10 +211,9 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   }
 
   /**
-   * When the api test script does not exist, the corresponding script will be generated. If the
-   * test script already exists, the current test information will be ignore.
-   *
-   * @param serverMap Specify server configuration when executing tests.
+   * Generate test scripts for an API with server configuration.
+   * <p>
+   * Validates permission, prepares environment, and generates scripts.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -240,6 +248,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }
   }
 
+  /**
+   * Delete test scripts for an API and test types.
+   * <p>
+   * Validates permission, deletes scripts, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void scriptDelete(Long apisId, Set<TestType> testTypes) {
@@ -268,6 +281,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Delete test scripts for an API and test types without permission check.
+   * <p>
+   * Directly deletes scripts for the specified test types.
+   */
   @Override
   public void scriptDelete0(Long apisId, Set<TestType> testTypes) {
     // Delete apis test script
@@ -276,13 +294,13 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   }
 
   /**
-   * When the api test task does not exist, the corresponding task will be generated. If the test
-   * task already exists, the current test information will be overwritten.
+   * Generate or reopen test tasks for an API.
+   * <p>
+   * Validates permission, generates or reopens tasks, and logs activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void testTaskGenerate(Long apisId, @Nullable Long sprintId, List<Task> tasks,
-      boolean ignoreApisPermission) {
+  public void testTaskGenerate(Long apisId, @Nullable Long sprintId, List<Task> tasks, boolean ignoreApisPermission) {
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
@@ -307,10 +325,9 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   }
 
   /**
-   * Retest or reopen the task
-   *
-   * @param apisId  Apis ID
-   * @param restart Restart is true, Reopen is false
+   * Retest or reopen test tasks for an API.
+   * <p>
+   * Validates permission, filters tasks, and logs activities.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -350,6 +367,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Delete test tasks for APIs and test types.
+   * <p>
+   * Validates permission, deletes tasks, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void testTaskDelete(List<Long> apisIds, Set<TestType> testTypes) {
@@ -384,6 +406,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Add test execution for an API and test types.
+   * <p>
+   * Validates permission, prepares environment, and triggers execution.
+   */
   @Override
   public void testExecAdd(Long apisId, Set<TestType> testTypes, @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
@@ -406,9 +433,13 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Add test execution for multiple APIs and test types.
+   * <p>
+   * Triggers execution for each API and test type.
+   */
   @Override
-  public void testExecAdd(HashSet<Long> apisIds, HashSet<TestType> testTypes,
-      @Nullable List<Server> servers) {
+  public void testExecAdd(HashSet<Long> apisIds, HashSet<TestType> testTypes, @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
 
       @Override
@@ -421,6 +452,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Add test execution for all cases of an API.
+   * <p>
+   * Validates permission, updates case status, synchronizes with scripts, and triggers execution.
+   */
   @Override
   public void testCaseExecAdd(Long apisId, LinkedHashSet<Long> caseIds) {
     new BizTemplate<Void>() {
@@ -455,6 +491,11 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }.execute();
   }
 
+  /**
+   * Add test execution for an API and test types with prepared scripts.
+   * <p>
+   * Prepares scripts, overrides server configuration, and triggers execution.
+   */
   @Override
   public void testExecAdd0(Apis apisDb, Set<TestType> testTypes, List<Server> servers) {
     Map<ScriptType, Script> scriptsDbMap = scriptQuery.findBySource(ScriptSource.API,
@@ -508,9 +549,13 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     }
   }
 
+  /**
+   * Initialize script and cases for an API.
+   * <p>
+   * Prepares script content, synchronizes cases, and saves scripts.
+   */
   @Transactional(rollbackFor = Exception.class)
-  public void initScriptAndCases(Apis apisDb, Map<String, Server> serverMap,
-      Script script, List<Variable> variables, List<Dataset> datasets) {
+  public void initScriptAndCases(Apis apisDb, Map<String, Server> serverMap, Script script, List<Variable> variables, List<Dataset> datasets) {
     script.setProjectId(apisDb.getProjectId());
     script.setSourceId(apisDb.getId());
     if (script.getType().isFunctionalTesting() /*&& apisDb.getTestFunc()*/) {

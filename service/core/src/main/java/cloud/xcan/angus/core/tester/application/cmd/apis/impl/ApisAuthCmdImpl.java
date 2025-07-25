@@ -37,32 +37,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Biz
 public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuthCmd {
 
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisAuthRepo apisAuthRepo;
-
   @Resource
   private ServicesAuthRepo servicesAuthRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add API authorization.
+   * <p>
+   * Checks API, creator, permission, object, and duplication, then inserts and records activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(ApisAuth auth) {
@@ -119,6 +120,11 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     }.execute();
   }
 
+  /**
+   * Replace API authorization.
+   * <p>
+   * Checks existence, creator, API, permission, and object, then updates and records activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(ApisAuth auth) {
@@ -157,6 +163,11 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     }.execute();
   }
 
+  /**
+   * Delete API authorization.
+   * <p>
+   * Checks existence, creator, API, and permission, records cancel activity, then deletes.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -184,7 +195,8 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
           authObjectName = commonQuery
               .checkAndGetAuthName(authDb.getAuthObjectType(), authDb.getAuthObjectId());
         } catch (Exception e) {
-          // NOOP: Authorization can also be cancelled after the authorization object is deleted
+          // Log the exception for troubleshooting.
+          log.warn("Failed to get auth object name", e);
         }
 
         // Add deleted permission activity, must be deleted before
@@ -197,6 +209,11 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     }.execute();
   }
 
+  /**
+   * Enable or disable API authorization.
+   * <p>
+   * Checks API and permission, updates status, and records activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(Long apisId, Boolean enabled) {
@@ -223,34 +240,43 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     }.execute();
   }
 
+  /**
+   * Batch add creator authorization for APIs.
+   * <p>
+   * Removes old and inserts new creator authorizations.
+   */
   @Override
   public void addCreatorAuth(Set<Long> apisIds, Set<Long> creatorIds) {
-    // Allow modification of new authorization
     apisAuthRepo.deleteByApisIdInAndCreator(apisIds, true);
-
     // Save api creator authorization
-    List<ApisAuth> apisAuths = new ArrayList<>();
-    for (Long apisId : apisIds) {
-      apisAuths.addAll(creatorIds.stream()
-          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)).toList());
-    }
+    List<ApisAuth> apisAuths = apisIds.stream()
+        .flatMap(apisId -> creatorIds.stream()
+            .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)))
+        .toList();
     batchInsert(apisAuths, "authObjectId");
   }
 
+  /**
+   * Batch add creator authorization for APIs with mapping.
+   * <p>
+   * Removes old and inserts new creator authorizations.
+   */
   @Override
   public void addCreatorAuth(Map<Long, Set<Long>> apisIdAndCreatorIds) {
-    // Allow modification of new authorization
     apisAuthRepo.deleteByApisIdInAndCreator(apisIdAndCreatorIds.keySet(), true);
-
     // Save api creator authorization
-    List<ApisAuth> apisAuths = new ArrayList<>();
-    for (Long apisId : apisIdAndCreatorIds.keySet()) {
-      apisAuths.addAll(apisIdAndCreatorIds.get(apisId).stream()
-          .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)).toList());
-    }
+    List<ApisAuth> apisAuths = apisIdAndCreatorIds.entrySet().stream()
+        .flatMap(entry -> entry.getValue().stream()
+            .map(creatorId -> toApisCreatorAuth(entry.getKey(), creatorId, uidGenerator)))
+        .toList();
     batchInsert(apisAuths, "authObjectId");
   }
 
+  /**
+   * Move creator authorization to a new project.
+   * <p>
+   * Removes old and inserts new creator authorizations for the target.
+   */
   @Override
   public void moveCreatorAuth(Services targetProjectDb, List<Long> apiIds, List<Apis> apis) {
     Set<ApisAuth> apisAuths = new HashSet<>();
@@ -264,6 +290,12 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
     batchInsert0(apisAuths);
   }
 
+  /**
+   * Get the repository for ApisAuth entity.
+   * <p>
+   *
+   * @return the ApisAuthRepo instance
+   */
   @Override
   protected BaseRepository<ApisAuth, Long> getRepository() {
     return this.apisAuthRepo;

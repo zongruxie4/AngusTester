@@ -23,21 +23,29 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing API follows.
+ * <p>
+ * Provides methods for adding, canceling, and batch canceling API follows.
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements ApisFollowCmd {
 
   @Resource
   private ApisFollowRepo apisFollowRepo;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add an API to follows.
+   * <p>
+   * Validates API existence, permission, and duplicate, inserts follow, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(ApisFollow follow) {
@@ -70,6 +78,11 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Cancel an API follow.
+   * <p>
+   * Validates API existence, deletes follow, and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long apisId) {
@@ -93,6 +106,11 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Cancel all API follows for a project or user.
+   * <p>
+   * Deletes all follows for the given project or user.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -110,6 +128,11 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
     }.execute();
   }
 
+  /**
+   * Get the repository for ApisFollow entity.
+   * <p>
+   * @return the ApisFollowRepo instance
+   */
   @Override
   protected BaseRepository<ApisFollow, Long> getRepository() {
     return this.apisFollowRepo;
