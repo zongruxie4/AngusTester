@@ -34,19 +34,14 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
 
   @Resource
   private FuncBaselineCaseRepo funcBaselineCaseRepo;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncBaselineCmd funcBaselineCmd;
-
   @Resource
   private FuncBaselineQuery funcBaselineQuery;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
 

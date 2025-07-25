@@ -40,13 +40,10 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
 
   @Resource
   private IndicatorPerfRepo indicatorPerfRepo;
-
   @Resource
   private IndicatorPerfQuery indicatorPerfQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

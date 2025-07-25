@@ -125,76 +125,52 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
 
   @Resource
   private MockServiceRepo mockServiceRepo;
-
   @Resource
   private MockServiceCmd mockServiceCmd;
-
   @Resource
   private MockServiceQuery mockServiceQuery;
-
   @Resource
   private MockApisRepo mockApisRepo;
-
   @Resource
   private MockApisCmd mockApisCmd;
-
   @Resource
   private MockApisLogRepo mockApisLogRepo;
-
   @Resource
   private MockApisResponseRepo mockApisResponseRepo;
-
   @Resource
   private MockApisResponseCmd mockApisResponseCmd;
-
   @Resource
   private MockServiceAuthCmd mockServiceAuthCmd;
-
   @Resource
   private MockServiceAuthQuery mockServiceAuthQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisCmd apisCmd;
-
   @Resource
   private MockServiceManageCmd mockServiceManageCmd;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesSchemaQuery projectSchemaQuery;
-
   @Resource
   private ServicesAuthQuery projectAuthQuery;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private NodeQuery nodeQuery;
-
   @Resource
   private NodeDomainDnsCmd nodeDomainDnsCmd;
-
   @Resource
   private NodeDomainQuery nodeDomainQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Value("${xcan.mockService.domainSuffix:mock.com}")
   private String mockServiceDomainSuffix;
-
   @Value("${xcan.mockService.testerApisUrlPrefix}")
   private String mockServiceTesterApisUrlPrefix;
 

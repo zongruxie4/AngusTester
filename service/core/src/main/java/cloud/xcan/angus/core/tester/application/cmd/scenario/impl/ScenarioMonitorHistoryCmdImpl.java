@@ -35,7 +35,6 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
 
   @Resource
   private ScenarioMonitorHistoryRepo scenarioMonitorHistoryRepo;
-
   @Resource
   private ExecDebugCmd execDebugCmd;
 

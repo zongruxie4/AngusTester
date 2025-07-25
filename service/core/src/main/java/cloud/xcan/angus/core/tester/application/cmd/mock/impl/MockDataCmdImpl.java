@@ -41,13 +41,10 @@ public class MockDataCmdImpl implements MockDataCmd {
 
   @Resource
   private DefaultMockTextReplacer defaultMockTextReplacer;
-
   @Resource
   private DefaultMockExpressionReplacer defaultMockExpressionReplacer;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ExecCmd execCmd;
 

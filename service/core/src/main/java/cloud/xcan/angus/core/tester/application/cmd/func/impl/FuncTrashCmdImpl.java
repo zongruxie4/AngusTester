@@ -46,28 +46,20 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
   @Resource
   private FuncTrashRepo funcTrashRepo;
-
   @Resource
   private FuncTrashQuery funcTrashQuery;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
-
   @Resource
   private FuncCaseCmd funcCaseCmd;
-
   @Resource
   private FuncPlanRepo funcPlanRepo;
-
   @Resource
   private FuncPlanAuthRepo funcPlanAuthRepo;
-
   @Resource
   private FuncPlanCmd funcPlanCmd;
-
   @Resource
   private ActivityCmd activityCmd;
 

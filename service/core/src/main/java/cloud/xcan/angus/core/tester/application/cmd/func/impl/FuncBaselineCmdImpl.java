@@ -49,25 +49,18 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
 
   @Resource
   private FuncBaselineRepo funcBaselineRepo;
-
   @Resource
   private FuncBaselineCaseRepo funcBaselineCaseRepo;
-
   @Resource
   private FuncBaselineCaseCmd funcBaselineCaseCmd;
-
   @Resource
   private FuncBaselineQuery funcBaselineQuery;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

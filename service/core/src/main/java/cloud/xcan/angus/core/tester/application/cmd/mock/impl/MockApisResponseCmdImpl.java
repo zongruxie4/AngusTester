@@ -50,25 +50,18 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
 
   @Resource
   private MockApisQuery mockApisQuery;
-
   @Resource
   private MockApisCmd mockApisCmd;
-
   @Resource
   private MockServiceQuery mockServiceQuery;
-
   @Resource
   private MockApisResponseRepo mockApisResponseRepo;
-
   @Resource
   private MockApisResponseCmd mockApisResponseCmd;
-
   @Resource
   private MockApisResponseQuery mockApisResponseQuery;
-
   @Resource
   private MockServiceAuthQuery mockServiceAuthQuery;
-
   @Resource
   private CommonQuery commonQuery;
 

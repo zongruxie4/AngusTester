@@ -26,10 +26,8 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
 
   @Resource
   private NodeDomainRepo nodeDomainRepo;
-
   @Resource
   private NodeDomainQuery nodeDomainQuery;
-
   @Resource
   private DnsClient dnsClient;
 

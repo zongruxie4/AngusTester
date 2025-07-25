@@ -39,16 +39,12 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
 
   @Resource
   private ScenarioTrashRepo scenarioTrashRepo;
-
   @Resource
   private ScenarioTrashQuery scenarioTrashQuery;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ScenarioCmd scenarioCmd;
-
   @Resource
   private ActivityCmd activityCmd;
 

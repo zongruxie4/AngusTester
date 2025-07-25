@@ -40,13 +40,10 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
 
   @Resource
   private IndicatorFuncRepo indicatorFuncRepo;
-
   @Resource
   private IndicatorFuncQuery indicatorFuncQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

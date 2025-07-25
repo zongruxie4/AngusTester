@@ -136,70 +136,48 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
-
   @Resource
   private FuncCaseFollowRepo funcCaseFollowRepo;
-
   @Resource
   private FuncCaseFavouriteRepo funcCaseFavouriteRepo;
-
   @Resource
   private FuncReviewCaseRepo funcReviewCaseRepo;
-
   @Resource
   private CommentRepo commentRepo;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private FuncCaseCmd funcCaseCmd;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncPlanCmd funcPlanCmd;
-
   @Resource
   private SoftwareVersionQuery softwareVersionQuery;
-
   @Resource
   private ModuleQuery moduleQuery;
-
   @Resource
   private TagTargetCmd tagTargetCmd;
-
   @Resource
   private TaskFuncCaseCmd taskFuncCaseCmd;
-
   @Resource
   private FuncReviewCmd funcReviewCmd;
-
   @Resource
   private FuncReviewCaseCmd funcReviewCaseCmd;
-
   @Resource
   private FuncBaselineCmd funcBaselineCmd;
-
   @Resource
   private FuncTrashCmd funcTrashCmd;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private ActivityCmd activityCmd;
 
@@ -400,7 +378,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
           idKeys.addAll(updatedCasesDb.stream()
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
-              .toList());
+              .collect(Collectors.toList()));
 
           // Add modification events
           funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream()
@@ -663,8 +641,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the priority of a functional test case.
    * <p>
-   * Checks permission and updates the priority, logging the activity and sending notification
-   * event.
+   * Checks permission and updates the priority, logging the activity and sending notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -760,8 +737,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the evaluation workload of a functional test case.
    * <p>
-   * Checks permission and updates the evaluation workload, logging the activity and sending
-   * notification event.
+   * Checks permission and updates the evaluation workload, logging the activity and sending notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -819,8 +795,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the actual workload of a functional test case.
    * <p>
-   * Checks permission and updates the actual workload, logging the activity and sending
-   * notification event.
+   * Checks permission and updates the actual workload, logging the activity and sending notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -886,8 +861,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replace the attachments of a functional test case.
    * <p>
-   * Checks permission and updates attachments, logging the activity and sending notification
-   * event.
+   * Checks permission and updates attachments, logging the activity and sending notification event.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1027,8 +1001,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Reset the test result of a batch of functional test cases.
    * <p>
-   * Checks permission before resetting test results, logs activities, and sends notification
-   * events.
+   * Checks permission before resetting test results, logs activities, and sends notification events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1176,8 +1149,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Reset the review result of a batch of functional test cases.
    * <p>
-   * Checks permission before resetting review results, logs activities, and sends notification
-   * events.
+   * Checks permission before resetting review results, logs activities, and sends notification events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1526,12 +1498,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   /**
+   * Note: When API calls that are not user-action, tenant and user information must be injected
+   * into the PrincipalContext.
+   */
+  /**
    * Import example functional test cases, plans, reviews, and baselines for a project.
    * <p>
    * Used for initializing sample data for demonstration or onboarding.
-   * <p>
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override

@@ -62,28 +62,20 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
 
   @Resource
   private TaskCmd taskCmd;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private ExecCmd execCmd;
 

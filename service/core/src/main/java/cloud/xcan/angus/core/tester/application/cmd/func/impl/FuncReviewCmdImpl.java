@@ -54,28 +54,20 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
   @Resource
   private FuncReviewRepo funcReviewRepo;
-
   @Resource
   private FuncReviewQuery funcReviewQuery;
-
   @Resource
   private FuncReviewCaseRepo funcReviewCaseRepo;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncReviewCaseCmd funcReviewCaseCmd;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private ActivityCmd activityCmd;
 

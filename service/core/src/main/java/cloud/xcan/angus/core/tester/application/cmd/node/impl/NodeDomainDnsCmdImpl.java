@@ -32,13 +32,10 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
 
   @Resource
   private NodeDomainDnsRepo nodeDomainDnsRepo;
-
   @Resource
   private NodeDomainDnsQuery nodeDomainDnsQuery;
-
   @Resource
   private NodeDomainQuery nodeDomainQuery;
-
   @Resource
   private DnsClient dnsClient;
 

@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.func.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.FUNC_CASE;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.FuncReviewCaseConverter.setReviewInfoAndStatus;
 import static cloud.xcan.angus.core.tester.application.converter.FuncReviewCaseConverter.toReviewCase;
@@ -56,37 +57,26 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
 
   @Resource
   private FuncReviewCaseRepo funcReviewCaseRepo;
-
   @Resource
   private FuncReviewCaseQuery funcReviewCaseQuery;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private FuncReviewQuery funcReviewQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncReviewRepo funcReviewRepo;
-
   @Resource
   private FuncCaseCmd funcCaseCmd;
-
   @Resource
   private FuncReviewCaseRecordCmd funcReviewCaseRecordCmd;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private JoinSupplier joinSupplier;
 
@@ -155,17 +145,15 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         // Check the review and cases is consistent
         Set<Long> planIds = reviewCasesDb.stream().map(FuncReviewCase::getPlanId)
             .collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(planIds.size() == 1,
-            "Only supports review one plan result");
+        assertTrue(planIds.size() == 1,"Only supports review one plan result");
         Set<Long> reviewIds = reviewCasesDb.stream().map(FuncReviewCase::getReviewId)
             .collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(reviewIds.size() == 1,
-            "Only supports modification one case review result");
-        // Check the review exists
+        assertTrue(reviewIds.size() == 1,"Only supports modification one case review result");
+        // Check the review exists  
         reviewDb = funcReviewQuery.checkAndFind(reviewIds.iterator().next());
-        // Check the reset review permission
+        // Check the review permission
         funcPlanAuthQuery.checkReviewAuth(getUserId(), planIds.iterator().next());
-        // Check the case exists
+        // Check the case exists and can review
         casesDb = funcCaseQuery.checkAndFind(reviewCasesDb.stream().map(FuncReviewCase::getCaseId)
             .collect(Collectors.toList()));
         // Check the review has started
@@ -184,11 +172,11 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         assembleUpdateReviewCases(reviewCasesDb, casesDbMap, reviewCaseMap);
         funcReviewCaseRepo.saveAll(reviewCasesDb);
 
-        // Add review case record
+        // Add review case records
         List<FuncReviewCaseRecord> reviewCaseRecords = assembleAddReviewCaseRecord(reviewCasesDb);
         funcReviewCaseRecordCmd.add0(reviewCaseRecords);
 
-        // Save case review status
+        // Update case review status
         Map<Long, FuncReviewCase> reviewCaseDbMap = reviewCasesDb.stream()
             .collect(Collectors.toMap(FuncReviewCase::getCaseId, x -> x));
         for (FuncCase caseDb : casesDb) {

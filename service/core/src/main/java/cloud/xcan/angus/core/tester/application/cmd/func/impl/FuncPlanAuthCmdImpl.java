@@ -44,22 +44,16 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
 
   @Resource
   private FuncPlanAuthRepo funcPlanAuthRepo;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncPlanRepo funcPlanRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

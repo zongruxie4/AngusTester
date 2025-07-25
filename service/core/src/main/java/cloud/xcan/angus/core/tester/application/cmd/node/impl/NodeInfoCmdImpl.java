@@ -63,28 +63,20 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
 
   @Resource
   private NodeInfoRepo nodeInfoRepo;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private NodeInfoCmd nodeInfoCmd;
-
   @Resource
   private NodeAgentCmdProperties agentProperties;
-
   @Resource
   private ClientSignInnerRemote clientSignInnerRemote;
-
   @Resource
   private ClientSignPubRemote clientSignPubRemote;
-
   @Resource
   private DiscoveryClient discoveryClient;
-
   @Resource
   private TenantManager tenantManager;
-
   @Resource
   private ApplicationInfo appInfo;
 
@@ -152,8 +144,6 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
                 .setCtrlAccessToken(nodeInfo.getAgentAuth().getAccessToken())
             );
       }
-
-
 
       /**
        * curl -s http://192.168.0.102:1805/filepxy/pubapi/v1/object/download/install-agent.sh?id=96204965327929444 -o install-agent.sh --retry 3 -m 120

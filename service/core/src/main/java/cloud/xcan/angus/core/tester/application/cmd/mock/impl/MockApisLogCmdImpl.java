@@ -27,7 +27,6 @@ public class MockApisLogCmdImpl extends CommCmd<MockApisLog, Long> implements Mo
 
   @Resource
   private MockApisLogRepo mockApisLogRepo;
-
   @Resource
   private MockApisCmd mockApisCmd;
 

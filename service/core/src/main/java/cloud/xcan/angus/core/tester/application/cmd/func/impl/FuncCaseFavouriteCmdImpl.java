@@ -35,10 +35,8 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
 
   @Resource
   private FuncCaseFavouriteRepo funcCaseFavouriteRepo;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

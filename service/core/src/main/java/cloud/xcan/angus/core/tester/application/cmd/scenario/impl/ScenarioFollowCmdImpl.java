@@ -36,11 +36,10 @@ public class ScenarioFollowCmdImpl extends CommCmd<ScenarioFollow, Long> impleme
 
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
+  @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

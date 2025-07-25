@@ -36,13 +36,10 @@ public class ScenarioFavouriteCmdImpl extends CommCmd<ScenarioFavourite, Long> i
 
   @Resource
   private ScenarioFavouriteRepo scenarioFavoriteRepo;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

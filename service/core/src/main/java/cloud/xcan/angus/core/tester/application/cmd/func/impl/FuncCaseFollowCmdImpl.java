@@ -35,10 +35,8 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
 
   @Resource
   private FuncCaseFollowRepo funcCaseFollowRepo;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

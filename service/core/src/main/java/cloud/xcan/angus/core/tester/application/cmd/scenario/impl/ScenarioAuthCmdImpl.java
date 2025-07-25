@@ -41,19 +41,14 @@ public class ScenarioAuthCmdImpl extends CommCmd<ScenarioAuth, Long> implements 
 
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ScenarioAuthRepo scenarioAuthRepo;
-
   @Resource
   private ActivityCmd activityCmd;
 

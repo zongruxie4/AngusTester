@@ -42,13 +42,10 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
 
   @Resource
   private IndicatorStabilityRepo indicatorStabilityRepo;
-
   @Resource
   private IndicatorStabilityQuery indicatorStabilityQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

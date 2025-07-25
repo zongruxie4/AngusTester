@@ -71,16 +71,12 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
 
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private MockServiceMetricsCmd mockServiceMetricsCmd;
-
   @Resource
   private DiscoveryClient discoveryClient;
-
   @Resource
   private ApplicationInfo appInfo;
-
   @Resource
   private ObjectMapper objectMapper;
 

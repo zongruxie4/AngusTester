@@ -68,49 +68,34 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ScenarioAuthCmd scenarioAuthCmd;
-
   @Resource
   private ScenarioAuthRepo scenarioAuthRepo;
-
   @Resource
   private ScenarioFavouriteRepo scenarioFavoriteRepo;
-
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private IndicatorPerfCmd indicatorPerfCmd;
-
   @Resource
   private IndicatorStabilityCmd indicatorStabilityCmd;
-
   @Resource
   private VariableTargetRepo variableTargetRepo;
-
   @Resource
   private DatasetTargetRepo datasetTargetRepo;
-
   @Resource
   private ScenarioTrashCmd trashScenarioCmd;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

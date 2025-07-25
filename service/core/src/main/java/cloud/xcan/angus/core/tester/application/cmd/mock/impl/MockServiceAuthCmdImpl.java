@@ -46,19 +46,14 @@ public class MockServiceAuthCmdImpl extends CommCmd<MockServiceAuth, Long> imple
 
   @Resource
   private MockServiceAuthRepo mockServiceAuthRepo;
-
   @Resource
   private MockServiceAuthQuery mockServiceAuthQuery;
-
   @Resource
   private MockServiceQuery mockServiceQuery;
-
   @Resource
   private MockServiceRepo mockServiceRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

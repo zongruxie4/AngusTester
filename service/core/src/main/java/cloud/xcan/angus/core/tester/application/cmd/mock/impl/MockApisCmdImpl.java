@@ -73,34 +73,24 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
 
   @Resource
   private MockApisRepo mockApisRepo;
-
   @Resource
   private MockApisQuery mockApisQuery;
-
   @Resource
   private MockApisCmd mockApisCmd;
-
   @Resource
   private MockServiceQuery mockServiceQuery;
-
   @Resource
   private MockServiceAuthQuery mockServiceAuthQuery;
-
   @Resource
   private MockApisResponseRepo mockApisResponseRepo;
-
   @Resource
   private MockApisResponseCmd mockApisResponseCmd;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private MockServiceManageCmd mockServiceManageCmd;
 
@@ -528,6 +518,8 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
    * Checks existence, permission, and updates association.
    * <p>
    * Logs association activity.
+   * 
+   * Note: Each mock API can only be associated with one apis.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
