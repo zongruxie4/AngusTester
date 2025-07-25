@@ -10,6 +10,7 @@ data
 conf/.*env
 LOG_HOME_IS_UNDEFINED
 CATALINA_BASE_IS_UNDEFINED
+.vscode
 
 /docker/compose/mysql/
 /docker/compose/nginx/conf.d

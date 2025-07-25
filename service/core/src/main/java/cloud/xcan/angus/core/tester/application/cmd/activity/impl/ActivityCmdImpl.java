@@ -18,16 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Reuse for functional testing plugin.
+ * Command implementation for Activity entity.
+ * Handles add, batch add, and delete operations with transaction management.
  */
 @Biz
 public class ActivityCmdImpl extends CommCmd<Activity, Long> implements ActivityCmd {
 
-  @Autowired(required = false)  // Prevent injection failure after other service dependencies.
+  // Inject ActivityRepo for database operations. 'required = false' allows for optional injection.
+  @Autowired(required = false)
   private ActivityRepo activityRepo;
 
   /**
-   * Complete principal and insert save
+   * Add a single Activity entity.
+   * Only executes if the action is performed by a user and the activity is not null.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -39,7 +42,8 @@ public class ActivityCmdImpl extends CommCmd<Activity, Long> implements Activity
   }
 
   /**
-   * Complete principal and insert save
+   * Add a collection of Activity entities in batch.
+   * Only executes if the action is performed by a user and the collection is not empty.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -50,18 +54,31 @@ public class ActivityCmdImpl extends CommCmd<Activity, Long> implements Activity
     batchInsert0(activities);
   }
 
+  /**
+   * Delete activities by target type and target IDs.
+   * @param targetType the type of the target
+   * @param targetIds the list of target IDs
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void deleteByTarget(CombinedTargetType targetType, List<Long> targetIds) {
     activityRepo.deleteByTargetIdAndTargetType(targetIds, targetType.getValue());
   }
 
+  /**
+   * Delete activities by task IDs.
+   * @param taskIds the list of task IDs
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void deleteByTaskIds(List<Long> taskIds) {
     activityRepo.deleteByTaskId(taskIds);
   }
 
+  /**
+   * Get the repository for Activity entity.
+   * @return the ActivityRepo instance
+   */
   @Override
   protected BaseRepository<Activity, Long> getRepository() {
     return this.activityRepo;
