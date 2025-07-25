@@ -28,6 +28,13 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for performance indicator management.
+ * <p>
+ * Provides methods for adding, replacing, and deleting performance indicators.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implements IndicatorPerfCmd {
 
@@ -43,6 +50,13 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new performance indicator.
+   * <p>
+   * Checks target existence and ensures only one indicator per target.
+   * <p>
+   * Logs indicator update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(IndicatorPerf perf) {
@@ -73,6 +87,13 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a performance indicator.
+   * <p>
+   * Checks existence and updates or adds the indicator as needed.
+   * <p>
+   * Logs indicator update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(IndicatorPerf perf) {
@@ -108,6 +129,11 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
     }.execute();
   }
 
+  /**
+   * Delete a batch of performance indicators by IDs.
+   * <p>
+   * Deletes indicators and logs activity for each deleted indicator.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -142,7 +168,9 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
   }
 
   /**
-   * After deletion, the default indicators will be used and do not require review.
+   * Delete all performance indicators by target IDs and type.
+   * <p>
+   * After deletion, default indicators will be used and do not require review.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -157,6 +185,11 @@ public class IndicatorPerfCmdImpl extends CommCmd<IndicatorPerf, Long> implement
     }.execute();
   }
 
+  /**
+   * Get the repository for performance indicators.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<IndicatorPerf, Long> getRepository() {
     return this.indicatorPerfRepo;

@@ -28,6 +28,13 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional indicator management.
+ * <p>
+ * Provides methods for adding, replacing, and deleting functional indicators.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implements IndicatorFuncCmd {
 
@@ -43,6 +50,13 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new functional indicator.
+   * <p>
+   * Checks target existence and ensures only one indicator per target.
+   * <p>
+   * Logs indicator update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(IndicatorFunc func) {
@@ -73,6 +87,13 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a functional indicator.
+   * <p>
+   * Checks existence and updates or adds the indicator as needed.
+   * <p>
+   * Logs indicator update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(IndicatorFunc func) {
@@ -108,6 +129,11 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
     }.execute();
   }
 
+  /**
+   * Delete a batch of functional indicators by IDs.
+   * <p>
+   * Deletes indicators and logs activity for each deleted indicator.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -142,7 +168,9 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
   }
 
   /**
-   * After deletion, the default indicators will be used and do not require review.
+   * Delete all functional indicators by target IDs and type.
+   * <p>
+   * After deletion, default indicators will be used and do not require review.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -157,6 +185,11 @@ public class IndicatorFuncCmdImpl extends CommCmd<IndicatorFunc, Long> implement
     }.execute();
   }
 
+  /**
+   * Get the repository for functional indicators.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<IndicatorFunc, Long> getRepository() {
     return this.indicatorFuncRepo;

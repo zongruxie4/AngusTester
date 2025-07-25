@@ -29,6 +29,13 @@ import java.util.Collection;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for stability indicator management.
+ * <p>
+ * Provides methods for adding, replacing, and deleting stability indicators.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long> implements
     IndicatorStabilityCmd {
@@ -45,6 +52,13 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new stability indicator.
+   * <p>
+   * Checks target existence and ensures only one indicator per target.
+   * <p>
+   * Logs indicator add activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(IndicatorStability stability) {
@@ -76,6 +90,13 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a stability indicator.
+   * <p>
+   * Checks existence and updates or adds the indicator as needed.
+   * <p>
+   * Logs indicator update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(IndicatorStability stability) {
@@ -112,6 +133,11 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
     }.execute();
   }
 
+  /**
+   * Delete a batch of stability indicators by IDs.
+   * <p>
+   * Deletes indicators and logs activity for each deleted indicator.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -142,7 +168,9 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
   }
 
   /**
-   * After deletion, the default indicators will be used and do not require review
+   * Delete all stability indicators by target IDs and type.
+   * <p>
+   * After deletion, default indicators will be used and do not require review.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -157,6 +185,11 @@ public class IndicatorStabilityCmdImpl extends CommCmd<IndicatorStability, Long>
     }.execute();
   }
 
+  /**
+   * Get the repository for stability indicators.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<IndicatorStability, Long> getRepository() {
     return this.indicatorStabilityRepo;
