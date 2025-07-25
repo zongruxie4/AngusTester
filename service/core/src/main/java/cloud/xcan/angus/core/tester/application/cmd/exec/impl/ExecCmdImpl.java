@@ -132,54 +132,52 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing execution of test scripts and distributed tasks.
+ * <p>
+ * Provides methods for adding, starting, stopping, updating, and deleting executions.
+ * Handles permission checks, quota validation, distributed locking, node selection, activity logging, and error handling.
+ */
 @Slf4j
 @Biz
 public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
   @Resource
   private ExecRepo execRepo;
-
   @Resource
   private ExecQuery execQuery;
-
   @Resource
   private ExecNodeCmd execNodeCmd;
-
   @Resource
   private ExecNodeRepo execNodeRepo;
-
   @Resource
   private ExecSampleRepo execSampleRepo;
-
   @Resource
   private ExecSampleErrorCauseRepo execSampleErrorsRepo;
-
   @Resource
   private ExecSampleContentRepo execSampleExtcRepo;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ObjectMapper objectMapper;
-
   @Resource
   private DiscoveryClient discoveryClient;
-
   @Resource
   private ApplicationInfo appInfo;
-
   @Resource
   private DistributedLock distributedLock;
 
   private static final String EXEC_LOCK_KEY_FMT = "tester:exec:restart:%s";
 
+  /**
+   * Add a new execution by local script content.
+   * <p>
+   * Parses script content, creates script, and adds execution with optional trial configuration.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> addByLocalScriptContent(Long projectId, String name,
@@ -198,6 +196,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Add a new execution by local script arguments.
+   * <p>
+   * Builds script from arguments, creates script, and adds execution with optional trial configuration.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> addByLocalScriptArgs(Long projectId, String name,
@@ -218,6 +221,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Add a new execution by local script reference.
+   * <p>
+   * Checks quotas, prepares configuration, and inserts execution.
+   */
   @Override
   public IdKey<Long, Object> addByLocalScript(Long projectId, String name, Long scriptId,
       String script, AngusScript angusScript, Boolean trial) {
@@ -243,6 +251,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Add a new execution by remote script.
+   * <p>
+   * Checks script existence, permission, quotas, parses content, and inserts or updates execution.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> addByRemoteScript(String name, Long scriptId,
@@ -335,6 +348,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Replace execution configuration.
+   * <p>
+   * Updates execution configuration, script, and test result update flag.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void configReplace(Long id, String name, Long iterations, TimeValue duration,
@@ -373,6 +391,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Replace script configuration for an execution.
+   * <p>
+   * Updates script type, configuration, arguments, and saves changes.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void scriptConfigReplace(Long id, String name, ScriptType scriptType,
@@ -414,11 +437,21 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Insert execution entity directly.
+   * <p>
+   * Used for internal logic, no additional checks.
+   */
   @Override
   public IdKey<Long, Object> add0(Exec exec) {
     return insert(exec);
   }
 
+  /**
+   * Start execution by DTO.
+   * <p>
+   * Checks existence, permission, and starts execution on selected nodes.
+   */
   //@Transactional(rollbackFor = Exception.class)
   @Override
   public List<RunnerRunVo> start(ExecStartDto dto) {
@@ -456,6 +489,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Start execution on nodes.
+   * <p>
+   * Handles distributed locking, node selection, sharding, and remote controller communication.
+   */
   @SneakyThrows
   // @Transactional(rollbackFor = Exception.class) -> Lock wait timeout exceeded; try restarting transaction
   @Override
@@ -670,6 +708,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // formatter:on
   }
 
+  /**
+   * Stop execution by DTO.
+   * <p>
+   * Checks existence, permission, and stops execution on selected nodes.
+   */
   @Override
   public List<RunnerStopVo> stop(ExecStopDto dto) {
     return new BizTemplate<List<RunnerStopVo>>() {
@@ -704,6 +747,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }.execute();
   }
 
+  /**
+   * Stop execution on nodes.
+   * <p>
+   * Handles distributed locking, node selection, and remote controller communication.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<RunnerStopVo> stop0(ExecInfo execDb, ExecStopDto dto) {
@@ -837,6 +885,11 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     // formatter:on
   }
 
+  /**
+   * Delete executions by IDs.
+   * <p>
+   * Checks existence, permission, stops running executions, and deletes records.
+   */
   @Override
   public void delete(LinkedHashSet<Long> ids) {
     new BizTemplate<Void>() {
@@ -1124,8 +1177,38 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         shardingRampDownThread, shardingIterations);
   }
 
+  /**
+   * Get the repository for Exec entity.
+   * <p>
+   * @return the ExecRepo instance
+   */
   @Override
   protected BaseRepository<Exec, Long> getRepository() {
     return this.execRepo;
   }
+
+    /**
+     * Try to acquire a distributed lock for execution.
+     * <p>
+     * Returns true if lock acquired, false otherwise. Logs warning if not acquired.
+     */
+    private boolean tryAcquireLock(String lockKey, String execId, List<RunnerRunVo> results, String ignoreMessage) {
+        boolean locked = distributedLock.tryLock(lockKey, execId, 2, TimeUnit.MINUTES);
+        if (!locked) {
+            log.warn(ignoreMessage);
+            results.add(RunnerRunVo.fail(execId, ignoreMessage));
+        }
+        return locked;
+    }
+
+    /**
+     * Release a distributed lock and log if exception occurs.
+     */
+    private void releaseLockWithLog(String lockKey, String execId) {
+        try {
+            distributedLock.releaseLock(lockKey, execId);
+        } catch (Exception e) {
+            log.error("Failed to release lock for execId {}: {}", execId, e.getMessage());
+        }
+    }
 }

@@ -84,6 +84,12 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing debug executions of test scripts.
+ * <p>
+ * Provides methods for starting, monitoring, and deleting debug executions.
+ * Handles permission checks, node selection, distributed execution, and result aggregation.
+ */
 @Slf4j
 @Biz
 public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDebugCmd {
@@ -124,6 +130,11 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   @Resource
   private ApplicationInfo appInfo;
 
+  /**
+   * Start a debug execution, either broadcast or targeted.
+   * <p>
+   * Validates quotas, parses script, selects node, and manages execution lifecycle.
+   */
   @Override
   public ExecDebug start(boolean broadcast, ExecDebug debug) {
     return new BizTemplate<ExecDebug>() {
@@ -288,6 +299,11 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }.execute();
   }
 
+  /**
+   * Start a debug execution by script.
+   * <p>
+   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   */
   @Override
   public ExecDebug startByScript(boolean broadcast, Long id, @Nonnull Long scriptId,
       ScriptType scriptType, Configuration configuration, Arguments arguments) {
@@ -316,6 +332,11 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }.execute();
   }
 
+  /**
+   * Start a debug execution by scenario.
+   * <p>
+   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   */
   @Override
   public ExecDebug startByScenario(boolean broadcast, Long id, Long scenarioId, Long scriptId,
       ScriptType scriptType, Configuration configuration, Arguments arguments) {
@@ -344,6 +365,11 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }.execute();
   }
 
+  /**
+   * Start a debug execution by monitor.
+   * <p>
+   * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   */
   @Override
   public ExecDebug startByMonitor(boolean broadcast, Long id, Long monitorId, Long scenarioId,
       Long scriptId, ScriptType scriptType, Configuration configuration, Arguments arguments,

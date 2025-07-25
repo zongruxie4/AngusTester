@@ -77,6 +77,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Command implementation for generating and aggregating execution test results.
+ * <p>
+ * Provides methods for generating, assembling, and updating test results for executions, cases, and indicators.
+ * Handles result aggregation, assertion summary, and status judgment.
+ */
 @Slf4j
 @Biz
 public class ExecTestResultCmdImpl implements ExecTestResultCmd {
@@ -111,6 +117,11 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
   @Resource
   private IndicatorStabilityQuery indicatorStabilityQuery;
 
+  /**
+   * Generate and aggregate test results for an execution.
+   * <p>
+   * Parses script, aggregates samples, indicators, and case results, and updates related entities.
+   */
   @Override
   public void generateResult(Exec execDb) {
     new BizTemplate<Void>() {

@@ -35,27 +35,27 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing test result updates and example imports for executions.
+ * <p>
+ * Provides methods for updating test results and importing example executions.
+ * Handles result aggregation, status updates, and related entity updates.
+ */
 @Biz
 public class ExecTestCmdImpl implements ExecTestCmd {
 
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ApisCaseRepo apisCaseRepo;
-
   @Resource
   private ScriptInfoRepo scriptInfoRepo;
-
   @Resource
   private ApplicationInfo applicationInfo;
-
   @Resource
   private ExecCmd execCmd;
 
@@ -111,6 +111,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
     }.execute();
   }
 
+  /**
+   * Update test results for tasks, APIs, scenarios, and cases.
+   * <p>
+   * Aggregates and updates results for related entities based on execution outcome.
+   */
   private void updateTaskTestResult(TestResultInfo testResult) {
     List<Task> taskDbs = taskRepo.find0ByTargetIdAndTestType(testResult.getScriptSourceId(),
         TestType.of(testResult.getScriptType()).getValue());
@@ -122,6 +127,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
     }
   }
 
+  /**
+   * Update test results for APIs.
+   * <p>
+   * Updates the test result for an API based on the execution outcome.
+   */
   private void updateApisTestResult(TestResultInfo testResult) {
     Apis apisDb = apisRepo.findById(testResult.getScriptSourceId()).orElse(null);
     if (nonNull(apisDb)) {
@@ -138,11 +148,19 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           apisDb.setTestStabilityPassed(testResult.isPassed())
               .setTestStabilityFailureMessage(testResult.getFailureMessage());
           break;
+        case MOCK_DATA:
+          // No action required for MOCK_DATA
+          break;
       }
       apisRepo.save(apisDb);
     }
   }
 
+  /**
+   * Update test results for scenarios.
+   * <p>
+   * Updates the test result for a scenario based on the execution outcome.
+   */
   private void updateScenarioTestResult(TestResultInfo testResult) {
     Scenario scenarioDb = scenarioRepo.findById(testResult.getScriptSourceId()).orElse(null);
     if (nonNull(scenarioDb)) {
@@ -159,11 +177,19 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           scenarioDb.setTestStabilityPassed(testResult.isPassed())
               .setTestStabilityFailureMessage(testResult.getFailureMessage());
           break;
+        case MOCK_DATA:
+          // No action required for MOCK_DATA
+          break;
       }
       scenarioRepo.save(scenarioDb);
     }
   }
 
+  /**
+   * Set test results for API cases.
+   * <p>
+   * Updates the test result for each API case based on the execution outcome.
+   */
   private void setApisCaseTestResult(List<TestCaseResultInfo> caseResults) {
     Map<Long, TestCaseResultInfo> caseResultInfoMap = caseResults.stream()
         .filter(x -> nonNull(x.getPassed())) // A null value means not executed, disabled.
@@ -177,6 +203,12 @@ public class ExecTestCmdImpl implements ExecTestCmd {
     }
   }
 
+  /**
+   * Set test result for a task.
+   * <p>
+   * Updates the status, script ID, execution result, failure message, test numbers, and
+   * execution details of a task based on the test result.
+   */
   private void setTaskTestResult(Task taskDb, TestResultInfo resultInfo) {
     taskDb.setStatus(resultInfo.isPassed() ? TaskStatus.COMPLETED : taskDb.getStatus())
         .setScriptId(resultInfo.getScriptId())
@@ -199,6 +231,12 @@ public class ExecTestCmdImpl implements ExecTestCmd {
     taskDb.setTotalNum(nullSafe(taskDb.getFailNum(), 0) + 1);
   }
 
+  /**
+   * Set test result for an API case.
+   * <p>
+   * Updates the execution result, failure message, test numbers, and execution details of an
+   * API case based on the test result.
+   */
   private void setCaseTestResult(ApisCase apisCaseDb, TestCaseResultInfo caseResult) {
     apisCaseDb.setExecResult(caseResult.getPassed() ? Result.SUCCESS : Result.FAIL)
         .setExecFailureMessage(caseResult.getFailureMessage())

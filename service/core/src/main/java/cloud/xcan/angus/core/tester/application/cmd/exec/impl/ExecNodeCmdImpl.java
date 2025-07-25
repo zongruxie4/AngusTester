@@ -12,6 +12,11 @@ import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Command implementation for managing execution nodes.
+ * <p>
+ * Provides methods for adding and retrieving execution nodes.
+ */
 @Slf4j
 @Biz
 public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNodeCmd {
@@ -19,6 +24,11 @@ public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNode
   @Resource
   private ExecNodeRepo execNodeRepo;
 
+  /**
+   * Add a batch of execution nodes.
+   * <p>
+   * Inserts nodes if the list is not empty.
+   */
   @Override
   public void add0(List<ExecNode> nodes) {
     if (isNotEmpty(nodes)) {
@@ -26,6 +36,11 @@ public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNode
     }
   }
 
+  /**
+   * Get the repository for ExecNode entity.
+   * <p>
+   * @return the ExecNodeRepo instance
+   */
   @Override
   protected BaseRepository<ExecNode, Long> getRepository() {
     return execNodeRepo;
