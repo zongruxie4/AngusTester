@@ -13,12 +13,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command implementation for node role management.
+ * <p>
+ * Provides methods for adding and replacing node roles.
+ * <p>
+ * Ensures batch operations and repository access.
+ */
 @Biz
 public class NodeRoleCmdImpl extends CommCmd<NodeRole, Long> implements NodeRoleCmd {
 
   @Resource
   private NodeRoleRepo nodeRoleRepo;
 
+  /**
+   * Add a batch of node roles.
+   * <p>
+   * Batch inserts node roles for the specified nodes.
+   */
   @Override
   public void add0(List<NodeRole> roles) {
     if (isNotEmpty(roles)) {
@@ -26,6 +38,11 @@ public class NodeRoleCmdImpl extends CommCmd<NodeRole, Long> implements NodeRole
     }
   }
 
+  /**
+   * Replace node roles for a batch of nodes.
+   * <p>
+   * Deletes existing roles and batch inserts new roles for the specified nodes.
+   */
   @Override
   public void replace0(List<NodeRole> roles) {
     if (isNotEmpty(roles)) {
@@ -36,6 +53,11 @@ public class NodeRoleCmdImpl extends CommCmd<NodeRole, Long> implements NodeRole
     }
   }
 
+  /**
+   * Get the repository for node roles.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<NodeRole, Long> getRepository() {
     return nodeRoleRepo;

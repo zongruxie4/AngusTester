@@ -20,6 +20,13 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for node domain DNS management.
+ * <p>
+ * Provides methods for adding, updating, and deleting node domain DNS records.
+ * <p>
+ * Ensures DNS integration, domain existence, and batch operations with transaction management.
+ */
 @Biz
 public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implements NodeDomainDnsCmd {
 
@@ -35,6 +42,11 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
   @Resource
   private DnsClient dnsClient;
 
+  /**
+   * Add a new node domain DNS record.
+   * <p>
+   * Checks domain existence, name uniqueness, and integrates with DNS provider.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(NodeDomainDns dns) {
@@ -59,6 +71,11 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
     }.execute();
   }
 
+  /**
+   * Update a node domain DNS record.
+   * <p>
+   * Checks existence, name uniqueness, and updates DNS record.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(NodeDomainDns dns) {
@@ -82,6 +99,11 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
     }.execute();
   }
 
+  /**
+   * Delete a node domain DNS record by ID.
+   * <p>
+   * Removes the DNS record from the provider and database.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -102,6 +124,11 @@ public class NodeDomainDnsCmdImpl extends CommCmd<NodeDomainDns, Long> implement
     }.execute();
   }
 
+  /**
+   * Get the repository for node domain DNS records.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<NodeDomainDns, Long> getRepository() {
     return this.nodeDomainDnsRepo;

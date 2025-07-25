@@ -69,8 +69,12 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
-/***
- * TODO 支持体验节点，没有购买和添加自有节点时查询返回体验节点，体验节点共享所有租户排队使用
+/**
+ * Command implementation for node management.
+ * <p>
+ * Provides methods for adding, updating, deleting, purchasing, renewing, enabling, stopping, restarting, and managing agent installation for nodes.
+ * <p>
+ * Ensures permission checks, cloud resource management, distributed coordination, and batch operations with transaction management.
  */
 @Slf4j
 @Biz
@@ -97,6 +101,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   @Resource
   private NodeInfoCmd nodeInfoCmd;
 
+  /**
+   * Add a batch of nodes.
+   * <p>
+   * Checks IP uniqueness and node quota before inserting nodes and their roles.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(List<Node> nodes) {
@@ -120,6 +129,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Add a batch of nodes.
+   * <p>
+   * Checks IP uniqueness and node quota before inserting nodes and their roles.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add0(List<Node> nodes) {
@@ -128,6 +142,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     return idKeys;
   }
 
+  /**
+   * Update a batch of nodes.
+   * <p>
+   * Checks existence, IP uniqueness, and updates node properties and roles.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<Node> nodes) {
@@ -173,6 +192,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Rename a node by ID.
+   * <p>
+   * Checks existence and updates the node name if changed.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -195,6 +219,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Stop a batch of purchased cloud nodes by IDs.
+   * <p>
+   * Only supports stopping nodes purchased online.
+   */
   @Override
   public void stop(HashSet<Long> ids) {
     new BizTemplate<Void>() {
@@ -228,6 +257,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Restart a batch of purchased cloud nodes by IDs.
+   * <p>
+   * Only supports restarting nodes purchased online.
+   */
   @Override
   public void restart(HashSet<Long> ids) {
     new BizTemplate<Void>() {
@@ -261,6 +295,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Enable a batch of nodes.
+   * <p>
+   * Checks existence and updates node status.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(List<Node> nodes) {
@@ -287,6 +326,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Delete a batch of nodes.
+   * <p>
+   * Checks existence, permission, and deletes nodes and their info.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(List<Node> nodes) {
@@ -325,6 +369,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Purchase nodes by order ID and tenant ID.
+   * <p>
+   * Checks order existence, cloud edition, and resource availability before purchasing and adding nodes.
+   */
   @DoInFuture("Move purchase logic to IAAS proxy service(Multi-cloud management)")
   @Override
   public void purchase(Long orderId, Long tenantId) {
@@ -374,6 +423,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Purchase nodes by node specification and number.
+   * <p>
+   * Checks order existence, cloud edition, and resource availability before purchasing and adding nodes.
+   */
   @Override
   public void purchase(Node node, Long nodeNum) {
     new BizTemplate<Void>() {
@@ -418,6 +472,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Renew nodes by order ID, original order ID, and tenant ID.
+   * <p>
+   * Checks order existence and cloud edition before updating expiration time.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void renew(Long orderId, Long originalOrderId, Long tenantId) {
@@ -444,6 +503,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Synchronize instance information for purchased nodes.
+   * <p>
+   * Updates local node info with cloud instance data.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void syncInstanceInfo() {
@@ -491,6 +555,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Expire and delete AliYun instances for expired nodes.
+   * <p>
+   * Updates expired nodes, deletes cloud instances, and removes node info.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void expireAndDeleteAliYunInstances() {
@@ -519,6 +588,13 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Install agent on a node by ID.
+   * <p>
+   * Checks installation status, connection, and installs agent via SSH.
+   * <p>
+   * Throws exception if installation fails.
+   */
   @Transactional(noRollbackFor = NoRollbackException.class)
   @Override
   public AgentInstallCmd agentInstall(Long id) {
@@ -594,6 +670,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Restart agent on a node by ID.
+   * <p>
+   * Checks connection and restarts agent via SSH.
+   */
   @Override
   public void agentRestart(Long id) {
     new BizTemplate<Void>() {
@@ -627,6 +708,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   }
 
   // TODO Test ...
+  /**
+   * Automatically install agent on all uninstalled nodes.
+   * <p>
+   * Checks connection and installs agent via SSH for each node.
+   */
   @Override
   public void agentAutoInstall() {
     new BizTemplate<Void>() {
@@ -662,6 +748,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }.execute();
   }
 
+  /**
+   * Test SSH connection configuration for a node.
+   * <p>
+   * Checks network and SSH availability.
+   */
   @Override
   public void testConnectionNodeConfig(String ip, Integer sshPort, String username,
       String password) {
@@ -671,6 +762,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     BizAssert.assertTrue(sshUtil.isAvailable(), NODE_CONN_ERROR_T, new Object[]{ip, sshPort});
   }
 
+  /**
+   * Test SSH connection configuration for a node (returns boolean).
+   * <p>
+   * Checks network and SSH availability.
+   */
   @Override
   public boolean testConnectionNodeConfig0(String ip, Integer sshPort,
       String username, String password) {
@@ -764,6 +860,11 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     }
   }
 
+  /**
+   * Get the repository for nodes.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<Node, Long> getRepository() {
     return this.nodeRepo;

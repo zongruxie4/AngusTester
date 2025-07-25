@@ -14,6 +14,13 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for node domain management.
+ * <p>
+ * Provides methods for adding, updating, and deleting node domains.
+ * <p>
+ * Ensures domain name uniqueness, DNS integration, and batch operations with transaction management.
+ */
 @Biz
 public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements NodeDomainCmd {
 
@@ -26,6 +33,11 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
   @Resource
   private DnsClient dnsClient;
 
+  /**
+   * Add a new node domain.
+   * <p>
+   * Checks name uniqueness, integrates with DNS, and sets domain status.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(NodeDomain domain) {
@@ -47,6 +59,11 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
     }.execute();
   }
 
+  /**
+   * Update a node domain.
+   * <p>
+   * Checks name uniqueness and updates domain information.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(NodeDomain domain) {
@@ -64,6 +81,11 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
     }.execute();
   }
 
+  /**
+   * Delete a node domain by ID.
+   * <p>
+   * Removes the domain from the database.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -77,6 +99,11 @@ public class NodeDomainCmdImpl extends CommCmd<NodeDomain, Long> implements Node
     }.execute();
   }
 
+  /**
+   * Get the repository for node domains.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<NodeDomain, Long> getRepository() {
     return this.nodeDomainRepo;

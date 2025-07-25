@@ -50,6 +50,13 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for node information management.
+ * <p>
+ * Provides methods for updating, deleting, initializing, and managing agent authentication and runner processes for node information.
+ * <p>
+ * Ensures distributed coordination, agent installation, and integration with external services.
+ */
 @Slf4j
 @Biz
 public class NodeInfoCmdImpl implements NodeInfoCmd {
@@ -81,12 +88,22 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
   @Resource
   private ApplicationInfo appInfo;
 
+  /**
+   * Update node information.
+   * <p>
+   * Saves the node information to the repository.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update0(NodeInfo nodeInfo){
     nodeInfoRepo.save(nodeInfo);
   }
 
+  /**
+   * Delete node information by IDs.
+   * <p>
+   * Removes node information records from the repository.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -100,6 +117,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     }.execute();
   }
 
+  /**
+   * Generate agent installation command for a node.
+   * <p>
+   * Initializes node info, saves agent authentication, and returns installation command.
+   */
   @Override
   public AgentInstallCmd agentInstallCmd(Long nodeId) {
     return new BizTemplate<AgentInstallCmd>(false) {
@@ -241,6 +263,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
 
 
 
+  /**
+   * Clear runner processes on a list of nodes.
+   * <p>
+   * Sends clear command to agent nodes via local controller.
+   */
   @Override
   public void clearRunner(List<NodeInfo> nodeInfos) {
     new BizTemplate<Void>() {
@@ -268,6 +295,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     }.execute();
   }
 
+  /**
+   * Kill runner process on a node by DTO.
+   * <p>
+   * Sends kill command to agent node or broadcasts to remote controllers.
+   */
   @Override
   public Boolean runnerProcessKill(NodeRunnerKillDto dto) {
     return new BizTemplate<Boolean>() {
@@ -319,6 +351,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     }.execute();
   }
 
+  /**
+   * Configure agent authentication for the main node.
+   * <p>
+   * Generates and saves agent authentication tokens and updates configuration files.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void configureAgentAuth() throws Exception {
@@ -349,6 +386,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
         .saveToDisk();
   }
 
+  /**
+   * Initialize agent node information.
+   * <p>
+   * Creates or updates node info with tenant and node IDs.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public NodeInfo initAgentNodeInfo(Long tenantId, Long nodeId) {
@@ -367,6 +409,11 @@ public class NodeInfoCmdImpl implements NodeInfoCmd {
     return initNodeInfo;
   }
 
+  /**
+   * Save agent authentication information for a node.
+   * <p>
+   * Generates and saves agent authentication tokens for the node.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void saveAgentAuthInfo(Long tenantId, Long nodeId, NodeInfo nodeInfo) {
