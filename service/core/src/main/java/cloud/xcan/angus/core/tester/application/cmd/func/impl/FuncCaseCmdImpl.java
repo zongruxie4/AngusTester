@@ -124,6 +124,13 @@ import java.util.stream.Stream;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Command implementation for functional test cases.
+ * <p>
+ * Provides methods for adding, updating, deleting, importing, and managing functional test cases.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCaseCmd {
 
@@ -196,6 +203,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a batch of functional test cases.
+   * <p>
+   * Checks plan, module, permission, duplicate names, and quota before saving cases.
+   * <p>
+   * Also saves tags and related tasks, and logs creation activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(List<FuncCase> cases) {
@@ -248,6 +262,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Update a batch of functional test cases.
+   * <p>
+   * Checks existence, plan, module, permission, and duplicate names before updating.
+   * <p>
+   * Updates tags, related tasks, and logs modification activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<FuncCase> cases) {
@@ -302,6 +323,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a batch of functional test cases.
+   * <p>
+   * Adds new cases and updates existing ones, handling tags and related tasks accordingly.
+   * <p>
+   * Logs modification activities and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> replace(List<FuncCase> cases) {
@@ -372,7 +400,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
           idKeys.addAll(updatedCasesDb.stream()
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
-              .collect(Collectors.toList()));
+              .toList());
 
           // Add modification events
           funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream()
@@ -385,6 +413,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Rename a functional test case.
+   * <p>
+   * Checks permission and duplicate name before renaming.
+   * <p>
+   * Updates related review case names and logs the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -426,6 +461,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Clone a batch of functional test cases.
+   * <p>
+   * Checks existence and permission, then creates new cases based on originals.
+   * <p>
+   * Logs clone activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> clone(Set<Long> ids) {
@@ -466,6 +508,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Move a batch of functional test cases to another plan.
+   * <p>
+   * Checks existence, target plan, and permissions before moving.
+   * <p>
+   * Updates project and plan IDs, logs move activities, and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void move(Set<Long> ids, Long targetPlanId) {
@@ -532,6 +581,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the tester of a functional test case.
+   * <p>
+   * Checks permission and user validity before updating.
+   * <p>
+   * Logs tester replacement activity and sends notification event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceTester(Long id, Long testerId) {
@@ -569,6 +625,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the deadline of a functional test case.
+   * <p>
+   * Checks permission and updates the deadline, logging the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceDeadline(Long id, LocalDateTime deadline) {
@@ -599,6 +660,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the priority of a functional test case.
+   * <p>
+   * Checks permission and updates the priority, logging the activity and sending notification
+   * event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replacePriority(Long id, Priority priority) {
@@ -633,6 +700,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the software version of a functional test case.
+   * <p>
+   * Checks permission and version existence before updating.
+   * <p>
+   * Logs version update or clear activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceSoftwareVersion(Long id, String version) {
@@ -683,6 +757,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
 
+  /**
+   * Replace the evaluation workload of a functional test case.
+   * <p>
+   * Checks permission and updates the evaluation workload, logging the activity and sending
+   * notification event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceEvalWorkload(Long id, BigDecimal evalWorkload) {
@@ -736,6 +816,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the actual workload of a functional test case.
+   * <p>
+   * Checks permission and updates the actual workload, logging the activity and sending
+   * notification event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceActualWorkload(Long id, BigDecimal actualWorkload) {
@@ -797,6 +883,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Replace the attachments of a functional test case.
+   * <p>
+   * Checks permission and updates attachments, logging the activity and sending notification
+   * event.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceAttachment(Long id, List<Attachment> attachments) {
@@ -854,6 +946,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Modify the test result of a batch of functional test cases.
+   * <p>
+   * Checks permission, plan status, and review status before updating test results.
+   * <p>
+   * Logs result update activities and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void resultModify(List<FuncCase> cases, boolean replace) {
@@ -925,6 +1024,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Note: Manually modifying the results of API testing cases is also permitted.
    */
+  /**
+   * Reset the test result of a batch of functional test cases.
+   * <p>
+   * Checks permission before resetting test results, logs activities, and sends notification
+   * events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void resultReset(HashSet<Long> ids) {
@@ -961,6 +1066,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Retest a batch of functional test cases.
+   * <p>
+   * Checks permission and case status before resetting test results to pending.
+   * <p>
+   * Logs retest activities and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void retest(HashSet<Long> ids) {
@@ -1009,6 +1121,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Review a batch of functional test cases.
+   * <p>
+   * Checks permission, plan status, and review enablement before updating review status.
+   * <p>
+   * Logs review activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void review(List<FuncCase> cases) {
@@ -1054,6 +1173,12 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Reset the review result of a batch of functional test cases.
+   * <p>
+   * Checks permission before resetting review results, logs activities, and sends notification
+   * events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void reviewReset(HashSet<Long> ids) {
@@ -1090,6 +1215,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Add associated tasks to a functional test case.
+   * <p>
+   * Checks permission and existence before associating tasks and logging the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void taskAssocAdd(Long id, HashSet<Long> assocTaskIds) {
@@ -1119,6 +1249,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Cancel associated tasks from a functional test case.
+   * <p>
+   * Checks permission and existence before removing task associations and logging the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void taskAssocCancel(Long id, HashSet<Long> assocTaskIds) {
@@ -1148,6 +1283,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Add associated cases to a functional test case.
+   * <p>
+   * Checks permission and existence before associating cases and logging the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void caseAssocAdd(Long id, HashSet<Long> assocCaseIds) {
@@ -1177,6 +1317,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Cancel associated cases from a functional test case.
+   * <p>
+   * Checks permission and existence before removing case associations and logging the activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void caseAssocCancel(Long id, HashSet<Long> assocCaseIds) {
@@ -1207,6 +1352,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
 
+  /**
+   * Import functional test cases from an Excel file.
+   * <p>
+   * Checks permission, validates file content, and handles duplicate strategies.
+   * <p>
+   * Converts imported data to domain objects and saves them.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> imports(Long planId,
@@ -1374,6 +1526,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   /**
+   * Import example functional test cases, plans, reviews, and baselines for a project.
+   * <p>
+   * Used for initializing sample data for demonstration or onboarding.
+   * <p>
    * Note: When API calls that are not user-action, tenant and user information must be injected
    * into the PrincipalContext.
    */
@@ -1435,6 +1591,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }.execute();
   }
 
+  /**
+   * Delete a batch of functional test cases and related data.
+   * <p>
+   * Updates delete status, logs activities, moves cases to trash, and sends notification events.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -1496,6 +1657,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     funcReviewCmd.deleteByCaseId(caseIds);
   }
 
+  /**
+   * Add review activities for a batch of functional test cases.
+   * <p>
+   * Groups cases by review status and logs activities for each group.
+   * <p>
+   * Sends notification events for each group.
+   */
   @Override
   public void addReviewActivities(List<FuncCase> casesDb) {
     Map<ReviewStatus, List<FuncCase>> reviewStatusMap = casesDb.stream()
@@ -1514,6 +1682,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     }
   }
 
+  /**
+   * Add modification activities and send notification events for updated cases.
+   * <p>
+   * Determines what fields have changed and logs corresponding activities.
+   * <p>
+   * Sends notification events for all updated cases.
+   */
   private void addModifyActivitiesAndEvents(boolean replace, List<FuncCase> cases,
       List<FuncCase> updatedCasesDb) {
     // Get existed status before replace
@@ -1550,10 +1725,20 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         .collect(Collectors.toList()), activities);
   }
 
+  /**
+   * Generate a unique case code using the BidGenerator.
+   * <p>
+   * Used for assigning unique identifiers to new cases.
+   */
   public static String getCaseCode() {
     return requireNonNull(getBean(BidGenerator.class)).getId(FUNC_CASE_BID_KEY, getTenantId());
   }
 
+  /**
+   * Get the repository for functional test cases.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncCase, Long> getRepository() {
     return this.funcCaseRepo;

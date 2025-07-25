@@ -42,6 +42,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional review sessions.
+ * <p>
+ * Provides methods for adding, updating, deleting, starting, ending, blocking, and cloning reviews.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements FuncReviewCmd {
 
@@ -72,6 +79,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new functional review session.
+   * <p>
+   * Checks plan, permission, name, owner, and participants before adding.
+   * <p>
+   * Initializes review cases and logs creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(FuncReview review) {
@@ -112,6 +126,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Update an existing functional review session.
+   * <p>
+   * Checks existence, name, permission, owner, and participants before updating.
+   * <p>
+   * Updates review details and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(FuncReview review) {
@@ -153,6 +174,11 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a functional review session.
+   * <p>
+   * Adds a new review or updates an existing one, handling participants and logging activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(FuncReview review) {
@@ -197,6 +223,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Start a functional review session.
+   * <p>
+   * Checks existence, permission, and status before starting the review.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void start(Long id) {
@@ -230,6 +263,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * End a functional review session.
+   * <p>
+   * Checks existence, permission, pending cases, and status before ending the review.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void end(Long id) {
@@ -265,6 +305,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Block a functional review session.
+   * <p>
+   * Checks existence, permission, and status before blocking the review.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void block(Long id) {
@@ -297,6 +344,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Clone a functional review session.
+   * <p>
+   * Checks existence and permission before cloning.
+   * <p>
+   * Logs clone activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -324,6 +378,11 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Reset review results for a batch of functional review sessions.
+   * <p>
+   * Checks permission before resetting review results, logs activities, and restarts reviews if needed.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void reviewReset(Set<Long> ids, boolean reset) {
@@ -369,6 +428,11 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Delete a functional review session.
+   * <p>
+   * Checks existence and permission before deleting the review, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -406,18 +470,33 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
     }.execute();
   }
 
+  /**
+   * Delete all review sessions by plan ID.
+   * <p>
+   * Removes all reviews and review cases associated with the given plan IDs.
+   */
   @Override
   public void deleteByPlanId(Collection<Long> planIds) {
     funcReviewRepo.deleteByPlanIdIn(planIds);
     funcReviewCaseRepo.deleteByPlanIdIn(planIds);
   }
 
+  /**
+   * Delete all review cases by case ID.
+   * <p>
+   * Removes all review cases associated with the given case IDs.
+   */
   @Override
   public void deleteByCaseId(Collection<Long> caseIds) {
     //funcReviewRepo.deleteByCaseIdIn(caseIds);
     funcReviewCaseRepo.deleteByCaseIdIn(caseIds);
   }
 
+  /**
+   * Get the repository for functional review sessions.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncReview, Long> getRepository() {
     return this.funcReviewRepo;

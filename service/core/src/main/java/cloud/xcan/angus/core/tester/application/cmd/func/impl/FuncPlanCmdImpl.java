@@ -1,6 +1,7 @@
 package cloud.xcan.angus.core.tester.application.cmd.func.impl;
 
 import static cloud.xcan.angus.api.commonlink.CombinedTargetType.FUNC_PLAN;
+import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
 import static cloud.xcan.angus.core.tester.domain.TesterFuncPluginMessage.PLAN_STATUS_MISMATCH_T;
@@ -50,6 +51,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional test plans.
+ * <p>
+ * Provides methods for adding, updating, deleting, starting, ending, blocking, and cloning test plans.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlanCmd {
 
@@ -89,6 +97,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new functional test plan.
+   * <p>
+   * Checks project membership, plan name, date range, quota, owner, and testers before adding.
+   * <p>
+   * Initializes plan creator, owner, and tester authorizations, and logs creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(FuncPlan plan) {
@@ -129,6 +144,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Update an existing functional test plan.
+   * <p>
+   * Checks existence, name, date range, permission, owner, and testers before updating.
+   * <p>
+   * Updates plan details, authorizations, and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(FuncPlan plan) {
@@ -188,6 +210,11 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a functional test plan.
+   * <p>
+   * Adds a new plan or updates an existing one, handling authorizations and logging activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(FuncPlan plan) {
@@ -247,6 +274,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Start a functional test plan.
+   * <p>
+   * Checks existence, permission, and status before starting the plan.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void start(Long id) {
@@ -262,7 +296,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         funcPlanAuthQuery.checkModifyPlanAuth(getUserId(), planDb.getId());
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(planDb.getStatus().allowStart(), PLAN_STATUS_MISMATCH_T,
+        assertTrue(planDb.getStatus().allowStart(), PLAN_STATUS_MISMATCH_T,
             new Object[]{planDb.getStatus(), IN_PROGRESS});
       }
 
@@ -277,6 +311,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * End a functional test plan.
+   * <p>
+   * Checks existence, permission, status, and case completion before ending the plan.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void end(Long id) {
@@ -292,7 +333,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         funcPlanAuthQuery.checkModifyPlanAuth(getUserId(), planDb.getId());
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(planDb.getStatus().allowEnd(), PLAN_STATUS_MISMATCH_T,
+        assertTrue(planDb.getStatus().allowEnd(), PLAN_STATUS_MISMATCH_T,
             new Object[]{planDb.getStatus(), COMPLETED});
 
         // Check the cases is completed
@@ -310,6 +351,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Block a functional test plan.
+   * <p>
+   * Checks existence, permission, and status before blocking the plan.
+   * <p>
+   * Logs status update activity.
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void block(Long id) {
@@ -325,7 +373,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
         funcPlanAuthQuery.checkModifyPlanAuth(getUserId(), planDb.getId());
 
         // Check the status is allowed
-        ProtocolAssert.assertTrue(planDb.getStatus().allowBlock(), PLAN_STATUS_MISMATCH_T,
+        assertTrue(planDb.getStatus().allowBlock(), PLAN_STATUS_MISMATCH_T,
             new Object[]{planDb.getStatus(), BLOCKED});
       }
 
@@ -340,6 +388,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Clone a functional test plan.
+   * <p>
+   * Checks existence and project membership before cloning.
+   * <p>
+   * Logs clone activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -368,7 +423,9 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   }
 
   /**
-   * Note: Manually modifying the results of API testing cases is also permitted.
+   * Reset the test result of a batch of functional test plans.
+   * <p>
+   * Checks permission before resetting test results, logs activities, and restarts plans if needed.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -398,6 +455,11 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Reset the review result of a batch of functional test plans.
+   * <p>
+   * Checks permission before resetting review results, logs activities, and restarts plans if needed.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void reviewReset(HashSet<Long> ids) {
@@ -432,6 +494,11 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Delete a functional test plan (logic delete).
+   * <p>
+   * Checks existence and permission before logic deleting the plan, moves plan to trash, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -473,6 +540,11 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }.execute();
   }
 
+  /**
+   * Delete all data related to a batch of functional test plans.
+   * <p>
+   * Removes plans, related cases, and reviews.
+   */
   @Override
   public void delete0(List<Long> ids) {
     // Delete plan
@@ -519,6 +591,11 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
     }
   }
 
+  /**
+   * Get the repository for functional test plans.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncPlan, Long> getRepository() {
     return this.funcPlanRepo;

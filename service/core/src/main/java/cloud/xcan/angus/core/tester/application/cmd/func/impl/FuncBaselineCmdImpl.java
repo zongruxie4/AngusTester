@@ -38,6 +38,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing functional baselines.
+ * <p>
+ * Provides methods for adding, updating, replacing, establishing, and deleting baselines for functional testing.
+ * Handles permission checks, baseline status validation, activity logging, and batch operations.
+ */
 @Biz
 public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements FuncBaselineCmd {
 
@@ -65,6 +71,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new functional baseline.
+   * <p>
+   * Checks plan existence, permission, and case consistency. Inserts the baseline and logs the creation activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(FuncBaseline baseline) {
@@ -93,6 +104,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
     }.execute();
   }
 
+  /**
+   * Update an existing functional baseline.
+   * <p>
+   * Checks baseline existence and permission. Updates the baseline and logs the update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(FuncBaseline baseline) {
@@ -118,11 +134,21 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
     }.execute();
   }
 
+  /**
+   * Update a functional baseline without additional checks.
+   * <p>
+   * Directly saves the baseline entity.
+   */
   @Override
   public void update0(FuncBaseline baseline) {
     funcBaselineRepo.save(baseline);
   }
 
+  /**
+   * Replace (add or update) a functional baseline.
+   * <p>
+   * Adds a new baseline if ID is null, otherwise updates the existing baseline.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(FuncBaseline baseline) {
@@ -155,6 +181,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
     }.execute();
   }
 
+  /**
+   * Establish a functional baseline.
+   * <p>
+   * Checks baseline existence, status, case non-emptiness, and permission. Inserts baseline cases, marks as established, and logs activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void establish(Long id) {
@@ -193,6 +224,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
     }.execute();
   }
 
+  /**
+   * Delete a batch of functional baselines.
+   * <p>
+   * Checks baseline existence and permission. Deletes baselines and their cases, and logs delete activities.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -220,6 +256,11 @@ public class FuncBaselineCmdImpl extends CommCmd<FuncBaseline, Long> implements 
     }.execute();
   }
 
+  /**
+   * Get the repository for FuncBaseline entity.
+   * <p>
+   * @return the FuncBaselineRepo instance
+   */
   @Override
   protected BaseRepository<FuncBaseline, Long> getRepository() {
     return funcBaselineRepo;

@@ -32,6 +32,13 @@ import java.util.Collection;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional test plan authorization.
+ * <p>
+ * Provides methods for adding, updating, enabling/disabling, and deleting plan authorizations.
+ * <p>
+ * Ensures permission checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements FuncPlanAuthCmd {
 
@@ -56,6 +63,13 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a new authorization for a functional test plan.
+   * <p>
+   * Checks plan existence, permission, and duplicate authorization before adding.
+   * <p>
+   * Logs grant permission activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(FuncPlanAuth auth) {
@@ -92,6 +106,13 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Replace (update) an existing authorization for a functional test plan.
+   * <p>
+   * Checks existence, permission, and updates authorization details.
+   * <p>
+   * Logs modification activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(FuncPlanAuth auth) {
@@ -132,6 +153,13 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Enable or disable authorization control for a functional test plan.
+   * <p>
+   * Checks existence and permission before updating authorization status.
+   * <p>
+   * Logs enable/disable activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(Long planId, Boolean enabled) {
@@ -159,6 +187,13 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Delete an authorization for a functional test plan.
+   * <p>
+   * Checks existence and permission before deleting authorization.
+   * <p>
+   * Logs cancel activity and deletes the authorization.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -201,11 +236,21 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
     }.execute();
   }
 
+  /**
+   * Add creator authorization for a functional test plan.
+   * <p>
+   * Batch inserts creator authorizations for the specified plan.
+   */
   @Override
   public void addCreatorAuth(Long planId, Set<Long> creatorIds) {
     batchInsert(toFuncPlanAuths(creatorIds, planId, FuncPlanPermission.ALL, true));
   }
 
+  /**
+   * Add owner and tester authorization for a functional test plan.
+   * <p>
+   * Batch inserts owner and tester authorizations for the specified plan.
+   */
   @Override
   public void addOwnerAndTesterAuth(Long planId, Long ownerId, Set<Long> testerIds) {
     // Add owner auths
@@ -220,11 +265,21 @@ public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements 
     }
   }
 
+  /**
+   * Delete tester authorization by plan ID.
+   * <p>
+   * Removes tester authorizations for the specified plan and tester IDs.
+   */
   @Override
   public void deleteAuthByPlanId(Long planId, Collection<Long> testerIds) {
     funcPlanAuthRepo.deleteByPlanIdAndAuthObjectId(planId, testerIds);
   }
 
+  /**
+   * Get the repository for functional test plan authorizations.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncPlanAuth, Long> getRepository() {
     return this.funcPlanAuthRepo;

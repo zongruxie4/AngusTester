@@ -34,6 +34,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional trash management.
+ * <p>
+ * Provides methods for adding, clearing, restoring, and deleting trash for functional test cases and plans.
+ * <p>
+   * Ensures permission checks, cascading operations, and batch processing with transaction management.
+ */
 @Biz
 public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTrashCmd {
 
@@ -64,11 +71,21 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a batch of trash records.
+   * <p>
+   * Batch inserts trash records for persistence.
+   */
   @Override
   public void add0(List<FuncTrash> trashes) {
     batchInsert0(trashes);
   }
 
+  /**
+   * Clear a single trash record and its associations.
+   * <p>
+   * Checks existence and permission before deleting trash and related data.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clear(Long id) {
@@ -95,6 +112,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }.execute();
   }
 
+  /**
+   * Clear all trash records for a project and their associations.
+   * <p>
+   * Deletes all trash and related data for the specified project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clearAll(Long projectId) {
@@ -122,6 +144,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }.execute();
   }
 
+  /**
+   * Restore a single trash record (case or plan) and its associations.
+   * <p>
+   * Checks existence and permission before restoring trash and related data.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void back(Long id) {
@@ -179,6 +206,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }.execute();
   }
 
+  /**
+   * Restore all trash records for a project and their associations.
+   * <p>
+   * Restores all trash and related data for the specified project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void backAll(Long projectId) {
@@ -231,6 +263,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }.execute();
   }
 
+  /**
+   * Delete all associations for a batch of trash records.
+   * <p>
+   * Removes all related cases, plans, and authorizations for the given trash records.
+   */
   private void deleteAssociation(List<FuncTrash> trashes) {
     List<Long> allCaseIds = new ArrayList<>();
 
@@ -259,6 +296,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }
   }
 
+  /**
+   * Get all trash records for a project and user.
+   * <p>
+   * Returns all trash records for the specified project and current user (or all if admin).
+   */
   private List<FuncTrash> getAllTrashesByProject(Long projectId) {
     Long currentUserId = getUserId();
     List<FuncTrash> trashDbs;
@@ -271,6 +313,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     return trashDbs;
   }
 
+  /**
+   * Get the repository for functional trash records.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncTrash, Long> getRepository() {
     return this.funcTrashRepo;

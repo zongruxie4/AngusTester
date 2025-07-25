@@ -43,6 +43,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Command implementation for functional case review operations.
+ * <p>
+ * Provides methods for adding, reviewing, resetting, and deleting review cases.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Biz
 public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     implements FuncReviewCaseCmd {
@@ -83,6 +90,11 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
   @Resource
   private JoinSupplier joinSupplier;
 
+  /**
+   * Add review cases to a review session.
+   * <p>
+   * Checks review and case existence, validity, and logs add activities.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(Long reviewId, Set<Long> caseIds) {
@@ -118,13 +130,19 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }.execute();
   }
 
+  /**
+   * Review a batch of review cases.
+   * <p>
+   * Checks existence, consistency, permission, and updates review status and records.
+   * <p>
+   * Logs review activities.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void review(List<FuncReviewCase> reviewCases) {
     new BizTemplate<Void>() {
       List<Long> reviewCaseIds;
       List<FuncReviewCase> reviewCasesDb;
-      Long reviewId;
       FuncReview reviewDb;
       List<FuncCase> casesDb;
 
@@ -143,7 +161,6 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
             .collect(Collectors.toSet());
         ProtocolAssert.assertTrue(reviewIds.size() == 1,
             "Only supports modification one case review result");
-        reviewId = reviewIds.iterator().next();
         // Check the review exists
         reviewDb = funcReviewQuery.checkAndFind(reviewIds.iterator().next());
         // Check the reset review permission
@@ -167,8 +184,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         assembleUpdateReviewCases(reviewCasesDb, casesDbMap, reviewCaseMap);
         funcReviewCaseRepo.saveAll(reviewCasesDb);
 
-        // Update review case record
-
+        // Add review case record
         List<FuncReviewCaseRecord> reviewCaseRecords = assembleAddReviewCaseRecord(reviewCasesDb);
         funcReviewCaseRecordCmd.add0(reviewCaseRecords);
 
@@ -188,6 +204,13 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }.execute();
   }
 
+  /**
+   * Reset review results for a batch of review cases.
+   * <p>
+   * Checks existence, consistency, permission, and resets review and case status.
+   * <p>
+   * Logs reset activities.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void reviewReset(Set<Long> ids, boolean reset) {
@@ -242,6 +265,13 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }.execute();
   }
 
+  /**
+   * Delete a batch of review cases.
+   * <p>
+   * Checks existence, consistency, permission, and deletes review cases and records.
+   * <p>
+   * Logs delete activities.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -283,6 +313,11 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }.execute();
   }
 
+  /**
+   * Assemble review case records for a batch of review cases.
+   * <p>
+   * Copies properties from review cases to records for persistence.
+   */
   public static List<FuncReviewCaseRecord> assembleAddReviewCaseRecord(
       List<FuncReviewCase> reviewCaseDbs) {
     // Save review case records
@@ -294,6 +329,11 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }).collect(Collectors.toList());
   }
 
+  /**
+   * Update review cases with new review information.
+   * <p>
+   * Sets reviewer, date, status, remarks, and summary for each review case.
+   */
   private void assembleUpdateReviewCases(List<FuncReviewCase> reviewCasesDb,
       Map<Long, FuncCase> casesDbMap, Map<Long, FuncReviewCase> reviewCaseMap) {
     for (FuncReviewCase reviewCaseDb : reviewCasesDb) {
@@ -307,6 +347,11 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
     }
   }
 
+  /**
+   * Get the repository for functional review cases.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncReviewCase, Long> getRepository() {
     return funcReviewCaseRepo;

@@ -22,6 +22,12 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for managing functional baseline cases.
+ * <p>
+ * Provides methods for adding, establishing, and deleting baseline cases for functional testing.
+ * Handles permission checks, baseline status validation, and version management.
+ */
 @Biz
 public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> implements
     FuncBaselineCaseCmd {
@@ -44,6 +50,13 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
 
+  /**
+   * Add cases to a functional baseline.
+   * <p>
+   * Checks baseline existence, status, plan consistency, and permission. Adds case IDs to the baseline.
+   * @param baselineId the ID of the baseline
+   * @param caseIds the set of case IDs to add
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void add(Long baselineId, HashSet<Long> caseIds) {
@@ -75,12 +88,26 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
     }.execute();
   }
 
+  /**
+   * Establish a functional baseline from given cases.
+   * <p>
+   * Inserts baseline cases and increments version for the specified case IDs.
+   * @param caseIds the set of case IDs to establish as baseline
+   * @param baselineCases the list of baseline case details
+   */
   @Override
   public void establishBaseline(Set<Long> caseIds, List<FuncBaselineCase> baselineCases) {
     batchInsert0(baselineCases);
     funcCaseRepo.incrVersionByIdIn(caseIds);
   }
 
+  /**
+   * Delete cases from a functional baseline.
+   * <p>
+   * Checks baseline existence, status, plan consistency, and permission. Removes case IDs from the baseline.
+   * @param baselineId the ID of the baseline
+   * @param caseIds the set of case IDs to delete
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long baselineId, HashSet<Long> caseIds) {
@@ -112,6 +139,11 @@ public class FuncBaselineCaseCmdImpl extends CommCmd<FuncBaselineCase, Long> imp
     }.execute();
   }
 
+  /**
+   * Get the repository for FuncBaselineCase entity.
+   * <p>
+   * @return the FuncBaselineCaseRepo instance
+   */
   @Override
   protected BaseRepository<FuncBaselineCase, Long> getRepository() {
     return funcBaselineCaseRepo;

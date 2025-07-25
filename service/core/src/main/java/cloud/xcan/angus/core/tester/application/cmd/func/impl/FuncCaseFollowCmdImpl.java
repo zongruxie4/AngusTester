@@ -22,6 +22,13 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for functional case follows.
+ * <p>
+ * Provides methods for adding, canceling, and batch canceling follows for functional test cases.
+ * <p>
+ * Ensures resource existence checks, duplicate prevention, and activity logging.
+ */
 @Biz
 public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> implements
     FuncCaseFollowCmd {
@@ -35,6 +42,13 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Add a follow for a functional test case.
+   * <p>
+   * Checks if the case exists and prevents duplicate follows.
+   * <p>
+   * Logs follow activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(FuncCaseFollow follow) {
@@ -64,6 +78,13 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Cancel a follow for a functional test case.
+   * <p>
+   * Checks if the case exists before canceling.
+   * <p>
+   * Logs cancel follow activity if deletion is successful.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long caseId) {
@@ -87,6 +108,13 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Cancel all follows for the current user, optionally by project.
+   * <p>
+   * If projectId is null, cancels all follows for the user across all projects.
+   * <p>
+   * Otherwise, cancels follows only within the specified project.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -104,6 +132,11 @@ public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> impleme
     }.execute();
   }
 
+  /**
+   * Get the repository for functional case follows.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<FuncCaseFollow, Long> getRepository() {
     return this.funcCaseFollowRepo;
