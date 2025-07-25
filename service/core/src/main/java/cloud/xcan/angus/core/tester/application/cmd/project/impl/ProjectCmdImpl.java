@@ -65,6 +65,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Command implementation for project management.
+ * <p>
+ * Provides methods for adding, updating, replacing, importing, deleting, and managing project members and example data.
+ * <p>
+ * Ensures permission checks, activity logging, and batch operations with transaction management.
+ */
 @Slf4j
 @Biz
 public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd {
@@ -126,6 +133,13 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * Add a new project.
+   * <p>
+   * Checks quota, name uniqueness, and member existence before inserting.
+   * <p>
+   * Optionally imports example data and logs creation activity.
+   */
   @Override
   public IdKey<Long, Object> add(Project project) {
     return new BizTemplate<IdKey<Long, Object>>() {
@@ -163,6 +177,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }.execute();
   }
 
+  /**
+   * Add a new project (internal, with owner/member setup).
+   * <p>
+   * Inserts project, adds owner to members, and saves members.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add0(Project project) {
@@ -176,6 +195,13 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     return idKey;
   }
 
+  /**
+   * Update an existing project.
+   * <p>
+   * Checks existence, permission, name uniqueness, and member existence before updating.
+   * <p>
+   * Updates members, saves project, and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(Project project) {
@@ -217,6 +243,13 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }.execute();
   }
 
+  /**
+   * Replace (add or update) a project.
+   * <p>
+   * Checks existence, permission, name uniqueness, and member existence before replacing.
+   * <p>
+   * Replaces members, saves project, and logs update activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(Project project) {
@@ -263,10 +296,10 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Import an example project and its example data.
+   * <p>
+   * Parses example file, imports project and example data, and logs creation activity.
    */
-  // @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> importExample(@Nullable String name, ProjectType type,
       @Nullable Set<ExampleDataType> dataTypes) {
@@ -295,6 +328,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }.execute();
   }
 
+  /**
+   * Import a project example (internal, with member setup).
+   * <p>
+   * Sets up project, members, and inserts into repository.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public @NotNull IdKey<Long, Object> importProjectExample(@Nullable String name,
@@ -318,6 +356,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     return idKey;
   }
 
+  /**
+   * Delete a project by ID (logic delete).
+   * <p>
+   * Checks existence and permission, marks project as deleted, and logs activity.
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -359,7 +402,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }.execute();
   }
 
-  //@Transactional(propagation = Propagation.REQUIRES_NEW)
+  /**
+   * Import example data for a project (internal helper).
+   * <p>
+   * Imports tags, modules, tasks, cases, services, scenarios, scripts, variables, datasets, mocks, and executions as needed.
+   */
   public void importOtherExample(Set<ExampleDataType> finalDataTypes, Project project) {
     if (finalDataTypes.contains(ExampleDataType.TAG)) {
       tagCmd.importExample(project.getId());
@@ -399,11 +446,21 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }
   }
 
+  /**
+   * Add owner to project members (internal helper).
+   * <p>
+   * Ensures the owner is included in the USER member set.
+   */
   private static void addOwnerToMembers(Project project, Project projectDb) {
     Long ownerId = isNull(project.getOwnerId()) ? projectDb.getOwnerId() : project.getOwnerId();
     addOwnerToMembers0(project, ownerId);
   }
 
+  /**
+   * Add owner to project members (internal helper).
+   * <p>
+   * Ensures the owner is included in the USER member set.
+   */
   private static void addOwnerToMembers0(Project project, Long ownerId) {
     LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> members = project.getMemberTypeIds();
     if (members.containsKey(OrgTargetType.USER)) {
@@ -415,6 +472,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
     }
   }
 
+  /**
+   * Get the repository for projects.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<Project, Long> getRepository() {
     return this.projectRepo;

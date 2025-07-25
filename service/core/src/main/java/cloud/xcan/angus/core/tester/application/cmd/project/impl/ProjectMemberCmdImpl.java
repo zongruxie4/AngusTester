@@ -14,12 +14,24 @@ import jakarta.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
+/**
+ * Command implementation for project member management.
+ * <p>
+ * Provides methods for adding and replacing project members.
+ * <p>
+ * Ensures batch operations and repository access.
+ */
 @Biz
 public class ProjectMemberCmdImpl extends CommCmd<ProjectMember, Long> implements ProjectMemberCmd {
 
   @Resource
   private ProjectMemberRepo projectMemberRepo;
 
+  /**
+   * Add a batch of project members for a project.
+   * <p>
+   * Batch inserts project members for the specified project and member types.
+   */
   @Override
   public void add0(Long projectId,
       LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds) {
@@ -28,6 +40,11 @@ public class ProjectMemberCmdImpl extends CommCmd<ProjectMember, Long> implement
     }
   }
 
+  /**
+   * Replace project members for a project.
+   * <p>
+   * Deletes existing members and batch inserts new members for the specified project and member types.
+   */
   @Override
   public void replace0(Long projectId,
       LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds) {
@@ -37,6 +54,11 @@ public class ProjectMemberCmdImpl extends CommCmd<ProjectMember, Long> implement
     }
   }
 
+  /**
+   * Get the repository for project members.
+   * <p>
+   * Used by the base command class for generic operations.
+   */
   @Override
   protected BaseRepository<ProjectMember, Long> getRepository() {
     return projectMemberRepo;
