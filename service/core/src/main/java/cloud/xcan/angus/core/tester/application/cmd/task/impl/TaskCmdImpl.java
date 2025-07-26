@@ -163,6 +163,29 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * Implementation of task command operations for comprehensive task management.
+ * 
+ * <p>This class provides extensive functionality for managing tasks throughout
+ * their complete lifecycle, including creation, modification, status management,
+ * and various task operations.</p>
+ * 
+ * <p>It handles the complete task lifecycle from creation to completion,
+ * including sprint management, assignment, confirmation, workload tracking,
+ * and activity logging for audit purposes.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Task CRUD operations with comprehensive validation</li>
+ *   <li>Task status management (start, cancel, process, confirm, restart, reopen)</li>
+ *   <li>Sprint management and task movement</li>
+ *   <li>Assignment and confirmation management</li>
+ *   <li>Workload tracking (evaluated and actual)</li>
+ *   <li>Task associations (subtasks, related tasks, cases)</li>
+ *   <li>Import/export functionality with example templates</li>
+ *   <li>Activity logging for audit trails</li>
+ *   <li>Permission and authorization management</li>
+ * </ul></p>
+ * 
  * @author XiaoLong Liu
  */
 @Biz
@@ -234,6 +257,20 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds a new task with comprehensive validation and setup.
+   * 
+   * <p>This method creates a new task with extensive validation including
+   * parent task relationships, sprint assignment, project membership,
+   * and permission checks.</p>
+   * 
+   * <p>The method automatically handles parent-child task relationships,
+   * sprint inheritance, and backlog management.</p>
+   * 
+   * @param task the task to add
+   * @return the ID key of the created task
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Task task) {
@@ -243,95 +280,95 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check parent task exists
+        // Verify parent task exists and handle inheritance
         if (nonNull(task.getParentTaskId())) {
           taskParentDb = taskQuery.checkAndFindInfo(task.getParentTaskId());
-          // TODO Check if there is a loop in the parent-child task, prevent errors in progress calculation and Gantt chart display.
-          // Safe sprint and backlog flag
+          // TODO: Verify no circular references in parent-child relationships to prevent errors in progress calculation and Gantt chart display
+          // Inherit sprint and backlog settings from parent task
           task.setSprintId(taskParentDb.getSprintId())
               .setBacklog(taskParentDb.getBacklog());
         }
 
         if (task.getBacklog() || isNull(task.getSprintId())) {
-          // Check the project id is required to create a backlog
+          // Verify project ID is provided for backlog tasks
           assertTrue(nonNull(task.getProjectId()), "Backlog project id is required");
-          // Check the project member permission
+          // Verify user has project membership permissions
           projectMemberQuery.checkMember(getUserId(), task.getProjectId());
         } else {
-          // Check the task sprint exists
+          // Verify sprint exists for non-backlog tasks
           sprintDb = taskSprintQuery.checkAndFind(task.getSprintId());
 
-          // Check the add task permission
+          // Verify user has task creation permissions
           taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintDb.getId());
         }
 
-        // Check the module exists
+        // Verify module exists if specified
         if (nonNull(task.getModuleId()) && !Objects.equals(task.getModuleId(), -1L)) {
           moduleQuery.checkAndFind(task.getModuleId());
         }
 
-        // Check the task is apis or scenario type, the parameter targetId is required
+        // TODO: Verify targetId is required for API or scenario test tasks
         // if (task.isTestTask()) {
         //  assertNotNull(task.getTargetId(), TASK_ASSOC_TARGET_ID_REQUIRED);
         // }
 
         if (task.isApiTest() && nonNull(task.getTargetId())) {
-          // Check the associated apis exists
-          // apisQuery.check(task.getTargetId());
+          // Verify associated API exists and set parent service ID
           Long serviceId = apisQuery.checkAndFindBaseInfo(task.getTargetId()).getServiceId();
           task.setTargetParentId(serviceId);
         }
 
-        // Check the assigner exists
+        // Verify assignee exists if specified
         if (nonNull(task.getAssigneeId())) {
           userManager.checkExists(task.getAssigneeId());
         }
 
-        // Check the confirmors exists
+        // Verify confirmor exists if specified
         if (nonNull(task.getConfirmorId())) {
           userManager.checkExists(task.getConfirmorId());
         }
 
-        // Check the reference task exists
+        // Verify reference tasks exist if specified
         if (isNotEmpty(task.getRefTaskIds())) {
           taskQuery.checkAndFind(task.getRefTaskIds());
         }
 
-        // Check the tags exists
+        // Verify tags exist if specified
         tagQuery.checkExists(task.getTagTargets());
 
-        // Check the name exists
+        // Verify task name is unique within project/sprint
         taskQuery.checkAddNameExists(task.getProjectId(), sprintDb, task.getName());
 
-        // NOOP:: Evaluation workload not set
+        // TODO: Add evaluation workload validation if needed
         // ProtocolAssert.assertTrue(isNull(task.getEvalWorkload())
         //    || nonNull(task.getActualWorkload()), "Evaluation workload not set");
 
-        // Check the target task exists
+        // Verify target task exists if specified
         if (nonNull(task.getTargetId())) {
           taskQuery.checkTargetTaskExists(task.getTargetId(), task.getTestType(),
               task.getTaskType());
         }
 
-        // Check the quota limit
+        // Verify quota limits are not exceeded
         taskQuery.checkQuota(task.getSprintId(), 1);
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Report is not required
+        // Add tag associations if specified
         if (isNotEmpty(task.getTagTargets())) {
           tagTargetCmd.add0(task.getTagTargets());
         }
 
-        // Save tasks
+        // Assemble task information and save
         boolean isAgile = nonNull(sprintDb) || projectQuery.isAgile(task.getProjectId());
         TaskConverter.assembleAddTaskInfo(task, sprintDb, isAgile);
         IdKey<Long, Object> idKey = insert(task);
 
-        // Save related tasks and use cases
+        // Save related tasks and use cases associations
         taskFuncCaseCmd.addAssoc(TASK, idKey.getId(), task.getRefTaskIds(), task.getRefCaseIds());
 
+        // Log task creation activity
         activityCmd.add(toActivity(TASK, task, ActivityType.CREATED));
         return idKey;
       }
@@ -340,6 +377,23 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   /**
    * Start and generate test tasks and update test info when it exists
+   */
+  /**
+   * Generates tasks based on APIs or scenarios with comprehensive validation.
+   * 
+   * <p>This method creates multiple tasks from APIs or scenarios with proper
+   * permission validation, target verification, and task type handling.</p>
+   * 
+   * <p>The method supports different task types and handles permission
+   * validation for both APIs and scenarios.</p>
+   * 
+   * @param sprintId the sprint ID to assign tasks to (can be null)
+   * @param taskType the type of task to generate
+   * @param targetId the target API or scenario ID
+   * @param tasks the list of tasks to generate
+   * @param ignoreApisOrScenarioPermission whether to ignore permission checks
+   * @return the generation result
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -354,44 +408,46 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
       @Override
       protected void checkParams() {
         if (taskType.isApiTest()) {
-          // Check the associated apis exists
+          // Verify associated API exists and get project ID
           apisDb = apisQuery.checkAndFindBaseInfo(targetId);
           projectId = apisDb.getProjectId();
           BizAssert.assertTrue(!apisDb.isWebSocket(), TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK);
-          // Check the apis test permission
-          if (!ignoreApisOrScenarioPermission) { // Generate by apis services
+          // Verify API test permissions if not ignoring permissions
+          if (!ignoreApisOrScenarioPermission) { // Generate by API services
             apisAuthQuery.checkTestAuth(getUserId(), targetId);
           }
         }
 
         if (taskType.isScenarioTest()) {
-          // Check the associated scenario exists
+          // Verify associated scenario exists and get project ID
           scenarioDb = scenarioQuery.checkAndFind0(targetId);
           projectId = scenarioDb.getProjectId();
-          // Check the scenario test permission
-          if (!ignoreApisOrScenarioPermission) { // Generate by scenario dir
+          // Verify scenario test permissions if not ignoring permissions
+          if (!ignoreApisOrScenarioPermission) { // Generate by scenario directory
             scenarioAuthQuery.checkTestAuth(getUserId(), targetId);
           }
         }
 
         if (nonNull(sprintId)) { // Agile Project Management
-          // Check the task sprint exists
+          // Verify task sprint exists and get project ID
           sprintDb = taskSprintQuery.checkAndFind(sprintId);
           projectId = sprintDb.getProjectId();
-          // Check the add task permission
+          // Verify add task permissions
           taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
         } else { // General Project Management
-          // Check the add task permission
+          // Verify project member permissions
           projectMemberQuery.checkMember(getUserId(), projectId);
         }
       }
 
       @Override
       protected Object process() {
+        // Get existing tasks by test type for the target
         Map<TestType, Task> existedTaskMap = taskRepo.findAllBySprintIdAndTargetId(
             sprintId, targetId).stream().collect(Collectors.toMap(Task::getTestType, x -> x));
         List<Task> newTasks = new ArrayList<>();
-        // No target test task
+        
+        // Handle case when no existing test tasks exist
         if (existedTaskMap.isEmpty()) {
           newTasks = tasks.stream()
               .map(o -> toAddApisOrScenarioTask(projectId, sprintDb, apisDb, scenarioDb, o))
@@ -401,33 +457,33 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           return nonNull(apisDb) ? apisDb : scenarioDb;
         }
 
-        // There are existing target test tasks
+        // Handle existing target test tasks
         List<Task> existedTasks = new ArrayList<>();
         for (Task task : tasks) {
           Task existedTask = existedTaskMap.get(task.getTestType());
           if (nonNull(existedTask)) {
             // Existing tasks can only be modified in the pending state
             if (existedTask.getStatus().isPending()) {
-              // Override the configuration when the task exists
+              // Override configuration when the task exists
               // Update test information: priority, startDate, endDate
               existedTasks.add(copyPropertiesIgnoreNull(task, existedTask));
             }
-            // Important Used by assignee associate task ID
+            // Important: Used by assignee to associate task ID
             task.setId(existedTask.getId()).setName(existedTask.getName());
           } else {
             newTasks.add(toAddApisOrScenarioTask(projectId, sprintDb, apisDb, scenarioDb, task));
           }
         }
 
-        // Save new task
+        // Save new tasks
         if (isNotEmpty(newTasks)) {
           activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.TASK_GEN));
           batchInsert0(newTasks);
         }
 
-        // Update existed task
+        // Update existing tasks
         if (isNotEmpty(existedTasks)) {
-          activityCmd.addAll(toActivities(TASK, newTasks, ActivityType.UPDATED));
+          activityCmd.addAll(toActivities(TASK, existedTasks, ActivityType.UPDATED));
           taskRepo.saveAll(existedTasks);
         }
         return nonNull(apisDb) ? apisDb : scenarioDb;
@@ -439,6 +495,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Test task information that supports modification: name、priority、result、startDate、endDate.
    * <p>
    * Only assignees , creator, confirmor and admins are allowed to modify.
+   */
+  /**
+   * Updates a task with comprehensive validation and change tracking.
+   * 
+   * <p>This method updates a task with extensive validation including
+   * permission checks, user verification, and change detection for
+   * activity logging.</p>
+   * 
+   * <p>The method tracks various changes including assignments, confirmations,
+   * descriptions, and other task properties for audit purposes.</p>
+   * 
+   * @param task the task to update
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -453,47 +522,47 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find task
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFind(task.getId());
 
-        // Check the add task permission
+        // Verify user has task modification permissions
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // TODO Check if there is a loop in the parent-child task, prevent errors in progress calculation and Gantt chart display.
+        // TODO: Verify no circular references in parent-child task relationships to prevent errors in progress calculation and Gantt chart display
 
-        // Check the module exists
+        // Verify module exists if specified
         if (nonNull(task.getModuleId())) {
           moduleQuery.checkAndFind(task.getModuleId());
         }
 
-        // Check the update name exist
+        // Verify task name is unique within project/sprint
         taskQuery.checkUpdateNameExists(taskDb.getProjectId(), taskDb.getSprintId(),
             task.getName(), task.getId());
 
-        // Evaluation workload not set
+        // TODO: Add evaluation workload validation if needed
         // assertTrue(isNull(task.getActualWorkload())
         //    || nonNull(task.getEvalWorkload()), "Evaluation workload not set");
 
-        // Check the assigner exists
+        // Verify assignee exists if specified
         assigneeDb = userManager.checkValidAndFindUserBase(task.getAssigneeId());
 
-        // Check the confirmors exists
+        // Verify confirmor exists if specified
         confirmorDb = userManager.checkValidAndFindUserBase(task.getConfirmorId());
 
-        // Check the parent is not a circular reference
+        // Verify no circular references in parent-child relationships
         taskQuery.checkUpdateParentNotCircular(taskDb.getProjectId(), List.of(task));
 
-        // Check the reference task exists
+        // Verify reference tasks exist if specified
         if (isNotEmpty(task.getRefTaskIds())) {
           refTasks = taskQuery.checkAndFindInfo(task.getRefTaskIds());
         }
 
-        // Check the reference case exists
+        // Verify reference cases exist if specified
         if (isNotEmpty(task.getRefCaseIds())) {
           refCases = funcCaseQuery.checkAndFindInfo(task.getRefCaseIds());
         }
 
-        // Check the tags exists
+        // Verify tags exist if specified
         if (isNotEmpty(task.getTagTargets())) {
           taskTagsDb = tagQuery.checkAndFind(task.getTagTargets().stream()
               .map(TagTarget::getTagId).collect(Collectors.toList()));
@@ -502,7 +571,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected Void process() {
-        // Get existed status before replace
+        // Detect changes before updating
         boolean hasModAssigness = nonNull(task.getAssigneeId())
             && !Objects.equals(taskDb.getAssigneeId(), task.getAssigneeId());
         boolean hasModConfirmor = nonNull(taskDb.getConfirmorId())
@@ -516,25 +585,26 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         boolean hasModRefCases = isNotEmpty(task.getRefCaseIds())
             && !collectionEquals(taskDb.getRefCaseIds(), task.getRefCaseIds());
 
-        // Change task tags
+        // Update task tags if changed
         if (hasModTags) {
           tagTargetCmd.replaceTaskTags0(taskDb, task.getTagTargets());
         }
 
-        // Do not log when parameter has not changed !!!  Null activity will ignored.
+        // Create activity log for changes (null activity will be ignored if no changes)
         Activity activity = toModifyTaskActivity(false, hasModAssigness, hasModConfirmor,
             hasModTags, hasModAttachments, task, taskDb, assigneeDb, confirmorDb,
             taskTagsDb, hasModRefTasks, refTasks, hasModRefCases, refCases);
         activityCmd.add(activity);
 
-        // Save task
+        // Assemble and save task updates
         TaskConverter.assembleUpdateTask(task, taskDb);
         taskRepo.save(taskDb);
 
-        // Save related tasks and use cases
+        // Update related tasks and use cases associations
         taskFuncCaseCmd.updateAssoc(TASK, taskDb.getId(), task.getRefTaskIds(),
             task.getRefCaseIds());
 
+        // Send modification notification events
         taskQuery.assembleAndSendModifyNoticeEvent(taskDb, activity);
         if (hasModAssigness) {
           taskQuery.assembleAndSendModifyAssigneeNoticeEvent(taskDb);
@@ -548,6 +618,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
    * Test task information that supports modification: name、priority、result、startDate、endDate.
    * <p>
    * Only assignees, creator, confirmor and admins are allowed to modify.
+   */
+  /**
+   * Replaces a task with comprehensive validation and change tracking.
+   * 
+   * <p>This method performs a complete replacement of a task with extensive
+   * validation including permission checks, user verification, and change
+   * detection for activity logging.</p>
+   * 
+   * <p>The method tracks various changes including assignments, confirmations,
+   * descriptions, and other task properties for audit purposes.</p>
+   * 
+   * @param task the task to replace
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -645,6 +728,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Renames a task with validation and activity logging.
+   * 
+   * <p>This method changes the name of a task after verifying
+   * user permissions and name uniqueness within the project/sprint.</p>
+   * 
+   * <p>The method logs name update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to rename
+   * @param name the new name for the task
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -684,6 +779,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Moves tasks to a different sprint with comprehensive validation.
+   * 
+   * <p>This method moves multiple tasks to a target sprint after verifying
+   * user permissions for both source and target sprints.</p>
+   * 
+   * <p>The method logs task movement activities and sends modification
+   * notification events.</p>
+   * 
+   * @param taskIds the list of task IDs to move
+   * @param targetSprintId the target sprint ID (null to move to backlog)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void move(List<Long> taskIds, Long targetSprintId) {
@@ -740,6 +848,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task type with validation and activity logging.
+   * 
+   * <p>This method changes the type of a task after verifying
+   * user permissions. For bug type tasks, it automatically sets
+   * default bug level and missing bug status.</p>
+   * 
+   * <p>The method logs type update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change type for
+   * @param type the new task type
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceType(Long id, String type) {
@@ -779,6 +900,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces bug level for bug type tasks with validation.
+   * 
+   * <p>This method changes the bug level of a task after verifying
+   * the task is of bug type and user has modification permissions.</p>
+   * 
+   * <p>The method logs bug level update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change bug level for
+   * @param bugLevel the new bug level
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public void replaceBugLevel(Long id, String bugLevel) {
     new BizTemplate<Void>() {
@@ -814,6 +947,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces missing bug status for bug type tasks with validation.
+   * 
+   * <p>This method changes the missing bug status of a task after verifying
+   * the task is of bug type and user has modification permissions.</p>
+   * 
+   * <p>The method logs missing bug status update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change missing bug status for
+   * @param missingBug the new missing bug status
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public void replaceMissingBug(Long id, Boolean missingBug) {
     new BizTemplate<Void>() {
@@ -848,6 +993,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task assignee with validation and activity logging.
+   * 
+   * <p>This method changes the assignee of a task after verifying
+   * user permissions and assignee existence.</p>
+   * 
+   * <p>The method logs assignee update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change assignee for
+   * @param assigneeId the new assignee ID (null to clear assignee)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceAssignees(Long id, Long assigneeId) {
@@ -887,6 +1045,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task confirmor with validation and activity logging.
+   * 
+   * <p>This method changes the confirmor of a task after verifying
+   * user permissions and confirmor existence.</p>
+   * 
+   * <p>The method logs confirmor update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change confirmor for
+   * @param confirmorId the new confirmor ID (null to clear confirmor)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceConfirmors(Long id, Long confirmorId) {
@@ -925,6 +1096,20 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task deadline with validation and activity logging.
+   * 
+   * <p>This method changes the deadline of a task after verifying
+   * user permissions. It automatically calculates overdue status
+   * based on the current time.</p>
+   * 
+   * <p>The method logs deadline update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change deadline for
+   * @param deadline the new deadline (null to clear deadline)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceDeadline(Long id, LocalDateTime deadline) {
@@ -958,6 +1143,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task priority with validation and activity logging.
+   * 
+   * <p>This method changes the priority of a task after verifying
+   * user permissions.</p>
+   * 
+   * <p>The method logs priority update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change priority for
+   * @param priority the new priority
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replacePriority(Long id, Priority priority) {
@@ -990,6 +1188,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task software version with validation and activity logging.
+   * 
+   * <p>This method changes the software version of a task after verifying
+   * user permissions and version uniqueness within the project.</p>
+   * 
+   * <p>The method logs software version update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change software version for
+   * @param version the new software version (null to clear version)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceSoftwareVersion(Long id, String version) {
@@ -1039,6 +1249,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task evaluated workload with validation and activity logging.
+   * 
+   * <p>This method changes the evaluated workload of a task after verifying
+   * user permissions. It handles both setting and clearing workload values.</p>
+   * 
+   * <p>The method logs workload update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change evaluated workload for
+   * @param evalWorkload the new evaluated workload (null to clear)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceEvalWorkload(Long id, BigDecimal evalWorkload) {
@@ -1092,6 +1314,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task actual workload with validation and activity logging.
+   * 
+   * <p>This method changes the actual workload of a task after verifying
+   * user permissions. It automatically sets evaluated workload if not present.</p>
+   * 
+   * <p>The method logs workload update activities for audit purposes.</p>
+   * 
+   * @param id the task ID to change actual workload for
+   * @param actualWorkload the new actual workload (null to clear)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceActualWorkload(Long id, BigDecimal actualWorkload) {
@@ -1153,6 +1387,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task description with validation and activity logging.
+   * 
+   * <p>This method changes the description of a task after verifying
+   * user permissions. It handles both setting and clearing description.</p>
+   * 
+   * <p>The method logs description update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change description for
+   * @param description the new description (null to clear)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceDescription(Long id, String description) {
@@ -1204,6 +1451,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Replaces task attachments with validation and activity logging.
+   * 
+   * <p>This method changes the attachments of a task after verifying
+   * user permissions. It handles both setting and clearing attachments.</p>
+   * 
+   * <p>The method logs attachment update activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to change attachments for
+   * @param attachments the new attachments list (null to clear)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceAttachment(Long id, List<Attachment> attachments) {
@@ -1261,6 +1521,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Starts a task with status validation and activity logging.
+   * 
+   * <p>This method changes a task status to IN_PROGRESS after verifying
+   * the current status allows starting and user has modification permissions.</p>
+   * 
+   * <p>The method increments the total execution count and logs
+   * task start activities for audit purposes.</p>
+   * 
+   * @param id the task ID to start
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void start(Long id) {
@@ -1269,13 +1541,13 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find task
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFind(id);
 
-        // Check the add task permission
+        // Verify user has task modification permissions
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // Check the pending status
+        // Verify task is in pending status
         if (!taskDb.getStatus().isPending()) {
           throw BizException.of(TASK_START_NO_PENDING_CODE, TASK_START_NO_PENDING);
         }
@@ -1299,6 +1571,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Cancels a task with status validation and activity logging.
+   * 
+   * <p>This method changes a task status to CANCELED after verifying
+   * user has modification permissions.</p>
+   * 
+   * <p>The method logs task cancellation activities and sends
+   * modification notification events.</p>
+   * 
+   * @param id the task ID to cancel
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long id) {
@@ -1331,6 +1615,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Marks a task as processed with comprehensive validation.
+   * 
+   * <p>This method changes a task status based on whether confirmation
+   * is required, after verifying user permissions and task status.</p>
+   * 
+   * <p>The method handles both confirmation-required and direct completion
+   * scenarios with appropriate status transitions.</p>
+   * 
+   * @param id the task ID to mark as processed
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void processed(Long id) {
@@ -1339,16 +1635,16 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find task
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFind(id);
 
-        // Check the add task permission
+        // Verify user has task modification permissions
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // Check if there is assignee permission
+        // Verify assignee has permission to process the task
         taskQuery.checkAssigneeUserPermission(taskDb);
 
-        // Check the in_progress status
+        // Verify task is in progress status
         if (!taskDb.getStatus().isInProgress()) {
           throw BizException.of(TASK_NO_PROCESSING_CODE, TASK_NO_PROCESSING);
         }
@@ -1387,6 +1683,21 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Confirms a task with result and workload validation.
+   * 
+   * <p>This method confirms a task with the specified result and workload
+   * values after verifying user permissions and task status.</p>
+   * 
+   * <p>The method handles success and failure scenarios with appropriate
+   * status transitions and failure count management.</p>
+   * 
+   * @param id the task ID to confirm
+   * @param result the confirmation result (success/failure)
+   * @param evalWorkload the evaluated workload value
+   * @param actualWorkload the actual workload value
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void confirm(Long id, Result result, BigDecimal evalWorkload, BigDecimal actualWorkload) {
@@ -1395,33 +1706,33 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find task
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFind(id);
 
-        // Check the add task permission
+        // Verify user has task modification permissions
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
-        // Check the evaluation workload not set
+        // Verify evaluation workload is set when actual workload is provided
         assertTrue(isNull(actualWorkload)
             || nonNull(evalWorkload), TASK_EVAL_WORKLOAD_NOT_SET);
 
-        // Check the subtask is not completed
+        // Verify subtasks are completed for successful results
         if (result.isSuccess()){
           taskQuery.checkSubTasksIsCompleted(taskDb.getProjectId(), id);
         }
 
         boolean isConfirmTask = taskDb.isConfirmTask();
         if (isConfirmTask) {
-          // Check if there is confirmor permission
+          // Verify confirmor has permission to confirm the task
           taskQuery.checkConfirmorUserPermission(taskDb);
         }
 
-        // Check the non-confirmed task must be in progress
+        // Verify non-confirmation tasks must be in progress
         if (!isConfirmTask && !taskDb.getStatus().isInProgress()) {
           throw BizException.of(TASK_NO_PROCESSING_CODE, TASK_NO_PROCESSING);
         }
 
-        // Check the confirmed task must be in the processed status
+        // Verify confirmation tasks must be in confirming status
         if (isConfirmTask && !taskDb.getStatus().isConfirming()) {
           throw BizException.of(TASK_NO_CONFIRMING_CODE, TASK_NO_CONFIRMING);
         }
@@ -1457,11 +1768,16 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Retest task
-   *
-   * <pre>
-   *  Update the test status to pending test based on the existing test records, and clean up the historical test statistics and status
-   * </pre>
+   * Restarts tasks with comprehensive cleanup and status reset.
+   * 
+   * <p>This method updates test tasks to pending status based on existing
+   * test records and cleans up historical test statistics and status.</p>
+   * 
+   * <p>The method resets task execution data and logs restart activities
+   * for audit purposes.</p>
+   * 
+   * @param taskIds the list of task IDs to restart
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1471,11 +1787,11 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check the test task exists
+        // Verify test tasks exist and retrieve task info
         tasksDb = taskRepo.findAllById(taskIds);
         taskQuery.checkTaskExists(taskIds, tasksDb);
 
-        // Check the update task permission
+        // Verify user has restart task permissions
         taskSprintAuthQuery.batchCheckPermission(tasksDb.stream().map(Task::getSprintId)
                 .filter(Objects::nonNull).collect(Collectors.toSet()),
             TaskSprintPermission.RESTART_TASK);
@@ -1497,11 +1813,16 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Reopen task
-   *
-   * <pre>
-   * Based on the existing test records, update the test status as pending, without clearing the historical test statistics and status
-   * </pre>
+   * Reopens tasks without clearing historical data.
+   * 
+   * <p>This method updates test tasks to pending status based on existing
+   * test records without clearing historical test statistics and status.</p>
+   * 
+   * <p>The method preserves execution history and logs reopen activities
+   * for audit purposes.</p>
+   * 
+   * @param taskIds the list of task IDs to reopen
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1511,16 +1832,16 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check the test task exists
+        // Verify test tasks exist and retrieve task info
         tasksDb = taskRepo.findAllById(taskIds);
         taskQuery.checkTaskExists(taskIds, tasksDb);
 
-        // Check the update task permission
+        // Verify user has reopen task permissions
         taskSprintAuthQuery.batchCheckPermission(tasksDb.stream().map(Task::getSprintId)
                 .filter(Objects::nonNull).collect(Collectors.toSet()),
             TaskSprintPermission.REOPEN_TASK);
 
-        // Check the task is opened repeatedly
+        // Verify tasks are not already opened
         taskQuery.checkTaskOpenStatus(tasksDb);
       }
 
@@ -1539,6 +1860,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Sets subtasks for a task with validation and activity logging.
+   * 
+   * <p>This method establishes parent-child relationships between tasks
+   * after verifying user permissions and task existence.</p>
+   * 
+   * <p>The method logs subtask association activities for audit purposes.</p>
+   * 
+   * @param id the parent task ID
+   * @param subTaskIds the set of subtask IDs to associate
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void subtaskSet(Long id, HashSet<Long> subTaskIds) {
@@ -1570,6 +1903,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Cancels subtask associations for a task with validation and activity logging.
+   * 
+   * <p>This method removes parent-child relationships between tasks
+   * after verifying user permissions and task existence.</p>
+   * 
+   * <p>The method logs subtask disassociation activities for audit purposes.</p>
+   * 
+   * @param id the parent task ID
+   * @param subTaskIds the set of subtask IDs to disassociate
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void subtaskCancel(Long id, HashSet<Long> subTaskIds) {
@@ -1601,6 +1946,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Adds task associations with validation and activity logging.
+   * 
+   * <p>This method establishes associations between tasks
+   * after verifying user permissions and task existence.</p>
+   * 
+   * <p>The method logs task association activities for audit purposes.</p>
+   * 
+   * @param id the task ID to add associations for
+   * @param assocTaskIds the set of associated task IDs to add
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void taskAssocAdd(Long id, HashSet<Long> assocTaskIds) {
@@ -1630,6 +1987,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Cancels task associations with validation and activity logging.
+   * 
+   * <p>This method removes associations between tasks
+   * after verifying user permissions and task existence.</p>
+   * 
+   * <p>The method logs task disassociation activities for audit purposes.</p>
+   * 
+   * @param id the task ID to remove associations for
+   * @param assocTaskIds the set of associated task IDs to remove
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void taskAssocCancel(Long id, HashSet<Long> assocTaskIds) {
@@ -1659,6 +2028,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Adds functional case associations with validation and activity logging.
+   * 
+   * <p>This method establishes associations between tasks and functional cases
+   * after verifying user permissions and case existence.</p>
+   * 
+   * <p>The method logs case association activities for audit purposes.</p>
+   * 
+   * @param id the task ID to add case associations for
+   * @param assocCaseIds the set of associated case IDs to add
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void caseAssocAdd(Long id, HashSet<Long> assocCaseIds) {
@@ -1688,6 +2069,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Cancels functional case associations with validation and activity logging.
+   * 
+   * <p>This method removes associations between tasks and functional cases
+   * after verifying user permissions and case existence.</p>
+   * 
+   * <p>The method logs case disassociation activities for audit purposes.</p>
+   * 
+   * @param id the task ID to remove case associations for
+   * @param assocCaseIds the set of associated case IDs to remove
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void caseAssocCancel(Long id, HashSet<Long> assocCaseIds) {
@@ -1717,6 +2110,22 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Imports tasks from Excel file with comprehensive validation.
+   * 
+   * <p>This method imports tasks from an Excel file with extensive validation
+   * including required columns, data integrity, and duplicate handling.</p>
+   * 
+   * <p>The method supports different import strategies and handles
+   * both agile and general project management scenarios.</p>
+   * 
+   * @param projectId the project ID to import tasks into
+   * @param sprintId the sprint ID to assign tasks to (can be null for backlog)
+   * @param strategyWhenDuplicated the strategy for handling duplicate tasks
+   * @param file the Excel file containing task data
+   * @return the list of created task ID keys
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> imports(Long projectId, @Nullable Long sprintId,
@@ -1727,15 +2136,15 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check the project exists
+        // Verify project exists and retrieve project info
         projectDb = projectQuery.checkAndFind(projectId);
         if (projectDb.isAgile() && nonNull(sprintId)) { // Agile Project Management
-          // Check the task sprint exists
+          // Verify task sprint exists and retrieve sprint info
           sprintDb = taskSprintQuery.checkAndFind(sprintId);
-          // Check the add task permission
+          // Verify user has add task permissions
           taskSprintAuthQuery.checkAddTaskAuth(getUserId(), sprintId);
         } else { // General Project Management
-          // Check the add task permission
+          // Verify user has project member permissions
           projectMemberQuery.checkMember(getUserId(), projectId);
         }
       }
@@ -1907,8 +2316,17 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Imports example tasks with sample data for project setup.
+   * 
+   * <p>This method creates example tasks with sample data including
+   * sprints, software versions, and task templates for project initialization.</p>
+   * 
+   * <p>Note: When API calls are not user-initiated, tenant and user information
+   * must be injected into the PrincipalContext.</p>
+   * 
+   * @param projectId the project ID to import example tasks into
+   * @return the list of created task ID keys
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1918,7 +2336,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check the project exists
+        // Verify project exists and retrieve project info
         projectDb = projectQuery.checkAndFind(projectId);
       }
 
@@ -1959,6 +2377,19 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     }.execute();
   }
 
+  /**
+   * Deletes tasks with logical deletion and cleanup.
+   * 
+   * <p>This method performs logical deletion of tasks after verifying
+   * user has deletion permissions. It moves tasks to trash and
+   * updates deletion status.</p>
+   * 
+   * <p>The method logs deletion activities and sends modification
+   * notification events.</p>
+   * 
+   * @param taskIds the list of task IDs to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(List<Long> taskIds) {
@@ -1967,11 +2398,11 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
       @Override
       protected void checkParams() {
-        // Check the test task exists
+        // Verify test tasks exist and retrieve task info
         tasksDb = taskRepo.findAllById(taskIds);
         // taskQuery.checkTaskExists(taskIds, tasksDb);
 
-        // Check the delete task permission
+        // Verify user has delete task permissions
         if (isNotEmpty(tasksDb)) {
           taskSprintAuthQuery.batchCheckPermission(tasksDb.stream().map(Task::getSprintId)
                   .filter(Objects::nonNull).collect(Collectors.toSet()),
@@ -1985,18 +2416,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           return null;
         }
 
-        // Update delete status
+        // Update task deletion status
         taskRepo.updateDeleteStatus(taskIds, true, getUserId(), LocalDateTime.now());
 
-        // Add delete activity
+        // Log deletion activities
         List<Activity> activities = toActivities(TASK, tasksDb, DELETED, activityParams(tasksDb));
         activityCmd.addAll(activities);
 
-        // Add deleted api to trash
+        // Move deleted tasks to trash
         trashTaskCmd.add0(tasksDb.stream().map(TaskConverter::toTaskTrash)
             .collect(Collectors.toList()));
 
-        // Add modification events
+        // Send modification notification events
         taskQuery.assembleAndSendModifyNoticeEvent(tasksDb, activities);
         return null;
       }
@@ -2004,11 +2435,14 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Reopen or restart task
-   *
-   * <pre>
-   * Based on the existing test records, update the test status as pending, without clearing the historical test statistics and status
-   * </pre>
+   * Retests tasks by target with optional restart functionality.
+   * 
+   * <p>This method updates test tasks to pending status based on existing
+   * test records, with optional clearing of historical test statistics
+   * and status depending on the restart parameter.</p>
+   * 
+   * @param restart whether to restart (clear history) or reopen (preserve history)
+   * @param tasksDb the list of tasks to retest
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -2027,6 +2461,17 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     activityCmd.addAll(toActivities(TASK, tasksDb, restart ? TASK_RESTART : TASK_REOPEN));
   }
 
+  /**
+   * Permanently deletes tasks by target with cascade cleanup (internal use).
+   * 
+   * <p>This method performs permanent deletion of tasks and all associated
+   * data including remarks, tags, and functional case associations.</p>
+   * 
+   * <p>Note: This method is intended for internal use and should be called
+   * after proper validation and permission checks.</p>
+   * 
+   * @param taskIds the list of task IDs to permanently delete
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete0ByTarget(List<Long> taskIds) {
@@ -2042,9 +2487,20 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     activityCmd.addAll(toActivities(TASK, tasksDb, DELETED));
   }
 
+  /**
+   * Permanently deletes tasks with cascade cleanup (internal use).
+   * 
+   * <p>This method performs permanent deletion of tasks and all associated
+   * data including remarks, tags, and functional case associations.</p>
+   * 
+   * <p>Note: This method is intended for internal use and should be called
+   * after proper validation and permission checks.</p>
+   * 
+   * @param taskIds the list of task IDs to permanently delete
+   */
   @Override
   public void delete0(List<Long> taskIds) {
-    // Notice: Delete assignees before deleting tasks
+    // Note: Delete associated data before deleting tasks
     taskRemarkRepo.deleteByTaskIdIn(taskIds);
     tagTargetCmd.deleteByTargetIdIn(taskIds);
     taskFuncCaseCmd.deleteByTargetIds(taskIds);
@@ -2052,10 +2508,20 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     taskRepo.deleteByIdIn(taskIds);
   }
 
+  /**
+   * Generates a unique task code for the current tenant.
+   * 
+   * @return the generated task code
+   */
   public static String getTaskCode() {
     return getBean(BidGenerator.class).getId(TASK_BID_KEY, getTenantId());
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task repository
+   */
   @Override
   protected BaseRepository<Task, Long> getRepository() {
     return this.taskRepo;

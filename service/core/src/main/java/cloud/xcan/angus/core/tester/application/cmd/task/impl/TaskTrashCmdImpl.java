@@ -34,6 +34,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of task trash command operations for deleted item management.
+ * 
+ * <p>This class provides functionality for managing deleted tasks and sprints
+ * in the trash system, including restoration and permanent deletion.</p>
+ * 
+ * <p>It handles the complete lifecycle of trash items from creation
+ * to restoration or permanent deletion, including cascade operations.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Trash item management (tasks and sprints)</li>
+ *   <li>Individual and bulk restoration operations</li>
+ *   <li>Individual and bulk permanent deletion</li>
+ *   <li>Cascade operations for related items</li>
+ *   <li>Activity logging for audit trails</li>
+ * </ul></p>
+ */
 @Biz
 public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTrashCmd {
 
@@ -64,11 +82,28 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds trash items without validation (internal use).
+   * 
+   * <p>This method performs bulk insertion of trash items without
+   * validation checks. It is intended for internal use only.</p>
+   * 
+   * @param trashes the list of trash items to add
+   */
   @Override
   public void add0(List<TaskTrash> trashes) {
     batchInsert0(trashes);
   }
 
+  /**
+   * Permanently deletes a trash item with cascade cleanup.
+   * 
+   * <p>This method permanently removes a trash item and all its
+   * associated data after verifying user permissions.</p>
+   * 
+   * @param id the trash item ID to permanently delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clear(Long id) {
@@ -77,7 +112,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
       @Override
       protected void checkParams() {
-        // Check the trash existed and permission
+        // Verify trash item exists and user has permission to clear it
         trashDb = taskTrashQuery.findMyTrashForBiz(id, "CLEAR");
       }
 
@@ -95,6 +130,14 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     }.execute();
   }
 
+  /**
+   * Permanently deletes all trash items for a project with cascade cleanup.
+   * 
+   * <p>This method permanently removes all trash items for a project
+   * and all their associated data.</p>
+   * 
+   * @param projectId the project ID to clear all trash for (null for all projects)
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clearAll(Long projectId) {
@@ -122,6 +165,17 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     }.execute();
   }
 
+  /**
+   * Restores a trash item with cascade restoration.
+   * 
+   * <p>This method restores a trash item (task or sprint) and all its
+   * associated data after verifying user permissions.</p>
+   * 
+   * <p>The method logs restoration activities for audit purposes.</p>
+   * 
+   * @param id the trash item ID to restore
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void back(Long id) {
@@ -130,7 +184,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
       @Override
       protected void checkParams() {
-        // Check the trash existed and permission
+        // Verify trash item exists and user has permission to restore it
         trashDb = taskTrashQuery.findMyTrashForBiz(id, "BACK");
       }
 
@@ -147,7 +201,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
       }
 
       private void backTasks(Long taskId) {
-        // Cascade recovery current task
+        // Cascade recovery of current task
         List<Long> taskIds = List.of(taskId);
         taskRepo.updateToUndeletedStatusByIdIn(taskIds);
 
@@ -157,22 +211,22 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
         // Delete associated task trash
         taskTrashRepo.deleteByTargetIdIn(taskIds);
 
-        // Add back task activity
+        // Log task restoration activity
         activityCmd.add(toActivity(TASK, trashDb, ActivityType.BACK, trashDb.getName()));
       }
 
       private void backSprint(Long sprintId, boolean saveActivity) {
-        // Cascade recovery current sprint
+        // Cascade recovery of current sprint
         List<Long> sprintIds = List.of(sprintId);
         taskSprintRepo.updateToUndeletedStatusByIdIn(sprintIds);
 
         // Delete associated sprint trash
         taskTrashRepo.deleteByTargetIdIn(sprintIds);
 
-        // Update case parent sprint delete status
+        // Update task parent sprint delete status
         taskRepo.updateSprintDeleteStatusBySprint(sprintIds, false);
 
-        // Add back sprint activity
+        // Log sprint restoration activity
         if (saveActivity) {
           activityCmd.add(toActivity(TASK_SPRINT, trashDb, ActivityType.BACK, trashDb.getName()));
         }
@@ -180,6 +234,14 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     }.execute();
   }
 
+  /**
+   * Restores all trash items for a project with cascade restoration.
+   * 
+   * <p>This method restores all trash items for a project and all their
+   * associated data, handling both tasks and sprints.</p>
+   * 
+   * @param projectId the project ID to restore all trash for (null for all projects)
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void backAll(Long projectId) {
@@ -207,12 +269,13 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
       }
 
       private void backAllTask(List<Long> taskIds) {
+        // Restore tasks to undeleted status
         taskRepo.updateToUndeletedStatusByIdIn(taskIds);
 
-        // Delete task trash
+        // Delete task trash entries
         taskTrashRepo.deleteByTargetIdIn(taskIds);
 
-        // Cascade recovery parent sprints
+        // Cascade recovery of parent sprints
         List<Long> sprintIds = taskInfoRepo.findAll0SprintIdsByIdIn(taskIds);
         if (isNotEmpty(sprintIds)) {
           backAllSprint(sprintIds);
@@ -220,13 +283,13 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
       }
 
       private void backAllSprint(List<Long> sprintIds) {
-        // Update sprint delete flag
+        // Restore sprints to undeleted status
         taskSprintRepo.updateToUndeletedStatusByIdIn(sprintIds);
 
-        // Update task sprint delete flag
+        // Update task sprint delete status
         taskRepo.updateSprintDeleteStatusBySprint(sprintIds, false);
 
-        // Delete sprint trash
+        // Delete sprint trash entries
         taskTrashRepo.deleteByTargetIdIn(sprintIds);
       }
     }.execute();
@@ -273,6 +336,11 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     return trashDbs;
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task trash repository
+   */
   @Override
   protected BaseRepository<TaskTrash, Long> getRepository() {
     return this.taskTrashRepo;

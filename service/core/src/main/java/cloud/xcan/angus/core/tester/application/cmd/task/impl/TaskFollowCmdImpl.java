@@ -22,6 +22,23 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of task follow command operations for task tracking.
+ * 
+ * <p>This class provides functionality for managing task follows,
+ * allowing users to track and receive updates on specific tasks.</p>
+ * 
+ * <p>It handles the complete lifecycle of task follows from creation
+ * to cancellation, including duplicate prevention and activity logging.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Task follow creation with duplicate prevention</li>
+ *   <li>Individual and bulk follow cancellation</li>
+ *   <li>Activity logging for audit trails</li>
+ *   <li>Project-level follow management</li>
+ * </ul></p>
+ */
 @Biz
 public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements TaskFollowCmd {
 
@@ -34,6 +51,18 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds a task follow with duplicate prevention.
+   * 
+   * <p>This method creates a follow entry for a task after verifying
+   * the task exists and preventing duplicate follows from the same user.</p>
+   * 
+   * <p>The method logs follow creation activity for audit purposes.</p>
+   * 
+   * @param follow the follow entry to create
+   * @return the ID key of the created follow
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(TaskFollow follow) {
@@ -42,9 +71,9 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
 
       @Override
       protected void checkParams() {
-        // Check the task exists
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFindInfo(follow.getTaskId());
-        //  Check is not repeated
+        // Verify no duplicate follow exists for this user and task
         if (taskFollowRepo.countByTaskIdAndCreatedBy(follow.getTaskId(), getUserId()) > 0) {
           throw ResourceExisted.of(TASK_FOLLOW_REPEATED, new Object[]{});
         }
@@ -62,6 +91,15 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
     }.execute();
   }
 
+  /**
+   * Cancels a task follow with activity logging.
+   * 
+   * <p>This method removes a task follow and logs the cancellation
+   * activity for audit purposes.</p>
+   * 
+   * @param id the task ID to stop following
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancel(Long id) {
@@ -70,7 +108,7 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
 
       @Override
       protected void checkParams() {
-        // Check the task existed
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFindInfo(id);
       }
 
@@ -85,6 +123,14 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
     }.execute();
   }
 
+  /**
+   * Cancels all task follows for a user, optionally filtered by project.
+   * 
+   * <p>This method removes all follows for the current user, either
+   * globally or within a specific project scope.</p>
+   * 
+   * @param projectId the project ID to filter by (null for all projects)
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void cancelAll(Long projectId) {
@@ -102,6 +148,11 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
     }.execute();
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task follow repository
+   */
   @Override
   protected BaseRepository<TaskFollow, Long> getRepository() {
     return this.taskFollowRepo;

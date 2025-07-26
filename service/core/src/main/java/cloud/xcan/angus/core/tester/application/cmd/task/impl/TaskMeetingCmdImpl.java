@@ -22,6 +22,23 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of task meeting command operations for meeting management.
+ * 
+ * <p>This class provides functionality for managing task-related meetings,
+ * including creation, updates, and deletion of meeting records.</p>
+ * 
+ * <p>It handles the complete lifecycle of task meetings from creation
+ * to deletion, including permission validation and activity logging.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Meeting CRUD operations with permission validation</li>
+ *   <li>Meeting replacement with upsert functionality</li>
+ *   <li>Activity logging for audit trails</li>
+ *   <li>Project member permission management</li>
+ * </ul></p>
+ */
 @Biz
 public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements TaskMeetingCmd {
 
@@ -37,13 +54,25 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds a new task meeting with permission validation.
+   * 
+   * <p>This method creates a new meeting after verifying
+   * the user has project member permissions.</p>
+   * 
+   * <p>The method logs meeting creation activity for audit purposes.</p>
+   * 
+   * @param meeting the meeting to add
+   * @return the ID key of the created meeting
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(TaskMeeting meeting) {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the project member permission
+        // Verify user has project member permissions
         projectMemberQuery.checkMember(getUserId(), meeting.getProjectId());
       }
 
@@ -57,6 +86,15 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
     }.execute();
   }
 
+  /**
+   * Updates an existing task meeting.
+   * 
+   * <p>This method updates a meeting after verifying it exists
+   * and logs the update activity for audit purposes.</p>
+   * 
+   * @param meeting the meeting to update
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(TaskMeeting meeting) {
@@ -78,6 +116,18 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
     }.execute();
   }
 
+  /**
+   * Replaces a task meeting with upsert functionality.
+   * 
+   * <p>This method either updates an existing meeting or creates a new one
+   * based on whether the meeting ID is provided.</p>
+   * 
+   * <p>The method logs meeting update activity for audit purposes.</p>
+   * 
+   * @param meeting the meeting to replace
+   * @return the ID key of the meeting
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> replace(TaskMeeting meeting) {
@@ -105,6 +155,15 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
     }.execute();
   }
 
+  /**
+   * Deletes a task meeting with activity logging.
+   * 
+   * <p>This method removes a meeting after verifying it exists
+   * and logs the deletion activity for audit purposes.</p>
+   * 
+   * @param id the meeting ID to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -126,6 +185,11 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
     }.execute();
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task meeting repository
+   */
   @Override
   protected BaseRepository<TaskMeeting, Long> getRepository() {
     return taskMeetingRepo;

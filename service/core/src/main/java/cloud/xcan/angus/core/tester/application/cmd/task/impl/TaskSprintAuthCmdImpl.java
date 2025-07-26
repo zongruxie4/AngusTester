@@ -30,6 +30,24 @@ import jakarta.annotation.Resource;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of task sprint authorization command operations.
+ * 
+ * <p>This class provides functionality for managing sprint-level permissions,
+ * including authorization grants, updates, and permission control.</p>
+ * 
+ * <p>It handles the complete lifecycle of sprint authorization from creation
+ * to deletion, including creator permission management and activity logging.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Sprint authorization management</li>
+ *   <li>Creator permission handling</li>
+ *   <li>Authorization enable/disable control</li>
+ *   <li>Activity logging for audit trails</li>
+ *   <li>Permission validation and security</li>
+ * </ul></p>
+ */
 @Biz
 public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> implements TaskSprintAuthCmd {
 
@@ -54,6 +72,18 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds sprint authorization with comprehensive validation.
+   * 
+   * <p>This method creates a new sprint authorization after verifying
+   * sprint existence, permission grants, and preventing creator authorization.</p>
+   * 
+   * <p>The method logs authorization grant activities for audit purposes.</p>
+   * 
+   * @param auth the authorization to add
+   * @return the ID key of the created authorization
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(TaskSprintAuth auth) {
@@ -63,17 +93,17 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Check the project exists
+        // Verify sprint exists and retrieve sprint info
         sprintDb = taskSprintQuery.checkAndFind(auth.getSprintId());
-        // Check the add creator permissions
+        // Verify creator cannot be granted additional permissions
         BizAssert.assertTrue(!sprintDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        // Check the user have project authorization permissions
+        // Verify user has sprint authorization grant permissions
         taskSprintAuthQuery.checkGrantAuth(getUserId(), auth.getSprintId());
-        // Check the authorization object exists
+        // Verify authorization object exists and get its name
         authObjectName = commonQuery.checkAndGetAuthName(auth.getAuthObjectType(),
             auth.getAuthObjectId());
-        // Check the for duplicate authorizations
+        // Verify no duplicate authorization exists
         taskSprintAuthQuery.checkRepeatAuth(auth.getSprintId(), auth.getAuthObjectId(),
             auth.getAuthObjectType());
       }
@@ -89,6 +119,17 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
     }.execute();
   }
 
+  /**
+   * Replaces sprint authorization with comprehensive validation.
+   * 
+   * <p>This method updates an existing sprint authorization after verifying
+   * authorization existence, permission modifications, and creator protection.</p>
+   * 
+   * <p>The method logs authorization update activities for audit purposes.</p>
+   * 
+   * @param auth the authorization to replace
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(TaskSprintAuth auth) {
@@ -99,16 +140,16 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Check the sprint authorization existed
+        // Verify sprint authorization exists and retrieve it
         authDb = taskSprintAuthQuery.checkAndFind(auth.getId());
-        // Check the modify creator permissions
+        // Verify creator permissions cannot be modified
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        // Check the sprint exists
+        // Verify sprint exists and retrieve sprint info
         sprintDb = taskSprintQuery.checkAndFind(authDb.getSprintId());
-        // Check the current user have sprint authorization permissions
+        // Verify current user has sprint authorization permissions
         taskSprintAuthQuery.checkGrantAuth(getUserId(), authDb.getSprintId());
-        // Check the authorization object exists
+        // Verify authorization object exists and get its name
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
       }
@@ -128,6 +169,18 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
     }.execute();
   }
 
+  /**
+   * Enables or disables sprint authorization control.
+   * 
+   * <p>This method controls the authorization system for a sprint,
+   * enabling or disabling permission checks for all tasks in the sprint.</p>
+   * 
+   * <p>The method logs authorization enable/disable activities for audit purposes.</p>
+   * 
+   * @param sprintId the sprint ID to control authorization for
+   * @param enabled whether to enable authorization control
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void enabled(Long sprintId, Boolean enabled) {
@@ -136,9 +189,9 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Check the sprint existed and authed
+        // Verify sprint exists and user has access
         sprintDb = taskSprintQuery.checkAndFind(sprintId);
-        // Check the user have sprint authorization permissions
+        // Verify user has sprint authorization permissions
         taskSprintAuthQuery.checkGrantAuth(getUserId(), sprintId);
       }
 
@@ -155,6 +208,17 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
     }.execute();
   }
 
+  /**
+   * Deletes sprint authorization with comprehensive cleanup.
+   * 
+   * <p>This method removes a sprint authorization after verifying
+   * authorization existence, permission modifications, and creator protection.</p>
+   * 
+   * <p>The method logs authorization cancellation activities for audit purposes.</p>
+   * 
+   * @param id the authorization ID to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -164,26 +228,26 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Check the sprint auth exists
+        // Verify sprint authorization exists and retrieve it
         authDb = taskSprintAuthQuery.checkAndFind(id);
-        // Check the modify creator permissions
+        // Verify creator permissions cannot be modified
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        // Check the sprint exists
+        // Verify sprint exists and retrieve sprint info
         sprintDb = taskSprintQuery.checkAndFind(authDb.getSprintId());
-        // Check the user have sprint authorization permissions
+        // Verify user has sprint authorization permissions
         taskSprintAuthQuery.checkGrantAuth(getUserId(), authDb.getSprintId());
       }
 
       @Override
       protected Void process() {
-        // Get if authorization object name
+        // Retrieve authorization object name for activity logging
         String authObjectName = "";
         try {
           authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
               authDb.getAuthObjectId());
         } catch (Exception e) {
-          // NOOP: Authorization can also be cancelled after the authorization object is deleted
+          // Authorization can be cancelled even if the authorization object is deleted
         }
 
         // Add deleted permission activity, must be deleted before
@@ -196,11 +260,25 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
     }.execute();
   }
 
+  /**
+   * Adds creator authorization for a sprint.
+   * 
+   * <p>This method creates creator-level permissions for specified users
+   * on a sprint, enabling them to manage the sprint and its tasks.</p>
+   * 
+   * @param sprintId the sprint ID to add creator authorization for
+   * @param creatorIds the set of user IDs to grant creator permissions to
+   */
   @Override
   public void addCreatorAuth(Long sprintId, Set<Long> creatorIds) {
     batchInsert(toTaskSprintAuths(creatorIds, sprintId, uidGenerator), "authObjectId");
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task sprint authorization repository
+   */
   @Override
   protected BaseRepository<TaskSprintAuth, Long> getRepository() {
     return this.taskSprintAuthRepo;

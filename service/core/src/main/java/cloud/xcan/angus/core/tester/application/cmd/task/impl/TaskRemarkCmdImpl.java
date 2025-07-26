@@ -22,6 +22,22 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Implementation of task remark command operations for task comments.
+ * 
+ * <p>This class provides functionality for managing task remarks,
+ * allowing users to add comments and notes to tasks.</p>
+ * 
+ * <p>It handles the complete lifecycle of task remarks from creation
+ * to deletion, including quota management and activity logging.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Task remark creation with quota validation</li>
+ *   <li>Remark deletion with activity logging</li>
+ *   <li>Task modification notification events</li>
+ *   <li>Permission management for remark operations</li>
+ * </ul></p>
+ * 
  * @author XiaoLong Liu
  */
 @Biz
@@ -39,6 +55,19 @@ public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements Task
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds a remark to a task with quota validation.
+   * 
+   * <p>This method creates a remark for a task after verifying
+   * the task exists and checking quota limits.</p>
+   * 
+   * <p>The method logs remark creation activity and sends
+   * modification notification events.</p>
+   * 
+   * @param remark the remark to add
+   * @return the ID key of the created remark
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public IdKey<Long, Object> add(TaskRemark remark) {
     return new BizTemplate<IdKey<Long, Object>>() {
@@ -46,13 +75,13 @@ public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements Task
 
       @Override
       protected void checkParams() {
-        // Check the task exists
+        // Verify task exists and retrieve task info
         taskDb = taskQuery.checkAndFindInfo(remark.getTaskId());
 
-        // Check the remarks quota
+        // Verify remark quota limits are not exceeded
         taskRemarkQuery.checkAddQuota(remark.getTaskId(), 1);
 
-        // Allow anyone to remark
+        // Allow any user to add remarks
       }
 
       @Override
@@ -68,6 +97,15 @@ public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements Task
     }.execute();
   }
 
+  /**
+   * Deletes a task remark with activity logging.
+   * 
+   * <p>This method removes a remark from a task and logs
+   * the deletion activity for audit purposes.</p>
+   * 
+   * @param id the remark ID to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -92,6 +130,11 @@ public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements Task
     }.execute();
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the task remark repository
+   */
   @Override
   protected BaseRepository<TaskRemark, Long> getRepository() {
     return this.taskRemarkRepo;
