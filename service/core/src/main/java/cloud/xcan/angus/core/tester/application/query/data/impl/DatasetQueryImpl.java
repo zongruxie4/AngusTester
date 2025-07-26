@@ -44,21 +44,46 @@ import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of dataset query operations for data management and validation.
+ *
+ * <p>This class provides comprehensive functionality for querying, validating,
+ * and managing datasets including preview generation, quota checking, and
+ * name validation.</p>
+ *
+ * <p>Key features include:
+ * <ul>
+ *   <li>Dataset detail retrieval and validation</li>
+ *   <li>Value preview generation with parameter extraction</li>
+ *   <li>Dataset listing with search and pagination</li>
+ *   <li>Name existence validation and safe cloning</li>
+ *   <li>Tenant quota management and validation</li>
+ *   <li>Required parameter validation</li>
+ * </ul></p>
+ *
+ * @author XiaoLong Liu
+ */
 @Biz
 public class DatasetQueryImpl implements DatasetQuery {
 
   @Resource
   private DatasetRepo datasetRepo;
-
   @Resource
   private DatasetSearchRepo datasetSearchRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private DatasetExtractor defaultDatasetExtractor;
 
+  /**
+   * Retrieves detailed dataset information by ID.
+   *
+   * <p>This method fetches a dataset by its ID, performing validation
+   * to ensure the dataset exists.</p>
+   *
+   * @param id the dataset ID to retrieve
+   * @return the detailed dataset information
+   */
   @Override
   public Dataset detail(Long id) {
     return new BizTemplate<Dataset>() {
@@ -70,6 +95,20 @@ public class DatasetQueryImpl implements DatasetQuery {
     }.execute();
   }
 
+  /**
+   * Generates value preview for dataset parameters.
+   *
+   * <p>This method extracts values from a dataset using the specified parameters
+   * and extraction method, returning a preview of the data for validation
+   * and testing purposes.</p>
+   *
+   * @param id the dataset ID (optional if name and parameters are provided)
+   * @param name the dataset name (used if ID is not provided)
+   * @param parameters the dataset parameters
+   * @param extraction the extraction method configuration
+   * @param rowNum the number of rows to preview
+   * @return map of parameter names to preview values
+   */
   @Override
   public LinkedHashMap<String, List<String>> valuePreview(Long id, String name,
       List<DatasetParameter> parameters, DefaultExtraction extraction, Long rowNum) {
@@ -85,13 +124,17 @@ public class DatasetQueryImpl implements DatasetQuery {
 
       @Override
       protected LinkedHashMap<String, List<String>> process() {
+        // Convert to Angus dataset model for extraction
         cloud.xcan.angus.model.element.dataset.Dataset angusDataset = nonNull(datasetDb)
             ? toAngusDataset(datasetDb) : toAngusDataset(name, parameters, extraction);
         LinkedHashMap<String, List<String>> previewValues = new LinkedHashMap<>();
         try {
+          // Extract dynamic values from dataset
           Map<String, ReadDynamicValue> dynamicValueMap
               = defaultDatasetExtractor.extract(angusDataset, ActionOnEOF.STOP_THREAD);
           Long finalRowNum = nullSafe(rowNum, DEFAULT_DATASET_REVIEW_ROWS);
+          
+          // Generate preview values for each parameter
           for (DatasetParameter parameter : datasetDb.getParameters()) {
             List<String> values = new ArrayList<>();
             ReadDynamicValue readDynamicValue = dynamicValueMap.get(parameter.getName());
@@ -114,7 +157,14 @@ public class DatasetQueryImpl implements DatasetQuery {
   }
 
   /**
-   * Note: Read the value only once.
+   * Generates value preview for multiple datasets.
+   *
+   * <p>This method reads one value from each dataset parameter for multiple
+   * datasets, providing a quick preview of available data. Note that values
+   * are read only once per parameter.</p>
+   *
+   * @param ids list of dataset IDs to preview
+   * @return map of parameter names to single preview values
    */
   @Override
   public Map<String, String> valuePreview(List<Long> ids) {
@@ -131,9 +181,12 @@ public class DatasetQueryImpl implements DatasetQuery {
         Map<String, String> valueMap = new LinkedHashMap<>();
         for (Dataset datasetDb : datasetsDb) {
           try {
+            // Convert to Angus dataset model and extract values
             cloud.xcan.angus.model.element.dataset.Dataset angusDataset = toAngusDataset(datasetDb);
             Map<String, ReadDynamicValue> dynamicValueMap
                 = defaultDatasetExtractor.extract(angusDataset, ActionOnEOF.STOP_THREAD);
+            
+            // Read one value from each parameter
             for (DatasetParameter parameter : datasetDb.getParameters()) {
               ReadDynamicValue readDynamicValue = dynamicValueMap.get(parameter.getName());
               if (nonNull(readDynamicValue)) {
@@ -152,6 +205,18 @@ public class DatasetQueryImpl implements DatasetQuery {
     }.execute();
   }
 
+  /**
+   * Lists datasets with optional search and pagination.
+   *
+   * <p>This method retrieves datasets based on specification criteria,
+   * supporting both full-text search and standard filtering.</p>
+   *
+   * @param spec the specification for filtering datasets
+   * @param pageable the pagination parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match the match fields for full-text search
+   * @return paginated list of datasets
+   */
   @Override
   public Page<Dataset> list(GenericSpecification<Dataset> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -166,6 +231,16 @@ public class DatasetQueryImpl implements DatasetQuery {
     }.execute();
   }
 
+  /**
+   * Finds datasets by project ID and optional dataset IDs.
+   *
+   * <p>This method retrieves datasets for a specific project, optionally
+   * filtered by a set of dataset IDs.</p>
+   *
+   * @param projectId the project ID
+   * @param ids optional set of dataset IDs to filter by
+   * @return list of datasets matching the criteria
+   */
   @Override
   public List<Dataset> findByProjectAndIds(Long projectId, @Nullable LinkedHashSet<Long> ids) {
     return new BizTemplate<List<Dataset>>() {
@@ -178,11 +253,31 @@ public class DatasetQueryImpl implements DatasetQuery {
     }.execute();
   }
 
+  /**
+   * Validates and retrieves a dataset by ID.
+   *
+   * <p>This method fetches a dataset by its ID, throwing a ResourceNotFound
+   * exception if the dataset does not exist.</p>
+   *
+   * @param id the dataset ID to check and retrieve
+   * @return the dataset if found
+   * @throws ResourceNotFound if the dataset is not found
+   */
   @Override
   public Dataset checkAndFind(Long id) {
     return datasetRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Dataset"));
   }
 
+  /**
+   * Validates and retrieves multiple datasets by IDs.
+   *
+   * <p>This method fetches multiple datasets by their IDs, ensuring all
+   * requested datasets exist and are valid.</p>
+   *
+   * @param ids collection of dataset IDs to check and retrieve
+   * @return list of datasets if all found
+   * @throws ResourceNotFound if any dataset is not found
+   */
   @Override
   public List<Dataset> checkAndFind(Collection<Long> ids) {
     List<Dataset> datasets = datasetRepo.findAllById(ids);
@@ -195,6 +290,17 @@ public class DatasetQueryImpl implements DatasetQuery {
     return datasets;
   }
 
+  /**
+   * Validates and retrieves datasets by project ID and names.
+   *
+   * <p>This method fetches datasets by their names within a specific project,
+   * ensuring all requested datasets exist.</p>
+   *
+   * @param projectId the project ID
+   * @param names list of dataset names to check and retrieve
+   * @return list of datasets if all found
+   * @throws ResourceNotFound if any dataset is not found
+   */
   @Override
   public List<Dataset> checkAndFindByName(Long projectId, List<String> names) {
     List<Dataset> datasets = datasetRepo.findByProjectIdAndNameIn(projectId, names);
@@ -207,6 +313,15 @@ public class DatasetQueryImpl implements DatasetQuery {
     return datasets;
   }
 
+  /**
+   * Validates tenant quota for dataset creation.
+   *
+   * <p>This method checks if the current tenant has sufficient quota
+   * to create additional datasets.</p>
+   *
+   * @param inc the increment amount to check
+   * @throws QuotaException if the quota limit would be exceeded
+   */
   @Override
   public void checkTenantQuota(int inc) {
     long count = datasetRepo.countByTenantId(getTenantId());
@@ -214,6 +329,15 @@ public class DatasetQueryImpl implements DatasetQuery {
         Collections.singleton(getTenantId()), count + inc);
   }
 
+  /**
+   * Validates required parameters for a dataset.
+   *
+   * <p>This method checks if the dataset has all required parameters
+   * based on its extraction configuration.</p>
+   *
+   * @param dataset the dataset to validate
+   * @throws ProtocolException if required parameters are missing
+   */
   @Override
   public void checkRequiredParam(Dataset dataset) {
     if (dataset.getExtracted() && isNull(dataset.getExtraction())) {
@@ -226,6 +350,15 @@ public class DatasetQueryImpl implements DatasetQuery {
     }
   }
 
+  /**
+   * Validates that a dataset name does not already exist in the project.
+   *
+   * <p>This method checks if a dataset with the same name already exists
+   * in the specified project for add operations.</p>
+   *
+   * @param dataset the dataset to check
+   * @throws ResourceExisted if a dataset with the same name already exists
+   */
   @Override
   public void checkAddNameExists(Dataset dataset) {
     if (datasetRepo.existsByProjectIdAndName(dataset.getProjectId(), dataset.getName())) {
@@ -233,6 +366,15 @@ public class DatasetQueryImpl implements DatasetQuery {
     }
   }
 
+  /**
+   * Validates that a dataset name does not already exist in the project for updates.
+   *
+   * <p>This method checks if a dataset with the same name already exists
+   * in the specified project, excluding the current dataset for update operations.</p>
+   *
+   * @param dataset the dataset to check
+   * @throws ResourceExisted if a dataset with the same name already exists
+   */
   @Override
   public void checkUpdateNameExists(Dataset dataset) {
     if (datasetRepo.existsByProjectIdAndNameAndIdNot(dataset.getProjectId(),
@@ -241,11 +383,20 @@ public class DatasetQueryImpl implements DatasetQuery {
     }
   }
 
+  /**
+   * Sets a safe clone name for a dataset.
+   *
+   * <p>This method generates a unique name for dataset cloning by appending
+   * "-Copy" and optionally a random suffix to ensure uniqueness.</p>
+   *
+   * @param dataset the dataset to set the clone name for
+   */
   @Override
   public void setSafeCloneName(Dataset dataset) {
     String saltName = randomAlphanumeric(3);
     String clonedName = datasetRepo.existsByName(dataset.getName() + "-Copy")
         ? dataset.getName() + "-Copy." + saltName : dataset.getName() + "-Copy";
+    // Ensure name length does not exceed maximum limit
     clonedName = clonedName.length() > MAX_NAME_LENGTH ? clonedName.substring(0,
         MAX_NAME_LENGTH - 3) + saltName : clonedName;
     dataset.setName(clonedName);
