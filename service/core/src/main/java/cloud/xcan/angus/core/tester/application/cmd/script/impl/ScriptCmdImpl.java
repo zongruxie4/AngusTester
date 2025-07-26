@@ -88,6 +88,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of script command operations for comprehensive script management.
+ * 
+ * <p>This class provides extensive functionality for managing test scripts, including
+ * creation, modification, cloning, import/export, and synchronization with API cases.</p>
+ * 
+ * <p>It handles the complete lifecycle of scripts from creation to deletion, including
+ * authorization management, tag management, and activity logging for audit purposes.</p>
+ * 
+ * <p>The implementation supports various script sources (API, Scenario, Service) and
+ * integrates with the Angus testing framework for script validation and execution.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Script CRUD operations with comprehensive validation</li>
+ *   <li>Script synchronization with API cases and services</li>
+ *   <li>Import/export functionality with example script templates</li>
+ *   <li>Creator authorization and tag management</li>
+ *   <li>Activity logging for audit trails</li>
+ * </ul></p>
+ */
 @Slf4j
 @Biz
 public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
@@ -129,8 +150,21 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   private ActivityCmd activityCmd;
 
   /**
-   * Note: Scenarios and scripts are one-to-one, apis (different test types) and scripts are
-   * one-to-many.
+   * Adds a new script with comprehensive validation and setup.
+   * 
+   * <p>This method performs extensive validation including project membership,
+   * script quota checks, source resource validation, and script content parsing.</p>
+   * 
+   * <p>It automatically sets up creator authorization and script tags,
+   * and logs the creation activity for audit purposes.</p>
+   * 
+   * <p>Note: Scenarios and scripts have a one-to-one relationship, while APIs
+   * (different test types) and scripts have a one-to-many relationship.</p>
+   * 
+   * @param script the script to add
+   * @param saveActivity whether to save the creation activity
+   * @return the ID key of the created script
+   * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -140,148 +174,186 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
       @Override
       protected void checkParams() {
-        // Check the project member
+        // Verify project membership for the current user
         projectMemberQuery.checkMember(getUserId(), script.getProjectId());
 
-        // Check the script num quota
+        // Check script quota availability
         scriptQuery.checkQuota(1);
 
-        // Check the source exists
+        // Verify the source resource exists
         scriptQuery.checkSourceResourceExist(script);
 
-        // Check the script length
+        // Validate script content length
         scriptQuery.checkScriptLength(script.getContent());
 
-        // Check and parse script
+        // Parse and validate script content
         angusScript = scriptQuery.checkAndParse(script.getContent(), true);
 
-        // Check the resource script exists,
-        // Apis and scenarios There can be only one script for each test type
+        // Check for duplicate scripts in the same source and test type
         script.setType(nullSafe(script.getType(), angusScript.getType()));
         scriptQuery.checkSourceAddScriptExist(script);
 
-        // TODO Check plugin is purchased and valid
+        // TODO: Check plugin is purchased and valid
 
-        // TODO Check test quota is valid
+        // TODO: Check test quota is valid
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // NOOP: Overwrite script type
+        // Determine and set script type based on content analysis
         judgeScriptType(script, angusScript);
         script.setPlugin(angusScript.getPlugin());
 
         IdKey<Long, Object> idKey = insert(script, "name");
 
-        // Init creator auth
+        // Initialize creator authorization
         scriptAuthCmd.addCreatorAuth(Set.of(getUserId()), idKey.getId());
 
-        // Add scripts tags
+        // Add script tags
         scriptTagCmd.add(script.getId(), angusScript.getTags());
 
-        // Save activity
-        activityCmd.add(toActivity(SCRIPT, script, ActivityType.CREATED));
+        // Log creation activity
+        if (saveActivity) {
+          activityCmd.add(toActivity(SCRIPT, script, ActivityType.CREATED));
+        }
         return idKey;
       }
     }.execute();
   }
 
+  /**
+   * Adds a new script with pre-validated AngusScript object.
+   * 
+   * <p>This method is used when the AngusScript object is already available and validated.
+   * It provides better performance by avoiding redundant parsing operations.</p>
+   * 
+   * <p>The method handles script serialization if content is empty and ensures
+   * proper type determination and plugin assignment.</p>
+   * 
+   * @param script the script to add
+   * @param angusScript the pre-validated AngusScript object
+   * @param validateScript whether to perform additional script validation
+   * @return the ID key of the created script
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Script script, AngusScript angusScript, boolean validateScript) {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the project member
+        // Verify project membership for the current user
         projectMemberQuery.checkMember(getUserId(), script.getProjectId());
 
-        // Check the script num quota
+        // Check script quota availability
         scriptQuery.checkQuota(1);
 
-        // Check the source exists
+        // Verify the source resource exists
         scriptQuery.checkSourceResourceExist(script);
 
-        // Check the resource script exists,
-        // Apis and scenarios There can be only one script for each test type
+        // Check for duplicate scripts in the same source and test type
         script.setType(nullSafe(script.getType(), angusScript.getType()));
         scriptQuery.checkSourceAddScriptExist(script);
 
-        // Check and serialize script
+        // Serialize script content if empty
         if (isEmpty(script.getContent())) {
           script.setContent(scriptQuery.checkAndSerialize(angusScript, validateScript));
         }
 
-        // TODO Check plugin is purchased and valid
+        // TODO: Check plugin is purchased and valid
 
-        // TODO Check test quota is valid
+        // TODO: Check test quota is valid
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // NOOP: Overwrite script type
+        // Determine and set script type based on content analysis
         judgeScriptType(script, angusScript);
         script.setPlugin(angusScript.getPlugin());
 
-        // Fix: Oh my god, internal reflection will generate duplicate ID.
+        // Generate new ID to avoid reflection conflicts
         script.setId(uidGenerator.getUID());
         IdKey<Long, Object> idKey = insert(script, "name");
 
-        // Init creator auth
+        // Initialize creator authorization
         scriptAuthCmd.addCreatorAuth(Set.of(getUserId()), idKey.getId());
 
-        // Add scripts tags
+        // Add script tags
         scriptTagCmd.add(script.getId(), angusScript.getTags());
 
-        // Save activity
+        // Log creation activity
         activityCmd.add(toActivity(SCRIPT, script, ActivityType.CREATED));
         return idKey;
       }
     }.execute();
   }
 
+  /**
+   * Adds a script by scenario with minimal validation.
+   * 
+   * <p>This method is specifically designed for scenario-based script creation
+   * with reduced validation requirements. It's typically used during scenario
+   * setup and initialization.</p>
+   * 
+   * @param script the script to add
+   * @param angusScript the pre-validated AngusScript object
+   * @return the ID key of the created script
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public IdKey<Long, Object> addByScenario(Script script, AngusScript angusScript) {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the resource script exists,
-        // Apis and scenarios There can be only one script for each test type
+        // Check for duplicate scripts in the same source and test type
         script.setType(nullSafe(script.getType(), angusScript.getType()));
         scriptQuery.checkSourceAddScriptExist(script);
 
-        // Check and serialize script
+        // Serialize script content if empty
         if (isEmpty(script.getContent())) {
           script.setContent(scriptQuery.checkAndSerialize(angusScript, true));
         }
 
-        // TODO Check plugin is purchased and valid
+        // TODO: Check plugin is purchased and valid
 
-        // TODO Check test quota is valid
+        // TODO: Check test quota is valid
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // NOOP: Overwrite script type
+        // Determine and set script type based on content analysis
         judgeScriptType(script, angusScript);
         script.setPlugin(angusScript.getPlugin());
 
-        // Fix: Oh my god, internal reflection will generate duplicate ID.
+        // Generate new ID to avoid reflection conflicts
         script.setId(uidGenerator.getUID());
         IdKey<Long, Object> idKey = insert(script, "name");
 
-        // Init creator auth
+        // Initialize creator authorization
         scriptAuthCmd.addCreatorAuth(Set.of(getUserId()), idKey.getId());
 
-        // Add scripts tags
+        // Add script tags
         scriptTagCmd.add(script.getId(), angusScript.getTags());
 
-        // Save activity
+        // Log creation activity
         activityCmd.add(toActivity(SCRIPT, script, ActivityType.CREATED));
         return idKey;
       }
     }.execute();
   }
 
+  /**
+   * Adds a script from AngusScript object with project context.
+   * 
+   * <p>This method creates a script from an AngusScript object, providing
+   * a convenient way to add scripts with minimal setup requirements.</p>
+   * 
+   * @param projectId the project ID to associate the script with
+   * @param angusScript the AngusScript object to convert
+   * @param validateScript whether to perform script validation
+   * @return the ID key of the created script
+   * @throws IllegalArgumentException if projectId is null or validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> addByAngus(Long projectId, AngusScript angusScript,
@@ -293,7 +365,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
       protected void checkParams() {
         assertNotNull(projectId, "Parameter projectId is null");
 
-        // Check and serialize script
+        // Serialize and validate script content
         content = scriptQuery.checkAndSerialize(angusScript, true);
       }
 
@@ -304,6 +376,18 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     }.execute();
   }
 
+  /**
+   * Updates an existing script with comprehensive validation.
+   * 
+   * <p>This method performs extensive validation including script existence,
+   * modification permissions, source resource validation, and content parsing.</p>
+   * 
+   * <p>It preserves existing script properties while allowing updates to
+   * type, name, and description fields for flexibility.</p>
+   * 
+   * @param script the script with updated properties
+   * @throws IllegalArgumentException if validation fails or script not found
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(Script script) {
@@ -313,41 +397,39 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find script
+        // Verify script exists and retrieve it
         scriptDb = scriptQuery.checkAndFind(script.getId());
 
-        // Check the script permission
+        // Verify user has modification permissions
         scriptAuthQuery.checkModifyAuth(getUserId(), scriptDb.getId());
 
-        // Check the source exists
+        // Verify the source resource exists
         scriptQuery.checkSourceResourceExist(script);
 
-        // Check the resource script exists,
-        // Apis and scenarios There can be only one script for each test type
+        // Check for duplicate scripts in the same source and test type
         scriptQuery.checkSourceUpdateScriptExist(script);
 
-        // Check the script length
+        // Validate script content length
         scriptQuery.checkScriptLength(script.getContent());
 
-        // Check and parse script
+        // Parse and validate script content
         angusScript = scriptQuery.checkAndParse(script.getContent(), true);
 
-        // TODO Check plugin is purchased and valid
+        // TODO: Check plugin is purchased and valid
 
-        // TODO Check test quota is valid
+        // TODO: Check test quota is valid
       }
 
       @Override
       protected Void process() {
-        // NOOP: Overwrite script type, name and description -> Allowing inconsistencies.
-
+        // Update script properties while preserving existing data
         if (nonNull(angusScript)) {
           script.setPlugin(angusScript.getPlugin());
         }
 
         scriptRepo.save(copyPropertiesIgnoreNull(script, scriptDb));
 
-        // Save activity
+        // Log update activity
         activityCmd.add(toActivity(SCRIPT, scriptDb, ActivityType.UPDATED));
         return null;
       }
@@ -406,14 +488,27 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     }.execute();
   }
 
+  /**
+   * Updates a script with pre-validated AngusScript object and optional tag replacement.
+   * 
+   * <p>This method is used for internal script updates where the AngusScript object
+   * is already validated. It provides better performance by avoiding redundant parsing.</p>
+   * 
+   * <p>The method allows selective tag replacement and activity logging based on
+   * the provided parameters.</p>
+   * 
+   * @param scriptDb the script to update
+   * @param angusScript the pre-validated AngusScript object
+   * @param replaceTag whether to replace existing tags
+   * @param validateScript whether to perform script validation
+   */
   @Override
   public void update0(Script scriptDb, AngusScript angusScript, boolean replaceTag,
       boolean validateScript) {
-    // Check and serialize script
+    // Serialize script content with validation
     scriptDb.setContent(scriptQuery.checkAndSerialize(angusScript, validateScript));
 
-    // NOOP: Overwrite script type, name and description -> Allowing inconsistencies.
-
+    // Update script properties while preserving existing data
     if (nonNull(angusScript)) {
       scriptDb.setPlugin(angusScript.getPlugin());
       judgeScriptType(scriptDb, angusScript);
@@ -421,12 +516,12 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
     scriptRepo.save(scriptDb);
 
-    // Replace scripts tags
+    // Replace script tags if requested
     if (replaceTag && nonNull(angusScript)) {
       scriptTagCmd.replace(scriptDb.getId(), angusScript.getTags());
     }
 
-    // Save activity
+    // Log update activity
     activityCmd.add(toActivity(SCRIPT, scriptDb, ActivityType.UPDATED));
   }
 
@@ -708,6 +803,18 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     }
   }
 
+  /**
+   * Determines and sets the script type based on priority rules.
+   * 
+   * <p>This method implements a priority-based type determination system where
+   * the script's explicit type takes precedence over the parsed AngusScript type.</p>
+   * 
+   * <p>If the script has no explicit type, it uses the type from the parsed
+   * AngusScript. Otherwise, it updates the AngusScript with the script's type.</p>
+   * 
+   * @param script the script entity to determine type for
+   * @param angusScript the parsed AngusScript object
+   */
   private void judgeScriptType(Script script, AngusScript angusScript) {
     if (isNull(script.getType())) {
       script.setType(angusScript.getType());
@@ -956,6 +1063,18 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     update0(scriptDb, angusScript, false, false);
   }
 
+  /**
+   * Converts domain variables to Angus configuration variables.
+   * 
+   * <p>This method flattens and converts a map of case variables to the format
+   * required by the Angus testing framework configuration.</p>
+   * 
+   * <p>It processes all variables from all cases and converts them to the
+   * appropriate Angus model format for script configuration.</p>
+   * 
+   * @param caseVariableMap map of case IDs to their associated variables
+   * @return list of Angus configuration variables, or null if no variables exist
+   */
   public static List<cloud.xcan.angus.model.element.variable.Variable> getAngusConfigurationVariables(
       Map<Long, List<Variable>> caseVariableMap) {
     List<Variable> variables = caseVariableMap.values().stream().flatMap(Collection::stream)
@@ -964,6 +1083,19 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
         .map(ApisToAngusModelConverter::toAngusVariable).collect(Collectors.toList());
   }
 
+  /**
+   * Converts domain datasets to Angus datasets for a specific case.
+   * 
+   * <p>This method retrieves and converts datasets associated with a specific
+   * API case to the format required by the Angus testing framework.</p>
+   * 
+   * <p>It returns null if no datasets are found for the case, allowing
+   * the calling code to handle the absence of datasets gracefully.</p>
+   * 
+   * @param caseDatasetMap map of case IDs to their associated datasets
+   * @param case0 the API case to get datasets for
+   * @return list of Angus datasets for the case, or null if no datasets exist
+   */
   @Nullable
   public static List<cloud.xcan.angus.model.element.dataset.Dataset> getAngusDataset(
       Map<Long, List<Dataset>> caseDatasetMap, ApisCase case0) {
@@ -973,6 +1105,11 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
             .collect(Collectors.toList());
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the script repository
+   */
   @Override
   protected BaseRepository<Script, Long> getRepository() {
     return this.scriptRepo;
