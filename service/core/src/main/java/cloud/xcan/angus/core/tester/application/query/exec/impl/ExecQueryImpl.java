@@ -97,6 +97,19 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of ExecQuery interface for managing execution queries and operations.
+ * <p>
+ * This class provides comprehensive functionality for querying execution information,
+ * managing quotas, validating permissions, and setting execution details. It handles
+ * both regular executions and trial executions with different quota constraints.
+ * <p>
+ * The implementation includes methods for finding executions by various criteria,
+ * checking quotas and permissions, setting execution metadata, and managing
+ * execution lifecycle operations.
+ * <p>
+ * Supports summary query registration for analytics and reporting purposes.
+ */
 @Biz
 @SummaryQueryRegister(name = "Exec", table = "exec",
     groupByColumns = {"created_date", "script_type", "status",}
@@ -105,37 +118,40 @@ public class ExecQueryImpl implements ExecQuery {
 
   @Resource
   private ExecRepo execRepo;
-
   @Resource
   private ExecInfoRepo execInfoRepo;
-
   @Resource
   private ExecSampleExtcQuery execSampleExtcQuery;
-
   @Resource
   private ExecInfoListRepo execInfoListRepo;
-
   @Resource
   private ExecInfoSearchRepo execInfoSearchRepo;
-
   @Resource
   private ExecSampleQuery execSampleQuery;
-
   @Resource
   private SettingManager settingManager;
-
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
-
   @Resource
   private SettingTenantManager settingTenantManager;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
 
+  /**
+   * Retrieves detailed execution information by ID.
+   * <p>
+   * Finds the execution by ID and populates it with complete information including
+   * parsed script content, node information, sample content, script names, and
+   * operation permissions.
+   * <p>
+   * The method performs comprehensive data enrichment to provide a complete
+   * execution view for detailed analysis and management.
+   *
+   * @param id the execution ID to retrieve details for
+   * @return Exec object with complete execution information
+   */
   @Override
   public Exec detail(Long id) {
     return new BizTemplate<Exec>() {
@@ -161,6 +177,20 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves execution information for a collection of execution IDs.
+   * <p>
+   * Finds execution information for the specified IDs and optionally joins
+   * sample summary data. This method is designed for sharding scenarios
+   * where it may be invoked by internal APIs.
+   * <p>
+   * The joinSampleSummary parameter controls whether to include detailed
+   * sample summary information in the results.
+   *
+   * @param ids collection of execution IDs to retrieve information for
+   * @param joinSampleSummary whether to include sample summary data
+   * @return List of ExecInfo objects with execution information
+   */
   @Override
   public List<ExecInfo> listInfo(Set<Long> ids, Boolean joinSampleSummary) {
     return new BizTemplate<List<ExecInfo>>() {
@@ -176,6 +206,21 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves execution information by source type and resource IDs.
+   * <p>
+   * Finds execution information for the specified resource type and IDs,
+   * optionally joining sample summary data. This method supports queries
+   * across different execution sources like scripts, scenarios, or APIs.
+   * <p>
+   * The joinSampleSummary parameter controls whether to include detailed
+   * sample summary information in the results.
+   *
+   * @param resourceType the type of resource (script, scenario, etc.)
+   * @param resourceIds set of resource IDs to find executions for
+   * @param joinSampleSummary whether to include sample summary data
+   * @return List of ExecInfo objects with execution information
+   */
   @Override
   public List<ExecInfo> listInfoBySource(ScriptSource resourceType, Set<Long> resourceIds,
       Boolean joinSampleSummary) {
@@ -191,6 +236,15 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves the raw script content for an execution.
+   * <p>
+   * Finds the execution by ID and returns the unparsed script content.
+   * This method is useful for debugging or when raw script access is needed.
+   *
+   * @param id the execution ID to retrieve script content for
+   * @return the raw script content as a string
+   */
   @Override
   public String script(Long id) {
     return new BizTemplate<String>() {
@@ -208,6 +262,19 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Finds server information from HTTP plugin executions.
+   * <p>
+   * Extracts server information from HTTP plugin executions by parsing
+   * the script content and extracting server configurations from both
+   * configuration variables and pipeline elements.
+   * <p>
+   * Only supports HTTP plugin executions and returns distinct server URLs.
+   *
+   * @param id the execution ID to extract server information from
+   * @return List of Server objects with server configuration
+   * @throws ProtocolException if script parsing fails
+   */
   @Override
   public List<Server> findServers(Long id) {
     return new BizTemplate<List<Server>>() {
@@ -251,6 +318,23 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Lists executions with pagination and search capabilities.
+   * <p>
+   * Provides paginated execution listing with support for both regular
+   * database queries and full-text search operations. The method handles
+   * project-based filtering and enriches results with script names,
+   * operation permissions, and sample data.
+   * <p>
+   * Supports different search modes based on the fullTextSearch parameter
+   * and can apply additional matching criteria for refined results.
+   *
+   * @param spec the search specification for filtering executions
+   * @param pageable pagination parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match additional matching criteria for search
+   * @return Page of ExecInfo objects with execution information
+   */
   @SneakyThrow0(level = "WARN") // Check exec quota in running
   @Override
   public Page<ExecInfo> list(GenericSpecification<ExecInfo> spec, PageRequest pageable,
@@ -279,6 +363,15 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Finds executions by node ID.
+   * <p>
+   * Retrieves all executions associated with a specific node ID.
+   * This method is useful for node-specific execution analysis and management.
+   *
+   * @param nodeId the node ID to find executions for
+   * @return List of ExecInfo objects for the specified node
+   */
   @Override
   public List<ExecInfo> findByNodeId(Long nodeId) {
     return new BizTemplate<List<ExecInfo>>() {
@@ -290,6 +383,18 @@ public class ExecQueryImpl implements ExecQuery {
     }.execute();
   }
 
+  /**
+   * Finds execution by script ID, type, and source.
+   * <p>
+   * Searches for executions based on script ID and filters by script type
+   * and source. For API sources, returns the first execution found.
+   * For other sources, filters by the specified script type.
+   *
+   * @param scriptId the script ID to search for
+   * @param scriptType the script type to filter by
+   * @param scriptSource the script source to filter by
+   * @return Exec object if found, null otherwise
+   */
   @Override
   public Exec findByScript(Long scriptId, ScriptType scriptType, ScriptSource scriptSource) {
     List<Exec> execsDb = execRepo.findByScriptId(scriptId);
@@ -301,28 +406,62 @@ public class ExecQueryImpl implements ExecQuery {
             .orElse(null);
   }
 
+  /**
+   * Finds execution information by ID.
+   *
+   * @param id the execution ID to find
+   * @return ExecInfo object if found, null otherwise
+   */
   @Override
   public ExecInfo findInfo(Long id) {
     return execInfoRepo.findById(id).orElse(null);
   }
 
+  /**
+   * Finds execution information by source type and resource IDs.
+   *
+   * @param resourceType the type of resource
+   * @param resourceIds set of resource IDs to find executions for
+   * @return List of ExecInfo objects for the specified resources
+   */
   @Override
   public List<ExecInfo> findInfoBySource(ScriptSource resourceType,
       Set<Long> resourceIds) {
     return execInfoRepo.findByScriptSourceAndScriptSourceIdIn(resourceType, resourceIds);
   }
 
+  /**
+   * Finds execution information for a collection of execution IDs.
+   *
+   * @param execIds collection of execution IDs to find information for
+   * @return List of ExecInfo objects for the specified executions
+   */
   @Override
   public List<ExecInfo> findInfo(Collection<Long> execIds) {
     return execInfoRepo.findAllById(execIds);
   }
 
+  /**
+   * Finds execution information map for a collection of execution IDs.
+   *
+   * @param execIds collection of execution IDs to find information for
+   * @return Map of execution ID to IdAndName objects
+   */
   @Override
   public Map<Long, IdAndName> findInfoMap(Collection<Long> execIds) {
     return execRepo.findInfoByIdIn(execIds).stream()
         .collect(Collectors.toMap(IdAndName::getId, x -> x));
   }
 
+  /**
+   * Finds tenant event notice types configuration.
+   * <p>
+   * Retrieves the configured event notice types for a tenant, either from
+   * cached settings or from the global default configuration.
+   *
+   * @param tenantId the tenant ID to get event notice types for
+   * @return Map of event codes to notice types
+   */
   @Override
   public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
     Long finalTenantId = nullSafe(tenantId, getOptTenantId());
@@ -337,11 +476,25 @@ public class ExecQueryImpl implements ExecQuery {
         collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));
   }
 
+  /**
+   * Finds execution by ID and throws ResourceNotFound if not found.
+   *
+   * @param id the execution ID to find
+   * @return Exec object if found
+   * @throws ResourceNotFound if the execution is not found
+   */
   @Override
   public Exec checkAndFind(Long id) {
     return execRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Exec"));
   }
 
+  /**
+   * Finds executions by IDs and throws ResourceNotFound for missing ones.
+   *
+   * @param ids collection of execution IDs to find
+   * @return List of Exec objects for the specified executions
+   * @throws ResourceNotFound if any execution is not found
+   */
   @Override
   public List<Exec> checkAndFind(Collection<Long> ids) {
     List<Exec> execs = execRepo.findAllById(ids);
@@ -351,11 +504,25 @@ public class ExecQueryImpl implements ExecQuery {
     return execs;
   }
 
+  /**
+   * Finds execution information by ID and throws ResourceNotFound if not found.
+   *
+   * @param id the execution ID to find
+   * @return ExecInfo object if found
+   * @throws ResourceNotFound if the execution is not found
+   */
   @Override
   public ExecInfo checkAndFindInfo(Long id) {
     return execInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Exec"));
   }
 
+  /**
+   * Finds execution information by IDs and throws ResourceNotFound for missing ones.
+   *
+   * @param ids collection of execution IDs to find
+   * @return List of ExecInfo objects for the specified executions
+   * @throws ResourceNotFound if any execution is not found
+   */
   @Override
   public List<ExecInfo> checkAndFindInfo(Collection<Long> ids) {
     List<ExecInfo> execs = execInfoRepo.findAllById(ids);
@@ -365,12 +532,30 @@ public class ExecQueryImpl implements ExecQuery {
     return execs;
   }
 
+  /**
+   * Checks if an execution is not currently running.
+   * <p>
+   * Validates that the execution status is not in a running state.
+   * Throws an exception if the execution is already running.
+   *
+   * @param exec the execution to check
+   * @throws BizException if the execution is already running
+   */
   @Override
   public void checkNotRunning(Exec exec) {
     assertTrue(!exec.getStatus().isRunning(), EXEC_ALREADY_IN_RUNNING_T,
         new Object[]{exec.getName()});
   }
 
+  /**
+   * Checks if an execution is not in a stopped state.
+   * <p>
+   * Validates that the execution status is not in a wide stopped state.
+   * Throws an exception if the execution is already stopped.
+   *
+   * @param exec the execution information to check
+   * @throws BizException if the execution is already stopped
+   */
   @Override
   public void checkNotStopped(ExecInfo exec) {
     assertTrue(!exec.getStatus().isWideStopped(), EXEC_ALREADY_IN_STOPPED_T,
@@ -378,7 +563,18 @@ public class ExecQueryImpl implements ExecQuery {
   }
 
   /**
-   * Check available and application nodes existence and role types are consistent.
+   * Validates node configuration and availability.
+   * <p>
+   * Checks that configured nodes exist and have the correct role types.
+   * Validates both available nodes (for execution) and application nodes.
+   * <p>
+   * For trial executions, this validation may be bypassed or modified
+   * based on trial-specific requirements.
+   *
+   * @param configuration the configuration containing node selectors
+   * @param trial whether this is a trial execution
+   * @throws ResourceNotFound if configured nodes do not exist
+   * @throws BizException if nodes do not have the required roles
    */
   @Override
   public void checkNodeValid(Configuration configuration, boolean trial) {
@@ -407,6 +603,18 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks if the current user has permission to operate on an execution.
+   * <p>
+   * Validates that the current user is either an admin, the execution creator,
+   * or has been granted operation permissions. For system users or admin users,
+   * permission checks are bypassed.
+   * <p>
+   * Throws a BizException if the user lacks permission to operate on the execution.
+   *
+   * @param exec the execution to check permissions for
+   * @throws BizException if the user lacks permission
+   */
   @Override
   public void checkPermission(Exec exec) {
     if (isEmpty(exec) || isAdminUser() || !isUserAction()) {
@@ -417,6 +625,18 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks if the current user has permission to operate on execution information.
+   * <p>
+   * Similar to checkPermission but operates on ExecInfo objects.
+   * Validates that the current user is either an admin, the execution creator,
+   * or has been granted operation permissions.
+   * <p>
+   * Throws a BizException if the user lacks permission to operate on the execution.
+   *
+   * @param exec the execution information to check permissions for
+   * @throws BizException if the user lacks permission
+   */
   @Override
   public void checkPermissionInfo(ExecInfo exec) {
     if (isEmpty(exec) || isAdminUser() || !isUserAction()) {
@@ -427,6 +647,18 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks if adding the specified increment would exceed the tenant's execution quota.
+   * <p>
+   * For trial executions, checks against free execution limits.
+   * For regular executions, validates against tenant-specific quota limits.
+   * <p>
+   * Only performs the check if the increment is greater than 0.
+   *
+   * @param incr the increment to check against the quota
+   * @param trial whether this is a trial execution
+   * @throws QuotaException if the quota would be exceeded
+   */
   @Override
   public void checkAddQuota(long incr, boolean trial) {
     if (incr > 0) {
@@ -444,6 +676,19 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks thread and node quota limits for a configuration.
+   * <p>
+   * Validates that the configuration's thread count and node count do not
+   * exceed tenant quota limits. For trial executions, this validation
+   * may be bypassed or modified.
+   * <p>
+   * Only performs validation for non-trial executions with valid configurations.
+   *
+   * @param trial whether this is a trial execution
+   * @param configuration the configuration to validate
+   * @throws QuotaException if quota limits would be exceeded
+   */
   @Override
   public void checkThreadAndNodesQuota(Boolean trial, Configuration configuration) {
     /* If trial, Front end verification, backend forcibly overwrites as security value */
@@ -460,6 +705,15 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks concurrent task quota with error handling.
+   * <p>
+   * Wrapper method that uses SneakyThrow0 to handle quota checking errors
+   * gracefully. Delegates to the actual quota checking logic.
+   *
+   * @param incr the increment to check against the concurrent task quota
+   * @param trial whether this is a trial execution
+   */
   @SneakyThrow0(level = "WARN")
   @Override
   public void checkConcurrentTaskQuota(long incr, boolean trial) {
@@ -468,6 +722,15 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Checks concurrent task quota without error handling.
+   * <p>
+   * Direct quota checking method that performs the actual validation
+   * without additional error handling wrappers.
+   *
+   * @param incr the increment to check against the concurrent task quota
+   * @param trial whether this is a trial execution
+   */
   @Override
   public void checkConcurrentTaskQuota0(long incr, boolean trial) {
     if (incr > 0) {
@@ -492,6 +755,14 @@ public class ExecQueryImpl implements ExecQuery {
     return hasPolicy(TesterConstant.ANGUSTESTER_ADMIN) || isTenantSysAdmin();
   }
 
+  /**
+   * Retrieves the pipeline target mappings for a given execution ID.
+   * <p>
+   * Parses the script content and returns the enabled pipeline target name mapping.
+   *
+   * @param execId the execution ID
+   * @return LinkedHashMap mapping pipeline names to target lists
+   */
   @Override
   public LinkedHashMap<String, List<String>> getPipelineTargetMappings(Long execId) {
     Exec execDb = checkAndFind(execId);
@@ -499,6 +770,14 @@ public class ExecQueryImpl implements ExecQuery {
     return execDb.getPipelineTargetMappings();
   }
 
+  /**
+   * Determines if the current user has permission to operate on the given execution.
+   * <p>
+   * Checks admin status, creator, executor, or script creator for permission.
+   *
+   * @param exec the execution to check
+   * @return true if the user has permission, false otherwise
+   */
   @Override
   public boolean hasPermission(Exec exec) {
     if (isAdminUser()) {
@@ -509,6 +788,14 @@ public class ExecQueryImpl implements ExecQuery {
         || (nonNull(exec.getScriptCreatedBy()) && exec.getScriptCreatedBy().equals(getUserId()));
   }
 
+  /**
+   * Determines if the current user has permission to operate on the given execution info.
+   * <p>
+   * Checks admin status, creator, executor, or script creator for permission.
+   *
+   * @param exec the execution info to check
+   * @return true if the user has permission, false otherwise
+   */
   @Override
   public boolean hasPermissionInfo(ExecInfo exec) {
     if (isAdminUser()) {
@@ -519,6 +806,13 @@ public class ExecQueryImpl implements ExecQuery {
         || (nonNull(exec.getScriptCreatedBy()) && exec.getScriptCreatedBy().equals(getUserId()));
   }
 
+  /**
+   * Sets the script name and source name for a list of executions.
+   * <p>
+   * Looks up script information and populates the script name and source name fields.
+   *
+   * @param execs the list of executions to update
+   */
   @Override
   public void setExecScriptName(List<Exec> execs) {
     if (isNotEmpty(execs)) {
@@ -540,6 +834,13 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets the script name and source name for a list of execution info objects.
+   * <p>
+   * Looks up script information and populates the script name and source name fields.
+   *
+   * @param execs the list of execution info objects to update
+   */
   @Override
   public void setExecInfoScriptName(List<ExecInfo> execs) {
     if (isNotEmpty(execs)) {
@@ -561,6 +862,13 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets node information for an execution.
+   * <p>
+   * Populates available, execution, and application node lists based on node IDs.
+   *
+   * @param exec the execution to update
+   */
   @Override
   public void setExecNodeInfo(Exec exec) {
     Set<Long> nodeIds = getAllNodeIds(exec);
@@ -597,6 +905,14 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets sample content for an execution if it is a functional testing type.
+   * <p>
+   * Retrieves and sets sample contents for the execution.
+   *
+   * @param exec the execution to update
+   * @param id the execution ID
+   */
   @Override
   public void setSampleContent(Exec exec, Long id) {
     if (exec.getScriptType().isFunctionalTesting()) {
@@ -605,6 +921,13 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets operation permission flag for a list of executions.
+   * <p>
+   * Determines if the current user has operation permission for each execution.
+   *
+   * @param execs the list of executions to update
+   */
   @Override
   public void setExecCurrentOperationPermission(List<Exec> execs) {
     boolean isAdmin = isAdminUser();
@@ -613,6 +936,13 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets operation permission flag for a list of execution info objects.
+   * <p>
+   * Determines if the current user has operation permission for each execution info.
+   *
+   * @param execs the list of execution info objects to update
+   */
   @Override
   public void setExecInfoCurrentOperationPermission(List<ExecInfo> execs) {
     boolean isAdmin = isAdminUser();
@@ -621,6 +951,14 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Sets sample summary for a list of execution info objects if required.
+   * <p>
+   * Optionally sets the latest total merge sample for each execution info.
+   *
+   * @param execs the list of execution info objects to update
+   * @param joinSampleSummary whether to include sample summary data
+   */
   @Override
   public void setSampleSummary(List<ExecInfo> execs, Boolean joinSampleSummary) {
     if (isEmpty(execs)) {
@@ -635,6 +973,18 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Parses and sets the script content for an execution.
+   * <p>
+   * Deserializes the script content from YAML format and sets the configuration,
+   * task, and pipeline target mappings. Handles cases where pipeline names
+   * might be empty for single task executions.
+   * <p>
+   * If parsing fails, throws a SysException with the error details.
+   *
+   * @param exec the execution to set parsed script content for
+   * @throws SysException if script content format is invalid
+   */
   @Override
   public void setParsedScriptContent(Exec exec) {
     try {
@@ -664,6 +1014,14 @@ public class ExecQueryImpl implements ExecQuery {
     }
   }
 
+  /**
+   * Retrieves all node IDs referenced by an execution.
+   * <p>
+   * Collects available, execution, application, and last scheduled node IDs.
+   *
+   * @param exec the execution to extract node IDs from
+   * @return Set of node IDs
+   */
   private Set<Long> getAllNodeIds(Exec exec) {
     Set<Long> nodeIds = new HashSet<>();
     if (isNotEmpty(exec.getAvailableNodeIds())) {
@@ -682,6 +1040,14 @@ public class ExecQueryImpl implements ExecQuery {
     return nodeIds;
   }
 
+  /**
+   * Retrieves all node IDs referenced by a configuration.
+   * <p>
+   * Collects available and application node IDs from the configuration.
+   *
+   * @param configuration the configuration to extract node IDs from
+   * @return Set of node IDs
+   */
   private Set<Long> getAllNodeIds(Configuration configuration) {
     Set<Long> nodeIds = new HashSet<>();
     if (nonNull(configuration.getNodeSelectors())) {

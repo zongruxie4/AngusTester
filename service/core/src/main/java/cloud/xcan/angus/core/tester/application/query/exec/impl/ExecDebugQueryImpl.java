@@ -35,6 +35,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Implementation of ExecDebugQuery interface for managing debug execution queries.
+ * <p>
+ * This class provides functionality to query and retrieve debug execution information
+ * for scripts, scenarios, and monitors. It handles quota checking, script parsing,
+ * and result evaluation for debug executions.
+ * <p>
+ * The implementation includes methods for finding debug executions by different sources,
+ * checking quotas, and setting debug results with parsed script content and sample data.
+ */
 @Biz
 public class ExecDebugQueryImpl implements ExecDebugQuery {
 
@@ -50,6 +60,17 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
 
+  /**
+   * Retrieves detailed debug information for a script execution.
+   * <p>
+   * Finds the debug execution by script ID and sets the complete debug result
+   * including parsed script content, sample contents, and execution success status.
+   * <p>
+   * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
+   *
+   * @param scriptId the ID of the script to find debug information for
+   * @return ExecDebug object with complete debug information, or null if not found
+   */
   @SneakyThrow0(level = "ERROR") // Check debug quota in running
   @Override
   public ExecDebug scriptDetail(Long scriptId) {
@@ -67,6 +88,17 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves detailed debug information for a scenario execution.
+   * <p>
+   * Finds the debug execution by scenario ID and sets the complete debug result
+   * including parsed script content, sample contents, and execution success status.
+   * <p>
+   * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
+   *
+   * @param scenarioId the ID of the scenario to find debug information for
+   * @return ExecDebug object with complete debug information, or null if not found
+   */
   @SneakyThrow0(level = "ERROR") // Check debug quota in running
   @Override
   public ExecDebug scenarioDetail(Long scenarioId) {
@@ -84,6 +116,17 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves detailed debug information for a monitor execution.
+   * <p>
+   * Finds the debug execution by monitor ID and sets the complete debug result
+   * including parsed script content, sample contents, and execution success status.
+   * <p>
+   * Uses SneakyThrow0 annotation to handle quota checking errors gracefully.
+   *
+   * @param monitorId the ID of the monitor to find debug information for
+   * @return ExecDebug object with complete debug information, or null if not found
+   */
   @SneakyThrow0(level = "ERROR") // Check debug quota in running
   @Override
   public ExecDebug monitorDetail(Long monitorId) {
@@ -101,26 +144,61 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     }.execute();
   }
 
+  /**
+   * Finds a debug execution by script ID.
+   *
+   * @param id the script ID to search for
+   * @return ExecDebug object if found, null otherwise
+   */
   @Override
   public ExecDebug findByScriptId(Long id) {
     return execDebugRepo.findBySourceAndScriptId(ExecDebugSource.SCRIPT, id);
   }
 
+  /**
+   * Finds a debug execution by scenario ID.
+   *
+   * @param scenarioId the scenario ID to search for
+   * @return ExecDebug object if found, null otherwise
+   */
   @Override
   public ExecDebug findByScenarioId(Long scenarioId) {
     return execDebugRepo.findBySourceAndScenarioId(ExecDebugSource.SCENARIO, scenarioId);
   }
 
+  /**
+   * Finds a debug execution by monitor ID.
+   *
+   * @param monitorId the monitor ID to search for
+   * @return ExecDebug object if found, null otherwise
+   */
   @Override
   public ExecDebug findByMonitorId(Long monitorId) {
     return execDebugRepo.findBySourceAndMonitorId(ExecDebugSource.MONITOR, monitorId);
   }
 
+  /**
+   * Finds a debug execution by ID and throws ResourceNotFound if not found.
+   *
+   * @param id the debug execution ID to search for
+   * @return ExecDebug object if found
+   * @throws ResourceNotFound if the debug execution is not found
+   */
   @Override
   public ExecDebug checkAndFind(Long id) {
     return execDebugRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "ExecDebug"));
   }
 
+  /**
+   * Checks if adding the specified increment would exceed the tenant's debug quota.
+   * <p>
+   * Only performs the check if the increment is greater than 0.
+   * <p>
+   * Queries the current count of debug executions for the tenant and validates
+   * against the configured quota limits.
+   *
+   * @param incr the increment to check against the quota
+   */
   @Override
   public void checkAddQuota(long incr) {
     if (incr > 0) {
@@ -130,6 +208,16 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     }
   }
 
+  /**
+   * Checks if adding the specified increment would exceed the tenant's concurrent task quota.
+   * <p>
+   * Only performs the check if the increment is greater than 0.
+   * <p>
+   * Queries the current count of running debug executions for the tenant and validates
+   * against the configured concurrent task quota limits.
+   *
+   * @param incr the increment to check against the concurrent task quota
+   */
   @SneakyThrow0(level = "ERROR")
   @Override
   public void checkConcurrentTaskQuota(long incr) {
@@ -140,6 +228,20 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     }
   }
 
+  /**
+   * Sets the complete debug result for an ExecDebug object.
+   * <p>
+   * This method populates the debug object with parsed script content, sample contents,
+   * finish sample result, and determines the execution success status.
+   * <p>
+   * The method performs the following operations:
+   * - Parses and sets the script content configuration and task
+   * - Retrieves and sets sample contents for the execution
+   * - Gets the final sample result for the execution
+   * - Judges and sets the execution success status
+   *
+   * @param debugDb the ExecDebug object to populate with result data
+   */
   @Override
   public void setDebugResult(ExecDebug debugDb) {
     setParsedScriptContent(debugDb);
@@ -159,6 +261,18 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     judgeExecSuccess(debugDb);
   }
 
+  /**
+   * Judges the execution success status based on multiple criteria.
+   * <p>
+   * Evaluates the execution success by checking:
+   * - Whether the execution status is completed
+   * - Meter status success (if available)
+   * - Sample result success for all sample contents
+   * <p>
+   * Sets the succeed flag and failure message accordingly.
+   *
+   * @param debug the ExecDebug object to evaluate and update
+   */
   private void judgeExecSuccess(ExecDebug debug) {
     boolean succeed = debug.getStatus().isCompleted();
     String failureMessage = succeed ? null : debug.getMessage();
@@ -181,6 +295,18 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
     debug.setSucceed(succeed).setFailureMessage(failureMessage);
   }
 
+  /**
+   * Parses and sets the script content for an ExecDebug object.
+   * <p>
+   * Deserializes the script content from YAML format and sets the configuration,
+   * task, and pipeline target mappings. Handles cases where pipeline names
+   * might be empty for single task executions.
+   * <p>
+   * If parsing fails, throws a SysException with the error details.
+   *
+   * @param debug the ExecDebug object to set parsed script content for
+   * @throws SysException if script content format is invalid
+   */
   private void setParsedScriptContent(ExecDebug debug) {
     try {
       AngusScript angusScript = AngusParser.YAML_MAPPER
@@ -189,7 +315,7 @@ public class ExecDebugQueryImpl implements ExecDebugQuery {
       debug.setTask(angusScript.getTask());
       if (isNotEmpty(angusScript.getTask().getPipelines())) {
         PipelineBuilder builder = PipelineBuilder.of(angusScript.getTask().getPipelines());
-        // Fix: Single task pipeline name can be empty// Fix: Single task pipeline name can be empty// Fix: Single task pipeline name can be empty
+        // Fix: Single task pipeline name can be empty
         if (isNull(builder) || isEmpty(builder.getEnabledTargetNameMapping())) {
           LinkedHashMap<String, List<String>> pipelines = new LinkedHashMap<>();
           pipelines.put(SAMPLE_TOTAL_NAME, new ArrayList<>());
