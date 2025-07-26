@@ -39,27 +39,38 @@ import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ProjectQuery for project management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for project listing, detail retrieval, permission checking, and quota validation.
+ * </p>
+ */
 @Biz
 public class ProjectQueryImpl implements ProjectQuery {
 
   @Resource
   private ProjectRepo projectRepo;
-
   @Resource
   private ProjectListRepo projectListRepo;
-
   @Resource
   private ProjectSearchRepo projectSearchRepo;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * <p>
+   * Get projects that the user has joined, optionally filtered by name.
+   * </p>
+   * @param userId User ID
+   * @param name Optional project name filter
+   * @return List of projects
+   */
   @Override
   public List<Project> userJoined(Long userId, @Nullable String name) {
     return new BizTemplate<List<Project>>() {
@@ -74,6 +85,13 @@ public class ProjectQueryImpl implements ProjectQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get user base information for all members of a project.
+   * </p>
+   * @param id Project ID
+   * @return List of user base information
+   */
   @Override
   public List<UserBase> userMember(Long id) {
     return new BizTemplate<List<UserBase>>() {
@@ -86,6 +104,13 @@ public class ProjectQueryImpl implements ProjectQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get detailed project information including members and owner details.
+   * </p>
+   * @param id Project ID
+   * @return Project with complete information
+   */
   @Override
   public Project detail(Long id) {
     return new BizTemplate<Project>() {
@@ -107,6 +132,19 @@ public class ProjectQueryImpl implements ProjectQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List projects with optional full-text search and authorization filtering.
+   * </p>
+   * <p>
+   * Only returns non-deleted projects. Applies authorization conditions for non-admin users.
+   * </p>
+   * @param spec Project search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of projects
+   */
   @Override
   public Page<Project> list(GenericSpecification<Project> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -130,27 +168,60 @@ public class ProjectQueryImpl implements ProjectQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if a project is an agile project.
+   * </p>
+   * @param id Project ID
+   * @return true if the project is agile, false otherwise
+   */
   @Override
   public boolean isAgile(Long id) {
     return projectRepo.countAgileById(id) > 0;
   }
 
+  /**
+   * <p>
+   * Check and find a project by ID, throw exception if not found.
+   * </p>
+   * @param id Project ID
+   * @return Project entity
+   */
   @Override
   public Project checkAndFind(Long id) {
     return projectRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Project"));
   }
 
+  /**
+   * <p>
+   * Find projects by a set of IDs.
+   * </p>
+   * @param ids Set of project IDs
+   * @return List of projects
+   */
   @Override
   public List<Project> find0ById(Set<Long> ids) {
     return projectRepo.findAllByIdIn(ids);
   }
 
+  /**
+   * <p>
+   * Check if the project quota is exceeded after increment.
+   * </p>
+   * @param inc Number of projects to add
+   */
   @Override
   public void checkQuota(int inc) {
     long count = projectRepo.countAll0();
     commonQuery.checkTenantQuota(QuotaResource.AngusTesterProject, null, count + inc);
   }
 
+  /**
+   * <p>
+   * Check if a project name already exists when adding a new project.
+   * </p>
+   * @param name Project name
+   */
   @Override
   public void checkAddNameExists(String name) {
     long count = projectRepo.countAll0ByName(name);
@@ -159,6 +230,13 @@ public class ProjectQueryImpl implements ProjectQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if a project name already exists when updating a project, excluding the current project.
+   * </p>
+   * @param id Project ID
+   * @param name Project name
+   */
   @Override
   public void checkUpdateNameExists(Long id, String name) {
     long count = projectRepo.countAll0ByNameAndIdNot(name, id);
@@ -167,6 +245,15 @@ public class ProjectQueryImpl implements ProjectQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if the current user has permission to modify the project.
+   * </p>
+   * <p>
+   * Admins, project creators, and project owners have modification permissions.
+   * </p>
+   * @param projectDb Project entity
+   */
   @Override
   public void checkModifyPermission(Project projectDb) {
     BizAssert.assertTrue(isAdmin() || getUserId().equals(projectDb.getCreatedBy())
@@ -174,6 +261,15 @@ public class ProjectQueryImpl implements ProjectQuery {
         PROJECT_NOT_MODIFY_PERMISSION_CODE, PROJECT_NOT_MODIFY_PERMISSION_MODIFY);
   }
 
+  /**
+   * <p>
+   * Check if the current user has permission to delete the project.
+   * </p>
+   * <p>
+   * Admins, project creators, and project owners have deletion permissions.
+   * </p>
+   * @param projectDb Project entity
+   */
   @Override
   public void checkDeletePermission(Project projectDb) {
     BizAssert.assertTrue(isAdmin() || getUserId().equals(projectDb.getCreatedBy())
@@ -181,24 +277,53 @@ public class ProjectQueryImpl implements ProjectQuery {
         PROJECT_NOT_DELETE_PERMISSION_CODE, PROJECT_NOT_DELETE_PERMISSION);
   }
 
+  /**
+   * <p>
+   * Check if the current user has permission to edit project tags.
+   * </p>
+   * @param projectDb Project entity
+   */
   @Override
   public void checkEditTagPermission(Project projectDb) {
     BizAssert.assertTrue(hasEditPermission(projectDb),
         PROJECT_NOT_EDIT_TAG_PERMISSION_CODE, PROJECT_NOT_EDIT_TAG_PERMISSION);
   }
 
+  /**
+   * <p>
+   * Check if the current user has permission to edit project modules.
+   * </p>
+   * @param projectDb Project entity
+   */
   @Override
   public void checkEditModulePermission(Project projectDb) {
     BizAssert.assertTrue(hasEditPermission(projectDb),
         PROJECT_NOT_EDIT_MODULE_PERMISSION_CODE, PROJECT_NOT_EDIT_MODULE_PERMISSION);
   }
 
+  /**
+   * <p>
+   * Check if the current user has edit permission for a project by ID.
+   * </p>
+   * @param projectId Project ID
+   * @return true if the user has edit permission, false otherwise
+   */
   @Override
   public boolean hasEditPermission(Long projectId) {
     Project projectDb = checkAndFind(projectId);
     return hasEditPermission(projectDb);
   }
 
+  /**
+   * <p>
+   * Check if the current user has edit permission for a project.
+   * </p>
+   * <p>
+   * Admins, project creators, project owners, and project members have edit permissions.
+   * </p>
+   * @param projectDb Project entity
+   * @return true if the user has edit permission, false otherwise
+   */
   @Override
   public boolean hasEditPermission(Project projectDb) {
     Long currentUserId = getUserId();

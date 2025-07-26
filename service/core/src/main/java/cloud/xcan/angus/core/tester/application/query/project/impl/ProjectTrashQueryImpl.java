@@ -22,18 +22,30 @@ import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ProjectTrashQuery for project trash management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for listing deleted projects, counting trash items, and validating trash operation permissions.
+ * </p>
+ */
 @Biz
 public class ProjectTrashQueryImpl implements ProjectTrashQuery {
 
   @Resource
   private ProjectTrashRepo projectTrashRepo;
-
   @Resource
   private ProjectTrashSearchRepo projectTrashSearchRepo;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * <p>
+   * Count the total number of projects in trash.
+   * </p>
+   * @return Number of projects in trash
+   */
   @Override
   public Long count() {
     return new BizTemplate<Long>() {
@@ -45,6 +57,19 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List projects in trash with optional full-text search.
+   * </p>
+   * <p>
+   * Sets user name and avatar information for both created by and deleted by users.
+   * </p>
+   * @param spec Project trash search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of project trash items
+   */
   @Override
   public Page<ProjectTrash> list(GenericSpecification<ProjectTrash> spec,
       PageRequest pageable, boolean fullTextSearch, String[] match) {
@@ -68,6 +93,17 @@ public class ProjectTrashQueryImpl implements ProjectTrashQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find a project trash item for business operations with permission validation.
+   * </p>
+   * <p>
+   * Admins can perform any operation. Regular users can only perform operations on items they deleted.
+   * </p>
+   * @param id Project trash ID
+   * @param biz Business operation type ("BACK" or "CLEAR")
+   * @return Project trash entity
+   */
   @Override
   public ProjectTrash findMyTrashForBiz(Long id, String biz) {
     ProjectTrash trashDb = projectTrashRepo.findById(id)
