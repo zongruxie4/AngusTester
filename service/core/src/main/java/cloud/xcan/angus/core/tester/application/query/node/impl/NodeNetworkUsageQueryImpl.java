@@ -27,42 +27,105 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of NodeNetworkUsageQuery that provides network usage metrics
+ * for nodes in the AngusTester system.
+ * 
+ * <p>
+ * This class handles network device usage queries, supporting both single device
+ * and multi-device network monitoring. It provides current network information
+ * and historical usage data for performance analysis.
+ * </p>
+ * 
+ * <p>
+ * Key features include:
+ * - Network device discovery and monitoring
+ * - Current network usage information retrieval
+ * - Historical network usage data with pagination
+ * - Support for free node metrics access
+ * </p>
+ * 
+ * <p>
+ * The implementation automatically handles tenant context switching for free nodes
+ * and provides comprehensive network metrics for performance monitoring.
+ * </p>
+ */
 @Biz
 public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
 
   @Resource
   private NetUsageRepo netUsageRepo;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
 
+  /**
+   * Retrieves current network information for all devices on a specific node.
+   * 
+   * <p>
+   * This method fetches the latest network usage data for all network devices
+   * that have been active on the node within the last hour. It automatically
+   * switches to owner tenant context for free nodes.
+   * </p>
+   * 
+   * <p>
+   * The method discovers available network devices and retrieves their current
+   * usage metrics, returning them as a map keyed by device name.
+   * </p>
+   * 
+   * @param nodeId the ID of the node to get network information for
+   * @return Map of device name to NetUsage object, or null if no devices found
+   */
   @Override
   public Map<String, NetUsage> networkInfo(Long nodeId) {
     return new BizTemplate<Map<String, NetUsage>>(false) {
 
       @Override
       protected Map<String, NetUsage> process() {
-        // Force to query free node metrics
-        if (!nodeInfoQuery.hasOwnNodes()){
+        // Switch to owner tenant context for free node metrics access
+        if (!nodeInfoQuery.hasOwnNodes()) {
           PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
         }
 
-        List<String> diskNames = netUsageRepo.findDeviceNameByNodeId(nodeId,
+        // Discover network devices active in the last hour
+        List<String> deviceNames = netUsageRepo.findDeviceNameByNodeId(nodeId,
             LocalDateTime.now().minusHours(1));
-        if (isEmpty(diskNames)) {
+        if (isEmpty(deviceNames)) {
           return null;
         }
 
-        Map<String, NetUsage> diskUsageMap = new HashMap<>();
-        for (String diskName : diskNames) {
-          diskUsageMap.put(diskName, netUsageRepo
-              .findFirstByNodeIdAndDeviceNameOrderByTimestampDesc(nodeId, diskName));
+        // Retrieve current usage data for each device
+        Map<String, NetUsage> deviceUsageMap = new HashMap<>();
+        for (String deviceName : deviceNames) {
+          NetUsage latestUsage = netUsageRepo
+              .findFirstByNodeIdAndDeviceNameOrderByTimestampDesc(nodeId, deviceName);
+          if (latestUsage != null) {
+            deviceUsageMap.put(deviceName, latestUsage);
+          }
         }
-        return diskUsageMap;
+        return deviceUsageMap;
       }
     }.execute();
   }
 
+  /**
+   * Retrieves historical network usage data for devices on a specific node.
+   * 
+   * <p>
+   * This method provides paginated access to historical network usage data,
+   * supporting both single device queries and multi-device batch queries.
+   * It automatically handles tenant context for free nodes.
+   * </p>
+   * 
+   * <p>
+   * When a specific device name is provided, it returns data for that device only.
+   * Otherwise, it returns data for all devices active within the last hour.
+   * </p>
+   * 
+   * @param nodeId the ID of the node to get network usage data for
+   * @param spec specification for filtering network usage data
+   * @param pageable pagination parameters
+   * @return List of NetDeviceUsage objects containing device-specific usage data
+   */
   @Override
   public List<NetDeviceUsage> network(Long nodeId, GenericSpecification<NetUsage> spec,
       PageRequest pageable) {
@@ -71,20 +134,23 @@ public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
 
       @Override
       protected void checkParams() {
+        // Extract device name from search criteria if specified
         deviceName = CriteriaUtils.findFirstValue(spec.getCriteria(), "deviceName",
             SearchOperation.EQUAL);
-        //spec.getCriteria().add(SearchCriteria.equal(DEFAULT_SHARDING_KEY, tenantId)); -> Single tenant table
+        // Add node ID filter to specification
         spec.getCriteria().add(SearchCriteria.equal("nodeId", nodeId));
       }
 
       @Override
       protected List<NetDeviceUsage> process() {
-        // Force to query free node metrics
-        if (!nodeInfoQuery.hasOwnNodes()){
+        // Switch to owner tenant context for free node metrics access
+        if (!nodeInfoQuery.hasOwnNodes()) {
           PrincipalContext.get().setOptTenantId(OWNER_TENANT_ID);
         }
 
         List<NetDeviceUsage> result = new ArrayList<>();
+        
+        // Handle single device query
         if (isNotEmpty(deviceName)) {
           NetDeviceUsage netDeviceInfo = new NetDeviceUsage();
           Page<NetUsage> devicePage = netUsageRepo.findAll(spec, pageable);
@@ -92,14 +158,22 @@ public class NodeNetworkUsageQueryImpl implements NodeNetworkUsageQuery {
           return result;
         }
 
+        // Handle multi-device query - discover all active devices
         List<String> deviceNames = netUsageRepo.findDeviceNameByNodeId(nodeId,
             LocalDateTime.now().minusHours(1));
         if (isEmpty(deviceNames)) {
           return result;
         }
+        
+        // Query data for each discovered device
         deviceNames.forEach(devName -> {
-          SearchCriteria sc = findFirstAndRemove(spec.getCriteria(), "deviceName");
-          spec.add(isNull(sc) ? SearchCriteria.equal("deviceName", devName) : sc.setValue(devName));
+          // Preserve original device name criteria if present
+          SearchCriteria originalCriteria = findFirstAndRemove(spec.getCriteria(), "deviceName");
+          SearchCriteria deviceCriteria = isNull(originalCriteria) 
+              ? SearchCriteria.equal("deviceName", devName) 
+              : originalCriteria.setValue(devName);
+          spec.add(deviceCriteria);
+          
           NetDeviceUsage netDeviceInfo = new NetDeviceUsage();
           Page<NetUsage> devicePage = netUsageRepo.findAll(spec, pageable);
           result.add(netDeviceInfo.setDeviceName(devName).setDeviceUsage(devicePage));

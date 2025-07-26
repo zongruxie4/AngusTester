@@ -33,19 +33,37 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
+/**
+ * <p>
+ * Implementation of NodeUsageQuery for querying node usage metrics and summaries.
+ * </p>
+ * <p>
+ * Provides methods for retrieving node usage data, latest metrics, and usage summaries over a time range.
+ * </p>
+ */
 @Slf4j
 @Biz
 public class NodeUsageQueryImpl implements NodeUsageQuery {
 
   @Resource
   private NodeUsageRepo nodeUsageRepo;
-
   @Resource
   private NetUsageRepo netUsageRepo;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
 
+  /**
+   * <p>
+   * Get paginated node usage metrics for a specific node.
+   * </p>
+   * <p>
+   * If the tenant does not own nodes, forcibly queries metrics for free nodes.
+   * </p>
+   * @param id Node ID
+   * @param spec Node usage search specification
+   * @param pageable Pagination information
+   * @return Page of NodeUsage
+   */
   @Override
   public Page<NodeUsage> metrics(Long id, GenericSpecification<NodeUsage> spec,
       PageRequest pageable) {
@@ -70,6 +88,16 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get the latest node usage metric for a specific node.
+   * </p>
+   * <p>
+   * If the tenant does not own nodes, forcibly queries metrics for free nodes.
+   * </p>
+   * @param id Node ID
+   * @return Latest NodeUsage
+   */
   @Override
   public NodeUsage metricsLatest(Long id) {
     return new BizTemplate<NodeUsage>(false) {
@@ -91,12 +119,32 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
     }.execute();
   }
 
-  @Override
+  /**
+   * <p>
+   * Get usage summaries for a collection of nodes within a time range.
+   * </p>
+   * @param nodeIds Collection of node IDs
+   * @param from Start time
+   * @param to End time
+   * @return Map of node ID to NodeUsageSummary
+   */
   public Map<Long, NodeUsageSummary> getUsageSummaries(Collection<Long> nodeIds,
       LocalDateTime from, LocalDateTime to) {
     return nodeIds.stream().collect(Collectors.toMap(x -> x, x -> getUsageSummary(x, from, to)));
   }
 
+  /**
+   * <p>
+   * Get usage summary for a node within a time range.
+   * </p>
+   * <p>
+   * Calculates mean and max CPU, memory, and filesystem usage, as well as network usage if available.
+   * </p>
+   * @param nodeId Node ID
+   * @param from Start time
+   * @param to End time
+   * @return NodeUsageSummary
+   */
   @Override
   public NodeUsageSummary getUsageSummary(Long nodeId, LocalDateTime from, LocalDateTime to) {
     NodeUsageSummary summary = new NodeUsageSummary();
@@ -143,6 +191,15 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
     return summary;
   }
 
+  /**
+   * <p>
+   * Find all node usage records for a node within a time range, paginated.
+   * </p>
+   * @param nodeId Node ID
+   * @param from Start time
+   * @param to End time
+   * @return List of NodeUsage
+   */
   private List<NodeUsage> findAllNodeUsages(Long nodeId, LocalDateTime from, LocalDateTime to) {
     int page = 0, pageSize = 500;
     Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.ASC, "timestamp"));
@@ -160,6 +217,15 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
     return nodeUsages;
   }
 
+  /**
+   * <p>
+   * Find all network usage records for a node within a time range, grouped by device name.
+   * </p>
+   * @param nodeId Node ID
+   * @param from Start time
+   * @param to End time
+   * @return Map of device name to list of NetUsage
+   */
   private Map<String, List<NetUsage>> findAllMetUsages(Long nodeId, LocalDateTime from,
       LocalDateTime to) {
     int page = 0, pageSize = 500;

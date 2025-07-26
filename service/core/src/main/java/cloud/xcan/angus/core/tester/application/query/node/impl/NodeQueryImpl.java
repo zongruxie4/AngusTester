@@ -60,6 +60,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * <p>
+ * Implementation of NodeQuery for node management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for node detail retrieval, listing, filtering, quota checking, and role management.
+ * </p>
+ */
 @Biz
 @SummaryQueryRegister(name = "Node", table = "node",
     groupByColumns = {"created_date", "source", "enabled", "free", "install_agent"})
@@ -67,24 +75,29 @@ public class NodeQueryImpl implements NodeQuery {
 
   @Resource
   private NodeRepo nodeRepo;
-
   @Resource
   private NodeListRepo nodeListRepo;
-
   @Resource
   private NodeSearchRepo nodeSearchRepo;
-
   @Resource
   private NodeRoleRepo nodeRoleRepo;
-
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
 
   @Transactional
   @Override
+  /**
+   * <p>
+   * Get the detail of a node by its ID.
+   * </p>
+   * <p>
+   * Only returns the node if it is a free node or belongs to the current tenant.
+   * </p>
+   * @param id Node ID
+   * @return Node entity
+   */
   public Node detail(Long id) {
     return new BizTemplate<Node>(false) {
 
@@ -99,6 +112,13 @@ public class NodeQueryImpl implements NodeQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Count the number of nodes matching the given specification.
+   * </p>
+   * @param spec Specification for filtering nodes
+   * @return Number of nodes
+   */
   @Override
   public Long count(Specification<Node> spec) {
     return new BizTemplate<Long>() {
@@ -109,6 +129,22 @@ public class NodeQueryImpl implements NodeQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List nodes with optional full-text search and role-based filtering.
+   * </p>
+   * <p>
+   * If the user is a tenant client, only non-deleted nodes are listed.
+   * </p>
+   * <p>
+   * If the user has no own nodes, returns free nodes for the specified role.
+   * </p>
+   * @param spec Node search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of nodes
+   */
   @Override
   public Page<Node> list(GenericSpecification<Node> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -138,21 +174,49 @@ public class NodeQueryImpl implements NodeQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find nodes by role for the current tenant.
+   * </p>
+   * @param nodeRole Node role
+   * @return List of nodes
+   */
   @Override
   public List<Node> findByRole(NodeRole nodeRole) {
     return nodeRepo.findByTenantIdAndRole(getOptTenantId(), nodeRole.getValue());
   }
 
+  /**
+   * <p>
+   * Find nodes by a set of search filters.
+   * </p>
+   * @param filters Set of search criteria
+   * @return List of nodes
+   */
   @Override
   public List<Node> findByFilters(Set<SearchCriteria> filters) {
     return nodeRepo.findAllByFilters(filters);
   }
 
+  /**
+   * <p>
+   * Check if the tenant has any nodes.
+   * </p>
+   * @param tenantId Tenant ID
+   * @return true if the tenant has nodes, false otherwise
+   */
   @Override
   public boolean hasOwnNodes(Long tenantId) {
     return nodeRepo.countByTenantId(tenantId) > 0;
   }
 
+  /**
+   * <p>
+   * Determine if a node is a trial (shared) node in cloud service edition.
+   * </p>
+   * @param nodeId Node ID
+   * @return true if the node is a trial node, false otherwise
+   */
   @Override
   public boolean isTrailNode(Long nodeId) {
     // Show shared nodes when there are no nodes in the cloud service version
@@ -163,6 +227,13 @@ public class NodeQueryImpl implements NodeQuery {
     return false;
   }
 
+  /**
+   * <p>
+   * Get free nodes when the tenant has no nodes, only in cloud service edition.
+   * </p>
+   * @param role Node role
+   * @return Page of free nodes
+   */
   @Override
   public Page<Node> getFreeWhenNonNodes(String role) {
     // Show shared nodes when there are no nodes in the cloud service version
@@ -182,16 +253,44 @@ public class NodeQueryImpl implements NodeQuery {
     return Page.empty();
   }
 
+  /**
+   * <p>
+   * Find a map of node IDs to Node entities.
+   * </p>
+   * @param ids Collection of node IDs
+   * @return Map of node ID to Node
+   */
   @Override
   public Map<Long, Node> findNodeMap(Collection<Long> ids) {
     return nodeRepo.findAllById(ids).stream().collect(Collectors.toMap(Node::getId, x -> x));
   }
 
+  /**
+   * <p>
+   * Get nodes by IDs, role, enabled status, and limit size.
+   * </p>
+   * @param nodeIds Set of node IDs
+   * @param role Node role
+   * @param enabled Enabled status
+   * @param size Maximum number of nodes to return
+   * @return List of nodes
+   */
   @Override
   public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled, int size) {
     return getNodes(nodeIds, role, enabled, size, null);
   }
 
+  /**
+   * <p>
+   * Get nodes by IDs, role, enabled status, limit size, and tenant ID.
+   * </p>
+   * @param nodeIds Set of node IDs
+   * @param role Node role
+   * @param enabled Enabled status
+   * @param size Maximum number of nodes to return
+   * @param tenantId Tenant ID
+   * @return List of nodes
+   */
   @Override
   public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
       int size, Long tenantId) {
@@ -215,11 +314,25 @@ public class NodeQueryImpl implements NodeQuery {
     return size > 0 ? nodes.subList(0, Math.min(size, nodes.size())) : nodes;
   }
 
+  /**
+   * <p>
+   * Check and find a node by ID, throw exception if not found.
+   * </p>
+   * @param id Node ID
+   * @return Node entity
+   */
   @Override
   public Node checkAndFind(Long id) {
     return nodeRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Node"));
   }
 
+  /**
+   * <p>
+   * Check and find nodes by a collection of IDs, throw exception if any not found.
+   * </p>
+   * @param ids Collection of node IDs
+   * @return List of nodes
+   */
   @Override
   public List<Node> checkAndFind(Collection<Long> ids) {
     List<Node> nodes = nodeRepo.findAllById(ids);
@@ -232,6 +345,14 @@ public class NodeQueryImpl implements NodeQuery {
     return nodes;
   }
 
+  /**
+   * <p>
+   * Check if a node has the specified role and agent installed.
+   * </p>
+   * @param id Node ID
+   * @param role Node role
+   * @return Node entity
+   */
   @Override
   public Node checkRoleAndGetNode(Long id, NodeRole role) {
     Node nodeDb = detail(id); // Multi tenant automatic assembly disabled
@@ -243,6 +364,12 @@ public class NodeQueryImpl implements NodeQuery {
     return nodeDb;
   }
 
+  /**
+   * <p>
+   * Check if the IPs of the given nodes already exist in the system.
+   * </p>
+   * @param nodes List of nodes
+   */
   @Override
   public void checkIpNotExisted(List<Node> nodes) {
     List<Node> existedNodes = nodeRepo
@@ -251,6 +378,12 @@ public class NodeQueryImpl implements NodeQuery {
         existedNodes.stream().map(Node::getIp).toArray());
   }
 
+  /**
+   * <p>
+   * Check if the node quota is exceeded after increment.
+   * </p>
+   * @param incNum Number of nodes to add
+   */
   @Override
   public void checkNodeQuota(int incNum) {
     int nodeNum = incNum + nodeRepo.countByTenantId(getOptTenantId());
@@ -258,6 +391,12 @@ public class NodeQueryImpl implements NodeQuery {
         (long) nodeNum);
   }
 
+  /**
+   * <p>
+   * Check if updating node IPs would cause duplication, ignoring the node itself.
+   * </p>
+   * @param nodes List of nodes
+   */
   @Override
   public void checkUpdateIpNotExisted(List<Node> nodes) {
     // Check and modify the IP duplication, ignore modifying the node itself
@@ -277,6 +416,12 @@ public class NodeQueryImpl implements NodeQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if nodes are not purchased online before allowing update.
+   * </p>
+   * @param nodesDb List of nodes
+   */
   @Override
   public void checkNotPurchasedUpdate(List<Node> nodesDb) {
     for (Node node : nodesDb) {
@@ -285,6 +430,12 @@ public class NodeQueryImpl implements NodeQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if an order has already been used to purchase a node.
+   * </p>
+   * @param orderId Order ID
+   */
   @Override
   public void checkOrderPurchasedExisted(Long orderId) {
     int count = nodeRepo.countByOrderId(orderId);
@@ -292,6 +443,12 @@ public class NodeQueryImpl implements NodeQuery {
         NODE_PURCHASE_BY_ORDER_REPEATED_T, new Object[]{orderId});
   }
 
+  /**
+   * <p>
+   * Check if the node agent is available and online.
+   * </p>
+   * @param nodeId Node ID
+   */
   @Override
   public void checkNodeAgentAvailable(Long nodeId) {
     Map<Long, SimpleCommandResult> resultMap = nodeInfoQuery.agentStatus(
@@ -301,6 +458,13 @@ public class NodeQueryImpl implements NodeQuery {
         NODE_AGENT_NOT_ONLINE_T, new Object[]{nodeId});
   }
 
+  /**
+   * <p>
+   * Get the roles of nodes by their IDs.
+   * </p>
+   * @param nodeIds List of node IDs
+   * @return Map of node ID to set of roles
+   */
   @Override
   public Map<Long, Set<NodeRole>> getNodeRoles(List<Long> nodeIds) {
     return nodeRoleRepo.findByNodeIdIn(nodeIds).stream()
@@ -309,6 +473,12 @@ public class NodeQueryImpl implements NodeQuery {
             Collectors.mapping(x -> NodeRole.valueOf(x.getRole()), Collectors.toSet())));
   }
 
+  /**
+   * <p>
+   * Set the roles for a list of nodes.
+   * </p>
+   * @param nodes List of nodes
+   */
   @Override
   public void setNodeRoles(List<Node> nodes) {
     List<Long> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
@@ -320,6 +490,13 @@ public class NodeQueryImpl implements NodeQuery {
     }
   }
 
+  /**
+   * <p>
+   * Get the tenant ID from the specification or context.
+   * </p>
+   * @param spec Node specification
+   * @return Tenant ID
+   */
   private Long getTenantId(GenericSpecification<Node> spec) {
     Object tenantId =
         PrincipalContextUtils.isInnerApi() ? findFirstValue(spec.getCriteria(), "tenantId") : null;
