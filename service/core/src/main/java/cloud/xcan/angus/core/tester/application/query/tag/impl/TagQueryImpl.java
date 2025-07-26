@@ -34,6 +34,14 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of TagQuery for tag management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for tag CRUD operations, tag association management, and permission validation.
+ * </p>
+ */
 @Biz
 public class TagQueryImpl implements TagQuery {
 
@@ -52,6 +60,13 @@ public class TagQueryImpl implements TagQuery {
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
 
+  /**
+   * <p>
+   * Get detailed information of a tag.
+   * </p>
+   * @param id Tag ID
+   * @return Tag entity with edit permission information
+   */
   @Override
   public Tag detail(Long id) {
     return new BizTemplate<Tag>() {
@@ -65,6 +80,20 @@ public class TagQueryImpl implements TagQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List tags with pagination and optional full-text search.
+   * </p>
+   * <p>
+   * Supports both regular database queries and full-text search operations.
+   * Sets edit permissions for all returned tags based on project permissions.
+   * </p>
+   * @param spec Search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Search match parameters
+   * @return Page of tags
+   */
   @Override
   public Page<Tag> list(GenericSpecification<Tag> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -80,6 +109,16 @@ public class TagQueryImpl implements TagQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if all specified tag targets exist in the database.
+   * </p>
+   * <p>
+   * Validates that all tag IDs in the tag targets correspond to existing tags.
+   * Throws ResourceNotFound if any tag does not exist.
+   * </p>
+   * @param tags List of tag targets to validate
+   */
   @Override
   public void checkExists(List<TagTarget> tags) {
     if (isEmpty(tags)) {
@@ -99,11 +138,28 @@ public class TagQueryImpl implements TagQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check and find a tag by ID.
+   * </p>
+   * @param tagId Tag ID
+   * @return Tag entity
+   */
   @Override
   public Tag checkAndFind(Long tagId) {
     return tagRepo.findById(tagId).orElseThrow(() -> ResourceNotFound.of(tagId, "Report"));
   }
 
+  /**
+   * <p>
+   * Check and find multiple tags by IDs.
+   * </p>
+   * <p>
+   * Validates that all specified tag IDs exist. Throws ResourceNotFound if any tag is missing.
+   * </p>
+   * @param tagIds Collection of tag IDs
+   * @return List of tag entities
+   */
   @Override
   public List<Tag> checkAndFind(Collection<Long> tagIds) {
     List<Tag> existedTags = null;
@@ -118,6 +174,18 @@ public class TagQueryImpl implements TagQuery {
     return existedTags;
   }
 
+  /**
+   * <p>
+   * Check and find tags by names within a project.
+   * </p>
+   * <p>
+   * Validates that all specified tag names exist in the project. Returns a map grouped by tag name.
+   * Throws ResourceNotFound if any tag name is missing.
+   * </p>
+   * @param projectId Project ID
+   * @param names Set of tag names
+   * @return Map of tag name to list of tags
+   */
   @Override
   public Map<String, List<Tag>> checkAndFindByName(Long projectId, Set<String> names) {
     if (isEmpty(names)) {
@@ -136,6 +204,13 @@ public class TagQueryImpl implements TagQuery {
     return casesDb.stream().collect(Collectors.groupingBy(Tag::getName));
   }
 
+  /**
+   * <p>
+   * Check if tag names already exist in a project when adding new tags.
+   * </p>
+   * @param projectId Project ID
+   * @param names Set of tag names to check
+   */
   @Override
   public void checkAddNameExist(Long projectId, Set<String> names) {
     List<Tag> funcCaseTagsDb = tagRepo.findByProjectIdAndNameIn(projectId, names);
@@ -144,6 +219,16 @@ public class TagQueryImpl implements TagQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if tag names already exist in a project when updating tags.
+   * </p>
+   * <p>
+   * Validates that updated tag names do not conflict with existing tags in the same project.
+   * </p>
+   * @param projectId Project ID
+   * @param tags Collection of tags to update
+   */
   @Override
   public void checkUpdateNameExists(Long projectId, Collection<Tag> tags) {
     List<Tag> tagsDb = tagRepo.findByProjectIdAndNameIn(projectId,
@@ -160,17 +245,42 @@ public class TagQueryImpl implements TagQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check tenant quota for tag creation.
+   * </p>
+   * @param incr Number of tags to be added
+   */
   @Override
   public void checkQuota(int incr) {
     long count = tagRepo.count();
     settingTenantQuotaManager.checkTenantQuota(AngusTesterTag, null, incr + count);
   }
 
+  /**
+   * <p>
+   * Check if a resource has any tags associated with it.
+   * </p>
+   * @param caseId Resource ID
+   * @return true if the resource has tags, false otherwise
+   */
   @Override
   public boolean hasTag(Long caseId) {
     return tagTargetRepo.countAllByTargetId(caseId) > 0;
   }
 
+  /**
+   * <p>
+   * Check if tag modifications are needed for a resource.
+   * </p>
+   * <p>
+   * Compares existing tags with new tag targets to determine if modifications are required.
+   * Returns true if tags need to be modified, false if no changes are needed.
+   * </p>
+   * @param id Resource ID
+   * @param tagTargets New tag targets to compare
+   * @return true if modifications are needed, false otherwise
+   */
   @Override
   public boolean hasModifyTag(Long id, List<TagTarget> tagTargets) {
     Set<Long> caseTagIdsDb = tagTargetRepo.findTagIdByTargetId(id);
@@ -190,6 +300,17 @@ public class TagQueryImpl implements TagQuery {
     return !tagsIds.isEmpty();
   }
 
+  /**
+   * <p>
+   * Set edit permissions for tags based on project permissions.
+   * </p>
+   * <p>
+   * Extracts project ID from search criteria and sets edit permission for all tags
+   * based on whether the user has edit permission for the project.
+   * </p>
+   * @param criteria Search criteria containing project ID
+   * @param tags List of tags to set permissions for
+   */
   @Override
   public void setEditPermission(Set<SearchCriteria> criteria, List<Tag> tags) {
     if (isEmpty(tags)) {
@@ -202,7 +323,14 @@ public class TagQueryImpl implements TagQuery {
   }
 
   /**
-   * Set case tags
+   * <p>
+   * Set tags for a list of resources.
+   * </p>
+   * <p>
+   * Efficiently loads and sets tag information for multiple resources to avoid N+1 query problems.
+   * Groups tag targets by resource ID and sets tag names for each target.
+   * </p>
+   * @param ress List of resources that can be associated with tags
    */
   @Override
   public void setTags(List<? extends ResourceTagAssoc<?, ?>> ress) {
