@@ -57,45 +57,66 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of service testing command operations.
+ * 
+ * <p>This class provides comprehensive functionality for managing service-level
+ * testing operations, including test configuration, script generation,
+ * task management, and execution control.</p>
+ * 
+ * <p>It handles various test types including functional, performance, stability,
+ * smoke, and security testing with proper authorization and activity logging.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Test type enablement and configuration</li>
+ *   <li>Script generation and management</li>
+ *   <li>Test task creation and execution</li>
+ *   <li>Smoke and security testing</li>
+ *   <li>Activity logging for audit trails</li>
+ * </ul></p>
+ */
 @Biz
 public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisCaseQuery apisCaseQuery;
-
   @Resource
   private ApisTestCmd apisTestCmd;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private TaskCmd taskCmd;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private ExecCmd execCmd;
 
+  /**
+   * Enables or disables specific test types for a service.
+   * 
+   * <p>This method controls the availability of different test types
+   * (functional, performance, stability) for all APIs within a service.</p>
+   * 
+   * <p>The method logs the enablement/disablement activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param testTypes the set of test types to configure
+   * @param enabled whether to enable or disable the test types
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void testEnabled(Long serviceId, Set<TestType> testTypes, Boolean enabled) {
@@ -104,7 +125,9 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
+        // Verify service exists
         servicesDb = servicesQuery.checkAndFind(serviceId);
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), serviceId);
       }
 
@@ -130,6 +153,19 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Generates test scripts for all APIs in a service.
+   * 
+   * <p>This method creates test scripts for all APIs within a service
+   * based on the specified script types. It only generates scripts
+   * that don't already exist for each API.</p>
+   * 
+   * <p>The method logs script generation activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param scripts the list of script configurations to generate
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   //@Transactional(rollbackFor = Exception.class)
   public void scriptGenerate(Long serviceId, List<Script> scripts) {
@@ -138,9 +174,9 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), serviceId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
       }
 
@@ -166,6 +202,18 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Deletes test scripts for all APIs in a service.
+   * 
+   * <p>This method removes test scripts for all APIs within a service
+   * based on the specified test types.</p>
+   * 
+   * <p>The method logs script deletion activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param testTypes the set of test types to delete scripts for
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void scriptDelete(Long serviceId, Set<TestType> testTypes) {
@@ -174,9 +222,9 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), serviceId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
       }
 
@@ -196,7 +244,17 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
   }
 
   /**
-   * Only generate api test tasks under the current services
+   * Generates test tasks for all APIs in a service.
+   * 
+   * <p>This method creates test tasks for all APIs within a service
+   * based on the specified test settings and sprint configuration.</p>
+   * 
+   * <p>The method logs task generation activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param sprintId the ID of the sprint to associate tasks with
+   * @param testings the list of test task settings
+   * @throws IllegalArgumentException if validation fails
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -206,9 +264,9 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), serviceId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
       }
 
@@ -231,7 +289,17 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
   }
 
   /**
-   * Only retest api test tasks under the current services
+   * Restarts or reopens test tasks for all APIs in a service.
+   * 
+   * <p>This method controls the restart/reopen behavior of test tasks
+   * for all APIs within a service. When restart is false, only finished
+   * tasks are reopened.</p>
+   * 
+   * <p>The method logs the restart/reopen activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param restart whether to restart all tasks or only reopen finished ones
+   * @throws IllegalArgumentException if validation fails
    */
   @Override
   public void retestTaskRestart(Long serviceId, Boolean restart) {
@@ -240,10 +308,10 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         Long userId = getUserId();
         servicesAuthQuery.checkTestAuth(userId, serviceId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
       }
 
@@ -274,6 +342,19 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Deletes test tasks for a service based on test types.
+   * 
+   * <p>This method removes test tasks for a service, optionally filtered
+   * by specific test types. If no test types are specified, all tasks
+   * are deleted.</p>
+   * 
+   * <p>The method logs task deletion activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param testTypes the set of test types to filter tasks by (optional)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public void testTaskDelete(Long serviceId, Set<TestType> testTypes) {
     new BizTemplate<Void>() {
@@ -281,10 +362,10 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check and get services
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
 
-        // Check the test permission
+        // Verify user has testing permissions
         Long userId = getUserId();
         servicesAuthQuery.checkTestAuth(userId, serviceId);
       }
@@ -308,18 +389,29 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Adds test executions for all APIs in a service.
+   * 
+   * <p>This method creates test executions for all APIs within a service
+   * based on the specified test types and server configurations.
+   * Only enabled test types are considered for execution.</p>
+   * 
+   * @param servicesId the ID of the service
+   * @param testTypes the set of test types to execute
+   * @param servers the list of server configurations for testing
+   * @throws IllegalArgumentException if validation fails
+   */
   //@Transactional(rollbackFor = Exception.class)
   @Override
   public void testExecAdd(Long servicesId, Set<TestType> testTypes, List<Server> servers) {
     new BizTemplate<Void>() {
-      Services serviceDb;
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), servicesId);
-        // Check the services exists
-        serviceDb = servicesQuery.checkAndFind(servicesId);
+        // Verify service exists
+        servicesQuery.checkAndFind(servicesId);
       }
 
       @Override
@@ -343,6 +435,17 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Adds smoke test execution for a service.
+   * 
+   * <p>This method creates smoke test execution for a service by
+   * synchronizing smoke test cases to scripts and creating execution
+   * tasks. It validates that smoke test cases exist before execution.</p>
+   * 
+   * @param servicesId the ID of the service
+   * @param servers the list of server configurations for testing (optional)
+   * @throws IllegalArgumentException if validation fails or smoke cases not found
+   */
   @Override
   public void testSmokeExecAdd(Long servicesId, @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
@@ -351,11 +454,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), servicesId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(servicesId);
-        // Check the smoke cases exists
+        // Verify smoke test cases exist
         casesDb = apisCaseQuery.findByServicesIdAndType(servicesId, ApisCaseType.SMOKE);
         assertResourceNotFound(casesDb, SERVICE_SMOKE_CASE_NOT_FOUND, new Object[]{});
       }
@@ -373,6 +476,17 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
     }.execute();
   }
 
+  /**
+   * Adds security test execution for a service.
+   * 
+   * <p>This method creates security test execution for a service by
+   * synchronizing security test cases to scripts and creating execution
+   * tasks. It validates that security test cases exist before execution.</p>
+   * 
+   * @param servicesId the ID of the service
+   * @param servers the list of server configurations for testing (optional)
+   * @throws IllegalArgumentException if validation fails or security cases not found
+   */
   @Override
   public void testSecurityExecAdd(Long servicesId, @Nullable List<Server> servers) {
     new BizTemplate<Void>() {
@@ -381,11 +495,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
       @Override
       protected void checkParams() {
-        // Check the services test permissions?
+        // Verify user has testing permissions
         servicesAuthQuery.checkTestAuth(getUserId(), servicesId);
-        // Check the services exists
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(servicesId);
-        // Check the smoke cases exists
+        // Verify security test cases exist
         casesDb = apisCaseQuery.findByServicesIdAndType(servicesId, ApisCaseType.SECURITY);
         assertResourceNotFound(casesDb, SERVICE_SECURITY_CASE_NOT_FOUND, new Object[]{});
       }

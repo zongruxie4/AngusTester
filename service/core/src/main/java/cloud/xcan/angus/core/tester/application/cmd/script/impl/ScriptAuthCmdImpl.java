@@ -44,19 +44,14 @@ public class ScriptAuthCmdImpl extends CommCmd<ScriptAuth, Long> implements Scri
 
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptRepo scriptRepo;
-
   @Resource
   private ScriptAuthQuery scriptAuthQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ScriptAuthRepo scriptAuthRepo;
-
   @Resource
   private ActivityCmd activityCmd;
 

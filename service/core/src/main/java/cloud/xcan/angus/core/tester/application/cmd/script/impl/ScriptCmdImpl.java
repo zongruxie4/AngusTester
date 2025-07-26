@@ -115,37 +115,26 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
   @Resource
   private ScriptRepo scriptRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptAuthCmd scriptAuthCmd;
-
   @Resource
   private ScriptAuthQuery scriptAuthQuery;
-
   @Resource
   private ScriptTagCmd scriptTagCmd;
-
   @Resource
   private ApisCaseQuery apisCaseQuery;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private VariableTargetQuery variableTargetQuery;
-
   @Resource
   private DatasetTargetQuery datasetTargetQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

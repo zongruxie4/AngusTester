@@ -80,67 +80,86 @@ import org.aspectj.util.FileUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Implementation of service command operations for comprehensive service management.
+ * 
+ * <p>This class provides extensive functionality for managing services, including
+ * creation, modification, cloning, import/export, and lifecycle management.</p>
+ * 
+ * <p>It handles the complete lifecycle of services from creation to deletion, including
+ * authorization management, schema management, component management, and activity logging
+ * for audit purposes.</p>
+ * 
+ * <p>The implementation supports various import sources (OpenAPI, Swagger) and provides
+ * comprehensive export functionality with multiple format options.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Service CRUD operations with comprehensive validation</li>
+ *   <li>Import/export functionality with multiple format support</li>
+ *   <li>Service cloning with complete data replication</li>
+ *   <li>Creator authorization and permission management</li>
+ *   <li>Activity logging for audit trails</li>
+ *   <li>Schema and component synchronization</li>
+ * </ul></p>
+ */
 @Biz
 @Slf4j
 public class ServicesCmdImpl extends CommCmd<Services, Long> implements ServicesCmd {
 
   @Resource
   private ServicesRepo servicesRepo;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ServicesAuthCmd servicesAuthCmd;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ApisAuthCmd apisAuthCmd;
-
   @Resource
   private ServicesSyncCmd servicesSyncCmd;
-
   @Resource
   private ServicesSchemaCmd servicesSchemaCmd;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private ServicesCompCmd servicesCompCmd;
-
   @Resource
   private IndicatorPerfCmd indicatorPerfCmd;
-
   @Resource
   private IndicatorStabilityCmd indicatorStabilityCmd;
-
   @Resource
   private ApisDesignCmd apisDesignCmd;
-
   @Resource
   private ApisTrashCmd trashApisCmd;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisCmd apisCmd;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private MockServiceRepo mockServiceRepo;
-
   @Resource
   private MockApisRepo mockApisRepo;
 
+  /**
+   * Adds a new service with comprehensive validation and setup.
+   * 
+   * <p>This method performs extensive validation including project membership,
+   * service quota checks, and name uniqueness validation.</p>
+   * 
+   * <p>It automatically sets up creator authorization and optionally initializes
+   * the service schema, and logs the creation activity for audit purposes.</p>
+   * 
+   * @param services the service to add
+   * @param initSchema whether to initialize the service schema
+   * @return the ID key of the created service
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add(Services services, boolean initSchema) {
@@ -149,13 +168,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
-        // Check the project member
+        // Verify project membership for the current user
         projectMemberQuery.checkMember(getUserId(), services.getProjectId());
 
-        // Check the service quota
+        // Check service quota availability
         servicesQuery.checkQuota(1);
 
-        // Check the service repeated name
+        // Verify service name uniqueness within the project
         servicesQuery.checkNameExists(services.getProjectId(), services.getName());
       }
 
@@ -163,19 +182,27 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
       protected IdKey<Long, Object> process() {
         IdKey<Long, Object> idKey = insert(services);
 
-        // Init creator auth
+        // Initialize creator authorization
         servicesAuthCmd.addCreatorAuth(idKey.getId(), getAuthCreatorIds());
 
-        // Init schema
+        // Initialize service schema if requested
         if (initSchema){
           servicesSchemaCmd.init(services);
         }
 
-        // Add service activity
+        // Log service creation activity
         activityCmd.add(toActivity(SERVICE, services, ActivityType.CREATED));
         return idKey;
       }
 
+      /**
+       * Gets the set of creator IDs for authorization setup.
+       * 
+       * <p>This method collects the current user ID and the original service creator ID
+       * to establish proper authorization for the newly created service.</p>
+       * 
+       * @return set of user IDs to be granted creator permissions
+       */
       @NotNull
       private Set<Long> getAuthCreatorIds() {
         Set<Long> createdIds = new HashSet<>();
@@ -188,6 +215,19 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
+  /**
+   * Renames a service with validation and permission checks.
+   * 
+   * <p>This method allows renaming a service while ensuring proper validation
+   * including service existence, publication status, and modification permissions.</p>
+   * 
+   * <p>Published services have additional restrictions on modifications,
+   * and the method logs the rename activity for audit purposes.</p>
+   * 
+   * @param id the ID of the service to rename
+   * @param name the new name for the service
+   * @throws IllegalArgumentException if validation fails or service not found
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void rename(Long id, String name) {
@@ -196,13 +236,13 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
-        // Check the service exists
+        // Verify the service exists
         serviceDb = servicesQuery.checkAndFind(id);
 
         if (!serviceDb.getName().equals(name)) {
-          // Published api are not allowed to be modified
+          // Verify published services can be modified
           servicesQuery.checkPublishStatus(serviceDb);
-          // Check the service modification permissions
+          // Verify user has modification permissions
           servicesAuthQuery.checkModifyAuth(getUserId(), id);
         }
       }
@@ -221,9 +261,18 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
   }
 
   /**
-   * Publishing a service will publish all services and apis under the project.
-   * <p>
-   * Services allow duplicate publications
+   * Updates the status of a service and all its associated APIs.
+   * 
+   * <p>This method controls the publication status of a service. When a service
+   * is published, all APIs under that service are also published. Services
+   * allow duplicate publications for flexibility.</p>
+   * 
+   * <p>The method performs appropriate permission validation based on the
+   * target status and logs the status change activity.</p>
+   * 
+   * @param serviceId the ID of the service to update
+   * @param status the new API status to set
+   * @throws IllegalArgumentException if validation fails or service not found
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -233,10 +282,10 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
-        // Check the service exists
+        // Verify the service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
 
-        // Check the to have permission to release
+        // Verify user has appropriate permissions based on status change
         if (status.isReleased() || serviceDb.isReleased()) {
           servicesAuthQuery.checkReleaseAuth(getUserId(), serviceId);
         } else {
@@ -256,6 +305,19 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
+  /**
+   * Clones a service with all its associated data.
+   * 
+   * <p>This method creates a complete copy of a service including all APIs,
+   * schemas, components, and authorizations. It performs comprehensive
+   * data replication while maintaining proper relationships.</p>
+   * 
+   * <p>The cloned service gets a new unique name and maintains all
+   * the original service's functionality and structure.</p>
+   * 
+   * @param id the ID of the service to clone
+   * @throws IllegalArgumentException if validation fails or service not found
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void clone(Long id) {
@@ -278,45 +340,76 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         return null;
       }
 
+      /**
+       * Performs the actual service and API cloning operation.
+       * 
+       * <p>This method handles the complete cloning process including service creation,
+       * API replication, authorization setup, and schema/component copying.</p>
+       * 
+       * @param serviceDb the original service to clone from
+       */
       private void cloneServiceAndApis(Services serviceDb) {
-        // Copy project
+        // Create cloned service with new ID
         Services clonedService = cloneService(uidGenerator.getUID(), serviceDb);
         servicesQuery.setSafeCloneName(clonedService);
 
-        // NOOP: Query service and copy sync and schemas
+        // TODO: Query service and copy sync and schemas
 
-        // Query service auth apis
+        // Set up creator authorization IDs
         Set<Long> creatorIds = new HashSet<>();
         creatorIds.add(getUserId());
         creatorIds.add(serviceDb.getCreatedBy());
 
+        // Clone associated APIs
         List<Apis> apisDb = apisRepo.findByServiceId(serviceDb.getId());
         if (isNotEmpty(apisDb)) {
           List<Apis> cloneApis = cloneApis(uidGenerator, apisDb, clonedService);
           apisRepo.batchInsert0(cloneApis);
 
-          // Initialize service auth
+          // Initialize API authorizations
           apisAuthCmd.addCreatorAuth(cloneApis.stream().map(Apis::getId)
               .collect(Collectors.toSet()), creatorIds);
         }
 
-        // Initialize service auth
+        // Initialize service authorization
         servicesAuthCmd.addCreatorAuth(clonedService.getId(), creatorIds);
 
-        // Save service and sync
+        // Save the cloned service
         insert0(clonedService);
 
         // Clone service schema
         servicesSchemaCmd.clone(serviceDb.getId(), clonedService.getId());
 
-        // Clone service comps
+        // Clone service components
         servicesCompCmd.clone(serviceDb.getId(), clonedService.getId());
 
+        // TODO: Clone project sync configuration
         // projectSyncRepo.batchInsert0(Collections.singleton(cloneConfig));
       }
     }.execute();
   }
 
+  /**
+   * Imports services from files or content with comprehensive validation.
+   * 
+   * <p>This method supports importing services from various sources including
+   * file uploads and direct content input. It handles both new service creation
+   * and existing service updates based on the provided parameters.</p>
+   * 
+   * <p>The method supports different import strategies for handling duplicates
+   * and optional cleanup of unreferenced components.</p>
+   * 
+   * @param projectId the ID of the project to import into
+   * @param serviceId the ID of existing service to update, null for new service
+   * @param serviceName the name for the new service (required when serviceId is null)
+   * @param importSource the source type for the import
+   * @param strategyWhenDuplicated strategy for handling duplicate components
+   * @param deleteWhenNotExisted whether to delete components not in the import
+   * @param file the uploaded file to import from
+   * @param content the direct content to import from
+   * @return the ID key of the imported/updated service
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> imports(Long projectId, Long serviceId, String serviceName,
@@ -327,20 +420,25 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
+        // Verify either file or content is provided
         assertTrue(nonNull(file) || isNotEmpty(content),
             "Parameter file or content cannot both be empty");
+        
+        // Verify project ID is provided when service ID is empty
         assertTrue(nonNull(serviceId) || nonNull(projectId),
             "Parameter projectId is required when serviceId is empty");
 
-        // If the ID is empty, a new service will be imported
+        // Handle existing service update
         if (nonNull(serviceId)) {
-          // Check the service exists
+          // Verify the service exists
           serviceDb = servicesQuery.checkAndFind(serviceId);
 
-          // Services permission: When the service ID is not empty, judge the service (archive) permission: judge whether it has the permission to save the api in the project
-          // (except for projects that are only allowed to add interfaces to the self-created and authorized projects, and projects without permission restrictions), Which interface to call
+          // Verify user has permission to add APIs to the service
+          // This applies to services that allow API additions to self-created
+          // and authorized projects, and projects without permission restrictions
           servicesAuthQuery.checkAddAuth(getUserId(), serviceId);
         } else {
+          // Verify service name is provided for new service creation
           assertNotEmpty(serviceName, SERVICE_IMPORT_NEW_NAME_EMPTY);
         }
       }
@@ -402,8 +500,16 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Imports example services into a project.
+   * 
+   * <p>This method imports predefined example services from sample files
+   * to help users get started with the system.</p>
+   * 
+   * <p>Note: When API calls are not user-initiated, tenant and user information
+   * must be injected into the PrincipalContext for proper authorization.</p>
+   * 
+   * @param projectId the ID of the project to import examples into
+   * @return list of ID keys for the imported services
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -424,6 +530,24 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
+  /**
+   * Exports services in various formats with comprehensive options.
+   * 
+   * <p>This method supports exporting services in different scopes (service-level
+   * or API-level) and multiple formats. It can export all components or only
+   * API-specific components based on the configuration.</p>
+   * 
+   * <p>The method handles single file exports and multi-file compression
+   * for bulk exports, with proper permission validation.</p>
+   * 
+   * @param exportScope the scope of the export (service or API level)
+   * @param serviceIds set of service IDs to export
+   * @param apisId set of specific API IDs to export (for API-level scope)
+   * @param format the export format (JSON, YAML, etc.)
+   * @param onlyApisComponents whether to export only API components
+   * @return the exported file (single file or compressed archive)
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public File exportProject(ServicesExportScope exportScope, Set<Long> serviceIds,
@@ -433,14 +557,14 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
-        // Check the there can only be one service exported by APIS
+        // Verify API-level export is limited to single service
         assertTrue(exportScope.equals(ServicesExportScope.SERVICE) ||
             serviceIds.size() == 1, "Export by APIS can only have one project");
 
-        //// NOOP:: Check in projectSchemaQuery.schemaDetail()
+        // TODO: Add permission check in projectSchemaQuery.schemaDetail()
         servicesAuthQuery.batchCheckPermission(serviceIds, ServicesPermission.EXPORT);
 
-        // Check and find project
+        // Verify services exist and retrieve them
         servicesDb = servicesQuery.checkAndFind(serviceIds);
       }
 
@@ -497,6 +621,19 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     }.execute();
   }
 
+  /**
+   * Logically deletes a service with comprehensive cleanup.
+   * 
+   * <p>This method performs a logical deletion of a service, marking it as deleted
+   * while preserving the data for potential recovery. It updates the deletion
+   * status of associated APIs and moves the service to trash.</p>
+   * 
+   * <p>The method logs the deletion activity for audit purposes and ensures
+   * proper cleanup of related data.</p>
+   * 
+   * @param id the ID of the service to delete
+   * @throws IllegalArgumentException if validation fails or service not found
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long id) {
@@ -505,10 +642,12 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
 
       @Override
       protected void checkParams() {
+        // Verify service exists
         serviceDb = servicesRepo.findById(id).orElse(null);
         if (isNull(serviceDb)) {
           return;
         }
+        // Verify user has deletion permissions
         servicesAuthQuery.checkDeleteAuth(getUserId(), id);
       }
 
@@ -518,22 +657,22 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
           return null;
         }
 
-        // Logic delete
-        // After the service is deleted, filter the associated service and apis by service deleted
+        // Perform logical deletion
+        // Mark the service as deleted and update associated APIs accordingly
         ServicesConverter.completeDeleteInfo(serviceDb);
         servicesRepo.save(serviceDb);
 
-        // Update apis deletion status
+        // Update API deletion status
         List<Long> serviceIds = Lists.newArrayList(id);
 
-        // Fix:: Do not delete the apis after deleting the project.
+        // Note: APIs are not deleted when the service is deleted
         apisRepo.updateServiceDeleteStatusByService(serviceIds, true);
 
-        // Save to trash
+        // Move service to trash for potential recovery
         ApisTrash trash = ServicesConverter.toTrash(serviceDb);
         trashApisCmd.add0(Collections.singletonList(trash));
 
-        // Add delete service activity
+        // Log service deletion activity
         activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.DELETED));
         return null;
       }
@@ -541,7 +680,17 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
   }
 
   /**
-   * Physically delete, External calling biz must ensure data authed and secured!
+   * Physically deletes services and all associated data.
+   * 
+   * <p>This method performs a complete physical deletion of services and all
+   * related data including APIs, schemas, components, authorizations, and
+   * performance indicators.</p>
+   * 
+   * <p>Warning: This is a destructive operation that cannot be undone.
+   * External calling business logic must ensure proper authorization and
+   * data security before invoking this method.</p>
+   * 
+   * @param ids list of service IDs to physically delete
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
@@ -580,6 +729,11 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
     apisDesignCmd.deleteByServiceIdIn(apisIds);
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the services repository
+   */
   @Override
   protected BaseRepository<Services, Long> getRepository() {
     return this.servicesRepo;

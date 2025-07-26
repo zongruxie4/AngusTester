@@ -68,40 +68,65 @@ import java.util.stream.Collectors;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of service schema command operations for OpenAPI schema management.
+ * 
+ * <p>This class provides comprehensive functionality for managing service schemas,
+ * including OpenAPI document parsing, schema updates, component management,
+ * and synchronization with external API documentation.</p>
+ * 
+ * <p>It handles the complete lifecycle of schema management from initialization
+ * to deletion, including security requirements, servers, tags, and extensions.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>OpenAPI document parsing and validation</li>
+ *   <li>Schema component management (security, servers, tags)</li>
+ *   <li>API synchronization and import/export</li>
+ *   <li>Translation services integration</li>
+ *   <li>Cache management for performance</li>
+ * </ul></p>
+ */
 @Biz
 public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> implements
     ServicesSchemaCmd {
 
   @Resource
   private ServicesSchemaRepo servicesSchemaRepo;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private ServicesSchemaCmd servicesSchemaCmd;
-
   @Resource
   private ServicesCompCmd servicesCompCmd;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ApisCmd apisCmd;
-
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Replaces or updates individual schema components with caching support.
+   * 
+   * <p>This method allows updating specific schema components (security requirements,
+   * servers, or tags) individually. It performs permission validation and
+   * automatically manages cache eviction to ensure data consistency.</p>
+   * 
+   * <p>The method logs component update activities for audit tracking.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param sr the security requirement to add or update
+   * @param server the server configuration to add or update
+   * @param tag the tag to add or update
+   * @throws IllegalArgumentException if validation fails
+   */
   @DoInFuture("Add quota restrictions")
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
   @Transactional(rollbackFor = Exception.class)
@@ -112,8 +137,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify schema exists and retrieve it
         schemaDb = servicesSchemaQuery.checkAndFind0(serviceId);
+        // Validate server configuration if provided
         if (nonNull(server)) {
           servicesSchemaQuery.checkValidServer(List.of(server));
         }
@@ -147,6 +175,18 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }.execute();
   }
 
+  /**
+   * Updates the current server configuration for all APIs in a service.
+   * 
+   * <p>This method synchronizes the server configuration across all APIs
+   * within a service, ensuring consistent server settings for API execution.</p>
+   * 
+   * <p>The method logs the server synchronization activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param serverId the ID of the server to set as current
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void apisServerReplace(Long serviceId, Long serverId) {
@@ -156,8 +196,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify schema exists and retrieve it
         schemaDb = servicesSchemaQuery.checkAndFind0(serviceId);
       }
 
@@ -179,6 +222,24 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }.execute();
   }
 
+  /**
+   * Replaces all schema components with comprehensive caching support.
+   * 
+   * <p>This method allows updating all schema components at once including info,
+   * external documentation, security requirements, servers, tags, and extensions.</p>
+   * 
+   * <p>It performs permission validation and automatically manages cache eviction
+   * to ensure data consistency across all components.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param info the OpenAPI info object
+   * @param extDoc the external documentation
+   * @param srs the list of security requirements
+   * @param servers the list of server configurations
+   * @param tags the list of tags
+   * @param extensions the map of extensions
+   * @throws IllegalArgumentException if validation fails
+   */
   @DoInFuture("Add quota restrictions")
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
   @Transactional(rollbackFor = Exception.class)
@@ -191,8 +252,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify schema exists and retrieve it
         schemaDb = servicesSchemaQuery.checkAndFind0(serviceId);
+        // Validate server configurations if provided
         if (nonNull(servers)) {
           servicesSchemaQuery.checkValidServer(servers);
         }
@@ -233,6 +297,21 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }.execute();
   }
 
+  /**
+   * Deletes specific schema components with caching support.
+   * 
+   * <p>This method allows selective deletion of schema components including
+   * security requirements, servers, and tags. It performs permission validation
+   * and automatically manages cache eviction.</p>
+   * 
+   * <p>The method logs component deletion activities for audit tracking.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param srNames the set of security requirement names to delete
+   * @param serverIds the set of server IDs to delete
+   * @param tagNames the set of tag names to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -243,7 +322,9 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify schema exists and retrieve it
         schemaDb = servicesSchemaQuery.checkAndFind0(serviceId);
       }
 
@@ -298,9 +379,27 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
   }
 
   /**
-   * Note: When an api is deleted, the front-end page should prompt the user to prevent accidental
-   * deletion; Additionally, if the user has not modified or saved, do not submit the request to the
-   * backend interface.
+   * Replaces OpenAPI content with comprehensive validation and processing.
+   * 
+   * <p>This method handles OpenAPI content replacement including decompression,
+   * validation, and parsing. It supports various import sources and strategies
+   * for handling duplicate components.</p>
+   * 
+   * <p>Note: When an API is deleted, the front-end should prompt the user to prevent
+   * accidental deletion. Additionally, if the user has not modified or saved,
+   * do not submit the request to the backend interface.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param forced whether to force the operation
+   * @param gzipCompression whether the content is gzip compressed
+   * @param content the OpenAPI content
+   * @param strategyWhenDuplicated strategy for handling duplicates
+   * @param deleteWhenNotExisted whether to delete components not in the import
+   * @param apiSource the source of the API
+   * @param importSource the import source type
+   * @param mergeSchema whether to merge schemas
+   * @param syncName the synchronization name
+   * @throws IllegalArgumentException if validation fails
    */
   @Override
   public void openapiReplace(Long serviceId, Boolean forced, boolean gzipCompression,
@@ -312,7 +411,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Decompress OpenAPI documentation
+        // Decompress OpenAPI documentation if needed
         try {
           decompressedContent = gzipCompression ? GzipUtils.decompress(content) : content;
         } catch (IOException e) {
@@ -322,12 +421,12 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected Void process() {
-        // Check the content is valid OpenAPI documents
+        // Validate and parse OpenAPI content
         openApi = servicesSchemaQuery.checkAndGetApisParser(
                 importSource.isWideOpenapi() ? ApiImportSource.OPENAPI : importSource)
             .parse(decompressedContent);
 
-        // Update schema
+        // Update schema with parsed OpenAPI
         servicesSchemaCmd.openapiReplace(serviceId, true, openApi, strategyWhenDuplicated,
             deleteWhenNotExisted, apiSource, importSource, mergeSchema, syncName);
         return null;
@@ -335,6 +434,26 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }.execute();
   }
 
+  /**
+   * Replaces OpenAPI schema with comprehensive processing and synchronization.
+   * 
+   * <p>This method handles complete OpenAPI schema replacement including API
+   * synchronization, component management, and cache invalidation. It supports
+   * various strategies for handling duplicates and optional cleanup.</p>
+   * 
+   * <p>The method performs extensive validation and logs activities for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param forced whether to force the operation
+   * @param openApi the OpenAPI object
+   * @param strategyWhenDuplicated strategy for handling duplicates
+   * @param deleteWhenNotExisted whether to delete components not in the import
+   * @param apiSource the source of the API
+   * @param importSource the import source type
+   * @param mergeSchema whether to merge schemas
+   * @param syncName the synchronization name
+   * @throws IllegalArgumentException if validation fails
+   */
   @CacheEvict(key = "'servicesId_' + #serviceId", value = "servicesSchema")
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -347,36 +466,37 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
       @Override
       protected void checkParams() {
-        // Check and find project schema
-        // projectSchemaDb = projectSchemaQuery.checkAndFind(serviceId); -> Fix:: After the first successful import, the query project document is empty.
+        // Verify schema exists and retrieve it
+        // Note: After the first successful import, the query project document is empty
         serviceSchemaDb = servicesSchemaQuery.checkAndFind(serviceId);
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
-        // Check the modify project permission
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
       }
 
       @Override
       protected Void process() {
-        // Update project schema
-        // Warn:: Multiple files importing the same project will be overwritten by the last imported file
+        // Update service schema
+        // Warning: Multiple files importing the same project will be overwritten by the last imported file
         servicesSchemaCmd.updateSchema(serviceId, serviceSchemaDb, openApi, mergeSchema,
             nonNull(strategyWhenDuplicated) && strategyWhenDuplicated.isCover());
 
-        // Update Apis (Operation Object Schema)
+        // Update APIs (Operation Object Schema)
         Map<String, Apis> apisDbMap = apisQuery.findByServiceId(serviceId).stream()
             .collect(Collectors.toMap(x -> x.getMethod().getValue().toLowerCase()
                 + ":" + x.getEndpoint(), x -> x));
-        // Warn: Since 3.1 is not required
+        // Note: Since OpenAPI 3.1, paths are not required
         if (isNotEmpty(openApi.getPaths())) {
           Map<String, Operation> operationsMap = OpenAPIUtils.flatPaths(openApi.getPaths());
           Map<String, Apis> openApisMap = isEmpty(operationsMap) ? emptyMap()
               : operationsMap.keySet().stream().collect(Collectors
                   .toMap(x -> x, x -> ApisConverter.toSchemaApis(operationsMap.get(x))));
-          // Find update apis
+          
+          // Find APIs to update
           if (StrategyWhenDuplicated.COVER.equals(strategyWhenDuplicated)) {
             Map<String, Apis> updatedApisDbMap = apisDbMap.keySet().stream()
                 .filter(x -> openApisMap.containsKey(x) &&
-                    /*apisDbMap.get(x).sameSchemaInfoAs(openApisMap.get(x))*/
                     apisDbMap.get(x).getSchemaHash() != openApisMap.get(x).getSchemaHash())
                 .collect(Collectors.toMap(x -> x, apisDbMap::get));
             if (isNotEmpty(updatedApisDbMap)) {
@@ -385,21 +505,22 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             }
           }
 
+          // Delete APIs not in the import if requested
           if (deleteWhenNotExisted) {
             Collection<Apis> deletedApisInDb = apisDbMap.keySet().stream()
                 .filter(x -> !openApisMap.containsKey(x)
-                    // Note:: If is synchronization, only delete the synchronization of its own data.
+                    // Note: If synchronization, only delete the synchronization of its own data
                     && (isEmpty(syncName) || syncName.equals(apisDbMap.get(x).getSyncName())))
                 .collect(Collectors.toMap(x -> x, apisDbMap::get)).values();
             if (isNotEmpty(deletedApisInDb)) {
               assertTrue(forced, SERVICE_DOC_CHANGE_REMINDER);
-              // Note:: The following method not delete the components ref, deleted by apisCmd.delete0() when clear Trash
+              // Note: The following method does not delete component references, deleted by apisCmd.delete0() when clearing Trash
               apisCmd.delete(deletedApisInDb.stream().map(Apis::getId).collect(Collectors.toSet()),
                   false);
             }
           }
 
-          // Find new apis
+          // Find new APIs to add
           Collection<Apis> newApis = openApisMap.keySet().stream()
               .filter(x -> !apisDbMap.containsKey(x))
               .collect(Collectors.toMap(x -> x, openApisMap::get)).values();
@@ -410,20 +531,21 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
                 .collect(Collectors.toList()), serviceDb, false);
           }
         } else {
+          // Delete all APIs if no paths exist and deletion is requested
           if (deleteWhenNotExisted) {
-            // Note:: The following method not delete the components ref, deleted by apisCmd.delete0() when clear Trash
+            // Note: The following method does not delete component references, deleted by apisCmd.delete0() when clearing Trash
             apisCmd.delete(apisDbMap.values().stream().map(Apis::getId).collect(Collectors.toSet()),
                 false);
           }
         }
 
-        // Update ServicesComp (Components Object Schema)
+        // Update service components (Components Object Schema)
         if (isNotEmpty(openApi.getComponents())) {
           servicesCompCmd.replaceByOpenApi(serviceDb.getId(), openApi.getComponents(),
               strategyWhenDuplicated, deleteWhenNotExisted);
         }
 
-        // Add editor activity
+        // Log appropriate activity based on API source
         if (isNull(apiSource) || ApiSource.EDITOR.equals(apiSource)) {
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_OPENAPI_UPDATED));
         } else if (ApiSource.SYNC.equals(apiSource)) {
@@ -436,14 +558,31 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }.execute();
   }
 
+  /**
+   * Translates OpenAPI documentation between different languages.
+   * 
+   * <p>This method uses external translation services to translate OpenAPI
+   * documentation content between supported languages. It requires proper
+   * API key configuration for the translation service.</p>
+   * 
+   * <p>The method performs complete translation and updates the schema
+   * with the translated content.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param sourceLanguage the source language for translation
+   * @param targetLanguage the target language for translation
+   * @throws SysException if translation service configuration fails
+   */
   @Override
   public void translate(Long serviceId, SupportedLanguage sourceLanguage,
       SupportedLanguage targetLanguage) {
     new BizTemplate<Void>() {
       @Override
       protected Void process() {
+        // Configure translation service API key
         System.setProperty("deepseek.api.key", EnvHelper.getString("DEEPSEEK_TRANSLATION_API_KEY"));
 
+        // Initialize translation service
         TranslationService translationService = servicesSchemaQuery.checkAndGetTranslationService(
             TranslationServiceProvider.DeepSeek);
         try {
@@ -452,31 +591,53 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
           throw new SysException(e.getMessage());
         }
 
+        // Retrieve current OpenAPI and perform translation
         OpenAPI openApi = servicesSchemaQuery.openapiDetail0(serviceId, null, false);
         OpenAPITranslator translator = new OpenAPITranslator(
             translationService, sourceLanguage, targetLanguage
         );
         translator.translateOpenAPI(openApi);
 
+        // Update schema with translated content
         servicesSchemaCmd.openapiReplace(serviceId, true, openApi, StrategyWhenDuplicated.COVER,
             false, null, null, false, null);
 
-        // TODO Notify the user that the translation is complete
+        // TODO: Notify the user that the translation is complete
         return null;
       }
     }.execute();
   }
 
+  /**
+   * Initializes a new service schema with default configuration.
+   * 
+   * @param services the service to initialize schema for
+   */
   @Override
   public void init(Services services) {
     insert0(toInitProjectSchema(services, null));
   }
 
+  /**
+   * Initializes a new service schema with provided OpenAPI configuration.
+   * 
+   * @param services the service to initialize schema for
+   * @param openAPI the OpenAPI configuration to use
+   */
   @Override
   public void init(Services services, OpenAPI openAPI) {
     insert0(toInitProjectSchema(services, openAPI));
   }
 
+  /**
+   * Clones a service schema to a new service.
+   * 
+   * <p>This method creates a complete copy of a service schema including
+   * all components, security requirements, servers, and tags.</p>
+   * 
+   * @param clonedServiceId the ID of the source service to clone from
+   * @param serviceId the ID of the target service to clone to
+   */
   @Override
   public void clone(Long clonedServiceId, Long serviceId) {
     ServicesSchema schemaDb = servicesSchemaQuery.findByServiceId(clonedServiceId);
@@ -485,6 +646,14 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }
   }
 
+  /**
+   * Deletes schemas for multiple services with cache invalidation.
+   * 
+   * <p>This method performs bulk deletion of service schemas and ensures
+   * proper cache invalidation to maintain data consistency.</p>
+   * 
+   * @param serviceIds the collection of service IDs to delete schemas for
+   */
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     servicesSchemaRepo.deleteByServiceIdIn(serviceIds);
@@ -493,6 +662,20 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             .collect(Collectors.toList()));
   }
 
+  /**
+   * Updates a service schema with new OpenAPI content.
+   * 
+   * <p>This method updates the service schema with new OpenAPI content,
+   * supporting both merge and cover strategies for handling conflicts.</p>
+   * 
+   * <p>The method logs the schema update activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param serviceSchemaDb the current service schema
+   * @param openApi the new OpenAPI content
+   * @param mergeSchema whether to merge schemas
+   * @param cover whether to cover existing content
+   */
   @Override
   public void updateSchema(Long serviceId, ServicesSchema serviceSchemaDb, OpenAPI openApi,
       boolean mergeSchema, boolean cover) {
@@ -501,11 +684,21 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     activityCmd.add(toActivity(SERVICE, serviceSchemaDb, ActivityType.SCHEMA_UPDATED));
   }
 
+  /**
+   * Adds or updates a security requirement in the schema.
+   * 
+   * <p>This method handles security requirement management by either updating
+   * existing requirements or adding new ones. It only uses one-dimensional
+   * security requirements for simplicity.</p>
+   * 
+   * @param schemaDb the schema to update
+   * @param sr the security requirement to add or update
+   */
   private void addOrUpdateSecurityRequirement(ServicesSchema schemaDb, SecurityRequirement sr) {
     List<SecurityRequirement> securityDb = schemaDb.getSecurity();
     if (isNotEmpty(securityDb)) {
       boolean update = false;
-      // Only use one-dimensional element
+      // Only use one-dimensional element for simplicity
       for (String name : securityDb.get(0).keySet()) {
         if (sr.containsKey(name)) {
           securityDb.get(0).put(name, sr.get(name));
@@ -521,6 +714,16 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }
   }
 
+  /**
+   * Adds or updates a server configuration in the schema.
+   * 
+   * <p>This method handles server configuration management by either updating
+   * existing servers or adding new ones. It automatically generates unique IDs
+   * for new servers if not provided.</p>
+   * 
+   * @param schemaDb the schema to update
+   * @param server the server configuration to add or update
+   */
   private void addOrUpdateServer(ServicesSchema schemaDb, Server server) {
     boolean update = false;
     Long serverId = getExtensionLong(server.getExtensions(), ID_KEY);
@@ -551,6 +754,15 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }
   }
 
+  /**
+   * Adds or updates a tag in the schema.
+   * 
+   * <p>This method handles tag management by either updating existing tags
+   * or adding new ones based on tag name matching.</p>
+   * 
+   * @param schemaDb the schema to update
+   * @param tag the tag to add or update
+   */
   private void addAndUpdateTag(ServicesSchema schemaDb, Tag tag) {
     boolean update = false;
     List<Tag> tagsDb = schemaDb.getTags();
@@ -572,6 +784,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     }
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the services schema repository
+   */
   @Override
   protected BaseRepository<ServicesSchema, Long> getRepository() {
     return this.servicesSchemaRepo;

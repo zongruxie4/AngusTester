@@ -48,28 +48,53 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of service synchronization command operations.
+ * 
+ * <p>This class provides comprehensive functionality for managing service
+ * synchronization with external API documentation sources, including
+ * configuration management, synchronization execution, and testing.</p>
+ * 
+ * <p>It handles the complete lifecycle of synchronization from configuration
+ * to execution, including quota management, activity logging, and error handling.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>External API documentation synchronization</li>
+ *   <li>Synchronization configuration management</li>
+ *   <li>OpenAPI content validation and testing</li>
+ *   <li>Quota and permission management</li>
+ *   <li>Activity logging for audit trails</li>
+ * </ul></p>
+ */
 @Biz
 @Slf4j
 public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements ServicesSyncCmd {
 
   @Resource
   private ServicesSyncRepo servicesSyncRepo;
-
   @Resource
   private ServicesSyncQuery servicesSyncQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ServicesSchemaCmd servicesSchemaCmd;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Replaces or creates a synchronization configuration.
+   * 
+   * <p>This method handles both creation and updates of synchronization
+   * configurations. It performs quota validation and logs appropriate
+   * activities for audit tracking.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param sync the synchronization configuration
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replace(Long serviceId, ServicesSync sync) {
@@ -79,11 +104,12 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
 
       @Override
       protected void checkParams() {
-        // Check the permissions
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
 
-        // Check the sync num quota
+        // Verify synchronization quota availability
         syncDb = servicesSyncQuery.find(serviceId, sync.getName());
         if (isNull(syncDb)) {
           servicesSyncQuery.checkSyncAddNumQuota(serviceId, 1);
@@ -107,6 +133,17 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     }.execute();
   }
 
+  /**
+   * Replaces all synchronization configurations for a service.
+   * 
+   * <p>This method handles bulk replacement of synchronization configurations,
+   * including creation, updates, and deletions. It performs comprehensive
+   * validation and quota management.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param syncs the list of synchronization configurations
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void replaceAll(Long serviceId, List<ServicesSync> syncs) {
@@ -116,15 +153,17 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
 
       @Override
       protected void checkParams() {
-        // Check the for duplicates in param
+        // Verify no duplicate names in parameters
         names = syncs.stream().map(ServicesSync::getName).collect(Collectors.toList());
         servicesSyncQuery.checkRepeatedNameInParams(names);
 
-        // Check the permissions
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify service exists
         serviceDb = servicesQuery.checkAndFind(serviceId);
 
-        // Check the sync num quota
+        // Verify synchronization quota availability
+        // TODO: Consider existing sync count in quota calculation
         // int existedNum = projectSyncRepo.countByProjectIdAndNameInNot(serviceId, names);
         servicesSyncQuery.checkSyncNumQuota(serviceId, syncs.size() /*+ existedNum*/);
       }
@@ -180,6 +219,17 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     }.execute();
   }
 
+  /**
+   * Executes synchronization for a specific configuration.
+   * 
+   * <p>This method performs the actual synchronization operation using
+   * the specified configuration. It handles error reporting and
+   * validates synchronization results.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param name the name of the synchronization configuration
+   * @throws ProtocolException if synchronization fails
+   */
   //@Transactional(rollbackFor = Exception.class)
   @Override
   public void sync(Long serviceId, String name) {
@@ -188,10 +238,12 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
 
       @Override
       protected void checkParams() {
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
 
+        // Verify synchronization configuration exists
+        // Note: When the name parameter is null, the collection will have 1 element
         syncsDb = servicesSyncQuery.find(serviceId,
-            /*Note:: When the name of this method is null, the number of collection elements will be 1*/
             Collections.singleton(name));
         assertResourceNotFound(syncsDb, SERVICE_SYNC_CONFIG_NOT_FOUND, new Object[]{});
       }
@@ -213,6 +265,18 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     }.execute();
   }
 
+  /**
+   * Tests synchronization configuration by validating OpenAPI content.
+   * 
+   * <p>This method validates the synchronization URL and connectivity,
+   * then parses and validates the OpenAPI content to ensure it can be
+   * successfully synchronized.</p>
+   * 
+   * @param syncUrl the synchronization URL to test
+   * @param auths the authentication configuration for the URL
+   * @return the parsed OpenAPI object
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public OpenAPI test(String syncUrl, List<SimpleHttpAuth> auths) {
     return new BizTemplate<OpenAPI>() {
@@ -220,13 +284,13 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
 
       @Override
       protected void checkParams() {
-        // Check the url and connectivity
+        // Verify URL and connectivity, retrieve OpenAPI content
         content = servicesSyncQuery.checkAndGetOpenApiContent(syncUrl, auths);
       }
 
       @Override
       protected OpenAPI process() {
-        // Check the is OpenApi document
+        // Validate and parse OpenAPI document
         List<AuthorizationValue> auths0 = isEmpty(auths) ? null
             : auths.stream().map(x -> new AuthorizationValue()
                     .type("apiKey").keyName(x.getKeyName()).value(x.getValue()))
@@ -236,6 +300,16 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     }.execute();
   }
 
+  /**
+   * Deletes synchronization configurations by names.
+   * 
+   * <p>This method removes specific synchronization configurations
+   * and logs the deletion activity for audit purposes.</p>
+   * 
+   * @param serviceId the ID of the service
+   * @param names the set of configuration names to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Long serviceId, Set<String> names) {
@@ -244,7 +318,9 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
 
       @Override
       protected void checkParams() {
+        // Verify user has modification permissions
         servicesAuthQuery.checkModifyAuth(getUserId(), serviceId);
+        // Verify service exists
         projectDb = servicesQuery.checkAndFind(serviceId);
       }
 
@@ -266,12 +342,22 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     }.execute();
   }
 
+  /**
+   * Performs the actual synchronization operation.
+   * 
+   * <p>This method executes the synchronization process, including URL validation,
+   * content retrieval, and schema updates. It handles success and failure states
+   * and updates the synchronization record accordingly.</p>
+   * 
+   * @param projectSync the synchronization configuration to execute
+   * @param serviceId the ID of the service to synchronize
+   */
   public void sync0(ServicesSync projectSync, Long serviceId) {
     try {
-      // Check the url and connectivity
+      // Verify URL and connectivity, retrieve OpenAPI content
       String content = servicesSyncQuery.checkAndGetOpenApiContent(
           projectSync.getApiDocsUrl(), projectSync.getAuths());
-      // Save sync result
+      // Perform schema replacement with synchronization
       servicesSchemaCmd.openapiReplace(serviceId, true, false, content,
           projectSync.getStrategyWhenDuplicated(), projectSync.getDeleteWhenNotExisted(),
           ApiSource.SYNC, ApiImportSource.OPENAPI, true, projectSync.getName());
@@ -285,11 +371,21 @@ public class ServicesSyncCmdImpl extends CommCmd<ServicesSync, Long> implements 
     servicesSyncRepo.save(projectSync);
   }
 
+  /**
+   * Deletes all synchronization configurations for multiple services.
+   * 
+   * @param servicesIds the collection of service IDs to delete sync configs for
+   */
   @Override
   public void deleteAllByServices(Collection<Long> servicesIds) {
     servicesSyncRepo.deleteByServiceIdIn(servicesIds);
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the services sync repository
+   */
   @Override
   protected BaseRepository<ServicesSync, Long> getRepository() {
     return this.servicesSyncRepo;
