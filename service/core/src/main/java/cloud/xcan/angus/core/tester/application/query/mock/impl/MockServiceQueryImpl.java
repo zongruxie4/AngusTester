@@ -85,6 +85,29 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
+/**
+ * Implementation of MockServiceQuery for managing Mock service operations and data retrieval.
+ * <p>
+ * This class provides comprehensive functionality for querying and managing Mock services,
+ * including service creation, configuration, monitoring, and lifecycle management.
+ * It handles service validation, authorization, status monitoring, and resource management.
+ * <p>
+ * Key features include:
+ * <ul>
+ *   <li>Mock service detail retrieval with comprehensive data enrichment</li>
+ *   <li>Service listing with search capabilities and authorization checks</li>
+ *   <li>Service status monitoring and health checking</li>
+ *   <li>Domain and port validation for service configuration</li>
+ *   <li>Node resource management and capacity planning</li>
+ *   <li>Authorization management and permission validation</li>
+ *   <li>Statistics and metrics collection for service analysis</li>
+ *   <li>Associated API management and quota validation</li>
+ * </ul>
+ * <p>
+ * The implementation uses the BizTemplate pattern for consistent business logic handling
+ * and proper error management across all operations. It also supports summary query
+ * registration for analytics and reporting purposes.
+ */
 @Biz
 @SummaryQueryRegister(name = "MockService", table = "mock_service",
     groupByColumns = {"created_date", "source"})
@@ -92,49 +115,48 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
   @Resource
   private MockServiceRepo mockServiceRepo;
-
   @Resource
   private MockServiceInfoRepo mockServiceInfoRepo;
-
   @Resource
   private MockServiceSearchRepo mockServiceSearchRepo;
-
   @Resource
   private MockApisResponseRepo mockApisResponseRepo;
-
   @Resource
   private MockServiceAuthQuery mockServiceAuthQuery;
-
   @Resource
   private MockServiceManageCmd mockServiceManageCmd;
-
   @Resource
   private NodeQuery nodeQuery;
-
   @Resource
   private NodeInfoQuery nodeInfoQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private MockApisRepo mockApisRepo;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * Retrieves detailed information for a specific Mock service with comprehensive data enrichment.
+   * <p>
+   * Fetches complete service details including status information, authorization data,
+   * and node information for comprehensive service management and monitoring.
+   * <p>
+   * The method performs authorization validation and enriches the service data with
+   * current status, user permissions, and node details.
+   *
+   * @param id the Mock service ID to retrieve details for
+   * @return MockService object with complete enriched details
+   * @throws ResourceNotFound if the Mock service is not found
+   */
   @Override
   public MockService detail(Long id) {
     return new BizTemplate<MockService>() {
@@ -142,28 +164,39 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       @Override
       protected void checkParams() {
-        // Check the to have permission to view
+        // Validate user authorization for viewing the Mock service
         mockServiceAuthQuery.checkViewAuth(getUserId(), id);
 
-        // Check and get service
+        // Validate that the Mock service exists and retrieve it
         serviceDb = checkAndFind(id);
       }
 
       @Override
       protected MockService process() {
-        // Set mock service status
+        // Enrich service with current status information
         setMockServiceStatus(Collections.singletonList(serviceDb));
 
-        // Set the current user service permissions flag
+        // Enrich service with current user permissions
         setMockServiceCurrentAuths(Collections.singletonList(serviceDb));
 
-        // Set node info
+        // Enrich service with node information
         setNodeInfo(List.of(serviceDb));
         return serviceDb;
       }
     }.execute();
   }
 
+  /**
+   * Retrieves detailed information for a Mock service by associated project ID.
+   * <p>
+   * Finds and retrieves Mock service details based on the associated project,
+   * performing authorization validation and data enrichment.
+   * <p>
+   * The method returns null if no Mock service is associated with the project.
+   *
+   * @param projectId the project ID to find the associated Mock service for
+   * @return MockService object with enriched details, or null if not found
+   */
   @Override
   public MockService detailByProjectId(Long projectId) {
     return new BizTemplate<MockService>() {
@@ -171,13 +204,13 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       @Override
       protected void checkParams() {
-        // Find mock service by projectId
+        // Find Mock service by associated project ID
         serviceDb = findByProjectId(projectId);
         if (isNull(serviceDb)) {
           return;
         }
 
-        // Check the to have permission to view
+        // Validate user authorization for viewing the Mock service
         mockServiceAuthQuery.checkViewAuth(getUserId(), serviceDb.getId());
       }
 
@@ -187,22 +220,32 @@ public class MockServiceQueryImpl implements MockServiceQuery {
           return null;
         }
 
-        // Set mock service status
+        // Enrich service with current status information
         setMockServiceStatus(Collections.singletonList(serviceDb));
 
-        // Set the current user service permissions flag
+        // Enrich service with current user permissions
         setMockServiceCurrentAuths(Collections.singletonList(serviceDb));
         return serviceDb;
       }
     }.execute();
   }
 
+  /**
+   * Retrieves basic information for a specific Mock service with authorization validation.
+   * <p>
+   * Fetches service information with proper error handling for non-existent services.
+   * Note: Authorization validation is currently disabled for this method.
+   *
+   * @param id the Mock service ID to retrieve information for
+   * @return MockService object with basic information
+   * @throws ResourceNotFound if the Mock service is not found
+   */
   @Override
   public MockService info(Long id) {
     return new BizTemplate<MockService>() {
       @Override
       protected void checkParams() {
-        // Check the to have permission to view
+        // Note: Authorization validation is currently disabled for this method
         // mockServiceAuthQuery.checkViewAuth(getUserId(), id);
       }
 
@@ -214,12 +257,21 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves basic information for a specific Mock service without authorization validation.
+   * <p>
+   * Fetches service information and returns null if the service does not exist.
+   * Note: Authorization validation is currently disabled for this method.
+   *
+   * @param id the Mock service ID to retrieve information for
+   * @return MockService object with basic information, or null if not found
+   */
   @Override
   public MockService info0(Long id) {
     return new BizTemplate<MockService>() {
       @Override
       protected void checkParams() {
-        // Check the to have permission to view
+        // Note: Authorization validation is currently disabled for this method
         // mockServiceAuthQuery.checkViewAuth(getUserId(), id);
       }
 
@@ -230,12 +282,22 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves all associated API IDs for a specific Mock service.
+   * <p>
+   * Fetches the complete list of API IDs associated with the Mock service
+   * for relationship management and analysis.
+   * Note: Authorization validation is currently disabled for this method.
+   *
+   * @param id the Mock service ID to retrieve associated API IDs for
+   * @return Set of API IDs associated with the Mock service
+   */
   @Override
   public Set<Long> assocApisIdsList(Long id) {
     return new BizTemplate<Set<Long>>() {
       @Override
       protected void checkParams() {
-        // Check the to have permission to view
+        // Note: Authorization validation is currently disabled for this method
         // mockServiceAuthQuery.checkViewAuth(getUserId(), id);
       }
 
@@ -246,6 +308,15 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Validates that a Mock service exists.
+   * <p>
+   * Performs existence validation and throws ResourceNotFound if the service
+   * is not found in the system.
+   *
+   * @param id the Mock service ID to validate
+   * @throws ResourceNotFound if the Mock service is not found
+   */
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
@@ -260,18 +331,34 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves a paginated list of Mock services with comprehensive filtering and enrichment.
+   * <p>
+   * Supports both regular search and full-text search with project member validation.
+   * Provides enriched service information including status, permissions, and node details.
+   * <p>
+   * The method performs project member validation to ensure the current user has
+   * access to the requested services.
+   *
+   * @param spec the search specification with criteria and filters
+   * @param pageable pagination parameters (page, size, sort)
+   * @param fullTextSearch whether to use full-text search capabilities
+   * @param match array of field names to include in full-text search
+   * @return Page of MockServiceInfo objects with enriched service information
+   */
   @Override
   public Page<MockServiceInfo> find(GenericSpecification<MockServiceInfo> spec,
       PageRequest pageable, boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<MockServiceInfo>>() {
       @Override
       protected void checkParams() {
-        // Check the project member permission
+        // Validate project member permissions for the search criteria
         projectMemberQuery.checkMember(spec.getCriteria());
       }
 
       @Override
       protected Page<MockServiceInfo> process() {
+        // Execute search based on whether full-text search is enabled
         Page<MockServiceInfo> page = fullTextSearch
             ? mockServiceSearchRepo.find(spec.getCriteria(), pageable, MockServiceInfo.class, match)
             : mockServiceInfoRepo.findAll(spec, pageable);
@@ -279,17 +366,26 @@ public class MockServiceQueryImpl implements MockServiceQuery {
           return page;
         }
 
-        // Set mock service status
+        // Enrich services with status information
         setMockServiceInfoStatus(page.getContent());
-        // Set the current user service permissions
+        // Enrich services with current user permissions
         setMockServiceInfoCurrentAuths(page.getContent());
-        // Set node info
+        // Enrich services with node information
         setInfoNodeInfo(page.getContent());
         return page;
       }
     }.execute();
   }
 
+  /**
+   * Retrieves all Mock services associated with a specific node.
+   * <p>
+   * Fetches services deployed on the specified node and enriches them with
+   * current status information for comprehensive node management.
+   *
+   * @param nodeId the node ID to retrieve services for
+   * @return List of MockServiceInfo objects with status information
+   */
   @Override
   public List<MockServiceInfo> findByNodeId(Long nodeId) {
     return new BizTemplate<List<MockServiceInfo>>() {
@@ -298,13 +394,24 @@ public class MockServiceQueryImpl implements MockServiceQuery {
       protected List<MockServiceInfo> process() {
         List<MockServiceInfo> infos = mockServiceInfoRepo.findByNodeId(nodeId);
 
-        // Set mock service status
+        // Enrich services with current status information
         setMockServiceInfoStatus(infos);
         return infos;
       }
     }.execute();
   }
 
+  /**
+   * Retrieves comprehensive statistics for Mock services and their APIs.
+   * <p>
+   * Collects detailed metrics including API counts, request statistics, and
+   * performance data for service analysis and monitoring.
+   * <p>
+   * The method handles both service-specific and global statistics collection.
+   *
+   * @param mockServiceId the Mock service ID for service-specific statistics (null for global)
+   * @return MockServiceCount object with comprehensive statistics
+   */
   @Override
   public MockServiceCount countStatistics(Long mockServiceId) {
     return new BizTemplate<MockServiceCount>() {
@@ -314,12 +421,15 @@ public class MockServiceQueryImpl implements MockServiceQuery {
         MockServiceCount count = new MockServiceCount();
         MockApisCount apisCount;
         if (nonNull(mockServiceId)) {
+          // Collect service-specific statistics
           count.setApisNum(mockApisRepo.countAllByMockServiceId(mockServiceId));
           apisCount = mockApisRepo.countAllNum(mockServiceId);
         } else {
+          // Collect global statistics
           count.setApisNum(mockApisRepo.countAll());
           apisCount = mockApisRepo.countAllNum();
         }
+        // Note: Handle null values from JPA advice to prevent primitive type mismatch
         // Fix:: JPA Null return value from advice does not match primitive return type for: MockApisCount
         // Modify primitive long to Long.
         count.setRequestNum(nullSafe(apisCount.getRequestNum(), 0L));
@@ -332,6 +442,21 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves creation statistics for Mock resources within specified criteria.
+   * <p>
+   * Collects comprehensive creation metrics for services, APIs, responses, and pushback
+   * configurations based on project, creator, and time range filters.
+   * <p>
+   * The method supports flexible filtering for detailed resource analysis and reporting.
+   *
+   * @param projectId the project ID for filtering (null for all projects)
+   * @param creatorObjectType the type of creator object for filtering
+   * @param creatorObjectId the creator object ID for filtering
+   * @param createdDateStart the start date for time range filtering
+   * @param createdDateEnd the end date for time range filtering
+   * @return MockResourcesCreationCount object with comprehensive creation statistics
+   */
   @Override
   public MockResourcesCreationCount creationStatistics(Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -342,18 +467,18 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       Set<Long> createdBys = null;
 
-
       @Override
       protected MockResourcesCreationCount process() {
-        // Find all when condition is null, else find by condition
+        // Determine creator filter based on object type
         if (nonNull(creatorObjectType)) {
           createdBys = userManager.getUserIdByOrgType0(creatorObjectType, creatorObjectId);
         }
 
+        // Build comprehensive filter criteria for statistics collection
         Set<SearchCriteria> allFilters = getCommonResourcesStatsFilter(
             projectId, createdDateStart, createdDateEnd, createdBys);
 
-        // Number of statistical apis
+        // Collect statistics for different resource types
         countService(result, allFilters);
         countApi(result, allFilters);
         countResponse(result, allFilters);
@@ -364,27 +489,39 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves associated API IDs that the user has permission to access.
+   * <p>
+   * Finds APIs within the specified project that are associated with the Mock service
+   * and validates user permissions for both the Mock service and the project.
+   * <p>
+   * The method respects quota limits and authorization controls for secure API access.
+   *
+   * @param id the Mock service ID to find associated APIs for
+   * @param angusProjectId the Angus project ID for API filtering
+   * @return Set of API IDs that are accessible and associated with the Mock service
+   */
   @Override
   public Set<Long> assocApisList(Long id, Long angusProjectId) {
     return new BizTemplate<Set<Long>>() {
       @Override
       protected void checkParams() {
-        // Check the mock service exists
+        // Validate that the Mock service exists
         check(id);
 
-        // Check the to have permission to view mock service
+        // Validate user authorization for viewing the Mock service
         mockServiceAuthQuery.checkViewAuth(getUserId(), id);
 
-        // Check the Angus project exists
+        // Validate that the Angus project exists
         servicesQuery.check(angusProjectId);
 
-        // Check the to have permission to view mock service
+        // Validate user authorization for viewing the Angus project
         servicesAuthQuery.checkViewAuth(getUserId(), angusProjectId);
       }
 
       @Override
       protected Set<Long> process() {
-        // Query project has permission apis
+        // Query project APIs with quota limit consideration
         long maxApisNum = commonQuery.findTenantQuota(AngusTesterMockServiceApis).getQuota();
         Page<ApisBasicInfo> apisExist = apisQuery.find0(angusProjectId,
             PageRequest.of(0, (int) maxApisNum, Sort.by(Direction.DESC, "id")),
@@ -393,35 +530,75 @@ public class MockServiceQueryImpl implements MockServiceQuery {
           return null;
         }
 
-        // Query the interface under the Mock service
+        // Query APIs associated with the Mock service from external services
         Set<Long> mockApisIds = mockApisRepo.findAllByMockServiceIdAndSource(id,
                 MockServiceSource.ASSOC_SERVICE).stream()
             .map(MockApis::getAssocApisId)
             .filter(Objects::nonNull).collect(toSet());
 
+        // Return intersection of project APIs and Mock service associated APIs
         return apisExist.getContent().stream().map(ApisBasicInfo::getId)
             .filter(mockApisIds::contains).collect(toSet());
       }
     }.execute();
   }
 
+  /**
+   * Finds a Mock service by its associated project ID.
+   * <p>
+   * Retrieves the Mock service that is associated with the specified project,
+   * returning null if no association exists.
+   *
+   * @param projectId the project ID to find the associated Mock service for
+   * @return MockService object if found, null otherwise
+   */
   @Override
   public MockService findByProjectId(Long projectId) {
     return mockServiceRepo.findByAssocServiceId(projectId).orElse(null);
   }
 
+  /**
+   * Validates that a Mock service exists and retrieves it.
+   * <p>
+   * Performs existence validation and throws ResourceNotFound if the service is not found.
+   * Used as a helper method for other operations that require service validation.
+   *
+   * @param id the Mock service ID to validate and retrieve
+   * @return MockService object if found
+   * @throws ResourceNotFound if the Mock service is not found
+   */
   @Override
   public MockService checkAndFind(Long id) {
     return mockServiceRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "MockService"));
   }
 
+  /**
+   * Validates that a Mock service info exists and retrieves it.
+   * <p>
+   * Performs existence validation and throws ResourceNotFound if the service info is not found.
+   * Used as a helper method for other operations that require service info validation.
+   *
+   * @param id the Mock service ID to validate and retrieve info for
+   * @return MockServiceInfo object if found
+   * @throws ResourceNotFound if the Mock service info is not found
+   */
   @Override
   public MockServiceInfo checkAndFindInfo(Long id) {
     return mockServiceInfoRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "MockService"));
   }
 
+  /**
+   * Validates that multiple Mock services exist and retrieves them.
+   * <p>
+   * Performs batch existence validation and throws ResourceNotFound if any service is not found.
+   * Used for bulk operations that require multiple service validations.
+   *
+   * @param ids set of Mock service IDs to validate and retrieve
+   * @return List of MockService objects for all found services
+   * @throws ResourceNotFound if any Mock service is not found
+   */
   @Override
   public List<MockService> checkAndFind(Set<Long> ids) {
     List<MockService> mockService = mockServiceRepo.findAllById(ids);
@@ -431,6 +608,16 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     return mockService;
   }
 
+  /**
+   * Validates that multiple Mock service infos exist and retrieves them.
+   * <p>
+   * Performs batch existence validation and throws ResourceNotFound if any service info is not found.
+   * Used for bulk operations that require multiple service info validations.
+   *
+   * @param ids set of Mock service IDs to validate and retrieve info for
+   * @return List of MockServiceInfo objects for all found services
+   * @throws ResourceNotFound if any Mock service info is not found
+   */
   @Override
   public List<MockServiceInfo> checkAndFindInfo(Set<Long> ids) {
     List<MockServiceInfo> mockService = mockServiceInfoRepo.findAllById(ids);
@@ -440,6 +627,14 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     return mockService;
   }
 
+  /**
+   * Validates that a Mock service name does not already exist.
+   * <p>
+   * Checks for name uniqueness to prevent duplicate service names during creation operations.
+   *
+   * @param name the service name to validate
+   * @throws ResourceExisted if the service name already exists
+   */
   @Override
   public void checkNameExists(String name) {
     long count = mockServiceRepo.countByName(name);
@@ -447,8 +642,15 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   }
 
   /**
-   * Limit the maximum number of services that can be created nodes is memory/1GB, but create at
-   * least two.
+   * Validates that a node has sufficient capacity for additional Mock services.
+   * <p>
+   * Checks the current service count against the node's memory capacity,
+   * limiting services to approximately 1GB of memory per service while ensuring
+   * at least 2 services can be created on any node.
+   *
+   * @param nodeId the node ID to check capacity for
+   * @param existedNodeNum the current number of services on the node
+   * @throws ProtocolException if the node capacity limit would be exceeded
    */
   @Override
   public void checkNodeServiceNum(long nodeId, long existedNodeNum) {
@@ -462,21 +664,30 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }
   }
 
+  /**
+   * Validates that a Mock service's domain and port configuration is valid and available.
+   * <p>
+   * Performs comprehensive validation including cloud domain requirements, domain uniqueness,
+   * and port availability checks for secure service configuration.
+   *
+   * @param service the Mock service to validate domain and port for
+   * @throws ProtocolException if domain or port validation fails
+   */
   @Override
   public void checkValidDomainAndPort(MockService service) {
     String serviceDomain = service.getServiceDomain();
     if (isNotEmpty(serviceDomain)) {
       if (isCloudServiceEdition()) {
-        // Check the service domain must end with angusmock.cloud
+        // Validate that cloud service domain ends with the required suffix
         assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
             MOCK_SERVICE_TOP_LEVEL_DOMAIN_ERROR_T, new Object[]{MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX});
       }
-      // Check the domain not used by any other nodes (Excluding nodeId)
+      // Validate that domain is not used by other nodes (excluding current node)
       boolean existedDomain = mockServiceRepo.existsByServiceDomainAndNodeIdNot(
           serviceDomain, service.getNodeId());
       assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
           new Object[]{service.getNodeId()});
-      // Check the domain and port not used by any services
+      // Validate that domain and port combination is not used by other services
       boolean existedDomainAndPort = mockServiceRepo.existsByServiceDomainAndServicePort(
           serviceDomain, service.getServicePort());
       assertTrue(!existedDomainAndPort, MOCK_SERVICE_DOMAIN_PORT_IN_USE_T,
@@ -484,15 +695,25 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }
   }
 
+  /**
+   * Validates that a domain update is valid and available.
+   * <p>
+   * Performs domain validation for update operations, ensuring the new domain
+   * meets cloud service requirements and is not already in use.
+   *
+   * @param serviceDomain the new service domain to validate
+   * @param nodeId the node ID to exclude from domain uniqueness check
+   * @throws ProtocolException if domain validation fails
+   */
   @Override
   public void checkUpdateDomain(String serviceDomain, Long nodeId) {
     if (isNotEmpty(serviceDomain)) {
       if (isCloudServiceEdition()) {
-        // Check the service domain must end with angusmock.cloud
+        // Validate that cloud service domain ends with the required suffix
         assertTrue(serviceDomain.endsWith(MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX),
             MOCK_SERVICE_TOP_LEVEL_DOMAIN_ERROR_T, new Object[]{MOCK_SERVICE_CLOUD_DOMAIN_SUFFIX});
       }
-      // Check the domain not used by any other nodes (Excluding nodeId)
+      // Validate that domain is not used by other nodes (excluding current node)
       boolean existedDomain = mockServiceRepo.existsByServiceDomainAndNodeIdNot(
           serviceDomain, nodeId);
       assertTrue(!existedDomain, MOCK_SERVICE_DOMAIN_IN_USE_T,
@@ -500,14 +721,24 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }
   }
 
+  /**
+   * Validates that a node and port combination is available for service deployment.
+   * <p>
+   * Checks both database records and agent availability to ensure the port
+   * is not already in use and is available for service deployment.
+   *
+   * @param nodeDb the node to check port availability for
+   * @param port the port to validate
+   * @throws ProtocolException if port is unavailable or already in use
+   */
   @Override
   public void checkNodeAndPortAvailable(Node nodeDb, int port) {
-    // Check the port not used by any other services
+    // Validate that port is not used by other services on the same node
     boolean existedNodePort = mockServiceRepo.existsByNodeIdAndServicePort(nodeDb.getId(), port);
     assertTrue(!existedNodePort, MOCK_SERVICE_NODE_PORT_IN_USE_T,
         new Object[]{nodeDb.getId(), port});
 
-    // Check the available in node by agent
+    // Validate port availability through node agent
     CheckPortVo result = checkPort(nodeDb.getId(), nodeDb.getIp(), port);
     if (!result.isSuccess()) {
       throw ProtocolException.of(MOCK_SERVICE_PORT_UNAVAILABLE_IN_AGENT_T,
@@ -515,6 +746,15 @@ public class MockServiceQueryImpl implements MockServiceQuery {
     }
   }
 
+  /**
+   * Validates that a project is not already associated with another Mock service.
+   * <p>
+   * Ensures that projects can only be associated with one Mock service to prevent
+   * conflicts and maintain data integrity.
+   *
+   * @param projectDb the project to validate association for
+   * @throws ResourceExisted if the project is already associated with another Mock service
+   */
   @Override
   public void checkAssocProjectExists(Services projectDb) {
     assertTrue(!mockServiceRepo.existsByAssocServiceId(projectDb.getId()),
