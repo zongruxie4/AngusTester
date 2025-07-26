@@ -43,6 +43,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * Implementation of API authorization query operations for permission management.
+ * 
+ * <p>This class provides comprehensive functionality for querying and validating
+ * API permissions, including user authorization checks, permission validation,
+ * and authorization status management.</p>
+ * 
+ * <p>It handles various permission types including view, modify, delete, debug,
+ * test, grant, share, release, and export permissions with proper validation.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>User permission validation and checking</li>
+ *   <li>Current user authorization status</li>
+ *   <li>Batch permission validation for multiple APIs</li>
+ *   <li>Creator permission handling</li>
+ *   <li>Admin user privilege management</li>
+ *   <li>Authorization status queries</li>
+ *   <li>Permission flatting and aggregation</li>
+ * </ul></p>
+ * 
+ * @author XiaoLong Liu
+ */
 @Biz
 public class ApisAuthQueryImpl implements ApisAuthQuery {
 
@@ -61,6 +84,15 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * Gets the authorization status for an API.
+   * 
+   * <p>This method retrieves whether authorization is enabled for a specific API,
+   * indicating whether permission checks are required for access.</p>
+   * 
+   * @param apiId the API ID to check authorization status for
+   * @return true if authorization is enabled, false otherwise
+   */
   @Override
   public Boolean status(Long apiId) {
     return new BizTemplate<Boolean>() {
@@ -68,7 +100,7 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
       @Override
       protected void checkParams() {
-        // Check and get apis exists
+        // Verify API exists and retrieve API base info
         apiInfoDb = apisQuery.checkAndFindBaseInfo(apiId);
       }
 
@@ -79,6 +111,20 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
     }.execute();
   }
 
+  /**
+   * Gets user permissions for a specific API with admin privilege handling.
+   * 
+   * <p>This method retrieves all permissions granted to a user for a specific API,
+   * including special handling for admin users and API creators.</p>
+   * 
+   * <p>The method considers admin privileges and creator permissions when
+   * determining the final permission set.</p>
+   * 
+   * @param apiId the API ID to check permissions for
+   * @param userId the user ID to get permissions for
+   * @param admin whether to consider admin privileges
+   * @return list of permissions granted to the user
+   */
   @Override
   public List<ApiPermission> userAuth(Long apiId, Long userId, Boolean admin) {
     return new BizTemplate<List<ApiPermission>>() {
@@ -86,7 +132,7 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
       @Override
       protected void checkParams() {
-        // Check the apis exists
+        // Verify API exists and retrieve API base info
         apisDb = apisQuery.checkAndFindBaseInfo(apiId);
       }
 
@@ -115,6 +161,19 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
     }.execute();
   }
 
+  /**
+   * Gets current user authorization status for a specific API.
+   * 
+   * <p>This method retrieves the current user's authorization status for a specific API,
+   * including project authorization, API authorization, and detailed permission set.</p>
+   * 
+   * <p>The method considers admin privileges, creator permissions, and public access
+   * when determining the final authorization status.</p>
+   * 
+   * @param apiId the API ID to check current user authorization for
+   * @param admin whether to consider admin privileges
+   * @return the current user's authorization status with detailed permissions
+   */
   @Override
   public ApisAuthCurrent currentUserAuth(Long apiId, Boolean admin) {
     return new BizTemplate<ApisAuthCurrent>() {
@@ -122,33 +181,38 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
       @Override
       protected void checkParams() {
-        // Check the apis exists
+        // Verify API exists and retrieve API base info
         apisDb = apisQuery.checkAndFindBaseInfo(apiId);
       }
 
       @Override
       protected ApisAuthCurrent process() {
+        // Initialize authorization status with project and API authorization flags
         ApisAuthCurrent authCurrent = new ApisAuthCurrent();
         authCurrent.setProjectAuth(apisDb.getServiceAuth());
         authCurrent.setApisAuth(apisDb.getAuth());
 
+        // Grant all permissions for admin users if admin flag is set
         if (Objects.nonNull(admin) && admin && commonQuery.isAdminUser()) {
           authCurrent.addPermissions(ApiPermission.ALL);
           return authCurrent;
         }
 
+        // Grant all permissions for API creators
         List<ApisAuth> apisAuths = findAuth(getUserId(), apiId);
         if (isCreator(apisAuths)) {
           authCurrent.addPermissions(ApiPermission.ALL);
           return authCurrent;
         }
 
+        // Add default permissions for APIs without authorization control
         Set<ApiPermission> permissions = new HashSet<>();
         if (!apisDb.isEnabledAuth()) {
           permissions.add(ApiPermission.VIEW);
           permissions.add(ApiPermission.DEBUG);
         }
 
+        // Aggregate all granted permissions from authorization records
         Set<ApiPermission> authPermissions = apisAuths.stream().map(ApisAuth::getAuths)
             .flatMap(Collection::stream).collect(Collectors.toSet());
         authPermissions.addAll(permissions);
@@ -219,9 +283,19 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
     checkAuth(userId, apisId, ApiPermission.TEST);
   }
 
+  /**
+   * Checks if user has grant authorization for an API.
+   * 
+   * <p>This method validates whether a user has permission to grant access to an API.
+   * Public APIs can be modified and authorized by anyone.</p>
+   * 
+   * @param userId the user ID to check grant authorization for
+   * @param apisId the API ID to check grant authorization for
+   * @throws BizException if user lacks grant authorization
+   */
   @Override
   public void checkGrantAuth(Long userId, Long apisId) {
-    // Fix:: Public apis can be modified and authorized by anyone
+    // Note: Public APIs can be modified and authorized by anyone
     checkAuth(userId, apisId, ApiPermission.GRANT, false, true);
   }
 
@@ -230,9 +304,19 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
     checkAuth(userId, apisId, ApiPermission.SHARE);
   }
 
+  /**
+   * Checks if user has release authorization for an API.
+   * 
+   * <p>This method validates whether a user has permission to release an API.
+   * Release permission is also required for modifying the released status of public APIs.</p>
+   * 
+   * @param userId the user ID to check release authorization for
+   * @param apisId the API ID to check release authorization for
+   * @throws BizException if user lacks release authorization
+   */
   @Override
   public void checkReleaseAuth(Long userId, Long apisId) {
-    // Fix:: Release permission is also required for modifying the released status of public apis.
+    // Note: Release permission is also required for modifying the released status of public APIs
     checkAuth(userId, apisId, ApiPermission.RELEASE, false, true);
   }
 
@@ -247,20 +331,38 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
         permission.isRelease() || permission.isGrant());
   }
 
+  /**
+   * Checks user authorization for a specific permission with advanced options.
+   * 
+   * <p>This method provides comprehensive authorization checking with options to ignore
+   * admin permissions and public access controls.</p>
+   * 
+   * <p>The method handles special cases for grant and release permissions on public APIs,
+   * and validates creator permissions and flat permission sets.</p>
+   * 
+   * @param userId the user ID to check authorization for
+   * @param apisId the API ID to check authorization for
+   * @param permission the permission to check
+   * @param ignoreAdminPermission whether to ignore admin user privileges
+   * @param ignorePublicAccess whether to ignore public access controls
+   * @throws BizException if user lacks the required permission
+   */
   @Override
   public void checkAuth(Long userId, Long apisId, ApiPermission permission,
       boolean ignoreAdminPermission, boolean ignorePublicAccess) {
+    // Skip validation for admin users or non-user actions
     if (!ignoreAdminPermission && commonQuery.isAdminUser() || !isUserAction()) {
       return;
     }
 
-    // Fix: When it is not controlled by permissions, it will cause users who do not have authorization permissions to authorize
+    // Skip validation for non-grant/non-release permissions on APIs without authorization control
+    // Note: This prevents users without authorization permissions from granting access
     if (!ignorePublicAccess && !permission.isGrant() && !permission.isRelease()
         && !apisQuery.isAuthCtrl(apisId)) {
       return;
     }
 
-    // View as base permissions
+    // Validate view permissions as base permissions
     List<ApisAuth> auths = findAuth(userId, apisId);
     if (permission.equals(ApiPermission.VIEW)) {
       if (isEmpty(auths)) {
@@ -268,17 +370,29 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
       }
     }
 
+    // Grant all permissions to API creators
     if (isCreator(auths)) {
       return;
     }
 
+    // Validate specific permission in flat permission set
     if (!flatPermissions(auths).contains(permission)) {
       throw BizException.of(APIS_NO_AUTH_CODE, APIS_NO_AUTH, new Object[]{permission});
     }
   }
 
   /**
-   * Verify the operation permissions of the apis
+   * Verifies operation permissions for multiple APIs in batch.
+   * 
+   * <p>This method performs batch permission validation for multiple APIs,
+   * checking if the current user has the specified permission for all APIs.</p>
+   * 
+   * <p>The method handles admin user privileges and filters APIs that require
+   * authorization control for efficient validation.</p>
+   * 
+   * @param apiIds the collection of API IDs to check permissions for
+   * @param permission the permission to validate for all APIs
+   * @throws BizException if user lacks permission for any API in the batch
    */
   @Override
   public void batchCheckPermission(Collection<Long> apiIds, ApiPermission permission) {

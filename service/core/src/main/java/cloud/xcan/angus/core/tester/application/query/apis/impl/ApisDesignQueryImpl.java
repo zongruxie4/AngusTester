@@ -34,6 +34,28 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of API design query operations for design management.
+ * 
+ * <p>This class provides comprehensive functionality for querying and managing
+ * API designs, including design details, pagination, search, and validation.</p>
+ * 
+ * <p>It handles design lifecycle management, service synchronization,
+ * OpenAPI content management, and comprehensive data enrichment.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>API design detail and info queries with pagination</li>
+ *   <li>Full-text search capabilities for design content</li>
+ *   <li>Service synchronization and OpenAPI content management</li>
+ *   <li>Design source validation and permission checking</li>
+ *   <li>Service name enrichment and association</li>
+ *   <li>Project member permission validation</li>
+ *   <li>Latest content retrieval and formatting</li>
+ * </ul></p>
+ * 
+ * @author XiaoLong Liu
+ */
 @Biz
 public class ApisDesignQueryImpl implements ApisDesignQuery {
 
@@ -61,6 +83,19 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
   @Resource
   private UserManager userManager;
 
+  /**
+   * Retrieves detailed API design information with comprehensive enrichment.
+   * 
+   * <p>This method fetches complete API design details with extensive enrichment
+   * including latest OpenAPI content, service information, and permission validation.</p>
+   * 
+   * <p>The method validates user permissions based on design source type
+   * and handles service synchronization for latest content retrieval.</p>
+   * 
+   * @param id the API design ID to retrieve details for
+   * @return the detailed API design information with all enrichments
+   * @throws ResourceNotFound if the design is not found
+   */
   @Override
   public ApisDesign detail(Long id) {
     return new BizTemplate<ApisDesign>() {
@@ -68,51 +103,71 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
       @Override
       protected void checkParams() {
-        // Check the design exists
+        // Verify design exists and retrieve design info
         designDb = checkAndFind(id);
-        // Check the view permissions
+        // Verify user has appropriate view permissions based on design source
         if (designDb.getDesignSource().isSynchronousService()) {
           servicesAuthQuery.checkViewAuth(getUserId(), designDb.getDesignSourceId());
         } else {
-          // Check the project permission
+          // Verify user has project member permissions
           projectMemberQuery.checkMember(getUserId(), designDb.getProjectId());
         }
       }
 
       @Override
       protected ApisDesign process() {
-        // Fetch the latest design content information
+        // Fetch and set the latest design content information
         if (designDb.hasLatestContent()) {
+          // Retrieve latest OpenAPI content from service schema
           OpenAPI openapi = servicesSchemaQuery.openapiDetail0(designDb.getDesignSourceId(),
               null, false);
           designDb.setLatestOpenapi(Json31.pretty(openapi));
         } else if (isNotEmpty(designDb.getOpenapi())) {
+          // Use existing OpenAPI content if available
           designDb.setLatestOpenapi(designDb.getOpenapi());
         }
 
+        // Enrich design with service name information
         setServicesName(designDb);
         return designDb;
       }
     }.execute();
   }
 
+  /**
+   * Lists API designs with pagination, filtering, and optional full-text search.
+   * 
+   * <p>This method retrieves API designs based on specification criteria with support
+   * for pagination and optional full-text search capabilities.</p>
+   * 
+   * <p>The method automatically enriches design data with service names
+   * and user information for enhanced display.</p>
+   * 
+   * @param spec the specification for filtering API designs
+   * @param pageable the pagination and sorting parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match the full-text search match fields
+   * @return a page of API designs with enriched data
+   */
   @Override
   public Page<ApisDesignInfo> list(GenericSpecification<ApisDesignInfo> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisDesignInfo>>() {
       @Override
       protected void checkParams() {
-        // Check the project permission
+        // Verify user has project member permissions
         projectMemberQuery.checkMember(spec.getCriteria());
       }
 
       @Override
       protected Page<ApisDesignInfo> process() {
+        // Execute search with full-text or standard search
         Page<ApisDesignInfo> page = fullTextSearch
             ? apisDesignInfoSearchRepo.find(spec.getCriteria(), pageable,
             ApisDesignInfo.class, match)
             : apisDesignInfoRepo.findAll(spec, pageable);
         if (page.hasContent()) {
+          // Enrich designs with service names and user information
           setServicesName(page.getContent());
           userManager.setUserNameAndAvatar(page.getContent(), "createdBy");
         }
@@ -136,6 +191,15 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
     return apisDesignInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "ApisDesign"));
   }
 
+  /**
+   * Checks if a service already has an associated API design.
+   * 
+   * <p>This method validates that a service does not already have an API design,
+   * preventing duplicate design creation for the same service.</p>
+   * 
+   * @param serviceId the service ID to check for existing designs
+   * @throws ResourceExisted if a design already exists for the service
+   */
   @Override
   public void checkServiceExisted(Long serviceId) {
     ApisDesignInfo design = apisDesignInfoRepo.findByDesignSourceId(serviceId);
@@ -144,6 +208,14 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
     }
   }
 
+  /**
+   * Sets service name for a single API design.
+   * 
+   * <p>This method enriches an API design with its associated service name
+   * for enhanced display and identification.</p>
+   * 
+   * @param design the API design to enrich with service name
+   */
   @Override
   public void setServicesName(ApisDesign design) {
     if (nonNull(design.getDesignSourceId())) {
@@ -154,6 +226,14 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
     }
   }
 
+  /**
+   * Sets service names for multiple API designs in batch.
+   * 
+   * <p>This method enriches multiple API designs with their associated service names
+   * for enhanced display and identification, using efficient batch processing.</p>
+   * 
+   * @param designs the list of API designs to enrich with service names
+   */
   @Override
   public void setServicesName(List<ApisDesignInfo> designs) {
     Set<Long> servicesIds = designs.stream().map(ApisDesignInfo::getDesignSourceId)

@@ -118,6 +118,31 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of API query operations for comprehensive API management and reporting.
+ * 
+ * <p>This class provides extensive functionality for querying and retrieving
+ * API data, including detailed information, pagination, search, and various
+ * enrichment operations.</p>
+ * 
+ * <p>It handles API lifecycle management, mock service integration, server
+ * configuration, reference resolution, and comprehensive data enrichment.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>API detail and basic info queries with pagination</li>
+ *   <li>Full-text search capabilities for API content</li>
+ *   <li>OpenAPI schema generation and reference resolution</li>
+ *   <li>Mock service integration and server management</li>
+ *   <li>API creation statistics and quota management</li>
+ *   <li>Favourite and follow status management</li>
+ *   <li>Activity resource mapping and notification events</li>
+ *   <li>Comprehensive validation and status checking</li>
+ *   <li>Summary query registration for reporting</li>
+ * </ul></p>
+ * 
+ * @author XiaoLong Liu
+ */
 @Slf4j
 @Biz
 @SummaryQueryRegister(name = "Apis", table = "apis",
@@ -183,6 +208,21 @@ public class ApisQueryImpl implements ApisQuery {
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
 
+  /**
+   * Retrieves detailed API information with comprehensive enrichment.
+   * 
+   * <p>This method fetches complete API details with extensive enrichment including
+   * favourite/follow status, mock service associations, available servers,
+   * tag schemas, and optional reference resolution.</p>
+   * 
+   * <p>The method validates user permissions and handles deleted API access
+   * with appropriate authorization checks.</p>
+   * 
+   * @param id the API ID to retrieve details for
+   * @param resolveRef whether to resolve OpenAPI references
+   * @return the detailed API information with all enrichments
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public Apis detail(Long id, Boolean resolveRef) {
     return new BizTemplate<Apis>() {
@@ -190,35 +230,34 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected void checkParams() {
-        // Check the to have view permission
+        // Verify user has API view permissions
         apisAuthQuery.checkViewAuth(getUserId(), id);
 
-        // Check the apis exists
+        // Verify API exists and retrieve API info
         apisDb = checkAndFind(id);
       }
 
       @Override
       protected Apis process() {
-        // If the apis has been deleted, determine whether it is deleted by the current person
+        // Verify user can access deleted API (only if they deleted it)
         BizAssert.assertTrue(!apisDb.getDeleted() || apisDb.getDeletedBy().equals(getUserId()),
             TRASH_NO_VIEW_PERMISSION_CODE, TRASH_NO_VIEW_PERMISSION);
 
         List<Apis> list = List.of(apisDb);
         if (isUserAction()) {
-          // Set favourite state
+          // Set favourite and follow status for current user
           setFavourite(list);
-          // Set follow state
           setFollow(list);
         }
-        // Set associated mock apis
+        // Set associated mock APIs for enhanced display
         setAssocMockApis(list);
-        // Set available servers
+        // Set available servers for API execution
         setAndGetAvailableServers(apisDb);
-        // Set tag schemas
+        // Set tag schemas from parent service
         List<Tag> tagSchemas = servicesSchemaQuery.checkAndFind(apisDb.getServiceId()).getTags();
         setTagSchemas(apisDb, tagSchemas);
 
-        // Set OpenAPI ref models
+        // Resolve OpenAPI references if requested
         if (Objects.equals(resolveRef, true)) {
           setOpenApiPathRefModels(apisDb);
         }
@@ -227,6 +266,19 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Finds mock API information associated with a specific API.
+   * 
+   * <p>This method retrieves mock API details and validates consistency
+   * between the original API and mock API configurations.</p>
+   * 
+   * <p>The method checks for operation inconsistencies and enriches
+   * mock service information for display purposes.</p>
+   * 
+   * @param id the API ID to find mock information for
+   * @return the mock API information or null if not found
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public MockApis findMockApis(Long id) {
     return new BizTemplate<MockApis>() {
@@ -234,20 +286,22 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected void checkParams() {
-        // Check the apis exists
+        // Verify API exists and retrieve API base info
         apisDb = checkAndFindBaseInfo(id);
 
-        // Check the to have view permission
+        // Verify user has API view permissions
         apisAuthQuery.checkViewAuth(getUserId(), id);
       }
 
       @Override
       protected MockApis process() {
+        // Retrieve mock API information for the specified API
         MockApis mockApis = mockApisRepo.findByAssocApisId(id);
         if (isNull(mockApis)) {
           return null;
         }
 
+        // Check for operation consistency between API and mock API
         if (!Objects.equals(apisDb.getEndpoint(), mockApis.getEndpoint()) ||
             !Objects.equals(apisDb.getMethod(), mockApis.getMethod())) {
           mockApis.setInconsistentOperation(true)
@@ -255,9 +309,10 @@ public class ApisQueryImpl implements ApisQuery {
         } else {
           mockApis.setInconsistentOperation(false);
         }
+        // Set mock service name for enhanced display
         mockApis.setMockServiceName(mockApisRepo.findMockServiceNameById(mockApis.getId()));
 
-        // Return apis parent mock service information
+        // Return API parent mock service information
         MockServiceInfo service = mockServiceInfoRepo.findByAssocServiceId(apisDb.getServiceId());
         if (nonNull(service)) {
           mockApis.setParentMockServiceId(service.getId())
@@ -270,6 +325,22 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Generates OpenAPI specification for an API with format and compression options.
+   * 
+   * <p>This method generates OpenAPI documentation for an API with support for
+   * different schema formats (JSON/YAML) and optional gzip compression.</p>
+   * 
+   * <p>The method validates export permissions and handles schema generation
+   * with proper error handling.</p>
+   * 
+   * @param id the API ID to generate OpenAPI specification for
+   * @param format the schema format (JSON or YAML)
+   * @param gzipCompression whether to apply gzip compression
+   * @param checkExport whether to check export permissions
+   * @return the OpenAPI specification as a string
+   * @throws IllegalArgumentException if validation fails
+   */
   @Override
   public String openapiDetail(Long id, SchemaFormat format, Boolean gzipCompression
       , boolean checkExport) {
@@ -298,6 +369,15 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Checks if an API exists by ID.
+   * 
+   * <p>This method validates that an API with the specified ID exists
+   * in the system, throwing a ResourceNotFound exception if not found.</p>
+   * 
+   * @param id the API ID to check for existence
+   * @throws ResourceNotFound if the API is not found
+   */
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
@@ -312,6 +392,20 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves detailed API information for multiple APIs with optional reference resolution.
+   * 
+   * <p>This method fetches detailed information for multiple APIs, ensuring they all belong
+   * to the same service and optionally resolving OpenAPI references.</p>
+   * 
+   * <p>The method validates user permissions for all APIs and enriches data with
+   * tag schemas and reference models when requested.</p>
+   * 
+   * @param ids the set of API IDs to retrieve details for
+   * @param resolveRef whether to resolve OpenAPI references
+   * @return list of detailed API information
+   * @throws IllegalArgumentException if APIs belong to different services
+   */
   @Override
   public List<Apis> listDetail(HashSet<Long> ids, Boolean resolveRef) {
     return new BizTemplate<List<Apis>>() {
@@ -329,9 +423,9 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected List<Apis> process() {
-        // Set OpenAPI ref models
+        // Set OpenAPI reference models if requested
         if (isNotEmpty(apisDb) && Objects.equals(resolveRef, true)) {
-          // Warn:: Services ID must belong to the same service
+          // Note: All APIs must belong to the same service for consistent tag schemas
           List<Tag> tagSchemas = servicesSchemaQuery.checkAndFind(
               apisDb.get(0).getServiceId()).getTags();
           for (Apis api : apisDb) {
@@ -344,6 +438,22 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Finds APIs by service ID with pagination, filtering, and optional full-text search.
+   * 
+   * <p>This method retrieves APIs for a specific service with support for pagination,
+   * filtering, and optional full-text search capabilities.</p>
+   * 
+   * <p>The method validates service view permissions and automatically filters
+   * out deleted APIs and services.</p>
+   * 
+   * @param serviceId the service ID to find APIs for
+   * @param spec the specification for filtering APIs
+   * @param pageable the pagination and sorting parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match the full-text search match fields
+   * @return a page of APIs for the specified service
+   */
   @Override
   public Page<ApisBasicInfo> findByServiceId(Long serviceId,
       GenericSpecification<ApisBasicInfo> spec, PageRequest pageable, boolean fullTextSearch,
@@ -351,12 +461,13 @@ public class ApisQueryImpl implements ApisQuery {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
       protected void checkParams() {
-        // Check the view permissions
+        // Verify user has service view permissions
         servicesAuthQuery.checkViewAuth(getUserId(), serviceId);
       }
 
       @Override
       protected Page<ApisBasicInfo> process() {
+        // Add service-specific and deletion filters
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(equal("serviceId", serviceId));
         criteria.add(equal("deleted", false));
@@ -367,18 +478,34 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Lists APIs with pagination, filtering, and optional full-text search.
+   * 
+   * <p>This method retrieves APIs based on specification criteria with support
+   * for pagination and optional full-text search capabilities.</p>
+   * 
+   * <p>The method automatically enriches API data with mock associations
+   * for enhanced display.</p>
+   * 
+   * @param spec the specification for filtering APIs
+   * @param pageable the pagination and sorting parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match the full-text search match fields
+   * @return a page of APIs with enriched data
+   */
   @Override
   public Page<ApisBasicInfo> list(GenericSpecification<ApisBasicInfo> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
     return new BizTemplate<Page<ApisBasicInfo>>() {
       @Override
       protected void checkParams() {
-        // Check the project member permission
+        // Verify user has project member permissions
         projectMemberQuery.checkMember(spec.getCriteria());
       }
 
       @Override
       protected Page<ApisBasicInfo> process() {
+        // Add deletion filters to exclude deleted APIs and services
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(equal("deleted", false));
         criteria.add(equal("serviceDeleted", false));
@@ -388,9 +515,21 @@ public class ApisQueryImpl implements ApisQuery {
     }.execute();
   }
 
+  /**
+   * Internal method for listing APIs with common enrichment logic.
+   * 
+   * <p>This method handles the core listing logic with authorization filtering,
+   * search execution, and comprehensive data enrichment.</p>
+   * 
+   * @param criteria the search criteria for filtering APIs
+   * @param pageable the pagination and sorting parameters
+   * @param fullTextSearch whether to use full-text search
+   * @param match the full-text search match fields
+   * @return a page of APIs with enriched data
+   */
   private Page<ApisBasicInfo> list0(Set<SearchCriteria> criteria, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
-    // Set authorization conditions when you are not an administrator or only query yourself
+    // Set authorization conditions for non-admin users or self-query scenarios
     commonQuery.checkAndSetAuthObjectIdCriteria(criteria);
     Page<ApisBasicInfo> page = fullTextSearch
         ? apisInfoSearchRepo.find(criteria, pageable, ApisBasicInfo.class,
@@ -400,20 +539,28 @@ public class ApisQueryImpl implements ApisQuery {
 
     if (page.hasContent()) {
       if (isUserAction()) {
-        // Set favourite state
+        // Set favourite and follow status for current user
         setFavourite(page.getContent());
-        // Set follow state
         setFollow(page.getContent());
       }
-      // Set associated mock apis
+      // Set associated mock APIs for enhanced display
       setInfoAssocMockApis(page.getContent());
-      // Set user name and avatar
+      // Enrich with user name and avatar information
       userManager.setUserNameAndAvatar(page.getContent(), "createdBy", "createdByName",
           "avatar");
     }
     return page;
   }
 
+  /**
+   * Gets the list of available servers for an API.
+   * 
+   * <p>This method retrieves all available servers for an API, including
+   * API-specific servers, parent service servers, and mock service servers.</p>
+   * 
+   * @param id the API ID to get servers for
+   * @return list of available servers for the API
+   */
   @Override
   public List<Server> serverList(Long id) {
     return new BizTemplate<List<Server>>() {
@@ -426,11 +573,29 @@ public class ApisQueryImpl implements ApisQuery {
 
       @Override
       protected List<Server> process() {
+        // Retrieve and set all available servers for the API
         return setAndGetAvailableServers(apisDb);
       }
     }.execute();
   }
 
+  /**
+   * Generates API creation statistics for reporting and analysis.
+   * 
+   * <p>This method calculates comprehensive creation statistics including
+   * API counts, service counts, and unarchived API counts within specified
+   * date ranges and creator criteria.</p>
+   * 
+   * <p>The method supports filtering by project, creator type, and date
+   * ranges for detailed analytics.</p>
+   * 
+   * @param projectId the project ID to filter statistics
+   * @param creatorObjectType the type of creator object
+   * @param creatorObjectId the creator object ID
+   * @param createdDateStart the start date for statistics
+   * @param createdDateEnd the end date for statistics
+   * @return comprehensive API creation statistics
+   */
   @Override
   public ApisResourcesCreationCount creationStatistics(Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -441,25 +606,26 @@ public class ApisQueryImpl implements ApisQuery {
       protected ApisResourcesCreationCount process() {
         final ApisResourcesCreationCount result = new ApisResourcesCreationCount();
 
-        // Find all when condition is null, else find by condition
+        // Determine creator filter based on object type and ID
         Set<Long> createdBys = isNull(creatorObjectType) ? null
             : userManager.getUserIdByOrgType0(creatorObjectType, creatorObjectId);
 
+        // Build common filters for all resource types
         Set<SearchCriteria> commonFilters = getCommonResourcesStatsFilter(projectId,
             createdDateStart, createdDateEnd, createdBys);
 
-        // Count services
+        // Count services with deletion filter
         Set<SearchCriteria> serviceFilters = merge(commonFilters, equal("deleted", false));
         List<Services> services = servicesRepo.findAllByFilters(serviceFilters);
         countCreationService(result, services);
 
-        // Count apis
+        // Count APIs with deletion filters for both API and service
         Set<SearchCriteria> apisFilters = merge(commonFilters, equal("deleted", false),
             equal("serviceDeleted", false));
         List<ApisBaseInfo> apis = apisBaseInfoRepo.findAllByFilters(apisFilters);
         countCreationApis(result, apis);
 
-        // Count unarchived apis
+        // Count unarchived APIs without deletion filter
         List<ApisUnarchived> unarchivedApis = apisUnarchivedRepo.findAllByFilters(commonFilters);
         countCreationUnarchivedApis(result, unarchivedApis);
         return result;
@@ -497,7 +663,13 @@ public class ApisQueryImpl implements ApisQuery {
   }
 
   /**
-   * Query all data including deleted
+   * Finds API base information by IDs, including deleted APIs.
+   * 
+   * <p>This method retrieves API base information for the specified IDs,
+   * including APIs that have been marked as deleted.</p>
+   * 
+   * @param ids the collection of API IDs to find
+   * @return list of API base information including deleted ones
    */
   @Override
   public List<ApisBaseInfo> findBase0ByIdIn(Collection<Long> ids) {
@@ -519,6 +691,15 @@ public class ApisQueryImpl implements ApisQuery {
     return apisRepo.findAllByServiceIdAndIdIn(serviceId, apiIds);
   }
 
+  /**
+   * Finds an API by ID with OpenAPI reference resolution.
+   * 
+   * <p>This method retrieves an API and resolves its OpenAPI references
+   * to provide complete schema information.</p>
+   * 
+   * @param id the API ID to find
+   * @return the API with resolved OpenAPI references or null if not found
+   */
   @Override
   public Apis findDeRefById(Long id) {
     Apis apis = apisRepo.findById(id).orElse(null);
@@ -528,6 +709,15 @@ public class ApisQueryImpl implements ApisQuery {
     return apis;
   }
 
+  /**
+   * Creates a mapping of case IDs to simple activity resources.
+   * 
+   * <p>This method converts functional case information into simple activity
+   * resources for activity tracking and reporting purposes.</p>
+   * 
+   * @param caseIds the collection of case IDs to map
+   * @return map of case ID to simple activity resource
+   */
   @Override
   public Map<Long, SimpleActivityResource> getCaseSimpleActivityResourceMap(
       Collection<Long> caseIds) {
@@ -538,6 +728,15 @@ public class ApisQueryImpl implements ApisQuery {
         .collect(Collectors.toMap(SimpleActivityResource::getId, x -> x));
   }
 
+  /**
+   * Checks if an API has authorization control enabled.
+   * 
+   * <p>This method determines whether both the service and API have
+   * authorization control enabled, requiring permission checks for access.</p>
+   * 
+   * @param id the API ID to check authorization control for
+   * @return true if authorization control is enabled, false otherwise
+   */
   @Override
   public Boolean isAuthCtrl(Long id) {
     ApisBaseInfo apis = apisBaseInfoRepo.findById(id).orElse(null);
@@ -576,6 +775,24 @@ public class ApisQueryImpl implements ApisQuery {
     return apisBasicInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Apis"));
   }
 
+  /**
+   * Finds and validates service APIs based on modification scope and criteria.
+   * 
+   * <p>This method retrieves APIs for a service based on the specified scope
+   * (all, selected, or matched by criteria) and validates user modification permissions.</p>
+   * 
+   * <p>The method supports filtering by endpoint regex, HTTP method, and tags
+   * for match-based scoping.</p>
+   * 
+   * @param serviceId the service ID to find APIs for
+   * @param modifyScope the scope for API selection (all, selected, or matched)
+   * @param matchEndpointRegex the endpoint regex pattern for matching
+   * @param matchMethod the HTTP method for matching
+   * @param selectedApisIds the set of selected API IDs
+   * @param filterTags the set of tags for filtering
+   * @return list of APIs matching the specified criteria
+   * @throws IllegalArgumentException if required parameters are missing for the scope
+   */
   @Override
   public List<Apis> checkAndFindServiceApis(Long serviceId, ServiceApisScope modifyScope,
       String matchEndpointRegex, HttpMethod matchMethod, Set<Long> selectedApisIds,
@@ -604,6 +821,15 @@ public class ApisQueryImpl implements ApisQuery {
     return serviceApisDb;
   }
 
+  /**
+   * Validates that API owners exist in the system.
+   * 
+   * <p>This method checks that all API owners (users) still exist in the system,
+   * preventing issues after user deletion.</p>
+   * 
+   * @param apis the collection of APIs to validate owners for
+   * @throws ResourceNotFound if any API owner no longer exists
+   */
   @Override
   public void checkOwnerExist(Collection<Apis> apis) {
     List<Long> ids = apis.stream().map(Apis::getOwnerId).collect(Collectors.toList());
@@ -640,15 +866,24 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Validates that APIs to be added do not already exist in their services.
+   * 
+   * <p>This method checks for duplicate API operations (method + endpoint combinations)
+   * within the same service to prevent conflicts during API creation.</p>
+   * 
+   * @param apis the collection of APIs to validate for existence
+   * @throws ResourceExisted if any API operation already exists in the service
+   */
   @Override
   public void checkAddServiceApisExisted(Collection<Apis> apis) {
     Map<Long, List<Apis>> serviceApisMap = apis.stream()
         .collect(Collectors.groupingBy(Apis::getServiceId));
     for (Long serviceId : serviceApisMap.keySet()) {
-      // Note:: Uri cannot be a null value, must be safe to ""
-      List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
-          serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
-              .collect(Collectors.toList()));
+              // Note: URI cannot be null, must be safely converted to empty string
+        List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
+            serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
+                .collect(Collectors.toList()));
       if (isNotEmpty(servicesApisDb)) {
         for (ApisBaseInfo apiDb : servicesApisDb) {
           for (Apis api : serviceApisMap.get(serviceId)) {
@@ -661,10 +896,22 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Validates that API operations do not conflict during updates.
+   * 
+   * <p>This method checks for duplicate API operations when updating APIs,
+   * handling method and endpoint updates with proper conflict detection.</p>
+   * 
+   * @param apis the collection of APIs being updated
+   * @param apisDb the collection of existing APIs in the database
+   * @param serviceId the service ID for the APIs
+   * @param replace whether this is a replace operation
+   * @throws ResourceExisted if any API operation conflicts with existing ones
+   */
   @Override
   public void checkServiceApisOperationNotExisted(Collection<Apis> apis, Collection<Apis> apisDb,
       Long serviceId, boolean replace) {
-    // Modifying the apis may not modify the method and uri, means method and uri is nullable.
+    // Handle partial updates where method and endpoint may not be modified (nullable)
     List<Apis> updateApis = apis.stream().filter(x -> nonNull(x.getMethod())
         || nonNull(x.getEndpoint())).collect(Collectors.toList());
     if (isNotEmpty(updateApis) && !replace /*Update apis*/) {
@@ -683,7 +930,7 @@ public class ApisQueryImpl implements ApisQuery {
       }
     }
 
-    // Fix:: Uri cannot be a null value, must be safe to ""
+    // Note: URI cannot be null, must be safely converted to empty string
     List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
         serviceId, apis.stream().map(Apis::getEndpoint).collect(Collectors.toList()));
     if (isNotEmpty(servicesApisDb)) {
@@ -700,7 +947,13 @@ public class ApisQueryImpl implements ApisQuery {
   }
 
   /**
-   * Check that only a maximum of apis can be added to a service
+   * Validates that adding APIs would not exceed service and tenant quotas.
+   * 
+   * <p>This method checks both service-level API quotas and tenant-level
+   * API quotas to ensure limits are not exceeded.</p>
+   * 
+   * @param apis the list of APIs to be added
+   * @throws QuotaException if adding APIs would exceed quota limits
    */
   @Override
   public void checkServiceApisQuota(List<Apis> apis) {
@@ -719,6 +972,15 @@ public class ApisQueryImpl implements ApisQuery {
         .collect(Collectors.toSet()), apisRepo.countByTenantId(getOptTenantId()) + apis.size());
   }
 
+  /**
+   * Validates that an API is not in released status for modification.
+   * 
+   * <p>This method ensures that released APIs cannot be modified,
+   * maintaining data integrity for published APIs.</p>
+   * 
+   * @param apisInfoDb the API basic info to check release status for
+   * @throws BizException if the API is in released status
+   */
   @Override
   public void checkReleasedStatus(ApisBasicInfo apisInfoDb) {
     BizAssert.assertTrue(isNull(apisInfoDb.getStatus())
@@ -726,6 +988,15 @@ public class ApisQueryImpl implements ApisQuery {
         APIS_PUBLISHED_CANNOT_MODIFY_T, new Object[]{apisInfoDb.getName()});
   }
 
+  /**
+   * Validates that an API is not in released status for modification.
+   * 
+   * <p>This method ensures that released APIs cannot be modified,
+   * maintaining data integrity for published APIs.</p>
+   * 
+   * @param apisDb the API to check release status for
+   * @throws BizException if the API is in released status
+   */
   @Override
   public void checkReleasedStatus(Apis apisDb) {
     BizAssert.assertTrue(isNull(apisDb.getStatus())
@@ -733,12 +1004,21 @@ public class ApisQueryImpl implements ApisQuery {
         APIS_PUBLISHED_CANNOT_MODIFY_T, new Object[]{apisDb.getName()});
   }
 
+  /**
+   * Validates that multiple APIs are not in released status for modification.
+   * 
+   * <p>This method ensures that none of the APIs in the collection are in released status,
+   * preventing modification of published APIs.</p>
+   * 
+   * @param apisDbs the collection of APIs to check release status for
+   * @throws BizException if any API is in released status
+   */
   @Override
   public void checkReleasedStatus(Collection<Apis> apisDbs) {
-    for (Apis apiDb : apisDbs) {
-      // Check the released api are not allowed to be modified
-      checkReleasedStatus(apiDb);
-    }
+          for (Apis apiDb : apisDbs) {
+        // Verify that released APIs are not allowed to be modified
+        checkReleasedStatus(apiDb);
+      }
   }
 
   @Override
@@ -761,6 +1041,14 @@ public class ApisQueryImpl implements ApisQuery {
     return apisRepo.findAllServiceIdByIdIn(apiIds);
   }
 
+  /**
+   * Sets favourite status for a list of APIs.
+   * 
+   * <p>This method enriches APIs with their favourite status for the current user,
+   * providing personalized display information.</p>
+   * 
+   * @param apis the list of APIs to set favourite status for
+   */
   @Override
   public void setFavourite(List<? extends ResourceFavouriteAndFollow<?, ?>> apis) {
     Set<Long> apiIds = apis.stream().map(ResourceFavouriteAndFollow::getId)
@@ -776,6 +1064,14 @@ public class ApisQueryImpl implements ApisQuery {
     });
   }
 
+  /**
+   * Sets follow status for a list of APIs.
+   * 
+   * <p>This method enriches APIs with their follow status for the current user,
+   * providing personalized display information.</p>
+   * 
+   * @param apis the list of APIs to set follow status for
+   */
   @Override
   public void setFollow(List<? extends ResourceFavouriteAndFollow<?, ?>> apis) {
     Set<Long> apiIds = apis.stream().map(ResourceFavouriteAndFollow::getId)
@@ -791,6 +1087,14 @@ public class ApisQueryImpl implements ApisQuery {
     });
   }
 
+  /**
+   * Sets associated mock API information for basic API info objects.
+   * 
+   * <p>This method enriches basic API information with associated mock service
+   * and mock API IDs for enhanced display.</p>
+   * 
+   * @param apis the list of basic API info objects to enrich
+   */
   @Override
   public void setInfoAssocMockApis(List<ApisBasicInfo> apis) {
     Map<Long, MockApisAssocP> apisMockMap = findApisMockIdsMap(apis.stream()
@@ -807,6 +1111,14 @@ public class ApisQueryImpl implements ApisQuery {
     });
   }
 
+  /**
+   * Sets associated mock API information for full API objects.
+   * 
+   * <p>This method enriches full API objects with associated mock service
+   * and mock API IDs for enhanced display.</p>
+   * 
+   * @param apis the list of API objects to enrich
+   */
   @Override
   public void setAssocMockApis(List<Apis> apis) {
     Map<Long, MockApisAssocP> apisMockMap = findApisMockIdsMap(apis.stream()
@@ -835,25 +1147,43 @@ public class ApisQueryImpl implements ApisQuery {
     apis.setEndpoint(apis.getEndpoint() + "-Copy." + saltName);
   }
 
+  /**
+   * Sets and retrieves all available servers for an API.
+   * 
+   * <p>This method assembles all available servers for an API including
+   * API-specific servers, parent service servers, and mock service servers.</p>
+   * 
+   * @param apis the API to set and get servers for
+   * @return list of all available servers for the API
+   */
   @Override
   public List<Server> setAndGetAvailableServers(Apis apis) {
     List<Server> servers = new ArrayList<>();
-    // Assemble api servers
+    // Assemble API-specific servers
     assembleApiServers(apis, servers);
-    // Assemble parent service and service config servers
+    // Assemble parent service and service configuration servers
     assembleParentServiceServers(servers, apis.getId());
-    // Assemble mock service server
+    // Assemble mock service servers
     assembleMockServiceServers(servers, apis.getId());
     apis.setAvailableServers(servers);
     return servers;
   }
 
+  /**
+   * Sets available servers for an API with custom parent servers.
+   * 
+   * <p>This method sets available servers for an API using provided parent servers
+   * instead of automatically retrieving them.</p>
+   * 
+   * @param apis the API to set servers for
+   * @param parentServers the custom parent servers to include
+   */
   @Override
   public void setAvailableServers(Apis apis, List<Server> parentServers) {
     List<Server> servers = new ArrayList<>();
-    // Assemble api servers
+    // Assemble API-specific servers
     assembleApiServers(apis, servers);
-    // Assemble parent service and service config servers
+    // Note: Parent project servers assembly is commented out
     // assembleParentProjectServers(servers, apis.getId());
     if (isNotEmpty(parentServers)) {
       servers.addAll(parentServers);
@@ -861,6 +1191,14 @@ public class ApisQueryImpl implements ApisQuery {
     apis.setAvailableServers(servers);
   }
 
+  /**
+   * Sets and retrieves referenced authentication for an API.
+   * 
+   * <p>This method resolves authentication schema references and sets
+   * the resolved authentication component for the API.</p>
+   * 
+   * @param apis the API to set referenced authentication for
+   */
   @Override
   public void setAndGetRefAuthentication(Apis apis) {
     if (apis.isAuthSchemaRef()) {
@@ -875,6 +1213,15 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Sets tag schemas for an API based on available tag definitions.
+   * 
+   * <p>This method filters and sets tag schemas that match the API's tags,
+   * providing complete tag information for display and validation.</p>
+   * 
+   * @param apisDb the API to set tag schemas for
+   * @param tagSchemas the list of available tag schemas
+   */
   @Override
   public void setTagSchemas(Apis apisDb, List<Tag> tagSchemas) {
     if (isNotEmpty(apisDb.getTags()) && isNotEmpty(tagSchemas)) {
@@ -883,6 +1230,15 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Gets parent service servers for an API.
+   * 
+   * <p>This method retrieves servers from the parent service of an API,
+   * adding source extensions for identification.</p>
+   * 
+   * @param apiId the API ID to get parent service servers for
+   * @return list of parent service servers or null if not found
+   */
   @Override
   public List<Server> getParentServiceServers(Long apiId) {
     Set<Long> parentIds = findParentIds(Collections.singletonList(apiId));
@@ -900,6 +1256,15 @@ public class ApisQueryImpl implements ApisQuery {
     return null;
   }
 
+  /**
+   * Assembles and sends modification notice events for multiple APIs.
+   * 
+   * <p>This method processes multiple API modifications and sends appropriate
+   * notification events to relevant users.</p>
+   * 
+   * @param apisDb the list of APIs that were modified
+   * @param activities the list of activities corresponding to the modifications
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(List<ApisBasicInfo> apisDb,
       List<Activity> activities) {
@@ -910,6 +1275,15 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Assembles and sends modification notice event for a single API.
+   * 
+   * <p>This method creates and sends notification events for API modifications
+   * to the API creator and followers.</p>
+   * 
+   * @param apisDb the API that was modified
+   * @param activity the activity corresponding to the modification
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(ApisBasicInfo apisDb, Activity activity) {
     List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(apisDb.getTenantId())
@@ -933,6 +1307,15 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Finds mock API association mapping for a set of API IDs.
+   * 
+   * <p>This method retrieves mock API associations for the specified APIs
+   * and creates a mapping for efficient lookup.</p>
+   * 
+   * @param apisIds the set of API IDs to find mock associations for
+   * @return map of API ID to mock API association information
+   */
   private Map<Long, MockApisAssocP> findApisMockIdsMap(Set<Long> apisIds) {
     if (isEmpty(apisIds)) {
       return Collections.emptyMap();
@@ -941,6 +1324,15 @@ public class ApisQueryImpl implements ApisQuery {
         Collectors.toMap(MockApisAssocP::getAssocApisId, x -> x));
   }
 
+  /**
+   * Assembles parent service servers for an API.
+   * 
+   * <p>This method retrieves servers from the parent service and adds them
+   * to the server list with source extensions for identification.</p>
+   * 
+   * @param servers the list to add parent service servers to
+   * @param apiId the API ID to get parent service servers for
+   */
   private void assembleParentServiceServers(List<Server> servers, Long apiId) {
     Set<Long> parentIds = findParentIds(Collections.singletonList(apiId));
     if (isNotEmpty(parentIds)) {
@@ -948,6 +1340,7 @@ public class ApisQueryImpl implements ApisQuery {
       if (isNotEmpty(parentServers)) {
         for (Server server : parentServers) {
           if (isNotEmpty(server.getUrl())) {
+            // Add source extension to identify server origin
             server.addExtension(SERVER_SOURCE_KEY, PARENT_SERVERS.getValue());
           }
         }
@@ -956,34 +1349,55 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Assembles mock service servers for an API.
+   * 
+   * <p>This method retrieves mock service information for an API and adds
+   * mock service servers to the server list with source extensions.</p>
+   * 
+   * @param servers the list to add mock service servers to
+   * @param apiId the API ID to get mock service servers for
+   */
   private void assembleMockServiceServers(List<Server> servers, Long apiId) {
     MockServiceInfo serviceInfo = mockServiceInfoRepo.findByApisId(apiId);
     if (nonNull(serviceInfo)) {
-      if (isNotEmpty(serviceInfo.getServiceDomainUrl())) {
-        Server server = new Server();
-        server.setUrl(serviceInfo.getServiceDomainUrl());
-        server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
-        servers.add(server);
-      }
-      if (isNotEmpty(serviceInfo.getServiceHostUrl())) {
-        Server server = new Server();
-        server.setUrl(serviceInfo.getServiceHostUrl());
-        server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
-        servers.add(server);
-      }
+              if (isNotEmpty(serviceInfo.getServiceDomainUrl())) {
+          // Create mock service domain server
+          Server server = new Server();
+          server.setUrl(serviceInfo.getServiceDomainUrl());
+          server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
+          servers.add(server);
+        }
+        if (isNotEmpty(serviceInfo.getServiceHostUrl())) {
+          // Create mock service host server
+          Server server = new Server();
+          server.setUrl(serviceInfo.getServiceHostUrl());
+          server.addExtension(SERVER_SOURCE_KEY, MOCK_SERVICE.getValue());
+          servers.add(server);
+        }
     }
   }
 
+  /**
+   * Assembles API-specific servers.
+   * 
+   * <p>This method adds API-specific servers including current request server
+   * and configured API servers to the server list.</p>
+   * 
+   * @param apis the API to get servers from
+   * @param servers the list to add API servers to
+   */
   private void assembleApiServers(Apis apis, List<Server> servers) {
     // Assemble current request server
     if (nonNull(apis.getCurrentServer()) && isNotEmpty(apis.getCurrentServer().getUrl())) {
       apis.getCurrentServer().addExtension(SERVER_SOURCE_KEY, CURRENT_REQUEST.getValue());
       servers.add(apis.getCurrentServer());
     }
-    // Assemble apis config servers
+    // Assemble API configuration servers
     if (isNotEmpty(apis.getServers())) {
       for (Server server : apis.getServers()) {
         if (isNotEmpty(server.getUrl())) {
+          // Add source extension to identify server origin
           server.addExtension(SERVER_SOURCE_KEY, API_SERVERS.getValue());
         }
       }
@@ -991,12 +1405,30 @@ public class ApisQueryImpl implements ApisQuery {
     }
   }
 
+  /**
+   * Sets OpenAPI path reference models for an API.
+   * 
+   * <p>This method resolves OpenAPI references and sets the resolved
+   * reference models for the API.</p>
+   * 
+   * @param apisDb the API to set reference models for
+   */
   @Override
   public void setOpenApiPathRefModels(Apis apisDb) {
     Map<String, String> allRefModels = findApisAllRef(apisDb);
     apisDb.setResolvedRefModels(allRefModels);
   }
 
+  /**
+   * Finds all OpenAPI references for an API.
+   * 
+   * <p>This method extracts all $ref properties from an API's OpenAPI specification
+   * and resolves them using service component models.</p>
+   * 
+   * @param apisDb the API to find references for
+   * @return map of reference paths to resolved model content
+   * @throws RuntimeException if JSON processing fails
+   */
   @NotNull
   @Override
   public Map<String, String> findApisAllRef(Apis apisDb) {
@@ -1014,12 +1446,30 @@ public class ApisQueryImpl implements ApisQuery {
     return allRefModels;
   }
 
+  /**
+   * Converts basic API information to summary format.
+   * 
+   * <p>This method transforms basic API information into summary format
+   * for reporting and display purposes.</p>
+   * 
+   * @param apis the list of basic API information to convert
+   * @return list of API information summaries or null if input is empty
+   */
   //@NameJoin
   public static List<ApisInfoSummary> getApisInfoSummary(List<ApisBasicInfo> apis) {
     return isEmpty(apis) ? null
         : apis.stream().map(ApisConverter::toApisInfoSummary).collect(Collectors.toList());
   }
 
+  /**
+   * Converts API detail information to summary format.
+   * 
+   * <p>This method transforms detailed API information into summary format
+   * for reporting and display purposes.</p>
+   * 
+   * @param apis the API detail information to convert
+   * @return API detail summary
+   */
   @NameJoin
   public static ApisDetailSummary getApisDetailSummary(Apis apis) {
     return toApisDetailSummary(apis);
