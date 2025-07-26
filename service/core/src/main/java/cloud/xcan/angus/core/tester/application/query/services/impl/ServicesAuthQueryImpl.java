@@ -43,24 +43,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * <p>
+ * Implementation of ServicesAuthQuery for services authorization management and validation.
+ * </p>
+ * <p>
+ * Provides methods for checking services permissions, managing user authorizations, and validating access rights.
+ * </p>
+ */
 @Biz
 public class ServicesAuthQueryImpl implements ServicesAuthQuery {
 
   @Resource
   private ServicesAuthRepo servicesAuthRepo;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesRepo servicesRepo;
-
   @Resource
   private UserRepo userRepo;
-
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * <p>
+   * Get the authorization status of a service.
+   * </p>
+   * @param serviceId Service ID
+   * @return Authorization status
+   */
   @Override
   public Boolean status(Long serviceId) {
     return new BizTemplate<Boolean>() {
@@ -79,6 +90,18 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific service.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns permissions based on their authorization records.
+   * </p>
+   * @param serviceId Service ID
+   * @param userId User ID
+   * @param admin Whether to check admin permissions
+   * @return List of services permissions
+   */
   @Override
   public List<ServicesPermission> userAuth(Long serviceId, Long userId, Boolean admin) {
     return new BizTemplate<List<ServicesPermission>>() {
@@ -115,6 +138,17 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get current user's authorization information for a service.
+   * </p>
+   * <p>
+   * Returns authorization status and permissions for the current user.
+   * </p>
+   * @param serviceId Service ID
+   * @param admin Whether to check admin permissions
+   * @return Current user's authorization information
+   */
   @Override
   public ServicesAuthCurrent currentUserAuth(Long serviceId, Boolean admin) {
     return new BizTemplate<ServicesAuthCurrent>() {
@@ -157,6 +191,14 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a service.
+   * </p>
+   * @param serviceId Service ID
+   * @param permission Required permission
+   * @param userId User ID
+   */
   @Override
   public void check(Long serviceId, ServicesPermission permission, Long userId) {
     new BizTemplate<Void>() {
@@ -169,6 +211,15 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find service authorizations with pagination and permission validation.
+   * </p>
+   * @param spec Search specification
+   * @param serviceIds List of service IDs
+   * @param pageable Pagination information
+   * @return Page of service authorizations
+   */
   @Override
   public Page<ServicesAuth> find(Specification<ServicesAuth> spec, List<String> serviceIds,
       Pageable pageable) {
@@ -188,59 +239,150 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check and find a service authorization by ID.
+   * </p>
+   * @param id Authorization ID
+   * @return Service authorization entity
+   */
   @Override
   public ServicesAuth checkAndFind(Long id) {
     return servicesAuthRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "ServicesAuth"));
   }
 
+  /**
+   * <p>
+   * Check if a user has add permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkAddAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.ADD);
   }
 
+  /**
+   * <p>
+   * Check if a user has view permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkViewAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.VIEW);
   }
 
+  /**
+   * <p>
+   * Check if a user has modify permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkModifyAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.MODIFY);
   }
 
+  /**
+   * <p>
+   * Check if a user has delete permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkDeleteAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.DELETE);
   }
 
+  /**
+   * <p>
+   * Check if a user has test permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkTestAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.TEST);
   }
 
+  /**
+   * <p>
+   * Check if a user has grant permission for a service.
+   * </p>
+   * <p>
+   * Fix: Public service can be modified and authorized by anyone.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkGrantAuth(Long userId, Long serviceId) {
     // Fix:: Public service can be modified and authorized by anyone
     checkAuth(userId, serviceId, ServicesPermission.GRANT, false, true);
   }
 
+  /**
+   * <p>
+   * Check if a user has share permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkShareAuth(Long userId, Long serviceId) {
     checkAuth(userId, serviceId, ServicesPermission.SHARE);
   }
 
+  /**
+   * <p>
+   * Check if a user has release permission for a service.
+   * </p>
+   * <p>
+   * Fix: Release permission is also required for modifying the released status of public projects.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   */
   @Override
   public void checkReleaseAuth(Long userId, Long serviceId) {
     // Fix:: Release permission is also required for modifying the released status of public projects.
     checkAuth(userId, serviceId, ServicesPermission.RELEASE, false, false);
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   * @param permission Required permission
+   */
   @Override
   public void checkAuth(Long userId, Long serviceId, ServicesPermission permission) {
     checkAuth(userId, serviceId, permission, false,
         permission.isGrant() || permission.isRelease());
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a service with additional control options.
+   * </p>
+   * <p>
+   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for non-grant and non-release permissions
+   * when authorization is not controlled.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   * @param permission Required permission
+   * @param ignoreAdminPermission Whether to ignore admin permissions
+   * @param ignorePublicAccess Whether to ignore public access
+   */
   @Override
   public void checkAuth(Long userId, Long serviceId, ServicesPermission permission,
       boolean ignoreAdminPermission, boolean ignorePublicAccess) {
@@ -272,7 +414,15 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
   }
 
   /**
-   * Verify the operation permissions of the service
+   * <p>
+   * Verify the operation permissions of the service for multiple services.
+   * </p>
+   * <p>
+   * Performs batch permission checking for a collection of services. Admins bypass this check.
+   * Only services with authorization enabled are checked for non-grant permissions.
+   * </p>
+   * @param serviceIds Collection of service IDs
+   * @param permission Required permission
    */
   @Override
   public void batchCheckPermission(Collection<Long> serviceIds, ServicesPermission permission) {
@@ -312,6 +462,15 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if an authorization already exists for the specified service and auth object.
+   * </p>
+   * @param serviceId Service ID
+   * @param authObjectId Authorization object ID
+   * @param authObjectType Authorization object type
+   * @param creator Whether the auth object is a creator
+   */
   @Override
   public void checkRepeatAuth(Long serviceId, Long authObjectId, AuthObjectType authObjectType,
       Boolean creator) {
@@ -321,6 +480,14 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Find service IDs where a user has a specific permission through their organization memberships.
+   * </p>
+   * @param userId User ID
+   * @param permission Required permission
+   * @return List of service IDs
+   */
   @Override
   public List<Long> findByAuthObjectIdsAndPermission(Long userId, ServicesPermission permission) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -330,6 +497,14 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
         .distinct().collect(Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and a specific service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   * @return List of service authorizations
+   */
   @Override
   public List<ServicesAuth> findAuth(Long userId, Long serviceId) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -337,6 +512,14 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     return servicesAuthRepo.findByServiceIdAndAuthObjectIdIn(serviceId, orgIds);
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and multiple services.
+   * </p>
+   * @param userId User ID
+   * @param serviceIds Collection of service IDs
+   * @return List of service authorizations
+   */
   @Override
   public List<ServicesAuth> findAuth(Long userId, Collection<Long> serviceIds) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -345,6 +528,17 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
         servicesAuthRepo.findByServiceIdInAndAuthObjectIdIn(serviceIds, orgIds);
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific service.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns their specific permissions.
+   * </p>
+   * @param serviceId Service ID
+   * @param userId User ID
+   * @return List of user permissions, or null if no permissions found
+   */
   @Override
   public List<ServicesPermission> getUserAuth(Long serviceId, Long userId) {
     if (commonQuery.isAdminUser()) {
@@ -363,12 +557,27 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
         .distinct().collect(Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Check if a user is the creator of a service.
+   * </p>
+   * @param userId User ID
+   * @param serviceId Service ID
+   * @return true if the user is the creator, false otherwise
+   */
   @Override
   public boolean isCreator(Long userId, Long serviceId) {
     List<ServicesAuth> projectAuths = findAuth(userId, serviceId);
     return isCreator(projectAuths);
   }
 
+  /**
+   * <p>
+   * Check if any of the authorization records indicates the user is a creator.
+   * </p>
+   * @param auths List of service authorizations
+   * @return true if the user is a creator, false otherwise
+   */
   private boolean isCreator(List<ServicesAuth> auths) {
     if (auths.isEmpty()) {
       return false;
@@ -381,6 +590,13 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     return false;
   }
 
+  /**
+   * <p>
+   * Flatten all permissions from a list of authorization records into a single set.
+   * </p>
+   * @param auths List of service authorizations
+   * @return Set of all permissions
+   */
   private Set<ServicesPermission> flatPermissions(List<ServicesAuth> auths) {
     Set<ServicesPermission> actions = new HashSet<>();
     for (ServicesAuth auth : auths) {

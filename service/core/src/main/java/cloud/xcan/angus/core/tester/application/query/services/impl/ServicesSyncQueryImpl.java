@@ -30,12 +30,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+/**
+ * <p>
+ * Implementation of ServicesSyncQuery for services synchronization management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for service synchronization configuration, quota validation, and OpenAPI content retrieval.
+ * </p>
+ */
 @Biz
 public class ServicesSyncQueryImpl implements ServicesSyncQuery {
 
   @Resource
   private ServicesSyncRepo projectSyncRepo;
 
+  /**
+   * <p>
+   * Find all synchronization configurations for a service.
+   * </p>
+   * @param serviceId Service ID
+   * @return List of service synchronization configurations
+   */
   @Override
   public List<ServicesSync> find(Long serviceId) {
     return new BizTemplate<List<ServicesSync>>() {
@@ -47,12 +62,32 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find a specific synchronization configuration by name.
+   * </p>
+   * @param serviceId Service ID
+   * @param name Synchronization configuration name
+   * @return Service synchronization configuration or null if not found
+   */
   @Override
   public ServicesSync find(Long serviceId, String name) {
     List<ServicesSync> sync = find(serviceId, Collections.singletonList(name));
     return sync.isEmpty() ? null : sync.get(0);
   }
 
+  /**
+   * <p>
+   * Find synchronization configurations by names.
+   * </p>
+   * <p>
+   * If no names are provided, returns all synchronization configurations for the service.
+   * Otherwise, returns only configurations matching the specified names.
+   * </p>
+   * @param serviceId Service ID
+   * @param names Collection of synchronization configuration names
+   * @return List of matching service synchronization configurations
+   */
   @Override
   public List<ServicesSync> find(Long serviceId, Collection<String> names) {
     return /* Fix:: !names.isEmpty()*/ isEmpty(names)
@@ -60,6 +95,16 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
         : projectSyncRepo.findByServiceIdAndNameIn(serviceId, names);
   }
 
+  /**
+   * <p>
+   * Check quota for adding synchronization configurations.
+   * </p>
+   * <p>
+   * Validates that adding the specified number of configurations does not exceed the maximum limit.
+   * </p>
+   * @param serviceId Service ID
+   * @param incr Number of configurations to be added
+   */
   @Override
   public void checkSyncAddNumQuota(Long serviceId, int incr) {
     int exitedNum = projectSyncRepo.countByServiceId(serviceId);
@@ -69,6 +114,16 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check quota for synchronization configuration count.
+   * </p>
+   * <p>
+   * Validates that the specified number does not exceed the maximum allowed limit.
+   * </p>
+   * @param serviceId Service ID
+   * @param num Number of configurations to validate
+   */
   @Override
   public void checkSyncNumQuota(Long serviceId, int num) {
     // List<String> namesDb = projectSyncRepo.findNameByProjectId(serviceId);
@@ -78,6 +133,16 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check for repeated names in the provided list.
+   * </p>
+   * <p>
+   * Validates that there are no duplicate names in the synchronization configuration names list.
+   * Throws an exception if duplicates are found.
+   * </p>
+   * @param names List of names to check for duplicates
+   */
   @Override
   public void checkRepeatedNameInParams(List<String> names) {
     List<String> repeatedNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
@@ -86,6 +151,18 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
         new Object[]{isNotEmpty(repeatedNames) ? repeatedNames.get(0) : ""});
   }
 
+  /**
+   * <p>
+   * Check connectivity and retrieve OpenAPI content from a URL.
+   * </p>
+   * <p>
+   * Validates URL format, tests connectivity, and retrieves OpenAPI content with optional authentication.
+   * Handles various connection and parsing errors gracefully.
+   * </p>
+   * @param syncUrl URL to retrieve OpenAPI content from
+   * @param auths List of HTTP authentication configurations
+   * @return OpenAPI content as string
+   */
   @Override
   public String checkAndGetOpenApiContent(String syncUrl, List<SimpleHttpAuth> auths) {
     // Check the connectivity
