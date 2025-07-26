@@ -84,6 +84,25 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Implementation of common query operations for AngusTester application.
+ *
+ * <p>This class provides centralized functionality for various common operations
+ * including permission checking, target management, user information retrieval,
+ * quota management, and organizational data handling.</p>
+ *
+ * <p>Key features include:
+ * <ul>
+ *   <li>Administrative permission validation and user role checking</li>
+ *   <li>Combined target management for various entity types (API, Scenario, Task, etc.)</li>
+ *   <li>User and organizational information retrieval and mapping</li>
+ *   <li>Tenant quota management and validation</li>
+ *   <li>Activity resource management and authorization</li>
+ *   <li>Event notification type configuration</li>
+ * </ul></p>
+ *
+ * @author XiaoLong Liu
+ */
 @Biz
 @Slf4j
 public class CommonQueryImpl implements CommonQuery {
@@ -148,6 +167,14 @@ public class CommonQueryImpl implements CommonQuery {
   @Resource
   private ExecQuery execQuery;
 
+  /**
+   * Checks if the current user has administrative permissions.
+   *
+   * <p>This method validates whether the current user possesses administrative
+   * privileges, throwing a BizException if not authorized.</p>
+   *
+   * @throws BizException if the user lacks administrative permissions
+   */
   @Override
   public void checkAdminPermission() {
     if (!isAdminUser()) {
@@ -155,6 +182,17 @@ public class CommonQueryImpl implements CommonQuery {
     }
   }
 
+  /**
+   * Validates and retrieves the name of an authorization object.
+   *
+   * <p>This method checks the existence of various authorization object types
+   * (User, Group, Department) and returns their names for display purposes.</p>
+   *
+   * @param authObjectType the type of authorization object
+   * @param authObjectId the ID of the authorization object
+   * @return the name of the authorization object
+   * @throws ResourceNotFound if the authorization object is not found
+   */
   @Override
   public String checkAndGetAuthName(AuthObjectType authObjectType, Long authObjectId) {
     return switch (authObjectType) {
@@ -177,7 +215,14 @@ public class CommonQueryImpl implements CommonQuery {
   }
 
   /**
-   * Contains data with deleted=true
+   * Retrieves indicator target information including deleted records.
+   *
+   * <p>This method fetches target information for indicators, including records
+   * marked as deleted, supporting API and Scenario target types.</p>
+   *
+   * @param targetType the type of target to retrieve
+   * @param targetId the ID of the target
+   * @return the target object or null if not supported
    */
   @Override
   public Object checkAndGetIndicatorTarget(CombinedTargetType targetType, Long targetId) {
@@ -190,6 +235,15 @@ public class CommonQueryImpl implements CommonQuery {
     return null;
   }
 
+  /**
+   * Validates modification permissions for indicator targets.
+   *
+   * <p>This method checks if the current user has permission to modify
+   * the specified indicator target based on its type.</p>
+   *
+   * @param targetType the type of target to check
+   * @param targetId the ID of the target
+   */
   @Override
   public void checkIndicatorTargetModifyAuth(CombinedTargetType targetType, Long targetId) {
     if (targetType.equals(API)) {
@@ -201,21 +255,58 @@ public class CommonQueryImpl implements CommonQuery {
     }
   }
 
+  /**
+   * Checks if the current user has administrative privileges.
+   *
+   * <p>This method validates whether the current user is an AngusTester admin,
+   * tenant system admin, or operation system admin.</p>
+   *
+   * @return true if the user has administrative privileges, false otherwise
+   */
   @Override
   public boolean isAdminUser() {
     return hasPolicy(TesterConstant.ANGUSTESTER_ADMIN) || isTenantSysAdmin() || isOpSysAdmin();
   }
 
+  /**
+   * Static method to check if the current user has administrative privileges.
+   *
+   * <p>This method provides the same functionality as isAdminUser() but as a
+   * static method for use in utility contexts.</p>
+   *
+   * @return true if the user has administrative privileges, false otherwise
+   */
   public static boolean isAdmin() {
     return hasPolicy(TesterConstant.ANGUSTESTER_ADMIN) || isTenantSysAdmin() || isOpSysAdmin();
   }
 
+  /**
+   * Retrieves user information map for a collection of user IDs.
+   *
+   * <p>This method fetches user information for multiple users and returns
+   * a map keyed by user ID, with email and mobile information removed for privacy.</p>
+   *
+   * @param userIds collection of user IDs to retrieve information for
+   * @return map of user ID to user information
+   */
   @Override
   public @NotNull Map<Long, UserInfo> getUserInfoMap(Collection<Long> userIds) {
     return userManager.findUserBases(userIds).stream().collect(
         Collectors.toMap(UserBase::getId, x -> x.toUserInfo().setEmail(null).setMobile(null)));
   }
 
+  /**
+   * Validates and retrieves combined target information with optional parent lookup.
+   *
+   * <p>This method fetches comprehensive target information for various entity types,
+   * including their parent relationships when requested. Throws exceptions for
+   * non-existent targets.</p>
+   *
+   * @param targetType the type of target to retrieve
+   * @param targetId the ID of the target
+   * @param findParent whether to include parent information
+   * @return combined target information
+   */
   @Override
   public CombinedTarget checkAndGetCombinedTarget(CombinedTargetType targetType, Long targetId,
       boolean findParent) {
@@ -273,8 +364,16 @@ public class CommonQueryImpl implements CommonQuery {
   }
 
   /**
-   * No exception is thrown when the resource is not found to prevent query exceptions after data is
-   * deleted.
+   * Retrieves combined target information without throwing exceptions for missing resources.
+   *
+   * <p>This method fetches target information but returns null values for missing
+   * resources instead of throwing exceptions, preventing query failures after
+   * data deletion.</p>
+   *
+   * @param targetType the type of target to retrieve
+   * @param targetId the ID of the target
+   * @param findParent whether to include parent information
+   * @return combined target information with null values for missing resources
    */
   @Override
   public CombinedTarget getCombinedTarget(CombinedTargetType targetType, Long targetId,
@@ -315,6 +414,17 @@ public class CommonQueryImpl implements CommonQuery {
     }
   }
 
+  /**
+   * Validates and retrieves activity resource information for a target.
+   *
+   * <p>This method fetches activity resource information for various target types,
+   * including special handling for execution targets.</p>
+   *
+   * @param targetType the type of target
+   * @param targetId the ID of the target
+   * @return activity resource information
+   * @throws ProtocolException if the target type is not supported
+   */
   @Override
   public ActivityResource checkAndFindActivityResource(CombinedTargetType targetType,
       Long targetId) {
@@ -337,7 +447,14 @@ public class CommonQueryImpl implements CommonQuery {
   }
 
   /**
-   * Set authorization conditions when you are not an administrator or only query yourself
+   * Sets authorization conditions for non-administrator users or self-query scenarios.
+   *
+   * <p>This method modifies search criteria to include authorization object ID
+   * restrictions when the user is not an administrator or when querying only
+   * their own data.</p>
+   *
+   * @param criteria the search criteria to modify
+   * @return false (return value not used)
    */
   @Override
   public boolean checkAndSetAuthObjectIdCriteria(Set<SearchCriteria> criteria) {
@@ -353,21 +470,60 @@ public class CommonQueryImpl implements CommonQuery {
     return false;
   }
 
+  /**
+   * Validates tenant quota for specified resources.
+   *
+   * <p>This method checks if the tenant has sufficient quota for the specified
+   * resource objects and increment.</p>
+   *
+   * @param quotaObject the quota resource type
+   * @param objectIds set of object IDs to check
+   * @param incr the increment amount
+   */
   @Override
   public void checkTenantQuota(QuotaResource quotaObject, Set<Long> objectIds, Long incr) {
     settingTenantQuotaManager.checkTenantQuota(quotaObject, objectIds, incr);
   }
 
+  /**
+   * Validates LCS (License Control System) quota for specified resources.
+   *
+   * <p>This method is currently a placeholder for LCS quota validation
+   * functionality.</p>
+   *
+   * @param quotaObject the quota resource type
+   * @param objectIds set of object IDs to check
+   * @param incr the increment amount
+   */
   @Override
   public void checkLcsQuota(QuotaResource quotaObject, Set<Long> objectIds, Long incr) {
-    // TODO
+    // TODO: Implement LCS quota validation logic
   }
 
+  /**
+   * Retrieves tenant quota information for a specific resource.
+   *
+   * <p>This method fetches the current quota settings for the specified
+   * resource type in the current tenant context.</p>
+   *
+   * @param name the quota resource type
+   * @return tenant quota information
+   */
   @Override
   public SettingTenantQuota findTenantQuota(QuotaResource name) {
     return settingTenantQuotaManager.findTenantQuota(getOptTenantId(), name);
   }
 
+  /**
+   * Retrieves tenant event notification type configurations.
+   *
+   * <p>This method fetches the notification type mappings for various events
+   * in the specified tenant, falling back to global settings if tenant-specific
+   * settings are not available.</p>
+   *
+   * @param tenantId the tenant ID (uses current tenant if null)
+   * @return map of event codes to notification types
+   */
   @Override
   public Map<String, List<NoticeType>> findTenantEventNoticeTypes(Long tenantId) {
     Long finalTenantId = nullSafe(tenantId, getOptTenantId());
@@ -382,6 +538,14 @@ public class CommonQueryImpl implements CommonQuery {
         collect(Collectors.toMap(TesterEvent::getEventCode, TesterEvent::getNoticeTypes));
   }
 
+  /**
+   * Validates the existence of organizational entities.
+   *
+   * <p>This method checks if all specified organizational entities (users,
+   * departments, groups) exist in the system.</p>
+   *
+   * @param typeIds map of organization types to sets of IDs to validate
+   */
   @Override
   public void checkOrgExists(LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> typeIds) {
     if (isNotEmpty(typeIds)) {
@@ -391,6 +555,15 @@ public class CommonQueryImpl implements CommonQuery {
     }
   }
 
+  /**
+   * Retrieves organizational information for specified entities.
+   *
+   * <p>This method fetches detailed information for users, departments, and groups,
+   * converting them to standardized OrgTargetInfo objects.</p>
+   *
+   * @param typeIds map of organization types to sets of IDs to retrieve
+   * @return map of organization types to sets of organization information
+   */
   @Override
   public LinkedHashMap<OrgTargetType, LinkedHashSet<OrgTargetInfo>> findOrgs(
       LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> typeIds) {
@@ -430,19 +603,41 @@ public class CommonQueryImpl implements CommonQuery {
     return infos;
   }
 
+  /**
+   * Sets the inner principal context for remote operations.
+   *
+   * <p>This method establishes the principal context for internal operations,
+   * typically used for Feign request interceptor header relay in remote
+   * AngusCtrl sharding sampling scenarios.</p>
+   *
+   * @param tenantId the tenant ID
+   * @param userId the user ID
+   */
   @Override
   public void setInnerPrincipal(Long tenantId, Long userId) {
-    // Transfer principal downwards
-    // Note: Passed by FeignRequestInterceptor#headerRelay() for remoted AngusCtrl sharding sampling
+    // Transfer principal downwards for remote operations
+    // Note: Used by FeignRequestInterceptor#headerRelay() for remote AngusCtrl sharding sampling
     Tenant tenant = tenantRepo.findById(tenantId)
         .orElseThrow(() -> ResourceNotFound.of(tenantId, "Tenant"));
     UserBase user = userManager.checkValidAndFindUserBase(userId);
     PrincipalContext.set(createInnerPrincipal(tenant, user, applicationInfo));
   }
 
-  // TODO 云服务版本和私有化版本都往租户许可表里写
+  /**
+   * Retrieves LCS (License Control System) quota information.
+   *
+   * <p>This method is currently a placeholder for retrieving LCS quota data.
+   * Both cloud service and private deployment versions will write to tenant
+   * license tables in the future.</p>
+   *
+   * @return LCS quota information (currently returns null)
+   */
   @Override
   public Quota findLcsQuota() {
+    // TODO: Implement LCS quota retrieval for both cloud service and private deployment versions
+    // Cloud service version: Retrieve from order details and product specifications
+    // Private deployment version: Read from license files and validate with guard
+
     //    QuotaData quotaData = new QuotaData();
     //    if (applicationInfo.isCloudServiceEdition()) {
     //      OrderDetailVo order = orderRemote.findOrderByProduct(
@@ -482,21 +677,6 @@ public class CommonQueryImpl implements CommonQuery {
     //          String lcsKeypass = licenseNo + new Str0(
     //              new long[]{0x473558DE36922716L, 0x43CCDE755449D9F4L, 0x93C95B98018A1E61L,
     //                  0x3BDB4EA026F4DDC4L});
-    //          Guard guard = new Guard(lcsKeypass, lcsPath);
-    //          // quotaData.setUser(Integer.parseInt(guard.var101())); // Not required for current service
-    //          quotaData.setThreads(Integer.parseInt(guard.var120()));
-    //          quotaData.setNode(Integer.parseInt(guard.var121()));
-    //          quotaData.setExpiredDate(
-    //              new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US)
-    //                  .parse(guard.var108()));
-    //          return quotaData;
-    //        }
-    //      } catch (Exception e) {
-    //        log.error("", e);
-    //        throw SysException.of(PRODUCT_LIC_OBTAIN_ERROR_CODE, PRODUCT_LIC_OBTAIN_ERROR);
-    //      }
-    //    }
-    //    throw SysException.of(PRODUCT_LIC_OBTAIN_ERROR_CODE, PRODUCT_LIC_OBTAIN_ERROR);
     return null;
   }
 
