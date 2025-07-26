@@ -57,28 +57,20 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
   @Resource
   private TaskTrashRepo taskTrashRepo;
-
   @Resource
   private TaskTrashQuery taskTrashQuery;
-
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private TaskInfoRepo taskInfoRepo;
-
   @Resource
   private TaskCmd taskCmd;
-
   @Resource
   private TaskSprintRepo taskSprintRepo;
-
   @Resource
   private TaskSprintCmd taskSprintCmd;
-
   @Resource
   private TaskSprintAuthRepo taskSprintAuthRepo;
-
   @Resource
   private ActivityCmd activityCmd;
 

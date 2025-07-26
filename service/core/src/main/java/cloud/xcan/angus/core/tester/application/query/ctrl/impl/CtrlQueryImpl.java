@@ -48,27 +48,56 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
+/**
+ * Implementation of controller query operations for node discovery and connection management.
+ *
+ * <p>This class provides functionality for discovering controller nodes in distributed
+ * environments, managing connections, and handling node election for load balancing.</p>
+ *
+ * <p>Key features include:
+ * <ul>
+ *   <li>Controller node discovery and validation</li>
+ *   <li>Service instance health checking and filtering</li>
+ *   <li>Connection weight calculation for load balancing</li>
+ *   <li>Remote controller communication and connection querying</li>
+ *   <li>Support for both cloud service and private deployment editions</li>
+ * </ul></p>
+ *
+ * @author XiaoLong Liu
+ */
 @Biz
 @Slf4j
 public class CtrlQueryImpl implements CtrlQuery {
 
   @Resource
   private NodeQuery nodeQuery;
-
   @Resource
   private DiscoveryClient discoveryClient;
-
   @Resource
   private ApplicationInfo appInfo;
-
   @Resource
   private AgentServerProperties serverProperties;
-
   @Resource
   private ObjectMapper objectMapper;
 
   /**
-   * The smaller the number of connections, the higher the weight.
+   * Discovers available controller nodes for load balancing.
+   *
+   * <p>This method performs comprehensive node discovery by querying available
+   * controller nodes, validating their health status, and calculating connection
+   * weights for load balancing purposes.</p>
+   *
+   * <p>The discovery process includes:
+   * <ul>
+   *   <li>Retrieving controller nodes from the database</li>
+   *   <li>Validating service instance health status</li>
+   *   <li>Filtering nodes based on edition type (cloud vs private)</li>
+   *   <li>Querying remote connections for weight calculation</li>
+   *   <li>Building discovery response with weighted nodes</li>
+   * </ul></p>
+   *
+   * @param dto the discovery request parameters
+   * @return discovery result with available nodes and their weights
    */
   @Override
   public DiscoveryNodeVo discovery(DiscoveryNodeDto dto) {
@@ -79,6 +108,7 @@ public class CtrlQueryImpl implements CtrlQuery {
         DiscoveryNodeVo discoveryNodeVo = new DiscoveryNodeVo();
         Long tenantId = getOptTenantId();
 
+        // Retrieve controller nodes from database
         List<Node> nodes = nodeQuery.getNodes(null, NodeRole.CONTROLLER,
             true, QUERY_MAX_EXEC_NODES, isPrivateEdition() ? tenantId : OWNER_TENANT_ID);
         if (isEmpty(nodes)) {
@@ -89,6 +119,7 @@ public class CtrlQueryImpl implements CtrlQuery {
         }
         log.info("Discovery controller nodes: {}", JsonUtils.toJson(nodes));
 
+        // Get healthy service instances from discovery client
         List<ServiceInstance> upInstances = discoveryClient.getInstances(appInfo.getArtifactId());
         if (isEmpty(upInstances)) {
           log.error("Fatal: No controller instance in up state, tenantId={}, dto={}", tenantId,
@@ -97,11 +128,14 @@ public class CtrlQueryImpl implements CtrlQuery {
           return discoveryNodeVo;
         }
 
+        // Extract IP addresses of healthy instances
         List<String> upInstanceIps = upInstances.stream().map(ServiceInstance::getHost)
             .collect(Collectors.toList());
         log.info("Discovery up instance ips: {}", upInstanceIps);
         log.info("Discovery isCloudServiceEdition={}, upInstanceIps.contains(nodes[0].ip)={}",
             isCloudServiceEdition(), nodes.get(0).getIp());
+        
+        // Filter valid nodes based on edition type and health status
         List<Node> validNodes = isCloudServiceEdition()
             ? nodes.stream().filter(x ->
             (isNotEmpty(x.getPublicIp()) || isNotEmpty(x.getDomain()) && isNotEmpty(x.getIp())
@@ -116,9 +150,11 @@ public class CtrlQueryImpl implements CtrlQuery {
         }
         log.info("Discovery valid nodes: {}", JsonUtils.toJson(validNodes));
 
+        // Create IP to node mapping for efficient lookup
         Map<String, Node> ipNodesMap = validNodes.stream()
             .collect(Collectors.toMap(Node::getIp, x -> x));
 
+        // Build discovery nodes with connection weights
         List<DiscoveryNode> discoveryNodes = new ArrayList<>();
         for (ServiceInstance inst : upInstances) {
           if (ipNodesMap.containsKey(inst.getHost())) {
@@ -129,10 +165,12 @@ public class CtrlQueryImpl implements CtrlQuery {
             }
             DiscoveryNode discoveryNode = new DiscoveryNode();
             Node node = ipNodesMap.get(inst.getHost());
+            // Determine discovery host (domain > public IP > private IP)
             String discoveryHost = isNotEmpty(node.getDomain())
                 ? node.getDomain() : isNotEmpty(node.getPublicIp())
                 ? node.getPublicIp() : node.getIp();
             discoveryNode.setHost(discoveryHost + ":" + serverProperties.getServerPort());
+            // Calculate weight based on connection count (fewer connections = higher weight)
             if (isEmpty(remoteResults)) {
               discoveryNode.setWeight(1);
             } else {
@@ -156,7 +194,12 @@ public class CtrlQueryImpl implements CtrlQuery {
 
 
   /**
-   * @return If a empty list indicates that the service no connections.
+   * Retrieves all active connections from the local channel router manager.
+   *
+   * <p>This method collects all channel routers from the local channel map,
+   * flattening the nested structure into a single list of active connections.</p>
+   *
+   * @return list of active channel routers, empty list if no connections exist
    */
   @Override
   public List<ChannelRouter> getConnections() {
@@ -164,12 +207,22 @@ public class CtrlQueryImpl implements CtrlQuery {
 
       @Override
       protected List<ChannelRouter> process() {
+        // Flatten nested channel map structure into single list
         return LocalChannelRouterManager.LOCAL_CHANNEL_MAP.values().stream().map(
             ConcurrentHashMap::values).flatMap(Collection::stream).collect(Collectors.toList());
       }
     }.execute();
   }
 
+  /**
+   * Broadcasts connection query to remote controller nodes.
+   *
+   * <p>This method sends HTTP requests to remote controller nodes to query
+   * their current connection information for load balancing calculations.</p>
+   *
+   * @param remoteUrl the remote controller endpoint URL
+   * @return list of channel routers from remote controller, null if unavailable
+   */
   private List<ChannelRouter> broadcastQueryConnections2RemoteCtrl(String remoteUrl) {
     try {
       Response response = doHttpGetRequest(remoteUrl);
@@ -193,7 +246,19 @@ public class CtrlQueryImpl implements CtrlQuery {
     return null;
   }
 
+  /**
+   * Performs HTTP GET request to remote endpoints with authentication.
+   *
+   * <p>This method creates an HTTP sender with configured timeouts and sends
+   * GET requests to remote URLs, optionally including bearer token authentication
+   * for door API invocations.</p>
+   *
+   * @param remoteUrl the target URL for the HTTP request
+   * @return HTTP response from the remote endpoint
+   * @throws Throwable if the request fails
+   */
   public static Response doHttpGetRequest(String remoteUrl) throws Throwable {
+    // Create HTTP sender with connection and request timeouts
     HttpSender sender = new HttpUrlConnectionSender(
         Duration.ofMillis(BROADCAST_CTRL_CONNECTION_TIMEOUT),
         Duration.ofMillis(BROADCAST_CTRL_REQUEST_TIMEOUT_0));

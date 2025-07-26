@@ -44,10 +44,8 @@ public class TaskFollowCmdImpl extends CommCmd<TaskFollow, Long> implements Task
 
   @Resource
   private TaskFollowRepo taskFollowRepo;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

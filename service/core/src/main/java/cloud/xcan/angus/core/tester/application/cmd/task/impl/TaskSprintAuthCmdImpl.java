@@ -53,22 +53,16 @@ public class TaskSprintAuthCmdImpl extends CommCmd<TaskSprintAuth, Long> impleme
 
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private TaskSprintRepo taskSprintRepo;
-
   @Resource
   private TaskSprintQuery taskSprintQuery;
-
   @Resource
   private TaskSprintAuthQuery taskSprintAuthQuery;
-
   @Resource
   private TaskSprintAuthRepo taskSprintAuthRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

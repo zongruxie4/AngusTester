@@ -59,16 +59,12 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
 
   @Resource
   private TagRepo tagRepo;
-
   @Resource
   private TagTargetRepo tagTargetRepo;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

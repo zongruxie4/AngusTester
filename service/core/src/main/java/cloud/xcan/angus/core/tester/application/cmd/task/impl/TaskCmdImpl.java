@@ -193,67 +193,46 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private TaskRemarkRepo taskRemarkRepo;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private SoftwareVersionQuery softwareVersionQuery;
-
   @Resource
   private SoftwareVersionCmd softwareVersionCmd;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private ModuleQuery moduleQuery;
-
   @Resource
   private TaskFuncCaseCmd taskFuncCaseCmd;
-
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private TaskSprintQuery taskSprintQuery;
-
   @Resource
   private TaskSprintCmd taskSprintCmd;
-
   @Resource
   private TaskSprintAuthQuery taskSprintAuthQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private TagTargetCmd tagTargetCmd;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private TaskTrashCmd trashTaskCmd;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private ActivityCmd activityCmd;
 

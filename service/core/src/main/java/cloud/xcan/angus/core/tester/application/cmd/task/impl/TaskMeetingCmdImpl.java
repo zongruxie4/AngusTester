@@ -44,13 +44,10 @@ public class TaskMeetingCmdImpl extends CommCmd<TaskMeeting, Long> implements Ta
 
   @Resource
   private TaskMeetingRepo taskMeetingRepo;
-
   @Resource
   private TaskMeetingQuery taskMeetingQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

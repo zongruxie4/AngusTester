@@ -109,61 +109,42 @@ public class CommonQueryImpl implements CommonQuery {
 
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private TaskSprintQuery taskSprintQuery;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private TenantRepo tenantRepo;
-
   @Resource
   private UserBaseRepo userBaseRepo;
-
   @Resource
   private GroupRepo groupRepo;
-
   @Resource
   private DeptRepo deptRepo;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private SettingManager settingManager;
-
   @Resource
   private SettingTenantManager settingTenantManager;
-
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
-
   @Resource
   private ApplicationInfo applicationInfo;
-
   @Resource
   private ExecQuery execQuery;
 

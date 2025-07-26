@@ -45,10 +45,8 @@ public class TaskFavouriteCmdImpl extends CommCmd<TaskFavourite, Long> implement
 
   @Resource
   private TaskFavouriteRepo taskFavoriteRepo;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 

@@ -45,13 +45,10 @@ public class TaskRemarkCmdImpl extends CommCmd<TaskRemark, Long> implements Task
 
   @Resource
   private TaskRemarkRepo taskRemarkRepo;
-
   @Resource
   private TaskRemarkQuery taskRemarkQuery;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private ActivityCmd activityCmd;
 
