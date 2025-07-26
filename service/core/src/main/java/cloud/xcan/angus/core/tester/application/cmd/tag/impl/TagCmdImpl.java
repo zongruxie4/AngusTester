@@ -35,6 +35,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation of tag command operations for tag management.
+ * 
+ * <p>This class provides comprehensive functionality for managing tags,
+ * including creation, updates, deletion, and example import operations.</p>
+ * 
+ * <p>It handles the complete lifecycle of tag management from creation
+ * to deletion, including permission validation, quota management,
+ * and activity logging for audit purposes.</p>
+ * 
+ * <p>Key features include:
+ * <ul>
+ *   <li>Tag CRUD operations with comprehensive validation</li>
+ *   <li>Bulk tag operations with project-level constraints</li>
+ *   <li>Example tag import functionality</li>
+ *   <li>Permission and quota management</li>
+ *   <li>Activity logging for audit trails</li>
+ * </ul></p>
+ */
 @Biz
 public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
 
@@ -53,18 +72,31 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds multiple tags to a project with comprehensive validation.
+   * 
+   * <p>This method creates multiple tags for a project with proper
+   * permission validation, name uniqueness checks, and quota management.</p>
+   * 
+   * <p>The method logs tag creation activities for audit purposes.</p>
+   * 
+   * @param projectId the ID of the project to add tags to
+   * @param names the set of tag names to create
+   * @return list of ID keys for the created tags
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public List<IdKey<Long, Object>> add(Long projectId, Set<String> names) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
-        // Check the edit permission
+        // Verify project exists and user has edit permissions
         Project projectDb = projectQuery.checkAndFind(projectId);
         projectQuery.checkEditModulePermission(projectDb);
-        // Check the names exists
+        // Verify tag names don't already exist
         tagQuery.checkAddNameExist(projectId, names);
-        // Check the quota limit
+        // Verify quota limits are not exceeded
         tagQuery.checkQuota(names.size());
       }
 
@@ -81,6 +113,17 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
     }.execute();
   }
 
+  /**
+   * Updates multiple tags with comprehensive validation.
+   * 
+   * <p>This method updates multiple tags with proper permission validation
+   * and name uniqueness checks. All tags must belong to the same project.</p>
+   * 
+   * <p>The method logs tag update activities for audit purposes.</p>
+   * 
+   * @param tags the list of tags to update
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void update(List<Tag> tags) {
@@ -89,19 +132,20 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
 
       @Override
       protected void checkParams() {
-        // Check the tags exists
+        // Verify tags exist and retrieve them
         tagsDb = tagQuery.checkAndFind(tags.stream().map(Tag::getId).collect(Collectors.toList()));
         Set<Long> projectIds = tagsDb.stream().map(Tag::getProjectId)
             .collect(Collectors.toSet());
+        // Verify all tags belong to the same project
         ProtocolAssert.assertTrue(projectIds.size() == 1,
             "Only batch adding tags with one project is allowed");
         Long projectId = projectIds.iterator().next();
 
-        // Check the edit permission
+        // Verify user has edit permissions for the project
         Project projectDb = projectQuery.checkAndFind(projectId);
         projectQuery.checkEditModulePermission(projectDb);
 
-        // Check the tag names exist
+        // Verify tag names don't conflict with existing tags
         tagQuery.checkUpdateNameExists(projectId, tags);
       }
 
@@ -116,8 +160,16 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
   }
 
   /**
-   * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * Imports example tags into a project.
+   * 
+   * <p>This method imports predefined example tags from sample files
+   * to help users get started with the system.</p>
+   * 
+   * <p>Note: When API calls are not user-initiated, tenant and user information
+   * must be injected into the PrincipalContext for proper authorization.</p>
+   * 
+   * @param projectId the ID of the project to import examples into
+   * @return list of ID keys for the imported tags
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -139,6 +191,17 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
     }.execute();
   }
 
+  /**
+   * Deletes multiple tags with comprehensive cleanup.
+   * 
+   * <p>This method deletes multiple tags and their associated relationships.
+   * All tags must belong to the same project for batch deletion.</p>
+   * 
+   * <p>The method logs tag deletion activities for audit purposes.</p>
+   * 
+   * @param ids the collection of tag IDs to delete
+   * @throws IllegalArgumentException if validation fails
+   */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -147,35 +210,41 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
 
       @Override
       protected void checkParams() {
-        // check tag exist
+        // Verify tags exist and retrieve them
         tagsDb = tagQuery.checkAndFind(ids);
 
-        // Check the one project is allowed
+        // Verify all tags belong to the same project
         Set<Long> projectIds = tagsDb.stream().map(Tag::getProjectId)
             .collect(Collectors.toSet());
         ProtocolAssert.assertTrue(projectIds.size() == 1,
             "Only batch adding modules with one project is allowed");
         Long projectId = projectIds.iterator().next();
 
-        // Check the edit permission
+        // Verify user has edit permissions for the project
         Project projectDb = projectQuery.checkAndFind(projectId);
         projectQuery.checkEditModulePermission(projectDb);
       }
 
       @Override
       protected Void process() {
-        // Delete relation
+        // Delete tag relationships first
         tagTargetRepo.deleteByTagIdIn(ids);
 
-        // Delete tags
+        // Delete the tags themselves
         tagRepo.deleteByIdIn(ids);
 
+        // Log tag deletion activities
         activityCmd.addAll(toActivities(TAG, tagsDb, DELETED));
         return null;
       }
     }.execute();
   }
 
+  /**
+   * Returns the repository instance for this command.
+   * 
+   * @return the tag repository
+   */
   @Override
   protected BaseRepository<Tag, Long> getRepository() {
     return this.tagRepo;
