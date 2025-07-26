@@ -45,24 +45,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * <p>
+ * Implementation of ScriptAuthQuery for script authorization management and validation.
+ * </p>
+ * <p>
+ * Provides methods for checking script permissions, managing user authorizations, and validating access rights.
+ * </p>
+ */
 @Biz
 public class ScriptAuthQueryImpl implements ScriptAuthQuery {
 
   @Resource
   private ScriptAuthRepo scriptAuthRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScriptRepo scriptRepo;
-
   @Resource
   private UserRepo userRepo;
-
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * <p>
+   * Get the authorization status of a script.
+   * </p>
+   * @param scriptId Script ID
+   * @return Authorization status
+   */
   @Override
   public Boolean status(Long scriptId) {
     return new BizTemplate<Boolean>() {
@@ -81,6 +92,18 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific script.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns permissions based on their authorization records.
+   * </p>
+   * @param scriptId Script ID
+   * @param userId User ID
+   * @param admin Whether to check admin permissions
+   * @return List of script permissions
+   */
   @Override
   public List<ScriptPermission> userAuth(Long scriptId, Long userId, Boolean admin) {
     return new BizTemplate<List<ScriptPermission>>() {
@@ -116,6 +139,17 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get current user's authorization information for a script.
+   * </p>
+   * <p>
+   * Returns authorization status and permissions for the current user.
+   * </p>
+   * @param scriptId Script ID
+   * @param admin Whether to check admin permissions
+   * @return Current user's authorization information
+   */
   @Override
   public ScriptAuthCurrent currentUserAuth(Long scriptId, Boolean admin) {
     return new BizTemplate<ScriptAuthCurrent>() {
@@ -156,6 +190,17 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get current user's authorization information for multiple scripts.
+   * </p>
+   * <p>
+   * Batch retrieves authorization information for multiple scripts to avoid N+1 query problems.
+   * </p>
+   * @param scriptIds Set of script IDs
+   * @param admin Whether to check admin permissions
+   * @return Map of script ID to authorization information
+   */
   @Override
   public Map<Long, ScriptAuthCurrent> currentUserAuths(HashSet<Long> scriptIds, Boolean admin) {
     return new BizTemplate<Map<Long, ScriptAuthCurrent>>() {
@@ -224,6 +269,14 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a script.
+   * </p>
+   * @param scriptId Script ID
+   * @param permission Required permission
+   * @param userId User ID
+   */
   @Override
   public void check(Long scriptId, ScriptPermission permission, Long userId) {
     new BizTemplate<Void>() {
@@ -236,6 +289,15 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find script authorizations with pagination and permission validation.
+   * </p>
+   * @param spec Search specification
+   * @param scriptIds List of script IDs
+   * @param pageable Pagination information
+   * @return Page of script authorizations
+   */
   @Override
   public Page<ScriptAuth> find(Specification<ScriptAuth> spec,
       List<String> scriptIds, Pageable pageable) {
@@ -255,47 +317,118 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check and find a script authorization by ID.
+   * </p>
+   * @param id Authorization ID
+   * @return Script authorization entity
+   */
   @Override
   public ScriptAuth checkAndFind(Long id) {
     return scriptAuthRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "ScriptAuth"));
   }
 
+  /**
+   * <p>
+   * Check if a user has view permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkViewAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.VIEW);
   }
 
+  /**
+   * <p>
+   * Check if a user has modify permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkModifyAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.MODIFY);
   }
 
+  /**
+   * <p>
+   * Check if a user has delete permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkDeleteAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.DELETE);
   }
 
+  /**
+   * <p>
+   * Check if a user has test permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkTestAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.TEST);
   }
 
+  /**
+   * <p>
+   * Check if a user has grant permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkGrantAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.GRANT, false, true);
   }
 
+  /**
+   * <p>
+   * Check if a user has export permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   */
   @Override
   public void checkExportAuth(Long userId, Long scriptId) {
     checkAuth(userId, scriptId, ScriptPermission.EXPORT);
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   * @param permission Required permission
+   */
   @Override
   public void checkAuth(Long userId, Long scriptId, ScriptPermission permission) {
     checkAuth(userId, scriptId, permission, false, permission.isGrant());
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a script with additional control options.
+   * </p>
+   * <p>
+   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for non-grant permissions
+   * when authorization is not controlled.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   * @param permission Required permission
+   * @param ignoreAdminPermission Whether to ignore admin permissions
+   * @param ignorePublicAccess Whether to ignore public access
+   */
   @Override
   public void checkAuth(Long userId, Long scriptId, ScriptPermission permission,
       boolean ignoreAdminPermission, boolean ignorePublicAccess) {
@@ -325,7 +458,15 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
   }
 
   /**
-   * Verify the operation permissions of the apis
+   * <p>
+   * Verify the operation permissions of the apis for multiple scripts.
+   * </p>
+   * <p>
+   * Performs batch permission checking for a collection of scripts. Admins bypass this check.
+   * Only scripts with authorization enabled are checked for non-grant permissions.
+   * </p>
+   * @param scriptIds Collection of script IDs
+   * @param permission Required permission
    */
   @Override
   public void batchCheckPermission(Collection<Long> scriptIds, ScriptPermission permission) {
@@ -365,6 +506,14 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if an authorization already exists for the specified script and auth object.
+   * </p>
+   * @param scriptId Script ID
+   * @param authObjectId Authorization object ID
+   * @param authObjectType Authorization object type
+   */
   @Override
   public void checkRepeatAuth(Long scriptId, Long authObjectId, AuthObjectType authObjectType) {
     if (scriptAuthRepo.countByScriptIdAndAuthObjectIdAndAuthObjectType(scriptId, authObjectId,
@@ -373,6 +522,14 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Find script IDs where a user has a specific permission through their organization memberships.
+   * </p>
+   * @param userId User ID
+   * @param permission Required permission
+   * @return List of script IDs
+   */
   @Override
   public List<Long> findByAuthObjectIdsAndPermission(Long userId, ScriptPermission permission) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -382,6 +539,14 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
             Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and a specific script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   * @return List of script authorizations
+   */
   @Override
   public List<ScriptAuth> findAuth(Long userId, Long scriptId) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -389,6 +554,14 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     return scriptAuthRepo.findAllByScriptIdAndAuthObjectIdIn(scriptId, orgIds);
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and multiple scripts.
+   * </p>
+   * @param userId User ID
+   * @param scriptIds Collection of script IDs
+   * @return List of script authorizations
+   */
   @Override
   public List<ScriptAuth> findAuth(Long userId, Collection<Long> scriptIds) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -397,6 +570,17 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
         : scriptAuthRepo.findAllByScriptIdInAndAuthObjectIdIn(scriptIds, orgIds);
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific script.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns their specific permissions.
+   * </p>
+   * @param scriptId Script ID
+   * @param userId User ID
+   * @return List of user permissions, or null if no permissions found
+   */
   @Override
   public List<ScriptPermission> getUserAuth(Long scriptId, Long userId) {
     if (commonQuery.isAdminUser()) {
@@ -414,6 +598,17 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
         .distinct().collect(Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Get user permissions for multiple scripts.
+   * </p>
+   * <p>
+   * Returns a map of script ID to permission sets for efficient batch permission checking.
+   * </p>
+   * @param scriptIds Collection of script IDs
+   * @param userId User ID
+   * @return Map of script ID to permission sets
+   */
   @Override
   public Map<Long, Set<ScriptPermission>> getUserScriptAuth(Collection<Long> scriptIds,
       Long userId) {
@@ -442,12 +637,27 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     return authPermissionMap;
   }
 
+  /**
+   * <p>
+   * Check if a user is the creator of a script.
+   * </p>
+   * @param userId User ID
+   * @param scriptId Script ID
+   * @return true if the user is the creator, false otherwise
+   */
   @Override
   public boolean isCreator(Long userId, Long scriptId) {
     List<ScriptAuth> scriptAuths = findAuth(userId, scriptId);
     return isCreator(scriptAuths);
   }
 
+  /**
+   * <p>
+   * Check if any of the authorization records indicates the user is a creator.
+   * </p>
+   * @param auths List of script authorizations
+   * @return true if the user is a creator, false otherwise
+   */
   private boolean isCreator(List<ScriptAuth> auths) {
     if (auths.isEmpty()) {
       return false;
@@ -460,6 +670,13 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
     return false;
   }
 
+  /**
+   * <p>
+   * Flatten all permissions from a list of authorization records into a single set.
+   * </p>
+   * @param auths List of script authorizations
+   * @return Set of all permissions
+   */
   private Set<ScriptPermission> flatPermissions(List<ScriptAuth> auths) {
     Set<ScriptPermission> actions = new HashSet<>();
     for (ScriptAuth auth : auths) {

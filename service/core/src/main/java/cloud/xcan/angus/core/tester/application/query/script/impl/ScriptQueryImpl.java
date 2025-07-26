@@ -73,6 +73,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScriptQuery for script management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for script CRUD operations, parsing, validation, statistics, and comprehensive data assembly.
+ * </p>
+ */
 @Slf4j
 @SummaryQueryRegister(name = "Script", table = "script", groupByColumns = {/*"created_date", */
     "type", "source"})
@@ -118,6 +126,16 @@ public class ScriptQueryImpl implements ScriptQuery {
   @Resource
   private Validator validator;
 
+  /**
+   * <p>
+   * Get detailed information of a script including tags, source name, and permissions.
+   * </p>
+   * <p>
+   * Checks view permissions and sets comprehensive script information for user interaction.
+   * </p>
+   * @param id Script ID
+   * @return Script with complete information
+   */
   @Override
   public Script detail(Long id) {
     return new BizTemplate<Script>() {
@@ -141,6 +159,13 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find a script by ID with optional permission checking for user actions.
+   * </p>
+   * @param id Script ID
+   * @return Script entity
+   */
   @Override
   public Script findById(Long id) {
     return new BizTemplate<Script>() {
@@ -158,6 +183,13 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get script information for a set of IDs with source names.
+   * </p>
+   * @param ids Set of script IDs
+   * @return List of script information
+   */
   @Override
   public List<ScriptInfo> infos(Set<Long> ids) {
     return new BizTemplate<List<ScriptInfo>>() {
@@ -171,6 +203,16 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get detailed script information including parsed Angus script content.
+   * </p>
+   * <p>
+   * Checks view permissions and parses the script content into AngusScript format.
+   * </p>
+   * @param id Script ID
+   * @return Script with parsed content
+   */
   @Override
   public Script angusDetail(Long id) {
     return new BizTemplate<Script>() {
@@ -193,6 +235,13 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get script count statistics with authorization filtering.
+   * </p>
+   * @param criteria Search criteria
+   * @return Script count statistics
+   */
   @Override
   public ScriptCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<ScriptCount>() {
@@ -211,6 +260,20 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get script creation statistics for a project within a specified time range.
+   * </p>
+   * <p>
+   * Supports filtering by creator object type and provides comprehensive creation count statistics.
+   * </p>
+   * @param projectId Project ID
+   * @param creatorObjectType Type of creator object
+   * @param creatorObjectId Creator object ID
+   * @param createdDateStart Start date for filtering
+   * @param createdDateEnd End date for filtering
+   * @return Script creation statistics
+   */
   @Override
   public ScriptResourcesCreationCount creationStatistics(Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -236,6 +299,20 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List scripts with optional full-text search and comprehensive data assembly.
+   * </p>
+   * <p>
+   * Checks project member permissions, applies authorization filters, and assembles tags and source names
+   * based on the requested information scope.
+   * </p>
+   * @param spec Script search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of scripts
+   */
   @Override
   public Page<ScriptInfo> list(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -273,6 +350,19 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List script information with conditional authorization filtering.
+   * </p>
+   * <p>
+   * Applies authorization filters only for user actions and sets source names accordingly.
+   * </p>
+   * @param spec Script search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of script information
+   */
   @Override
   public Page<ScriptInfo> infoList(GenericSpecification<ScriptInfo> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -305,6 +395,15 @@ public class ScriptQueryImpl implements ScriptQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Safely convert scenario queries from associated table to main table queries.
+   * </p>
+   * <p>
+   * Converts sourceTargetId to scenarioId when the source is SCENARIO.
+   * </p>
+   * @param criteria Search criteria to modify
+   */
   @Override
   public void safeScenarioQuery(Set<SearchCriteria> criteria) {
     // Convert the scenario query from associated table to the main table query
@@ -317,21 +416,54 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Find script information by source and source target ID.
+   * </p>
+   * @param source Script source
+   * @param sourceTargetId Source target ID
+   * @return List of script information
+   */
   @Override
   public List<ScriptInfo> findInfoBySource(ScriptSource source, Long sourceTargetId) {
     return scriptInfoRepo.findBySourceIdAndSource(sourceTargetId, source);
   }
 
+  /**
+   * <p>
+   * Find scripts by source and source target ID.
+   * </p>
+   * @param source Script source
+   * @param sourceTargetId Source target ID
+   * @return List of scripts
+   */
   @Override
   public List<Script> findBySource(ScriptSource source, Long sourceTargetId) {
     return scriptRepo.findBySourceIdAndSource(sourceTargetId, source);
   }
 
+  /**
+   * <p>
+   * Find script IDs by source and source target IDs.
+   * </p>
+   * @param source Script source
+   * @param sourceTargetIds Collection of source target IDs
+   * @return Set of script IDs
+   */
   @Override
   public Set<Long> findIdsBySource(ScriptSource source, Collection<Long> sourceTargetIds) {
     return scriptRepo.findIdsBySourceIdInAndSourceAndType(sourceTargetIds, source.getValue());
   }
 
+  /**
+   * <p>
+   * Find script IDs by source, source target IDs, and test types.
+   * </p>
+   * @param source Script source
+   * @param sourceTargetIds Collection of source target IDs
+   * @param testTypes Collection of test types
+   * @return Set of script IDs
+   */
   @Override
   public Set<Long> findIdsBySourceAndTypeIn(ScriptSource source, Collection<Long> sourceTargetIds,
       Collection<ScriptType> testTypes) {
@@ -339,6 +471,13 @@ public class ScriptQueryImpl implements ScriptQuery {
         testTypes.stream().map(ScriptType::getValue).collect(Collectors.toList()));
   }
 
+  /**
+   * <p>
+   * Find script by scenario ID, ensuring one-to-one relationship.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @return Script entity or null
+   */
   @Override
   public Script findScriptByScenarioId(Long scenarioId) {
     List<Script> scripts = scriptRepo.findBySourceIdAndSource(scenarioId, ScriptSource.SCENARIO);
@@ -348,6 +487,13 @@ public class ScriptQueryImpl implements ScriptQuery {
     return isEmpty(scripts) ? null : scripts.get(0);
   }
 
+  /**
+   * <p>
+   * Find script information by scenario ID, ensuring one-to-one relationship.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @return Script information entity or null
+   */
   @Override
   public ScriptInfo findScriptInfoByScenarioId(Long scenarioId) {
     List<ScriptInfo> scripts = scriptInfoRepo.findBySourceIdAndSource(scenarioId,
@@ -358,22 +504,55 @@ public class ScriptQueryImpl implements ScriptQuery {
     return isEmpty(scripts) ? null : scripts.get(0);
   }
 
+  /**
+   * <p>
+   * Find script by source, source target ID, and script type.
+   * </p>
+   * @param source Script source
+   * @param sourceTargetId Source target ID
+   * @param scriptType Script type
+   * @return Script entity
+   */
   @Override
   public Script findBySourceAndScriptType(ScriptSource source, Long sourceTargetId,
       ScriptType scriptType) {
     return scriptRepo.findBySourceIdAndSourceAndType(sourceTargetId, source, scriptType);
   }
 
+  /**
+   * <p>
+   * Check and find a script by ID.
+   * </p>
+   * @param id Script ID
+   * @return Script entity
+   */
   @Override
   public Script checkAndFind(Long id) {
     return scriptRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Script"));
   }
 
+  /**
+   * <p>
+   * Check and find script information by ID.
+   * </p>
+   * @param id Script ID
+   * @return Script information entity
+   */
   @Override
   public ScriptInfo checkAndFindInfo(Long id) {
     return scriptInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Script"));
   }
 
+  /**
+   * <p>
+   * Check and find multiple script information by IDs.
+   * </p>
+   * <p>
+   * Validates that all requested scripts exist and throws appropriate exceptions if any are missing.
+   * </p>
+   * @param ids Collection of script IDs
+   * @return List of script information
+   */
   @Override
   public List<ScriptInfo> checkAndFindInfos(Collection<Long> ids) {
     List<ScriptInfo> scriptDbs = scriptInfoRepo.findAllById(ids);
@@ -384,6 +563,16 @@ public class ScriptQueryImpl implements ScriptQuery {
     return scriptDbs;
   }
 
+  /**
+   * <p>
+   * Get a map of script information by script IDs.
+   * </p>
+   * <p>
+   * Handles exceptions gracefully when scripts are deleted and returns partial results.
+   * </p>
+   * @param scriptIds Set of script IDs
+   * @return Map of script ID to script information
+   */
   @Override
   public Map<Long, ScriptInfo> getScriptInfoMap(Set<Long> scriptIds) {
     Map<Long, ScriptInfo> scriptVoMap = new HashMap<>();
@@ -400,6 +589,17 @@ public class ScriptQueryImpl implements ScriptQuery {
     return scriptVoMap;
   }
 
+  /**
+   * <p>
+   * Check and parse script content into AngusScript format.
+   * </p>
+   * <p>
+   * Validates parsing results and optionally performs additional script validation.
+   * </p>
+   * @param content Script content
+   * @param validation Whether to perform additional validation
+   * @return Parsed AngusScript or null
+   */
   @Override
   public AngusScript checkAndParse(String content, boolean validation) {
     if (isEmpty(content)) {
@@ -421,6 +621,17 @@ public class ScriptQueryImpl implements ScriptQuery {
     return parse.getScript();
   }
 
+  /**
+   * <p>
+   * Check and serialize AngusScript to string format.
+   * </p>
+   * <p>
+   * Validates script content and checks length constraints.
+   * </p>
+   * @param script AngusScript to serialize
+   * @param validation Whether to perform validation
+   * @return Serialized script content
+   */
   @Override
   public String checkAndSerialize(AngusScript script, boolean validation) {
     if (isEmpty(script)) {
@@ -442,6 +653,12 @@ public class ScriptQueryImpl implements ScriptQuery {
     return content;
   }
 
+  /**
+   * <p>
+   * Validate AngusScript using Bean Validation constraints.
+   * </p>
+   * @param script AngusScript to validate
+   */
   @Override
   public void checkAngusScript(AngusScript script) {
     // Verify parameter constraints
@@ -454,12 +671,24 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if the script quota is exceeded after increment.
+   * </p>
+   * @param incr Number of scripts to add
+   */
   @Override
   public void checkQuota(int incr) {
     long count = scriptRepo.count();
     settingTenantQuotaManager.checkTenantQuota(QuotaResource.AngusTesterScript, null, incr + count);
   }
 
+  /**
+   * <p>
+   * Check if script content length exceeds the maximum allowed length.
+   * </p>
+   * @param script Script content
+   */
   @Override
   public void checkScriptLength(String script) {
     if (isNotEmpty(script)) {
@@ -469,6 +698,15 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if the source resource exists for a script.
+   * </p>
+   * <p>
+   * Validates that APIs or scenarios referenced by the script actually exist.
+   * </p>
+   * @param script Script to validate
+   */
   @Override
   public void checkSourceResourceExist(Script script) {
     //Assert.assertNotNull(script.getSourceId(), "Script source id is null");
@@ -482,6 +720,12 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if a script already exists when adding a new script.
+   * </p>
+   * @param script Script to check
+   */
   @Override
   public void checkSourceAddScriptExist(Script script) {
     assertNotNull(script.getType(), "Script type is null");
@@ -495,6 +739,12 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if a script already exists when updating a script, excluding the current script.
+   * </p>
+   * @param script Script to check
+   */
   @Override
   public void checkSourceUpdateScriptExist(Script script) {
     assertNotNull(script.getId(), "Script id is null");
@@ -508,12 +758,25 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if authorization control is enabled for a script.
+   * </p>
+   * @param scriptId Script ID
+   * @return true if authorization control is enabled, false otherwise
+   */
   @Override
   public boolean isAuthCtrl(Long scriptId) {
     ScriptInfo script = scriptInfoRepo.findById(scriptId).orElse(null);
     return nonNull(script) && (script.getAuth());
   }
 
+  /**
+   * <p>
+   * Set tags for a script.
+   * </p>
+   * @param script Script to set tags for
+   */
   @Override
   public void setScriptTag(Script script) {
     List<String> tags = scriptTagRepo.findByScriptId(script.getId()).stream()
@@ -521,6 +784,15 @@ public class ScriptQueryImpl implements ScriptQuery {
     script.setTags(tags);
   }
 
+  /**
+   * <p>
+   * Set tags for a list of script information.
+   * </p>
+   * <p>
+   * Batch retrieves tag information to avoid N+1 query problems.
+   * </p>
+   * @param scriptInfos List of script information to update
+   */
   @Override
   public void setScriptInfoTag(List<ScriptInfo> scriptInfos) {
     Map<Long, List<ScriptTag>> tagsMap = scriptTagRepo
@@ -537,6 +809,12 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set the source name for a script.
+   * </p>
+   * @param script Script to set source name for
+   */
   @Override
   public void setScriptSourceName(Script script) {
     if (script.getSource().isApis() && nonNull(script.getSourceId())) {
@@ -554,6 +832,12 @@ public class ScriptQueryImpl implements ScriptQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set the source name for a list of script information.
+   * </p>
+   * @param scriptInfos List of script information to set source name for
+   */
   @Override
   public void setScriptSourceName(List<ScriptInfo> scriptInfos) {
     Map<ScriptSource, List<ScriptInfo>> sourceScriptMap = scriptInfos.stream()
