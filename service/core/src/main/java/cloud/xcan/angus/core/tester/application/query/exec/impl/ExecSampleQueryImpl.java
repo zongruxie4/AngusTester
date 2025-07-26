@@ -76,22 +76,16 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
 
   @Resource
   private ExecSampleRepo sampleRepo;
-
   @Resource
   private ExecSampleSummaryRepo sampleSummaryRepo;
-
   @Resource
   private ExecSampleScoreRepo sampleScoreRepo;
-
   @Resource
   private ExecSampleThroughputRepo sampleThroughputRepo;
-
   @Resource
   private ExecSampleThreadRepo sampleThreadRepo;
-
   @Resource
   private ExecSampleErrorRepo sampleErrorRepo;
-
   @Resource
   private ExecQuery execQuery;
 

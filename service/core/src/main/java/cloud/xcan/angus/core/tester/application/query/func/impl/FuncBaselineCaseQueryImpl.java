@@ -44,31 +44,22 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
 
   @Resource
   private FuncBaselineCaseRepo funcBaselineCaseRepo;
-
   @Resource
   private FuncBaselineCaseInfoRepo funcBaselineCaseInfoRepo;
-
   @Resource
   private FuncBaselineCaseInfoSearchRepo funcBaselineCaseInfoSearchRepo;
-
   @Resource
   private TaskFuncCaseQuery taskFuncCaseQuery;
-
   @Resource
   private FuncPlanAuthQuery funcPlanAuthQuery;
-
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private CommentQuery commentQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private UserManager userManager;
 
