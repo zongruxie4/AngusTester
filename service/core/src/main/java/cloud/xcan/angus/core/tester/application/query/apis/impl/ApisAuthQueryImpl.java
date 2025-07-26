@@ -63,24 +63,18 @@ import org.springframework.data.jpa.domain.Specification;
  *   <li>Authorization status queries</li>
  *   <li>Permission flatting and aggregation</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   @Resource
   private ApisAuthRepo apisAuthRepo;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private UserRepo userRepo;
-
   @Resource
   private CommonQuery commonQuery;
 

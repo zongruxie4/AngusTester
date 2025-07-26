@@ -29,8 +29,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Project-based follow counting</li>
  *   <li>User-specific follow filtering</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 public class ApisFollowQueryImpl implements ApisFollowQuery {

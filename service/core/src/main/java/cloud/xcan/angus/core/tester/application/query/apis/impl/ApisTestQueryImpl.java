@@ -45,15 +45,12 @@ import org.springframework.data.domain.Sort.Order;
  *   <li>Functional, performance, and stability test support</li>
  *   <li>Comprehensive test data aggregation</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 public class ApisTestQueryImpl implements ApisTestQuery {
 
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private UserManager userManager;
 

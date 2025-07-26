@@ -29,8 +29,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Project-based favourite counting</li>
  *   <li>User-specific favourite filtering</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 public class ApisFavouriteQueryImpl implements ApisFavouriteQuery {

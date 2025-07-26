@@ -47,8 +47,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Summary query registration for reporting</li>
  *   <li>Update permission validation</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 @Slf4j
@@ -58,13 +56,10 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
 
   @Resource
   private ApisUnarchivedRepo apisUnarchivedRepo;
-
   @Resource
   private ApisUnarchivedListRepo apisUnarchivedListRepo;
-
   @Resource
   private ApisUnarchivedSearchRepo apisUnarchivedSearchRepo;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
 

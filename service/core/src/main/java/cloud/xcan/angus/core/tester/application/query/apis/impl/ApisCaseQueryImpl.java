@@ -71,8 +71,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>User information enrichment</li>
  *   <li>Safe clone name generation</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Slf4j
 @Biz
@@ -80,19 +78,14 @@ public class ApisCaseQueryImpl implements ApisCaseQuery {
 
   @Resource
   private ApisCaseRepo apisCaseRepo;
-
   @Resource
   private ApisCaseInfoRepo apisCaseInfoRepo;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private ApisCaseInfoSearchRepo apisCaseInfoSearchRepo;
-
   @Resource
   private ServicesCompQuery servicesCompQuery;
-
   @Resource
   private UserManager userManager;
 

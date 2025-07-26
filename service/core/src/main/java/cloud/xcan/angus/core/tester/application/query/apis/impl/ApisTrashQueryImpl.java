@@ -51,13 +51,10 @@ public class ApisTrashQueryImpl implements ApisTrashQuery {
 
   @Resource
   private ApisTrashRepo apisTrashRepo;
-
   @Resource
   private ApisTrashSearchRepo apisTrashSearchRepo;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private UserManager userManager;
 

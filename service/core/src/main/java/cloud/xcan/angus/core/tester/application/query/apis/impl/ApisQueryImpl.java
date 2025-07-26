@@ -140,8 +140,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Comprehensive validation and status checking</li>
  *   <li>Summary query registration for reporting</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Slf4j
 @Biz
@@ -153,58 +151,40 @@ public class ApisQueryImpl implements ApisQuery {
 
   @Resource
   private ApisRepo apisRepo;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private ApisBasicInfoRepo apisBasicInfoRepo;
-
   @Resource
   private ApisInfoSearchRepo apisInfoSearchRepo;
-
   @Resource
   private ApisFavouriteRepo favouriteRepo;
-
   @Resource
   private ApisFollowRepo apisFollowRepo;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ApisInfoListRepo apisInfoListRepo;
-
   @Resource
   private ApisUnarchivedRepo apisUnarchivedRepo;
-
   @Resource
   private ServicesRepo servicesRepo;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private ServicesCompQuery servicesCompQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private MockServiceInfoRepo mockServiceInfoRepo;
-
   @Resource
   private MockApisRepo mockApisRepo;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
 

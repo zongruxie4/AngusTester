@@ -53,33 +53,24 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Project member permission validation</li>
  *   <li>Latest content retrieval and formatting</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @Biz
 public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   @Resource
   private ApisDesignRepo apisDesignRepo;
-
   @Resource
   private ApisDesignInfoRepo apisDesignInfoRepo;
-
   @Resource
   private ApisDesignInfoSearchRepo apisDesignInfoSearchRepo;
-
   @Resource
   private ServicesQuery servicesQuery;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private ServicesAuthQuery servicesAuthQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private UserManager userManager;
 

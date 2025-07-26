@@ -48,8 +48,6 @@ import org.springframework.data.domain.PageRequest;
  *   <li>Summary query registration for reporting</li>
  *   <li>Public access token (PAT) validation</li>
  * </ul></p>
- * 
- * @author XiaoLong Liu
  */
 @SummaryQueryRegister(name = "ApisShare", table = "apis_share",
     groupByColumns = {"created_date", "target_type"}
@@ -59,16 +57,12 @@ public class ApisShareQueryImpl implements ApisShareQuery {
 
   @Resource
   private ApisShareRepo apisShareRepo;
-
   @Resource
   private ApisShareSearchRepo apisShareSearchRepo;
-
   @Resource
   private ServicesSchemaQuery servicesSchemaQuery;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private SettingUserInnerRemote settingUserInnerRemote;
 
