@@ -41,24 +41,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+/**
+ * <p>
+ * Implementation of ScenarioAuthQuery for scenario authorization management and validation.
+ * </p>
+ * <p>
+ * Provides methods for checking scenario permissions, managing user authorizations, and validating access rights.
+ * </p>
+ */
 @Biz
 public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
 
   @Resource
   private ScenarioAuthRepo scenarioAuthRepo;
-
   @Resource
   private ScenarioQuery scenarioQuery;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private UserRepo userRepo;
-
   @Resource
   private CommonQuery commonQuery;
 
+  /**
+   * <p>
+   * Get the authorization status of a scenario.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @return Authorization status
+   */
   @Override
   public Boolean status(Long scenarioId) {
     return new BizTemplate<Boolean>() {
@@ -77,6 +88,18 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific scenario.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns permissions based on their authorization records.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @param userId User ID
+   * @param admin Whether to check admin permissions
+   * @return List of scenario permissions
+   */
   @Override
   public List<ScenarioPermission> userAuth(Long scenarioId, Long userId, Boolean admin) {
     return new BizTemplate<List<ScenarioPermission>>() {
@@ -112,6 +135,17 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get current user's authorization information for a scenario.
+   * </p>
+   * <p>
+   * Returns authorization status and permissions for the current user.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @param admin Whether to check admin permissions
+   * @return Current user's authorization information
+   */
   @Override
   public ScenarioAuthCurrent currentUserAuth(Long scenarioId, Boolean admin) {
     return new BizTemplate<ScenarioAuthCurrent>() {
@@ -153,6 +187,14 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a scenario.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @param permission Required permission
+   * @param userId User ID
+   */
   @Override
   public void check(Long scenarioId, ScenarioPermission permission, Long userId) {
     new BizTemplate<Void>() {
@@ -165,6 +207,15 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find scenario authorizations with pagination and permission validation.
+   * </p>
+   * @param spec Search specification
+   * @param scenarioIds List of scenario IDs
+   * @param pageable Pagination information
+   * @return Page of scenario authorizations
+   */
   @Override
   public Page<ScenarioAuth> find(Specification<ScenarioAuth> spec,
       List<String> scenarioIds, Pageable pageable) {
@@ -184,47 +235,118 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check and find a scenario authorization by ID.
+   * </p>
+   * @param id Authorization ID
+   * @return Scenario authorization entity
+   */
   @Override
   public ScenarioAuth checkAndFind(Long id) {
     return scenarioAuthRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "ScriptAuth"));
   }
 
+  /**
+   * <p>
+   * Check if a user has view permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkViewAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.VIEW);
   }
 
+  /**
+   * <p>
+   * Check if a user has modify permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkModifyAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.MODIFY);
   }
 
+  /**
+   * <p>
+   * Check if a user has delete permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkDeleteAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.DELETE);
   }
 
+  /**
+   * <p>
+   * Check if a user has test permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkTestAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.TEST);
   }
 
+  /**
+   * <p>
+   * Check if a user has grant permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkGrantAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.GRANT, false, true);
   }
 
+  /**
+   * <p>
+   * Check if a user has export permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   */
   @Override
   public void checkExportAuth(Long userId, Long scenarioId) {
     checkAuth(userId, scenarioId, ScenarioPermission.EXPORT);
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   * @param permission Required permission
+   */
   @Override
   public void checkAuth(Long userId, Long scenarioId, ScenarioPermission permission) {
     checkAuth(userId, scenarioId, permission, false, permission.isGrant());
   }
 
+  /**
+   * <p>
+   * Check if a user has a specific permission for a scenario with additional control options.
+   * </p>
+   * <p>
+   * Admins bypass permission checks unless explicitly ignored. Public access is allowed for non-grant permissions
+   * when authorization is not controlled.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   * @param permission Required permission
+   * @param ignoreAdminPermission Whether to ignore admin permissions
+   * @param ignorePublicAccess Whether to ignore public access
+   */
   @Override
   public void checkAuth(Long userId, Long scenarioId, ScenarioPermission permission,
       boolean ignoreAdminPermission, boolean ignorePublicAccess) {
@@ -254,7 +376,15 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
   }
 
   /**
-   * Verify the operation permissions of the apis
+   * <p>
+   * Verify the operation permissions of the apis for multiple scenarios.
+   * </p>
+   * <p>
+   * Performs batch permission checking for a collection of scenarios. Admins bypass this check.
+   * Only scenarios with authorization enabled are checked for non-grant permissions.
+   * </p>
+   * @param scenarioIds Collection of scenario IDs
+   * @param permission Required permission
    */
   @Override
   public void batchCheckPermission(Collection<Long> scenarioIds, ScenarioPermission permission) {
@@ -295,6 +425,14 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Check if an authorization already exists for the specified scenario and auth object.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @param authObjectId Authorization object ID
+   * @param authObjectType Authorization object type
+   */
   @Override
   public void checkRepeatAuth(Long scenarioId, Long authObjectId, AuthObjectType authObjectType) {
     if (scenarioAuthRepo.countByScenarioIdAndAuthObjectIdAndAuthObjectType(scenarioId, authObjectId,
@@ -303,6 +441,14 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     }
   }
 
+  /**
+   * <p>
+   * Find scenario IDs where a user has a specific permission through their organization memberships.
+   * </p>
+   * @param userId User ID
+   * @param permission Required permission
+   * @return List of scenario IDs
+   */
   @Override
   public List<Long> findByAuthObjectIdsAndPermission(Long userId, ScenarioPermission permission) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -312,6 +458,14 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
             Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and a specific scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   * @return List of scenario authorizations
+   */
   @Override
   public List<ScenarioAuth> findAuth(Long userId, Long scenarioId) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -319,6 +473,14 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     return scenarioAuthRepo.findAllByScenarioIdAndAuthObjectIdIn(scenarioId, orgIds);
   }
 
+  /**
+   * <p>
+   * Find authorization records for a user and multiple scenarios.
+   * </p>
+   * @param userId User ID
+   * @param scenarioIds Collection of scenario IDs
+   * @return List of scenario authorizations
+   */
   @Override
   public List<ScenarioAuth> findAuth(Long userId, Collection<Long> scenarioIds) {
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
@@ -327,6 +489,17 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
         : scenarioAuthRepo.findAllByScenarioIdInAndAuthObjectIdIn(scenarioIds, orgIds);
   }
 
+  /**
+   * <p>
+   * Get user permissions for a specific scenario.
+   * </p>
+   * <p>
+   * Returns all permissions for admins and creators. For regular users, returns their specific permissions.
+   * </p>
+   * @param scenarioId Scenario ID
+   * @param userId User ID
+   * @return List of user permissions, or null if no permissions found
+   */
   @Override
   public List<ScenarioPermission> getUserAuth(Long scenarioId, Long userId) {
     if (commonQuery.isAdminUser()) {
@@ -344,12 +517,27 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
         .distinct().collect(Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Check if a user is the creator of a scenario.
+   * </p>
+   * @param userId User ID
+   * @param scenarioId Scenario ID
+   * @return true if the user is the creator, false otherwise
+   */
   @Override
   public boolean isCreator(Long userId, Long scenarioId) {
     List<ScenarioAuth> scenarioAuths = findAuth(userId, scenarioId);
     return isCreator(scenarioAuths);
   }
 
+  /**
+   * <p>
+   * Check if any of the authorization records indicates the user is a creator.
+   * </p>
+   * @param auths List of scenario authorizations
+   * @return true if the user is a creator, false otherwise
+   */
   private boolean isCreator(List<ScenarioAuth> auths) {
     if (auths.isEmpty()) {
       return false;
@@ -362,6 +550,13 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
     return false;
   }
 
+  /**
+   * <p>
+   * Flatten all permissions from a list of authorization records into a single set.
+   * </p>
+   * @param auths List of scenario authorizations
+   * @return Set of all permissions
+   */
   private Set<ScenarioPermission> flatPermissions(List<ScenarioAuth> auths) {
     Set<ScenarioPermission> actions = new HashSet<>();
     for (ScenarioAuth auth : auths) {

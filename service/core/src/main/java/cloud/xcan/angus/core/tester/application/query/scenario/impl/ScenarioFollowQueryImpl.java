@@ -19,15 +19,34 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScenarioFollowQuery for scenario follow management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for listing user's followed scenarios, counting follows, and setting scenario information.
+ * </p>
+ */
 @Biz
 public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
 
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
-
   @Resource
   private ScenarioRepo scenarioRepo;
 
+  /**
+   * <p>
+   * List user's followed scenarios with optional name filtering and pagination.
+   * </p>
+   * <p>
+   * Sets scenario name and plugin information for each followed item.
+   * </p>
+   * @param projectId Project ID for filtering
+   * @param name Optional scenario name filter
+   * @param pageable Pagination information
+   * @return Page of followed scenarios
+   */
   @Override
   public Page<ScenarioFollow> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioFollow>>() {
@@ -43,6 +62,17 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Count the number of followed scenarios for the current user.
+   * </p>
+   * <p>
+   * If projectId is provided, counts follows within that project only.
+   * Otherwise, counts all follows for the user.
+   * </p>
+   * @param projectId Optional project ID for filtering
+   * @return Number of followed scenarios
+   */
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
@@ -55,6 +85,15 @@ public class ScenarioFollowQueryImpl implements ScenarioFollowQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Set scenario information (name and plugin) for a list of followed scenarios.
+   * </p>
+   * <p>
+   * Batch retrieves scenario information to avoid N+1 query problems.
+   * </p>
+   * @param follows List of followed scenarios to update
+   */
   public void setScenarioInfo(List<ScenarioFollow> follows) {
     if (isNotEmpty(follows)) {
       Map<Long, Scenario> scenarioMap = scenarioRepo

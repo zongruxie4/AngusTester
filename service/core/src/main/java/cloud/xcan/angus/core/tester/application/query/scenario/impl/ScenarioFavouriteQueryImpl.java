@@ -19,15 +19,34 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScenarioFavouriteQuery for scenario favorite management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for listing user's favorite scenarios, counting favorites, and setting scenario information.
+ * </p>
+ */
 @Biz
 public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
 
   @Resource
   private ScenarioFavouriteRepo scenarioFavouriteRepo;
-
   @Resource
   private ScenarioRepo scenarioRepo;
 
+  /**
+   * <p>
+   * List user's favorite scenarios with optional name filtering and pagination.
+   * </p>
+   * <p>
+   * Sets scenario name and plugin information for each favorite item.
+   * </p>
+   * @param projectId Project ID for filtering
+   * @param name Optional scenario name filter
+   * @param pageable Pagination information
+   * @return Page of favorite scenarios
+   */
   @Override
   public Page<ScenarioFavourite> list(Long projectId, String name, PageRequest pageable) {
     return new BizTemplate<Page<ScenarioFavourite>>() {
@@ -43,6 +62,17 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Count the number of favorite scenarios for the current user.
+   * </p>
+   * <p>
+   * If projectId is provided, counts favorites within that project only.
+   * Otherwise, counts all favorites for the user.
+   * </p>
+   * @param projectId Optional project ID for filtering
+   * @return Number of favorite scenarios
+   */
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
@@ -55,6 +85,15 @@ public class ScenarioFavouriteQueryImpl implements ScenarioFavouriteQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Set scenario information (name and plugin) for a list of favorite scenarios.
+   * </p>
+   * <p>
+   * Batch retrieves scenario information to avoid N+1 query problems.
+   * </p>
+   * @param favourites List of favorite scenarios to update
+   */
   public void setScenarioInfo(List<ScenarioFavourite> favourites) {
     if (isNotEmpty(favourites)) {
       Map<Long, Scenario> scenarioMap = scenarioRepo

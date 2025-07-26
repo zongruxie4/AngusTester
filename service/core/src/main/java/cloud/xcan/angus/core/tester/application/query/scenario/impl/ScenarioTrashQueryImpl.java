@@ -23,18 +23,35 @@ import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScenarioTrashQuery for scenario trash management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for listing deleted scenarios, counting trash items, and validating trash operation permissions.
+ * </p>
+ */
 @Biz
 public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
 
   @Resource
   private ScenarioTrashRepo scenarioTrashRepo;
-
   @Resource
   private ScenarioTrashSearchRepo scenarioTrashSearchRepo;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * <p>
+   * Count the number of scenarios in trash.
+   * </p>
+   * <p>
+   * If projectId is provided, counts trash items within that project only.
+   * Otherwise, counts all trash items.
+   * </p>
+   * @param projectId Optional project ID for filtering
+   * @return Number of scenarios in trash
+   */
   @Override
   public Long count(Long projectId) {
     return new BizTemplate<Long>() {
@@ -47,6 +64,19 @@ public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List scenarios in trash with optional full-text search.
+   * </p>
+   * <p>
+   * Sets user name and avatar information for both created by and deleted by users.
+   * </p>
+   * @param spec Scenario trash search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of scenario trash items
+   */
   @Override
   public Page<ScenarioTrash> list(GenericSpecification<ScenarioTrash> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -69,6 +99,17 @@ public class ScenarioTrashQueryImpl implements ScenarioTrashQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find a scenario trash item for business operations with permission validation.
+   * </p>
+   * <p>
+   * Admins can perform any operation. Regular users can only perform operations on items they deleted.
+   * </p>
+   * @param id Scenario trash ID
+   * @param biz Business operation type ("BACK" or "CLEAR")
+   * @return Scenario trash entity
+   */
   @Override
   public ScenarioTrash findMyTrashForBiz(Long id, String biz) {
     return new BizTemplate<ScenarioTrash>() {

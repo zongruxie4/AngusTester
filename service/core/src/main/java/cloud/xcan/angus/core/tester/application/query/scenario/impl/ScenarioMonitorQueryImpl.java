@@ -40,24 +40,38 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScenarioMonitorQuery for scenario monitoring management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for scenario monitoring CRUD operations, failure notification handling, and monitoring statistics assembly.
+ * </p>
+ */
 @Biz
 public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
 
   @Resource
   private ScenarioMonitorRepo scenarioMonitorRepo;
-
   @Resource
   private ScenarioMonitorSearchRepo scenarioMonitorSearchRepo;
-
   @Resource
   private ScenarioMonitorHistoryQuery scenarioMonitorHistoryQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * <p>
+   * Get detailed information of a scenario monitor including monitoring statistics.
+   * </p>
+   * <p>
+   * Assembles monitoring count information from history records.
+   * </p>
+   * @param id Monitor ID
+   * @return Scenario monitor with complete information
+   */
   @Override
   public ScenarioMonitor detail(Long id) {
     return new BizTemplate<ScenarioMonitor>() {
@@ -78,6 +92,19 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List scenario monitors with optional full-text search and monitoring statistics assembly.
+   * </p>
+   * <p>
+   * Supports both regular search and full-text search. Assembles monitoring count information for all monitors in the result.
+   * </p>
+   * @param spec Monitor search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of scenario monitors
+   */
   @Override
   public Page<ScenarioMonitor> list(GenericSpecification<ScenarioMonitor> spec,
       PageRequest pageable, boolean fullTextSearch, String[] match) {
@@ -97,12 +124,29 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check and find a scenario monitor by ID.
+   * </p>
+   * @param id Monitor ID
+   * @return Scenario monitor entity
+   */
   @Override
   public ScenarioMonitor checkAndFind(Long id) {
     return scenarioMonitorRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "ScenarioMonitor"));
   }
 
+  /**
+   * <p>
+   * Check and find multiple scenario monitors by IDs.
+   * </p>
+   * <p>
+   * Validates that all requested monitors exist and throws appropriate exceptions if any are missing.
+   * </p>
+   * @param ids Collection of monitor IDs
+   * @return List of scenario monitors
+   */
   @Override
   public List<ScenarioMonitor> checkAndFind(Collection<Long> ids) {
     List<ScenarioMonitor> monitors = scenarioMonitorRepo.findAllById(ids);
@@ -115,6 +159,13 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
     return monitors;
   }
 
+  /**
+   * <p>
+   * Check if a monitor with the specified name already exists in the project.
+   * </p>
+   * @param projectId Project ID
+   * @param name Monitor name
+   */
   @Override
   public void checkExits(Long projectId, String name) {
     long count = scenarioMonitorRepo.countByProjectIdAndName(projectId, name);
@@ -123,6 +174,15 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
     }
   }
 
+  /**
+   * <p>
+   * Assemble monitoring count information for a page of scenario monitors.
+   * </p>
+   * <p>
+   * Batch retrieves monitoring history information and assembles count statistics to avoid N+1 query problems.
+   * </p>
+   * @param page Page of scenario monitors
+   */
   @Override
   public void assembleScenarioMonitorCount(Page<ScenarioMonitor> page) {
     Set<Long> monitorIds = page.getContent().stream().map(ScenarioMonitor::getId)
@@ -135,6 +195,16 @@ public class ScenarioMonitorQueryImpl implements ScenarioMonitorQuery {
     }
   }
 
+  /**
+   * <p>
+   * Assemble and send failure notification events for scenario monitoring.
+   * </p>
+   * <p>
+   * Sends notifications to monitor creators and configured organization members when monitoring fails.
+   * Supports multiple notification types based on tenant settings.
+   * </p>
+   * @param monitorDb Scenario monitor entity
+   */
   @Override
   public void assembleAndSendScenarioMonitorFailureNoticeEvent(ScenarioMonitor monitorDb) {
     if (nonNull(monitorDb.getCreatedBy())) {

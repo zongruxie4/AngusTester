@@ -71,6 +71,14 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * <p>
+ * Implementation of ScenarioQuery for scenario management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for scenario CRUD operations, execution tracking, statistics, and notification handling.
+ * </p>
+ */
 @Biz
 @SummaryQueryRegister(name = "Scenario", table = "scenario",
     groupByColumns = {"created_date", "auth", "target"})
@@ -78,37 +86,37 @@ public class ScenarioQueryImpl implements ScenarioQuery {
 
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private ScenarioAuthQuery scenarioAuthQuery;
-
   @Resource
   private ScenarioListRepo scenarioListRepo;
-
   @Resource
   private ScenarioSearchRepo scenarioSearchRepo;
-
   @Resource
   private ScriptQuery scriptQuery;
-
   @Resource
   private ScenarioFavouriteRepo scenarioFavoriteRepo;
-
   @Resource
   private ScenarioFollowRepo scenarioFollowRepo;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private ExecQuery execQuery;
 
+  /**
+   * <p>
+   * Get detailed information of a scenario including script content and user interaction states.
+   * </p>
+   * <p>
+   * Checks view permissions, sets favorite and follow states for user actions, and loads associated script information.
+   * </p>
+   * @param id Scenario ID
+   * @return Scenario with complete information
+   */
   @Override
   public Scenario detail(Long id) {
     return new BizTemplate<Scenario>() {
@@ -144,6 +152,12 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Check if a scenario exists by ID.
+   * </p>
+   * @param id Scenario ID
+   */
   @Override
   public void check(Long id) {
     new BizTemplate<Void>() {
@@ -158,6 +172,13 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find scenarios by a set of IDs.
+   * </p>
+   * @param ids Set of scenario IDs
+   * @return List of scenarios
+   */
   @Override
   public List<Scenario> findByIds(Set<Long> ids) {
     return new BizTemplate<List<Scenario>>() {
@@ -169,6 +190,20 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List scenarios with optional full-text search and comprehensive data assembly.
+   * </p>
+   * <p>
+   * Checks project member permissions, applies authorization filters, and assembles execution information,
+   * user interaction states, and user details for all scenarios in the result.
+   * </p>
+   * @param spec Scenario search specification
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Full-text search keywords
+   * @return Page of scenarios
+   */
   @Override
   public Page<Scenario> list(GenericSpecification<Scenario> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -209,6 +244,20 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get scenario creation statistics for a project within a specified time range.
+   * </p>
+   * <p>
+   * Supports filtering by creator object type and provides comprehensive creation count statistics.
+   * </p>
+   * @param projectId Project ID
+   * @param creatorObjectType Type of creator object
+   * @param creatorObjectId Creator object ID
+   * @param createdDateStart Start date for filtering
+   * @param createdDateEnd End date for filtering
+   * @return Scenario creation statistics
+   */
   @Override
   public ScenarioResourcesCreationCount creationStatistics(Long projectId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -234,21 +283,49 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Convert a scenario to a detail summary format.
+   * </p>
+   * @param scenario Scenario entity
+   * @return Scenario detail summary
+   */
   @NameJoin
   public static ScenarioDetailSummary getScenarioDetailSummary(Scenario scenario) {
     return toScenarioDetailSummary(scenario);
   }
 
+  /**
+   * <p>
+   * Check and find a scenario by ID.
+   * </p>
+   * @param id Scenario ID
+   * @return Scenario entity
+   */
   @Override
   public Scenario checkAndFind(Long id) {
     return scenarioRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Scenario"));
   }
 
+  /**
+   * <p>
+   * Check and find a scenario by ID using optimized query.
+   * </p>
+   * @param id Scenario ID
+   * @return Scenario entity
+   */
   @Override
   public Scenario checkAndFind0(Long id) {
     return scenarioRepo.find0ById(id).orElseThrow(() -> ResourceNotFound.of(id, "Scenario"));
   }
 
+  /**
+   * <p>
+   * Check and find the script associated with a scenario.
+   * </p>
+   * @param id Scenario ID
+   * @return Script entity
+   */
   @Override
   public Script checkAndFindScenarioScript(Long id) {
     Script script = scriptQuery.findScriptByScenarioId(id);
@@ -256,6 +333,13 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     return script;
   }
 
+  /**
+   * <p>
+   * Check and find the script information associated with a scenario.
+   * </p>
+   * @param id Scenario ID
+   * @return Script information entity
+   */
   @Override
   public ScriptInfo checkAndFindScenarioScriptInfo(Long id) {
     ScriptInfo script = scriptQuery.findScriptInfoByScenarioId(id);
@@ -263,40 +347,91 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     return script;
   }
 
+  /**
+   * <p>
+   * Check if the scenario quota is exceeded after increment.
+   * </p>
+   * @param inc Number of scenarios to add
+   */
   @Override
   public void checkQuota(int inc) {
     long count = scenarioRepo.countAll0();
     commonQuery.checkTenantQuota(QuotaResource.AngusTesterScenario, null, count + inc);
   }
 
+  /**
+   * <p>
+   * Find a scenario by ID using optimized query, returns null if not found.
+   * </p>
+   * @param id Scenario ID
+   * @return Scenario entity or null
+   */
   @Override
   public Scenario find0(Long id) {
     return scenarioRepo.find0ById(id).orElse(null);
   }
 
+  /**
+   * <p>
+   * Find scenarios by a collection of IDs using optimized query.
+   * </p>
+   * @param ids Collection of scenario IDs
+   * @return List of scenarios
+   */
   @Override
   public List<Scenario> find0ByIdIn(Collection<Long> ids) {
     return scenarioRepo.findAll0ByIdIn(ids);
   }
 
+  /**
+   * <p>
+   * Find the least recently used scenario by project, plugin, and script types.
+   * </p>
+   * @param projectId Project ID
+   * @param plugin Plugin name
+   * @param scriptTypes List of script types
+   * @return Scenario entity
+   */
   @Override
   public Scenario findLeastByProjectIdAndPluginAndTypeIn(Long projectId, String plugin,
       List<String> scriptTypes) {
     return scenarioRepo.findLeastByProjectIdAndPluginAndTypeIn(projectId, plugin, scriptTypes);
   }
 
+  /**
+   * <p>
+   * Check if a scenario name already exists in the project when adding a new scenario.
+   * </p>
+   * @param projectId Project ID
+   * @param name Scenario name
+   */
   @Override
   public void checkNameExists(long projectId, String name) {
     Long count = scenarioRepo.countAll0ByNameAndProjectId(name, projectId);
     assertResourceExisted(count < 1, SCE_NAME_REPEATED_T, new Object[]{name});
   }
 
+  /**
+   * <p>
+   * Check if a scenario name already exists when updating a scenario, excluding the current scenario.
+   * </p>
+   * @param projectId Project ID
+   * @param name Scenario name
+   * @param scenarioId Current scenario ID
+   */
   @Override
   public void checkUpdateNameExists(long projectId, String name, long scenarioId) {
     Long count = scenarioRepo.countAll0ByNameAndProjectIdAndIdNot(name, projectId, scenarioId);
     assertResourceExisted(count < 1, SCE_NAME_REPEATED_T, new Object[]{name});
   }
 
+  /**
+   * <p>
+   * Check if authorization control is enabled for a scenario.
+   * </p>
+   * @param id Scenario ID
+   * @return true if authorization control is enabled, false otherwise
+   */
   @Override
   public Boolean isAuthCtrl(Long id) {
     Scenario scenario = scenarioRepo.findById(id).orElse(null);
@@ -304,7 +439,13 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   /**
-   * Set whether to collect
+   * <p>
+   * Set favorite state for a list of scenarios.
+   * </p>
+   * <p>
+   * Batch retrieves favorite information to avoid N+1 query problems.
+   * </p>
+   * @param scenarios List of scenarios to update
    */
   @Override
   public void setFavourite(List<Scenario> scenarios) {
@@ -321,7 +462,13 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   /**
-   * Set follow state
+   * <p>
+   * Set follow state for a list of scenarios.
+   * </p>
+   * <p>
+   * Batch retrieves follow information to avoid N+1 query problems.
+   * </p>
+   * @param scenarios List of scenarios to update
    */
   @Override
   public void setFollow(List<Scenario> scenarios) {
@@ -338,7 +485,13 @@ public class ScenarioQueryImpl implements ScenarioQuery {
   }
 
   /**
-   * Set exec info
+   * <p>
+   * Set execution information for a list of scenarios.
+   * </p>
+   * <p>
+   * Retrieves the latest execution information for each scenario and sets failure messages for failed executions.
+   * </p>
+   * @param scenarios List of scenarios to update
    */
   @Override
   public void setExecInfo(List<Scenario> scenarios) {
@@ -373,6 +526,15 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     });
   }
 
+  /**
+   * <p>
+   * Set a safe clone name for a scenario to avoid naming conflicts.
+   * </p>
+   * <p>
+   * Generates a unique name by appending "-Copy" and random suffix if necessary, ensuring the name length is within limits.
+   * </p>
+   * @param scenario Scenario to set clone name for
+   */
   @Override
   public void setSafeCloneName(Scenario scenario) {
     String saltName = randomAlphanumeric(3);
@@ -384,6 +546,17 @@ public class ScenarioQueryImpl implements ScenarioQuery {
     scenario.setName(clonedName);
   }
 
+  /**
+   * <p>
+   * Assemble and send modification notification events for scenario changes.
+   * </p>
+   * <p>
+   * Sends notifications to scenario creators and followers when scenarios are modified.
+   * Supports multiple notification types based on tenant settings.
+   * </p>
+   * @param scenarioDb Scenario entity
+   * @param activity Activity information
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(Scenario scenarioDb, Activity activity) {
     List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(scenarioDb.getTenantId())
