@@ -32,6 +32,13 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of FuncBaselineCaseQuery for managing baseline case queries.
+ * <p>
+ * Provides methods to retrieve, list, and check baseline cases, including tag, comment, and user info enrichment.
+ * <p>
+ * Handles permission checks and export logic for baseline case information.
+ */
 @Biz
 public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
 
@@ -65,6 +72,14 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
   @Resource
   private UserManager userManager;
 
+  /**
+   * Retrieves detailed information for a baseline case by caseId.
+   * <p>
+   * Enriches the result with tags, associated tasks, user info, and comment count.
+   *
+   * @param caseId the case ID
+   * @return list of FuncBaselineCase, or null if not found
+   */
   @Override
   public List<FuncBaselineCase> detail(Long caseId) {
     return new BizTemplate<List<FuncBaselineCase>>() {
@@ -97,6 +112,19 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
     }.execute();
   }
 
+  /**
+   * Lists baseline case info with optional export and full-text search.
+   * <p>
+   * Checks project member permission and export authorization, enriches with user and tag info, and optionally includes steps and preconditions for export.
+   *
+   * @param export whether to export extra info
+   * @param baselineId the baseline ID
+   * @param spec search specification
+   * @param pageable pagination
+   * @param fullTextSearch whether to use full-text search
+   * @param match search match terms
+   * @return paginated result of FuncBaselineCaseInfo
+   */
   @Override
   public Page<FuncBaselineCaseInfo> list(boolean export, Long baselineId,
       GenericSpecification<FuncBaselineCaseInfo> spec, PageRequest pageable,
@@ -151,6 +179,12 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
     }.execute();
   }
 
+  /**
+   * Checks and finds baseline cases by caseId, throws if not found.
+   *
+   * @param caseId the case ID
+   * @return list of FuncBaselineCase
+   */
   @Override
   public List<FuncBaselineCase> checkAndFind(Long caseId) {
     List<FuncBaselineCase> baselineCases = funcBaselineCaseRepo.findByCaseId(caseId);

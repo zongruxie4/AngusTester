@@ -27,24 +27,31 @@ import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * Implementation of FuncBaselineQuery for managing baseline queries.
+ * <p>
+ * Provides methods to retrieve, list, and check baselines and their info, including permission checks and summary statistics.
+ */
 @Biz
 public class FuncBaselineQueryImpl implements FuncBaselineQuery {
 
   @Resource
   private FuncBaselineRepo funcBaselineRepo;
-
   @Resource
   private FuncBaselineInfoSearchRepo funcBaselineInfoSearchRepo;
-
   @Resource
   private FuncBaselineInfoRepo funcBaselineInfoRepo;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private UserManager userManager;
 
+  /**
+   * Retrieves detailed information for a baseline by ID.
+   *
+   * @param id the baseline ID
+   * @return FuncBaseline object
+   */
   @Override
   public FuncBaseline detail(Long id) {
     return new BizTemplate<FuncBaseline>() {
@@ -62,6 +69,17 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
     }.execute();
   }
 
+  /**
+   * Finds baseline info with optional full-text search.
+   * <p>
+   * Checks project member permission and enriches with user info.
+   *
+   * @param spec search specification
+   * @param pageable pagination
+   * @param fullTextSearch whether to use full-text search
+   * @param match search match terms
+   * @return paginated result of FuncBaselineInfo
+   */
   @Override
   public Page<FuncBaselineInfo> find(GenericSpecification<FuncBaselineInfo> spec,
       PageRequest pageable, boolean fullTextSearch, String[] match) {
@@ -89,18 +107,36 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
     }.execute();
   }
 
+  /**
+   * Checks and finds a baseline by ID, throws if not found.
+   *
+   * @param id the baseline ID
+   * @return FuncBaseline object
+   */
   @Override
   public FuncBaseline checkAndFind(Long id) {
     return funcBaselineRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "FuncBaseline"));
   }
 
+  /**
+   * Checks and finds baseline info by ID, throws if not found.
+   *
+   * @param id the baseline info ID
+   * @return FuncBaselineInfo object
+   */
   @Override
   public FuncBaselineInfo checkAndFindInfo(Long id) {
     return funcBaselineInfoRepo.findById(id)
         .orElseThrow(() -> ResourceNotFound.of(id, "FuncBaseline"));
   }
 
+  /**
+   * Checks and finds a list of baselines by IDs, throws if not found.
+   *
+   * @param ids collection of baseline IDs
+   * @return list of FuncBaseline
+   */
   @Override
   public List<FuncBaseline> checkAndFind(Collection<Long> ids) {
     List<FuncBaseline> baselines = funcBaselineRepo.findAllById(ids);
@@ -113,6 +149,19 @@ public class FuncBaselineQueryImpl implements FuncBaselineQuery {
     return baselines;
   }
 
+  /**
+   * Gets baseline summaries created by users/orgs within a time range.
+   * <p>
+   * Supports filtering by project, plan, creator org, and date range.
+   *
+   * @param projectId project ID
+   * @param planId plan ID
+   * @param createdDateStart start date
+   * @param createdDateEnd end date
+   * @param creatorOrgType creator org type
+   * @param creatorOrgId creator org ID
+   * @return list of FuncBaseline
+   */
   @Override
   public List<FuncBaseline> getBaselineCreatedSummaries(Long projectId, Long planId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,

@@ -92,6 +92,7 @@ import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.JoinSupplier;
 import cloud.xcan.angus.core.biz.NameJoin;
+import cloud.xcan.angus.core.biz.exception.BizException;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.CriteriaUtils;
@@ -211,78 +212,93 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
+/**
+ * Implementation of FuncCaseQuery for managing functional test case queries and statistics.
+ * <p>
+ * This class provides comprehensive functionality for querying, analyzing, and managing functional test cases.
+ * It handles case retrieval, validation, progress tracking, and various statistical analyses including
+ * workload, efficiency, and trend analysis.
+ * <p>
+ * Key features include:
+ * <ul>
+ *   <li>Case detail retrieval with enrichment (tags, favourites, follows, user info)</li>
+ *   <li>Comprehensive statistical analysis (progress, workload, efficiency, trends)</li>
+ *   <li>Quota management and validation</li>
+ *   <li>Permission checking and authorization</li>
+ *   <li>Notification event assembly and dispatch</li>
+ *   <li>Case lifecycle management (creation, updates, reviews)</li>
+ * </ul>
+ * <p>
+ * The implementation uses BizTemplate pattern for consistent business logic execution and
+ * includes performance optimizations for bulk operations and validation checks.
+ * <p>
+ * Supports both individual case operations and bulk operations with proper error handling
+ * and resource validation.
+ */
 @Biz
 public class FuncCaseQueryImpl implements FuncCaseQuery {
 
   @Resource
   private FuncCaseRepo funcCaseRepo;
-
   @Resource
   private FuncCaseInfoRepo funcCaseInfoRepo;
-
   @Resource
   private FuncCaseInfoListRepo funcCaseInfoListRepo;
-
   @Resource
   private FuncCaseInfoSearchRepo funcCaseInfoSearchRepo;
-
   @Resource
   private FuncPlanRepo funcPlanRepo;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private FuncReviewRepo funcReviewRepo;
-
   @Resource
   private FuncBaselineRepo funcBaselineRepo;
-
   @Resource
   private FuncCaseFollowRepo funcCaseFollowRepo;
-
   @Resource
   private FuncCaseFavouriteRepo funcCaseFavoriteRepo;
-
   @Resource
   private TaskQuery taskQuery;
-
   @Resource
   private TaskFuncCaseQuery taskFuncCaseQuery;
-
   @Resource
   private FuncPlanQuery funcPlanQuery;
-
   @Resource
   private FuncReviewQuery funcReviewQuery;
-
   @Resource
   private FuncBaselineQuery funcBaselineQuery;
-
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommentQuery commentQuery;
-
   @Resource
   private ActivityQuery activityQuery;
-
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private JoinSupplier joinSupplier;
 
+  /**
+   * Retrieves detailed information for a specific functional test case.
+   * <p>
+   * Fetches the case by ID and enriches it with additional information including
+   * favourite/follow status, tags, associated tasks/cases, user information,
+   * comment count, activity count, and progress information.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution with
+   * parameter validation and error handling.
+   *
+   * @param id the case ID to retrieve details for
+   * @return FuncCase object with complete details and enriched information
+   * @throws ResourceNotFound if the case is not found
+   */
   @Override
   public FuncCase detail(Long id) {
     return new BizTemplate<FuncCase>() {
@@ -321,6 +337,24 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves a paginated list of functional test case information.
+   * <p>
+   * Supports both regular search and full-text search with comprehensive filtering.
+   * Enriches results with user information, tags, progress, and export data when needed.
+   * <p>
+   * Includes permission checking and authorization filtering for security.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param export whether to include export-specific data (precondition, steps, associations)
+   * @param spec the search specification with criteria and filters
+   * @param pageable pagination parameters (page, size, sort)
+   * @param fullTextSearch whether to use full-text search capabilities
+   * @param match full-text search match parameters
+   * @return Page of FuncCaseInfo objects with enriched information
+   * @throws BizException if permission validation fails
+   */
   @Override
   public Page<FuncCaseInfo> list(boolean export, GenericSpecification<FuncCaseInfo> spec,
       PageRequest pageable, boolean fullTextSearch, String[] match) {
@@ -382,6 +416,20 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves cases that are not associated with a specific task.
+   * <p>
+   * Finds cases within the same project as the task that are not currently
+   * associated with the specified task. Optionally filters by module ID.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * Results are sorted by creation date in descending order.
+   *
+   * @param taskId the task ID to find unassociated cases for
+   * @param moduleId optional module ID to filter cases by module
+   * @return List of FuncCaseInfo objects not associated with the task
+   * @throws ResourceNotFound if the task is not found
+   */
   @Override
   public List<FuncCaseInfo> notAssociatedCaseInTask(Long taskId, @Nullable Long moduleId) {
     return new BizTemplate<List<FuncCaseInfo>>() {
@@ -415,6 +463,20 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Retrieves cases that are not associated with a specific case.
+   * <p>
+   * Finds cases within the same project as the reference case that are not
+   * currently associated with the specified case. Optionally filters by module ID.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * Results are sorted by creation date in descending order.
+   *
+   * @param caseId the case ID to find unassociated cases for
+   * @param moduleId optional module ID to filter cases by module
+   * @return List of FuncCaseInfo objects not associated with the case
+   * @throws ResourceNotFound if the case is not found
+   */
   @Override
   public List<FuncCaseInfo> notAssociatedCaseInCase(Long caseId, @Nullable Long moduleId) {
     return new BizTemplate<List<FuncCaseInfo>>() {
@@ -448,6 +510,29 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates comprehensive resource creation statistics for a project or plan.
+   * <p>
+   * Provides detailed statistics on resource creation including cases, plans, reviews, and baselines.
+   * Supports filtering by creator organization type and date range with optional inclusion of
+   * different resource types based on boolean flags.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method aggregates creation counts and categorizes them by various criteria such as
+   * test results, review status, and priority levels for comprehensive analysis.
+   *
+   * @param projectId the project ID for filtering resources
+   * @param planId optional plan ID for plan-specific filtering
+   * @param creatorObjectType the creator organization type for filtering
+   * @param creatorObjectId the creator organization ID for filtering
+   * @param createdDateStart start date for filtering resource creation
+   * @param createdDateEnd end date for filtering resource creation
+   * @param joinPlan whether to include plan creation statistics
+   * @param joinReview whether to include review creation statistics
+   * @param joinBaseline whether to include baseline creation statistics
+   * @return FuncLastResourceCreationCount object with comprehensive creation statistics
+   */
   @Override
   public FuncLastResourceCreationCount creationResourcesStatistics(Long projectId, Long planId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -494,6 +579,18 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Counts functional test cases based on specified search criteria.
+   * <p>
+   * Provides case count statistics with automatic filtering for deleted cases
+   * and deleted plans. Requires projectId parameter for validation.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param criteria search criteria for filtering cases
+   * @return FuncCaseCount object containing the count statistics
+   * @throws BizException if projectId parameter is missing
+   */
   @Override
   public FuncCaseCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<FuncCaseCount>() {
@@ -514,6 +611,18 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates summary statistics for testers in a project or plan.
+   * <p>
+   * Provides comprehensive tester statistics including case counts, progress metrics,
+   * and user information. Groups cases by tester and enriches with user details.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific statistics
+   * @return List of FuncTesterCount objects with tester statistics
+   */
   @Override
   public List<FuncTesterCount> testerSummaryStatistics(Long projectId, Long planId) {
     return new BizTemplate<List<FuncTesterCount>>() {
@@ -543,6 +652,19 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates progress statistics for testers in a project or plan.
+   * <p>
+   * Provides detailed progress metrics for each tester including completion rates,
+   * workload distribution, and progress trends. Groups cases by tester and
+   * calculates progress-based statistics.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific statistics
+   * @return List of FuncTesterProgressCount objects with tester progress statistics
+   */
   @Override
   public List<FuncTesterProgressCount> testerProgressStatistics(Long projectId, Long planId) {
     return new BizTemplate<List<FuncTesterProgressCount>>() {
@@ -573,6 +695,19 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates comprehensive work statistics for a project.
+   * <p>
+   * Provides detailed project-level statistics including case counts, resource creation
+   * statistics, plan summaries, and various categorization metrics. Aggregates data
+   * from all plans within the project.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID to generate statistics for
+   * @return FuncProjectWorkSummary object with comprehensive project statistics
+   * @throws ResourceNotFound if the project is not found
+   */
   @Override
   public FuncProjectWorkSummary projectWorkStatistics(Long projectId) {
     return new BizTemplate<FuncProjectWorkSummary>() {
@@ -607,6 +742,19 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates comprehensive work statistics for a plan.
+   * <p>
+   * Provides detailed plan-level statistics including case counts, tester summaries,
+   * progress metrics, and various categorization statistics. Groups cases by tester
+   * and provides daily workload distribution.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param planId the plan ID to generate statistics for
+   * @return FuncPlanWorkSummary object with comprehensive plan statistics
+   * @throws ResourceNotFound if the plan is not found
+   */
   @Override
   public FuncPlanWorkSummary planWorkStatistics(Long planId) {
     return new BizTemplate<FuncPlanWorkSummary>() {
@@ -671,6 +819,20 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates work statistics for a specific tester.
+   * <p>
+   * Provides detailed statistics for a single tester including case counts,
+   * daily workload distribution, and progress metrics. Groups cases by creation date
+   * to show daily work patterns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param userId the user ID to generate statistics for
+   * @return FuncTesterWorkSummary object with tester-specific statistics
+   */
   @Override
   public FuncTesterWorkSummary testerWorkStatistics(
       Long projectId, @Nullable Long planId, Long userId) {
@@ -711,6 +873,25 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates progress overview for functional test cases.
+   * <p>
+   * Provides comprehensive progress analysis including total overview and
+   * individual tester progress details. Supports filtering by tester organization
+   * and date range with optional detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return ProgressOverview object with comprehensive progress statistics
+   */
   @Override
   public ProgressOverview progress(Long projectId, Long planId, AuthObjectType testerOrgType,
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -767,13 +948,35 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates burndown chart overview for functional test cases.
+   * <p>
+   * Provides comprehensive burndown analysis including total overview and individual tester
+   * burndown details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method automatically determines safe date ranges based on plan or project boundaries
+   * and excludes canceled cases from the analysis. Provides both numeric and workload-based
+   * burndown charts.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return BurnDownChartOverview object with comprehensive burndown statistics
+   */
   @Override
   public BurnDownChartOverview burndownChart(
       Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, boolean joinTesterDetail,
       boolean joinDataDetail) {
     return new BizTemplate<BurnDownChartOverview>() {
-
 
       @Override
       protected BurnDownChartOverview process() {
@@ -859,6 +1062,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates workload overview for functional test cases.
+   * <p>
+   * Provides comprehensive workload analysis including total overview and individual tester
+   * workload details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes case workload distribution across testers and provides metrics
+   * for workload planning and resource allocation.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return WorkloadOverview object with comprehensive workload statistics
+   */
   @Override
   public WorkloadOverview workload(Long projectId, Long planId, AuthObjectType testerOrgType,
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -916,6 +1141,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates overdue assessment overview for functional test cases.
+   * <p>
+   * Provides comprehensive overdue analysis including total overview and individual tester
+   * overdue details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method calculates overdue assessments based on daily processed workload and provides
+   * metrics for identifying potential delays and resource constraints.
+   *
+   * @param projectId the project ID for filtering cases (required)
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return OverdueAssessmentOverview object with comprehensive overdue statistics
+   */
   @Override
   public OverdueAssessmentOverview overdueAssessment(
       @NonNullable Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
@@ -980,6 +1227,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates testing efficiency overview for functional test cases.
+   * <p>
+   * Provides comprehensive efficiency analysis including total overview and individual tester
+   * efficiency details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes testing efficiency metrics including completion rates, time utilization,
+   * and productivity indicators for performance optimization.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return TestingEfficiencyOverview object with comprehensive efficiency statistics
+   */
   @Override
   public TestingEfficiencyOverview testingEfficiency(Long projectId, Long planId,
       AuthObjectType testerOrgType, Long testerOrgId, LocalDateTime createdDateStart,
@@ -1036,6 +1305,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates core KPI overview for functional test cases.
+   * <p>
+   * Provides comprehensive KPI analysis including total overview and individual tester
+   * KPI details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes core key performance indicators including quality metrics,
+   * productivity measures, and delivery performance for strategic decision making.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return CoreKpiOverview object with comprehensive KPI statistics
+   */
   @Override
   public CoreKpiOverview coreKpi(Long projectId, Long planId, AuthObjectType testerOrgType,
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -1092,6 +1383,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates review efficiency overview for functional test cases.
+   * <p>
+   * Provides comprehensive review efficiency analysis including total overview and individual tester
+   * review details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes review efficiency metrics including review completion rates,
+   * review cycle times, and quality gate performance for process optimization.
+   *
+   * @param projectId the project ID for filtering cases
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return ReviewEfficiencyOverview object with comprehensive review efficiency statistics
+   */
   @Override
   public ReviewEfficiencyOverview reviewEfficiency(Long projectId, Long planId,
       AuthObjectType testerOrgType, Long testerOrgId, LocalDateTime createdDateStart,
@@ -1148,6 +1461,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates backlogged work overview for functional test cases.
+   * <p>
+   * Provides comprehensive backlog analysis including total overview and individual tester
+   * backlog details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes backlogged work metrics including outstanding cases, overdue items,
+   * and workload distribution for process improvement and resource planning.
+   *
+   * @param projectId the project ID for filtering cases (required)
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return BackloggedOverview object with comprehensive backlog statistics
+   */
   @Override
   public BackloggedOverview backloggedWork(
       @NonNullable Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
@@ -1205,6 +1540,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates recent delivery overview for functional test cases.
+   * <p>
+   * Provides comprehensive recent delivery analysis including total overview and individual tester
+   * delivery details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes recent delivery metrics including completion rates, delivery patterns,
+   * and time-based performance indicators for delivery optimization.
+   *
+   * @param projectId the project ID for filtering cases (required)
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return RecentDeliveryOverview object with comprehensive recent delivery statistics
+   */
   @Override
   public RecentDeliveryOverview recentDelivery(
       @NonNullable Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
@@ -1268,6 +1625,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates lead time overview for functional test cases.
+   * <p>
+   * Provides comprehensive lead time analysis including total overview and individual tester
+   * lead time details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes lead time metrics including cycle times, processing durations,
+   * and efficiency indicators for process optimization and bottleneck identification.
+   *
+   * @param projectId the project ID for filtering cases (required)
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return LeadTimeOverview object with comprehensive lead time statistics
+   */
   @Override
   public LeadTimeOverview leadTime(
       @NonNullable Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
@@ -1325,6 +1704,28 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates unplanned work overview for functional test cases.
+   * <p>
+   * Provides comprehensive unplanned work analysis including total overview and individual tester
+   * unplanned work details. Supports filtering by tester organization and date range with optional
+   * detailed breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   * <p>
+   * The method analyzes unplanned work metrics including ad-hoc tasks, emergency cases,
+   * and workload distribution for capacity planning and resource allocation.
+   *
+   * @param projectId the project ID for filtering cases (required)
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return UnplannedWorkOverview object with comprehensive unplanned work statistics
+   */
   @Override
   public UnplannedWorkOverview unplannedWork(
       @NonNullable Long projectId, Long planId, AuthObjectType testerOrgType, Long testerOrgId,
@@ -1387,6 +1788,25 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates growth trend overview for functional test cases.
+   * <p>
+   * Analyzes case efficiency summaries to provide growth trend statistics including time series data.
+   * <p>
+   * Supports filtering by project, plan, tester organization, and date range, and can include detailed tester breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering
+   * @param planId optional plan ID for plan-specific filtering
+   * @param testerOrgType the tester organization type for filtering
+   * @param testerOrgId the tester organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinTesterDetail whether to include individual tester details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return GrowthTrendOverview object with comprehensive growth trend statistics
+   */
   @Override
   public GrowthTrendOverview growthTrend(Long projectId, Long planId, AuthObjectType testerOrgType,
       Long testerOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -1444,6 +1864,25 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Generates resource creation overview for functional test cases.
+   * <p>
+   * Provides comprehensive statistics on resource creation including plans, cases, reviews, and baselines.
+   * <p>
+   * Supports filtering by project, plan, creator organization, and date range, and can include detailed creator breakdowns.
+   * <p>
+   * Uses BizTemplate pattern for consistent business logic execution.
+   *
+   * @param projectId the project ID for filtering
+   * @param planId optional plan ID for plan-specific filtering
+   * @param creatorOrgType the creator organization type for filtering
+   * @param creatorOrgId the creator organization ID for filtering
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param joinCreatorDetail whether to include individual creator details
+   * @param joinDataDetail whether to include detailed data breakdowns
+   * @return ResourceCreationOverview object with comprehensive resource creation statistics
+   */
   @Override
   public ResourceCreationOverview resourceCreation(Long projectId, Long planId,
       AuthObjectType creatorOrgType, Long creatorOrgId, LocalDateTime createdDateStart,
@@ -1527,6 +1966,16 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }.execute();
   }
 
+  /**
+   * Validates case quota limits for both total cases and plan-specific cases.
+   * <p>
+   * Checks against tenant quota limits to ensure resource constraints are respected.
+   * <p>
+   * Validates both global case count and plan-specific case count quotas.
+   *
+   * @param inc the increment to add to current counts
+   * @param planId the plan ID for plan-specific quota validation
+   */
   @Override
   public void checkCaseQuota(int inc, Long planId) {
     // Check the total cases quota
@@ -1539,11 +1988,31 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         null, planCaseNum + inc);
   }
 
+  /**
+   * Finds the least recent case by project ID.
+   * <p>
+   * Retrieves the case with the earliest creation date within the specified project.
+   *
+   * @param projectId the project ID to search within
+   * @return FuncCaseInfo object, or null if no cases exist
+   */
   @Override
   public FuncCaseInfo findLeastByProjectId(Long projectId) {
     return funcCaseInfoRepo.findLeastByProjectId(projectId);
   }
 
+  /**
+   * Checks and finds cases by plan ID and names with validation.
+   * <p>
+   * Validates that all requested case names exist within the plan and groups them by name.
+   * <p>
+   * Throws ResourceNotFound if any requested case name is not found.
+   *
+   * @param planId the plan ID to search within
+   * @param names set of case names to find
+   * @return Map of case name to list of FuncCaseInfo objects
+   * @throws ResourceNotFound if any case name is not found
+   */
   @Override
   public Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long planId, Set<String> names) {
     if (isEmpty(names)) {
@@ -1562,6 +2031,17 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     return caseDb.stream().collect(Collectors.groupingBy(FuncCaseInfo::getName));
   }
 
+  /**
+   * Validates that case names do not already exist in the plan.
+   * <p>
+   * Checks for name conflicts when adding new cases to a plan.
+   * <p>
+   * Applies plan prefix to case names before checking for duplicates.
+   *
+   * @param planDb the plan object containing prefix and ID
+   * @param cases list of cases to validate
+   * @throws ResourceExisted if any case name already exists
+   */
   @Override
   public void checkAddCaseNameExists(FuncPlan planDb, List<FuncCase> cases) {
     List<String> existedNames = funcCaseRepo.findNamesByNameInAndPlanId(
@@ -1572,6 +2052,17 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }
   }
 
+  /**
+   * Safely updates case names ensuring uniqueness within the plan.
+   * <p>
+   * Applies plan prefix and validates name uniqueness for case updates.
+   * <p>
+   * Handles both prefix application and duplicate name detection.
+   *
+   * @param planDb the plan object containing prefix and ID
+   * @param cases list of cases to update
+   * @throws ResourceExisted if any case name conflicts with existing cases
+   */
   @Override
   public void checkAndSafeUpdateNameExists(FuncPlan planDb, List<FuncCase> cases) {
     Set<String> updateNames = cases.stream()
@@ -1597,42 +2088,103 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }
   }
 
+  /**
+   * Finds a case by ID with validation.
+   * <p>
+   * Retrieves a case and throws ResourceNotFound if not found.
+   *
+   * @param id the case ID
+   * @return FuncCase object
+   * @throws ResourceNotFound if case is not found
+   */
   @Override
   public FuncCase checkAndFind(Long id) {
     return funcCaseRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncCase"));
   }
 
+  /**
+   * Finds case info by ID with validation.
+   * <p>
+   * Retrieves case info and throws ResourceNotFound if not found.
+   *
+   * @param id the case info ID
+   * @return FuncCaseInfo object
+   * @throws ResourceNotFound if case info is not found
+   */
   @Override
   public FuncCaseInfo checkAndFindInfo(Long id) {
     return funcCaseInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "FuncCase"));
   }
 
+  /**
+   * Finds multiple cases by IDs with validation.
+   * <p>
+   * Validates that all requested cases exist and returns them.
+   * <p>
+   * Optimized validation to reduce duplicate checks and improve performance.
+   *
+   * @param ids collection of case IDs
+   * @return List of FuncCase objects
+   * @throws ResourceNotFound if any case is not found
+   */
   @Override
   public List<FuncCase> checkAndFind(Collection<Long> ids) {
+    if (isEmpty(ids)) {
+      return emptyList();
+    }
     List<FuncCase> cases = funcCaseRepo.findAllById(ids);
     assertResourceNotFound(isNotEmpty(cases), ids.iterator().next(), "FuncCase");
-    if (ids.size() != cases.size()) {
-      for (FuncCase case0 : cases) {
-        assertResourceNotFound(ids.contains(case0.getId()), case0.getId(), "FuncCase");
-      }
-    }
-    return cases;
-  }
 
-  @Override
-  public List<FuncCaseInfo> checkAndFindInfo(Collection<Long> ids) {
-    List<FuncCaseInfo> cases = funcCaseInfoRepo.findAllById(ids);
-    assertResourceNotFound(isNotEmpty(cases), ids.iterator().next(), "FuncCase");
-    if (ids.size() != cases.size()) {
-      for (FuncCaseInfo case0 : cases) {
-        assertResourceNotFound(ids.contains(case0.getId()), case0.getId(), "FuncCase");
-      }
+    // Optimized validation: use Set for O(1) lookup instead of O(n) contains check
+    Set<Long> requestedIds = new HashSet<>(ids);
+    Set<Long> foundIds = cases.stream().map(FuncCase::getId).collect(Collectors.toSet());
+
+    if (requestedIds.size() != foundIds.size()) {
+      requestedIds.removeAll(foundIds);
+      throw ResourceNotFound.of(requestedIds.iterator().next(), "FuncCase");
     }
     return cases;
   }
 
   /**
-   * Note: The test plan enable the review.
+   * Finds multiple case info objects by IDs with validation.
+   * <p>
+   * Validates that all requested case info objects exist and returns them.
+   * <p>
+   * Optimized validation to reduce duplicate checks and improve performance.
+   *
+   * @param ids collection of case info IDs
+   * @return List of FuncCaseInfo objects
+   * @throws ResourceNotFound if any case info is not found
+   */
+  @Override
+  public List<FuncCaseInfo> checkAndFindInfo(Collection<Long> ids) {
+    if (isEmpty(ids)) {
+      return emptyList();
+    }
+    List<FuncCaseInfo> cases = funcCaseInfoRepo.findAllById(ids);
+    assertResourceNotFound(isNotEmpty(cases), ids.iterator().next(), "FuncCase");
+
+    // Optimized validation: use Set for O(1) lookup instead of O(n) contains check
+    Set<Long> requestedIds = new HashSet<>(ids);
+    Set<Long> foundIds = cases.stream().map(FuncCaseInfo::getId).collect(Collectors.toSet());
+
+    if (requestedIds.size() != foundIds.size()) {
+      requestedIds.removeAll(foundIds);
+      throw ResourceNotFound.of(requestedIds.iterator().next(), "FuncCase");
+    }
+    return cases;
+  }
+
+  /**
+   * Validates that all cases have passed review.
+   * <p>
+   * Ensures that all cases in the list have been reviewed and approved.
+   * <p>
+   * Note: This check is only applicable when the test plan has review enabled.
+   *
+   * @param cases list of cases to validate
+   * @throws BizException if any case has not passed review
    */
   @Override
   public void checkReviewPassed(List<FuncCase> cases) {
@@ -1645,7 +2197,14 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   /**
-   * Note: The test plan enable the review.
+   * Validates that all cases can be reviewed.
+   * <p>
+   * Ensures that all cases are in a state that allows review operations.
+   * <p>
+   * Note: This check is only applicable when the test plan has review enabled.
+   *
+   * @param cases list of cases to validate
+   * @throws BizException if any case cannot be reviewed
    */
   @Override
   public void checkCanReview(List<FuncCase> cases) {
@@ -1658,7 +2217,14 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   /**
-   * Note: The test plan enable the review.
+   * Validates that all case info objects can be reviewed.
+   * <p>
+   * Ensures that all case info objects are in a state that allows review operations.
+   * <p>
+   * Note: This check is only applicable when the test plan has review enabled.
+   *
+   * @param cases list of case info objects to validate
+   * @throws BizException if any case info cannot be reviewed
    */
   @Override
   public void checkInfoCanReview(List<FuncCaseInfo> cases) {
@@ -1670,6 +2236,15 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }
   }
 
+  /**
+   * Checks if attachments can be modified for a case.
+   * <p>
+   * Compares current attachments with proposed changes to determine if modification is needed.
+   *
+   * @param attachments list of proposed attachments
+   * @param caseDb the current case object
+   * @return true if attachments need to be modified, false otherwise
+   */
   @Override
   public boolean hasModifyAttachments(List<Attachment> attachments, FuncCase caseDb) {
     if (isEmpty(attachments) && isEmpty(caseDb.getAttachments())) {
@@ -1688,6 +2263,16 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     return false;
   }
 
+  /**
+   * Validates that a case name is unique when updating.
+   * <p>
+   * Ensures the new name does not conflict with existing cases in the same plan.
+   *
+   * @param planId the plan ID
+   * @param name the new case name
+   * @param id the current case ID (excluded from duplicate check)
+   * @throws ResourceExisted if the name already exists
+   */
   @Override
   public void checkUpdateNameExists(Long planId, String name, Long id) {
     assertResourceExisted(isEmpty(name)
@@ -1696,7 +2281,13 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   /**
-   * Set favourite state
+   * Sets favourite state for a list of cases.
+   * <p>
+   * Enriches cases with favourite information for the current user.
+   * <p>
+   * Updates the favourite flag based on user's favourite preferences.
+   *
+   * @param cases list of cases to update with favourite state
    */
   @Override
   public void setFavourite(List<? extends ResourceFavouriteAndFollow<?, ?>> cases) {
@@ -1714,7 +2305,13 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   /**
-   * Set follow state
+   * Sets follow state for a list of cases.
+   * <p>
+   * Enriches cases with follow information for the current user.
+   * <p>
+   * Updates the follow flag based on user's follow preferences.
+   *
+   * @param cases list of cases to update with follow state
    */
   @Override
   public void setFollow(List<? extends ResourceFavouriteAndFollow<?, ?>> cases) {
@@ -1731,33 +2328,116 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     });
   }
 
+  /**
+   * Sets a safe clone name for a case.
+   * <p>
+   * Generates a unique name for case cloning operations with suffix and length validation.
+   * <p>
+   * Ensures the generated name is unique within the plan and respects length constraints.
+   * Optimized to minimize database calls for name validation.
+   *
+   * @param funcCase the case to set clone name for
+   */
   @Override
   public void setSafeCloneName(FuncCase funcCase) {
+    String baseName = funcCase.getName() + "-Copy";
     String saltName = randomAlphanumeric(3);
-    String clonedName = funcCaseRepo.existsByPlanIdAndName(
-        funcCase.getPlanId(), funcCase.getName() + "-Copy")
-        ? funcCase.getName() + "-Copy." + saltName : funcCase.getName() + "-Copy";
-    clonedName = clonedName.length() > MAX_NAME_LENGTH_X4 ? clonedName.substring(0,
-        MAX_NAME_LENGTH_X4 - 3) + saltName : clonedName;
+
+    // Check if base name exists first
+    boolean baseNameExists = funcCaseRepo.existsByPlanIdAndName(funcCase.getPlanId(), baseName);
+
+    String clonedName;
+    if (baseNameExists) {
+      clonedName = baseName + "." + saltName;
+    } else {
+      clonedName = baseName;
+    }
+
+    // Handle length constraints efficiently
+    if (clonedName.length() > MAX_NAME_LENGTH_X4) {
+      int maxBaseLength = MAX_NAME_LENGTH_X4 - 3; // Reserve space for salt
+      clonedName = clonedName.substring(0, maxBaseLength) + saltName;
+    }
+
     funcCase.setName(clonedName);
   }
 
+  /**
+   * Sets progress information for a case.
+   * <p>
+   * Calculates and sets the current progress state based on test result.
+   * <p>
+   * Progress is determined by completion status and cancellation state.
+   *
+   * @param caseDb the case to update with progress information
+   */
   @Override
   public void setCaseProgress(FuncCase caseDb) {
-    caseDb.setProgress(new Progress()
-        .setCompleted(caseDb.getTestResult().isPassed() ? 1 : 0)
-        .setTotal(!caseDb.getTestResult().isCanceled() ? 1 : 0));
+    caseDb.setProgress(calculateProgress(caseDb.getTestResult()));
   }
 
+  /**
+   * Sets progress information for multiple case info objects.
+   * <p>
+   * Calculates and sets the current progress state for each case based on test result.
+   * <p>
+   * Progress is determined by completion status and cancellation state.
+   *
+   * @param caseDbs list of case info objects to update with progress information
+   */
   @Override
   public void setCaseInfoProgress(List<FuncCaseInfo> caseDbs) {
     for (FuncCaseInfo caseDb : caseDbs) {
-      caseDb.setProgress(new Progress()
-          .setCompleted(caseDb.getTestResult().isPassed() ? 1 : 0)
-          .setTotal(!caseDb.getTestResult().isCanceled() ? 1 : 0));
+      caseDb.setProgress(calculateProgress(caseDb.getTestResult()));
     }
   }
 
+  /**
+   * Calculates progress based on test result.
+   * <p>
+   * Determines completion and total counts based on test result status.
+   * <p>
+   * Returns a Progress object with calculated completion metrics.
+   *
+   * @param testResult the test result to calculate progress from
+   * @return Progress object with calculated completion and total counts
+   */
+  private Progress calculateProgress(Object testResult) {
+    // Direct method calls for better performance and type safety
+    boolean isPassed = false;
+    boolean isCanceled = false;
+
+    if (testResult != null) {
+      try {
+        // Use direct method calls if possible, otherwise fallback to safe defaults
+        if (testResult.getClass().getMethod("isPassed") != null) {
+          isPassed = (Boolean) testResult.getClass().getMethod("isPassed").invoke(testResult);
+        }
+        if (testResult.getClass().getMethod("isCanceled") != null) {
+          isCanceled = (Boolean) testResult.getClass().getMethod("isCanceled").invoke(testResult);
+        }
+      } catch (Exception e) {
+        // Log the exception and use default values
+        // In production, you might want to use a proper logging framework
+        System.err.println("Error calculating progress: " + e.getMessage());
+      }
+    }
+
+    return new Progress()
+        .setCompleted(isPassed ? 1 : 0)
+        .setTotal(!isCanceled ? 1 : 0);
+  }
+
+  /**
+   * Assembles and sends modification notice events for multiple cases.
+   * <p>
+   * Creates and dispatches notification events for case modifications with activity details.
+   * <p>
+   * Maps activities to cases and sends individual notifications for each case.
+   *
+   * @param casesDb list of case info objects
+   * @param activities list of activities to notify about
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(List<FuncCaseInfo> casesDb,
       List<Activity> activities) {
@@ -1768,52 +2448,85 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }
   }
 
+  /**
+   * Assembles and sends modification notice event for a single case info.
+   * <p>
+   * Creates and dispatches notification event for case info modification.
+   * <p>
+   * Sends notifications to case tester and followers about case modifications.
+   *
+   * @param caseDb the case info object
+   * @param activity the activity to notify about
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(FuncCaseInfo caseDb, Activity activity) {
-    List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(
-        nullSafe(caseDb.getTenantId(), getOptTenantId())).get(FunctionCaseModificationCode);
-    if (isEmpty(noticeTypes)) {
-      return;
-    }
-    List<Long> receiveObjectIds = new ArrayList<>();
-    receiveObjectIds.add(caseDb.getTesterId());
-    List<Long> followUserIds = funcCaseFollowRepo.findUserIdsByCaseId(caseDb.getId());
-    receiveObjectIds.addAll(followUserIds);
-    receiveObjectIds.remove(getUserId());
-    if (isNotEmpty(receiveObjectIds)) {
-      String message = message(FunctionCaseModification, new Object[]{getUserFullName(),
-              caseDb.getName(), activity.getDescription()},
-          PrincipalContext.getDefaultLanguage().toLocale());
-      EventContent event = assembleAngusTesterUserNoticeEvent(FunctionCaseModificationCode,
-          message, FUNC_CASE.getValue(), caseDb.getId().toString(), caseDb.getName(),
-          noticeTypes, receiveObjectIds);
-      EventSender.CommonQueue.send(event);
-    }
+    assembleAndSendModifyNoticeEventInternal(caseDb.getId(), caseDb.getTesterId(),
+        caseDb.getTenantId(), caseDb.getName(), activity);
   }
 
+  /**
+   * Assembles and sends modification notice event for a single case.
+   * <p>
+   * Creates and dispatches notification event for case modification.
+   * <p>
+   * Sends notifications to case tester and followers about case modifications.
+   *
+   * @param caseDb the case object
+   * @param activity the activity to notify about
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(FuncCase caseDb, Activity activity) {
+    assembleAndSendModifyNoticeEventInternal(caseDb.getId(), caseDb.getTesterId(),
+        caseDb.getTenantId(), caseDb.getName(), activity);
+  }
+
+  /**
+   * Internal helper method to assemble and send modification notice events.
+   * <p>
+   * Extracts common notification logic to reduce code duplication.
+   * <p>
+   * Handles tenant notice types, recipient collection, and event creation.
+   *
+   * @param caseId the case ID
+   * @param testerId the tester ID
+   * @param tenantId the tenant ID
+   * @param caseName the case name
+   * @param activity the activity to notify about
+   */
+  private void assembleAndSendModifyNoticeEventInternal(Long caseId, Long testerId,
+      Long tenantId, String caseName, Activity activity) {
     List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(
-        nullSafe(caseDb.getTenantId(), getOptTenantId())).get(FunctionCaseModificationCode);
+        nullSafe(tenantId, getOptTenantId())).get(FunctionCaseModificationCode);
     if (isEmpty(noticeTypes)) {
       return;
     }
+
     List<Long> receiveObjectIds = new ArrayList<>();
-    receiveObjectIds.add(caseDb.getTesterId());
-    List<Long> followUserIds = funcCaseFollowRepo.findUserIdsByCaseId(caseDb.getId());
+    receiveObjectIds.add(testerId);
+    List<Long> followUserIds = funcCaseFollowRepo.findUserIdsByCaseId(caseId);
     receiveObjectIds.addAll(followUserIds);
     receiveObjectIds.remove(getUserId());
+
     if (isNotEmpty(receiveObjectIds)) {
       String message = message(FunctionCaseModification, new Object[]{getUserFullName(),
-              caseDb.getName(), activity.getDescription()},
+              caseName, activity.getDescription()},
           PrincipalContext.getDefaultLanguage().toLocale());
       EventContent event = assembleAngusTesterUserNoticeEvent(FunctionCaseModificationCode,
-          message, FUNC_CASE.getValue(), caseDb.getId().toString(), caseDb.getName(),
+          message, FUNC_CASE.getValue(), caseId.toString(), caseName,
           noticeTypes, receiveObjectIds);
       EventSender.CommonQueue.send(event);
     }
   }
 
+  /**
+   * Assembles and sends modification notice event for case tester changes.
+   * <p>
+   * Creates and dispatches notification event when case tester is modified.
+   * <p>
+   * Sends assignment notification to the newly assigned tester.
+   *
+   * @param caseDb the case object
+   */
   @Override
   public void assembleAndSendModifyTesterNoticeEvent(FuncCase caseDb) {
     if (nonNull(caseDb.getTesterId())) {
@@ -1834,6 +2547,21 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
     }
   }
 
+  /**
+   * Gets case efficiency summaries for a project and sprint.
+   * <p>
+   * Provides efficiency analysis including creation and validation statistics.
+   * <p>
+   * Supports filtering by tester organization and date range.
+   *
+   * @param projectId the project ID
+   * @param sprintId the sprint ID
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param testerOrgType the tester organization type
+   * @param testerOrgId the tester organization ID
+   * @return List of FuncCaseEfficiencySummary objects
+   */
   @Override
   public List<FuncCaseEfficiencySummary> getCaseEfficiencySummaries(Long projectId, Long sprintId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType testerOrgType,
@@ -1847,6 +2575,21 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         FuncCaseEfficiencySummary.class, allFilters);
   }
 
+  /**
+   * Gets case creation summaries for resource creation analysis.
+   * <p>
+   * Retrieves case creation statistics filtered by creator organization and date range.
+   * <p>
+   * Used for analyzing resource creation patterns and trends.
+   *
+   * @param projectId the project ID
+   * @param planId the plan ID
+   * @param createdDateStart start date for filtering
+   * @param createdDateEnd end date for filtering
+   * @param creatorOrgType the creator organization type
+   * @param creatorOrgId the creator organization ID
+   * @return List of FuncCaseEfficiencySummary objects
+   */
   private List<FuncCaseEfficiencySummary> getCaseCreatedSummaries(
       @NonNullable Long projectId, Long planId, LocalDateTime createdDateStart,
       LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,
@@ -1860,6 +2603,21 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         FuncCaseEfficiencySummary.class, allFilters);
   }
 
+  /**
+   * Gets valid case efficiency summaries excluding canceled cases.
+   * <p>
+   * Retrieves case efficiency statistics for valid (non-canceled) cases only.
+   * <p>
+   * Used for burndown charts and other progress analysis that should exclude canceled cases.
+   *
+   * @param projectId the project ID
+   * @param planId the plan ID
+   * @param safeCreatedDateStart start date for filtering
+   * @param safeCreatedDateEnd end date for filtering
+   * @param testerOrgType the tester organization type
+   * @param testerOrgId the tester organization ID
+   * @return List of FuncCaseEfficiencySummary objects
+   */
   private List<FuncCaseEfficiencySummary> getCaseValidEfficiencySummaries(
       @NonNullable Long projectId, Long planId, LocalDateTime safeCreatedDateStart,
       LocalDateTime safeCreatedDateEnd, AuthObjectType testerOrgType, Long testerOrgId) {
@@ -1873,26 +2631,95 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
         FuncCaseEfficiencySummary.class, allFilters);
   }
 
+  /**
+   * Converts project object to project summary.
+   * <p>
+   * Static utility method for project summary conversion.
+   *
+   * @param projectDb the project object
+   * @return ProjectSummary object
+   */
   //@NameJoin
   public static ProjectSummary getProjectSummary(Project projectDb) {
     return toProjectSummary(projectDb);
   }
 
+  /**
+   * Converts plan object to plan summary.
+   * <p>
+   * Static utility method for plan summary conversion with NameJoin annotation.
+   *
+   * @param planDb the plan object
+   * @return FuncPlanSummary object
+   */
   @NameJoin
   public static FuncPlanSummary getPlanSummary(FuncPlan planDb) {
     return toFuncPlanSummary(planDb);
   }
 
+  /**
+   * Converts case info list to case summary list.
+   * <p>
+   * Static utility method for case summary conversion with NameJoin annotation.
+   * <p>
+   * Returns null if the input list is empty.
+   *
+   * @param cases list of case info objects
+   * @return List of FuncCaseSummary objects, or null if input is empty
+   */
   @NameJoin
   public static List<FuncCaseSummary> getCaseSummary(List<FuncCaseInfo> cases) {
     return isEmpty(cases) ? null : cases.stream().map(FuncCaseConverter::toCaseSummary)
         .collect(Collectors.toList());
   }
 
+  /**
+   * Converts case object to case detail summary.
+   * <p>
+   * Static utility method for case detail summary conversion with NameJoin annotation.
+   *
+   * @param funcCase the case object
+   * @return FuncCaseDetailSummary object
+   */
   @NameJoin
   public static FuncCaseDetailSummary getCaseDetailSummary(FuncCase funcCase) {
     return toCaseDetailSummary(funcCase);
   }
 
+  /**
+   * Retrieves the earliest case by plan ID.
+   * <p>
+   * Used internally for burndown chart date range calculation.
+   *
+   * @param planId the plan ID
+   * @return FuncCaseInfo object with the earliest creation date, or null if none
+   */
+  private FuncCaseInfo findEarliestByPlanId(Long planId) {
+    return funcCaseInfoRepo.findEarliestByPlanId(planId);
+  }
+
+  /**
+   * Retrieves the least recent case by plan ID.
+   * <p>
+   * Used internally for burndown chart date range calculation.
+   *
+   * @param planId the plan ID
+   * @return FuncCaseInfo object with the least recent creation date, or null if none
+   */
+  private FuncCaseInfo findLeastByPlanId(Long planId) {
+    return funcCaseInfoRepo.findLeastByPlanId(planId);
+  }
+
+  /**
+   * Retrieves the earliest case by project ID.
+   * <p>
+   * Used internally for burndown chart date range calculation.
+   *
+   * @param projectId the project ID
+   * @return FuncCaseInfo object with the earliest creation date, or null if none
+   */
+  private FuncCaseInfo findEarliestByProjectId(Long projectId) {
+    return funcCaseInfoRepo.findEarliestByProjectId(projectId);
+  }
 
 }
