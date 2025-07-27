@@ -86,8 +86,7 @@ public class NodeQueryImpl implements NodeQuery {
   @Resource
   private NodeInfoQuery nodeInfoQuery;
 
-  @Transactional
-  @Override
+
   /**
    * <p>
    * Get the detail of a node by its ID.
@@ -98,6 +97,7 @@ public class NodeQueryImpl implements NodeQuery {
    * @param id Node ID
    * @return Node entity
    */
+  @Override
   public Node detail(Long id) {
     return new BizTemplate<Node>(false) {
 
@@ -116,8 +116,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Count the number of nodes matching the given specification.
    * </p>
+   * <p>
+   * Executes a count query using the provided specification to filter nodes.
+   * </p>
    * @param spec Specification for filtering nodes
-   * @return Number of nodes
+   * @return Number of nodes matching the specification
    */
   @Override
   public Long count(Specification<Node> spec) {
@@ -178,8 +181,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Find nodes by role for the current tenant.
    * </p>
-   * @param nodeRole Node role
-   * @return List of nodes
+   * <p>
+   * Retrieves all nodes that have the specified role and belong to the current tenant.
+   * </p>
+   * @param nodeRole Node role to filter by
+   * @return List of nodes with the specified role
    */
   @Override
   public List<Node> findByRole(NodeRole nodeRole) {
@@ -190,8 +196,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Find nodes by a set of search filters.
    * </p>
-   * @param filters Set of search criteria
-   * @return List of nodes
+   * <p>
+   * Executes a query using the provided search criteria to filter and retrieve nodes.
+   * </p>
+   * @param filters Set of search criteria for filtering nodes
+   * @return List of nodes matching the filters
    */
   @Override
   public List<Node> findByFilters(Set<SearchCriteria> filters) {
@@ -202,7 +211,10 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if the tenant has any nodes.
    * </p>
-   * @param tenantId Tenant ID
+   * <p>
+   * Counts the number of nodes owned by the specified tenant and returns true if any exist.
+   * </p>
+   * @param tenantId Tenant ID to check for nodes
    * @return true if the tenant has nodes, false otherwise
    */
   @Override
@@ -214,7 +226,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Determine if a node is a trial (shared) node in cloud service edition.
    * </p>
-   * @param nodeId Node ID
+   * <p>
+   * Checks if the specified node is a free/shared node available for trial use.
+   * Only applicable in cloud service edition.
+   * </p>
+   * @param nodeId Node ID to check
    * @return true if the node is a trial node, false otherwise
    */
   @Override
@@ -231,8 +247,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Get free nodes when the tenant has no nodes, only in cloud service edition.
    * </p>
-   * @param role Node role
-   * @return Page of free nodes
+   * <p>
+   * Returns shared/free nodes for trial use when the current tenant has no own nodes.
+   * This feature is only available in cloud service edition.
+   * </p>
+   * @param role Optional node role filter
+   * @return Page of free nodes available for trial
    */
   @Override
   public Page<Node> getFreeWhenNonNodes(String role) {
@@ -257,8 +277,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Find a map of node IDs to Node entities.
    * </p>
-   * @param ids Collection of node IDs
-   * @return Map of node ID to Node
+   * <p>
+   * Retrieves multiple nodes by their IDs and returns them as a map for efficient lookup.
+   * </p>
+   * @param ids Collection of node IDs to retrieve
+   * @return Map of node ID to Node entity
    */
   @Override
   public Map<Long, Node> findNodeMap(Collection<Long> ids) {
@@ -269,11 +292,15 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Get nodes by IDs, role, enabled status, and limit size.
    * </p>
-   * @param nodeIds Set of node IDs
-   * @param role Node role
-   * @param enabled Enabled status
+   * <p>
+   * Retrieves nodes based on multiple criteria including IDs, role, enabled status,
+   * and applies a size limit to the result set.
+   * </p>
+   * @param nodeIds Set of node IDs to filter by
+   * @param role Node role to filter by
+   * @param enabled Enabled status to filter by
    * @param size Maximum number of nodes to return
-   * @return List of nodes
+   * @return List of nodes matching the criteria
    */
   @Override
   public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled, int size) {
@@ -284,12 +311,16 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Get nodes by IDs, role, enabled status, limit size, and tenant ID.
    * </p>
-   * @param nodeIds Set of node IDs
-   * @param role Node role
-   * @param enabled Enabled status
+   * <p>
+   * Retrieves nodes based on multiple criteria including IDs, role, enabled status,
+   * tenant ID, and applies a size limit to the result set.
+   * </p>
+   * @param nodeIds Set of node IDs to filter by
+   * @param role Node role to filter by
+   * @param enabled Enabled status to filter by
    * @param size Maximum number of nodes to return
-   * @param tenantId Tenant ID
-   * @return List of nodes
+   * @param tenantId Tenant ID to filter by
+   * @return List of nodes matching the criteria
    */
   @Override
   public List<Node> getNodes(Set<Long> nodeIds, NodeRole role, Boolean enabled,
@@ -318,8 +349,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check and find a node by ID, throw exception if not found.
    * </p>
-   * @param id Node ID
-   * @return Node entity
+   * <p>
+   * Retrieves a node by its ID and throws a ResourceNotFound exception if the node does not exist.
+   * </p>
+   * @param id Node ID to find
+   * @return Node entity if found
+   * @throws ResourceNotFound if the node is not found
    */
   @Override
   public Node checkAndFind(Long id) {
@@ -330,8 +365,13 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check and find nodes by a collection of IDs, throw exception if any not found.
    * </p>
-   * @param ids Collection of node IDs
-   * @return List of nodes
+   * <p>
+   * Retrieves multiple nodes by their IDs and validates that all requested nodes exist.
+   * Throws a ResourceNotFound exception if any node is missing.
+   * </p>
+   * @param ids Collection of node IDs to find
+   * @return List of nodes if all found
+   * @throws ResourceNotFound if any node is not found
    */
   @Override
   public List<Node> checkAndFind(Collection<Long> ids) {
@@ -349,9 +389,14 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if a node has the specified role and agent installed.
    * </p>
-   * @param id Node ID
-   * @param role Node role
-   * @return Node entity
+   * <p>
+   * Validates that the specified node has the required role configured and the agent installed.
+   * Throws exceptions if the role is not configured or the agent is not installed.
+   * </p>
+   * @param id Node ID to check
+   * @param role Required node role
+   * @return Node entity if validation passes
+   * @throws BizAssert if the role is not configured or agent is not installed
    */
   @Override
   public Node checkRoleAndGetNode(Long id, NodeRole role) {
@@ -368,7 +413,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if the IPs of the given nodes already exist in the system.
    * </p>
-   * @param nodes List of nodes
+   * <p>
+   * Validates that the IP addresses of the provided nodes are not already in use by other nodes.
+   * Throws an exception if any IP address is duplicated.
+   * </p>
+   * @param nodes List of nodes to check for IP conflicts
+   * @throws ResourceExisted if any IP address already exists
    */
   @Override
   public void checkIpNotExisted(List<Node> nodes) {
@@ -382,7 +432,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if the node quota is exceeded after increment.
    * </p>
+   * <p>
+   * Validates that adding the specified number of nodes would not exceed the tenant's node quota.
+   * Throws an exception if the quota would be exceeded.
+   * </p>
    * @param incNum Number of nodes to add
+   * @throws QuotaExceeded if the quota would be exceeded
    */
   @Override
   public void checkNodeQuota(int incNum) {
@@ -395,7 +450,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if updating node IPs would cause duplication, ignoring the node itself.
    * </p>
-   * @param nodes List of nodes
+   * <p>
+   * Validates that updating the IP addresses of the provided nodes would not create conflicts
+   * with other nodes, excluding the nodes themselves from the conflict check.
+   * </p>
+   * @param nodes List of nodes to check for IP update conflicts
+   * @throws ResourceExisted if any IP address would conflict with other nodes
    */
   @Override
   public void checkUpdateIpNotExisted(List<Node> nodes) {
@@ -420,7 +480,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if nodes are not purchased online before allowing update.
    * </p>
-   * @param nodesDb List of nodes
+   * <p>
+   * Validates that the provided nodes were not purchased online, as online-purchased nodes
+   * have restrictions on updates.
+   * </p>
+   * @param nodesDb List of nodes to check for online purchase status
+   * @throws BizAssert if any node was purchased online
    */
   @Override
   public void checkNotPurchasedUpdate(List<Node> nodesDb) {
@@ -434,7 +499,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if an order has already been used to purchase a node.
    * </p>
-   * @param orderId Order ID
+   * <p>
+   * Validates that the specified order ID has not been used to purchase a node before,
+   * preventing duplicate purchases with the same order.
+   * </p>
+   * @param orderId Order ID to check for previous usage
+   * @throws BizAssert if the order has already been used
    */
   @Override
   public void checkOrderPurchasedExisted(Long orderId) {
@@ -447,7 +517,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Check if the node agent is available and online.
    * </p>
-   * @param nodeId Node ID
+   * <p>
+   * Validates that the agent on the specified node is running and accessible.
+   * Throws an exception if the agent is not online or not responding.
+   * </p>
+   * @param nodeId Node ID to check agent status
+   * @throws BizAssert if the agent is not available or online
    */
   @Override
   public void checkNodeAgentAvailable(Long nodeId) {
@@ -462,7 +537,11 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Get the roles of nodes by their IDs.
    * </p>
-   * @param nodeIds List of node IDs
+   * <p>
+   * Retrieves all roles configured for the specified nodes and returns them as a map
+   * for efficient lookup by node ID.
+   * </p>
+   * @param nodeIds List of node IDs to get roles for
    * @return Map of node ID to set of roles
    */
   @Override
@@ -477,7 +556,10 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Set the roles for a list of nodes.
    * </p>
-   * @param nodes List of nodes
+   * <p>
+   * Batch retrieves and sets the roles for multiple nodes to avoid N+1 query problems.
+   * </p>
+   * @param nodes List of nodes to set roles for
    */
   @Override
   public void setNodeRoles(List<Node> nodes) {
@@ -494,8 +576,12 @@ public class NodeQueryImpl implements NodeQuery {
    * <p>
    * Get the tenant ID from the specification or context.
    * </p>
-   * @param spec Node specification
-   * @return Tenant ID
+   * <p>
+   * Extracts the tenant ID from the specification if it's an internal API call,
+   * otherwise returns the current tenant ID from the context.
+   * </p>
+   * @param spec Node specification containing potential tenant ID
+   * @return Tenant ID from specification or current context
    */
   private Long getTenantId(GenericSpecification<Node> spec) {
     Object tenantId =

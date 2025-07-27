@@ -39,10 +39,8 @@ public class ProjectMemberQueryImpl implements ProjectMemberQuery {
 
   @Resource
   private ProjectMemberRepo projectMemberRepo;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private UserManager userManager;
 
