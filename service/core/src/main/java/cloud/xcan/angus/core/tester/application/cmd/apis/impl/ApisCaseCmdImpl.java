@@ -45,40 +45,43 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing API test cases.
  * <p>
- * Provides methods for adding, updating, replacing, renaming, enabling/disabling, cloning, deleting, and syncing API cases.
- * Ensures permission checks, name uniqueness, quota validation, and activity logging.
+ * Implementation of ApisCaseCmd for API test case management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive test case management services including adding, updating, replacing,
+ * renaming, enabling/disabling, cloning, deleting, and syncing API cases. Ensures permission
+ * checks, name uniqueness, quota validation, script synchronization, and activity logging.
+ * </p>
  */
 @Biz
 public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCaseCmd {
 
   @Resource
   private ApisCaseRepo apisCaseRepo;
-
   @Resource
   private ApisCaseInfoRepo apisCaseInfoRepo;
-
   @Resource
   private ApisCaseQuery apisCaseQuery;
-
   @Resource
   private ApisQuery apisQuery;
-
   @Resource
   private ApisAuthQuery apisAuthQuery;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add a batch of API cases for a single API.
+   * </p>
    * <p>
    * Validates API existence, permission, case type uniqueness, name duplication, and quota.
    * Inserts cases, synchronizes with scripts, and logs creation activities.
+   * </p>
+   * @param cases List of API cases to add
+   * @return List of ID keys for created cases
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -88,34 +91,37 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
 
       @Override
       protected void checkParams() {
-        // Check the apis exists
+        // Validate all cases belong to the same API (single API constraint)
         Set<Long> apiIds = cases.stream().map(ApisCase::getApisId).collect(Collectors.toSet());
         ProtocolAssert.assertTrue(apiIds.size() == 1,
             "Only batch adding cases with one apis is allowed");
         apisDb = apisQuery.checkAndFind(apiIds.iterator().next());
 
-        // Check the test permission
+        // Verify current user has test permission for the API
         apisAuthQuery.checkTestAuth(getUserId(), apisDb.getId());
 
-        // Check the unique type cases
+        // Ensure case types are unique within the API
         apisCaseQuery.checkExistedCaseType(apisDb.getId(), cases);
 
-        // Check the names duplicate
+        // Validate case names are not duplicated
         apisCaseQuery.checkCaseNameExists(apisDb, cases);
 
-        // Check the quota limit
+        // Check quota limits for case creation
         apisCaseQuery.checkCaseQuota(cases.size(), apisDb.getId());
       }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
-        // Save cases
+        // Set API information for all cases
         ApisCaseConverter.setApisInfo(cases, apisDb);
+        
+        // Insert all cases and get their IDs
         List<IdKey<Long, Object>> idKeys = batchInsert(cases, "name");
 
-        // Synchronize testing cases to script
+        // Synchronize test cases to script for execution
         scriptCmd.syncApisCaseToScript(apisDb, cases);
 
+        // Log creation activities for all cases
         activityCmd.addAll(toActivities(API_CASE, cases, ActivityType.CREATED));
         return idKeys;
       }
@@ -139,10 +145,14 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
   }
 
   /**
+   * <p>
    * Update a batch of API cases.
+   * </p>
    * <p>
    * Validates case existence, API, permission, and name duplication.
    * Updates cases, synchronizes with scripts, and logs update activities.
+   * </p>
+   * @param cases List of API cases to update
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -153,32 +163,33 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
 
       @Override
       protected void checkParams() {
-        // Check the case exists
+        // Validate all cases exist and retrieve current records
         updatedCasesDb = apisCaseQuery.checkAndFind(
             cases.stream().map(ApisCase::getId).collect(Collectors.toList()));
 
-        // Check the apis exists
+        // Ensure all cases belong to the same API (single API constraint)
         Set<Long> apiIds = updatedCasesDb.stream().map(ApisCase::getApisId)
             .collect(Collectors.toSet());
         ProtocolAssert.assertTrue(apiIds.size() == 1,
             "Only batch adding cases with one apis is allowed");
         apisDb = apisQuery.checkAndFind(apiIds.iterator().next());
 
-        // Check the test permission
+        // Verify current user has test permission for the API
         apisAuthQuery.checkTestAuth(getUserId(), apisDb.getId());
 
-        // Check the names duplicate
+        // Validate case names are not duplicated (safe update check)
         apisCaseQuery.checkAndSafeUpdateNameExists(apisDb, cases);
       }
 
       @Override
       protected Void process() {
-        // Update cases
+        // Update cases with new properties (ignore null values)
         batchUpdate0(batchCopyPropertiesIgnoreNull(cases, updatedCasesDb));
 
-        // Synchronize testing cases to script
+        // Synchronize updated cases to script for execution
         scriptCmd.syncApisCaseToScript(apisDb, updatedCasesDb);
 
+        // Log update activities for all cases
         activityCmd.addAll(toActivities(API_CASE, updatedCasesDb, ActivityType.UPDATED));
         return null;
       }

@@ -39,10 +39,14 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing API and service trash (recycle bin).
  * <p>
- * Provides methods for adding, clearing, restoring, and deleting trash records.
- * Handles permission checks, association cleanup, and activity logging.
+ * Implementation of ApisTrashCmd for API and service trash (recycle bin) management.
+ * </p>
+ * <p>
+ * Provides comprehensive trash management services including adding, clearing, restoring, and
+ * deleting trash records. Handles permission checks, association cleanup, and activity logging.
+ * Manages the lifecycle of deleted APIs and services with proper recovery and cleanup mechanisms.
+ * </p>
  */
 @Biz
 public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTrashCmd {
@@ -78,9 +82,13 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   }
 
   /**
+   * <p>
    * Clear a single trash record and its associations.
+   * </p>
    * <p>
    * Validates permission, deletes trash, cleans up associations, and skips activity logging.
+   * </p>
+   * @param id Trash record ID to clear
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -90,19 +98,19 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
 
       @Override
       protected void checkParams() {
-        // Check the trash existed and permission
+        // Validate trash exists and user has permission to clear it
         trashDb = apisTrashQuery.findMyTrashForBiz(id, "CLEAR");
       }
 
       @Override
       protected Void process() {
-        // Delete trash
+        // Remove the trash record
         apisTrashRepo.deleteById(id);
 
-        // Delete association data
+        // Clean up all associated data (APIs, services, etc.)
         deleteAssociation(Collections.singletonList(trashDb));
 
-        // No activity, Only record delete operation activities
+        // Note: No activity logging for clear operations (only delete operations are logged)
         return null;
       }
     }.execute();
@@ -141,9 +149,13 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
   }
 
   /**
+   * <p>
    * Restore a single trash record.
+   * </p>
    * <p>
    * Validates permission, restores APIs or services, and logs the restore activity.
+   * </p>
+   * @param id Trash record ID to restore
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -153,18 +165,24 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
 
       @Override
       protected void checkParams() {
+        // Validate trash exists and user has permission to restore it
         trashDb = apisTrashQuery.findMyTrashForBiz(id, "BACK");
       }
 
       @Override
       protected Void process() {
+        // Restore based on target type
         if (trashDb.getTargetType().isService()) {
+          // Restore service and its associated APIs
           backServices(Collections.singletonList(trashDb));
-          // Add back activity
+          
+          // Log service restore activity
           activityCmd.add(toActivity(SERVICE, trashDb, ActivityType.BACK, trashDb.getName()));
         } else if (trashDb.getTargetType().isApi()) {
+          // Restore API and its parent service
           backApisAndServices(Collections.singletonList(trashDb));
-          // Add back activity
+          
+          // Log API restore activity
           activityCmd.add(toActivity(API, trashDb, ActivityType.BACK, trashDb.getName()));
         }
         return null;

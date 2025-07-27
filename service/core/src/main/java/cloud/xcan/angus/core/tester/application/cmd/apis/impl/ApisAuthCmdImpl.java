@@ -41,10 +41,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * API authorization management command implementation.
  * <p>
- * Provides methods for adding, replacing, deleting, enabling/disabling, and batch operations on
- * API authorizations.
+ * Implementation of ApisAuthCmd for API authorization management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive authorization management services including adding, replacing, deleting,
+ * enabling/disabling, and batch operations on API authorizations. Handles permission validation,
+ * creator authorization management, and activity logging for all authorization operations.
+ * </p>
  */
 @Slf4j
 @Biz
@@ -66,9 +70,16 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
   private ActivityCmd activityCmd;
 
   /**
-   * Add API authorization.
    * <p>
-   * Checks API, creator, permission, object, and duplication, then inserts and records activity.
+   * Add API authorization with comprehensive validation and permission management.
+   * </p>
+   * <p>
+   * Validates API existence, creator permissions, user authorization rights, authorization object
+   * existence, and duplicate authorization checks. Inserts authorization record, initializes parent
+   * project view permissions, and logs grant permission activity.
+   * </p>
+   * @param auth API authorization to add
+   * @return ID key of the created authorization
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -79,44 +90,63 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check the api existed
+        // Validate API exists and retrieve basic information
         apiInfoDb = apisQuery.checkAndFindBasicInfo(auth.getApisId());
-        // Check the add creator permissions
+        
+        // Prevent creator from authorizing themselves (security check)
         assertTrue(!apiInfoDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
 
-        // Check the user have api authorization permissions
+        // Verify current user has permission to grant API authorization
         apisAuthQuery.checkGrantAuth(getUserId(), auth.getApisId());
-        // Check the authorization object exists
+        
+        // Validate authorization object exists and get its name for activity logging
         authObjectName = commonQuery
             .checkAndGetAuthName(auth.getAuthObjectType(), auth.getAuthObjectId());
-        // Check the duplicate authorizations
+        
+        // Prevent duplicate authorization assignments
         apisAuthQuery.checkRepeatAuth(auth.getApisId(), auth.getAuthObjectId(),
             auth.getAuthObjectType());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Insert the authorization record
         IdKey<Long, Object> idKey = insert(auth, "authObjectId");
 
-        // Determine and initialize parent project view permissions
+        // Initialize parent project view permissions if needed
         List<ServicesAuth> projectAuths = addParentViewPermission(auth);
         if (isNotEmpty(projectAuths)) {
           servicesAuthRepo.batchInsert0(projectAuths);
         }
 
-        // Add grant permission activity
+        // Log grant permission activity (skip for creator authorizations)
         if (nonNull(auth.getCreator()) && !auth.getCreator()) {
           activityCmd.add(toActivity(API, apiInfoDb, ActivityType.AUTH, authObjectName));
         }
         return idKey;
       }
 
+      /**
+       * <p>
+       * Add parent project view permission for the authorization object.
+       * </p>
+       * <p>
+       * Ensures that the authorization object has view permission to the parent service
+       * if they don't already have it. This maintains proper permission hierarchy.
+       * </p>
+       * @param apisAuth API authorization being added
+       * @return List of service authorizations to insert
+       */
       private List<ServicesAuth> addParentViewPermission(ApisAuth apisAuth) {
         List<ServicesAuth> auths = new ArrayList<>();
+        
+        // Check if authorization object already has view permission to the service
         long count = servicesAuthRepo
             .countByServiceIdAndAuthObjectIdAndAuthObjectType(apiInfoDb.getServiceId(),
                 apisAuth.getAuthObjectId(), apisAuth.getAuthObjectType());
+        
+        // Add view permission if not already present
         if (count < 1) {
           auths.add(toServicesViewPermission(apiInfoDb.getServiceId(), apisAuth.getAuthObjectType(),
               apisAuth.getAuthObjectId()));
@@ -127,9 +157,14 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
   }
 
   /**
-   * Replace API authorization.
    * <p>
-   * Checks existence, creator, API, permission, and object, then updates and records activity.
+   * Replace API authorization with comprehensive validation and permission management.
+   * </p>
+   * <p>
+   * Validates authorization existence, creator permissions, API existence, user authorization rights,
+   * and authorization object existence. Updates authorization permissions and logs modification activity.
+   * </p>
+   * @param auth API authorization to replace
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -141,26 +176,30 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check the Auth existed
+        // Validate authorization exists and retrieve current record
         authDb = apisAuthQuery.checkAndFind(auth.getId());
-        // Check the modify creator permissions
+        
+        // Prevent modification of creator authorizations (security check)
         assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        // Check the api existed
+        
+        // Validate API exists and retrieve basic information
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
-        // Check the current user have api authorization permissions
+        
+        // Verify current user has permission to grant API authorization
         apisAuthQuery.checkGrantAuth(getUserId(), authDb.getApisId());
-        // Check the authorization object existed
+        
+        // Validate authorization object exists and get its name for activity logging
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
       }
 
       @Override
       protected Void process() {
-        // Replace authorization
+        // Update authorization permissions
         authDb.setAuths(auth.getAuths());
         apisAuthRepo.save(authDb);
 
-        // Add modification permission activity
+        // Log modification permission activity (skip for creator authorizations)
         if (!authDb.isCreatorAuth()) {
           activityCmd.add(toActivity(API, apiInfoDb, ActivityType.AUTH_UPDATED, authObjectName));
         }
@@ -170,9 +209,14 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
   }
 
   /**
-   * Delete API authorization.
    * <p>
-   * Checks existence, creator, API, and permission, records cancel activity, then deletes.
+   * Delete API authorization with comprehensive validation and activity logging.
+   * </p>
+   * <p>
+   * Validates authorization existence, creator permissions, API existence, and user authorization rights.
+   * Logs cancellation activity and removes the authorization record.
+   * </p>
+   * @param id Authorization ID to delete
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -183,32 +227,35 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check the api auth existed
+        // Validate authorization exists and retrieve current record
         authDb = apisAuthQuery.checkAndFind(id);
-        // Check the modify creator permissions
+        
+        // Prevent deletion of creator authorizations (security check)
         assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        // Check the api existed
+        
+        // Validate API exists and retrieve basic information
         apiInfoDb = apisQuery.checkAndFindBasicInfo(authDb.getApisId());
-        // Check the user have api authorization permissions
+        
+        // Verify current user has permission to grant API authorization
         apisAuthQuery.checkGrantAuth(getUserId(), authDb.getApisId());
       }
 
       @Override
       protected Void process() {
-        // Get if authorization object name
+        // Retrieve authorization object name for activity logging (with error handling)
         String authObjectName = "";
         try {
           authObjectName = commonQuery
               .checkAndGetAuthName(authDb.getAuthObjectType(), authDb.getAuthObjectId());
         } catch (Exception e) {
-          // Log the exception for troubleshooting.
+          // Log the exception for troubleshooting but continue with deletion
           log.warn("Failed to get auth object name", e);
         }
 
-        // Add deleted permission activity, must be deleted before
+        // Log cancellation activity before deletion (for audit trail)
         activityCmd.add(toActivity(API, apiInfoDb, ActivityType.AUTH_CANCEL, authObjectName));
 
-        // Delete api permission
+        // Remove the authorization record
         apisAuthRepo.deleteById(id);
         return null;
       }
@@ -216,9 +263,15 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
   }
 
   /**
-   * Enable or disable API authorization.
    * <p>
-   * Checks API and permission, updates status, and records activity.
+   * Enable or disable API authorization control.
+   * </p>
+   * <p>
+   * Validates API existence and user authorization rights. Updates authorization control status
+   * and logs the enable/disable activity.
+   * </p>
+   * @param apisId API ID
+   * @param enabled Whether to enable authorization control
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -228,17 +281,19 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
 
       @Override
       protected void checkParams() {
-        // Check and get apis exists
+        // Validate API exists and retrieve base information
         apiInfoDb = apisQuery.checkAndFindBaseInfo(apisId);
 
-        // Check the to have permission to grant apis
+        // Verify current user has permission to grant API authorization
         apisAuthQuery.checkGrantAuth(getUserId(), apisId);
       }
 
       @Override
       protected Void process() {
+        // Update authorization control status in API record
         apisRepo.updateAuthById(apisId, enabled);
-        // Enable permission control activity
+        
+        // Log enable/disable authorization control activity
         activityCmd.add(toActivity(API, apiInfoDb,
             enabled ? ActivityType.AUTH_ENABLED : ActivityType.AUTH_DISABLED));
         return null;
@@ -247,52 +302,85 @@ public class ApisAuthCmdImpl extends CommCmd<ApisAuth, Long> implements ApisAuth
   }
 
   /**
-   * Batch add creator authorization for APIs.
    * <p>
-   * Removes old and inserts new creator authorizations.
+   * Batch add creator authorization for APIs.
+   * </p>
+   * <p>
+   * Removes existing creator authorizations and inserts new ones for the specified APIs and creators.
+   * This method is used for bulk creator permission management.
+   * </p>
+   * @param apisIds Set of API IDs
+   * @param creatorIds Set of creator user IDs
    */
   @Override
   public void addCreatorAuth(Set<Long> apisIds, Set<Long> creatorIds) {
+    // Remove existing creator authorizations for the specified APIs
     apisAuthRepo.deleteByApisIdInAndCreator(apisIds, true);
-    // Save api creator authorization
+    
+    // Create new creator authorization records for all API-creator combinations
     List<ApisAuth> apisAuths = apisIds.stream()
         .flatMap(apisId -> creatorIds.stream()
             .map(creatorId -> toApisCreatorAuth(apisId, creatorId, uidGenerator)))
         .toList();
+    
+    // Batch insert all new creator authorizations
     batchInsert(apisAuths, "authObjectId");
   }
 
   /**
-   * Batch add creator authorization for APIs with mapping.
    * <p>
-   * Removes old and inserts new creator authorizations.
+   * Batch add creator authorization for APIs with mapping.
+   * </p>
+   * <p>
+   * Removes existing creator authorizations and inserts new ones based on the provided mapping.
+   * Each API can have different sets of creators, allowing for more granular permission management.
+   * </p>
+   * @param apisIdAndCreatorIds Mapping of API IDs to their respective creator user IDs
    */
   @Override
   public void addCreatorAuth(Map<Long, Set<Long>> apisIdAndCreatorIds) {
+    // Remove existing creator authorizations for all specified APIs
     apisAuthRepo.deleteByApisIdInAndCreator(apisIdAndCreatorIds.keySet(), true);
-    // Save api creator authorization
+    
+    // Create new creator authorization records based on the mapping
     List<ApisAuth> apisAuths = apisIdAndCreatorIds.entrySet().stream()
         .flatMap(entry -> entry.getValue().stream()
             .map(creatorId -> toApisCreatorAuth(entry.getKey(), creatorId, uidGenerator)))
         .toList();
+    
+    // Batch insert all new creator authorizations
     batchInsert(apisAuths, "authObjectId");
   }
 
   /**
-   * Move creator authorization to a new project.
    * <p>
-   * Removes old and inserts new creator authorizations for the target.
+   * Move creator authorization to a new project.
+   * </p>
+   * <p>
+   * Removes existing creator authorizations from parent service and creates new ones for the target
+   * project. This is used when APIs are moved between projects to maintain proper creator permissions.
+   * </p>
+   * @param targetProjectDb Target project entity
+   * @param apiIds List of API IDs to move
+   * @param apis List of API entities
    */
   @Override
   public void moveCreatorAuth(Services targetProjectDb, List<Long> apiIds, List<Apis> apis) {
     Set<ApisAuth> apisAuths = new HashSet<>();
     Set<Long> creatorIds = new HashSet<>();
+    
+    // Add target project creator to the creator set
     creatorIds.add(targetProjectDb.getCreatedBy());
-    // Move from parent service to parent project exists in the apiIds
+    
+    // Remove existing creator authorizations from parent service for the specified APIs
     apisAuthRepo.deleteByApisIdInAndAuthObjectIdInAndCreator(apiIds, creatorIds, true);
+    
+    // Create new creator authorizations for each API with the target project creator
     for (Apis api : apis) {
       apisAuths.addAll(toApisCreatorAuth(api, creatorIds));
     }
+    
+    // Batch insert all new creator authorizations
     batchInsert0(apisAuths);
   }
 

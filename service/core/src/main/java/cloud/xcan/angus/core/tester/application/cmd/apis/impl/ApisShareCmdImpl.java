@@ -34,10 +34,14 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing API and service shares.
  * <p>
- * Provides methods for adding, updating, deleting, and incrementing view count of shares.
- * Ensures permission checks, duplicate prevention, and activity logging.
+ * Implementation of ApisShareCmd for API and service share management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive share management services including adding, updating, deleting, and
+ * incrementing view count of shares. Ensures permission checks, duplicate prevention, and activity
+ * logging. Manages public access tokens and share scopes for APIs and services.
+ * </p>
  */
 @Biz
 public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisShareCmd {
@@ -58,9 +62,14 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add a new share for an API or service.
+   * </p>
    * <p>
    * Validates permission, inserts share, and logs the creation activity.
+   * </p>
+   * @param share Share to add
+   * @return Created share entity
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -71,30 +80,36 @@ public class ApisShareCmdImpl extends CommCmd<ApisShare, Long> implements ApisSh
 
       @Override
       protected void checkParams() {
-        // Check the services exists
+        // Validate service exists
         servicesDb = servicesQuery.checkAndFind(share.getServicesId());
-        // Check the apis not empty
+        
+        // Ensure API IDs are provided for non-service shares
         if (!share.getShareScope().isService()) {
           assertNotEmpty(share.getApisIds(), "Share apis id must not be empty");
         }
-        // Check the share permission and exists
+        
+        // Validate share permissions based on scope
         if (share.getShareScope().isSingleApi()) {
+          // Check API share permission for single API share
           long apisId = share.getApisIds().iterator().next();
           apisAuthQuery.checkShareAuth(getUserId(), apisId);
           apisDb = apisQuery.checkAndFindBaseInfo(apisId);
         } else {
+          // Check service share permission for service-wide share
           servicesAuthQuery.checkShareAuth(getUserId(), share.getServicesId());
         }
       }
 
       @Override
       protected ApisShare process() {
+        // Set project ID and generate public access token
         share.setProjectId(servicesDb.getProjectId());
         share.setPat(randomAlphanumeric(MAX_PUBLIC_TOKEN_LENGTH));
 
+        // Insert the share record
         insert0(share);
 
-        // Save activity
+        // Log appropriate creation activity based on share scope
         if (share.getShareScope().isSingleApi()) {
           activityCmd.add(toActivity(API, apisDb, SHARE_CREATED, share.getId()));
         } else {

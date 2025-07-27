@@ -24,10 +24,14 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing API follows.
  * <p>
- * Provides methods for adding, canceling, and batch canceling API follows.
- * Ensures permission checks, duplicate prevention, and activity logging.
+ * Implementation of ApisFollowCmd for API follow management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive API follow management services including adding, canceling, and batch
+ * canceling API follows. Ensures permission checks, duplicate prevention, and activity logging.
+ * Manages user's API follow relationships for tracking API changes and updates.
+ * </p>
  */
 @Biz
 public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements ApisFollowCmd {
@@ -42,9 +46,14 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add an API to follows.
+   * </p>
    * <p>
    * Validates API existence, permission, and duplicate, inserts follow, and logs the activity.
+   * </p>
+   * @param follow API follow to add
+   * @return ID key of the created follow
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -54,13 +63,13 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
 
       @Override
       protected void checkParams() {
-        // Check the apis existed
+        // Validate API exists and retrieve basic information
         apisDb = apisQuery.checkAndFindBaseInfo(follow.getApisId());
 
-        // Check the permission to view apis
+        // Verify current user has permission to view the API
         apisAuthQuery.checkViewAuth(getUserId(), follow.getApisId());
 
-        // Check the not repeated
+        // Check for duplicate follow (prevent following same API twice)
         if (apisFollowRepo.countByApisIdAndCreatedBy(follow.getApisId(), getUserId()) > 0) {
           throw ResourceExisted.of(APIS_FOLLOW_REPEATED_T, new Object[]{apisDb.getName()});
         }
@@ -68,10 +77,13 @@ public class ApisFollowCmdImpl extends CommCmd<ApisFollow, Long> implements Apis
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Set project ID from API information
         follow.setProjectId(apisDb.getProjectId());
+        
+        // Insert the follow record
         IdKey<Long, Object> idKey = insert(follow);
 
-        // Add follow api activity
+        // Log follow activity
         activityCmd.add(toActivity(API, apisDb, ActivityType.FOLLOW));
         return idKey;
       }

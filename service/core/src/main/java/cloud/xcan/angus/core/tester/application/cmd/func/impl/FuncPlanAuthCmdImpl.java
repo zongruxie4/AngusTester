@@ -33,11 +33,17 @@ import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional test plan authorization.
  * <p>
- * Provides methods for adding, updating, enabling/disabling, and deleting plan authorizations.
+ * Command implementation for managing functional plan authorization.
+ * </p>
  * <p>
- * Ensures permission checks, duplicate prevention, and activity logging.
+ * Provides methods for adding, updating, replacing, enabling, and deleting plan authorizations.
+ * Handles permission checks, authorization validation, and activity logging.
+ * </p>
+ * <p>
+ * Key features include authorization management, creator permission setup,
+ * owner and tester authorization, and comprehensive activity tracking.
+ * </p>
  */
 @Biz
 public class FuncPlanAuthCmdImpl extends CommCmd<FuncPlanAuth, Long> implements FuncPlanAuthCmd {

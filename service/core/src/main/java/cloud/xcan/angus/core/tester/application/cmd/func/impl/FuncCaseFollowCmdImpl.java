@@ -23,11 +23,17 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional case follows.
  * <p>
- * Provides methods for adding, canceling, and batch canceling follows for functional test cases.
+ * Command implementation for managing functional case follows.
+ * </p>
  * <p>
- * Ensures resource existence checks, duplicate prevention, and activity logging.
+ * Provides methods for adding and canceling case follows for functional testing.
+ * Handles permission checks, case existence validation, and activity logging.
+ * </p>
+ * <p>
+ * Key features include follow case management, user tracking preferences,
+ * and comprehensive activity logging for audit purposes.
+ * </p>
  */
 @Biz
 public class FuncCaseFollowCmdImpl extends CommCmd<FuncCaseFollow, Long> implements

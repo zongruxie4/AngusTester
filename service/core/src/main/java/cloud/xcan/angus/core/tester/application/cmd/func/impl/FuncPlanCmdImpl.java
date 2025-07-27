@@ -51,11 +51,17 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional test plans.
  * <p>
- * Provides methods for adding, updating, deleting, starting, ending, blocking, and cloning test plans.
+ * Command implementation for managing functional test plans.
+ * </p>
  * <p>
- * Ensures permission checks, activity logging, and batch operations with transaction management.
+ * Provides methods for adding, updating, replacing, starting, ending, blocking, cloning, and deleting test plans.
+ * Handles permission checks, plan lifecycle management, authorization setup, and activity logging.
+ * </p>
+ * <p>
+ * Key features include plan lifecycle management, authorization initialization,
+ * result and review reset functionality, and comprehensive activity tracking.
+ * </p>
  */
 @Biz
 public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlanCmd {
@@ -86,11 +92,15 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add a new functional test plan.
+   * </p>
    * <p>
    * Checks project membership, plan name, date range, quota, owner, and testers before adding.
-   * <p>
    * Initializes plan creator, owner, and tester authorizations, and logs creation activity.
+   * </p>
+   * @param plan the plan entity to add
+   * @return ID and name of the created plan
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -100,32 +110,40 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
       @Override
       protected void checkParams() {
-        // Check the project member
+        // Validate user is a member of the project
         projectMemberQuery.checkMember(getUserId(), plan.getProjectId());
-        // Check the plan name exists
+        
+        // Check if plan name already exists in the project
         funcPlanQuery.checkNameExists(plan.getProjectId(), plan.getName());
-        // Check the plan date range
+        
+        // Check plan date range validation
         // NOOP:: funcPlanQuery.checkPlanDateRange(plan.getStartDate(), plan.getDeadlineDate());
-        // Check the quota limit
+        
+        // Validate quota limits
         funcPlanQuery.checkQuota();
-        // Check the owner exists
+        
+        // Verify owner exists
         userManager.checkAndFind(plan.getOwnerId());
-        // Check the testers exists
+        
+        // Verify all testers exist
         testerIds = plan.getTesterResponsibilities().keySet();
         userManager.checkAndFind(testerIds);
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Insert the plan and get ID
         IdKey<Long, Object> idKey = insert(plan);
 
-        // Init plan creator auth
+        // Initialize plan creator authorization
         Long currentUserId = getUserId();
         funcPlanAuthCmd.addCreatorAuth(idKey.getId(), Set.of(currentUserId));
-        // Init plan owner and tester auth
+        
+        // Initialize plan owner and tester authorizations
         funcPlanAuthCmd.addOwnerAndTesterAuth(idKey.getId(),
             Objects.equals(plan.getOwnerId(), currentUserId) ? null : plan.getOwnerId(), testerIds);
 
+        // Log plan creation activity
         activityCmd.add(toActivity(FUNC_PLAN, plan, ActivityType.CREATED));
         return idKey;
       }
@@ -411,9 +429,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   }
 
   /**
-   * Reset the test result of a batch of functional test plans.
+   * Resets test results for a batch of functional test plans.
    * <p>
-   * Checks permission before resetting test results, logs activities, and restarts plans if needed.
+   * Validates plan existence and user permissions before resetting test results.
+   * <p>
+   * Resets all case test results to initial state and restarts completed plans.
+   * <p>
+   * Logs reset activities for audit trail purposes.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -423,20 +445,23 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
       @Override
       protected void checkParams() {
-        // Check the case exists
+        // Ensure all plans exist in database
         plansDb = funcPlanQuery.checkAndFind(ids);
 
-        // Check the test permission
+        // Check user permission to reset test results
         funcPlanAuthQuery.batchCheckPermission(plansDb.stream().map(FuncPlan::getProjectId)
             .collect(Collectors.toSet()), FuncPlanPermission.RESET_TEST_RESULT);
       }
 
       @Override
       protected Void process() {
+        // Reset all case test results to initial state
         funcCaseRepo.updateTestResultToInitByPlanIds(ids);
 
+        // Restart plans that were completed
         startPlanIfCompleted(plansDb);
 
+        // Log test result reset activities for audit
         activityCmd.addAll(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
         return null;
       }
@@ -444,9 +469,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   }
 
   /**
-   * Reset the review result of a batch of functional test plans.
+   * Resets review results for a batch of functional test plans.
    * <p>
-   * Checks permission before resetting review results, logs activities, and restarts plans if needed.
+   * Validates plan existence and user permissions before resetting review results.
+   * <p>
+   * Resets all case review results and associated review sessions.
+   * <p>
+   * Logs reset activities and restarts completed plans if needed.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -456,26 +485,30 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
       @Override
       protected void checkParams() {
-        // Check the case exists
+        // Ensure all plans exist in database
         plansDb = funcPlanQuery.checkAndFind(ids);
 
-        // Check the test permission
+        // Check user permission to reset review results
         funcPlanAuthQuery.batchCheckPermission(plansDb.stream().map(FuncPlan::getProjectId)
             .collect(Collectors.toSet()), FuncPlanPermission.RESET_REVIEW_RESULT);
       }
 
       @Override
       protected Void process() {
+        // Reset all case review results to initial state
         funcCaseRepo.updateReviewResultToInitByPlanIds(ids);
 
+        // Reset associated review sessions
         Set<Long> reviewIds = funcReviewQuery.findByPlanIds(ids)
             .stream().map(FuncReview::getPlanId).collect(Collectors.toSet());
         if (isNotEmpty(reviewIds)) {
           funcReviewCmd.reviewReset(reviewIds, true);
         }
 
+        // Restart plans that were completed
         startPlanIfCompleted(plansDb);
 
+        // Log review result reset activities for audit
         activityCmd.addAll(toActivities(FUNC_PLAN, plansDb, ActivityType.RESULT_RESET));
         return null;
       }
@@ -483,9 +516,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   }
 
   /**
-   * Delete a functional test plan (logic delete).
+   * Deletes a functional test plan (soft delete).
    * <p>
-   * Checks existence and permission before logic deleting the plan, moves plan to trash, and logs activity.
+   * Validates plan existence and user permissions before marking the plan as deleted.
+   * <p>
+   * Moves plan to trash for potential recovery and updates associated case delete status.
+   * <p>
+   * Logs deletion activity for audit trail purposes.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -495,11 +532,13 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
       @Override
       protected void checkParams() {
-        // Check the plan existed and authed
+        // Check if plan exists in database
         planDb = funcPlanRepo.findById(id);
         if (planDb.isEmpty()) {
           return;
         }
+        
+        // Check user permission to delete the plan
         funcPlanAuthQuery.checkDeletePlanAuth(getUserId(), id);
       }
 
@@ -511,17 +550,17 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
 
         FuncPlan plan0 = planDb.get();
 
-        // Logic delete
+        // Mark plan as deleted (soft delete)
         plan0.setDeleted(true).setDeletedBy(getUserId()).setDeletedDate(LocalDateTime.now());
         funcPlanRepo.save(plan0);
 
-        // Fix:: Do not delete the case and cases after deleting the plan.
+        // Update associated cases delete status
         funcCaseRepo.updatePlanDeleteStatusByPlan(singleton(id), true);
 
-        // Add plan to Trash
+        // Move plan to trash for potential recovery
         trashFuncRepo.save(FuncPlanConverter.toFuncTrash(plan0));
 
-        // Add delete plan activity
+        // Log plan deletion activity for audit
         activityCmd.add(toActivity(FUNC_PLAN, plan0, ActivityType.DELETED));
         return null;
       }
@@ -529,49 +568,81 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   }
 
   /**
-   * Delete all data related to a batch of functional test plans.
+   * Permanently deletes all data related to a batch of functional test plans.
    * <p>
-   * Removes plans, related cases, and reviews.
+   * Removes plans, associated cases, and reviews from the database.
+   * <p>
+   * This operation is irreversible and should be used with caution.
    */
   @Override
   public void delete0(List<Long> ids) {
-    // Delete plan
+    // Permanently delete all plans
     funcPlanRepo.deleteAllByIdIn(ids);
 
+    // Get all case IDs associated with these plans
     List<Long> caseIds = funcCaseRepo.findAll0IdByPlanIdIn(ids);
     if (isNotEmpty(caseIds)) {
+      // Permanently delete all associated cases
       funcCaseCmd.delete0(caseIds);
     }
 
+    // Permanently delete all associated reviews
     funcReviewCmd.deleteByPlanId(ids);
   }
 
+  /**
+   * Updates case review status based on plan review setting changes.
+   * <p>
+   * When review is disabled, clears all case review results.
+   * <p>
+   * When review is enabled, sets all case review results to started state.
+   */
   private void updateCaseReviewStatus(FuncPlan plan, FuncPlan planDb) {
     if (Objects.equals(false, plan.getReview())) {
+      // Clear review results when review is disabled
       funcCaseRepo.updateReviewResultToDisabledByPlanId(plan.getId());
     } else {
+      // Set review results to started when review is enabled
       funcCaseRepo.updateReviewResultToStartedByPlanId(plan.getId());
     }
   }
 
+  /**
+   * Replaces plan authorizations for updated testers.
+   * <p>
+   * Removes existing authorizations and creates new ones for plan creator, 
+   * owner, and testers.
+   */
   private void replacePlanAuths(FuncPlan planDb, Set<Long> testerIds) {
-    // Delete tester auth
+    // Collect all user IDs that need authorization changes
     Set<Long> allTesterIds = new HashSet<>(testerIds);
     allTesterIds.add(planDb.getCreatedBy());
     allTesterIds.add(planDb.getOwnerId());
+    
+    // Remove existing authorizations for all users
     funcPlanAuthCmd.deleteAuthByPlanId(planDb.getId(), allTesterIds);
-    // Init plan Creator auth
+    
+    // Initialize authorization for plan creator
     funcPlanAuthCmd.addCreatorAuth(planDb.getId(), Set.of(planDb.getCreatedBy()));
-    // Init plan owner and tester auth
+    
+    // Initialize authorization for plan owner and testers (excluding creator)
     Set<Long> safeTesterIds = new HashSet<>(testerIds);
     safeTesterIds.remove(planDb.getCreatedBy());
     funcPlanAuthCmd.addOwnerAndTesterAuth(planDb.getId(), planDb.getOwnerId(), safeTesterIds);
   }
 
+  /**
+   * Restarts completed plans by setting their status to PENDING.
+   * <p>
+   * Used when test results are reset to allow testing to continue.
+   */
   private void startPlanIfCompleted(List<FuncPlan> plansDb) {
+    // Find all plans that are currently completed
     List<FuncPlan> completedPlansDb = plansDb.stream()
         .filter(x -> x.getStatus().isCompleted()).collect(Collectors.toList());
+    
     if (isNotEmpty(completedPlansDb)) {
+      // Set all completed plans back to PENDING status
       for (FuncPlan plan : completedPlansDb) {
         plan.setStatus(FuncPlanStatus.PENDING);
       }

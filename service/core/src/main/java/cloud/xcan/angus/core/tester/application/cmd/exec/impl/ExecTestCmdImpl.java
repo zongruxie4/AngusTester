@@ -36,10 +36,18 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * <p>
  * Command implementation for managing test result updates and example imports for executions.
+ * </p>
  * <p>
  * Provides methods for updating test results and importing example executions.
- * Handles result aggregation, status updates, and related entity updates.
+ * Handles result aggregation, status updates, and related entity updates for tasks,
+ * APIs, scenarios, and cases based on execution outcomes.
+ * </p>
+ * <p>
+ * Key features include comprehensive test result synchronization across multiple
+ * entity types and example execution import functionality.
+ * </p>
  */
 @Biz
 public class ExecTestCmdImpl implements ExecTestCmd {
@@ -60,7 +68,16 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   private ExecCmd execCmd;
 
   /**
-   * Note: A scenario or apis may have multiple testing tasks.
+   * <p>
+   * Update test results for execution.
+   * </p>
+   * <p>
+   * Note: A scenario or APIs may have multiple testing tasks.
+   * Updates test results for tasks, APIs, scenarios, and cases based on execution outcome.
+   * Handles result aggregation and status synchronization across related entities.
+   * </p>
+   * @param testResult Test result information
+   * @param caseResults List of test case results
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -69,16 +86,19 @@ public class ExecTestCmdImpl implements ExecTestCmd {
 
       @Override
       protected Void process() {
+        // Update task test results if test result is provided
         if (nonNull(testResult)) {
           updateTaskTestResult(testResult);
         }
 
+        // Update API or scenario test results based on script source
         if (testResult.getScriptSource().isApis()) {
           updateApisTestResult(testResult);
         } else if (testResult.getScriptSource().isScenario()) {
           updateScenarioTestResult(testResult);
         }
 
+        // Update API case test results if case results are provided
         if (isNotEmpty(caseResults)) {
           setApisCaseTestResult(caseResults);
         }
@@ -88,22 +108,32 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
+   * Import example execution for project.
+   * </p>
+   * <p>
    * Note: When API calls that are not user-action, tenant and user information must be injected
-   * into the PrincipalContext.
+   * into the PrincipalContext. Finds performance test script and creates example execution.
+   * </p>
+   * @param projectId Project ID
+   * @return Execution ID and name, or null if no suitable script found
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> importExample(Long projectId) {
     return new BizTemplate<IdKey<Long, Object>>() {
 
-
       @Override
       protected IdKey<Long, Object> process() {
+        // Find top performance test script for the project
         ScriptInfo script = scriptInfoRepo.findTop1ByProjectIdAndPluginAndTypeIn(projectId,
             PLUGIN_HTTP_NAME, ScriptType.TEST_PERFORMANCE.getValue());
+        
         if (isNull(script)) {
           return null;
         }
+        
+        // Create example execution using the found script
         return execCmd.addByRemoteScript(
             script.getName() + "-" + script.getType().getMessage(), script.getId(),
             script.getType(), null, new Arguments(), applicationInfo.isCloudServiceEdition());
@@ -112,14 +142,21 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Update test results for tasks, APIs, scenarios, and cases.
+   * </p>
    * <p>
    * Aggregates and updates results for related entities based on execution outcome.
+   * Finds tasks by target ID and test type, then updates their test results.
+   * </p>
+   * @param testResult Test result information
    */
   private void updateTaskTestResult(TestResultInfo testResult) {
+    // Find tasks by target ID and test type
     List<Task> taskDbs = taskRepo.find0ByTargetIdAndTestType(testResult.getScriptSourceId(),
         TestType.of(testResult.getScriptType()).getValue());
     if (isNotEmpty(taskDbs)) {
+      // Update test results for each task
       for (Task taskDb : taskDbs) {
         setTaskTestResult(taskDb, testResult);
       }
@@ -128,13 +165,21 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Update test results for APIs.
+   * </p>
    * <p>
    * Updates the test result for an API based on the execution outcome.
+   * Handles different test types (functional, performance, stability) and updates
+   * corresponding fields in the API entity.
+   * </p>
+   * @param testResult Test result information
    */
   private void updateApisTestResult(TestResultInfo testResult) {
+    // Find API by script source ID
     Apis apisDb = apisRepo.findById(testResult.getScriptSourceId()).orElse(null);
     if (nonNull(apisDb)) {
+      // Update API test results based on script type
       switch (testResult.getScriptType()) {
         case TEST_FUNCTIONALITY:
           apisDb.setTestFuncPassed(testResult.isPassed())
@@ -148,6 +193,8 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           apisDb.setTestStabilityPassed(testResult.isPassed())
               .setTestStabilityFailureMessage(testResult.getFailureMessage());
           break;
+        case TEST_CUSTOMIZATION:
+        case MOCK_APIS:
         case MOCK_DATA:
           // No action required for MOCK_DATA
           break;
@@ -157,13 +204,21 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Update test results for scenarios.
+   * </p>
    * <p>
    * Updates the test result for a scenario based on the execution outcome.
+   * Handles different test types (functional, performance, stability) and updates
+   * corresponding fields in the scenario entity.
+   * </p>
+   * @param testResult Test result information
    */
   private void updateScenarioTestResult(TestResultInfo testResult) {
+    // Find scenario by script source ID
     Scenario scenarioDb = scenarioRepo.findById(testResult.getScriptSourceId()).orElse(null);
     if (nonNull(scenarioDb)) {
+      // Update scenario test results based on script type
       switch (testResult.getScriptType()) {
         case TEST_FUNCTIONALITY:
           scenarioDb.setTestFuncPassed(testResult.isPassed())
@@ -186,14 +241,23 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Set test results for API cases.
+   * </p>
    * <p>
    * Updates the test result for each API case based on the execution outcome.
+   * Filters out cases with null passed status (not executed, disabled) and updates
+   * execution details for enabled cases.
+   * </p>
+   * @param caseResults List of test case results
    */
   private void setApisCaseTestResult(List<TestCaseResultInfo> caseResults) {
+    // Filter and map case results by case ID (exclude null passed status)
     Map<Long, TestCaseResultInfo> caseResultInfoMap = caseResults.stream()
         .filter(x -> nonNull(x.getPassed())) // A null value means not executed, disabled.
         .collect(Collectors.toMap(TestCaseResultInfo::getCaseId, x -> x));
+    
+    // Find and update API cases
     List<ApisCase> caseDbs = apisCaseRepo.findAllById(caseResultInfoMap.keySet());
     if (isNotEmpty(caseDbs)) {
       for (ApisCase caseDb : caseDbs) {
@@ -204,12 +268,19 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Set test result for a task.
+   * </p>
    * <p>
    * Updates the status, script ID, execution result, failure message, test numbers, and
-   * execution details of a task based on the test result.
+   * execution details of a task based on the test result. Handles completion dates
+   * and failure count tracking.
+   * </p>
+   * @param taskDb Task entity to update
+   * @param resultInfo Test result information
    */
   private void setTaskTestResult(Task taskDb, TestResultInfo resultInfo) {
+    // Update task status, execution details, and test numbers
     taskDb.setStatus(resultInfo.isPassed() ? TaskStatus.COMPLETED : taskDb.getStatus())
         .setScriptId(resultInfo.getScriptId())
         .setExecResult(resultInfo.isPassed() ? Result.SUCCESS : Result.FAIL)
@@ -221,10 +292,13 @@ public class ExecTestCmdImpl implements ExecTestCmd {
         .setExecBy(resultInfo.getExecBy())
         .setExecDate(resultInfo.getLastExecStartDate());
 
+    // Set completion dates if task is completed
     if (taskDb.getStatus().isCompleted()) {
       taskDb.setStartDate(resultInfo.getLastExecStartDate());
       taskDb.setCompletedDate(resultInfo.getLastExecEndDate());
     }
+    
+    // Update failure count and total count
     if (!resultInfo.isPassed()) {
       taskDb.setFailNum(nullSafe(taskDb.getFailNum(), 0) + 1);
     }
@@ -232,12 +306,18 @@ public class ExecTestCmdImpl implements ExecTestCmd {
   }
 
   /**
+   * <p>
    * Set test result for an API case.
+   * </p>
    * <p>
    * Updates the execution result, failure message, test numbers, and execution details of an
    * API case based on the test result.
+   * </p>
+   * @param apisCaseDb API case entity to update
+   * @param caseResult Test case result information
    */
   private void setCaseTestResult(ApisCase apisCaseDb, TestCaseResultInfo caseResult) {
+    // Update API case execution details and test numbers
     apisCaseDb.setExecResult(caseResult.getPassed() ? Result.SUCCESS : Result.FAIL)
         .setExecFailureMessage(caseResult.getFailureMessage())
         .setExecTestNum(caseResult.getTestNum())

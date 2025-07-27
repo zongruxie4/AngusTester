@@ -85,10 +85,19 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing debug executions of test scripts.
  * <p>
- * Provides methods for starting, monitoring, and deleting debug executions.
- * Handles permission checks, node selection, distributed execution, and result aggregation.
+ * Command implementation for managing debug executions of test scripts.
+ * </p>
+ * <p>
+ * Provides comprehensive debug execution management services including starting, monitoring, 
+ * and deleting debug executions. Handles permission checks, node selection, distributed 
+ * execution, and result aggregation. Supports debug execution from scripts, scenarios, 
+ * and monitors with server configuration overrides.
+ * </p>
+ * <p>
+ * Key features include single-node debug execution, remote controller communication, 
+ * script parsing and assembly, and comprehensive error handling with detailed status reporting.
+ * </p>
  */
 @Slf4j
 @Biz
@@ -120,9 +129,16 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   private ApplicationInfo appInfo;
 
   /**
+   * <p>
    * Start a debug execution, either broadcast or targeted.
+   * </p>
    * <p>
    * Validates quotas, parses script, selects node, and manages execution lifecycle.
+   * Handles both local and remote node execution with comprehensive error handling.
+   * </p>
+   * @param broadcast Whether to broadcast execution or target specific node
+   * @param debug Debug execution entity
+   * @return Updated debug execution entity with results
    */
   @Override
   public ExecDebug start(boolean broadcast, ExecDebug debug) {
@@ -133,25 +149,27 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
       @Override
       protected void checkParams() {
         if (broadcast) {
-          // Check the execution quotas
+          // Validate execution quotas for new debug execution
           execDebugQuery.checkAddQuota(1);
 
-          // Check the execution quota in running
+          // Validate concurrent task quotas for running execution
           execDebugQuery.checkConcurrentTaskQuota(1);
 
-          // Parse the script content
+          // Parse script content from configuration or script string
           if (nonNull(debug.getConfiguration()) && nonNull(debug.getTask())) {
+            // Assemble script from configuration and task components
             angusScript = assembleAngusScript(debug);
           } else if (isNotEmpty(debug.getScript())) {
+            // Parse existing script content
             angusScript = parseAngusScript(debug.getScript());
           } else {
             throw new SysException("Debug script is empty");
           }
 
-          // Check the available and application nodes is valid
+          // Validate node availability and application nodes
           execQuery.checkNodeValid(angusScript.getConfiguration(), false);
         } else {
-          // Check the id is required
+          // For targeted mode: validate debug execution ID exists
           assertNotNull(debug.getId(), "Execution debug id is required when broadcast = false");
           debugDb = execDebugQuery.checkAndFind(debug.getId());
         }
@@ -163,45 +181,51 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
         log.info("Controller handle to start execution debug `{}` request", debug.getId());
 
         try {
+          // Set inner principal for non-user actions
           if (!isUserAction()) {
             PrincipalContext.set(createInnerPrincipal(appInfo));
           }
 
-          // Randomly select a node from available nodes, with priority given to idle nodes
+          // Select execution node based on mode
           Long nodeId;
           if (broadcast) {
-            // Election testing node
+            // Select node using strategy for broadcast mode
             NodeSelector nodeSelector = angusScript.getConfiguration().getNodeSelectors();
             nodeId = selectNodeByStrategy(nodeSelector, 1).getId();
           } else {
+            // Use existing node ID for targeted mode
             nodeId = debugDb.getExecNodeId();
           }
 
-          // Save debugging records
+          // Save debug execution records for broadcast mode
           if (broadcast) {
-            // NOOP: Not initiated based on existing scripts or scenarios
+            // Note: Historical debug results are not cleared based on existing scripts or scenarios
             // deleteByScriptIdAndScenarioId(debug.getScriptId(), debug.getScenarioId());
 
+            // Set node ID and running status, then save
             debug.setExecNodeId(nodeId).setStatus(ExecStatus.RUNNING);
             add0(debug);
             debugDb = debug;
           }
 
+          // Determine tenant ID for node communication
           Long nodeTenantId = nodeQuery.isTrailNode(nodeId) ? OWNER_TENANT_ID : debugDb.getTenantId();
+          
+          // Get local channel router for node communication
           ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, nodeTenantId);
           if (nonNull(router)) {
-            // Push local controller
+            // Execute on local controller
             RunnerRunDto runCmd = RunnerRunDto.newBuilder()
                 .execId(String.valueOf(debugDb.getId())).script(debugDb.getScript())
                 .testTask(debugDb.getScriptType().isTest()).debug(true)
                 .build();
             RunnerRunVo result0 = pushRunCmd2Agent(runCmd, router);
 
-            // Save success result
+            // Update execution status based on result
             debugDb.setStatus(result0.isSuccess() ? ExecStatus.COMPLETED : ExecStatus.FAILED)
                 .setMessage(result0.getMessage()).setSchedulingResult(result0);
 
-            // Judge setup, sampling and town-down error
+            // Analyze console output for setup, sampling, and teardown errors
             if (result0.isSuccess() && isNotEmpty(result0.getConsole())) {
               for (String c : debugDb.getSchedulingResult().getConsole()) {
                 MeterStatus errorCode = MeterStatus.formLogKeyError(c);
@@ -214,36 +238,40 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
               }
             }
           } else {
-            // Push remote controller
+            // Execute on remote controller
             if (broadcast) {
+              // Get valid controller IP to node mapping
               Map<String, List<Node>> ctrlIpNodeMap = nodeInfoQuery.getValidCtrlIpNodeVoMap();
               if (isEmpty(ctrlIpNodeMap)) {
                 throw SysException.of(EXEC_CONTROLLER_NODE_NOT_FOUND);
               }
 
+              // Get service instances for remote communication
               List<ServiceInstance> instances = discoveryClient.getInstances(appInfo.getArtifactId());
               if (isNotEmpty(instances)) {
                 String currentInstanceIp = appInfo.getInstanceId().split(":")[0];
-                // Send run command to node agent
+                
+                // Build debug start command for remote execution
                 ExecDebugStartDto runCmd = ExecDebugStartDto.newBuilder()
                     .broadcast(false).id(debugDb.getId())
                     .name(debugDb.getName()).plugin(debugDb.getPlugin())
                     .configuration(debugDb.getConfiguration()).task(debugDb.getTask())
                     .build();
+                
                 boolean broadcastSuccess = false;
                 for (ServiceInstance inst : instances) {
                   String broadcastInstanceIp = inst.getHost();
-                  // Exclude current controller
+                  // Skip current controller and non-exchange server controllers
                   if (currentInstanceIp.equals(broadcastInstanceIp)
-                      // Exclude non exchange server controller
                       || !ctrlIpNodeMap.containsKey(broadcastInstanceIp)) {
                     continue;
                   }
 
+                  // Send command to remote controller
                   String remoteUrl = "http://" + inst.getInstanceId() + EXEC_DEBUG_START_ENDPOINT;
                   RunnerRunVo result0 = broadcastRun2RemoteCtrl(runCmd, remoteUrl);
                   if (nonNull(result0)) {
-                    // Save success result
+                    // Update execution status based on remote result
                     debugDb.setStatus(result0.isSuccess() ? ExecStatus.COMPLETED : ExecStatus.FAILED)
                         .setMessage(result0.getMessage())
                         .setSchedulingResult(result0);
@@ -252,18 +280,22 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
                     break;
                   }
                 }
+                
+                // Handle broadcast failure
                 if (!broadcastSuccess) {
                   String message = message(EXEC_AGENT_ROUTER_NOT_FOUND_T, new Object[]{nodeId});
                   RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
                   debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
                 }
               } else {
+                // Handle no service instances available
                 String message = message(EXEC_CONTROLLER_INSTANCE_NOT_FOUND_T, new Object[]{nodeId});
                 log.error(message);
                 RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
                 debugDb.setStatus(ExecStatus.FAILED).setMessage(message).setSchedulingResult(result0);
               }
             } else {
+              // Handle remote controller ignored for targeted mode
               String message = message(EXEC_REMOTE_CONTROLLER_IGNORED_T, new Object[]{nodeId});
               log.error(message);
               RunnerRunVo result0 = RunnerRunVo.fail(String.valueOf(debugDb.getId()), nodeId, message);
@@ -271,13 +303,16 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
             }
           }
 
+          // Save updated debug execution
           execDebugRepo.save(debugDb);
 
+          // Set debug result and node info for broadcast mode
           if (broadcast) {
             execDebugQuery.setDebugResult(debugDb);
             setExecNodeInfo(nodeId, debugDb);
           }
         } finally {
+          // Clean up principal context for non-user actions
           if (!isUserAction()) {
             PrincipalContext.remove();
           }
@@ -289,9 +324,20 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   }
 
   /**
+   * <p>
    * Start a debug execution by script.
+   * </p>
    * <p>
    * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   * Handles script parsing and debug execution setup for script-based debugging.
+   * </p>
+   * @param broadcast Whether to broadcast execution or target specific node
+   * @param id Debug execution ID
+   * @param scriptId Script ID to debug
+   * @param scriptType Script type (optional override)
+   * @param configuration Configuration (optional override)
+   * @param arguments Arguments (optional override)
+   * @return Debug execution entity with results
    */
   @Override
   public ExecDebug startByScript(boolean broadcast, Long id, @Nonnull Long scriptId,
@@ -302,18 +348,22 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
       @Override
       protected void checkParams() {
-        // Check the script exists
+        // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        // Parse the script content
+        
+        // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
 
       @Override
       protected ExecDebug process() {
+        // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        // Clear historical debugging results
+        
+        // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.SCRIPT, scriptId);
 
+        // Create debug execution entity and start execution
         ExecDebug debug = startToDomain(ExecDebugSource.SCRIPT, id, null, scriptId,
             null, scriptType, configuration, arguments, script, angusScript);
         return start(broadcast, debug);
@@ -322,9 +372,21 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   }
 
   /**
+   * <p>
    * Start a debug execution by scenario.
+   * </p>
    * <p>
    * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   * Handles script parsing and debug execution setup for scenario-based debugging.
+   * </p>
+   * @param broadcast Whether to broadcast execution or target specific node
+   * @param id Debug execution ID
+   * @param scenarioId Scenario ID
+   * @param scriptId Script ID to debug
+   * @param scriptType Script type (optional override)
+   * @param configuration Configuration (optional override)
+   * @param arguments Arguments (optional override)
+   * @return Debug execution entity with results
    */
   @Override
   public ExecDebug startByScenario(boolean broadcast, Long id, Long scenarioId, Long scriptId,
@@ -335,18 +397,22 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
       @Override
       protected void checkParams() {
-        // Check the script exists
+        // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        // Parse the script content
+        
+        // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
 
       @Override
       protected ExecDebug process() {
+        // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        // Clear historical debugging results
+        
+        // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.SCENARIO, scriptId);
 
+        // Create debug execution entity and start execution
         ExecDebug debug = startToDomain(ExecDebugSource.SCENARIO, id, scenarioId, scriptId,
             null, scriptType, configuration, arguments, script, angusScript);
         return start(broadcast, debug);
@@ -355,9 +421,23 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
   }
 
   /**
+   * <p>
    * Start a debug execution by monitor.
+   * </p>
    * <p>
    * Validates script existence, clears historical results, and delegates to start(boolean, ExecDebug).
+   * Handles script parsing, server configuration overrides, and debug execution setup for monitor-based debugging.
+   * </p>
+   * @param broadcast Whether to broadcast execution or target specific node
+   * @param id Debug execution ID
+   * @param monitorId Monitor ID
+   * @param scenarioId Scenario ID
+   * @param scriptId Script ID to debug
+   * @param scriptType Script type (optional override)
+   * @param configuration Configuration (optional override)
+   * @param arguments Arguments (optional override)
+   * @param servers Server configurations for HTTP overrides
+   * @return Debug execution entity with results
    */
   @Override
   public ExecDebug startByMonitor(boolean broadcast, Long id, Long monitorId, Long scenarioId,
@@ -369,24 +449,31 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
 
       @Override
       protected void checkParams() {
-        // Check the script exists
+        // Validate script exists and retrieve details
         script = scriptQuery.findById(scriptId);
-        // Parse  the script content
+        
+        // Parse script content from YAML
         angusScript = parseAngusScript(script.getContent());
       }
 
       @Override
       protected ExecDebug process() {
+        // Set operation tenant from script
         PrincipalContext.get().setOptTenantId(script.getTenantId());
-        // Clear historical debugging results
+        
+        // Clear historical debugging results for this script
         deleteByScriptId(ExecDebugSource.MONITOR, scriptId);
 
-        // Check only HTTP servers is supported
+        // Apply server configuration overrides for HTTP plugins only
         if (PLUGIN_HTTP_NAME.equals(script.getPlugin()) && isNotEmpty(servers)) {
-          // Override exec server configuration parameter in variables
+          // Create server map for parameter overrides
           Map<String, Server> serverMap = isEmpty(servers) ? Collections.emptyMap()
               : servers.stream().collect(Collectors.toMap(Server::getUrl, x -> x));
+          
+          // Override server parameters in configuration variables
           overrideExecServerParameter(serverMap, angusScript.getConfiguration().getVariables());
+          
+          // Override server parameters in HTTP pipelines
           if (nonNull(angusScript.getTask()) && isNotEmpty(angusScript.getTask().getPipelines())) {
             for (TestTargetType pipeline : angusScript.getTask().getPipelines()) {
               if (pipeline instanceof Http) {
@@ -396,6 +483,7 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
           }
         }
 
+        // Create debug execution entity and start execution
         ExecDebug debug = startToDomain(ExecDebugSource.MONITOR, id, scenarioId, scriptId,
             monitorId, scriptType, configuration, arguments, script, angusScript);
         return start(broadcast, debug);
@@ -403,67 +491,140 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }.execute();
   }
 
+  /**
+   * <p>
+   * Add debug execution entity directly.
+   * </p>
+   * <p>
+   * Sets tenant and user information for non-user actions and inserts the debug execution.
+   * </p>
+   * @param debug Debug execution entity to add
+   */
   @Transactional(rollbackFor = Exception.class)
   public void add0(ExecDebug debug) {
     if (!isUserAction()) {
+      // Set tenant and user information for system actions
       debug.setTenantId(getOptTenantId());
       debug.setCreatedBy(getUserId()).setCreatedDate(LocalDateTime.now());
     }
     insert(debug);
   }
 
+  /**
+   * <p>
+   * Delete debug executions by script ID and source.
+   * </p>
+   * <p>
+   * Removes debug executions and associated sample data for the specified script and source.
+   * </p>
+   * @param source Debug execution source (SCRIPT, SCENARIO, MONITOR)
+   * @param scriptId Script ID
+   */
   @Transactional(rollbackFor = Exception.class)
   public void deleteByScriptId(ExecDebugSource source, @Nonnull Long scriptId) {
+    // Find debug execution IDs for the script and source
     List<Long> execIds = execDebugRepo.findIdBySourceAndScriptId(source.name(), scriptId);
     if (isNotEmpty(execIds)) {
+      // Delete debug executions and associated sample data
       execDebugRepo.deleteByIdIn(execIds);
       deleteExecSamples(execIds);
     }
   }
 
+  /**
+   * <p>
+   * Delete execution samples by execution IDs.
+   * </p>
+   * <p>
+   * Removes all sample data associated with the specified execution IDs.
+   * </p>
+   * @param execIds Collection of execution IDs
+   */
   @Transactional(rollbackFor = Exception.class)
   public void deleteExecSamples(Collection<Long> execIds) {
+    // Delete execution samples, error causes, and content
     execSampleRepo.deleteByExecIdIn(execIds);
     execSampleErrorsRepo.deleteByExecIdIn(execIds);
     execSampleExtcRepo.deleteByExecIdIn(execIds);
   }
 
+  /**
+   * <p>
+   * Set execution node information for debug execution.
+   * </p>
+   * <p>
+   * Retrieves and sets node details for the debug execution.
+   * </p>
+   * @param nodeId Node ID
+   * @param debugDb Debug execution entity
+   */
   private void setExecNodeInfo(Long nodeId, ExecDebug debugDb) {
+    // Retrieve node information for the execution
     List<Node> nodes = nodeQuery.getNodes(Set.of(nodeId), null, null, 1, debugDb.getTenantId());
     if (isNotEmpty(nodes)) {
+      // Set node information in debug execution
       debugDb.setExecNode(toExecNodeInfo(nodes.get(0)));
     }
   }
 
+  /**
+   * <p>
+   * Push run command to agent via channel router.
+   * </p>
+   * <p>
+   * Sends execution command to node agent and handles response.
+   * </p>
+   * @param runCmd Run command DTO
+   * @param router Channel router for communication
+   * @return Execution result from agent
+   */
   private RunnerRunVo pushRunCmd2Agent(RunnerRunDto runCmd, ChannelRouter router) {
     ReplyMessage result;
     try {
+      // Send message to agent via router
       result = nodeInfoQuery.pushAgentMessage(RUNNER_RUN, runCmd, router);
     } catch (Exception e) {
       return RunnerRunVo.fail(runCmd.getExecId(), "Push agent message failure: " + e.getMessage());
     }
     if (result.isSuccess()) {
+      // Parse successful response
       return JsonUtils.fromJson(result.getContent().toString(), RunnerRunVo.class);
     } else {
+      // Handle failed response
       return RunnerRunVo.fail(runCmd.getExecId(), message(AGENT_PUSH_START_FAILED));
     }
   }
 
+  /**
+   * <p>
+   * Broadcast run command to remote controller.
+   * </p>
+   * <p>
+   * Sends debug start command to remote controller via HTTP and handles response.
+   * </p>
+   * @param dto Debug start DTO
+   * @param remoteUrl Remote controller URL
+   * @return Execution result from remote controller
+   */
   private RunnerRunVo broadcastRun2RemoteCtrl(ExecDebugStartDto dto, String remoteUrl) {
     try {
+      // Send HTTP POST request to remote controller
       Response response = doHttpPostRequest(dto, remoteUrl);
       if (response.isSuccessful()) {
+        // Parse successful response
         ExecDebugDetailVo detailVo = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<ExecDebugDetailVo>>() {
             }).orElseContentThrow();
         return nonNull(detailVo) ? detailVo.getSchedulingResult() : null;
       } else {
+        // Handle failed response
         ApiLocaleResult<?> result = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<?>>() {
             });
         return RunnerRunVo.fail(String.valueOf(dto.getId()), result.getMsg());
       }
     } catch (Throwable e) {
+      // Handle communication exception
       String message = message(BROADCAST_START_TO_REMOTE_EXCEPTION_T,
           new Object[]{getMessage(e)});
       log.error(message);
@@ -471,23 +632,48 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     }
   }
 
+  /**
+   * <p>
+   * Select node by strategy.
+   * </p>
+   * <p>
+   * Applies node selection strategy to choose an appropriate node for execution.
+   * </p>
+   * @param nodeSelector Node selector configuration
+   * @param nodeNum Number of nodes to select
+   * @return Selected node information
+   */
   private NodeInfo selectNodeByStrategy(NodeSelector nodeSelector, int nodeNum) {
     NodeInfo nodeInfo;
     if (nonNull(nodeSelector)) {
+      // Use node selector configuration for selection
       nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, nodeSelector.getAvailableNodeIds(),
           null, nodeSelector.getStrategy(), true).get(0);
     } else {
+      // Use default selection strategy
       nodeInfo = nodeInfoQuery.selectByStrategy(nodeNum, null,
           null, null, true).get(0);
     }
     return nodeInfo;
   }
 
+  /**
+   * <p>
+   * Assemble AngusScript from debug execution components.
+   * </p>
+   * <p>
+   * Creates AngusScript object from debug execution configuration and task, then converts to YAML.
+   * </p>
+   * @param debug Debug execution entity
+   * @return Assembled AngusScript object
+   */
   public static AngusScript assembleAngusScript(ExecDebug debug) {
+    // Build AngusScript from debug components
     AngusScript angusScript = new AngusScript().setType(debug.getScriptType())
         .setPlugin(debug.getPlugin()).setConfiguration(debug.getConfiguration())
         .setTask(debug.getTask());
     try {
+      // Convert to YAML and set in debug execution
       debug.setScript(YAML_MAPPER.writeValueAsString(angusScript));
     } catch (JsonProcessingException e) {
       throw new SysException(e.getMessage());
@@ -495,6 +681,16 @@ public class ExecDebugCmdImpl extends CommCmd<ExecDebug, Long> implements ExecDe
     return angusScript;
   }
 
+  /**
+   * <p>
+   * Parse AngusScript from YAML content.
+   * </p>
+   * <p>
+   * Converts YAML string to AngusScript object with error handling.
+   * </p>
+   * @param content YAML script content
+   * @return Parsed AngusScript object
+   */
   public static AngusScript parseAngusScript(String content) {
     try {
       return YAML_MAPPER.readValue(content, AngusScript.class);

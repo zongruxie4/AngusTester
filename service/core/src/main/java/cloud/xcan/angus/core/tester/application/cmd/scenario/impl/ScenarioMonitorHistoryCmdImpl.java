@@ -22,11 +22,13 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Command implementation for scenario monitor history management.
+ * Command implementation for scenario monitoring history management operations.
  * <p>
- * Provides methods for running and recording scenario monitor histories.
+ * Provides execution and recording functionality for scenario monitoring histories.
  * <p>
- * Ensures execution log retrieval, error handling, and history retention.
+ * Implements execution log retrieval, error handling, and history retention management.
+ * <p>
+ * Supports execution result tracking, log analysis, and historical data cleanup.
  */
 @Slf4j
 @Biz
@@ -39,42 +41,59 @@ public class ScenarioMonitorHistoryCmdImpl extends CommCmd<ScenarioMonitorHistor
   private ExecDebugCmd execDebugCmd;
 
   /**
-   * Run a scenario monitor and record its history.
+   * Executes a scenario monitor and records its execution history.
    * <p>
-   * Executes the monitor, records results and logs, and retains a maximum number of history records.
+   * Runs the monitoring scenario using debug execution and captures execution results.
+   * <p>
+   * Retrieves execution logs from remote systems and handles execution failures gracefully.
+   * <p>
+   * Maintains history retention limits and ensures proper cleanup of old records.
    */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public ScenarioMonitorHistory run(ScenarioMonitor monitor) {
+    // Initialize history record with basic information
     ScenarioMonitorHistory history = new ScenarioMonitorHistory();
     history.setProjectId(monitor.getProjectId())
-        .setMonitorId(monitor.getId()).setCreatedBy(getUserId());;
+        .setMonitorId(monitor.getId()).setCreatedBy(getUserId());
+    
     try {
+      // Execute the monitoring scenario using debug execution
       ExecDebug result = execDebugCmd.startByMonitor(true, null, monitor.getId(),
           monitor.getScenarioId(), monitor.getScriptId(), ScriptType.TEST_FUNCTIONALITY,
           null, new Arguments(), monitor.getServerSetting());
+      
+      // Assemble execution results into history record
       assembleScenarioMonitorResultInfo(history, result);
+      
       try {
+        // Retrieve execution logs from remote system
         readExecutionLogFromRemote(result, history);
       } catch (Throwable e) {
+        // Log warning but continue processing if log retrieval fails
         log.warn("Exception in querying scenario monitoring execution logs: {}",
             e.getMessage());
       }
     } catch (Exception e) {
+      // Handle execution failures and record error information
       history.setStatus(ScenarioMonitorStatus.FAILURE)
           .setFailureMessage("Execution scenario monitoring exception: " + e.getMessage());
     }
+    
+    // Save history record to database
     insert0(history);
 
-    // Maximum retention of historical records
+    // Clean up old history records to maintain retention limits
     scenarioMonitorHistoryRepo.deleteHistory(monitor.getId(), MAX_SCE_MONITOR_HISTORY_NUM);
     return history;
   }
 
   /**
-   * Get the repository for scenario monitor histories.
+   * Gets the repository for scenario monitoring history entities.
    * <p>
    * Used by the base command class for generic operations.
+   * <p>
+   * Provides access to the underlying scenario monitoring history data store.
    */
   @Override
   protected BaseRepository<ScenarioMonitorHistory, Long> getRepository() {

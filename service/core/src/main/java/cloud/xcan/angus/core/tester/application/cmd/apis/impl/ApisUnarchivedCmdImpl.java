@@ -18,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing unarchived APIs.
  * <p>
- * Provides methods for adding, updating, renaming, and deleting unarchived APIs.
- * Handles permission checks and batch operations.
+ * Implementation of ApisUnarchivedCmd for unarchived API management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive unarchived API management services including adding, updating, renaming,
+ * and deleting unarchived APIs. Handles permission checks and batch operations. Manages temporary
+ * API storage for users who have unarchived APIs from external sources.
+ * </p>
  */
 @Slf4j
 @Biz
@@ -34,9 +38,14 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
   private ApisUnarchivedQuery apisUnarchivedQuery;
 
   /**
+   * <p>
    * Add unarchived APIs in batch.
+   * </p>
    * <p>
    * Inserts unarchived APIs, does not support related projects and API owner.
+   * </p>
+   * @param apis List of unarchived APIs to add
+   * @return List of ID keys for created APIs
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -45,15 +54,20 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
 
       @Override
       protected List<IdKey<Long, Object>> process() {
+        // Batch insert unarchived APIs with summary validation
         return batchInsert(apis, "summary");
       }
     }.execute();
   }
 
   /**
+   * <p>
    * Update unarchived APIs in batch.
+   * </p>
    * <p>
    * Validates permission and updates unarchived APIs.
+   * </p>
+   * @param apis List of unarchived APIs to update
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -61,11 +75,13 @@ public class ApisUnarchivedCmdImpl extends CommCmd<ApisUnarchived, Long> impleme
     new BizTemplate<Void>() {
       @Override
       protected void checkParams() {
+        // Verify current user has permission to update the APIs
         apisUnarchivedQuery.checkUpdateApiPermission(apis);
       }
 
       @Override
       protected Void process() {
+        // Batch update APIs (throw exception if not found)
         batchUpdateOrNotFound0(apis);
         return null;
       }

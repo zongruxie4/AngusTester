@@ -66,11 +66,16 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for project management.
+ * Command implementation for project management operations.
  * <p>
- * Provides methods for adding, updating, replacing, importing, deleting, and managing project members and example data.
+ * Provides comprehensive CRUD operations for projects including creation, modification, 
+ * deletion, import/export, and member management.
  * <p>
- * Ensures permission checks, activity logging, and batch operations with transaction management.
+ * Implements business logic validation, permission checks, activity logging, 
+ * and transaction management for all project operations.
+ * <p>
+ * Supports example data import, member management, trash functionality, 
+ * and comprehensive activity tracking.
  */
 @Slf4j
 @Biz
@@ -134,32 +139,37 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   private CommonQuery commonQuery;
 
   /**
-   * Add a new project.
+   * Adds a new project to the system.
    * <p>
-   * Checks quota, name uniqueness, and member existence before inserting.
+   * Performs comprehensive validation including quota limits, project name uniqueness, 
+   * and member existence checks.
    * <p>
-   * Optionally imports example data and logs creation activity.
+   * Optionally imports example data based on project configuration and logs creation activity 
+   * for audit trail purposes.
+   * <p>
+   * Ensures proper project setup with owner and member associations.
    */
   @Override
   public IdKey<Long, Object> add(Project project) {
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the project quota
+        // Check if project creation exceeds quota limits
         projectQuery.checkQuota(1);
 
-        // Check the name replication
+        // Validate project name is unique within the tenant
         projectQuery.checkAddNameExists(project.getName());
 
-        // Check the members exists
+        // Ensure all specified members exist in the organization
         commonQuery.checkOrgExists(project.getMemberTypeIds());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Create project with owner and member setup
         IdKey<Long, Object> idKey = projectCmd.add0(project);
 
-        // Create other example data
+        // Import example data if requested
         if (project.isImportExample()) {
           ProjectType type = nullSafe(project.getType(), ProjectType.AGILE);
           Set<ExampleDataType> finalDataTypes = getSafeExampleDataTypes(type, null);
@@ -170,7 +180,7 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           }
         }
 
-        // Add created project activity
+        // Log project creation activity for audit
         activityCmd.add(toActivity(PROJECT, project, ActivityType.CREATED));
         return idKey;
       }
@@ -178,29 +188,38 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Add a new project (internal, with owner/member setup).
+   * Adds a new project with internal setup (owner and member management).
    * <p>
-   * Inserts project, adds owner to members, and saves members.
+   * Creates the project entity and establishes owner-member relationships.
+   * <p>
+   * Ensures the project owner is automatically added to the member list.
+   * <p>
+   * This is an internal method used by the public add method.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public IdKey<Long, Object> add0(Project project) {
-    // Save project
+    // Save project to database and get generated ID
     IdKey<Long, Object> idKey = insert(project);
 
-    // Add owner to members
+    // Ensure project owner is included in member list
     addOwnerToMembers0(project, project.getOwnerId());
-    // Save members
+    
+    // Create project member associations
     projectMemberCmd.add0(idKey.getId(), project.getMemberTypeIds());
     return idKey;
   }
 
   /**
-   * Update an existing project.
+   * Updates an existing project in the system.
    * <p>
-   * Checks existence, permission, name uniqueness, and member existence before updating.
+   * Validates project existence, user permissions, name uniqueness, and member existence 
+   * before updating project details.
    * <p>
-   * Updates members, saves project, and logs update activity.
+   * Updates project information, manages member changes, and logs modification activity 
+   * for audit trail purposes.
+   * <p>
+   * Only project owners and administrators can modify projects.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -210,33 +229,33 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
       @Override
       protected void checkParams() {
-        // Check the project exists
+        // Ensure the project exists in database
         projectDb = projectQuery.checkAndFind(project.getId());
 
-        // Check the only allow owner and admin to modify
+        // Check user permission to modify the project (owner or admin only)
         projectQuery.checkModifyPermission(projectDb);
 
-        // Check the name replication
+        // Validate project name is unique if changed
         if (isNotEmpty(project.getName())) {
           projectQuery.checkUpdateNameExists(project.getId(), project.getName());
         }
 
-        // Check the members exists
+        // Ensure all specified members exist in the organization
         commonQuery.checkOrgExists(project.getMemberTypeIds());
       }
 
       @Override
       protected Void process() {
-        // Update members
+        // Update project members if specified
         if (isNotEmpty(project.getMemberTypeIds())) {
           addOwnerToMembers(project, projectDb);
           projectMemberCmd.replace0(projectDb.getId(), project.getMemberTypeIds());
         }
 
-        // Save project
+        // Update project information in database
         projectRepo.save(copyPropertiesIgnoreNull(project, projectDb));
 
-        // Add created project activity
+        // Log project update activity for audit
         activityCmd.add(toActivity(PROJECT, project, ActivityType.UPDATED));
         return null;
       }
@@ -244,11 +263,14 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Replace (add or update) a project.
+   * Replaces (adds or updates) a project in the system.
    * <p>
-   * Checks existence, permission, name uniqueness, and member existence before replacing.
+   * Validates project existence, user permissions, name uniqueness, and member existence 
+   * before replacing project details.
    * <p>
-   * Replaces members, saves project, and logs update activity.
+   * Creates a new project if ID is null, otherwise updates existing project.
+   * <p>
+   * Updates project information, manages member changes, and logs modification activity.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -259,36 +281,37 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
       @Override
       protected void checkParams() {
         if (nonNull(project.getId())) {
-          // Check the project exists
+          // Ensure the project exists in database
           projectDb = projectQuery.checkAndFind(project.getId());
 
-          // Check the only allow owner and admin to modify
+          // Check user permission to modify the project (owner or admin only)
           projectQuery.checkModifyPermission(projectDb);
 
-          // Check the name replication
+          // Validate project name is unique if changed
           if (isNotEmpty(project.getName())) {
             projectQuery.checkUpdateNameExists(project.getId(), project.getName());
           }
 
-          // Check the members exists
+          // Ensure all specified members exist in the organization
           commonQuery.checkOrgExists(project.getMemberTypeIds());
         }
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Create new project if ID is null
         if (isNull(project.getId())) {
           return add(project);
         }
 
-        // Replace members
+        // Update project members
         addOwnerToMembers(project, projectDb);
         projectMemberCmd.replace0(projectDb.getId(), project.getMemberTypeIds());
 
-        // Save project
+        // Update project information in database
         projectRepo.save(copyProperties(project, projectDb));
 
-        // Add created project activity
+        // Log project update activity for audit
         activityCmd.add(toActivity(PROJECT, project, ActivityType.UPDATED));
         return new IdKey<Long, Object>().setId(projectDb.getId()).setKey(projectDb.getName());
       }
@@ -296,9 +319,15 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Import an example project and its example data.
+   * Imports an example project with sample data from template files.
    * <p>
-   * Parses example file, imports project and example data, and logs creation activity.
+   * Parses example project template from resources and creates a new project 
+   * with the specified name and type.
+   * <p>
+   * Imports comprehensive example data including tags, modules, tasks, cases, 
+   * services, scenarios, scripts, variables, datasets, mocks, and executions.
+   * <p>
+   * Logs creation activity for audit trail purposes.
    */
   @Override
   public IdKey<Long, Object> importExample(@Nullable String name, ProjectType type,
@@ -307,21 +336,21 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Parse project by example file
+        // Parse project template from resource file
         URL resourceUrl = this.getClass().getResource("/samples/project/"
             + getDefaultLanguage().getValue() + "/" + SAMPLE_PROJECT_FILE);
         Project project = parseSample(Objects.requireNonNull(resourceUrl),
             new TypeReference<Project>() {
             }, SAMPLE_PROJECT_FILE);
 
-        // Create project example data
+        // Create project with example data
         IdKey<Long, Object> idKey = projectCmd.importProjectExample(name, type, project);
 
-        // Create other example data
+        // Import additional example data based on project type
         Set<ExampleDataType> finalDataTypes = getSafeExampleDataTypes(type, dataTypes);
         importOtherExample(finalDataTypes, project);
 
-        // Add created project activity
+        // Log project creation activity for audit
         activityCmd.add(toActivity(PROJECT, project, ActivityType.CREATED));
         return idKey;
       }
@@ -329,15 +358,20 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Import a project example (internal, with member setup).
+   * Imports a project example with internal setup and member management.
    * <p>
-   * Sets up project, members, and inserts into repository.
+   * Creates a new project with example data, sets up project timeline, 
+   * and establishes member associations.
+   * <p>
+   * Automatically adds all tenant users as project members.
+   * <p>
+   * This is an internal method used by the public importExample method.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
   public @NotNull IdKey<Long, Object> importProjectExample(@Nullable String name,
       ProjectType type, Project project) {
-    // Create example project
+    // Create example project with generated ID and timeline
     project.setId(uidGenerator.getUID()).setType(type)
         .setName(isNotEmpty(name) ? name : project.getName())
         .setOwnerId(getUserId())
@@ -345,21 +379,30 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
         .setDeadlineDate(LocalDateTime.now().minusHours(SAMPLE_AFTER_HOURS));
     IdKey<Long, Object> idKey = insert(project);
 
-    // Create project members
+    // Get all valid users from the tenant for member setup
     List<User> users = userManager.findValidByTenantId(getOptTenantId());
     Assert.assertNotEmpty(users, "Tenant users are empty");
+    
+    // Create member type mapping with all tenant users
     LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds = new LinkedHashMap<>();
     memberTypeIds.put(OrgTargetType.USER,
         new LinkedHashSet<>(users.stream().map(User::getId).collect(Collectors.toSet())));
     project.setMemberTypeIds(memberTypeIds);
+    
+    // Create project member associations
     projectMemberCmd.add0(idKey.getId(), project.getMemberTypeIds());
     return idKey;
   }
 
   /**
-   * Delete a project by ID (logic delete).
+   * Deletes a project from the system (soft delete).
    * <p>
-   * Checks existence and permission, marks project as deleted, and logs activity.
+   * Validates project existence and user permissions before marking the project as deleted.
+   * <p>
+   * Moves project to trash for potential recovery and logs deletion activity 
+   * for audit trail purposes.
+   * <p>
+   * Only project owners and administrators can delete projects.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -369,11 +412,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
       @Override
       protected void checkParams() {
-        // Check the project existed and authed
+        // Check if project exists in database
         projectDb = projectRepo.findById(id).orElse(null);
 
         if (nonNull(projectDb)) {
-          // Check the only allow owner and admin to delete
+          // Check user permission to delete the project (owner or admin only)
           projectQuery.checkModifyPermission(projectDb);
         }
       }
@@ -384,18 +427,17 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
           return null;
         }
 
-        // Logic delete
-        // After the project is deleted, filter and exclude the associated sub project and task!
+        // Mark project as deleted (soft delete)
         projectDb.setDeleted(true).setDeletedBy(getUserId())
             .setDeletedDate(LocalDateTime.now());
         projectRepo.save(projectDb);
 
-        // TODO Logical deletion of associated resources
+        // TODO: Implement logical deletion of associated resources
 
-        // Add project to ProjectTrash
+        // Move project to trash for potential recovery
         trashProjectCmd.add0(singletonList(toTaskTrash(projectDb)));
 
-        // Add delete project activity
+        // Log project deletion activity for audit
         activityCmd.add(toActivity(PROJECT, projectDb, ActivityType.DELETED));
         return null;
       }
@@ -403,53 +445,78 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Import example data for a project (internal helper).
+   * Imports example data for a project based on specified data types.
    * <p>
-   * Imports tags, modules, tasks, cases, services, scenarios, scripts, variables, datasets, mocks, and executions as needed.
+   * Imports various types of example data including tags, modules, tasks, cases, 
+   * services, scenarios, scripts, variables, datasets, mocks, and executions.
+   * <p>
+   * Each data type is imported conditionally based on the finalDataTypes set.
+   * <p>
+   * This is an internal helper method used for project initialization.
    */
   public void importOtherExample(Set<ExampleDataType> finalDataTypes, Project project) {
+    // Import tags if requested
     if (finalDataTypes.contains(ExampleDataType.TAG)) {
       tagCmd.importExample(project.getId());
     }
+    
+    // Import modules if requested
     if (finalDataTypes.contains(ExampleDataType.MODULE)) {
       moduleCmd.importExample(project.getId());
     }
+    
+    // Import tasks if requested
     if (finalDataTypes.contains(ExampleDataType.TASK)) {
       taskCmd.importExample(project.getId());
     }
+    
+    // Import functional test cases if requested
     if (finalDataTypes.contains(ExampleDataType.FUNC)) {
       funcCaseCmd.importExample(project.getId());
     }
+    
+    // Import services if requested
     if (finalDataTypes.contains(ExampleDataType.SERVICES)) {
       servicesCmd.importExample(project.getId());
     }
+    
+    // Import scenarios if requested
     if (finalDataTypes.contains(ExampleDataType.SCENARIO)) {
       scenarioCmd.importExample(project.getId());
     }
+    
+    // Import scripts if requested
     if (finalDataTypes.contains(ExampleDataType.SCRIPT)) {
       scriptCmd.importExample(project.getId());
     }
+    
+    // Import variables if requested
     if (finalDataTypes.contains(ExampleDataType.VARIABLE)) {
       variableCmd.importExample(project.getId());
     }
+    
+    // Import datasets if requested
     if (finalDataTypes.contains(ExampleDataType.DATASET)) {
       datasetCmd.importExample(project.getId());
     }
+    
+    // Import mock services if requested
     if (finalDataTypes.contains(ExampleDataType.MOCK)) {
       mockServiceCmd.importExample(project.getId());
     }
-    /*if (finalDataTypes.contains(ExampleDataType.REPORT) && !isCommunityEdition()) {
-      reportCmd.importExample(project.getId(), finalDataTypes);
-    }*/
+    
+    // Import test executions if requested
     if (finalDataTypes.contains(ExampleDataType.EXECUTION)) {
       execTestCmd.importExample(project.getId());
     }
   }
 
   /**
-   * Add owner to project members (internal helper).
+   * Adds the project owner to the member list (internal helper).
    * <p>
-   * Ensures the owner is included in the USER member set.
+   * Ensures the project owner is included in the USER member set.
+   * <p>
+   * Uses the new owner ID if specified, otherwise uses the existing owner ID.
    */
   private static void addOwnerToMembers(Project project, Project projectDb) {
     Long ownerId = isNull(project.getOwnerId()) ? projectDb.getOwnerId() : project.getOwnerId();
@@ -457,15 +524,19 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Add owner to project members (internal helper).
+   * Adds the project owner to the member list (internal helper).
    * <p>
-   * Ensures the owner is included in the USER member set.
+   * Ensures the project owner is included in the USER member set.
+   * <p>
+   * Creates the USER member set if it doesn't exist.
    */
   private static void addOwnerToMembers0(Project project, Long ownerId) {
     LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> members = project.getMemberTypeIds();
     if (members.containsKey(OrgTargetType.USER)) {
+      // Add owner to existing USER member set
       members.get(OrgTargetType.USER).add(ownerId);
     } else {
+      // Create new USER member set with owner
       LinkedHashSet<Long> memberSet = new LinkedHashSet<>();
       memberSet.add(ownerId);
       project.getMemberTypeIds().put(OrgTargetType.USER, memberSet);
@@ -473,9 +544,11 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
   }
 
   /**
-   * Get the repository for projects.
+   * Gets the repository for project entities.
    * <p>
    * Used by the base command class for generic operations.
+   * <p>
+   * Provides access to the underlying project data store.
    */
   @Override
   protected BaseRepository<Project, Long> getRepository() {

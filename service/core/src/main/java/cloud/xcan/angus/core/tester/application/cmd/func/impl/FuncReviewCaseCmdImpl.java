@@ -45,11 +45,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Command implementation for functional case review operations.
+ * <p>
+ * Command implementation for managing functional review cases.
+ * </p>
  * <p>
  * Provides methods for adding, reviewing, resetting, and deleting review cases.
+ * Handles permission checks, review workflow management, and activity logging.
+ * </p>
  * <p>
- * Ensures permission checks, activity logging, and batch operations with transaction management.
+ * Key features include review case management, review workflow processing,
+ * record tracking, and comprehensive activity logging for audit purposes.
+ * </p>
  */
 @Biz
 public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>

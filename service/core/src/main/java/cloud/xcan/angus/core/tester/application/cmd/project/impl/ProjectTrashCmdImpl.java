@@ -39,19 +39,14 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
 
   @Resource
   private ProjectTrashRepo projectTrashRepo;
-
   @Resource
   private ProjectTrashQuery projectTrashQuery;
-
   @Resource
   private ProjectRepo projectRepo;
-
   @Resource
   private TagCmd tagCmd;
-
   @Resource
   private ModuleCmd moduleCmd;
-
   @Resource
   private ActivityCmd activityCmd;
 

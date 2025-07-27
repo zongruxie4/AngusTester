@@ -133,10 +133,20 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing execution of test scripts and distributed tasks.
  * <p>
- * Provides methods for adding, starting, stopping, updating, and deleting executions.
- * Handles permission checks, quota validation, distributed locking, node selection, activity logging, and error handling.
+ * Command implementation for managing execution of test scripts and distributed tasks.
+ * </p>
+ * <p>
+ * Provides comprehensive execution management services including adding, starting, stopping, 
+ * updating, and deleting executions. Handles permission checks, quota validation, distributed 
+ * locking, node selection, activity logging, and error handling. Supports both local and remote 
+ * script execution with trial mode capabilities.
+ * </p>
+ * <p>
+ * Key features include distributed execution across multiple nodes, script sharding for 
+ * performance optimization, remote controller communication, and comprehensive error handling 
+ * with detailed status reporting.
+ * </p>
  */
 @Slf4j
 @Biz
@@ -174,9 +184,18 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   private static final String EXEC_LOCK_KEY_FMT = "tester:exec:restart:%s";
 
   /**
+   * <p>
    * Add a new execution by local script content.
+   * </p>
    * <p>
    * Parses script content, creates script, and adds execution with optional trial configuration.
+   * Handles YAML parsing and script creation before execution setup.
+   * </p>
+   * @param projectId Project ID
+   * @param name Execution name (auto-generated if null)
+   * @param content Script content in YAML format
+   * @param trial Whether this is a trial execution
+   * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -187,19 +206,38 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       @SneakyThrows
       @Override
       protected IdKey<Long, Object> process() {
+        // Generate safe name if not provided
         String safeName = emptySafe(name, "Script" + formatByDateTimePattern(new Date()));
+        
+        // Parse YAML content to AngusScript object
         AngusScript angusScript = YAML_MAPPER.readValue(content, AngusScript.class);
+        
+        // Create script entity and get script ID
         IdKey<Long, Object> idKey = scriptCmd.add(toAngusAddScript(projectId, angusScript, content),
             true);
+        
+        // Add execution using the created script
         return addByLocalScript(projectId, safeName, idKey.getId(), content, angusScript, trial);
       }
     }.execute();
   }
 
   /**
+   * <p>
    * Add a new execution by local script arguments.
+   * </p>
    * <p>
    * Builds script from arguments, creates script, and adds execution with optional trial configuration.
+   * Constructs AngusScript from individual components and converts to YAML content.
+   * </p>
+   * @param projectId Project ID
+   * @param name Execution name (auto-generated if null)
+   * @param scriptType Type of script
+   * @param plugin Plugin identifier
+   * @param configuration Script configuration
+   * @param task Script task definition
+   * @param trial Whether this is a trial execution
+   * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -210,21 +248,41 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       @SneakyThrows
       @Override
       protected IdKey<Long, Object> process() {
+        // Build AngusScript from individual components
         AngusScript angusScript = AngusScript.newBuilder()
             .type(scriptType).plugin(plugin).configuration(configuration).task(task).build();
+        
+        // Convert AngusScript to YAML content
         String content = YAML_MAPPER.writeValueAsString(angusScript);
+        
+        // Generate safe name if not provided
         String safeName = emptySafe(name, "Script" + formatByDateTimePattern(new Date()));
+        
+        // Create script entity and get script ID
         IdKey<Long, Object> idKey = scriptCmd.add(toAngusAddScript(projectId, angusScript, content),
             true);
+        
+        // Add execution using the created script
         return addByLocalScript(projectId, safeName, idKey.getId(), content, angusScript, trial);
       }
     }.execute();
   }
 
   /**
-   * Add a new execution by local script reference.
    * <p>
-   * Checks quotas, prepares configuration, and inserts execution.
+   * Add a new execution by local script reference.
+   * </p>
+   * <p>
+   * Checks quotas, prepares configuration, and inserts execution. Validates execution
+   * quotas and thread/node quotas before creating the execution.
+   * </p>
+   * @param projectId Project ID
+   * @param name Execution name
+   * @param scriptId Script ID
+   * @param script Script content
+   * @param angusScript Parsed script object
+   * @param trial Whether this is a trial execution
+   * @return Execution ID and name
    */
   @Override
   public IdKey<Long, Object> addByLocalScript(Long projectId, String name, Long scriptId,
@@ -233,28 +291,42 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check the execution quotas
+        // Validate execution quotas (1 execution, trial flag)
         execQuery.checkAddQuota(1, nonNull(trial) && trial);
 
-        // Check the purchase or authorization quotas
+        // Validate thread and node quotas based on configuration
         execQuery.checkThreadAndNodesQuota(trial, angusScript.getConfiguration());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Trial execution max quota limit: 1 node, 10000 threads, duration 30 minutes, 100000 iterations.
+        // Apply trial execution limits if trial mode is enabled
+        // Max quota: 1 node, 10000 threads, 30 minutes duration, 100000 iterations
         if (nonNull(trial) && trial) {
           safeTrialConfiguration(angusScript.getConfiguration());
         }
+        
+        // Create and insert execution entity
         return add0(localScriptVoToExec(projectId, name, scriptId, script, angusScript, trial));
       }
     }.execute();
   }
 
   /**
+   * <p>
    * Add a new execution by remote script.
+   * </p>
    * <p>
    * Checks script existence, permission, quotas, parses content, and inserts or updates execution.
+   * Handles both new execution creation and existing execution updates with configuration overrides.
+   * </p>
+   * @param name Execution name
+   * @param scriptId Remote script ID
+   * @param scriptType Script type (optional override)
+   * @param configuration Configuration (optional override)
+   * @param arguments Arguments (optional override)
+   * @param trial Whether this is a trial execution
+   * @return Execution ID and name
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -267,76 +339,83 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check the script exists
+        // Validate script exists and retrieve details
         script = scriptQuery.detail(scriptId);
 
-        // Check the test permission
+        // Verify current user has test permission for the script
         BizAssert.assertTrue(!isUserAction() || isEmpty(script.getPermissions())
                 || script.getPermissions().contains(ScriptPermission.TEST),
             SCRIPT_NO_AUTH_CODE, SCRIPT_NO_AUTH_T, new Object[]{ScriptPermission.TEST});
 
-        // Query existed execution
-        // Important: Different test types of apis correspond to different scripts and executions,
+        // Query existing execution for this script
+        // Important: Different test types of APIs correspond to different scripts and executions,
         // but multiple test types in a scenario correspond to one script and multiple executions.
         execDb = execQuery.findByScript(scriptId, script.getType(), script.getSource());
 
-        // Add new exec
+        // Validate execution quotas for new executions only
         if (isNull(execDb)) {
-          // Check execution quotas
           execQuery.checkAddQuota(1, nonNull(trial) && trial);
         }
 
-        // Check the purchase or authorization quotas
+        // Validate thread and node quotas based on configuration
         execQuery.checkThreadAndNodesQuota(trial, configuration);
 
-        // Parse the script content
+        // Parse script content from YAML
         try {
           angusScript = YAML_MAPPER.readValue(script.getContent(), AngusScript.class);
         } catch (JsonProcessingException e) {
           throw SysException.of("Failed to parse script content: " + e.getMessage());
         }
 
-        // Check the available nodes exists -> Do in add()
+        // Node validation is performed in add() method
         // execQuery.checkNodeValid(nonNull(configuration) ? configuration :
         //   angusScript.getConfiguration());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Apply configuration overrides if provided
         if (nonNull(configuration)) {
           angusScript.setConfiguration(configuration);
         }
 
+        // Apply argument overrides if provided
         if (isNotEmpty(arguments)) {
           angusScript.getTask().setArguments(arguments);
         }
 
+        // Apply script type override if provided
         if (nonNull(scriptType)) {
           angusScript.setType(scriptType);
         }
 
-        // Trial execution max quota limit: 1 node, 10000 threads, duration 30 minutes, 100000 iterations.
+        // Apply trial execution limits if trial mode is enabled
+        // Max quota: 1 node, 10000 threads, 30 minutes duration, 100000 iterations
         if (nonNull(trial) && trial) {
           safeTrialConfiguration(angusScript.getConfiguration());
         }
 
-        // Whether to synchronize configuration changes to the script <- NOOP
+        // Configuration changes are not synchronized to the script (NOOP)
 
-        // Add new exec
+        // Create new execution or update existing one
         try {
           if (isNull(execDb)) {
+            // Create new execution
             Exec exec = remoteScriptVoToExec(name, scriptType, script, angusScript, trial);
             return add0(exec);
           }
 
-          // Fix: The configuration in the script may also be modified
+          // Update existing execution with new configuration
           execDb = configReplaceToExec(execDb, name, scriptType, angusScript.getConfiguration(),
               angusScript);
 
           // Note: Repeatedly starting and running tasks will continue to execute
+          // Only update status if not currently running
           if (!execDb.getStatus().isRunning()) {
             execDb.setStatus(ExecStatus.PENDING);
           }
+          
+          // Update script content with new configuration
           execDb.setScript(YAML_MAPPER.writeValueAsString(angusScript));
           execRepo.save(execDb);
         } catch (Exception e) {
@@ -349,9 +428,24 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   }
 
   /**
+   * <p>
    * Replace execution configuration.
+   * </p>
    * <p>
    * Updates execution configuration, script, and test result update flag.
+   * Validates permissions and applies configuration changes to both execution and script content.
+   * </p>
+   * @param id Execution ID
+   * @param name Execution name
+   * @param iterations Number of iterations
+   * @param duration Execution duration
+   * @param thread Number of threads
+   * @param priority Execution priority
+   * @param ignoreAssertions Whether to ignore assertions
+   * @param updateTestResult Whether to update test results
+   * @param startMode Start mode
+   * @param startAtDate Scheduled start date
+   * @param reportInterval Report interval
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -363,29 +457,33 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find exec
+        // Validate execution exists and retrieve details
         execDb = execQuery.checkAndFind(id);
 
-        // Check the exec permission
+        // Verify current user has permission to modify the execution
         execQuery.checkPermission(execDb);
 
-        // TODO Check purchase or authorization quotas
+        // TODO: Validate purchase or authorization quotas
       }
 
       @Override
       protected Void process() {
+        // Apply optional configuration changes to execution entity
         replaceOptionalConfig(execDb, name, iterations, duration, thread, priority,
             ignoreAssertions, startMode, startAtDate, reportInterval);
 
+        // Overwrite script content with new configuration
         String script = overwriteConfigScript(execDb, execDb.getThread(),
             null, null, execDb.getIterations());
         execDb.setScript(script);
 
+        // Update test result flag if specified
         judgeUpdateTestResult(execDb, updateTestResult);
 
+        // Save updated execution
         execRepo.save(execDb);
 
-        // Whether to synchronize configuration changes to the script <- NOOP
+        // Configuration changes are not synchronized to the script (NOOP)
         return null;
       }
     }.execute();
@@ -395,6 +493,13 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Replace script configuration for an execution.
    * <p>
    * Updates script type, configuration, arguments, and saves changes.
+   * Validates permissions and node availability before applying script changes.
+   * </p>
+   * @param id Execution ID
+   * @param name Execution name
+   * @param scriptType New script type
+   * @param configuration New configuration
+   * @param arguments New arguments
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -407,30 +512,37 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       @SneakyThrows
       @Override
       protected void checkParams() {
-        // Check and find exec
+        // Validate execution exists and retrieve details
         execDb = execQuery.checkAndFind(id);
-        // Check the exec permission
+        
+        // Verify current user has permission to modify the execution
         execQuery.checkPermission(execDb);
-        // Parse the script content
+        
+        // Parse current script content from YAML
         angusScript = YAML_MAPPER.readValue(execDb.getScript(), AngusScript.class);
-        // Check the available nodes exists
+        
+        // Validate node availability for the new configuration
         execQuery.checkNodeValid(configuration, execDb.isTrial());
       }
 
       @SneakyThrows
       @Override
       protected Void process() {
+        // Update script type, configuration, and arguments
         angusScript.setType(scriptType);
         angusScript.setConfiguration(configuration);
         angusScript.getTask().setArguments(arguments);
 
+        // Convert updated script back to YAML and save
         execDb.setScript(YAML_MAPPER.writeValueAsString(angusScript));
 
+        // Apply configuration changes to execution entity
         execDb = configReplaceToExec(execDb, name, scriptType, configuration, angusScript);
 
+        // Save updated execution
         execRepo.save(execDb);
 
-        // Whether to synchronize configuration changes to the script <- NOOP
+        // Configuration changes are not synchronized to the script (NOOP)
 
         return null;
       }
@@ -438,19 +550,32 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   }
 
   /**
-   * Insert execution entity directly.
    * <p>
-   * Used for internal logic, no additional checks.
+   * Insert execution entity directly.
+   * </p>
+   * <p>
+   * Used for internal logic, no additional checks. Directly inserts the execution
+   * entity without validation or quota checks.
+   * </p>
+   * @param exec Execution entity to insert
+   * @return Execution ID and name
    */
   @Override
   public IdKey<Long, Object> add0(Exec exec) {
+    // Direct insertion without additional validation
     return insert(exec);
   }
 
   /**
+   * <p>
    * Start execution by DTO.
+   * </p>
    * <p>
    * Checks existence, permission, and starts execution on selected nodes.
+   * Handles both broadcast and targeted node execution modes.
+   * </p>
+   * @param dto Execution start DTO containing execution ID and node selection
+   * @return List of execution results from all nodes
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
@@ -460,30 +585,34 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check the exec exists
+        // Validate execution exists and retrieve details
         execDb = execQuery.checkAndFind(dto.getId());
 
-        // Set the operation tenant
+        // Set operation tenant for job or inner API calls
         if (PrincipalContextUtils.isJobOrInnerApi()) {
           PrincipalContext.get().setOptTenantId(execDb.getTenantId());
         }
 
         if (dto.isBroadcast()) {
-          // Check execution quota in running
+          // Broadcast mode: validate concurrent task quotas
           execQuery.checkConcurrentTaskQuota(1, execDb.isTrial());
-          // Check exec is not running, only on the main controller (Broadcast=true)
+          
+          // Ensure execution is not already running (main controller only)
           execQuery.checkNotRunning(execDb);
-          // Check exec permission
+          
+          // Verify current user has permission to start the execution
           execQuery.checkPermission(execDb);
-          // Check the number of concurrent tasks
+          
+          // Additional concurrent task validation
         } else {
-          // Check selected nodes is required
+          // Targeted mode: require specific node selection
           assertNotEmpty(dto.getRemoteNodeIds(), message(EXEC_REMOTE_NODE_IS_REQUIRED));
         }
       }
 
       @Override
       protected List<RunnerRunVo> process() {
+        // Delegate to start0 for actual execution logic
         return start0(execDb, dto);
       }
     }.execute();
@@ -493,6 +622,20 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
    * Start execution on nodes.
    * <p>
    * Handles distributed locking, node selection, sharding, and remote controller communication.
+   * This is the core execution logic that manages the entire execution lifecycle including
+   * distributed locking, node selection, script sharding, and multi-controller coordination.
+   * </p>
+   * <p>
+   * Key features:
+   * - Distributed locking to prevent concurrent execution
+   * - Node selection based on strategy and availability
+   * - Script sharding for multi-node execution
+   * - Remote controller communication for distributed execution
+   * - Comprehensive error handling and status management
+   * </p>
+   * @param execDb Execution entity
+   * @param dto Execution start DTO
+   * @return List of execution results from all nodes
    */
   @SneakyThrows
   // @Transactional(rollbackFor = Exception.class) -> Lock wait timeout exceeded; try restarting transaction
@@ -502,8 +645,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     String execId = String.valueOf(execDb.getId());
     List<RunnerRunVo> results = new ArrayList<>();
 
-    // Lock to prevent repeated restart
-    // Lock only on the main controller (Broadcast=true)
+    // Acquire distributed lock to prevent concurrent execution (main controller only)
     if (dto.isBroadcast()) {
       boolean locked = distributedLock.tryLock(format(EXEC_LOCK_KEY_FMT, execId), execId, 2, TimeUnit.MINUTES);
       if (!locked) {
@@ -516,7 +658,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       }
     }
 
-    // Check execution quota in running for job
+    // Validate concurrent task quotas for job execution
     try {
       execQuery.checkConcurrentTaskQuota0(1, execDb.isTrial());
     } catch (Exception e) {
@@ -524,7 +666,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       return results;
     }
 
-    // Parsing and overwrite script configuration
+    // Parse and overwrite script configuration with execution parameters
     String script;
     try {
       script = overwriteConfigScript(execDb, execDb.getThread(), null, null, execDb.getIterations());
@@ -533,7 +675,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       return results;
     }
 
-    // Check the script content exists
+    // Validate script content exists
     if (isEmpty(execDb.getScript())) {
       updateSchedulingFailed(execId, results, message(EXEC_START_IGNORED_WITH_SCRIPT_MISSING));
       return results;
@@ -541,7 +683,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
     try {
       if (dto.isBroadcast()) {
-        // Check that the pipeline is valid
+        // Validate pipeline configuration for broadcast mode
         if (isNotEmpty(execDb.getTask().getPipelines()) && execDb.getTask().getPipelines().size() > 1) {
           try {
             PipelineBuilder.of(execDb.getTask().getPipelines());
@@ -551,7 +693,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
           }
         }
       } else {
-        // Ignore locked executions in this startup to prevent data inconsistency! Important!!
+        // For targeted mode: ensure execution is locked to prevent data inconsistency
         String locked0 = distributedLock.get(format(EXEC_LOCK_KEY_FMT, execId));
         if (isEmpty(locked0)) {
           updateSchedulingFailed(execId, results, message(EXEC_START_UP_TIMEOUT));
@@ -559,45 +701,46 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
         }
       }
 
-      // Select and check available nodes
+      // Select and validate available nodes for execution
       LinkedHashSet<Long> nodeIds = new LinkedHashSet<>();
       String selectFailMessage = null;
       if (dto.isBroadcast()) {
-        // Otherwise, it will be set as pending and waiting for job scheduling
-        // Note：Throw an exception when the node is not satisfied.
+        // Node selection logic for broadcast mode
         try {
           if (nonNull(execDb.getTrial()) && execDb.getTrial()) {
             if (isUserAction()) {
-              // Query idle shared nodes during trial execution
+              // For user actions: select idle shared nodes for trial execution
               nodeIds.addAll(nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
             } else {
               try {
-                // Query idle shared nodes during trial execution
+                // For system actions: select idle shared nodes for trial execution
                 nodeIds.addAll(nodeInfoQuery.selectValidFreeNodeIds(1, execDb.getAvailableNodeIds()));
               } catch (Exception e) {
-                // Ignore NO_AVAILABLE_NODES message
-                // If there are no public trial nodes, use the tenant's own nodes
+                // Fallback to tenant's own nodes if no public trial nodes available
                 if (nodeIds.isEmpty()) {
                   nodeIds.addAll(selectNodeByStrategy(execDb));
                 }
               }
             }
           } else {
+            // For non-trial execution: use node selection strategy
             nodeIds.addAll(selectNodeByStrategy(execDb));
           }
         } catch (Exception e) {
           selectFailMessage = e.getMessage();
           log.error("No execution nodes that meet the policy", e);
           if (e instanceof BizException || execDb.getTrial()) {
-            // BizException will terminate and continue scheduling.
+            // Terminate execution for BizException or trial mode
             updateSchedulingFailed(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
             return results;
           }
         }
       } else {
+        // For targeted mode: use specified node IDs
         nodeIds.addAll(dto.getRemoteNodeIds());
       }
 
+      // Validate that nodes were selected
       if (isEmpty(nodeIds)) {
         updateSchedulingFailedInPending(execId, results, nullSafe(selectFailMessage, message(EXEC_NOT_MEET_CONDITIONS_NODES)));
         return results;
@@ -709,9 +852,15 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   }
 
   /**
+   * <p>
    * Stop execution by DTO.
+   * </p>
    * <p>
    * Checks existence, permission, and stops execution on selected nodes.
+   * Handles both broadcast and targeted node stopping modes.
+   * </p>
+   * @param dto Execution stop DTO containing execution ID and node selection
+   * @return List of stop results from all nodes
    */
   @Override
   public List<RunnerStopVo> stop(ExecStopDto dto) {
@@ -720,21 +869,22 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check exec exists
+        // Validate execution exists and retrieve basic information
         execDb = execQuery.checkAndFindInfo(dto.getId());
 
-        // Set operation tenant
+        // Set operation tenant for job or inner API calls
         if (PrincipalContextUtils.isJobOrInnerApi()) {
           PrincipalContext.get().setOptTenantId(execDb.getTenantId());
         }
 
         if (dto.isBroadcast()) {
-          // Check exec is not stopped, only on the main controller (Broadcast=true)
+          // Broadcast mode: ensure execution is not already stopped (main controller only)
           execQuery.checkNotStopped(execDb);
-          // Check exec permission
+          
+          // Verify current user has permission to stop the execution
           execQuery.checkPermissionInfo(execDb);
         } else {
-          // Check selected nodes is required
+          // Targeted mode: require specific node selection
           assertNotEmpty(dto.getRemoteNodeIds(),
               "Selected remote node ids is required when broadcast = false");
         }
@@ -742,6 +892,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected List<RunnerStopVo> process() {
+        // Delegate to stop0 for actual stopping logic
         return stop0(execDb, dto);
       }
     }.execute();
@@ -886,9 +1037,14 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
   }
 
   /**
+   * <p>
    * Delete executions by IDs.
+   * </p>
    * <p>
    * Checks existence, permission, stops running executions, and deletes records.
+   * Handles distributed locking to prevent deletion of actively running executions.
+   * </p>
+   * @param ids Set of execution IDs to delete
    */
   @Override
   public void delete(LinkedHashSet<Long> ids) {
@@ -897,9 +1053,10 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
       @Override
       protected void checkParams() {
-        // Check exec exists
+        // Validate executions exist and retrieve basic information
         execsDb = execQuery.checkAndFindInfo(ids);
-        // Check exec permission
+        
+        // Verify current user has permission to delete each execution
         for (ExecInfo execInfo : execsDb) {
           execQuery.checkPermissionInfo(execInfo);
         }
@@ -909,7 +1066,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       protected Void process() {
         for (ExecInfo exec : execsDb) {
           try {
-            // Ignore locked executions in this startup to prevent data inconsistency! Important!!
+            // Check if execution is locked to prevent deletion during active scheduling
             String locked = distributedLock.get(format(EXEC_LOCK_KEY_FMT, exec.getId()));
             if (isNotBlank(locked)) {
               log.warn("Ignore deletion, execution `{}` is triggered and during scheduling",
@@ -917,11 +1074,14 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
               continue;
             }
 
+            // Stop execution if it's currently running
             if (exec.getStatus().isRunning()) {
               stop(new ExecStopDto().setBroadcast(true).setId(exec.getId()));
             }
+            
+            // Delete execution record
             execRepo.deleteById(exec.getId());
-            // Fix:: execTargetRepo.deleteByExecId(exec.getId()); -> Deleting it will result in missing test result relationships
+            // Note: execTargetRepo deletion is skipped to preserve test result relationships
           } catch (Exception e) {
             log.error("Delete execution exception, cause: {}", e.getMessage());
           }
@@ -939,40 +1099,67 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     return joiner;
   }
 
+  /**
+   * <p>
+   * Start execution on a single node.
+   * </p>
+   * <p>
+   * Handles local and remote node communication, sends execution commands to agents,
+   * and manages execution results collection.
+   * </p>
+   * @param latch CountDownLatch for synchronization (null for single node)
+   * @param execDb Execution entity
+   * @param execId Execution ID as string
+   * @param results List to collect execution results
+   * @param script Script content to execute
+   * @param nodeId Target node ID
+   * @param remoteNodeIds Set to collect remote node IDs
+   * @param successNodeIds Set to collect successful node IDs
+   */
   private void startSingleNodeTask(CountDownLatch latch, Exec execDb, String execId,
       List<RunnerRunVo> results, String script, Long nodeId, LinkedHashSet<Long> remoteNodeIds,
       LinkedHashSet<Long> successNodeIds) {
     boolean isLocalRouter = false;
 
-    // Push local controller
+    // Determine tenant ID for node communication
     Long realTenantId = execDb.getTrial() ? OWNER_TENANT_ID : execDb.getTenantId();
+    
+    // Get local channel router for the node
     ChannelRouter router = nodeInfoQuery.getLocalChannelRouter(nodeId, realTenantId);
     if (nonNull(router)) {
       isLocalRouter = true;
       try {
-        // Send run command to node agent
+        // Build and send run command to node agent
         RunnerRunDto runCmd = RunnerRunDto.newBuilder()
             .execId(execId).script(script).testTask(execDb.getScriptType().isTest())
             .build();
         RunnerRunVo result0 = pushRunCmd2Agent(runCmd, nodeId, realTenantId, router);
         results.add(result0);
+        
+        // Handle successful execution
         if (result0.isSuccess()) {
           successNodeIds.add(result0.getDeviceId());
+          // Validate node consistency
           if (!Objects.equals(nodeId, result0.getDeviceId())) {
             log.error("The scheduling node `{}` and execution node `{}` are inconsistent",
                 nodeId, result0.getDeviceId());
           }
         }
       } catch (Exception e) {
+        // Handle execution failure
         String message = message(EXEC_CONTROLLER_START_EXCEPTION,
             new Object[]{isLocalRouter, getMessage(e)});
         log.error(message);
         results.add(RunnerRunVo.fail(execId, nodeId, message));
       }
     }
+    
+    // Add to remote nodes if not local
     if (!isLocalRouter) {
       remoteNodeIds.add(nodeId);
     }
+    
+    // Signal completion for multi-node execution
     if (nonNull(latch)) {
       latch.countDown();
     }
@@ -1135,17 +1322,41 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     }
   }
 
+  /**
+   * <p>
+   * Select nodes based on execution strategy.
+   * </p>
+   * <p>
+   * Applies node selection strategy, validates node availability, and ensures
+   * selected nodes are live and accessible.
+   * </p>
+   * @param execDb Execution entity containing node selection configuration
+   * @return List of selected node IDs
+   */
   private List<Long> selectNodeByStrategy(Exec execDb) {
+    // Get node selector configuration from execution
     NodeSelector nodeSelector = execDb.getConfiguration().getNodeSelectors();
+    
+    // Select nodes based on strategy and configuration
     List<NodeInfo> selectNodes = nodeInfoQuery.selectByStrategy(
         isNull(nodeSelector) || isNull(nodeSelector.getNum())
-            ? 1 : nodeSelector.getNum(), execDb.getAvailableNodeIds(), execDb.getExecNodeIds(),
-        isNull(nodeSelector) ? null : nodeSelector.getStrategy(), false);
+            ? 1 : nodeSelector.getNum(), // Default to 1 node if not specified
+        execDb.getAvailableNodeIds(), 
+        execDb.getExecNodeIds(),
+        isNull(nodeSelector) ? null : nodeSelector.getStrategy(), 
+        false);
+    
+    // Validate that nodes were selected
     assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
+    // Extract node IDs from selected nodes
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
         .collect(Collectors.toList());
+    
+    // Get live node IDs to validate availability
     Set<Long> liveNodeIds = nodeInfoQuery.getLiveNodeIds(selectNodeIds);
+    
+    // Validate that all selected nodes are live and accessible
     for (NodeInfo selectNode : selectNodes) {
       BizAssert.assertTrue(liveNodeIds.contains(selectNode.getId()),
           message(NODE_AGENT_UNAVAILABLE_T, new Object[]{selectNode.getId()}));
@@ -1153,26 +1364,46 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
     return selectNodeIds;
   }
 
+  /**
+   * <p>
+   * Create sharded script for multi-node execution.
+   * </p>
+   * <p>
+   * Distributes thread count and iterations across multiple nodes for load balancing.
+   * The first node receives any remainder to ensure complete distribution.
+   * </p>
+   * @param execDb Execution entity
+   * @param nodeSize Total number of nodes
+   * @param isFirst Whether this is the first node
+   * @return Sharded script content
+   */
   private String shardingScript(Exec execDb, int nodeSize, boolean isFirst) {
-    // The first node has more concurrency
+    // Distribute thread count across nodes (first node gets remainder)
     Integer shardingThread = !isFirst ? execDb.getThread() / nodeSize
         : (execDb.getThread() / nodeSize) + (execDb.getThread() % nodeSize);
-    // The first node has more iterations
+    
+    // Distribute iterations across nodes (first node gets remainder)
     Long shardingIterations = isNull(execDb.getIterations()) ? null : !isFirst
         ? execDb.getIterations() / nodeSize
         : (execDb.getIterations() / nodeSize) + (execDb.getIterations() % nodeSize);
 
+    // Handle ramp-up and ramp-down thread distribution
     Integer shardingRampUpThread = null, shardingRampDownThread = null;
     if (nonNull(execDb.getOrgThread())) {
+      // Distribute ramp-up threads
       Integer rampUpThread = execDb.getOrgThread().getRampUpThreads();
       shardingRampUpThread = execDb.getOrgThread().needRampUp() ?
           !isFirst ? rampUpThread / nodeSize
               : (rampUpThread / nodeSize) + (rampUpThread % nodeSize) : null;
+      
+      // Distribute ramp-down threads
       Integer rampDownThread = execDb.getOrgThread().getRampDownThreads();
       shardingRampDownThread = execDb.getOrgThread().needRampDown() ?
           !isFirst ? rampDownThread / nodeSize
               : (rampDownThread / nodeSize) + (rampDownThread % nodeSize) : null;
     }
+    
+    // Generate script with sharded configuration
     return overwriteConfigScript(execDb, shardingThread, shardingRampUpThread,
         shardingRampDownThread, shardingIterations);
   }

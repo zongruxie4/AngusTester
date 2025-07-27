@@ -298,12 +298,10 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
   @Override
   public void enabled(List<Node> nodes) {
     new BizTemplate<Void>() {
-      List<Node> nodesDb;
-
       @Override
       protected void checkParams() {
         // Check and find nodes
-        nodesDb = nodeQuery.checkAndFind(
+        nodeQuery.checkAndFind(
             nodes.stream().map(Node::getId).collect(Collectors.toSet()));
 
         // Purchase node update is not allowed

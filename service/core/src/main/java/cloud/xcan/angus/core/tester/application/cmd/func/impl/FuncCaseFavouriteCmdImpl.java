@@ -23,11 +23,17 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional case favorites.
  * <p>
- * Provides methods for adding, canceling, and batch canceling favorites for functional test cases.
+ * Command implementation for managing functional case favorites.
+ * </p>
  * <p>
- * Ensures resource existence checks, duplicate prevention, and activity logging.
+ * Provides methods for adding and canceling favorite cases for functional testing.
+ * Handles permission checks, case existence validation, and activity logging.
+ * </p>
+ * <p>
+ * Key features include favorite case management, user preference tracking,
+ * and comprehensive activity logging for audit purposes.
+ * </p>
  */
 @Biz
 public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> implements
@@ -41,11 +47,15 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
   private ActivityCmd activityCmd;
 
   /**
-   * Add a favorite for a functional test case.
    * <p>
-   * Checks if the case exists and prevents duplicate favorites.
+   * Add a functional case to favorites.
+   * </p>
    * <p>
-   * Logs favorite activity.
+   * Checks case existence and prevents duplicate favorites. Adds the case to user's favorites
+   * and logs the activity. Validates that the case exists and is not already favorited.
+   * </p>
+   * @param favourite the favorite case entity to add
+   * @return ID and name of the created favorite
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -55,10 +65,10 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
 
       @Override
       protected void checkParams() {
-        // Check the case existed
+        // Validate case exists and retrieve details
         caseDb = funcCaseQuery.checkAndFindInfo(favourite.getCaseId());
-
-        // Check the favourites is not repeated
+        
+        // Check if favorite already exists to prevent duplicates
         FuncCaseFavourite existed = funcCaseFavouriteRepo.findByCaseIdAndCreatedBy(
             favourite.getCaseId(), getUserId());
         assertResourceExisted(existed, CASE_FAVOURITE_REPEATED_T, new Object[]{caseDb.getName()});
@@ -66,10 +76,11 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Set project ID and insert favorite case record
         favourite.setProjectId(caseDb.getProjectId());
         IdKey<Long, Object> idKey = insert(favourite);
 
-        //Add favorite case activity
+        // Log favorite case activity
         activityCmd.add(toActivity(FUNC_CASE, caseDb, ActivityType.FAVOURITE));
         return idKey;
       }

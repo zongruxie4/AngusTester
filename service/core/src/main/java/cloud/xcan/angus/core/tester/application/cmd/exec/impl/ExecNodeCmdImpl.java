@@ -13,9 +13,13 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Command implementation for managing execution nodes.
  * <p>
- * Provides methods for adding and retrieving execution nodes.
+ * Command implementation for managing execution nodes.
+ * </p>
+ * <p>
+ * Provides methods for adding and retrieving execution nodes. Handles batch operations
+ * for execution node management and provides repository access for execution node entities.
+ * </p>
  */
 @Slf4j
 @Biz
@@ -25,13 +29,19 @@ public class ExecNodeCmdImpl extends CommCmd<ExecNode, Long> implements ExecNode
   private ExecNodeRepo execNodeRepo;
 
   /**
-   * Add a batch of execution nodes.
    * <p>
-   * Inserts nodes if the list is not empty.
+   * Add a batch of execution nodes.
+   * </p>
+   * <p>
+   * Inserts nodes if the list is not empty. Performs batch insertion for efficiency
+   * when adding multiple execution nodes.
+   * </p>
+   * @param nodes List of execution nodes to add
    */
   @Override
   public void add0(List<ExecNode> nodes) {
     if (isNotEmpty(nodes)) {
+      // Perform batch insertion for efficiency
       batchInsert0(nodes);
     }
   }

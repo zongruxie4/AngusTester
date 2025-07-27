@@ -42,6 +42,18 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Command implementation for scenario monitoring management operations.
+ * <p>
+ * Provides comprehensive CRUD operations for scenario monitors including creation, 
+ * modification, execution, and lifecycle management.
+ * <p>
+ * Implements business logic validation, permission checks, activity logging, 
+ * and transaction management for all monitoring operations.
+ * <p>
+ * Supports scheduled execution, failure notification, history tracking, 
+ * and comprehensive activity monitoring.
+ */
 @Biz
 public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
     implements ScenarioMonitorCmd {
@@ -63,6 +75,16 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
   @Resource
   private ActivityCmd activityCmd;
 
+  /**
+   * Adds a new scenario monitor to the system.
+   * <p>
+   * Performs comprehensive validation including scenario existence, user permissions, 
+   * monitor name uniqueness, and notification settings.
+   * <p>
+   * Initializes monitor with pending status and calculates next execution date.
+   * <p>
+   * Logs creation activity and establishes proper monitoring setup.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public IdKey<Long, Object> add(ScenarioMonitor monitor) {
@@ -71,14 +93,19 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected void checkParams() {
-        // Check the scenario exists
+        // Ensure scenario ID is provided
         assertNotNull(monitor.getScenarioId(), "scenarioId is required");
+        
+        // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind(monitor.getScenarioId());
-        // Check the scenario view permission
+        
+        // Check user permission to view the scenario
         scenarioAuthQuery.checkViewAuth(getUserId(), scenarioDb.getId());
-        // Check the monitor name exists
+        
+        // Validate monitor name is unique within the project
         scenarioMonitorQuery.checkExits(monitor.getProjectId(), monitor.getName());
-        // Check the required notice setting
+        
+        // Validate notification settings if enabled
         NoticeSetting setting = monitor.getNoticeSetting();
         assertTrue(!setting.getEnabled()
                 || nonNull(setting.getOrgType()) && nonNull(setting.getOrgs()),
@@ -87,20 +114,29 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Save monitor
+        // Initialize monitor with project and execution settings
         monitor.setProjectId(scenarioDb.getProjectId());
         monitor.setStatus(ScenarioMonitorStatus.PENDING);
         monitor.setScriptId(scenarioDb.getScriptId());
         monitor.setNextExecDate(monitor.getTimeSetting().getNextDate(LocalDateTime.now()));
         IdKey<Long, Object> idKey = insert(monitor);
 
-        // Save activity
+        // Log monitor creation activity for audit
         activityCmd.add(toActivity(SCENARIO_MONITOR, monitor, ActivityType.CREATED));
         return idKey;
       }
     }.execute();
   }
 
+  /**
+   * Updates an existing scenario monitor in the system.
+   * <p>
+   * Validates monitor existence and name uniqueness before updating monitor details.
+   * <p>
+   * Recalculates next execution date if time settings are modified.
+   * <p>
+   * Logs update activity and maintains monitoring schedule integrity.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void update(ScenarioMonitor monitor) {
@@ -109,9 +145,10 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected void checkParams() {
-        // Check the monitor exists
+        // Ensure the monitor exists in database
         monitorDb = scenarioMonitorQuery.checkAndFind(monitor.getId());
-        // Check the monitor exists
+        
+        // Validate monitor name is unique if changed
         if (isNotEmpty(monitor.getName()) && !monitorDb.getName().equals(monitor.getName())) {
           scenarioMonitorQuery.checkExits(monitorDb.getProjectId(), monitor.getName());
         }
@@ -119,11 +156,16 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected Void process() {
+        // Recalculate next execution date if time settings changed
         if (nonNull(monitor.getTimeSetting())) {
           monitor.setNextExecDate(monitor.getTimeSetting()
               .getNextDate(nullSafe(monitorDb.getLastMonitorDate(), LocalDateTime.now())));
         }
+        
+        // Update monitor information in database
         scenarioMonitorRepo.save(copyPropertiesIgnoreNull(monitor, monitorDb));
+        
+        // Log monitor update activity for audit
         activityCmd.add(toActivity(SCENARIO_MONITOR, monitorDb, ActivityType.UPDATED));
         return null;
       }
@@ -164,6 +206,15 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
     }.execute();
   }
 
+  /**
+   * Executes a scenario monitor immediately and records the results.
+   * <p>
+   * Validates monitor existence and executes the monitoring scenario.
+   * <p>
+   * Updates monitor status, failure messages, and next execution date.
+   * <p>
+   * Sends failure notifications and maintains execution history.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void runNow(Long id) {
@@ -172,35 +223,40 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected void checkParams() {
-        // Check the monitor exists
+        // Ensure the monitor exists in database
         monitorDb = scenarioMonitorQuery.checkAndFind(id);
       }
 
       @Override
       protected Void process() {
         try {
+          // Set execution context for system-initiated runs
           if (!isUserAction()) {
-            // Transfer principal downwards
             commonQuery.setInnerPrincipal(monitorDb.getTenantId(), monitorDb.getCreatedBy());
           }
 
+          // Execute the monitoring scenario and record results
           LocalDateTime now = LocalDateTime.now();
           ScenarioMonitorHistory history = scenarioMonitorHistoryCmd.run(monitorDb);
+          
+          // Update monitor status and execution information
           monitorDb.setStatus(history.getStatus())
               .setFailureMessage(lengthSafe(history.getFailureMessage(), 400))
               .setLastMonitorHistoryId(history.getId())
               .setLastMonitorDate(history.getCreatedDate());
+          
+          // Calculate next execution date for recurring monitors
           if (nonNull(monitorDb.getTimeSetting()) && !monitorDb.getTimeSetting().isOnetime()) {
-            // Trigger the next execution
             monitorDb.setNextExecDate(monitorDb.getTimeSetting().getNextDate(now));
           }
           scenarioMonitorRepo.save(monitorDb);
 
-          // Add scenario monitor failure event
+          // Send failure notification if execution failed
           if (monitorDb.getStatus().isFailure()) {
             scenarioMonitorQuery.assembleAndSendScenarioMonitorFailureNoticeEvent(monitorDb);
           }
         } finally {
+          // Clean up execution context for system-initiated runs
           if (!isUserAction()) {
             PrincipalContext.remove();
           }
@@ -210,6 +266,15 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
     }.execute();
   }
 
+  /**
+   * Deletes scenario monitors and their associated history records.
+   * <p>
+   * Validates monitor existence and removes all related monitoring data.
+   * <p>
+   * Cleans up monitoring history and logs deletion activities.
+   * <p>
+   * This operation is irreversible and removes all monitoring records.
+   */
   @Transactional(rollbackOn = Exception.class)
   @Override
   public void delete(Collection<Long> ids) {
@@ -218,14 +283,19 @@ public class ScenarioMonitorCmdImpl extends CommCmd<ScenarioMonitor, Long>
 
       @Override
       protected void checkParams() {
+        // Ensure all monitors exist in database
         monitorDb = scenarioMonitorQuery.checkAndFind(ids);
       }
 
       @Override
       protected Void process() {
+        // Delete all monitoring history records first
         scenarioMonitorHistoryRepo.deleteByMonitorIdIn(ids);
+        
+        // Delete all monitors
         scenarioMonitorRepo.deleteByIdIn(ids);
 
+        // Log deletion activities for audit
         activityCmd.addAll(toActivities(SCENARIO_MONITOR, monitorDb, ActivityType.DELETED));
         return null;
       }

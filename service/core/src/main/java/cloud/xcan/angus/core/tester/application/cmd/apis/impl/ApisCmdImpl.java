@@ -115,11 +115,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing APIs.
  * <p>
- * Provides methods for adding, updating, replacing, renaming, archiving, moving, status updating,
- * and deleting APIs. Handles permission checks, quota validation, activity logging, and related
- * resource management.
+ * Implementation of ApisCmd for API management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive API management services including adding, updating, replacing, renaming,
+ * archiving, moving, status updating, and deleting APIs. Handles permission checks, quota validation,
+ * activity logging, script synchronization, and related resource management. Supports parameter
+ * management, authentication configuration, server management, and variable/dataset associations.
+ * </p>
  */
 @Biz
 @Slf4j
@@ -177,61 +181,85 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   private ScriptCmd scriptCmd;
 
   /**
+   * <p>
    * Add a batch of APIs to a service.
+   * </p>
    * <p>
    * Validates that all APIs belong to the same service, checks permission, duplication, quota, and
    * owner. Inserts APIs, initializes creator permissions, and logs creation activities if
    * required.
+   * </p>
+   * @param apis List of APIs to add
+   * @param servicesDb Service entity
+   * @param saveActivity Whether to save creation activities
+   * @return List of ID keys for created APIs
    */
   @Override
   public List<IdKey<Long, Object>> add(List<Apis> apis, Services servicesDb, boolean saveActivity) {
     return new BizTemplate<List<IdKey<Long, Object>>>() {
       @Override
       protected void checkParams() {
+        // Ensure all APIs belong to the same service (single service constraint)
         Set<Long> serviceIds = apis.stream().map(Apis::getServiceId).collect(Collectors.toSet());
         assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
 
-        // Check the release apis permission
+        // Verify current user has permission to add APIs to the service
         servicesAuthQuery.checkAddAuth(getUserId(), serviceIds.iterator().next());
 
-        // Check the apis existed by uri and method
+        // Check for duplicate APIs by URI and method within the service
         apisQuery.checkAddServiceApisExisted(apis);
 
-        // Check the only a maximum of MAX_PROJECT_OR_SERVICE_APIS_NUM apis can be added to a service
+        // Validate service API quota limits
         apisQuery.checkServiceApisQuota(apis);
 
-        // Check the owner exists
-        // Prevent user sync failure after user deletion
+        // Ensure API owners exist (prevent issues after user deletion)
         apisQuery.checkOwnerExist(apis);
       }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
+        // Generate creator authorization records for APIs and service
         List<ApisAuth> apisAuths = getApisAndServiceCreatorAuth();
 
+        // Insert all APIs and get their IDs
         List<IdKey<Long, Object>> idKeys = batchInsert(apis, "summary");
 
-        // Add the creator initialization permission of the api
+        // Initialize creator permissions for all APIs
         if (isNotEmpty(apisAuths)) {
           apisAuthRepo.batchInsert0(apisAuths);
         }
 
-        // Add created api activity
+        // Log creation activities if requested
         if (saveActivity) {
           activityCmd.addAll(toActivities(API, apis, ActivityType.CREATED, activityParams(apis)));
         }
         return idKeys;
       }
 
+      /**
+       * <p>
+       * Generate creator authorization records for APIs and service.
+       * </p>
+       * <p>
+       * Creates authorization records for both the API creator and service creator,
+       * ensuring proper permission hierarchy and access control.
+       * </p>
+       * @return List of authorization records to insert
+       */
       private List<ApisAuth> getApisAndServiceCreatorAuth() {
         Set<ApisAuth> apisAuths = new HashSet<>();
         for (Apis api : apis) {
+          // Assemble API authorization information
           ApisConverter.assembleApiAuthInfo(api, servicesDb);
+          
           Set<Long> creatorIds = new HashSet<>();
+          // Add current user or service creator based on context
           creatorIds.add(
               PrincipalContextUtils.isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
-          // Current services creator authorization
+          // Add service creator authorization
           creatorIds.add(servicesDb.getCreatedBy());
+          
+          // Generate creator authorization records
           apisAuths.addAll(ApisAuthConverter.toApisCreatorAuth(api, creatorIds));
         }
         return new ArrayList<>(apisAuths);
@@ -240,9 +268,14 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Archive a batch of APIs (HTTP or WebSocket).
+   * </p>
    * <p>
    * Validates service, archives APIs, logs activities, and deletes unarchived records.
+   * </p>
+   * @param apis List of APIs to archive
+   * @return List of ID keys for archived APIs
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -252,23 +285,23 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
-        // Check the service exists
-        // Only batch adding apis with one service is allowed <- Check in add()
+        // Validate service exists (single service constraint already checked in add())
         servicesDb = servicesQuery.checkAndFind(apis.get(0).getServiceId());
       }
 
       @Override
       protected List<IdKey<Long, Object>> process() {
+        // Process unarchived API information and set project ID
         Set<Long> unarchivedIds = assembleUnarchivedInfo(apis, servicesDb);
 
-        // Add unarchived apis
+        // Add APIs to the service (without activity logging)
         List<IdKey<Long, Object>> idKeys = add(apis, servicesDb, false);
 
-        // Add archived apis activity
+        // Log archive activities with service and API names
         activityCmd.addAll(toActivities(API, apis, ARCHIVED,
             archiveActivityParams(apis, servicesDb)));
 
-        // Delete unarchived apis
+        // Clean up unarchived API records
         apisUnarchivedRepo.deleteAllByCreatedByAndIdIn(getUserId(), unarchivedIds);
         return idKeys;
       }
@@ -276,10 +309,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Update a batch of APIs.
+   * </p>
    * <p>
    * Validates APIs, service, owner, duplication, permission, and status. Updates APIs and logs
    * activities if required.
+   * </p>
+   * @param apis List of APIs to update
+   * @param saveActivity Whether to save update activities
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -289,31 +327,29 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
-        // Check and find apis
+        // Retrieve existing APIs for validation
         List<Long> apisIds = apis.stream().map(Apis::getId).collect(Collectors.toList());
         apisDbs = apisQuery.checkAndFind(apisIds);
 
-        // Note: service id is not allowed modify
-        // Check the allowing operations on a single service
+        // Ensure all APIs belong to the same service (single service constraint)
         Set<Long> serviceIds = apisDbs.stream().map(Apis::getServiceId).collect(Collectors.toSet());
         assertSingleService(serviceIds,"Only batch updating apis with one service is allowed");
 
-        // Check the owner exists
-        // Prevent user sync failure after user deletion
+        // Ensure API owners exist (prevent issues after user deletion)
         apisQuery.checkOwnerExist(apis);
 
-        // Check the repeated apis
+        // Check for duplicate APIs within the service
         apisQuery.checkServiceApisOperationNotExisted(apis, apisDbs, apisDbs.get(0).getServiceId(),
             false);
 
-        // Check the modify apis permission
+        // Verify current user has permission to modify the APIs
         Set<Long> apiIds = apis.stream().map(Apis::getId).collect(Collectors.toSet());
         apisAuthQuery.batchCheckPermission(apiIds, ApiPermission.MODIFY);
 
-        // Check the released api are not allowed to be modified
+        // Ensure released APIs are not being modified
         apisQuery.checkReleasedStatus(apisDbs);
 
-        // Check the release apis permission
+        // Verify current user has permission to release APIs (if any are being released)
         apiIds = apis.stream().filter(x -> nonNull(x.getStatus()) && x.getStatus().isReleased())
             .map(Apis::getId).collect(Collectors.toSet());
         apisAuthQuery.batchCheckPermission(apiIds, ApiPermission.RELEASE);
@@ -321,15 +357,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected Void process() {
-        // Save apis to database
+        // Update APIs in database (copy non-null properties)
         batchUpdate0(batchCopyPropertiesIgnoreNull(apis, apisDbs));
 
         if (saveActivity) {
-          // Add update api activity
+          // Log update activities
           List<Activity> activities = toActivities(API, apisDbs, UPDATED, activityParams(apis));
           activityCmd.addAll(activities);
 
-          // Add modification events
+          // Send modification notification events
           apisQuery.assembleAndSendModifyNoticeEvent(apisDbs.stream().map(x -> {
             ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
                 .setId(x.getId()).setSummary(x.getSummary());
@@ -343,10 +379,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Replace (add or update) a batch of APIs.
+   * </p>
    * <p>
    * Handles both new and existing APIs, validates all constraints, archives new APIs, updates
    * existing ones, and logs activities.
+   * </p>
+   * @param apis List of APIs to replace
+   * @return List of ID keys for newly added APIs
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -358,38 +399,39 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
+        // Separate new APIs (without ID) for addition
         addApis = apis.stream().filter(x -> isNull(x.getId())).collect(Collectors.toList());
         if (isNotEmpty(addApis)) {
-          // Check the allowing operations on a single service
+          // Ensure all new APIs belong to the same service
           Set<Long> serviceIds = addApis.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
           assertSingleService(serviceIds,"Only batch adding apis with one service is allowed");
         }
 
-        // Note: service id is not allowed modify
+        // Separate existing APIs (with ID) for update
         updateApis = apis.stream().filter(x -> nonNull(x.getId())).collect(Collectors.toList());
         if (isNotEmpty(updateApis)) {
-          // Check the apis exists
+          // Retrieve existing APIs for validation
           List<Long> updateApisIds = updateApis.stream().map(Apis::getId)
               .collect(Collectors.toList());
           updateApisDbs = apisQuery.checkAndFind(updateApisIds);
 
-          // Check the allowing operations on a single service
+          // Ensure all existing APIs belong to the same service
           Set<Long> serviceIds = updateApisDbs.stream().map(Apis::getServiceId)
               .collect(Collectors.toSet());
           assertSingleService(serviceIds, "Only batch updating apis with one service is allowed");
 
-          // Check the operation is not repeated
+          // Check for duplicate APIs within the service
           apisQuery.checkServiceApisOperationNotExisted(updateApis, updateApisDbs,
               updateApisDbs.get(0).getServiceId(), true);
 
-          // Check the released api are not allowed to be modified
+          // Ensure released APIs are not being modified
           apisQuery.checkReleasedStatus(updateApisDbs);
 
-          // Check the modify apis permission
+          // Verify current user has permission to modify the APIs
           apisAuthQuery.batchCheckPermission(updateApisIds, ApiPermission.MODIFY);
 
-          // Check the release apis permission
+          // Verify current user has permission to release APIs (if any are being released)
           Set<Long> apiIds = updateApis.stream().filter(x -> nonNull(x.getStatus())
               && x.getStatus().isReleased()).map(Apis::getId).collect(Collectors.toSet());
           apisAuthQuery.batchCheckPermission(apiIds, ApiPermission.RELEASE);
@@ -400,21 +442,23 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = null;
 
-        // Add unarchived apis
+        // Archive new APIs if any
         if (isNotEmpty(addApis)) {
           idKeys = archive(addApis);
         }
 
+        // Update existing APIs if any
         if (isNotEmpty(updateApis)) {
-          // Save apis
+          // Retain replace-specific fields and update APIs
           ApisConverter.retainReplaceField(updateApis, updateApisDbs);
           batchUpdate0(updateApisDbs);
 
+          // Log update activities
           List<Activity> activities = toActivities(API, updateApisDbs, UPDATED,
               activityParams(apis));
           activityCmd.addAll(activities);
 
-          // Add modification events
+          // Send modification notification events
           apisQuery.assembleAndSendModifyNoticeEvent(updateApis.stream().map(x -> {
             ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
                 .setId(x.getId()).setSummary(x.getSummary());
@@ -508,10 +552,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Move a batch of APIs to another service.
+   * </p>
    * <p>
    * Validates service, APIs, permission, and quota. Updates service ID, manages creator
    * permissions, and logs activities. After moving, permissions and references are re-initialized.
+   * </p>
+   * @param apiIds List of API IDs to move
+   * @param targetServiceId Target service ID
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -522,42 +571,40 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
-        // Check and get service exists
+        // Validate target service exists
         targetServiceDb = servicesQuery.checkAndFind(targetServiceId);
 
-        // Check and get apis exists
+        // Validate all APIs exist
         apisDb = apisQuery.checkAndFind(apiIds);
 
-        // Check the move one service is allowed
+        // Ensure all APIs belong to the same service (single service constraint)
         Set<Long> serviceIds = apisDb.stream().map(Apis::getServiceId).collect(Collectors.toSet());
         assertSingleService(serviceIds, "Only batch move apis with one service is allowed");
 
-        // Check if the movement position has changed
+        // Verify the move actually changes the service (not moving to same service)
         assertTrue(!apisDb.get(0).getServiceId().equals(targetServiceId),
             "The moving position has not changed");
 
-        // Check the services add auth
+        // Verify current user has permission to add APIs to target service
         servicesAuthQuery.checkAddAuth(getUserId(), targetServiceId);
 
-        // Check the to have permission to modify apis
+        // Verify current user has permission to modify the APIs
         apisAuthQuery.batchCheckPermission(apiIds, ApiPermission.MODIFY);
 
-        // Check the only a maximum of MAX_PROJECT_OR_SERVICE_APIS_NUM apis can be added to a service
+        // Validate target service API quota limits
         apisQuery.checkServiceApisQuota(apiIds.stream().map(
                 id -> new Apis().setId(id).setServiceId(targetServiceId))
             .collect(Collectors.toList()));
 
-        // NOOP: Allow repeated names after move
+        // Note: Allow repeated names after move (names can be duplicated across services)
       }
 
       @Override
       protected Void process() {
-        // Grant the apis creator permission to the target service creator
+        // Transfer creator permissions to target service creator
         apisAuthCmd.moveCreatorAuth(targetServiceDb, apiIds, apisDb);
 
-        // Modify the serviceId of apis
-        // apisRepo.updateServiceById(apiIds, targetServiceId);
-
+        // Update service ID for all APIs and fix OpenAPI path references
         for (Apis api : apisDb) {
           api.setServiceId(targetServiceId);
           // Fix: Cannot find service component after moving.
@@ -565,13 +612,13 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         }
         batchUpdate0(apisDb);
 
-        // NOOP: Init apis creator to view parent service and service permissions by WEB-UI
+        // Note: API creator permissions to view parent service are initialized by WEB-UI
 
-        // Add move api activity
+        // Log move activities
         List<Activity> activities = toActivities(API, apisDb, MOVED_TO, targetServiceDb.getName());
         activityCmd.addAll(activities);
 
-        // Add modification events
+        // Send modification notification events
         apisQuery.assembleAndSendModifyNoticeEvent(
             apisDb.stream().map(x -> {
               ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
@@ -738,9 +785,19 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Batch add parameters to APIs.
+   * </p>
    * <p>
    * Validates service and permission, adds parameters, and logs activities.
+   * </p>
+   * @param serviceId Service ID
+   * @param modifyScope Scope of APIs to modify
+   * @param matchEndpointRegex Endpoint regex pattern to match
+   * @param matchMethod HTTP method to match
+   * @param selectedApisIds Selected API IDs
+   * @param filterTags Filter tags
+   * @param parameters Parameters to add
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -752,27 +809,36 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
+        // Find APIs that match the specified criteria
         serviceApisDb = apisQuery.checkAndFindServiceApis(serviceId, modifyScope,
             matchEndpointRegex, matchMethod, selectedApisIds, filterTags);
       }
 
       @Override
       protected Void process() {
+        // Extract parameter names for duplicate checking
         Set<String> addParameterNames = parameters.stream().map(Parameter::getName)
             .collect(Collectors.toSet());
+        
+        // Add parameters to each matching API
         for (Apis apis : serviceApisDb) {
           if (isEmpty(apis.getParameters())) {
+            // If no existing parameters, set the new parameters directly
             apis.setParameters(parameters);
             continue;
           }
+          
+          // Filter out existing parameters with the same names and add new ones
           List<Parameter> finalParameters = apis.getParameters().stream()
               .filter(x -> !addParameterNames.contains(x.getName())).collect(Collectors.toList());
           finalParameters.addAll(parameters);
           apis.setParameters(finalParameters);
         }
 
+        // Update all modified APIs
         batchUpdate0(serviceApisDb);
 
+        // Log parameter addition activities
         activityCmd.addAll(toActivities(API, serviceApisDb, APIS_PARAMETER_ADD,
             String.join(",", addParameterNames)));
         return null;
@@ -879,9 +945,20 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Batch enable or disable parameters of APIs.
+   * </p>
    * <p>
    * Validates service and permission, updates parameter status, and logs activities.
+   * </p>
+   * @param serviceId Service ID
+   * @param modifyScope Scope of APIs to modify
+   * @param matchEndpointRegex Endpoint regex pattern to match
+   * @param matchMethod HTTP method to match
+   * @param selectedApisIds Selected API IDs
+   * @param filterTags Filter tags
+   * @param names Parameter names to enable/disable
+   * @param enabled Whether to enable or disable the parameters
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -893,27 +970,35 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
+        // Find APIs that match the specified criteria
         serviceApisDb = apisQuery.checkAndFindServiceApis(serviceId, modifyScope,
             matchEndpointRegex, matchMethod, selectedApisIds, filterTags);
       }
 
       @Override
       protected Void process() {
+        // Process each matching API
         for (Apis apis : serviceApisDb) {
           if (isEmpty(apis.getParameters())) {
             continue;
           }
+          
           Set<String> updateParameterNames = new HashSet<>();
+          
+          // Update parameter enabled status for each matching parameter
           for (Parameter parameter : apis.getParameters()) {
             if (names.contains(parameter.getName())) {
               if (isEmpty(parameter.getExtensions())) {
+                // Add enabled extension if no extensions exist
                 parameter.addExtension(ExtensionKey.ENABLED_KEY, enabled);
                 updateParameterNames.add(parameter.getName());
               } else {
                 if (!parameter.getExtensions().containsKey(ExtensionKey.ENABLED_KEY)) {
+                  // Add enabled extension if it doesn't exist
                   parameter.getExtensions().put(ExtensionKey.ENABLED_KEY, enabled);
                   updateParameterNames.add(parameter.getName());
                 } else {
+                  // Update enabled extension if value has changed
                   Boolean current = Boolean.parseBoolean(
                       parameter.getExtensions().get(ExtensionKey.ENABLED_KEY).toString());
                   if (!Objects.equals(current, enabled)) {
@@ -924,8 +1009,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
               }
             }
           }
+          
+          // Save API and log activity if parameters were updated
           if (!updateParameterNames.isEmpty()) {
-            // apis.setParameters(updateParameterNames);
             apisRepo.save(apis);
             activityCmd.add(toActivity(API, apis, enabled ? APIS_PARAMETER_ENABLED
                 : APIS_PARAMETER_DISABLED, String.join(",", updateParameterNames)));
@@ -1143,9 +1229,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Associate a mock API with an API.
+   * </p>
    * <p>
    * Validates permission, generates mock API and responses, and logs the association activity.
+   * </p>
+   * @param id API ID to associate with mock
+   * @param mockServiceId Mock service ID
+   * @param summary Mock API summary
+   * @return ID key of the created mock API
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1155,31 +1248,32 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
-        // Check the apis view permission
+        // Verify current user has permission to view the API
         apisAuthQuery.checkViewAuth(getUserId(), id);
 
-        // Check the apis exists and get apis
+        // Validate API exists and retrieve full details
         apisDb = apisQuery.checkAndFind(id);
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Resolve all reference models for the API
         Map<String, String> allRefModels = apisQuery.findApisAllRef(apisDb);
         apisDb.setResolvedRefModels(allRefModels);
 
-        // Convert apis to mock apis
+        // Convert API to mock API with association source
         MockApis mockApis = toAssocOrCopeMockApis(apisDb, mockServiceId, MockApisSource.ASSOC_APIS);
         if (isNotEmpty(summary)) {
           mockApis.setSummary(summary);
         }
 
-        // Add mock apis
+        // Create mock API
         List<IdKey<Long, Object>> idKeys = mockApisCmd.add(List.of(mockApis), false);
 
-        // Add mocks apis responses
+        // Generate mock API responses based on the original API
         mockApisCmd.addMockApisResponses(mockApis, apisDb, mockServiceId);
 
-        // Save the associated apis activity
+        // Log association activity
         activityCmd.add(toActivity(MOCK_APIS, apisDb, ADD_ASSOC_TARGET));
         return idKeys.get(0);
       }
@@ -1187,9 +1281,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Export an API as an OpenAPI document.
+   * </p>
    * <p>
    * Supports multiple formats and logs the export activity.
+   * </p>
+   * @param id API ID to export
+   * @param format Export format (JSON/YAML)
+   * @param response HTTP response object
+   * @return ResponseEntity containing the exported document
    */
   @Override
   public ResponseEntity<org.springframework.core.io.Resource> export(Long id, SchemaFormat format,
@@ -1198,15 +1299,22 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected ResponseEntity<org.springframework.core.io.Resource> process() {
+        // Generate OpenAPI document in the specified format
         String openAPI = apisQuery.openapiDetail(id, format, false, true);
+        
+        // Retrieve API information for filename and activity logging
         Apis apisDb = (Apis) getExtension(id.toString());
+        
+        // Convert to byte array for download
         byte[] bytes = openAPI.getBytes(UTF_8);
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
+        
+        // Build download response with proper headers
         ResponseEntity<org.springframework.core.io.Resource> responseEntity =
             buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
                 apisDb.getSummary() + "." + format.name(), bytes.length, resource);
 
-        // Add export api activity
+        // Log export activity
         activityCmd.add(toActivity(API, apisDb, EXPORT, apisDb.getName()));
         return responseEntity;
       }
@@ -1214,9 +1322,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
+   * <p>
    * Batch logical delete APIs.
+   * </p>
    * <p>
    * Validates permission and status, updates delete status, logs activities, and adds to trash.
+   * This is a soft delete operation that marks APIs as deleted without removing them from the database.
+   * </p>
+   * @param apiIds Collection of API IDs to delete
+   * @param checkPermission Whether to check permissions (legacy parameter)
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -1226,14 +1340,14 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
       @Override
       protected void checkParams() {
-        // Published api are not allowed to be modified
+        // Retrieve API base information for validation
         apisBasesDb = apisBaseInfoRepo.findAllByIdIn(apiIds);
 
         if (isNotEmpty(apisBasesDb)) {
-          // Check whether you have the permission to modify the apis
+          // Verify current user has permission to delete the APIs
           apisAuthQuery.batchCheckPermission(apiIds, ApiPermission.DELETE);
 
-          // Check the released api are not allowed to be modified
+          // Ensure released APIs are not being deleted (business rule)
           apisQuery.checkApisBaseReleasedStatus(apisBasesDb);
         }
       }
@@ -1244,19 +1358,19 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           return null;
         }
 
-        // Update deletion status
+        // Mark APIs as deleted (soft delete)
         apisRepo.updateDeleteStatus(apiIds, true, getUserId(), LocalDateTime.now());
 
-        // Add delete activity
+        // Log deletion activities
         List<Activity> activities = toActivities(API, apisBasesDb, ActivityType.DELETED,
             activityParams(apisBasesDb));
         activityCmd.addAll(activities);
 
-        // Add deleted api to trash
+        // Add deleted APIs to trash for potential recovery
         trashApisCmd.add0(apisBasesDb.stream().map(ApisConverter::toApisTrash)
             .collect(Collectors.toList()));
 
-        // Add modification events
+        // Send modification notification events
         apisQuery.assembleAndSendModifyNoticeEvent(
             apisBasesDb.stream().map(x -> {
               ApisBasicInfo apisBasicInfos = new ApisBasicInfo()
@@ -1275,33 +1389,53 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
-   * Physically delete, External calling biz must ensure data authed and secured!
+   * <p>
+   * Physically delete APIs and all related resources.
+   * </p>
+   * <p>
+   * Completely removes APIs and all associated data from the database. This is a destructive
+   * operation that cannot be undone. External calling business logic must ensure data is
+   * properly authorized and secured before calling this method.
+   * </p>
+   * @param apiIds List of API IDs to physically delete
    */
   //@Transactional(rollbackFor = Exception.class)
   @Override
   public void delete0(List<Long> apiIds) {
-    // Set to empty if the apis is associated
+    // Clear mock API associations to prevent orphaned references
     mockApisRepo.updateAssocToNullByApisIdIn(apiIds);
-    // Delete apis
+    
+    // Remove APIs from database
     apisRepo.deleteAllByIdIn(apiIds);
-    // Delete apis case
+    
+    // Delete associated API test cases
     apisCaseCmd.deleteByApisIdIn(apiIds);
-    // Delete apis script
+    
+    // Delete associated API scripts
     scriptCmd.deleteBySource(ScriptSource.API, apiIds);
-    // Delete apis auth
+    
+    // Delete API authorization records
     apisAuthRepo.deleteByApisIdIn(apiIds);
-    // Delete apis favorite
+    
+    // Delete API favorite records
     apisFavoriteRepo.deleteByApisIdIn(apiIds);
-    // Delete apis follow
+    
+    // Delete API follow records
     apisFollowRepo.deleteByApisIdIn(apiIds);
-    // Delete apis indicator
+    
+    // Delete API performance indicators
     indicatorPerfCmd.deleteAllByTarget(apiIds, API);
+    
+    // Delete API stability indicators
     indicatorStabilityCmd.deleteAllByTarget(apiIds, API);
-    // Delete apis variable association
+    
+    // Delete API variable associations
     variableTargetRepo.deleteByTarget(apiIds, API.getValue());
-    // Delete apis dataset association
+    
+    // Delete API dataset associations
     datasetTargetRepo.deleteByTarget(apiIds, API.getValue());
-    // Do not delete associated test tasks
+    
+    // Note: Associated test tasks are not deleted to preserve test history
     // apisTestCmd.delete0(apiIds);
   }
 
@@ -1323,16 +1457,32 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         activityParams(updatedApisDbMap.values())));
   }
 
+  /**
+   * <p>
+   * Assemble unarchived API information and set project ID.
+   * </p>
+   * <p>
+   * Processes unarchived API data, merges missing parameters, and sets project ID for all APIs.
+   * </p>
+   * @param apis List of APIs to process
+   * @param servicesDb Service entity
+   * @return Set of unarchived API IDs
+   */
   @NotNull
   private Set<Long> assembleUnarchivedInfo(List<Apis> apis, Services servicesDb) {
+    // Extract unarchived API IDs
     Set<Long> unarchivedIds = apis.stream().map(Apis::getUnarchivedId)
         .filter(Objects::nonNull).collect(Collectors.toSet());
+    
     if (isNotEmpty(unarchivedIds)) {
+      // Retrieve unarchived API details
       List<ApisUnarchived> unarchivedApis = checkAndGetUnarchived(unarchivedIds);
-      // If the apis parameters queryParams, requestBodyData... are empty when archiving,
-      // set the corresponding parameter value in the unarchived api to the current apis
+      
+      // Create mapping for efficient lookup
       Map<Long, ApisUnarchived> unarchivedMap = unarchivedApis.stream()
           .collect(Collectors.toMap(ApisUnarchived::getId, o -> o));
+      
+      // Merge missing parameters from unarchived APIs to current APIs
       apis.forEach(api -> {
         ApisUnarchived apisUnarchived = unarchivedMap.get(api.getUnarchivedId());
         if (nonNull(apisUnarchived)) {
@@ -1341,6 +1491,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       });
     }
 
+    // Set project ID for all APIs
     apis.forEach(api -> {
           api.setProjectId(servicesDb.getProjectId());
         }
@@ -1348,17 +1499,32 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     return unarchivedIds;
   }
 
+  /**
+   * <p>
+   * Check and retrieve unarchived APIs by IDs.
+   * </p>
+   * <p>
+   * Validates that all requested unarchived APIs exist and belong to the current user.
+   * </p>
+   * @param unarchivedIds Set of unarchived API IDs to retrieve
+   * @return List of unarchived APIs
+   */
   @NotNull
   private List<ApisUnarchived> checkAndGetUnarchived(Set<Long> unarchivedIds) {
-    // Query unarchived apis
+    // Query unarchived APIs for current user
     List<ApisUnarchived> unarchivedApisDb = apisUnarchivedRepo.findAllByCreatedByAndIdIn(
         getUserId(), unarchivedIds);
+    
+    // Validate that unarchived APIs exist
     assertResourceNotFound(unarchivedApisDb, unarchivedIds.iterator().next(), "UnarchiveApi");
 
+    // Check for missing unarchived APIs
     Set<Long> unarchivedExistIds = unarchivedApisDb.stream()
         .map(ApisUnarchived::getId).filter(Objects::nonNull).collect(Collectors.toSet());
     Set<Long> unarchiveRequestIds = new HashSet<>(unarchivedIds);
     unarchiveRequestIds.removeAll(unarchivedExistIds);
+    
+    // Validate that all requested APIs were found
     assertResourceNotFound(unarchiveRequestIds.isEmpty(), unarchiveRequestIds, "UnarchiveApi");
     return unarchivedApisDb;
   }
@@ -1372,9 +1538,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   }
 
   /**
-   * Assert that all APIs belong to a single service.
    * <p>
-   * Throws an exception if the set size is not 1.
+   * Assert that all APIs belong to a single service.
+   * </p>
+   * <p>
+   * Throws an exception if the set size is not 1, ensuring batch operations
+   * are performed on APIs from the same service.
+   * </p>
+   * @param serviceIds Set of service IDs to validate
+   * @param message Error message to display if validation fails
    */
   private void assertSingleService(Set<Long> serviceIds, String message) {
       assertTrue(serviceIds.size() == 1, message);

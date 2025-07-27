@@ -11,11 +11,17 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Command implementation for functional review case records.
+ * <p>
+ * Command implementation for managing functional review case records.
+ * </p>
  * <p>
  * Provides methods for adding and deleting review case records.
+ * Handles record management for review case tracking and audit purposes.
+ * </p>
  * <p>
- * Ensures batch operations and repository access.
+ * Key features include review record management, batch operations,
+ * and record cleanup for review case lifecycle.
+ * </p>
  */
 @Biz
 public class FuncReviewCaseRecordCmdImpl extends CommCmd<FuncReviewCaseRecord, Long>

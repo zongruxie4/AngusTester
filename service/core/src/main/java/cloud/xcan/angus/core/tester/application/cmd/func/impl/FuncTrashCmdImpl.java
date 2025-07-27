@@ -35,11 +35,17 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional trash management.
  * <p>
- * Provides methods for adding, clearing, restoring, and deleting trash for functional test cases and plans.
+ * Command implementation for managing functional trash operations.
+ * </p>
  * <p>
-   * Ensures permission checks, cascading operations, and batch processing with transaction management.
+ * Provides methods for adding, clearing, and restoring items from trash.
+ * Handles trash lifecycle management, association cleanup, and activity logging.
+ * </p>
+ * <p>
+ * Key features include trash management, item restoration, association cleanup,
+ * and comprehensive activity tracking for audit purposes.
+ * </p>
  */
 @Biz
 public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTrashCmd {
@@ -74,9 +80,14 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
   }
 
   /**
-   * Clear a single trash record and its associations.
    * <p>
-   * Checks existence and permission before deleting trash and related data.
+   * Clear a specific item from trash.
+   * </p>
+   * <p>
+   * Checks trash existence and permission. Permanently deletes the item and its associations.
+   * Handles both case and plan trash items with appropriate cleanup.
+   * </p>
+   * @param id the trash item ID to clear
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -86,19 +97,15 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
       @Override
       protected void checkParams() {
-        // Check the trash existed and permission
+        // Validate trash item exists and retrieve details
         trashDb = funcTrashQuery.findMyTrashForBiz(id, "CLEAR");
       }
 
       @Override
       protected Void process() {
-        // Delete trash
-        funcTrashRepo.deleteById(id);
-
-        // Delete association data
-        deleteAssociation(singletonList(trashDb));
-
-        // No activity, Only record delete operation activities
+        // Delete associations and the trash item itself
+        deleteAssociation(List.of(trashDb));
+        funcTrashRepo.delete(trashDb);
         return null;
       }
     }.execute();

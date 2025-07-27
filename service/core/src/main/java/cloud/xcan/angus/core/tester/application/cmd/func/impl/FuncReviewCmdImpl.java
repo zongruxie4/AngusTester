@@ -43,11 +43,16 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for functional review sessions.
+ * Command implementation for functional review session management operations.
  * <p>
- * Provides methods for adding, updating, deleting, starting, ending, blocking, and cloning reviews.
+ * Provides comprehensive CRUD operations for functional review sessions including creation, 
+ * modification, deletion, lifecycle management, and case association.
  * <p>
- * Ensures permission checks, activity logging, and batch operations with transaction management.
+ * Implements business logic validation, permission checks, activity logging, 
+ * and transaction management for all review operations.
+ * <p>
+ * Supports review lifecycle management (start, end, block), case association management,
+ * result reset functionality, and comprehensive activity tracking.
  */
 @Biz
 public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements FuncReviewCmd {
@@ -72,11 +77,15 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   private ActivityCmd activityCmd;
 
   /**
-   * Add a new functional review session.
+   * Adds a new functional review session to the system.
    * <p>
-   * Checks plan, permission, name, owner, and participants before adding.
+   * Performs comprehensive validation including plan existence, review enablement, 
+   * user permissions, name uniqueness, and user existence checks.
    * <p>
-   * Initializes review cases and logs creation activity.
+   * Creates review case associations and logs creation activity 
+   * for audit trail purposes.
+   * <p>
+   * Ensures proper setup for review workflow and case tracking.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -86,32 +95,35 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
       @Override
       protected void checkParams() {
-        // Check the plan exists
+        // Ensure the plan exists and review is enabled
         planDb = funcPlanQuery.checkAndFind(review.getPlanId());
-        // Check the plan review enabled
         assertTrue(planDb.getReview(), "Plan review is not enabled");
-        // Check the plan review permission
+        
+        // Check user permission to create reviews for the plan
         funcPlanAuthQuery.checkReviewAuth(getUserId(), review.getPlanId());
-        // Check the review name exists
+        
+        // Validate review name is unique within the project
         funcReviewQuery.checkNameExists(review.getProjectId(), review.getName());
-        // Check the owner exists
+        
+        // Ensure review owner exists and is valid
         userManager.checkAndFind(review.getOwnerId());
-        // Check the participants exists
+        
+        // Ensure all participants exist and are valid
         userManager.checkAndFind(review.getParticipantIds());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Save case review
+        // Set project ID from plan and save review
         review.setProjectId(planDb.getProjectId());
         IdKey<Long, Object> idKey = insert(review);
 
-        // Save review cases
+        // Create review case associations if cases specified
         if (isNotEmpty(review.getCaseIds())) {
           funcReviewCaseCmd.add(review.getId(), review.getCaseIds());
         }
 
-        // Save activity
+        // Log review creation activity for audit
         activityCmd.add(toActivity(FUNC_REVIEW, review, ActivityType.CREATED));
         return idKey;
       }
@@ -216,11 +228,14 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   }
 
   /**
-   * Start a functional review session.
+   * Starts a functional review session to begin review activities.
    * <p>
-   * Checks existence, permission, and status before starting the review.
+   * Validates review existence, user permissions, and review status before transitioning 
+   * the review to IN_PROGRESS state.
    * <p>
-   * Logs status update activity.
+   * Only reviews in appropriate status (typically PENDING) can be started.
+   * <p>
+   * Logs status change activity for audit trail purposes.
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -230,24 +245,26 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
       @Override
       protected void checkParams() {
-        // Check the review exists
+        // Ensure the review exists in database
         reviewDb = funcReviewQuery.checkAndFind(id);
 
-        // Check the plan review permission
+        // Check user permission to manage the review (creator has full access)
         if (Objects.equals(getUserId(), reviewDb.getCreatedBy())) {
           funcPlanAuthQuery.checkReviewAuth(getUserId(), reviewDb.getPlanId());
         }
 
-        // Check the status is allowed
+        // Ensure review status allows starting (typically PENDING status)
         assertTrue(reviewDb.getStatus().allowStart(), REVIEW_STATUS_MISMATCH_T,
             new Object[]{reviewDb.getStatus(), FuncPlanStatus.IN_PROGRESS});
       }
 
       @Override
       protected Void process() {
+        // Transition review to IN_PROGRESS status
         reviewDb.setStatus(FuncPlanStatus.IN_PROGRESS);
         funcReviewRepo.save(reviewDb);
 
+        // Log status change activity for audit
         activityCmd.add(toActivity(FUNC_REVIEW, reviewDb, STATUS_UPDATE,
             FuncPlanStatus.IN_PROGRESS));
         return null;
@@ -256,11 +273,14 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   }
 
   /**
-   * End a functional review session.
+   * Ends a functional review session to complete review activities.
    * <p>
-   * Checks existence, permission, pending cases, and status before ending the review.
+   * Validates review existence, user permissions, pending cases, and review status 
+   * before transitioning the review to COMPLETED state.
    * <p>
-   * Logs status update activity.
+   * Only reviews with all cases reviewed can be ended.
+   * <p>
+   * Logs status change activity for audit trail purposes.
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -270,27 +290,29 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
       @Override
       protected void checkParams() {
-        // Check the review exists
+        // Ensure the review exists in database
         reviewDb = funcReviewQuery.checkAndFind(id);
 
-        // Check the plan review permission
+        // Check user permission to manage the review (creator has full access)
         if (Objects.equals(getUserId(), reviewDb.getCreatedBy())) {
           funcPlanAuthQuery.checkReviewAuth(getUserId(), reviewDb.getPlanId());
         }
 
-        // Check cases without pending review status
+        // Ensure no cases are pending review (all must be reviewed)
         assertTrue(!funcReviewQuery.hasPendingCaseInReview(id), REVIEW_CANNOT_END);
 
-        // Check the status is allowed
+        // Ensure review status allows ending (typically IN_PROGRESS status)
         assertTrue(reviewDb.getStatus().allowEnd(), REVIEW_STATUS_MISMATCH_T,
             new Object[]{reviewDb.getStatus(), FuncPlanStatus.COMPLETED});
       }
 
       @Override
       protected Void process() {
+        // Transition review to COMPLETED status
         reviewDb.setStatus(FuncPlanStatus.COMPLETED);
         funcReviewRepo.save(reviewDb);
 
+        // Log status change activity for audit
         activityCmd.add(toActivity(FUNC_REVIEW, reviewDb, STATUS_UPDATE, FuncPlanStatus.COMPLETED));
         return null;
       }
@@ -371,9 +393,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   }
 
   /**
-   * Reset review results for a batch of functional review sessions.
+   * Resets review results for a batch of functional review sessions.
    * <p>
-   * Checks permission before resetting review results, logs activities, and restarts reviews if needed.
+   * Validates review existence and user permissions before resetting review results.
+   * <p>
+   * Resets case review status, review case status, and review session status.
+   * <p>
+   * Logs reset activities and restarts reviews if needed.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -383,10 +409,10 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
       @Override
       protected void checkParams() {
-        // Check the review exists
+        // Ensure all reviews exist in database
         reviewsDb = funcReviewQuery.checkAndFind(ids);
 
-        // Check the review permission
+        // Check user permission to reset review results
         funcPlanAuthQuery.batchCheckPermission(reviewsDb.stream().map(FuncReview::getPlanId)
             .collect(Collectors.toSet()), FuncPlanPermission.RESET_REVIEW_RESULT);
       }
@@ -394,24 +420,27 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
       @Override
       protected Void process() {
         for (Long id : ids) {
-          // Query reset review case ids
+          // Get all case IDs associated with this review
           Set<Long> caseIds = funcReviewCaseRepo.findCaseIdByReviewId(id);
 
           if (isNotEmpty(caseIds)) {
-            // Reset cases status
+            // Reset case review status based on reset flag
             if (reset) {
+              // Reset to initial state
               funcCaseRepo.updateReviewResultToInitByIds(caseIds);
             } else {
+              // Reset to restart state
               funcCaseRepo.updateReviewResultToRestartByIds(caseIds);
             }
 
-            // Reset review cases status
+            // Reset review case status to initial state
             funcReviewCaseRepo.updateReviewResultToInitByReviewIdAndCaseIds(id, caseIds);
 
-            // Reset review status
+            // Reset review session status to PENDING
             reviewsDb.forEach(x -> x.setStatus(FuncPlanStatus.PENDING));
             funcReviewRepo.saveAll(reviewsDb);
 
+            // Log review reset activities for audit
             activityCmd.addAll(toActivities(FUNC_REVIEW, reviewsDb, ActivityType.REVIEW_RESET));
           }
         }
@@ -421,9 +450,14 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   }
 
   /**
-   * Delete a functional review session.
+   * Deletes a functional review session from the system.
    * <p>
-   * Checks existence and permission before deleting the review, and logs activity.
+   * Validates review existence and user permissions before permanently removing 
+   * the review from the database.
+   * <p>
+   * Logs deletion activity for audit trail purposes.
+   * <p>
+   * Note: Review case records are not automatically deleted.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -433,12 +467,13 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
 
       @Override
       protected void checkParams() {
-        // Check the review existed
+        // Check if review exists in database
         reviewDb = funcReviewRepo.findById(id).orElse(null);
         if (isNull(reviewDb)) {
           return;
         }
-        // Check the plan review permission
+        
+        // Check user permission to delete the review (creator has full access)
         if (Objects.equals(getUserId(), reviewDb.getCreatedBy())) {
           funcPlanAuthQuery.checkReviewAuth(getUserId(), reviewDb.getPlanId());
         }
@@ -450,12 +485,12 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
           return null;
         }
 
-        // Delete review
+        // Permanently delete the review from database
         funcReviewRepo.deleteById(reviewDb.getId());
 
-        // NOOP -> Delete review case records ?
+        // Note: Review case records are not automatically deleted
 
-        // Add delete review activity
+        // Log review deletion activity for audit
         activityCmd.add(toActivity(FUNC_REVIEW, reviewDb, ActivityType.DELETED));
         return null;
       }
@@ -463,24 +498,32 @@ public class FuncReviewCmdImpl extends CommCmd<FuncReview, Long> implements Func
   }
 
   /**
-   * Delete all review sessions by plan ID.
+   * Deletes all review sessions associated with the specified plan IDs.
    * <p>
-   * Removes all reviews and review cases associated with the given plan IDs.
+   * Removes all reviews and their associated review case records 
+   * for the given plan IDs.
+   * <p>
+   * Used for cleanup when plans are deleted.
    */
   @Override
   public void deleteByPlanId(Collection<Long> planIds) {
+    // Delete all reviews for the specified plans
     funcReviewRepo.deleteByPlanIdIn(planIds);
+    
+    // Delete all review case associations for the specified plans
     funcReviewCaseRepo.deleteByPlanIdIn(planIds);
   }
 
   /**
-   * Delete all review cases by case ID.
+   * Deletes all review case associations for the specified case IDs.
    * <p>
-   * Removes all review cases associated with the given case IDs.
+   * Removes review case records without affecting the review sessions themselves.
+   * <p>
+   * Used for cleanup when cases are deleted.
    */
   @Override
   public void deleteByCaseId(Collection<Long> caseIds) {
-    //funcReviewRepo.deleteByCaseIdIn(caseIds);
+    // Delete all review case associations for the specified cases
     funcReviewCaseRepo.deleteByCaseIdIn(caseIds);
   }
 

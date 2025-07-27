@@ -24,10 +24,14 @@ import jakarta.annotation.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for managing API favorites.
  * <p>
- * Provides methods for adding, canceling, and batch canceling API favorites.
- * Ensures permission checks, duplicate prevention, and activity logging.
+ * Implementation of ApisFavouriteCmd for API favorite management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive API favorite management services including adding, canceling, and batch
+ * canceling API favorites. Ensures permission checks, duplicate prevention, and activity logging.
+ * Manages user's personal favorite API collections with proper access control.
+ * </p>
  */
 @Biz
 public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implements ApisFavouriteCmd {
@@ -42,9 +46,14 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add an API to favorites.
+   * </p>
    * <p>
    * Validates API existence, permission, and duplicate, inserts favorite, and logs the activity.
+   * </p>
+   * @param favourite API favorite to add
+   * @return ID key of the created favorite
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -54,13 +63,13 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
 
       @Override
       protected void checkParams() {
-        // Check the apis existed
+        // Validate API exists and retrieve basic information
         apisDb = apisQuery.checkAndFindBaseInfo(favourite.getApisId());
 
-        // Check the permission to view apis
+        // Verify current user has permission to view the API
         apisAuthQuery.checkViewAuth(getUserId(), favourite.getApisId());
 
-        // Check the favourites is not repeated
+        // Check for duplicate favorite (prevent adding same API twice)
         ApisFavourite existed = apisFavouriteRepo.findByApisIdAndCreatedBy(favourite.getApisId(),
             getUserId());
         assertResourceExisted(existed, APIS_FAVOURITE_REPEATED_T, new Object[]{apisDb.getName()});
@@ -68,10 +77,13 @@ public class ApisFavouriteCmdImpl extends CommCmd<ApisFavourite, Long> implement
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Set project ID from API information
         favourite.setProjectId(apisDb.getProjectId());
+        
+        // Insert the favorite record
         IdKey<Long, Object> idKey = insert(favourite);
 
-        // Add favorite api activity
+        // Log favorite activity
         activityCmd.add(toActivity(API, apisDb, ActivityType.FAVOURITE));
         return idKey;
       }

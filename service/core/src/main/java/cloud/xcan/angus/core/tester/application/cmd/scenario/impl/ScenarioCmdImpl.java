@@ -57,11 +57,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Command implementation for scenario management.
+ * Command implementation for scenario management operations.
  * <p>
- * Provides methods for adding, updating, replacing, importing, deleting, cloning, and moving scenarios.
+ * Provides comprehensive CRUD operations for scenarios including creation, modification, 
+ * deletion, cloning, moving, and import/export functionality.
  * <p>
- * Ensures permission checks, activity logging, and batch operations with transaction management.
+ * Implements business logic validation, permission checks, activity logging, 
+ * and transaction management for all scenario operations.
+ * <p>
+ * Supports script management, authorization setup, indicator tracking, 
+ * and comprehensive activity tracking.
  */
 @Biz
 public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements ScenarioCmd {
@@ -100,11 +105,14 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   private ActivityCmd activityCmd;
 
   /**
-   * Add a new scenario.
+   * Adds a new scenario to the system.
    * <p>
-   * Checks project membership, quota, name uniqueness, and script before inserting.
+   * Performs comprehensive validation including project membership, quota limits, 
+   * name uniqueness, and script validation.
    * <p>
-   * Initializes creator authorization and logs creation activity.
+   * Creates associated script if provided and initializes creator authorization.
+   * <p>
+   * Logs creation activity and establishes proper scenario setup.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -112,25 +120,27 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the project member
+        // Ensure user is a member of the project
         projectMemberQuery.checkMember(getUserId(), scenario.getProjectId());
 
-        // Check the scenario quota
+        // Check if scenario creation exceeds quota limits
         scenarioQuery.checkQuota(1);
 
-        // Check the repeated name
+        // Validate scenario name is unique within the project
         scenarioQuery.checkNameExists(scenario.getProjectId(), scenario.getName());
 
-        // Check the target is purchased and valid TODO
+        // TODO: Check if target is purchased and valid
       }
 
       @SneakyThrows
       @Override
       protected IdKey<Long, Object> process() {
+        // Generate scenario ID if not provided
         if (isNull(scenario.getId())){
           scenario.setId(uidGenerator.getUID());
         }
 
+        // Create associated script if provided
         IdKey<Long, Object> scriptIdKey = null;
         if (nonNull(scenario.getAngusScript())) {
           PrincipalContext.addExtension("scenario", scenario);
@@ -140,19 +150,20 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
               scenario.getAngusScript());
         }
 
-        // Save scenario
+        // Set script type from Angus script if not specified
         if (isNull(scenario.getScriptType()) && nonNull(scenario.getAngusScript())) {
           scenario.setScriptType(scenario.getAngusScript().getType());
         }
 
+        // Update scenario with script ID and authorization settings
         scenario.setScriptId(nonNull(scriptIdKey) ? scriptIdKey.getId() : scenario.getScriptId());
         scenario.setAuth(nullSafe(scenario.getAuth(), false));
         IdKey<Long, Object> idKey = insert(scenario, "name");
 
-        // Init creator auth
+        // Initialize creator authorization for the scenario
         scenarioAuthCmd.addCreatorAuth(Set.of(getUserId()), scenario.getId());
 
-        // Add delete scenario activity
+        // Log scenario creation activity for audit
         activityCmd.add(toActivity(SCENARIO, scenario, ActivityType.CREATED));
         return idKey;
       }
@@ -160,11 +171,14 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Update an existing scenario.
+   * Updates an existing scenario in the system.
    * <p>
-   * Checks existence, permission, name uniqueness, and script before updating.
+   * Validates scenario existence, user permissions, name uniqueness, and script changes 
+   * before updating scenario details.
    * <p>
-   * Updates scenario, logs update activity, and sends modification event.
+   * Updates associated script if provided and logs modification activity.
+   * <p>
+   * Sends modification notification events for real-time updates.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -174,37 +188,38 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
       @Override
       protected void checkParams() {
-        // Check and find scenario
+        // Ensure the scenario exists in database
         scenarioDb = scenarioQuery.checkAndFind(scenario.getId());
 
-        // Check the scenario permission
+        // Check user permission to modify the scenario
         scenarioAuthQuery.checkModifyAuth(getUserId(), scenario.getId());
 
-        // Check the repeated name
+        // Validate scenario name is unique if changed
         if (StringUtils.isNotBlank(scenario.getName())) {
           scenarioQuery.checkUpdateNameExists(scenarioDb.getId(), scenario.getName(),
               scenarioDb.getProjectId());
         }
 
-        // Check the target is purchased and valid TODO
+        // TODO: Check if target is purchased and valid
       }
 
       @Override
       protected Void process() {
+        // Update associated script if provided
         if (nonNull(scenario.getAngusScript())) {
           ScriptInfo scriptInfo = scenarioQuery.checkAndFindScenarioScriptInfo(scenario.getId());
           scriptCmd.angusReplace(scriptInfo.getId(), scenario.getAngusScript(), true);
           scenarioDb.setScriptType(scenario.getAngusScript().getType());
         }
 
-        // Update scenario
+        // Update scenario information in database
         updateOrNotFound0(CoreUtils.copyPropertiesIgnoreNull(scenario, scenarioDb));
 
-        // Add updated scenario activity
+        // Log scenario update activity for audit
         Activity activity = toActivity(SCENARIO, scenarioDb, ActivityType.UPDATED);
         activityCmd.add(activity);
 
-        // Add modification event
+        // Send modification notification event
         scenarioQuery.assembleAndSendModifyNoticeEvent(scenarioDb, activity);
         return null;
       }
@@ -212,11 +227,14 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Replace (add or update) a scenario.
+   * Replaces (adds or updates) a scenario in the system.
    * <p>
-   * Checks existence, permission, name uniqueness, and script before replacing.
+   * Validates scenario existence, user permissions, name uniqueness, and script changes 
+   * before replacing scenario details.
    * <p>
-   * Replaces scenario, logs update activity, and sends modification event.
+   * Creates a new scenario if ID is null, otherwise updates existing scenario.
+   * <p>
+   * Updates associated script and sends modification notification events.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -227,42 +245,41 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
       @Override
       protected void checkParams() {
-        // Check and find scenario
+        // Check if scenario exists in database
         if (nonNull(scenario.getId())) {
           scenarioDb = scenarioRepo.findById(scenario.getId()).orElse(null);
 
-          // Check the scenario permission
+          // Check user permission to modify the scenario
           scenarioAuthQuery.checkModifyAuth(getUserId(), scenario.getId());
 
-          // Check the repeated name
+          // Validate scenario name is unique if changed
           scenarioQuery.checkUpdateNameExists(scenarioDb.getId(), scenario.getName(),
               scenarioDb.getProjectId());
 
-          // Check and find project
-          // scenarioDirDb = scenarioDirQuery.checkAndFind(scenarioDb.getProjectId());
+          // TODO: Check if target is purchased and valid
         }
-
-        // Check the target is purchased and valid TODO
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Create new scenario if ID is null
         if (isNull(scenarioDb)) {
           return add(scenario);
         }
 
+        // Update scenario with retention information
         ScenarioConverter.setReplaceRetentionInfo(scenario, scenarioDb);
         scenarioRepo.save(scenario);
 
-        // Replace the script of scenario
+        // Update associated script
         ScriptInfo scriptInfo = scenarioQuery.checkAndFindScenarioScriptInfo(scenario.getId());
         scriptCmd.angusReplace(scriptInfo.getId(), scenario.getAngusScript(), true);
 
-        // Add updated scenario activity
+        // Log scenario update activity for audit
         Activity activity = toActivity(SCENARIO, scenario, ActivityType.UPDATED);
         activityCmd.add(activity);
 
-        // Add modification event
+        // Send modification notification event
         scenarioQuery.assembleAndSendModifyNoticeEvent(scenarioDb, activity);
 
         return new IdKey<Long, Object>().setId(scenarioDb.getId()).setKey(scenarioDb.getName());
@@ -321,9 +338,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Clone a scenario and its script.
+   * Clones a scenario and its associated script.
    * <p>
-   * Checks existence and permission, clones scenario and script, and logs activity.
+   * Validates scenario existence and user permissions before creating a deep copy.
+   * <p>
+   * Creates a new scenario with a unique name and clones the associated script.
+   * <p>
+   * Logs clone activity and establishes proper scenario setup.
    */
   @Override
   public IdKey<Long, Object> clone(Long id) {
@@ -332,24 +353,27 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
       @Override
       protected void checkParams() {
+        // Get scenario details and ensure it exists
         scenarioDb = scenarioQuery.detail(id);
+        
+        // Check user permission to view the scenario
         scenarioAuthQuery.checkViewAuth(getUserId(), id);
       }
 
       @Override
       protected IdKey<Long, Object> process() {
-        // Clone scenario
+        // Create a deep copy of the scenario with a new name
         Scenario scenario = ScenarioConverter.toCloneScenario(this.scenarioDb);
         scenarioQuery.setSafeCloneName(scenario);
 
-        // Clone and save scenario script
+        // Clone and save the associated script
         IdKey<Long, Object> scriptIdKey = scriptCmd.cloneByScenario(id, scenario.getId());
 
-        // Save scenario
+        // Save the cloned scenario with the new script ID
         scenario.setScriptId(scriptIdKey.getId());
         IdKey<Long, Object> idKey = add(scenario);
 
-        // Add clone scenario activity
+        // Log scenario clone activity for audit
         activityCmd.add(toActivity(SCENARIO, scenarioDb, ActivityType.CLONE, scenarioDb.getName()));
         return idKey;
       }
@@ -357,9 +381,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Import example scenarios for a project.
+   * Imports example scenarios for a project from template files.
    * <p>
-   * Parses example scripts, adds scenarios, and logs creation activity.
+   * Parses example script files from resources and creates scenarios for each template.
+   * <p>
+   * Validates script content and creates scenarios with proper project association.
+   * <p>
+   * Returns list of created scenario IDs for further processing.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -369,9 +397,16 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
       @Override
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
+        
+        // Process each example script file
         for (String scriptFile : SAMPLE_SCRIPT_FILES) {
+          // Read script content from resource file
           String content = readExampleScriptContent(this.getClass(), scriptFile);
+          
+          // Parse and validate the script content
           AngusScript angusScript = scriptQuery.checkAndParse(content, true);
+          
+          // Convert to domain object and create scenario
           Scenario scenario = importExampleToDomain(projectId, angusScript);
           idKeys.add(add(scenario));
         }
@@ -381,9 +416,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Delete a scenario by ID (logic delete).
+   * Deletes a scenario from the system (soft delete).
    * <p>
-   * Checks existence and permission, marks scenario as deleted, and logs activity.
+   * Validates scenario existence and user permissions before marking the scenario as deleted.
+   * <p>
+   * Moves scenario to trash for potential recovery and logs deletion activity.
+   * <p>
+   * Sends modification notification events for real-time updates.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -393,11 +432,13 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
 
       @Override
       protected void checkParams() {
-        // Check the scenario existed and authed
+        // Check if scenario exists in database
         scenarioDb = scenarioRepo.find0ById(id);
         if (scenarioDb.isEmpty()) {
           return;
         }
+        
+        // Check user permission to delete the scenario
         scenarioAuthQuery.checkDeleteAuth(getUserId(), id);
       }
 
@@ -407,17 +448,17 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
           return null;
         }
 
-        // Delete scenario
+        // Mark scenario as deleted (soft delete)
         scenarioRepo.updateDeleteStatus(id, true, getUserId(), LocalDateTime.now());
 
-        // Add scenario to ApisTrash
+        // Move scenario to trash for potential recovery
         trashScenarioCmd.add0(singletonList(toScenarioTrash(scenarioDb.get())));
 
-        // Add delete scenario activity
+        // Log scenario deletion activity for audit
         Activity activity = toActivity(SCENARIO, scenarioDb.get(), ActivityType.DELETED);
         activityCmd.add(activity);
 
-        // Add modification event
+        // Send modification notification event
         scenarioQuery.assembleAndSendModifyNoticeEvent(scenarioDb.get(), activity);
         return null;
       }
@@ -425,37 +466,53 @@ public class ScenarioCmdImpl extends CommCmd<Scenario, Long> implements Scenario
   }
 
   /**
-   * Physically delete scenarios and all related data (external use must ensure data security).
+   * Permanently deletes scenarios and all related data from the system.
    * <p>
-   * Deletes scenarios, scripts, authorizations, favorites, follows, indicators, and associations.
+   * Removes scenarios, scripts, authorizations, favorites, follows, indicators, 
+   * and variable/dataset associations.
+   * <p>
+   * This operation is irreversible and should be used with extreme caution.
+   * <p>
+   * External use must ensure data security and proper authorization.
    */
   @Override
   public void delete0(List<Long> ids) {
-    // Delete scenario
+    // Permanently delete all scenarios
     scenarioRepo.deleteAllByIdIn(ids);
-    // Delete scenario script
+    
+    // Permanently delete all associated scripts
     scriptCmd.deleteBySource(ScriptSource.SCENARIO, ids);
-    // Delete scenario auth
+    
+    // Permanently delete all scenario authorizations
     scenarioAuthRepo.deleteByScenarioIdIn(ids);
-    // Delete scenario favorite
+    
+    // Permanently delete all scenario favorites
     scenarioFavoriteRepo.deleteByScenarioIdIn(ids);
-    // Delete scenario follow
+    
+    // Permanently delete all scenario follows
     scenarioFollowRepo.deleteByScenarioIdIn(ids);
-    // Delete scenario indicator
+    
+    // Permanently delete all performance indicators
     indicatorPerfCmd.deleteAllByTarget(ids, SCENARIO);
+    
+    // Permanently delete all stability indicators
     indicatorStabilityCmd.deleteAllByTarget(ids, SCENARIO);
-    // Delete scenario variable association
+    
+    // Permanently delete all variable associations
     variableTargetRepo.deleteByTarget(ids, API.getValue());
-    // Delete scenario dataset association
+    
+    // Permanently delete all dataset associations
     datasetTargetRepo.deleteByTarget(ids, API.getValue());
-    // Do not delete associated test tasks
-    // scenarioTestCmd.delete0(ids);
+    
+    // Note: Associated test tasks are not deleted to preserve test history
   }
 
   /**
-   * Get the repository for scenarios.
+   * Gets the repository for scenario entities.
    * <p>
    * Used by the base command class for generic operations.
+   * <p>
+   * Provides access to the underlying scenario data store.
    */
   @Override
   protected BaseRepository<Scenario, Long> getRepository() {

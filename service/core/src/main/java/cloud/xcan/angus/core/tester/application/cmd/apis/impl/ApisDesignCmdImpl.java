@@ -61,10 +61,15 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Command implementation for managing API design documents.
  * <p>
- * Provides methods for adding, updating, cloning, associating, generating, importing, exporting, and deleting API designs.
- * Handles permission checks, content validation, and activity logging.
+ * Implementation of ApisDesignCmd for API design document management and command operations.
+ * </p>
+ * <p>
+ * Provides comprehensive API design management services including adding, updating, cloning,
+ * associating, generating, importing, exporting, and deleting API designs. Handles permission
+ * checks, content validation, OpenAPI parsing, service generation, and activity logging.
+ * Supports both manual design creation and service-based design association.
+ * </p>
  */
 @Biz
 public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements ApisDesignCmd {
@@ -92,9 +97,14 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   private ActivityCmd activityCmd;
 
   /**
+   * <p>
    * Add a new API design document.
+   * </p>
    * <p>
    * Validates project membership, inserts the design, and logs the creation activity.
+   * </p>
+   * @param design API design document to add
+   * @return ID key of the created design
    */
   @Transactional(rollbackOn = Exception.class)
   @Override
@@ -102,13 +112,16 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
     return new BizTemplate<IdKey<Long, Object>>() {
       @Override
       protected void checkParams() {
-        // Check the project member permission
+        // Verify current user is a member of the project
         projectMemberQuery.checkMember(getUserId(), design.getProjectId());
       }
 
       @Override
       protected IdKey<Long, Object> process() {
+        // Insert the design document
         IdKey<Long, Object> idKeys = add0(design);
+        
+        // Log creation activity
         activityCmd.add(toActivity(API_DESIGN, design, ActivityType.CREATED));
         return idKeys;
       }
@@ -158,9 +171,14 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   }
 
   /**
+   * <p>
    * Replace the OpenAPI content of a design document.
+   * </p>
    * <p>
    * Validates permission, updates content, and logs the activity.
+   * </p>
+   * @param id Design document ID
+   * @param openapi OpenAPI content to replace
    */
   @Transactional(rollbackOn = Exception.class)
   @Override
@@ -170,20 +188,27 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
       @Override
       protected void checkParams() {
-        // Check the design exists
+        // Validate design document exists
         designDb = apisDesignQuery.checkAndFind(id);
-        // Check the project member permission
+        
+        // Verify current user is a member of the project
         projectMemberQuery.checkMember(getUserId(), designDb.getProjectId());
       }
 
       @Override
       protected Void process() {
+        // Mark design as unreleased when content is updated
         designDb.setReleased(false);
+        
+        // Parse and validate OpenAPI content
         OpenAPI osa = servicesSchemaQuery.checkAndGetApisParser(ApiImportSource.OPENAPI)
             .parse(openapi);
+        
+        // Store formatted JSON content
         designDb.setOpenapi(Json31.pretty(osa));
         apisDesignRepo.save(designDb);
 
+        // Log content update activity
         activityCmd.add(toActivity(API_DESIGN, designDb, ActivityType.UPDATED));
         return null;
       }
@@ -191,9 +216,13 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   }
 
   /**
+   * <p>
    * Release an API design document.
+   * </p>
    * <p>
    * Validates permission and content, releases the design, and logs the activity.
+   * </p>
+   * @param id Design document ID to release
    */
   @Transactional(rollbackOn = Exception.class)
   @Override
@@ -203,24 +232,30 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
       @Override
       protected void checkParams() {
-        // Check the design exists
+        // Validate design document exists
         designDb = apisDesignQuery.checkAndFind(id);
-        // Check the project member permission
+        
+        // Verify current user is a member of the project
         projectMemberQuery.checkMember(getUserId(), designDb.getProjectId());
-        // Check the released content is not empty
+        
+        // Ensure OpenAPI content is not empty before release
         assertNotEmpty(designDb.getOpenapi(), APIS_OAS_DESIGN_NOT_FOUND);
       }
 
       @Override
       protected Void process() {
+        // If design has latest content, update the associated service
         if (designDb.hasLatestContent()) {
           servicesSchemaCmd.openapiReplace(designDb.getDesignSourceId(), false, false,
               designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true, ApiSource.EDITOR,
               ApiImportSource.OPENAPI, true, null);
         }
+        
+        // Mark design as released
         designDb.setReleased(true);
         apisDesignRepo.save(designDb);
 
+        // Log release activity
         activityCmd.add(toActivity(API_DESIGN, designDb, ActivityType.RELEASE));
         return null;
       }
@@ -294,9 +329,13 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
   }
 
   /**
+   * <p>
    * Generate a service from an API design document.
+   * </p>
    * <p>
    * Validates permission, generates the service, and logs the activity.
+   * </p>
+   * @param id Design document ID to generate service from
    */
   @Transactional(rollbackOn = Exception.class)
   @Override
@@ -306,36 +345,45 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
 
       @Override
       protected void checkParams() {
-        // Check the design exists
+        // Validate design document exists
         designDb = apisDesignQuery.checkAndFind(id);
-        // Check duplicate generate
+        
+        // Check for duplicate service generation
         if (nonNull(designDb.getDesignSourceId())) {
           Services servicesDb = servicesQuery.checkAndFind(designDb.getDesignSourceId());
           assertResourceExisted(designDb.getDesignSourceId(), APIS_DESIGN_SERVICE_EXISTED_T,
               new Object[]{servicesDb.getName()});
         }
-        // Check the project member permission
+        
+        // Verify current user is a member of the project
         projectMemberQuery.checkMember(getUserId(), designDb.getProjectId());
       }
 
       @Override
       protected Void process() {
+        // Skip generation if design is already synchronized with a service
         if (designDb.getDesignSource().isSynchronousService()) {
           return null;
         }
 
+        // Create new service with design information
         Services services = new Services()
             .setProjectId(designDb.getProjectId()).setName(designDb.getName())
             .setAuth(false).setStatus(ApiStatus.UNKNOWN).setSource(ApiSource.EDITOR);
         servicesCmd.add(services, false);
 
+        // Initialize service schema based on OpenAPI content
         if (isEmpty(designDb.getOpenapi())) {
+          // Initialize empty service schema
           servicesSchemaCmd.init(services);
         } else {
+          // Parse OpenAPI content and initialize service schema
           OpenAPI openAPI =
               servicesSchemaQuery.checkAndGetApisParser(ApiImportSource.OPENAPI)
                   .parse(designDb.getOpenapi());
           servicesSchemaCmd.init(services, openAPI);
+          
+          // Replace service schema if paths exist
           if (isNotEmpty(openAPI.getPaths())) {
             servicesSchemaCmd.openapiReplace(services.getId(), true, false,
                 designDb.getOpenapi(), StrategyWhenDuplicated.COVER, true,
@@ -343,9 +391,11 @@ public class ApisDesignCmdImpl extends CommCmd<ApisDesign, Long> implements Apis
           }
         }
 
+        // Update design to reference the generated service
         designDb.setDesignSource(SYNCHRONOUS_SERVICE).setDesignSourceId(services.getId());
         apisDesignRepo.save(designDb);
 
+        // Log service creation activity
         activityCmd.add(toActivity(SERVICE, services, ActivityType.CREATED));
         return null;
       }
