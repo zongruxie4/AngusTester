@@ -83,58 +83,40 @@ public class ProjectCmdImpl extends CommCmd<Project, Long> implements ProjectCmd
 
   @Resource
   private ProjectRepo projectRepo;
-
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private ProjectCmd projectCmd;
-
   @Resource
   private ProjectMemberCmd projectMemberCmd;
-
   @Resource
   private ProjectTrashCmd trashProjectCmd;
-
   @Resource
   private TagCmd tagCmd;
-
   @Resource
   private ModuleCmd moduleCmd;
-
   @Resource
   private TaskCmd taskCmd;
-
   @Resource
   private FuncCaseCmd funcCaseCmd;
-
   @Resource
   private ServicesCmd servicesCmd;
-
   @Resource
   private ScenarioCmd scenarioCmd;
-
   @Resource
   private ScriptCmd scriptCmd;
-
   @Resource
   private MockServiceCmd mockServiceCmd;
-
   @Resource
   private VariableCmd variableCmd;
-
   @Resource
   private DatasetCmd datasetCmd;
-
   @Resource
   private ExecTestCmd execTestCmd;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private ActivityCmd activityCmd;
-
   @Resource
   private CommonQuery commonQuery;
 

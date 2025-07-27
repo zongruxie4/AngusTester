@@ -18,17 +18,17 @@ import lombok.experimental.Accessors;
 public class FuncPlanAuthAddDto {
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for permission scope definition", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object identifier for permission assignment", requiredMode = RequiredMode.REQUIRED)
   private Long authObjectId;
 
   //@NotNull
   @Size(min = 1)
   @CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test plan operation permissions for access control", requiredMode = RequiredMode.REQUIRED)
   private Set<FuncPlanPermission> permissions;
 
 }

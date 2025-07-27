@@ -23,47 +23,42 @@ import org.hibernate.validator.constraints.Range;
 public class ApisTestScriptGenerateDto {
 
   @NotNull
-  @Schema(description = "Test type", example = "PERFORMANCE", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test type for script generation specification", example = "PERFORMANCE", requiredMode = RequiredMode.REQUIRED)
   private TestType testType;
 
-  @Schema(description = "Test execution priority, default MEDIUM", example = "MEDIUM")
+  @Schema(description = "Test execution priority for resource allocation, defaults to MEDIUM", example = "MEDIUM")
   private Priority priority = Priority.DEFAULT;
 
   @Range(min = 1, max = MAX_FUNCTIONAL_ITERATIONS)
-  @Schema(description = "Functional testing iterations, default 1, max 10", example = "MEDIUM")
+  @Schema(description = "Functional testing iteration count, defaults to 1, maximum 10", example = "1")
   private Long iterations = 1L;
 
   @Min(1)
-  @Schema(description = "Maximum number of threads. When there are multiple nodes, they will be evenly distributed to each node", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Maximum thread count for distributed execution across nodes", requiredMode = RequiredMode.REQUIRED)
   private int threads = 1;
 
   //@NotNull
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Task execution duration, defaults to 30 seconds when iterations and duration are not configured"/*, requiredMode = RequiredMode.REQUIRED*/)
   private TimeValue duration;
 
   @Min(0L)
-  @Schema(description="Adjust ramp up thread number, specify during performance testing and the value does not exceed the threads")
+  @Schema(description = "Ramp-up thread count for performance testing, must not exceed total threads")
   private Integer rampUpThreads;
 
-  @Schema(description = "Adjust ramp up thread interval, specify during performance testing the value does not exceed the duration")
+  @Schema(description = "Ramp-up thread interval for performance testing, must not exceed total duration")
   private TimeValue rampUpInterval;
 
-  @Schema(description = "Whether to ignore assertions. If not ignored, handle as sampling error when assertion fails")
+  @Schema(description = "Assertion ignore flag for error handling configuration")
   private Boolean ignoreAssertions;
 
   /**
    * Important: A null value indicates that there is no need to update the test results.
    */
-  @Schema(description =
-      "When there are associated resources, will the test results be updated to the associated resources, "
-          + "such as apis, use cases, and scenarios. The default is false")
+  @Schema(description = "Test result update flag for associated resources like APIs, use cases, and scenarios, defaults to false")
   private Boolean updateTestResult;
 
-  @Schema(description = "Is the generated script subject to permission control? "
-      + "When it is subject to permission control, by default, it is only visible to and accessible by the owner with full permissions, "
-      + "Other users need to be manually authorized through \"Scripts\" -> \"Authorization\""
-      + "When it is not subject to permission control, it is visible and accessible to all users")
+  @Schema(description = "Permission control flag for generated script access management, defaults to owner-only visibility")
   private Boolean auth;
 
   @Override

@@ -18,23 +18,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class FuncBaselineFindDto extends PageQuery {
 
+  @Schema(description = "Functional test baseline identifier for precise query")
   private Long id;
 
+  @Schema(description = "Functional test baseline name for fuzzy search and filtering")
   private String name;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for baseline scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Functional test plan identifier for baseline filtering")
   private Long planId;
 
+  @Schema(description = "Baseline establishment status for state-based filtering")
   private Boolean established;
 
+  @Schema(description = "Baseline creator identifier for ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Baseline creation timestamp for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Baseline last modifier identifier for modification tracking")
   private Long lastModifiedBy;
 
 }

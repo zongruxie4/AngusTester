@@ -14,11 +14,11 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncCaseFollowFindDto extends PageQuery {
 
-  @Schema(description = "Project id")
+  @Schema(description = "Project identifier for followed case scope filtering")
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Follow case name")
+  @Schema(description = "Followed test case name for fuzzy search and filtering")
   private String caseName;
 
 }

@@ -19,25 +19,25 @@ import org.hibernate.validator.constraints.Length;
 public class ScriptUpdateDto {
 
   @NotNull
-  @Schema(description = "Script id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Script name", example = "script-01")
+  @Schema(description = "Script name for identification and management", example = "script-01")
   private String name;
 
-  @Schema(description = "Script type, priority is higher than the type in the script content, which controls the actual type of test execution", example = "TEST_PERFORMANCE")
+  @Schema(description = "Script type defining the testing methodology and execution approach", example = "TEST_PERFORMANCE")
   private ScriptType type;
 
   //@Schema(description = "script source", example = "CREATED")
   //private ScriptSource source;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Script description")
+  @Schema(description = "Script description for detailed information and requirements")
   private String description;
 
   @Length(max = ANGUS_SCRIPT_LENGTH) // 10MB
-  @Schema(description = "Yaml or json format script content")
+  @Schema(description = "Script content in YAML or JSON format for execution configuration")
   private String content;
 
 }

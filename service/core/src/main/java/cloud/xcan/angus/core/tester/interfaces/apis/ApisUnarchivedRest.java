@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisUnarchived", description = "Personal Workspace (Unarchived) - Private staging area for managing uncommitted APIs and personal development artifacts")
+@Tag(name = "APIs Unarchived", description = "Personal Workspace Management - Comprehensive APIs for private staging area management of uncommitted APIs and personal development artifacts with lifecycle control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/unarchived")
@@ -47,9 +47,11 @@ public class ApisUnarchivedRest {
   @Resource
   private ApisUnarchivedFacade apisUnarchivedFacade;
 
-  @Operation(summary = "Add the unarchived api", operationId = "apis:unarchived:add")
+  @Operation(summary = "Create unarchived API", 
+      description = "Create new unarchived API in personal workspace with comprehensive configuration and validation",
+      operationId = "apis:unarchived:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Unarchived API created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
@@ -57,10 +59,12 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success(apisUnarchivedFacade.add(dto));
   }
 
-  @Operation(summary = "Update the unarchived api", operationId = "apis:unarchived:update")
+  @Operation(summary = "Update unarchived API", 
+      description = "Update existing unarchived API with comprehensive configuration and validation",
+      operationId = "apis:unarchived:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Unarchived API updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Unarchived API not found")
   })
   @PatchMapping("/{id}")
   public ApiLocaleResult<?> update(
@@ -69,59 +73,71 @@ public class ApisUnarchivedRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the name of unarchived api", operationId = "apis:unarchived:name:replace")
+  @Operation(summary = "Rename unarchived API", 
+      description = "Update unarchived API name with comprehensive validation and metadata management",
+      operationId = "apis:unarchived:name:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Unarchived API name updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Unarchived API not found")})
   @PutMapping("/{id}/name")
   public ApiLocaleResult<?> rename(
-      @Parameter(name = "id", description = "Unarchived api id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "name", description = "Unarchived api name", required = true) @Valid @Length(max = MAX_NAME_LENGTH_X2) @RequestParam("name") String name) {
+      @Parameter(name = "id", description = "Unarchived API identifier for name update", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "name", description = "New unarchived API name for identification", required = true) @Valid @Length(max = MAX_NAME_LENGTH_X2) @RequestParam("name") String name) {
     apisUnarchivedFacade.rename(id, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the unarchived api", operationId = "apis:unarchived:delete")
+  @Operation(summary = "Delete unarchived API", 
+      description = "Remove specific unarchived API from personal workspace with comprehensive cleanup",
+      operationId = "apis:unarchived:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Unarchived API deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Unarchived api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Unarchived API identifier for deletion", required = true) @PathVariable("id") Long id) {
     apisUnarchivedFacade.delete(id);
   }
 
-  @Operation(summary = "Delete all the unarchived api", operationId = "apis:unarchived:delete:all")
+  @Operation(summary = "Delete all unarchived APIs", 
+      description = "Remove all unarchived APIs from personal workspace with comprehensive cleanup",
+      operationId = "apis:unarchived:delete:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "All unarchived APIs deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void deleteAll() {
     apisUnarchivedFacade.deleteAll();
   }
 
-  @Operation(summary = "Query the detail of unarchived api", operationId = "apis:unarchived:detail")
+  @Operation(summary = "Get unarchived API details", 
+      description = "Retrieve comprehensive unarchived API details including configuration and metadata",
+      operationId = "apis:unarchived:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Unarchived API details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Unarchived API not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ApisUnarchivedDetailVo> detail(
-      @Parameter(name = "id", description = "Unarchived api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Unarchived API identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisUnarchivedFacade.detail(id));
   }
 
-  @Operation(summary = "Query the number of unarchived api", operationId = "apis:unarchived:count")
+  @Operation(summary = "Get unarchived API count", 
+      description = "Retrieve total count of unarchived APIs for specific project with comprehensive statistics",
+      operationId = "apis:unarchived:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Unarchived API count retrieved successfully")})
   @GetMapping(value = "/count")
   public ApiLocaleResult<Long> count(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for unarchived API count") Long projectId) {
     return ApiLocaleResult.success(apisUnarchivedFacade.count(projectId));
   }
 
-  @Operation(summary = "Query the list of unarchived api", operationId = "apis:unarchived:list")
+  @Operation(summary = "Query unarchived API list", 
+      description = "Retrieve paginated list of unarchived APIs with comprehensive filtering and search options",
+      operationId = "apis:unarchived:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Unarchived API list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisUnarchivedListVo>> list(
       @Valid @ParameterObject ApisUnarchivedFindDto dto) {

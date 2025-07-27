@@ -22,25 +22,32 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class MockServiceFindDto extends PageQuery {
 
+  @Schema(description = "Mock service identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project ID, required when creating a service", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Mock service name for filtering")
   private String name;
 
   @Length(max = IPV4_LENGTH)
+  @Schema(description = "Node IP address for network-based filtering")
   private String nodeIp;
 
+  @Schema(description = "Node identifier for deployment-based filtering")
   private Long nodeId;
 
+  @Schema(description = "Mock service source type for origin-based filtering")
   private MockServiceSource source;
 
+  @Schema(description = "Creator identifier for ownership-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Creation date for temporal filtering")
   private LocalDateTime createdDate;
 
   @Override

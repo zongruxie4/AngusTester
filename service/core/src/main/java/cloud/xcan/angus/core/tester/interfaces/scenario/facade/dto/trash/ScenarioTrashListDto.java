@@ -18,12 +18,14 @@ import org.hibernate.validator.constraints.Length;
 public class ScenarioTrashListDto extends PageQuery {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for trash scenario filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Scenario name for fuzzy search in trash")
   private String targetName;
 
+  @Schema(description = "Scenario deletion date for temporal filtering")
   private LocalDateTime deletedDate;
 
 }

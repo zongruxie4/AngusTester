@@ -17,12 +17,12 @@ import org.hibernate.validator.constraints.Length;
 public class TagUpdateDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Tag identifier for modification", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(example = "Sprint-1", requiredMode = RequiredMode.REQUIRED)
+  @Schema(example = "Sprint-1", description = "Updated tag name for improved classification", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
 }

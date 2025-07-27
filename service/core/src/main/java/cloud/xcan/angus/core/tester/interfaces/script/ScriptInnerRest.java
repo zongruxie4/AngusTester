@@ -30,8 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScriptInner", description = "Script Query (Internal) - "
-    + "Internal system APIs for programmatic retrieval of test script metadata and execution records")
+@Tag(name = "Script - Internal", description = "Script Internal Management API - Internal system interfaces for programmatic script metadata retrieval and execution record management.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/script")
@@ -40,42 +39,50 @@ public class ScriptInnerRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(summary = "Query the detail of script", operationId = "script:detail:inner")
+  @Operation(summary = "Query script detail",
+      description = "Retrieve comprehensive script configuration and metadata for internal processing.",
+      operationId = "script:detail:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ScriptDetailVo> detail(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.detail(id));
   }
 
-  @Operation(summary = "Query the info of script", operationId = "script:info:inner")
+  @Operation(summary = "Query script info",
+      description = "Retrieve script information and metadata for internal system integration.",
+      operationId = "script:info:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script info retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @GetMapping(value = "/{id}/info")
   public ApiLocaleResult<ScriptInfoVo> info(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for info query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(summary = "Query the info of script", operationId = "script:infos")
+  @Operation(summary = "Query multiple scripts info",
+      description = "Retrieve information for multiple scripts in batch for internal processing.",
+      operationId = "script:infos")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scripts info retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more scripts not found")})
   //@GetMapping(value = "/innerapi/v1/script/infos") -> Conflicted with '/innerapi/v1/script/{id}'
   @GetMapping(value = "/info/byids")
   public ApiLocaleResult<List<ScriptInfosVo>> infos(
-      @Parameter(name = "ids", description = "Script ids", required = true)
+      @Parameter(name = "ids", description = "Script identifiers for batch info query", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     return ApiLocaleResult.success(scriptFacade.infos(ids));
   }
 
-  @Operation(summary = "Query the list of script info", operationId = "script:info:list:inner")
+  @Operation(summary = "Query script info list",
+      description = "Retrieve paginated list of script information for internal system management.",
+      operationId = "script:info:list:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script info list retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "No scripts found")})
   @GetMapping("/info")
   public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(
       @Valid @ParameterObject ScriptFindDto dto) {

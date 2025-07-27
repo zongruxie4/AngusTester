@@ -15,18 +15,20 @@ import org.hibernate.validator.constraints.Length;
 
 @Setter
 @Getter
-
 public class TaskTrashListDto extends PageQuery {
 
+  @Schema(description = "Project identifier for trash item filtering and organization")
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Target item name for partial matching search in trash")
   private String targetName;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target item type for task or sprint classification", requiredMode = RequiredMode.REQUIRED)
   private TaskTargetType targetType;
 
+  @Schema(description = "Item deletion timestamp for timeline filtering")
   private LocalDateTime deletedDate;
 
 }

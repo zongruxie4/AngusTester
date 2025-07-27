@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecutionDebugInner", description = "Execution Scenario Monitoring (Internal) API - Internal service integration for scenario execution monitoring")
+@Tag(name = "Execution Monitor - Internal", description = "Internal Execution Monitor Management - Internal service integration for scenario execution monitoring with comprehensive monitoring capabilities")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec/debug")
@@ -29,9 +29,11 @@ public class ExecMonitorInnerRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(summary = "Start debug execution by monitor", operationId = "exec:debug:monitor:start:inner")
+  @Operation(summary = "Start monitor debug execution", 
+      description = "Initiate monitor-based debug execution with internal service integration and comprehensive monitoring analysis",
+      operationId = "exec:debug:monitor:start:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Started successfully")
+      @ApiResponse(responseCode = "200", description = "Monitor debug execution started successfully")
   })
   @PostMapping(value = "/monitor/start")
   public ApiLocaleResult<ExecDebugDetailVo> startByMonitor(
@@ -39,13 +41,15 @@ public class ExecMonitorInnerRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(summary = "Query the detail of monitor debug execution", operationId = "exec:debug:monitor:detail:inner")
+  @Operation(summary = "Get monitor debug execution details", 
+      description = "Retrieve comprehensive monitor debug execution details for internal service integration",
+      operationId = "exec:debug:monitor:detail:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Monitor debug execution details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Monitor debug execution not found")})
   @GetMapping(value = "/monitor/{id}")
   public ApiLocaleResult<ExecDebugDetailVo> monitorDetail(
-      @Parameter(name = "id", description = "Monitor id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Monitor debug execution identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(execDebugFacade.monitorDetail(id));
   }
 }

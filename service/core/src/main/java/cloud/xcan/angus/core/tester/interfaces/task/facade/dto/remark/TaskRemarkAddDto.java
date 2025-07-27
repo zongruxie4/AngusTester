@@ -8,19 +8,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-/**
- * @author XiaoLong Liu
- */
 @Getter
 @Setter
 @Accessors(chain = true)
 public class TaskRemarkAddDto {
 
   @NotNull
-  @Schema(description = "Task id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Task identifier for remark association and context", requiredMode = RequiredMode.REQUIRED)
   private Long taskId;
 
   @EditorContentLength(max = 6000)
-  @Schema(description = "Task quoteRemark content")
+  @Schema(description = "Task remark content for collaboration and documentation")
   private String content;
 }

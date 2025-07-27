@@ -17,14 +17,14 @@ public class NodeRunnerQueryDto {
   /**
    * Whether to notify other controllers to handle
    */
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Flag to enable broadcast mode for multi-controller coordination", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast = true;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Node identifier for runner process query", requiredMode = RequiredMode.REQUIRED)
   private Long nodeId;
 
-  @Schema(description = "Is it a free node? Default is true")
+  @Schema(description = "Flag indicating whether this is a free/shared node; default is true")
   private Boolean freeNode = true;
 
 }

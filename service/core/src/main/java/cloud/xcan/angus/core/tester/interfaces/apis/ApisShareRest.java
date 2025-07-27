@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisShare", description = "API Sharing Management - Unified management entrance for service and apis resource sharing")
+@Tag(name = "APIs Sharing", description = "APIs Sharing Management - Comprehensive APIs for unified management of service and API resource sharing with access control and collaboration features")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/share")
@@ -44,50 +44,60 @@ public class ApisShareRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(summary = "Add the sharing of api", operationId = "apis:share:add")
+  @Operation(summary = "Create API sharing", 
+      description = "Create new API sharing with comprehensive access control and collaboration settings",
+      operationId = "apis:share:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "API sharing created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<ApisShareAddVo> add(@Valid @RequestBody ApisShareAddDto dto) {
     return ApiLocaleResult.success(apisShareFacade.add(dto));
   }
 
-  @Operation(summary = "Update the sharing of api", operationId = "apis:share:update")
+  @Operation(summary = "Update API sharing", 
+      description = "Update existing API sharing with comprehensive configuration and access control",
+      operationId = "apis:share:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API sharing updated successfully"),
+      @ApiResponse(responseCode = "404", description = "API sharing not found")})
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody ApisShareUpdateDto dto) {
     apisShareFacade.update(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the sharing of api", operationId = "apis:share:delete")
+  @Operation(summary = "Delete API sharing", 
+      description = "Remove API sharing from the system with proper cleanup and access control validation",
+      operationId = "apis:share:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "204", description = "API sharing deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "API sharing not found")})
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Apis sharing ids", required = true)
+      @Parameter(name = "ids", description = "API sharing identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     apisShareFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the sharing detail of api", operationId = "space:share:detail")
+  @Operation(summary = "Get API sharing details", 
+      description = "Retrieve comprehensive API sharing details including access control and collaboration settings",
+      operationId = "space:share:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API sharing details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API sharing not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ApisShareVo> detail(
-      @Parameter(name = "id", description = "Share id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API sharing identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisShareFacade.detail(id));
   }
 
-  @Operation(summary = "Query the sharing list of api", operationId = "apis:share:list")
+  @Operation(summary = "Query API sharing list", 
+      description = "Retrieve paginated list of API sharing with comprehensive filtering and search options",
+      operationId = "apis:share:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API sharing list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisShareVo>> list(
       @Valid @ParameterObject ApisShareFindDto dto) {

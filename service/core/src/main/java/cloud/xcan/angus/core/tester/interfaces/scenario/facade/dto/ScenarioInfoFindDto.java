@@ -21,38 +21,48 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class ScenarioInfoFindDto extends PageQuery {
 
+  @Schema(description = "Scenario identifier for precise query filtering")
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH_X2)
+  @Schema(description = "Scenario name for fuzzy search or filtering")
   private String name;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for scenario filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Scenario execution plugin name for filtering")
   private String plugin;
 
+  @Schema(description = "Scenario script type for format-based filtering")
   private ScriptType scriptType;
 
-  @Schema(description = "Required when app administrators query all scenarios")
+  @Schema(description = "Flag indicating whether this is an admin query for all scenarios")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission scenario")
+  @Schema(description = "Required permission level for scenario access filtering")
   private ScenarioPermission hasPermission;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Scenario creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for modification-based filtering")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Scenario last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
+  @Schema(description = "User identifier who favorited the scenario for filtering")
   private Long favouriteBy;
 
+  @Schema(description = "User identifier who followed the scenario for filtering")
   private Long followBy;
 
   @Override

@@ -35,44 +35,43 @@ public class MockServiceServicesAssocDto {
   //  private MockServiceSource source;
 
   @NotNull
-  @Schema(description = "Services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service identifier for association operation", requiredMode = RequiredMode.REQUIRED)
   private Long serviceId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "The name of an existing projectProject(service)",
-      example = "XCAN-ANGUSAPI.BOOT", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Name of the existing project or service for association", example = "XCAN-ANGUSAPI.BOOT", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotNull
-  @Schema(description = "Specify the mock service running node ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target node identifier for mock service deployment", requiredMode = RequiredMode.REQUIRED)
   private Long nodeId;
 
   @NotNull
   @Port
-  @Schema(description = "Specify the port on which to run the service on the node", example = "80", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service port number for mock service deployment on target node", example = "80", requiredMode = RequiredMode.REQUIRED)
   private Integer servicePort;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "The cloud service edition is fixed at xxx.angusmock.cloud, and the privatized version allows users to freely enter the domain name", example = "service1.angusmock.cloud")
+  @Schema(description = "Service domain configuration with cloud edition fixed format and private edition custom domain support", example = "service1.angusmock.cloud")
   private String serviceDomain;
 
   //@NotEmpty
   @Size(min = 1)
-  @Schema(description = "Import a services's apis collection"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "API identifiers to associate with the service")
   private HashSet<Long> apiIds;
 
   @Valid
-  @Schema(description = "Mock request authentication configuration")
+  @Schema(description = "Mock API request authentication configuration for security management")
   private List<SimpleHttpAuth> apisSecurity;
 
   @Valid
-  @Schema(description = "Mock request CORS configuration")
+  @Schema(description = "Mock API request CORS configuration for cross-origin access control")
   private CorsData apisCors;
 
   @Valid
   //@NotNull
-  @Schema(description = "Mock service configuration")
+  @Schema(description = "Mock service runtime configuration for comprehensive deployment settings")
   private MockServiceSetting setting;
 
 }

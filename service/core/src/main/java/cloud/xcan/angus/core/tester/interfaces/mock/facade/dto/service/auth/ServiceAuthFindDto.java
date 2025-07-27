@@ -20,13 +20,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ServiceAuthFindDto extends PageQuery {
 
   @NotNull
-  @Schema(example = "USER", description = "Authorization object type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for access control filtering", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for precise filtering")
   private Long authObjectId;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Authorization creation date for temporal filtering")
   private Date createdDate;
 
 }

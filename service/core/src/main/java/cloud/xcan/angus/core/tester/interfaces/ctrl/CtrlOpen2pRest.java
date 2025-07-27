@@ -25,12 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Election based on number of tasks being processed and ctrl node resource usage.
- * <p>
- * Used by AngusAgent.
- */
-@Tag(name = "ControllerOpen2p", description = "Private Environment Controller API - On-premises controller status monitoring and agent connection management")
+@Tag(name = "Controller - Private Environment", description = "Private Environment Controller API - On-premises controller status monitoring, leadership election, and agent connection management for private deployment environments")
 @Validated
 @RestController
 @RequestMapping(OPEN2P_DISCOVER_URI_PREFIX)
@@ -39,27 +34,33 @@ public class CtrlOpen2pRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Ping an controller for bind validator", operationId = "ctrl:ping:open2p")
+  @Operation(summary = "Private controller health check ping", 
+      description = "Perform health check ping to validate private environment controller availability and binding status",
+      operationId = "ctrl:ping:open2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Ping successfully")})
+      @ApiResponse(responseCode = "200", description = "Private controller health check successful")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_PING_ENDPOINT_SUFFIX)
   public Principal ping() {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Query and elect controller", operationId = "ctrl:discovery:open2p")
+  @Operation(summary = "Private controller discovery and election", 
+      description = "Query available private environment controllers and perform leadership election based on resource utilization and task load",
+      operationId = "ctrl:discovery:open2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Private controller discovery and election completed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_ENDPOINT_SUFFIX)
   public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(@ParameterObject DiscoveryNodeDto dto) {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Query the connections info of controller", operationId = "ctrl:connections:info:open2p")
+  @Operation(summary = "Private controller connection information", 
+      description = "Retrieve comprehensive connection information for all private environment controller agents and routing channels",
+      operationId = "ctrl:connections:info:open2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Private controller connection information retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/connections/info")
   public ApiLocaleResult<List<ChannelRouter>> connectionsInfo() {

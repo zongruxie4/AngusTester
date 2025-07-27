@@ -19,21 +19,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ApisAuthFindDto extends PageQuery {
 
-  @Schema(description = "Authorization id")
+  @Schema(description = "Authorization identifier for precise query")
   private Long id;
 
   //@NotNull -> Transferring values in filters
-  @Schema(description = "Apis id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API identifier for authorization query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long apisId;
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(example = "USER", description = "Authorization object type for permission target classification", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for permission target filtering")
   private Long authObjectId;
 
-  @Schema(description = "Authorization date")
+  @Schema(description = "Authorization creation date for temporal filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

@@ -14,10 +14,10 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncBaselineUpdateDto {
 
-  @Schema(description="It is required to add a baseline")
+  @Schema(description = "Functional test baseline identifier for update operation")
   private Long id;
 
-  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters")
+  @Schema(description = "Functional test baseline name for identification and organization")
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 
@@ -25,7 +25,7 @@ public class FuncBaselineUpdateDto {
   //private Long planId;
 
   @EditorContentLength
-  @Schema(description = "Baseline information")
+  @Schema(description = "Comprehensive baseline description and documentation")
   private String description;
 
   //@Size(max = MAX_OPT_CASE_NUM)

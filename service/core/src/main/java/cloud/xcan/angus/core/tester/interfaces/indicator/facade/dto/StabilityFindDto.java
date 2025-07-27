@@ -21,25 +21,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class StabilityFindDto extends PageQuery {
 
-  @Schema(description = "Perf indicator id")
+  @Schema(description = "Stability test indicator identifier for precise query")
   private Long id;
 
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"API", "SCENARIO"})
-  @Schema(allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target type for stability test indicator query (API, SCENARIO)", allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
-  @Schema(description = "Required when app administrators query all stability indicator")
+  @Schema(description = "Administrator query flag for accessing all stability test indicators")
   private Boolean admin;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Target name")
+  @Schema(description = "Target name for fuzzy search and filtering")
   private String targetName;
 
-  @Schema(description = "Stability indicator creator id")
+  @Schema(description = "Stability test indicator creator identifier")
   private Long createdBy;
 
-  @Schema(description = "Stability indicator creation time ")
+  @Schema(description = "Stability test indicator creation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Comment", description = "Resource Comments Management - Unified entry point for managing and querying reviews/comments on AngusTester resources (e.g., test cases, tasks)")
+@Tag(name = "Comment Management", description = "Resource Comment Management - Comprehensive APIs for managing and querying comments and reviews on AngusTester resources including test cases, tasks, scripts, and scenarios with hierarchical comment tree support")
 @Validated
 @RestController
 @RequestMapping("/api/v1/comment")
@@ -37,28 +37,34 @@ public class CommentRest {
   @Resource
   private CommentFacade commentFacade;
 
-  @Operation(summary = "Add comment", operationId = "comment:add")
+  @Operation(summary = "Add comment to resource", 
+      description = "Create a new comment on a specific resource with hierarchical support for threaded discussions",
+      operationId = "comment:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Comment created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<AngusCommentDetailVo> add(@Valid @RequestBody AngusCommentAddDto dto) {
     return ApiLocaleResult.success(commentFacade.add(dto));
   }
 
-  @Operation(summary = "Delete comments", operationId = "comment:delete")
+  @Operation(summary = "Delete comment", 
+      description = "Remove a specific comment from the system with proper validation and cleanup",
+      operationId = "comment:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Comment deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Valid @PathVariable("id") @Min(1) @Parameter(name = "id", description = "Comment id", required = true) Long id) {
+      @Valid @PathVariable("id") @Min(1) @Parameter(name = "id", description = "Comment identifier for deletion", required = true) Long id) {
     commentFacade.delete(id);
   }
 
-  @Operation(summary = "Query the tree of comment", operationId = "comment:tree")
+  @Operation(summary = "Query comment tree", 
+      description = "Retrieve hierarchical comment tree for a specific resource with threaded discussion support",
+      operationId = "comment:tree")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Comment tree retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<List<AngusCommentTreeVo>> tree(@Valid @ParameterObject AngusCommentFindDto dto) {
     return ApiLocaleResult.success(commentFacade.tree(dto));

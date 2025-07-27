@@ -18,16 +18,16 @@ import org.hibernate.validator.constraints.Length;
 public class FuncCaseReviewDto {
 
   @NotNull
-  @Schema(description = "Functional testing case id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test case identifier for review operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotNull
   @EnumPart(enumClass = ReviewStatus.class, allowableValues = {"PASSED", "FAILED"})
-  @Schema(description = "The result of case review", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test case review outcome for approval workflow", requiredMode = RequiredMode.REQUIRED)
   private ReviewStatus reviewStatus;
 
   @Length(max = MAX_DESC_LENGTH_X2)
-  @Schema(description = "The remark of case review")
+  @Schema(description = "Test case review comments and feedback")
   private String reviewRemark;
 
 }

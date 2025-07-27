@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Apis", description = "API Management - Central registry for maintaining interface debug value, schema definitions, and version history")
+@Tag(name = "APIs", description = "APIs Management - Comprehensive APIs for interface registry maintenance, schema definitions, version history, and API lifecycle management with debug value tracking")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
@@ -60,10 +60,12 @@ public class ApisRest {
   @Resource
   private ApisFacade apisFacade;
 
-  @Operation(summary = "Archive the unarchived api", operationId = "apis:archive")
+  @Operation(summary = "Archive unarchived APIs", 
+      description = "Move unarchived APIs to archive with comprehensive version control and lifecycle management",
+      operationId = "apis:archive")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Archived Successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "APIs archived successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more APIs not found")
   })
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/archive")
@@ -72,10 +74,12 @@ public class ApisRest {
     return ApiLocaleResult.success(apisFacade.archive(dto));
   }
 
-  @Operation(summary = "Update api", operationId = "apis:update")
+  @Operation(summary = "Update APIs", 
+      description = "Update multiple APIs with comprehensive configuration and validation",
+      operationId = "apis:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "APIs updated successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more APIs not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(
@@ -84,31 +88,37 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace api", operationId = "apis:replace")
+  @Operation(summary = "Replace APIs", 
+      description = "Replace multiple APIs with complete new configuration and comprehensive validation",
+      operationId = "apis:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "APIs replaced successfully")})
   @PutMapping
   public ApiLocaleResult<?> replace(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisReplaceDto> dto) {
     return ApiLocaleResult.success(apisFacade.replace(dto));
   }
 
-  @Operation(summary = "Update the name of api", operationId = "apis:replace:name")
+  @Operation(summary = "Rename API", 
+      description = "Update API name with comprehensive validation and metadata management",
+      operationId = "apis:replace:name")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API name updated successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @PutMapping("/{id}/name")
   public ApiLocaleResult<?> rename(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
-      @Valid @Length(max = MAX_NAME_LENGTH_X2) @Parameter(name = "name", description = "New apis name", required = true) @RequestParam("name") String name) {
+      @Parameter(name = "id", description = "API identifier for name update", required = true) @PathVariable("id") Long id,
+      @Valid @Length(max = MAX_NAME_LENGTH_X2) @Parameter(name = "name", description = "New API name for identification", required = true) @RequestParam("name") String name) {
     apisFacade.rename(id, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Move the api to another service", operationId = "apis:move")
+  @Operation(summary = "Move API to another service", 
+      description = "Relocate API to different service with comprehensive validation and relationship management",
+      operationId = "apis:move")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Move successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "API moved successfully"),
+      @ApiResponse(responseCode = "404", description = "API or target service not found")
   })
   @PatchMapping("/move")
   public ApiLocaleResult<?> move(@Valid @RequestBody ApisMoveDto dto) {
@@ -116,178 +126,207 @@ public class ApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone api", operationId = "apis:clone")
+  @Operation(summary = "Clone API", 
+      description = "Create copy of API with all configuration, schema definitions, and metadata",
+      operationId = "apis:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "201", description = "API cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")
   })
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{id}/clone")
   public ApiLocaleResult<IdKey<Long, Object>> clone(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API identifier for cloning", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisFacade.clone(id));
   }
 
-  @Operation(summary = "Delete api", operationId = "apis:delete")
+  @Operation(summary = "Delete APIs", 
+      description = "Remove multiple APIs from the system with batch operation support and comprehensive cleanup",
+      operationId = "apis:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "APIs deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Api ids", required = true)
+      @Parameter(name = "ids", description = "API identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     apisFacade.delete(ids);
   }
 
-  @Operation(summary = "Modify api status", operationId = "apis:status:update")
+  @Operation(summary = "Update API status", 
+      description = "Modify API status with comprehensive lifecycle management and validation",
+      operationId = "apis:status:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Modified successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "API status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")
   })
   @PatchMapping("/{id}/status")
   public ApiLocaleResult<?> statusUpdate(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "status", description = "Api status", required = true) @RequestParam("status") ApiStatus status) {
+      @Parameter(name = "id", description = "API identifier for status update", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "status", description = "New API status for lifecycle management", required = true) @RequestParam("status") ApiStatus status) {
     apisFacade.statusUpdate(id, status);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace server configuration of the api", operationId = "apis:schema:server:replace")
+  @Operation(summary = "Replace API server configuration", 
+      description = "Update API server configuration with comprehensive validation and deployment settings",
+      operationId = "apis:schema:server:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Services not found")
+      @ApiResponse(responseCode = "200", description = "API server configuration replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "API service not found")
   })
   @PutMapping("/{id}/schema/server")
   public ApiLocaleResult<?> serverReplace(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "API identifier for server configuration", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody Server dto) {
     apisFacade.serverReplace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace all server configuration of the api", operationId = "apis:schema:server:all:replace")
+  @Operation(summary = "Replace all API server configurations", 
+      description = "Update all API server configurations with comprehensive validation and deployment settings",
+      operationId = "apis:schema:server:all:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Api not found")
+      @ApiResponse(responseCode = "200", description = "All API server configurations replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")
   })
   @PutMapping("/{id}/schema/server/all")
   public ApiLocaleResult<?> serverReplaceAll(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "API identifier for server configuration update", required = true) @PathVariable("id") Long id,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<Server> dto) {
     apisFacade.serverReplaceAll(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete servers of the api", operationId = "apis:schema:server:delete")
+  @Operation(summary = "Delete API servers", 
+      description = "Remove specific servers from API configuration with comprehensive cleanup",
+      operationId = "apis:schema:server:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Services not found")
+      @ApiResponse(responseCode = "204", description = "API servers deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "API service not found")
   })
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}/schema/server")
   public void serverDelete(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "urls", description = "Server url", required = true) @RequestParam("urls") Set<String> urls) {
+      @Parameter(name = "id", description = "API identifier for server deletion", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "urls", description = "Server URLs for targeted deletion", required = true) @RequestParam("urls") Set<String> urls) {
     apisFacade.serverDelete(id, urls);
   }
 
-  @Operation(summary = "Query the server configuration of api", description = "Note: `The data source includes "
-          + "the current api request server, servers configuration, and parent services servers configuration`", operationId = "apis:schema:server:all")
+  @Operation(summary = "Get API server configuration", 
+      description = "Retrieve comprehensive server configuration including current API request server, servers configuration, and parent services servers configuration",
+      operationId = "apis:schema:server:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Api not found")
+      @ApiResponse(responseCode = "200", description = "API server configuration retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")
   })
   @GetMapping("/{id}/schema/server")
   public ApiLocaleResult<List<Server>> serverList(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API identifier for server configuration query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisFacade.serverList(id));
   }
 
-  @Operation(summary = "Add mock api association", operationId = "apis:association:mock:apis:add")
+  @Operation(summary = "Add mock API association", 
+      description = "Establish association between API and mock APIs with comprehensive configuration",
+      operationId = "apis:association:mock:apis:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock API association created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/association/mock/apis")
   public ApiLocaleResult<IdKey<Long, Object>> assocMockApisAdd(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "API identifier for mock association", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody ApisAssocMockApisAddDto dto) {
     return ApiLocaleResult.success(apisFacade.assocMockApisAdd(id, dto));
   }
 
-  @Operation(summary = "Query the mock apis information associated with the api", operationId = "apis:association:mock:apis:all")
+  @Operation(summary = "Get mock API associations", 
+      description = "Retrieve comprehensive mock API associations for specific API with detailed information",
+      operationId = "apis:association:mock:apis:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock API associations retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @GetMapping(value = "/{id}/association/mock/apis")
   public ApiLocaleResult<ApisAssocMockApiVo> assocMockApisDetail(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API identifier for mock association query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisFacade.assocMockApis(id));
   }
 
-  @Operation(summary = "Query the detail of api", operationId = "apis:detail")
+  @Operation(summary = "Get API details", 
+      description = "Retrieve comprehensive API details including schema definitions, metadata, and configuration",
+      operationId = "apis:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ApisDetailVo> detail(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "resolveRef", description = "Resolve reference flag, default false", required = true)
+      @Parameter(name = "id", description = "API identifier for detail retrieval", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "resolveRef", description = "Reference resolution flag for enhanced schema processing", required = true)
       @RequestParam(value = "resolveRef", required = false) Boolean resolveRef) {
     return ApiLocaleResult.success(apisFacade.detail(id, resolveRef));
   }
 
-  @Operation(summary = "Query the OpenAPI document of api", operationId = "apis:openapi:detail")
+  @Operation(summary = "Get API OpenAPI document", 
+      description = "Retrieve OpenAPI specification document for specific API with comprehensive format support",
+      operationId = "apis:openapi:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Services not found")
+      @ApiResponse(responseCode = "200", description = "API OpenAPI document retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API service not found")
   })
   @GetMapping(value = "/{id}/openapi")
   public ApiLocaleResult<String> openapiDetail(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "API identifier for OpenAPI document", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject ApisSchemaOpenApiDto dto) {
     return ApiLocaleResult.successData(apisFacade.openapiDetail(id, dto));
   }
 
-  @Operation(summary = "Check api", operationId = "apis:check")
+  @Operation(summary = "Check API existence", 
+      description = "Validate API existence with comprehensive resource validation",
+      operationId = "apis:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API exists and is valid"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/check")
   public ApiLocaleResult<?> check(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API identifier for existence check", required = true) @PathVariable("id") Long id) {
     apisFacade.check(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the detail list of api", operationId = "apis:list:detail")
+  @Operation(summary = "Get API details list", 
+      description = "Retrieve comprehensive details for multiple APIs with batch operation support",
+      operationId = "apis:list:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API details list retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more APIs not found")})
   @GetMapping(value = "/list/detail")
   public ApiLocaleResult<List<ApisDetailVo>> listDetail(
-      @Parameter(name = "ids", description = "Api ids", required = true)
+      @Parameter(name = "ids", description = "API identifiers for detail retrieval", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids,
-      @Parameter(name = "resolveRef", description = "Resolve reference flag, default false", required = true)
+      @Parameter(name = "resolveRef", description = "Reference resolution flag for enhanced schema processing", required = true)
       @RequestParam(value = "resolveRef", required = false) Boolean resolveRef) {
     return ApiLocaleResult.success(apisFacade.listDetail(ids, resolveRef));
   }
 
-  @Operation(summary = "Query the basic information of api", operationId = "apis:list")
+  @Operation(summary = "Query API list", 
+      description = "Retrieve paginated list of APIs with comprehensive filtering, search options, and basic information",
+      operationId = "apis:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisInfoListVo>> list(
       @Valid @ParameterObject ApisInfoFindDto dto) {
     return ApiLocaleResult.success(apisFacade.list(dto));
   }
 
-  @Operation(summary = "Export the OpenAPI specification of api", operationId = "apis:openapi:export")
+  @Operation(summary = "Export API OpenAPI specification", 
+      description = "Export API to OpenAPI specification format with comprehensive configuration options and format support",
+      operationId = "apis:openapi:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Exported Successfully")})
+      @ApiResponse(responseCode = "201", description = "API OpenAPI specification exported successfully")})
   @GetMapping(value = "/{id}/openapi/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Parameter(name = "id", description = "Api id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "API identifier for OpenAPI export", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject ApisExportDto dto, HttpServletResponse response) {
     return apisFacade.export(id, dto, response);
   }

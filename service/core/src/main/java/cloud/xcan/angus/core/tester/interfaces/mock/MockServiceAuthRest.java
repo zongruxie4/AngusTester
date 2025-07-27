@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockServiceAuth", description = "Mock Service Access Control - Manage data permissions and authorization policies for mock services")
+@Tag(name = "Mock Service Authorization", description = "Mock Service Access Control - Comprehensive management of data permissions and authorization policies for mock services with granular access control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/service")
@@ -42,96 +42,112 @@ public class MockServiceAuthRest {
   @Resource
   private MockServiceAuthFacade mockServiceAuthFacade;
 
-  @Operation(summary = "Add the authorization of mock service", operationId = "mock:service:auth:add")
+  @Operation(summary = "Add mock service authorization",
+      description = "Create new authorization policy for mock service with comprehensive permission management",
+      operationId = "mock:service:auth:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock service authorization created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "id", description = "Mock service identifier for authorization assignment", required = true) @PathVariable("id") Long serviceId,
       @Valid @RequestBody ServiceAddAuthDto dto) {
     return ApiLocaleResult.success(mockServiceAuthFacade.add(serviceId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of mock service", operationId = "mock:service:auth:replace")
+  @Operation(summary = "Replace mock service authorization",
+      description = "Update existing authorization policy for mock service with comprehensive permission modifications",
+      operationId = "mock:service:auth:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Mock service authorization replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock service authorization not found")
   })
   @PutMapping("/auth/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Mock service authorization id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Mock service authorization identifier for replacement", required = true) @PathVariable("id") Long id,
       @RequestBody ServiceAuthReplaceDto dto) {
     mockServiceAuthFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the authorization of mock service", operationId = "mock:service:auth:enabled")
+  @Operation(summary = "Enable or disable mock service authorization",
+      description = "Toggle authorization status for mock service to control access availability",
+      operationId = "mock:service:auth:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock service authorization status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Mock service identifier for authorization status control", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "enabled", description = "Authorization status flag for enable/disable control", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     mockServiceAuthFacade.enabled(serviceId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of mock service", operationId = "mock:service:auth:status")
+  @Operation(summary = "Query mock service authorization status",
+      description = "Retrieve current authorization status for mock service to verify access control state",
+      operationId = "mock:service:auth:status")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock service authorization status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock service not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "Mock service identifier for status query", required = true) @PathVariable("id") Long serviceId) {
     return ApiLocaleResult.success(mockServiceAuthFacade.status(serviceId));
   }
 
-  @Operation(summary = "Delete the authorization of mock service", operationId = "mock:service:auth:delete")
+  @Operation(summary = "Delete mock service authorization",
+      description = "Remove authorization policy from mock service with comprehensive cleanup",
+      operationId = "mock:service:auth:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Mock service authorization deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/auth/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Mock service authorization id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock service authorization identifier for deletion", required = true) @PathVariable("id") Long id) {
     mockServiceAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission of mock datasource", operationId = "mock:service:user:auth")
+  @Operation(summary = "Query user authorization permissions for mock service",
+      description = "Retrieve comprehensive user authorization permissions for mock service with administrative override support",
+      operationId = "mock:service:user:auth")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "User authorization permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock service or user not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<MockServicePermission>> userAuth(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Mock service identifier for permission query", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "userId", description = "User identifier for permission query", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "admin", description = "Administrative permission flag for enhanced access control") Boolean admin) {
     return ApiLocaleResult.success(mockServiceAuthFacade.userAuth(serviceId, userId, admin));
   }
 
-  @Operation(summary = "Check the user authorization permission of mock service", operationId = "mock:service:auth:check")
+  @Operation(summary = "Check user authorization permission for mock service",
+      description = "Verify specific authorization permission for user on mock service with comprehensive validation",
+      operationId = "mock:service:auth:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed")})
+      @ApiResponse(responseCode = "200", description = "User authorization permission verified successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Mock service authorized permission", required = true) @PathVariable("authPermission") MockServicePermission permission) {
+      @Parameter(name = "id", description = "Mock service identifier for permission verification", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "userId", description = "User identifier for permission verification", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "authPermission", description = "Specific authorization permission to verify", required = true) @PathVariable("authPermission") MockServicePermission permission) {
     mockServiceAuthFacade.authCheck(serviceId, permission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the authorization list of mock service", operationId = "mock:service:auth:list")
+  @Operation(summary = "Query mock service authorization list",
+      description = "Retrieve paginated list of authorization policies for mock service with comprehensive filtering",
+      operationId = "mock:service:auth:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock service authorization list retrieved successfully")})
   @GetMapping("/{id}/auth")
   public ApiLocaleResult<PageResult<ServiceAuthVo>> list(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Mock service identifier for authorization list query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject ServiceAuthFindDto dto) {
     return ApiLocaleResult.success(mockServiceAuthFacade.list(id, dto));
   }

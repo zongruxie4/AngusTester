@@ -23,44 +23,42 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ProjectReplaceDto {
 
-  @Schema(description="Modify project id. Create a new project when the value is null")
+  @Schema(description = "Project identifier for replacement operation; null indicates creation of a new project")
   private Long id;
 
-  @Schema(description = "Create project type, default `AGILE`", example = "AGILE")
+  @Schema(description = "Project type defining the development methodology and workflow", example = "AGILE")
   private ProjectType type;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Project name, must be unique", example = "DemoProject", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project name for identification and management, must be unique within the organization", example = "DemoProject", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
-  @Schema(description = "Project avatar")
+  @Schema(description = "Project avatar URL for visual identification")
   @Length(max = MAX_URL_LENGTH_X2)
   private String avatar;
 
   @NotNull
-  @Schema(description = "Owner id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project owner identifier for responsibility assignment", requiredMode = RequiredMode.REQUIRED)
   private Long ownerId;
 
   @NotNull
-  @Schema(description = "Project start date, Determine the start times of the research and testing activities"
-      + " to ensure completion within the project cycle", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project start date for timeline planning and milestone tracking", example = "2023-06-10 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime startDate;
 
   @NotNull
-  @Schema(description = "Project deadline date, Determine the end times of the research and testing activities"
-      + " to ensure completion within the project cycle", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project deadline date for delivery planning and resource allocation", example = "2029-06-20 00:00:00", requiredMode = RequiredMode.REQUIRED)
   private LocalDateTime deadlineDate;
 
-  @Schema(description = "Project description")
+  @Schema(description = "Project description for detailed information and requirements")
   @EditorContentLength
   private String description;
 
-  @Schema(description = "Whether to import project example data, effective only when creating a new project")
+  @Schema(description = "Flag to import example data for rapid project setup; effective only when creating a new project")
   private boolean importExample = false;
 
   @NotNull
-  @Schema(description = "Project member type and ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project member mapping by organization target type and member identifiers", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds;
 
 }

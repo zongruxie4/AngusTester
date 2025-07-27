@@ -21,13 +21,12 @@ public class ServicesSyncTestDto {
 
   @NotEmpty
   @Length(max = MAX_URL_LENGTH_X2)
-  @Schema(example = "http://192.168.0.101:1807/v2/api-docs?group=Api", requiredMode = RequiredMode.REQUIRED,
-      description = "Synchronize OpenAPI docs url. After configured, the apis will be read from that address to the current services")
+  @Schema(description = "OpenAPI documentation URL for synchronization testing", example = "http://192.168.0.101:1807/v2/api-docs?group=Api", requiredMode = RequiredMode.REQUIRED)
   private String apiDocsUrl;
 
   @Valid
   @Length(max = MAX_HTTP_AUTH_PARAM_NUM)
-  @Schema(description = "Authentication configuration. It is required when the synchronization url is protected")
+  @Schema(description = "Authentication configuration for protected synchronization URLs")
   private List<SimpleHttpAuth> auths;
 
 }

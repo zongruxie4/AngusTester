@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeDomain", description = "Cloud Subdomain Registry - Lifecycle management of subdomains for cloud service nodes (e.g., AliCloud hosted zones)")
+@Tag(name = "Node Domain", description = "Cloud Subdomain Management - Lifecycle management of subdomains for cloud service nodes, supporting AliCloud hosted zones and domain registration workflows.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node/domain")
@@ -41,19 +41,23 @@ public class NodeDomainRest {
   @Resource
   private NodeDomainFacade nodeDomainFacade;
 
-  @Operation(summary = "Add node domains ", operationId = "node:domain:add")
+  @Operation(summary = "Create subdomain for cloud service node",
+      description = "Register a new subdomain for cloud service node to enable domain-based service routing.",
+      operationId = "node:domain:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Subdomain created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody NodeDomainAddDto dto) {
     return ApiLocaleResult.success(nodeDomainFacade.add(dto));
   }
 
-  @Operation(summary = "Update node domains", operationId = "node:domain:update")
+  @Operation(summary = "Update subdomain configuration for cloud service node",
+      description = "Modify existing subdomain properties and configuration settings.",
+      operationId = "node:domain:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Subdomain updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Subdomain not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody NodeDomainUpdateDto dto) {
@@ -61,28 +65,34 @@ public class NodeDomainRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete node domains", operationId = "node:domain:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete subdomain for cloud service node",
+      description = "Remove subdomain registration to disable domain-based service routing.",
+      operationId = "node:domain:delete")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Subdomain deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
   public void delete(
-      @Parameter(name = "id", description = "Domain id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Subdomain identifier for deletion", required = true) @PathVariable("id") Long id) {
     nodeDomainFacade.delete(id);
   }
 
-  @Operation(summary = "Query the detail of node domain", operationId = "node:domain:detail")
+  @Operation(summary = "Query subdomain details for cloud service node",
+      description = "Retrieve detailed information of a specific subdomain configuration.",
+      operationId = "node:domain:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Subdomain details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Subdomain not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<NodeDomainDetailVo> detail(
-      @Parameter(name = "id", description = "Domain id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Subdomain identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeDomainFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of node domain", operationId = "node:domain:list")
+  @Operation(summary = "Query subdomain list for cloud service nodes",
+      description = "Retrieve paginated list of subdomains with filtering and search capabilities.",
+      operationId = "node:domain:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Subdomain list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<NodeDomainDetailVo>> list(
       @Valid @ParameterObject NodeDomainFindDto dto) {

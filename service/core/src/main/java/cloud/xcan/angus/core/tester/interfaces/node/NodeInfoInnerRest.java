@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeInfoInner", description = "Internal Service Node Management API - Management interface for internal service invocation node information")
+@Tag(name = "Node Info - Internal", description = "Internal Node Management API - Internal service interfaces for node information management and agent control operations.")
 @Validated
 @RestController
 public class NodeInfoInnerRest {
@@ -36,31 +36,37 @@ public class NodeInfoInnerRest {
   @Resource
   private NodeInfoFacade nodeInfoFacade;
 
-  @Operation(summary = "Delete nodes information", operationId = "node:info:delete:inner")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete node information records",
+      description = "Batch delete node information records by their identifiers for internal service operations.",
+      operationId = "node:info:delete:inner")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Node information deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = NODE_INFO_DELETE_DOOR_ENDPOINT)
   public void delete(
-      @Parameter(name = "ids", description = "Node ids", required = true)
+      @Parameter(name = "ids", description = "Node identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     nodeInfoFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the online agent node by door api", operationId = "node:info:agent:online:inner")
+  @Operation(summary = "Query online agent nodes",
+      description = "Retrieve list of online agent nodes by their identifiers for internal service communication.",
+      operationId = "node:info:agent:online:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Online agent nodes retrieved successfully")})
   @GetMapping(value = NODE_ONLINE_ENDPOINT_PREFIX)
   public ApiLocaleResult<Set<Long>> agentOnlineNode(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     return ApiLocaleResult.success(nodeInfoFacade.agentOnlineNode(ids));
   }
 
-  @Operation(summary = "Query the installation cmd of node agent by door api", operationId = "node:agent:install:cmd:inner")
+  @Operation(summary = "Query agent installation command",
+      description = "Retrieve agent installation command for a specific node to enable automated deployment.",
+      operationId = "node:agent:install:cmd:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Agent installation command retrieved successfully")})
   @GetMapping(value = AGENT_INSTALL_DOOR_ENDPOINT)
   public ApiLocaleResult<AgentInstallCmd> agentInstallCmdByDoor(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for agent installation", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeInfoFacade.agentInstallCmd(id));
   }
 

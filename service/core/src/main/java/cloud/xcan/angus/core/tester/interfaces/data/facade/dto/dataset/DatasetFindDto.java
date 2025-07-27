@@ -19,23 +19,29 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class DatasetFindDto extends PageQuery {
 
+  @Schema(description = "Dataset identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for dataset query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Dataset name for fuzzy search and filtering")
   private String name;
 
+  @Schema(description = "Creator identifier for dataset ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Dataset creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for dataset update tracking")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Dataset last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
   @Override

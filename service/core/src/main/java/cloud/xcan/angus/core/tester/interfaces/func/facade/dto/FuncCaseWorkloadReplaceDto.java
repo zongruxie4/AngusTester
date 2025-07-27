@@ -17,6 +17,6 @@ public class FuncCaseWorkloadReplaceDto {
 
   @DecimalMin(value = "0.01")
   @DecimalMax(value = "" + MAX_WORKLOAD_NUM)
-  @Schema(name = "workload", description = "Task story point or work hours, allow clear story point or work hours")
+  @Schema(name = "workload", description = "Test case story points or work hours with clear functionality")
   private BigDecimal workload;
 }

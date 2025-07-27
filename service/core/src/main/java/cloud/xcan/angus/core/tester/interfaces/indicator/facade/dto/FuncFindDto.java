@@ -21,25 +21,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class FuncFindDto extends PageQuery {
 
-  @Schema(description = "Functionality indicator id")
+  @Schema(description = "Functional test indicator identifier for precise query")
   private Long id;
 
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"SERVICE", "API"})
-  @Schema(allowableValues = "SERVICE,API", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target type for functional test indicator query (SERVICE, API)", allowableValues = "SERVICE,API", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
-  @Schema(description = "Required when app administrators query all functionality indicator")
+  @Schema(description = "Administrator query flag for accessing all functional test indicators")
   private Boolean admin;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Target name")
+  @Schema(description = "Target name for fuzzy search and filtering")
   private String targetName;
 
-  @Schema(description = "Functionality indicator creator id")
+  @Schema(description = "Functional test indicator creator identifier")
   private Long createdBy;
 
-  @Schema(description = "Functionality indicator creation time")
+  @Schema(description = "Functional test indicator creation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

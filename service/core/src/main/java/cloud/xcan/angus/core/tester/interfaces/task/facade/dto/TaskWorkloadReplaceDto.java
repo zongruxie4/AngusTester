@@ -17,6 +17,6 @@ public class TaskWorkloadReplaceDto {
 
   @DecimalMin(value = "0.01")
   @DecimalMax(value = "" + MAX_WORKLOAD_NUM)
-  @Schema(description = "Task story point or work hours, allow clear story point or work hours by empty value")
+  @Schema(description = "Task story point or work hours for effort estimation. Empty value clears the current workload")
   private BigDecimal workload;
 }

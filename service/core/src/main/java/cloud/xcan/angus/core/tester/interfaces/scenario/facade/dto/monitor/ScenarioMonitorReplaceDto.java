@@ -23,32 +23,32 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ScenarioMonitorReplaceDto {
 
-  @Schema(description="Modify monitor id. Create a new monitor when the value is null")
+  @Schema(description = "Monitoring configuration identifier for replacement; null indicates creation of new configuration")
   private Long id;
 
-  @Schema(description = "Monitor scenario id, required when creating a new monitor")
+  @Schema(description = "Scenario identifier for monitoring configuration association; required when creating new configuration")
   private Long scenarioId;
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Monitor name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Monitoring configuration name for identification and management", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Monitor description")
+  @Schema(description = "Monitoring configuration description for detailed information")
   private String description;
 
   @Valid
   @NotNull
-  @Schema(description = "Monitor time setting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Monitoring schedule configuration for execution timing and frequency", requiredMode = RequiredMode.REQUIRED)
   private MonitorTimeSetting timeSetting;
 
-  @Schema(description = "Monitor server setting")
+  @Schema(description = "Target server configuration for monitoring execution")
   private List<Server> serverSetting;
 
   @Valid
   @NotNull
-  @Schema(description = "Monitor notice setting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Alert notification configuration for issue reporting", requiredMode = RequiredMode.REQUIRED)
   private NoticeSetting noticeSetting;
 
 }

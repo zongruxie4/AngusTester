@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Tag", description = "Project Tag Management - Manage organizational tags and classification systems for project resources")
+@Tag(name = "Tag", description = "Project Tag Management API - Comprehensive classification system for organizing and categorizing project resources with flexible tagging capabilities.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/tag")
@@ -44,18 +44,18 @@ public class TagRest {
   @Resource
   private TagFacade tagFacade;
 
-  @Operation(summary = "Add the tag", operationId = "tag:add")
+  @Operation(summary = "Create new tags", operationId = "tag:add", description = "Create multiple new tags for project resource classification and organization.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Tags created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(@Valid @RequestBody TagAddDto dto) {
     return ApiLocaleResult.success(tagFacade.add(dto));
   }
 
-  @Operation(summary = "Update the tag", operationId = "tag:update")
+  @Operation(summary = "Update existing tags", operationId = "tag:update", description = "Update multiple tag names and properties for improved classification.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully")})
+      @ApiResponse(responseCode = "200", description = "Tags updated successfully")})
   @PatchMapping
   public ApiLocaleResult<?> update(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<TagUpdateDto> dto) {
@@ -63,39 +63,39 @@ public class TagRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import the tag examples", operationId = "tag:example:import")
+  @Operation(summary = "Import tag examples", operationId = "tag:example:import", description = "Import predefined tag examples to jumpstart project classification system.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Tag examples imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for tag example import", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(tagFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete the tags", operationId = "tag:delete")
+  @Operation(summary = "Delete tags", operationId = "tag:delete", description = "Permanently remove multiple tags from the project classification system.")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Tags deleted successfully")})
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Case tag ids", required = true)
+      @Parameter(name = "ids", description = "Tag identifiers for deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     tagFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of tag", operationId = "tag:detail")
+  @Operation(summary = "Get tag details", operationId = "tag:detail", description = "Retrieve comprehensive details of a specific tag including usage statistics.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Tag details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Tag not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<TagVo> detail(
-      @Parameter(name = "id", description = "Tag id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Tag identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(tagFacade.detail(id));
   }
 
-  @Operation(summary = "Query the tag list", operationId = "tag:list")
+  @Operation(summary = "List tags", operationId = "tag:list", description = "Retrieve paginated list of project tags with filtering and search capabilities.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Tag list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<TagVo>> list(@Valid TagFindDto dto) {
     return ApiLocaleResult.success(tagFacade.list(dto));

@@ -16,10 +16,11 @@ import org.hibernate.validator.constraints.Length;
 public class ScenarioFavouriteFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for favorite scenario filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Scenario name for fuzzy search in favorite scenarios")
   private String scenarioName;
 
 }

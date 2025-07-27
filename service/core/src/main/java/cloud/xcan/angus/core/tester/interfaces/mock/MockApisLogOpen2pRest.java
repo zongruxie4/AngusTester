@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Tag(name = "MockApisLogOpen2p", description = "Upload Mock Request Logs - Internal endpoints for storing mock request/response logs within AngusMockService")
+@Tag(name = "Mock Apis Log - Private Environment", description = "Mock Request Log Upload - Internal endpoints for storing mock request/response logs within AngusMockService with comprehensive logging and analytics capabilities")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock")
@@ -28,9 +28,11 @@ public class MockApisLogOpen2pRest {
   @Resource
   private MockApisLogOpen2pFacade mockApisLogOpen2pFacade;
 
-  @Operation(summary = "Add mock apis request logs", operationId = "mock:apis:log:add:openapi2p")
+  @Operation(summary = "Upload mock API request logs for analytics",
+      description = "Store comprehensive mock API request and response logs for performance analysis and debugging purposes",
+      operationId = "mock:apis:log:add:openapi2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock API request logs uploaded successfully")})
   @PostMapping(value = "/apis/log")
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
       @Valid @RequestBody List<ApisRequestLog> dto) {

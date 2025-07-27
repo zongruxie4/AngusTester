@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScriptAuth", description = "Test Script Authorization Management - Unified entry for managing data access permissions of test script")
+@Tag(name = "Script Authorization", description = "Script Authorization Management API - Comprehensive access control system for test script permissions and user authorization management.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")
@@ -47,116 +47,136 @@ public class ScriptAuthRest {
   @Resource
   private ScriptAuthFacade scriptAuthFacade;
 
-  @Operation(summary = "Add the authorization of script", operationId = "script:auth:add")
+  @Operation(summary = "Add script authorization",
+      description = "Create new authorization configuration for script access control.",
+      operationId = "script:auth:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Script authorization created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "script id", required = true) @PathVariable("id") Long scriptId,
+      @Parameter(name = "id", description = "Script identifier for authorization assignment", required = true) @PathVariable("id") Long scriptId,
       @Valid @RequestBody ScriptAuthAddDto dto) {
     return ApiLocaleResult.success(scriptAuthFacade.add(scriptId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of script", operationId = "script:auth:replace")
+  @Operation(summary = "Replace script authorization",
+      description = "Update existing authorization configuration with new permission settings.",
+      operationId = "script:auth:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Script authorization replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Script authorization not found")
   })
   @PutMapping("/auth/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Script authorization id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Authorization record identifier for replacement", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody ScriptAuthReplaceDto dto) {
     scriptAuthFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the authorization of script", operationId = "script:auth:enabled")
+  @Operation(summary = "Enable or disable script authorization",
+      description = "Toggle authorization control status for script access management.",
+      operationId = "script:auth:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully")})
+      @ApiResponse(responseCode = "200", description = "Script authorization status updated successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Script identifier for authorization control", required = true) @PathVariable("id") Long scriptId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Authorization control status flag", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     scriptAuthFacade.enabled(scriptId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of script", operationId = "script:auth:status")
+  @Operation(summary = "Query script authorization status",
+      description = "Retrieve current authorization control status for script access.",
+      operationId = "script:auth:status")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script authorization status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId) {
+      @Parameter(name = "id", description = "Script identifier for status query", required = true) @PathVariable("id") Long scriptId) {
     return ApiLocaleResult.success(scriptAuthFacade.status(scriptId));
   }
 
-  @Operation(summary = "Delete the authorization of script", operationId = "script:auth:delete")
+  @Operation(summary = "Delete script authorization",
+      description = "Remove authorization configuration and revoke access permissions.",
+      operationId = "script:auth:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Script authorization deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/auth/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Script authorization id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Authorization record identifier for deletion", required = true) @PathVariable("id") Long id) {
     scriptAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission", operationId = "script:user:auth")
+  @Operation(summary = "Query user script permissions",
+      description = "Retrieve specific user's authorization permissions for script access.",
+      operationId = "script:user:auth")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "User script permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script or user not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<ScriptPermission>> userAuth(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Script identifier for permission query", required = true) @PathVariable("id") Long scriptId,
+      @Parameter(name = "userId", description = "User identifier for permission query", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "admin", description = "Flag to include administrator permissions in query") Boolean admin) {
     return ApiLocaleResult.success(scriptAuthFacade.userAuth(scriptId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission", operationId = "script:user:auth:current")
+  @Operation(summary = "Query current user script permissions",
+      description = "Retrieve current authenticated user's authorization permissions for script access.",
+      operationId = "script:user:auth:current")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user script permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/auth/current")
   public ApiLocaleResult<ScriptAuthCurrentVo> currentUserAuth(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Script identifier for current user permission query", required = true) @PathVariable("id") Long scriptId,
+      @Parameter(name = "admin", description = "Flag to include administrator permissions in query") Boolean admin) {
     return ApiLocaleResult.success(scriptAuthFacade.currentUserAuth(scriptId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission", operationId = "script:user:auth:current:batch")
+  @Operation(summary = "Query current user permissions for multiple scripts",
+      description = "Retrieve current authenticated user's authorization permissions for multiple scripts.",
+      operationId = "script:user:auth:current:batch")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user script permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more scripts not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/user/auth/current")
   public ApiLocaleResult<Map<Long, ScriptAuthCurrentVo>> currentUserAuths(
-      @Parameter(name = "scriptIds", description = "Script ids", required = true) @RequestParam(value = "scriptIds") @NotEmpty HashSet<Long> scriptIds,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "scriptIds", description = "Script identifiers for batch permission query", required = true) @RequestParam(value = "scriptIds") @NotEmpty HashSet<Long> scriptIds,
+      @Parameter(name = "admin", description = "Flag to include administrator permissions in query") Boolean admin) {
     return ApiLocaleResult.success(scriptAuthFacade.currentUserAuths(scriptIds, admin));
   }
 
-  @Operation(summary = "Check the user authorization or administrator permission of script", operationId = "script:auth:check")
+  @Operation(summary = "Check user script permission",
+      description = "Verify specific user's authorization permission or administrator access for script.",
+      operationId = "script:auth:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed")})
+      @ApiResponse(responseCode = "200", description = "User permission verification successful")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long scriptId,
-      @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Script authorized permission", required = true) @PathVariable("authPermission") ScriptPermission permission) {
+      @Parameter(name = "id", description = "Script identifier for permission verification", required = true) @PathVariable("id") Long scriptId,
+      @Parameter(name = "userId", description = "User identifier for permission verification", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "authPermission", description = "Required permission level for verification", required = true) @PathVariable("authPermission") ScriptPermission permission) {
     scriptAuthFacade.authCheck(scriptId, permission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of script authorization", operationId = "script:auth:list")
+  @Operation(summary = "Query script authorization list",
+      description = "Retrieve paginated list of script authorization configurations with filtering capabilities.",
+      operationId = "script:auth:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Script authorization list retrieved successfully")})
   @GetMapping("/auth")
   public ApiLocaleResult<PageResult<ScriptAuthVo>> list(
       @Valid @ParameterObject ScriptAuthFindDto dto) {

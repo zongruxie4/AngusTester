@@ -46,7 +46,7 @@ import cloud.xcan.angus.core.tester.domain.node.info.NodeInfo;
 import cloud.xcan.angus.core.tester.domain.node.role.NodeRole;
 import cloud.xcan.angus.core.tester.infra.iaas.EcsClient;
 import cloud.xcan.angus.core.tester.infra.iaas.InstanceChargeType;
-import cloud.xcan.angus.core.tester.infra.util.SshUtil;
+import cloud.xcan.angus.core.tester.infra.util.SSHUtil;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.remote.message.ProtocolException;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
@@ -613,7 +613,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
 
         AgentInstallCmd installCmd = nodeInfoCmd.agentInstallCmd(nodeDb.getId());
 
-        SshUtil ssh = new SshUtil(emptySafe(nodeDb.getPublicIp(), nodeDb.getIp()),
+        SSHUtil ssh = new SSHUtil(emptySafe(nodeDb.getPublicIp(), nodeDb.getIp()),
             nodeDb.getSshPort(), nodeDb.getUsername(), decryptHostPassword(nodeDb.getPassword()));
         boolean installed = false;
         String resultMessage = "Unsupported OS";
@@ -683,7 +683,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       @Override
       protected Void process() {
         try {
-          SshUtil ssh = new SshUtil(emptySafe(nodeDb.getPublicIp(), nodeDb.getIp()),
+          SSHUtil ssh = new SSHUtil(emptySafe(nodeDb.getPublicIp(), nodeDb.getIp()),
               nodeDb.getSshPort(), nodeDb.getUsername(), decryptHostPassword(nodeDb.getPassword()));
           String testLinuxOrMacOs = ssh.run("uname -s");
           if ("Linux".equalsIgnoreCase(testLinuxOrMacOs)) {
@@ -721,7 +721,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
           if (testConnectionNodeConfig0(emptySafe(node.getPublicIp(), node.getIp()),
               node.getSshPort(), node.getUsername(), decryptHostPassword(node.getPassword()))) {
             AgentInstallCmd installCmd = nodeInfoCmd.agentInstallCmd(node.getId());
-            SshUtil ssh = new SshUtil(emptySafe(node.getPublicIp(), node.getIp()),
+            SSHUtil ssh = new SSHUtil(emptySafe(node.getPublicIp(), node.getIp()),
                 node.getSshPort(), node.getUsername(), decryptHostPassword(node.getPassword()));
             try {
               String result = runLinuxAgentInstallCmd(installCmd, ssh, node);
@@ -750,7 +750,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       String password) {
     boolean result = NetworkUtils.ping(ip);
     BizAssert.assertTrue(result, NODE_IP_NOT_AVAILABLE_T, new Object[]{ip});
-    SshUtil sshUtil = new SshUtil(ip, sshPort, username, password);
+    SSHUtil sshUtil = new SSHUtil(ip, sshPort, username, password);
     BizAssert.assertTrue(sshUtil.isAvailable(), NODE_CONN_ERROR_T, new Object[]{ip, sshPort});
   }
 
@@ -764,7 +764,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       String username, String password) {
     boolean result = NetworkUtils.ping(ip);
     if (result) {
-      SshUtil sshUtil = new SshUtil(ip, sshPort, username, password);
+      SSHUtil sshUtil = new SSHUtil(ip, sshPort, username, password);
       return sshUtil.isAvailable();
     }
     return false;
@@ -792,7 +792,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     nodeRoleCmd.replace0(roles);
   }
 
-  private String runLinuxAgentInstallCmd(AgentInstallCmd cmdVo, SshUtil ssh, Node node)
+  private String runLinuxAgentInstallCmd(AgentInstallCmd cmdVo, SSHUtil ssh, Node node)
       throws Exception {
     ssh.run(cmdVo.getLinuxDownloadInstallScriptCmd());
     ssh.run("chmod +x " + cmdVo.getLinuxInstallScriptName());
@@ -801,7 +801,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
     return result;
   }
 
-  private void runLinuxAgentRestartCmd(SshUtil ssh, Node node) throws Exception {
+  private void runLinuxAgentRestartCmd(SSHUtil ssh, Node node) throws Exception {
     ssh.run("source /etc/profile && sh ${AGENT_HOME}/shutdown-agent.sh");
     String result = ssh.run("source /etc/profile && sh ${AGENT_HOME}/startup-agent.sh");
     log.info("Restart node {} agent on linux result:{}", node.getId(), result);

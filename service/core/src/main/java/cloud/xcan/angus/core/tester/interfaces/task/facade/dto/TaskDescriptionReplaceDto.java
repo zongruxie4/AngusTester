@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 public class TaskDescriptionReplaceDto {
 
   @Length(max = MAX_REMARK_LENGTH_X30)
-  @Schema(description = "Task description, allow clear description by empty value")
+  @Schema(description = "Detailed task description for requirements and context. Empty value clears the current description")
   private String description;
 
 }

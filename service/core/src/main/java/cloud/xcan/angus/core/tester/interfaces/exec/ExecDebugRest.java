@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecutionDebug", description = "Scenario & Script Debugging API - Execution debugging and result inspection interface")
+@Tag(name = "Execution Debug", description = "Scenario & Script Debugging Management - Comprehensive APIs for execution debugging, result inspection, and step-by-step analysis with real-time debugging capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec/debug")
@@ -32,18 +32,22 @@ public class ExecDebugRest {
   @Resource
   private ExecDebugFacade execDebugFacade;
 
-  @Operation(summary = "Start execution debug", operationId = "exec:debug:start")
+  @Operation(summary = "Start execution debug session", 
+      description = "Initiate a new execution debug session with comprehensive debugging configuration and real-time monitoring",
+      operationId = "exec:debug:start")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Started successfully")
+      @ApiResponse(responseCode = "200", description = "Execution debug session started successfully")
   })
   @PostMapping("/start")
   public ApiLocaleResult<ExecDebugDetailVo> start(@Valid @RequestBody ExecDebugStartDto dto) {
     return ApiLocaleResult.success(execDebugFacade.start(dto));
   }
 
-  @Operation(summary = "Start debug execution by script", operationId = "exec:debug:script:start")
+  @Operation(summary = "Start debug execution by script", 
+      description = "Initiate script-based debug execution with comprehensive script analysis and debugging capabilities",
+      operationId = "exec:debug:script:start")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Started successfully")
+      @ApiResponse(responseCode = "200", description = "Script debug execution started successfully")
   })
   @PostMapping(value = "/script/start")
   public ApiLocaleResult<ExecDebugDetailVo> startByScript(
@@ -51,9 +55,11 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScript(dto));
   }
 
-  @Operation(summary = "Start debug execution by scenario", operationId = "exec:debug:scenario:start")
+  @Operation(summary = "Start debug execution by scenario", 
+      description = "Initiate scenario-based debug execution with comprehensive scenario analysis and debugging capabilities",
+      operationId = "exec:debug:scenario:start")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Started successfully")
+      @ApiResponse(responseCode = "200", description = "Scenario debug execution started successfully")
   })
   @PostMapping(value = "/scenario/start")
   public ApiLocaleResult<ExecDebugDetailVo> startByScenario(
@@ -61,9 +67,11 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByScenario(dto));
   }
 
-  @Operation(summary = "Start debug execution by monitor", operationId = "exec:debug:monitor:start")
+  @Operation(summary = "Start debug execution by monitor", 
+      description = "Initiate monitor-based debug execution with comprehensive monitoring analysis and debugging capabilities",
+      operationId = "exec:debug:monitor:start")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Started successfully")
+      @ApiResponse(responseCode = "200", description = "Monitor debug execution started successfully")
   })
   @PostMapping(value = "/monitor/start")
   public ApiLocaleResult<ExecDebugDetailVo> startByMonitor(
@@ -71,33 +79,39 @@ public class ExecDebugRest {
     return ApiLocaleResult.success(execDebugFacade.startByMonitor(dto));
   }
 
-  @Operation(summary = "Query the detail of script debug execution", operationId = "exec:debug:script:detail")
+  @Operation(summary = "Get script debug execution details", 
+      description = "Retrieve comprehensive script debug execution details including step-by-step analysis and debugging information",
+      operationId = "exec:debug:script:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script debug execution details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script debug execution not found")})
   @GetMapping(value = "/script/{id}")
   public ApiLocaleResult<ExecDebugDetailVo> scriptDetail(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script debug execution identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(execDebugFacade.scriptDetail(id));
   }
 
-  @Operation(summary = "Query the detail of scenario debug execution", operationId = "exec:debug:scenario:detail")
+  @Operation(summary = "Get scenario debug execution details", 
+      description = "Retrieve comprehensive scenario debug execution details including step-by-step analysis and debugging information",
+      operationId = "exec:debug:scenario:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario debug execution details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario debug execution not found")})
   @GetMapping(value = "/scenario/{id}")
   public ApiLocaleResult<ExecDebugDetailVo> scenarioDetail(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario debug execution identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(execDebugFacade.scenarioDetail(id));
   }
 
-  @Operation(summary = "Query the detail of monitor debug execution", operationId = "exec:debug:monitor:detail")
+  @Operation(summary = "Get monitor debug execution details", 
+      description = "Retrieve comprehensive monitor debug execution details including step-by-step analysis and debugging information",
+      operationId = "exec:debug:monitor:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Monitor debug execution details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Monitor debug execution not found")})
   @GetMapping(value = "/monitor/{id}")
   public ApiLocaleResult<ExecDebugDetailVo> monitorDetail(
-      @Parameter(name = "id", description = "Monitor id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Monitor debug execution identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(execDebugFacade.monitorDetail(id));
   }
 }

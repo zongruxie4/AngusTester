@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DatasetTarget", description = "Test Dataset Associations - Management interface for establishing and maintaining links between test datasets and test resources (APIs/scenarios)")
+@Tag(name = "Dataset Target", description = "Dataset Target Management - Comprehensive APIs for establishing and maintaining associations between test datasets and test resources including APIs and scenarios with value preview capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -41,56 +41,66 @@ public class DatasetTargetRest {
   @Resource
   private DatasetTargetFacade datasetTargetFacade;
 
-  @Operation(summary = "Add target dataset", operationId = "data:target:dataset:add")
+  @Operation(summary = "Associate datasets with target", 
+      description = "Establish associations between test datasets and specific test resources with batch operation support",
+      operationId = "data:target:dataset:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Dataset associations created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/target/{targetId}/{targetType}/dataset")
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "targetType", description = "Target type, allowable values: API, SCENARIO", required = true) @PathVariable("targetType") String targetType,
+      @Parameter(name = "targetId", description = "Target resource identifier for dataset association", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "targetType", description = "Target resource type for dataset categorization, allowable values: API, SCENARIO", required = true) @PathVariable("targetType") String targetType,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody LinkedHashSet<Long> datasetIds) {
     return ApiLocaleResult.success(datasetTargetFacade.add(targetId, targetType, datasetIds));
   }
 
-  @Operation(summary = "Delete target datasets", operationId = "data:target:dataset:delete")
+  @Operation(summary = "Remove dataset associations", 
+      description = "Remove associations between test datasets and specific test resources with batch operation support",
+      operationId = "data:target:dataset:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Dataset associations removed successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = "/target/{targetId}/{targetType}/dataset")
   public void delete(
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "targetType", description = "Target type, allowable values : API, SCENARIO", required = true) @PathVariable("targetType") String targetType,
+      @Parameter(name = "targetId", description = "Target resource identifier for dataset association removal", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "targetType", description = "Target resource type for dataset categorization, allowable values: API, SCENARIO", required = true) @PathVariable("targetType") String targetType,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody HashSet<Long> datasetIds) {
     datasetTargetFacade.delete(targetId, targetType, datasetIds);
   }
 
-  @Operation(summary = "Query the list of target datasets", operationId = "data:target:dataset:list")
+  @Operation(summary = "Get target dataset associations", 
+      description = "Retrieve all dataset associations for a specific test resource with comprehensive details",
+      operationId = "data:target:dataset:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Target dataset associations retrieved successfully")})
   @GetMapping(value = "/target/{targetId}/{targetType}/dataset")
   public ApiLocaleResult<List<DatasetDetailVo>> list(
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "targetType", description = "Target type, allowable values : API, SCENARIO", required = true) @PathVariable("targetType") String targetType) {
+      @Parameter(name = "targetId", description = "Target resource identifier for dataset association query", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "targetType", description = "Target resource type for dataset categorization, allowable values: API, SCENARIO", required = true) @PathVariable("targetType") String targetType) {
     return ApiLocaleResult.success(datasetTargetFacade.list(targetId, targetType));
   }
 
-  @Operation(summary = "Query the list of dataset targets", operationId = "data:dataset:target:list")
+  @Operation(summary = "Get dataset target associations", 
+      description = "Retrieve all target associations for a specific dataset with comprehensive resource mapping",
+      operationId = "data:dataset:target:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Dataset target associations retrieved successfully")})
   @GetMapping(value = "/dataset/{datasetId}/target")
   public ApiLocaleResult<List<DatasetTargetVo>> listTarget(
-      @Parameter(name = "datasetId", description = "Dataset id", required = true) @PathVariable("datasetId") Long datasetId) {
+      @Parameter(name = "datasetId", description = "Dataset identifier for target association query", required = true) @PathVariable("datasetId") Long datasetId) {
     return ApiLocaleResult.success(datasetTargetFacade.listTarget(datasetId));
   }
 
-  @Operation(summary = "Preview the values of target datasets", operationId = "data:target:dataset:value:preview")
+  @Operation(summary = "Preview target dataset values", 
+      description = "Preview dataset parameter values for a specific test resource with dynamic processing and validation",
+      operationId = "data:target:dataset:value:preview")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Target dataset values preview retrieved successfully")})
   @GetMapping("/target/{targetId}/{targetType}/dataset/value/preview")
   public ApiLocaleResult<Map<String, String>> valuePreview(
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "targetType", description = "Target type, allowable values : API, SCENARIO", required = true) @PathVariable("targetType") String targetType) {
+      @Parameter(name = "targetId", description = "Target resource identifier for dataset value preview", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "targetType", description = "Target resource type for dataset categorization, allowable values: API, SCENARIO", required = true) @PathVariable("targetType") String targetType) {
     return ApiLocaleResult.successData(datasetTargetFacade.valuePreview(targetId, targetType));
   }
 }

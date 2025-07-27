@@ -22,33 +22,31 @@ import org.hibernate.validator.constraints.Length;
 public class ProjectUpdateDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Project name, must be unique", example = "DemoProject")
+  @Schema(description = "Project name for identification and management, must be unique within the organization", example = "DemoProject")
   private String name;
 
-  @Schema(description = "Project avatar")
+  @Schema(description = "Project avatar URL for visual identification")
   @Length(max = MAX_URL_LENGTH_X2)
   private String avatar;
 
-  @Schema(description = "Owner id", example = "1")
+  @Schema(description = "Project owner identifier for responsibility assignment", example = "1")
   private Long ownerId;
 
-  @Schema(description = "Project start date, Determine the start times of the research and testing activities"
-      + " to ensure completion within the project cycle", example = "2023-06-10 00:00:00")
+  @Schema(description = "Project start date for timeline planning and milestone tracking", example = "2023-06-10 00:00:00")
   private LocalDateTime startDate;
 
-  @Schema(description = "Project deadline date, Determine the end times of the research and testing activities"
-      + " to ensure completion within the project cycle", example = "2029-06-20 00:00:00")
+  @Schema(description = "Project deadline date for delivery planning and resource allocation", example = "2029-06-20 00:00:00")
   private LocalDateTime deadlineDate;
 
-  @Schema(description = "Project description")
+  @Schema(description = "Project description for detailed information and requirements")
   @EditorContentLength
   private String description;
 
-  @Schema(description = "Project member type and ids")
+  @Schema(description = "Project member mapping by organization target type and member identifiers")
   private LinkedHashMap<OrgTargetType, LinkedHashSet<Long>> memberTypeIds;
 }
 

@@ -21,19 +21,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ScenarioTestTaskGenerateDto {
 
   @NotNull
-  @Schema(description = "Assignee id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test task assignee identifier for responsibility assignment", requiredMode = RequiredMode.REQUIRED)
   private Long assigneeId;
 
   @NotNull
-  @Schema(description = "Test type", example = "FUNCTIONAL", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test type defining the testing methodology and execution approach", example = "FUNCTIONAL", requiredMode = RequiredMode.REQUIRED)
   private TestType testType;
 
-  @Schema(description = "Test task priority, Default MEDIUM", example = "MEDIUM")
+  @Schema(description = "Test task priority level for resource allocation and scheduling", example = "MEDIUM")
   private Priority priority = Priority.DEFAULT;
 
   @Future
   @NotNull
-  @Schema(description = "Test task deadline", example = "2022-12-01 12:00:00", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test task deadline date for delivery planning and resource allocation", example = "2022-12-01 12:00:00", requiredMode = RequiredMode.REQUIRED)
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime deadlineDate;
 

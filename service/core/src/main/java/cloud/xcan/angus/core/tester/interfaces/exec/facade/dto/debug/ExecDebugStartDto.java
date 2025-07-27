@@ -20,30 +20,30 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ExecDebugStartDto {
 
-  @Schema(description = "Whether to notify other controllers to handle")
+  @Schema(description = "Broadcast flag for multi-controller notification and handling")
   private boolean broadcast;
 
-  @Schema(description = "Debug id")
+  @Schema(description = "Debug session identifier for session management")
   private Long id;
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Execution name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Debug execution name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotEmpty
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Execution plugin name. Note: If there are multiple plugins with the same name, the highest version of the plugin will be automatically used", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Debug execution plugin name with automatic version selection for highest compatibility", requiredMode = RequiredMode.REQUIRED)
   private String plugin;
 
   @Valid
   @NotNull
-  @Schema(description = "Execution configuration", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Debug execution configuration for comprehensive parameter settings", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Valid
   @NotNull
-  @Schema(description = "Execution task information", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Debug execution task information for pipeline definition", requiredMode = RequiredMode.REQUIRED)
   private Task task;
 
   public ExecDebugStartDto() {

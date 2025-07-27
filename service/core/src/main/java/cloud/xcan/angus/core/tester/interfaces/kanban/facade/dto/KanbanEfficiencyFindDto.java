@@ -19,25 +19,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class KanbanEfficiencyFindDto extends PageQuery {
 
-  @Schema(description = "Query organization type, default USER")
+  @Schema(description = "Creator organization type for efficiency analysis filtering with USER as default")
   private AuthObjectType creatorObjectType;
 
-  @Schema(description = "Query organization id")
+  @Schema(description = "Creator organization identifier for efficiency analysis filtering")
   private Long creatorObjectId;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for efficiency analysis scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Case plan or task sprint id")
+  @Schema(description = "Test plan or task sprint identifier for efficiency analysis filtering")
   private Long planId;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Efficiency analysis start date for temporal filtering")
   private LocalDateTime createdDateStart;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation end date")
+  @Schema(description = "Efficiency analysis end date for temporal filtering")
   private LocalDateTime createdDateEnd;
 
 }

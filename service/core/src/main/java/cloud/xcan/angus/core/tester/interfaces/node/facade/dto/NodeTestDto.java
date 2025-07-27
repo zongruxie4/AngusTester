@@ -20,23 +20,23 @@ import org.hibernate.validator.constraints.Length;
 public class NodeTestDto {
 
   @NotBlank
-  @Schema(example = "192.168.10.11", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "IP address for node connectivity testing", example = "192.168.10.11", requiredMode = RequiredMode.REQUIRED)
   @Length(max = IPV4_LENGTH)
   private String ip;
 
   @NotBlank
-  @Schema(example = "root", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "SSH username for node authentication testing", example = "root", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH_X2)
   private String username;
 
   @NotBlank
-  @Schema(example = "abc@123", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "SSH password for node authentication testing", example = "abc@123", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_CODE_LENGTH_X5)
   private String password;
 
   @NotNull
   @Port
-  @Schema(example = "22", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "SSH port for secure shell connection testing", example = "22", requiredMode = RequiredMode.REQUIRED)
   private Integer sshPort;
 
 }

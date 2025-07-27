@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Variable", description = "Test Variable Definitions - Unified interface for declaring and maintaining test variables (e.g., environment variables, global parameters)")
+@Tag(name = "Variable", description = "Test Variable Management - Comprehensive APIs for declaring, maintaining, and managing test variables including environment variables, global parameters, and dynamic value processing")
 @Validated
 @RestController
 @RequestMapping("/api/v1/variable")
@@ -54,19 +54,23 @@ public class VariableRest {
   @Resource
   private VariableFacade variableFacade;
 
-  @Operation(summary = "Add variable", operationId = "data:variable:add")
+  @Operation(summary = "Create new variable", 
+      description = "Create a new test variable with comprehensive configuration and value processing settings",
+      operationId = "data:variable:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Variable created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody VariableAddDto dto) {
     return ApiLocaleResult.success(variableFacade.add(dto));
   }
 
-  @Operation(summary = "Update variable", operationId = "data:variable:update")
+  @Operation(summary = "Update variable", 
+      description = "Update existing variable configuration and value processing with partial modification support",
+      operationId = "data:variable:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Variable updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Variable not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody VariableUpdateDto dto) {
@@ -74,20 +78,24 @@ public class VariableRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace variable", operationId = "data:variable:replace")
+  @Operation(summary = "Replace variable", 
+      description = "Replace existing variable with complete new configuration and value processing settings",
+      operationId = "data:variable:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Variable replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Variable not found")
   })
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody VariableReplaceDto dto) {
     return ApiLocaleResult.success(variableFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone the variables", operationId = "data:variable:clone")
+  @Operation(summary = "Clone variables", 
+      description = "Create copies of multiple variables with all configuration and value processing settings",
+      operationId = "data:variable:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Clone successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Variables cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more variables not found")
   })
   @PostMapping("/clone")
   public ApiLocaleResult<List<IdKey<Long, Object>>> clone(
@@ -95,9 +103,11 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.clone(ids));
   }
 
-  @Operation(summary = "Import the variables", operationId = "data:variable:import")
+  @Operation(summary = "Import variables", 
+      description = "Import variables from external files with comprehensive format support and validation",
+      operationId = "data:variable:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Variables imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<List<IdKey<Long, Object>>> imports(
@@ -105,55 +115,67 @@ public class VariableRest {
     return ApiLocaleResult.success(variableFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the variable example", operationId = "data:variable:example:import")
+  @Operation(summary = "Import variable examples", 
+      description = "Import predefined variable examples with sample data and configuration templates",
+      operationId = "data:variable:example:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Variable examples imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for example variable import", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(variableFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete variables", operationId = "data:variable:delete")
+  @Operation(summary = "Delete variables", 
+      description = "Remove multiple variables from the system with batch operation support",
+      operationId = "data:variable:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Variables deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Variable ids", required = true)
+      @Parameter(name = "ids", description = "Variable identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     variableFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of variable", operationId = "data:variable:detail")
+  @Operation(summary = "Get variable details", 
+      description = "Retrieve comprehensive details and configuration for a specific variable",
+      operationId = "data:variable:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Variable details retrieved successfully")})
   @GetMapping("/{id}")
   public ApiLocaleResult<VariableDetailVo> detail(
-      @Parameter(name = "id", description = "Variable id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Variable identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(variableFacade.detail(id));
   }
 
-  @Operation(summary = "Preview the value of variable", operationId = "data:variable:value:preview")
+  @Operation(summary = "Preview variable values", 
+      description = "Preview variable values with dynamic processing and validation",
+      operationId = "data:variable:value:preview")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Variable values preview retrieved successfully")})
   @PostMapping("/value/preview")
   public ApiLocaleResult<String> valuePreview(@RequestBody VariableValuePreviewDto dto) {
     return ApiLocaleResult.successData(variableFacade.valuePreview(dto));
   }
 
-  @Operation(summary = "Query the list of variables", operationId = "data:variable:list")
+  @Operation(summary = "Query variable list", 
+      description = "Retrieve paginated list of variables with comprehensive filtering and search options",
+      operationId = "data:variable:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Variable list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<VariableDetailVo>> list(@Valid VariableFindDto dto) {
     return ApiLocaleResult.success(variableFacade.list(dto));
   }
 
-  @Operation(summary = "Export the variables", operationId = "data:variable:export")
+  @Operation(summary = "Export variables", 
+      description = "Export variables to external files with comprehensive format support and configuration options",
+      operationId = "data:variable:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Exported successfully")
+      @ApiResponse(responseCode = "200", description = "Variables exported successfully")
   })
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(

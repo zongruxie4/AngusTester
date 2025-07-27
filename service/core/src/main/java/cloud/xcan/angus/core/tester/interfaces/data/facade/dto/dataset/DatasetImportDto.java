@@ -15,17 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class DatasetImportDto{
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for dataset import destination", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api", example = "COVER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Duplicate handling strategy for import conflict resolution. COVER overrides existing datasets, IGNORE skips duplicates", example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
-  @Schema(description = "Variable specification content. Variable definition string content in json or yaml format")
+  @Schema(description = "Dataset specification content in JSON or YAML format for direct import")
   private String content;
 
-  @Schema(type = "string", format = "binary", description = "Variable specification file. Variable definition file in json or yaml format")
+  @Schema(description = "Dataset specification file in JSON or YAML format for file-based import", type = "string", format = "binary")
   private MultipartFile file;
 
 }

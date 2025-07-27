@@ -33,7 +33,7 @@ import org.hibernate.validator.constraints.Length;
 public class ApisCaseUpdateDto {
 
   @NotNull
-  @Schema(description = "Functional testing case id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional testing case identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@Schema(description = "Case apis id")
@@ -45,47 +45,47 @@ public class ApisCaseUpdateDto {
   //@Schema(description = "Apis test cases type, default is USER_DEFINED")
   //private ApisCaseType type;
 
-  @Schema(description = "Apis test cases method, default is `NULL`")
+  @Schema(description = "API test case method specification, defaults to NULL")
   private CaseTestMethod testMethod;
 
   @Length(max = MAX_NAME_LENGTH_X4)
-  @Schema(description = "Case name")
+  @Schema(description = "Test case name for identification and organization")
   private String name;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Case description")
+  @Schema(description = "Test case description for detailed documentation")
   private String description;
 
-  @Schema(example = "http")
+  @Schema(description = "API protocol specification for communication type definition", example = "http")
   private ApisProtocol protocol;
 
-  @Schema(example = "GET")
+  @Schema(description = "HTTP method for API request specification", example = "GET")
   private HttpMethod method;
 
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(example = "/comm/api/v1/country/{id}")
+  @Schema(description = "API endpoint path for resource identification", example = "/comm/api/v1/country/{id}")
   private String endpoint;
 
-  @Schema(description = "Current apis server")
+  @Schema(description = "Current API server configuration for connection and deployment")
   private Server currentServer;
 
-  @Schema(description = "Current apis request parameters")
+  @Schema(description = "Current API request parameters for test case configuration")
   private List<Parameter> parameters;
 
-  @Schema(description = "Current apis request body")
+  @Schema(description = "Current API request body for test case configuration")
   private RequestBody requestBody;
 
-  @Schema(description = "Current apis request authentication")
+  @Schema(description = "Current API request authentication for test case configuration")
   private SecurityScheme authentication;
 
   @Valid
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Current apis assertions")
+  @Schema(description = "Current API assertions for test case validation")
   private List<Assertion<HttpExtraction>> assertions;
 
-  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`")
+  @Schema(description = "Dataset end-of-file action configuration, defaults to RECYCLE")
   private ActionOnEOF datasetActionOnEOF;
 
-  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`")
+  @Schema(description = "Dataset sharing mode for multi-thread execution, defaults to ALL_THREAD")
   private SharingMode datasetSharingMode;
 }

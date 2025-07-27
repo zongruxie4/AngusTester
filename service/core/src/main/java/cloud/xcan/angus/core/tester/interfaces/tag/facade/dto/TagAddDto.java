@@ -18,11 +18,11 @@ import lombok.experimental.Accessors;
 public class TagAddDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for tag organization and access control", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @NotEmpty
   @Size(max = MAX_BATCH_SIZE)
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Tag names for project resource classification and organization", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashSet<String> names;
 }

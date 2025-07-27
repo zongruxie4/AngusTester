@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesTest", description = "API Test and Analytics - Configure and analyze user-initiated API test and results")
+@Tag(name = "Services Test", description = "API Test and Analytics Management API - Comprehensive configuration and analysis system for user-initiated API testing and result management.")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -50,186 +50,210 @@ public class ServicesTestRest {
   @Resource
   private ServicesSchemaFacade servicesSchemaFacade;
 
-  @Operation(summary = "Enable or disable the testing of service apis",
-      description = "After enabled, the test will be marked as a mandatory activity and the results will be included in the performance analysis",
+  @Operation(summary = "Enable or disable service API testing",
+      description = "Configure mandatory testing activity for service APIs with performance analysis inclusion.",
       operationId = "services:test:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service API testing status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/services/{id}/test/enabled")
   public ApiLocaleResult<?> testEnabled(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
-      @Valid @NotEmpty @Parameter(description = "Apis test type", required = true) @RequestParam(value = "testTypes") HashSet<TestType> testTypes,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Service identifier for testing configuration", required = true) @PathVariable("id") Long serviceId,
+      @Valid @NotEmpty @Parameter(description = "API test types for configuration", required = true) @RequestParam(value = "testTypes") HashSet<TestType> testTypes,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Testing status flag", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     servicesTestFacade.testEnabled(serviceId, testTypes, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "The api testing count of service", operationId = "services:test:apis:count")
+  @Operation(summary = "Query service API testing count",
+      description = "Retrieve API testing execution statistics for service performance analysis.",
+      operationId = "services:test:apis:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service API testing count retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/services/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countServiceTestApis(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "id", description = "Service identifier for testing statistics query", required = true) @PathVariable("id") Long serviceId,
       @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
-  @Operation(summary = "The api testing count of project", operationId = "project:test:apis:count")
+  @Operation(summary = "Query project API testing count",
+      description = "Retrieve API testing execution statistics for project performance analysis.",
+      operationId = "project:test:apis:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Project API testing count retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Project not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/project/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countProjectTestApis(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Project identifier for testing statistics query", required = true) @PathVariable("id") Long projectId,
       @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countProjectTestApis(projectId, dto));
   }
 
-  @Operation(summary = "Configure and generate the testing scripts of service", operationId = "services:test:script:generate")
+  @Operation(summary = "Configure and generate service testing scripts",
+      description = "Create and configure testing scripts for service with comprehensive test type support.",
+      operationId = "services:test:script:generate")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Configure and generate successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service testing scripts generated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/services/{id}/test/script/generate")
   public ApiLocaleResult<?> scriptGenerate(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "id", description = "Service identifier for script generation", required = true) @PathVariable("id") Long serviceId,
       @Valid @NotEmpty @RequestBody Set<ApisTestScriptGenerateDto> dto) {
     servicesTestFacade.scriptGenerate(serviceId, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the testing scripts of service", operationId = "services:test:script:delete")
+  @Operation(summary = "Delete service testing scripts",
+      description = "Remove testing scripts by test types for service management.",
+      operationId = "services:test:script:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Service testing scripts deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/services/{id}/test/script")
   public void scriptDelete(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "testTypes", description = "Test type", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
+      @Parameter(name = "id", description = "Service identifier for script management", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "testTypes", description = "Test types for script deletion", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
     servicesTestFacade.scriptDelete(serviceId, testTypes);
   }
 
-  @Operation(summary = "Configure and generate testing tasks of service", operationId = "services:test:task:generate")
+  @Operation(summary = "Configure and generate service testing tasks",
+      description = "Create and configure testing tasks for service with sprint integration support.",
+      operationId = "services:test:task:generate")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Configure and generate successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service testing tasks generated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @PutMapping("/services/{id}/test/task/generate")
   public ApiLocaleResult<?> generate(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "taskSprintId", description = "Task sprint id, it is required for agile project management")
-      @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
+      @Parameter(name = "id", description = "Service identifier for task generation", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "taskSprintId", description = "Task sprint identifier for agile project management") @RequestParam(value = "taskSprintId", required = false) Long taskSprintId,
       @Valid @NotEmpty @RequestBody Set<ServicesTestTaskGenerateDto> dto) {
     servicesTestFacade.testTaskGenerate(serviceId, taskSprintId, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restart the existing testing tasks of service", operationId = "services:test:task:restart")
+  @Operation(summary = "Restart existing service testing tasks",
+      description = "Restart existing testing tasks for service execution management.",
+      operationId = "services:test:task:restart")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Restarted successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service testing tasks restarted successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @PatchMapping("/services/{id}/test/task/restart")
   public ApiLocaleResult<?> testTaskRestart(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "Service identifier for task restart", required = true) @PathVariable("id") Long serviceId) {
     servicesTestFacade.testTaskRestart(serviceId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Reopen the existing testing tasks of service", operationId = "services:test:task:reopen")
+  @Operation(summary = "Reopen existing service testing tasks",
+      description = "Reopen existing testing tasks for service execution management.",
+      operationId = "services:test:task:reopen")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Reopened successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service testing tasks reopened successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @PatchMapping("/services/{id}/test/task/reopen")
   public ApiLocaleResult<?> testTaskReopen(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "Service identifier for task reopen", required = true) @PathVariable("id") Long serviceId) {
     servicesTestFacade.testTaskReopen(serviceId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the testing tasks of service", operationId = "services:test:task:delete")
+  @Operation(summary = "Delete service testing tasks",
+      description = "Remove testing tasks by test types for service management.",
+      operationId = "services:test:task:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Service testing tasks deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/services/{id}/test/task")
   public void testTaskDelete(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId,
-      @Parameter(name = "testTypes", description = "Test type", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
+      @Parameter(name = "id", description = "Service identifier for task management", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "testTypes", description = "Test types for task deletion", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes) {
     servicesTestFacade.testTaskDelete(serviceId, testTypes);
   }
 
-  @Operation(summary = "Query all server configurations of the service", operationId = "services:test:schema:server:all")
+  @Operation(summary = "Query all service server configurations",
+      description = "Retrieve all server configurations for service testing environment.",
+      operationId = "services:test:schema:server:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Services not found")
+      @ApiResponse(responseCode = "200", description = "All service server configurations retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")
   })
   @GetMapping("/services/{id}/test/schema/server")
   public ApiLocaleResult<List<Server>> serverList(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "Service identifier for server query", required = true) @PathVariable("id") Long serviceId) {
     return ApiLocaleResult.success(servicesSchemaFacade.serverList(serviceId, true));
   }
 
-  @Operation(summary = "Create the testing execution of service apis",
-      description = "If the script does not exist, create the script", operationId = "services:test:apis:exec:add")
+  @Operation(summary = "Create service API testing execution",
+      description = "Create testing execution for service APIs with automatic script generation if not exists.",
+      operationId = "services:test:apis:exec:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service API testing execution created successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/services/{id}/exec")
   public ApiLocaleResult<?> testExecAdd(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long servicesId,
-      @Parameter(name = "testTypes", description = "Test type", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes,
+      @Parameter(name = "id", description = "Service identifier for testing execution", required = true) @PathVariable("id") Long servicesId,
+      @Parameter(name = "testTypes", description = "Test types for execution", required = true) @RequestParam("testTypes") HashSet<TestType> testTypes,
       @RequestBody @Nullable List<Server> servers) {
     servicesTestFacade.testExecAdd(servicesId, testTypes, servers);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Create the smoke testing execution of service apis",
-      description = "If the script does not exist, create the script", operationId = "services:smoke:test:apis:exec:add")
+  @Operation(summary = "Create service smoke testing execution",
+      description = "Create smoke testing execution for service APIs with automatic script generation if not exists.",
+      operationId = "services:smoke:test:apis:exec:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service smoke testing execution created successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/services/{id}/smoke/exec")
   public ApiLocaleResult<?> testSmokeExecAdd(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long servicesId,
+      @Parameter(name = "id", description = "Service identifier for smoke testing execution", required = true) @PathVariable("id") Long servicesId,
       @RequestBody @Nullable List<Server> servers) {
     servicesTestFacade.testSmokeExecAdd(servicesId, servers);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Create the smoke testing execution of service apis",
-      description = "if the script does not exist, create the script", operationId = "services:security:test:apis:exec:add")
+  @Operation(summary = "Create service security testing execution",
+      description = "Create security testing execution for service APIs with automatic script generation if not exists.",
+      operationId = "services:security:test:apis:exec:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service security testing execution created successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/services/{id}/security/exec")
   public ApiLocaleResult<?> testSecurityExecAdd(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long servicesId,
+      @Parameter(name = "id", description = "Service identifier for security testing execution", required = true) @PathVariable("id") Long servicesId,
       @RequestBody @Nullable List<Server> servers) {
     servicesTestFacade.testSecurityExecAdd(servicesId, servers);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the test results of service", operationId = "services:test:apis:result:detail")
+  @Operation(summary = "Query service test results",
+      description = "Retrieve comprehensive test results for service performance analysis.",
+      operationId = "services:test:apis:result:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Service test results retrieved successfully")})
   @GetMapping(value = "/services/{id}/test/result")
   public ApiLocaleResult<ExecApisResultInfo> testServiceResult(
-      @Parameter(name = "id", description = "Services id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "Service identifier for test results query", required = true) @PathVariable("id") Long serviceId) {
     return ApiLocaleResult.success(servicesTestFacade.testServiceResult(serviceId));
   }
 
-  @Operation(summary = "Query the test results of project", operationId = "project:test:apis:result:detail")
+  @Operation(summary = "Query project test results",
+      description = "Retrieve comprehensive test results for project performance analysis.",
+      operationId = "project:test:apis:result:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Project test results retrieved successfully")})
   @GetMapping(value = "/project/{id}/test/result")
   public ApiLocaleResult<ExecApisResultInfo> testProjectResult(
-      @Parameter(name = "id", description = "Project id", required = true) @PathVariable("id") Long projectId) {
+      @Parameter(name = "id", description = "Project identifier for test results query", required = true) @PathVariable("id") Long projectId) {
     return ApiLocaleResult.success(servicesTestFacade.testProjectResult(projectId));
   }
 

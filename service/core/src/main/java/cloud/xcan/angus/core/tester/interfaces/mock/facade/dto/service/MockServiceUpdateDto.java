@@ -22,11 +22,11 @@ import org.hibernate.validator.constraints.Length;
 public class MockServiceUpdateDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock service identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(example = "XCAN-ANGUSAPI.BOOT")
+  @Schema(description = "Mock service name for identification and display", example = "XCAN-ANGUSAPI.BOOT")
   private String name;
 
   //Modification of node is not allowed
@@ -41,18 +41,18 @@ public class MockServiceUpdateDto {
   //private Integer servicePort;
 
   @Length(max = MAX_DOMAIN_LENGTH)
-  @Schema(description = "The cloud service edition is fixed at xxx.angusmock.cloud, and the privatized version allows users to freely enter the domain name", example = "service1.angusmock.cloud")
+  @Schema(description = "Service domain configuration with cloud edition fixed format and private edition custom domain support", example = "service1.angusmock.cloud")
   private String serviceDomain;
 
   @Valid
-  @Schema(description = "Mock request authentication configuration")
+  @Schema(description = "Mock API request authentication configuration for security management")
   private List<SimpleHttpAuth> apisSecurity;
 
   @Valid
-  @Schema(description = "Mock request CORS configuration")
+  @Schema(description = "Mock API request CORS configuration for cross-origin access control")
   private CorsData apisCors;
 
   @Valid
-  @Schema(description = "Mock service configuration")
+  @Schema(description = "Mock service runtime configuration for comprehensive deployment settings")
   private MockServiceSetting setting;
 }

@@ -18,35 +18,35 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ExecDebugStartByMonitorDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and handling", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
-  @Schema(description = "Debug id")
+  @Schema(description = "Debug session identifier for session management")
   private Long id;
 
   @NotNull
-  @Schema(description = "Execution monitor id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Monitor identifier for debug execution reference", requiredMode = RequiredMode.REQUIRED)
   private Long monitorId;
 
   @NotNull
-  @Schema(description = "Execution scenario id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Scenario identifier for debug execution reference", requiredMode = RequiredMode.REQUIRED)
   private Long scenarioId;
 
   @NotNull
-  @Schema(description = "Execution scenario script id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script identifier for debug execution reference", requiredMode = RequiredMode.REQUIRED)
   private Long scriptId;
 
-  @Schema(description = "Execute actual script type")
+  @Schema(description = "Actual script type for debug execution specification")
   private ScriptType scriptType;
 
   @Valid
-  @Schema(description = "Common configuration parameters for script execution")
+  @Schema(description = "Common configuration parameters for debug script execution")
   private Configuration configuration;
 
-  @Schema(description="Plugin configuration parameters")
+  @Schema(description = "Plugin configuration parameters for debug execution customization")
   private Arguments arguments = new Arguments();
 
-  @Schema(description="Http server configuration")
+  @Schema(description = "HTTP server configuration for debug environment setup")
   private List<Server> serverSetting;
 
 }

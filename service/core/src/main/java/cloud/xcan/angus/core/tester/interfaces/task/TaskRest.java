@@ -65,7 +65,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task", description = "R&D and Testing Task Management - A unified management entry for all tasks related to R&D and testing")
+@Tag(name = "Task", description = "R&D and Testing Task Management API - Comprehensive lifecycle management system for research, development, and testing tasks with full workflow support.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -74,58 +74,58 @@ public class TaskRest {
   @Resource
   private TaskFacade taskFacade;
 
-  @Operation(summary = "Create task", operationId = "task:add")
+  @Operation(summary = "Create new task", operationId = "task:add", description = "Create a new R&D or testing task with comprehensive metadata including assignments, priorities, and workflow configuration.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully")})
+      @ApiResponse(responseCode = "200", description = "Task created successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody TaskAddDto dto) {
     return ApiLocaleResult.success(taskFacade.add(dto));
   }
 
-  @Operation(summary = "Update task", operationId = "task:update")
+  @Operation(summary = "Update task details", operationId = "task:update", description = "Update specific fields of an existing task while preserving other information and maintaining workflow integrity.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Task updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Task not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}")
   public ApiLocaleResult<?> update(
-      @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Task identifier to update", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody TaskUpdateDto dto) {
     taskFacade.update(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace task", operationId = "task:replace")
+  @Operation(summary = "Replace task completely", operationId = "task:replace", description = "Replace all task information with new data, effectively recreating the task with updated comprehensive details.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Task replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Task not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Task identifier to replace", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody TaskReplaceDto dto) {
     taskFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the name of task", operationId = "task:name:replace")
+  @Operation(summary = "Rename task", operationId = "task:name:replace", description = "Update the display name of a task for better identification and organization.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Task renamed successfully"),
+      @ApiResponse(responseCode = "404", description = "Task not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{id}/name")
   public ApiLocaleResult<?> rename(
-      @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "name", description = "New task name", required = true) @RequestParam("name") String name) {
+      @Parameter(name = "id", description = "Task identifier to rename", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "name", description = "New task name for identification", required = true) @RequestParam("name") String name) {
     taskFacade.rename(id, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Move the task to another sprint", operationId = "task:move")
+  @Operation(summary = "Move task to different sprint", operationId = "task:move", description = "Transfer a task from one sprint to another for better project organization and timeline management.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Move successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Task moved successfully"),
+      @ApiResponse(responseCode = "404", description = "Task or sprint not found")
   })
   @PatchMapping("/move")
   public ApiLocaleResult<?> move(@Valid @RequestBody TaskMoveDto dto) {

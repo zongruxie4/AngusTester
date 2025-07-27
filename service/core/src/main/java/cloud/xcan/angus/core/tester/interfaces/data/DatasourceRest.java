@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Datasource", description = "Entry point for executing JDBC-based tests and managing referenced data sources (e.g., database connections)")
+@Tag(name = "Datasource", description = "Datasource Management - Comprehensive APIs for managing database connections and executing JDBC-based tests with connection testing and validation capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/data/datasource")
@@ -41,19 +41,23 @@ public class DatasourceRest {
   @Resource
   private DatasourceFacade datasourceFacade;
 
-  @Operation(summary = "Add the datasource of data", operationId = "data:datasource:add")
+  @Operation(summary = "Create new datasource", 
+      description = "Create a new database datasource with comprehensive connection configuration and validation",
+      operationId = "data:datasource:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Datasource created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody DatasourceAddDto dto) {
     return ApiLocaleResult.success(datasourceFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the datasource of data", operationId = "data:datasource:replace")
+  @Operation(summary = "Replace datasource", 
+      description = "Replace existing datasource with complete new configuration and connection settings",
+      operationId = "data:datasource:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Datasource replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Datasource not found")
   })
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(
@@ -61,49 +65,59 @@ public class DatasourceRest {
     return ApiLocaleResult.success(datasourceFacade.replace(dto));
   }
 
-  @Operation(summary = "Delete the datasource of data", operationId = "data:datasource:delete")
+  @Operation(summary = "Delete datasource", 
+      description = "Remove datasource from the system with proper cleanup and validation",
+      operationId = "data:datasource:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Datasource deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Mock datasource id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Datasource identifier for deletion", required = true) @PathVariable("id") Long id) {
     datasourceFacade.delete(id);
   }
 
-  @Operation(summary = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byId")
+  @Operation(summary = "Test datasource connection by ID", 
+      description = "Test database connection for existing datasource with comprehensive validation and error reporting",
+      operationId = "data:datasource:sync:test:byId")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Tested successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Datasource connection test completed successfully"),
+      @ApiResponse(responseCode = "404", description = "Datasource not found")})
   @GetMapping(value = "/{id}/test")
   public ApiLocaleResult<DatasourceTestVo> testById(
-      @Parameter(name = "id", description = "Mock datasource id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Datasource identifier for connection testing", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(datasourceFacade.testById(id));
   }
 
-  @Operation(summary = "Test the configuration of data datasource", operationId = "data:datasource:sync:test:byParam")
+  @Operation(summary = "Test datasource connection by configuration", 
+      description = "Test database connection using provided configuration parameters with real-time validation",
+      operationId = "data:datasource:sync:test:byParam")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Tested successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Datasource connection test completed successfully"),
+      @ApiResponse(responseCode = "404", description = "Configuration validation failed")})
   @GetMapping(value = "/config/test")
   public ApiLocaleResult<DatasourceTestVo> testByConfig(
       @Valid @ParameterObject DatasourceTestDto dto) {
     return ApiLocaleResult.success(datasourceFacade.testByConfig(dto));
   }
 
-  @Operation(summary = "Query the detail of data datasource", operationId = "data:datasource:detail")
+  @Operation(summary = "Get datasource details", 
+      description = "Retrieve comprehensive datasource details including configuration, status, and metadata",
+      operationId = "data:datasource:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Datasource details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Datasource not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<DatasourceDetailVo> detail(
-      @Parameter(name = "id", description = "Mock datasource id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Datasource identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(datasourceFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of data datasource", operationId = "data:datasource:list")
+  @Operation(summary = "Query datasource list", 
+      description = "Retrieve paginated list of datasources with comprehensive filtering and search options",
+      operationId = "data:datasource:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Datasource list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<DatasourceVo>> list(
       @Valid @ParameterObject DatasourceFindDto dto) {

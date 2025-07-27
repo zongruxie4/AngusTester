@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskFollow", description = "Task Follow Management - Notification management interface for receiving alerts when subscribed task are modified")
+@Tag(name = "Task - Follow", description = "Task Follow Management API - Comprehensive notification system for subscribing to task updates and receiving real-time alerts when followed tasks are modified.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -35,51 +35,51 @@ public class TaskFollowRest {
   @Resource
   private TaskFollowFacade taskFollowFacade;
 
-  @Operation(summary = "Add the follow of task", operationId = "task:follow:add")
+  @Operation(summary = "Follow task for notifications", operationId = "task:follow:add", description = "Subscribe to a specific task to receive notifications when the task is updated, assigned, or has status changes.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Follow successfully")})
+      @ApiResponse(responseCode = "201", description = "Task follow subscription created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{id}/follow")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Task identifier to follow for notifications", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(taskFollowFacade.add(id));
   }
 
-  @Operation(summary = "Cancel the follow of task", operationId = "task:follow:cancel")
+  @Operation(summary = "Unfollow task notifications", operationId = "task:follow:cancel", description = "Unsubscribe from notifications for a specific task to stop receiving update alerts.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Canceled successfully")})
+      @ApiResponse(responseCode = "204", description = "Task follow subscription removed successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}/follow")
   public void cancel(
-      @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Task identifier to unfollow notifications for", required = true) @PathVariable("id") Long id) {
     taskFollowFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all follows of the task", operationId = "task:follow:cancel:all")
+  @Operation(summary = "Unfollow all tasks in project", operationId = "task:follow:cancel:all", description = "Unsubscribe from notifications for all followed tasks within a specific project.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Canceled successfully")})
+      @ApiResponse(responseCode = "204", description = "All project task follows removed successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/follow")
   public void cancelAll(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier to unfollow all tasks from") Long projectId) {
     taskFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query follow list of the task", operationId = "task:follow:list")
+  @Operation(summary = "Get paginated followed tasks list", operationId = "task:follow:list", description = "Retrieve a paginated list of followed tasks with detailed information including follow timestamps and task metadata.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Followed tasks list retrieved successfully")})
   @GetMapping("/follow")
   public ApiLocaleResult<PageResult<TaskFollowDetailVo>> list(
       @Valid @ParameterObject TaskFollowFindDto dto) {
     return ApiLocaleResult.success(taskFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query follow count of the task", operationId = "task:follow:count")
+  @Operation(summary = "Get followed tasks count by project", operationId = "task:follow:count", description = "Retrieve the total count of followed tasks within a specific project for statistical and dashboard purposes.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
+      @ApiResponse(responseCode = "200", description = "Followed tasks count retrieved successfully")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier to count followed tasks for") Long projectId) {
     return ApiLocaleResult.success(taskFollowFacade.count(projectId));
   }
 }

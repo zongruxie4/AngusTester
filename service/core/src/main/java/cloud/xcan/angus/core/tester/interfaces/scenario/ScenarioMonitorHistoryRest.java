@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioMonitorHistory", description = "Scenario Monitoring History Query - "
-    + "Query historical monitoring records for specific scenarios, including metrics, alerts, and resolution timelines")
+@Tag(name = "Scenario Monitor History", description = "Scenario Monitoring History API - Historical data and audit trail for scenario monitoring activities, including metrics, alerts, and resolution timelines.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor/history")
@@ -31,19 +30,23 @@ public class ScenarioMonitorHistoryRest {
   @Resource
   private ScenarioMonitorHistoryFacade scenarioMonitorHistoryFacade;
 
-  @Operation(summary = "Query the detail of scenario monitor history", operationId = " scenario:monitor:history:detail")
+  @Operation(summary = "Query scenario monitor history detail",
+      description = "Retrieve detailed historical record of a specific monitoring event or alert.",
+      operationId = "scenario:monitor:history:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Monitor history detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Monitor history record not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ScenarioMonitorHistoryDetailVo> detail(
-      @Parameter(name = "id", description = "Scenario monitor history id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Monitor history record identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scenarioMonitorHistoryFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of scenario monitor history", operationId = " scenario:monitor:history:list")
+  @Operation(summary = "Query scenario monitor history list",
+      description = "Retrieve paginated list of monitoring history records with filtering and search capabilities.",
+      operationId = "scenario:monitor:history:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Monitor history list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ScenarioMonitorHistoryListVo>> list(
       @Valid @ParameterObject ScenarioMonitorHistoryFindDto dto) {

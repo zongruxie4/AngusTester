@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @ToString
 public class NodeAgentInstallDto {
 
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Device identifier for agent installation targeting", requiredMode = RequiredMode.REQUIRED)
   public Long deviceId;
 
 }

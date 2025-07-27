@@ -17,15 +17,15 @@ public class NodeRunnerKillDto {
   /**
    * Whether to notify other controllers to handle
    */
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Flag to enable broadcast mode for multi-controller coordination", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast = true;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Node identifier for runner process termination", requiredMode = RequiredMode.REQUIRED)
   private Long nodeId;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Process identifier for specific runner process termination", requiredMode = RequiredMode.REQUIRED)
   private Integer pid;
 
 }

@@ -25,47 +25,41 @@ import org.hibernate.validator.constraints.Range;
 public class ExecConfigReplaceDto {
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Execution name")
+  @Schema(description = "Execution name for identification and organization")
   private String name;
 
   @Max(value = MAX_ITERATIONS)
-  @Schema(description = "Number of sampling iterations executed. Note: "
-      + "1. When mocking data, the current value will be forcefully set to the specified rows for mocking data; "
-      + "2. Iterations after sharding during multi node testing")
+  @Schema(description = "Number of sampling iterations for execution control with mock data and multi-node support")
   private Long iterations;
 
   @TimeValueRange(maxInMs = MAX_EXEC_DURATION_IN_MS) // 3 days
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds")
+  @Schema(description = "Task execution duration with automatic 30-second fallback when iterations and duration are not configured")
   private TimeValue duration;
 
-  @Schema(description = "Duration of task execution")
+  @Schema(description = "Thread count for concurrent execution control")
   @Range(min = 1, max = MAX_THREAD_NUM)
   private Integer thread;
 
-  @Schema(description = "Execution priority of tasks, with higher numerical values being prioritized. Supported range: 1-2147483647, default 1000")
+  @Schema(description = "Execution priority for task scheduling with higher numerical values being prioritized")
   private Integer priority /*= DEFAULT_PRIORITY*/;
 
-  @Schema(description = "Whether to ignore assertions. If not ignored, handle as sampling error when assertion fails")
+  @Schema(description = "Assertion ignore flag for error handling configuration")
   private Boolean ignoreAssertions;
 
   /**
    * Important: A null value indicates that there is no need to update the test results.
    */
-  @Schema(description = "When there are associated resources, will the test results be updated to the associated resources, "
-      + "such as apis, use cases, and scenarios. The default is false")
+  @Schema(description = "Test result update flag for associated resources like APIs, use cases, and scenarios")
   private Boolean updateTestResult;
 
-  @Schema(description = "Set the execution mode, including two options: IMMEDIATELY and TIMING"
-      + "In IMMEDIATELY mode, the task will be scheduled and executed immediately"
-      + "In TIMING mode, the task will be scheduled and executed at the designated startDate", required = true)
+  @Schema(description = "Execution mode specification for immediate or scheduled task execution")
   private StartMode startMode;
 
-  @Schema(description = "The desired scheduled execution time for the task"
-      + "If not set or if the time is less than the current time, it will be immediately scheduled for execution")
+  @Schema(description = "Scheduled execution time for timing mode with immediate execution fallback")
   private LocalDateTime startAtDate;
 
   @TimeValueRange(minInMs = MIN_REPORT_INTERVAL_MS, maxInMs = MAX_REPORT_INTERVAL_MS)
-  @Schema(description = "The interval for reporting sampling results. Supported range: 1-300 second, default 5 second")
+  @Schema(description = "Sampling result reporting interval for real-time monitoring")
   private TimeValue reportInterval/* = DEFAULT_REPORT_INTERVAL*/;
 
 }

@@ -38,8 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Module", description = "Software Module Management - "
-    + "APIs for modular system architecture design, enabling creation and organization of independent functional units")
+@Tag(name = "Module", description = "Software Module Management - APIs for modular system architecture, enabling creation, organization, and management of independent functional units within a project.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/module")
@@ -48,18 +47,22 @@ public class ModuleRest {
   @Resource
   private ModuleFacade moduleFacade;
 
-  @Operation(summary = "Add the software module of project", operationId = "module:add")
+  @Operation(summary = "Create new software modules for a project",
+      description = "Add one or more software modules to a project for modular architecture design and management.",
+      operationId = "module:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Modules created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(@Valid @RequestBody ModuleAddDto dto) {
     return ApiLocaleResult.success(moduleFacade.add(dto));
   }
 
-  @Operation(summary = "Update the software module of project", operationId = "module:update")
+  @Operation(summary = "Update software modules of a project",
+      description = "Batch update properties of existing software modules, such as name, parent, or sequence.",
+      operationId = "module:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully")})
+      @ApiResponse(responseCode = "200", description = "Modules updated successfully")})
   @PatchMapping
   public ApiLocaleResult<?> update(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ModuleUpdateDto> dto) {
@@ -67,56 +70,68 @@ public class ModuleRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the software module of project", operationId = "module:replace")
+  @Operation(summary = "Replace software modules of a project",
+      description = "Batch replace software modules with new definitions, supporting full structure updates.",
+      operationId = "module:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "Modules replaced successfully")})
   @PutMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> replace(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ModuleReplaceDto> dto) {
     return ApiLocaleResult.success(moduleFacade.replace(dto));
   }
 
-  @Operation(summary = "Import the module example", operationId = "module:example:import")
+  @Operation(summary = "Import module example structure",
+      description = "Import a predefined example module structure into the project for rapid modularization.",
+      operationId = "module:example:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Module example imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for module import", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(moduleFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete the software modules of project", operationId = "module:delete")
+  @Operation(summary = "Delete software modules from a project",
+      description = "Batch delete software modules by their identifiers.",
+      operationId = "module:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Modules deleted successfully")})
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Case module ids", required = true)
+      @Parameter(name = "ids", description = "Module identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     moduleFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the software module detail of project", operationId = "module:detail")
+  @Operation(summary = "Query software module details",
+      description = "Retrieve detailed information of a specific software module by its identifier.",
+      operationId = "module:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Module details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Module not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ModuleVo> detail(
-      @Parameter(name = "id", description = "Module id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Module identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(moduleFacade.detail(id));
   }
 
-  @Operation(summary = "Query the software module list of project", operationId = "module:list")
+  @Operation(summary = "Query software module list of a project",
+      description = "Retrieve a flat list of software modules for a project with filtering and pagination support.",
+      operationId = "module:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Module list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<List<ModuleVo>> list(@Valid @ParameterObject ModuleFindDto dto) {
     return ApiLocaleResult.success(moduleFacade.list(dto));
   }
 
-  @Operation(summary = "Query the software module tree of project", operationId = "module:tree")
+  @Operation(summary = "Query software module tree of a project",
+      description = "Retrieve a hierarchical tree structure of software modules for a project.",
+      operationId = "module:tree")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Module tree retrieved successfully")})
   @GetMapping("/tree")
   public ApiLocaleResult<List<ModuleTreeVo>> tree(@Valid @ParameterObject ModuleFindDto dto) {
     return ApiLocaleResult.success(moduleFacade.tree(dto));

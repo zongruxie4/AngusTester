@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ExecutionInner", description = "Internal Execution API - Service-to-service scenario/script execution and result query")
+@Tag(name = "Execution - Internal", description = "Internal Execution Management - Service-to-service scenario/script execution and result query with internal integration capabilities")
 @Validated
 @RestController
 public class ExecInnerRest {
@@ -42,71 +42,85 @@ public class ExecInnerRest {
   @Resource
   private ExecFacade execFacade;
 
-  @Operation(summary = "Create execution by script id", operationId = "exec:byScript:add:inner")
+  @Operation(summary = "Create execution by script identifier", 
+      description = "Create a new test execution using existing script identifier with internal service integration",
+      operationId = "exec:byScript:add:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully")
+      @ApiResponse(responseCode = "200", description = "Execution created successfully by script identifier")
   })
   @PostMapping(value = EXEC_ADD_BY_SCRIPT_ENDPOINT)
   public ApiLocaleResult<IdKey<Long, Object>> addByScript(@Valid @RequestBody ExecAddByScriptDto dto) {
     return ApiLocaleResult.success(execFacade.addByScript(dto));
   }
 
-  @Operation(summary = "Start execution", operationId = "exec:start:inner")
+  @Operation(summary = "Start execution", 
+      description = "Initiate test execution with internal service integration and runner management",
+      operationId = "exec:start:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Start successfully")
+      @ApiResponse(responseCode = "200", description = "Execution started successfully")
   })
   @PostMapping(value = EXEC_START_ENDPOINT)
   public ApiLocaleResult<List<RunnerRunVo>> start(@Valid @RequestBody ExecStartDto dto) {
     return ApiLocaleResult.success(execFacade.start(dto));
   }
 
-  @Operation(summary = "Stop execution", operationId = "exec:stop:inner")
+  @Operation(summary = "Stop execution", 
+      description = "Terminate test execution with graceful shutdown and internal service cleanup",
+      operationId = "exec:stop:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Stop successfully")
+      @ApiResponse(responseCode = "200", description = "Execution stopped successfully")
   })
   @PostMapping(value = EXEC_STOP_ENDPOINT)
   public ApiLocaleResult<List<RunnerStopVo>> stop(@Valid @RequestBody ExecStopDto dto) {
     return ApiLocaleResult.success(execFacade.stop(dto));
   }
 
-  @Operation(summary = "Query the detail of execution", operationId = "exec:detail:inner")
+  @Operation(summary = "Get execution details", 
+      description = "Retrieve comprehensive execution details for internal service integration",
+      operationId = "exec:detail:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Execution details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Execution not found")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/{id}")
   public ApiLocaleResult<ExecDetailVo> detail(
-      @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Execution identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(execFacade.detail(id));
   }
 
-  @Operation(summary = "Query the basic information of execution", operationId = "exec:info")
+  @Operation(summary = "Get execution basic information", 
+      description = "Retrieve basic execution information with optional sample summary integration",
+      operationId = "exec:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Execution basic information retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/{id}/info")
   public ApiLocaleResult<ExecInfoVo> info(
-      @Parameter(name = "id", description = "Execution id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "joinSampleSummary", description = "Join sample summary flag, default true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
+      @Parameter(name = "id", description = "Execution identifier for basic information retrieval", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "joinSampleSummary", description = "Sample summary integration flag for comprehensive data retrieval, defaults to true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
     return ApiLocaleResult.success(execFacade.info(id, joinSampleSummary));
   }
 
-  @Operation(summary = "Query the basic information of executions", operationId = "exec:list:info")
+  @Operation(summary = "Get multiple executions basic information", 
+      description = "Retrieve basic information for multiple executions with optional sample summary integration",
+      operationId = "exec:list:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Multiple executions basic information retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/info")
   public ApiLocaleResult<List<ExecInfoVo>> listInfo(
-      @Parameter(name = "ids", description = "Execution ids", required = true) @RequestParam("ids") Set<Long> ids,
-      @Parameter(name = "joinSampleSummary", description = "Join sample summary flag, default true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
+      @Parameter(name = "ids", description = "Execution identifiers for batch information retrieval", required = true) @RequestParam("ids") Set<Long> ids,
+      @Parameter(name = "joinSampleSummary", description = "Sample summary integration flag for comprehensive data retrieval, defaults to true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
     return ApiLocaleResult.success(execFacade.listInfo(ids, joinSampleSummary));
   }
 
-  @Operation(summary = "Query the basic information of executions", operationId = "exec:list:info:bySource")
+  @Operation(summary = "Get executions basic information by source", 
+      description = "Retrieve basic information for executions filtered by resource type and identifiers",
+      operationId = "exec:list:info:bySource")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Executions basic information retrieved successfully by source")})
   @GetMapping(value = EXEC_ENDPOINT_PREFIX + "/info/bySource")
   public ApiLocaleResult<List<ExecInfoVo>> listInfoBySource(
-      @Parameter(name = "resourceType", description = "Execution resource type", required = true) @RequestParam("resourceType") String resourceType,
-      @Parameter(name = "resourceIds", description = "Execution resource ids", required = true) @RequestParam("resourceIds") Set<Long> resourceIds,
-      @Parameter(name = "joinSampleSummary", description = "Join sample summary flag, default true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
+      @Parameter(name = "resourceType", description = "Execution resource type for source-based filtering", required = true) @RequestParam("resourceType") String resourceType,
+      @Parameter(name = "resourceIds", description = "Execution resource identifiers for source-based filtering", required = true) @RequestParam("resourceIds") Set<Long> resourceIds,
+      @Parameter(name = "joinSampleSummary", description = "Sample summary integration flag for comprehensive data retrieval, defaults to true", required = false) @RequestParam(value = "joinSampleSummary", required = false) Boolean joinSampleSummary) {
     return ApiLocaleResult.success(
         execFacade.listInfoBySource(ScriptSource.valueOf(resourceType), resourceIds,
             joinSampleSummary));

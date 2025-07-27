@@ -22,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @EqualsAndHashCode(callSuper = true)
 public class ServiceApisFindDto extends PageQuery {
 
-  @Schema(description = "Apis id")
+  @Schema(description = "API identifier for precise query filtering")
   private Long id;
 
   // Fix: The path value {serviceId} binds the query parameter exception: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'
@@ -30,28 +30,35 @@ public class ServiceApisFindDto extends PageQuery {
   //  @Schema(description = "Services id")
   //  private Long serviceId;
 
+  @Schema(description = "API protocol type for filtering")
   private ApisProtocol protocol;
 
   @Length(max = MAX_NAME_LENGTH_X4)
+  @Schema(description = "API summary for fuzzy search")
   private String summary;
 
   @Length(max = MAX_CODE_LENGTH_X5)
+  @Schema(description = "API operation identifier for precise search")
   private String operationId;
 
-  @Schema(description = "Required when app administrators query all projects")
+  @Schema(description = "Flag indicating whether this is an admin query for all projects")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission project")
+  @Schema(description = "Required permission level for API access filtering")
   private ServicesPermission hasPermission;
 
   @Length(max = MAX_URL_LENGTH_X2)
+  @Schema(description = "API endpoint for URL-based filtering")
   private String endpoint;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "API creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
+  @Schema(description = "Owner identifier for ownership-based filtering")
   private Long ownerId;
 }
 

@@ -15,19 +15,19 @@ import lombok.Setter;
 public class ServiceApisScopeDto {
 
   @NotNull
-  @Schema(description = "Modify parameter API scope, default 'ALL'", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API scope configuration for selective operation targeting", requiredMode = RequiredMode.REQUIRED)
   private ServiceApisScope scope = ServiceApisScope.ALL;
 
-  @Schema(description = "Selected apis ids, it is required when the scope is a `SELECTED_APIS`")
+  @Schema(description = "Selected API identifiers for targeted scope operations")
   private Set<Long> selectedApisIds;
 
-  @Schema(description = "Match apis regex, it is optional when the scope is a `MATCH_APIS`")
+  @Schema(description = "Endpoint regex pattern for API matching operations")
   private String matchEndpointRegex;
 
-  @Schema(description = "Match apis regex, it is optional when the scope is a `MATCH_APIS`")
+  @Schema(description = "HTTP method for API matching operations")
   private HttpMethod matchMethod;
 
-  @Schema(description = "Match apis tags, it is optional when the scope is a `MATCH_APIS`")
+  @Schema(description = "API tags for filtering operations")
   private Set<String> filterTags;
 
 }

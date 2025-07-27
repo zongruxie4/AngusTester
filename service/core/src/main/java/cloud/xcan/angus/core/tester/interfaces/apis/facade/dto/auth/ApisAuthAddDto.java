@@ -18,16 +18,16 @@ import lombok.experimental.Accessors;
 public class ApisAuthAddDto {
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for permission target classification", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object identifier for permission target specification", requiredMode = RequiredMode.REQUIRED)
   private Long authObjectId;
 
   @Size(min = 1)
   @CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission), Default view")
+  @Schema(description = "Authorization permissions for operation access control with VIEW as default")
   private Set<ApiPermission> permissions;
 
 }

@@ -18,18 +18,18 @@ import org.hibernate.validator.constraints.Length;
 public class ModuleUpdateDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Module identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Min(DEFAULT_ROOT_PID)
-  @Schema(name = "Parent module ID", example = "1")
+  @Schema(description = "Parent module identifier for hierarchical structure", example = "1")
   private Long pid;
 
-  @Schema(description = "Sorting value, the smaller the value, the higher", example = "10000")
+  @Schema(description = "Sorting value; smaller values indicate higher priority", example = "10000")
   private Integer sequence;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(name = "Module name", example = "Sprint-1")
+  @Schema(description = "Module name for identification and display", example = "Sprint-1")
   private String name;
 
 }

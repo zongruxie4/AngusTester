@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
 public class ScenarioUpdateDto {
 
   @NotNull
-  @Schema(description = "Scenario id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Scenario identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@NotNull
@@ -26,7 +26,7 @@ public class ScenarioUpdateDto {
   //private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Scenario name", example = "Create an order")
+  @Schema(description = "Scenario name for identification and management", example = "Create an order")
   private String name;
 
   //@NotBlank
@@ -35,22 +35,22 @@ public class ScenarioUpdateDto {
   //private String pluginName;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Scenario description")
+  @Schema(description = "Scenario description for detailed information and requirements")
   private String description;
 
-  @Schema(description = "Yaml or json format scenario script content")
+  @Schema(description = "Scenario script content in YAML or JSON format for execution configuration")
   private AngusScript script;
 
-  @Schema(description = "Whether to enable authorization control, default enabled")
+  @Schema(description = "Flag to enable authorization control for access management")
   private Boolean auth;
 
-  @Schema(description = "Whether to enable functional testing, default enabled")
+  @Schema(description = "Flag to enable functional testing capabilities")
   private Boolean testFunc;
 
-  @Schema(description = "Whether to enable performance testing, default enabled")
+  @Schema(description = "Flag to enable performance testing capabilities")
   private Boolean testPerf;
 
-  @Schema(description = "Whether to enable stability testing, default enabled")
+  @Schema(description = "Flag to enable stability testing capabilities")
   private Boolean testStability;
 }
 

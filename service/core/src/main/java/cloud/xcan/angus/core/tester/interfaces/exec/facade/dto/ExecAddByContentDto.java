@@ -17,18 +17,18 @@ import org.hibernate.validator.constraints.Length;
 public class ExecAddByContentDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for execution association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Execution name")
+  @Schema(description = "Execution name for identification and organization")
   private String name;
 
   @NotEmpty
-  @Schema(description = "Script type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script content for direct execution with inline script definition", requiredMode = RequiredMode.REQUIRED)
   private String scriptContent;
 
-  @Schema(description = "Trial execution test flag")
+  @Schema(description = "Trial execution flag for testing and validation purposes")
   private Boolean trial;
 
 }

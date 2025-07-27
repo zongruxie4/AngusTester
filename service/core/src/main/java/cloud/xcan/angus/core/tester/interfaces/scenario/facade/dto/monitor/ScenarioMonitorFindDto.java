@@ -20,28 +20,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ScenarioMonitorFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for monitoring configuration filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description="Monitor id")
+  @Schema(description = "Monitoring configuration identifier for precise query filtering")
   private Long id;
 
-  @Schema(description = "Monitor name")
+  @Schema(description = "Monitoring configuration name for fuzzy search")
   private String name;
 
-  @Schema(description = "Monitor scenario id")
+  @Schema(description = "Scenario identifier for monitoring configuration association")
   private Long scenarioId;
 
+  @Schema(description = "Monitoring execution status for filtering")
   private ScenarioMonitorStatus status;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Monitoring configuration creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for modification-based filtering")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Monitoring configuration last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
   @Override

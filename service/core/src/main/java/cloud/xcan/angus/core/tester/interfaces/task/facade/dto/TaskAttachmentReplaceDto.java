@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class TaskAttachmentReplaceDto {
 
   @Size(max = MAX_ATTACHMENT_NUM)
-  @Schema(description = "Task attachments, allow clear attachments by empty value")
+  @Schema(description = "Task-related file attachments for documentation and reference. Empty value removes all current attachments")
   private List<Attachment> attachments;
 
 }

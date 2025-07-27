@@ -19,39 +19,51 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ApisCaseFindDto extends PageQuery {
 
+  @Schema(description = "Test case identifier for precise query")
   private Long id;
 
+  @Schema(description = "Project identifier for test case query scope definition")
   private Long projectId;
 
+  @Schema(description = "Service identifier for test case filtering")
   private Long serviceId;
 
+  @Schema(description = "API identifier for test case filtering")
   private Long apisId;
 
+  @Schema(description = "Test case name for fuzzy search and filtering")
   private String name;
 
-  @Schema(description = "Enable test cases flag default is `enabled`")
+  @Schema(description = "Test case enablement flag for filtering")
   private Boolean enabled;
 
-  @Schema(description = "Apis test cases type, default is `USER_DEFINED`")
+  @Schema(description = "API test case type for classification filtering")
   private ApisCaseType type;
 
-  @Schema(description = "Apis test cases method, default is `NULL`")
+  @Schema(description = "API test case method for specification filtering")
   private CaseTestMethod testMethod;
 
+  @Schema(description = "API protocol for communication type filtering")
   private ApisProtocol protocol;
 
+  @Schema(description = "HTTP method for request specification filtering")
   private HttpMethod method;
 
+  @Schema(description = "API endpoint path for resource identification filtering")
   private String endpoint;
 
+  @Schema(description = "Creator identifier for ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for update tracking")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
 }

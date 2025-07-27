@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncReviewCase", description = "Test Review-Case Relationships - Management interface for linking test review to specific test cases")
+@Tag(name = "Functional Test Review-Case", description = "Functional Test Review-Case Management - Comprehensive APIs for linking test reviews to specific test cases with review process management and result tracking")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/review/case")
@@ -47,9 +47,11 @@ public class FuncReviewCaseRest {
   @Resource
   private FuncReviewCaseFacade funcReviewCaseFacade;
 
-  @Operation(summary = "Add functional testing review cases", operationId = "func:review:case:add")
+  @Operation(summary = "Add test cases to review", 
+      description = "Associate multiple test cases with a specific review for systematic analysis and discussion",
+      operationId = "func:review:case:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Test cases added to review successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
@@ -57,10 +59,12 @@ public class FuncReviewCaseRest {
     return ApiLocaleResult.success(funcReviewCaseFacade.add(dto));
   }
 
-  @Operation(summary = "Review functional test cases", operationId = "func:review:case:review")
+  @Operation(summary = "Review test cases", 
+      description = "Perform review operations on multiple test cases with comprehensive review feedback and results",
+      operationId = "func:review:case:review")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Test cases reviewed successfully"),
+      @ApiResponse(responseCode = "404", description = "Test case not found")
   })
   @PutMapping("/review")
   public ApiLocaleResult<?> review(
@@ -69,10 +73,12 @@ public class FuncReviewCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Reset the review result of case", operationId = "func:review:case:result:reset")
+  @Operation(summary = "Reset test case review results", 
+      description = "Reset review results for multiple test cases to initial state for re-review",
+      operationId = "func:review:case:result:reset")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Test case review results reset successfully"),
+      @ApiResponse(responseCode = "404", description = "Test case not found")
   })
   @PatchMapping(value = "/reset")
   public ApiLocaleResult<?> reviewReset(
@@ -81,10 +87,12 @@ public class FuncReviewCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restart the result of review case result", operationId = "func:review:case:result:restart")
+  @Operation(summary = "Restart test case review results", 
+      description = "Restart review process for multiple test cases to initiate new review cycle",
+      operationId = "func:review:case:result:restart")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Test case review results restarted successfully"),
+      @ApiResponse(responseCode = "404", description = "Test case not found")
   })
   @PatchMapping(value = "/restart")
   public ApiLocaleResult<?> reviewStart(
@@ -93,9 +101,11 @@ public class FuncReviewCaseRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete functional testing cases of review", operationId = "func:review:case:delete")
+  @Operation(summary = "Remove test cases from review", 
+      description = "Disassociate multiple test cases from a specific review to remove from review process",
+      operationId = "func:review:case:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Test cases removed from review successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
@@ -103,19 +113,23 @@ public class FuncReviewCaseRest {
     funcReviewCaseFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the functional testing case detail of review", operationId = "func:review:case:detail")
+  @Operation(summary = "Get review test case details", 
+      description = "Retrieve comprehensive details of a specific test case within a review for analysis",
+      operationId = "func:review:case:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Review test case details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Review test case not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<FuncReviewCaseDetailVo> detail(
-      @Parameter(name = "id", description = "Review case id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Review test case identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(funcReviewCaseFacade.detail(id));
   }
 
-  @Operation(summary = "Query the functional case info list of review", operationId = "func:review:case:list")
+  @Operation(summary = "List review test cases", 
+      description = "Retrieve paginated list of test cases associated with reviews with comprehensive filtering options",
+      operationId = "func:review:case:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Review test case list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<FuncReviewCaseVo>> list(
       @Valid @ParameterObject FuncReviewCaseFindDto dto) {

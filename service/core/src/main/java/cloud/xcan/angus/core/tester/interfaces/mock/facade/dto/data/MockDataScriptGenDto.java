@@ -19,25 +19,25 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class MockDataScriptGenDto {
 
-  @Schema(description = "Script id. Generate a new script when the script ID is empty")
+  @Schema(description = "Script identifier for reuse or new script generation")
   private Long scriptId;
 
-  @Schema(description = "Project id. It is required to add scripts")
+  @Schema(description = "Project identifier required for script creation and management")
   private Long projectId;
 
   @NotEmpty
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Script execution plugin, when multiple plugins with the same name exist, use the plugin with the highest version number", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script execution plugin with version-based selection for highest compatibility", requiredMode = RequiredMode.REQUIRED)
   private String plugin;
 
   @Valid
   @NotNull
-  @Schema(description = "Common configuration parameters for script execution", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Common configuration parameters for script execution with comprehensive settings", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Valid
   @NotNull
-  @Schema(description = "Mock data task", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock data generation task configuration for comprehensive data simulation", requiredMode = RequiredMode.REQUIRED)
   private MockData mockData;
 
 }

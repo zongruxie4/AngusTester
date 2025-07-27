@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DataParameterization", description = "Data Parameterization Preview - Dedicated access for previewing parameterized data values during test configuration")
+@Tag(name = "Parameterization Preview", description = "Parameterization Preview - Dedicated access for previewing parameterized data values during test configuration")
 @Validated
 @RestController
 @RequestMapping("/api/v1/target")

@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AngusScript", description = "AngusScript Configuration - "
-    + "Configure and manage test scripts that comply with standardized test workflow specifications")
+@Tag(name = "Angus Script", description = "Angus Script Management API - Standardized test script configuration and management system for workflow-compliant test execution.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/angus/script")
@@ -34,35 +33,41 @@ public class AngusScriptRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(summary = "Add script by angus model", operationId = "script:angus:add")
+  @Operation(summary = "Create Angus script",
+      description = "Create new test script using standardized Angus model for workflow compliance.",
+      operationId = "script:angus:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Angus script created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> angusAdd(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId,
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for script association") Long projectId,
       @Valid @RequestBody AngusScript dto) {
     return ApiLocaleResult.success(scriptFacade.angusAdd(projectId, dto));
   }
 
-  @Operation(summary = "Replace script by angus model", operationId = "script:angus:replace")
+  @Operation(summary = "Replace Angus script",
+      description = "Replace existing Angus script with new standardized configuration.",
+      operationId = "script:angus:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "Angus script replaced successfully")})
   @PutMapping("/{id}")
   public ApiLocaleResult<?> angusReplace(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Script identifier for replacement", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody AngusScript dto) {
     scriptFacade.angusReplace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the script detail of angus model", operationId = "script:angus:detail")
+  @Operation(summary = "Query Angus script detail",
+      description = "Retrieve comprehensive Angus script configuration and metadata.",
+      operationId = "script:angus:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Angus script detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Angus script not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<AngusScriptDetailVo> angusDetail(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.angusDetail(id));
   }
 }

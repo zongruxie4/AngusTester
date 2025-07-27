@@ -18,39 +18,39 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ScenarioReplaceDto {
 
-  @Schema(description="Modify scenario id. Create a new scenario when the value is null")
+  @Schema(description = "Scenario identifier for replacement; null indicates creation of new scenario")
   private Long id;
 
-  @Schema(description = "Project id, required when creating a new scenario")
+  @Schema(description = "Project identifier for scenario association; required when creating new scenario")
   private Long projectId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Scenario name", example = "Create an order", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Scenario name for identification and management", example = "Create an order", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotBlank
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Name of the scenario execution plugin", example = "Http", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Scenario execution plugin name defining the testing protocol", example = "Http", requiredMode = RequiredMode.REQUIRED)
   private String plugin;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Scenario description")
+  @Schema(description = "Scenario description for detailed information and requirements")
   private String description;
 
-  @Schema(description = "Yaml or json format scenario script content")
+  @Schema(description = "Scenario script content in YAML or JSON format for execution configuration")
   private AngusScript script;
 
-  @Schema(description = "Whether to enable authorization control, default enabled")
+  @Schema(description = "Flag to enable authorization control for access management")
   private Boolean auth;
 
-  @Schema(description = "Whether to enable functional testing, default enabled")
+  @Schema(description = "Flag to enable functional testing capabilities")
   private Boolean testFunc;
 
-  @Schema(description = "Whether to enable performance testing, default enabled")
+  @Schema(description = "Flag to enable performance testing capabilities")
   private Boolean testPerf;
 
-  @Schema(description = "Whether to enable stability testing, default enabled")
+  @Schema(description = "Flag to enable stability testing capabilities")
   private Boolean testStability;
 }
 

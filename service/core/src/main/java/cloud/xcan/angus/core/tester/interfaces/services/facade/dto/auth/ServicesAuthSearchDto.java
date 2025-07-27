@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ServicesAuthSearchDto extends PageQuery {
 
-  @Schema
+  @Schema(description = "Authorization record identifier for precise query filtering")
   private Long id;
 
   @JsonIgnore
@@ -23,7 +23,7 @@ public class ServicesAuthSearchDto extends PageQuery {
   private Long serviceId;
 
   @NotNull
-  @Schema(example = "USER", description = "Authorization object type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for entity category filtering", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
 }

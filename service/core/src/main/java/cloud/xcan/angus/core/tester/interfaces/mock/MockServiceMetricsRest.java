@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockServiceMetrics", description = "Mock Service Monitoring & Metrics API - Access point for mock service observability data")
+@Tag(name = "Mock Service Metrics", description = "Mock Service Monitoring & Metrics - Comprehensive access point for mock service observability data with performance analytics and health monitoring")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/service")
@@ -28,12 +28,14 @@ public class MockServiceMetricsRest {
   @Resource
   private MockServiceMetricsFacade mockServiceMetricsFacade;
 
-  @Operation(summary = "Query the list of mock service metrics", operationId = "mock:service:metrics")
+  @Operation(summary = "Query mock service metrics with filtering",
+      description = "Retrieve comprehensive mock service metrics with pagination and filtering for performance analysis and monitoring",
+      operationId = "mock:service:metrics")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock service metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics")
   public ApiLocaleResult<PageResult<MockServiceMetricsVo>> metrics(
-      @Parameter(name = "id", description = "Mock service ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Mock service identifier for metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(mockServiceMetricsFacade.metrics(id, dto));
   }

@@ -18,18 +18,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApisDesignImportDto {
 
   @NotNull
-  @Schema(description = "Project ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for API design import destination", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @NotBlank
-  @Schema(description = "Design name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API design name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH)
   private String name;
 
-  @Schema(description = "Apis specification content. API definition string content in json or yaml format, multiple files import is not supported")
+  @Schema(description = "OpenAPI specification content in JSON or YAML format for direct import")
   private String content;
 
-  @Schema(description = "Apis specification file. API definition file in json or yaml format, multiple files need to be compressed into a zip file before uploading",
+  @Schema(description = "OpenAPI specification file in JSON or YAML format for file-based import",
       type = "string", format = "binary")
   private MultipartFile file;
 

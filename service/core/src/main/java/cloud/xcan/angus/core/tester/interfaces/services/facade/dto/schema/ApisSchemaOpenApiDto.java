@@ -12,19 +12,16 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ApisSchemaOpenApiDto {
 
-  @Schema(example = "yaml", allowableValues = "yaml, json",
-      description = "OpenAPI document format. Available values yaml or json, the default value is yaml")
+  @Schema(description = "OpenAPI document format specification for schema generation", example = "yaml", allowableValues = "yaml, json")
   private SchemaFormat format = SchemaFormat.yaml;
 
-  @Schema(example = "true",
-      description = "Whether to turn on Gzip compression. It is recommended to enable gzip compression. After enabling it, the data size can be reduced by more than 20 times. By default, gzip compression is enabled")
+  @Schema(description = "Gzip compression flag for data size optimization", example = "true")
   private boolean gzipCompression = true;
 
-  @Schema(description = "Apis ids included. Specify the apis to include, include all when not specified")
+  @Schema(description = "API identifiers for selective schema generation")
   private Set<Long> apiIds;
 
-  @Schema(example = "false",
-      description = "Only return apis associated components, if true, return all components, default false")
+  @Schema(description = "Flag to include only APIs with associated components", example = "false")
   private boolean onlyApisComponents = false;
 
 }

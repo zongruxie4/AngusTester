@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class NodeDomainUpdateDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Domain identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //  @Length(max = MAX_NAME_LENGTH_X2)
@@ -22,7 +22,7 @@ public class NodeDomainUpdateDto {
   //  private String name;
 
   @NotNull
-  @Schema(example = "NORMAL", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Domain status for lifecycle management and access control", example = "NORMAL", requiredMode = RequiredMode.REQUIRED)
   private NormalStatus status;
 
 }

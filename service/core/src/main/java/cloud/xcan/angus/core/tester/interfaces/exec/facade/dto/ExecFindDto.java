@@ -26,48 +26,67 @@ import org.hibernate.validator.constraints.Range;
 public class ExecFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for execution query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Execution identifier for precise query")
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Execution name for fuzzy search and filtering")
   private String name;
 
   @Length(max = MAX_KEY_LENGTH)
+  @Schema(description = "Plugin name for execution filtering")
   private String plugin;
 
+  @Schema(description = "Execution status for state-based filtering")
   private ExecStatus status;
 
+  @Schema(description = "Script identifier for script-based filtering")
   private Long scriptId;
 
+  @Schema(description = "Script type for type-based filtering")
   private ScriptType scriptType;
 
+  @Schema(description = "Script source for source-based filtering")
   private ScriptSource scriptSource;
 
+  @Schema(description = "Script source identifier for source-based filtering")
   private Long scriptSourceId;
 
   @Range(min = MIN_PRIORITY, max = MAX_PRIORITY)
+  @Schema(description = "Execution priority for priority-based filtering")
   private Integer priority;
 
+  @Schema(description = "Node identifier for node-based filtering")
   private Long nodeId;
 
+  @Schema(description = "Start mode for execution mode filtering")
   private StartMode startMode;
 
+  @Schema(description = "Scheduled start date for temporal filtering")
   private LocalDateTime startDate;
 
+  @Schema(description = "Actual start date for temporal filtering")
   private LocalDateTime actualStartDate;
 
+  @Schema(description = "End date for temporal filtering")
   private LocalDateTime endDate;
 
+  @Schema(description = "Executor identifier for executor-based filtering")
   private Long execBy;
 
+  @Schema(description = "Creator identifier for ownership filtering")
   private Long createdBy;
 
+  @Schema(description = "Creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for update tracking")
   private Long lastModifiedBy;
 
+  @Schema(description = "Last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
   @Override

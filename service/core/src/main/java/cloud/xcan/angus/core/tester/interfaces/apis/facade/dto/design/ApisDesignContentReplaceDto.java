@@ -16,11 +16,11 @@ import org.hibernate.validator.constraints.Length;
 public class ApisDesignContentReplaceDto {
 
   @NotNull
-  @Schema(description = "Design ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API design identifier for content replacement operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotNull
-  @Schema(description = "Design content", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "OpenAPI specification content for design definition", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_OPENAPI_LENGTH)
   private String openapi;
 

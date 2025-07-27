@@ -16,16 +16,17 @@ import lombok.experimental.Accessors;
 public class ServicesAuthFindDto extends PageQuery {
 
   //@NotNull -> Transferring values in filters
-  @Schema(description = "Services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service identifier for authorization query filtering", requiredMode = RequiredMode.REQUIRED)
   private Long serviceId;
 
   @NotNull
-  @Schema(example = "USER", description = "Authorization object type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for entity category filtering", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for specific entity filtering")
   private Long authObjectId;
 
+  @Schema(description = "Authorization creation date for temporal filtering")
   private Date createdDate;
 
 }

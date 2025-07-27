@@ -17,11 +17,11 @@ import org.hibernate.validator.constraints.Length;
 public class ApisFollowFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for followed API query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Follow apis name")
+  @Schema(description = "Followed API name for fuzzy search and filtering")
   private String apisName;
 
 }

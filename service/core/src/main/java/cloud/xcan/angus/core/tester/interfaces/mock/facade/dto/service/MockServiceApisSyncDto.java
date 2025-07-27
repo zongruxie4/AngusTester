@@ -16,12 +16,12 @@ import lombok.experimental.Accessors;
 @ToString
 public class MockServiceApisSyncDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and coordination", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
   @Valid
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock APIs batch synchronization command parameters for distributed operation", requiredMode = RequiredMode.REQUIRED)
   private MockApisSyncDto cmdParams;
 
 }

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "FuncPlanAuth", description = "Test Plan Authorization Management - Unified entry for managing data access permissions of test plans, their linked cases, and baseline references")
+@Tag(name = "Functional Test Plan Authorization", description = "Functional Test Plan Authorization Management - Comprehensive APIs for managing data access permissions of test plans, their linked cases, and baseline references with granular permission control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")
@@ -47,116 +47,136 @@ public class FuncPlanAuthRest {
   @Resource
   private FuncPlanAuthFacade funcPlanAuthFacade;
 
-  @Operation(summary = "Add the authorization of functional test plan", operationId = "func:plan:auth:add")
+  @Operation(summary = "Add test plan authorization", 
+      description = "Create authorization for a specific functional test plan with comprehensive permission settings",
+      operationId = "func:plan:auth:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Test plan authorization created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
+      @Parameter(name = "id", description = "Test plan identifier for authorization creation", required = true) @PathVariable("id") Long planId,
       @Valid @RequestBody FuncPlanAuthAddDto dto) {
     return ApiLocaleResult.success(funcPlanAuthFacade.add(planId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of functional test plan", operationId = "func:plan:auth:replace")
+  @Operation(summary = "Replace test plan authorization", 
+      description = "Update authorization settings for a specific functional test plan with complete permission replacement",
+      operationId = "func:plan:auth:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Test plan authorization replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Test plan authorization not found")
   })
   @PutMapping("/auth/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Functional test plan authorization id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Authorization identifier for replacement operation", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody FuncPlanAuthReplaceDto dto) {
     funcPlanAuthFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the authorization of functional test plan", operationId = "func:plan:auth:enabled")
+  @Operation(summary = "Enable or disable test plan authorization", 
+      description = "Toggle authorization status for a specific functional test plan to control access",
+      operationId = "func:plan:auth:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully")})
+      @ApiResponse(responseCode = "200", description = "Test plan authorization status updated successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Test plan identifier for authorization status update", required = true) @PathVariable("id") Long planId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Authorization enablement flag for access control", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     funcPlanAuthFacade.enabled(planId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of functional test plan", operationId = "func:plan:auth:status")
+  @Operation(summary = "Get test plan authorization status", 
+      description = "Retrieve authorization status for a specific functional test plan",
+      operationId = "func:plan:auth:status")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Test plan authorization status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Test plan not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId) {
+      @Parameter(name = "id", description = "Test plan identifier for status retrieval", required = true) @PathVariable("id") Long planId) {
     return ApiLocaleResult.success(funcPlanAuthFacade.status(planId));
   }
 
-  @Operation(summary = "Delete the authorization of functional test plan", operationId = "func:plan:auth:delete")
+  @Operation(summary = "Delete test plan authorization", 
+      description = "Remove authorization for a specific functional test plan to revoke access",
+      operationId = "func:plan:auth:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Test plan authorization deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/auth/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Functional test plan authorization id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Authorization identifier for deletion", required = true) @PathVariable("id") Long id) {
     funcPlanAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission of functional test plan", operationId = "func:plan:user:auth")
+  @Operation(summary = "Get user authorization permissions", 
+      description = "Retrieve authorization permissions for a specific user on a functional test plan",
+      operationId = "func:plan:user:auth")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "User authorization permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Test plan not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<FuncPlanPermission>> userAuth(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Test plan identifier for permission query", required = true) @PathVariable("id") Long planId,
+      @Parameter(name = "userId", description = "User identifier for permission query", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "admin", description = "Administrator permission flag for enhanced access control") Boolean admin) {
     return ApiLocaleResult.success(funcPlanAuthFacade.userAuth(planId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission of functional test plan", operationId = "func:plan:user:auth:current")
+  @Operation(summary = "Get current user authorization permissions", 
+      description = "Retrieve authorization permissions for the current user on a functional test plan",
+      operationId = "func:plan:user:auth:current")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user authorization permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Test plan not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/auth/current")
   public ApiLocaleResult<FuncPlanAuthCurrentVo> currentUserAuth(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Test plan identifier for current user permission query", required = true) @PathVariable("id") Long planId,
+      @Parameter(name = "admin", description = "Administrator permission flag for enhanced access control") Boolean admin) {
     return ApiLocaleResult.success(funcPlanAuthFacade.currentUserAuth(planId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission", operationId = "func:plan:user:auth:current:batch")
+  @Operation(summary = "Get current user authorization permissions for multiple plans", 
+      description = "Retrieve authorization permissions for the current user on multiple functional test plans",
+      operationId = "func:plan:user:auth:current:batch")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user authorization permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Test plan not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/user/auth/current")
   public ApiLocaleResult<Map<Long, FuncPlanAuthCurrentVo>> currentUserAuths(
-      @Parameter(name = "ids", description = "Functional test plan ids", required = true) @RequestParam(value = "ids") @NotEmpty HashSet<Long> planIds,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "ids", description = "Test plan identifiers for batch permission query", required = true) @RequestParam(value = "ids") @NotEmpty HashSet<Long> planIds,
+      @Parameter(name = "admin", description = "Administrator permission flag for enhanced access control") Boolean admin) {
     return ApiLocaleResult.success(funcPlanAuthFacade.currentUserAuths(planIds, admin));
   }
 
-  @Operation(summary = "Check the user authorization or administrator permission", operationId = "func:plan:auth:check")
+  @Operation(summary = "Check user authorization permission", 
+      description = "Verify specific authorization permission for a user on a functional test plan",
+      operationId = "func:plan:auth:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed")})
+      @ApiResponse(responseCode = "200", description = "User authorization permission verified successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "Functional test plan id", required = true) @PathVariable("id") Long planId,
-      @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Function plan authorized permission", required = true) @PathVariable("authPermission") FuncPlanPermission permission) {
+      @Parameter(name = "id", description = "Test plan identifier for permission verification", required = true) @PathVariable("id") Long planId,
+      @Parameter(name = "userId", description = "User identifier for permission verification", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "authPermission", description = "Specific permission to verify for access control", required = true) @PathVariable("authPermission") FuncPlanPermission permission) {
     funcPlanAuthFacade.authCheck(planId, permission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of functional test plan authorization", operationId = "func:plan:auth:list")
+  @Operation(summary = "List test plan authorizations", 
+      description = "Retrieve paginated list of test plan authorizations with comprehensive filtering and search options",
+      operationId = "func:plan:auth:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Test plan authorization list retrieved successfully")})
   @GetMapping("/auth")
   public ApiLocaleResult<PageResult<FuncPlanAuthVo>> list(
       @Valid @ParameterObject FuncPlanAuthFindDto dto) {

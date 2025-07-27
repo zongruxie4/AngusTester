@@ -17,6 +17,6 @@ import lombok.experimental.Accessors;
 public class ServicesReplaceAuthDto {
 
   @NotNull
-  @Schema
+  @Schema(description = "Authorization permissions defining operational access rights for the service")
   private List<ServicesPermission> authData;
 }

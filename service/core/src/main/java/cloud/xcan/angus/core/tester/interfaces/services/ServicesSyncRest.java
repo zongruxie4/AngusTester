@@ -28,8 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesSync", description = "OpenAPI Document Synchronization Configuration - "
-    + "Synchronize service implementations with Swagger/OpenAPI documentation")
+@Tag(name = "Services Synchronization", description = "OpenAPI Document Synchronization Management API - Comprehensive synchronization system for service implementations with Swagger/OpenAPI documentation.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -38,82 +37,84 @@ public class ServicesSyncRest {
   @Resource
   private ServicesSyncFacade servicesSyncFacade;
 
-  @Operation(summary = "Replace synchronization configuration of the service",
-      description = "Replace synchronization configuration of the services, allow up to "
-          + MAX_SYNC_OPENAPI_NUM + " configuration to be added",
+  @Operation(summary = "Replace service synchronization configuration",
+      description = "Configure synchronization settings for service with OpenAPI documentation integration. Allow up to " + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
       operationId = "services:sync:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
+      @ApiResponse(responseCode = "200", description = "Service synchronization configuration replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Service not found")
   })
   @PutMapping("/{serviceId}/synchronization")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for synchronization configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @RequestBody ServicesSyncReplaceDto dto) {
     servicesSyncFacade.replace(serviceId, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace all synchronization configuration of the service",
-      description = "Replace all synchronization configuration of the services, allow up to "
-          + MAX_SYNC_OPENAPI_NUM + " configuration to be added",
+  @Operation(summary = "Replace all service synchronization configurations",
+      description = "Configure all synchronization settings for service with OpenAPI documentation integration. Allow up to " + MAX_SYNC_OPENAPI_NUM + " configurations to be added.",
       operationId = "services:sync:all:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
+      @ApiResponse(responseCode = "200", description = "All service synchronization configurations replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Service not found")
   })
   @PutMapping("/{serviceId}/synchronization/all")
   public ApiLocaleResult<?> replaceAll(
-      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for synchronization configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @RequestBody List<ServicesSyncReplaceDto> dto) {
     servicesSyncFacade.replaceAll(serviceId, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Execute the service synchronization",
-      description = "Execute the synchronization of service by OpenAPI docs configuration",
+  @Operation(summary = "Execute service synchronization",
+      description = "Execute synchronization process for service using OpenAPI documentation configuration.",
       operationId = "services:sync:exec")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
+      @ApiResponse(responseCode = "200", description = "Service synchronization executed successfully"),
       @ApiResponse(responseCode = "404", description = "Service not found")
   })
   @PostMapping("/{serviceId}/synchronization/exec")
   public ApiLocaleResult<?> sync(
-      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable Long serviceId,
-      @Parameter(name = "name", description = "Synchronization configuration name, synchronize all OpenAPI docs under the project when the value is empty", required = false) @RequestParam(value = "name", required = false) String name) {
+      @Parameter(name = "serviceId", description = "Service identifier for synchronization execution", required = true) @PathVariable Long serviceId,
+      @Parameter(name = "name", description = "Synchronization configuration name for selective execution; synchronize all OpenAPI docs under the project when empty") @RequestParam(value = "name", required = false) String name) {
     servicesSyncFacade.sync(serviceId, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Test the synchronization configuration",
-      description = "Test whether the synchronization url and authorization information are configured correctly",
+  @Operation(summary = "Test synchronization configuration",
+      description = "Validate synchronization URL and authorization configuration for connectivity and access verification.",
       operationId = "services:sync:test")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Test successfully")})
+      @ApiResponse(responseCode = "200", description = "Synchronization configuration test completed successfully")})
   @PostMapping("/synchronization/test")
   public ApiLocaleResult<?> test(@RequestBody ServicesSyncTestDto dto) {
     servicesSyncFacade.test(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the service synchronization configuration", operationId = "services:sync:delete")
+  @Operation(summary = "Delete service synchronization configuration",
+      description = "Remove synchronization configuration by names for service management.",
+      operationId = "services:sync:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Test successfully")})
+      @ApiResponse(responseCode = "204", description = "Service synchronization configuration deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/synchronization")
   public void delete(
-      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Parameter(name = "names", description = "Synchronization configuration names", required = true) @RequestParam("names") Set<String> names) {
+      @Parameter(name = "serviceId", description = "Service identifier for synchronization configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "names", description = "Synchronization configuration names for deletion", required = true) @RequestParam("names") Set<String> names) {
     servicesSyncFacade.delete(serviceId, names);
   }
 
-  @Operation(summary = "Query the service synchronization configuration", operationId = "services:sync:list")
+  @Operation(summary = "Query service synchronization configuration",
+      description = "Retrieve synchronization configuration list for service management and monitoring.",
+      operationId = "services:sync:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
+      @ApiResponse(responseCode = "200", description = "Service synchronization configuration retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Service not found")})
   @GetMapping(value = "/{serviceId}/synchronization")
   public ApiLocaleResult<List<ServicesSyncDetailVo>> list(
-      @Parameter(name = "serviceId", description = "Service id", required = true) @PathVariable("serviceId") Long serviceId) {
+      @Parameter(name = "serviceId", description = "Service identifier for synchronization query", required = true) @PathVariable("serviceId") Long serviceId) {
     return ApiLocaleResult.success(servicesSyncFacade.list(serviceId));
   }
 

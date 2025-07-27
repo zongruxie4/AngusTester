@@ -19,27 +19,36 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class TaskSprintFindDto extends PageQuery {
 
+  @Schema(description = "Sprint identifier for specific sprint lookup")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for sprint filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Sprint display name for partial matching search")
   private String name;
 
+  @Schema(description = "Sprint execution status for workflow filtering")
   private TaskSprintStatus status;
 
+  @Schema(description = "Sprint execution start date for timeline filtering")
   private LocalDateTime startDate;
 
+  @Schema(description = "Sprint completion deadline for timeline filtering")
   private LocalDateTime deadlineDate;
 
+  @Schema(description = "Sprint owner identifier for responsibility filtering")
   private Long ownerId;
 
+  @Schema(description = "Sprint creator identifier for ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Sprint creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for change tracking")
   private Long lastModifiedBy;
 
   @Override

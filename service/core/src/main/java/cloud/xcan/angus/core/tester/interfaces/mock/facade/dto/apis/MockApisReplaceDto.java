@@ -20,30 +20,30 @@ import org.hibernate.validator.constraints.Length;
 public class MockApisReplaceDto {
 
   //@NotNull
-  @Schema(description = "Mock apis id", example = "1"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Mock API identifier for replacement operation", example = "1"/*, requiredMode = RequiredMode.REQUIRED*/)
   private Long id;
 
   //Modifications are not allowed
   @NotNull
-  @Schema(description = "Mock service id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock service identifier for API association", requiredMode = RequiredMode.REQUIRED)
   private Long mockServiceId;
 
   @NotEmpty
   @Length(max = MAX_OPENAPI_SUMMARY_LENGTH)
-  @Schema(description = "Mock api name", example = "Query users", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock API name for identification and display", example = "Query users", requiredMode = RequiredMode.REQUIRED)
   private String summary;
 
-  @Schema(description = "Mock api detailed description")
+  @Schema(description = "Mock API detailed description for comprehensive documentation")
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
   private String description;
 
   @NotNull
-  @Schema(description = "Mock api method", example = "GET", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "HTTP method for API request simulation", example = "GET", requiredMode = RequiredMode.REQUIRED)
   private HttpMethod method;
 
   @NotEmpty
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(description = "Mock api endpoint", example = "/api/v1/user", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock API endpoint path for request routing", example = "/api/v1/user", requiredMode = RequiredMode.REQUIRED)
   private String endpoint;
 
 }

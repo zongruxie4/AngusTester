@@ -20,14 +20,14 @@ import lombok.experimental.Accessors;
 public class ServiceAddAuthDto {
 
   @NotNull
-  @Schema(example = "USER", description = "Authorization object type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for access control classification", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
   @NotNull
-  @Schema(description = "Authorization object id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object identifier for precise access control", requiredMode = RequiredMode.REQUIRED)
   private Long authObjectId;
 
   @Size(min = 1)
-  @Schema(description = "Authorization permissions(Operation permission), default view")
+  @Schema(description = "Authorization permissions with operation-based access control and default view permission")
   private Set<MockServicePermission> permissions;
 }

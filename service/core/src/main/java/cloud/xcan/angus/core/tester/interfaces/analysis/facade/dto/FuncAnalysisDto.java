@@ -16,27 +16,27 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class FuncAnalysisDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for functional analysis", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Plan id")
+  @Schema(description = "Test plan identifier for analysis scope filtering")
   private Long planId;
 
-  @Schema(description = "Analysis organization type")
+  @Schema(description = "Organization type for analysis grouping")
   private AuthObjectType orgType;
-  @Schema(description = "Analysis organization id")
+  @Schema(description = "Organization identifier for analysis filtering")
   private Long orgId;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Analysis data start time")
+  @Schema(description = "Analysis data collection start timestamp")
   private LocalDateTime startTime;
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Analysis data end time")
+  @Schema(description = "Analysis data collection end timestamp")
   private LocalDateTime endTime;
 
-  @Schema(description = "Contains tester analysis, default true")
+  @Schema(description = "Include tester analysis in results, defaults to true")
   private boolean containsUserAnalysis = true;
-  @Schema(description = "Contains data details, default true")
+  @Schema(description = "Include detailed data in results, defaults to true")
   private boolean containsDataDetail = true;
 
 }

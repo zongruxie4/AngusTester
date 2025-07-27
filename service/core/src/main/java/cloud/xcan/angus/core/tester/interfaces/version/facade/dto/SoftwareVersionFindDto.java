@@ -17,15 +17,19 @@ import lombok.experimental.Accessors;
 public class SoftwareVersionFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for version filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Version identifier for specific version lookup")
   private Long id;
 
+  @Schema(description = "Version name for partial matching search")
   private String name;
 
+  @Schema(description = "Version status for lifecycle filtering")
   private SoftwareVersionStatus status;
 
+  @Schema(description = "Version creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
   @Override

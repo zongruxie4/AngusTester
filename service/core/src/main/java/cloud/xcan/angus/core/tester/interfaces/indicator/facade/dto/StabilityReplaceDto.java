@@ -23,60 +23,60 @@ import lombok.experimental.Accessors;
 public class StabilityReplaceDto {
 
   @NotNull
-  @Schema(description = "Services or api id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target identifier for stability test indicator replacement", requiredMode = RequiredMode.REQUIRED)
   private Long targetId;
 
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"API", "SCENARIO"})
-  @Schema(description = "Target Type, allowable values: API,SCENARIO", allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target type for stability test indicator replacement (API, SCENARIO)", allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
   @NotNull
   @Min(1)
-  @Schema(description = "The number of concurrent threads(VU)", example = "10", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Concurrent virtual user count for stability testing", example = "10", requiredMode = RequiredMode.REQUIRED)
   private Integer threads;
 
   @NotNull
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 5 minutes", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test execution duration with automatic 5-minute fallback when not configured", requiredMode = RequiredMode.REQUIRED)
   private TimeValue duration;
 
   @Min(1)
-  @Schema(description = "Average response time in milliseconds(ART、ms)")
+  @Schema(description = "Average response time threshold in milliseconds")
   private Long art;
 
-  @Schema(description = "Average response time percentile")
+  @Schema(description = "Response time percentile for statistical analysis")
   private Percentile percentile;
 
   @NotNull
   @Min(1)
-  @Schema(description = "Operations per second(QPS/TPS)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Transactions per second target for stability validation", requiredMode = RequiredMode.REQUIRED)
   private Integer tps;
 
   @NotNull
   @Min(0)
   @Max(100)
-  @Schema(description = "Error rate (ERROR)/%", example = "0.01", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Maximum acceptable error rate percentage", example = "0.01", requiredMode = RequiredMode.REQUIRED)
   private Double errorRate;
 
   @Min(0)
   @Max(100)
-  @Schema(description = "CPU usage rate", example = "0.75")
+  @Schema(description = "CPU utilization threshold percentage", example = "0.75")
   private Double cpu;
 
   @Min(0)
   @Max(100)
-  @Schema(description = "memory usage rate", example = "0.75")
+  @Schema(description = "Memory utilization threshold percentage", example = "0.75")
   private Double memory;
 
   @Min(0)
   @Max(100)
-  @Schema(description = "disk usage rate", example = "0.75")
+  @Schema(description = "Disk utilization threshold percentage", example = "0.75")
   private Double disk;
 
   @Min(0)
   @DecimalMax(value = "10000.00")
-  @Schema(description = "network usage rate", example = "0.75")
+  @Schema(description = "Network bandwidth utilization threshold in Mbps", example = "0.75")
   private Double network;
 
 }

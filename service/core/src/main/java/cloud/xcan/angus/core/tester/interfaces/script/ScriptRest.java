@@ -52,8 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Script", description = "Unified Script Management - "
-    + "Centralized management hub for AngusTester test scripts, including lifecycle controls and dependency mapping")
+@Tag(name = "Script", description = "Script Management API - Comprehensive test script lifecycle management system with dependency mapping and execution controls.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")
@@ -62,19 +61,23 @@ public class ScriptRest {
   @Resource
   private ScriptFacade scriptFacade;
 
-  @Operation(summary = "Add script", operationId = "script:add")
+  @Operation(summary = "Create script",
+      description = "Create new test script with comprehensive configuration and metadata.",
+      operationId = "script:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Script created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody ScriptAddDto dto) {
     return ApiLocaleResult.success(scriptFacade.add(dto));
   }
 
-  @Operation(summary = "Update script", operationId = "script:update")
+  @Operation(summary = "Update script",
+      description = "Modify existing script configuration and metadata.",
+      operationId = "script:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Script updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody ScriptUpdateDto dto) {
@@ -82,28 +85,34 @@ public class ScriptRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace script", operationId = "script:replace")
+  @Operation(summary = "Replace script",
+      description = "Replace script with new configuration or create new script if identifier is null.",
+      operationId = "script:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "Script replaced successfully")})
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody ScriptReplaceDto dto) {
     return ApiLocaleResult.success(scriptFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone script", operationId = "script:clone")
+  @Operation(summary = "Clone script",
+      description = "Create duplicate script with new identifier while preserving original configuration.",
+      operationId = "script:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "201", description = "Script cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/clone")
   public ApiLocaleResult<IdKey<Long, Object>> clone(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for cloning", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.clone(id));
   }
 
-  @Operation(summary = "Import script", operationId = "script:import")
+  @Operation(summary = "Import script",
+      description = "Import script from file or content with format validation and processing.",
+      operationId = "script:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Script imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<IdKey<Long, Object>> importScript(
@@ -111,82 +120,98 @@ public class ScriptRest {
     return ApiLocaleResult.success(scriptFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the script example", operationId = "script:example:import")
+  @Operation(summary = "Import script examples",
+      description = "Import predefined example scripts for rapid setup and demonstration.",
+      operationId = "script:example:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Script examples imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for example script association", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(scriptFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete scripts", operationId = "script:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete scripts",
+      description = "Remove multiple scripts and their associated configurations.",
+      operationId = "script:delete")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scripts deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE)
-      @Parameter(name = "ids", description = "Script ids", required = true) @RequestParam("ids") HashSet<Long> ids) {
+      @Parameter(name = "ids", description = "Script identifiers for batch deletion", required = true) @RequestParam("ids") HashSet<Long> ids) {
     scriptFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of script", operationId = "script:detail")
+  @Operation(summary = "Query script detail",
+      description = "Retrieve comprehensive script configuration and metadata.",
+      operationId = "script:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ScriptDetailVo> detail(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.detail(id));
   }
 
-  @Operation(summary = "Query the info of script", operationId = "script:info")
+  @Operation(summary = "Query script info",
+      description = "Retrieve script information and metadata for management purposes.",
+      operationId = "script:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script info retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @GetMapping(value = "/{id}/info")
   public ApiLocaleResult<ScriptInfoVo> info(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for info query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(summary = "Query the info of script", operationId = "script:infos")
+  @Operation(summary = "Query multiple scripts info",
+      description = "Retrieve information for multiple scripts in batch for management purposes.",
+      operationId = "script:infos")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scripts info retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more scripts not found")})
   //@GetMapping(value = "/innerapi/v1/script/infos") -> Conflicted with '/api/v1/script/{id}'
   @GetMapping(value = "/info/byids")
   public ApiLocaleResult<List<ScriptInfosVo>> infos(
-      @Parameter(name = "ids", description = "Script ids", required = true)
+      @Parameter(name = "ids", description = "Script identifiers for batch info query", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") Set<Long> ids) {
     return ApiLocaleResult.success(scriptFacade.infos(ids));
   }
 
-  @Operation(summary = "Query the targets of script", operationId = "script:target:info")
+  @Operation(summary = "Query script target info",
+      description = "Retrieve script target information and dependency mapping.",
+      operationId = "script:target:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script target info retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Script not found")})
   @GetMapping(value = "/{id}/target/info")
   public ApiLocaleResult<ScriptInfoVo> sourceTargets(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Script identifier for target info query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scriptFacade.info(id));
   }
 
-  @Operation(summary = "Query the list of script", operationId = "script:list")
+  @Operation(summary = "Query script list",
+      description = "Retrieve paginated list of scripts with filtering and sorting capabilities.",
+      operationId = "script:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script list retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "No scripts found")})
   @GetMapping
   public ApiLocaleResult<PageResult<ScriptListVo>> list(@Valid @ParameterObject ScriptFindDto dto) {
     PageResult<ScriptListVo> result = scriptFacade.list(dto);
     return assembleAllowImportSampleStatus(result);
   }
 
-  @Operation(summary = "Query the list of script info", operationId = "script:info:list")
+  @Operation(summary = "Query script info list",
+      description = "Retrieve paginated list of script information for management purposes.",
+      operationId = "script:info:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Script info list retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "No scripts found")})
   @GetMapping("/info")
   public ApiLocaleResult<PageResult<ScriptInfoListVo>> infoList(
       @Valid @ParameterObject ScriptFindDto dto) {
@@ -194,14 +219,16 @@ public class ScriptRest {
     return assembleInfoAllowImportSampleStatus(result);
   }
 
-  @Operation(summary = "Export script", operationId = "script:export")
+  @Operation(summary = "Export script",
+      description = "Export script configuration in specified format for backup or sharing.",
+      operationId = "script:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Exported successfully")
+      @ApiResponse(responseCode = "200", description = "Script exported successfully")
   })
   @GetMapping(value = "/{id}/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
-      @Parameter(name = "id", description = "Script id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "format", description = "Script format, default yml", required = true) ScriptFormat format,
+      @Parameter(name = "id", description = "Script identifier for export", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "format", description = "Export format specification", required = true) ScriptFormat format,
       HttpServletResponse response) {
     return scriptFacade.export(id, format, response);
   }

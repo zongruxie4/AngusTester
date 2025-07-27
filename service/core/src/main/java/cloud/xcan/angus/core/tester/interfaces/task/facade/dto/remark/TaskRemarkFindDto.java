@@ -12,27 +12,25 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * @author XiaoLong Liu
- */
 @Setter
 @Getter
 @Accessors(chain = true)
 public class TaskRemarkFindDto extends PageQuery {
 
+  @Schema(description = "Remark identifier for specific remark lookup")
   private Long id;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Task identifier for remark filtering and association", requiredMode = RequiredMode.REQUIRED)
   private Long taskId;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Remark creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
   @Override
   public String getDefaultOrderBy() {
     return "createdDate";
   }
-
 
 }

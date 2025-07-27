@@ -19,26 +19,26 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class KanbanDataAssetsFindDto {
 
-  @Schema(description = "Query organization type, default USER")
+  @Schema(description = "Creator organization type for data assets filtering with USER as default")
   private AuthObjectType creatorObjectType;
 
-  @Schema(description = "Query organization id")
+  @Schema(description = "Creator organization identifier for data assets filtering")
   private Long creatorObjectId;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for data assets scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Data assets creation start date for temporal filtering")
   private LocalDateTime createdDateStart;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Data assets creation end date for temporal filtering")
   private LocalDateTime createdDateEnd;
 
   @NotNull
-  @Schema(description = "Resources category", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Data assets category for classification filtering", requiredMode = RequiredMode.REQUIRED)
   private DataAssetsCategory category;
 
 }

@@ -39,8 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario", description = "Scenario Design and Orchestration Management - "
-    + "Visually design and manage complex test workflows through a UI-driven interface")
+@Tag(name = "Scenario", description = "Scenario Design and Management API - Visual workflow design and orchestration system for creating, managing, and executing complex test scenarios through UI-driven interfaces.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -49,19 +48,23 @@ public class ScenarioRest {
   @Resource
   private ScenarioFacade scenarioFacade;
 
-  @Operation(summary = "Add scenario", operationId = "scenario:add")
+  @Operation(summary = "Create scenario",
+      description = "Create new test scenario with visual workflow design and configuration.",
+      operationId = "scenario:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Scenario created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody ScenarioAddDto dto) {
     return ApiLocaleResult.success(scenarioFacade.add(dto));
   }
 
-  @Operation(summary = "Update scenario", operationId = "scenario:update")
+  @Operation(summary = "Update scenario",
+      description = "Modify existing scenario configuration, workflow design, and properties.",
+      operationId = "scenario:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Scenario updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody ScenarioUpdateDto dto) {
@@ -69,81 +72,97 @@ public class ScenarioRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace scenario", operationId = "scenario:replace")
+  @Operation(summary = "Replace scenario",
+      description = "Replace scenario with new configuration or create new scenario if identifier is null.",
+      operationId = "scenario:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario replaced successfully")})
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody ScenarioReplaceDto dto) {
     return ApiLocaleResult.success(scenarioFacade.replace(dto));
   }
 
-  @Operation(summary = "Move the scenario to another dir", operationId = "scenario:move")
+  @Operation(summary = "Move scenario to another project",
+      description = "Transfer scenario ownership and location to a different project.",
+      operationId = "scenario:move")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Moved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario moved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario or target project not found")})
   @PatchMapping(value = "/{scenarioId}/{targetProjectId}/move")
   public ApiLocaleResult<?> move(
-      @PathVariable("scenarioId") @Parameter(name = "scenarioId", description = "Scenario id", required = true) Long scenarioId,
-      @PathVariable("targetProjectId") @Parameter(name = "targetProjectId", description = "Target parent id", required = true) Long targetProjectId) {
+      @PathVariable("scenarioId") @Parameter(name = "scenarioId", description = "Scenario identifier for transfer", required = true) Long scenarioId,
+      @PathVariable("targetProjectId") @Parameter(name = "targetProjectId", description = "Target project identifier for scenario transfer", required = true) Long targetProjectId) {
     scenarioFacade.move(scenarioId, targetProjectId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone scenario", operationId = "scenario:clone")
+  @Operation(summary = "Clone scenario",
+      description = "Create a duplicate copy of existing scenario with all configuration and workflow design.",
+      operationId = "scenario:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "201", description = "Scenario cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")
   })
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{id}/clone")
   public ApiLocaleResult<IdKey<Long, Object>> clone(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario identifier for cloning", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scenarioFacade.clone(id));
   }
 
-  @Operation(summary = "Import the scenario example", operationId = "scenario:example:import")
+  @Operation(summary = "Import scenario examples",
+      description = "Import predefined example scenarios for rapid setup and demonstration purposes.",
+      operationId = "scenario:example:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Scenario examples imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for example import", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(scenarioFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete scenario", operationId = "scenario:delete")
+  @Operation(summary = "Delete scenario",
+      description = "Permanently delete scenario and move to recycle bin for potential recovery.",
+      operationId = "scenario:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Scenario deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario identifier for deletion", required = true) @PathVariable("id") Long id) {
     scenarioFacade.delete(id);
   }
 
-  @Operation(summary = "Query the detail of scenario", operationId = "scenario:detail")
+  @Operation(summary = "Query scenario detail",
+      description = "Retrieve comprehensive scenario information including workflow design and configuration.",
+      operationId = "scenario:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ScenarioDetailVo> detail(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scenarioFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of scenario", operationId = "scenario:list:byIds")
+  @Operation(summary = "Query scenarios by identifiers",
+      description = "Retrieve basic information for multiple scenarios specified by their identifiers.",
+      operationId = "scenario:list:byIds")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenarios retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more scenarios not found")})
   @GetMapping(value = "/list")
   public ApiLocaleResult<List<ScenarioListVo>> list(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") Set<@Min(1) Long> ids) {
     return ApiLocaleResult.success(scenarioFacade.list(ids));
   }
 
-  @Operation(summary = "Query the basic information list of scenario", operationId = "scenario:list")
+  @Operation(summary = "Query scenario list",
+      description = "Retrieve paginated list of scenarios with filtering and search capabilities.",
+      operationId = "scenario:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ScenarioListVo>> list(
       @Valid @ParameterObject ScenarioInfoFindDto dto) {

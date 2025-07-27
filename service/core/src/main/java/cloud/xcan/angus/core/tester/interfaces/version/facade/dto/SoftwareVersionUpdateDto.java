@@ -18,20 +18,20 @@ import org.hibernate.validator.constraints.Length;
 public class SoftwareVersionUpdateDto {
 
   @NotNull
-  @Schema(description = "Version id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Version identifier for modification", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
-  @Schema(description = "Version name")
+  @Schema(description = "Software version name for identification and release management")
   private String name;
 
-  @Schema(description = "Version start date")
+  @Schema(description = "Version development start date for timeline planning")
   private LocalDateTime startDate;
 
-  @Schema(description = "Version release date")
+  @Schema(description = "Version release date for production deployment planning")
   private LocalDateTime releaseDate;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Version description")
+  @Schema(description = "Version description for feature documentation and release notes")
   private String description;
 
 }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioFollow", description = "Scenario Follow Management - Notification management interface for receiving alerts when subscribed test scenario are modified")
+@Tag(name = "Scenario Follow", description = "Scenario Follow Management API - Notification and subscription system for tracking changes and updates to test scenarios.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -35,51 +35,61 @@ public class ScenarioFollowRest {
   @Resource
   private ScenarioFollowFacade scenarioFollowFacade;
 
-  @Operation(summary = "Add the follow of scenario", operationId = "scenario:follow:add")
+  @Operation(summary = "Follow scenario for notifications",
+      description = "Subscribe to scenario updates and receive notifications for changes.",
+      operationId = "scenario:follow:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Follow successfully")})
+      @ApiResponse(responseCode = "201", description = "Scenario follow subscription created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{id}/follow")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario identifier for follow subscription", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scenarioFollowFacade.add(id));
   }
 
-  @Operation(summary = "Cancel the follow of scenario", operationId = "scenario:follow:cancel")
+  @Operation(summary = "Unfollow scenario",
+      description = "Cancel follow subscription and stop receiving notifications for the scenario.",
+      operationId = "scenario:follow:cancel")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Canceled successfully")})
+      @ApiResponse(responseCode = "204", description = "Scenario follow subscription canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}/follow")
   public void cancel(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario identifier for unfollowing", required = true) @PathVariable("id") Long id) {
     scenarioFollowFacade.cancel(id);
   }
 
-  @Operation(summary = "Cancel all follows of the scenario", operationId = "scenario:follow:cancel:all")
+  @Operation(summary = "Unfollow all scenarios",
+      description = "Cancel all follow subscriptions for scenarios in the specified project.",
+      operationId = "scenario:follow:cancel:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Canceled successfully")})
+      @ApiResponse(responseCode = "204", description = "All scenario follow subscriptions canceled successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/follow")
   public void cancelAll(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for bulk unfollowing") Long projectId) {
     scenarioFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Query follow list of the scenario", operationId = "scenario:follow:list")
+  @Operation(summary = "Query scenario follow list",
+      description = "Retrieve paginated list of followed scenarios with filtering capabilities.",
+      operationId = "scenario:follow:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario follow list retrieved successfully")})
   @GetMapping("/follow")
   public ApiLocaleResult<PageResult<ScenarioFollowDetailVo>> list(
       @Valid @ParameterObject ScenarioFollowFindDto dto) {
     return ApiLocaleResult.success(scenarioFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Query follow count of the scenario", operationId = "scenario:follow:count")
+  @Operation(summary = "Query scenario follow count",
+      description = "Get total count of followed scenarios for the specified project.",
+      operationId = "scenario:follow:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
+      @ApiResponse(responseCode = "200", description = "Scenario follow count retrieved successfully")})
   @GetMapping("/follow/count")
   public ApiLocaleResult<Long> count(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for follow count") Long projectId) {
     return ApiLocaleResult.success(scenarioFollowFacade.count(projectId));
   }
 }

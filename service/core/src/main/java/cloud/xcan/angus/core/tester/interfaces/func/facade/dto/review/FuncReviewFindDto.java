@@ -19,26 +19,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class FuncReviewFindDto extends PageQuery {
 
+  @Schema(description = "Functional test review identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for review scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Plan id")
+  @Schema(description = "Functional test plan identifier for review filtering")
   private Long planId;
 
+  @Schema(description = "Review name for fuzzy search and filtering")
   private String name;
 
+  @Schema(description = "Review status for state-based filtering")
   private FuncPlanStatus status;
 
+  @Schema(description = "Review owner identifier for responsibility filtering")
   private Long ownerId;
 
+  @Schema(description = "Review creator identifier for ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Review creation timestamp for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Review last modifier identifier for modification tracking")
   private Long lastModifiedBy;
 
 }

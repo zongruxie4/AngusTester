@@ -19,7 +19,7 @@ public class ScriptAuthReplaceDto {
   @NotEmpty
   @Size(min = 1)
   @CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization permissions defining operational access rights for the script", requiredMode = RequiredMode.REQUIRED)
   private Set<ScriptPermission> permissions;
 
 }

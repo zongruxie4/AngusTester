@@ -25,35 +25,35 @@ public class ApisShareAddDto {
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Share name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Length(max = MAX_NAME_LENGTH_X4)
-  @Schema(description = "Share remark, it will be displayed on the sharing page to information")
+  @Schema(description = "Share remark for display on sharing page information")
   private String remark;
 
-  @Schema(description = "Share expired date")
+  @Schema(description = "Share expiration date for access control")
   private LocalDateTime expiredDate;
 
   @Valid
   @NotNull
-  @Schema(description = "Share display options", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share display options for presentation configuration", requiredMode = RequiredMode.REQUIRED)
   private DisplayOptions displayOptions;
 
   @NotNull
-  @Schema(description = "Share scope", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share scope for access control definition", requiredMode = RequiredMode.REQUIRED)
   private ApisShareScope shareScope;
 
   @NotNull
-  @Schema(description = "Share services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service identifier for share association", requiredMode = RequiredMode.REQUIRED)
   private Long servicesId;
 
-  @Schema(description = "Share apis ids, it is required when share scope is apis")
+  @Schema(description = "API identifiers for selective sharing when scope is APIs")
   private Set<Long> apisIds;
 
   @NotEmpty
   @Length(max = MAX_URL_LENGTH)
-  @Schema(description = "Web front end sharing page address", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Web frontend sharing page base URL for public access", requiredMode = RequiredMode.REQUIRED)
   private String baseUrl;
 
 }

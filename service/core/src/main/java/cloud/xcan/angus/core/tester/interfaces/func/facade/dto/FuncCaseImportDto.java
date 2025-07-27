@@ -18,16 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class FuncCaseImportDto {
 
   @NotNull
-  @Schema(description = "Import plan id")
+  @Schema(description = "Target functional test plan identifier for case import", requiredMode = RequiredMode.REQUIRED)
   private Long planId;
 
   @NotNull
-  @Schema(description = "Strategy for handling duplicate apis. The COVER value overrides the local api, and the IGNORE value ignores the synchronization current api",
+  @Schema(description = "Duplicate handling strategy: COVER overrides existing cases, IGNORE skips duplicates",
       example = "COVER", requiredMode = RequiredMode.REQUIRED)
   private StrategyWhenDuplicated strategyWhenDuplicated;
 
   @NotNull
-  @Schema(type = "string", format = "binary", description = "Import task file, only support excel file", requiredMode = RequiredMode.REQUIRED)
+  @Schema(type = "string", format = "binary", description = "Excel file containing test case data for import", requiredMode = RequiredMode.REQUIRED)
   private MultipartFile file;
 
 }

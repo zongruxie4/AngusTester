@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Election based on number of tasks being processed and ctrl node resource usage.
- */
-@Tag(name = "Controller", description = "Controller Status API - Controller health checks, leadership election, and agent connectivity monitoring")
+@Tag(name = "Controller", description = "Controller Management API - Comprehensive controller health monitoring, leadership election, and agent connectivity management with resource-based load balancing")
 @Validated
 @RestController
 @RequestMapping(value = "/api/v1/ctrl")
@@ -36,27 +33,33 @@ public class CtrlRest {
   @Resource
   private CtrlFacade ctrlFacade;
 
-  @Operation(summary = "Ping an controller for bind validator", operationId = "ctrl:ping")
+  @Operation(summary = "Controller health check ping", 
+      description = "Perform health check ping to validate controller availability and binding status",
+      operationId = "ctrl:ping")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Ping successfully")})
+      @ApiResponse(responseCode = "200", description = "Controller health check successful")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_PING_ENDPOINT_SUFFIX)
   public Principal ping() {
     return PrincipalContext.get();
   }
 
-  @Operation(summary = "Query and elect controller", operationId = "ctrl:discovery")
+  @Operation(summary = "Controller discovery and election", 
+      description = "Query available controllers and perform leadership election based on resource utilization and task load",
+      operationId = "ctrl:discovery")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Controller discovery and election completed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(DISCOVERY_ENDPOINT_SUFFIX)
   public /*ApiLocaleResult<DiscoveryNodeVo>*/ DiscoveryNodeVo discovery(@ParameterObject DiscoveryNodeDto dto) {
     return ctrlFacade.discovery(dto);
   }
 
-  @Operation(summary = "Query the connections info of controller", operationId = "ctrl:connections:info")
+  @Operation(summary = "Controller connection information", 
+      description = "Retrieve comprehensive connection information for all controller agents and routing channels",
+      operationId = "ctrl:connections:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Controller connection information retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/connections/info")
   public ApiLocaleResult<List<ChannelRouter>> connectionsInfo() {

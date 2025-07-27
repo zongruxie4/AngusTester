@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 public class TaskTagReplaceDto {
 
   @Size(max = MAX_TAGS_NUM)
-  @Schema(description = "Report ids, allow clear tags by empty value")
+  @Schema(description = "Tag identifiers for task categorization and filtering. Empty value removes all current tags")
   private LinkedHashSet<Long> tagIds;
 
 }

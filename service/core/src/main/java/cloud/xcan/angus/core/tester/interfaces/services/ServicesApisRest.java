@@ -35,8 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesApis", description = "Service apis and parameters management - "
-    + "Configure global parameters (e.g., authentication headers, versioning) for all APIs under a service")
+@Tag(name = "Services APIs", description = "Service APIs and Parameters Management API - Comprehensive configuration system for global parameters, authentication headers, and versioning across all APIs under a service.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -45,153 +44,173 @@ public class ServicesApisRest {
   @Resource
   private ApisFacade apisFacade;
 
-  @Operation(summary = "Add api parameters",
-      description = "Add the parameters of apis, override parameter value if it exists",
+  @Operation(summary = "Add API parameters",
+      description = "Add global parameters to APIs with scope-based targeting and value override capability.",
       operationId = "apis:parameter:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API parameters added successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> addParameters(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for parameter configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<io.swagger.v3.oas.models.parameters.Parameter> parameters) {
     apisFacade.addParameters(serviceId, dto, parameters);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Update api parameters", operationId = "apis:parameter:update")
+  @Operation(summary = "Update API parameters",
+      description = "Update existing API parameters with scope-based targeting and value modification.",
+      operationId = "apis:parameter:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API parameters updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> updateParameters(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for parameter configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisScopeDto dto,
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<io.swagger.v3.oas.models.parameters.Parameter> parameters) {
     apisFacade.updateParameters(serviceId, dto, parameters);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete api parameters", operationId = "apis:parameter:delete")
+  @Operation(summary = "Delete API parameters",
+      description = "Remove API parameters by name with scope-based targeting.",
+      operationId = "apis:parameter:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "204", description = "API parameters deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/apis/parameter")
   public ApiLocaleResult<?> deleteParameters(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names", required = true) @RequestParam(value = "names") List<String> names,
+      @Parameter(name = "serviceId", description = "Service identifier for parameter configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names for deletion", required = true) @RequestParam(value = "names") List<String> names,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.deleteParameters(serviceId, dto, names);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable api parameters", operationId = "apis:parameter:enabled")
+  @Operation(summary = "Enable or disable API parameters",
+      description = "Toggle parameter status for scope-based API parameter management.",
+      operationId = "apis:parameter:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API parameter status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{serviceId}/apis/parameter/enabled")
   public ApiLocaleResult<?> enableParameters(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names", required = true) @RequestParam(value = "names") List<String> names,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled,
+      @Parameter(name = "serviceId", description = "Service identifier for parameter configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Parameter names for status update", required = true) @RequestParam(value = "names") List<String> names,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Parameter status flag", required = true) @RequestParam(value = "enabled") Boolean enabled,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.enableParameters(serviceId, dto, names, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Update api authentication", operationId = "apis:authentication:update")
+  @Operation(summary = "Update API authentication",
+      description = "Configure authentication scheme for scope-based API access control.",
+      operationId = "apis:authentication:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API authentication updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{serviceId}/apis/authentication")
   public ApiLocaleResult<?> updateAuth(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for authentication configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisScopeDto dto, @RequestBody SecurityScheme authentication) {
     apisFacade.updateAuth(serviceId, dto, authentication);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Update the current api server configuration", operationId = "apis:server:update")
+  @Operation(summary = "Update API server configuration",
+      description = "Configure server settings for scope-based API execution environment.",
+      operationId = "apis:server:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enable or disable successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API server configuration updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{serviceId}/apis/server")
   public ApiLocaleResult<?> updateServer(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for server configuration", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisScopeDto dto, @RequestBody Server server) {
     apisFacade.updateServer(serviceId, dto, server);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Add api variable references", operationId = "apis:variable:reference:add")
+  @Operation(summary = "Add API variable references",
+      description = "Configure variable references for scope-based API parameter substitution.",
+      operationId = "apis:variable:reference:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API variable references added successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{serviceId}/apis/variable/reference")
   public ApiLocaleResult<?> addVariableReference(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names", required = true) @RequestParam(value = "names", required = true) List<String> variableNames,
+      @Parameter(name = "serviceId", description = "Service identifier for variable configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names for reference configuration", required = true) @RequestParam(value = "names", required = true) List<String> variableNames,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.addVariableReference(serviceId, dto, variableNames);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete api variable references", operationId = "apis:variable:reference:delete")
+  @Operation(summary = "Delete API variable references",
+      description = "Remove variable references for scope-based API parameter management.",
+      operationId = "apis:variable:reference:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "204", description = "API variable references deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/apis/variable/reference")
   public ApiLocaleResult<?> deleteVariableReference(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names", required = true) @RequestParam(value = "names", required = true) List<String> variableNames,
+      @Parameter(name = "serviceId", description = "Service identifier for variable configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Variable names for reference removal", required = true) @RequestParam(value = "names", required = true) List<String> variableNames,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.deleteVariableReference(serviceId, dto, variableNames);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Add api dataset reference", operationId = "apis:dataset:reference:add")
+  @Operation(summary = "Add API dataset reference",
+      description = "Configure dataset references for scope-based API data integration.",
+      operationId = "apis:dataset:reference:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API dataset references added successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{serviceId}/apis/dataset/reference")
   public ApiLocaleResult<?> addDatasetReference(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames,
+      @Parameter(name = "serviceId", description = "Service identifier for dataset configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names for reference configuration", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.addDatasetReference(serviceId, dto, datasetNames);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete api dataset references", operationId = "apis:dataset:reference:delete")
+  @Operation(summary = "Delete API dataset references",
+      description = "Remove dataset references for scope-based API data management.",
+      operationId = "apis:dataset:reference:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "204", description = "API dataset references deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{serviceId}/apis/dataset/reference")
   public ApiLocaleResult<?> deleteDatasetReference(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
-      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames,
+      @Parameter(name = "serviceId", description = "Service identifier for dataset configuration", required = true) @PathVariable("serviceId") Long serviceId,
+      @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @Parameter(name = "names", description = "Dataset names for reference removal", required = true) @RequestParam(value = "names", required = true) List<String> datasetNames,
       @Valid @ParameterObject ServiceApisScopeDto dto) {
     apisFacade.deleteDatasetReference(serviceId, dto, datasetNames);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of HTTP and WebSocket apis", operationId = "services:apis:list")
+  @Operation(summary = "Query HTTP and WebSocket APIs list",
+      description = "Retrieve paginated list of HTTP and WebSocket APIs with comprehensive filtering capabilities.",
+      operationId = "services:apis:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "APIs list retrieved successfully")})
   @GetMapping("/{serviceId}/apis")
   public ApiLocaleResult<PageResult<ServicesApisInfoListVo>> listApis(
-      @Parameter(name = "serviceId", description = "Services id", required = true) @PathVariable("serviceId") Long serviceId,
+      @Parameter(name = "serviceId", description = "Service identifier for APIs query", required = true) @PathVariable("serviceId") Long serviceId,
       @Valid @ParameterObject ServiceApisFindDto dto) {
     return ApiLocaleResult.success(apisFacade.listApis(serviceId, dto));
   }

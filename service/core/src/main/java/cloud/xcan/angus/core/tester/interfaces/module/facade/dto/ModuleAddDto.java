@@ -18,18 +18,18 @@ import lombok.experimental.Accessors;
 public class ModuleAddDto {
 
   @NotNull
-  @Schema(name = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for module association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Min(DEFAULT_ROOT_PID)
-  @Schema(name = "Parent module ID, null and -1 indicate that it is a top-level node", example = "-1")
+  @Schema(description = "Parent module identifier; null or -1 indicates a top-level module", example = "-1")
   private Long pid;
 
-  @Schema(description = "Sorting value, the smaller the value, the higher", example = "10000", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Sorting value; smaller values indicate higher priority", example = "10000", requiredMode = RequiredMode.REQUIRED)
   private Integer sequence;
 
   @NotEmpty
-  @Schema(name = "Module name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Set of module names for batch creation or multi-language support", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashSet<String> names;
 
 }

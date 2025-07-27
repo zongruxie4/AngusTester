@@ -20,14 +20,14 @@ import lombok.experimental.Accessors;
 public class DatasetExportDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for dataset export scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Dataset ids. Note: All the datasets wil be exported if ids are empty")
+  @Schema(description = "Specific dataset identifiers for selective export. All datasets will be exported if empty")
   @Size(max = MAX_BATCH_SIZE)
   private LinkedHashSet<Long> ids;
 
-  @Parameter(name = "format", description = "Script format, default yml")
+  @Parameter(description = "Export format specification with YAML as default")
   private ScriptFormat format;
 
 }

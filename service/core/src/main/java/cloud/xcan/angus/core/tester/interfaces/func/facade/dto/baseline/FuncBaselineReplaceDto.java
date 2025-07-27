@@ -19,23 +19,23 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncBaselineReplaceDto {
 
-  @Schema(description="It is required to add a baseline")
+  @Schema(description = "Functional test baseline identifier for replacement operation")
   private Long id;
 
   @NotBlank
-  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters", example = "Example Baseline", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test baseline name for identification and organization", example = "Example Baseline", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 
-  @Schema(description = "Plan id. It is required to add a baseline")
+  @Schema(description = "Functional test plan identifier for baseline association")
   private Long planId;
 
   @EditorContentLength
-  @Schema(description = "Baseline information")
+  @Schema(description = "Comprehensive baseline description and documentation")
   private String description;
 
   @Size(max = MAX_OPT_CASE_NUM)
-  @Schema(description="It is valid to add a baseline")
+  @Schema(description = "Test case identifiers for baseline versioning and tracking")
   private LinkedHashSet<Long> caseIds;
 
 }

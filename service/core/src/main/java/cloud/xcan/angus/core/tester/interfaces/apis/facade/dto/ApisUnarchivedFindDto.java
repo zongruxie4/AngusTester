@@ -22,24 +22,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class ApisUnarchivedFindDto extends PageQuery {
 
+  @Schema(description = "Unarchived API identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for unarchived API query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_URL_LENGTH_X4)
+  @Schema(description = "API endpoint path for filtering and search")
   private String endpoint;
 
   @Length(max = MAX_OPENAPI_SUMMARY_LENGTH)
+  @Schema(description = "API summary or name for filtering and search")
   private String summary;
 
   @Length(max = MAX_CODE_LENGTH_X5)
+  @Schema(description = "Operation identifier for filtering and search")
   private String operationId;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Creation date for temporal filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Creator identifier for ownership filtering")
   private Long createdBy;
 
   @Override

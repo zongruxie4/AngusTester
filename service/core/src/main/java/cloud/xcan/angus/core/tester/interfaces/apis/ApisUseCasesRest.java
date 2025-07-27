@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisUseCases", description = "API Test Use Cases Management - For storing and managing interface testing cases and assertion rules")
+@Tag(name = "APIs Test Use Cases", description = "APIs Test Use Cases Management - Comprehensive APIs for storing and managing interface testing cases, assertion rules, and test scenario configuration with lifecycle management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/case")
@@ -51,9 +51,11 @@ public class ApisUseCasesRest {
   @Resource
   private ApisCaseFacade apisCaseFacade;
 
-  @Operation(summary = "Add apis functional test cases", operationId = "apis:case:add")
+  @Operation(summary = "Create API functional test cases", 
+      description = "Create new API functional test cases with comprehensive configuration and validation",
+      operationId = "apis:case:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "API functional test cases created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
@@ -61,10 +63,12 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success(apisCaseFacade.add(dto));
   }
 
-  @Operation(summary = "Update apis functional test cases", operationId = "apis:case:update")
+  @Operation(summary = "Update API functional test cases", 
+      description = "Update existing API functional test cases with comprehensive configuration and validation",
+      operationId = "apis:case:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "API functional test cases updated successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more test cases not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(
@@ -73,9 +77,11 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace apis functional test cases", operationId = "apis:case:replace")
+  @Operation(summary = "Replace API functional test cases", 
+      description = "Replace existing API functional test cases with complete new configuration and validation",
+      operationId = "apis:case:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "API functional test cases replaced successfully")})
   @PutMapping
   public ApiLocaleResult<?> replace(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody List<ApisCaseReplaceDto> dto) {
@@ -83,48 +89,56 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the name of apis functional test cases", operationId = "apis:case:name:replace")
+  @Operation(summary = "Rename API functional test case", 
+      description = "Update API functional test case name with comprehensive validation and metadata management",
+      operationId = "apis:case:name:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API functional test case name updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Test case not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping("/{id}/name")
   public ApiLocaleResult<?> rename(
-      @Parameter(name = "id", description = "Case id", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "name", description = "New case name", required = true) @Valid @Length(max = MAX_NAME_LENGTH_X4) @RequestParam("name") String name) {
+      @Parameter(name = "id", description = "Test case identifier for name update", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "name", description = "New test case name for identification", required = true) @Valid @Length(max = MAX_NAME_LENGTH_X4) @RequestParam("name") String name) {
     apisCaseFacade.rename(id, name);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the functional test cases", operationId = "func:case:enabled")
+  @Operation(summary = "Enable or disable functional test cases", 
+      description = "Toggle functional test case status with comprehensive lifecycle management and validation",
+      operationId = "func:case:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Functional test case status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more test cases not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/enabled")
   public ApiLocaleResult<?> enabled(
-      @Valid @NotEmpty @Parameter(name = "ids", description = "Case ids", required = true) @RequestParam(value = "ids") Set<Long> ids,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Valid @NotEmpty @Parameter(name = "ids", description = "Test case identifiers for status update", required = true) @RequestParam(value = "ids") Set<Long> ids,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Test case status flag for enable/disable control", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     apisCaseFacade.enabled(ids, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Force synchronize the functional test cases to script", operationId = "func:case:script:sync")
+  @Operation(summary = "Sync functional test cases to script", 
+      description = "Force synchronize functional test cases to script with comprehensive validation and automation",
+      operationId = "func:case:script:sync")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Functional test cases synchronized to script successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/syncToScript")
   public ApiLocaleResult<?> syncToScript(
-      @Parameter(name = "apisId", description = "Apis id", required = true) @RequestParam(value = "apisId") Long apisId) {
+      @Parameter(name = "apisId", description = "API identifier for test case synchronization", required = true) @RequestParam(value = "apisId") Long apisId) {
     apisCaseFacade.syncToScript(apisId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone the apis functional test cases", operationId = "apis:case:clone")
+  @Operation(summary = "Clone API functional test cases", 
+      description = "Create copies of API functional test cases with all configuration and metadata",
+      operationId = "apis:case:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Clone successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "API functional test cases cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more test cases not found")
   })
   @PostMapping("/clone")
   public ApiLocaleResult<List<IdKey<Long, Object>>> clone(
@@ -132,9 +146,11 @@ public class ApisUseCasesRest {
     return ApiLocaleResult.success(apisCaseFacade.clone(ids));
   }
 
-  @Operation(summary = "Delete apis functional test cases", operationId = "apis:case:delete")
+  @Operation(summary = "Delete API functional test cases", 
+      description = "Remove API functional test cases from the system with batch operation support and comprehensive cleanup",
+      operationId = "apis:case:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "API functional test cases deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
@@ -142,19 +158,23 @@ public class ApisUseCasesRest {
     apisCaseFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of apis functional test cases", operationId = "apis:case:detail")
+  @Operation(summary = "Get API functional test case details", 
+      description = "Retrieve comprehensive API functional test case details including configuration and metadata",
+      operationId = "apis:case:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "API functional test case details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Test case not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ApisCaseDetailVo> detail(
-      @Valid @Parameter(name = "id", description = "Case ID", required = true) @PathVariable("id") Long id) {
+      @Valid @Parameter(name = "id", description = "Test case identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisCaseFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of apis functional test cases", operationId = "apis:case:list")
+  @Operation(summary = "Query API functional test cases list", 
+      description = "Retrieve paginated list of API functional test cases with comprehensive filtering and search options",
+      operationId = "apis:case:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API functional test cases list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisCaseListVo>> list(
       @Valid @ParameterObject ApisCaseFindDto dto) {

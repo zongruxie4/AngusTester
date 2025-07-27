@@ -23,21 +23,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class ScriptImportDto {
 
   @NotNull
-  @Schema(description = "Project id, it is required to add script", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for script association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Script name", example = "script-01")
+  @Schema(description = "Script name for identification and management", example = "script-01")
   private String name;
 
-  @Schema(type = "string", format = "binary", description = "Script file") // TODO 10MB
+  @Schema(type = "string", format = "binary", description = "Script file for import processing") // TODO 10MB
   private MultipartFile file;
 
   @Length(max = ANGUS_SCRIPT_LENGTH) // 10MB
-  @Schema(description = "Yaml or json format script content")
+  @Schema(description = "Script content in YAML or JSON format for import processing")
   private String content;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Script description")
+  @Schema(description = "Script description for detailed information")
   private String description;
 }

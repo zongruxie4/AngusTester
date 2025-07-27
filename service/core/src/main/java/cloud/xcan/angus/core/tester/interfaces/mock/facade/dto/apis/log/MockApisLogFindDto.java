@@ -18,21 +18,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class MockApisLogFindDto extends PageQuery {
 
-  @Schema(description = "Mock apis id")
+  @Schema(description = "Mock API identifier for log filtering")
   private Long mockApisId;
 
-  @Schema(description = "Mock name")
+  @Schema(description = "Mock API name for log filtering")
   private String summary;
 
+  @Schema(description = "HTTP method for log filtering")
   private String method;
 
   @Length(max = MAX_APIS_URI_LENGTH)
-  @Schema(description = "Mock apis path")
+  @Schema(description = "Mock API endpoint path for log filtering")
   private String endpoint;
 
+  @Schema(description = "HTTP status code for log filtering")
   private Integer status;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Log creation date for temporal filtering")
   private LocalDateTime createdDate;
 
 }

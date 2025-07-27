@@ -18,16 +18,16 @@ import lombok.experimental.Accessors;
 public class ScriptAuthAddDto {
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type defining the entity category for permission assignment", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object identifier for specific entity permission assignment", requiredMode = RequiredMode.REQUIRED)
   private Long authObjectId;
 
   @Size(min = 1)
   @CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission), default view")
+  @Schema(description = "Authorization permissions defining operational access rights for the script")
   private List<ScriptPermission> permissions;
 
 }

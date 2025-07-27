@@ -16,7 +16,7 @@ public class ServiceAuthReplaceDto {
 
   @NotEmpty
   @Size(min = 1)
-  @Schema(description = "Authorization permissions(Operation permission), default view")
+  @Schema(description = "Authorization permissions with operation-based access control and default view permission")
   private Set<MockServicePermission> permissions;
 
 }

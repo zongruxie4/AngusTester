@@ -23,29 +23,29 @@ import org.hibernate.validator.constraints.Length;
 public class ScenarioMonitorUpdateDto {
 
   @NotNull
-  @Schema(description = "Modify monitor id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Monitoring configuration identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@Schema(description = "Monitor scenario id, required when creating a new monitor")
   //private Long scenarioId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Monitor name")
+  @Schema(description = "Monitoring configuration name for identification and management")
   private String name;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Monitor description")
+  @Schema(description = "Monitoring configuration description for detailed information")
   private String description;
 
   @Valid
-  @Schema(description = "Monitor time setting")
+  @Schema(description = "Monitoring schedule configuration for execution timing and frequency")
   private MonitorTimeSetting timeSetting;
 
-  @Schema(description = "Monitor server setting")
+  @Schema(description = "Target server configuration for monitoring execution")
   private List<Server> serverSetting;
 
   @Valid
-  @Schema(description = "Monitor notice setting")
+  @Schema(description = "Alert notification configuration for issue reporting")
   private NoticeSetting noticeSetting;
 
 }

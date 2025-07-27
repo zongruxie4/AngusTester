@@ -21,18 +21,18 @@ import org.hibernate.validator.constraints.Length;
 public class MockTextDataDto {
 
   @Length(max = MAX_PARAM_NAME_LENGTH)
-  @Schema(example = "Greeting", description = "Out business unique identification key")
+  @Schema(example = "Greeting", description = "Business unique identification key for output mapping")
   private String outKey;
 
   @NotBlank
   @Length(max = MAX_MOCK_FUNC_LENGTH)
-  @Schema(example = "Good morning, Mr. @Name()", description = "Text containing function expressions", requiredMode = RequiredMode.REQUIRED)
+  @Schema(example = "Good morning, Mr. @Name()", description = "Text content with embedded JMock function expressions for dynamic generation", requiredMode = RequiredMode.REQUIRED)
   private String text;
 
   @NotNull
   @Min(1)
   @Max(MAX_MOCK_FUNC_ITERATIONS)
-  @Schema(description = "The number of iterations, default 1", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Number of text iterations with default value of 1", requiredMode = RequiredMode.REQUIRED)
   private Integer iterations = 1;
 
 }

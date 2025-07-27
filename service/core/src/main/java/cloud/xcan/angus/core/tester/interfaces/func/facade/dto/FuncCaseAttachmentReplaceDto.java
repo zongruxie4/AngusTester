@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class FuncCaseAttachmentReplaceDto {
 
   @Size(max = MAX_ATTACHMENT_NUM)
-  @Schema(description = "Case attachments, allow clear attachments")
+  @Schema(description = "Test case supporting documents and attachments with clear functionality")
   private List<Attachment> attachments;
 
 }

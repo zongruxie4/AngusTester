@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 public class SoftwareVersionRefReplaceDto {
 
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Version of software for the task, allow clear version by empty value")
+  @Schema(description = "Software version reference for task association. Empty value clears the current version")
   private String softwareVersion;
 
 }

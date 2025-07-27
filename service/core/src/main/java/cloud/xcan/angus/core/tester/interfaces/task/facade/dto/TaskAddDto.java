@@ -38,76 +38,76 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class TaskAddDto {
 
-  @Schema(description = "Project id. It is required to create a backlog", example = "1")
+  @Schema(description = "Project identifier for task creation and organization", example = "1")
   private Long projectId;
 
   //@NotNull
-  @Schema(description = "Sprint Id. Note: If the value is empty, it will be created as a Backlog", example = "1"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Sprint identifier for task assignment. If empty, task will be created in product backlog", example = "1"/*, requiredMode = RequiredMode.REQUIRED*/)
   private Long sprintId;
 
-  @Schema(description = "Function case module id")
+  @Schema(description = "Function case module identifier for task categorization")
   private Long moduleId;
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH_X4)
-  @Schema(description = "Task name", example = "A task", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Task display name for identification and organization", example = "A task", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Version of software for the task")
+  @Schema(description = "Software version identifier associated with the task")
   private String softwareVersion;
 
   @NotNull
-  @Schema(description = "Task type", example = "TASK", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Task classification type for workflow management", example = "TASK", requiredMode = RequiredMode.REQUIRED)
   private TaskType taskType;
 
-  @Schema(description = "Bug level, default MINOR", example = "MINOR")
+  @Schema(description = "Bug severity level for defect classification", example = "MINOR")
   private BugLevel bugLevel;
 
-  @Schema(description = "The scenario or api ID associated with the task")
+  @Schema(description = "Associated API or scenario identifier for test task linkage")
   private Long targetId;
 
-  @Schema(example = "FUNCTIONAL")
+  @Schema(example = "FUNCTIONAL", description = "Test type classification for task execution")
   private TestType testType;
 
   //@NotNull Fix:: Backlog assignee is nullable
-  @Schema(description = "Assignee id"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Primary assignee identifier for task responsibility"/*, requiredMode = RequiredMode.REQUIRED*/)
   private Long assigneeId;
 
-  @Schema(description = "Confirmor id")
+  @Schema(description = "Reviewer identifier for task validation and approval")
   private Long confirmorId;
 
-  @Schema(description = "Task tester")
+  @Schema(description = "Test execution identifier for task testing responsibility")
   private Long testerId;
 
-  @Schema(description = "Is it a missing bug")
+  @Schema(description = "Flag indicating if this is a missing bug report")
   private Boolean missingBug;
 
   @Size(max = MAX_TAGS_NUM)
-  @Schema(description = "Report ids")
+  @Schema(description = "Tag identifiers for task categorization and filtering")
   private LinkedHashSet<Long> tagIds;
 
-  @Schema(example = "MEDIUM", description = "Default MEDIUM")
+  @Schema(example = "MEDIUM", description = "Task priority level for scheduling and resource allocation")
   private Priority priority = Priority.DEFAULT;
 
   @Future
   //@NotNull Fix:: Backlog deadlineDate is nullable
-  @Schema(example = "2023-01-02 12:00:00", description = "Task deadline")
+  @Schema(example = "2023-01-02 12:00:00", description = "Task completion deadline for timeline management")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime deadlineDate;
 
   @Valid
   @Size(max = MAX_ATTACHMENT_NUM)
-  @Schema(description = "Task attachments")
+  @Schema(description = "Task-related file attachments for documentation and reference")
   private List<Attachment> attachments;
 
   @EditorContentLength(max = 6000)
-  @Schema(description = "Task description")
+  @Schema(description = "Detailed task description for requirements and context")
   private String description;
 
   @Min(0)
   @Max(MAX_WORKLOAD_NUM)
-  @Schema(description = "Task Workload")
+  @Schema(description = "Estimated workload for task planning and resource allocation")
   private BigDecimal evalWorkload;
 
   //@Min(0)
@@ -118,10 +118,10 @@ public class TaskAddDto {
   private Long parentTaskId;
 
   @Size(max = MAX_CASE_OR_TASK_REFS_NUM)
-  @Schema(description = "Reference task ids")
+  @Schema(description = "Referenced task identifiers for dependency management")
   private LinkedHashSet<Long> refTaskIds;
 
   @Size(max = MAX_CASE_OR_TASK_REFS_NUM)
-  @Schema(description = "Reference case ids")
+  @Schema(description = "Referenced test case identifiers for test coverage linkage")
   private LinkedHashSet<Long> refCaseIds;
 }

@@ -15,9 +15,10 @@ import lombok.experimental.Accessors;
 public class FuncTesterSummaryStatisticsDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for tester summary statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Test plan identifier for statistics scope filtering")
   private Long planId;
 
 }

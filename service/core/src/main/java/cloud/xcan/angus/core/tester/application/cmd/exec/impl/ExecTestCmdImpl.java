@@ -232,9 +232,11 @@ public class ExecTestCmdImpl implements ExecTestCmd {
           scenarioDb.setTestStabilityPassed(testResult.isPassed())
               .setTestStabilityFailureMessage(testResult.getFailureMessage());
           break;
-        case MOCK_DATA:
-          // No action required for MOCK_DATA
-          break;
+          case TEST_CUSTOMIZATION:
+          case MOCK_APIS:
+          case MOCK_DATA:
+            // No action required for MOCK_DATA
+            break;
       }
       scenarioRepo.save(scenarioDb);
     }

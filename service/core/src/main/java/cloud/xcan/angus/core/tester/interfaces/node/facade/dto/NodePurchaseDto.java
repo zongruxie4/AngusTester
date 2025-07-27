@@ -21,50 +21,50 @@ public class NodePurchaseDto {
 
   @NotNull
   @EnumPart(enumClass = InstanceChargeType.class, allowableValues = "PostPaid")
-  @Schema(example = "PostPaid", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Cloud instance billing type for cost management", example = "PostPaid", requiredMode = RequiredMode.REQUIRED)
   public InstanceChargeType chargeType;
-  @Schema(description = "PrePaid: Unit is month, PostPaid:Unit is day", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Billing cycle duration; PrePaid: Unit is month, PostPaid: Unit is day", requiredMode = RequiredMode.REQUIRED)
   public Integer chargeCycle;
-  @Schema(example = "10002929288887")
+  @Schema(description = "Order identifier for purchase tracking and billing", example = "10002929288887")
   private Long orderId;
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Flag indicating whether this is a free node for cost management", requiredMode = RequiredMode.REQUIRED)
   private Boolean free;
   @NotNull
-  @Schema(example = "aliyun", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Cloud service provider for resource provisioning", example = "aliyun", requiredMode = RequiredMode.REQUIRED)
   private String cloudSupplier;
 
   @NotEmpty
-  @Schema(example = "cn-shenzhen", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Cloud region identifier for resource deployment location", example = "cn-shenzhen", requiredMode = RequiredMode.REQUIRED)
   private String regionId;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Number of nodes to purchase for batch resource provisioning", requiredMode = RequiredMode.REQUIRED)
   private Long nodeNum;
 
   @Max(value = 64)
   @NotNull
-  @Schema(example = "8", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "CPU cores for node performance specification", example = "8", requiredMode = RequiredMode.REQUIRED)
   private Integer cpu;
 
   @Max(value = 256)
   @NotNull
-  @Schema(example = "16", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Memory capacity in GB for node performance specification", example = "16", requiredMode = RequiredMode.REQUIRED)
   private Integer memory; // GB
 
   @NotNull
-  @Schema(example = "cloud_essd", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "System disk category for storage performance specification", example = "cloud_essd", requiredMode = RequiredMode.REQUIRED)
   private String sysDiskCategory;
 
   @Max(value = 2048)
   @NotNull
-  @Schema(example = "200", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "System disk size in GB for storage capacity", example = "200", requiredMode = RequiredMode.REQUIRED)
   private Integer sysDisk; // GB
 
-  @Schema(example = "PayByTraffic")
+  @Schema(description = "Bandwidth billing type for network cost management", example = "PayByTraffic")
   private String bandwidthChargeType;
 
-  @Schema(example = "1")
+  @Schema(description = "Bandwidth capacity in MB for network performance", example = "1")
   private Integer bandwidth; // MB
 
 }

@@ -15,11 +15,11 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class FuncCaseFavouriteFindDto extends PageQuery {
 
-  @Schema(description = "Project id")
+  @Schema(description = "Project identifier for favorite case scope filtering")
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Favourite case name")
+  @Schema(description = "Favorite test case name for fuzzy search and filtering")
   private String caseName;
 
 }

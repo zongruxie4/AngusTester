@@ -35,14 +35,14 @@ import org.hibernate.validator.constraints.Length;
 public class ApisUnarchivedAddDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for unarchived API association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(example = "http")
+  @Schema(example = "http", description = "API protocol specification for communication type definition")
   private ApisProtocol protocol;
 
   @NotNull
-  @Schema(example = "GET", requiredMode = RequiredMode.REQUIRED)
+  @Schema(example = "GET", description = "HTTP method for API request specification", requiredMode = RequiredMode.REQUIRED)
   private HttpMethod method;
 
   /**
@@ -51,7 +51,7 @@ public class ApisUnarchivedAddDto {
    * @see io.swagger.v3.oas.models.Paths#keySet()
    */
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(example = "/comm/api/v1/country/{id}")
+  @Schema(example = "/comm/api/v1/country/{id}", description = "API endpoint path without query parameters for resource identification")
   private String endpoint;
 
   /////////////////////////OpenAPI Document//////////////////////////
@@ -60,14 +60,14 @@ public class ApisUnarchivedAddDto {
   /**
    * @see Operation#getSummary()
    */
-  @Schema(description = "Api summary or name", example = "Add user api")
+  @Schema(description = "API summary or name for identification and documentation", example = "Add user api")
   private String summary;
 
   /**
    * @see Operation#getDescription()
    */
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
-  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation")
+  @Schema(description = "API description with CommonMark syntax support for rich text representation")
   private String description;
 
   //  private ExternalDocumentation externalDocs;
@@ -75,20 +75,20 @@ public class ApisUnarchivedAddDto {
   //  private String operationId;
 
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Api request parameters. See [OpenAPI Parameter Object](https://swagger.io/specification/v3/#parameter-object)")
+  @Schema(description = "API request parameters following OpenAPI Parameter Object specification")
   private List<Parameter> parameters;
 
-  @Schema(description = "Api request body. See [OpenAPI Request Body Object](https://swagger.io/specification/v3/#request-body-object)")
+  @Schema(description = "API request body following OpenAPI Request Body Object specification")
   private RequestBody requestBody;
 
-  @Schema(description = "Api responses. See [OpenAPI Response Object](https://swagger.io/specification/v3/#response-object)")
+  @Schema(description = "API responses following OpenAPI Response Object specification")
   private Map<String, ApiResponse> responses;
 
   //  private Boolean deprecated;
 
   //  private List<SecurityRequirement> security;
 
-  @Schema(description = "Provides connection information between the current API and the target server. See [OpenAPI Server Object](https://swagger.io/specification/v3/#server-object)")
+  @Schema(description = "Current server configuration for API connection and deployment information")
   private Server currentServer;
 
   /**
@@ -98,16 +98,16 @@ public class ApisUnarchivedAddDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
-  @Schema(description = "Extension fields allow users to customize business extension attributes")
+  @Schema(description = "Extension fields for custom business attributes and configuration")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 
-  @Schema(description = "Defines a security scheme that can be used by the operations. See [OpenAPI Security Scheme Object](https://swagger.io/specification/v3/#security-scheme-object)")
+  @Schema(description = "Security scheme definition following OpenAPI Security Scheme Object specification")
   private SecurityScheme authentication;
 
   @Valid
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Configure interface execution result assertion. See [AngusTester Http Assertion](https://www.xcan.cloud/en/docs/tester/specification/content/task/elements/http)")
+  @Schema(description = "HTTP assertion configuration for interface execution result validation")
   private List<Assertion<HttpExtraction>> assertions;
 
 }

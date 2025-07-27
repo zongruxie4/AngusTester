@@ -19,30 +19,30 @@ import lombok.experimental.Accessors;
 public class FuncReplaceDto {
 
   @NotNull
-  @Schema(description = "Apis or services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target identifier for functional test indicator replacement", requiredMode = RequiredMode.REQUIRED)
   private Long targetId;
 
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"API"})
-  @Schema(description = "Target Type, allowable values: API", allowableValues = "API", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target type for functional test indicator replacement (API)", allowableValues = "API", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
-  @Schema(description = "Enabled or disabled smoke testing, default Enabled")
+  @Schema(description = "Smoke testing enablement flag with default enabled state")
   private boolean smoke;
 
-  @Schema(description = "Enabled or disabled smoke testing")
+  @Schema(description = "Smoke testing configuration parameters and settings")
   private SmokeCheckSetting smokeCheckSetting;
 
-  @Schema(description = "User-defined check smoke testing assertion")
+  @Schema(description = "Custom assertion configuration for smoke testing validation")
   private Assertion<HttpExtraction> userDefinedSmokeAssertion;
 
-  @Schema(description = "Enabled or disabled security testing")
+  @Schema(description = "Security testing enablement flag")
   private boolean security;
 
-  @Schema(description = "Enabled or disabled security testing, default Enabled")
+  @Schema(description = "Security testing configuration parameters and settings with default enabled state")
   private SecurityCheckSetting securityCheckSetting;
 
-  @Schema(description = "User-defined check security testing assertion")
+  @Schema(description = "Custom assertion configuration for security testing validation")
   private Assertion<HttpExtraction> userDefinedSecurityAssertion;
 
 }

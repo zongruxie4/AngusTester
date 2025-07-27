@@ -25,36 +25,32 @@ import org.hibernate.validator.constraints.Length;
 public class FuncReviewAddDto {
 
   @NotNull
-  @Schema(description = "Plan id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test plan identifier for review association", requiredMode = RequiredMode.REQUIRED)
   private Long planId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Review name, Brief Overview of the review, supporting up to 200 characters", example = "Example review", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test review name for identification and organization", example = "Example review", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotNull
-  @Schema(description = "Review owner id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Review owner identifier for responsibility and authority assignment", requiredMode = RequiredMode.REQUIRED)
   private Long ownerId;
 
   @NotEmpty
-  @Schema(description = "Review participant ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Review participant identifiers for collaboration and feedback", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashSet<Long> participantIds;
 
   @Size(max = MAX_ATTACHMENT_NUM_X2)
-  @Schema(description =
-      "Review attachments. Additional documents and information, such as requirement specifications, reference materials and standards, "
-          + "system architecture diagrams, testing specifications, technical documents, etc")
+  @Schema(description = "Review supporting documents and reference materials")
   private List<Attachment> attachments;
 
   @EditorContentLength
-  @Schema(description =
-      "Other review information. This is the other description of the testing review. Additional details such as testing strategies, "
-          + "risk assessment, and management")
+  @Schema(description = "Comprehensive review description and additional information")
   private String description;
 
   @Size(max = MAX_OPT_CASE_NUM)
-  @Schema(description = "Review case ids")
+  @Schema(description = "Test case identifiers for review scope definition")
   private LinkedHashSet<Long> caseIds;
 
 }

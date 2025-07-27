@@ -18,25 +18,25 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class SoftwareVersionReplaceDto {
 
-  @Schema(description="Modify version id. Create a new version when the value is null")
+  @Schema(description = "Version identifier for modification. Creates new version when null")
   private Long id;
 
-  @Schema(description = "Project id, required when creating a new version")
+  @Schema(description = "Project identifier for version organization and access control")
   private Long projectId;
 
   @NotEmpty
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Version name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Software version name for identification and release management", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
-  @Schema(description = "Version start date")
+  @Schema(description = "Version development start date for timeline planning")
   private LocalDateTime startDate;
 
-  @Schema(description = "Version release date")
+  @Schema(description = "Version release date for production deployment planning")
   private LocalDateTime releaseDate;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Version description")
+  @Schema(description = "Version description for feature documentation and release notes")
   private String description;
 
 }

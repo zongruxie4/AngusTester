@@ -16,24 +16,24 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ExecDebugStartByScriptDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and handling", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
-  @Schema(description = "Execution id")
+  @Schema(description = "Execution identifier for debug session reference")
   private Long id;
 
   @NotNull
-  @Schema(description = "Execution script id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script identifier for debug execution reference", requiredMode = RequiredMode.REQUIRED)
   private Long scriptId;
 
-  @Schema(description = "Execute actual script type")
+  @Schema(description = "Actual script type for debug execution specification")
   private ScriptType scriptType;
 
   @Valid
-  @Schema(description = "Common configuration parameters for script execution")
+  @Schema(description = "Common configuration parameters for debug script execution")
   private Configuration configuration;
 
-  @Schema(description="Plugin configuration parameters")
+  @Schema(description = "Plugin configuration parameters for debug execution customization")
   private Arguments arguments = new Arguments();
 
 }

@@ -29,142 +29,142 @@ public class TaskFindDto extends PageQuery {
 
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for task filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Task id")
+  @Schema(description = "Task identifier for specific task lookup")
   private Long id;
 
-  @Schema(description = "Task name")
+  @Schema(description = "Task display name for partial matching search")
   private String name;
 
   @Length(max = MAX_BID_LENGTH)
-  @Schema(description = "Task code")
+  @Schema(description = "Task unique code for identification and tracking")
   private String code;
 
-  @Schema(description = "Version of software for the task")
+  @Schema(description = "Software version identifier for task filtering")
   private String softwareVersion;
 
-  @Schema(description = "Task sprint id")
+  @Schema(description = "Sprint identifier for task iteration filtering")
   private Long sprintId;
 
-  @Schema(description = "Task module id")
+  @Schema(description = "Module identifier for task categorization filtering")
   private Long moduleId;
 
-  @Schema(description = "Backlog flag. true: Sprint backlog, false: Product backlog")
+  @Schema(description = "Backlog classification flag. true: Sprint backlog, false: Product backlog")
   private Boolean backlog;
 
-  @Schema(description = "The scenario or api ID associated with the task")
+  @Schema(description = "Associated API or scenario identifier for test task filtering")
   public Long targetId;
 
-  @Schema(description = "The scenario dir or services ID associated with the task")
+  @Schema(description = "Associated scenario directory or service identifier for hierarchical filtering")
   public Long targetParentId;
 
-  @Schema(description = "Task type")
+  @Schema(description = "Task classification type for workflow filtering")
   private TaskType taskType;
 
-  @Schema(description = "Bug level")
+  @Schema(description = "Bug severity level for defect filtering")
   private BugLevel bugLevel;
 
-  @Schema(description = "Task test type")
+  @Schema(description = "Test type classification for execution filtering")
   private TestType testType;
 
-  @Schema(description = "Assignee id")
+  @Schema(description = "Primary assignee identifier for responsibility filtering")
   private Long assigneeId;
 
-  @Schema(description = "Confirmor id")
+  @Schema(description = "Reviewer identifier for approval workflow filtering")
   private Long confirmorId;
 
-  @Schema(description = "Tester id")
+  @Schema(description = "Test execution identifier for testing responsibility filtering")
   private Long testerId;
 
-  @Schema(description = "Missing bug flag")
+  @Schema(description = "Missing bug flag for defect classification filtering")
   private Boolean missingBug;
 
   private Boolean unplanned;
 
-  @Schema(description = "Task parent id")
+  @Schema(description = "Parent task identifier for hierarchical relationship filtering")
   private Long parentTaskId;
 
-  @Schema(description = "Tag id")
+  @Schema(description = "Tag identifier for categorization filtering")
   private Long tagId;
 
-  @Schema(description = "Task priority")
+  @Schema(description = "Task priority level for scheduling filtering")
   private Priority priority;
 
-  @Schema(description = "Task eval workload")
+  @Schema(description = "Estimated workload for planning filtering")
   private BigDecimal evalWorkload;
 
-  @Schema(description = "Task actual workload")
+  @Schema(description = "Actual workload for performance analysis filtering")
   private BigDecimal actualWorkload;
 
-  @Schema(description = "Task status")
+  @Schema(description = "Task execution status for workflow filtering")
   private TaskStatus status;
 
-  @Schema(description = "Whether the task is overdue")
+  @Schema(description = "Overdue flag for timeline management filtering")
   private Boolean overdue;
 
-  @Schema(description = "The number of tasks failures")
+  @Schema(description = "Number of task execution failures for quality analysis")
   private Integer failNum;
 
-  @Schema(description = "The number of tasks processed")
+  @Schema(description = "Total number of task executions for performance metrics")
   private Integer totalNum;
 
-  @Schema(description = "Execution id")
+  @Schema(description = "Execution identifier for test run filtering")
   private Long execId;
 
-  @Schema(description = "Execution user id")
+  @Schema(description = "Execution user identifier for responsibility tracking")
   private Long execBy;
 
-  @Schema(description = "Task execution result")
+  @Schema(description = "Task execution result for outcome filtering")
   private Result execResult;
 
-  @Schema(description = "Task start date")
+  @Schema(description = "Task execution start timestamp for timeline filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime startDate;
 
-  @Schema(description = "Task deadline")
+  @Schema(description = "Task completion deadline for timeline filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime deadlineDate;
 
-  @Schema(description = "Task confirmed date")
+  @Schema(description = "Task confirmation timestamp for approval workflow filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime confirmedDate;
 
-  @Schema(description = "Task completed date")
+  @Schema(description = "Task completion timestamp for workflow status filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime completedDate;
 
-  @Schema(description = "Task processed date")
+  @Schema(description = "Task processing timestamp for execution tracking")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime processedDate;
 
-  @Schema(description = "Task canceled date")
+  @Schema(description = "Task cancellation timestamp for status tracking")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime canceledDate;
 
-  @Schema(description = "Task execution date")
+  @Schema(description = "Task execution timestamp for performance analysis")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime execDate;
 
-  @Schema(description = "Task creator")
+  @Schema(description = "Task creator identifier for ownership filtering")
   private Long createdBy;
 
-  @Schema(description = "Task creation date")
+  @Schema(description = "Task creation timestamp for timeline analysis")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 
-  @Schema(description = "Task last modified user")
+  @Schema(description = "Last modifier identifier for change tracking")
   private Long lastModifiedBy;
 
-  @Schema(description = "Task last modified date")
+  @Schema(description = "Last modification timestamp for change analysis")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime lastModifiedDate;
 
-  @Schema(description = "Required when app administrators query all projects")
+  @Schema(description = "Administrator flag for cross-project query permissions")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission project")
+  @Schema(description = "Permission level required for project access filtering")
   private TaskSprintPermission hasPermission;
 
   private Long favouriteBy;

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskSprintAuth", description = "Task Sprint Authorization Management - Unified entry for managing data access permissions of task sprint")
+@Tag(name = "Task Sprint Authorization", description = "Task Sprint Authorization Management API - Comprehensive access control system for sprint-level permissions including user roles, data access rights, and administrative privileges.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")
@@ -44,106 +44,106 @@ public class TaskSprintAuthRest {
   @Resource
   private TaskSprintAuthFacade taskSprintAuthFacade;
 
-  @Operation(summary = "Add the authorization of task sprint", operationId = "task:sprint:auth:add")
+  @Operation(summary = "Grant sprint authorization to user", operationId = "task:sprint:auth:add", description = "Assign specific permissions to a user for a task sprint, enabling controlled access to sprint data and operations.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Sprint authorization granted successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
+      @Parameter(name = "id", description = "Task sprint identifier to grant authorization for", required = true) @PathVariable("id") Long sprintId,
       @Valid @RequestBody TaskSprintAuthAddDto dto) {
     return ApiLocaleResult.success(taskSprintAuthFacade.add(sprintId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of task sprint", operationId = "task:sprint:auth:replace")
+  @Operation(summary = "Update sprint authorization permissions", operationId = "task:sprint:auth:replace", description = "Modify existing authorization permissions for a user within a task sprint, updating access levels and role assignments.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Sprint authorization updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Sprint authorization not found")
   })
   @PutMapping("/auth/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Task sprint authorization id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Sprint authorization identifier to update", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody TaskSprintAuthReplaceDto dto) {
     taskSprintAuthFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the authorization of task sprint", operationId = "task:sprint:auth:enabled")
+  @Operation(summary = "Enable or disable sprint authorization", operationId = "task:sprint:auth:enabled", description = "Activate or deactivate authorization system for a task sprint, controlling overall access to sprint data.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Sprint authorization status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Task sprint not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Task sprint identifier to update authorization status for", required = true) @PathVariable("id") Long sprintId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Enable or disable authorization system", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     taskSprintAuthFacade.enabled(sprintId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of task sprint", operationId = "task:sprint:auth:status")
+  @Operation(summary = "Get sprint authorization status", operationId = "task:sprint:auth:status", description = "Retrieve the current authorization status for a task sprint to determine if access control is active.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Sprint authorization status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Task sprint not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId) {
+      @Parameter(name = "id", description = "Task sprint identifier to check authorization status for", required = true) @PathVariable("id") Long sprintId) {
     return ApiLocaleResult.success(taskSprintAuthFacade.status(sprintId));
   }
 
-  @Operation(summary = "Delete the authorization of task sprint", operationId = "task:sprint:auth:delete")
+  @Operation(summary = "Revoke sprint authorization", operationId = "task:sprint:auth:delete", description = "Remove authorization permissions for a user from a task sprint, revoking all associated access rights.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Sprint authorization revoked successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/auth/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Task sprint authorization id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Sprint authorization identifier to revoke", required = true) @PathVariable("id") Long id) {
     taskSprintAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission of task sprint", operationId = "task:sprint:user:auth")
+  @Operation(summary = "Get user sprint permissions", operationId = "task:sprint:user:auth", description = "Retrieve all authorization permissions assigned to a specific user for a task sprint.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "User sprint permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Task sprint not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<TaskSprintPermission>> userAuth(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Task sprint identifier to check permissions for", required = true) @PathVariable("id") Long sprintId,
+      @Parameter(name = "userId", description = "User identifier to retrieve permissions for", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "admin", description = "Include administrator permissions in the query") Boolean admin) {
     return ApiLocaleResult.success(taskSprintAuthFacade.userAuth(sprintId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permission of task sprint", operationId = "task:sprint:user:auth:current")
+  @Operation(summary = "Get current user sprint permissions", operationId = "task:sprint:user:auth:current", description = "Retrieve authorization permissions for the currently authenticated user within a specific task sprint.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user sprint permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Task sprint not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/auth/current")
   public ApiLocaleResult<TaskSprintAuthCurrentVo> currentUserAuth(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Task sprint identifier to check current user permissions for", required = true) @PathVariable("id") Long sprintId,
+      @Parameter(name = "admin", description = "Include administrator permissions in the query") Boolean admin) {
     return ApiLocaleResult.success(taskSprintAuthFacade.currentUserAuth(sprintId, admin));
   }
 
-  @Operation(summary = "Check the user authorization or administrator permission of task sprint", operationId = "task:sprint:auth:check")
+  @Operation(summary = "Verify user sprint permission", operationId = "task:sprint:auth:check", description = "Validate that a specific user has the required authorization permission for a task sprint operation.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed")})
+      @ApiResponse(responseCode = "200", description = "User permission verified successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "Task sprint id", required = true) @PathVariable("id") Long sprintId,
-      @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Task sprint authorized permission", required = true)
+      @Parameter(name = "id", description = "Task sprint identifier to verify permissions for", required = true) @PathVariable("id") Long sprintId,
+      @Parameter(name = "userId", description = "User identifier to verify permissions for", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "authPermission", description = "Specific permission to verify", required = true)
       @PathVariable("authPermission") TaskSprintPermission permission) {
     taskSprintAuthFacade.authCheck(sprintId, permission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of task sprint authorization", operationId = "task:sprint:auth:list")
+  @Operation(summary = "Get paginated sprint authorizations list", operationId = "task:sprint:auth:list", description = "Retrieve a paginated list of all sprint authorizations with filtering options for user, permission type, and status.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Sprint authorizations list retrieved successfully")})
   @GetMapping("/auth")
   public ApiLocaleResult<PageResult<TaskSprintAuthVo>> list(
       @Valid @ParameterObject TaskSprintAuthFindDto dto) {

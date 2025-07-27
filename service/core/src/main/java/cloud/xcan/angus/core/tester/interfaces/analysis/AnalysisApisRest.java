@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Analysis - Apis", description = "API Resource Analytics - Creation monitoring and statistical analysis of API creations, status and testing result")
+@Tag(name = "Analysis APIs", description = "API Resource Analytics - Comprehensive monitoring and statistical analysis of API resource creation, status tracking, and testing result aggregation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")
@@ -27,18 +27,22 @@ public class AnalysisApisRest {
   @Resource
   private AnalysisApisFacade analysisAngusApisFacade;
 
-  @Operation(summary = "Api and service creation statistics", operationId = "analysis:apis:resources:count")
+  @Operation(summary = "API and service creation statistics", 
+      description = "Retrieve comprehensive statistics on API and service resource creation patterns and trends",
+      operationId = "analysis:apis:resources:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API creation statistics retrieved successfully")})
   @GetMapping("/apis/resources")
   public ApiLocaleResult<ApisResourcesCreationCount> apisResourcesStatistics(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusApisFacade.apisResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Query the test results of api", operationId = "analysis:apis:test:result:count")
+  @Operation(summary = "API testing result statistics", 
+      description = "Query and analyze API testing results with comprehensive metrics and performance indicators",
+      operationId = "analysis:apis:test:result:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API testing result statistics retrieved successfully")})
   @GetMapping(value = "/apis/test/result/count")
   public ApiLocaleResult<TestApisCount> testResult(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {

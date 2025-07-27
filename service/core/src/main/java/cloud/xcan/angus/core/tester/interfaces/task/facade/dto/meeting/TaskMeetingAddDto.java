@@ -24,43 +24,43 @@ import org.hibernate.validator.constraints.Length;
 public class TaskMeetingAddDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for meeting organization and access control", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Meeting sprint id")
+  @Schema(description = "Sprint identifier for meeting iteration association")
   private Long sprintId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Meeting subject", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting subject for identification and agenda summary", requiredMode = RequiredMode.REQUIRED)
   private String subject;
 
   @NotNull
-  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting type classification for workflow management and categorization", requiredMode = RequiredMode.REQUIRED)
   private TaskMeetingType type;
 
   @NotEmpty
-  @Schema(description = "Meeting date, record the specific date of the meeting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting date for scheduling and calendar management", requiredMode = RequiredMode.REQUIRED)
   private String date;
 
   @NotEmpty
-  @Schema(description = "Meeting start and time, record the start and end times of the meeting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting time range for start and end time specification", requiredMode = RequiredMode.REQUIRED)
   private String time;
 
   @Length(max = MAX_ADDRESS_LENGTH)
-  @Schema(description = "Meeting location, record the meeting venue or the link for online meetings")
+  @Schema(description = "Meeting location or online meeting link for venue specification")
   private String location;
 
   @NotNull
-  @Schema(description = "Meeting moderator, specify the host of the meeting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting moderator information for host identification and contact", requiredMode = RequiredMode.REQUIRED)
   private UserInfo moderator;
 
   @NotEmpty
   @Size(max = MAX_BATCH_SIZE)
-  @Schema(description = "Meeting participants, list the names of all participants", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting participants list for attendance tracking and notification", requiredMode = RequiredMode.REQUIRED)
   private List<UserInfo> participants;
 
   @NotEmpty
   @EditorContentLength(max = 6000)
-  @Schema(description = "Meeting content, record the content of the meeting", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Meeting agenda and discussion content for documentation", requiredMode = RequiredMode.REQUIRED)
   private String content;
 }

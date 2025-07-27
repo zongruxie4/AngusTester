@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class FuncCaseTesterReplaceDto {
 
   @NotNull
-  @Schema(description = "Tester id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Tester identifier for case assignment and execution responsibility", requiredMode = RequiredMode.REQUIRED)
   private Long testerId;
 
 }

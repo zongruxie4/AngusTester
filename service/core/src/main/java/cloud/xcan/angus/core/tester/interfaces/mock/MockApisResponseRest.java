@@ -33,8 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockApisResponse", description = "Mock Response Definition and Management - "
-    + "Define and manage mock response templates (status codes, headers, body schemas)")
+@Tag(name = "Mock Apis Response", description = "Mock Response Definition and Management - Comprehensive management of mock response templates including status codes, headers, body schemas, and response variations")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/apis")
@@ -43,46 +42,54 @@ public class MockApisResponseRest {
   @Resource
   private MockApisResponseFacade mockApisResponseFacade;
 
-  @Operation(summary = "Add the response of mock apis", operationId = "mock:apis:response:add")
+  @Operation(summary = "Add mock API response definitions",
+      description = "Create new mock response definitions with status codes, headers, and body schemas for API simulation",
+      operationId = "mock:apis:response:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock API response definitions created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{apisId}/response")
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
-      @Parameter(name = "apisId", description = "Mock apis id", required = true) @PathVariable("apisId") Long apisId,
+      @Parameter(name = "apisId", description = "Mock API identifier for response association", required = true) @PathVariable("apisId") Long apisId,
       @Valid @Size(max = MAX_BATCH_SIZE) @RequestBody List<MockApisResponseAddDto> dto) {
     return ApiLocaleResult.success(mockApisResponseFacade.add(apisId, dto));
   }
 
-  @Operation(summary = "Replace the response of mock apis", operationId = "mock:apis:response:replace")
+  @Operation(summary = "Replace mock API response definitions",
+      description = "Replace existing mock response definitions with new configurations for API simulation updates",
+      operationId = "mock:apis:response:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock API response definitions replaced successfully")})
   @PutMapping("/{apisId}/response")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "apisId", description = "Mock apis id", required = true) @PathVariable("apisId") Long apisId,
+      @Parameter(name = "apisId", description = "Mock API identifier for response replacement", required = true) @PathVariable("apisId") Long apisId,
       @Valid @Size(max = MAX_BATCH_SIZE) @RequestBody List<MockApisResponseReplaceDto> dto) {
     mockApisResponseFacade.replace(apisId, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the response of mock apis", operationId = "mock:apis:response:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete mock API response definitions",
+      description = "Remove specific mock response definitions from mock API configuration",
+      operationId = "mock:apis:response:delete")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock API response definitions deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{apisId}/response")
   public void delete(
-      @Parameter(name = "apisId", description = "Mock apis id", required = true) @PathVariable("apisId") Long apisId,
-      @Parameter(name = "responseIds", description = "Mock apis response ids", required = true)
+      @Parameter(name = "apisId", description = "Mock API identifier for response deletion", required = true) @PathVariable("apisId") Long apisId,
+      @Parameter(name = "responseIds", description = "Mock API response identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("responseIds") HashSet<Long> responseIds) {
     mockApisResponseFacade.delete(apisId, responseIds);
   }
 
-  @Operation(summary = "Query the response of mock apis", operationId = "mock:apis:response:all")
+  @Operation(summary = "Query all mock API response definitions",
+      description = "Retrieve all response definitions for specific mock API including status codes, headers, and body schemas",
+      operationId = "mock:apis:response:all")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock API response definitions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API not found")})
   @GetMapping(value = "/{apisId}/response")
   public ApiLocaleResult<List<MockApiResponseVo>> all(
-      @Parameter(name = "apisId", description = "Mock apis id", required = true) @PathVariable("apisId") Long apisId) {
+      @Parameter(name = "apisId", description = "Mock API identifier for response query", required = true) @PathVariable("apisId") Long apisId) {
     return ApiLocaleResult.success(mockApisResponseFacade.all(apisId));
   }
 

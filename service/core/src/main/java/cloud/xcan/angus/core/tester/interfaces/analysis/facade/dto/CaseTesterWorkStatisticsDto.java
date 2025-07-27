@@ -11,14 +11,14 @@ import lombok.Setter;
 public class CaseTesterWorkStatisticsDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for case tester work statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Plan id")
+  @Schema(description = "Test plan identifier for filtering case statistics")
   private Long planId;
 
   @NotNull
-  @Schema(description = "Query work user ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Tester user identifier for work statistics analysis", requiredMode = RequiredMode.REQUIRED)
   private Long userId;
 
 }

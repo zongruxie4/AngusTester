@@ -20,13 +20,13 @@ import lombok.experimental.Accessors;
 @ToString
 public class MockServiceStopDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and coordination", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
   @Valid
   @NotEmpty
   @Size(min = 1, max = MAX_BATCH_SIZE)
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock service shutdown command parameters for batch operation management", requiredMode = RequiredMode.REQUIRED)
   private List<StopCmdParam> cmdParams;
 
 }

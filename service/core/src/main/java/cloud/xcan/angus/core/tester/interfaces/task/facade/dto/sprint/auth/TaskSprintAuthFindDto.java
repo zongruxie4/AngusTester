@@ -15,16 +15,17 @@ import lombok.Setter;
 public class TaskSprintAuthFindDto extends PageQuery {
 
   //@NotNull -> Transferring values in filters
-  @Schema(description = "Task sprint id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Task sprint identifier for authorization filtering", requiredMode = RequiredMode.REQUIRED)
   private Long sprintId;
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(example = "USER", description = "Authorization object type for permission classification", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for user or role filtering")
   private Long authObjectId;
 
+  @Schema(description = "Authorization creation timestamp for timeline filtering")
   private Date createdDate;
 
 }

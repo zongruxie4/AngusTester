@@ -18,32 +18,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ActivityFindDto extends PageQuery {
 
-  @Schema(description = "Activity id")
+  @Schema(description = "Activity record identifier")
   private Long id;
 
-  @Schema(description = "Project id")
+  @Schema(description = "Project identifier for activity filtering")
   private Long projectId;
 
-  @Schema(description = "Target id")
+  @Schema(description = "Target resource identifier")
   private Long targetId;
 
-  @Schema(description = "Target parent id")
+  @Schema(description = "Parent target resource identifier")
   private Long parentTargetId;
 
-  @Schema(description = "Target type")
+  @Schema(description = "Target resource type for activity categorization")
   private CombinedTargetType targetType;
 
-  @Schema(description = "Operation user id")
+  @Schema(description = "User identifier who performed the operation")
   private Long userId;
 
-  @Schema(description = "Main target id")
+  @Schema(description = "Main target resource identifier for activity grouping")
   private Long mainTargetId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "For fulltext search")
+  @Schema(description = "Activity detail content for full-text search")
   private String detail;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Activity operation timestamp")
   private LocalDateTime optDate;
 
   @Override

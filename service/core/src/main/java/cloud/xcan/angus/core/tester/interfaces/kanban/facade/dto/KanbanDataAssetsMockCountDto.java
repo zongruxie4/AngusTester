@@ -18,22 +18,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class KanbanDataAssetsMockCountDto {
 
-  @Schema(description = "Query organization type, default USER")
+  @Schema(description = "Creator organization type for mock resources filtering with USER as default")
   private AuthObjectType creatorObjectType;
 
-  @Schema(description = "Query organization id")
+  @Schema(description = "Creator organization identifier for mock resources filtering")
   private Long creatorObjectId;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for mock resources scope filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Mock resources creation start date for temporal filtering")
   private LocalDateTime createdDateStart;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Mock resources creation end date for temporal filtering")
   private LocalDateTime createdDateEnd;
 
 }

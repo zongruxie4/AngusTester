@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "MockApisOpen2p", description = "Mock Definition Sync - Internal endpoints for querying and synchronizing mock interface definitions across AngusMockService instances")
+@Tag(name = "Mock Apis - Private Environment", description = "Mock Definition Synchronization - Internal endpoints for querying and synchronizing mock interface definitions across AngusMockService instances with distributed coordination")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock")
@@ -36,27 +36,33 @@ public class MockApisOpen2pRest {
   @Resource
   private MockApisOpen2pFacade mockApisOpen2pFacade;
 
-  @Operation(summary = "Update the request counter of mock apis", operationId = "mock:apis:counter:update:openapi2p")
+  @Operation(summary = "Update mock API request counter",
+      description = "Increment and update request counter for mock APIs to track usage statistics and performance metrics",
+      operationId = "mock:apis:counter:update:openapi2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock API request counter updated successfully")})
   @PostMapping(value = "/apis/counter")
   public ApiLocaleResult<?> counterUpdate(@Valid @RequestBody MockApisRequestCountDto dto) {
     mockApisOpen2pFacade.counterUpdate(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of mock service", operationId = "mock:service:detail:openapi2p")
+  @Operation(summary = "Query mock service details",
+      description = "Retrieve comprehensive information about specific mock service configuration and status",
+      operationId = "mock:service:detail:openapi2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock service details retrieved successfully")})
   @GetMapping("/service/{id}")
   public ApiLocaleResult<MockApisServiceInfoVo> mockService(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock service identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(mockApisOpen2pFacade.mockService(id));
   }
 
-  @Operation(summary = "Query the list of mock apis", operationId = "mock:apis:detail:openapi2p")
+  @Operation(summary = "Query mock APIs with filtering",
+      description = "Retrieve list of mock APIs with comprehensive filtering and search capabilities for service synchronization",
+      operationId = "mock:apis:detail:openapi2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock APIs retrieved successfully")})
   @GetMapping("/apis")
   public ApiLocaleResult<List<MockApisInfoVo>> mockApis(
       @Valid @ParameterObject MockApisDetailDto dto) {

@@ -21,29 +21,34 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ServicesFindDto extends PageQuery {
 
+  @Schema(description = "Service identifier for precise query filtering")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for service filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Services name")
+  @Schema(description = "Service name for fuzzy search")
   private String name;
 
-  @Schema(description = "Required when app administrators query all projects")
+  @Schema(description = "Flag indicating whether this is an admin query for all projects")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission project")
+  @Schema(description = "Required permission level for service access filtering")
   private ServicesPermission hasPermission;
 
+  @Schema(description = "Flag to filter services with associated APIs")
   private Boolean queryHasApis;
 
+  @Schema(description = "Flag to filter services with associated mock services")
   private Boolean queryHasMockService;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Service creation date for temporal filtering")
   private LocalDateTime createdDate;
 
   @Override

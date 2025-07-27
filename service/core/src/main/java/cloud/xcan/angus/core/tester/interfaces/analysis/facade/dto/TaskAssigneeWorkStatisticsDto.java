@@ -11,14 +11,14 @@ import lombok.Setter;
 public class TaskAssigneeWorkStatisticsDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for task assignee work statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Sprint id")
+  @Schema(description = "Sprint identifier for work statistics filtering")
   private Long sprintId;
 
   @NotNull
-  @Schema(description = "Query work user ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Assignee user identifier for work statistics analysis", requiredMode = RequiredMode.REQUIRED)
   private Long userId;
 
 }

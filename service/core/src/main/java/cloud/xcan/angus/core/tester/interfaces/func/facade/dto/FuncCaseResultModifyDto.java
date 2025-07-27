@@ -22,27 +22,27 @@ import org.hibernate.validator.constraints.Length;
 public class FuncCaseResultModifyDto {
 
   @NotNull
-  @Schema(description = "Functional testing case id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test case identifier for result modification", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotNull
   @EnumPart(enumClass = CaseTestResult.class, allowableValues = {
       "PASSED", "NOT_PASSED", "BLOCKED", "CANCELED"})
-  @Schema(description = "The result of functional testing case", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test case execution result for outcome tracking", requiredMode = RequiredMode.REQUIRED)
   private CaseTestResult testResult;
 
   @Min(0)
   @Max(MAX_WORKLOAD_NUM)
-  @Schema(description = "Eval usage workload")
+  @Schema(description = "Estimated workload for test case effort planning")
   private BigDecimal evalWorkload;
 
   @Min(0)
   @Max(MAX_WORKLOAD_NUM)
-  @Schema(description = "Actual usage workload")
+  @Schema(description = "Actual workload for test case effort tracking")
   private BigDecimal actualWorkload;
 
   @Length(max = MAX_DESC_LENGTH_X2)
-  @Schema(description = "The remark of case test")
+  @Schema(description = "Test case execution remarks and observations")
   private String testRemark;
 
 }

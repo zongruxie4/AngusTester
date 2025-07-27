@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.Length;
 public class DatasetUpdateDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Dataset identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@NotNull
@@ -31,19 +31,19 @@ public class DatasetUpdateDto {
   //private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Dataset name")
+  @Schema(description = "Dataset name for identification and organization")
   private String name;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Dataset description")
+  @Schema(description = "Dataset description for detailed documentation")
   private String description;
 
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Parameters definition")
+  @Schema(description = "Dataset parameter definitions with comprehensive configuration options")
   private List<DatasetParameter> parameters;
 
   @Valid
-  @Schema(description = "Extraction rules configuration")
+  @Schema(description = "Data extraction rules configuration for automated data processing")
   private DefaultExtraction extraction;
 
 }

@@ -17,20 +17,20 @@ import lombok.experimental.Accessors;
 public class ServicesExportDto {
 
   @NotNull
-  @Schema(description = "Export data scope", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Export data scope configuration for selective data export", requiredMode = RequiredMode.REQUIRED)
   private ServicesExportScope exportScope;
 
-  @Schema(description = "Export apis ids. Specify the apis to export when scope is by `APIS`, export all when not specified")
+  @Schema(description = "API identifiers for selective export when scope is APIS")
   private Set<Long> apiIds;
 
   @NotEmpty
-  @Schema(description = "Export services ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service identifiers for export operation", requiredMode = RequiredMode.REQUIRED)
   private Set<Long> serviceIds;
 
-  @Schema(allowableValues = "yaml, json", description = "OpenAPI document format. Available values yaml or json, the default value is yaml")
+  @Schema(description = "OpenAPI document format specification for export", allowableValues = "yaml, json")
   private SchemaFormat format = SchemaFormat.yaml;
 
-  @Schema(description = "Only return apis associated components, if true, return all components, default false", example = "false")
+  @Schema(description = "Flag to include only APIs with associated components", example = "false")
   private boolean onlyApisComponents = false;
 
 }

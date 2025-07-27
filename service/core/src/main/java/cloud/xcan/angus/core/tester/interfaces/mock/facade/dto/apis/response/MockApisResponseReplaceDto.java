@@ -21,23 +21,20 @@ import lombok.experimental.Accessors;
 public class MockApisResponseReplaceDto {
 
   @NotEmpty
-  @Schema(description = "Mock response name, the name must be unique", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock response name with unique constraint for identification", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Valid
-  @Schema(description =
-      "Specifies the matching request conditions that need to be met in order to return the current response"
-          + "Note: When multiple responses that meet the conditions are matched, the one with the highest priority will be returned. If no matching conditions are configured or the priorities "
-          + "are the same, the first one (the one configured first) will be returned")
+  @Schema(description = "Request matching conditions for response selection with priority-based resolution and first-come-first-served fallback")
   private MatchRequest match;
 
   @Valid
   @NotNull
-  @Schema(description = "The mock response content returned after receiving the request", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock response content configuration for request simulation", requiredMode = RequiredMode.REQUIRED)
   private MockResponseContent content;
 
   @Valid
-  @Schema(description = "Pushback request content returned after receiving the request")
+  @Schema(description = "Pushback request configuration for advanced response simulation")
   private MockResponsePushback pushback;
 
 }

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisTrash", description = "API Recycle Bin Management - Temporary storage for deleted service and apis with restore capabilities and permanent deletion controls")
+@Tag(name = "API Recycle Bin", description = "API Recycle Bin Management - Comprehensive APIs for temporary storage of deleted service and API resources with restore capabilities, permanent deletion controls, and lifecycle management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/trash")
@@ -34,57 +34,69 @@ public class ApisTrashRest {
   @Resource
   private ApisTrashFacade apisTrashFacade;
 
-  @Operation(summary = "Clear the trash of services or apis", operationId = "apis:trash:clear")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
+  @Operation(summary = "Clear API trash", 
+      description = "Permanently remove specific API or service from trash with comprehensive cleanup",
+      operationId = "apis:trash:clear")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "API trash cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void clear(
-      @Parameter(name = "id", description = "Trash id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Trash identifier for permanent deletion", required = true) @PathVariable("id") Long id) {
     apisTrashFacade.clear(id);
   }
 
-  @Operation(summary = "Clear all the trash of services and api apis", operationId = "apis:trash:clear:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Cleared successfully")})
+  @Operation(summary = "Clear all API trash", 
+      description = "Permanently remove all API and service trash for specific project with comprehensive cleanup",
+      operationId = "apis:trash:clear:all")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All API trash cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping()
   public void clearAll(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for trash cleanup") Long projectId) {
     apisTrashFacade.clearAll(projectId);
   }
 
-  @Operation(summary = "Back the services or apis from the trash", operationId = "apis:trash:back")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
+  @Operation(summary = "Restore API from trash", 
+      description = "Restore specific API or service from trash with comprehensive validation and lifecycle management",
+      operationId = "apis:trash:back")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "API restored from trash successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/back")
   public ApiLocaleResult<?> back(
-      @Parameter(name = "id", description = "Trash id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Trash identifier for restoration", required = true) @PathVariable("id") Long id) {
     apisTrashFacade.back(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Back all the services and apis from the trash", operationId = "apis:trash:back:all")
-  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Backed successfully")})
+  @Operation(summary = "Restore all APIs from trash", 
+      description = "Restore all APIs and services from trash for specific project with comprehensive validation",
+      operationId = "apis:trash:back:all")
+  @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All APIs restored from trash successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/back")
   public ApiLocaleResult<?> backAll(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for trash restoration") Long projectId) {
     apisTrashFacade.backAll(projectId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the count of all service and api trash", operationId = "apis:trash:count")
+  @Operation(summary = "Get API trash count", 
+      description = "Retrieve total count of API and service trash for specific project with comprehensive statistics",
+      operationId = "apis:trash:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Query count succeeded")})
+      @ApiResponse(responseCode = "200", description = "API trash count retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/count")
   public ApiLocaleResult<Long> count(
-      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project id") Long projectId) {
+      @RequestParam("projectId") @Parameter(name = "projectId", description = "Project identifier for trash count") Long projectId) {
     return ApiLocaleResult.success(apisTrashFacade.count(projectId));
   }
 
-  @Operation(summary = "Fulltext search the trash of services or apis", operationId = "apis:trash:list")
+  @Operation(summary = "Search API trash", 
+      description = "Full-text search API and service trash with comprehensive filtering and search options",
+      operationId = "apis:trash:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API trash search results retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisTrashDetailVo>> list(
       @Valid @ParameterObject ApisTrashFindDto dto) {

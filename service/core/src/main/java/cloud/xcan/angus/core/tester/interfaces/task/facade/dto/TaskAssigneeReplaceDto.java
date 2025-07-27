@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TaskAssigneeReplaceDto {
 
-  @Schema(description = "Assignee id, allow clear assignee by empty value")
+  @Schema(description = "Primary assignee identifier for task responsibility assignment. Empty value clears the current assignee")
   private Long assigneeId;
 
 }

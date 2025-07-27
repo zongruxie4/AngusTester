@@ -22,32 +22,32 @@ import org.hibernate.validator.constraints.Length;
 public class ExecAddByArgsDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for execution association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Execution name")
+  @Schema(description = "Execution name for identification and organization")
   private String name;
 
   @NotNull
-  @Schema(description = "Script type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script type for execution specification", requiredMode = RequiredMode.REQUIRED)
   private ScriptType scriptType;
 
   @NotEmpty
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Execution plugin name. Note: If there are multiple plugins with the same name, the highest version of the plugin will be automatically used", required = true)
+  @Schema(description = "Execution plugin name with automatic version selection for highest compatibility", requiredMode = RequiredMode.REQUIRED)
   private String plugin;
 
   @Valid
   @NotNull
-  @Schema(description = "Execution configuration", required = true)
+  @Schema(description = "Execution configuration for comprehensive parameter settings", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Valid
   @NotNull
-  @Schema(description = "Execution task information", required = true)
+  @Schema(description = "Execution task information for pipeline definition", requiredMode = RequiredMode.REQUIRED)
   private Task task;
 
-  @Schema(description = "Trial execution test flag")
+  @Schema(description = "Trial execution flag for testing and validation purposes")
   private Boolean trial;
 }

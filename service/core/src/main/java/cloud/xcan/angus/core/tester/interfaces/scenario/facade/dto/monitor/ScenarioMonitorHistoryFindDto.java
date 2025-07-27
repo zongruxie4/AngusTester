@@ -19,18 +19,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ScenarioMonitorHistoryFindDto extends PageQuery {
 
-  @Schema(description = "Monitor history id")
+  @Schema(description = "Monitoring history record identifier for precise query filtering")
   private Long id;
 
   @NotNull
-  @Schema(description = "Monitor id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Monitoring configuration identifier for history query filtering", requiredMode = RequiredMode.REQUIRED)
   private Long monitorId;
 
+  @Schema(description = "Monitoring execution status for history filtering")
   private ScenarioMonitorStatus status;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Monitoring history creation date for temporal filtering")
   private LocalDateTime createdDate;
 
   @Override

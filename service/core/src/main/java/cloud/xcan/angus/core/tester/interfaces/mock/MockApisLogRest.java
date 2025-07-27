@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockApisLog", description = "Mock Log Analytics and Query - Query and analyze mock interface request logs and statistical metrics (success/failure rates, latency distributions)")
+@Tag(name = "Mock Apis Log", description = "Mock Log Analytics and Query - Comprehensive query and analysis of mock interface request logs with statistical metrics including success/failure rates and latency distributions")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")
@@ -30,22 +30,26 @@ public class MockApisLogRest {
   @Resource
   private MockApisLogFacade mockApisLogFacade;
 
-  @Operation(summary = "Query the request log detail of mock apis", operationId = "mock:apis:log:detail")
+  @Operation(summary = "Query mock API request log details",
+      description = "Retrieve detailed information about specific mock API request logs for debugging and analysis",
+      operationId = "mock:apis:log:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock API request log details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API request log not found")})
   @GetMapping(value = "/apis/log/{id}")
   public ApiLocaleResult<MockApisLogDetailVo> detail(
-      @Parameter(name = "id", description = "Mock apis log id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock API request log identifier for precise query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(mockApisLogFacade.detail(id));
   }
 
-  @Operation(summary = "Query mock apis request logs", operationId = "mock:service:apis:log:list")
+  @Operation(summary = "Query mock API request logs with filtering",
+      description = "Retrieve paginated list of mock API request logs with comprehensive filtering and search capabilities",
+      operationId = "mock:service:apis:log:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock API request logs retrieved successfully")})
   @GetMapping("/service/{mockServiceId}/apis/log")
   public ApiLocaleResult<PageResult<MockApisLogListVo>> list(
-      @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
+      @Parameter(name = "mockServiceId", description = "Mock service identifier for log scope filtering", required = true) @PathVariable("mockServiceId") Long mockServiceId,
       @Valid @ParameterObject MockApisLogFindDto dto) {
     return ApiLocaleResult.success(mockApisLogFacade.list(mockServiceId, dto));
   }

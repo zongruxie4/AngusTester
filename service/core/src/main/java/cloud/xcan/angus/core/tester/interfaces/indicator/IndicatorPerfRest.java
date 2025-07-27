@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Indicator - PerformanceTest", description = "Performance Test Indicator Management - Define and adjust performance test parameters (concurrency levels, TPS targets, error rate thresholds)")
+@Tag(name = "Indicator - Performance Test", description = "Performance Test Indicator Management - Comprehensive APIs for defining and adjusting performance test parameters (concurrency levels, TPS targets, error rate thresholds) with target-based configuration")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -40,19 +40,23 @@ public class IndicatorPerfRest {
   @Resource
   private IndicatorPerfFacade indicatorPerfFacade;
 
-  @Operation(summary = "Add the indicator of performance", operationId = "indicator:perf:add")
+  @Operation(summary = "Create performance test indicator", 
+      description = "Create a new performance test indicator with comprehensive configuration for performance parameters",
+      operationId = "indicator:perf:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Performance test indicator created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/perf")
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody PerfAddDto dto) {
     return ApiLocaleResult.success(indicatorPerfFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the indicator of performance", operationId = "indicator:perf:replace")
+  @Operation(summary = "Replace performance test indicator", 
+      description = "Replace an existing performance test indicator with complete new configuration",
+      operationId = "indicator:perf:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Performance test indicator replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Performance test indicator not found")
   })
   @PutMapping("/perf")
   public ApiLocaleResult<?> replace(@Valid @RequestBody PerfReplaceDto dto) {
@@ -60,45 +64,53 @@ public class IndicatorPerfRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the performance indicator of target", operationId = "indicator:perf:target:delete")
+  @Operation(summary = "Delete performance test indicator by target", 
+      description = "Remove performance test indicator configuration for a specific target type and identifier",
+      operationId = "indicator:perf:target:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Performance test indicator deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping(value = "/{targetType}/{targetId}/perf")
   public void deleteByTarget(
-      @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
+      @Parameter(name = "targetType", description = "Target type for indicator configuration (API, SCENARIO)", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
+      @Parameter(name = "targetId", description = "Target identifier for indicator configuration", required = true) @PathVariable("targetId") Long targetId) {
     indicatorPerfFacade.deleteByTarget(targetType, targetId);
   }
 
-  @Operation(summary = "Query the indicator detail of performance", operationId = "indicator:perf:detail")
+  @Operation(summary = "Get performance test indicator details", 
+      description = "Retrieve comprehensive details of performance test indicator for a specific target",
+      operationId = "indicator:perf:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Performance test indicator details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Performance test indicator not found")})
   @GetMapping(value = "/{targetType}/{targetId}/perf")
   public ApiLocaleResult<PerfVo> detail(
-      @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
+      @Parameter(name = "targetType", description = "Target type for indicator query (API, SCENARIO)", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
+      @Parameter(name = "targetId", description = "Target identifier for indicator query", required = true) @PathVariable("targetId") Long targetId) {
     return ApiLocaleResult.success(indicatorPerfFacade.detail(targetType, targetId));
   }
 
-  @Operation(summary = "Query the indicator detail of performance", description = "Note: Return to default configuration when not set", operationId = "indicator:perf:audit:detailOrDefault")
+  @Operation(summary = "Get performance test indicator details or default", 
+      description = "Retrieve performance test indicator details for a specific target, returning default configuration when not set",
+      operationId = "indicator:perf:audit:detailOrDefault")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Performance test indicator details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Performance test indicator not found")})
   @GetMapping(value = "/{targetType}/{targetId}/perf/detailOrDefault")
   public ApiLocaleResult<PerfVo> detailOrDefault(
-      @Parameter(name = "targetType", description = "Target Type, allowable values: API,SCENARIO", required = true)
+      @Parameter(name = "targetType", description = "Target type for indicator query (API, SCENARIO)", required = true)
       @PathVariable("targetType") CombinedTargetType targetType,
-      @Parameter(name = "targetId", description = "Target id", required = true) @PathVariable("targetId") Long targetId) {
+      @Parameter(name = "targetId", description = "Target identifier for indicator query", required = true) @PathVariable("targetId") Long targetId) {
     return ApiLocaleResult.success(indicatorPerfFacade.detailOrDefault(targetType, targetId));
   }
 
-  @Operation(summary = "Query the indicator list of performance", operationId = "indicator:perf:list")
+  @Operation(summary = "List performance test indicators", 
+      description = "Retrieve paginated list of performance test indicators with comprehensive filtering and search options",
+      operationId = "indicator:perf:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Performance test indicator list retrieved successfully")})
   @GetMapping("/perf")
   public ApiLocaleResult<PageResult<PerfListVo>> list(@Valid @ParameterObject PerfFindDto dto) {
     return ApiLocaleResult.success(indicatorPerfFacade.list(dto));

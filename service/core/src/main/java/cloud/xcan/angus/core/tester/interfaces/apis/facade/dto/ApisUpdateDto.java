@@ -42,61 +42,61 @@ import org.hibernate.validator.constraints.Length;
 public class ApisUpdateDto {
 
   @NotNull
-  @Schema(description = "Api id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   //@Schema(example = "1") -> Instead by move
   //private Long serviceId;
 
-  @Schema(example = "http")
+  @Schema(description = "API protocol specification for communication type definition", example = "http")
   private ApisProtocol protocol;
 
-  @Schema(example = "GET")
+  @Schema(description = "HTTP method for API request specification", example = "GET")
   private HttpMethod method;
 
   /**
    * @see io.swagger.v3.oas.models.Paths#keySet()
    */
   @Length(max = MAX_URL_LENGTH_X4)
-  @Schema(description = "Api endpoint. Note: Cannot include query parameters when saving", example = "/comm/api/v1/country/{id}")
+  @Schema(description = "API endpoint path without query parameters for resource identification", example = "/comm/api/v1/country/{id}")
   private String endpoint;
 
   /////////////////////////OpenAPI Document//////////////////////////
-  @Schema(description = "Api OpenAPI tags")
+  @Schema(description = "API OpenAPI tags for categorization and organization")
   private List<String> tags;
 
   @Length(max = MAX_OPENAPI_SUMMARY_LENGTH)
-  @Schema(description = "Api summary or name", example = "Add user api")
+  @Schema(description = "API summary or name for identification and documentation", example = "Add user api")
   private String summary;
 
   @Length(max = MAX_OPENAPI_DOC_DESC_LENGTH)
-  @Schema(description = "A description of the link. CommonMark syntax MAY be used for rich text representation")
+  @Schema(description = "API description with CommonMark syntax support for rich text representation")
   private String description;
 
-  @Schema(description = "Allows referencing an external resource for extended documentation. See [OpenAPI External Documentation Object](https://swagger.io/specification/v3/#external-documentation-object)")
+  @Schema(description = "External documentation reference following OpenAPI External Documentation Object specification")
   private ExternalDocumentation externalDocs;
 
   @Length(max = MAX_CODE_LENGTH_X5)
-  @Schema(description = "The name of an existing, resolvable OAS operation, as defined with a unique operationId")
+  @Schema(description = "Unique operation identifier for OpenAPI specification resolution")
   private String operationId;
 
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Api request parameters. See [OpenAPI Parameter Object](https://swagger.io/specification/v3/#parameter-object)")
+  @Schema(description = "API request parameters following OpenAPI Parameter Object specification")
   private List<Parameter> parameters;
 
-  @Schema(description = "Api request body. See [OpenAPI Request Body Object](https://swagger.io/specification/v3/#request-body-object)")
+  @Schema(description = "API request body following OpenAPI Request Body Object specification")
   private RequestBody requestBody;
 
-  @Schema(description = "Api responses. See [OpenAPI Response Object](https://swagger.io/specification/v3/#response-object)")
+  @Schema(description = "API responses following OpenAPI Response Object specification")
   private Map<String, ApiResponse> responses;
 
-  @Schema(description = "Declares this operation to be deprecated. Consumers SHOULD refrain from usage of the declared operation. Default value is false")
+  @Schema(description = "API deprecation flag for lifecycle management and consumer guidance")
   private Boolean deprecated;
 
-  @Schema(description = "A declaration of which security mechanisms can be used for this apis. See [OpenAPI Security Requirement Object](https://swagger.io/specification/v3/#security-requirement-object)")
+  @Schema(description = "Security mechanism declarations following OpenAPI Security Requirement Object specification")
   private List<SecurityRequirement> security;
 
-  @Schema(description = "Provides connection information between the current API and the target server. See [OpenAPI Server Object](https://swagger.io/specification/v3/#server-object)")
+  @Schema(description = "Current server configuration for API connection and deployment information")
   private Server currentServer;
 
   /**
@@ -106,40 +106,41 @@ public class ApisUpdateDto {
    * {@link ExtensionKey#REQUEST_SETTING_KEY}
    */
   @JsonAnySetter
-  @Schema(description = "Extension fields allow users to customize business extension attributes")
+  @Schema(description = "Extension fields for custom business attributes and configuration")
   private Map<String, Object> extensions = new HashMap<>();
   /////////////////////////OpenAPI Document//////////////////////////
 
-  @Schema(description = "Defines a security scheme that can be used by the operations. See [OpenAPI Security Scheme Object](https://swagger.io/specification/v3/#security-scheme-object)")
+  @Schema(description = "Security scheme definition following OpenAPI Security Scheme Object specification")
   private SecurityScheme authentication;
 
   @Valid
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Configure interface execution result assertion. See [AngusTester Http Assertion](https://www.xcan.cloud/en/docs/tester/specification/content/task/elements/http)")
+  @Schema(description = "HTTP assertion configuration for interface execution result validation")
   private List<Assertion<HttpExtraction>> assertions;
 
   //Fix:: Security Bug
   //@Schema(description = "Whether to enable authorization control, default enabled")
   //private Boolean auth;
 
-  @Schema(description = "Process actions when the dataset reaches the end of reading, default `RECYCLE`")
+  @Schema(description = "Dataset end-of-file action configuration, defaults to RECYCLE")
   private ActionOnEOF datasetActionOnEOF;
 
-  @Schema(description = "Dataset sharing mode when multi threads, default `ALL_THREAD`")
+  @Schema(description = "Dataset sharing mode for multi-thread execution, defaults to ALL_THREAD")
   private SharingMode datasetSharingMode;
 
-  @Schema(description = "Whether to enable functional testing, default enabled")
+  @Schema(description = "Functional testing enablement flag, defaults to enabled")
   private Boolean testFunc;
 
-  @Schema(description = "Whether to enable performance testing, default enabled")
+  @Schema(description = "Performance testing enablement flag, defaults to enabled")
   private Boolean testPerf;
 
-  @Schema(description = "Whether to enable stability testing, default enabled")
+  @Schema(description = "Stability testing enablement flag, defaults to enabled")
   private Boolean testStability;
 
-  @Schema(example = "1")
+  @Schema(example = "1", description = "API owner or developer identifier for ownership management")
   private Long ownerId;
 
+  @Schema(description = "API status for lifecycle management and workflow control")
   private ApiStatus status;
 
 }

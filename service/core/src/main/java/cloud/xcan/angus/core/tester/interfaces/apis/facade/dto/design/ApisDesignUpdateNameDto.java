@@ -17,11 +17,11 @@ import org.hibernate.validator.constraints.Length;
 public class ApisDesignUpdateNameDto {
 
   @NotNull
-  @Schema(description = "Design ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API design identifier for name update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotBlank
-  @Schema(description = "Design name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API design name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH)
   private String name;
 

@@ -20,30 +20,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ApisShareFindDto extends PageQuery {
 
-  @Schema(description = "Share id")
+  @Schema(description = "Share identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for share query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Share name")
+  @Schema(description = "Share name for fuzzy search and filtering")
   private String name;
 
-  @Schema(description = "Share expired date")
+  @Schema(description = "Share expiration date for temporal filtering")
   private LocalDateTime expiredDate;
 
-  @Schema(description = "Share scope")
+  @Schema(description = "Share scope for access control filtering")
   private ApisShareScope shareScope;
 
-  @Schema(description = "Share services id")
+  @Schema(description = "Service identifier for share association filtering")
   private Long servicesId;
 
-  @Schema(description = "Share user id")
+  @Schema(description = "Creator identifier for ownership filtering")
   private Long createdBy;
 
-  @Schema(description = "Share date")
+  @Schema(description = "Share creation date for temporal filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

@@ -19,17 +19,19 @@ import lombok.experimental.Accessors;
 @ToString
 public class ExecStartDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and handling", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
   @NotNull
-  @Schema(description = "Execution id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Execution identifier for start operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Valid
   @Size(min = 1, max = MAX_BATCH_SIZE)
+  @Schema(description = "Remote node identifiers for distributed execution")
   private LinkedHashSet<Long> remoteNodeIds;
 
+  @Schema(description = "Last node identifier for execution continuity")
   private Long lastNodeId;
 
 }

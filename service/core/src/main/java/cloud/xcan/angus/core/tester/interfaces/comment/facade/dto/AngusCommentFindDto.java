@@ -16,13 +16,12 @@ import lombok.experimental.Accessors;
 public class AngusCommentFindDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target resource identifier for comment tree query", requiredMode = RequiredMode.REQUIRED)
   private Long targetId;
 
   @NotNull
-  @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"TASK", "SCRIPT", "FUNC_CASE",
-      "SCENARIO"})
-  @Schema(example = "TASK", requiredMode = RequiredMode.REQUIRED)
+  @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"TASK", "SCRIPT", "FUNC_CASE", "SCENARIO"})
+  @Schema(description = "Target resource type for comment tree filtering", example = "TASK", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
 }

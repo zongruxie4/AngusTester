@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ServicesTestInner", description = "API Test and Analytics (Internal) - "
-    + "Internal query endpoints for API test execution statistics (success rates, latency percentiles)")
+@Tag(name = "Services Test - Internal", description = "API Test and Analytics Internal API - Internal query endpoints for API test execution statistics including success rates and latency percentiles.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -30,26 +29,30 @@ public class ServicesTestInnerRest {
   @Resource
   private ServicesTestFacade servicesTestFacade;
 
-  @Operation(summary = "The api testing count of service", operationId = "services:test:apis:count:inner")
+  @Operation(summary = "Query service API testing count",
+      description = "Retrieve API testing execution statistics for service performance analysis.",
+      operationId = "services:test:apis:count:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Service API testing count retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Service not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/services/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countServiceTestApis(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long serviceId,
+      @Parameter(name = "id", description = "Service identifier for testing statistics query", required = true) @PathVariable("id") Long serviceId,
       @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countServiceTestApis(serviceId, dto));
   }
 
-  @Operation(summary = "The api testing count of project", operationId = "project:test:apis:count:inner")
+  @Operation(summary = "Query project API testing count",
+      description = "Retrieve API testing execution statistics for project performance analysis.",
+      operationId = "project:test:apis:count:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Project API testing count retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Project not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/project/{id}/test/apis/count")
   public ApiLocaleResult<ApisTestCount> countProjectTestApis(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Project identifier for testing statistics query", required = true) @PathVariable("id") Long projectId,
       @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(servicesTestFacade.countProjectTestApis(projectId, dto));
   }

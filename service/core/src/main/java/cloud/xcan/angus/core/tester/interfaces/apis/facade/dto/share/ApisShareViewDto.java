@@ -17,12 +17,12 @@ import org.hibernate.validator.constraints.Length;
 public class ApisShareViewDto {
 
   @NotNull
-  @Schema(description = "Share id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share identifier for public access", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @NotEmpty
   @Length(max = MAX_PUBLIC_TOKEN_LENGTH)
-  @Schema(description = "Share public access token", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share public access token for authentication", requiredMode = RequiredMode.REQUIRED)
   private String pat;
 
 }

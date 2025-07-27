@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeInfo", description = "User Node & Executor Process Control API - User-accessible node information and executor process management")
+@Tag(name = "Node Info", description = "Node Information & Agent Control API - User-accessible interfaces for node system information, agent status monitoring, and process control operations.")
 @Validated
 @RestController
 public class NodeInfoRest {
@@ -48,48 +48,58 @@ public class NodeInfoRest {
   @Resource
   private NodeInfoFacade nodeInfoFacade;
 
-  @Operation(summary = "Query the detail of node system information", operationId = "node:info:detail")
+  @Operation(summary = "Query node system information details",
+      description = "Retrieve detailed system information of a specific node including hardware specs and status.",
+      operationId = "node:info:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Not found resource")})
+      @ApiResponse(responseCode = "200", description = "Node system information retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Node not found")})
   @GetMapping(value = "")
   public ApiLocaleResult<NodeInfoDetailVo> detail(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
-      @Parameter(name = "freeNode", description = "Free node flag", required = true) @RequestParam("freeNode") Boolean freeNode) {
+      @Parameter(name = "id", description = "Node identifier for system information query", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "freeNode", description = "Flag indicating whether this is a free/shared node", required = true) @RequestParam("freeNode") Boolean freeNode) {
     return ApiLocaleResult.success(nodeInfoFacade.detail(id, freeNode));
   }
 
-  @Operation(summary = "Query the list of node system information", operationId = "node:info:list")
+  @Operation(summary = "Query node system information list",
+      description = "Retrieve paginated list of node system information with filtering and search capabilities.",
+      operationId = "node:info:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Node system information list retrieved successfully")})
   @GetMapping(value = LIST_ENDPOINT)
   public ApiLocaleResult<PageResult<NodeInfoDetailVo>> list(
       @Valid @ParameterObject NodeInfoFindDto dto) {
     return ApiLocaleResult.success(nodeInfoFacade.list(dto));
   }
 
-  @Operation(summary = "Query the list of node execution", operationId = "node:exec:list")
+  @Operation(summary = "Query node execution information",
+      description = "Retrieve current execution status and information for a specific node.",
+      operationId = "node:exec:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Node execution information retrieved successfully")})
   @GetMapping(value = EXEC_ENDPOINT)
   public ApiLocaleResult<List<NodeExecVo>> exec(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for execution information query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeInfoFacade.exec(id));
   }
 
-  @Operation(summary = "Query the list of node agent status", operationId = "node:info:agent:status")
+  @Operation(summary = "Query node agent status",
+      description = "Check agent status for multiple nodes to verify connectivity and health.",
+      operationId = "node:info:agent:status")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Not found resource")})
+      @ApiResponse(responseCode = "200", description = "Agent status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Node not found")})
   @PostMapping(value = AGENT_STATUS_CHECK_ENDPOINT)
   public ApiLocaleResult<Map<Long, SimpleCommandResult>> agentStatus(
       @Valid @RequestBody NodeAgentStatusQueryDto dto) {
     return ApiLocaleResult.success(nodeInfoFacade.agentStatus(dto));
   }
 
-  @Operation(summary = "Check if the agent port is available", operationId = "node:info:agent:port:check")
+  @Operation(summary = "Check agent port availability",
+      description = "Verify port availability on agent nodes for network connectivity testing.",
+      operationId = "node:info:agent:port:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successfully processed")
+      @ApiResponse(responseCode = "200", description = "Port availability check completed successfully")
   })
   @PostMapping(value = AGENT_PORT_CHECK_ENDPOINT)
   public ApiLocaleResult<List<CheckPortVo>> checkPort(
@@ -97,27 +107,33 @@ public class NodeInfoRest {
     return ApiLocaleResult.success(nodeInfoFacade.checkPort(dto));
   }
 
-  @Operation(summary = "Query the installation cmd of node agent by door api", operationId = "node:agent:install:cmd")
+  @Operation(summary = "Query agent installation command",
+      description = "Retrieve agent installation command for a specific node to enable manual deployment.",
+      operationId = "node:agent:install:cmd")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Agent installation command retrieved successfully")})
   @GetMapping(value = AGENT_INSTALL_ENDPOINT)
   public ApiLocaleResult<AgentInstallCmd> agentInstallCmdByDoor(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for agent installation command", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeInfoFacade.agentInstallCmd(id));
   }
 
-  @Operation(summary = "Query the list of runner processes", operationId = "node:runner:process:list")
+  @Operation(summary = "Query runner process information",
+      description = "Retrieve detailed information about runner processes running on nodes.",
+      operationId = "node:runner:process:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Runner process information retrieved successfully")})
   @PostMapping(value = RUNNER_PROCESS_ENDPOINT)
   public ApiLocaleResult<RunnerQueryVo> runnerProcess(
       @Valid @ParameterObject NodeRunnerQueryDto dto) {
     return ApiLocaleResult.success(nodeInfoFacade.runnerProcess(dto));
   }
 
-  @Operation(summary = "Kill the runner processes", operationId = "node:runner:process:kill")
+  @Operation(summary = "Terminate runner processes",
+      description = "Forcefully terminate runner processes on nodes for process control and cleanup.",
+      operationId = "node:runner:process:kill")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Kill successfully")})
+      @ApiResponse(responseCode = "200", description = "Runner processes terminated successfully")})
   @PostMapping(value = KILL_RUNNER_PROCESS_ENDPOINT)
   public ApiLocaleResult<Boolean> runnerProcessKill(@Valid @RequestBody NodeRunnerKillDto dto) {
     return ApiLocaleResult.successData(nodeInfoFacade.runnerProcessKill(dto));

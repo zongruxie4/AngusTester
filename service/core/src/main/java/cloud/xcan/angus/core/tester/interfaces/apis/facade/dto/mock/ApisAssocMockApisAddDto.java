@@ -19,11 +19,11 @@ import org.hibernate.validator.constraints.Length;
 public class ApisAssocMockApisAddDto {
 
   @NotNull
-  @Schema(description = "Associate Mock Service id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock service identifier for API association", requiredMode = RequiredMode.REQUIRED)
   private Long mockServiceId;
 
   @Length(max = MAX_OPENAPI_SUMMARY_LENGTH)
-  @Schema(description = "Mock apis name", example = "This is mock apis name")
+  @Schema(description = "Mock API name for identification and organization", example = "This is mock apis name")
   private String summary;
 
 }

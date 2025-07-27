@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioAuth", description = "Scenario Authorization Management - Unified entry for managing data access permissions of test scenario")
+@Tag(name = "Scenario Authorization", description = "Scenario Authorization Management API - Comprehensive access control system for managing data permissions, user roles, and security policies for test scenarios.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -44,106 +44,124 @@ public class ScenarioAuthRest {
   @Resource
   private ScenarioAuthFacade scenarioAuthFacade;
 
-  @Operation(summary = "Add the authorization of scenario", operationId = "scenario:auth:add")
+  @Operation(summary = "Create scenario authorization",
+      description = "Create new authorization rules for scenario access control and permission management.",
+      operationId = "scenario:auth:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Scenario authorization created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/{id}/auth")
   public ApiLocaleResult<IdKey<Long, Object>> add(
-      @Parameter(name = "id", description = "scenario id", required = true) @PathVariable("id") Long scenarioId,
+      @Parameter(name = "id", description = "Scenario identifier for authorization setup", required = true) @PathVariable("id") Long scenarioId,
       @Valid @RequestBody ScenarioAuthAddDto dto) {
     return ApiLocaleResult.success(scenarioAuthFacade.add(scenarioId, dto));
   }
 
-  @Operation(summary = "Replace the authorization of scenario", operationId = "scenario:auth:replace")
+  @Operation(summary = "Replace scenario authorization",
+      description = "Replace existing authorization configuration with new permission settings.",
+      operationId = "scenario:auth:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Scenario authorization replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Authorization record not found")
   })
   @PutMapping("/auth/{id}")
   public ApiLocaleResult<?> replace(
-      @Parameter(name = "id", description = "Scenario authorization id", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Authorization record identifier for replacement", required = true) @PathVariable("id") Long id,
       @Valid @RequestBody ScenarioAuthReplaceDto dto) {
     scenarioAuthFacade.replace(id, dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable the authorization of scenario", operationId = "scenario:auth:enabled")
+  @Operation(summary = "Enable or disable scenario authorization",
+      description = "Toggle authorization status to control access to the scenario.",
+      operationId = "scenario:auth:enabled")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Enabled or disabled successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Authorization status updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping("/{id}/auth/enabled")
   public ApiLocaleResult<?> enabled(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
-      @Valid @NotNull @Parameter(name = "enabled", description = "Enabled or Disabled", required = true) @RequestParam(value = "enabled") Boolean enabled) {
+      @Parameter(name = "id", description = "Scenario identifier for authorization control", required = true) @PathVariable("id") Long scenarioId,
+      @Valid @NotNull @Parameter(name = "enabled", description = "Authorization status flag", required = true) @RequestParam(value = "enabled") Boolean enabled) {
     scenarioAuthFacade.enabled(scenarioId, enabled);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query authorization status of scenario", operationId = "scenario:auth:status")
+  @Operation(summary = "Query scenario authorization status",
+      description = "Retrieve current authorization status for the specified scenario.",
+      operationId = "scenario:auth:status")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Authorization status retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/auth/status")
   public ApiLocaleResult<Boolean> status(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId) {
+      @Parameter(name = "id", description = "Scenario identifier for status query", required = true) @PathVariable("id") Long scenarioId) {
     return ApiLocaleResult.success(scenarioAuthFacade.status(scenarioId));
   }
 
-  @Operation(summary = "Delete the authorization of scenario", operationId = "scenario:auth:delete")
+  @Operation(summary = "Delete scenario authorization",
+      description = "Remove authorization record and revoke associated permissions.",
+      operationId = "scenario:auth:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Scenario authorization deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/auth/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Scenario authorization id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Authorization record identifier for deletion", required = true) @PathVariable("id") Long id) {
     scenarioAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Query the user authorization permission of scenario", operationId = "scenario:user:auth")
+  @Operation(summary = "Query user's scenario permissions",
+      description = "Retrieve all permissions granted to a specific user for the scenario.",
+      operationId = "scenario:user:auth")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "User permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario or user not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth")
   public ApiLocaleResult<List<ScenarioPermission>> userAuth(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
-      @Parameter(name = "userId", description = "userId", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Scenario identifier for permission query", required = true) @PathVariable("id") Long scenarioId,
+      @Parameter(name = "userId", description = "User identifier for permission check", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "admin", description = "Flag to include administrator permissions in query") Boolean admin) {
     return ApiLocaleResult.success(scenarioAuthFacade.userAuth(scenarioId, userId, admin));
   }
 
-  @Operation(summary = "Query the current user authorization permissions of scenario", operationId = "scenario:user:auth:current")
+  @Operation(summary = "Query current user's scenario permissions",
+      description = "Retrieve permissions for the currently authenticated user on the specified scenario.",
+      operationId = "scenario:user:auth:current")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Current user permissions retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/auth/current")
   public ApiLocaleResult<ScenarioAuthCurrentVo> currentUserAuth(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
-      @Parameter(name = "admin", description = "Required when the query contains administrator permissions") Boolean admin) {
+      @Parameter(name = "id", description = "Scenario identifier for current user permission query", required = true) @PathVariable("id") Long scenarioId,
+      @Parameter(name = "admin", description = "Flag to include administrator permissions in query") Boolean admin) {
     return ApiLocaleResult.success(scenarioAuthFacade.currentUserAuth(scenarioId, admin));
   }
 
-  @Operation(summary = "Check the user authorization or administrator permission of scenario", operationId = "scenario:auth:check")
+  @Operation(summary = "Check user authorization permission",
+      description = "Verify if a user has specific permission or administrator access to the scenario.",
+      operationId = "scenario:auth:check")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Resource existed")})
+      @ApiResponse(responseCode = "200", description = "Authorization check completed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/user/{userId}/auth/{authPermission}/check")
   public ApiLocaleResult<?> authCheck(
-      @Parameter(name = "id", description = "Scenario id", required = true) @PathVariable("id") Long scenarioId,
-      @Parameter(name = "userId", description = "Authorization user id", required = true) @PathVariable("userId") Long userId,
-      @Parameter(name = "authPermission", description = "Scenario authorized permission", required = true)
+      @Parameter(name = "id", description = "Scenario identifier for permission verification", required = true) @PathVariable("id") Long scenarioId,
+      @Parameter(name = "userId", description = "User identifier for permission verification", required = true) @PathVariable("userId") Long userId,
+      @Parameter(name = "authPermission", description = "Specific permission to verify", required = true)
       @PathVariable("authPermission") ScenarioPermission permission) {
     scenarioAuthFacade.authCheck(scenarioId, permission, userId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of scenario authorization", operationId = "scenario:auth:list")
+  @Operation(summary = "Query scenario authorization list",
+      description = "Retrieve paginated list of all authorization records with filtering capabilities.",
+      operationId = "scenario:auth:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Authorization list retrieved successfully")})
   @GetMapping("/auth")
   public ApiLocaleResult<PageResult<ScenarioAuthVo>> list(
       @Valid @ParameterObject ScenarioAuthFindDto dto) {

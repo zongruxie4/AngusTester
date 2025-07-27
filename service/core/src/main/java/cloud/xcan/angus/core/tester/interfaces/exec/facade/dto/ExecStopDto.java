@@ -19,15 +19,16 @@ import lombok.experimental.Accessors;
 @ToString
 public class ExecStopDto {
 
-  @Schema(description = "Whether to notify other controllers to handle", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Broadcast flag for multi-controller notification and handling", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
   @NotNull
-  @Schema(description = "Execution id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Execution identifier for stop operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Valid
   @Size(min = 1, max = MAX_BATCH_SIZE)
+  @Schema(description = "Remote node identifiers for distributed execution termination")
   private LinkedHashSet<Long> remoteNodeIds;
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Kanban - Efficiency", description = "R&D & Test Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness")
+@Tag(name = "Kanban - Efficiency", description = "Efficiency Analytics - Comprehensive statistical analysis of R&D task efficiency and functional test effectiveness with performance metrics and productivity insights")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/efficiency")
@@ -27,18 +27,22 @@ public class KanbanEfficiencyRest {
   @Resource
   private KanbanEfficiencyFacade kanbanEfficiencyFacade;
 
-  @Operation(summary = "Task efficiency statistics overview", operationId = "kanban:efficiency:task:overview")
+  @Operation(summary = "Generate task efficiency statistics overview",
+      description = "Provides comprehensive task efficiency analysis including completion rates, time tracking, and productivity metrics for performance optimization",
+      operationId = "kanban:efficiency:task:overview")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Task efficiency statistics overview generated successfully")})
   @GetMapping("/task/overview")
   public ApiLocaleResult<EfficiencyTaskOverview> taskEfficiencyOverview(
       @Valid @ParameterObject KanbanEfficiencyFindDto dto) {
     return ApiLocaleResult.success(kanbanEfficiencyFacade.taskEfficiencyOverview(dto));
   }
 
-  @Operation(summary = "Testing efficiency statistics overview", operationId = "kanban:efficiency:case:overview")
+  @Operation(summary = "Generate testing efficiency statistics overview",
+      description = "Provides comprehensive testing efficiency analysis including case execution rates, quality metrics, and effectiveness indicators for process improvement",
+      operationId = "kanban:efficiency:case:overview")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Testing efficiency statistics overview generated successfully")})
   @GetMapping("/case/overview")
   public ApiLocaleResult<EfficiencyCaseOverview> caseEfficiencyOverview(
       @Valid @ParameterObject KanbanEfficiencyFindDto dto) {

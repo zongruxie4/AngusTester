@@ -15,10 +15,10 @@ import lombok.experimental.Accessors;
 public class ApisDesignExportDto {
 
   @NotNull
-  @Schema(description = "Design ID", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "API design identifier for export operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
-  @Schema(allowableValues = "yaml, json", description = "OpenAPI document format. Available values yaml or json, the default value is yaml")
+  @Schema(description = "OpenAPI document export format specification with YAML as default", allowableValues = "yaml, json")
   private SchemaFormat format = SchemaFormat.yaml;
 }
 

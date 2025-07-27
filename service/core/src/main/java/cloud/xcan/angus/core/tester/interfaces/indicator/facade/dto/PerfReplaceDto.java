@@ -23,48 +23,48 @@ import lombok.experimental.Accessors;
 public class PerfReplaceDto {
 
   @NotNull
-  @Schema(description = "Apis or services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target identifier for performance test indicator replacement", requiredMode = RequiredMode.REQUIRED)
   private Long targetId;
 
   @NotNull
   @EnumPart(enumClass = CombinedTargetType.class, allowableValues = {"API", "SCENARIO"})
-  @Schema(description = "Target Type, allowable values: API,SCENARIO", allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target type for performance test indicator replacement (API, SCENARIO)", allowableValues = "API,SCENARIO", requiredMode = RequiredMode.REQUIRED)
   private CombinedTargetType targetType;
 
   @NotNull
   @Min(1)
   @Max(MAX_API_PERF_CONCURRENCY)
-  @Schema(description = "The number of concurrent threads(VU)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Concurrent virtual user count for performance testing", requiredMode = RequiredMode.REQUIRED)
   private Integer threads;
 
   @TimeValueRange(minInMs = 1000, maxInMs = MAX_EXEC_DURATION_IN_MS) // 1 days
   @NotNull
-  @Schema(description = "Duration of task execution, when iterations and duration are not configured, they will automatically execute for 30 seconds", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test execution duration with automatic 30-second fallback when not configured", requiredMode = RequiredMode.REQUIRED)
   private TimeValue duration;
 
   @Min(0)
-  @Schema(description = "Adjust ramp up thread number, the value does not exceed the threads")
+  @Schema(description = "Gradual thread ramp-up count not exceeding total thread count")
   private Integer rampUpThreads;
 
-  @Schema(description = "Adjust ramp up time interval, the value does not exceed the duration")
+  @Schema(description = "Gradual thread ramp-up time interval not exceeding total duration")
   private TimeValue rampUpInterval;
 
   @Min(1)
-  @Schema(description = "Average response time in milliseconds(ART、ms)")
+  @Schema(description = "Average response time threshold in milliseconds")
   private Long art;
 
-  @Schema(description = "Average response time percentile")
+  @Schema(description = "Response time percentile for statistical analysis")
   private Percentile percentile;
 
   @NotNull
   @Min(1)
-  @Schema(description = "Operations per second(QPS/TPS)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Transactions per second target for performance validation", requiredMode = RequiredMode.REQUIRED)
   private Integer tps;
 
   @NotNull
   @Min(0)
   @Max(100)
-  @Schema(description = "Error rate (ERROR)/%", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Maximum acceptable error rate percentage", requiredMode = RequiredMode.REQUIRED)
   private Double errorRate;
 
 }

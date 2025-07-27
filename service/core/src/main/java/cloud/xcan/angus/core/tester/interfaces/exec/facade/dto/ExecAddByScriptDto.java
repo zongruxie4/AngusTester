@@ -20,24 +20,24 @@ import org.hibernate.validator.constraints.Length;
 public class ExecAddByScriptDto {
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Execution name, when empty, the script name will be used")
+  @Schema(description = "Execution name for identification, defaults to script name when empty")
   private String name;
 
   @NotNull
-  @Schema(description = "Execution script id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script identifier for execution reference", requiredMode = RequiredMode.REQUIRED)
   private Long scriptId;
 
-  @Schema(description = "Execute actual script type")
+  @Schema(description = "Actual script type for execution specification")
   private ScriptType scriptType;
 
   @Valid
-  @Schema(description = "Common configuration parameters for script execution")
+  @Schema(description = "Common configuration parameters for script execution customization")
   private Configuration configuration;
 
-  @Schema(description="Plugin configuration parameters")
+  @Schema(description = "Plugin configuration parameters for execution customization")
   private Arguments arguments = new Arguments();
 
-  @Schema(description = "Trial execution test flag")
+  @Schema(description = "Trial execution flag for testing and validation purposes")
   private Boolean trial;
 
 }

@@ -19,11 +19,11 @@ public class ApisMoveDto {
 
   @NotNull
   @Size(min = 1)
-  @Schema(description = "Source api ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Source API identifiers for relocation operation", requiredMode = RequiredMode.REQUIRED)
   private List<Long> apiIds;
 
   @NotNull
-  @Schema(description = "Target services id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Target service identifier for API relocation destination", requiredMode = RequiredMode.REQUIRED)
   private Long targetServiceId;
 
 }

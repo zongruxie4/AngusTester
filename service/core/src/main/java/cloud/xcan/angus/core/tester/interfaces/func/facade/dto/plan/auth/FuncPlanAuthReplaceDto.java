@@ -19,7 +19,7 @@ public class FuncPlanAuthReplaceDto {
   @NotNull
   @Size(min = 1)
   @CollectionValueNotNull
-  @Schema(description = "Authorization permissions(Operation permission)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test plan operation permissions for access control replacement", requiredMode = RequiredMode.REQUIRED)
   private Set<FuncPlanPermission> permissions;
 
 }

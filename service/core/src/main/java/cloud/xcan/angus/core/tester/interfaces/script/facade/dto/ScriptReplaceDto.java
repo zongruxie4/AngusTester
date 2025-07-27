@@ -19,22 +19,22 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class ScriptReplaceDto {
 
-  @Schema(description="Modify script id. Create a new script when the value is null")
+  @Schema(description = "Script identifier for replacement; null indicates creation of new script")
   private Long id;
 
-  @Schema(description = "Project id, required when creating a new script")
+  @Schema(description = "Project identifier for script association; required when creating new script")
   private Long projectId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Script name", example = "script-01", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script name for identification and management", example = "script-01", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
-  @Schema(description = "Whether to enable authorization control, default disabled")
+  @Schema(description = "Flag to enable authorization control for access management")
   public Boolean auth;
 
   @NotNull
-  @Schema(description = "Script type, priority is higher than the type in the script content, which controls the actual type of test execution", example = "TEST_PERFORMANCE", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script type defining the testing methodology and execution approach", example = "TEST_PERFORMANCE", requiredMode = RequiredMode.REQUIRED)
   private ScriptType type;
 
   //@NotNull
@@ -42,12 +42,12 @@ public class ScriptReplaceDto {
   //private ScriptSource source;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Script description")
+  @Schema(description = "Script description for detailed information and requirements")
   private String description;
 
   @NotBlank
   @Length(max = ANGUS_SCRIPT_LENGTH) // 10MB
-  @Schema(description = "Yaml or json format script content", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script content in YAML or JSON format for execution configuration", requiredMode = RequiredMode.REQUIRED)
   private String content;
 
 }

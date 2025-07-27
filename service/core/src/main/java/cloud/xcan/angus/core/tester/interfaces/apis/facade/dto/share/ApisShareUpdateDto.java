@@ -23,35 +23,35 @@ import org.hibernate.validator.constraints.Length;
 public class ApisShareUpdateDto {
 
   @NotNull
-  @Schema(description = "Share id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Share identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Share name")
+  @Schema(description = "Share name for identification and organization")
   private String name;
 
   @Length(max = MAX_NAME_LENGTH_X4)
-  @Schema(description = "Share remark, it will be displayed on the sharing page to information")
+  @Schema(description = "Share remark for display on sharing page information")
   private String remark;
 
-  @Schema(description = "Share expired date")
+  @Schema(description = "Share expiration date for access control")
   private LocalDateTime expiredDate;
 
   @Valid
-  @Schema(description = "Share display options")
+  @Schema(description = "Share display options for presentation configuration")
   private DisplayOptions displayOptions;
 
-  @Schema(description = "Share scope")
+  @Schema(description = "Share scope for access control definition")
   private ApisShareScope shareScope;
 
-  @Schema(description = "Share services id")
+  @Schema(description = "Service identifier for share association")
   private Long servicesId;
 
-  @Schema(description = "Share apis ids, it is required when share scope is apis")
+  @Schema(description = "API identifiers for selective sharing when scope is APIs")
   private Set<Long> apisIds;
 
   @Length(max = MAX_URL_LENGTH)
-  @Schema(description = "Web front end sharing page address")
+  @Schema(description = "Web frontend sharing page base URL for public access")
   private String baseUrl;
 
 }

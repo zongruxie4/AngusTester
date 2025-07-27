@@ -30,142 +30,143 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class TaskSummaryStatisticsDto extends PageQuery {
 
-  @Schema(description = "Task id")
+  @Schema(description = "Task identifier")
   private Long id;
 
   @NotNull
-  @Schema(description = "Task project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for task statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Task name")
+  @Schema(description = "Task name for search and filtering")
   private String name;
 
   @Length(max = MAX_BID_LENGTH)
-  @Schema(description = "Task code")
+  @Schema(description = "Task code for identification and search")
   private String code;
 
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Version of software for the task")
+  @Schema(description = "Software version associated with the task")
   private String version;
 
-  @Schema(description = "Task sprint id")
+  @Schema(description = "Sprint identifier for task categorization")
   private Long sprintId;
 
-  @Schema(description = "Task module id")
+  @Schema(description = "Module identifier for task categorization")
   private Long moduleId;
 
-  @Schema(description = "Backlog flag. true: Sprint backlog, false: Product backlog")
+  @Schema(description = "Backlog classification flag: true for sprint backlog, false for product backlog")
   private Boolean backlog;
 
-  @Schema(description = "The scenario or api ID associated with the task")
+  @Schema(description = "Associated scenario or API identifier")
   public Long targetId;
 
-  @Schema(description = "The scenario dir or services ID associated with the task")
+  @Schema(description = "Associated scenario directory or services identifier")
   public Long targetParentId;
 
-  @Schema(description = "Task type")
+  @Schema(description = "Task type for categorization")
   private TaskType taskType;
 
-  @Schema(description = "Bug level")
+  @Schema(description = "Bug severity level")
   private BugLevel bugLevel;
 
-  @Schema(description = "Task test type")
+  @Schema(description = "Task test type for execution categorization")
   private TestType testType;
 
-  @Schema(description = "Assignee id")
+  @Schema(description = "Assignee user identifier")
   private Long assigneeId;
 
-  @Schema(description = "Confirmor id")
+  @Schema(description = "Confirmer user identifier")
   private Long confirmorId;
 
-  @Schema(description = "Tester id")
+  @Schema(description = "Tester user identifier")
   private Long testerId;
 
-  @Schema(description = "Missing bug flag")
+  @Schema(description = "Missing bug detection flag")
   private Boolean missingBug;
 
+  @Schema(description = "Flag indicating if task is unplanned")
   private Boolean unplanned;
 
-  @Schema(description = "Report id")
+  @Schema(description = "Tag identifier for task categorization")
   private Long tagId;
 
-  @Schema(description = "Task priority")
+  @Schema(description = "Task priority level")
   private Priority priority;
 
-  @Schema(description = "Task eval workload")
+  @Schema(description = "Estimated workload for the task")
   private BigDecimal evalWorkload;
 
-  @Schema(description = "Task actual workload")
+  @Schema(description = "Actual workload consumed by the task")
   private BigDecimal actualWorkload;
 
-  @Schema(description = "Task status")
+  @Schema(description = "Current task status")
   private TaskStatus status;
 
-  @Schema(description = "Whether the task is overdue")
+  @Schema(description = "Flag indicating if task is overdue")
   private Boolean overdue;
 
-  @Schema(description = "The number of tasks failures")
+  @Schema(description = "Number of task execution failures")
   private Integer failNum;
 
-  @Schema(description = "The number of tasks processed")
+  @Schema(description = "Total number of task executions")
   private Integer totalNum;
 
-  @Schema(description = "Execution id")
+  @Schema(description = "Execution identifier for task runs")
   private Long execId;
 
-  @Schema(description = "Execution user id")
+  @Schema(description = "Execution user identifier")
   private Long execBy;
 
-  @Schema(description = "Task execution result")
+  @Schema(description = "Task execution result status")
   private Result execResult;
 
-  @Schema(description = "Task start date")
+  @Schema(description = "Task start timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime startDate;
 
-  @Schema(description = "Task deadline")
+  @Schema(description = "Task deadline timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime deadlineDate;
 
-  @Schema(description = "Task confirmed date")
+  @Schema(description = "Task confirmation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime confirmedDate;
 
-  @Schema(description = "Task completed date")
+  @Schema(description = "Task completion timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime completedDate;
 
-  @Schema(description = "Task processed date")
+  @Schema(description = "Task processing timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime processedDate;
 
-  @Schema(description = "Task canceled date")
+  @Schema(description = "Task cancellation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   public LocalDateTime canceledDate;
 
-  @Schema(description = "Task execution date")
+  @Schema(description = "Task execution timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime execDate;
 
-  @Schema(description = "Task creator")
+  @Schema(description = "Task creator user identifier")
   private Long createdBy;
 
-  @Schema(description = "Task creation date")
+  @Schema(description = "Task creation timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 
-  @Schema(description = "Task last modified user")
+  @Schema(description = "Last modifier user identifier")
   private Long lastModifiedBy;
 
-  @Schema(description = "Task last modified date")
+  @Schema(description = "Last modification timestamp")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime lastModifiedDate;
 
-  @Schema(description = "Required when app administrators query all projects")
+  @Schema(description = "Administrator access flag for cross-project task queries")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission project")
+  @Schema(description = "Permission level for task access control")
   private TaskSprintPermission hasPermission;
 
 }

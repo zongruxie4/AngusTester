@@ -18,12 +18,12 @@ import lombok.experimental.Accessors;
 public class FuncReviewCaseAddDto {
 
   @NotNull
-  @Schema(description = "Review id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test review identifier for case association", requiredMode = RequiredMode.REQUIRED)
   private Long reviewId;
 
   @NotEmpty
   @Size(max = MAX_OPT_CASE_NUM)
-  @Schema(description = "Review case ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Test case identifiers for review scope definition", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashSet<Long> caseIds;
 
 }

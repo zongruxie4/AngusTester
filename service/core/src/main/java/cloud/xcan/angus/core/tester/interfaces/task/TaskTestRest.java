@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskTest", description = "Task Associations Resource Query - Query resources and test results associated with specific task")
+@Tag(name = "TaskTest", description = "Task Test Associations and Results API - Comprehensive query system for task-related test resources, execution results, and performance analytics.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -30,24 +30,24 @@ public class TaskTestRest {
   @Resource
   private TaskTestFacade taskTestFacade;
 
-  @Operation(summary = "Query the associated target list of task", operationId = "task:assoc:list")
+  @Operation(summary = "Get task-associated test resources", operationId = "task:assoc:list", description = "Retrieve all test resources associated with a specific task, organized by script type for comprehensive test coverage analysis.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Task-associated test resources retrieved successfully")})
   @GetMapping("/{taskType}/{targetId}/test/association")
   public ApiLocaleResult<Map<ScriptType, List<TaskAssocVo>>> assocList(
-      @Parameter(name = "taskType", description = "Task type", required = true) @PathVariable("taskType") TaskType taskType,
-      @Parameter(name = "targetId", description = "Associated api or scenario id", required = true) @PathVariable("targetId") Long targetId) {
+      @Parameter(name = "taskType", description = "Task type for resource association", required = true) @PathVariable("taskType") TaskType taskType,
+      @Parameter(name = "targetId", description = "Associated API or scenario identifier", required = true) @PathVariable("targetId") Long targetId) {
     return ApiLocaleResult.success(taskTestFacade.assocList(taskType, targetId));
   }
 
-  @Operation(summary = "Query the test results of task", operationId = "apis:test:result:info")
+  @Operation(summary = "Get task test execution results", operationId = "apis:test:result:info", description = "Retrieve detailed test execution results for a specific task, including performance metrics, success rates, and execution summaries.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Task test results retrieved successfully")})
   @GetMapping(value = "/{taskType}/{targetId}/{testType}/result")
   public ApiLocaleResult<ExecTestResultDetailSummary> testResult(
-      @Parameter(name = "taskType", description = "Task type", required = true) @PathVariable("taskType") TaskType taskType,
-      @Parameter(name = "targetId", description = "Associated api or scenario id", required = true) @PathVariable("targetId") Long targetId,
-      @Parameter(name = "testType", description = "Test type", required = true) @PathVariable("testType") TestType testType) {
+      @Parameter(name = "taskType", description = "Task type for result retrieval", required = true) @PathVariable("taskType") TaskType taskType,
+      @Parameter(name = "targetId", description = "Associated API or scenario identifier", required = true) @PathVariable("targetId") Long targetId,
+      @Parameter(name = "testType", description = "Test type for result filtering", required = true) @PathVariable("testType") TestType testType) {
     return ApiLocaleResult.success(taskTestFacade.testResult(taskType, targetId, testType));
   }
 }

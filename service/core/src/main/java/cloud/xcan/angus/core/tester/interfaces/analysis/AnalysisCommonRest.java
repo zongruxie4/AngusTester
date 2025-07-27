@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Analysis - Common", description = "Public Resource Analytics - Aggregated analytics for shared infrastructure resources (scenario, script, data, etc)")
+@Tag(name = "Analysis Common", description = "Common Resource Analytics - Comprehensive analytics for shared infrastructure resources including scenarios, scripts, data, and mock services with aggregated metrics and performance insights")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")
@@ -33,54 +33,66 @@ public class AnalysisCommonRest {
   @Resource
   private AnalysisCommonFacade analysisAngusFacade;
 
-  @Operation(summary = "Scenario creation resources count statistics", operationId = "analysis:scenario:resources:count")
+  @Operation(summary = "Scenario creation resource statistics", 
+      description = "Retrieve comprehensive statistics on scenario resource creation patterns and utilization metrics",
+      operationId = "analysis:scenario:resources:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario creation statistics retrieved successfully")})
   @GetMapping("/scenario/resources/count")
   public ApiLocaleResult<ScenarioResourcesCreationCount> scenarioResourcesStatistics(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scenarioResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Query the test results of scenario", operationId = "analysis:scenario:test:result:count")
+  @Operation(summary = "Scenario testing result statistics", 
+      description = "Query and analyze scenario testing results with comprehensive performance metrics and outcome analysis",
+      operationId = "analysis:scenario:test:result:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario testing result statistics retrieved successfully")})
   @GetMapping(value = "/scenario/test/result/count")
   public ApiLocaleResult<TestScenarioCount> testResult(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.testResult(dto));
   }
 
-  @Operation(summary = "Script creation resources count statistics", operationId = "analysis:script:resources:count")
+  @Operation(summary = "Script creation resource statistics", 
+      description = "Retrieve comprehensive statistics on script resource creation patterns and development metrics",
+      operationId = "analysis:script:resources:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Script creation statistics retrieved successfully")})
   @GetMapping("/script/resources/count")
   public ApiLocaleResult<ScriptResourcesCreationCount> scriptResourcesStatistics(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scriptResourcesStatistics(dto));
   }
 
-  @Operation(summary = "Script resources count statistics", operationId = "analysis:script:count")
+  @Operation(summary = "Script resource count statistics", 
+      description = "Query and analyze script resource counts with categorization and utilization metrics",
+      operationId = "analysis:script:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Script count statistics retrieved successfully")})
   @GetMapping("/script/count")
   public ApiLocaleResult<ScriptCount> scriptCountStatistics(
       @Valid @ParameterObject ScriptStatisticsDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.scriptCountStatistics(dto));
   }
 
-  @Operation(summary = "Mock service resources and mock status count statistics", operationId = "analysis:mock:service:count")
+  @Operation(summary = "Mock service statistics", 
+      description = "Retrieve comprehensive statistics on mock service resources and service status metrics",
+      operationId = "analysis:mock:service:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock service statistics retrieved successfully")})
   @GetMapping("/mock/service/count")
   public ApiLocaleResult<MockServiceCount> mockServiceCount(
       @Valid @ParameterObject MockServiceCountDto dto) {
     return ApiLocaleResult.success(analysisAngusFacade.mockServiceCountStatistics(dto));
   }
 
-  @Operation(summary = "Data creation resources statistics", operationId = "analysis:data:resources:count")
+  @Operation(summary = "Data resource creation statistics", 
+      description = "Retrieve comprehensive statistics on data resource creation patterns and storage utilization",
+      operationId = "analysis:data:resources:count")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Data resource creation statistics retrieved successfully")})
   @GetMapping("/data/resources")
   public ApiLocaleResult<DataResourcesCreationCount> dataResourcesStatistics(
       @Valid @ParameterObject ResourcesStatisticsDto dto) {

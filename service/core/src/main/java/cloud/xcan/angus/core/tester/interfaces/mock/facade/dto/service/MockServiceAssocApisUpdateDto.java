@@ -21,14 +21,14 @@ import lombok.experimental.Accessors;
 public class MockServiceAssocApisUpdateDto {
 
   @NotNull
-  @Schema(description = "Mock service id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Mock service identifier for association update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
-  @Schema(description = "Services id. The parameters projectId and apiIds must have one, if all are empty, clear the association")
+  @Schema(description = "Project identifier for association update; at least one of projectId or apiIds must be provided. If both are empty, the association will be cleared.")
   private Long projectId;
 
   @Size(min = 1, max = MAX_PAGE_SIZE)
-  @Schema(description = "Update the apiIds of the associated project. The parameters projectId and apiIds must have one, if all are empty, clear the association")
+  @Schema(description = "API identifiers to associate with the service; at least one of projectId or apiIds must be provided. If both are empty, the association will be cleared.")
   private HashSet<Long> apiIds;
 
 }

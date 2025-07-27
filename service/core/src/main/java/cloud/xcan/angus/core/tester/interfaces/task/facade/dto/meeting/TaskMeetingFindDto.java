@@ -21,30 +21,34 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class TaskMeetingFindDto extends PageQuery {
 
+  @Schema(description = "Meeting identifier for specific meeting lookup")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for meeting filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Meeting sprint id")
+  @Schema(description = "Sprint identifier for meeting iteration filtering")
   private Long sprintId;
 
-  @Schema(description = "Meeting moderator id")
+  @Schema(description = "Meeting moderator identifier for host filtering")
   private Long moderatorId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Meeting subject")
+  @Schema(description = "Meeting subject for partial matching search")
   private String subject;
 
-  @Schema(description = "Meeting type, Specify the type of meeting for identification and management purposes")
+  @Schema(description = "Meeting type classification for workflow filtering")
   private TaskMeetingType type;
 
+  @Schema(description = "Meeting creator identifier for ownership filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Meeting creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier identifier for change tracking")
   private Long lastModifiedBy;
 
   @Override

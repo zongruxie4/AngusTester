@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeInner", description = "Node Procurement (Internal) - Resource purchase and renewal workflows for cloud service nodes")
+@Tag(name = "Node - Internal", description = "Internal Node Procurement API - Internal service interfaces for cloud node resource purchase, renewal, and lifecycle management workflows.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/node")
@@ -35,9 +35,11 @@ public class NodeInnerRest {
   private NodeFacade nodeFacade;
 
   @CloudServiceEdition
-  @Operation(summary = "Online purchase nodes by order", operationId = "node:online:purchase:byorder:inner")
+  @Operation(summary = "Process online node purchase by order",
+      description = "Handle cloud node purchase workflow based on order information for automated resource provisioning.",
+      operationId = "node:online:purchase:byorder:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successful purchase or change")})
+      @ApiResponse(responseCode = "200", description = "Node purchase processed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/purchase/byorder")
   public ApiLocaleResult<?> purchase(@Valid @RequestBody NodeOnlinePurchaseDto dto) {
@@ -46,9 +48,11 @@ public class NodeInnerRest {
   }
 
   @CloudServiceEdition
-  @Operation(summary = "Online renewal nodes by order", operationId = "node:online:renewal:byorder:inner")
+  @Operation(summary = "Process online node renewal by order",
+      description = "Handle cloud node renewal workflow based on order information for automated resource extension.",
+      operationId = "node:online:renewal:byorder:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successful renew")})
+      @ApiResponse(responseCode = "200", description = "Node renewal processed successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/renewal/byorder")
   public ApiLocaleResult<?> renew(@Valid @RequestBody NodeRenewDto dto) {
@@ -56,9 +60,11 @@ public class NodeInnerRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Query the list of node", operationId = "node:list:inner")
+  @Operation(summary = "Query node list for internal services",
+      description = "Retrieve paginated list of nodes with filtering capabilities for internal service operations.",
+      operationId = "node:list:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Node list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<NodeDetailVo>> list(@Valid @ParameterObject NodeFindDto dto) {
     return ApiLocaleResult.success(nodeFacade.list(dto));

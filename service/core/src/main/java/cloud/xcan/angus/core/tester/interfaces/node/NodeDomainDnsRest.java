@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeDomainDns", description = "Cloud DNS Resolution - Dynamic management of subdomain DNS records (e.g., AliCloud DNS resolution rules)")
+@Tag(name = "Node Domain Dns", description = "Cloud DNS Resolution Management - Dynamic management of subdomain DNS records for cloud service nodes, supporting AliCloud DNS resolution rules and domain routing configuration.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node/domain/dns")
@@ -41,19 +41,23 @@ public class NodeDomainDnsRest {
   @Resource
   private NodeDomainDnsFacade nodeDomainDnsFacade;
 
-  @Operation(summary = "Add the dns of node domain", operationId = "node:domain:dns:add")
+  @Operation(summary = "Create DNS resolution record for node domain",
+      description = "Add a new DNS resolution record to enable subdomain routing for cloud service nodes.",
+      operationId = "node:domain:dns:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "DNS record created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody NodeDomainDnsAddDto dto) {
     return ApiLocaleResult.success(nodeDomainDnsFacade.add(dto));
   }
 
-  @Operation(summary = "Update the dns of node domain", operationId = "node:domain:dns:update")
+  @Operation(summary = "Update DNS resolution record for node domain",
+      description = "Modify existing DNS resolution record properties for domain routing configuration.",
+      operationId = "node:domain:dns:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "DNS record updated successfully"),
+      @ApiResponse(responseCode = "404", description = "DNS record not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody NodeDomainDnsUpdateDto dto) {
@@ -61,19 +65,23 @@ public class NodeDomainDnsRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the dns of node domain", operationId = "node:domain:dns:delete")
+  @Operation(summary = "Delete DNS resolution record for node domain",
+      description = "Remove DNS resolution record to disable subdomain routing for cloud service nodes.",
+      operationId = "node:domain:dns:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "DNS record deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
   public void delete(
-      @Parameter(name = "id", description = "Domain dns id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "DNS record identifier for deletion", required = true) @PathVariable("id") Long id) {
     nodeDomainDnsFacade.delete(id);
   }
 
-  @Operation(summary = "Query the list of node domain", operationId = "node:domain:dns:list")
+  @Operation(summary = "Query DNS resolution records for node domains",
+      description = "Retrieve paginated list of DNS resolution records with filtering and search capabilities.",
+      operationId = "node:domain:dns:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "DNS records retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<NodeDomainDnsDetailVo>> list(
       @Valid @ParameterObject NodeDomainDnsFindDto dto) {

@@ -15,16 +15,17 @@ import lombok.Setter;
 public class FuncPlanAuthFindDto extends PageQuery {
 
   //@NotNull -> Transferring values in filters
-  @Schema(description = "Plan id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test plan identifier for authorization filtering", requiredMode = RequiredMode.REQUIRED)
   private Long planId;
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for permission scope filtering", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for permission filtering")
   private Long authObjectId;
 
+  @Schema(description = "Authorization creation timestamp for temporal filtering")
   private Date createdDate;
 
 }

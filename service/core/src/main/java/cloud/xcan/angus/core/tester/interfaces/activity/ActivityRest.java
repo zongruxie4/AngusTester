@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Activity", description = "User Activity Auditing - APIs for querying and analyzing user activity logs (resource access, and operational events) with granular filters and audit trail exports")
+@Tag(name = "Activity", description = "User Activity Management - Comprehensive APIs for querying and analyzing user activity logs including resource access patterns, operational events, and audit trail management with granular filtering and export capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/activity")
@@ -27,9 +27,11 @@ public class ActivityRest {
   @Resource
   private ActivityFacade activityFacade;
 
-  @Operation(summary = "Query the list of activity", operationId = "activity:list")
+  @Operation(summary = "Activity list query", 
+      description = "Query and retrieve comprehensive activity logs with advanced filtering options and pagination support",
+      operationId = "activity:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Activity list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ActivityDetailVo>> list(
       @Valid @ParameterObject ActivityFindDto dto) {

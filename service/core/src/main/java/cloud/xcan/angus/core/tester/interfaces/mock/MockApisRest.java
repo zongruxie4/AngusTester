@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "MockApis", description = "Mock API Management - Unified management portal for creating, simulating, and organizing mock APIs")
+@Tag(name = "Mock Apis", description = "Mock API Management - Comprehensive unified management portal for creating, simulating, and organizing mock APIs with full lifecycle management capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/apis")
@@ -48,9 +48,11 @@ public class MockApisRest {
   @Resource
   private MockApisFacade mockApisFacade;
 
-  @Operation(summary = "Add mock apis", operationId = "mock:apis:add")
+  @Operation(summary = "Create mock APIs",
+      description = "Create new mock API definitions with comprehensive configuration for API simulation and testing",
+      operationId = "mock:apis:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock APIs created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> add(
@@ -58,10 +60,12 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.add(dto));
   }
 
-  @Operation(summary = "Update mock apis", operationId = "mock:apis:update")
+  @Operation(summary = "Update mock APIs",
+      description = "Update existing mock API configurations with partial modifications for flexible management",
+      operationId = "mock:apis:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Mock APIs updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(
@@ -70,9 +74,11 @@ public class MockApisRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace mock apis", operationId = "mock:apis:replace")
+  @Operation(summary = "Replace mock APIs",
+      description = "Replace existing mock API configurations with complete new definitions for comprehensive updates",
+      operationId = "mock:apis:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully")
+      @ApiResponse(responseCode = "200", description = "Mock APIs replaced successfully")
   })
   @PutMapping
   public ApiLocaleResult<List<IdKey<Long, Object>>> replace(
@@ -80,108 +86,128 @@ public class MockApisRest {
     return ApiLocaleResult.success(mockApisFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone mock apis", operationId = "mock:apis:clone")
+  @Operation(summary = "Clone mock API",
+      description = "Create a duplicate copy of existing mock API with all configurations for rapid replication",
+      operationId = "mock:apis:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "201", description = "Mock API cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API not found")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/{id}/clone")
   public ApiLocaleResult<IdKey<Long, Object>> clone(
-      @Parameter(name = "id", description = "Mock apis id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock API identifier for cloning operation", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(mockApisFacade.clone(id));
   }
 
-  @Operation(summary = "Move the apis to another mock service", operationId = "mock:apis:move")
+  @Operation(summary = "Move mock APIs to another service",
+      description = "Transfer mock APIs from current service to target mock service for organizational restructuring",
+      operationId = "mock:apis:move")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Moved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock APIs moved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API or target service not found")})
   @PatchMapping(value = "/move")
   public ApiLocaleResult<?> move(
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestBody HashSet<Long> ids,
-      @Parameter(name = "targetServiceId", description = "Target mock service id", required = true) @RequestParam("targetServiceId") Long targetServiceId) {
+      @Parameter(name = "targetServiceId", description = "Target mock service identifier for API transfer", required = true) @RequestParam("targetServiceId") Long targetServiceId) {
     mockApisFacade.move(ids, targetServiceId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Synchronize the apis to mock service instance", operationId = "mock:apis:instance:sync")
+  @Operation(summary = "Synchronize mock API to service instance",
+      description = "Deploy mock API configuration to mock service instance for runtime availability",
+      operationId = "mock:apis:instance:sync")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Synchronized successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Mock API synchronized to instance successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API not found")
   })
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(value = "/{id}/instance/sync")
   public ApiLocaleResult<?> instanceSync(
-      @Parameter(name = "id", description = "Mock apis id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock API identifier for instance synchronization", required = true) @PathVariable("id") Long id) {
     mockApisFacade.instanceSync(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Generate mock apis from copied apis", operationId = "mock:apis:copy:add")
+  @Operation(summary = "Generate mock API from copied API",
+      description = "Create new mock API based on existing API definition for rapid mock service setup",
+      operationId = "mock:apis:copy:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Mock API generated from copied API successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/copy/{apisId}/{mockServiceId}")
   public ApiLocaleResult<IdKey<Long, Object>> copyApisAdd(
-      @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
-      @Parameter(name = "apisId", description = "Apis id", required = true) @PathVariable("apisId") Long apisId) {
+      @Parameter(name = "mockServiceId", description = "Mock service identifier for API generation", required = true) @PathVariable("mockServiceId") Long mockServiceId,
+      @Parameter(name = "apisId", description = "Source API identifier for mock generation", required = true) @PathVariable("apisId") Long apisId) {
     return ApiLocaleResult.success(mockApisFacade.copyApisAdd(mockServiceId, apisId));
   }
 
-  @Operation(summary = "Generate associated mock apis from apis", operationId = "mock:apis:association:add")
+  @Operation(summary = "Generate associated mock API from API",
+      description = "Create mock API with association to existing API for integrated testing workflows",
+      operationId = "mock:apis:association:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Associated mock API generated successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/association/{mockServiceId}/{apisId}")
   public ApiLocaleResult<IdKey<Long, Object>> assocApisAdd(
-      @Parameter(name = "mockServiceId", description = "Mock service id", required = true) @PathVariable("mockServiceId") Long mockServiceId,
-      @Parameter(name = "apisId", description = "Apis id", required = true) @PathVariable("apisId") Long apisId) {
+      @Parameter(name = "mockServiceId", description = "Mock service identifier for association", required = true) @PathVariable("mockServiceId") Long mockServiceId,
+      @Parameter(name = "apisId", description = "API identifier for mock association", required = true) @PathVariable("apisId") Long apisId) {
     return ApiLocaleResult.success(mockApisFacade.assocApisAdd(mockServiceId, apisId));
   }
 
-  @Operation(summary = "Associate mock apis and apis", operationId = "mock:apis:association:update")
+  @Operation(summary = "Associate mock API with API",
+      description = "Establish association between existing mock API and API for integrated testing workflows",
+      operationId = "mock:apis:association:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock API association updated successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(value = "/association/{mockApisId}/{apisId}")
   public ApiLocaleResult<?> assocApisUpdate(
-      @Parameter(name = "mockApisId", description = "Mock apis id", required = true) @PathVariable("mockApisId") Long mockApisId,
-      @Parameter(name = "apisId", description = "Apis id", required = true) @PathVariable("apisId") Long apisId) {
+      @Parameter(name = "mockApisId", description = "Mock API identifier for association", required = true) @PathVariable("mockApisId") Long mockApisId,
+      @Parameter(name = "apisId", description = "API identifier for association", required = true) @PathVariable("apisId") Long apisId) {
     mockApisFacade.assocApisUpdate(mockApisId, apisId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete the association between mock apis and service apis", operationId = "mock:apis:association:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete mock API associations",
+      description = "Remove associations between mock APIs and service APIs for relationship management",
+      operationId = "mock:apis:association:delete")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock API associations deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/association")
-  public void assocDelete(@Parameter(name = "ids", description = "Mock apis ids", required = true)
+  public void assocDelete(@Parameter(name = "ids", description = "Mock API identifiers for association deletion", required = true)
   @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     mockApisFacade.assocDelete(ids);
   }
 
-  @Operation(summary = "Delete mock apis", operationId = "mock:apis:delete")
-  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Deleted successfully")})
+  @Operation(summary = "Delete mock APIs",
+      description = "Remove mock API definitions from system with comprehensive cleanup",
+      operationId = "mock:apis:delete")
+  @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock APIs deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Mock apis ids", required = true)
+      @Parameter(name = "ids", description = "Mock API identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     mockApisFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of mock apis", operationId = "mock:apis:detail")
+  @Operation(summary = "Query mock API details",
+      description = "Retrieve comprehensive information about specific mock API including configuration and status",
+      operationId = "mock:apis:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock API details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock API not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<MockApisDetailVo> detail(
-      @Parameter(name = "id", description = "Mock apis id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock API identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(mockApisFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of mock apis", operationId = "mock:apis:list")
+  @Operation(summary = "Query mock APIs with filtering",
+      description = "Retrieve paginated list of mock APIs with comprehensive filtering and search capabilities",
+      operationId = "mock:apis:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Mock APIs retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<MockApisListVo>> list(
       @Valid @ParameterObject MockApisFindDto dto) {

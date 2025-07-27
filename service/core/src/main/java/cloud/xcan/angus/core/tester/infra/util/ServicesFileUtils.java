@@ -116,9 +116,8 @@ public class ServicesFileUtils {
     SpringAppDirUtils utils = new SpringAppDirUtils();
     
     // Build export path with tenant isolation and unique identifier
-    String tmpPath =
-        utils.getTmpDir() + TesterConstant.EXPORT_OPENAPI_DIR + getTenantId() + File.separator
-            + randomUUID() + File.separator + nullSafe(fileName, "");
+    String tmpPath = utils.getTmpDir() + TesterConstant.EXPORT_OPENAPI_DIR + getTenantId() 
+    + File.separator + randomUUID() + File.separator + nullSafe(fileName, "");
     
     // Create file object and ensure parent directory exists
     File file = new File(tmpPath);

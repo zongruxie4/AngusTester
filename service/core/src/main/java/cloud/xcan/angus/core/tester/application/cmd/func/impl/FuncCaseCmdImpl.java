@@ -127,13 +127,13 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Command implementation for functional test case management operations.
  * <p>
- * Provides comprehensive CRUD operations for functional test cases including creation, 
+ * Provides comprehensive CRUD operations for functional test cases including creation,
  * modification, deletion, import/export, and lifecycle management.
  * <p>
- * Implements business logic validation, permission checks, activity logging, 
+ * Implements business logic validation, permission checks, activity logging,
  * and transaction management for all case operations.
  * <p>
- * Supports batch operations, association management, test result tracking, 
+ * Supports batch operations, association management, test result tracking,
  * and review workflow integration.
  */
 @Biz
@@ -189,10 +189,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Adds a batch of functional test cases to the system.
    * <p>
-   * Performs comprehensive validation including plan existence, module validation, 
+   * Performs comprehensive validation including plan existence, module validation,
    * user permissions, duplicate name checks, and quota limitations.
    * <p>
-   * Creates associated tags, task relationships, and logs creation activities 
+   * Creates associated tags, task relationships, and logs creation activities
    * for audit trail purposes.
    * <p>
    * All cases must belong to the same test plan for batch processing.
@@ -249,10 +249,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Updates a batch of functional test cases in the system.
    * <p>
-   * Validates case existence, plan association, module references, user permissions, 
+   * Validates case existence, plan association, module references, user permissions,
    * and prevents duplicate names within the same plan.
    * <p>
-   * Updates associated tags, task relationships, and logs modification activities 
+   * Updates associated tags, task relationships, and logs modification activities
    * for audit trail and notification purposes.
    * <p>
    * Supports partial updates while maintaining data integrity and business rules.
@@ -308,10 +308,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replaces functional test cases by adding new ones and updating existing ones.
    * <p>
-   * Handles both creation and modification in a single operation, managing tags, 
+   * Handles both creation and modification in a single operation, managing tags,
    * task associations, and related data appropriately.
    * <p>
-   * Logs comprehensive modification activities and sends notification events 
+   * Logs comprehensive modification activities and sends notification events
    * for all affected cases.
    * <p>
    * Provides atomic operation ensuring data consistency across all related entities.
@@ -382,7 +382,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
           idKeys.addAll(updatedCasesDb.stream()
               .map(x -> new IdKey<Long, Object>().setId(x.getId()).setKey(x.getName()))
-              .collect(Collectors.toList()));
+              .toList());
 
           // Send modification events for updated cases
           funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream()
@@ -398,10 +398,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Renames a functional test case with validation and audit trail.
    * <p>
-   * Validates user permissions and ensures the new name is unique within the plan 
+   * Validates user permissions and ensures the new name is unique within the plan
    * before performing the rename operation.
    * <p>
-   * Updates related review case names and logs the rename activity 
+   * Updates related review case names and logs the rename activity
    * for audit and notification purposes.
    * <p>
    * Only performs the operation if the name has actually changed.
@@ -453,10 +453,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Clones a batch of functional test cases to create new instances.
    * <p>
-   * Validates case existence and user permissions before creating duplicates 
+   * Validates case existence and user permissions before creating duplicates
    * with unique names and preserved relationships.
    * <p>
-   * Generates new case codes and ensures no naming conflicts while maintaining 
+   * Generates new case codes and ensures no naming conflicts while maintaining
    * all original case properties and associations.
    * <p>
    * Logs clone activities for audit trail and tracking purposes.
@@ -505,10 +505,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Moves functional test cases from one plan to another plan.
    * <p>
-   * Validates case existence, target plan validity, and user permissions 
+   * Validates case existence, target plan validity, and user permissions
    * before performing the move operation.
    * <p>
-   * Updates project and plan associations, handles unplanned status, 
+   * Updates project and plan associations, handles unplanned status,
    * and maintains data integrity across the move operation.
    * <p>
    * Logs move activities and sends notification events for affected cases.
@@ -534,12 +534,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Ensure all cases are from the same project directory
         Set<Long> dirIds = casesDb.stream().map(FuncCaseInfo::getProjectId)
             .collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(dirIds.size() == 1,
-            "Only batch move cases with one dir is allowed");
+        assertTrue(dirIds.size() == 1, "Only batch move cases with one dir is allowed");
 
         // Ensure the move is actually to a different plan
-        ProtocolAssert.assertTrue(!casesDb.get(0).getPlanId().equals(targetPlanId),
-            "The moving position has not changed");
+        assertTrue(!casesDb.get(0).getPlanId().equals(targetPlanId), "The moving position has not changed");
 
         // Check user permission to modify cases in the original plan
         funcPlanAuthQuery.batchCheckPermission(dirIds, FuncPlanPermission.MODIFY_CASE);
@@ -570,13 +568,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Replaces the assigned tester for a functional test case.
    * <p>
-   * Validates case existence, user permissions, and new tester validity 
+   * Validates case existence, user permissions, and new tester validity
    * before updating the assignment.
    * <p>
-   * Only performs the update if the tester has actually changed, 
+   * Only performs the update if the tester has actually changed,
    * and logs the activity for audit trail purposes.
    * <p>
-   * Sends notification events to inform relevant stakeholders 
+   * Sends notification events to inform relevant stakeholders
    * about the tester change.
    */
   @Transactional(rollbackFor = Exception.class)
@@ -620,13 +618,13 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   /**
    * Updates the priority level of a functional test case.
    * <p>
-   * Validates case existence, user permissions, and priority value 
+   * Validates case existence, user permissions, and priority value
    * before updating the case priority.
    * <p>
-   * Only performs the update if the priority has actually changed, 
+   * Only performs the update if the priority has actually changed,
    * and logs the activity for audit trail purposes.
    * <p>
-   * Sends notification events to inform relevant stakeholders 
+   * Sends notification events to inform relevant stakeholders
    * about the priority change.
    */
   @Transactional(rollbackFor = Exception.class)
@@ -796,7 +794,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           caseDb.setEvalWorkload(actualWorkload);
         }
         // Clear actual workload if input is null
-        if (Objects.isNull(actualWorkload)) {
+        if (isNull(actualWorkload)) {
           if (nonNull(caseDb.getActualWorkload())) {
             // Log actual workload clear activity
             Activity activity = toActivity(FUNC_CASE, caseDb,
@@ -909,8 +907,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(planIds.size() == 1,
-            "Only batch update cases with one plan is allowed");
+        assertTrue(planIds.size() == 1, "Only batch update cases with one plan is allowed");
         FuncPlan planDb = funcPlanQuery.checkAndFind(planIds.iterator().next());
 
         // Check user permission to modify test results
@@ -947,14 +944,14 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
                 Collectors.mapping(FuncCase::getId, Collectors.toList())));
         Map<Long, String> caseNameDbMap = casesDb.stream()
             .collect(Collectors.toMap(FuncCase::getId, FuncCase::getName));
-        
+
         for (CaseTestResult caseTestResult : resultCaseIdMap.keySet()) {
           // Create case objects with names for activity logging
           Map<CaseTestResult, List<FuncCase>> resultCaseMap = casesDb.stream()
               .peek(x -> x.setName(caseNameDbMap.get(x.getId())))
               .collect(Collectors.groupingBy(FuncCase::getTestResult));
           List<FuncCase> resultCases = resultCaseMap.get(caseTestResult);
-          
+
           // Log activities for this test result group
           List<Activity> activities = toActivities(FUNC_CASE, resultCases,
               ActivityType.RESULT_UPDATE, caseTestResult);
@@ -971,12 +968,11 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   }
 
   /**
-   * Note: Manually modifying the results of API testing cases is also permitted.
-   */
-  /**
    * Reset the test result of a batch of functional test cases.
    * <p>
    * Checks permission before resetting test results, logs activities, and sends notification events.
+   *
+   * Note: Manually modifying the results of API testing cases is also permitted.
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
@@ -992,8 +988,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCaseInfo::getPlanId)
             .collect(Collectors.toSet());
-        ProtocolAssert.assertTrue(planIds.size() == 1,
-            "Only batch update cases with one plan is allowed");
+        assertTrue(planIds.size() == 1, "Only batch update cases with one plan is allowed");
         FuncPlan planDb = funcPlanQuery.checkAndFind(planIds.iterator().next());
 
         // Check user permission to reset test results
@@ -1037,8 +1032,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId)
             .collect(Collectors.toSet());
-        assertTrue(planIds.size() == 1,
-            "Only batch update cases with one plan is allowed");
+        assertTrue(planIds.size() == 1, "Only batch update cases with one plan is allowed");
         FuncPlan planDb = funcPlanQuery.checkAndFind(planIds.iterator().next());
 
         // Check user permission to modify test results
@@ -1047,8 +1041,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Ensure all cases have completed testing (only finished cases can be retested)
         FuncCase invalidCase = casesDb.stream().filter(x -> !x.getTestResult().isWideFinished())
             .findFirst().orElse(null);
-        assertTrue(null == invalidCase,
-            "Incomplete cases are not allowed to be retested");
+        assertTrue(null == invalidCase, "Incomplete cases are not allowed to be retested");
       }
 
       @Override
@@ -1097,16 +1090,16 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         ProtocolAssert.assertTrue(planIds.size() == 1,
             "Only batch update cases with one plan is allowed");
         FuncPlan planDb = funcPlanQuery.checkAndFind(planIds.iterator().next());
-        
+
         // Check user permission to review cases
         funcPlanAuthQuery.checkReviewAuth(getUserId(), planDb.getId());
-        
+
         // Ensure the plan has started (reviews can only be performed after plan starts)
         funcPlanQuery.checkHasStarted(planDb);
-        
+
         // Ensure review is enabled for the plan
         funcPlanQuery.checkReviewEnabled(planDb);
-        
+
         // Validate that all cases are eligible for review
         funcCaseQuery.checkCanReview(casesDb);
       }
@@ -1188,10 +1181,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure the case exists
         caseDb = funcCaseQuery.checkAndFindInfo(id);
-        
+
         // Ensure all associated tasks exist
         assocTasksDb = taskQuery.checkAndFindInfo(assocTaskIds);
-        
+
         // Check user permission to modify the case
         funcPlanAuthQuery.checkModifyCaseAuth(getUserId(), id);
       }
@@ -1226,10 +1219,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure the case exists
         caseDb = funcCaseQuery.checkAndFindInfo(id);
-        
+
         // Ensure all associated tasks exist
         assocTasksDb = taskQuery.checkAndFindInfo(assocTaskIds);
-        
+
         // Check user permission to modify the case
         funcPlanAuthQuery.checkModifyCaseAuth(getUserId(), id);
       }
@@ -1264,10 +1257,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure the case exists
         caseDb = funcCaseQuery.checkAndFindInfo(id);
-        
+
         // Ensure all associated cases exist
         assocCasesDb = funcCaseQuery.checkAndFindInfo(assocCaseIds);
-        
+
         // Check user permission to modify the case
         funcPlanAuthQuery.checkModifyCaseAuth(getUserId(), id);
       }
@@ -1302,10 +1295,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure the case exists
         caseDb = funcCaseQuery.checkAndFindInfo(id);
-        
+
         // Ensure all associated cases exist
         assocCasesDb = funcCaseQuery.checkAndFindInfo(assocCaseIds);
-        
+
         // Check user permission to modify the case
         funcPlanAuthQuery.checkModifyCaseAuth(getUserId(), id);
       }
@@ -1432,25 +1425,25 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             .map(x -> x[moduleIdx]).collect(Collectors.toSet());
         Map<String, Module> modulesMap = moduleQuery.checkAndFindByName(
             planDb.getProjectId(), modules);
-        
+
         Set<String> reviwers = data.stream()
             .filter(x -> reviwerIdx != -1 && isNotEmpty(x[reviwerIdx]))
             .map(x -> x[reviwerIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> reviwersMap = userManager.checkValidAndFindUserBasesByName(
             reviwers);
-        
+
         Set<String> creators = data.stream()
             .filter(x -> creatorIdx != -1 && isNotEmpty(x[creatorIdx]))
             .map(x -> x[creatorIdx]).collect(Collectors.toSet());
         Map<String, List<UserBase>> creatorsMap = userManager.checkValidAndFindUserBasesByName(
             creators);
-        
+
         // Validate associated tags exist
         Set<String> tags = data.stream().filter(x -> tagsIdx != -1 && isNotEmpty(x[tagsIdx]))
             .map(x -> List.of(x[tagsIdx].split("##"))).flatMap((Collection::stream))
             .collect(Collectors.toSet());
         Map<String, List<Tag>> tagsMap = tagQuery.checkAndFindByName(planDb.getProjectId(), tags);
-        
+
         // Validate associated tasks exist
         Set<String> taskNames = data.stream()
             .filter(x -> tasksIdx != -1 && isNotEmpty(x[tasksIdx]))
@@ -1458,7 +1451,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             .collect(Collectors.toSet());
         Map<String, List<TaskInfo>> tasksMap = taskQuery.checkAndFindByProjectAndName(
             planDb.getProjectId(), taskNames);
-        
+
         // Validate associated cases exist
         Set<String> caseNames = data.stream()
             .filter(x -> casesIdx != -1 && isNotEmpty(x[casesIdx]))
@@ -1549,7 +1542,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             }, SAMPLE_FUNC_REVIEW_FILE);
         assembleExampleFuncReview(projectId, uidGenerator.getUID(), review, plan, users);
         funcReviewCmd.add(review);
-        
+
         // Associate pending cases with the review
         funcReviewCaseCmd.add(review.getId(), cases.stream()
             .filter(x -> nonNull(x.getReviewStatus()) && x.getReviewStatus().isPending())
@@ -1621,22 +1614,22 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
   public void delete0(List<Long> caseIds) {
     // Permanently delete cases from database
     funcCaseRepo.deleteAllByIdIn(caseIds);
-    
+
     // Clean up case favorites
     funcCaseFollowRepo.deleteByCaseIdIn(caseIds);
-    
+
     // Clean up case follows
     funcCaseFavouriteRepo.deleteByCaseIdIn(caseIds);
-    
+
     // Clean up case comments
     commentRepo.deleteByTargetIdInAndTargetType(caseIds, CommentTargetType.FUNC_CASE.getValue());
-    
+
     // Clean up case tag associations
     tagTargetCmd.delete0ByCaseIds(caseIds);
-    
+
     // Clean up case reference associations
     taskFuncCaseCmd.deleteByTargetIds(caseIds);
-    
+
     // Clean up case review associations
     funcReviewCmd.deleteByCaseId(caseIds);
   }
@@ -1651,10 +1644,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     // Group cases by review status for batch activity logging
     Map<ReviewStatus, List<FuncCase>> reviewStatusMap = casesDb.stream()
         .collect(Collectors.groupingBy(FuncCase::getReviewStatus));
-    
+
     for (ReviewStatus reviewStatus : reviewStatusMap.keySet()) {
       List<FuncCase> reviewCasesDb = reviewStatusMap.get(reviewStatus);
-      
+
       // Log review activities for this status group
       List<Activity> activities = toActivities(FUNC_CASE, reviewCasesDb,
           ActivityType.REVIEW_UPDATE, reviewStatus);
@@ -1684,7 +1677,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
             cases.stream().map(FuncCase::getTesterId).filter(Objects::nonNull)
                 .collect(Collectors.toSet())).stream()
         .collect(Collectors.toMap(UserBase::getId, x -> x));
-    
+
     List<Activity> activities = new ArrayList<>();
     for (FuncCase case0 : cases) {
       // Detect what fields have actually changed
@@ -1694,14 +1687,14 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           .hasModifyTag(case0.getId(), case0.getTagTargets());
       boolean hasModifyAttachments = funcCaseQuery
           .hasModifyAttachments(case0.getAttachments(), caseDbMap.get(case0.getId()));
-      
+
       // Get tag info for activity logging if tags were modified
       List<Tag> caseTagsDb = null;
       if (isNotEmpty(case0.getTagTargets())) {
         caseTagsDb = tagQuery.checkAndFind(case0.getTagTargets().stream()
             .map(TagTarget::getTagId).collect(Collectors.toList()));
       }
-      
+
       // Create modification activity based on what changed
       activities.add(toModifyCaseActivity(replace, hasModifyTester, hasModifyTaskTags,
           hasModifyAttachments, case0, caseDbMap.get(case0.getId()),

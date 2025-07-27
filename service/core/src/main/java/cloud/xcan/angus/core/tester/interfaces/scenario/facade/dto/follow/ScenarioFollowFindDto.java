@@ -17,10 +17,11 @@ import org.hibernate.validator.constraints.Length;
 public class ScenarioFollowFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for followed scenario filtering", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Scenario name for fuzzy search in followed scenarios")
   private String scenarioName;
 
 }

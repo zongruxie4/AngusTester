@@ -23,14 +23,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class ApisInfoFindDto extends PageQuery {
 
-  @Schema(description = "Apis id")
+  @Schema(description = "API identifier for precise query")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for API query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Services id")
+  @Schema(description = "Service identifier for API filtering")
   private Long serviceId;
 
   private ApisProtocol protocol;
@@ -45,10 +45,10 @@ public class ApisInfoFindDto extends PageQuery {
 
   private ApiStatus status;
 
-  @Schema(description = "Required when app administrators query all apis")
+  @Schema(description = "Administrator privilege flag for comprehensive API query access")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission apis")
+  @Schema(description = "Permission filter for API access control validation")
   private ApiPermission hasPermission;
 
   @Length(max = MAX_URL_LENGTH_X2)

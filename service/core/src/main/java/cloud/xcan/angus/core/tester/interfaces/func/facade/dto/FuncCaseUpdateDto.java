@@ -34,11 +34,11 @@ import org.hibernate.validator.constraints.Length;
 public class FuncCaseUpdateDto {
 
   @NotNull
-  @Schema(description = "Functional testing case id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Functional test case identifier for update operation", requiredMode = RequiredMode.REQUIRED)
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH_X4)
-  @Schema(description = "Case name")
+  @Schema(description = "Functional test case name for identification and organization")
   private String name;
 
   //@NotBlank
@@ -49,67 +49,67 @@ public class FuncCaseUpdateDto {
   //@Schema(description = "Functional testing plan id")
   //private Long planId;
 
-  @Schema(description = "Function case module id")
+  @Schema(description = "Functional test case module identifier for categorization")
   private Long moduleId;
 
   @Length(max = MAX_KEY_LENGTH)
-  @Schema(description = "Version of software for the task")
+  @Schema(description = "Software version for test case execution context")
   private String softwareVersion;
 
-  @Schema(description = "Case priority")
+  @Schema(description = "Test case priority level for execution scheduling")
   private Priority priority;
 
   //@NotNull
-  @Schema(description = "Case deadline date")
+  @Schema(description = "Test case completion deadline for timeline management")
   public LocalDateTime deadlineDate;
 
   @Min(0)
   @Max(MAX_WORKLOAD_NUM)
-  @Schema(description = "Case Workload")
+  @Schema(description = "Estimated workload for test case effort planning")
   private BigDecimal evalWorkload;
 
   @Min(0)
   @Max(MAX_WORKLOAD_NUM)
-  @Schema(description = "Actual usage workload")
+  @Schema(description = "Actual workload for test case effort tracking")
   private BigDecimal actualWorkload;
 
   @EditorContentLength
-  @Schema(description = "Case preconditions")
+  @Schema(description = "Test case preconditions for execution preparation")
   private String precondition;
 
-  @Schema(description = "Case steps view type, default is 'TABLE'")
+  @Schema(description = "Test case steps display format with TABLE as default")
   private CaseStepView stepView;
 
   @Size(max = MAX_CASE_STEPS_NUM)
-  @Schema(description = "Case steps")
+  @Schema(description = "Test case execution steps with detailed procedures")
   private List<CaseTestStep> steps;
 
   @EditorContentLength
-  @Schema(description = "Case description")
+  @Schema(description = "Comprehensive test case description and documentation")
   private String description;
 
-  @Schema(description = "Developer id")
+  @Schema(description = "Developer identifier for case assignment and responsibility")
   private Long developerId;
 
-  @Schema(description = "Tester id")
+  @Schema(description = "Tester identifier for case execution and validation")
   private Long testerId;
 
   //private CaseTestResult testResult;
 
   @Size(max = MAX_TAGS_NUM)
-  @Schema(description = "Report ids")
+  @Schema(description = "Tag identifiers for test case categorization and filtering")
   private LinkedHashSet<Long> tagIds;
 
   @Size(max = MAX_ATTACHMENT_NUM)
-  @Schema(description = "Case attachments")
+  @Schema(description = "Test case supporting documents and attachments")
   private List<Attachment> attachments;
 
   @Size(max = MAX_CASE_OR_TASK_REFS_NUM)
-  @Schema(description = "Reference task ids")
+  @Schema(description = "Referenced task identifiers for dependency management")
   private LinkedHashSet<Long> refTaskIds;
 
   @Size(max = MAX_CASE_OR_TASK_REFS_NUM)
-  @Schema(description = "Reference case ids")
+  @Schema(description = "Referenced case identifiers for test case relationships")
   private LinkedHashSet<Long> refCaseIds;
 
 }

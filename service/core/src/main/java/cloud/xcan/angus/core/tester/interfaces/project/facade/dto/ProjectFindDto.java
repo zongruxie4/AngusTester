@@ -11,21 +11,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
 @Getter
-
 public class ProjectFindDto extends PageQuery {
 
+  @Schema(description = "Project identifier for precise query filtering")
   private Long id;
 
+  @Schema(description = "Project name for fuzzy search or filtering")
   private String name;
 
-  @Schema(description = "Required when app administrators query all projects")
+  @Schema(description = "Flag indicating whether this is an admin query for all projects")
   private Boolean admin;
 
+  @Schema(description = "Project owner identifier for ownership-based filtering")
   private Long ownerId;
 
+  @Schema(description = "Creator identifier for creation-based filtering")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Project creation date for temporal filtering")
   private LocalDateTime createdDate;
 
   @Override

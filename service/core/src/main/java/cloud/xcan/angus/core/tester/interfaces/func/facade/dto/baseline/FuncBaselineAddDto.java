@@ -5,6 +5,7 @@ import static cloud.xcan.angus.spec.experimental.BizConstant.MAX_NAME_LENGTH_X2;
 
 import cloud.xcan.angus.validator.EditorContentLength;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -20,19 +21,20 @@ import org.hibernate.validator.constraints.Length;
 public class FuncBaselineAddDto {
 
   @NotBlank
-  @Schema(description = "Baseline name, Brief overview of the baseline, supporting up to 200 characters")
+  @Schema(description = "Functional test baseline name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH_X2)
   private String name;
 
   @NotNull
-  @Schema(description = "Plan id")
+  @Schema(description = "Functional test plan identifier for baseline association", requiredMode = RequiredMode.REQUIRED)
   private Long planId;
 
   @EditorContentLength
-  @Schema(description = "Baseline information")
+  @Schema(description = "Comprehensive baseline description and documentation")
   private String description;
 
   @Size(max = MAX_OPT_CASE_NUM)
+  @Schema(description = "Test case identifiers for baseline versioning and tracking")
   private LinkedHashSet<Long> caseIds;
 
 }

@@ -37,8 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioMonitor", description = "Scenario Monitoring Config - "
-    + "Configure and manage monitoring rules to track system health at the API level, enabling proactive issue detection and remediation")
+@Tag(name = "Scenario Monitor", description = "Scenario Monitoring Management API - Comprehensive monitoring configuration and management system for proactive issue detection and remediation at the API level.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor")
@@ -47,19 +46,23 @@ public class ScenarioMonitorRest {
   @Resource
   private ScenarioMonitorFacade scenarioMonitorFacade;
 
-  @Operation(summary = "Create scenario monitor", operationId = " scenario:monitor:add")
+  @Operation(summary = "Create scenario monitor",
+      description = "Create new monitoring configuration for proactive issue detection and alerting.",
+      operationId = "scenario:monitor:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Created successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario monitor created successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody ScenarioMonitorAddDto dto) {
     return ApiLocaleResult.success(scenarioMonitorFacade.add(dto));
   }
 
-  @Operation(summary = "Update scenario monitor", operationId = " scenario:monitor:update")
+  @Operation(summary = "Update scenario monitor",
+      description = "Modify existing monitoring configuration and alert settings.",
+      operationId = "scenario:monitor:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario monitor updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario monitor not found")})
   @ResponseStatus(HttpStatus.OK)
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody ScenarioMonitorUpdateDto dto) {
@@ -67,52 +70,62 @@ public class ScenarioMonitorRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace scenario monitor", operationId = " scenario:monitor:replace")
+  @Operation(summary = "Replace scenario monitor",
+      description = "Replace monitoring configuration with new settings or create new monitor if identifier is null.",
+      operationId = "scenario:monitor:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario monitor replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario monitor not found")})
   @ResponseStatus(HttpStatus.OK)
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody ScenarioMonitorReplaceDto dto) {
     return ApiLocaleResult.success(scenarioMonitorFacade.replace(dto));
   }
 
-  @Operation(summary = "Run scenario monitoring immediately", operationId = " scenario:monitor:run:now")
+  @Operation(summary = "Execute scenario monitoring immediately",
+      description = "Trigger immediate monitoring execution for real-time health check and alert generation.",
+      operationId = "scenario:monitor:run:now")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Generated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Monitoring execution triggered successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario monitor not found")
   })
   @PostMapping("/{id}/run")
   public ApiLocaleResult<?> runNow(
-      @Parameter(name = "id", description = "Scenario monitor id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario monitor identifier for immediate execution", required = true) @PathVariable("id") Long id) {
     scenarioMonitorFacade.runNow(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete scenario monitor", operationId = " scenario:monitor:delete")
+  @Operation(summary = "Delete scenario monitors",
+      description = "Remove monitoring configurations and stop associated alerting for specified monitors.",
+      operationId = "scenario:monitor:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Scenario monitors deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Scenario monitor ids", required = true)
+      @Parameter(name = "ids", description = "Scenario monitor identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     scenarioMonitorFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of scenario monitor", operationId = " scenario:monitor:detail")
+  @Operation(summary = "Query scenario monitor detail",
+      description = "Retrieve comprehensive monitoring configuration and current status.",
+      operationId = "scenario:monitor:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Scenario monitor detail retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario monitor not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ScenarioMonitorDetailVo> detail(
-      @Parameter(name = "id", description = "Scenario monitor id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Scenario monitor identifier for detail query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(scenarioMonitorFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of scenario monitor", operationId = " scenario:monitor:list")
+  @Operation(summary = "Query scenario monitor list",
+      description = "Retrieve paginated list of monitoring configurations with filtering capabilities.",
+      operationId = "scenario:monitor:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Scenario monitor list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ScenarioMonitorListVo>> list(
       @Valid @ParameterObject ScenarioMonitorFindDto dto) {

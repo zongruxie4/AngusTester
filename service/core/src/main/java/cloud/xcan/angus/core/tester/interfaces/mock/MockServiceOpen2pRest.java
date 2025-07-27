@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "MockServiceOpen2p", description = "Mock Instance Config Query - Internal endpoints for querying mock service instance configurations")
+@Tag(name = "Mock Service - Private Environment", description = "Mock Instance Configuration Query - Internal endpoints for querying mock service instance configurations with distributed coordination")
 @Validated
 @RestController
 @RequestMapping("/openapi2p/v1/mock/service")
@@ -29,13 +29,15 @@ public class MockServiceOpen2pRest {
   private MockServiceOpen2pFacade mockServiceOpen2pFacade;
 
   @Unused
-  @Operation(summary = "Query the info of mock service", operationId = "mock:service:info:openapi2p")
+  @Operation(summary = "Query mock service configuration information",
+      description = "Retrieve comprehensive mock service configuration information for internal service coordination and management",
+      operationId = "mock:service:info:openapi2p")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Mock service configuration information retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Mock service not found")})
   @GetMapping("/{id}/info")
   public MockServiceInfoVo info(
-      @Parameter(name = "id", description = "Mock service id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Mock service identifier for configuration query", required = true) @PathVariable("id") Long id) {
     return mockServiceOpen2pFacade.info(id);
   }
 

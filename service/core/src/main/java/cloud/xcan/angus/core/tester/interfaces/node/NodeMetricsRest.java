@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "NodeMetrics", description = "Node Monitoring & Metrics API - Access point for node monitoring and metrics querying")
+@Tag(name = "Node Metrics", description = "Node Monitoring & Metrics API - Comprehensive monitoring interfaces for node performance metrics, including CPU, memory, disk, network, and filesystem monitoring with real-time data collection.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node")
@@ -37,116 +37,140 @@ public class NodeMetricsRest {
   @Resource
   private NodeMetricsFacade nodeMetricsFacade;
 
-  @Operation(summary = "Query the list of node metrics", operationId = "node:metrics")
+  @Operation(summary = "Query node performance metrics",
+      description = "Retrieve paginated list of comprehensive performance metrics for a specific node.",
+      operationId = "node:metrics")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Node metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics")
   public ApiLocaleResult<PageResult<NodeMetricsVo>> host(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.host(id, dto));
   }
 
-  @Operation(summary = "Query the latest node metrics", operationId = "node:metrics:latest")
+  @Operation(summary = "Query latest node performance metrics",
+      description = "Retrieve the most recent performance metrics snapshot for a specific node.",
+      operationId = "node:metrics:latest")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Latest node metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/latest")
   public ApiLocaleResult<NodeMetricsVo> hostLatest(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for latest metrics query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.hostLatest(id));
   }
 
-  @Operation(summary = "Query the list of node cpu metrics", operationId = "node:metrics:cpu")
+  @Operation(summary = "Query node CPU performance metrics",
+      description = "Retrieve detailed CPU performance metrics including utilization, load, and frequency data.",
+      operationId = "node:metrics:cpu")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "CPU metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/cpu")
   public ApiLocaleResult<PageResult<NodeCpuMetricsVo>> cpu(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for CPU metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.cpu(id, dto));
   }
 
-  @Operation(summary = "Query the latest of node metrics sampling", operationId = "node:metrics:cpu:latest")
+  @Operation(summary = "Query latest node CPU metrics",
+      description = "Retrieve the most recent CPU performance metrics snapshot for a specific node.",
+      operationId = "node:metrics:cpu:latest")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Latest CPU metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/cpu/latest")
   public ApiLocaleResult<NodeCpuMetricsVo> cpuLatest(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for latest CPU metrics query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.cpuLatest(id));
   }
 
-  @Operation(summary = "Query the list of node memory metrics", operationId = "node:metrics:memory")
+  @Operation(summary = "Query node memory performance metrics",
+      description = "Retrieve detailed memory performance metrics including usage, available, and swap data.",
+      operationId = "node:metrics:memory")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Memory metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/memory")
   public ApiLocaleResult<PageResult<NodeMemoryMetricsVo>> memory(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for memory metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.memory(id, dto));
   }
 
-  @Operation(summary = "Query the latest of node memory metrics", operationId = "node:metrics:memory:latest")
+  @Operation(summary = "Query latest node memory metrics",
+      description = "Retrieve the most recent memory performance metrics snapshot for a specific node.",
+      operationId = "node:metrics:memory:latest")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Latest memory metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/memory/latest")
   public ApiLocaleResult<NodeMemoryMetricsVo> memoryLatest(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for latest memory metrics query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.memoryLatest(id));
   }
 
-  @Operation(summary = "Query the list of node filesystem metrics", operationId = "node:metrics:filesystem")
+  @Operation(summary = "Query node filesystem performance metrics",
+      description = "Retrieve detailed filesystem performance metrics including usage, inodes, and mount point data.",
+      operationId = "node:metrics:filesystem")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Filesystem metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/filesystem")
   public ApiLocaleResult<PageResult<NodeFilesystemMetricsVo>> filesystem(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for filesystem metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.filesystem(id, dto));
   }
 
-  @Operation(summary = "Query the latest of node filesystem metrics", operationId = "node:metrics:filesystem:latest")
+  @Operation(summary = "Query latest node filesystem metrics",
+      description = "Retrieve the most recent filesystem performance metrics snapshot for a specific node.",
+      operationId = "node:metrics:filesystem:latest")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Latest filesystem metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/filesystem/latest")
   public ApiLocaleResult<NodeFilesystemMetricsVo> filesystemLatest(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for latest filesystem metrics query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.filesystemLatest(id));
   }
 
-  @Operation(summary = "Query the list of node disk info sampling", operationId = "node:metrics:disk:info")
+  @Operation(summary = "Query node disk information",
+      description = "Retrieve detailed disk hardware information including device names, sizes, and partition data.",
+      operationId = "node:metrics:disk:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Disk information retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/disk/info")
   public ApiLocaleResult<List<NodeDiskInfoVo>> diskInfo(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for disk information query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.diskInfo(id));
   }
 
-  @Operation(summary = "Query the list of node disk metrics", operationId = "node:metrics:disk")
+  @Operation(summary = "Query node disk performance metrics",
+      description = "Retrieve detailed disk performance metrics including I/O operations, throughput, and latency data.",
+      operationId = "node:metrics:disk")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Disk metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/disk")
   public ApiLocaleResult<List<NodeDiskMetricsVo>> disk(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for disk metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsNameFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.disk(id, dto));
   }
 
-  @Operation(summary = "Query the list of node network info sampling", operationId = "node:metrics:network:info")
+  @Operation(summary = "Query node network information",
+      description = "Retrieve detailed network interface information including IP addresses, MAC addresses, and interface status.",
+      operationId = "node:metrics:network:info")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Network information retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/network/info")
   public ApiLocaleResult<List<ModeNetworkInfoVo>> networkInfo(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Node identifier for network information query", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(nodeMetricsFacade.networkInfo(id));
   }
 
-  @Operation(summary = "Query the list of node network metrics", operationId = "node:metrics:network")
+  @Operation(summary = "Query node network performance metrics",
+      description = "Retrieve detailed network performance metrics including bandwidth, packet statistics, and error rates.",
+      operationId = "node:metrics:network")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Network metrics retrieved successfully")})
   @GetMapping(value = "/{id}/metrics/network")
   public ApiLocaleResult<List<NodeNetworkMetricsVo>> network(
-      @Parameter(name = "id", description = "Node ID", required = true) @PathVariable("id") Long id,
+      @Parameter(name = "id", description = "Node identifier for network metrics query", required = true) @PathVariable("id") Long id,
       @Valid @ParameterObject NodeMetricsNameFindDto dto) {
     return ApiLocaleResult.success(nodeMetricsFacade.network(id, dto));
   }

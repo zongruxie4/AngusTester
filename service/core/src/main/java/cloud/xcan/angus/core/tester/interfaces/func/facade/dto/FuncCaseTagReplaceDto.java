@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 public class FuncCaseTagReplaceDto {
 
   @Size(max = MAX_TAGS_NUM)
-  @Schema(description = "Report ids, allow clear tags")
+  @Schema(description = "Tag identifiers for test case categorization with clear functionality")
   private LinkedHashSet<Long> tagIds;
 
 }

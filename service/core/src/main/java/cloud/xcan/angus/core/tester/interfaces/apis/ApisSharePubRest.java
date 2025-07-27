@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author XiaoLong Liu
  */
-@Tag(name = "ApisSharePub", description = "API Sharing Public Query - Public access entry for shared service and apis")
+@Tag(name = "APIs Sharing Public Access", description = "APIs Sharing Public Access - Public access entry for shared service and API resources with comprehensive query capabilities")
 @Validated
 @RestController
 @RequestMapping("/pubapi/v1/apis/share")
@@ -29,10 +29,12 @@ public class ApisSharePubRest {
   @Resource
   private ApisShareFacade apisShareFacade;
 
-  @Operation(summary = "Query the sharing detail of api", operationId = "apis:share:view:pub")
+  @Operation(summary = "Get shared API details", 
+      description = "Retrieve comprehensive shared API details with public access and comprehensive resource information",
+      operationId = "apis:share:view:pub")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "Shared API details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Shared API not found")})
   @GetMapping("/view")
   public ApiLocaleResult<ApisShareViewVo> view(@Valid @ParameterObject ApisShareViewDto dto) {
     return ApiLocaleResult.success(apisShareFacade.view(dto));

@@ -16,21 +16,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class ResourcesStatisticsDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for resource statistics analysis", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
-  @Schema(description = "Creator object type, Default USER", example = "USER")
+  @Schema(description = "Creator object type for analysis grouping, defaults to USER", example = "USER")
   private AuthObjectType creatorObjectType = AuthObjectType.USER;
 
-  @Schema(description = "Creator object id, Default current user id")
+  @Schema(description = "Creator object identifier, defaults to current user identifier")
   private Long creatorObjectId;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Resource creation period start timestamp")
   private LocalDateTime createdDateStart;
 
   @DateTimeFormat(pattern = DATE_FMT)
-  @Schema(description = "Resources creation start date")
+  @Schema(description = "Resource creation period end timestamp")
   private LocalDateTime createdDateEnd;
 
 }

@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TaskConfirmorReplaceDto {
 
-  @Schema(description = "Confirmor id, allow clear confirmor by empty value")
+  @Schema(description = "Reviewer identifier for task validation and approval. Empty value clears the current reviewer")
   private Long confirmorId;
 
 }

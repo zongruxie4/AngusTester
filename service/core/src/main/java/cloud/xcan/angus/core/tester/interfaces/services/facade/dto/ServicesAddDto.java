@@ -17,15 +17,15 @@ import org.hibernate.validator.constraints.Length;
 public class ServicesAddDto {
 
   @NotNull
-  @Schema(description = "Project ID, required when creating a service", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for service association", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @NotBlank
-  @Schema(example = "UserService", description = "services name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Service name for identification and management", example = "UserService", requiredMode = RequiredMode.REQUIRED)
   @Length(max = MAX_NAME_LENGTH)
   private String name;
 
-  @Schema(description = "Whether to enable authorization control, default disabled")
+  @Schema(description = "Flag to enable authorization control for access management")
   public Boolean auth;
 }
 

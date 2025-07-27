@@ -18,11 +18,11 @@ import org.hibernate.validator.constraints.Length;
 public class ApisFavouriteFindDto extends PageQuery {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for favorite API query scope definition", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Favourite apis name")
+  @Schema(description = "Favorite API name for fuzzy search and filtering")
   private String apisName;
 
 }

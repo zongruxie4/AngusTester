@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisTestInner", description = "Internal API Testing - Service internal apis testing query entrance")
+@Tag(name = "APIs Internal Testing", description = "Internal APIs Testing - Service internal API testing query entrance with comprehensive test type management and internal service integration")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/apis")
@@ -28,14 +28,16 @@ public class ApisTestDoorRest {
   @Resource
   private ApisTestFacade apisTestFacade;
 
-  @Operation(summary = "Find enabled testing type of api", operationId = "apis:test:enabled:find:inner")
+  @Operation(summary = "Get enabled API test types", 
+      description = "Retrieve enabled testing types for specific API with comprehensive test configuration information",
+      operationId = "apis:test:enabled:find:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Enabled API test types retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/{id}/test/enabled")
   public ApiLocaleResult<List<TestType>> testEnabledFind(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long apisId) {
+      @Parameter(name = "id", description = "API identifier for test type query", required = true) @PathVariable("id") Long apisId) {
     return ApiLocaleResult.success(apisTestFacade.testEnabledFind(apisId));
   }
 

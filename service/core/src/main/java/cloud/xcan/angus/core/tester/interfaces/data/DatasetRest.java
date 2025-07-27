@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Dataset", description = "Test Dataset Management - Centralized control interface for creating, editing, and organizing complete test datasets")
+@Tag(name = "Dataset", description = "Test Dataset Management - Comprehensive APIs for creating, editing, organizing, and managing complete test datasets with import/export capabilities and value preview functionality")
 @Validated
 @RestController
 @RequestMapping("/api/v1/dataset")
@@ -56,19 +56,23 @@ public class DatasetRest {
   @Resource
   private DatasetFacade datasetFacade;
 
-  @Operation(summary = "Add dataset", operationId = "data:dataset:add")
+  @Operation(summary = "Create new dataset", 
+      description = "Create a new test dataset with comprehensive configuration and parameter settings",
+      operationId = "data:dataset:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Dataset created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody DatasetAddDto dto) {
     return ApiLocaleResult.success(datasetFacade.add(dto));
   }
 
-  @Operation(summary = "Update dataset", operationId = "data:dataset:update")
+  @Operation(summary = "Update dataset", 
+      description = "Update existing dataset configuration and parameters with partial modification support",
+      operationId = "data:dataset:update")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Dataset updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Dataset not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody DatasetUpdateDto dto) {
@@ -76,20 +80,24 @@ public class DatasetRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace dataset", operationId = "data:dataset:replace")
+  @Operation(summary = "Replace dataset", 
+      description = "Replace existing dataset with complete new configuration and parameter settings",
+      operationId = "data:dataset:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Dataset replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Dataset not found")
   })
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(@Valid @RequestBody DatasetReplaceDto dto) {
     return ApiLocaleResult.success(datasetFacade.replace(dto));
   }
 
-  @Operation(summary = "Clone the datasets", operationId = "data:dataset:clone")
+  @Operation(summary = "Clone datasets", 
+      description = "Create copies of multiple datasets with all configuration and parameter settings",
+      operationId = "data:dataset:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Clone successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Datasets cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more datasets not found")
   })
   @PostMapping("/clone")
   public ApiLocaleResult<List<IdKey<Long, Object>>> clone(
@@ -97,9 +105,11 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.clone(ids));
   }
 
-  @Operation(summary = "Import the datasets", operationId = "data:dataset:import")
+  @Operation(summary = "Import datasets", 
+      description = "Import datasets from external files with comprehensive format support and validation",
+      operationId = "data:dataset:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Datasets imported successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<List<IdKey<Long, Object>>> imports(
@@ -107,57 +117,69 @@ public class DatasetRest {
     return ApiLocaleResult.success(datasetFacade.imports(dto));
   }
 
-  @Operation(summary = "Import the dataset example", operationId = "data:dataset:example:import")
+  @Operation(summary = "Import dataset examples", 
+      description = "Import predefined dataset examples with sample data and configuration templates",
+      operationId = "data:dataset:example:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Imported successfully")})
+      @ApiResponse(responseCode = "201", description = "Dataset examples imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/example/import")
   public ApiLocaleResult<List<IdKey<Long, Object>>> importExample(
-      @Parameter(name = "projectId", description = "Project id", required = true) @RequestParam("projectId") Long projectId) {
+      @Parameter(name = "projectId", description = "Project identifier for example dataset import", required = true) @RequestParam("projectId") Long projectId) {
     return ApiLocaleResult.success(datasetFacade.importExample(projectId));
   }
 
-  @Operation(summary = "Delete datasets", operationId = "data:dataset:delete")
+  @Operation(summary = "Delete datasets", 
+      description = "Remove multiple datasets from the system with batch operation support",
+      operationId = "data:dataset:delete")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Datasets deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Dataset ids", required = true)
+      @Parameter(name = "ids", description = "Dataset identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     datasetFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the detail of dataset", operationId = "data:dataset:detail")
+  @Operation(summary = "Get dataset details", 
+      description = "Retrieve comprehensive details and configuration for a specific dataset",
+      operationId = "data:dataset:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Dataset details retrieved successfully")})
   @GetMapping("/{id}")
   public ApiLocaleResult<DatasetDetailVo> detail(
-      @Parameter(name = "id", description = "Dataset id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Dataset identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(datasetFacade.detail(id));
   }
 
-  @Operation(summary = "Preview the value of dataset", operationId = "data:dataset:value:preview")
+  @Operation(summary = "Preview dataset values", 
+      description = "Preview dataset parameter values and data content with validation and formatting",
+      operationId = "data:dataset:value:preview")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Dataset values preview retrieved successfully")})
   @PostMapping("/value/preview")
   public ApiLocaleResult<LinkedHashMap<String, List<String>>> valuePreview(
       @RequestBody DatasetValuePreviewDto dto) {
     return ApiLocaleResult.success(datasetFacade.valuePreview(dto));
   }
 
-  @Operation(summary = "Query the list of datasets", operationId = "data:dataset:list")
+  @Operation(summary = "Query dataset list", 
+      description = "Retrieve paginated list of datasets with comprehensive filtering and search options",
+      operationId = "data:dataset:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Dataset list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<DatasetDetailVo>> list(
       @Valid @ParameterObject DatasetFindDto dto) {
     return ApiLocaleResult.success(datasetFacade.list(dto));
   }
 
-  @Operation(summary = "Export the datasets", operationId = "data:dataset:export")
+  @Operation(summary = "Export datasets", 
+      description = "Export datasets to external files with comprehensive format support and configuration options",
+      operationId = "data:dataset:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Exported successfully")
+      @ApiResponse(responseCode = "200", description = "Datasets exported successfully")
   })
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(

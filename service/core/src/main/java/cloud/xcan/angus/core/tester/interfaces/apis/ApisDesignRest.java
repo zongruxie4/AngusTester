@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ApisDesign", description = "OpenAPI Design Management - Standardization hub for API specification development, version control, and compliance monitoring")
+@Tag(name = "API Design", description = "API Design Management - Comprehensive APIs for OpenAPI specification development, version control, compliance monitoring, and service generation with design lifecycle management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/design")
@@ -52,81 +52,97 @@ public class ApisDesignRest {
   @Resource
   private ApisDesignFacade apisDesignFacade;
 
-  @Operation(summary = "Add the design of apis", operationId = "apis:design:add")
+  @Operation(summary = "Create API design", 
+      description = "Create new API design specification with comprehensive OpenAPI configuration and version control",
+      operationId = "apis:design:add")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "API design created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody ApisDesignAddDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.add(dto));
   }
 
-  @Operation(summary = "Replace the name of apis design", operationId = "apis:design:name:replace")
+  @Operation(summary = "Update API design name", 
+      description = "Update API design name with comprehensive version control and metadata management",
+      operationId = "apis:design:name:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design name updated successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @PutMapping
   public ApiLocaleResult<?> updateName(@Valid @RequestBody ApisDesignUpdateNameDto dto) {
     apisDesignFacade.updateName(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the design content of apis", operationId = "apis:design:content:replace")
+  @Operation(summary = "Replace API design content", 
+      description = "Replace API design content with complete new OpenAPI specification and version control",
+      operationId = "apis:design:content:replace")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design content replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @PutMapping("/content")
   public ApiLocaleResult<?> replaceContent(@Valid @RequestBody ApisDesignContentReplaceDto dto) {
     apisDesignFacade.replaceContent(dto);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Release the design of apis", operationId = "apis:design:release")
+  @Operation(summary = "Release API design", 
+      description = "Release API design specification with comprehensive version control and service generation",
+      operationId = "apis:design:release")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Release successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design released successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @PutMapping("/{id}/release")
   public ApiLocaleResult<?> release(
-      @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API design identifier for release", required = true) @PathVariable("id") Long id) {
     apisDesignFacade.release(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone the design of apis", operationId = "apis:design:clone")
+  @Operation(summary = "Clone API design", 
+      description = "Create copy of API design with all configuration and version control settings",
+      operationId = "apis:design:clone")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design cloned successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @PutMapping("/{id}/clone")
   public ApiLocaleResult<IdKey<Long, Object>> clone(
-      @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API design identifier for cloning", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisDesignFacade.clone(id));
   }
 
-  @Operation(summary = "Associate existing service and apis design", operationId = "apis:design:services:associate")
+  @Operation(summary = "Associate API design with service", 
+      description = "Establish association between API design and existing service with comprehensive integration",
+      operationId = "apis:design:services:associate")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design service association created successfully"),
+      @ApiResponse(responseCode = "404", description = "API service not found")})
   @PutMapping("/services/{id}/associate")
   public ApiLocaleResult<?> servicesAssociate(
-      @Parameter(name = "id", description = "Apis service id", required = true) @PathVariable("id") Long serviceId) {
+      @Parameter(name = "id", description = "API service identifier for design association", required = true) @PathVariable("id") Long serviceId) {
     apisDesignFacade.servicesAssociate(serviceId);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Generate the services of designed apis", operationId = "apis:design:services:generate")
+  @Operation(summary = "Generate services from API design", 
+      description = "Generate API services from design specification with comprehensive service creation and configuration",
+      operationId = "apis:design:services:generate")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Cloned successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API services generated successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @PutMapping("/{id}/services/generate")
   public ApiLocaleResult<?> servicesGenerate(
-      @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API design identifier for service generation", required = true) @PathVariable("id") Long id) {
     apisDesignFacade.servicesGenerate(id);
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Import the apis design", operationId = "apis:design:import")
+  @Operation(summary = "Import API design", 
+      description = "Import API design from external files with comprehensive format support and validation",
+      operationId = "apis:design:import")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Imported successfully")})
+      @ApiResponse(responseCode = "200", description = "API design imported successfully")})
   @ResponseStatus(HttpStatus.OK)
   @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ApiLocaleResult<IdKey<Long, Object>> imports(
@@ -134,40 +150,48 @@ public class ApisDesignRest {
     return ApiLocaleResult.success(apisDesignFacade.imports(dto));
   }
 
-  @Operation(summary = "Delete the design of apis", operationId = "apis:design:delete")
+  @Operation(summary = "Delete API designs", 
+      description = "Remove multiple API designs from the system with batch operation support",
+      operationId = "apis:design:delete")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "204", description = "API designs deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "One or more API designs not found")})
   @DeleteMapping
   public void delete(
-      @Parameter(name = "ids", description = "Apis design ids", required = true)
+      @Parameter(name = "ids", description = "API design identifiers for batch deletion", required = true)
       @Valid @NotEmpty @Size(max = MAX_BATCH_SIZE) @RequestParam("ids") HashSet<Long> ids) {
     apisDesignFacade.delete(ids);
   }
 
-  @Operation(summary = "Query the sharing detail of apis", operationId = "space:design:detail")
+  @Operation(summary = "Get API design details", 
+      description = "Retrieve comprehensive API design details including specification, version control, and metadata",
+      operationId = "space:design:detail")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Sharing does not exist")})
+      @ApiResponse(responseCode = "200", description = "API design details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "API design not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<ApisDesignDetailVo> detail(
-      @Parameter(name = "id", description = "Design id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "API design identifier for detail retrieval", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(apisDesignFacade.detail(id));
   }
 
-  @Operation(summary = "Query the design list of apis", operationId = "apis:design:list")
+  @Operation(summary = "Query API design list", 
+      description = "Retrieve paginated list of API designs with comprehensive filtering and search options",
+      operationId = "apis:design:list")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "API design list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<ApisDesignVo>> list(
       @Valid @ParameterObject ApisDesignFindDto dto) {
     return ApiLocaleResult.success(apisDesignFacade.list(dto));
   }
 
-  @Operation(summary = "Export the designed OpenAPI specification of apis", operationId = "apis:design:export")
+  @Operation(summary = "Export API design specification", 
+      description = "Export API design to OpenAPI specification format with comprehensive configuration options",
+      operationId = "apis:design:export")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Exported Successfully")})
+      @ApiResponse(responseCode = "201", description = "API design specification exported successfully")})
   @GetMapping(value = "/export")
   public ResponseEntity<org.springframework.core.io.Resource> export(
       @Valid @ParameterObject ApisDesignExportDto dto, HttpServletResponse response) {

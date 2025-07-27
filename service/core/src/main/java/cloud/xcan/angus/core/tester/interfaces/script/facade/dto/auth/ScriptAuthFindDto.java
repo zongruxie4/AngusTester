@@ -18,21 +18,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class ScriptAuthFindDto extends PageQuery {
 
-  @Schema(description = "Authorization id")
+  @Schema(description = "Authorization record identifier for precise query filtering")
   private Long id;
 
   //@NotNull -> Transferring values in filters
-  @Schema(description = "Script id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Script identifier for authorization query filtering", requiredMode = RequiredMode.REQUIRED)
   private Long scriptId;
 
   @NotNull
-  @Schema(example = "USER", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type for entity category filtering", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
-  @Schema(description = "Authorization object id")
+  @Schema(description = "Authorization object identifier for specific entity filtering")
   private Long authObjectId;
 
-  @Schema(description = "Authorization date")
+  @Schema(description = "Authorization creation date for temporal filtering")
   @DateTimeFormat(pattern = DATE_FMT)
   private LocalDateTime createdDate;
 

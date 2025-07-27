@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskMeeting", description = "Task Meeting Management - A unified management entry for all meetings within an Agile project")
+@Tag(name = "Task - Meeting", description = "Task Meeting Management API - Comprehensive meeting management system for Agile project collaboration including scheduling, updates, and participant coordination.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/meeting")
@@ -41,19 +41,19 @@ public class TaskMeetingRest {
   @Resource
   private TaskMeetingFacade taskMeetingFacade;
 
-  @Operation(summary = "Add task meeting", operationId = "task:meeting:add")
+  @Operation(summary = "Create new task meeting", operationId = "task:meeting:add", description = "Create a new meeting associated with a task, including scheduling, participant assignment, and agenda details.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Created successfully")})
+      @ApiResponse(responseCode = "201", description = "Task meeting created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ApiLocaleResult<IdKey<Long, Object>> add(@Valid @RequestBody TaskMeetingAddDto dto) {
     return ApiLocaleResult.success(taskMeetingFacade.add(dto));
   }
 
-  @Operation(summary = "Update task meeting", operationId = "task:meeting:update")
+  @Operation(summary = "Update task meeting details", operationId = "task:meeting:update", description = "Update specific fields of an existing task meeting while preserving other information.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Task meeting updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Task meeting not found")
   })
   @PatchMapping
   public ApiLocaleResult<?> update(@Valid @RequestBody TaskMeetingUpdateDto dto) {
@@ -61,10 +61,10 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace task meeting", operationId = "task:meeting:replace")
+  @Operation(summary = "Replace task meeting completely", operationId = "task:meeting:replace", description = "Replace all meeting information with new data, effectively recreating the meeting with updated details.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Replaced successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")
+      @ApiResponse(responseCode = "200", description = "Task meeting replaced successfully"),
+      @ApiResponse(responseCode = "404", description = "Task meeting not found")
   })
   @PutMapping
   public ApiLocaleResult<IdKey<Long, Object>> replace(
@@ -72,29 +72,29 @@ public class TaskMeetingRest {
     return ApiLocaleResult.success(taskMeetingFacade.replace(dto));
   }
 
-  @Operation(summary = "Delete task meeting", operationId = "task:meeting:delete")
+  @Operation(summary = "Delete task meeting", operationId = "task:meeting:delete", description = "Permanently remove a task meeting and all associated data including participant assignments and meeting records.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Deleted successfully")})
+      @ApiResponse(responseCode = "204", description = "Task meeting deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void delete(
-      @Parameter(name = "id", description = "Meeting id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Meeting identifier to delete", required = true) @PathVariable("id") Long id) {
     taskMeetingFacade.delete(id);
   }
 
-  @Operation(summary = "Query the detail of task meeting", operationId = "task:meeting:detail")
+  @Operation(summary = "Get task meeting details", operationId = "task:meeting:detail", description = "Retrieve comprehensive details of a specific task meeting including participants, agenda, and meeting history.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Task meeting details retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Task meeting not found")})
   @GetMapping(value = "/{id}")
   public ApiLocaleResult<TaskMeetingDetailVo> detail(
-      @Parameter(name = "id", description = "Meeting id", required = true) @PathVariable("id") Long id) {
+      @Parameter(name = "id", description = "Meeting identifier to retrieve details for", required = true) @PathVariable("id") Long id) {
     return ApiLocaleResult.success(taskMeetingFacade.detail(id));
   }
 
-  @Operation(summary = "Query the list of task meeting", operationId = "task:meeting:list")
+  @Operation(summary = "Get paginated task meetings list", operationId = "task:meeting:list", description = "Retrieve a paginated list of task meetings with filtering options for project, date range, and participant criteria.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully")})
+      @ApiResponse(responseCode = "200", description = "Task meetings list retrieved successfully")})
   @GetMapping
   public ApiLocaleResult<PageResult<TaskMeetingVo>> list(
       @Valid @ParameterObject TaskMeetingFindDto dto) {

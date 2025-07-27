@@ -16,7 +16,7 @@ public class ServicesAuthReplaceDto {
 
   @NotEmpty
   //@CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization permissions defining operational access rights for the service", requiredMode = RequiredMode.REQUIRED)
   private Set<ServicesPermission> permissions;
 
 }

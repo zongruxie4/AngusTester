@@ -20,11 +20,11 @@ public class TaskMoveDto {
 
   @NotNull
   @Size(min = 1)
-  @Schema(description = "Source task ids", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Source task identifiers for bulk movement operation", requiredMode = RequiredMode.REQUIRED)
   private List<Long> taskIds;
 
   //@NotNull
-  @Schema(description = "Target sprint id. When empty, it means moving from sprint to product backlog"/*, requiredMode = RequiredMode.REQUIRED*/)
+  @Schema(description = "Target sprint identifier for task reassignment. Empty value moves tasks to product backlog"/*, requiredMode = RequiredMode.REQUIRED*/)
   private Long targetSprintId;
 
 }

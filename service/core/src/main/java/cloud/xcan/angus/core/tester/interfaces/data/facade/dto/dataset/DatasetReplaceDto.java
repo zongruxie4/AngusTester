@@ -22,27 +22,27 @@ import org.hibernate.validator.constraints.Length;
 @Accessors(chain = true)
 public class DatasetReplaceDto {
 
-  @Schema(description="Modify dataset id. Create a new dataset when the value is null")
+  @Schema(description = "Dataset identifier for replacement. Creates new dataset when null")
   private Long id;
 
-  @Schema(description = "Project id, required when creating a new dataset")
+  @Schema(description = "Project identifier required for new dataset creation")
   private Long projectId;
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH)
-  @Schema(description = "Dataset name", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Dataset name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @Length(max = MAX_DESC_LENGTH)
-  @Schema(description = "Dataset description")
+  @Schema(description = "Dataset description for detailed documentation")
   private String description;
 
   @NotEmpty
   @Size(max = MAX_PARAM_SIZE)
-  @Schema(description = "Parameters definition", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Dataset parameter definitions with comprehensive configuration options", requiredMode = RequiredMode.REQUIRED)
   private List<DatasetParameter> parameters;
 
   @Valid
-  @Schema(description = "Extraction rules configuration")
+  @Schema(description = "Data extraction rules configuration for automated data processing")
   private DefaultExtraction extraction;
 }

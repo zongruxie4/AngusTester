@@ -23,13 +23,13 @@ public class NodeAgentStatusQueryDto {
    * Whether to notify other controllers to handle
    */
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Flag to enable broadcast mode for multi-controller coordination", requiredMode = RequiredMode.REQUIRED)
   private Boolean broadcast;
 
   @Valid
   @NotEmpty
   @Size(min = 1, max = MAX_BATCH_SIZE)
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "List of node identifiers for batch agent status query", requiredMode = RequiredMode.REQUIRED)
   private List<Long> nodeIds;
 
 }

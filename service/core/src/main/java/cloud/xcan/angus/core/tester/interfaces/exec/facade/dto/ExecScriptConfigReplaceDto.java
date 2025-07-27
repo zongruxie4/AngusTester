@@ -24,19 +24,20 @@ public class ExecScriptConfigReplaceDto {
 
   @NotEmpty
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Execution name", required = true)
+  @Schema(description = "Execution name for identification and organization", requiredMode = RequiredMode.REQUIRED)
   private String name;
 
   @NotNull
-  @Schema(description = "Script type", required = true)
+  @Schema(description = "Script type for execution specification", requiredMode = RequiredMode.REQUIRED)
   private ScriptType scriptType;
 
   @Valid
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Execution configuration for comprehensive parameter settings", requiredMode = RequiredMode.REQUIRED)
   private Configuration configuration;
 
   @Size(max = MAX_ARGUMENTS)
+  @Schema(description = "Plugin configuration arguments for execution customization")
   private Arguments arguments;
 
 }

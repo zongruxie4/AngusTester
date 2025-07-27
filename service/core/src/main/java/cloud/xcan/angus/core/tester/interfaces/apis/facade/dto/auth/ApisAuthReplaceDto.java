@@ -19,7 +19,7 @@ public class ApisAuthReplaceDto {
   @NotNull
   @Size(min = 1)
   @CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission)", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization permissions for operation access control configuration", requiredMode = RequiredMode.REQUIRED)
   private Set<ApiPermission> permissions;
 
 }

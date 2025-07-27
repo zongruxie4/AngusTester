@@ -26,45 +26,58 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ScriptStatisticsDto extends PageQuery {
 
+  @Schema(description = "Script identifier")
   private Long id;
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for script statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
+  @Schema(description = "Script name for search and filtering")
   private String name;
 
+  @Schema(description = "Script type for categorization")
   private ScriptType type;
 
+  @Schema(description = "Script source for origin tracking")
   private ScriptSource source;
 
+  @Schema(description = "Service identifier associated with the script")
   private Long serviceId;
 
+  @Schema(description = "Source identifier for external script reference")
   private String sourceId;
 
+  @Schema(description = "Scenario identifier associated with the script")
   private Long scenarioId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Script tag for categorization")
   private String tag;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Script plugin type")
   private String plugin;
 
-  @Schema(description = "Required when app administrators query all scripts")
+  @Schema(description = "Administrator access flag for cross-project script queries")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission script")
+  @Schema(description = "Permission level for script access control")
   private ScriptPermission hasPermission;
 
+  @Schema(description = "Script creator user identifier")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Script creation timestamp")
   private LocalDateTime createdDate;
 
+  @Schema(description = "Last modifier user identifier")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Last modification timestamp")
   private LocalDateTime lastModifiedDate;
 
 }

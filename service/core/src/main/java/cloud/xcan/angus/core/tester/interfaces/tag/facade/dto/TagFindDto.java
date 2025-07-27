@@ -21,15 +21,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class TagFindDto extends PageQuery {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for tag filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Tag identifier for specific tag lookup")
   private Long id;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Tag name for partial matching search")
   private String name;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Tag creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
 }

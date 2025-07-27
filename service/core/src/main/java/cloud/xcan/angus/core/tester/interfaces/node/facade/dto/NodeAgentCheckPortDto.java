@@ -20,16 +20,13 @@ import lombok.experimental.Accessors;
 @ToString
 public class NodeAgentCheckPortDto {
 
-  /**
-   * Whether to notify other controllers to handle
-   */
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Flag to enable broadcast mode for multi-controller coordination", requiredMode = RequiredMode.REQUIRED)
   private boolean broadcast;
 
   @Valid
   @NotEmpty
   @Size(min = 1, max = MAX_BATCH_SIZE)
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "List of port check command parameters for batch port availability testing", requiredMode = RequiredMode.REQUIRED)
   private List<CheckPortCmdParam> cmdParams;
 
 }

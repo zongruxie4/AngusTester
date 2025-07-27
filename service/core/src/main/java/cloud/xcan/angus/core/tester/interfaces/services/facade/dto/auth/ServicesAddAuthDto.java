@@ -19,15 +19,15 @@ import lombok.experimental.Accessors;
 public class ServicesAddAuthDto {
 
   @NotNull
-  @Schema(example = "USER", description = "Authorization object type", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object type defining the entity category for permission assignment", example = "USER", requiredMode = RequiredMode.REQUIRED)
   private AuthObjectType authObjectType;
 
   @NotNull
-  @Schema(description = "Authorization object id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Authorization object identifier for specific entity permission assignment", requiredMode = RequiredMode.REQUIRED)
   private Long authObjectId;
 
   //@CollectionValueNotNull // Fix:: invalid enumeration value is null element
-  @Schema(description = "Authorization permissions(Operation permission), default view")
+  @Schema(description = "Authorization permissions defining operational access rights for the service")
   private Set<ServicesPermission> permissions;
 
 }

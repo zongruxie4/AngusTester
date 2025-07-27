@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ScenarioTestInner", description = "Scenario Testing (Internal) - Internal system APIs for managing and auditing automated test scenario executions")
+@Tag(name = "Scenario Test - Internal", description = "Scenario Testing Internal API - System-level interfaces for managing and auditing automated test scenario executions with internal monitoring capabilities.")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -31,25 +31,29 @@ public class ScenarioTestInnerRest {
   @Resource
   private ScenarioTestFacade scenarioTestFacade;
 
-  @Operation(summary = "Find enabled testing type of the scenario", operationId = "scenario:test:enabled:find:inner")
+  @Operation(summary = "Query enabled test types for scenario",
+      description = "Retrieve all enabled test types configured for the specified scenario.",
+      operationId = "scenario:test:enabled:find:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Enabled test types retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Scenario not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/scenario/{id}/test/enabled")
   public ApiLocaleResult<List<TestType>> testEnabledFind(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long scenario) {
+      @Parameter(name = "id", description = "Scenario identifier for test type query", required = true) @PathVariable("id") Long scenario) {
     return ApiLocaleResult.success(scenarioTestFacade.testEnabledFind(scenario));
   }
 
-  @Operation(summary = "The testing scenario testing count of the project", operationId = "project:test:scenario:count:inner")
+  @Operation(summary = "Query project test scenario count",
+      description = "Get comprehensive count of test scenarios and their execution statistics for the project.",
+      operationId = "project:test:scenario:count:inner")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Retrieved successfully"),
-      @ApiResponse(responseCode = "404", description = "Resource not found")})
+      @ApiResponse(responseCode = "200", description = "Project test scenario count retrieved successfully"),
+      @ApiResponse(responseCode = "404", description = "Project not found")})
   @ResponseStatus(HttpStatus.OK)
   @GetMapping("/project/{id}/test/scenario/count")
   public ApiLocaleResult<ScenarioTestCount> countProjectTestScenarios(
-      @Parameter(name = "id", required = true) @PathVariable("id") Long projectId,
+      @Parameter(name = "id", description = "Project identifier for test scenario count", required = true) @PathVariable("id") Long projectId,
       @ParameterObject OrgAndDateFilterDto dto) {
     return ApiLocaleResult.success(scenarioTestFacade.countProjectTestScenarios(projectId, dto));
   }

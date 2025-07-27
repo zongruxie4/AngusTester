@@ -12,6 +12,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ApisExportDto {
 
-  @Schema(allowableValues = "yaml, json", description = "OpenAPI document format. Available values yaml or json, the default value is yaml")
+  @Schema(allowableValues = "yaml, json", description = "OpenAPI document export format specification with YAML as default")
   private SchemaFormat format = SchemaFormat.yaml;
 }

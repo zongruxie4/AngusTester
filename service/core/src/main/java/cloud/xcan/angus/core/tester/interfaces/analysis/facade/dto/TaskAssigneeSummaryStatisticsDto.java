@@ -15,9 +15,10 @@ import lombok.experimental.Accessors;
 public class TaskAssigneeSummaryStatisticsDto {
 
   @NotNull
-  @Schema(requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for task assignee summary statistics", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Sprint identifier for statistics scope filtering")
   private Long sprintId;
 
 }
