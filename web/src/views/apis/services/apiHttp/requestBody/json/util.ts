@@ -120,7 +120,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
             try {
               value = JSON.parse(value);
             } catch {
-              console.log(value + 'id not a json');
+              // JSON parsing failed, continue with original value
             }
           }
           transArr(value, id, level + 1, schema.properties?.[key] || {});
@@ -130,7 +130,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
             try {
               value = JSON.parse(value);
             } catch {
-              console.log(value + 'id not a json');
+              // JSON parsing failed, continue with original value
             }
           }
           transObjct(value, id, level + 1, schema.properties?.[key] || {});
@@ -168,7 +168,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
     try {
       data = JSON.parse(data);
     } catch {
-      console.log(data + 'id not a json');
+      // JSON parsing failed, continue with original value
     }
   }
   if (type === 'array') {

@@ -74,8 +74,8 @@ const execute = (leftOperand: string | undefined, operator: Operator, rightOpera
   }
 
   // 只支持基本数据类型运算。 typeof null === 'object'
-  if (leftOperand !== null && leftOperand !== null) {
-    if (!checkType(leftOperand) || !checkType(leftOperand)) {
+  if (leftOperand !== null && rightOperand !== null) {
+    if (!checkType(leftOperand) || !checkType(rightOperand)) {
       return false;
     }
   }
