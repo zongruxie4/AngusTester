@@ -249,6 +249,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
+/**
+ * <p>
+ * Implementation of TaskQuery for comprehensive task management and query operations.
+ * </p>
+ * <p>
+ * Provides methods for task CRUD operations, statistics analysis, progress tracking, and various task-related queries.
+ * Includes support for task associations, permissions, notifications, and comprehensive reporting capabilities.
+ * Supports full-text search, pagination, and complex filtering with project member permission checks.
+ * </p>
+ */
 @Biz
 @SummaryQueryRegister(name = "Task", table = "task",
     aggregateColumns = {"id", "fail_num", "total_num", "eval_workload", "actual_workload"},
@@ -260,79 +270,66 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Resource
   private TaskListRepo taskListRepo;
-
   @Resource
   private TaskSearchRepo taskSearchRepo;
-
   @Resource
   private TagQuery tagQuery;
-
   @Resource
   private TaskMeetingRepo taskMeetingRepo;
-
   @Resource
   private TaskMeetingQuery taskMeetingQuery;
-
   @Resource
   private TaskRepo taskRepo;
-
   @Resource
   private TaskInfoRepo taskInfoRepo;
-
   @Resource
   private TaskSprintRepo taskSprintRepo;
-
   @Resource
   private TaskSprintQuery taskSprintQuery;
-
   @Resource
   private TaskFavouriteRepo taskFavouriteRepo;
-
   @Resource
   private TaskFollowRepo taskFollowRepo;
-
   @Resource
   private FuncCaseQuery funcCaseQuery;
-
   @Resource
   private TaskFuncCaseQuery taskFuncCaseQuery;
-
   @Resource
   private ApisBaseInfoRepo apisBaseInfoRepo;
-
   @Resource
   private ProjectQuery projectQuery;
-
   @Resource
   private ServicesRepo servicesRepo;
-
   @Resource
   private ScenarioRepo scenarioRepo;
-
   @Resource
   private CommentQuery commentQuery;
-
   @Resource
   private TaskRemarkQuery taskRemarkQuery;
-
   @Resource
   private ActivityQuery activityQuery;
-
   @Resource
   private ProjectMemberQuery projectMemberQuery;
-
   @Resource
   private CommonQuery commonQuery;
-
   @Resource
   private SettingTenantQuotaManager settingTenantQuotaManager;
-
   @Resource
   private UserManager userManager;
-
   @Resource
   private JoinSupplier joinSupplier;
 
+  /**
+   * <p>
+   * Get detailed information of a task by ID with comprehensive associated data.
+   * </p>
+   * <p>
+   * Retrieves task details and assembles all related information including tags, associations,
+   * progress, comments, remarks, and activities. Sets user-specific flags for follow and favorite status.
+   * </p>
+   * @param id Task ID
+   * @return Complete task details with all associated information
+   */
   @Override
   public Task detail(Long id) {
     return new BizTemplate<Task>() {
@@ -348,42 +345,64 @@ public class TaskQueryImpl implements TaskQuery {
       @Override
       protected Task process() {
         List<Task> tasks = List.of(taskDb);
+        
+        // Set user-specific flags only for user actions to avoid unnecessary processing
         if (isUserAction()) {
-          // Set follow flag
+          // Set follow flag for current user
           setFollow(tasks);
-          // Set favourite flag
+          // Set favourite flag for current user
           setFavourite(tasks);
         }
-        // Set task tag id and name
+        
+        // Assemble comprehensive task data for display
+        // Set task tag information (id and name)
         tagQuery.setTags(tasks);
-        // Set reference tasks and cases
+        // Set associated tasks and functional cases
         taskFuncCaseQuery.setAssocForTask(tasks);
-        // Set api target name
+        // Set API target names for API test tasks
         setApiTargetName(tasks);
-        // Set scenario target name
+        // Set scenario target names for scenario test tasks
         setScenarioTargetName(tasks);
-        // Set current user role
+        // Set current user's role for each task (assignee, creator, admin, etc.)
         setCurrentRoles(tasks);
-        // Set sub task
+        
+        // Set hierarchical task structure
+        // Retrieve and set direct subtasks
         taskDb.setSubTasks(findSub(id));
-        // Set comment num
+        
+        // Set related counts for task overview
+        // Get comment count for this task
         int commentNum = commentQuery.getCommentNum(id, CommentTargetType.TASK.getValue());
         taskDb.setCommentNum(commentNum);
-        // Set remark num
+        // Get remark count for this task
         int remarkNum = taskRemarkQuery.getRemarkNum(id);
         taskDb.setRemarkNum(remarkNum);
-        // Set activity num
+        // Get activity count for this task
         int activityNum = activityQuery.getActivityNumByMainTarget(id);
         taskDb.setActivityNum(activityNum);
-        // Set task progress
+        
+        // Calculate and set progress information
+        // Set progress for main task
         setTaskProgress(tasks);
-        // Set sub task progress
+        // Set progress for all subtasks
         setTaskInfoProgress(taskDb.getSubTasks());
+        
         return taskDb;
       }
     }.execute();
   }
 
+  /**
+   * <p>
+   * Count task statistics based on search criteria.
+   * </p>
+   * <p>
+   * Provides aggregated task counts for reporting and analysis purposes.
+   * Automatically filters out deleted tasks and sprints.
+   * </p>
+   * @param criteria Search criteria for filtering tasks
+   * @return Task count statistics
+   */
   @Override
   public TaskCount countStatistics(Set<SearchCriteria> criteria) {
     return new BizTemplate<TaskCount>() {
@@ -401,6 +420,21 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * List tasks with pagination and search capabilities.
+   * </p>
+   * <p>
+   * Supports both full-text search and specification-based filtering with project member permission checks.
+   * Automatically sets user-specific flags and assembles related data for each task.
+   * </p>
+   * @param export Whether this is an export operation
+   * @param spec Generic specification for filtering
+   * @param pageable Pagination information
+   * @param fullTextSearch Whether to use full-text search
+   * @param match Fields to match in full-text search
+   * @return Page of tasks with associated data
+   */
   @Override
   public Page<Task> list(boolean export, GenericSpecification<Task> spec, PageRequest pageable,
       boolean fullTextSearch, String[] match) {
@@ -413,37 +447,46 @@ public class TaskQueryImpl implements TaskQuery {
 
       @Override
       protected Page<Task> process() {
+        // Add standard filters to exclude deleted tasks and sprints
         spec.getCriteria().add(SearchCriteria.equal("deleted", false));
         spec.getCriteria().add(SearchCriteria.equal("sprintDeleted", false));
 
+        // Apply authorization criteria based on current user context
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
+        
+        // Execute search using appropriate repository based on search type
         Page<Task> page = fullTextSearch
             ? taskSearchRepo.find(spec.getCriteria(), pageable, Task.class, match)
             : taskListRepo.find(spec.getCriteria(), pageable, Task.class, null);
 
+        // Enrich task data with additional information if results exist
         if (page.hasContent()) {
+          // Set user-specific flags only for user actions
           if (isUserAction()) {
-            // Set follow flag
+            // Set follow status for current user
             setFollow(page.getContent());
-            // Set favourite flag
+            // Set favourite status for current user
             setFavourite(page.getContent());
           }
-          // Set task tag id and name
+          
+          // Assemble comprehensive task data for display
+          // Set task tag information
           tagQuery.setTags(page.getContent());
-          // Set current user role
+          // Set current user's role for each task
           setCurrentRoles(page.getContent());
-          // Set api target name
+          // Set API target names for API test tasks
           setApiTargetName(page.getContent());
-          // Set scenario target name
+          // Set scenario target names for scenario test tasks
           setScenarioTargetName(page.getContent());
-          // Set task progress
+          // Calculate and set progress information
           setTaskProgress(page.getContent());
-          // Set assignee name and avatar
+          // Set assignee display information (name and avatar)
           userManager.setUserNameAndAvatar(page.getContent(),
               "assigneeId", "assigneeName", "assigneeAvatar");
 
+          // Include additional data for export operations
           if (export) {
-            // Set reference tasks and cases
+            // Set associated tasks and functional cases for comprehensive export
             taskFuncCaseQuery.setAssocForTask(page.getContent());
           }
         }
@@ -452,6 +495,18 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find subtasks that are not associated with a specific task.
+   * </p>
+   * <p>
+   * Retrieves available subtasks that can be associated with the given task.
+   * Filters by module if specified and excludes already associated subtasks.
+   * </p>
+   * @param taskId Parent task ID
+   * @param moduleId Optional module ID for filtering
+   * @return List of available subtasks
+   */
   @Override
   public List<TaskInfo> notAssociatedSubtask(Long taskId, Long moduleId) {
     return new BizTemplate<List<TaskInfo>>() {
@@ -464,25 +519,46 @@ public class TaskQueryImpl implements TaskQuery {
 
       @Override
       protected List<TaskInfo> process() {
+        // Build search criteria for available subtasks
         Set<SearchCriteria> filters = new HashSet<>();
+        // Filter by project to ensure data isolation
         filters.add(SearchCriteria.equal("projectId", taskDb.getProjectId()));
+        // Apply module filter if specified
         if (nonNull(moduleId)) {
           filters.add(SearchCriteria.equal("moduleId", moduleId));
         }
-        //Auto added by @Where
-        //filters.add(SearchCriteria.equal("deleted", false));
-        //filters.add(SearchCriteria.equal("sprintDeleted", false));
+        // Note: deleted and sprintDeleted filters are automatically added by @Where annotation
+        // filters.add(SearchCriteria.equal("deleted", false));
+        // filters.add(SearchCriteria.equal("sprintDeleted", false));
 
+        // Get IDs of already associated subtasks to exclude them
         Set<Long> associatedSubTaskIds = taskInfoRepo.findSubTaskIdsById(taskId);
-        associatedSubTaskIds.add(taskId); // Exclude assoc oneself
+        // Exclude the task itself to prevent self-association
+        associatedSubTaskIds.add(taskId);
         if (isNotEmpty(associatedSubTaskIds)) {
+          // Filter out already associated tasks
           filters.add(SearchCriteria.notIn("id", associatedSubTaskIds));
         }
+        
+        // Return available subtasks sorted by creation date (newest first)
         return taskInfoRepo.findAllByFilters(filters, Sort.by(Direction.DESC, "createdDate"));
       }
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find tasks that are not associated with a specific functional case.
+   * </p>
+   * <p>
+   * Retrieves available tasks that can be associated with the given case.
+   * Supports filtering by module and task type, excluding already associated tasks.
+   * </p>
+   * @param caseId Functional case ID
+   * @param moduleId Optional module ID for filtering
+   * @param taskType Optional task type for filtering
+   * @return List of available tasks
+   */
   @Override
   public List<TaskInfo> notAssociatedTaskInCase(Long caseId, @Nullable Long moduleId,
       @Nullable TaskType taskType) {
@@ -520,6 +596,19 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+    /**
+   * <p>
+   * Find tasks that are not associated with a specific task.
+   * </p>
+   * <p>
+   * Retrieves available tasks that can be associated with the given task.
+   * Supports filtering by module and task type, excluding already associated tasks.
+   * </p>
+   * @param taskId task ID
+   * @param moduleId Optional module ID for filtering
+   * @param taskType Optional task type for filtering
+   * @return List of available tasks
+   */
   @Override
   public List<TaskInfo> notAssociatedTaskInTask(Long taskId, @Nullable Long moduleId,
       @Nullable TaskType taskType) {
@@ -557,6 +646,18 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get associated tasks by task type and target ID.
+   * </p>
+   * <p>
+   * Retrieves tasks associated with a specific target based on task type.
+   * Supports different association types like API, scenario, or case associations.
+   * </p>
+   * @param taskType Type of task association
+   * @param targetId Target ID (API, scenario, or case ID)
+   * @return List of associated tasks
+   */
   @Override
   public List<TaskInfo> assocList(TaskType taskType, Long targetId) {
     return new BizTemplate<List<TaskInfo>>() {
@@ -568,6 +669,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get resource creation statistics for tasks.
+   * </p>
+   * <p>
+   * Provides comprehensive statistics about task creation including counts for tasks, sprints, meetings, and backlogs.
+   * Supports filtering by project, sprint, creator, and date range.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param creatorObjectType Creator object type
+   * @param creatorObjectId Creator object ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinSprint Whether to include sprint information
+   * @param joinMeeting Whether to include meeting information
+   * @return Resource creation statistics
+   */
   @Override
   public TaskLastResourceCreationCount creationResourcesStatistics(Long projectId, Long sprintId,
       AuthObjectType creatorObjectType, Long creatorObjectId, LocalDateTime createdDateStart,
@@ -578,30 +697,35 @@ public class TaskQueryImpl implements TaskQuery {
       protected TaskLastResourceCreationCount process() {
         final TaskLastResourceCreationCount result = new TaskLastResourceCreationCount();
 
-        // Find all when condition is null, else find by condition
+        // Resolve creator user IDs based on organization type and ID
+        // If creatorObjectType is null, include all creators; otherwise filter by specific organization
         Set<Long> createdBys = isNull(creatorObjectType) ? null
             : userManager.getUserIdByOrgType0(creatorObjectType, creatorObjectId);
 
-        // Number of statistical backlog
+        // Calculate backlog statistics
+        // Build filters for task creation analysis
         Set<SearchCriteria> allTaskFilters = getTaskCreatorResourcesFilter(projectId, sprintId,
             createdDateStart, createdDateEnd, createdBys);
+        // Retrieve task efficiency summaries for analysis
         List<TaskEfficiencySummary> allTasks = taskInfoRepo.findProjectionByFilters(TaskInfo.class,
             TaskEfficiencySummary.class, allTaskFilters);
+        // Count and categorize backlog items
         countCreationBacklog(result, allTasks);
 
-        // Number of statistical task
+        // Calculate task creation statistics
         countCreationTask(result, allTasks);
 
-        // Number of statistical sprint
+        // Calculate sprint creation statistics (optional)
         Set<SearchCriteria> commonFilters = getCommonResourcesStatsFilter(projectId,
             createdDateStart, createdDateEnd, createdBys);
         if (joinSprint) {
+          // Add deleted filter for sprints to exclude soft-deleted items
           Set<SearchCriteria> sprintFilters = merge(commonFilters, equal("deleted", false));
           List<TaskSprint> sprints = taskSprintRepo.findAllByFilters(sprintFilters);
           countCreationSprint(result, sprints);
         }
 
-        // Number of statistical meeting
+        // Calculate meeting creation statistics (optional)
         if (joinMeeting) {
           List<TaskMeeting> meetings = taskMeetingRepo.findAllByFilters(commonFilters);
           countCreationMeeting(result, meetings);
@@ -611,6 +735,18 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get assignee summary statistics for tasks.
+   * </p>
+   * <p>
+   * Provides aggregated statistics about task distribution among assignees.
+   * Includes task counts, workload distribution, and performance metrics per assignee.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @return List of assignee summary statistics
+   */
   @Override
   public List<TaskAssigneeCount> assigneeSummaryStatistics(Long projectId, Long sprintId) {
     return new BizTemplate<List<TaskAssigneeCount>>() {
@@ -619,15 +755,18 @@ public class TaskQueryImpl implements TaskQuery {
       protected List<TaskAssigneeCount> process() {
         final List<TaskAssigneeCount> assigneeCounts = new ArrayList<>();
 
+        // Get task distribution by assignee for the specified project and sprint
         Map<Long, List<TaskEfficiencySummary>> assigneeTaskMap = getAssigneeTaskMap(
             projectId, sprintId);
         if (isEmpty(assigneeTaskMap)) {
           return assigneeCounts;
         }
 
-        Set<Long> assigneeIds = assigneeTaskMap.keySet();  // Is Full
+        // Get all assignee IDs and retrieve their user information
+        Set<Long> assigneeIds = assigneeTaskMap.keySet();  // Contains all assignee IDs
         Map<Long, UserBase> userMaps = userManager.getUserBaseMap(assigneeIds);
 
+        // Build assignee count statistics for each assignee
         for (Long assigneeId : assigneeIds) {
           assigneeCounts.add(assembleTaskAssigneeCount(assigneeId, userMaps, assigneeTaskMap));
         }
@@ -637,6 +776,18 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get assignee progress statistics for tasks.
+   * </p>
+   * <p>
+   * Provides detailed progress analysis for each assignee including completion rates,
+   * task status distribution, and time-based progress metrics.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @return List of assignee progress statistics
+   */
   @Override
   public List<TaskAssigneeProgressCount> assigneeProgressStatistics(Long projectId, Long sprintId) {
     return new BizTemplate<List<TaskAssigneeProgressCount>>() {
@@ -664,6 +815,17 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get project work statistics summary.
+   * </p>
+   * <p>
+   * Provides comprehensive work statistics for a project including task distribution,
+   * progress overview, and performance metrics at the project level.
+   * </p>
+   * @param projectId Project ID
+   * @return Project work statistics summary
+   */
   @Override
   public TaskProjectWorkSummary projectWorkStatistics(Long projectId) {
     return new BizTemplate<TaskProjectWorkSummary>() {
@@ -697,6 +859,17 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get sprint work statistics summary.
+   * </p>
+   * <p>
+   * Provides comprehensive work statistics for a sprint including task distribution,
+   * progress tracking, and performance metrics at the sprint level.
+   * </p>
+   * @param sprintId Sprint ID
+   * @return Sprint work statistics summary
+   */
   @Override
   public TaskSprintWorkSummary sprintWorkStatistics(Long sprintId) {
     return new BizTemplate<TaskSprintWorkSummary>() {
@@ -761,6 +934,19 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get assignee work statistics for a specific user.
+   * </p>
+   * <p>
+   * Provides detailed work statistics for a specific assignee including task distribution,
+   * workload analysis, and performance metrics over time.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param userId User ID to get statistics for
+   * @return Assignee work statistics summary
+   */
   @Override
   public TaskAssigneeWorkSummary assigneeWorkStatistics(Long projectId, Long sprintId,
       Long userId) {
@@ -800,6 +986,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get task progress overview with detailed analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive progress analysis including task completion rates, time series data,
+   * and assignee performance metrics. Supports filtering by project, sprint, assignee, and date range.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Progress overview with analysis
+   */
   @Override
   public ProgressOverview progress(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -811,20 +1015,23 @@ public class TaskQueryImpl implements TaskQuery {
       protected ProgressOverview process() {
         ProgressOverview overview = new ProgressOverview();
 
+        // Retrieve task efficiency summaries for progress analysis
         List<TaskEfficiencySummary> tasks = getTaskEfficiencySummaries(projectId, sprintId,
             createdDateStart, createdDateEnd, assigneeOrgType, assigneeOrgId);
         if (isEmpty(tasks)) {
           return overview;
         }
 
-        // Assignees
+        // Build assignee information map for display purposes
         Map<Long, UserInfo> assignees = commonQuery.getUserInfoMap(
             tasks.stream().map(TaskEfficiencySummary::getAssigneeId).collect(Collectors.toSet()));
         overview.setAssignees(assignees);
 
-        // Total overview
+        // Calculate total progress overview across all tasks
         ProgressCount total = assembleTaskProgressCount0(tasks);
         overview.setTotalOverview(total);
+        
+        // Include detailed data for export if requested
         if (joinDataDetail) {
           overview.setDataDetailTitles(message(EXPORT_ANALYSIS_TASK_PROGRESS).split(","));
           ProgressDetail totalDetail = new ProgressDetail();
@@ -833,16 +1040,22 @@ public class TaskQueryImpl implements TaskQuery {
           overview.getDataDetails().add(totalDetail);
         }
 
-        // Assignees overview
+        // Calculate individual assignee progress if detailed view is requested
+        // Skip if assigneeOrgType is USER (single user view) as total equals assignee
         if (joinAssigneeDetail && (isNull(assigneeOrgType)
-            || !AuthObjectType.USER.equals(assigneeOrgType))// Total is equal assignee
+            || !AuthObjectType.USER.equals(assigneeOrgType))
         ) {
+          // Group tasks by assignee for individual analysis
           Map<Long, List<TaskEfficiencySummary>> taskMap = tasks.stream()
               .collect(groupingBy(TaskEfficiencySummary::getAssigneeId));
+          
+          // Calculate progress for each assignee
           for (Long assigneeId : assignees.keySet()) {
             ProgressCount assignee = assembleTaskProgressCount0(
                 taskMap.getOrDefault(assigneeId, emptyList()));
             overview.getAssigneesOverview().put(assigneeId, assignee);
+            
+            // Include assignee details for export if requested
             if (joinDataDetail) {
               ProgressDetail assigneeDetail = new ProgressDetail();
               assigneeDetail.setName(
@@ -857,6 +1070,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get burndown chart overview for task analysis.
+   * </p>
+   * <p>
+   * Provides burndown chart data for tracking task completion over time.
+   * Includes ideal vs actual progress lines, remaining work analysis, and velocity metrics.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Burndown chart overview
+   */
   @Override
   public BurnDownChartOverview burndownChart(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -947,6 +1178,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get workload overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive workload analysis including planned vs actual workload,
+   * workload distribution among assignees, and workload trends over time.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Workload overview
+   */
   @Override
   public WorkloadOverview workload(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1005,6 +1254,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get overdue assessment overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive overdue assessment analysis including overdue task identification,
+   * risk assessment, and mitigation strategies based on workload and deadlines.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Overdue assessment overview
+   */
   @Override
   public OverdueAssessmentOverview overdueAssessment(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1068,6 +1335,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get bug overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive bug analysis including bug identification, severity assessment,
+   * and bug distribution patterns among assignees and time periods.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Bug overview
+   */
   @Override
   public BugOverview bug(Long projectId, Long sprintId,
       AuthObjectType assigneeOrgType, Long assigneeOrgId, LocalDateTime createdDateStart,
@@ -1120,6 +1405,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get processing efficiency overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive processing efficiency analysis including throughput metrics,
+   * processing time analysis, and efficiency trends over time.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Processing efficiency overview
+   */
   @Override
   public ProcessingEfficiencyOverview processingEfficiency(Long projectId, Long sprintId,
       AuthObjectType assigneeOrgType, Long assigneeOrgId, LocalDateTime createdDateStart,
@@ -1177,6 +1480,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get core KPI overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive core KPI analysis including key performance indicators,
+   * productivity metrics, and performance benchmarks across different dimensions.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Core KPI overview
+   */
   @Override
   public CoreKpiOverview coreKpi(Long projectId, Long sprintId, AuthObjectType assigneeOrgType,
       Long assigneeOrgId, LocalDateTime createdDateStart, LocalDateTime createdDateEnd,
@@ -1234,6 +1555,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get failure assessment overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive failure assessment analysis including failure rate analysis,
+   * risk assessment, and failure pattern identification across different dimensions.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Failure assessment overview
+   */
   @Override
   public FailureAssessmentOverview failureAssessment(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1289,6 +1628,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get backlogged work overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive backlog analysis including pending task identification,
+   * backlog trends, and workload distribution analysis.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Backlogged work overview
+   */
   @Override
   public BackloggedOverview backloggedWork(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1347,6 +1704,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get recent delivery overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive recent delivery analysis including delivery trends,
+   * completion patterns, and delivery performance metrics.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Recent delivery overview
+   */
   @Override
   public RecentDeliveryOverview recentDelivery(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1411,6 +1786,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get lead time overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive lead time analysis including cycle time metrics,
+   * delivery time analysis, and process efficiency measurements.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Lead time overview
+   */
   @Override
   public LeadTimeOverview leadTime(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1468,6 +1861,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get unplanned work overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive unplanned work analysis including ad-hoc task identification,
+   * unplanned work trends, and impact assessment on planned work.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Unplanned work overview
+   */
   @Override
   public UnplannedWorkOverview unplannedWork(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1530,6 +1941,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get tester submitted bug overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive bug submission analysis including bug discovery patterns,
+   * tester performance metrics, and bug quality assessment.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param creatorOrgType Creator organization type
+   * @param creatorOrgId Creator organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Tester submitted bug overview
+   */
   @Override
   public TesterSubmittedBugOverview submittedBug(@NonNullable Long projectId,
       Long sprintId, AuthObjectType creatorOrgType, Long creatorOrgId,
@@ -1600,6 +2029,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get growth trend overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive growth trend analysis including task growth patterns,
+   * productivity trends, and performance evolution over time.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinAssigneeDetail Whether to include assignee details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Growth trend overview
+   */
   @Override
   public GrowthTrendOverview growthTrend(@NonNullable Long projectId,
       Long sprintId, AuthObjectType assigneeOrgType, Long assigneeOrgId,
@@ -1662,6 +2109,24 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Get resource creation overview for task analysis.
+   * </p>
+   * <p>
+   * Provides comprehensive resource creation analysis including task, sprint, and meeting
+   * creation patterns, creator productivity metrics, and resource utilization trends.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param creatorOrgType Creator organization type
+   * @param creatorOrgId Creator organization ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param joinCreatorDetail Whether to include creator details
+   * @param joinDataDetail Whether to include detailed data
+   * @return Resource creation overview
+   */
   @Override
   public ResourceCreationOverview resourceCreation(Long projectId, Long sprintId,
       AuthObjectType creatorOrgType, Long creatorOrgId, LocalDateTime createdDateStart,
@@ -1738,21 +2203,49 @@ public class TaskQueryImpl implements TaskQuery {
     }.execute();
   }
 
+  /**
+   * <p>
+   * Find the task with the earliest creation date in a project.
+   * </p>
+   * <p>
+   * Retrieves the task info entity with the minimum (earliest) creation date for the specified project.
+   * </p>
+   * @param projectId Project ID
+   * @return TaskInfo with the earliest creation date, or null if none exists
+   */
   @Override
   public TaskInfo findLeastByProjectId(Long projectId) {
     return taskInfoRepo.findLeastByProjectId(projectId);
   }
 
-  @Override
-  public Task checkAndFind(Long id) {
-    return taskRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Task"));
-  }
-
+  /**
+   * <p>
+   * Check and find a task info by ID.
+   * </p>
+   * <p>
+   * Retrieves a task info entity by its ID and throws ResourceNotFound if not found.
+   * </p>
+   * @param id TaskInfo ID
+   * @return TaskInfo entity if found
+   * @throws ResourceNotFound if the task info is not found
+   */
   @Override
   public TaskInfo checkAndFindInfo(Long id) {
     return taskInfoRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Task"));
   }
 
+  /**
+   * <p>
+   * Check and find multiple task info entities by a collection of IDs.
+   * </p>
+   * <p>
+   * Retrieves all task info entities for the given IDs and validates that all requested IDs exist.
+   * Throws ResourceNotFound if any are missing.
+   * </p>
+   * @param ids Collection of TaskInfo IDs
+   * @return List of TaskInfo entities if all found
+   * @throws ResourceNotFound if any task info is not found
+   */
   @Override
   public List<TaskInfo> checkAndFindInfo(Collection<Long> ids) {
     List<TaskInfo> tasks = taskInfoRepo.findAllById(ids);
@@ -1765,6 +2258,18 @@ public class TaskQueryImpl implements TaskQuery {
     return tasks;
   }
 
+  /**
+   * <p>
+   * Check and find multiple tasks by a collection of IDs.
+   * </p>
+   * <p>
+   * Retrieves all task entities for the given IDs and validates that all requested IDs exist.
+   * Throws ResourceNotFound if any are missing.
+   * </p>
+   * @param ids Collection of Task IDs
+   * @return List of Task entities if all found
+   * @throws ResourceNotFound if any task is not found
+   */
   @Override
   public List<Task> checkAndFind(Collection<Long> ids) {
     Set<Long> refTaskIds = new HashSet<>(ids);
@@ -1775,6 +2280,19 @@ public class TaskQueryImpl implements TaskQuery {
     return tasks;
   }
 
+  /**
+   * <p>
+   * Check and find tasks by project and a set of names.
+   * </p>
+   * <p>
+   * Retrieves all task info entities in the specified project with names in the given set.
+   * Throws ResourceNotFound if any name is not found.
+   * </p>
+   * @param projectId Project ID
+   * @param names Set of task names to find
+   * @return Map from task name to list of TaskInfo entities
+   * @throws ResourceNotFound if any name is not found
+   */
   @Override
   public Map<String, List<TaskInfo>> checkAndFindByProjectAndName(Long projectId,
       Set<String> names) {
@@ -1794,6 +2312,19 @@ public class TaskQueryImpl implements TaskQuery {
     return taskDb.stream().collect(Collectors.groupingBy(TaskInfo::getName));
   }
 
+  /**
+   * <p>
+   * Check and find tasks by sprint and a set of names.
+   * </p>
+   * <p>
+   * Retrieves all task info entities in the specified sprint with names in the given set.
+   * Throws ResourceNotFound if any name is not found.
+   * </p>
+   * @param sprintId Sprint ID
+   * @param names Set of task names to find
+   * @return Map from task name to list of TaskInfo entities
+   * @throws ResourceNotFound if any name is not found
+   */
   @Override
   public Map<String, List<TaskInfo>> checkAndFindByPlanAndName(Long sprintId, Set<String> names) {
     if (isEmpty(names)) {
@@ -1812,6 +2343,17 @@ public class TaskQueryImpl implements TaskQuery {
     return taskDb.stream().collect(Collectors.groupingBy(TaskInfo::getName));
   }
 
+  /**
+   * <p>
+   * Check if all subtasks of a task are completed.
+   * </p>
+   * <p>
+   * Validates that all subtasks of the specified task have been completed.
+   * Throws an exception if any subtask is not completed, preventing parent task completion.
+   * </p>
+   * @param projectId Project ID
+   * @param id Task ID
+   */
   @Override
   public void checkSubTasksIsCompleted(Long projectId, Long id) {
     TaskInfo notCompletedTask = findSub(id).stream()
@@ -1821,6 +2363,17 @@ public class TaskQueryImpl implements TaskQuery {
         new Object[]{nonNull(notCompletedTask) ? notCompletedTask.getName() : null});
   }
 
+  /**
+   * <p>
+   * Check that updating parent tasks does not create circular references.
+   * </p>
+   * <p>
+   * Validates that setting parent tasks does not create circular dependencies.
+   * Prevents infinite loops in task hierarchies by checking for circular references.
+   * </p>
+   * @param projectId Project ID
+   * @param tasks List of tasks to check for circular references
+   */
   @Override
   public void checkUpdateParentNotCircular(Long projectId, List<Task> tasks) {
     for (Task task : tasks) {
@@ -1833,6 +2386,17 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Find direct subtasks of a task.
+   * </p>
+   * <p>
+   * Retrieves all direct subtasks of the specified task.
+   * Returns only immediate children, not nested subtasks.
+   * </p>
+   * @param taskId Parent task ID
+   * @return List of direct subtasks
+   */
   @Override
   public List<TaskInfo> findSub(Long taskId) {
     List<TaskInfo> subs = taskInfoRepo.findByParentTaskId(taskId);
@@ -1849,6 +2413,18 @@ public class TaskQueryImpl implements TaskQuery {
     return subs;
   }
 
+  /**
+   * <p>
+   * Find all subtask information for multiple tasks.
+   * </p>
+   * <p>
+   * Efficiently retrieves all subtask information for multiple parent tasks.
+   * Uses batch processing to avoid N+1 query problems and includes nested subtasks.
+   * </p>
+   * @param projectId Project ID
+   * @param taskIds Collection of parent task IDs
+   * @return List of all subtask information
+   */
   @Override
   public List<TaskInfo> findAllSubInfo(Long projectId, Collection<Long> taskIds) {
     if (isEmpty(taskIds)) {
@@ -1981,6 +2557,17 @@ public class TaskQueryImpl implements TaskQuery {
     BizAssert.assertTrue(isConfirmor, NO_HANDLER_PERMISSION_CODE, NO_HANDLER_PERMISSION);
   }
 
+  /**
+   * <p>
+   * Check that all requested task IDs exist in the database.
+   * </p>
+   * <p>
+   * Validates that all requested task IDs correspond to existing tasks.
+   * Throws an exception if any task ID does not exist, ensuring data integrity.
+   * </p>
+   * @param reqTaskIds List of requested task IDs
+   * @param taskDbs List of found tasks from database
+   */
   @Override
   public void checkTaskExists(List<Long> reqTaskIds, List<Task> taskDbs) {
     assertResourceNotFound(isNotEmpty(taskDbs), reqTaskIds, "Task");
@@ -1991,6 +2578,16 @@ public class TaskQueryImpl implements TaskQuery {
     });
   }
 
+  /**
+   * <p>
+   * Check that all tasks are in an open status.
+   * </p>
+   * <p>
+   * Validates that all tasks are in a modifiable state (not completed, canceled, etc.).
+   * Throws an exception if any task is not open, preventing modifications to closed tasks.
+   * </p>
+   * @param taskDbs List of tasks to check
+   */
   @Override
   public void checkTaskOpenStatus(List<Task> taskDbs) {
     taskDbs.forEach(task -> {
@@ -1999,6 +2596,18 @@ public class TaskQueryImpl implements TaskQuery {
     });
   }
 
+  /**
+   * <p>
+   * Check if a task name already exists when adding a new task.
+   * </p>
+   * <p>
+   * Validates that the task name is unique within the project and sprint scope.
+   * Throws an exception if the name already exists, preventing duplicate task names.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintDb Sprint information
+   * @param name Task name to check
+   */
   @Override
   public void checkAddNameExists(Long projectId, TaskSprint sprintDb, String name) {
     if (nonNull(sprintDb)) {
@@ -2034,6 +2643,17 @@ public class TaskQueryImpl implements TaskQuery {
         new Object[]{targetId});
   }
 
+  /**
+   * <p>
+   * Check if adding tasks exceeds the sprint quota.
+   * </p>
+   * <p>
+   * Validates that adding the specified number of tasks does not exceed the sprint's task quota.
+   * Throws an exception if quota would be exceeded, preventing quota violations.
+   * </p>
+   * @param springId Sprint ID
+   * @param incr Number of tasks to add
+   */
   @Override
   public void checkQuota(Long springId, int incr) {
     long count = taskRepo.count();
@@ -2045,29 +2665,63 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set favorite flags for a list of tasks.
+   * </p>
+   * <p>
+   * Efficiently loads and sets favorite status for multiple tasks to avoid N+1 query problems.
+   * Uses batch retrieval and mapping to set favorite flags for the current user.
+   * </p>
+   * @param tasks List of tasks to set favorite flags for
+   */
   @Override
   public void setFavourite(List<? extends ResourceFavouriteAndFollow<?, ?>> tasks) {
+    // Extract task IDs for batch querying to avoid N+1 problem
     Set<Long> taskIds = tasks.stream().map(ResourceFavouriteAndFollow::getId)
         .collect(Collectors.toSet());
+    
+    // Batch retrieve favourite records for current user and specified tasks
     List<TaskFavourite> favourites = taskFavouriteRepo
         .findAllByTaskIdInAndCreatedBy(taskIds, getUserId());
+    
+    // Create a set of favourited task IDs for efficient lookup
     Set<Long> favouritesTaskIds = favourites.stream().map(TaskFavourite::getTaskId)
         .collect(Collectors.toSet());
-    tasks.forEach(api -> {
-      if (favouritesTaskIds.contains(api.getId())) {
-        api.setFavourite(true);
+    
+    // Set favourite flag for tasks that are favourited by current user
+    tasks.forEach(task -> {
+      if (favouritesTaskIds.contains(task.getId())) {
+        task.setFavourite(true);
       }
     });
   }
 
+  /**
+   * <p>
+   * Set follow flags for a list of tasks.
+   * </p>
+   * <p>
+   * Efficiently loads and sets follow status for multiple tasks to avoid N+1 query problems.
+   * Uses batch retrieval and mapping to set follow flags for the current user.
+   * </p>
+   * @param tasks List of tasks to set follow flags for
+   */
   @Override
   public void setFollow(List<? extends ResourceFavouriteAndFollow<?, ?>> tasks) {
+    // Extract task IDs for batch querying to avoid N+1 problem
     Set<Long> taskIds = tasks.stream().map(ResourceFavouriteAndFollow::getId)
         .collect(Collectors.toSet());
+    
+    // Batch retrieve follow records for current user and specified tasks
     List<TaskFollow> follows = taskFollowRepo
         .findByTaskIdInAndCreatedBy(taskIds, getUserId());
+    
+    // Create a set of followed task IDs for efficient lookup
     Set<Long> followTaskIds = follows.stream().map(TaskFollow::getTaskId)
         .collect(Collectors.toSet());
+    
+    // Set follow flag for tasks that are followed by current user
     tasks.forEach(task -> {
       if (followTaskIds.contains(task.getId())) {
         task.setFollow(true);
@@ -2075,31 +2729,55 @@ public class TaskQueryImpl implements TaskQuery {
     });
   }
 
+  /**
+   * <p>
+   * Set current user roles for a list of tasks.
+   * </p>
+   * <p>
+   * Determines and sets the current user's role for each task based on project membership,
+   * task assignment, and user permissions. Includes roles like assignee, creator, and viewer.
+   * </p>
+   * @param tasks List of tasks to set roles for
+   */
   @Override
   public void setCurrentRoles(List<Task> tasks) {
     if (isNotEmpty(tasks)) {
+      // Get current user context and admin status
       Principal principal = PrincipalContext.get();
       boolean isSysAdmin = isTenantSysAdmin();
       boolean isAppAdmin = hasPolicy(TesterConstant.ANGUSTESTER_ADMIN);
 
+      // Determine current user's role for each task
       tasks.forEach(task -> {
         List<AssociateUserType> currentRoles = new ArrayList<>();
+        
+        // Check if current user is the task creator
         if (nonNull(task.getCreatedBy())
             && task.getCreatedBy().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.CREATOR);
         }
+        
+        // Check if current user is the task assignee
         if (nonNull(task.getAssigneeId()) && task.getAssigneeId().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.ASSIGNEE);
         }
+        
+        // Check if current user is the task confirmor
         if (nonNull(task.getConfirmorId()) && task.getConfirmorId().equals(principal.getUserId())) {
           currentRoles.add(AssociateUserType.CONFIRMOR);
         }
+        
+        // Add system admin role if applicable
         if (isSysAdmin) {
           currentRoles.add(AssociateUserType.SYS_ADMIN);
         }
+        
+        // Add application admin role if applicable
         if (isAppAdmin) {
           currentRoles.add(AssociateUserType.APP_ADMIN);
         }
+        
+        // Set roles only if any are found
         if (isNotEmpty(currentRoles)) {
           task.setCurrentAssociateType(currentRoles);
         }
@@ -2107,30 +2785,49 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set API target names for a list of tasks.
+   * </p>
+   * <p>
+   * Efficiently loads and sets API target names for tasks that are associated with APIs.
+   * Uses batch retrieval to avoid N+1 query problems and sets target names for display.
+   * </p>
+   * @param tasks List of tasks to set API target names for
+   */
   @Override
   public void setApiTargetName(List<Task> tasks) {
     if (isNotEmpty(tasks)) {
+      // Extract API target IDs for API test tasks
       Set<Long> targetIds = tasks.stream()
           .filter(x -> (nonNull(x.getTargetId()) && x.getTaskType().isApiTest()))
           .map(Task::getTargetId).collect(Collectors.toSet());
       if (isEmpty(targetIds)) {
         return;
       }
+      
+      // Extract API service (parent) IDs for API test tasks
       Set<Long> targetParentIds = tasks.stream()
           .filter(x -> (nonNull(x.getTargetParentId()) && x.getTaskType().isApiTest()))
           .map(Task::getTargetParentId).collect(Collectors.toSet());
       if (isEmpty(targetParentIds)) {
         return;
       }
+      
+      // Batch retrieve API and service information to avoid N+1 queries
       Map<Long, ApisBaseInfo> apisDbMap = apisBaseInfoRepo.findAll0ByIdIn(targetIds).stream()
           .collect(Collectors.toMap(ApisBaseInfo::getId, x -> x));
       Map<Long, Services> projectsDbMap = servicesRepo.findAll0ByIdIn(targetParentIds).stream()
           .collect(Collectors.toMap(Services::getId, x -> x));
+      
+      // Set target names for API test tasks
       for (Task task : tasks) {
         if (task.getTaskType().isApiTest()) {
+          // Set API name if available
           if (nonNull(task.getTargetId()) && nonNull(apisDbMap.get(task.getTargetId()))) {
             task.setTargetName(apisDbMap.get(task.getTargetId()).getName());
           }
+          // Set service name if available
           if (nonNull(task.getTargetParentId())
               && nonNull(projectsDbMap.get(task.getTargetParentId()))) {
             task.setTargetParentName(projectsDbMap.get(task.getTargetParentId()).getName());
@@ -2140,6 +2837,16 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set scenario target names for a list of tasks.
+   * </p>
+   * <p>
+   * Efficiently loads and sets scenario target names for tasks that are associated with scenarios.
+   * Uses batch retrieval to avoid N+1 query problems and sets target names for display.
+   * </p>
+   * @param tasks List of tasks to set scenario target names for
+   */
   @Override
   public void setScenarioTargetName(List<Task> tasks) {
     if (isNotEmpty(tasks)) {
@@ -2162,13 +2869,27 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set progress information for a list of tasks.
+   * </p>
+   * <p>
+   * Calculates and sets progress percentages for multiple tasks based on their completion status.
+   * Handles various task states and calculates accurate progress metrics.
+   * </p>
+   * @param tasks List of tasks to set progress for
+   */
   @Override
   public void setTaskProgress(List<Task> tasks) {
     if (isEmpty(tasks)) {
       return;
     }
+    
+    // Retrieve all subtasks for the project to calculate hierarchical progress
     List<Task> allSubTasks = findAllSub(tasks.get(0).getProjectId(),
         tasks.stream().map(Task::getId).collect(Collectors.toSet()));
+    
+    // If no subtasks exist, calculate simple progress for each task
     if (isEmpty(allSubTasks)) {
       for (Task task : tasks) {
         task.setProgress(new Progress()
@@ -2179,9 +2900,13 @@ public class TaskQueryImpl implements TaskQuery {
       return;
     }
 
+    // Calculate hierarchical progress including subtasks
     for (Task task : tasks) {
+      // Find all subtasks for this specific task
       List<Task> subs = findAllSubTasks(allSubTasks, task.getId());
-      subs.add(task);
+      subs.add(task); // Include the task itself in progress calculation
+      
+      // Calculate progress based on completed vs total tasks
       task.setProgress(new Progress()
           .setCompleted(subs.stream().filter(x -> x.getStatus().isCompleted())
               .collect(Collectors.toSet()).size())
@@ -2190,6 +2915,16 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Set progress information for a list of task info objects.
+   * </p>
+   * <p>
+   * Calculates and sets progress percentages for multiple task info objects based on their completion status.
+   * Handles various task states and calculates accurate progress metrics for lightweight task representations.
+   * </p>
+   * @param tasks List of task info objects to set progress for
+   */
   @Override
   public void setTaskInfoProgress(List<TaskInfo> tasks) {
     if (isEmpty(tasks)) {
@@ -2218,6 +2953,17 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Assemble and send task modification notice events.
+   * </p>
+   * <p>
+   * Creates and sends notification events for task modifications to relevant users.
+   * Handles batch processing of multiple tasks and activities.
+   * </p>
+   * @param tasksDb List of modified tasks
+   * @param activities List of related activities
+   */
   @Override
   public void assembleAndSendModifyNoticeEvent(List<Task> tasksDb, List<Activity> activities) {
     Map<Long, Activity> taskActivityMap = activities.stream()
@@ -2229,20 +2975,31 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Override
   public void assembleAndSendModifyNoticeEvent(Task taskDb, Activity activity) {
+    // Get notification types configured for task modification events
     List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(
         nullSafe(taskDb.getTenantId(), getOptTenantId())).get(TaskModificationCode);
     if (isEmpty(noticeTypes)) {
       return;
     }
+    
+    // Build list of users to notify
     List<Long> receiveObjectIds = new ArrayList<>();
+    // Add task assignee
     receiveObjectIds.add(taskDb.getAssigneeId());
+    // Add users following this task
     List<Long> followUserIds = taskFollowRepo.findUserIdsByTaskId(taskDb.getId());
     receiveObjectIds.addAll(followUserIds);
+    // Remove current user to avoid self-notification
     receiveObjectIds.remove(getUserId());
+    
+    // Send notification if there are recipients
     if (isNotEmpty(receiveObjectIds)) {
+      // Create notification message with task details
       String message = message(TaskModification, new Object[]{getUserFullName(),
               taskDb.getName(), activity.getDescription()},
           PrincipalContext.getDefaultLanguage().toLocale());
+      
+      // Assemble and send notification event
       EventContent event = assembleAngusTesterUserNoticeEvent(TaskModificationCode, message,
           TASK.getValue(), taskDb.getId().toString(), taskDb.getName(), noticeTypes,
           receiveObjectIds);
@@ -2273,6 +3030,16 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Assemble and send task assignee modification notice event.
+   * </p>
+   * <p>
+   * Creates and sends notification events when a task assignee is changed.
+   * Notifies both the previous and new assignees about the change.
+   * </p>
+   * @param taskDb Modified task
+   */
   @Override
   public void assembleAndSendModifyAssigneeNoticeEvent(Task taskDb) {
     if (nonNull(taskDb.getAssigneeId())) {
@@ -2312,6 +3079,22 @@ public class TaskQueryImpl implements TaskQuery {
     }
   }
 
+  /**
+   * <p>
+   * Get task efficiency summaries for analysis.
+   * </p>
+   * <p>
+   * Retrieves task efficiency data for performance analysis and reporting.
+   * Supports filtering by project, sprint, assignee, and date range.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param assigneeOrgType Assignee organization type
+   * @param assigneeOrgId Assignee organization ID
+   * @return List of task efficiency summaries
+   */
   private List<TaskEfficiencySummary> getTaskEfficiencySummaries(Long projectId, Long sprintId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType assigneeOrgType,
       Long assigneeOrgId) {
@@ -2325,6 +3108,22 @@ public class TaskQueryImpl implements TaskQuery {
         TaskEfficiencySummary.class, allFilters);
   }
 
+  /**
+   * <p>
+   * Get task creation summaries for analysis.
+   * </p>
+   * <p>
+   * Retrieves task creation data for performance analysis and reporting.
+   * Supports filtering by project, sprint, creator, and date range.
+   * </p>
+   * @param projectId Project ID
+   * @param sprintId Optional sprint ID
+   * @param createdDateStart Start date for creation time filter
+   * @param createdDateEnd End date for creation time filter
+   * @param creatorOrgType Creator organization type
+   * @param creatorOrgId Creator organization ID
+   * @return List of task creation summaries
+   */
   private List<TaskEfficiencySummary> getTaskCreatedSummaries(Long projectId, Long sprintId,
       LocalDateTime createdDateStart, LocalDateTime createdDateEnd, AuthObjectType creatorOrgType,
       Long creatorOrgId) {
@@ -2360,20 +3159,66 @@ public class TaskQueryImpl implements TaskQuery {
         allFilters).stream().collect(groupingBy(TaskEfficiencySummary::getAssigneeId));
   }
 
+  /**
+   * <p>
+   * Convert TaskSprint to TaskSprintSummary.
+   * </p>
+   * <p>
+   * Static utility method to convert a TaskSprint entity to its summary representation.
+   * </p>
+   * @param sprintDb TaskSprint entity
+   * @return TaskSprintSummary representation
+   */
   @NameJoin
   public static TaskSprintSummary getSprintSummary(TaskSprint sprintDb) {
     return toSprintSummary(sprintDb);
   }
 
+  /**
+   * <p>
+   * Convert list of TaskInfo to TaskSummary.
+   * </p>
+   * <p>
+   * Static utility method to convert a list of TaskInfo entities to their summary representations.
+   * </p>
+   * @param tasks List of TaskInfo entities
+   * @return List of TaskSummary representations
+   */
   @NameJoin
   public static List<TaskSummary> getTaskSummary(List<TaskInfo> tasks) {
     return isEmpty(tasks) ? null
         : tasks.stream().map(TaskConverter::toTaskSummary).collect(Collectors.toList());
   }
 
+  /**
+   * <p>
+   * Convert Task to TaskDetailSummary.
+   * </p>
+   * <p>
+   * Static utility method to convert a Task entity to its detailed summary representation.
+   * </p>
+   * @param task Task entity
+   * @return TaskDetailSummary representation
+   */
   @NameJoin
   public static TaskDetailSummary getTaskDetailSummary(Task task) {
     return toTaskDetailSummary(task);
+  }
+
+  /**
+   * <p>
+   * Check and find a task by ID.
+   * </p>
+   * <p>
+   * Retrieves a task entity by its ID and throws ResourceNotFound if not found.
+   * </p>
+   * @param id Task ID
+   * @return Task entity if found
+   * @throws ResourceNotFound if the task is not found
+   */
+  @Override
+  public Task checkAndFind(Long id) {
+    return taskRepo.findById(id).orElseThrow(() -> ResourceNotFound.of(id, "Task"));
   }
 
 }
