@@ -238,7 +238,7 @@ public class OAS3ExampleGenerator {
       }
       return mp;
     } else if (!StringUtils.isEmpty(schema.get$ref())) { // model
-      String simpleName = OpenApiUtil.getSimpleRef(schema.get$ref());
+      String simpleName = OpenAPIUtil.getSimpleRef(schema.get$ref());
       Schema<?> model = null;
       if (openAPI != null && openAPI.getComponents() != null
           && openAPI.getComponents().getSchemas() != null) {
