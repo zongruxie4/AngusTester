@@ -1,7 +1,7 @@
 const pureParams = (params: Record<string, any>): Record<string, any> => {
   const res = {};
   Object.keys(params).forEach(i => {
-    if (params[i] ?? (params[i] !== '')) {
+    if (params[i] && (params[i] !== '')) {
       res[i] = params[i];
     }
   });
