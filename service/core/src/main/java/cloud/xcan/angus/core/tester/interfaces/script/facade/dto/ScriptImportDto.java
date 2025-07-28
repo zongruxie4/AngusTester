@@ -14,9 +14,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * @author XiaoLong Liu
- */
 @Getter
 @Setter
 @Accessors(chain = true)

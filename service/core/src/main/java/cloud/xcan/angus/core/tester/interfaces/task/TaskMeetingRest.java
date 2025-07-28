@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task - Meeting", description = "Task Meeting Management API - Comprehensive meeting management system for Agile project collaboration including scheduling, updates, and participant coordination.")
+@Tag(name = "Task Meeting", description = "Task Meeting Management API - Comprehensive meeting management system for Agile project collaboration including scheduling, updates, and participant coordination.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/meeting")

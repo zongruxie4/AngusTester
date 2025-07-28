@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskSprint", description = "Task Sprint Management API - Comprehensive iteration management system for Agile development cycles with progress tracking, timeline control, and team collaboration features.")
+@Tag(name = "Task Sprint", description = "Task Sprint Management API - Comprehensive iteration management system for Agile development cycles with progress tracking, timeline control, and team collaboration features.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")

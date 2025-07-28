@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task - Follow", description = "Task Follow Management API - Comprehensive notification system for subscribing to task updates and receiving real-time alerts when followed tasks are modified.")
+@Tag(name = "Task Follow", description = "Task Follow Management API - Comprehensive notification system for subscribing to task updates and receiving real-time alerts when followed tasks are modified.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TaskRemark", description = "Task Remark Management API - Comprehensive comment and annotation system for task collaboration including threaded discussions and contextual notes.")
+@Tag(name = "Task Remark", description = "Task Remark Management API - Comprehensive comment and annotation system for task collaboration including threaded discussions and contextual notes.")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/remark")

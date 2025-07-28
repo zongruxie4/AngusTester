@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
 @Getter
-
 public class ScriptAuthFindDto extends PageQuery {
 
   @Schema(description = "Authorization record identifier for precise query filtering")
