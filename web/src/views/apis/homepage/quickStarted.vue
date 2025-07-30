@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, ref } from 'vue';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/localImport/index.vue'));
 

@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, TESTER } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/infra';
 import DOMPurify from 'dompurify';
 
 import { activity } from 'src/api/tester';

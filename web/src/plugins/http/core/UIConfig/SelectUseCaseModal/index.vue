@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, inject, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { TESTER, duration } from '@xcan-angus/tools';
+import { TESTER, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
 import { paramTarget, apis } from '@/api/tester';

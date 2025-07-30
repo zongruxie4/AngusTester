@@ -22,7 +22,7 @@ const getDefaultLanguage = () => {
     navigatorLang = 'en'
   }
 
-  return cookie.get('localeCookie') || navigatorLang
+  return cookieUtils.get('localeCookie') || navigatorLang
 };
 
 const bootstrap = async () => {

@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { http, utils } from '@xcan-angus/tools';
+import { http, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';

@@ -3,7 +3,7 @@ import { computed, inject, reactive, ref, watch } from 'vue';
 import { Icon, IconRequired, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import { encode } from '@/utils/secure';
-import { http, utils } from '@xcan-angus/tools';
+import { http, utils } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from 'src/api/tester';
 

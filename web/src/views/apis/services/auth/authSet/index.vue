@@ -3,7 +3,7 @@ import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } fr
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { Arrow, IconText, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { apis, services } from '@/api/tester';
 

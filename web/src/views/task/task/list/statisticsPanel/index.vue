@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { analysis } from 'src/api/tester';
 
 import { ResourceInfo } from '../PropsType';

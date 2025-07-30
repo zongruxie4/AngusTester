@@ -13,7 +13,7 @@ import {
   TaskPriority,
   TaskStatus
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
 

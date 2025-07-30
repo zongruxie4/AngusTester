@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { ActivityInfo, IconRefresh, Input, PureCard, Spin } from '@xcan-angus/vue-ui';
 import { Pagination } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { activity } from 'src/api/tester';
 
 interface Activity {

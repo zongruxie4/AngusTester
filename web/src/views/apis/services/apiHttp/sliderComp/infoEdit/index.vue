@@ -15,7 +15,7 @@ import {
   , VuexHelper
 } from '@xcan-angus/vue-ui';
 import { apis, services } from 'src/api/tester';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
 
 interface Props {

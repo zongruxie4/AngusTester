@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import { http } from '@xcan-angus/infra';
 import { handleHeaders } from '@/utils/index';
 
 let baseUrl: string;

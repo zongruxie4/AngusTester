@@ -127,7 +127,7 @@ const formatTypes = [{
 }];
 
 onMounted(async () => {
-  accessToken.value = cookie.get('access_token');
+  accessToken.value = cookieUtils.get('access_token');
   docOrigin.value = await site.getUrl('apis');
 });
 

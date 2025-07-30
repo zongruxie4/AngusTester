@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';

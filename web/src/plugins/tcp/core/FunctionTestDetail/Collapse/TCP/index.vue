@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '../StatusTag/index.vue';
 import { TcpInfo } from './PropsType';

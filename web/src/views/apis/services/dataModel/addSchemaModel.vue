@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
 import AddAttrModal from './addAttrModal.vue';

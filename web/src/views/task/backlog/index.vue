@@ -18,7 +18,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Input, Select, Validate } from '@xcan-angus/vue-ui';
 
 import { DelayData, DelayMode } from './PropsType';

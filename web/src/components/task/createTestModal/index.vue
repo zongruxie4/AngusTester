@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
-import { http, TESTER } from '@xcan-angus/tools';
+import { http, TESTER } from '@xcan-angus/infra';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 import { Icon, Modal, notification, Select, Toggle } from '@xcan-angus/vue-ui';
 import { project } from '@/api/tester';

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { Modal, notification, Select } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 interface Props {

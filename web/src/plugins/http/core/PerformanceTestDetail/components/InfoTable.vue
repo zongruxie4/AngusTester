@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import { TableColumnType } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Icon, Table } from '@xcan-angus/vue-ui';
 
 interface Props {

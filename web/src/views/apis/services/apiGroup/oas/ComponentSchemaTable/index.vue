@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { getPropertyExample } from '../utils';
 import TopTable from './TopTable.vue';

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent } from 'vue';
 import { Alert } from 'ant-design-vue';
 import { Colon, HttpMethodText } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/views/report/preview/execFunction/sampling/http/collapse/statusTag/index.vue';
 import { HTTPInfo } from './PropsType';

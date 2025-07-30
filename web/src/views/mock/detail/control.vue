@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { Icon, IconRefresh, Input, IntervalTimestamp, PureCard, Table } from '@xcan-angus/vue-ui';
 import { Tooltip } from 'ant-design-vue';
-import { duration, TESTER } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { analysis, mock as mock0 } from 'src/api/tester';

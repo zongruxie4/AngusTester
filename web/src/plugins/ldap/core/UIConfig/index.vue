@@ -4,7 +4,7 @@ import { Button, Collapse, CollapsePanel, RadioGroup, Radio, Switch } from 'ant-
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Colon, Arrow, IconRequired, notification, Tooltip } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 
 import { PipelineConfig } from '../PropsType';
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Input, IconCopy, Hints } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 export interface Option {
     name: string;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { IntervalTimestamp } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 const CacheChart = defineAsyncComponent(() => import('@/components/chart/mock/cacheChart.vue'));
 const RamChart = defineAsyncComponent(() => import('@/components/chart/mock/ramChart.vue'));

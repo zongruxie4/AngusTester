@@ -13,7 +13,7 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from 'src/api/tester';
 

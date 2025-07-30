@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { DropdownGroup, HttpMethodText, Icon, IconText, Input, Select, Table } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { services, apis } from '@/api/tester';
 

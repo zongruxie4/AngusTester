@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER, http } from '@xcan-angus/infra';
 import { notification } from '@xcan-angus/vue-ui';
 import { exec } from '@/api/tester';
 

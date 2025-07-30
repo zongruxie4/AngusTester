@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
-import { utils, TESTER } from '@xcan-angus/tools';
+import { utils, TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
 
 type Remark = {

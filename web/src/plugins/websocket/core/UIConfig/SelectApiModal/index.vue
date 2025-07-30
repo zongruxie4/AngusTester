@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
 import { ApiInfo } from './PropsType';

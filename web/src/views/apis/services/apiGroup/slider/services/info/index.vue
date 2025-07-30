@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, SelectEnum } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { services } from 'src/api/tester';
 import { IInfomation, Status } from './PropsType';

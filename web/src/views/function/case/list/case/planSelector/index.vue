@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { inject, ref, watch } from 'vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { funcPlan } from '@/api/tester';
 

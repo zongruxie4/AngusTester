@@ -4,7 +4,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { Icon, Input, notification } from '@xcan-angus/vue-ui';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 
 import { setting } from '@/api/gm';
 import apple from './assets/images/apple.png';

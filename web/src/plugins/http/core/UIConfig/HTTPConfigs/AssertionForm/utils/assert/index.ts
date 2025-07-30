@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash-es';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import expressionUtils from '../expression';
 import { Operator } from '../expression/PropsType';

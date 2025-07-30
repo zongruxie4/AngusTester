@@ -1,4 +1,4 @@
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 type callbackFn = () => void;
 interface IStateObj {

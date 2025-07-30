@@ -12,7 +12,7 @@ import {
   notification,
   ScriptTypeTag
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { scenario } from 'src/api/tester';
 import { MenuItem, MenuItemKey, MenuItemPermission, SceneInfo } from './PropsType';

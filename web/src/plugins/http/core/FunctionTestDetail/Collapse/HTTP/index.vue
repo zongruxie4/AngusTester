@@ -6,7 +6,7 @@ import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 export interface Props {
   value: HTTPInfo;

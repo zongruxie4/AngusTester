@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Popconfirm, Tag, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 
 import { ServerInfo } from '../PropsType';

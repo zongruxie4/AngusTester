@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { GroupedKey, SceneInfo } from './PropsType';

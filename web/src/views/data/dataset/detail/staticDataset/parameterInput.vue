@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, IconRequired, Input, Tooltip, FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 export interface Option {

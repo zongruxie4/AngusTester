@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, onMounted } from 'vue';
 import '@xcan-angus/rapidoc';
-import { cookie, site } from '@xcan-angus/tools';
+import { cookieUtils, site } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import YAML from 'yaml';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
@@ -42,7 +42,7 @@ const loadData = async () => {
 const accessToken = ref();
 const docOrigin = ref();
 onMounted(async () => {
-  accessToken.value = cookie.get('access_token');
+  accessToken.value = cookieUtils.get('access_token');
   docOrigin.value = await site.getUrl('apis');
   loadData();
 });

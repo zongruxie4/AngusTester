@@ -4,7 +4,7 @@ import { Colon, IconCount, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { Tooltip } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 

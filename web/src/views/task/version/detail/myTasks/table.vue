@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { http } from '@xcan-angus/tools';
+import { http } from '@xcan-angus/infra';
 
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 

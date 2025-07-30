@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, watchEffect } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Input, Icon, Tooltip } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { TransStartConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';

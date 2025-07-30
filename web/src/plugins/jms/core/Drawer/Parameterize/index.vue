@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { Spin, Hints, Input, AsyncComponent, Select } from '@xcan-angus/vue-ui';
 import { RadioButton, RadioGroup } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 const activeType = ref<'upload' | 'generated'>('upload');
 const activeSource = ref('file');

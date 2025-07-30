@@ -2,7 +2,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { IconText, Modal, SelectEnum, TreeSelect, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 
 const props = withDefaults(defineProps<{visible: boolean, service?: {id: string, name: string}, projectId: string}>(), {

@@ -4,7 +4,7 @@ import { Button, Collapse, CollapsePanel, Switch, Checkbox } from 'ant-design-vu
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Colon, Arrow, IconRequired, Tooltip, SelectInput, Select, ShortDuration } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 import { PipelineConfig } from '../PropsType';

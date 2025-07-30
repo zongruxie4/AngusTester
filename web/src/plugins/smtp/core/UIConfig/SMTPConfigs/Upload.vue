@@ -3,7 +3,7 @@ import { ref, watch, computed, onMounted, nextTick } from 'vue';
 import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
-// import { gzip, ungzip } from '@xcan-angus/tools';
+// import { gzip, ungzip } from '@xcan-angus/infra';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface File {

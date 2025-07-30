@@ -3,7 +3,7 @@ import { ref, computed, onMounted, inject } from 'vue';
 import { Icon, SearchPanel, IconRefresh, Colon, DropdownSort } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 interface Props {
   loading: boolean;

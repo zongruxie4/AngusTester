@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { Button, Collapse, CollapsePanel, Popconfirm, TypographyParagraph } from 'ant-design-vue';
 import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { services } from '@/api/tester';
 

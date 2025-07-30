@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
 
 import { ProjectInfo } from './PropsType';

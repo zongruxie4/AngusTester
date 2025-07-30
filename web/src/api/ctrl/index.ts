@@ -1,4 +1,4 @@
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import Exec from './Exec';
 import Node from './Node';

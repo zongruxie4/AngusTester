@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, provide, ref, watch } from 'vue';
 import { AsyncComponent, Icon, Select } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Button, Popover, RadioButton, RadioGroup, Switch, TabPane, Tabs, Tag, Tooltip } from 'ant-design-vue';
 
 import { Props } from './PropTypes';

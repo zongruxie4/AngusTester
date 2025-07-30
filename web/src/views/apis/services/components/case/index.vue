@@ -14,7 +14,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 
 import { Case } from './type';
 import { apis } from 'src/api/tester';

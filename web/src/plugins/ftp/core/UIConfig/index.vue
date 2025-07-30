@@ -5,7 +5,7 @@ import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow, Select, IconRequired, Spin, ShortDuration } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 import { PipelineConfig } from '../PropsType';

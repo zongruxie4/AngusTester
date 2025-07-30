@@ -4,7 +4,7 @@ import { Grid, Hints, Icon, IconRefresh, Input, NoData, PureCard, Spin, FormatHi
 import { useI18n } from 'vue-i18n';
 import { Pagination, TabPane, Tabs, Tooltip } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 
 import { mock } from 'src/api/tester';
 

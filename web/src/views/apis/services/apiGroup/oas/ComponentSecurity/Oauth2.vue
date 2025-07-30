@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Colon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 type FlowsKey = 'implicit' | 'authorizationCode' | 'password' | 'clientCredentials';
 type FlowsItem = {

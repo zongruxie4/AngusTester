@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
 import { NoData, Colon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Badge } from 'ant-design-vue';
 
 import { PipelineConfig } from '../UIConfig/PropsType';

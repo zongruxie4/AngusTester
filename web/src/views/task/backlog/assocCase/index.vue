@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../PropsType';

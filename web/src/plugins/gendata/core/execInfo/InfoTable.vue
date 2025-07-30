@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
 import { TableColumnType } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 interface Props {
   columns: TableColumnType[];

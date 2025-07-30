@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { Colon, ScriptTypeTag, Tooltip } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ScriptInfo } from '../PropsType';
 

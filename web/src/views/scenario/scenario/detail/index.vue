@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
 import { scenario, exec } from 'src/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';

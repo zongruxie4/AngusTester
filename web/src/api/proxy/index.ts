@@ -1,4 +1,4 @@
-import { PUB_TESTER, http } from '@xcan-angus/tools';
+import { PUB_TESTER, http } from '@xcan-angus/infra';
 
 /**
  * 将直连URL转换为代理URL

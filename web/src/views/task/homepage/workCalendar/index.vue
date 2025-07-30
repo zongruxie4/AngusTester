@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Badge, Calendar } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconTask, Popover, Select, TaskStatus } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 

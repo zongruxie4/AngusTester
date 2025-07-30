@@ -1,4 +1,4 @@
-import { GM } from '@xcan-angus/tools';
+import { GM } from '@xcan-angus/infra';
 
 import Auth from './Auth';
 import App from './App';

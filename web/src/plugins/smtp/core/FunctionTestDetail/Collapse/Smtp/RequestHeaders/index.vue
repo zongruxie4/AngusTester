@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
 
 import { ExecContent } from '../../../PropsType';

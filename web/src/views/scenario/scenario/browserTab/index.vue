@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
 import { Dropdown, Menu, MenuItem, TabPane, Tabs } from 'ant-design-vue';
-import { localStore } from '@xcan-angus/tools';
+import { localStore } from '@xcan-angus/infra';
 
 import { Icon, notification } from '@xcan-angus/vue-ui';
 

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { TESTER, duration } from '@xcan-angus/tools';
+import { TESTER, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import ListItem from './listItem.vue';

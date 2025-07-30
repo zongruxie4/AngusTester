@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, provide, re
 import dayjs from 'dayjs';
 import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils, HttpTestInfo, Indicator } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';

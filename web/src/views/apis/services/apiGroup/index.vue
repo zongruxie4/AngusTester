@@ -356,7 +356,7 @@ onMounted(async () => {
       notification.warning('服务不存在或者您没有查看全选');
     }
   }
-  accessToken.value = cookie.get('access_token');
+  accessToken.value = cookieUtils.get('access_token');
   docOrigin.value = await site.getUrl('apis');
 });
 

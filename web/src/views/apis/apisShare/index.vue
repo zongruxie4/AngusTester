@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, provide, watch } from 'vue';
-import { cookie, site } from '@xcan-angus/tools';
+import { cookieUtils, site } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
@@ -80,7 +80,7 @@ const docOrigin = ref();
 onMounted(async () => {
   id.value = route.query.id;
   pat.value = route.query.pat;
-  accessToken.value = cookie.get('access_token');
+  accessToken.value = cookieUtils.get('access_token');
   docOrigin.value = await site.getUrl('apis');
   await loadData();
 

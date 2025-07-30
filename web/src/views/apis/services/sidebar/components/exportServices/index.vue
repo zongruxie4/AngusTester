@@ -364,7 +364,7 @@ const formatTypes = computed(() => [{
 }].filter(Boolean));
 
 onMounted(async () => {
-  accessToken.value = cookie.get('access_token');
+  accessToken.value = cookieUtils.get('access_token');
   docOrigin.value = await site.getUrl('apis');
   if (props.type === 'API') {
     importCreatPdf();

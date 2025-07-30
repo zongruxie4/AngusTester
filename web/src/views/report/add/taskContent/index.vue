@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
 
 interface Props {

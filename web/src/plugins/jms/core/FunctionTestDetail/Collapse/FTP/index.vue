@@ -2,7 +2,7 @@
 import { inject, computed, defineAsyncComponent, ref } from 'vue';
 import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';

@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
 interface Props {

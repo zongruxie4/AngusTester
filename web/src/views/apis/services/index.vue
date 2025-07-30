@@ -13,7 +13,7 @@ import {
   watch
 } from 'vue';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ExecContent, ExecInfo } from './PropsType';
 import Collapse from '@/views/report/preview/execFunction/sampling/http/collapse/index.vue';

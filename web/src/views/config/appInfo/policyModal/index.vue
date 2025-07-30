@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { Icon, Input, Modal, Scroll } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Divider } from 'ant-design-vue';
-import { duration, GM } from '@xcan-angus/tools';
+import { duration, GM } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;

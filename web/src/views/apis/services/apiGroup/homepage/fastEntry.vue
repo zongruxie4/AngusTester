@@ -3,7 +3,7 @@
 import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { AsyncComponent, Icon, Tooltip, VuexHelper } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 
 const LocalImport = defineAsyncComponent(() => import('../../sidebar/components/localImport/index.vue'));

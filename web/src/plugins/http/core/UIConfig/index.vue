@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, ref, onMounted, watch, inject, computed } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, AsyncComponent, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import qs from 'qs';
 import { paramTarget } from '@/api/tester';
 

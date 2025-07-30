@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Input, notification, SelectEnum } from '@xcan-angus/vue-ui';
 
 import { Condition, ResponseMatchConfig } from './PropsType';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 interface Props {
   value: ResponseMatchConfig['body']&{condition:{message:string;value:Condition;}};

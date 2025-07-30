@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { PermissionKey, ResourceInfo, ScriptInfo } from '../PropsType';
 import { isEqual } from 'lodash-es';

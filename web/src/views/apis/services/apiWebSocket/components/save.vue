@@ -4,7 +4,7 @@
 import { inject, onMounted, reactive, ref } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectEnum, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { apis, services } from 'src/api/tester';
 

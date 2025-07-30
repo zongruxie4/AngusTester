@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { http, utils, TESTER } from '@xcan-angus/tools';
+import { http, utils, TESTER } from '@xcan-angus/infra';
 import { Spin } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
 import { services } from '@/api/tester';

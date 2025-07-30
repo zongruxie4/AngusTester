@@ -1,4 +1,4 @@
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { ParamsItem } from '@/views/apis/services/apiHttp/interface';
 import { blobToDataURL } from '@/utils/common';
 import { blobTobase64, dataURLtoBlob, getBlobByUrl } from '@/utils/blob';

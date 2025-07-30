@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { Input, Modal, ReviewStatus, Table, TestResult } from '@xcan-angus/vue-ui';
 import { ReviewCaseInfo } from './PropsType';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
 

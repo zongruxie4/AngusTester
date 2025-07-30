@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
-import { http } from '@xcan-angus/tools';
+import { http } from '@xcan-angus/infra';
 import { Select, Icon, Arrow, Colon, Tooltip } from '@xcan-angus/vue-ui';
 
 interface Props {

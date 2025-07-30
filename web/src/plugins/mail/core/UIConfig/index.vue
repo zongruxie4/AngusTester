@@ -4,7 +4,7 @@ import { Badge, Button, Collapse, CollapsePanel, Switch, Tabs, TabPane, RadioGro
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow, IconRequired, Hints, ShortDuration } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 
 import { PipelineConfig } from '../PropsType';
 import Upload from './Upload.vue';

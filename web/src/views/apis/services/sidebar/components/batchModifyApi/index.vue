@@ -2,7 +2,7 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification, Select, SelectEnum, SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import qs from 'qs';
 import { services } from '@/api/tester';
 

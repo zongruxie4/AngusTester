@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 
 type Tag = 'DYNAMIC_POSITION' | 'TOP_NAVIGATION' | 'FIXED_POSITION' | 'HEADER_MENU_POPOVER'

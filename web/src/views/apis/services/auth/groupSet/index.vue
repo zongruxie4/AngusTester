@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { debounce } from 'throttle-debounce';
-import { GM, duration } from '@xcan-angus/tools';
+import { GM, duration } from '@xcan-angus/infra';
 import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
 
 interface ListInfo {

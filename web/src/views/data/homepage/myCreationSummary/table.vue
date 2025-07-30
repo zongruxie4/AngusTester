@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { dataSource, dataSet, variable } from 'src/api/tester';
 import { space } from '@/api/storage';
 

@@ -3,7 +3,7 @@
 import { onMounted, ref, watch, watchEffect } from 'vue';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 export interface OptionProps {

@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, ref, onMounted, watch, computed } from 'vue';
 import { Checkbox, Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Switch } from 'ant-design-vue';
 import { Icon, AsyncComponent, NoData, Input, SelectEnum, Tooltip, Validate, Select, Arrow, IconRequired, Colon, ApiUtils as angusUtils, FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { uniq } from 'lodash-es';
 import qs from 'qs';
 import Draggable from 'vuedraggable';

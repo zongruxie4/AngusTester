@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { Input, Modal, ReviewStatus, Table, TestResult } from '@xcan-angus/vue-ui';
-import { http, duration } from '@xcan-angus/tools';
+import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { ReviewCaseInfo } from '@/views/function/review/edit/PropsType';
 

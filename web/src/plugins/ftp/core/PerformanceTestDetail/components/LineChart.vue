@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, onBeforeUnmount, nextTick } from 'vue';
 import * as echarts from 'echarts/core';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
 import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components';

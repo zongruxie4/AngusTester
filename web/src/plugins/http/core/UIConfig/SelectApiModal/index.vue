@@ -2,7 +2,7 @@
 import { ref, computed, inject } from 'vue';
 import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, duration } from '@xcan-angus/tools';
+import { TESTER, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { apis, paramTarget } from '@/api/tester';
 

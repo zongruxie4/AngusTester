@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref, onMounted, watch, watchEffect } from 'vue';
 import { Badge, Collapse, CollapsePanel, Tabs, TabPane, Switch } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, Tooltip, Validate, Select, Arrow } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ParameterConfig, WebsocketConfig, WebSocketMode } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';

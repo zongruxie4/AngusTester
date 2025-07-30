@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { apis, mock } from 'src/api/tester';
 

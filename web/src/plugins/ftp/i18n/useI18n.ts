@@ -1,4 +1,4 @@
-import { cookie } from '@xcan-angus/tools';
+import { cookieUtils } from '@xcan-angus/infra';
 
 import enMessages from './en';
 import zhMessages from './zh_CN';
@@ -8,7 +8,7 @@ class UseI18n {
   private localeCookie:string;
   private messages:{[key:string]:any};
   constructor () {
-    const localeCookie = cookie.get('localeCookie');
+    const localeCookie = cookieUtils.get('localeCookie');
     if (!['en', 'zh_CN'].includes(localeCookie)) {
       this.localeCookie = 'zh_CN';
     }

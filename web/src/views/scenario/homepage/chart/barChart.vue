@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';

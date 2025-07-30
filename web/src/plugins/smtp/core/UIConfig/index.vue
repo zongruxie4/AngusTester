@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, ref, onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Hints } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 
 import { PipelineConfig } from '../PropsType';

@@ -3,7 +3,7 @@ import { computed, ref, onMounted, watch, inject } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon, notification } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, TESTER } from '@xcan-angus/tools';
+import { duration, TESTER } from '@xcan-angus/infra';
 import YAML from 'yaml';
 import { script } from '@/api/tester';
 

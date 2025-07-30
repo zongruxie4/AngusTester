@@ -17,7 +17,7 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { useRoute } from 'vue-router';
 
 import ViewType from '@/views/mock/viewType/index.vue';

@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, defineAsyncComponent, watchEffect } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Tooltip, Input, IconCopy, SelectEnum } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/tools';
+import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { FormState } from './PropsType';

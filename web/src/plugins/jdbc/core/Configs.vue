@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
-import { utils, TESTER } from '@xcan-angus/tools';
+import { utils, TESTER } from '@xcan-angus/infra';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';

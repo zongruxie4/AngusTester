@@ -6,7 +6,7 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { useRouter } from 'vue-router';
 
 import { encode } from '@/utils/secure';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { mock } from 'src/api/tester';
 // import { API_EXTENSION_KEY } from '@/views/apis/utils';
 // const { valueKey } = API_EXTENSION_KEY;

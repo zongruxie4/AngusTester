@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import GlobalSecurity from './GlobalSecurity/index.vue';
 import { PathItemInfo } from './PropsType';

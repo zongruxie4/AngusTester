@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, ref } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Grid, Icon, Input, Popover, ReviewStatus, Select, SelectEnum, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { funcCase } from '@/api/tester';
 

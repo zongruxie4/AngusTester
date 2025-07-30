@@ -3,7 +3,7 @@ import { Button } from 'ant-design-vue';
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { Dropdown, DropdownGroup, DropdownSort, Icon, Input } from '@xcan-angus/vue-ui';
-import { duration, utils } from '@xcan-angus/tools';
+import { duration, utils } from '@xcan-angus/infra';
 import elementResizeDetector from 'element-resize-detector';
 
 interface Props{

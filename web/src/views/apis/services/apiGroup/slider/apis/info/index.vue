@@ -12,7 +12,7 @@ import {
   SelectUser
 } from '@xcan-angus/vue-ui';
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 
 import { apis } from 'src/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';

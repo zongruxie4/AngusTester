@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, computed, defineAsyncComponent, watchEffect, onBeforeUnmount } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design-vue';
 import { Composite, Input, SelectEnum, Icon, Tooltip, Popover, ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 import { HTTPConfig, HttpMethod } from './PropsType';

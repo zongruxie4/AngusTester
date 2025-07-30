@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Select } from '@xcan-angus/vue-ui';
 
 import { PathItemInfo } from '../PropsType';

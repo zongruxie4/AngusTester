@@ -1,4 +1,4 @@
-import { http } from '@xcan-angus/tools';
+import { http } from '@xcan-angus/infra';
 
 type SettingKey = 'API_LOG_CONFIG' | 'COMMON_DATA_PERMISSION' | 'HEALTH_CHECK' | 'LOCALE' | 'MAX_METRICS_DAYS' | 'MAX_RESOURCE_ACTIVITIES' | 'OPERATION_LOG_CONFIG' | 'PREF_INDICATOR' | 'QUOTA' | 'SECURITY' | 'SOCIAL' | 'STABILITY_INDICATOR' | 'SYSTEM_LOG_CONFIG' | 'THEME';
 

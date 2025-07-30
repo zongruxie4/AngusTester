@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref, inject, Ref, onMounted, watch } fr
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, utils } from '@xcan-angus/tools';
+import { duration, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 type Props = {

@@ -2,7 +2,7 @@
 import { computed, ref, onMounted, nextTick } from 'vue';
 import { Badge, Descriptions, DescriptionsItem, TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ExecContent } from '../../../../PropsType';
 

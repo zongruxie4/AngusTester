@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, Ref } from 'vue';
-import { GM } from '@xcan-angus/tools';
+import { GM } from '@xcan-angus/infra';
 import { Image, Popover, Scroll } from '@xcan-angus/vue-ui';
 
 import { UserInfo } from './PropsType';

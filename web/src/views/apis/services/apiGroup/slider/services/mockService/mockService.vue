@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, IconCopy, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
 import { analysis, mock, services } from 'src/api/tester';

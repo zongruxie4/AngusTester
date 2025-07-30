@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, notification, Popover, SelectEnum } from '@xcan-angus/vue-ui';
 
 import { StringCondition } from './PropsType';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 type PathInfo = {
   condition: StringCondition;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import dayjs from 'dayjs';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Colon } from '@xcan-angus/vue-ui';
 import RichEditor from '@/components/richEditor/index.vue';
 

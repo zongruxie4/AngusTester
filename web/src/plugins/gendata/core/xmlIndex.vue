@@ -2,7 +2,7 @@
 import { ref, watch, nextTick, inject, computed } from 'vue';
 import { PureCard, notification } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/tools';
+import { TESTER, http } from '@xcan-angus/infra';
 import { mock } from '@/api/tester';
 
 import { UserInfo } from './PropsType';

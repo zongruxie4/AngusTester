@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, ref } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { localStore } from '@xcan-angus/tools';
+import { localStore } from '@xcan-angus/infra';
 
 import { CountObj } from './PropsType';
 

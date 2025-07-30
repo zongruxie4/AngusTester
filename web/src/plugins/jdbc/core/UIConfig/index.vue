@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { JDBCConfig } from './JDBCConfigs/PropsType';

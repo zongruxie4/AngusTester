@@ -2,7 +2,7 @@
 import { inject, ref } from 'vue';
 import { Icon, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';

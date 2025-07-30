@@ -3,7 +3,7 @@ import { defineAsyncComponent, ref, onMounted, watch } from 'vue';
 import { Icon, NoData } from '@xcan-angus/vue-ui';
 import Draggable from 'vuedraggable';
 
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { TargetKey, PipelineConfig } from '../PropsType';
 
 type DragDataConfig = {

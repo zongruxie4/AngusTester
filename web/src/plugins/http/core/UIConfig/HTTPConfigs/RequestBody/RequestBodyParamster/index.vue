@@ -3,7 +3,7 @@ import { computed, watch, ref, onMounted, watchEffect, nextTick } from 'vue';
 import type { UploadFile } from 'ant-design-vue';
 import { Button, Checkbox, Upload } from 'ant-design-vue';
 import { Icon, Input, Select, notification } from '@xcan-angus/vue-ui';
-import { utils, ungzip, gzip, duration } from '@xcan-angus/tools';
+import { utils, ungzip, gzip, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { RequestBodyFormItem } from '../PropsType';

@@ -2,7 +2,7 @@
 import { onMounted, watch, watchEffect, ref } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Input, Icon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ParameterConfig } from './PropsType';
 

@@ -1,5 +1,5 @@
 import { debounce } from 'throttle-debounce';
-import { localStore } from '@xcan-angus/tools';
+import { localStore } from '@xcan-angus/infra';
 
 class Scroll {
     private element: HTMLElement;

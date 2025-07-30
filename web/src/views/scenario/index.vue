@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 type MenuKey = 'homepage' | 'scenario' | 'trash' | 'monitor';
 

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { RadioButton, RadioGroup } from 'ant-design-vue';
-import { GM } from '@xcan-angus/tools';
+import { GM } from '@xcan-angus/infra';
 
 interface Props {
     visible: boolean

@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, Input, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';

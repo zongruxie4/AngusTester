@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, watchEffect } from 'vue';
 import { Input, Select, Icon, Tooltip } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { WaitingTimeConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';

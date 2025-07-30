@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { software } from 'src/api/tester';
 
 interface Props {

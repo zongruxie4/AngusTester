@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, Ref, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';

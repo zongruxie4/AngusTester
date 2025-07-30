@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import { Modal, NoData, Table, Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, http, duration } from '@xcan-angus/tools';
+import { TESTER, http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 

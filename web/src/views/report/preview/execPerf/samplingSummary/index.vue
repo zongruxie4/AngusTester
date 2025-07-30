@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo, SummaryListItem } from '../../PropsType';
 

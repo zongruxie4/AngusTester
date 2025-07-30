@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Input, Icon, SelectEnum, Select, Hints } from '@xcan-angus/vue-ui';
 import { Checkbox, FormItem, Tooltip, Form } from 'ant-design-vue';
 

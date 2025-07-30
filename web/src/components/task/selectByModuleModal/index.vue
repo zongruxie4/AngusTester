@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { IconTask, Input, Modal, Table } from '@xcan-angus/vue-ui';
-import { http, duration } from '@xcan-angus/tools';
+import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 interface Props {

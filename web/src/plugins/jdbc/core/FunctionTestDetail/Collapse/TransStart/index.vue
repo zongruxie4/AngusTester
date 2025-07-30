@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow, Icon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '../StatusTag/index.vue';
 import { ExecContent } from '../../PropsType';

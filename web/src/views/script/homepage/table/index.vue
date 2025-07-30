@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, PaginationProps, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { script, exec } from '@/api/tester';
 
 import { PermissionKey, ScriptInfo } from '../../PropsType';

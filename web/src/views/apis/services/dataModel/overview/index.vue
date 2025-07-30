@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { Icon, Select } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { Button, Popover, RadioButton, RadioGroup, Tag, Tooltip } from 'ant-design-vue';
 
 import CodeView from './code.vue';

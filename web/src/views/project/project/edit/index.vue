@@ -11,7 +11,7 @@ import {
   Tabs
 } from 'ant-design-vue';
 import { DatePicker, Icon, Image, Input, notification, Select, SelectUser, Cropper } from '@xcan-angus/vue-ui';
-import { GM } from '@xcan-angus/tools';
+import { GM } from '@xcan-angus/infra';
 import { project } from 'src/api/tester';
 
 interface Props {

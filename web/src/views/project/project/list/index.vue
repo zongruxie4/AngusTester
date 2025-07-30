@@ -18,7 +18,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { project } from 'src/api/tester';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/tools';
+import { duration } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import DefaultProjectImage from '@/views/project/project/images/default.png';
 

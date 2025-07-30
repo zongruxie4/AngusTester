@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { TESTER } from '@xcan-angus/tools';
+import { TESTER } from '@xcan-angus/infra';
 import { Popover, Scroll } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
 

@@ -2,7 +2,7 @@
 import { ref, defineAsyncComponent, onMounted, watch, computed, watchEffect } from 'vue';
 import { Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate, FunctionsButton } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/tools';
+import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
