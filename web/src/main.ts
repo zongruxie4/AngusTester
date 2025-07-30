@@ -13,6 +13,7 @@ import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
 
+// TODO 替换成公共方法
 const getDefaultLanguage = () => {
   let navigatorLang = navigator.language;
   if (navigatorLang.startsWith('zh')) {
