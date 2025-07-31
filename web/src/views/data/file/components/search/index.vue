@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
-import { STORAGE } from '@xcan-angus/tools';
+import { STORAGE } from '@xcan-angus/infra';
 import { Select } from '@xcan-angus/vue-ui';
 
 import FileIcon from '@/views/data/file/components/icon/index.vue';

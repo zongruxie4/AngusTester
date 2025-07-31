@@ -4,7 +4,7 @@ import { Icon, Input, notification, PureCard, Select, SelectEnum, Tooltip } from
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
-import { TESTER, site } from '@xcan-angus/tools';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 
 import { formatBytes } from '@/utils/common';
@@ -240,7 +240,7 @@ const treeSelectFormat = (data) => {
 };
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition();
   loadNodes();
 });
 </script>

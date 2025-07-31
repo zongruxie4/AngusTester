@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { Colon } from '@xcan-angus/vue-ui';
 
 type CreateTimeSetting = {

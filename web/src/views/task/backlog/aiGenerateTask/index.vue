@@ -15,7 +15,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, utils, duration } from '@xcan-angus/tools';
+import { TESTER, utils, duration } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { task } from '@/api/tester';

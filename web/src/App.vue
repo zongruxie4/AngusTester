@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-angus/vue-ui';
-import { app, http, site, utils, duration, GM } from '@xcan-angus/tools';
+import { http, utils, duration, GM, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { mock } from 'src/api/tester';
 import GlobalConstantConfig from '@/globalConstantConfig';
@@ -56,10 +56,10 @@ const loadAIAgent = async () => {
   return res?.data?.aiAgent;
 };
 
-const globalConfigs = ref<{ [key: string]: string }>();
+const globalConfigs = ref<{ [key: string]: string|{} }>();
 onMounted(async () => {
   window.addEventListener('resize', resizeHandler);
-  const envContent = await site.getEnvContent();
+  const envContent = appContext.getContext().env;
   globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
   aiAgent.value = await loadAIAgent();
 });
@@ -86,7 +86,7 @@ provide('windowResizeNotify', windowResizeNotify);
       <RouterView />
     </template>
     <template v-else>
-      <Header :menus="app.menuList" :codeMap="app.codeMap" />
+      <Header :menus="appContext.getAccessAppFuncTree() || []" :codeMap="appContext.getAccessAppFuncCodeMap()" />
       <div style="height: calc(100% - 54px);" class="overflow-auto flex justify-center items-center">
         <template v-if="status === 403">
           <Denied />

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { Arrow, AsyncComponent, Colon, Hints, Icon, IconCopy, Input, notification, Scroll, Spin } from '@xcan-angus/vue-ui';
 import { Button, Tooltip } from 'ant-design-vue';
-import { clipboard, TESTER } from '@xcan-angus/tools';
+import { toClipboard, TESTER } from '@xcan-angus/infra';
 
 import { apis } from 'src/api/tester';
 import { ListType, ShareObj, TargetType } from './PropsType';
@@ -109,7 +109,7 @@ const copy = (item:ListType) => {
   } else {
     message = `名称: ${item.name}\n链接: ${item.url}`;
   }
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   });
 };

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { TESTER, clipboard, download } from '@xcan-angus/tools';
+import { TESTER, toClipboard, download } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 
 import { PlanInfo } from '../PropsType';
@@ -134,7 +134,7 @@ const toExport = async () => {
 
 const toCopyHref = () => {
   const message = window.location.origin + '/function#plans?id=' + planId.value;
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

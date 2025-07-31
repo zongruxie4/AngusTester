@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Modal, SingleUpload } from '@xcan-angus/vue-ui';
-import { gzip } from '@xcan-angus/tools';
+import { gzip } from '@xcan-angus/infra';
 
 import { ContentEncoding } from '../PropsType';
 

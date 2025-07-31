@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
-import { Icon, notification, PureCard, Select } from '@xcan-angus/vue-ui';
-import { Button, RadioGroup } from 'ant-design-vue';
-import { PUB_TESTER, site } from '@xcan-angus/tools';
+import {computed, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue';
+import {Icon, notification, PureCard, Select} from '@xcan-angus/vue-ui';
+import {Button, RadioGroup} from 'ant-design-vue';
+import {ApiType, routerUtils, ApiUrlBuilder} from '@xcan-angus/infra';
 import axios from 'axios';
 
-import { mock } from 'src/api/tester';
+import {mock} from 'src/api/tester';
 
 export interface Props {
   id: string;
@@ -64,11 +64,12 @@ const loadIp = async () => {
 };
 
 const loadFileList = async () => {
-  const host = await site.getUrl('apis');
-  const privHost = await site.getUrl('at');
-  const isPrivate = await site.isPrivate();
-  axios.get(`${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/names?filePrefix=mockservice&targetAddr=http://${ip.value}:${port.value}`, {
-  })
+  // const host = await site.getUrl('apis');
+  // const privHost = await site.getUrl('at');
+  // const isPrivate = await site.isPrivate();
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
+  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/names?filePrefix=mockservice&targetAddr=http://${ip.value}:${port.value}`)
+  axios.get(url, {})
     .then(resp => {
       const { data } = resp;
       fileList.value = (data || []).map(i => ({ label: i, value: i }));
@@ -96,10 +97,12 @@ const loadLogContent = async () => {
   if (!logName) {
     return;
   }
-  const host = await site.getUrl('apis');
-  const privHost = await site.getUrl('at');
-  const isPrivate = await site.isPrivate();
-  axios.get(`${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${ip.value}:${port.value}`, {})
+  // const host = await site.getUrl('apis');
+  // const privHost = await site.getUrl('at');
+  // const isPrivate = await site.isPrivate();
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
+  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${ip.value}:${port.value}`)
+  axios.get(url, {})
     .then(resp => {
       const { data } = resp;
       content.value = data;

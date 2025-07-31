@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { TESTER, XCanDexie, enumLoader } from '@xcan-angus/tools';
+import { TESTER, XCanDexie, enumLoader } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 

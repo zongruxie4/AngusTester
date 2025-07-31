@@ -4,7 +4,7 @@ import { Input, NoData, notification, Select, SelectInput, ApiUtils as apiUtils,
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
-import { axiosClient, utils } from '@xcan-angus/tools';
+import { axiosClient, utils } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis } from '@/api/tester';

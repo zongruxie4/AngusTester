@@ -2,7 +2,7 @@
 import { onMounted, ref, computed, watch, inject, nextTick, defineAsyncComponent } from 'vue';
 import { Input, Select, notification, Icon, Spin, Hints, IconRequired } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
-import { utils, TESTER, GM } from '@xcan-angus/tools';
+import { utils, TESTER, GM } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { FormState } from './PropsType';

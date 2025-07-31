@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { XCanDexie } from '@xcan-angus/tools';
+import { XCanDexie } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
 import { columns } from './PropsType';

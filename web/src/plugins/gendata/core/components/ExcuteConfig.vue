@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, defineAsyncComponent, computed, nextTick } from 'vue';
 import { Form, FormItem, RadioGroup, Radio } from 'ant-design-vue';
 import { Hints, Input, Select } from '@xcan-angus/vue-ui';
-import { TESTER, enumLoader } from '@xcan-angus/tools';
+import { TESTER, enumLoader } from '@xcan-angus/infra';
 
 export interface Props {
   format: string;

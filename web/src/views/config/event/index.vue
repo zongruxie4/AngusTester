@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event, setting } from '@/api/gm';

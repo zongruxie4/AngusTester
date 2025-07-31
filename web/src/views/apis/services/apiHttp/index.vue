@@ -5,7 +5,7 @@ import {
 import { Popover, TabPane, Tabs, RadioGroup, RadioButton, Button, Badge } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, SelectEnum, AsyncComponent, AssertUtils as assertUtils, ApiUtils as apiUtils, AuthUtils as authUtil } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { utils, axiosClient, duration } from '@xcan-angus/tools';
+import { utils, axiosClient, duration } from '@xcan-angus/infra';
 import { dataURLtoBlob } from '@/utils/blob';
 import qs from 'qs';
 import { deconstruct } from '@/utils/swagger';

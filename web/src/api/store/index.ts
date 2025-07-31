@@ -1,4 +1,4 @@
-import { PUB_ESS, ESS } from '@xcan-angus/tools';
+import { PUB_ESS, ESS } from '@xcan-angus/infra';
 
 import PubStore from './PubStore';
 import Edition from './Edition';

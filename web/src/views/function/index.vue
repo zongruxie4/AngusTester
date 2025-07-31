@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, ref, Ref, watch } from 'vue';
-import { XCanDexie, sessionStore, utils, site } from '@xcan-angus/tools';
+import { XCanDexie, sessionStore, utils, appContext } from '@xcan-angus/infra';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { useRouter } from 'vue-router';
 
@@ -101,8 +101,8 @@ let tagsRefreshNotifyFlag = false;
 let trashRefreshNotifyFlag = false;
 
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+
+  editionType.value = appContext.getEditionType();
   const queryString = window.location.hash;
   const searchParams = new URLSearchParams(queryString);
   const urlParams = Object.fromEntries(searchParams.entries());

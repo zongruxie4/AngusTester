@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Divider, Form, FormItem, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { Card, Hints, Icon, IconCopy, Input, notification, Select } from '@xcan-angus/vue-ui';
-import { site } from '@xcan-angus/tools';
+import { appContext } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 
 import { mock } from 'src/api/tester';
@@ -357,8 +357,7 @@ const keNameValidator = async (_rule: Rule, value: string) => {
 };
 
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+  editionType.value = appContext.getEditionType();
   loadInfo();
 });
 

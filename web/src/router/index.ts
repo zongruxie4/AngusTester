@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { guard, app } from '@xcan-angus/tools';
+import { guard, app } from '@xcan-angus/infra';
 
 import routes from './routes';
 import store from '@/store';

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { Grid, Icon, Tooltip } from '@xcan-angus/vue-ui';
+import {ref, watch} from 'vue';
+import {Grid, Icon, Tooltip} from '@xcan-angus/vue-ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { site, PUB_TESTER } from '@xcan-angus/tools';
+import {ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 
-import { formatBytes } from '@/utils';
+import {formatBytes} from '@/utils';
 
 interface Props {
   ip: string;
@@ -65,10 +65,12 @@ watch(() => props.ip, async newValue => {
     return;
   }
 
-  const host = await site.getUrl('apis');
-  const privHost = await site.getUrl('at');
-  const isPrivate = await site.isPrivate();
-  axios.get(`${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy?targetAddr=http://${newValue}:${props.port}`, {
+  // const host = await site.getUrl('apis');
+  // const privHost = await site.getUrl('at');
+  // const isPrivate = await site.isPrivate();
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
+  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy?targetAddr=http://${newValue}:${props.port}`);
+  axios.get(url, {
     timeout: 2000
   })
     .then(resp => {

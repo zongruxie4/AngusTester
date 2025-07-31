@@ -7,7 +7,7 @@ import * as eCharts from 'echarts';
 import { throttle } from 'throttle-debounce';
 import { kanban } from 'src/api/tester';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 const chartSeriesColorConfig = {

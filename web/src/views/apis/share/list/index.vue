@@ -2,14 +2,13 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
-import { clipboard } from '@xcan-angus/tools';
+import { toClipboard } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
 import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
 import { nextTick } from 'process';
 
-const { toClipboard } = clipboard;
 
 type Props = {
   projectId: string;

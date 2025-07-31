@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, Input, SearchPanel, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, TESTER, duration, site, enumLoader } from '@xcan-angus/tools';
+import { XCanDexie, TESTER, duration, enumLoader, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
 
@@ -396,11 +396,10 @@ const resetData = () => {
 };
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition();
   await loadScriptTypeEnum();
   loadNodeQuota();
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+  editionType.value = appContext.getEditionType();
 
   watch(() => dbParamsKey.value, (newValue) => {
     if (!newValue) {

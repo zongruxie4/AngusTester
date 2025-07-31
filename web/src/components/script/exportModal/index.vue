@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Colon, Modal, notification } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
-import { site, TESTER, download } from '@xcan-angus/tools';
+import { download, routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;
@@ -29,9 +29,11 @@ const handleOk = async () => {
   }
 
   exportLoading.value = true;
-  const host = await site.getUrl('apis');
+  // const host = await site.getUrl('apis');
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
   const urls:string[] = props.ids.map((item) => {
-    return `${host}${TESTER}/script/${item}/export?format=${format.value}`;
+    // return `${host}${TESTER}/script/${item}/export?format=${format.value}`;
+    return ApiUrlBuilder.buildApiUrl(routeConfig, `/script/${item}/export?format=${format.value}`);
   });
   const res = await download(urls);
   exportLoading.value = false;

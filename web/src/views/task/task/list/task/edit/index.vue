@@ -17,7 +17,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { localStore, upload, TESTER } from '@xcan-angus/tools';
+import { localStore, upload, TESTER } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from 'src/api/tester';

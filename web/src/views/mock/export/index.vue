@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { Colon, Modal, notification, SelectApi, Spin } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
-import { TESTER, download } from '@xcan-angus/tools';
+import { TESTER, download } from '@xcan-angus/infra';
 
 import { MockServiceObj } from '../PropsType';
 

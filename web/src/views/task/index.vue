@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
-import { utils, site } from '@xcan-angus/tools';
+import { utils, appContext } from '@xcan-angus/infra';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
@@ -51,8 +51,7 @@ const projectId = computed(() => {
 });
 
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+  editionType.value = appContext.getEditionType();
   watch(() => activeKey.value, (newValue) => {
     if (newValue === 'homepage') {
       if (homepageRefreshNotifyFlag) {

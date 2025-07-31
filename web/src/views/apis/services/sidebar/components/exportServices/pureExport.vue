@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { Colon, Modal, Spin } from '@xcan-angus/vue-ui';
-import { RadioGroup } from 'ant-design-vue';
-import { TESTER, download, site, cookie, http } from '@xcan-angus/tools';
-import { createPdf } from '@xcan-angus/rapipdf';
+import {onMounted, ref} from 'vue';
+import {Colon, Modal, Spin} from '@xcan-angus/vue-ui';
+import {RadioGroup} from 'ant-design-vue';
+import {
+  ApiType,
+  ApiUrlBuilder,
+  cookieUtils,
+  DomainManager,
+  download,
+  http,
+  routerUtils,
+  TESTER
+} from '@xcan-angus/infra';
+import {createPdf} from '@xcan-angus/rapipdf';
 
 interface Props {
   visible: boolean;
@@ -44,13 +53,16 @@ const handleOk = async () => {
   };
   if (format.value === 'pdf') {
     let apiUrl = '';
+    const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
     if (props.type === 'API') {
-      apiUrl = `${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`;
+      apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`)
+      // apiUrl = `${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`;
       createPdf(apiUrl);
     } else {
       exportLoading.value = true;
       // services/export?exportScope=SERVICE&serviceIds=${props.serviceId}&format=yaml&access_token=${accessToken}&gzipCompression=false
-      const [error, res] = await http.post(`${docOrigin.value}${TESTER}/services/export`, {
+      const url = ApiUrlBuilder.buildApiUrl(routeConfig, '/services/export');
+      const [error, res] = await http.post(url, {
         access_token: accessToken.value,
         exportScope: exportType.value,
         format: 'json',
@@ -67,10 +79,13 @@ const handleOk = async () => {
     return;
   }
   exportLoading.value = true;
-  const host = await site.getUrl('apis');
+  // const host = await site.getUrl('apis');
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
+
   // 单接口导出
   if (props.type === 'API') {
-    const apiUrl = `${host}${TESTER}/apis/${props.id}/openapi/export?format=${format.value}`;
+    const apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=${format.value}`)
+    // const apiUrl = `${host}${TESTER}/apis/${props.id}/openapi/export?format=${format.value}`;
     const [error] = await download(apiUrl);
     exportLoading.value = false;
     if (error) {
@@ -128,7 +143,7 @@ const formatTypes = [{
 
 onMounted(async () => {
   accessToken.value = cookieUtils.get('access_token');
-  docOrigin.value = await site.getUrl('apis');
+  docOrigin.value = DomainManager.getInstance().getApiDomain('tester');
 });
 
 </script>

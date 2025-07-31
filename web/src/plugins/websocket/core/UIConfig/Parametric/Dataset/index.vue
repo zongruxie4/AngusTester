@@ -2,7 +2,7 @@
 import { ref, onMounted, defineAsyncComponent, watch, computed } from 'vue';
 import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 import { DatasetItem } from './PropsType';
 import { HTTPConfig } from '../../PropsType';

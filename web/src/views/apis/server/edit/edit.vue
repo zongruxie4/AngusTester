@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Radio } from 'ant-design-vue';
 import { Icon, IconRequired, Input, notification, Select, Tooltip, Validate } from '@xcan-angus/vue-ui';
-import { utils, duration, TESTER } from '@xcan-angus/tools';
+import { utils, duration, TESTER } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { ServerConfig } from './PropsType';

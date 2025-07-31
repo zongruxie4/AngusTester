@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { Grid, Icon } from '@xcan-angus/vue-ui';
-import { site } from '@xcan-angus/tools';
+import { appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
 import { edition } from '@/api/store';
@@ -90,9 +90,7 @@ const getVersionTypeIcon = (key: string) => {
 };
 
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
-
+  editionType.value = appContext.getEditionType();
   loadInfo();
 });
 

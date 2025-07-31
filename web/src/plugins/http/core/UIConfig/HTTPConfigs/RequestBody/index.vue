@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref, watch, onMounted } from 'vue';
 import { Icon, notification, Select, MonacoEditor } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Upload } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { duration, utils, gzip, ungzip } from '@xcan-angus/tools';
+import { duration, utils, gzip, ungzip } from '@xcan-angus/infra';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 

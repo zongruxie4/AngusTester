@@ -2,7 +2,7 @@
 import { onMounted, ref, watch, computed, nextTick } from 'vue';
 import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
-import { site, clipboard, TESTER, enumLoader } from '@xcan-angus/tools';
+import { toClipboard, TESTER, enumLoader, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
   shareScope?: string;
 }
 
-const { toClipboard } = clipboard;
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   shareId: undefined,
@@ -185,7 +184,7 @@ const editOk = async () => {
 
 onMounted(async () => {
   loadApisShareScopeOpt();
-  origin.value = await site.getUrl('at');
+  origin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester)
   watch(() => props.visible, async (newValue) => {
     if (newValue) {
       if (props.shareId) {

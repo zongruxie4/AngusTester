@@ -14,7 +14,7 @@ import {
   Table,
   TaskPriority
 } from '@xcan-angus/vue-ui';
-import { download, duration } from '@xcan-angus/tools';
+import { download, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';

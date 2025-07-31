@@ -1,4 +1,4 @@
-import { PUB_STORAGE, STORAGE } from '@xcan-angus/tools';
+import { PUB_STORAGE, STORAGE } from '@xcan-angus/infra';
 import File from './File';
 import Space from './Space';
 import PubSpace from './PubSpace';

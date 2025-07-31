@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { Icon, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import axios from 'axios';
-import { PUB_TESTER, site } from '@xcan-angus/tools';
+import { routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
 
 export interface Props {
   ip: string;
@@ -53,11 +53,14 @@ const logTextParam = reactive({
 const fileList = ref<{label: string; value: string}[]>([]);
 
 const loadFileList = async () => {
-  const host = await site.getUrl('apis');
-  const privHost = await site.getUrl('at');
-  const isPrivate = await site.isPrivate();
-  axios.get(`${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`, {
-  })
+  // const host = await site.getUrl('apis');
+  // const privHost = await site.getUrl('at');
+  // const isPrivate = await site.isPrivate();
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
+  const host = ApiUrlBuilder.buildApiUrl(routeConfig, '');
+  // const url = `${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`
+  const url = `${host}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`
+  axios.get(url, {})
     .then(resp => {
       const { data } = resp;
       fileList.value = (data || []).map(i => ({ label: i, value: i }));
@@ -95,11 +98,15 @@ const loadLogContent = async () => {
   // Dev 环境 >>>   http://dev-apis.xcan.cloud/altester/pubapi/v1/proxy/actuator/runner/log/204764938806239665?targetAddr=http://192.168.0.101:6807
 
   // Prod 环境 >>>   https://bj-c1-prod-apis.xcan.cloud/altester/pubapi/v1/proxy/actuator/runner/log/204764938806239665?targetAddr=http://192.168.0.101:6807
-  const host = await site.getUrl('apis');
-  const privHost = await site.getUrl('at');
-  const isPrivate = await site.isPrivate();
-  axios.get(`${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`, {
-  })
+  // const host = await site.getUrl('apis');
+  // const privHost = await site.getUrl('at');
+  // const isPrivate = await site.isPrivate();
+
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
+  const host = ApiUrlBuilder.buildApiUrl(routeConfig, '');
+  // // const url = `${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`
+  const url = `${host}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`
+  axios.get(url, {})
     .then(resp => {
       const { data } = resp;
       content.value = data;

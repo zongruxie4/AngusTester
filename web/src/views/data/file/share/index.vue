@@ -3,7 +3,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { Icon, Input, Modal, notification, ShortDuration } from '@xcan-angus/vue-ui';
 import type { TreeProps } from 'ant-design-vue';
 import { Button, Form, FormItem, RadioGroup, Textarea, Tree } from 'ant-design-vue';
-import { clipboard, site, utils, enumLoader } from '@xcan-angus/tools';
+import { toClipboard, utils, enumLoader, DomainManager } from '@xcan-angus/infra';
 import { space } from '@/api/storage';
 import store from '@/store';
 
@@ -146,7 +146,7 @@ const loadShareInfo = async () => {
 
 // 获取分享的url
 const loadShareUrl = async () => {
-  const host = await site.getUrl('at');
+  const host = DomainManager.getInstance().getAppDomain('tester');
   const route = '/share/file';
   return `${host}${route}`;
 };
@@ -246,7 +246,7 @@ const copy = () => {
   } else {
     message = `链接: ${form.url} 密码: ${form.password || ''}`;
   }
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   });
 };

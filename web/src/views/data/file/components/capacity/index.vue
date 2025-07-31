@@ -6,7 +6,7 @@ import { Icon } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { store } from '@/api/store';
 import { SourceType } from './type';
-import { site } from '@xcan-angus/tools';
+import { appContext } from '@xcan-angus/infra';
 
 interface Props {
   id: string
@@ -27,7 +27,7 @@ const percent = ref(0);
 const couldDiskUrl = ref();
 
 const loadCloudDiskPayUrl = async () => {
-  const isPrivate = await site.isPrivate();
+  const isPrivate = appContext.isPrivateEdition()
   if (isPrivate) {
     return;
   }

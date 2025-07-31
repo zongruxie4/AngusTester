@@ -26,7 +26,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { clipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
+import { toClipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -455,7 +455,7 @@ const toCopyLink = () => {
     return;
   }
 
-  clipboard.toClipboard(window.location.origin + `/function#plans?id=${id}`).then(() => {
+  toClipboard(window.location.origin + `/function#plans?id=${id}`).then(() => {
     notification.success('复制链接成功');
   }).catch(() => {
     notification.error('复制链接失败');

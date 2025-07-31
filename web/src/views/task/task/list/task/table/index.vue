@@ -12,7 +12,7 @@ import {
   TaskPriority,
   TaskStatus
 } from '@xcan-angus/vue-ui';
-import { clipboard } from '@xcan-angus/tools';
+import { toClipboard } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../PropsType';
@@ -627,7 +627,7 @@ const toCancel = async (data: TaskInfo) => {
 
 const toCopyHref = (data: TaskInfo) => {
   const message = window.location.origin + (data.linkUrl || '');
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

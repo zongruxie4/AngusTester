@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Icon, IndicatorAssert } from '@xcan-angus/vue-ui';
 import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { setting } from '@/api/gm';
 
 // 冒烟测试指标选项

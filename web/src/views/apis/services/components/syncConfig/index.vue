@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch, defineAsyncComponent, computed } from 'v
 import { Arrow, Colon, Hints, Icon, IconRequired, Input, notification, Select, Spin, AsyncComponent, VuexHelper } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { regexp, utils, duration } from '@xcan-angus/tools';
+import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { AuthObj, SyncObj } from './PropsType';
@@ -360,7 +360,7 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
   }
 
   _data.apiDocsUrlErr.emptyUrl = false;
-  if (!regexp.isUrl(_data.apiDocsUrl)) {
+  if (!regexpUtils.isUrl(_data.apiDocsUrl)) {
     _data.apiDocsUrlErr.errUrl = true;
     hasEmpty = true;
   }
@@ -571,7 +571,7 @@ const syncUrlChange = debounce(duration.search, (value:string, sync:SyncObj):voi
   }
 
   sync.apiDocsUrlErr.emptyUrl = false;
-  if (regexp.isUrl(value)) {
+  if (regexpUtils.isUrl(value)) {
     sync.apiDocsUrlErr.errUrl = false;
     return;
   }

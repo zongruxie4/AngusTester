@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, r
 import { useRoute } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Drawer, Icon, Input, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { download, clipboard } from '@xcan-angus/tools';
+import { download, toClipboard } from '@xcan-angus/infra';
 
 import { fileApi, space } from '@/api/storage';
 import { parseQuery } from '@/utils/url';
@@ -308,7 +308,7 @@ const copyDownloadUrl = async (record) => {
       return;
     }
     setTimeout(async () => {
-      await clipboard.toClipboard(data);
+      await toClipboard(data);
       notification.success('复制链接成功');
     });
   }

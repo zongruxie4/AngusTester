@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, DatePicker, Hints, Icon, IconCopy, Input, Modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox, CheckboxGroup, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
-import { enumLoader, duration, clipboard, site, utils } from '@xcan-angus/tools';
+import { enumLoader, duration, toClipboard, site, utils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from 'src/api/tester';
@@ -66,7 +66,8 @@ const expiredDate = ref<string>(dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:s
 
 // 设置添加数据的默认URL
 const getDefaultShareUrl = async () => {
-  const host = await site.getUrl('at');
+  // const host = await site.getUrl('at');
+  const host = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   const route = '/share/api';
   shareList.value[0].url = host + route;
   formState.value.url = host + route;
@@ -458,7 +459,7 @@ const copy = (item:ShareObj, isCopy?:boolean) => {
   } else {
     message = `名称: ${item.name}\n链接: ${item.url}`;
   }
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success(isCopy ? '复制成功' : '分享成功');
   });
 };

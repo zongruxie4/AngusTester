@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { enumLoader, utils, duration } from '@xcan-angus/tools';
+import { enumLoader, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { AssertionConfig, AssertionType, AssertionCondition } from './PropsType';

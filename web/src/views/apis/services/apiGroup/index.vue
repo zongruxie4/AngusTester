@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, ref, watch } from 'vue';
 import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
-import { site, cookie } from '@xcan-angus/tools';
+import { cookieUtils, DomainManager } from '@xcan-angus/infra';
 
 import store from '@/store';
 import { apis, services } from 'src/api/tester';
@@ -357,7 +357,8 @@ onMounted(async () => {
     }
   }
   accessToken.value = cookieUtils.get('access_token');
-  docOrigin.value = await site.getUrl('apis');
+  // docOrigin.value = await site.getUrl('apis');
+  docOrigin.value = DomainManager.getInstance().getApiDomain('tester')
 });
 
 // 更新state

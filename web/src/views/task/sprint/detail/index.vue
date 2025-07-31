@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, clipboard, utils, download } from '@xcan-angus/tools';
+import { TESTER, toClipboard, utils, download } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
 import { SprintInfo } from '../PropsType';
@@ -135,7 +135,7 @@ const toExport = async () => {
 
 const toCopyHref = () => {
   const message = window.location.origin + '/task#sprint?id=' + sprintId.value;
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

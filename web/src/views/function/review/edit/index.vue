@@ -13,7 +13,7 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/tools';
+import { utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';

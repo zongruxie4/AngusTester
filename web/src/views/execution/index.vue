@@ -14,7 +14,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { site } from '@xcan-angus/tools';
+import { appContext } from '@xcan-angus/infra';
 import { Pagination, Progress, Switch } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
@@ -638,7 +638,7 @@ const initialize = () => {
 };
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition()
   watch(() => projectId.value, (newValue) => {
     if (!newValue) {
       return;

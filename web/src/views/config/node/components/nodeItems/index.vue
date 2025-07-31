@@ -3,7 +3,7 @@ import { Button, CheckboxGroup, Popover, Progress, TabPane, Tabs, Tag } from 'an
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { Grid, Hints, Icon, Input, modal, notification, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-import { site, clipboard } from '@xcan-angus/tools';
+import { appContext, toClipboard } from '@xcan-angus/infra';
 
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
@@ -504,7 +504,7 @@ watch(() => props.autoRefresh, newValue => {
 });
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition();
 });
 
 const showInstallCtrlAccessTokenMap = ref<{[key: string]: boolean}>({});
@@ -513,7 +513,7 @@ const toggleShowCtrlAccessToken = (id) => {
 };
 
 const copyContent = (text) => {
-  clipboard.toClipboard(text).then(() => {
+  toClipboard(text).then(() => {
     notification.success('已复制到剪贴板');
   });
 };

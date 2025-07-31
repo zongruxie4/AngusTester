@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie } from '@xcan-angus/tools';
+import { XCanDexie } from '@xcan-angus/infra';
 
 import { MenuItem, SelectOption } from './PropsType';
 

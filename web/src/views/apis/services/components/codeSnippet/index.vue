@@ -8,7 +8,7 @@ import { Button, RadioGroup } from 'ant-design-vue';
 // import { supportedLanguages, oasToSnippet } from '@readme/oas-to-snippet';
 import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
-import { clipboard } from '@xcan-angus/tools';
+import { toClipboard } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema';
 
@@ -296,7 +296,7 @@ const selectLanguage = (funcs, l) => {
 };
 
 const copyCode = () => {
-  clipboard.toClipboard(codeContent.value)
+  toClipboard(codeContent.value)
     .then(() => {
       notification.success('复制成功');
     });

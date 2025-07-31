@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DateType, PieSetting } from './PropsType';
 

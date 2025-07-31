@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http, utils } from '@xcan-angus/tools';
+import { TESTER, http, utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 type Props = {

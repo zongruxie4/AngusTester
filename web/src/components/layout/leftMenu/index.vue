@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { TabPane, Tabs, TypographyParagraph } from 'ant-design-vue';
 import { Icon, Image } from '@xcan-angus/vue-ui';
-import { localStore, utils } from '@xcan-angus/tools';
+import { localStore } from '@xcan-angus/infra';
 
 type MenuItem = {
   key: string;

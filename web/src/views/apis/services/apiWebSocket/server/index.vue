@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, toRaw, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
-import { XCanDexie } from '@xcan-angus/tools';
+import { XCanDexie } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 
 import { API_EXTENSION_KEY } from '@/views/apis/utils';

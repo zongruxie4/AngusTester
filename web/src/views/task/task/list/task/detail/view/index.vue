@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, http, utils, duration } from '@xcan-angus/tools';
+import { toClipboard, http, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
@@ -313,7 +313,7 @@ const toCancel = async () => {
 
 const toCopyHref = () => {
   const message = window.location.origin + props.linkUrl;
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

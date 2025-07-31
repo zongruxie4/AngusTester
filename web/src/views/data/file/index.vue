@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, modal, Table } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { duration, STORAGE, site } from '@xcan-angus/tools';
+import { duration, STORAGE, site, appContext } from '@xcan-angus/infra';
 
 import { space } from '@/api/storage';
 import { FileCapacity, SpaceInfo } from './components';
@@ -215,7 +215,7 @@ const saveSpace = async (form) => {
 };
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition();
   watch(() => projectId.value, newValue => {
     if (newValue) {
       pagination.current = 1;

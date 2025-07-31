@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { Arrow, Colon, Hints, Icon, IconRequired, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { regexp, utils, duration } from '@xcan-angus/tools';
+import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { SyncObj, AuthObj } from './PropsType';
@@ -72,7 +72,7 @@ const syncUrlChange = debounce(duration.search, (value:string):void => {
   }
 
   sync.value.apiDocsUrlErr.emptyUrl = false;
-  if (regexp.isUrl(value)) {
+  if (regexpUtils.isUrl(value)) {
     sync.value.apiDocsUrlErr.errUrl = false;
     return;
   }

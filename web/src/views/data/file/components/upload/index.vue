@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { upload, cookie } from '@xcan-angus/tools';
+import { upload, cookieUtils } from '@xcan-angus/infra';
 import { Progress, Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 

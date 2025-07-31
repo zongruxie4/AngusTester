@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { PieData, PieSetting } from './PropsType';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
 import Charts from './charts.vue';

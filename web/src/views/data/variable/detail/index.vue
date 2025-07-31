@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, utils } from '@xcan-angus/tools';
+import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
 
 import { VariableItem } from '../PropsType';
@@ -110,7 +110,7 @@ const toClone = async () => {
 };
 
 const toCopyLink = (id: string) => {
-  clipboard.toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
+  toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
     notification.success('复制链接成功');
   }).catch(() => {
     notification.error('复制链接失败');

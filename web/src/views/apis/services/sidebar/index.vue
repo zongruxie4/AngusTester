@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
-import { TESTER, localStore, utils, duration } from '@xcan-angus/tools';
+import { TESTER, localStore, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 

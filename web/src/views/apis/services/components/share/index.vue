@@ -2,7 +2,7 @@
 import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { AsyncComponent, Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Divider, Tooltip } from 'ant-design-vue';
-import { clipboard } from '@xcan-angus/tools';
+import { toClipboard } from '@xcan-angus/infra';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
 import { apis } from 'src/api/tester';
@@ -138,7 +138,7 @@ const copy = (item:ListType) => {
   } else {
     message = `链接: ${item.url}`;
   }
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   });
 };

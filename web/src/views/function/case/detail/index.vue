@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import Dexie, { TESTER, duration, clipboard } from '@xcan-angus/tools';
+import { XCanDexie,  TESTER, duration, toClipboard } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 
@@ -81,7 +81,7 @@ const hasLastData = ref(false);
 const hasBeforeData = ref(false);
 let isFirstClick = true;
 
-let db: Dexie<IData>;
+let db;
 const getData = async (value: 'before' | 'after') => {
   if (!db) {
     db = new XCanDexie<IData>('parameter');
@@ -240,7 +240,7 @@ const handleClick = (type: CaseActionAuth) => {
 // 复制Url
 const handleCopy = async () => {
   const message = `${window.location.origin}/function#cases?&id=${caseDetail.value.id}&projectId=${projectInfo.value.id}&name=${caseDetail.value.name}&currIndex=${props.currIndex}&total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&pageSize=${props.queryParams.pageSize}`;
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

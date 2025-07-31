@@ -15,7 +15,7 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, download } from '@xcan-angus/tools';
+import { utils, TESTER, download } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
 import { funcPlan } from '@/api/tester';

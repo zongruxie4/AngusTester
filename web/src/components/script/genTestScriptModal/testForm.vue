@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, ShortDuration, TaskPriority, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 import { splitDuration } from '@/utils/utils';
 

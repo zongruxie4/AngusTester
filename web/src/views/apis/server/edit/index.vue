@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { clipboard, utils } from '@xcan-angus/tools';
+import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 
 import { ServerConfig } from './PropsType';
@@ -221,7 +221,7 @@ const toClone = async () => {
 };
 
 const toCopyLink = () => {
-  clipboard.toClipboard(window.location.origin + `/apis#server?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
+  toClipboard(window.location.origin + `/apis#server?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
     notification.success('复制链接成功');
   }).catch(() => {
     notification.error('复制链接失败');

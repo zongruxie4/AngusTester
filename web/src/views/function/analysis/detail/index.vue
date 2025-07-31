@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { TESTER, download } from '@xcan-angus/tools';
+import { TESTER, download } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
 import { TemplateIconConfig } from '@/views/function/analysis/list/PropTypes';

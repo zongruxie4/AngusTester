@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumLoader } from '@xcan-angus/tools';
+import { TESTER, GM, enumLoader } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
 interface Props {

@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Dropdown, Icon, Input } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 import ResponseSchema from '../responseSchema.vue';
 

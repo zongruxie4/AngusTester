@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Arrow, Hints, Icon, IconRequired, Input, Modal, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Textarea, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { regexp, utils } from '@xcan-angus/tools';
+import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 
 import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
@@ -488,7 +488,7 @@ const tokenUrlChange = (value:string, auth:AuthConfigObj, key:'tokenUrlErr' | 'a
   }
 
   auth.model[key].isEmpty = false;
-  if (regexp.isUrl(value)) {
+  if (regexpUtils.isUrl(value)) {
     auth.model[key].isError = false;
     return;
   }
@@ -500,7 +500,7 @@ const callbackUrlChange = (value:string, auth:AuthConfigObj, key:'callbackUrlErr
     return;
   }
 
-  if (regexp.isUrl(value)) {
+  if (regexpUtils.isUrl(value)) {
     auth.model[key].isError = false;
     return;
   }

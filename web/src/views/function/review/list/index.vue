@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { utils, download } from '@xcan-angus/tools';
+import { utils, download } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { func } from '@/api/tester';
 

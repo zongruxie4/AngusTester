@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, inject } from 'vue';
-import { STORAGE, site } from '@xcan-angus/tools';
+import { STORAGE, routerUtils } from '@xcan-angus/infra';
 import { Select, Input, Hints } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
@@ -19,10 +19,11 @@ const projectInfo = inject('projectInfo', ref({ id: '' }));
 const appInfo = inject('appInfo', ref({ code: '' }));
 
 onMounted(async () => {
-  const host = await site.getUrl('files');
-  const isPrivate = await site.isPrivate();
-  const _STORAGE = isPrivate ? STORAGE.replace('/storage', '') : STORAGE;
-  formState.value.url = `${host}${_STORAGE}/file/upload`;
+  // const host = await site.getUrl('files');
+  // const isPrivate = await site.isPrivate();
+  const storageUrl = routerUtils.getStorageFileUrl('/file/upload')
+  // const _STORAGE = isPrivate ? STORAGE.replace('/storage', '') : STORAGE;
+  formState.value.url = storageUrl;
 });
 
 const defaultSpace = ref();

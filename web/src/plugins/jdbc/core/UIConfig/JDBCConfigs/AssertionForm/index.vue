@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watchEffect } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { enumLoader, utils } from '@xcan-angus/tools';
+import { enumLoader, utils } from '@xcan-angus/infra';
 
 import { AssertionConfig, AssertionType, AssertionCondition } from './PropsType';
 import ExpectedPopover from './ExpectedPopover.vue';

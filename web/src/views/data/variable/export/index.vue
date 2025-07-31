@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Colon, Modal } from '@xcan-angus/vue-ui';
-import { download, TESTER } from '@xcan-angus/tools';
+import { download, TESTER } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;

@@ -13,7 +13,7 @@ import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import JsonContent from '../requestBody/json/index.vue';
 import { itemTypes } from '../requestBody/json/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import { clipboard } from '@xcan-angus/tools';
+import { toClipboard } from '@xcan-angus/infra';
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
@@ -177,7 +177,7 @@ const copyValue = async (data: ParamsItem) => {
     text = JSON.stringify(text);
   }
 
-  clipboard.toClipboard(text).then(() => {
+  toClipboard(text).then(() => {
     notification.success('成功复制值到剪贴板');
   });
 };

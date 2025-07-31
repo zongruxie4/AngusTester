@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select, notification } from '@xcan-angus/vue-ui';
-import { TESTER, http, utils } from '@xcan-angus/tools';
+import { TESTER, http, utils } from '@xcan-angus/infra';
 
 type Props = {
   projectId: string;

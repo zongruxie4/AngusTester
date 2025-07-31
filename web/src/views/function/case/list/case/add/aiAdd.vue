@@ -17,7 +17,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumLoader, TESTER, upload, utils } from '@xcan-angus/tools';
+import { enumLoader, TESTER, upload, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';

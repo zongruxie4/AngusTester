@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
-import { utils, enumLoader, axiosClient } from '@xcan-angus/tools';
+import { utils, enumLoader, axiosClient } from '@xcan-angus/infra';
 
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/mock/detail/mockApis/components/urlForm/index.vue';

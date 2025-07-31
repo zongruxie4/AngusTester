@@ -16,7 +16,7 @@ import {
   Toggle
 } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag, Upload } from 'ant-design-vue';
-import { download, upload, TESTER, duration, utils } from '@xcan-angus/tools';
+import { download, upload, TESTER, duration, utils } from '@xcan-angus/infra';
 import RichEditor from '@/components/richEditor/index.vue';
 import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';

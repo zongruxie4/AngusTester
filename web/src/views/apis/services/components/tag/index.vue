@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Arrow, Hints, Icon, IconRequired, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Textarea, Tooltip, TypographyParagraph } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { regexp, utils, duration } from '@xcan-angus/tools';
+import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { SaveParams, TagObj } from './PropsType';
@@ -418,7 +418,7 @@ const externalDocsUrlChange = debounce(duration.search, (value:string, tag:TagOb
   }
 
   tag.externalDocs.urlErr.emptyUrl = false;
-  if (regexp.isUrl(value)) {
+  if (regexpUtils.isUrl(value)) {
     tag.externalDocs.urlErr.errUrl = false;
     return;
   }

@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch, Ref } from 'vue';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { TESTER, enumLoader } from '@xcan-angus/tools';
+import { TESTER, enumLoader } from '@xcan-angus/infra';
 import { formatBytes } from '@/utils/common';
 import { task } from '@/api/tester';
 

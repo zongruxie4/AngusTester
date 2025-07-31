@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 
 import { CountObj } from './type';
 import Charts from './charts.vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 interface Props {
   dataSource:CountObj;

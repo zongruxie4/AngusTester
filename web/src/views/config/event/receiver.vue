@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PushSetting } from './interface';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { event } from '@/api/gm';
 import { Modal, notification, SelectUser } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Form, FormItem } from 'ant-design-vue';

@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button, Popover } from 'ant-design-vue';
-import { clipboard, TESTER } from '@xcan-angus/tools';
+import { toClipboard, TESTER } from '@xcan-angus/infra';
 import { report } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
@@ -195,7 +195,7 @@ const getShareToken = async (report) => {
     return;
   }
   const url = data;
-  await clipboard.toClipboard(url);
+  await toClipboard(url);
   notification.success('已复制分享链接到剪贴板');
 };
 

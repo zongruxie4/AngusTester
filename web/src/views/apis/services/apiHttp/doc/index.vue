@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted } from 'vue';
-import { site, cookie, TESTER, VERSION, API } from '@xcan-angus/tools';
+import { TESTER, VERSION, API, cookieUtils, appContext, routerUtils, ApiType, ApiUrlBuilder} from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 
 import '@xcan-angus/rapidoc';
@@ -31,8 +31,11 @@ const handleExportdoc = () => {
 
 onMounted(async () => {
   accessToken.value = cookieUtils.get('access_token');
-  isPrivate.value = await site.isPrivate();
-  docOrigin.value = await site.getUrl('apis');
+  // isPrivate.value = await site.isPrivate();
+  // docOrigin.value = await site.getUrl('apis');
+
+  isPrivate.value = appContext.isPrivateEdition();
+  docOrigin.value = ApiUrlBuilder.buildApiUrl(routerUtils.getTesterApiRouteConfig(ApiType.API), '');
 });
 
 </script>

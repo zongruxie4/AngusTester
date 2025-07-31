@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { Arrow, AsyncComponent, Hints, Icon, IconRefresh, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { enumLoader, duration } from '@xcan-angus/tools';
+import { enumLoader, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { CompObj, ComponentsType } from './PropsType';

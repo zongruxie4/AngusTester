@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, nextTick, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { site, utils, enumLoader } from '@xcan-angus/tools';
+import { utils, enumLoader, appContext } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
 
 import { sortOpt } from './interface';
@@ -167,8 +167,8 @@ const deleteItem = ():void => {
 
 const searchPanelRef = ref();
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+
+  editionType.value = appContext.getEditionType()
   loadEnums();
   if (route.query.id) {
     nextTick(() => {

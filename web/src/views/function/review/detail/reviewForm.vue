@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 import { func } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';

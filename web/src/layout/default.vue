@@ -6,7 +6,7 @@ import {
   Breadcrumb, HeaderLogo, HeaderMessage, HeaderNavigator, HeaderPersonalCenter, HeaderSearch, HeaderLanguagePreference, Icon, IconRefresh,
   Image, Input, Notice, notification, Spin
 } from '@xcan-angus/vue-ui';
-import { app, duration, localStore } from '@xcan-angus/tools';
+import { duration, localStore, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { project } from '@/api/tester';
 
@@ -26,8 +26,11 @@ const AddProjectModal = defineAsyncComponent(() => import('@/views/project/add/i
 const HeaderMenu = defineAsyncComponent(() => import('@/layout/headerMenu/index.vue'));
 const ProjectMenu = defineAsyncComponent(() => import('@/layout/projectMenu/index.vue'));
 
-const appInfo = inject<Ref<{ appId: string; id: string; }>>('appInfo');
-const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
+const appInfo = ref(appContext.getContext().accessApp);
+// const appInfo = inject<Ref<{ appId: string; id: string; }>>('appInfo');
+// const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.getContext().user);
+const codeMap = appContext.getAccessAppFuncCodeMap()
 const route = useRoute();
 const router = useRouter();
 const logoDefaultImg = new URL('./assets/AngusTester.png', import.meta.url).href;
@@ -149,12 +152,13 @@ onMounted(async () => {
 });
 
 const headerMenus = computed(() => {
-  // console.log(app.menuList);
-  return app.menuList?.filter(item => !['Projects', 'Config', !proTypeShowMap.value?.showTask ? 'Task' : ''].includes(item.code)) || [];
+  const menuList = appContext.getAccessAppFuncTree();
+  return menuList?.filter(item => !['Projects', 'Config', !proTypeShowMap.value?.showTask ? 'Task' : ''].includes(item.code)) || [];
 });
 
 const projectMenus = computed(() => {
-  return app.menuList?.filter(item => ['Projects', 'Config'].includes(item.code)) || [];
+  const menuList = appContext.getAccessAppFuncTree();
+  return menuList?.filter(item => ['Projects', 'Config'].includes(item.code)) || [];
 });
 
 const hasBreadcrumb = computed(() => {
@@ -216,7 +220,7 @@ provide('getNewCurrentProject', loadData);
   <div class="shadow relative z-99 flex items-center h-13.5 pr-3 header-nav-bg">
     <HeaderNavigator class="flex-shrink-0 !w-11" />
     <HeaderLogo
-      :appId="appInfo?.appId"
+      :appId="appInfo?.id"
       :defaultImg="logoDefaultImg"
       class="mr-3.5" />
     <div class="w-0.5 h-3.5 mr-3.5 bg-slate-200 rounded"></div>
@@ -282,31 +286,31 @@ provide('getNewCurrentProject', loadData);
     </Dropdown>
     <HeaderMenu :menus="headerMenus" class="mr-3.5 flex-shrink flex-grow basis-0 layout-header-menu" />
     <HeaderSearch
-      v-if="app.codeMap.get('SearchBar')?.hasAuth"
+      v-if="codeMap.get('SearchBar')?.hasAuth"
       style="width:170px;"
       class="mr-5 flex-shrink-0 flex-grow-0 basis-auto" />
-    <template v-if="app.codeMap.get('Expense')?.hasAuth">
+    <template v-if="codeMap.get('Expense')?.hasAuth">
       <a
-        :href="app.codeMap.get('Expense')?.url"
+        :href="codeMap.get('Expense')?.url"
         target="_blank"
         class="flex items-center mr-5 header-item-text-normal header-item-text-active">
-        {{ app.codeMap.get('Expense')?.showName }}
+        {{ codeMap.get('Expense')?.showName }}
       </a>
     </template>
-    <template v-if="app.codeMap.get('WorkOrder')?.hasAuth">
+    <template v-if="codeMap.get('WorkOrder')?.hasAuth">
       <a
-        :href="app.codeMap.get('WorkOrder')?.url"
+        :href="codeMap.get('WorkOrder')?.url"
         target="_blank"
         class="flex items-center mr-5 header-item-text-normal header-item-text-active">
-        {{ app.codeMap.get('WorkOrder')?.showName }}
+        {{ codeMap.get('WorkOrder')?.showName }}
       </a>
     </template>
-    <template v-if="app.codeMap.get('OfficialWebsite')?.hasAuth">
+    <template v-if="codeMap.get('OfficialWebsite')?.hasAuth">
       <a
-        :href="app.codeMap.get('OfficialWebsite')?.url"
+        :href="codeMap.get('OfficialWebsite')?.url"
         target="_blank"
         class="flex items-center mr-5 header-item-text-normal header-item-text-active">
-        {{ app.codeMap.get('OfficialWebsite')?.showName }}
+        {{ codeMap.get('OfficialWebsite')?.showName }}
       </a>
     </template>
     <HeaderLanguagePreference class="px-3"/>

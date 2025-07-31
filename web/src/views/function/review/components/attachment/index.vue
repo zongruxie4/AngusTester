@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { NoData } from '@xcan-angus/vue-ui';
-import { download } from '@xcan-angus/tools';
+import { download } from '@xcan-angus/infra';
 
 interface Props {
   caseInfo?: {[key: string]: any};

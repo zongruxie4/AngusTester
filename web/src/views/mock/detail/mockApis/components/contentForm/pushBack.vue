@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, SelectEnum, Validate } from '@xcan-angus/vue-ui';
-import { regexp, utils, axiosClient } from '@xcan-angus/tools';
+import { regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
@@ -68,7 +68,7 @@ const validateUrl = (value:string|undefined):boolean => {
     return false;
   }
 
-  if (!regexp.isUrl(value)) {
+  if (!regexpUtils.isUrl(value)) {
     urlError.value = true;
     urlErrorMessage.value = '回推地址格式错误';
     return false;

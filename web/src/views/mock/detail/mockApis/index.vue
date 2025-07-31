@@ -22,7 +22,7 @@ import {
   Validate
 } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { utils, TESTER, duration, download } from '@xcan-angus/tools';
+import { utils, TESTER, duration, download } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';

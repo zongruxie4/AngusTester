@@ -22,7 +22,7 @@ import {
   TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { clipboard, http, duration, download, TESTER, enumLoader, XCanDexie } from '@xcan-angus/tools';
+import { toClipboard, http, duration, download, TESTER, enumLoader, XCanDexie } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
@@ -1239,7 +1239,7 @@ const handleCopy = async (value) => {
   const _params = http.getURLSearchParams(_qery, true);
 
   const message = `${window.location.origin}/function#cases?&id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
-  clipboard.toClipboard(message).then(() => {
+  toClipboard(message).then(() => {
     notification.success('复制成功');
   }).catch(() => {
     notification.error('复制失败');

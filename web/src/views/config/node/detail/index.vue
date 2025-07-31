@@ -16,7 +16,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { clipboard, TESTER } from '@xcan-angus/tools';
+import { toClipboard, TESTER } from '@xcan-angus/infra';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
@@ -1177,7 +1177,7 @@ const toggleShowCtrlAccessToken = () => {
 };
 
 const copyContent = (text) => {
-  clipboard.toClipboard(text).then(() => {
+  toClipboard(text).then(() => {
     notification.success('已复制到剪贴板');
   });
 };

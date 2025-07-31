@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, ref } from 'vue';
 import { Input, notification, Select, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
-import { site, TESTER } from '@xcan-angus/tools';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
 import { mock, services } from 'src/api/tester';
@@ -141,7 +141,7 @@ const handleCancel = () => {
 };
 
 onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+  isPrivate.value = appContext.isPrivateEdition();
   formState.value.serviceId = props.id;
   await loadProjectInfo();
   createType.value = !serviceInfo.value?.mockServiceId;

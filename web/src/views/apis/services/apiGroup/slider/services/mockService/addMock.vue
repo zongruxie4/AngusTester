@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification, Select, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { TESTER, site } from '@xcan-angus/tools';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import { mock, services } from 'src/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
 
@@ -140,8 +140,8 @@ watch(() => props.visible, (newValue) => {
   immediate: true
 });
 
-onMounted(async () => {
-  isPrivate.value = await site.isPrivate();
+onMounted( () => {
+  isPrivate.value = appContext.isPrivateEdition();
 });
 </script>
 <template>

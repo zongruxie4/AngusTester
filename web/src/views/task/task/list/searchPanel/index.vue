@@ -20,7 +20,7 @@ import {
   TaskStatus,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { TESTER, duration, enumLoader, XCanDexie } from '@xcan-angus/tools';
+import { TESTER, duration, enumLoader, XCanDexie } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';

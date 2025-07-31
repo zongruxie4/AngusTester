@@ -13,7 +13,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea, Upload } from 'ant-design-vue';
-import { clipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/tools';
+import { toClipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
@@ -299,7 +299,7 @@ const toCopyLink = () => {
     return;
   }
 
-  clipboard.toClipboard(window.location.origin + `/task#sprint?id=${id}`).then(() => {
+  toClipboard(window.location.origin + `/task#sprint?id=${id}`).then(() => {
     notification.success('复制链接成功');
   }).catch(() => {
     notification.error('复制链接失败');

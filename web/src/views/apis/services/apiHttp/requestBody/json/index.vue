@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import { clipboard, utils } from '@xcan-angus/tools';
+import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
@@ -309,7 +309,7 @@ const copyValue = async (data: ParamsItem) => {
     text = JSON.stringify(text);
   }
 
-  clipboard.toClipboard(text).then(() => {
+  toClipboard(text).then(() => {
     notification.success('成功复制值到剪贴板');
   });
 };

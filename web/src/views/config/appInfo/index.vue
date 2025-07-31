@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Image, Input, NoData } from '@xcan-angus/vue-ui';
-import { site } from '@xcan-angus/tools';
+import { appContext } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 
 import { AppInfo } from './interface';
@@ -26,8 +26,8 @@ const state:{appInfo:AppInfo} = reactive({ appInfo: {} as AppInfo });
 const activeTab = ref('member');
 
 onMounted(async () => {
-  const envContent = await site.getEnvContent();
-  editionType.value = envContent?.VITE_EDITION_TYPE;
+
+  editionType.value = appContext.getEditionType();
 
   watch(() => appInfo.value, (newValue:AppInfo) => {
     state.appInfo = newValue;

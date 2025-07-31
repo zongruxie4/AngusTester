@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { utils, duration, enumLoader } from '@xcan-angus/tools';
+import { utils, duration, enumLoader } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import MatchItemPopover from './MacthItemPopover.vue';

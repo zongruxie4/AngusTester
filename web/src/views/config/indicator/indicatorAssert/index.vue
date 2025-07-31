@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { Input, Select, SelectEnum, Validate } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/tools';
+import { enumLoader } from '@xcan-angus/infra';
 
 import MatchItemPopover from './matchItemPopover.vue';
 import ExpectedPopover from './expectedPopover.vue';
