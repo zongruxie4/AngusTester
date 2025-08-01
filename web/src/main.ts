@@ -1,5 +1,5 @@
 import { createApp, defineAsyncComponent } from 'vue';
-import { i18n as I18n, app, http, cookieUtils } from '@xcan-angus/infra';
+import { SupportedLanguage, i18n as I18n, app, http, cookieUtils, EnumPlugin, enumUtils } from '@xcan-angus/infra';
 
 import router, { startupGuard } from '@/router';
 import store from '@/store';
@@ -11,8 +11,9 @@ import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
 
-import zhEnumCNLocale from '@/enums/locales/zh_CN.json';
-import enEnumLocale from '@/enums/locales/en.json';
+import zhEnumCNLocale from '@/enums/locale/zh_CN.json';
+import enEnumLocale from '@/enums/locale/en.json';
+import { enumNamespaceMap } from '@/enums/enums';
 
 const bootstrap = async () => {
   await app.initEnvironment();
@@ -36,10 +37,10 @@ const bootstrap = async () => {
     i18n.global.mergeLocaleMessage(SupportedLanguage.en, enEnumLocale);
 
     const enumPluginOptions = {
-      i18n,
-      enumUtils,
+      i18n: i18n,
+      enumUtils: enumUtils,
       appEnums: enumNamespaceMap
-    } as EnumPluginOptions;
+    };
 
     const App = defineAsyncComponent(() => import('./AppShare.vue'));
     createApp(App)
