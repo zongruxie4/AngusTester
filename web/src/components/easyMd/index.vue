@@ -60,7 +60,7 @@ defineExpose({
 </script>
 <template>
   <div class="revert-style text-4" :class="{'preview-wrapper': !!props.preview }">
-    <textarea ref="textareaRef" ></textarea>
+    <textarea ref="textareaRef"></textarea>
   </div>
 </template>
 <style scoped>

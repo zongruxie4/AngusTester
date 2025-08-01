@@ -3,7 +3,7 @@ import { inject, ref, watch, onMounted, computed } from 'vue';
 import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect, SelectApisTable } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import {TESTER, download, utils, cookieUtils, duration, DomainManager, ApiUrlBuilder, routerUtils, ApiType} from '@xcan-angus/infra';
+import { TESTER, download, utils, cookieUtils, duration, DomainManager, ApiUrlBuilder, routerUtils, ApiType } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 // import { createPdf } from '@xcan-angus/rapipdf';
 
@@ -217,7 +217,7 @@ const handleOk = async () => {
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
   // 单接口导出
   if (props.type === 'API') {
-    const apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=${format.value}`)
+    const apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=${format.value}`);
     // const apiUrl = `${host}${TESTER}/apis/${props.id}/openapi/export?format=${format.value}`;
     const [error] = await download(apiUrl);
     exportLoading.value = false;

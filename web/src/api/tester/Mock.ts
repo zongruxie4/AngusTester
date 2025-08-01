@@ -153,5 +153,4 @@ export default class API {
   getGenerateScriptContent (params: Record<string, any>): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/data/script/content`, params);
   }
-
 }

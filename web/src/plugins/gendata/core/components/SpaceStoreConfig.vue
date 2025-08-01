@@ -21,7 +21,7 @@ const appInfo = inject('appInfo', ref({ code: '' }));
 onMounted(async () => {
   // const host = await site.getUrl('files');
   // const isPrivate = await site.isPrivate();
-  const storageUrl = routerUtils.getStorageFileUrl('/file/upload')
+  const storageUrl = routerUtils.getStorageFileUrl('/file/upload');
   // const _STORAGE = isPrivate ? STORAGE.replace('/storage', '') : STORAGE;
   formState.value.url = storageUrl;
 });

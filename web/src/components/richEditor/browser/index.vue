@@ -12,6 +12,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 </script>
 <template>
-  <div v-html="props.value || props.emptyText" :class="{'text-sub-content leading-5.5': !props.value}"></div>
+  <div :class="{'text-sub-content leading-5.5': !props.value}" v-html="props.value || props.emptyText"></div>
 <!--  <RichBrowser :value="props.value" contentStyle="body{font-size: 12px;margin:0; };.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before{color:#BFBFBF;font-size:12px;}" />-->
 </template>

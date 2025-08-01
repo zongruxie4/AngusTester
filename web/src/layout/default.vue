@@ -30,7 +30,7 @@ const appInfo = ref(appContext.getContext().accessApp);
 // const appInfo = inject<Ref<{ appId: string; id: string; }>>('appInfo');
 // const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
 const userInfo = ref(appContext.getContext().user);
-const codeMap = appContext.getAccessAppFuncCodeMap()
+const codeMap = appContext.getAccessAppFuncCodeMap();
 const route = useRoute();
 const router = useRouter();
 const logoDefaultImg = new URL('./assets/AngusTester.png', import.meta.url).href;
@@ -313,7 +313,7 @@ provide('getNewCurrentProject', loadData);
         {{ codeMap.get('OfficialWebsite')?.showName }}
       </a>
     </template>
-    <HeaderLanguagePreference class="px-3"/>
+    <HeaderLanguagePreference class="px-3" />
     <HeaderMessage class="mr-5 flex-shrink-0 flex-grow-0 basis-auto" />
     <HeaderPersonalCenter class="flex-shrink-0 flex-grow-0 basis-auto" />
   </div>

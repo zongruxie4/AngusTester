@@ -954,7 +954,7 @@ const sendRequest = async () => {
 
   // 请求设置
   const { connectTimeout, readTimeout, retryNum, maxRedirects } = setting.value;
-  const isExceedRequestSize = requestBodyRef.value.ifExceedRequestSize()
+  const isExceedRequestSize = requestBodyRef.value.ifExceedRequestSize();
   if (!ws || isExceedRequestSize) {
     controller = new AbortController();
     const signal = controller.signal;

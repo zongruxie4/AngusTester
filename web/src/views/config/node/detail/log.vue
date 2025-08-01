@@ -59,7 +59,7 @@ const loadFileList = async () => {
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
   const host = ApiUrlBuilder.buildApiUrl(routeConfig, '');
   // const url = `${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`
-  const url = `${host}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`
+  const url = `${host}/proxy/actuator/log/names?filePrefix=agent&targetAddr=http://${props.ip}:${props.port}`;
   axios.get(url, {})
     .then(resp => {
       const { data } = resp;
@@ -105,7 +105,7 @@ const loadLogContent = async () => {
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
   const host = ApiUrlBuilder.buildApiUrl(routeConfig, '');
   // // const url = `${isPrivate ? privHost : host}${isPrivate ? '/pubapi/v1' : PUB_TESTER}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`
-  const url = `${host}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`
+  const url = `${host}/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${props.ip}:${props.port}`;
   axios.get(url, {})
     .then(resp => {
       const { data } = resp;

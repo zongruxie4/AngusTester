@@ -167,8 +167,7 @@ const deleteItem = ():void => {
 
 const searchPanelRef = ref();
 onMounted(async () => {
-
-  editionType.value = appContext.getEditionType()
+  editionType.value = appContext.getEditionType();
   loadEnums();
   if (route.query.id) {
     nextTick(() => {

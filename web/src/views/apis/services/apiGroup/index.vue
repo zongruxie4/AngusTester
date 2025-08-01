@@ -358,7 +358,7 @@ onMounted(async () => {
   }
   accessToken.value = cookieUtils.get('access_token');
   // docOrigin.value = await site.getUrl('apis');
-  docOrigin.value = DomainManager.getInstance().getApiDomain('tester')
+  docOrigin.value = DomainManager.getInstance().getApiDomain('tester');
 });
 
 // 更新state

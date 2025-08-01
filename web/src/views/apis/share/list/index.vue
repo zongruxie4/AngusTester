@@ -9,7 +9,6 @@ import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
 import { nextTick } from 'process';
 
-
 type Props = {
   projectId: string;
   userInfo: { id: string; };

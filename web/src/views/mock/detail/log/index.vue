@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {computed, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue';
-import {Icon, notification, PureCard, Select} from '@xcan-angus/vue-ui';
-import {Button, RadioGroup} from 'ant-design-vue';
-import {ApiType, routerUtils, ApiUrlBuilder} from '@xcan-angus/infra';
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { Icon, notification, PureCard, Select } from '@xcan-angus/vue-ui';
+import { Button, RadioGroup } from 'ant-design-vue';
+import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 import axios from 'axios';
 
-import {mock} from 'src/api/tester';
+import { mock } from 'src/api/tester';
 
 export interface Props {
   id: string;
@@ -68,7 +68,7 @@ const loadFileList = async () => {
   // const privHost = await site.getUrl('at');
   // const isPrivate = await site.isPrivate();
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
-  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/names?filePrefix=mockservice&targetAddr=http://${ip.value}:${port.value}`)
+  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/names?filePrefix=mockservice&targetAddr=http://${ip.value}:${port.value}`);
   axios.get(url, {})
     .then(resp => {
       const { data } = resp;
@@ -101,7 +101,7 @@ const loadLogContent = async () => {
   // const privHost = await site.getUrl('at');
   // const isPrivate = await site.isPrivate();
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
-  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${ip.value}:${port.value}`)
+  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy/actuator/log/${logName}?tail=${tail}&linesNum=${linesNum}&targetAddr=http://${ip.value}:${port.value}`);
   axios.get(url, {})
     .then(resp => {
       const { data } = resp;

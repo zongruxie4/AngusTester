@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted } from 'vue';
-import { TESTER, VERSION, API, cookieUtils, appContext, routerUtils, ApiType, ApiUrlBuilder} from '@xcan-angus/infra';
+import { TESTER, VERSION, API, cookieUtils, appContext, routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 
 import '@xcan-angus/rapidoc';

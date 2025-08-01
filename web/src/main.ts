@@ -18,7 +18,7 @@ const bootstrap = async () => {
   const path = window.location.pathname;
   const sharePaths = ['/share/file', '/apis/share'];
   if (sharePaths.includes(path)) {
-    const locale = cookieUtils.getCurrentLanguage()
+    const locale = cookieUtils.getCurrentLanguage();
     const messages = (await import(`./locales/${locale}/index.js`)).default;
     const i18n = I18n.setupI18n({
       locale,

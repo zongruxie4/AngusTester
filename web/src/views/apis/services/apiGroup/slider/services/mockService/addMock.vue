@@ -140,7 +140,7 @@ watch(() => props.visible, (newValue) => {
   immediate: true
 });
 
-onMounted( () => {
+onMounted(() => {
   isPrivate.value = appContext.isPrivateEdition();
 });
 </script>
