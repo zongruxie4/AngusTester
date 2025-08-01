@@ -103,11 +103,11 @@ const failNumFilter = ref<{ key: 'failNum'; op: string; value: string | undefine
 const totalNumFilter = ref<{ key: 'totalNum'; op: string; value: string | undefined; }>({ key: 'totalNum', op: 'EQUAL', value: undefined });
 const taskTypeList = ref<MenuItem[]>([]);
 
-const loadTaskTypeEnum = async () => {
-  const [, data] = await enumUtils.enumToMessages('TaskType');
+const loadTaskTypeEnum = () => {
+  const data = enumUtils.enumToMessages('TaskType');
   taskTypeList.value = (data || []).map(item => {
     return {
-      name: item.message,
+      name: item.description,
       key: item.value
     };
   });

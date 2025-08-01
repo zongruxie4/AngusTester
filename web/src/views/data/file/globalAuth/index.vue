@@ -34,10 +34,10 @@ const cancel = () => {
   emit('update:visible', false);
 };
 
-const loadEnums = async () => {
-  const [error, res] = await enumUtils.enumToMessages('SpacePermission');
-  if (!error && res?.length) {
-    permissions.value = res.map(item => ({ label: item.message, value: item.value }));
+const loadEnums = () => {
+  const res = enumUtils.enumToMessages('SpacePermission');
+  if (res?.length) {
+    permissions.value = res.map(item => ({ label: item.description, value: item.value }));
   }
 };
 

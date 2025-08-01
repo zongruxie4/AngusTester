@@ -29,12 +29,9 @@ const init = async () => {
 };
 
 const loadScriptType = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ScriptType');
-  if (error) {
-    return;
-  }
+  const data = enumUtils.enumToMessages('ScriptType');
   const enums = data.filter(item => item.value !== 'MOCK_APIS');
-  groupByGroup.value[0].type = enums;
+  groupByGroup.value[0].type = enums.map((i) => ({ ...i, message: i.description }));
   scriptTypeData.value = enums.map(item => {
     let color = '';
     switch (item.value) {
@@ -55,17 +52,13 @@ const loadScriptType = async () => {
         break;
     }
     scriptTypeColor.value.push(color);
-    return { name: item.message, value: 0 };
+    return { name: item.description, value: 0 };
   });
 };
 
-const loadExecStatus = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ExecStatus');
-  if (error) {
-    return;
-  }
-
-  groupByGroup.value[1].type = data;
+const loadExecStatus = () => {
+  const data = enumUtils.enumToMessages('ExecStatus');
+  groupByGroup.value[1].type = data.map((i) => ({ ...i, message: i.description }));
   statusData.value = data.map(item => {
     let color = '';
     switch (item.value) {
@@ -92,7 +85,7 @@ const loadExecStatus = async () => {
         break;
     }
     statusColor.value.push(color);
-    return { name: item.message, value: 0 };
+    return { name: item.description, value: 0 };
   });
 };
 

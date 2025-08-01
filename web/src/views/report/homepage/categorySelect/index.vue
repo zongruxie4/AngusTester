@@ -15,10 +15,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:category', value: string):void}>();
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部报告', value: '' }]);
 
-const loadOpt = async () => {
-  const [, data] = await enumUtils.enumToMessages('ReportCategory');
-
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
+const loadOpt = () => {
+  const data = enumUtils.enumToMessages('ReportCategory');
+  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.description })));
 };
 
 const handleSelectKeysChange = (value) => {

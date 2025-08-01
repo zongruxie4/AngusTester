@@ -41,12 +41,9 @@ const formState = ref({
 });
 
 const ApisShareScope = ref<{value: string; label: string}[]>([]);
-const loadApisShareScopeOpt = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ApisShareScope');
-  if (error) {
-    return;
-  }
-  ApisShareScope.value = (data || []).map(i => ({ value: i.value, label: i.message }));
+const loadApisShareScopeOpt = () => {
+  const data = enumUtils.enumToMessages('ApisShareScope');
+  ApisShareScope.value = (data || []).map(i => ({ value: i.value, label: i.description }));
 };
 
 const loading = ref(false);

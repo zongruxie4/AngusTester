@@ -29,7 +29,7 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const { t } = useI18n();
 
-const eventTypes = ref<{ value: string, message: string, models: string[] | undefined }[]>([]);
+const eventTypes = ref<{ value: string, description: string}[]>([]);
 const selectetType = ref<string[]>([]);
 const init = async () => {
   await loadCurrentChannels();
@@ -37,15 +37,12 @@ const init = async () => {
 };
 
 const loadEventTypes = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ReceiveChannelType');
-  if (error) {
-    return;
-  }
-  eventTypes.value = data?.map(m => {
+  const data = enumUtils.enumToMessages('ReceiveChannelType');
+  eventTypes.value = (data || [])?.map(m => {
     (selectetType.value.includes(m.value) || channelValus[m.value].length) && loadConfigOptions(m.value);
     return {
       ...m,
-      label: m.message
+      label: m.description
     };
   });
 };
@@ -170,7 +167,7 @@ watch(() => props.visible, newValue => {
         <FormItem
           v-for="type in eventTypes"
           :key="type.value"
-          :label="type.message"
+          :label="type.description"
           :name="type.value">
           <Select
             v-model:value="channelValus[type.value]"

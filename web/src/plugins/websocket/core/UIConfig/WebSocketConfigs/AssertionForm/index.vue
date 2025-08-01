@@ -25,9 +25,9 @@ const emit = defineEmits<{
 const idList = ref<string[]>([]);
 const dataMap = ref<{ [key: string]: AssertionConfig }>({});
 const conditionOptions = ref<{
-  'BODY': { message: string; value: string; }[];
-  'BODY_SIZE': { message: string; value: string; }[];
-  'DURATION': { message: string; value: string; }[];
+  'BODY': { description: string; value: string; }[];
+  'BODY_SIZE': { description: string; value: string; }[];
+  'DURATION': { description: string; value: string; }[];
 }>({ BODY: [], BODY_SIZE: [], DURATION: [] });
 
 const nameErrorSet = ref<Set<string>>(new Set());
@@ -40,11 +40,7 @@ const checkedSet = ref<Set<string>>(new Set());
 const repeatNameSet = ref<Set<string>>(new Set());
 
 const loadConditionOptions = async () => {
-  const [error, data = []] = await enumUtils.enumToMessages('AssertionCondition');
-  if (error) {
-    return;
-  }
-
+  const data = enumUtils.enumToMessages('AssertionCondition');
   const numberConditions = data.filter(item => NUMBER_CONDITIONS.includes(item.value));
   conditionOptions.value = {
     BODY: data,
@@ -420,7 +416,7 @@ defineExpose({
             :disabled="!dataMap[item].type"
             :error="conditionErrorSet.has(item)"
             :value="dataMap[item].assertionCondition"
-            :fieldNames="{ label: 'message', value: 'value' }"
+            :fieldNames="{ label: 'description', value: 'value' }"
             :options="conditionOptions[dataMap[item].type]"
             @change="conditionChange($event, item)" />
           <template v-if="EXPRESSION_CONDITIONS.includes(dataMap[item].assertionCondition)">

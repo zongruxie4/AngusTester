@@ -16,12 +16,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const responseSchemaRef = ref([]);
 
-const allStatus = ref<string[]>([]);
-const loadAllStatus = async () => {
-  const [error, data] = await enumUtils.enumToMessages('HttpStatus');
-  if (error) {
-    return;
-  }
+const allStatus = ref<{ value:string, description:string }[]>([]);
+const loadAllStatus = () => {
+  const data = enumUtils.enumToMessages('HttpStatus');
   allStatus.value = data;
 };
 
@@ -92,7 +89,7 @@ defineExpose({
           :menuStyle="{maxHeight: '500px', overflowY: 'auto'}"
           placement="leftTop"
           :disabledKeys="respStatus"
-          :menuItems="allStatus.map(i => ({ key: i.value, name: `${i.value} ${i.message}` }))"
+          :menuItems="allStatus.map(i => ({ key: i.value, name: `${i.value} ${i.description}` }))"
           @click="addStatus">
           <Button
             size="small"

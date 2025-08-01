@@ -64,15 +64,12 @@ const changeShowDebug = (value: boolean) => {
   showDebug.value = value;
 };
 
-let statusOpt:{value: string, message: string}[] = [];
+let statusOpt:{value: string, description: string}[] = [];
 const loadStatusEnum = async () => {
   if (statusOpt.length) {
     return;
   }
-  const [error, data] = await enumUtils.enumToMessages('HttpStatus');
-  if (error) {
-    return;
-  }
+  const data = enumUtils.enumToMessages('HttpStatus');
   statusOpt = data || [];
 };
 const method = ref();

@@ -74,13 +74,9 @@ const expressionShowSet = ref<Set<string>>(new Set());
 const expressionErrorSet = ref<Set<string>>(new Set());
 
 // 断言条件枚举
-const assertionConditionOptions = ref<{ message: string; value: string; }[]>([]);
-const loadAssertionConditionOptions = async () => {
-  const [error, data = []] = await enumUtils.enumToMessages('AssertionCondition');
-  if (error) {
-    return;
-  }
-
+const assertionConditionOptions = ref<{ description: string; value: string; }[]>([]);
+const loadAssertionConditionOptions = () => {
+  const data = enumUtils.enumToMessages('AssertionCondition');
   assertionConditionOptions.value = data;
 };
 
@@ -105,13 +101,9 @@ const optionsMap = computed(() => {
 });
 
 // 提取位置枚举
-const locationOptions = ref<{ message: string; value: string; }[]>([]);
-const loadLocationOptions = async () => {
-  const [error, data = []] = await enumUtils.enumToMessages('HttpExtractionLocation');
-  if (error) {
-    return;
-  }
-
+const locationOptions = ref<{ description: string; value: string; }[]>([]);
+const loadLocationOptions = () => {
+  const data = enumUtils.enumToMessages('HttpExtractionLocation');
   locationOptions.value = data;
 };
 
@@ -125,7 +117,6 @@ const locationOptionsMap = computed(() => {
     } else {
       prev[cur] = options;
     }
-
     return prev;
   }, {}) || {};
 });
@@ -822,7 +813,7 @@ const expressionPlaceholder = computed(() => {
   return map;
 });
 const textAreaAutoSize = { minRows: 1, maxRows: 5 };
-const enumFieldNames = { label: 'message', value: 'value' };
+const enumFieldNames = { label: 'description', value: 'value' };
 </script>
 <template>
   <div class="space-y-4 pb-3">

@@ -346,7 +346,7 @@ const planParams = computed(() => {
   return { projectId: projectInfo.value?.id };
 });
 
-const evalWorkloadMethod = ref();
+const evalWorkloadMethod = ref<{value: string, description: string}>();
 const planEndDate = ref<string>();
 const planChange = (_value, options) => {
   formState.value.deadlineDate = _value ? options.deadlineDate : '';
@@ -374,16 +374,12 @@ const getModuleTreeData = async () => {
   moduleTreeData.value = data || [];
 };
 
-const stepViewOpt = ref([]);
+const stepViewOpt = ref<{name: string, key: string}[]>([]);
 const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
-  const [error1, data1] = await enumUtils.enumToMessages('CaseStepView');
-  if (!error) {
-    evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
-  }
-  if (!error1) {
-    stepViewOpt.value = data1.map(i => ({ name: i.message, key: i.value }));
-  }
+  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
+  const data1 = enumUtils.enumToMessages('CaseStepView');
+  evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
+  stepViewOpt.value = data1.map(i => ({ name: i.description, key: i.value }));
 };
 
 const changeStepView = ({ key }) => {

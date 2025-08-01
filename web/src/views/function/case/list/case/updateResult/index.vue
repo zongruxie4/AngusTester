@@ -91,10 +91,10 @@ const handleSubmit = () => {
     });
 };
 
-const testResultEnum = ref<{ value: string, message: string }[]>([]);
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('CaseTestResult');
-  if (error || !data) {
+const testResultEnum = ref<{ value: string, description: string }[]>([]);
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('CaseTestResult');
+  if (!data) {
     return;
   }
   testResultEnum.value = data.filter(item => !['PENDING', 'BLOCKED', 'CANCELED'].includes(item.value)) || [];

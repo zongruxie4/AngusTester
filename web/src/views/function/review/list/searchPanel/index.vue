@@ -28,10 +28,10 @@ const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
-const loadStatusEnum = async () => {
-  const [, data] = await enumUtils.enumToMessages('FuncPlanStatus');
+const loadStatusEnum = () => {
+  const data = enumUtils.enumToMessages('FuncPlanStatus');
 
-  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
+  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value }));
 };
 
 const searchPanelOptions = [

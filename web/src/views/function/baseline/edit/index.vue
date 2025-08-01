@@ -42,7 +42,7 @@ const dataSource = ref<BaselineInfo>();
 
 const activeTabKey = ref('funcCase');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
 const baselineFlagVisible = ref(false);
 
 const oldFormState = ref<FormState>();
@@ -229,12 +229,8 @@ const setFormData = (data: BaselineInfo) => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
-  if (error) {
-    return;
-  }
-
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
+  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
 };
 
 const members = ref([]);

@@ -48,12 +48,9 @@ const loadEnums = async () => {
   }
 };
 
-const loadScriptType = async () => {
-  const [error, data] = await enumUtils.enumToMessages('CombinedTargetType');
-  if (error) {
-    return;
-  }
-  activityGroup.value[0].type = data;
+const loadScriptType = () => {
+  const data = enumUtils.enumToMessages('CombinedTargetType');
+  activityGroup.value[0].type = data.map(i => ({...i, message: i.description}));
   activityGroup.value[0].color = data?.map(item => getScriptTypeColor(item.value));
 };
 

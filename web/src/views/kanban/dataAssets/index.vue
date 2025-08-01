@@ -66,15 +66,12 @@ const targetDataCategery = {
   REPORT: '报告',
   REPORT_RECORD: '记录'
 };
-const reportCategoryOpt = ref<{value: string, message: string}[]>([]);
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ReportCategory');
-  if (error) {
-    return;
-  }
+const reportCategoryOpt = ref<{value: string, description: string}[]>([]);
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('ReportCategory');
   reportCategoryOpt.value = data || [];
   if (reportCategoryOpt.value.length) {
-    reportBarChartsConfig.xAxis.data = reportCategoryOpt.value.map(i => i.message);
+    reportBarChartsConfig.xAxis.data = reportCategoryOpt.value.map(i => i.description);
   }
 };
 

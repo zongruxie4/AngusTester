@@ -34,8 +34,8 @@ const pagination = {
   total: 0
 };
 
-const templateDesc = ref<{ value: string; message: string }[]>([]);
-const templateData = ref<{ value: string; message: string }[]>([]);
+const templateDesc = ref<{ value: string; description: string }[]>([]);
+const templateData = ref<{ value: string; description: string }[]>([]);
 const filters = ref<{ op: string; key: string; value: any }[]>([]);
 const orderData = ref({
   orderBy: undefined,
@@ -46,12 +46,12 @@ const dataList = ref([]);
 const loading = ref(false);
 
 const getTemplateName = () => {
-  return templateData.value.find(item => item.value === template.value)?.message;
+  return templateData.value.find(item => item.value === template.value)?.description;
 };
 const TemplateDescConfig = computed(() => {
   const res = {};
   templateDesc.value.forEach(item => {
-    res[item.value] = item.message;
+    res[item.value] = item.description;
   });
   return res;
 });

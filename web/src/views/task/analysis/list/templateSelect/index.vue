@@ -7,8 +7,8 @@ import { TemplateIconConfig } from '../PropTypes';
 
 interface Props {
   template: string;
-  templateData: {value: string; message: string}[];
-  templateDesc: {value: string; message: string}[];
+  templateData: {value: string; description: string}[];
+  templateDesc: {value: string; description: string}[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,30 +16,21 @@ const props = withDefaults(defineProps<Props>(), {
   templateData: () => []
 });
 
-const emits = defineEmits<{(e: 'update:template', value: string):void; (e: 'update:templateData', value: {value: string; message: string}[]):void; (e:'update:templateDesc', value: {value: string; message: string}[]):void}>();
+const emits = defineEmits<{(e: 'update:template', value: string):void;
+  (e: 'update:templateData', value: {value: string; description: string}[]):void;
+  (e:'update:templateDesc', value: {value: string; description: string}[]):void}>();
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部分析', value: '' }]);
 
-const loadOpt = async () => {
-  const [, data] = await enumUtils.enumToMessages('AnalysisTaskTemplate');
-
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
+const loadOpt = () => {
+  const data = enumUtils.enumToMessages('AnalysisTaskTemplate');
+  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.description })));
   emits('update:templateData', data);
-  const [, desc] = await enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
+  const desc = enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
   emits('update:templateDesc', desc);
 };
 
 const handleSelectKeysChange = (value) => {
   emits('update:template', value[0]);
-};
-
-const categoryIcon = {
-  // PROJECT: 'icon-xiangmu',
-  // TASK: 'icon-renwuceshibaogao',
-  // FUNCTIONAL: 'icon-gongnengceshibaogao',
-  // APIS: 'icon-jiekou',
-  // SCENARIO: 'icon-changjingguanli',
-  // EXECUTION: 'icon-zhihang',
-  // '': 'icon-liebiaoshitu'
 };
 
 onMounted(() => {

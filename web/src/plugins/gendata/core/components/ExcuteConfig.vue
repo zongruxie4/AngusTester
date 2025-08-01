@@ -63,12 +63,9 @@ const storeTip = computed(() => {
 // 存储方式选项
 let allLocationOpt: {label: string; value: string}[] = [];
 const storageLocationOpt = ref<{label: string; value: string}[]>([]);
-const loadStorageLoactionOpt = async () => {
-  const [error, data] = await enumUtils.enumToMessages('StorageLocation');
-  if (error) {
-    return;
-  }
-  allLocationOpt = data.map(i => ({ ...i, label: i.message }));
+const loadStorageLoactionOpt = () => {
+  const data = enumUtils.enumToMessages('StorageLocation');
+  allLocationOpt = data.map(i => ({ ...i, label: i.description }));
   storageLocationOpt.value = props.format !== 'SQL' ? allLocationOpt.filter(i => i.value !== 'DATASOURCE') : allLocationOpt;
 };
 

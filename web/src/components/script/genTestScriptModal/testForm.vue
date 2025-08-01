@@ -114,13 +114,10 @@ const variableIncludeStrategyTip = {
   REF: '只包含接口引用的全局变量、继承项目/服务变量、以及当前接口变量',
   IGNORE: '忽略变量，生成脚本不包含变量'
 };
-const variableIncludeStrategyOpt = ref<{ message: string; value: string; }[]>([]);
+const variableIncludeStrategyOpt = ref<{ description: string; value: string; }[]>([]);
 const loadVariableEnum = async () => {
-  const [error, data] = await enumUtils.enumToMessages('VariableIncludeStrategy');
-  if (error) {
-    return;
-  }
-  variableIncludeStrategyOpt.value = (data || []).map(i => ({ ...i, label: i.message, tip: variableIncludeStrategyTip[i.value] }));
+  const data = enumUtils.enumToMessages('VariableIncludeStrategy');
+  variableIncludeStrategyOpt.value = (data || []).map(i => ({ ...i, label: i.description, tip: variableIncludeStrategyTip[i.value] }));
 };
 
 onMounted(() => {

@@ -32,16 +32,13 @@ const testData = computed(() => {
     { name: '评审未通过', value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
   ];
   result.forEach((i) => {
-    i.name = ReviewStatusEnum.value?.[i.enumKey]?.message || i.name;
+    i.name = ReviewStatusEnum.value?.[i.enumKey]?.description || i.name;
   });
   return result;
 });
 
-onMounted(async () => {
-  const [error, data = []] = await enumUtils.enumToMessages('ReviewStatus');
-  if (error) {
-    return;
-  }
+onMounted( () => {
+  const data = enumUtils.enumToMessages('ReviewStatus');
   ReviewStatusEnum.value = {};
   data?.forEach(i => {
     ReviewStatusEnum.value[i.value] = i;

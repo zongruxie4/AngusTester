@@ -20,12 +20,9 @@ const handleEditPerform = () => {
   }));
 };
 
-const durationUnitOpt = ref([]);
-const loadDurationUnitOpt = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
-  if (error) {
-    return;
-  }
+const durationUnitOpt = ref<{value: string, description: string}[]>([]);
+const loadDurationUnitOpt = () => {
+  const data = enumUtils.enumToMessages('ShortTimeUnit');
   durationUnitOpt.value = (data || []);
 };
 
@@ -55,12 +52,9 @@ const info = reactive({ // 展示 info
   tps: ''
 });
 
-const percentileOpt = ref([]);
+const percentileOpt = ref<{value: string, description: string}[]>([]);
 const loadPercentileOpt = async () => {
-  const [error, data] = await enumUtils.enumToMessages('Percentile');
-  if (error) {
-    return;
-  }
+  const data = enumUtils.enumToMessages('Percentile');
   percentileOpt.value = data;
 };
 
@@ -195,7 +189,7 @@ onMounted(() => {
             <Select
               v-model:value="editInfo.percentile"
               class="w-25 mr-2 quota-rt"
-              :fieldNames="{label: 'message', value: 'value'}"
+              :fieldNames="{label: 'description', value: 'value'}"
               :allowClear="false"
               size="small"
               :options="percentileOpt" />

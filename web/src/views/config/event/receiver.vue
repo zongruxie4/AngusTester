@@ -22,11 +22,11 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'refr
 const { t } = useI18n();
 const formRef = ref();
 
-const receiversType = ref<{value:string, message:string}[]>([]);
-const otherType = ref<{value:string, message:string}>({ value: '', message: '' });
+const receiversType = ref<{value:string, description:string}[]>([]);
+const otherType = ref<{value:string, description:string}>({ value: '', description: '' });
 const defaultUsers = ref<{value:string, laebel:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
 const users = ref<string[]>(defaultUsers.value.map(user => user.value));
-const noticeTypeOpt = ref<{value:string, message:string}[]>([]);
+const noticeTypeOpt = ref<{value:string, description:string}[]>([]);
 const noticeType = ref<string[]>((props.selectedItem?.receiveSetting?.receivers?.noticeTypes || []).map(i => i.value));
 
 const init = () => {
@@ -34,21 +34,15 @@ const init = () => {
   loadNoticeType();
 };
 
-const loadReceiverEnum = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ReceiverType');
-  if (error) {
-    return;
-  }
+const loadReceiverEnum = () => {
+  const data = enumUtils.enumToMessages('ReceiverType');
   receiversType.value = (data || []).filter(type => type.value !== 'OTHER');
-  otherType.value = (data || []).find(type => type.value === 'OTHER');
+  otherType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', description: '' };
 };
 
-const loadNoticeType = async () => {
-  const [error, data] = await enumUtils.enumToMessages('NoticeType');
-  if (error) {
-    return;
-  }
-  noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.message }));
+const loadNoticeType = () => {
+  const data = enumUtils.enumToMessages('NoticeType');
+  noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.description }));
 };
 
 const receivingMethods = ref<string[]>(props.selectedItem?.receiveSetting?.receivers?.receiverTypes.map(m => m.value) || []);
@@ -90,11 +84,11 @@ onMounted(() => {
             v-for="r in receiversType"
             :key="r.value"
             :value="r.value">
-            {{ r.message }}
+            {{ r.description }}
           </Checkbox>
         </CheckboxGroup>
         <div class="flex text-3">
-          <span class="mr-2 leading-7">{{ otherType.message }}</span>
+          <span class="mr-2 leading-7">{{ otherType.description }}</span>
           <SelectUser
             v-model:value="users"
             :allowClear="false"

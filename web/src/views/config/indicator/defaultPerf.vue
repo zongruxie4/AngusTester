@@ -29,12 +29,9 @@ const info = reactive({ // 展示 info
   rampUpThreads: undefined,
   rampUpInterval: '1min'
 });
-const percentileOpt = ref([]);
-const loadPercentileOpt = async () => {
-  const [error, data] = await enumUtils.enumToMessages('Percentile');
-  if (error) {
-    return;
-  }
+const percentileOpt = ref<{value: string, description: string}[]>([]);
+const loadPercentileOpt = () => {
+  const data = enumUtils.enumToMessages('Percentile');
   percentileOpt.value = (data || []);
 };
 
@@ -180,7 +177,7 @@ onMounted(() => {
             <Select
               v-model:value="editInfo.percentile"
               class="w-25 mr-2 quota-rt"
-              :fieldNames="{label: 'message', value: 'value'}"
+              :fieldNames="{label: 'description', value: 'value'}"
               :allowClear="false"
               size="small"
               :options="percentileOpt" />

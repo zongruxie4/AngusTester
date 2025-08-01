@@ -49,7 +49,7 @@ const isAdmin = inject('isAdmin', ref(false));
 // const meetingsRef = ref();
 const formRef = ref();
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
 const dataSource = ref<SprintInfo>();
 
 const permissions = ref<string[]>([]);
@@ -319,13 +319,10 @@ const cancel = () => {
   deleteTabPane([props.data._id]);
 };
 
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
-  if (error) {
-    return;
-  }
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
 
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
 };
 
 const loadPermissions = async (id: string) => {
@@ -723,7 +720,7 @@ const autoSize = {
             v-for="item in evalWorkloadMethodOptions"
             :key="item.value"
             :value="item.value">
-            {{ item.message }}
+            {{ item.description }}
           </Radio>
         </RadioGroup>
         <Tooltip

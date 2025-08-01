@@ -37,12 +37,9 @@ const formData = ref<{
   planId: undefined
 });
 
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('StrategyWhenDuplicated');
-  if (error) {
-    return;
-  }
-  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.message }));
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('StrategyWhenDuplicated');
+  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.description }));
 };
 
 const handleFile = (fileInfo) => {

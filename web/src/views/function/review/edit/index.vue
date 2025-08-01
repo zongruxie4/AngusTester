@@ -55,7 +55,7 @@ const dataSource = ref<ReviewInfo>();
 
 const activeTabKey = ref('funcCase');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
@@ -311,13 +311,9 @@ const setFormData = (data: ReviewInfo) => {
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
-  if (error) {
-    return;
-  }
-
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
+  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
 };
 
 const loadPermissions = async (id: string) => {

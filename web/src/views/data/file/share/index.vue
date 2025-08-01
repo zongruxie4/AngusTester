@@ -109,15 +109,12 @@ const resetForm = () => {
   form.id = undefined;
 };
 
-const loadUnit = async () => {
+const loadUnit = () => {
   if (state.unitEnum.length) {
     return;
   }
   const excludeUnit = ['Millisecond', 'Second'];
-  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
-  if (error) {
-    return;
-  }
+  const data = enumUtils.enumToMessages('ShortTimeUnit');
   state.unitEnum = (data || []).filter(unit => !excludeUnit.includes(unit.value));
 };
 

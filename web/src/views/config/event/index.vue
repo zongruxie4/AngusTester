@@ -46,8 +46,8 @@ const pushSettingList = ref<PushSetting[]>([]);
 const pushRecordList = ref<PushRecord[]>([]);
 const pageTotal = ref(0);
 
-const targetTypeEnums = ref<{value: string; message: string}[]>([]);
-const NoticeType = ref<{value: string; message: string}[]>([]);
+const targetTypeEnums = ref<{value: string; description: string}[]>([]);
+const NoticeType = ref<{value: string; description: string}[]>([]);
 const eventDataNoticeType = ref<{eventCode: string; noticeTypes: {value: string; message: string}[]}[]>([]);
 
 const { t } = useI18n();
@@ -60,14 +60,14 @@ const init = async () => {
   loadPushRecordList();
 };
 
-const loadEnums = async () => {
-  const [_err1, data1] = await enumUtils.enumToMessages('CombinedTargetType');
-  const [_err2, data2] = await enumUtils.enumToMessages('NoticeType');
+const loadEnums = () => {
+  const data1 = enumUtils.enumToMessages('CombinedTargetType');
+  const data2 = enumUtils.enumToMessages('NoticeType');
   targetTypeEnums.value = data1 || [];
   NoticeType.value = (data2 || []).map(i => {
     return {
       ...i,
-      label: i.message
+      label: i.description
     };
   });
 };
@@ -82,7 +82,7 @@ const loadEventNoticeTypeByEventCode = async () => {
 
 const getTargetTypeName = (value: string) => {
   const target = targetTypeEnums.value.find(i => i.value === value);
-  return target?.message || '  ';
+  return target?.description || '  ';
 };
 
 const loadStatistics = async () => {

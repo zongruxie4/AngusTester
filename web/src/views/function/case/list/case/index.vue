@@ -882,12 +882,9 @@ const getPlanAuth = async () => {
   // }
 };
 
-const NumberMatchCondition = ref<{ value: string, message: string }[]>([{ value: 'EQUAL', message: '等于' }]);
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('NumberCompareCondition');
-  if (error) {
-    return;
-  }
+const NumberMatchCondition = ref<{ value: string, description: string }[]>([{ value: 'EQUAL', description: '等于' }]);
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('NumberCompareCondition');
   NumberMatchCondition.value = data;
 };
 
@@ -1822,7 +1819,7 @@ defineExpose({
                     :value="testNumScope"
                     size="small"
                     :options="NumberMatchCondition"
-                    :fieldNames="{ label: 'message', value: 'value' }"
+                    :fieldNames="{ label: 'description', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"
                     class="w-24"
@@ -1846,7 +1843,7 @@ defineExpose({
                     v-model:value="testFailScope"
                     size="small"
                     :options="NumberMatchCondition"
-                    :fieldNames="{ label: 'message', value: 'value' }"
+                    :fieldNames="{ label: 'description', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"
                     class="w-24"
@@ -1870,7 +1867,7 @@ defineExpose({
                     :value="reviewNumScope"
                     size="small"
                     :options="NumberMatchCondition"
-                    :fieldNames="{ label: 'message', value: 'value' }"
+                    :fieldNames="{ label: 'description', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"
                     class="w-24"

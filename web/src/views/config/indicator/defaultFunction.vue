@@ -15,11 +15,11 @@ const SecurityEnumOpt = ref<{value: string; label: string}[]>([]);
 const smokeAssetRef = ref();
 const securityAssetRef = ref();
 
-const loadIndicatorEnum = async () => {
-  const [, data1] = await enumUtils.enumToMessages('SmokeCheckSetting');
-  smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
-  const [, data2] = await enumUtils.enumToMessages('SecurityCheckSetting');
-  SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
+const loadIndicatorEnum = () => {
+  const data1 = enumUtils.enumToMessages('SmokeCheckSetting');
+  smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.description }));
+  const data2 = enumUtils.enumToMessages('SecurityCheckSetting');
+  SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.description }));
 };
 
 // 获取默认指标

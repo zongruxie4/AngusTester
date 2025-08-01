@@ -68,7 +68,7 @@ const dataSource = ref<PlanInfo>();
 const testerSelectRef = ref();
 const activeTabKey = ref('testingObjectives');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
@@ -577,13 +577,9 @@ const getJson = (value) => {
   }
 };
 
-const loadEnums = async () => {
-  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
-  if (error) {
-    return;
-  }
-
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+const loadEnums = () => {
+  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
+  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
 };
 
 const loadPermissions = async (id: string) => {
@@ -957,7 +953,7 @@ const autoSize = {
             v-for="item in evalWorkloadMethodOptions"
             :key="item.value"
             :value="item.value">
-            {{ item.message }}
+            {{ item.description }}
           </Radio>
         </RadioGroup>
         <Tooltip

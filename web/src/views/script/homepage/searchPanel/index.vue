@@ -45,9 +45,9 @@ const serviceIdFilter = ref<{ key: 'serviceId', op: 'EQUAL', value: string | und
 const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undefined }>({ key: 'sourceId', op: 'EQUAL', value: undefined });
 
 const scriptTypeOpt = ref<MenuItem[]>([]);
-const loadEnum = async () => {
-  const [, data] = await enumUtils.enumToMessages('ScriptType');
-  scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'MOCK_APIS');
+const loadEnum = () => {
+  const data = enumUtils.enumToMessages('ScriptType');
+  scriptTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value })).filter(i => i.key !== 'MOCK_APIS');
 };
 
 const menuItemClick = (data: MenuItem) => {

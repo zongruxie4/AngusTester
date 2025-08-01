@@ -47,23 +47,23 @@ const orgOpt = [
   }
 ];
 
-const templateDescOpt = ref([]);
-const loadDescOpt = async () => {
-  const [, data] = await enumUtils.enumToMessages('AnalysisCaseTemplateDesc');
+const templateDescOpt = ref<{description: string, value: string}[]>([]);
+const loadDescOpt = () => {
+  const data = enumUtils.enumToMessages('AnalysisCaseTemplateDesc');
   templateDescOpt.value = data || [];
 };
 
-const analysisCaseObjectOpt = ref([]);
-const loadAnalysisCaseObject = async () => {
-  const [, data] = await enumUtils.enumToMessages('AnalysisCaseObject');
+const analysisCaseObjectOpt = ref<{value: string, description: string}[]>([]);
+const loadAnalysisCaseObject = () => {
+  const data = enumUtils.enumToMessages('AnalysisCaseObject');
   analysisCaseObjectOpt.value = data || [];
 };
 
-const analysisTimeRangeOpt = ref([]);
-const loadAnalysisTimeRange = async () => {
-  const [, data] = await enumUtils.enumToMessages('AnalysisTimeRange');
+const analysisTimeRangeOpt = ref<{value: string, description: string, label: string}[]>([]);
+const loadAnalysisTimeRange = () => {
+  const data = enumUtils.enumToMessages('AnalysisTimeRange');
 
-  analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
+  analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.description }));
 };
 
 const formData = ref({
@@ -187,7 +187,7 @@ onMounted(async () => {
   }
   watch(() => formData.value.template, () => {
     if (!descriptionChanged.value) {
-      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.message;
+      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.description;
     }
   }, {
     immediate: true
@@ -255,7 +255,7 @@ onMounted(async () => {
           v-model:value="formData.object"
           buttonStyle="solid"
           size="small">
-          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.message }}</RadioButton>
+          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.description }}</RadioButton>
         </RadioGroup>
       </FormItem>
 

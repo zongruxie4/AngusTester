@@ -76,7 +76,7 @@ const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment'
 const planPermissionsMap = ref<Map<string, PlanPermissionKey[]>>(new Map());
 const planAuthMap = ref({});
 
-const testResultList = ref<{ message: string; value: TestResult }[]>([]);
+const testResultList = ref<{ description: string; value: TestResult }[]>([]);
 const caseList = ref<CaseInfo[]>([]);
 const caseDataMap = ref<{ [key in TestResult]: CaseInfo[] }>({
   PENDING: [],
@@ -123,12 +123,8 @@ const taskModalVisible = ref(false);
 const resultPassed = ref(false);
 
 const loadEnum = async () => {
-  const [error, res] = await enumUtils.enumToMessages('CaseTestResult');
-  if (error) {
-    return;
-  }
-
-  testResultList.value = (res || []) as { message: string; value: TestResult }[];
+  const res = enumUtils.enumToMessages('CaseTestResult');
+  testResultList.value = (res || []) as { description: string; value: TestResult }[];
 };
 
 const loadData = async () => {
@@ -1353,7 +1349,7 @@ const checkedCaseId = computed(() => {
         :key="item.value"
         class="col-item h-full w-1/5 border-r border-solid border-theme-text-box overflow-hidden">
         <div class="flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-          <span>{{ item.message }}</span>
+          <span>{{ item.description }}</span>
           <span>{{ numMap[item.value] }}</span>
         </div>
         <Draggable
@@ -1455,7 +1451,7 @@ const checkedCaseId = computed(() => {
           :key="_testResult.value"
           style="width:calc((100% - 200px)/5);"
           class="col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-          <span>{{ _testResult.message }}</span>
+          <span>{{ _testResult.description }}</span>
           <span>{{ numMap[_testResult.value] }}</span>
         </div>
       </div>
@@ -1489,7 +1485,7 @@ const checkedCaseId = computed(() => {
                 :key="_testResult.value"
                 style="width:20%;"
                 class="flex items-center px-2.5 py-3.5 space-x-1.5">
-                <span>{{ _testResult.message }}</span>
+                <span>{{ _testResult.description }}</span>
                 <span>{{ groupDataMap[_createdByName.value]?.[_testResult.value]?.length || 0 }}</span>
               </div>
             </template>

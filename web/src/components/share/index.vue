@@ -239,13 +239,13 @@ const resetPassword = () => {
 
 const dateUnitOptions = ref<{ label: string; value: string; }[]>([]);
 
-const loadUnit = async () => {
+const loadUnit = () => {
   const excludeUnit = ['Millisecond', 'Second'];
-  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
-  if (error || !data) {
+  const data = enumUtils.enumToMessages('ShortTimeUnit');
+  if (!data) {
     return;
   }
-  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({ label: item.message, value: item.value }));
+  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({ label: item.description, value: item.value }));
 };
 
 const apiIndeterminate = ref<boolean>(false);

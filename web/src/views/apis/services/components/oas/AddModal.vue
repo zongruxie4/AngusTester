@@ -31,13 +31,13 @@ const handleCancel = () => {
 const compType = ref<ComponentsType>('schemas');
 
 const compTypesEnum = ref<{label:string, value:string, disabled:boolean}[]>([]);
-const getCompTypesEnum = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ServicesCompType');
-  if (error || !data?.length) {
+const getCompTypesEnum = () => {
+  const data = enumUtils.enumToMessages('ServicesCompType');
+  if (!data?.length) {
     return;
   }
   compTypesEnum.value = data.map(item => ({
-    label: item.message,
+    label: item.description,
     value: item.value,
     disabled: ['securitySchemes', 'links', 'callbacks', 'extensions', 'pathItems'].includes(item.value)
   }));

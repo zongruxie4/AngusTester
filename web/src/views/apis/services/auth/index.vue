@@ -20,19 +20,15 @@ const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
 
-const apisPermissions = ref<{ value: string, message: string }[]>([]);
-const servicesPermissions = ref<{ value: string, message: string }[]>([]);
+const apisPermissions = ref<{ value: string, description: string }[]>([]);
+const servicesPermissions = ref<{ value: string, description: string }[]>([]);
 const loaded = ref(false);
 
-const loadEnums = async () => {
-  const [e1, d1] = await enumUtils.enumToMessages('ApiPermission');
-  if (!e1) {
-    apisPermissions.value = d1 || [];
-  }
-  const [e2, d2] = await enumUtils.enumToMessages('ServicesPermission');
-  if (!e2) {
-    servicesPermissions.value = d2 || [];
-  }
+const loadEnums = () => {
+  const d1 = enumUtils.enumToMessages('ApiPermission');
+  apisPermissions.value = d1 || [];
+  const d2 = enumUtils.enumToMessages('ServicesPermission');
+  servicesPermissions.value = d2 || [];
 };
 
 onMounted(() => {

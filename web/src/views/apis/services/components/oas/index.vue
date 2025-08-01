@@ -133,9 +133,9 @@ const oldCompListObj = ref<Record<ComponentsType, {
   }
 );
 
-const getCompTypesEnum = async () => {
-  const [error, data] = await enumUtils.enumToMessages('ServicesCompType');
-  if (error || !data?.length) {
+const getCompTypesEnum = () => {
+  const data = enumUtils.enumToMessages('ServicesCompType');
+  if (!data?.length) {
     return;
   }
   for (let i = 0; i < data.length; i++) {
@@ -143,7 +143,7 @@ const getCompTypesEnum = async () => {
       continue;
     }
     compListObj.value[data[i].value] = {
-      name: data[i]?.message,
+      name: data[i]?.description,
       list: compList.value?.filter(item => item.type.value === data[i].value).map(item => {
         return {
           ...item,
@@ -171,7 +171,7 @@ onMounted(() => {
 
 const getData = async () => {
   await getProjectCompList();
-  await getCompTypesEnum();
+  getCompTypesEnum();
 };
 
 const modalType = ref<'add' | 'edit' | 'view'>('view');

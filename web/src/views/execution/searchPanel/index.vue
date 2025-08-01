@@ -52,9 +52,9 @@ const filters = ref<{ key: string; op: string; value: string; }[]>([]);
 const scriptSourceIdFilter = ref<{ key: 'scriptSourceId', op: 'EQUAL', value: string | undefined }>({ key: 'scriptSourceId', op: 'EQUAL', value: undefined });
 const priorityFilter = ref<{ key: 'priority', op: 'EQUAL'|'GREATER_THAN'|'GREATER_THAN_EQUAL'|'LESS_THAN'|'LESS_THAN_EQUAL', value: string | undefined }>({ key: 'priority', op: 'EQUAL', value: undefined });
 
-const loadScriptTypeEnum = async () => {
-  const [, data] = await enumUtils.enumToMessages('ScriptType');
-  scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'API_MOCK');
+const loadScriptTypeEnum = () => {
+  const data = enumUtils.enumToMessages('ScriptType');
+  scriptTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value })).filter(i => i.key !== 'API_MOCK');
   scriptTypeKeys = scriptTypeOpt.value.map(i => i.key);
 };
 
