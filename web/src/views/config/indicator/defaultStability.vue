@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { splitDuration } from '@/utils/utils';
 
@@ -22,7 +22,7 @@ const handleEditPerform = () => {
 
 const durationUnitOpt = ref([]);
 const loadDurationUnitOpt = async () => {
-  const [error, data] = await enumLoader.load('ShortTimeUnit');
+  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
   if (error) {
     return;
   }
@@ -57,7 +57,7 @@ const info = reactive({ // 展示 info
 
 const percentileOpt = ref([]);
 const loadPercentileOpt = async () => {
-  const [error, data] = await enumLoader.load('Percentile');
+  const [error, data] = await enumUtils.enumToMessages('Percentile');
   if (error) {
     return;
   }

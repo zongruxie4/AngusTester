@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DateType, PieSetting } from './PropsType';
 
@@ -49,7 +49,7 @@ const loadEnums = async () => {
 };
 
 const loadScriptType = async () => {
-  const [error, data] = await enumLoader.load('CombinedTargetType');
+  const [error, data] = await enumUtils.enumToMessages('CombinedTargetType');
   if (error) {
     return;
   }

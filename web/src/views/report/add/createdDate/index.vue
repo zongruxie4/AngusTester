@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
@@ -49,9 +49,9 @@ const timeOfDay = ref();
 const createdAtSomeDate = ref();
 const loadEnum = async () => {
   Promise.all([
-    enumLoader.load('CreatedAt'),
-    enumLoader.load('PeriodicCreationUnit'),
-    enumLoader.load('DayOfWeek')
+    enumUtils.enumToMessages('CreatedAt'),
+    enumUtils.enumToMessages('PeriodicCreationUnit'),
+    enumUtils.enumToMessages('DayOfWeek')
   ]).then(([resp1, resp2, resp3]) => {
     const [_error1, data1] = resp1;
     createdAtAllOpt.value = data1 || [];

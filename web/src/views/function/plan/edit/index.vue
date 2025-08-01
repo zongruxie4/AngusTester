@@ -26,7 +26,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/infra';
+import { toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -578,7 +578,7 @@ const getJson = (value) => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
   if (error) {
     return;
   }

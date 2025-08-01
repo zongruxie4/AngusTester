@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { PieData, PieSetting } from './PropsType';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
 import Charts from './charts.vue';
@@ -29,7 +29,7 @@ const init = async () => {
 };
 
 const loadScriptType = async () => {
-  const [error, data] = await enumLoader.load('ScriptType');
+  const [error, data] = await enumUtils.enumToMessages('ScriptType');
   if (error) {
     return;
   }
@@ -60,7 +60,7 @@ const loadScriptType = async () => {
 };
 
 const loadExecStatus = async () => {
-  const [error, data] = await enumLoader.load('ExecStatus');
+  const [error, data] = await enumUtils.enumToMessages('ExecStatus');
   if (error) {
     return;
   }

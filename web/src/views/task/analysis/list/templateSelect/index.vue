@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from '../PropTypes';
 
@@ -20,11 +20,11 @@ const emits = defineEmits<{(e: 'update:template', value: string):void; (e: 'upda
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部分析', value: '' }]);
 
 const loadOpt = async () => {
-  const [, data] = await enumLoader.load('AnalysisTaskTemplate');
+  const [, data] = await enumUtils.enumToMessages('AnalysisTaskTemplate');
 
   moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
   emits('update:templateData', data);
-  const [, desc] = await enumLoader.load('AnalysisTaskTemplateDesc');
+  const [, desc] = await enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
   emits('update:templateDesc', desc);
 };
 

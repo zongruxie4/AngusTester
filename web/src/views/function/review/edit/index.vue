@@ -13,7 +13,7 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, enumLoader, upload, duration } from '@xcan-angus/infra';
+import { utils, TESTER, enumUtils, upload, duration } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
@@ -312,7 +312,7 @@ const setFormData = (data: ReviewInfo) => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
   if (error) {
     return;
   }

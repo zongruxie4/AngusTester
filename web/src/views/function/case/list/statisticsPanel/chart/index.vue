@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 
 import { CountObj } from './type';
 import Charts from './charts.vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 
 interface Props {
   dataSource:CountObj;
@@ -38,7 +38,7 @@ const testData = computed(() => {
 });
 
 onMounted(async () => {
-  const [error, data = []] = await enumLoader.load('ReviewStatus');
+  const [error, data = []] = await enumUtils.enumToMessages('ReviewStatus');
   if (error) {
     return;
   }

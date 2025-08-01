@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Arrow, AsyncComponent, Colon, Icon, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Collapse, CollapsePanel, Popconfirm, Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
-import { enumLoader, TESTER, http } from '@xcan-angus/infra';
+import { enumUtils, TESTER, http } from '@xcan-angus/infra';
 import { paramTarget } from '@/api/tester';
 
 import { DataSetItem } from './PropsType';
@@ -152,7 +152,7 @@ const loadData = async () => {
 };
 
 const loadActionOnEOFEnums = async () => {
-  const [error, res] = await enumLoader.load('ActionOnEOF');
+  const [error, res] = await enumUtils.enumToMessages('ActionOnEOF');
   if (error) {
     return;
   }
@@ -161,7 +161,7 @@ const loadActionOnEOFEnums = async () => {
 };
 
 const loadSharingModeEnums = async () => {
-  const [error, res] = await enumLoader.load('SharingMode');
+  const [error, res] = await enumUtils.enumToMessages('SharingMode');
   if (error) {
     return;
   }

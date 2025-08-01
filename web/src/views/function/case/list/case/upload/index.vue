@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { TESTER, enumLoader } from '@xcan-angus/infra';
+import { TESTER, enumUtils } from '@xcan-angus/infra';
 import { formatBytes } from '@/utils/common';
 import { funcCase } from '@/api/tester';
 
@@ -38,7 +38,7 @@ const formData = ref<{
 });
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('StrategyWhenDuplicated');
+  const [error, data] = await enumUtils.enumToMessages('StrategyWhenDuplicated');
   if (error) {
     return;
   }

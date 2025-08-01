@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { IconRequired, Input, Modal, Select, SelectEnum, SelectInput } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
@@ -32,7 +32,7 @@ const compType = ref<ComponentsType>('schemas');
 
 const compTypesEnum = ref<{label:string, value:string, disabled:boolean}[]>([]);
 const getCompTypesEnum = async () => {
-  const [error, data] = await enumLoader.load('ServicesCompType');
+  const [error, data] = await enumUtils.enumToMessages('ServicesCompType');
   if (error || !data?.length) {
     return;
   }

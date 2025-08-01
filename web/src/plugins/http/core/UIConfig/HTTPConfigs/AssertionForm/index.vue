@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { utils, duration, enumLoader } from '@xcan-angus/infra';
+import { utils, duration, enumUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import MatchItemPopover from './MacthItemPopover.vue';
@@ -76,7 +76,7 @@ const expressionErrorSet = ref<Set<string>>(new Set());
 // 断言条件枚举
 const assertionConditionOptions = ref<{ message: string; value: string; }[]>([]);
 const loadAssertionConditionOptions = async () => {
-  const [error, data = []] = await enumLoader.load('AssertionCondition');
+  const [error, data = []] = await enumUtils.enumToMessages('AssertionCondition');
   if (error) {
     return;
   }
@@ -107,7 +107,7 @@ const optionsMap = computed(() => {
 // 提取位置枚举
 const locationOptions = ref<{ message: string; value: string; }[]>([]);
 const loadLocationOptions = async () => {
-  const [error, data = []] = await enumLoader.load('HttpExtractionLocation');
+  const [error, data = []] = await enumUtils.enumToMessages('HttpExtractionLocation');
   if (error) {
     return;
   }

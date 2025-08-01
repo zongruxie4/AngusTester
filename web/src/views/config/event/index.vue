@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event, setting } from '@/api/gm';
@@ -61,8 +61,8 @@ const init = async () => {
 };
 
 const loadEnums = async () => {
-  const [_err1, data1] = await enumLoader.load('CombinedTargetType');
-  const [_err2, data2] = await enumLoader.load('NoticeType');
+  const [_err1, data1] = await enumUtils.enumToMessages('CombinedTargetType');
+  const [_err2, data2] = await enumUtils.enumToMessages('NoticeType');
   targetTypeEnums.value = data1 || [];
   NoticeType.value = (data2 || []).map(i => {
     return {

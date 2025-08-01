@@ -2,7 +2,7 @@
 import { onMounted, ref, watch, computed, nextTick } from 'vue';
 import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
-import { toClipboard, TESTER, enumLoader, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
+import { toClipboard, TESTER, enumUtils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -42,7 +42,7 @@ const formState = ref({
 
 const ApisShareScope = ref<{value: string; label: string}[]>([]);
 const loadApisShareScopeOpt = async () => {
-  const [error, data] = await enumLoader.load('ApisShareScope');
+  const [error, data] = await enumUtils.enumToMessages('ApisShareScope');
   if (error) {
     return;
   }

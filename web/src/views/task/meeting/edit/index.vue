@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Icon, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
-import { http, utils, TESTER, enumLoader } from '@xcan-angus/infra';
+import { http, utils, TESTER, enumUtils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { task, project } from '@/api/tester';
 
@@ -129,7 +129,7 @@ const cancel = () => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
   if (error) {
     return;
   }

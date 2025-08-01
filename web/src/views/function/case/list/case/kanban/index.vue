@@ -14,7 +14,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
@@ -123,7 +123,7 @@ const taskModalVisible = ref(false);
 const resultPassed = ref(false);
 
 const loadEnum = async () => {
-  const [error, res] = await enumLoader.load('CaseTestResult');
+  const [error, res] = await enumUtils.enumToMessages('CaseTestResult');
   if (error) {
     return;
   }

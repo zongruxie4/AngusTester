@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Icon, IndicatorAssert } from '@xcan-angus/vue-ui';
 import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { setting } from '@/api/gm';
 
 // 冒烟测试指标选项
@@ -16,9 +16,9 @@ const smokeAssetRef = ref();
 const securityAssetRef = ref();
 
 const loadIndicatorEnum = async () => {
-  const [, data1] = await enumLoader.load('SmokeCheckSetting');
+  const [, data1] = await enumUtils.enumToMessages('SmokeCheckSetting');
   smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
-  const [, data2] = await enumLoader.load('SecurityCheckSetting');
+  const [, data2] = await enumUtils.enumToMessages('SecurityCheckSetting');
   SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
 };
 

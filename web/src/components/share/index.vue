@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, DatePicker, Hints, Icon, IconCopy, Input, Modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox, CheckboxGroup, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
-import { enumLoader, duration, toClipboard, site, utils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
+import { enumUtils, duration, toClipboard, site, utils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from 'src/api/tester';
@@ -241,7 +241,7 @@ const dateUnitOptions = ref<{ label: string; value: string; }[]>([]);
 
 const loadUnit = async () => {
   const excludeUnit = ['Millisecond', 'Second'];
-  const [error, data] = await enumLoader.load('ShortTimeUnit');
+  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
   if (error || !data) {
     return;
   }

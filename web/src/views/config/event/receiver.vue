@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PushSetting } from './interface';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { event } from '@/api/gm';
 import { Modal, notification, SelectUser } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Form, FormItem } from 'ant-design-vue';
@@ -35,7 +35,7 @@ const init = () => {
 };
 
 const loadReceiverEnum = async () => {
-  const [error, data] = await enumLoader.load('ReceiverType');
+  const [error, data] = await enumUtils.enumToMessages('ReceiverType');
   if (error) {
     return;
   }
@@ -44,7 +44,7 @@ const loadReceiverEnum = async () => {
 };
 
 const loadNoticeType = async () => {
-  const [error, data] = await enumLoader.load('NoticeType');
+  const [error, data] = await enumUtils.enumToMessages('NoticeType');
   if (error) {
     return;
   }

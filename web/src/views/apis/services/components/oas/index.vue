@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { Arrow, AsyncComponent, Hints, Icon, IconRefresh, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { services } from 'src/api/tester';
-import { enumLoader, duration } from '@xcan-angus/infra';
+import { enumUtils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { CompObj, ComponentsType } from './PropsType';
@@ -134,7 +134,7 @@ const oldCompListObj = ref<Record<ComponentsType, {
 );
 
 const getCompTypesEnum = async () => {
-  const [error, data] = await enumLoader.load('ServicesCompType');
+  const [error, data] = await enumUtils.enumToMessages('ServicesCompType');
   if (error || !data?.length) {
     return;
   }
