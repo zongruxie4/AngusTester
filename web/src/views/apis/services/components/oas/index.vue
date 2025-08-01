@@ -143,7 +143,7 @@ const getCompTypesEnum = () => {
       continue;
     }
     compListObj.value[data[i].value] = {
-      name: data[i]?.description,
+      name: data[i]?.message,
       list: compList.value?.filter(item => item.type.value === data[i].value).map(item => {
         return {
           ...item,

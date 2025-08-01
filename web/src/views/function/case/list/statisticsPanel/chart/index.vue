@@ -32,7 +32,7 @@ const testData = computed(() => {
     { name: '评审未通过', value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
   ];
   result.forEach((i) => {
-    i.name = ReviewStatusEnum.value?.[i.enumKey]?.description || i.name;
+    i.name = ReviewStatusEnum.value?.[i.enumKey]?.message || i.name;
   });
   return result;
 });

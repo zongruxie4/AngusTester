@@ -76,7 +76,7 @@ const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment'
 const planPermissionsMap = ref<Map<string, PlanPermissionKey[]>>(new Map());
 const planAuthMap = ref({});
 
-const testResultList = ref<{ description: string; value: TestResult }[]>([]);
+const testResultList = ref<{ message: string; value: TestResult }[]>([]);
 const caseList = ref<CaseInfo[]>([]);
 const caseDataMap = ref<{ [key in TestResult]: CaseInfo[] }>({
   PENDING: [],
@@ -124,7 +124,7 @@ const resultPassed = ref(false);
 
 const loadEnum = async () => {
   const res = enumUtils.enumToMessages('CaseTestResult');
-  testResultList.value = (res || []) as { description: string; value: TestResult }[];
+  testResultList.value = (res || []) as { message: string; value: TestResult }[];
 };
 
 const loadData = async () => {
@@ -1485,7 +1485,7 @@ const checkedCaseId = computed(() => {
                 :key="_testResult.value"
                 style="width:20%;"
                 class="flex items-center px-2.5 py-3.5 space-x-1.5">
-                <span>{{ _testResult.description }}</span>
+                <span>{{ _testResult.message }}</span>
                 <span>{{ groupDataMap[_createdByName.value]?.[_testResult.value]?.length || 0 }}</span>
               </div>
             </template>

@@ -34,7 +34,7 @@ const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void
 
 const formRef = ref();
 
-const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
 const dataSource = ref<MeetingInfo>();
 const formState = ref<FormState>({
   content: '',
@@ -130,7 +130,7 @@ const cancel = () => {
 
 const loadEnums = async () => {
   const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
+  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
 };
 
 const loadData = async (id: string) => {

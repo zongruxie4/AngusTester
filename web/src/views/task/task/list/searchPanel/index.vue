@@ -107,7 +107,7 @@ const loadTaskTypeEnum = () => {
   const data = enumUtils.enumToMessages('TaskType');
   taskTypeList.value = (data || []).map(item => {
     return {
-      name: item.description,
+      name: item.message,
       key: item.value
     };
   });

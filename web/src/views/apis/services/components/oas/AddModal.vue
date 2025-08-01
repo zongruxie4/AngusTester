@@ -37,7 +37,7 @@ const getCompTypesEnum = () => {
     return;
   }
   compTypesEnum.value = data.map(item => ({
-    label: item.description,
+    label: item.message,
     value: item.value,
     disabled: ['securitySchemes', 'links', 'callbacks', 'extensions', 'pathItems'].includes(item.value)
   }));

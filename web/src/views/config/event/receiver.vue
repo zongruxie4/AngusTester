@@ -22,11 +22,11 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'refr
 const { t } = useI18n();
 const formRef = ref();
 
-const receiversType = ref<{value:string, description:string}[]>([]);
-const otherType = ref<{value:string, description:string}>({ value: '', description: '' });
-const defaultUsers = ref<{value:string, laebel:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
+const receiversType = ref<{value:string, message:string}[]>([]);
+const otherType = ref<{value:string, message:string}>({ value: '', message: '' });
+const defaultUsers = ref<{value:string, label:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
 const users = ref<string[]>(defaultUsers.value.map(user => user.value));
-const noticeTypeOpt = ref<{value:string, description:string}[]>([]);
+const noticeTypeOpt = ref<{value:string, message:string}[]>([]);
 const noticeType = ref<string[]>((props.selectedItem?.receiveSetting?.receivers?.noticeTypes || []).map(i => i.value));
 
 const init = () => {
@@ -37,12 +37,12 @@ const init = () => {
 const loadReceiverEnum = () => {
   const data = enumUtils.enumToMessages('ReceiverType');
   receiversType.value = (data || []).filter(type => type.value !== 'OTHER');
-  otherType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', description: '' };
+  otherType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', message: '' };
 };
 
 const loadNoticeType = () => {
   const data = enumUtils.enumToMessages('NoticeType');
-  noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.description }));
+  noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.message }));
 };
 
 const receivingMethods = ref<string[]>(props.selectedItem?.receiveSetting?.receivers?.receiverTypes.map(m => m.value) || []);
@@ -84,11 +84,11 @@ onMounted(() => {
             v-for="r in receiversType"
             :key="r.value"
             :value="r.value">
-            {{ r.description }}
+            {{ r.message }}
           </Checkbox>
         </CheckboxGroup>
         <div class="flex text-3">
-          <span class="mr-2 leading-7">{{ otherType.description }}</span>
+          <span class="mr-2 leading-7">{{ otherType.message }}</span>
           <SelectUser
             v-model:value="users"
             :allowClear="false"

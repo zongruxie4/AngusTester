@@ -7,8 +7,8 @@ import { TemplateIconConfig } from '../PropTypes';
 
 interface Props {
   template: string;
-  templateData: {value: string; description: string}[];
-  templateDesc: {value: string; description: string}[];
+  templateData: {value: string; message: string}[];
+  templateDesc: {value: string; message: string}[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,13 +17,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:template', value: string):void;
-  (e: 'update:templateData', value: {value: string; description: string}[]):void;
-  (e:'update:templateDesc', value: {value: string; description: string}[]):void}>();
+  (e: 'update:templateData', value: {value: string; message: string}[]):void;
+  (e:'update:templateDesc', value: {value: string; message: string}[]):void}>();
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部分析', value: '' }]);
 
 const loadOpt = () => {
   const data = enumUtils.enumToMessages('AnalysisTaskTemplate');
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.description })));
+  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
   emits('update:templateData', data);
   const desc = enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
   emits('update:templateDesc', desc);

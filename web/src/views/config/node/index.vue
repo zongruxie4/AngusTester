@@ -114,11 +114,11 @@ const loadList = async () => {
   pagination.total = +res.data.total;
 };
 
-const roleOptions = ref<{name: string, label: string, value: string, description: string, disabled?: boolean}[]>([]);
+const roleOptions = ref<{name: string, label: string, value: string, message: string, disabled?: boolean}[]>([]);
 
 const loadEnums = () => {
   const data = enumUtils.enumToMessages('NodeRole');
-  roleOptions.value = (data || []).map(i => ({ ...i, name: i.description, label: i.description, disabled: disabledRoles.includes(i.value) }));
+  roleOptions.value = (data || []).map(i => ({ ...i, name: i.message, label: i.message, disabled: disabledRoles.includes(i.value) }));
 };
 
 const changeForm = (val) => {

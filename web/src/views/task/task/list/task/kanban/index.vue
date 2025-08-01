@@ -90,7 +90,7 @@ const searchSprintId = ref<string>();
 
 const sprintPermissionsMap = ref<Map<string, SprintPermissionKey[]>>(new Map());
 
-const statusList = ref<{ description: string; value: TaskInfo['status']['value'] }[]>([]);
+const statusList = ref<{ message: string; value: TaskInfo['status']['value'] }[]>([]);
 const taskList = ref<TaskInfo[]>([]);
 const groupDataMap = ref<{ [key: string]: { [key in TaskInfo['status']['value']]: TaskInfo[] } }>({});
 const taskDataMap = ref<{ [key in TaskInfo['status']['value']]: TaskInfo[] }>({
@@ -120,7 +120,7 @@ const isDraggingToColumnStatus = ref<TaskInfo['status']['value'][]>([]);
 
 const loadEnum = () => {
   const res = enumUtils.enumToMessages('TaskStatus');
-  statusList.value = (res || []) as { description: string; value: TaskInfo['status']['value'] }[];
+  statusList.value = (res || []) as { message: string; value: TaskInfo['status']['value'] }[];
 };
 
 const loadData = async () => {
@@ -1404,7 +1404,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           :key="item.value"
           class="col-item h-full w-1/5 border-r border-solid border-theme-text-box overflow-hidden">
           <div class="flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-            <span>{{ item.description }}</span>
+            <span>{{ item.message }}</span>
             <span>{{ numMap[item.value] }}</span>
           </div>
 
@@ -1506,7 +1506,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             :key="_status.value"
             style="width:calc((100% - 200px)/5);"
             class="col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-            <span>{{ _status.description }}</span>
+            <span>{{ _status.message }}</span>
             <span>{{ numMap[_status.value] }}</span>
           </div>
         </div>
@@ -1546,7 +1546,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                   :key="_status.value"
                   style="width:20%;"
                   class="flex items-center px-2.5 py-3.5 space-x-1.5">
-                  <span>{{ _status.description }}</span>
+                  <span>{{ _status.message }}</span>
                   <span>{{ groupDataMap[_createdByName.value]?.[_status.value]?.length || 0 }}</span>
                 </div>
               </template>

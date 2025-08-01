@@ -37,7 +37,7 @@ const cancel = () => {
 const loadEnums = () => {
   const res = enumUtils.enumToMessages('SpacePermission');
   if (res?.length) {
-    permissions.value = res.map(item => ({ label: item.description, value: item.value }));
+    permissions.value = res.map(item => ({ label: item.message, value: item.value }));
   }
 };
 

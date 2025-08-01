@@ -346,7 +346,7 @@ const planParams = computed(() => {
   return { projectId: projectInfo.value?.id };
 });
 
-const evalWorkloadMethod = ref<{value: string, description: string}>();
+const evalWorkloadMethod = ref<{value: string, message: string}>();
 const planEndDate = ref<string>();
 const planChange = (_value, options) => {
   formState.value.deadlineDate = _value ? options.deadlineDate : '';
@@ -379,7 +379,7 @@ const loadEnums = async () => {
   const data = enumUtils.enumToMessages('EvalWorkloadMethod');
   const data1 = enumUtils.enumToMessages('CaseStepView');
   evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
-  stepViewOpt.value = data1.map(i => ({ name: i.description, key: i.value }));
+  stepViewOpt.value = data1.map(i => ({ name: i.message, key: i.value }));
 };
 
 const changeStepView = ({ key }) => {

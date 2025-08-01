@@ -64,8 +64,8 @@ const changeShowDebug = (value: boolean) => {
   showDebug.value = value;
 };
 
-let statusOpt:{value: string, description: string}[] = [];
-const loadStatusEnum = async () => {
+let statusOpt:{value: string, message: string}[] = [];
+const loadStatusEnum = () => {
   if (statusOpt.length) {
     return;
   }

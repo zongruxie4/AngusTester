@@ -30,7 +30,7 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 const taskStatusTypeOpt = ref<{name: string; key: string}[]>([]);
 const loadStatusEnum = () => {
   const data = enumUtils.enumToMessages('TaskSprintStatus');
-  taskStatusTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value }));
+  taskStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
 };
 
 const searchPanelOptions = [

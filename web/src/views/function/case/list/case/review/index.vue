@@ -65,7 +65,7 @@ const onFinish = async () => {
   emits('update');
 };
 
-const reviewStatusEnum = ref<{value:string, description:string}[]>([]);
+const reviewStatusEnum = ref<{value:string, message:string}[]>([]);
 const loadEnums = () => {
   const data = enumUtils.enumToMessages('ReviewStatus');
   reviewStatusEnum.value = data.filter(item => item.value !== 'PENDING') || [];
@@ -122,7 +122,7 @@ onMounted(() => {
             v-for="item in reviewStatusEnum"
             :key="item.value"
             :value="item.value">
-            {{ item.description }}
+            {{ item.message }}
           </Radio>
         </RadioGroup>
       </FormItem>

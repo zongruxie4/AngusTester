@@ -20,8 +20,8 @@ const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
 
-const apisPermissions = ref<{ value: string, description: string }[]>([]);
-const servicesPermissions = ref<{ value: string, description: string }[]>([]);
+const apisPermissions = ref<{ value: string, message: string }[]>([]);
+const servicesPermissions = ref<{ value: string, message: string }[]>([]);
 const loaded = ref(false);
 
 const loadEnums = () => {

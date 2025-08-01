@@ -14,8 +14,8 @@ import { ArrayItem, TreeElement } from './PropsType';
 interface Props {
   authObjectId: string | undefined;
   type: 'USER' | 'DEPT' | 'GROUP';
-  apiPermissions: { value: string; description: string }[];
-  projectPermissions: { value: string; description: string }[];
+  apiPermissions: { value: string; message: string }[];
+  projectPermissions: { value: string; message: string }[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -670,11 +670,11 @@ const showIdList = computed(() => {
 });
 
 const apiCheckboxOptions = computed(() => {
-  return props.apiPermissions?.map(item => ({ label: item.description, value: item.value }));
+  return props.apiPermissions?.map(item => ({ label: item.message, value: item.value }));
 });
 
 const projectCheckboxOptions = computed(() => {
-  return props.projectPermissions?.map(item => ({ label: item.description, value: item.value }));
+  return props.projectPermissions?.map(item => ({ label: item.message, value: item.value }));
 });
 </script>
 <template>

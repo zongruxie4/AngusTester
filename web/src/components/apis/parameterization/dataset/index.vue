@@ -42,10 +42,10 @@ const modalVisible = ref(false);
 const collapseActiveKeys = ref<string[]>([]);
 
 const actionOnEOF = ref<'RECYCLE' | 'STOP_THREAD'>('RECYCLE');
-const eofEnums = ref<{ description: string; value: 'RECYCLE' | 'STOP_THREAD'; }[]>([]);
+const eofEnums = ref<{ message: string; value: 'RECYCLE' | 'STOP_THREAD'; }[]>([]);
 
 const sharingMode = ref<'ALL_THREAD' | 'CURRENT_THREAD'>('ALL_THREAD');
-const sharingModeEnums = ref<{ description: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[]>([]);
+const sharingModeEnums = ref<{ message: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[]>([]);
 
 const arrowChange = (open: boolean, id: string) => {
   if (!open) {
@@ -153,12 +153,12 @@ const loadData = async () => {
 
 const loadActionOnEOFEnums = () => {
   const res = enumUtils.enumToMessages('ActionOnEOF');
-  eofEnums.value = (res || []) as { description: string; value: 'RECYCLE' | 'STOP_THREAD'; }[];
+  eofEnums.value = (res || []) as { message: string; value: 'RECYCLE' | 'STOP_THREAD'; }[];
 };
 
 const loadSharingModeEnums = () => {
   const res = enumUtils.enumToMessages('SharingMode');
-  sharingModeEnums.value = (res || []) as { description: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[];
+  sharingModeEnums.value = (res || []) as { message: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[];
 };
 
 const reset = () => {
@@ -228,7 +228,7 @@ const hintTextMap = {
             :key="item.value"
             :value="item.value">
             <div class="flex items-center space-x-1">
-              <span>{{ item.description }}</span>
+              <span>{{ item.message }}</span>
               <Tooltip v-if="item.value === 'RECYCLE'" title="数据集中所有数据行都被使用后，‌将重新从开头使用数据。">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
@@ -254,7 +254,7 @@ const hintTextMap = {
             :key="item.value"
             :value="item.value">
             <div class="flex items-center space-x-1">
-              <span>{{ item.description }}</span>
+              <span>{{ item.message }}</span>
               <Tooltip v-if="item.value === 'ALL_THREAD'" title="所有线程共享同一份数据集数据。">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>

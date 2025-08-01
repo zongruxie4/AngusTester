@@ -245,7 +245,7 @@ const loadUnit = () => {
   if (!data) {
     return;
   }
-  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({ label: item.description, value: item.value }));
+  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({ label: item.message, value: item.value }));
 };
 
 const apiIndeterminate = ref<boolean>(false);

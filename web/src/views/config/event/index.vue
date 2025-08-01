@@ -46,8 +46,8 @@ const pushSettingList = ref<PushSetting[]>([]);
 const pushRecordList = ref<PushRecord[]>([]);
 const pageTotal = ref(0);
 
-const targetTypeEnums = ref<{value: string; description: string}[]>([]);
-const NoticeType = ref<{value: string; description: string}[]>([]);
+const targetTypeEnums = ref<{value: string; message: string}[]>([]);
+const NoticeType = ref<{value: string; message: string}[]>([]);
 const eventDataNoticeType = ref<{eventCode: string; noticeTypes: {value: string; message: string}[]}[]>([]);
 
 const { t } = useI18n();
@@ -67,7 +67,7 @@ const loadEnums = () => {
   NoticeType.value = (data2 || []).map(i => {
     return {
       ...i,
-      label: i.description
+      label: i.message
     };
   });
 };
@@ -82,7 +82,7 @@ const loadEventNoticeTypeByEventCode = async () => {
 
 const getTargetTypeName = (value: string) => {
   const target = targetTypeEnums.value.find(i => i.value === value);
-  return target?.description || '  ';
+  return target?.message || '  ';
 };
 
 const loadStatistics = async () => {

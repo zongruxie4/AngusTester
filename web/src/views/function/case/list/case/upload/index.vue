@@ -39,7 +39,7 @@ const formData = ref<{
 
 const loadEnums = () => {
   const data = enumUtils.enumToMessages('StrategyWhenDuplicated');
-  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.description }));
+  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.message }));
 };
 
 const handleFile = (fileInfo) => {

@@ -47,7 +47,7 @@ const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undef
 const scriptTypeOpt = ref<MenuItem[]>([]);
 const loadEnum = () => {
   const data = enumUtils.enumToMessages('ScriptType');
-  scriptTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value })).filter(i => i.key !== 'MOCK_APIS');
+  scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'MOCK_APIS');
 };
 
 const menuItemClick = (data: MenuItem) => {

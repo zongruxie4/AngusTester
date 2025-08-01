@@ -65,7 +65,7 @@ let allLocationOpt: {label: string; value: string}[] = [];
 const storageLocationOpt = ref<{label: string; value: string}[]>([]);
 const loadStorageLoactionOpt = () => {
   const data = enumUtils.enumToMessages('StorageLocation');
-  allLocationOpt = data.map(i => ({ ...i, label: i.description }));
+  allLocationOpt = data.map(i => ({ ...i, label: i.message }));
   storageLocationOpt.value = props.format !== 'SQL' ? allLocationOpt.filter(i => i.value !== 'DATASOURCE') : allLocationOpt;
 };
 

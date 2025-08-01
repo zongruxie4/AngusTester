@@ -31,7 +31,7 @@ const init = async () => {
 const loadScriptType = async () => {
   const data = enumUtils.enumToMessages('ScriptType');
   const enums = data.filter(item => item.value !== 'MOCK_APIS');
-  groupByGroup.value[0].type = enums.map((i) => ({ ...i, message: i.description }));
+  groupByGroup.value[0].type = enums;
   scriptTypeData.value = enums.map(item => {
     let color = '';
     switch (item.value) {
@@ -58,7 +58,7 @@ const loadScriptType = async () => {
 
 const loadExecStatus = () => {
   const data = enumUtils.enumToMessages('ExecStatus');
-  groupByGroup.value[1].type = data.map((i) => ({ ...i, message: i.description }));
+  groupByGroup.value[1].type = data;
   statusData.value = data.map(item => {
     let color = '';
     switch (item.value) {

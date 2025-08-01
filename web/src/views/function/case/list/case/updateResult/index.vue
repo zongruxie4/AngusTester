@@ -91,7 +91,7 @@ const handleSubmit = () => {
     });
 };
 
-const testResultEnum = ref<{ value: string, description: string }[]>([]);
+const testResultEnum = ref<{ value: string, message: string }[]>([]);
 const loadEnums = () => {
   const data = enumUtils.enumToMessages('CaseTestResult');
   if (!data) {

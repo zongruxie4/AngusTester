@@ -48,22 +48,22 @@ const orgOpt = [
   }
 ];
 
-const templateDescOpt = ref<{value: string, description: string}[]>([]);
+const templateDescOpt = ref<{value: string, message: string}[]>([]);
 const loadDescOpt = () => {
   const data = enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
   templateDescOpt.value = data || [];
 };
 
-const analysisCaseObjectOpt = ref<{value: string, description: string}[]>([]);
+const analysisCaseObjectOpt = ref<{value: string, message: string}[]>([]);
 const loadAnalysisCaseObject = () => {
   const data = enumUtils.enumToMessages('AnalysisCaseObject');
   analysisCaseObjectOpt.value = data || [];
 };
 
-const analysisTimeRangeOpt = ref<{description: string, value:string}[]>([]);
+const analysisTimeRangeOpt = ref<{message: string, value:string}[]>([]);
 const loadAnalysisTimeRange = () => {
   const data = enumUtils.enumToMessages('AnalysisTimeRange');
-  analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.description }));
+  analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
 };
 
 const formData = ref({
@@ -186,7 +186,7 @@ onMounted(async () => {
 
   watch(() => formData.value.template, () => {
     if (!descriptionChanged.value) {
-      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.description;
+      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.message;
     }
   }, {
     immediate: true
@@ -257,7 +257,7 @@ onMounted(async () => {
           v-model:value="formData.object"
           buttonStyle="solid"
           size="small">
-          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.description }}</RadioButton>
+          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.message }}</RadioButton>
         </RadioGroup>
       </FormItem>
 

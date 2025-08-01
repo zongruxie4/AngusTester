@@ -54,7 +54,7 @@ const priorityFilter = ref<{ key: 'priority', op: 'EQUAL'|'GREATER_THAN'|'GREATE
 
 const loadScriptTypeEnum = () => {
   const data = enumUtils.enumToMessages('ScriptType');
-  scriptTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value })).filter(i => i.key !== 'API_MOCK');
+  scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'API_MOCK');
   scriptTypeKeys = scriptTypeOpt.value.map(i => i.key);
 };
 

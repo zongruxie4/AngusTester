@@ -31,7 +31,7 @@ const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
 const loadStatusEnum = () => {
   const data = enumUtils.enumToMessages('FuncPlanStatus');
 
-  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.description, key: i.value }));
+  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
 };
 
 const searchPanelOptions = [

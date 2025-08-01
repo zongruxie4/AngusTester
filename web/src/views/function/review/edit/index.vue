@@ -55,7 +55,7 @@ const dataSource = ref<ReviewInfo>();
 
 const activeTabKey = ref('funcCase');
 
-const evalWorkloadMethodOptions = ref<{ value: string, description: string }[]>([]);
+const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
@@ -313,7 +313,7 @@ const setFormData = (data: ReviewInfo) => {
 
 const loadEnums = () => {
   const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { description: string; value: string; }[];
+  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
 };
 
 const loadPermissions = async (id: string) => {

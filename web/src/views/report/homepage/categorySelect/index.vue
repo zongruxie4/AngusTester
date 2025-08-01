@@ -17,7 +17,7 @@ const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部报�
 
 const loadOpt = () => {
   const data = enumUtils.enumToMessages('ReportCategory');
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.description })));
+  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
 };
 
 const handleSelectKeysChange = (value) => {

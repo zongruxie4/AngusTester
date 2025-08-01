@@ -29,7 +29,7 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const { t } = useI18n();
 
-const eventTypes = ref<{ value: string, description: string}[]>([]);
+const eventTypes = ref<{ value: string, message: string}[]>([]);
 const selectetType = ref<string[]>([]);
 const init = async () => {
   await loadCurrentChannels();
@@ -42,7 +42,7 @@ const loadEventTypes = async () => {
     (selectetType.value.includes(m.value) || channelValus[m.value].length) && loadConfigOptions(m.value);
     return {
       ...m,
-      label: m.description
+      label: m.message
     };
   });
 };

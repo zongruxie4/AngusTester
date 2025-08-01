@@ -17,9 +17,9 @@ const securityAssetRef = ref();
 
 const loadIndicatorEnum = () => {
   const data1 = enumUtils.enumToMessages('SmokeCheckSetting');
-  smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.description }));
+  smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
   const data2 = enumUtils.enumToMessages('SecurityCheckSetting');
-  SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.description }));
+  SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
 };
 
 // 获取默认指标
