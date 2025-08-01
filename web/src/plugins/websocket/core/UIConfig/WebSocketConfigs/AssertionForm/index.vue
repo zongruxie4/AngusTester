@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch, watchEffect } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { enumLoader, utils } from '@xcan-angus/infra';
+import { enumUtils, utils } from '@xcan-angus/infra';
 
 import { AssertionConfig, AssertionType, AssertionCondition } from './PropsType';
 import ExpectedPopover from './ExpectedPopover.vue';
@@ -40,7 +40,7 @@ const checkedSet = ref<Set<string>>(new Set());
 const repeatNameSet = ref<Set<string>>(new Set());
 
 const loadConditionOptions = async () => {
-  const [error, data = []] = await enumLoader.load('AssertionCondition');
+  const [error, data = []] = await enumUtils.enumToMessages('AssertionCondition');
   if (error) {
     return;
   }

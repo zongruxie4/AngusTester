@@ -17,7 +17,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumLoader, TESTER, upload, utils } from '@xcan-angus/infra';
+import { enumUtils, TESTER, upload, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
@@ -382,8 +382,8 @@ const getModuleTreeData = async () => {
 
 const stepViewOpt = ref([]);
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
-  const [error1, data1] = await enumLoader.load('CaseStepView');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
+  const [error1, data1] = await enumUtils.enumToMessages('CaseStepView');
   if (!error) {
     evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
   }

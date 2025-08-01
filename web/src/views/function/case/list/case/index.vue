@@ -22,7 +22,7 @@ import {
   TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, http, duration, download, TESTER, enumLoader, XCanDexie } from '@xcan-angus/infra';
+import { toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
@@ -884,7 +884,7 @@ const getPlanAuth = async () => {
 
 const NumberMatchCondition = ref<{ value: string, message: string }[]>([{ value: 'EQUAL', message: '等于' }]);
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('NumberCompareCondition');
+  const [error, data] = await enumUtils.enumToMessages('NumberCompareCondition');
   if (error) {
     return;
   }

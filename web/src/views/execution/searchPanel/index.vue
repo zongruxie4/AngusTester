@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, Input, SearchPanel, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, TESTER, duration, enumLoader, appContext } from '@xcan-angus/infra';
+import { XCanDexie, TESTER, duration, enumUtils, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
 
@@ -53,7 +53,7 @@ const scriptSourceIdFilter = ref<{ key: 'scriptSourceId', op: 'EQUAL', value: st
 const priorityFilter = ref<{ key: 'priority', op: 'EQUAL'|'GREATER_THAN'|'GREATER_THAN_EQUAL'|'LESS_THAN'|'LESS_THAN_EQUAL', value: string | undefined }>({ key: 'priority', op: 'EQUAL', value: undefined });
 
 const loadScriptTypeEnum = async () => {
-  const [, data] = await enumLoader.load('ScriptType');
+  const [, data] = await enumUtils.enumToMessages('ScriptType');
   scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'API_MOCK');
   scriptTypeKeys = scriptTypeOpt.value.map(i => i.key);
 };

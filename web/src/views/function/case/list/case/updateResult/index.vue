@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcCase } from '@/api/tester';
 
@@ -93,7 +93,7 @@ const handleSubmit = () => {
 
 const testResultEnum = ref<{ value: string, message: string }[]>([]);
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('CaseTestResult');
+  const [error, data] = await enumUtils.enumToMessages('CaseTestResult');
   if (error || !data) {
     return;
   }

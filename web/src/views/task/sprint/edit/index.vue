@@ -13,7 +13,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea, Upload } from 'ant-design-vue';
-import { toClipboard, utils, TESTER, enumLoader, upload } from '@xcan-angus/infra';
+import { toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
@@ -320,7 +320,7 @@ const cancel = () => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
   if (error) {
     return;
   }

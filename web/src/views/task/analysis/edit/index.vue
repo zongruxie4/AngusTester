@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumLoader } from '@xcan-angus/infra';
+import { TESTER, GM, enumUtils } from '@xcan-angus/infra';
 import { Analysis } from '../PropType';
 import { analysis } from '@/api/tester';
 
@@ -50,19 +50,19 @@ const orgOpt = [
 
 const templateDescOpt = ref([]);
 const loadDescOpt = async () => {
-  const [, data] = await enumLoader.load('AnalysisTaskTemplateDesc');
+  const [, data] = await enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
   templateDescOpt.value = data || [];
 };
 
 const analysisCaseObjectOpt = ref([]);
 const loadAnalysisCaseObject = async () => {
-  const [, data] = await enumLoader.load('AnalysisCaseObject');
+  const [, data] = await enumUtils.enumToMessages('AnalysisCaseObject');
   analysisCaseObjectOpt.value = data || [];
 };
 
 const analysisTimeRangeOpt = ref([]);
 const loadAnalysisTimeRange = async () => {
-  const [, data] = await enumLoader.load('AnalysisTimeRange');
+  const [, data] = await enumUtils.enumToMessages('AnalysisTimeRange');
 
   analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
 };

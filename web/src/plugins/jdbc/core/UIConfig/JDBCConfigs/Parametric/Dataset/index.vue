@@ -2,7 +2,7 @@
 import { ref, onMounted, defineAsyncComponent, watch, computed } from 'vue';
 import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 
 import { DatasetItem } from './PropsType';
 import { HTTPConfig } from '../../PropsType';
@@ -83,7 +83,7 @@ const toDelete = async (data: DatasetItem) => {
 };
 
 const loadActionOnEOFEnums = async () => {
-  const [error, res] = await enumLoader.load('ActionOnEOF');
+  const [error, res] = await enumUtils.enumToMessages('ActionOnEOF');
   if (error) {
     return;
   }
@@ -92,7 +92,7 @@ const loadActionOnEOFEnums = async () => {
 };
 
 const loadSharingModeEnums = async () => {
-  const [error, res] = await enumLoader.load('SharingMode');
+  const [error, res] = await enumUtils.enumToMessages('SharingMode');
   if (error) {
     return;
   }

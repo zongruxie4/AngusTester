@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
 
@@ -37,7 +37,7 @@ const cancel = () => {
 };
 
 const loadEnums = async () => {
-  const [error, res] = await enumLoader.load('ScriptPermission');
+  const [error, res] = await enumUtils.enumToMessages('ScriptPermission');
   if (!error && res?.length) {
     permissions.value = res.map(item => ({ label: item.message, value: item.value }));
   }

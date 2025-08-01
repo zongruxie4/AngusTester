@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, defineAsyncComponent, computed, nextTick } from 'vue';
 import { Form, FormItem, RadioGroup, Radio } from 'ant-design-vue';
 import { Hints, Input, Select } from '@xcan-angus/vue-ui';
-import { TESTER, enumLoader } from '@xcan-angus/infra';
+import { TESTER, enumUtils } from '@xcan-angus/infra';
 
 export interface Props {
   format: string;
@@ -64,7 +64,7 @@ const storeTip = computed(() => {
 let allLocationOpt: {label: string; value: string}[] = [];
 const storageLocationOpt = ref<{label: string; value: string}[]>([]);
 const loadStorageLoactionOpt = async () => {
-  const [error, data] = await enumLoader.load('StorageLocation');
+  const [error, data] = await enumUtils.enumToMessages('StorageLocation');
   if (error) {
     return;
   }

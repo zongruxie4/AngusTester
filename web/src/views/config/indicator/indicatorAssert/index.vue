@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { Input, Select, SelectEnum, Validate } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 
 import MatchItemPopover from './matchItemPopover.vue';
 import ExpectedPopover from './expectedPopover.vue';
@@ -96,7 +96,7 @@ const expressionErrorMsgMap = ref();
 // 断言条件枚举
 const assertionConditionOptions = ref<{ message: string; value: string; }[]>([]);
 const loadAssertionConditionOptions = async () => {
-  const [error, data = []] = await enumLoader.load('AssertionCondition');
+  const [error, data = []] = await enumUtils.enumToMessages('AssertionCondition');
   if (error) {
     return;
   }
@@ -123,7 +123,7 @@ const optionsMap = computed(() => {
 // 提取位置枚举
 const locationOptions = ref<{ message: string; value: string; }[]>([]);
 const loadLocationOptions = async () => {
-  const [error, data = []] = await enumLoader.load('HttpExtractionLocation');
+  const [error, data = []] = await enumUtils.enumToMessages('HttpExtractionLocation');
   if (error) {
     return;
   }

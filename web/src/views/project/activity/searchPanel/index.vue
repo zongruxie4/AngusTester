@@ -38,7 +38,7 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 // const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
 // const loadStatusEnum = async () => {
-//   const [, data] = await enumLoader.load('FuncPlanStatus');
+//   const [, data] = await enumUtils.enumToMessages('FuncPlanStatus');
 
 //   planStatusTypeOpt.value = (data || []).map(i => ({name: i.message, key: i.value}));
 // }

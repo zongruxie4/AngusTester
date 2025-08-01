@@ -68,7 +68,7 @@ const state = reactive<StateItem>({
 const allContentTypes = ref<string[]>(CONTENT_TYPE);
 
 // const loadSelectOpt = async () => {
-//   const [error, data] = await enumLoader.load('BodyContentType');
+//   const [error, data] = await enumUtils.enumToMessages('BodyContentType');
 //   if (error) {
 //     return;
 //   }

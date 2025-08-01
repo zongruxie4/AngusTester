@@ -3,7 +3,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { Icon, Input, Modal, notification, ShortDuration } from '@xcan-angus/vue-ui';
 import type { TreeProps } from 'ant-design-vue';
 import { Button, Form, FormItem, RadioGroup, Textarea, Tree } from 'ant-design-vue';
-import { toClipboard, utils, enumLoader, DomainManager } from '@xcan-angus/infra';
+import { toClipboard, utils, enumUtils, DomainManager } from '@xcan-angus/infra';
 import { space } from '@/api/storage';
 import store from '@/store';
 
@@ -114,7 +114,7 @@ const loadUnit = async () => {
     return;
   }
   const excludeUnit = ['Millisecond', 'Second'];
-  const [error, data] = await enumLoader.load('ShortTimeUnit');
+  const [error, data] = await enumUtils.enumToMessages('ShortTimeUnit');
   if (error) {
     return;
   }

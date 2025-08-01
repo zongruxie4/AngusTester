@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table } from '@xcan-angus/vue-ui';
-import { utils, TESTER, enumLoader, duration } from '@xcan-angus/infra';
+import { utils, TESTER, enumUtils, duration } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
@@ -229,7 +229,7 @@ const setFormData = (data: BaselineInfo) => {
 };
 
 const loadEnums = async () => {
-  const [error, data] = await enumLoader.load('EvalWorkloadMethod');
+  const [error, data] = await enumUtils.enumToMessages('EvalWorkloadMethod');
   if (error) {
     return;
   }

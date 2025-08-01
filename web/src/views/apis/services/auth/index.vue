@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 
@@ -25,11 +25,11 @@ const servicesPermissions = ref<{ value: string, message: string }[]>([]);
 const loaded = ref(false);
 
 const loadEnums = async () => {
-  const [e1, d1] = await enumLoader.load('ApiPermission');
+  const [e1, d1] = await enumUtils.enumToMessages('ApiPermission');
   if (!e1) {
     apisPermissions.value = d1 || [];
   }
-  const [e2, d2] = await enumLoader.load('ServicesPermission');
+  const [e2, d2] = await enumUtils.enumToMessages('ServicesPermission');
   if (!e2) {
     servicesPermissions.value = d2 || [];
   }

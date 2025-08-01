@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -16,7 +16,7 @@ const emits = defineEmits<{(e: 'update:category', value: string):void}>();
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部报告', value: '' }]);
 
 const loadOpt = async () => {
-  const [, data] = await enumLoader.load('ReportCategory');
+  const [, data] = await enumUtils.enumToMessages('ReportCategory');
 
   moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
 };

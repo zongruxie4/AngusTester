@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, ShortDuration, TaskPriority, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 
 import { splitDuration } from '@/utils/utils';
 
@@ -116,7 +116,7 @@ const variableIncludeStrategyTip = {
 };
 const variableIncludeStrategyOpt = ref<{ message: string; value: string; }[]>([]);
 const loadVariableEnum = async () => {
-  const [error, data] = await enumLoader.load('VariableIncludeStrategy');
+  const [error, data] = await enumUtils.enumToMessages('VariableIncludeStrategy');
   if (error) {
     return;
   }

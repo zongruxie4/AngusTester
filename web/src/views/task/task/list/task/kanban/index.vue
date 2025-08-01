@@ -14,7 +14,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { enumLoader } from '@xcan-angus/infra';
+import { enumUtils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
@@ -119,7 +119,7 @@ const isDraggingToColumn = ref<number | null>(null);
 const isDraggingToColumnStatus = ref<TaskInfo['status']['value'][]>([]);
 
 const loadEnum = async () => {
-  const [error, res] = await enumLoader.load('TaskStatus');
+  const [error, res] = await enumUtils.enumToMessages('TaskStatus');
   if (error) {
     return;
   }
