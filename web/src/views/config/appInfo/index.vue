@@ -26,7 +26,6 @@ const state:{appInfo:AppInfo} = reactive({ appInfo: {} as AppInfo });
 const activeTab = ref('member');
 
 onMounted(async () => {
-
   editionType.value = appContext.getEditionType();
 
   watch(() => appInfo.value, (newValue:AppInfo) => {

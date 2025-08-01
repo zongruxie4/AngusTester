@@ -27,7 +27,7 @@ const percent = ref(0);
 const couldDiskUrl = ref();
 
 const loadCloudDiskPayUrl = async () => {
-  const isPrivate = appContext.isPrivateEdition()
+  const isPrivate = appContext.isPrivateEdition();
   if (isPrivate) {
     return;
   }

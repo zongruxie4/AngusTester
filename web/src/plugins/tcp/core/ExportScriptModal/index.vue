@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {Colon, Modal, notification} from '@xcan-angus/vue-ui';
-import {RadioGroup} from 'ant-design-vue';
-import {ApiType, download, routerUtils, ApiUrlBuilder} from '@xcan-angus/infra';
+import { ref } from 'vue';
+import { Colon, Modal, notification } from '@xcan-angus/vue-ui';
+import { RadioGroup } from 'ant-design-vue';
+import { ApiType, download, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;
@@ -30,7 +30,7 @@ const handleOk = async () => {
 
   exportLoading.value = true;
   // const host = await site.getUrl('apis');
-  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API)
+  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
   const exportUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/script/${props.id}/export?format=${format.value}`);
   // const exportUrl = `${host}${TESTER}/script/${props.id}/export?format=${format.value}`;
   const [error] = await download(exportUrl);

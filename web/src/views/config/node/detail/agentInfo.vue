@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
-import {Grid, Icon, Tooltip} from '@xcan-angus/vue-ui';
+import { ref, watch } from 'vue';
+import { Grid, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import {ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
+import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 
-import {formatBytes} from '@/utils';
+import { formatBytes } from '@/utils';
 
 interface Props {
   ip: string;

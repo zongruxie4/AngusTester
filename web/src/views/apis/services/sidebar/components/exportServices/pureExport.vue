@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
-import {Colon, Modal, Spin} from '@xcan-angus/vue-ui';
-import {RadioGroup} from 'ant-design-vue';
+import { onMounted, ref } from 'vue';
+import { Colon, Modal, Spin } from '@xcan-angus/vue-ui';
+import { RadioGroup } from 'ant-design-vue';
 import {
   ApiType,
   ApiUrlBuilder,
@@ -12,7 +12,7 @@ import {
   routerUtils,
   TESTER
 } from '@xcan-angus/infra';
-import {createPdf} from '@xcan-angus/rapipdf';
+import { createPdf } from '@xcan-angus/rapipdf';
 
 interface Props {
   visible: boolean;
@@ -55,7 +55,7 @@ const handleOk = async () => {
     let apiUrl = '';
     const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
     if (props.type === 'API') {
-      apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`)
+      apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`);
       // apiUrl = `${docOrigin.value}${TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken.value}`;
       createPdf(apiUrl);
     } else {
@@ -84,7 +84,7 @@ const handleOk = async () => {
 
   // 单接口导出
   if (props.type === 'API') {
-    const apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=${format.value}`)
+    const apiUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/apis/${props.id}/openapi/export?format=${format.value}`);
     // const apiUrl = `${host}${TESTER}/apis/${props.id}/openapi/export?format=${format.value}`;
     const [error] = await download(apiUrl);
     exportLoading.value = false;

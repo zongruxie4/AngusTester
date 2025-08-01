@@ -9,7 +9,7 @@ import { Button, Radio, RadioGroup, Tooltip, Upload } from 'ant-design-vue';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { debounce } from 'throttle-debounce';
 import { deconstruct } from '@/utils/swagger';
-import {  duration, codeUtils } from '@xcan-angus/infra';
+import { duration, codeUtils } from '@xcan-angus/infra';
 
 import { deepParseJson, OptionItem, radioGroups, RequestBodyParam, StateItem, transRefJsonToDataJson } from './interface';
 import { getBodyDefaultItem, ParamsItem } from '../interface';
@@ -18,7 +18,7 @@ import { getNewItem } from '../utils';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/views/apis/utils';
 import { services } from 'src/api/tester';
 
-const {gzip, ungzip,} = codeUtils;
+const { gzip, ungzip } = codeUtils;
 const { valueKey, fileNameKey, enabledKey } = API_EXTENSION_KEY;
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestBody/form/index.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));

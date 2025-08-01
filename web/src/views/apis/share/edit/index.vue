@@ -184,7 +184,7 @@ const editOk = async () => {
 
 onMounted(async () => {
   loadApisShareScopeOpt();
-  origin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester)
+  origin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   watch(() => props.visible, async (newValue) => {
     if (newValue) {
       if (props.shareId) {

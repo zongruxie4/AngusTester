@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {Colon, Modal, notification} from '@xcan-angus/vue-ui';
-import {RadioGroup} from 'ant-design-vue';
-import {ApiType, download, routerUtils, ApiUrlBuilder} from '@xcan-angus/infra';
+import { ref } from 'vue';
+import { Colon, Modal, notification } from '@xcan-angus/vue-ui';
+import { RadioGroup } from 'ant-design-vue';
+import { ApiType, download, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;

@@ -638,7 +638,7 @@ const initialize = () => {
 };
 
 onMounted(async () => {
-  isPrivate.value = appContext.isPrivateEdition()
+  isPrivate.value = appContext.isPrivateEdition();
   watch(() => projectId.value, (newValue) => {
     if (!newValue) {
       return;

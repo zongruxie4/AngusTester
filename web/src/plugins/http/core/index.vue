@@ -35,5 +35,4 @@ defineExpose({
     ref="detailRef"
     v-bind="props"
     @setCountTabKey="setCountTabKey" />
-
 </template>

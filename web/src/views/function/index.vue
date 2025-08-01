@@ -101,7 +101,6 @@ let tagsRefreshNotifyFlag = false;
 let trashRefreshNotifyFlag = false;
 
 onMounted(async () => {
-
   editionType.value = appContext.getEditionType();
   const queryString = window.location.hash;
   const searchParams = new URLSearchParams(queryString);
