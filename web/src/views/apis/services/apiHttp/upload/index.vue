@@ -4,9 +4,10 @@ import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
-import { gzip, ungzip } from '@xcan-angus/infra';
+import { codeUtils } from '@xcan-angus/infra';
 
 const { valueKey, fileNameKey, formContentTypeKey } = API_EXTENSION_KEY;
+const { gzip, ungzip } = codeUtils;
 
 interface File {
   [formContentTypeKey]: string;

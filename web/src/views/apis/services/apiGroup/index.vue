@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, ref, watch } from 'vue';
 import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
-import { cookieUtils, DomainManager } from '@xcan-angus/infra';
+import { cookieUtils, DomainManager, appContext } from '@xcan-angus/infra';
 
 import store from '@/store';
 import { apis, services } from 'src/api/tester';
@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   info: {}
 });
 const showQuckEbtrace = ref(false); // 当前服务不存在时显示快速入口
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 
 const allAuths = ['VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
 // const allProjectAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
@@ -301,7 +301,7 @@ const useAuth = computed(() => {
 });
 
 watch(() => userInfo.value, newValue => {
-  if (newValue.id) {
+  if (newValue?.id) {
     ploadProjectAuthInfo();
   }
 }, {

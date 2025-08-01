@@ -3,12 +3,12 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Icon, notification, Select, MonacoEditor } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Upload } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { duration, gzip, ungzip, utils } from '@xcan-angus/infra';
+import { duration,  utils, codeUtils } from '@xcan-angus/infra';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
 import { ContentType, RequestBody } from './PropsType';
-
+const { gzip, ungzip } = codeUtils;
 export interface Props {
   value: RequestBody;
   contentType: ContentType | null;

@@ -3,6 +3,7 @@ import { computed, inject, reactive, ref, watch } from 'vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 import { apis } from 'src/api/tester';
 import { Button, Form, FormItem } from 'ant-design-vue';
+import { appContext } from '@xcan-angus/infra';
 
 interface Props {
   disabled:boolean
@@ -56,7 +57,7 @@ state.id = inject('id', ''); // 当前 api id;
 const handleCloseDrawer = inject('selectHandle', closeFunCallBack);
 const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
 const setUnarchivedApiInfo = inject('setUnarchivedApiInfo', (info) => (info));
-const userInfo = inject('tenantInfo', ref({ id: '', fullName: '' }));
+const userInfo = ref(appContext.getUser());
 
 const loadInfo = async () => {
   const [error, res] = await unarchived.getUnarchivedApiDetail(state.id);
@@ -75,7 +76,7 @@ const loadInfo = async () => {
     condition: item.condition?.value,
     type: item.type?.value
   })) || [];
-  if (!form.ownerId && userInfo.value.id) {
+  if (!form.ownerId && userInfo.value?.id) {
     form.ownerId = userInfo.value.id;
     form.ownerName = userInfo.value.fullName;
   }

@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Modal, SingleUpload } from '@xcan-angus/vue-ui';
-import { gzip } from '@xcan-angus/infra';
+import { codeUtils } from '@xcan-angus/infra';
 
 import { ContentEncoding } from '../PropsType';
 
@@ -39,7 +39,7 @@ const ok = async () => {
   let base64Content:string;
   const coding = contentEncoding.value;
   if (contentEncoding.value === 'gzip_base64') {
-    base64Content = gzip(file);
+    base64Content = codeUtils.(file);
     emit('ok', base64Content, file, coding);
     close();
     return;

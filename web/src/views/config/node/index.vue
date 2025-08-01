@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, nextTick, onMounted, reactive, ref } from 'vue';
+import { defineAsyncComponent, nextTick, onMounted, reactive, ref, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
 import { utils, enumLoader, appContext } from '@xcan-angus/infra';

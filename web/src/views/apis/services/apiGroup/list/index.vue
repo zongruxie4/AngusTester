@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { TESTER, duration } from '@xcan-angus/infra';
+import { TESTER, duration, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import ListItem from './listItem.vue';
@@ -83,7 +83,7 @@ const refreshRecycleBin = inject('refreshRecycleBin', (_key:'api') => {});
 
 const { t } = useI18n();
 
-const appInfo = inject('appInfo') as Ref<Record<string, any>>;
+const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const listWrapperRef = ref();
 const wrapperHeight = ref(500);
 const loading = ref(false);

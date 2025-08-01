@@ -15,7 +15,7 @@ import {
   , VuexHelper
 } from '@xcan-angus/vue-ui';
 import { apis, services } from 'src/api/tester';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
 
 interface Props {
@@ -37,7 +37,7 @@ const refreshUnarchived = inject('refreshUnarchived', () => {});
 const handleCloseDrawer = inject('selectHandle', () => {});
 const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
 const setApiInfo = inject('setApiInfo', (info) => (info));
-const userInfo = inject('tenantInfo', ref({ id: '', fullName: '' }));
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const getParameter = inject('getParameter', () => ({} as any));
@@ -107,7 +107,7 @@ const loadInfo = async () => {
     condition: item.condition?.value,
     type: item.type?.value
   })) || [];
-  if (!form.ownerId && userInfo.value.id) {
+  if (!form.ownerId && userInfo.value?.id) {
     form.ownerId = userInfo.value.id;
     form.ownerName = userInfo.value.fullName;
   }
@@ -126,7 +126,7 @@ watch(() => state.id, async () => {
       form.serviceName = formParams.serviceName;
       defaultProject.value = { id: form.serviceId, name: form.serviceName };
     }
-    if (!form.ownerId && userInfo.value.id) {
+    if (!form.ownerId && userInfo.value?.id) {
       form.ownerId = userInfo.value.id;
       form.ownerName = userInfo.value.fullName;
     }

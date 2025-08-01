@@ -45,7 +45,8 @@ const emits = defineEmits<{
   (e: 'loadList'): void
 }>();
 
-const tenantInfo = inject('tenantInfo', ref({}));
+const tenantInfo = ref(appContext.getTenant());
+const userInfo = ref(appContext.getUser());
 
 const validated = ref(false);
 
@@ -537,7 +538,7 @@ defineExpose({ add, startInterval });
           <template v-if="editNameId !== state.id">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
             <Icon
-              v-if="!state.free || tenantInfo.tenantId === '1'"
+              v-if="!state.free || tenantInfo.id === '1'"
               icon="icon-shuxie"
               class="ml-1 hover:text-blue-1 cursor-pointer"
               @click="editName(state.name, state.id)" />
@@ -686,7 +687,7 @@ defineExpose({ add, startInterval });
             </div>
             <div class="pb-2 flex justify-between max-w-180">
               <!-- 权限控制：（1、只允许管理员修改 || 2、自己添加的节点允许修改）&& 3、不允许修改租户1共享的节点。 -->
-              <Tooltip v-if="state.tenantId !== tenantInfo.tenantId || !(props.isAdmin || state.createdBy === tenantInfo.id)" :title="getEditTip(state)">
+              <Tooltip v-if="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)" :title="getEditTip(state)">
                 <Button
                   type="text"
                   :disabled="true"
@@ -707,7 +708,7 @@ defineExpose({ add, startInterval });
               </Button>
               <Button
                 type="text"
-                :disabled="state.tenantId !== tenantInfo.tenantId || !(props.isAdmin || state.createdBy === tenantInfo.id)"
+                :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
                 :showTextIndex="state.enabled?0:1"
                 size="small"
                 class="flex space-x-1"
@@ -715,7 +716,7 @@ defineExpose({ add, startInterval });
                 <Icon :icon="state.enabled?'icon-jinyong':'icon-qiyong'" />
                 {{ state.enabled?'禁用':'启用' }}
               </Button>
-              <Tooltip v-if="state.tenantId !== tenantInfo.tenantId || !(props.isAdmin || state.createdBy === tenantInfo.id) || state.enabled" :title="getDelTip(state)">
+              <Tooltip v-if="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id) || state.enabled" :title="getDelTip(state)">
                 <Button
                   type="text"
                   :disabled="true"
@@ -804,7 +805,7 @@ defineExpose({ add, startInterval });
                 size="small"
                 class="flex space-x-1"
                 :loading="restartingMap[state.id]"
-                :disabled="state.tenantId !== tenantInfo.tenantId || !(props.isAdmin || state.createdBy === tenantInfo.id)"
+                :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
                 @click="restartProxy(state)">
                 <Icon icon="icon-zhongxinkaishi" />
                 重启代理

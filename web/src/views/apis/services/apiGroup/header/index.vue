@@ -3,7 +3,7 @@ import { Button } from 'ant-design-vue';
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { Dropdown, DropdownGroup, DropdownSort, Icon, Input } from '@xcan-angus/vue-ui';
-import { duration, utils } from '@xcan-angus/infra';
+import { duration, utils, appContext } from '@xcan-angus/infra';
 import elementResizeDetector from 'element-resize-detector';
 
 interface Props{
@@ -46,7 +46,7 @@ const emit = defineEmits<{
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const containerRef = ref();
 const showMoreIcon = ref(false);
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 
@@ -118,7 +118,7 @@ const addApi = (type) => {
   if (type === 'API') {
     const param = {
       summary: 'api' + new Date().getTime(),
-      ownerId: userInfo.value.id,
+      ownerId: userInfo.value?.id,
       serviceId: props.serviceId,
       assertions: [],
       authentication: null,

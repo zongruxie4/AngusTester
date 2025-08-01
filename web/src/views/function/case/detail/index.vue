@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import { XCanDexie,  TESTER, duration, toClipboard } from '@xcan-angus/infra';
+import { XCanDexie,  TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 
@@ -59,8 +59,8 @@ const emits = defineEmits<{(e: 'onClick', type: CaseActionAuth, value: CaseListO
 
 const isAdmin = inject('isAdmin', ref(false));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const userInfo = inject('userInfo');
-const appInfo = inject('appInfo');
+const userInfo = ref(appContext.getUser());
+const appInfo = ref(appContext.getAccessApp());
 const projectId = computed(() => {
   return projectInfo.value?.id;
 });
@@ -175,7 +175,7 @@ const getCaseInfo = async (id: string) => {
     }
   }
   if (caseAuth.value[data.id].includes('retestResult')) {
-    if (!funcPlanAuth.value && userInfo?.id !== data.testerId) {
+    if (!funcPlanAuth.value && userInfo.value?.id !== data.testerId) {
       caseAuth.value[data.id] = caseAuth.value[data.id].filter(i => i !== 'retestResult');
     }
   }

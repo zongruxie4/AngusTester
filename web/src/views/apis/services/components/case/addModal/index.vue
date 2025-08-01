@@ -4,7 +4,7 @@ import { Icon, Input, Modal, notification, SelectEnum, Spin } from '@xcan-angus/
 import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
-import { localStore } from '@xcan-angus/infra';
+import { localStore, appContext } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: ''
 });
 
-const userInfo: any = inject('tenantInfo');
+const userInfo: any = ref(appContext.getUser());
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void;
@@ -38,7 +38,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void;
   (e: 'ok'):void;
 }>();
 
-const addCaseSizeKey = `${userInfo.id}${projectInfo.value.id}addApiCaseSize`;
+const addCaseSizeKey = `${userInfo.value?.id}${projectInfo.value.id}addApiCaseSize`;
 
 const formState = ref({
   description: '',

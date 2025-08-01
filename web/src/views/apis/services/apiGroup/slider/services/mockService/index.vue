@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, Ref, ref } from 'vue';
 import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, IconCopy, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
 import { analysis, mock, services } from 'src/api/tester';
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const router = useRouter();
-const appInfo = inject('appInfo') as Ref<Record<string, any>>;
+const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const mockServiceInfo = ref();
 const loading = ref();
 

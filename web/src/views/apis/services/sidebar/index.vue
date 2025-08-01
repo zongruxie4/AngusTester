@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
-import { TESTER, localStore, utils, duration } from '@xcan-angus/infra';
+import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 
@@ -35,7 +35,7 @@ const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/
 const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/sidebar/unarchived/index.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/execTest/index.vue'));
 
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 const isAdmin = inject('isAdmin', ref(false));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const appInfo = inject('appInfo') as Ref<Record<string, any>>;
@@ -474,7 +474,7 @@ const addApiByProject = async (item) => {
   const _id = utils.uuid('api');
   const param = {
     summary: 'api' + new Date().getTime(),
-    ownerId: userInfo.value.id,
+    ownerId: userInfo.value?.id,
     projectId: item.id,
     assertions: [],
     authentication: null,
@@ -504,7 +504,7 @@ const addSocketByProject = async (item) => {
   const _id = utils.uuid('socket');
   const params = {
     summary: 'socket' + new Date().getTime(),
-    ownerId: userInfo.value.id,
+    ownerId: userInfo.value?.id,
     projectId: item.id,
     parameters: [],
     protocol: 'wss',
@@ -809,7 +809,7 @@ const buttonProps = {
 const guideProjectId = ref('');
 const getGuideProjectId = (id:string) => {
   if (!id) {
-    const cacheGuideKey = `${userInfo.value.id}_API_GUIDE`;
+    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
     localStore.set(cacheGuideKey, true);
     updateGuideStep({ visible: false, key: '' });
   }
@@ -820,7 +820,7 @@ const proejctGuideStep = (key:string) => {
   if (key === 'hideDrawer') {
     updateGuideStep({ visible: false, key: '' });
     updateGuideType('');
-    const cacheGuideKey = `${userInfo.value.id}_API_GUIDE`;
+    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
     localStore.set(cacheGuideKey, true);
     return;
   }

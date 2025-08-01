@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 
 import { PermissionKey, ResourceInfo, ScriptInfo } from '../PropsType';
 import { isEqual } from 'lodash-es';
@@ -19,7 +19,7 @@ const route = useRoute();
 const router = useRouter();
 
 const isAdmin = inject('isAdmin', ref(false));
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({
   id: '',
   avatar: '',

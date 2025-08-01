@@ -12,7 +12,7 @@ import {
   SelectUser
 } from '@xcan-angus/vue-ui';
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 
 import { apis } from 'src/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';
@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const updateApiGroup = inject('updateApiGroup', () => undefined);
 
-const appInfo = inject('appInfo') as Ref<Record<string, any>>;
+const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 
 const state = reactive({
   info: {
