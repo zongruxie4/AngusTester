@@ -1,0 +1,520 @@
+{
+  "xcm": {
+    "enum": {
+      "NodeSource": {
+        "OWN_NODE": "Own Node",
+        "ONLINE_BUY": "Online Purchase"
+      },
+      "CountScriptType": {
+        "PERF": "Performance",
+        "FUNCTIONAL": "Functional",
+        "STABILITY": "Stability",
+        "FILE": "File",
+        "DATASOURCE": "Data Source",
+        "ALL": "All Scripts"
+      },
+      "TaskTargetType": {
+        "TASK": "Task",
+        "TASK_SPRINT": "Sprint"
+      },
+      "ApisTargetType": {
+        "SERVICE": "Service",
+        "API": "API"
+      },
+      "CombinedTargetType": {
+        "PROJECT": "Project",
+        "TAG": "Tag",
+        "MODULE": "Module",
+        "TASK": "Task",
+        "TASK_SPRINT": "Sprint",
+        "SOFTWARE_VERSION": "Software Version",
+        "TASK_ANALYSIS": "Task Analysis",
+        "MEETING": "Meeting",
+        "FUNC_PLAN": "Function Plan",
+        "FUNC_REVIEW": "Function Review",
+        "FUNC_CASE": "Function Case",
+        "FUNC_CASE_BASELINE": "Case Baseline",
+        "FUNC_CASE_ANALYSIS": "Case Analysis",
+        "SERVICE": "Service",
+        "API": "API",
+        "API_CASE": "API Case",
+        "API_DESIGN": "API Design",
+        "SCENARIO": "Scenario",
+        "SCENARIO_MONITOR": "Scenario Monitor",
+        "SCRIPT": "Script",
+        "VARIABLE": "Variable",
+        "DATASET": "Dataset",
+        "MOCK_SERVICE": "Mock Service",
+        "MOCK_APIS": "Mock APIs",
+        "EXECUTION": "Execution",
+        "REPORT": "Report"
+      },
+      "AuthorizationType": {
+        "NO_AUTH": "No Authentication",
+        "BASIC_AUTH": "Basic",
+        "BEARER_TOKEN": "Bearer Token",
+        "CUSTOM": "Custom"
+      },
+      "ApiSource": {
+        "CREATED": "Created",
+        "EDITOR": "Editor",
+        "IMPORT": "Import",
+        "SYNC": "Synchronize"
+      },
+      "ApiStatus": {
+        "UNKNOWN": "Unknown",
+        "IN_DESIGN": "In Design",
+        "IN_DEV": "In Development",
+        "DEV_COMPLETED": "Development Completed",
+        "RELEASED": "Released"
+      },
+      "ActionWhenDuplicate": {
+        "COVER": "Overwrite",
+        "IGNORE": "Ignore"
+      },
+      "TestType": {
+        "PERFORMANCE": "Performance Test",
+        "FUNCTIONAL": "Functional Test",
+        "STABILITY": "Stability Test",
+        "CUSTOMIZATION": "Custom Test"
+      },
+      "CountTestType": {
+        "PERF": "Performance",
+        "FUNCTIONAL": "Functional",
+        "STABILITY": "Stability",
+        "ALL": "All Scripts"
+      },
+      "TaskType": {
+        "REQUIREMENT": "Requirement",
+        "STORY": "Story",
+        "TASK": "Task",
+        "BUG": "Bug",
+        "API_TEST": "API Test",
+        "SCENARIO_TEST": "Scenario Test"
+      },
+      "TaskStatus": {
+        "PENDING": "Pending",
+        "IN_PROGRESS": "In Progress",
+        "CONFIRMING": "Awaiting Confirmation",
+        "COMPLETED": "Completed",
+        "CANCELED": "Canceled"
+      },
+      "SoftwareVersionStatus": {
+        "NOT_RELEASED": "Planned",
+        "RELEASED": "Released",
+        "ARCHIVED": "Archived"
+      },
+      "BugLevel": {
+        "CRITICAL": "Critical",
+        "MAJOR": "Major",
+        "MINOR": "Minor",
+        "TRIVIAL": "Trivial"
+      },
+      "OverdueRiskLevel": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "NONE": "None"
+      },
+      "AssociateUserType": {
+        "CREATOR": "Creator",
+        "ASSIGNEE": "Assignee",
+        "CONFIRMOR": "Confirmer",
+        "OWNER": "Owner",
+        "SYS_ADMIN": "System Administrator",
+        "APP_ADMIN": "Application Administrator"
+      },
+      "ServicesPermission": {
+        "ADD": "Add",
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "DELETE": "Delete",
+        "TEST": "Test",
+        "GRANT": "Grant",
+        "SHARE": "Share",
+        "RELEASE": "Release",
+        "EXPORT": "Export"
+      },
+      "ApiPermission": {
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "DELETE": "Delete",
+        "DEBUG": "Debug",
+        "TEST": "Test",
+        "GRANT": "Grant",
+        "SHARE": "Share",
+        "RELEASE": "Release",
+        "EXPORT": "Export"
+      },
+      "StrategyWhenDuplicated": {
+        "COVER": "Overwrite",
+        "IGNORE": "Ignore"
+      },
+      "ScriptPermission": {
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "DELETE": "Delete",
+        "TEST": "Test",
+        "GRANT": "Grant",
+        "EXPORT": "Export"
+      },
+      "MockServiceStartStatus": {
+        "NOT_STARTED": "Not Started",
+        "SUCCESS": "Success",
+        "FAILURE": "Failure",
+        "UNKNOWN": "Unknown"
+      },
+      "ExecStatus": {
+        "CREATED": "Created",
+        "PENDING": "Pending",
+        "RUNNING": "Running",
+        "STOPPED": "Stopped",
+        "FAILED": "Failed",
+        "COMPLETED": "Completed",
+        "TIMEOUT": "Timeout"
+      },
+      "TestResultStatus": {
+        "NOT_ENABLED": "Not Enabled",
+        "UNTESTED": "Untested",
+        "PARTIALLY_PASSED": "Partially Passed",
+        "FULLY_PASSED": "Fully Passed",
+        "FULLY_FAILED": "Fully Failed"
+      },
+      "ProjectType": {
+        "AGILE": "Agile Project Management",
+        "GENERAL": "General Project Management",
+        "TESTING": "Software Testing Project"
+      },
+      "ServicesExportScope": {
+        "SERVICE": "Service",
+        "APIS": "By API"
+      },
+      "ApisShareScope": {
+        "SERVICES": "Services",
+        "PARTIAL_APIS": "Multiple APIs",
+        "SINGLE_APIS": "Single API"
+      },
+      "IndicatorType": {
+        "FUNC": "Functional",
+        "PERF": "Performance",
+        "STABILITY": "Stability"
+      },
+      "TaskSprintPermission": {
+        "MODIFY_SPRINT": "Modify Sprint",
+        "DELETE_SPRINT": "Delete Sprint",
+        "ADD_TASK": "Add Task",
+        "MODIFY_TASK": "Modify Task",
+        "DELETE_TASK": "Delete Task",
+        "EXPORT_TASK": "Export Task",
+        "RESTART_TASK": "Restart Task",
+        "REOPEN_TASK": "Reopen Task",
+        "GRANT": "Grant"
+      },
+      "ScenarioPermission": {
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "DELETE": "Delete",
+        "TEST": "Test",
+        "GRANT": "Grant",
+        "EXPORT": "Export"
+      },
+      "MockServicePermission": {
+        "ADD": "Add API",
+        "VIEW": "View",
+        "MODIFY": "Edit",
+        "DELETE": "Delete",
+        "RUN": "Run",
+        "GRANT": "Grant",
+        "EXPORT": "Export"
+      },
+      "MockServiceStatus": {
+        "NOT_STARTED": "Not Started",
+        "RUNNING": "Running"
+      },
+      "MockServiceSource": {
+        "CREATED": "Manually Created",
+        "FILE_IMPORT": "File Import",
+        "ASSOC_SERVICE": "Associated Service"
+      },
+      "MockApisSource": {
+        "CREATED": "Manually Created",
+        "ANGUS_IMPORT": "Angus File Import",
+        "COPY_APIS": "Copy API",
+        "ASSOC_APIS": "Associated API"
+      },
+      "MockDataSourceStatus": {
+        "SUCCESS": "Connection Successful",
+        "FAIL": "Connection Failed"
+      },
+      "BinaryContentType": {
+        "FILE": "File",
+        "BASE64_TEXT": "File Base64 Text",
+        "URL": "File URL"
+      },
+      "MockAuthorizationType": {
+        "HTTP_BASIC": "HTTP Basic",
+        "REQUEST_HEADER_MATCH": "Request Header Match"
+      },
+      "MockDataTargetType": {
+        "FILE": "File",
+        "DATASOURCE": "Data Source"
+      },
+      "ServicesCompType": {
+        "schemas": "Data Models",
+        "responses": "Responses",
+        "parameters": "Parameters",
+        "examples": "Examples",
+        "requestBodies": "Request Bodies",
+        "headers": "Headers",
+        "securitySchemes": "Security Schemes",
+        "links": "Links",
+        "callbacks": "Callbacks",
+        "extensions": "Extensions",
+        "pathItems": "APIs"
+      },
+      "TaskSprintStatus": {
+        "PENDING": "Pending",
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "BLOCKED": "Blocked"
+      },
+      "TaskMeetingType": {
+        "DAILY_STANDUP": "Daily Standup",
+        "PLANNING": "Sprint Planning",
+        "REVIEW": "Sprint Review",
+        "RETROSPECTIVE": "Sprint Retrospective",
+        "BACKLOG_REFINEMENT": "Backlog Refinement",
+        "OTHER": "Other"
+      },
+      "ApisDesignSource": {
+        "SYNCHRONOUS_SERVICE": "Synchronous Service",
+        "FILE_IMPORT": "File Import",
+        "MANUAL_CREATED": "Manually Created"
+      },
+      "DnsLine": {
+        "DEFAULT": "Default",
+        "TELECOM": "Telecom",
+        "UNICOM": "Unicom",
+        "MOBILE": "Mobile",
+        "OVERSEA": "Overseas"
+      },
+      "InstanceChargeType": {
+        "PrePaid": "Prepaid",
+        "PostPaid": "Pay-as-you-go"
+      },
+      "FuncTargetType": {
+        "PLAN": "Test Plan",
+        "CASE": "Case"
+      },
+      "CaseTestResult": {
+        "PENDING": "Pending Test",
+        "PASSED": "Test Passed",
+        "NOT_PASSED": "Test Failed",
+        "BLOCKED": "Blocked",
+        "CANCELED": "Canceled"
+      },
+      "CaseStepView": {
+        "TABLE": "Table View",
+        "TEXT": "Text View"
+      },
+      "FuncPlanPermission": {
+        "MODIFY_PLAN": "Modify Plan",
+        "DELETE_PLAN": "Delete Plan",
+        "ADD_CASE": "Add Case",
+        "MODIFY_CASE": "Modify Case",
+        "DELETE_CASE": "Delete Case",
+        "EXPORT_CASE": "Export Case",
+        "REVIEW": "Review",
+        "RESET_REVIEW_RESULT": "Reset Review Result",
+        "TEST": "Modify Test Result",
+        "RESET_TEST_RESULT": "Reset Test Result",
+        "ESTABLISH_BASELINE": "Establish Baseline",
+        "GRANT": "Grant"
+      },
+      "FuncPlanStatus": {
+        "PENDING": "Pending",
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "BLOCKED": "Blocked"
+      },
+      "ScenarioMonitorStatus": {
+        "PENDING": "Pending Execution",
+        "SUCCESS": "Success",
+        "FAILURE": "Failure"
+      },
+      "DataAssetsCategory": {
+        "FUNC": "Function",
+        "APIS": "APIs",
+        "SCENARIO": "Scenario",
+        "TASK": "Task",
+        "SCRIPT": "Script",
+        "MOCK": "Mock",
+        "DATA": "Data"
+      },
+      "ParameterizationDataSource": {
+        "STATIC_VALUE": "Static Value",
+        "EXTRACT_VALUE": "Value Extraction",
+        "EXTRACT_FILE": "File Extraction",
+        "EXTRACT_HTTP": "Http Extraction",
+        "EXTRACT_HTTP_SAMPLING": "Http Sampling Extraction",
+        "EXTRACT_JDBC": "Jdbc Extraction"
+      },
+      "EfficiencyResourceType": {
+        "TASK": "Task",
+        "CASE": "Case"
+      },
+      "BurnDownResourceType": {
+        "NUM": "Data",
+        "WORKLOAD": "Total Workload"
+      },
+      "AnalysisTimeRange": {
+        "ALL_TIME": "All Time",
+        "THIS_WEEK": "This Week",
+        "LAST_WEEK": "Last Week",
+        "THIS_MONTH": "This Month",
+        "LAST_MONTH": "Last Month",
+        "THIS_YEAR": "This Year",
+        "CUSTOM_TIME": "Custom Time"
+      },
+      "AnalysisDataSource": {
+        "REAL_TIME_DATA": "Display real-time data each time",
+        "SNAPSHOT_DATA": "Save data snapshot, display snapshot data each time"
+      },
+      "AnalysisTaskObject": {
+        "CURRENT_PROJECT": "Current Project",
+        "SPRINT": "Sprint",
+        "ASSIGNEE_ORG": "Assignee Organization"
+      },
+      "AnalysisTaskTemplate": {
+        "PROGRESS": "Progress Analysis",
+        "BURNDOWN": "Burndown Analysis",
+        "WORKLOAD": "Workload Analysis",
+        "OVERDUE_ASSESSMENT": "Overdue Assessment Analysis",
+        "BUGS": "Bug Analysis",
+        "HANDLING_EFFICIENCY": "Handling Efficiency Analysis",
+        "CORE_KPI": "Core KPI Analysis",
+        "FAILURES": "Failure Analysis",
+        "BACKLOG_TASKS": "Backlog Task Analysis",
+        "RECENT_DELIVERY": "Recent Delivery Analysis",
+        "LEAD_TIME": "Lead Time Analysis",
+        "UNPLANNED_TASKS": "Unplanned Task Analysis",
+        "TASK_GROWTH_TREND": "Task Growth Trend Analysis",
+        "RESOURCE_CREATION": "Resource Creation Analysis",
+        "CUSTOM_DEFINITION": "Custom Analysis"
+      },
+      "AnalysisTaskTemplateDesc": {
+        "PROGRESS": "Track project, sprint, or assignee work progress. Help teams evaluate task scheduling and work efficiency.",
+        "BURNDOWN": "Track the likelihood of completing all work within the planned time. Help teams monitor progress and respond accordingly.",
+        "WORKLOAD": "Understand team workload, evaluate workload and actual workload deviations. Help teams ensure reasonable workload distribution.",
+        "OVERDUE_ASSESSMENT": "Evaluate tasks that are not completed on time, enabling teams to adjust strategies and optimize resource allocation. Help teams identify potential risks and bottlenecks.",
+        "BUGS": "Evaluate issues in the system that do not meet expectations. Help teams understand design flaws, implementation problems, or insufficient testing.",
+        "HANDLING_EFFICIENCY": "Evaluate the frequency of repeated task handling, revealing poor completion quality issues. Help teams identify quality bottlenecks and adjust work standards in a timely manner.",
+        "CORE_KPI": "Evaluate key performance indicators such as number of tasks, total workload, overdue items, and bugs. Facilitate quick performance evaluation of R&D teams.",
+        "FAILURES": "Evaluate the number of defects, their severity distribution, and resolution timeliness. Help teams analyze failure causes and track resolution status.",
+        "BACKLOG_TASKS": "Summarize unfinished tasks and workload, evaluate whether completion time has overdue risks. Help teams identify overdue risks and manage progress.",
+        "RECENT_DELIVERY": "Evaluate recently completed tasks and deliverables. Help teams identify gaps between completed work items and expected goals, thereby adjusting strategies and resource allocation timely.",
+        "LEAD_TIME": "Evaluate the time required to complete tasks and the distribution of processing cycles. Help teams monitor the efficiency and stability of the delivery process.",
+        "UNPLANNED_TASKS": "Evaluate unplanned tasks that appear during execution, understand their impact on overall progress and resource allocation. Help teams identify interference factors and avoid risks.",
+        "TASK_GROWTH_TREND": "Evaluate the number of new tasks added within a specific time period and their impact on project progress. Help teams adjust strategies timely to cope with the continuously growing work demands.",
+        "RESOURCE_CREATION": "Evaluate the creation of various resources such as backlogs, sprints, tasks, and meetings. Help teams understand the effective utilization and contribution of resources.",
+        "CUSTOM_DEFINITION": "Perform custom status or time-series analysis on key indicators. Help teams gain in-depth understanding of specific data changes, statuses, and distributions."
+      },
+      "AnalysisCaseObject": {
+        "CURRENT_PROJECT": "Current Project",
+        "PLAN": "Plan",
+        "TESTER_ORG": "Tester Organization"
+      },
+      "AnalysisCaseTemplate": {
+        "PROGRESS": "Progress Analysis",
+        "BURNDOWN": "Burndown Analysis",
+        "WORKLOAD": "Workload Analysis",
+        "OVERDUE_ASSESSMENT": "Overdue Assessment Analysis",
+        "SUBMITTED_BUGS": "Submitted Bug Analysis",
+        "TESTING_EFFICIENCY": "Testing Efficiency Analysis",
+        "CORE_KPI": "Core KPI Analysis",
+        "REVIEW_EFFICIENCY": "Review Efficiency Analysis",
+        "BACKLOG_CASES": "Backlog Case Analysis",
+        "RECENT_DELIVERY": "Recent Delivery Analysis",
+        "LEAD_TIME": "Lead Time Analysis",
+        "UNPLANNED_CASES": "Unplanned Case Analysis",
+        "CASE_GROWTH_TREND": "Case Growth Trend Analysis",
+        "RESOURCE_CREATION": "Resource Creation Analysis",
+        "CUSTOM_DEFINITION": "Custom Analysis"
+      },
+      "AnalysisCaseTemplateDesc": {
+        "PROGRESS": "Track project, plan, or tester work progress. Help teams evaluate test scheduling and work efficiency.",
+        "BURNDOWN": "Track the likelihood of completing all work within the planned time. Help teams monitor progress and respond accordingly.",
+        "WORKLOAD": "Understand team workload, evaluate workload and actual workload deviations. Help teams ensure reasonable workload distribution.",
+        "OVERDUE_ASSESSMENT": "Evaluate cases that are not completed on time, enabling teams to adjust strategies and optimize resource allocation. Help teams identify potential risks and bottlenecks.",
+        "SUBMITTED_BUGS": "Evaluate the bug submission status of testers. Help teams understand test hit rate, analyze case design and functional implementation deficiencies.",
+        "TESTING_EFFICIENCY": "Evaluate the frequency of repeated case testing, revealing poor completion quality issues. Help teams identify quality bottlenecks and adjust work standards in a timely manner.",
+        "CORE_KPI": "Evaluate key performance indicators such as number of cases, total workload, overdue items, and reviews. Facilitate quick performance evaluation of testing teams.",
+        "REVIEW_EFFICIENCY": "Evaluate the efficiency of the test case review process. Help teams optimize testing strategies and ensure high-quality software delivery.",
+        "BACKLOG_CASES": "Summarize unfinished cases and workload, evaluate whether completion time has overdue risks. Help teams identify overdue risks and manage progress.",
+        "RECENT_DELIVERY": "Evaluate recently completed cases and deliverables. Help teams identify gaps between completed work items and expected goals, thereby adjusting strategies and resource allocation timely.",
+        "LEAD_TIME": "Evaluate the time required to complete cases and the distribution of processing cycles. Help teams monitor the efficiency and stability of the delivery process.",
+        "UNPLANNED_CASES": "Evaluate unplanned cases that appear during execution, understand their impact on overall progress and resource allocation. Help teams identify interference factors and avoid risks.",
+        "CASE_GROWTH_TREND": "Evaluate the number of new cases added within a specific time period and their impact on project progress. Help teams adjust strategies timely to cope with the continuously growing work demands.",
+        "RESOURCE_CREATION": "Evaluate the creation of various resources such as plans, cases, reviews, and baselines. Help teams understand the effective utilization and contribution of resources.",
+        "CUSTOM_DEFINITION": "Perform custom status or time-series analysis on key indicators. Help teams gain in-depth understanding of specific data changes, statuses, and distributions."
+      },
+      "ReportPermission": {
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "GENERATE": "Generate Immediately",
+        "DELETE": "Delete",
+        "GRANT": "Grant",
+        "EXPORT": "Export"
+      },
+      "ReportStatus": {
+        "PENDING": "Pending Generation",
+        "SUCCESS": "Success",
+        "FAILURE": "Failure"
+      },
+      "ReportCategory": {
+        "PROJECT": "Project Report",
+        "TASK": "Task Report",
+        "FUNCTIONAL": "Functional Test Report",
+        "APIS": "API Test Report",
+        "SCENARIO": "Scenario Test Report",
+        "EXECUTION": "Execution Report"
+      },
+      "ReportTemplate": {
+        "PROJECT_PROGRESS": "Project Progress Report",
+        "PROJECT_DATA_ASSETS": "Project Data Assets Report",
+        "PROJECT_EFFICIENCY": "Project Efficiency Report",
+        "PROJECT_ACTIVITY": "Project Activity Report",
+        "TASK_SPRINT": "Sprint Report",
+        "TASK": "Task Report",
+        "FUNC_TESTING_PLAN": "Test Plan Report",
+        "FUNC_TESTING_CASE": "Test Case Report",
+        "SERVICES_TESTING_RESULT": "Service Test Result Report",
+        "APIS_TESTING_RESULT": "API Test Result Report",
+        "APIS_TESTING": "API Test Report",
+        "SCENARIO_TESTING_RESULT": "Scenario Test Result Report",
+        "SCENARIO_TESTING": "Scenario Test Report",
+        "EXEC_FUNCTIONAL_RESULT": "Execution Functional Test Report",
+        "EXEC_PERFORMANCE_RESULT": "Execution Performance Test Report",
+        "EXEC_STABILITY_RESULT": "Execution Stability Test Report",
+        "EXEC_CUSTOMIZATION_RESULT": "Execution Custom Test Report"
+      },
+      "ExampleDataType": {
+        "TAG": "Tag",
+        "MODULE": "Module",
+        "TASK": "Task",
+        "FUNC": "Function",
+        "SERVICES": "Services",
+        "SCENARIO": "Scenario",
+        "SCRIPT": "Script",
+        "MOCK": "Mock",
+        "VARIABLE": "Variable",
+        "DATASET": "Dataset",
+        "EXECUTION": "Execution",
+        "REPORT": "Report"
+      },
+      "AssociateTargetType": {
+        "EXEC": "Execution",
+        "REPORTER": "Report"
+      }
+    }
+  }
+}

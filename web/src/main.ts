@@ -11,6 +11,9 @@ import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
 
+import zhEnumCNLocale from '@/enums/locales/zh_CN.json';
+import enEnumLocale from '@/enums/locales/en.json';
+
 const bootstrap = async () => {
   await app.initEnvironment();
   await http.create();
@@ -28,13 +31,23 @@ const bootstrap = async () => {
       }
     });
 
+    // Merge locale messages
+    i18n.global.mergeLocaleMessage(SupportedLanguage.zh_CN, zhEnumCNLocale);
+    i18n.global.mergeLocaleMessage(SupportedLanguage.en, enEnumLocale);
+
+    const enumPluginOptions = {
+      i18n,
+      enumUtils,
+      appEnums: enumNamespaceMap
+    } as EnumPluginOptions;
+
     const App = defineAsyncComponent(() => import('./AppShare.vue'));
     createApp(App)
       .use(router)
       .use(store)
+      .use(EnumPlugin, enumPluginOptions)
       .use(i18n)
       .mount('#app');
-
     return;
   }
 
