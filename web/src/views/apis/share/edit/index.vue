@@ -2,7 +2,8 @@
 import { onMounted, ref, watch, computed, nextTick } from 'vue';
 import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
-import { toClipboard, TESTER, enumUtils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
+import { toClipboard, TESTER, enumUtils, DomainManager, AppOrServiceRoute, EnumMessage } from '@xcan-angus/infra';
+import { ApisShareScope } from '@/enums/enums';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -20,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: '',
   servicesId: undefined,
   apisIds: () => [],
-  shareScope: 'SERVICES'
+  shareScope: ApisShareScope.SERVICES
 });
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
@@ -40,10 +41,9 @@ const formState = ref({
   apisIds: props.apisIds as string[]
 });
 
-const ApisShareScope = ref<{value: string; label: string}[]>([]);
+const apisShareScope = ref<EnumMessage<ApisShareScope>[]>([]);
 const loadApisShareScopeOpt = () => {
-  const data = enumUtils.enumToMessages('ApisShareScope');
-  ApisShareScope.value = (data || []).map(i => ({ value: i.value, label: i.description }));
+  apisShareScope.value = enumUtils.enumToMessages(ApisShareScope);
 };
 
 const loading = ref(false);
@@ -296,7 +296,7 @@ const schemaStyleOpt = [
           required>
           <RadioGroup
             v-model:value="formState.shareScope"
-            :options="ApisShareScope"
+            :options="apisShareScope"
             @change="handleScopeChange">
           </RadioGroup>
         </FormItem>

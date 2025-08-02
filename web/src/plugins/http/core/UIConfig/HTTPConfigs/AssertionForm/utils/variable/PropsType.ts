@@ -1,4 +1,4 @@
-import { Extraction, ExtractMethod } from '../extract/PropsType';
+import { Extraction, ExtractionMethod } from '../extract/PropsType';
 
 export type TargetType = 'API' | 'PROJECT' | 'SCENARIO' | 'SERVICE' | 'TASK' | 'VARIABLE'
 
@@ -25,7 +25,7 @@ export type VariableItem = {
   extraction: Extraction & {
     method: {
       message: string;
-      value: ExtractMethod
+      value: ExtractionMethod
     }
   };
   lastModifiedBy: string;

@@ -2,7 +2,6 @@
 import { onMounted, ref, watch } from 'vue';
 import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, ShortDuration, TaskPriority, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
 
 import { splitDuration } from '@/utils/utils';
 
@@ -108,21 +107,6 @@ const getData = () => {
 
   return result;
 };
-
-const variableIncludeStrategyTip = {
-  ALL: '包含所有全局变量、继承项目/服务变量、以及当前接口变量',
-  REF: '只包含接口引用的全局变量、继承项目/服务变量、以及当前接口变量',
-  IGNORE: '忽略变量，生成脚本不包含变量'
-};
-const variableIncludeStrategyOpt = ref<{ message: string; value: string; }[]>([]);
-const loadVariableEnum = () => {
-  const data = enumUtils.enumToMessages('VariableIncludeStrategy');
-  variableIncludeStrategyOpt.value = (data || []).map(i => ({ ...i, label: i.message, tip: variableIncludeStrategyTip[i.value] }));
-};
-
-onMounted(() => {
-  loadVariableEnum();
-});
 
 defineExpose({
   getData

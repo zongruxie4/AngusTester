@@ -13,7 +13,7 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, enumUtils, upload, duration } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, upload, duration } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
@@ -55,7 +55,7 @@ const dataSource = ref<ReviewInfo>();
 
 const activeTabKey = ref('funcCase');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
@@ -71,20 +71,6 @@ const formState = ref<FormState>({
   caseIds: [],
   participantIds: []
 });
-
-const uploadOptions = { bizKey: 'angusTesterCaseAttachments' };
-const editorInit = {
-  menubar: false,
-  height: 368,
-  selector: 'textarea', // 选择器，指定要转换为富文本编辑器的textarea元素
-  content_style: `
-  body { font-size: 12px; }
-    #tinymce.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-    color: #BFBFBF !important;
-  }
-  `,
-  placeholder: '请输入备注，最多支持2000字符，包括文件上传后URL地址长度' // 设置内容区的占位文字提示
-};
 
 const upLoadFile = async (file) => {
   if (loading.value) {
@@ -312,8 +298,7 @@ const setFormData = (data: ReviewInfo) => {
 };
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 const loadPermissions = async (id: string) => {

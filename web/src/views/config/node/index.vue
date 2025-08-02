@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, onMounted, reactive, ref, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { utils, enumUtils, appContext } from '@xcan-angus/infra';
+import { NodeRole, utils, enumUtils, appContext } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
 
 import { sortOpt } from './interface';
@@ -117,7 +117,7 @@ const loadList = async () => {
 const roleOptions = ref<{name: string, label: string, value: string, message: string, disabled?: boolean}[]>([]);
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('NodeRole');
+  const data = enumUtils.enumToMessages(NodeRole);
   roleOptions.value = (data || []).map(i => ({ ...i, name: i.message, label: i.message, disabled: disabledRoles.includes(i.value) }));
 };
 

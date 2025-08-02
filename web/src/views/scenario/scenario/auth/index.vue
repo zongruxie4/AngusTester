@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { enumUtils } from '@xcan-angus/infra';
+import { ScenarioPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 
@@ -26,10 +27,8 @@ const permissions = ref<{value:string, label:string}[]>([]);
 const loaded = ref(false);
 
 const loadEnums = () => {
-  const res = enumUtils.enumToMessages('ScenarioPermission');
-  if (res?.length) {
-    permissions.value = res.map(item => ({ label: item.message, value: item.value }));
-  }
+  const res = enumUtils.enumToMessages(ScenarioPermission);
+  permissions.value = res.map(item => ({ label: item.message, value: item.value }));
 };
 
 onMounted(() => {

@@ -4,6 +4,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, notification, SelectEnum, Toggle, Tooltip } from '@xcan-angus/vue-ui';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
+import { ExtractionMethod } from '@xcan-angus/infra';
 
 import { DataSetItem } from '../../PropsType';
 import { FormState } from './PropsType';
@@ -58,7 +59,7 @@ const selectSqlString = ref<string>('');
 const rowIndex = ref<string>('0');
 const columnIndex = ref<string>('0');
 
-const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
+const method = ref<ExtractionMethod>(ExtractionMethod.EXACT_VALUE);
 const defaultValue = ref<string>('');
 const expression = ref<string>('');
 const matchItem = ref<string>('');
@@ -70,7 +71,7 @@ const previewData = ref<{
   parameters: { name: string }[];
   extraction: {
     source: 'JDBC';
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+    method: ExtractionMethod;
     expression: string;
     defaultValue: string;
     matchItem: string;

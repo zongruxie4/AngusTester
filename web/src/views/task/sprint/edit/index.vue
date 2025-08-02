@@ -12,15 +12,13 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea, Upload } from 'ant-design-vue';
-import { toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
+import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Upload } from 'ant-design-vue';
+import { EnumMessage, EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
-// import { cloneDeep, isEqual } from 'lodash-es';
 import { FormState } from './PropsType';
 import { SprintInfo } from '../PropsType';
-// import Meetings from './meeting.vue';
 
 type Props = {
   projectId: string;
@@ -49,7 +47,7 @@ const isAdmin = inject('isAdmin', ref(false));
 // const meetingsRef = ref();
 const formRef = ref();
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const dataSource = ref<SprintInfo>();
 
 const permissions = ref<string[]>([]);
@@ -168,7 +166,6 @@ const criteriaRichRef = ref();
 const infoRichRef = ref();
 const validateMaxLen = (val) => {
   if (val.field === 'acceptanceCriteria') {
-    debugger;
     if (criteriaRichRef.value && criteriaRichRef.value.getLength() > 2000) {
       return Promise.reject('字符不能超过2000个字符');
     }
@@ -179,20 +176,11 @@ const validateMaxLen = (val) => {
       return Promise.reject('字符不能超过2000个字符');
     }
   }
-  // if (formState.value[val.field].length > 2000) {
-  //   return Promise.reject('字符不能超过2000个字符');
-  // }
   return Promise.resolve();
 };
 
 const ok = async () => {
   formRef.value.validate().then(async () => {
-    // Promise.all([formRef.value.validate(), meetingsRef.value.validate()]).then(async ([, meetingData]) => {
-    // if (meetingData.length) {
-    //   formState.value.meetings = meetingData;
-    // } else {
-    //   delete formState.value.meetings;
-    // }
     if (!editFlag.value) {
       await addOk();
     } else {
@@ -320,9 +308,7 @@ const cancel = () => {
 };
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 const loadPermissions = async (id: string) => {

@@ -10,7 +10,7 @@ export interface OptionProps {
   id: string;
   value: string;
   type: 'string';
-  in: 'query' | 'path' | 'header' | 'cookie';
+  in: ParameterIn;
 }
 
 export interface Props {

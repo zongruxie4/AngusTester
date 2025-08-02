@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { CombinedTargetType, enumUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DateType, PieSetting } from './PropsType';
 
@@ -49,7 +49,7 @@ const loadEnums = async () => {
 };
 
 const loadScriptType = () => {
-  const data = enumUtils.enumToMessages('CombinedTargetType');
+  const data = enumUtils.enumToMessages(CombinedTargetType);
   activityGroup.value[0].type = data;
   activityGroup.value[0].color = data?.map(item => getScriptTypeColor(item.value));
 };

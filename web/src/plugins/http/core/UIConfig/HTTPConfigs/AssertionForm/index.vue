@@ -2,7 +2,6 @@
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { utils, duration, enumUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import MatchItemPopover from './MacthItemPopover.vue';
@@ -12,9 +11,9 @@ import expressionUtils from './utils/expression';
 import jsonpath from './utils/jsonpath';
 import xpath from './utils/xpath';
 import regexp from './utils/regexp';
-import { ExtractMethod, Extraction } from './utils/extract/PropsType';
+import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
-import { AssertType, AssertCondition } from './utils/assert/PropsType';
+import { AssertionCondition, AssertionType, EnumMessage, ExtractionMethod, HttpExtractionLocation, utils, duration, enumUtils } from '@xcan-angus/infra';
 
 interface Props {
   defaultValue: FormItem[];
@@ -67,17 +66,16 @@ const NOT_PARAMETER_NAME: readonly ['REQUEST_RAW_BODY', 'RESPONSE_BODY'] = ['REQ
 
 // 是否显示期望值或提取值的输入框，只有断言条件不是['为空','不为空','为null','不为null']才显示
 const showExpectedSet = ref<Set<string>>(new Set());
-const NOT_SHOW_CONDITION: readonly Partial<AssertCondition>[] = ['IS_NULL', 'IS_EMPTY', 'NOT_EMPTY', 'NOT_NULL'];
+const NOT_SHOW_CONDITION: readonly Partial<AssertionCondition>[] = ['IS_NULL', 'IS_EMPTY', 'NOT_EMPTY', 'NOT_NULL'];
 
 // 只有断言条件为正则表达式、xpath表达式、jsonpath表达式才显示
 const expressionShowSet = ref<Set<string>>(new Set());
 const expressionErrorSet = ref<Set<string>>(new Set());
 
 // 断言条件枚举
-const assertionConditionOptions = ref<{ message: string; value: string; }[]>([]);
+const assertionConditionOptions = ref<EnumMessage<AssertionCondition>[]>([]);
 const loadAssertionConditionOptions = () => {
-  const data = enumUtils.enumToMessages('AssertionCondition');
-  assertionConditionOptions.value = data;
+  assertionConditionOptions.value = enumUtils.enumToMessages(AssertionCondition);
 };
 
 const NUMBER_CONDITION = ['EQUAL', 'NOT_EQUAL', 'GREATER_THAN', 'GREATER_THAN_EQUAL', 'LESS_THAN', 'LESS_THAN_EQUAL'];
@@ -101,10 +99,9 @@ const optionsMap = computed(() => {
 });
 
 // 提取位置枚举
-const locationOptions = ref<{ message: string; value: string; }[]>([]);
+const locationOptions = ref<EnumMessage<HttpExtractionLocation>[]>([]);
 const loadLocationOptions = () => {
-  const data = enumUtils.enumToMessages('HttpExtractionLocation');
-  locationOptions.value = data;
+  locationOptions.value = enumUtils.enumToMessages(HttpExtractionLocation);
 };
 
 const locationOptionsMap = computed(() => {
@@ -215,7 +212,7 @@ const conditionBlur = async (event: { target: { value: string } }, id: string) =
   }
 };
 
-const typeChange = (value: AssertType, id: string) => {
+const typeChange = (value: AssertionType, id: string) => {
   typeErrorSet.value.delete(id);
   dataMap.value[id].type = value;
   if (value !== 'HEADER') {
@@ -285,7 +282,7 @@ const expressionMatchItemChange = () => {
   emitChange();
 };
 
-const methodChange = (value:ExtractMethod, id: string) => {
+const methodChange = (value:ExtractionMethod, id: string) => {
   dataMap.value[id].extraction.method = value;
   methodErrorSet.value.delete(id);
   if (dataMap.value[id].extraction.method === 'EXACT_VALUE') {

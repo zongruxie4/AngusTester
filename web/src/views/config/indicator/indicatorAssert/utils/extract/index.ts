@@ -3,7 +3,7 @@ import { utils } from '@xcan-angus/infra';
 import jsonpath from '../jsonpath';
 import xpath from '../xpath';
 import regexp from '../regexp';
-import { ExtractMethod } from './PropsType';
+import { ExtractionMethod } from './PropsType';
 import { Parameter } from '../assert/PropsType';
 
 /**
@@ -14,7 +14,7 @@ import { Parameter } from '../assert/PropsType';
  */
 const execute = (extraction: {
   location: string | undefined;
-  method: ExtractMethod | undefined;
+  method: ExtractionMethod | undefined;
   parameterName?: string;
   defaultValue?: string;
   expression?: string;

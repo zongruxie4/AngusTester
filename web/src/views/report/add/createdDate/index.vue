@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, CreatedAt, PeriodicCreationUnit, DayOfWeek, enumUtils } from '@xcan-angus/infra';
 import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 
 type CreateTimeSetting = {
-  createdAt: 'AT_SOME_DATE'| 'NOW'| 'PERIODICALLY',
-  periodicCreationUnit?: 'DAILY'| 'MONTHLY'|'WEEKLY',
-  dayOfWeek?: 'FRIDAY'| 'MONDAY'|'SATURDAY'| 'SUNDAY'|'THURSDAY'| 'TUESDAY'| 'WEDNESDAY';
+  createdAt: CreatedAt,
+  periodicCreationUnit?: PeriodicCreationUnit,
+  dayOfWeek?: DayOfWeek;
   createdAtSomeDate?: string;
   dayOfMonth?: string;
   timeOfDay?: string;
@@ -34,11 +34,11 @@ const enumFieldNames = {
 
 const createTimeSettingData = ref<CreateTimeSetting>({ createdAt: 'NOW' });
 
-const createdAtAllOpt = ref<{message: string; value: string}[]>([]);
-const createdAtOpt = ref<{message: string; value: string}[]>([]);
-const periodicCreationUnitOpt = ref<{message: string; value: string}[]>([]);
-const dayOfWeekOpt = ref<{message: string; value: string}[]>([]);
-const dayOfMonthOpt = ref<{message: string; value: string}[]>(Array.from(new Array(31)).map((_i, idx) => {
+const createdAtAllOpt = ref<EnumMessage<CreatedAt>[]>([]);
+const createdAtOpt = ref<EnumMessage<CreatedAt>[]>([]);
+const periodicCreationUnitOpt = ref<EnumMessage<PeriodicCreationUnit>[]>([]);
+const dayOfWeekOpt = ref<EnumMessage<DayOfWeek>[]>([]);
+const dayOfMonthOpt = ref<EnumMessage<DayOfWeek>[]>(Array.from(new Array(31)).map((_i, idx) => {
   return {
     message: idx + 1 + '',
     value: idx + 1 + ''
@@ -48,18 +48,9 @@ const dayOfMonthOpt = ref<{message: string; value: string}[]>(Array.from(new Arr
 const timeOfDay = ref();
 const createdAtSomeDate = ref();
 const loadEnum = async () => {
-  Promise.all([
-    enumUtils.enumToMessages('CreatedAt'),
-    enumUtils.enumToMessages('PeriodicCreationUnit'),
-    enumUtils.enumToMessages('DayOfWeek')
-  ]).then(([resp1, resp2, resp3]) => {
-    const [_error1, data1] = resp1;
-    createdAtAllOpt.value = data1 || [];
-    const [_error2, data2] = resp2;
-    periodicCreationUnitOpt.value = data2 || [];
-    const [_error3, data3] = resp3;
-    dayOfWeekOpt.value = data3 || [];
-  });
+  createdAtAllOpt.value = enumUtils.enumToMessages(CreatedAt);
+  periodicCreationUnitOpt.value = enumUtils.enumToMessages(PeriodicCreationUnit);
+  dayOfWeekOpt.value = enumUtils.enumToMessages(DayOfWeek);
 };
 
 watch([() => props.showPeriodically, () => createdAtAllOpt.value], ([newValue]) => {

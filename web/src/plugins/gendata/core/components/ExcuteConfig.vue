@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, defineAsyncComponent, computed, nextTick } from 'vue';
+import { ref, onMounted, watch, defineAsyncComponent, computed } from 'vue';
 import { Form, FormItem, RadioGroup, Radio } from 'ant-design-vue';
 import { Hints, Input, Select } from '@xcan-angus/vue-ui';
 import { TESTER, enumUtils } from '@xcan-angus/infra';
+import { StorageLocation } from '@/enums/enums';
 
 export interface Props {
   format: string;
@@ -23,7 +24,7 @@ const formState = ref({
   nodeId: undefined,
   priority: '1000',
   onError: 'CONTINUE',
-  location: 'DATASPACE',
+  location: StorageLocation.DATASOURCE,
   rows: '1000',
   name: undefined
 });
@@ -35,38 +36,41 @@ const pushConfigRef = ref();
 
 const storeForm = computed(() => {
   switch (formState.value.location) {
-    case 'DATASOURCE': return dataSourceConfigRef.value;
-    case 'LOCAL': return localConfigRef.value;
-    case 'PUSH_THIRD': return pushConfigRef.value;
-    case 'DATASPACE': return spaceConfigRef.value;
+    case StorageLocation.DATASOURCE:
+      return dataSourceConfigRef.value;
+    case StorageLocation.LOCAL:
+      return localConfigRef.value;
+    case StorageLocation.PUSH_THIRD:
+      return pushConfigRef.value;
+    case StorageLocation.DATASPACE:
+      return spaceConfigRef.value;
   }
   return dataSourceConfigRef.value;
 });
 
-// - DATASPACE：数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。
-// - DATASOURCE：数据源存储，将生成数据写入到数据库。
-// - LOCAL：本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。
-// - PUSH_THIRD：推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。
-
 // 存储方式文案提示
 const storeTip = computed(() => {
   switch (formState.value.location) {
-    case 'DATASOURCE': return '数据源存储，将生成数据写入到数据库。';
-    case 'DATASPACE': return '数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。';
-    // eslint-disable-next-line no-template-curly-in-string
-    case 'LOCAL': return '本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。';
-    case 'PUSH_THIRD': return '推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。';
+    case StorageLocation.DATASOURCE:
+      return '数据源存储，将生成数据写入到数据库。';
+    case StorageLocation.DATASPACE:
+      return '数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。';
+    case StorageLocation.LOCAL:
+      // eslint-disable-next-line no-template-curly-in-string
+      return '本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。';
+    case StorageLocation.PUSH_THIRD:
+      return '推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。';
   }
   return '';
 });
 
 // 存储方式选项
-let allLocationOpt: {label: string; value: string}[] = [];
-const storageLocationOpt = ref<{label: string; value: string}[]>([]);
-const loadStorageLoactionOpt = () => {
-  const data = enumUtils.enumToMessages('StorageLocation');
+let allLocationOpt: { label: string; value: string }[] = [];
+const storageLocationOpt = ref<{ label: string; value: string }[]>([]);
+const loadStorageLocationOpt = () => {
+  const data = enumUtils.enumToMessages(StorageLocation);
   allLocationOpt = data.map(i => ({ ...i, label: i.message }));
-  storageLocationOpt.value = props.format !== 'SQL' ? allLocationOpt.filter(i => i.value !== 'DATASOURCE') : allLocationOpt;
+  storageLocationOpt.value = props.format !== 'SQL' ? allLocationOpt.filter(i => i.value !== StorageLocation.DATASOURCE) : allLocationOpt;
 };
 
 const validate = () => {
@@ -110,15 +114,15 @@ const onThreadsBlur = () => {
 
 watch(() => props.format, (newValue, oldValue) => {
   storageLocationOpt.value = newValue !== 'SQL'
-    ? allLocationOpt.filter(i => i.value !== 'DATASOURCE')
+    ? allLocationOpt.filter(i => i.value !== StorageLocation.DATASOURCE)
     : allLocationOpt;
-  if (oldValue === 'SQL' && formState.value.location === 'DATASOURCE') {
+  if (oldValue === 'SQL' && formState.value.location === StorageLocation.DATASOURCE) {
     formState.value.location = 'DATASPACE';
   }
 });
 
 onMounted(() => {
-  loadStorageLoactionOpt();
+  loadStorageLocationOpt();
 });
 
 defineExpose({

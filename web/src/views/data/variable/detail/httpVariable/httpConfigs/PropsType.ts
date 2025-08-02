@@ -27,14 +27,14 @@ export type RequestConfigs = {
     endpoint: string;
     parameters: {
         name: string;
-        in: 'query' | 'path' | 'header' | 'cookie';
+        in: ParameterIn;
         value: string;
         enabled: boolean;
         type: 'string';
     }[];
     body: {
         format: string;
-        contentEncoding: 'gzip_base64' | 'base64';
+        contentEncoding: ContentEncoding;
         forms: {
             name: string;
             description: string;
@@ -42,7 +42,7 @@ export type RequestConfigs = {
             type: string;
             format: string;
             contentType: string;
-            contentEncoding: 'gzip_base64' | 'base64';
+            contentEncoding: ContentEncoding;
             fileName: string;
             value: string;
         }[];
@@ -67,7 +67,7 @@ export type RequestConfigs = {
                 scopes: string[];
                 clientId: string;
                 clientSecret: string;
-                clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                clientIn: AuthClientIn;
                 username: string;
                 password: string;
             };
@@ -77,7 +77,7 @@ export type RequestConfigs = {
                 scopes: string[];
                 clientId: string;
                 clientSecret: string;
-                clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                clientIn: AuthClientIn;
                 username: string;
                 password: string;
             };

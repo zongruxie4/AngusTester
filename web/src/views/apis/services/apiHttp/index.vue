@@ -5,7 +5,7 @@ import {
 import { Popover, TabPane, Tabs, RadioGroup, RadioButton, Button, Badge } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, SelectEnum, AsyncComponent, AssertUtils as assertUtils, ApiUtils as apiUtils, AuthUtils as authUtil } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { utils, axiosClient, duration } from '@xcan-angus/infra';
+import { AssertionCondition, AssertionType, utils, axiosClient, duration } from '@xcan-angus/infra';
 import { dataURLtoBlob } from '@/utils/blob';
 import qs from 'qs';
 import { deconstruct } from '@/utils/swagger';
@@ -31,7 +31,7 @@ import {
 import { HttpServer } from '@/views/apis/services/apiHttp/serverPath/PropsType';
 import { getServerData } from '@/views/apis/services/apiHttp/serverPath/utils';
 import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/apiHttp/requestBody/interface';
-import { AssertCondition, AssertResult, AssertType, ConditionResult, Parameter } from './PropsType';
+import { AssertResult, ConditionResult, Parameter } from './PropsType';
 import { encode } from '@/utils/secure';
 
 const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));
@@ -1254,7 +1254,7 @@ const getHeaderParams = (data: string[], name: string): string => {
   return result.join(',');
 };
 
-const getValueByType = (assertionCondition: AssertCondition, type: AssertType, data: {
+const getValueByType = (assertionCondition: AssertionCondition, type: AssertionType, data: {
   bodySize: number;
   size: number;
   duration: number;
@@ -1488,7 +1488,7 @@ const setAssertResult = async (responseData) => {
       parameterName,
       condition,
       assertionCondition,
-      type: (type as { message: string; value: AssertType }).value,
+      type: (type as { message: string; value: AssertionType }).value,
       extraction: !!extraction,
       _condition,
       result: {

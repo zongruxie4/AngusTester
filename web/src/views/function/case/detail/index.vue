@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import { XCanDexie,  TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
+import { XCanDexie, TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 

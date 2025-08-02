@@ -2,7 +2,16 @@
 import { onMounted, ref, watch } from 'vue';
 import { Colon, DatePicker, Hints, Icon, IconCopy, Input, Modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox, CheckboxGroup, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
-import { enumUtils, duration, toClipboard, site, utils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
+import {
+  EnumMessage,
+  ShortTimeUnit,
+  enumUtils,
+  duration,
+  toClipboard,
+  utils,
+  DomainManager,
+  AppOrServiceRoute
+} from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from 'src/api/tester';
@@ -12,13 +21,13 @@ import { randomString } from '@/utils/utils';
 import { ShareObj, TargetType } from './PropsType';
 
 interface Props {
-  source:'add' | 'edit' | 'all'
-  sharedId:string,
-  visible:boolean,
+  source: 'add' | 'edit' | 'all'
+  sharedId: string,
+  visible: boolean,
   id: string,
-  name:string,
+  name: string,
   type: TargetType,
-  share?:ShareObj
+  share?: ShareObj
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,8 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e:'update:visible', value:boolean):void,
-  (e:'ok', value:{ url: string, password: string, type: 'add' | 'edit' }):void
+  (e: 'update:visible', value: boolean): void,
+  (e: 'ok', value: { url: string, password: string, type: 'add' | 'edit' }): void
 }>();
 
 const { t } = useI18n();
@@ -66,7 +75,6 @@ const expiredDate = ref<string>(dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:s
 
 // 设置添加数据的默认URL
 const getDefaultShareUrl = async () => {
-  // const host = await site.getUrl('at');
   const host = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   const route = '/share/api';
   shareList.value[0].url = host + route;
@@ -83,11 +91,13 @@ const apiList = ref<{ id: string, summary: string; method: string }[]>([]);
 // 保存服务下所有的接口数据
 const allApiList = ref<{ id: string, summary: string; method: string }[]>([]);
 
-const apiParams = ref<{pageSize: number }>({ pageSize: 2000 });
+const apiParams = ref<{ pageSize: number }>({ pageSize: 2000 });
 // 获取服务下的接口列表
 const loadApiList = async () => {
   const [error, { data }] = await services.loadApisByServicesId(props.id, apiParams.value);
-  if (error) { return; }
+  if (error) {
+    return;
+  }
   allAipIds.value = [];
   apiList.value = data?.list.map(item => {
     allAipIds.value.push(item.id);
@@ -108,7 +118,12 @@ const loadSharedList = async () => {
   if (error || !data?.list?.length) {
     return;
   }
-  shareList.value = [shareList.value[0], ...data.list.map(item => ({ ...item, isEdit: false, isLoading: false, apiList: [] }))];
+  shareList.value = [shareList.value[0], ...data.list.map(item => ({
+    ...item,
+    isEdit: false,
+    isLoading: false,
+    apiList: []
+  }))];
 };
 
 const formState = ref({
@@ -127,7 +142,7 @@ const oldShare = ref<ShareObj>();
 
 const shareListRef = ref<HTMLElement | null>(null);
 // 开启编辑
-const handleEdit = (share, index:number) => {
+const handleEdit = (share, index: number) => {
   if (allApiList.value.length) {
     share.apiList = allApiList.value;
     allAipIds.value = allApiList.value.map(item => item.id);
@@ -237,15 +252,15 @@ const resetPassword = () => {
   passdErr.value = false;
 };
 
-const dateUnitOptions = ref<{ label: string; value: string; }[]>([]);
+const dateUnitOptions = ref<EnumMessage<string>[]>([]);
 
 const loadUnit = () => {
-  const excludeUnit = ['Millisecond', 'Second'];
-  const data = enumUtils.enumToMessages('ShortTimeUnit');
-  if (!data) {
-    return;
-  }
-  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({ label: item.message, value: item.value }));
+  const excludeUnit = [ShortTimeUnit.Millisecond, ShortTimeUnit.Second];
+  const data = enumUtils.enumToMessages(ShortTimeUnit);
+  dateUnitOptions.value = data.filter(unit => !excludeUnit.includes(unit.value)).map(item => ({
+    label: item.message,
+    value: item.value
+  }));
 };
 
 const apiIndeterminate = ref<boolean>(false);
@@ -261,7 +276,7 @@ const selectALLApi = (e) => {
   apiIndeterminate.value = false;
 };
 
-const apiChecked = (checkedValue:string[]) => {
+const apiChecked = (checkedValue: string[]) => {
   apiIds.value = checkedValue;
   if (checkedValue.length) {
     const isEuqal = utils.deepCompare(allAipIds.value, checkedValue);
@@ -288,7 +303,7 @@ const handleOk = async (share) => {
     return;
   }
 
-  let params:Record<string, any> = {
+  let params: Record<string, any> = {
     ...formState.value,
     expiredFlag: !formState.value.expiredFlag
   };
@@ -370,7 +385,7 @@ const historyData = ref<{
   targetId: string;
   targetType: TargetType;
   expiredFlag: boolean;
-  historyData?:string;
+  historyData?: string;
   password?: string;
   id: '',
   name: '',
@@ -405,13 +420,13 @@ const patchShare = async (params, share) => {
 const shareId = ref(props.sharedId);
 
 const nameErr = ref(false);
-const nameChange = (event:ChangeEvent) => {
+const nameChange = (event: ChangeEvent) => {
   const value = event.target.value;
   nameErr.value = !value;
 };
 
 const passdErr = ref(false);
-const passdChange = (event:ChangeEvent) => {
+const passdChange = (event: ChangeEvent) => {
   const value = event.target.value;
   passdErr.value = !value;
 };
@@ -438,7 +453,7 @@ const handleCancel = () => {
 };
 
 // 删除分享
-const delShare = async (id:string) => {
+const delShare = async (id: string) => {
   const [error] = await apis.deleteShare(id);
   if (error) {
     return;
@@ -447,12 +462,12 @@ const delShare = async (id:string) => {
   shareList.value = shareList.value.filter(item => item.id !== id);
 };
 
-const clickCopyIcon = (item:ShareObj) => {
+const clickCopyIcon = (item: ShareObj) => {
   copy(item, true);
 };
 
 // 复制名称、密码和链接?
-const copy = (item:ShareObj, isCopy?:boolean) => {
+const copy = (item: ShareObj, isCopy?: boolean) => {
   let message;
   if (!item.public0) {
     message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.password || ''}`;
@@ -464,7 +479,7 @@ const copy = (item:ShareObj, isCopy?:boolean) => {
   });
 };
 
-const queryApisByName = debounce(duration.search, (event:ChangeEvent, share:ShareObj) => {
+const queryApisByName = debounce(duration.search, (event: ChangeEvent, share: ShareObj) => {
   const value = event.target.value as string;
   // 如果没有条件 展示所有的接口
   if (!value) {
@@ -569,7 +584,7 @@ onMounted(async () => {
   });
 });
 
-const getBgColorByApiMethod = (apiMethods:string) => {
+const getBgColorByApiMethod = (apiMethods: string) => {
   switch (apiMethods) {
     case 'GET':
       return 'text-http-get';
@@ -595,7 +610,7 @@ const disabledDate = current => {
 };
 
 // 校验提交的时间是否是当前时间24小时之后的时间（主要用来处理用户点开时间弹框或者选择了时间一直不提交的情况）
-function isWithin5Minutes (timeStr:string) {
+function isWithin5Minutes (timeStr: string) {
   const currentTime = dayjs();
   const targetTime = dayjs(timeStr);
   const diffInMinutes = targetTime.diff(currentTime, 'minute');
@@ -631,7 +646,11 @@ function isWithin5Minutes (timeStr:string) {
             </template>
             <template v-else>
               <template v-if="item.id === 'add'">
-                <div class="flex-1 mr-2 truncate cursor-pointer text-text-link hover:text-text-link-hover" @click="handleEdit(item,index)">{{ item.name }}</div>
+                <div
+                  class="flex-1 mr-2 truncate cursor-pointer text-text-link hover:text-text-link-hover"
+                  @click="handleEdit(item,index)">
+                  {{ item.name }}
+                </div>
               </template>
               <template v-else>
                 <Tooltip
@@ -671,9 +690,19 @@ function isWithin5Minutes (timeStr:string) {
           :class="item.isEdit ? 'open-info' : 'stop-info'"
           class="transition-height duration-500 overflow-hidden px-1">
           <template v-if="item.isEdit">
-            <div class="text-text-sub-content flex-none mr-2 mt-2.5">链接<Colon /></div>
-            <div class="break-all cursor-pointer text-text-link hover:text-text-link-hover text-3 px-2">{{ item.url }}</div>
-            <div class="text-text-sub-content flex-none mr-2 mt-2.5">权限<Colon /></div>
+            <div class="text-text-sub-content flex-none mr-2 mt-2.5">
+              链接
+              <Colon />
+            </div>
+            <div class="break-all cursor-pointer text-text-link hover:text-text-link-hover text-3 px-2">
+              {{
+                item.url
+              }}
+            </div>
+            <div class="text-text-sub-content flex-none mr-2 mt-2.5">
+              权限
+              <Colon />
+            </div>
             <div class="flex items-center h-7 -mt-0.5 px-2">
               <RadioGroup
                 v-model:value="formState.public0"
@@ -700,12 +729,17 @@ function isWithin5Minutes (timeStr:string) {
                   class="flex-1"
                   @change="passdChange">
                   <template #addonAfter>
-                    <a class="text-3 text-text-sub-content" @click="resetPassword"><Icon icon="icon-shuaxin" class="mr-1 -mt-0.5" />重置</a>
+                    <a class="text-3 text-text-sub-content" @click="resetPassword">
+                      <Icon icon="icon-shuaxin" class="mr-1 -mt-0.5" />
+                      重置</a>
                   </template>
                 </Input>
               </template>
             </div>
-            <div class="text-text-sub-content flex-none mr-2 mt-2.5">有效期<Colon /></div>
+            <div class="text-text-sub-content flex-none mr-2 mt-2.5">
+              有效期
+              <Colon />
+            </div>
             <div class="flex items-center h-7 -mt-0.5  px-2">
               <RadioGroup
                 v-model:value="formState.expiredFlag"
@@ -736,7 +770,8 @@ function isWithin5Minutes (timeStr:string) {
             </div>
             <template v-if="props.type !== 'API'">
               <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-                分享接口<Colon />
+                分享接口
+                <Colon />
               </div>
               <div class=" border border-border-divider p-2 rounded" :class="allApiList.length > 0 ? 'h-73' : 'h-40'">
                 <Input
@@ -751,7 +786,9 @@ function isWithin5Minutes (timeStr:string) {
                   </template>
                 </Input>
                 <template v-if="apiList.length">
-                  <div class="overflow-hidden hover:overflow-y-auto -mr-2 pr-2.5 -mt-1.5" style="scrollbar-gutter: stable;max-height: 216px;">
+                  <div
+                    class="overflow-hidden hover:overflow-y-auto -mr-2 pr-2.5 -mt-1.5"
+                    style="scrollbar-gutter: stable;max-height: 216px;">
                     <CheckboxGroup
                       v-model:value="apiIds"
                       class="text-3 w-full"
@@ -761,7 +798,11 @@ function isWithin5Minutes (timeStr:string) {
                         :key="api.id"
                         class="flex items-center space-x-2 mt-1.75 h-5 leading-5">
                         <Checkbox :value="api.id" class="-mt-0.25" />
-                        <div class="w-13 whitespace-nowrap" :class="getBgColorByApiMethod(api.method)">{{ api.method }}</div>
+                        <div class="w-13 whitespace-nowrap" :class="getBgColorByApiMethod(api.method)">
+                          {{
+                            api.method
+                          }}
+                        </div>
                         <div
                           style="width: 376px;"
                           class="truncate"

@@ -2,7 +2,8 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumUtils } from '@xcan-angus/infra';
+import {TESTER, GM, enumUtils, EnumMessage} from '@xcan-angus/infra';
+import { AnalysisCaseTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
 import { analysis } from '@/api/tester';
 
 interface Props {
@@ -47,22 +48,19 @@ const orgOpt = [
   }
 ];
 
-const templateDescOpt = ref<{message: string, value: string}[]>([]);
+const templateDescOpt = ref<EnumMessage<AnalysisCaseTemplateDesc>[]>([]);
 const loadDescOpt = () => {
-  const data = enumUtils.enumToMessages('AnalysisCaseTemplateDesc');
-  templateDescOpt.value = data || [];
+  templateDescOpt.value = enumUtils.enumToMessages(AnalysisCaseTemplateDesc);
 };
 
-const analysisCaseObjectOpt = ref<{value: string, message: string}[]>([]);
+const analysisCaseObjectOpt = ref<EnumMessage<AnalysisCaseObject>[]>([]);
 const loadAnalysisCaseObject = () => {
-  const data = enumUtils.enumToMessages('AnalysisCaseObject');
-  analysisCaseObjectOpt.value = data || [];
+  analysisCaseObjectOpt.value = enumUtils.enumToMessages(AnalysisCaseObject);
 };
 
 const analysisTimeRangeOpt = ref<{value: string, message: string, label: string}[]>([]);
 const loadAnalysisTimeRange = () => {
-  const data = enumUtils.enumToMessages('AnalysisTimeRange');
-
+  const data = enumUtils.enumToMessages(AnalysisTimeRange);
   analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
 };
 

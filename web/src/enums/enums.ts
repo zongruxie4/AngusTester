@@ -135,36 +135,6 @@ export enum FuncPlanStatus {
   BLOCKED = 'BLOCKED'
 }
 
-// Combined Target Types
-export enum CombinedTargetType {
-  PROJECT = 'PROJECT',
-  TAG = 'TAG',
-  MODULE = 'MODULE',
-  TASK = 'TASK',
-  TASK_SPRINT = 'TASK_SPRINT',
-  SOFTWARE_VERSION = 'SOFTWARE_VERSION',
-  TASK_ANALYSIS = 'TASK_ANALYSIS',
-  MEETING = 'MEETING',
-  FUNC_PLAN = 'FUNC_PLAN',
-  FUNC_REVIEW = 'FUNC_REVIEW',
-  FUNC_CASE = 'FUNC_CASE',
-  FUNC_CASE_BASELINE = 'FUNC_CASE_BASELINE',
-  FUNC_CASE_ANALYSIS = 'FUNC_CASE_ANALYSIS',
-  SERVICE = 'SERVICE',
-  API = 'API',
-  API_CASE = 'API_CASE',
-  API_DESIGN = 'API_DESIGN',
-  SCENARIO = 'SCENARIO',
-  SCENARIO_MONITOR = 'SCENARIO_MONITOR',
-  SCRIPT = 'SCRIPT',
-  VARIABLE = 'VARIABLE',
-  DATASET = 'DATASET',
-  MOCK_SERVICE = 'MOCK_SERVICE',
-  MOCK_APIS = 'MOCK_APIS',
-  EXECUTION = 'EXECUTION',
-  REPORT = 'REPORT'
-}
-
 // Software Version Enums
 export enum SoftwareVersionStatus {
   NOT_RELEASED = 'NOT_RELEASED',
@@ -288,6 +258,17 @@ export enum ReportPermission {
   DELETE = 'DELETE',
   GRANT = 'GRANT',
   EXPORT = 'EXPORT'
+}
+
+export enum SpacePermission {
+  VIEW = 'VIEW',
+  MODIFY = 'MODIFY',
+  DELETE = 'DELETE',
+  SHARE = 'SHARE',
+  GRANT = 'GRANT',
+  OBJECT_READ = 'OBJECT_READ',
+  OBJECT_WRITE = 'OBJECT_WRITE',
+  OBJECT_DELETE = 'OBJECT_DELETE'
 }
 
 // Action Strategy Enums
@@ -610,7 +591,6 @@ export const enumNamespaceMap = new Map<any, string>([
   [CountScriptType, 'xcm.enum.CountScriptType'],
   [TaskTargetType, 'xcm.enum.TaskTargetType'],
   [ApisTargetType, 'xcm.enum.ApisTargetType'],
-  [CombinedTargetType, 'xcm.enum.CombinedTargetType'],
   [AuthorizationType, 'xcm.enum.AuthorizationType'],
   [ApiSource, 'xcm.enum.ApiSource'],
   [ApiStatus, 'xcm.enum.ApiStatus'],
@@ -669,6 +649,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [AnalysisCaseTemplate, 'xcm.enum.AnalysisCaseTemplate'],
   [AnalysisCaseTemplateDesc, 'xcm.enum.AnalysisCaseTemplateDesc'],
   [ReportPermission, 'xcm.enum.ReportPermission'],
+  [SpacePermission, 'xcm.enum.SpacePermission'],
   [ReportStatus, 'xcm.enum.ReportStatus'],
   [ReportCategory, 'xcm.enum.ReportCategory'],
   [ReportTemplate, 'xcm.enum.ReportTemplate'],

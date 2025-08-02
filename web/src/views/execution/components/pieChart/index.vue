@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { PieData, PieSetting } from './PropsType';
-import { enumUtils } from '@xcan-angus/infra';
+import { ScriptType, enumUtils } from '@xcan-angus/infra';
+import { ExecStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
 
 import Charts from './charts.vue';
@@ -25,12 +26,12 @@ const statusColor = ref<string[]>([]);
 const init = async () => {
   await loadScriptType();
   await loadExecStatus();
-  loadCount();
+  await loadCount();
 };
 
 const loadScriptType = async () => {
-  const data = enumUtils.enumToMessages('ScriptType');
-  const enums = data.filter(item => item.value !== 'MOCK_APIS');
+  const data = enumUtils.enumToMessages(ScriptType);
+  const enums = data.filter(item => item.value !== ScriptType.MOCK_APIS);
   groupByGroup.value[0].type = enums;
   scriptTypeData.value = enums.map(item => {
     let color = '';
@@ -52,12 +53,12 @@ const loadScriptType = async () => {
         break;
     }
     scriptTypeColor.value.push(color);
-    return { name: item.description, value: 0 };
+    return { name: item.message, value: 0 };
   });
 };
 
 const loadExecStatus = () => {
-  const data = enumUtils.enumToMessages('ExecStatus');
+  const data = enumUtils.enumToMessages(ExecStatus);
   groupByGroup.value[1].type = data;
   statusData.value = data.map(item => {
     let color = '';
@@ -85,7 +86,7 @@ const loadExecStatus = () => {
         break;
     }
     statusColor.value.push(color);
-    return { name: item.description, value: 0 };
+    return { name: item.message, value: 0 };
   });
 };
 

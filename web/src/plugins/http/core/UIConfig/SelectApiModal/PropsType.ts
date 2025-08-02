@@ -43,7 +43,7 @@ export type ApiInfo = {
     assertions: {
         name: string;
         enabled: boolean;
-        type: { value: 'BODY' | 'BODY_SIZE' | 'DURATION'; message: string; };
+        type: { value: BasicAssertionType; message: string; };
         expected: string;
         assertionCondition: { value: AssertionCondition; message: string; };
         expression: string;

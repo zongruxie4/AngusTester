@@ -2,7 +2,7 @@
 import { CheckboxGroup, Form, FormItem, Popover, Select, Tag } from 'ant-design-vue';
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, ReceiveChannelType, enumUtils } from '@xcan-angus/infra';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 
 import { event } from '@/api/gm';
@@ -29,17 +29,17 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const { t } = useI18n();
 
-const eventTypes = ref<{ value: string, message: string}[]>([]);
-const selectetType = ref<string[]>([]);
+const eventTypes = ref<EnumMessage<ReceiveChannelType>[]>([]);
+const selectedType = ref<string[]>([]);
 const init = async () => {
   await loadCurrentChannels();
-  loadEventTypes();
+  await loadEventTypes();
 };
 
 const loadEventTypes = async () => {
-  const data = enumUtils.enumToMessages('ReceiveChannelType');
+  const data = enumUtils.enumToMessages(ReceiveChannelType);
   eventTypes.value = (data || [])?.map(m => {
-    (selectetType.value.includes(m.value) || channelValus[m.value].length) && loadConfigOptions(m.value);
+    (selectedType.value.includes(m.value) || channelValus[m.value].length) && loadConfigOptions(m.value);
     return {
       ...m,
       label: m.message
@@ -59,7 +59,7 @@ const loadCurrentChannels = async () => {
   if (error) {
     return;
   }
-  selectetType.value = (res.data.allowedChannelTypes || []).map(type => type.value);
+  selectedType.value = (res.data.allowedChannelTypes || []).map(type => type.value);
   channelValus.WEBHOOK = res.data.receiveSetting?.channels?.filter(channel => channel.channelType.value === 'WEBHOOK').map(channel => channel.id) || [];
   channelValus.EMAIL = res.data.receiveSetting?.channels?.filter(channel => channel.channelType.value === 'EMAIL').map(channel => channel.id) || [];
   channelValus.DINGTALK = res.data.receiveSetting?.channels?.filter(channel => channel.channelType.value === 'DINGTALK').map(channel => channel.id) || [];
@@ -125,7 +125,7 @@ const getPlaceholder = (key: string) => {
 
 const handleOk = async () => {
   let ids: string[] = [];
-  for (const eventType of selectetType.value) {
+  for (const eventType of selectedType.value) {
     ids = ids.concat(channelValus[eventType]);
   }
   const [error] = await event.saveChannelSetting({ id: props.id, channelIds: ids });
@@ -159,7 +159,7 @@ watch(() => props.visible, newValue => {
         name="receiveSetting">
         <CheckboxGroup
           :options="eventTypes"
-          :value="selectetType"
+          :value="selectedType"
           disabled>
         </CheckboxGroup>
       </FormItem>
@@ -174,7 +174,7 @@ watch(() => props.visible, newValue => {
             :fieldNames="{value: 'id', label: 'name'}"
             :options="getOptions(type.value)"
             :placeholder="getPlaceholder(type.value)"
-            :disabled="!selectetType.includes(type.value)"
+            :disabled="!selectedType.includes(type.value)"
             mode="multiple">
             <template #tagRender="{option, label, closable, onClose}">
               <Popover>

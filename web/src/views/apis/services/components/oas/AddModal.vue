@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { IconRequired, Input, Modal, Select, SelectEnum, SelectInput } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
+import { ServicesCompType } from '@/enums/enums';
 import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
@@ -32,10 +33,7 @@ const compType = ref<ComponentsType>('schemas');
 
 const compTypesEnum = ref<{label:string, value:string, disabled:boolean}[]>([]);
 const getCompTypesEnum = () => {
-  const data = enumUtils.enumToMessages('ServicesCompType');
-  if (!data?.length) {
-    return;
-  }
+  const data = enumUtils.enumToMessages(ServicesCompType);
   compTypesEnum.value = data.map(item => ({
     label: item.message,
     value: item.value,

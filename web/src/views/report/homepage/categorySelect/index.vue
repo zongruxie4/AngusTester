@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
+import { ReportCategory } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -16,7 +17,7 @@ const emits = defineEmits<{(e: 'update:category', value: string):void}>();
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部报告', value: '' }]);
 
 const loadOpt = () => {
-  const data = enumUtils.enumToMessages('ReportCategory');
+  const data = enumUtils.enumToMessages(ReportCategory);
   moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
 };
 

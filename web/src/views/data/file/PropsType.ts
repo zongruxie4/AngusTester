@@ -45,7 +45,6 @@ export interface SourceType {
 export interface SpaceInfoType {
   id: string;
   name: string;
-  auth?: string[];
   auth: boolean;
   quotaSize?: {
     value: string;

@@ -3,6 +3,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { enumUtils } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
+import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
 const GroupSet = defineAsyncComponent(() => import('@/views/apis/services/auth/groupSet/index.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/apis/services/auth/authSet/index.vue'));
@@ -25,10 +26,8 @@ const servicesPermissions = ref<{ value: string, message: string }[]>([]);
 const loaded = ref(false);
 
 const loadEnums = () => {
-  const d1 = enumUtils.enumToMessages('ApiPermission');
-  apisPermissions.value = d1 || [];
-  const d2 = enumUtils.enumToMessages('ServicesPermission');
-  servicesPermissions.value = d2 || [];
+  apisPermissions.value = enumUtils.enumToMessages(ApiPermission);
+  servicesPermissions.value = enumUtils.enumToMessages(ServicesPermission);
 };
 
 onMounted(() => {

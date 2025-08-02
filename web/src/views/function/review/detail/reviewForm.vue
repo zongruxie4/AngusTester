@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
 import { func } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
@@ -47,10 +47,10 @@ const onFinish = async () => {
   emits('update');
 };
 
-const reviewStatusEnum = ref<{value:string, message:string}[]>([]);
+const reviewStatusEnum = ref<EnumMessage<ReviewStatus>[]>([]);
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('ReviewStatus');
-  reviewStatusEnum.value = data.filter(item => item.value !== 'PENDING') || [];
+  const data = enumUtils.enumToMessages(ReviewStatus);
+  reviewStatusEnum.value = data.filter(item => item.value !== ReviewStatus.PENDING) || [];
 };
 
 const failMessageValue = ref();

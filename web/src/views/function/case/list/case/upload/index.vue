@@ -3,6 +3,7 @@ import { computed, inject, ref, watch } from 'vue';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { TESTER, enumUtils } from '@xcan-angus/infra';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { funcCase } from '@/api/tester';
 
@@ -29,17 +30,17 @@ const formRef = ref();
 
 const formData = ref<{
   file: File|undefined;
-  strategyWhenDuplicated: 'COVER'|'IGNORE';
+  strategyWhenDuplicated: StrategyWhenDuplicated;
   planId: string|undefined;
 }>({
   file: undefined,
-  strategyWhenDuplicated: 'COVER',
+  strategyWhenDuplicated: StrategyWhenDuplicated.COVER,
   planId: undefined
 });
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('StrategyWhenDuplicated');
-  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.message }));
+  const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
+  strategyWhenDuplicatedOpt.value = data.map(i => ({ value: i.value, label: i.message }));
 };
 
 const handleFile = (fileInfo) => {
@@ -88,7 +89,7 @@ const ok = () => {
 watch(() => props.visible, newValue => {
   if (!newValue) {
     formData.value.file = undefined;
-    formData.value.strategyWhenDuplicated = 'COVER';
+    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
   }
   if (!strategyWhenDuplicatedOpt.value.length) {
     loadEnums();

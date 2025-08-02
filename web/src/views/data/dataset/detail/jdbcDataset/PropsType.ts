@@ -1,3 +1,5 @@
+import { ExtractionMethod } from '@xcan-angus/infra';
+
 export type FormState = {
     projectId: string;
     name: string;
@@ -7,7 +9,7 @@ export type FormState = {
       }[];
     extraction: {
         source: 'JDBC';
-        method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+        method: ExtractionMethod;
         expression: string;
         defaultValue: string;
         matchItem: string;

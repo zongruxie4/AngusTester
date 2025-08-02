@@ -4,7 +4,7 @@ export type ParametersInType = 'cookie' | 'header' | 'query';
 export type RadioType = 'none' | 'application/x-www-form-urlencode' | 'multipart/form-data' | 'raw'
 export type ContentType = 'application/x-www-form-urlencode' | 'multipart/form-data' | 'application/json' | 'text/html' | 'application/xml' | 'application/javascript' | 'text/plain' | '*/*'
 export type Languge = 'json' | 'html' | 'typescript' | 'text'
-export type ContentEncoding = 'gzip_base64' | 'base64'
+export type ContentEncoding = ContentEncoding
 
 export type DelayData = {
     fixedTime?: string;

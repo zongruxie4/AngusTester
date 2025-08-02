@@ -15,6 +15,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
+import { TaskStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
@@ -119,7 +120,7 @@ const isDraggingToColumn = ref<number | null>(null);
 const isDraggingToColumnStatus = ref<TaskInfo['status']['value'][]>([]);
 
 const loadEnum = () => {
-  const res = enumUtils.enumToMessages('TaskStatus');
+  const res = enumUtils.enumToMessages(TaskStatus);
   statusList.value = (res || []) as { message: string; value: TaskInfo['status']['value'] }[];
 };
 

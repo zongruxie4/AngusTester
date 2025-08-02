@@ -21,34 +21,6 @@
         "SERVICE": "Service",
         "API": "API"
       },
-      "CombinedTargetType": {
-        "PROJECT": "Project",
-        "TAG": "Tag",
-        "MODULE": "Module",
-        "TASK": "Task",
-        "TASK_SPRINT": "Sprint",
-        "SOFTWARE_VERSION": "Software Version",
-        "TASK_ANALYSIS": "Task Analysis",
-        "MEETING": "Meeting",
-        "FUNC_PLAN": "Function Plan",
-        "FUNC_REVIEW": "Function Review",
-        "FUNC_CASE": "Function Case",
-        "FUNC_CASE_BASELINE": "Case Baseline",
-        "FUNC_CASE_ANALYSIS": "Case Analysis",
-        "SERVICE": "Service",
-        "API": "API",
-        "API_CASE": "API Case",
-        "API_DESIGN": "API Design",
-        "SCENARIO": "Scenario",
-        "SCENARIO_MONITOR": "Scenario Monitor",
-        "SCRIPT": "Script",
-        "VARIABLE": "Variable",
-        "DATASET": "Dataset",
-        "MOCK_SERVICE": "Mock Service",
-        "MOCK_APIS": "Mock APIs",
-        "EXECUTION": "Execution",
-        "REPORT": "Report"
-      },
       "AuthorizationType": {
         "NO_AUTH": "No Authentication",
         "BASIC_AUTH": "Basic",
@@ -464,6 +436,16 @@
         "DELETE": "Delete",
         "GRANT": "Grant",
         "EXPORT": "Export"
+      },
+      "SpacePermission": {
+        "VIEW": "View",
+        "MODIFY": "Modify",
+        "DELETE": "Delete",
+        "SHARE": "Share",
+        "GRANT": "Grant",
+        "OBJECT_READ": "Object Read",
+        "OBJECT_WRITE": "Object Write",
+        "OBJECT_DELETE": "Object Delete"
       },
       "ReportStatus": {
         "PENDING": "Pending Generation",

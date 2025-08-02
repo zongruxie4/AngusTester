@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { enumUtils } from '@xcan-angus/infra';
+import { CombinedTargetType, NoticeType, enumUtils, EnumMessage } from '@xcan-angus/infra';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event, setting } from '@/api/gm';
@@ -46,25 +46,25 @@ const pushSettingList = ref<PushSetting[]>([]);
 const pushRecordList = ref<PushRecord[]>([]);
 const pageTotal = ref(0);
 
-const targetTypeEnums = ref<{value: string; message: string}[]>([]);
-const NoticeType = ref<{value: string; message: string}[]>([]);
-const eventDataNoticeType = ref<{eventCode: string; noticeTypes: {value: string; message: string}[]}[]>([]);
+const targetTypeEnums = ref<EnumMessage<CombinedTargetType>[]>([]);
+const noticeType = ref<EnumMessage<NoticeType>[]>([]);
+const eventDataNoticeType = ref<{eventCode: string; noticeTypes: EnumMessage<CombinedTargetType>[]}[]>([]);
 
 const { t } = useI18n();
 
 const init = async () => {
   await loadEnums();
   await loadEventNoticeTypeByEventCode();
-  loadPushConfigList();
-  loadStatistics();
-  loadPushRecordList();
+  await loadPushConfigList();
+  await loadStatistics();
+  await loadPushRecordList();
 };
 
 const loadEnums = () => {
-  const data1 = enumUtils.enumToMessages('CombinedTargetType');
-  const data2 = enumUtils.enumToMessages('NoticeType');
+  const data1 = enumUtils.enumToMessages(CombinedTargetType);
+  const data2 = enumUtils.enumToMessages(noticeType);
   targetTypeEnums.value = data1 || [];
-  NoticeType.value = (data2 || []).map(i => {
+  noticeType.value = (data2 || []).map(i => {
     return {
       ...i,
       label: i.message
@@ -323,7 +323,7 @@ onMounted(() => {
           <template v-if="column.dataIndex === 'noticeType'">
             <CheckboxGroup
               :value="record.noticeTypes"
-              :options="NoticeType"
+              :options="noticeType"
               @change="handleChangeNoticeType($event, record.eventCode)" />
           </template>
           <template v-if="column.dataIndex === 'operate'">

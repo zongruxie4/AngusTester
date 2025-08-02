@@ -3,12 +3,12 @@ import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue';
 import type { UploadFile } from 'ant-design-vue';
 import { Button, Checkbox, Upload } from 'ant-design-vue';
 import { Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
-import {  utils, duration, codeUtils } from '@xcan-angus/infra';
+import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { RequestBodyFormItem } from '../PropsType';
 
-const { gzip, ungzip } = codeUtils
+const { gzip, ungzip } = codeUtils;
 
 export interface Props {
   value: RequestBodyFormItem[];

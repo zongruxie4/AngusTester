@@ -1,3 +1,5 @@
+import { ExtractionFileType, ExtractionMethod } from '@xcan-angus/infra';
+
 export type FormState = {
   projectId: string;
   name: string;
@@ -7,7 +9,7 @@ export type FormState = {
   }[];
   extraction: {
     source: 'FILE';
-    fileType: 'CSV' | 'EXCEL' | 'TXT';
+    fileType: ExtractionFileType;
     path: string;
     encoding: string;
     quoteChar: string;
@@ -15,7 +17,7 @@ export type FormState = {
     separatorChar: string;
     rowIndex: string;
     columnIndex: string;
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+    method: ExtractionMethod;
     defaultValue: string;
     expression: string;
     matchItem: string;

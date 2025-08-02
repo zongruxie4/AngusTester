@@ -25,7 +25,7 @@ export type HTTPConfig = {
         endpoint: string;
         parameters: {
             name: string;
-            in: 'query' | 'path' | 'header' | 'cookie';
+            in: ParameterIn;
             value: string;
             enabled: boolean;
             type: 'string';
@@ -42,7 +42,7 @@ export type HTTPConfig = {
     assertions: {
         name: string;
         enabled: boolean;
-        type: 'BODY' | 'BODY_SIZE' | 'DURATION';
+        type: BasicAssertionType;
         expected: string;
         assertionCondition: AssertionCondition;
         expression: string;
@@ -88,7 +88,7 @@ export type HTTPInfo = {
         endpoint: string;
         parameters: {
             name: string;
-            in: 'query' | 'path' | 'header' | 'cookie';
+            in: ParameterIn;
             value: string;
             enabled: boolean;
             type: 'string';
@@ -105,7 +105,7 @@ export type HTTPInfo = {
         name: string;
         enabled: boolean;
         type: {
-            value: 'BODY' | 'BODY_SIZE' | 'DURATION';
+            value: BasicAssertionType;
             message: string;
         },
         expected: string;

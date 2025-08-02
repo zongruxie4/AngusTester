@@ -26,7 +26,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -68,7 +68,7 @@ const dataSource = ref<PlanInfo>();
 const testerSelectRef = ref();
 const activeTabKey = ref('testingObjectives');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
@@ -578,8 +578,7 @@ const getJson = (value) => {
 };
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 const loadPermissions = async (id: string) => {

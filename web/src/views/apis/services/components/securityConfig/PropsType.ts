@@ -1,10 +1,10 @@
+import { AuthClientIn } from '@xcan-angus/infra';
+
 export type AuthType = 'basic' | 'bearer' | 'apiKey' | 'oauth2';
 
 export type ApiKeyIN = 'header' | 'query';
 
 export type FlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
-
-export type ClientAuthType = 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
 
 export type ApiKeyExtensionFields = {
   name: string;
@@ -26,7 +26,7 @@ export type ModelObj = {
   'x-xc-oauth2-newToken': boolean;
   'x-xc-oauth2-authFlow': FlowKey;
   'x-xc-oauth2-token':string;
-  'x-xc-oauth2-clientAuthType': ClientAuthType;
+  'x-xc-oauth2-clientAuthType': AuthClientIn;
   'x-xc-oauth2-callbackUrl': string;
   'x-xc-oauth2-username': string;
   'x-xc-oauth2-password': string;

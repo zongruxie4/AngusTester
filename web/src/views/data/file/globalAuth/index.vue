@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { enumUtils } from '@xcan-angus/infra';
+import { SpacePermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
 
@@ -35,10 +36,8 @@ const cancel = () => {
 };
 
 const loadEnums = () => {
-  const res = enumUtils.enumToMessages('SpacePermission');
-  if (res?.length) {
-    permissions.value = res.map(item => ({ label: item.message, value: item.value }));
-  }
+  const res = enumUtils.enumToMessages(SpacePermission);
+  permissions.value = res.map(item => ({ label: item.message, value: item.value }));
 };
 
 onMounted(() => {

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils } from '@xcan-angus/infra';
+import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 
@@ -27,11 +28,10 @@ const tenantInfo = inject('tenantInfo', ref({ id: '' }));
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
-const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
+const planStatusTypeOpt = ref<EnumMessage<FuncPlanStatus>[]>([]);
 const loadStatusEnum = () => {
-  const data = enumUtils.enumToMessages('FuncPlanStatus');
-
-  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
+  const data = enumUtils.enumToMessages(FuncPlanStatus);
+  planStatusTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
 };
 
 const searchPanelOptions = [

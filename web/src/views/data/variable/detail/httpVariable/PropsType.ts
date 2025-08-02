@@ -1,3 +1,5 @@
+import { ExtractionMethod, HttpExtractionLocation, HttpMethod } from '@xcan-angus/infra';
+
 export type FormState = {
     projectId: string;
     name: string;
@@ -5,10 +7,10 @@ export type FormState = {
     passwordValue: false;
     extraction: {
         source: 'http';
-        method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+        method: ExtractionMethod;
         expression: string;
         defaultValue: string;
-        location: 'QUERY_PARAMETER' | 'PATH_PARAMETER' | 'REQUEST_HEADER' | 'FORM_PARAMETER' | 'REQUEST_RAW_BODY' | 'RESPONSE_HEADER' | 'RESPONSE_BODY';
+        location: HttpExtractionLocation;
         matchItem: string;
         parameterName: string;
         request: { url: string; };
@@ -16,8 +18,7 @@ export type FormState = {
     id?: string;
 }
 
-export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
-
+// TODO 存在重复代码
 export type RequestConfig = {
     method: HttpMethod;
     url: string;
@@ -35,7 +36,7 @@ export type RequestConfig = {
     endpoint: string;
     parameters: {
         name: string;
-        in: 'query' | 'path' | 'header' | 'cookie';
+        in: ParameterIn;
         value: string;
         enabled: boolean;
         type: 'string';

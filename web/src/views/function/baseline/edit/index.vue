@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table } from '@xcan-angus/vue-ui';
-import { utils, TESTER, enumUtils, duration } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, duration } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
@@ -42,7 +42,7 @@ const dataSource = ref<BaselineInfo>();
 
 const activeTabKey = ref('funcCase');
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const baselineFlagVisible = ref(false);
 
 const oldFormState = ref<FormState>();
@@ -68,7 +68,6 @@ const getParams = () => {
   }
 
   delete params.date;
-
   return params;
 };
 
@@ -229,8 +228,7 @@ const setFormData = (data: BaselineInfo) => {
 };
 
 const loadEnums = async () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 const members = ref([]);

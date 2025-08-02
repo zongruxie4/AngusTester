@@ -1,3 +1,5 @@
+import { CaseTestResult } from '@/enums/enums';
+
 export type PlanPermissionKey = 'ADD' |
     'VIEW' |
     'MODIFY' |
@@ -14,7 +16,6 @@ export type PlanPermissionKey = 'ADD' |
     'RESET_REVIEW_RESULT' |
     'TEST' | 'RESET_TEST_RESULT';
 
-export type TestResult = 'PENDING' | 'PASSED' | 'NOT_PASSED' | 'BLOCKED' | 'CANCELED';
 export type ReviewStatus = 'PENDING' | 'PASSED' | 'FAILED';
 
 export type ActionMenuItem = {
@@ -29,11 +30,11 @@ export type ActionMenuItem = {
 export type CaseInfo = {
     id: string;
     priority: {
-        value: TestResult;
+        value: CaseTestResult;
         message: string;
     };
     testResult: {
-        value: TestResult;
+        value: CaseTestResult;
         message: string;
     };
     planId: string;

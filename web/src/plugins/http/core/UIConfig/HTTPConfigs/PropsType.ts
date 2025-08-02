@@ -70,14 +70,14 @@ export type HTTPConfig = {
         endpoint: string;
         parameters: {
             name: string;
-            in: 'query' | 'path' | 'header' | 'cookie';
+            in: ParameterIn;
             value: string;
             enabled: boolean;
             type: 'string';
         }[];
         body: {
             format: string;
-            contentEncoding: 'gzip_base64' | 'base64';
+            contentEncoding: ContentEncoding;
             forms: {
                 name: string;
                 description: string;
@@ -85,7 +85,7 @@ export type HTTPConfig = {
                 type: string;
                 format: string;
                 contentType: string;
-                contentEncoding: 'gzip_base64' | 'base64';
+                contentEncoding: ContentEncoding;
                 fileName: string;
                 value: string;
             }[];
@@ -110,7 +110,7 @@ export type HTTPConfig = {
                     scopes: string[];
                     clientId: string;
                     clientSecret: string;
-                    clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                    clientIn: AuthClientIn;
                     username: string;
                     password: string;
                 };
@@ -120,7 +120,7 @@ export type HTTPConfig = {
                     scopes: string[];
                     clientId: string;
                     clientSecret: string;
-                    clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                    clientIn: AuthClientIn;
                     username: string;
                     password: string;
                 };
@@ -133,7 +133,7 @@ export type HTTPConfig = {
     assertions: {
         name: string;
         enabled: boolean;
-        type: 'BODY' | 'BODY_SIZE' | 'DURATION';
+        type: BasicAssertionType;
         expected: string;
         assertionCondition: AssertionCondition;
         expression: string;
@@ -235,14 +235,14 @@ export type HTTPInfo = {
         endpoint: string;
         parameters: {
             name: string;
-            in: 'query' | 'path' | 'header' | 'cookie';
+            in: ParameterIn;
             value: string;
             enabled: boolean;
             type: 'string';
         }[];
         body: {
             format: string;
-            contentEncoding: 'gzip_base64' | 'base64';
+            contentEncoding: ContentEncoding;
             forms: {
                 name: string;
                 description: string;
@@ -250,7 +250,7 @@ export type HTTPInfo = {
                 type: string;
                 format: string;
                 contentType: string;
-                contentEncoding: 'gzip_base64' | 'base64';
+                contentEncoding: ContentEncoding;
                 fileName: string;
                 value: string;
             }[];
@@ -274,7 +274,7 @@ export type HTTPInfo = {
                     scopes: string[];
                     clientId: string;
                     clientSecret: string;
-                    clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                    clientIn: AuthClientIn;
                     username: string;
                     password: string;
                 };
@@ -284,7 +284,7 @@ export type HTTPInfo = {
                     scopes: string[];
                     clientId: string;
                     clientSecret: string;
-                    clientIn: 'QUERY_PARAMETER' | 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+                    clientIn: AuthClientIn;
                     username: string;
                     password: string;
                 };
@@ -298,7 +298,7 @@ export type HTTPInfo = {
         name: string;
         enabled: boolean;
         type: {
-            value: 'BODY' | 'BODY_SIZE' | 'DURATION';
+            value: BasicAssertionType;
             message: string;
         },
         expected: string;

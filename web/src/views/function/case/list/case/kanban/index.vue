@@ -15,12 +15,13 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
+import { CaseTestResult } from '@/enums/enums';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import { funcCase, funcPlan } from '@/api/tester';
 
-import { ActionMenuItem, CaseInfo, PlanPermissionKey, TestResult } from './PropsType';
+import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './PropsType';
 import { userInfo } from 'os';
 
 type Props = {
@@ -76,16 +77,16 @@ const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment'
 const planPermissionsMap = ref<Map<string, PlanPermissionKey[]>>(new Map());
 const planAuthMap = ref({});
 
-const testResultList = ref<{ message: string; value: TestResult }[]>([]);
+const testResultList = ref<{ message: string; value: CaseTestResult }[]>([]);
 const caseList = ref<CaseInfo[]>([]);
-const caseDataMap = ref<{ [key in TestResult]: CaseInfo[] }>({
+const caseDataMap = ref<{ [key in CaseTestResult]: CaseInfo[] }>({
   PENDING: [],
   PASSED: [],
   NOT_PASSED: [],
   BLOCKED: [],
   CANCELED: []
 });
-const numMap = ref<{ [key in TestResult]: number }>({
+const numMap = ref<{ [key in CaseTestResult]: number }>({
   PENDING: 0,
   PASSED: 0,
   NOT_PASSED: 0,
@@ -95,10 +96,10 @@ const numMap = ref<{ [key in TestResult]: number }>({
 
 const testerNameList = ref<{ name: string; value: string }[]>([]);
 const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
-const groupDataMap = ref<{ [key: string]: { [key in TestResult]: CaseInfo[] } }>({});
+const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseInfo[] } }>({});
 
 const isDraggingToColumn = ref<number|null>(null);
-const isDraggingToColumnTestResult = ref<TestResult[]>([]);
+const isDraggingToColumnTestResult = ref<CaseTestResult[]>([]);
 
 const openFlag = ref(false);
 const arrowOpenSet = ref(new Set<string>());
@@ -108,11 +109,11 @@ const checkedPlanInfo = ref<{ id: string; name: string; }>();
 const checkedGroupKey = ref<string>();
 
 const selectedIndex = ref<number>();
-const selectedTestResult = ref<TestResult>();
+const selectedTestResult = ref<CaseTestResult>();
 const selectedCaseInfo = ref<CaseInfo>();
 
 // 拖动到确认完成、确认未完成相关数据，用于取消确认完成、取消确认未完成时重置数据
-const selectedToTestResult = ref<TestResult>();
+const selectedToTestResult = ref<CaseTestResult>();
 const selectedGroupKey = ref<'none' | 'testerName' | 'lastModifiedByName'>();
 
 const caseModalVisible = ref(false);
@@ -123,8 +124,7 @@ const taskModalVisible = ref(false);
 const resultPassed = ref(false);
 
 const loadEnum = async () => {
-  const res = enumUtils.enumToMessages('CaseTestResult');
-  testResultList.value = (res || []) as { message: string; value: TestResult }[];
+  testResultList.value = enumUtils.enumToMessages(CaseTestResult);
 };
 
 const loadData = async () => {
@@ -312,9 +312,9 @@ const setDefaultGroupData = () => {
 
 const dragMove = (event) => {
   // 设置正在拖动的列索引
-  const [, toIndex] = event.to.id.split('-') as [TestResult, number];
-  const [fromResult] = event.from.id.split('-') as [TestResult, number];
-  const [, , draggedId] = event.dragged.id.split('-') as [TestResult, number, string];
+  const [, toIndex] = event.to.id.split('-') as [CaseTestResult, number];
+  const [fromResult] = event.from.id.split('-') as [CaseTestResult, number];
+  const [, , draggedId] = event.dragged.id.split('-') as [CaseTestResult, number, string];
   let cancelDisabled = false;
   const cancelItem = menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel');
   if (!cancelItem) {
@@ -368,7 +368,7 @@ const dragEnd = () => {
   isDraggingToColumnTestResult.value = [];
 };
 
-const dragHandler = (data:CaseInfo, testResult:TestResult, toTestResult:TestResult, index:number, groupKey?:'none' | 'testerName' | 'lastModifiedByName') => {
+const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:CaseTestResult, index:number, groupKey?:'none' | 'testerName' | 'lastModifiedByName') => {
   const { review, reviewStatus: { value: reviewStatus }, planId, id } = data;
   const permissions = planPermissionsMap.value.get(planId) || [];
   if (testResult === 'PENDING') {
@@ -528,8 +528,8 @@ const dragHandler = (data:CaseInfo, testResult:TestResult, toTestResult:TestResu
   }
 };
 
-const dragAdd = async (event: { item: { id: string; }; }, toTestResult: TestResult) => {
-  const [testResult, index, id] = (event.item.id.split('-')) as [TestResult, number, string];
+const dragAdd = async (event: { item: { id: string; }; }, toTestResult: CaseTestResult) => {
+  const [testResult, index, id] = (event.item.id.split('-')) as [CaseTestResult, number, string];
   const targetData = caseDataMap.value[toTestResult].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -538,8 +538,8 @@ const dragAdd = async (event: { item: { id: string; }; }, toTestResult: TestResu
   dragHandler(targetData, testResult, toTestResult, index);
 };
 
-const groupDragAdd = async (event: { item: { id: string; } }, toTestResult: TestResult) => {
-  const [testResult, index, id, groupKey] = (event.item.id.split('-')) as [TestResult, number, string, string];
+const groupDragAdd = async (event: { item: { id: string; } }, toTestResult: CaseTestResult) => {
+  const [testResult, index, id, groupKey] = (event.item.id.split('-')) as [CaseTestResult, number, string, string];
   const targetData = groupDataMap.value[groupKey][toTestResult].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -548,7 +548,7 @@ const groupDragAdd = async (event: { item: { id: string; } }, toTestResult: Test
   dragHandler(targetData, testResult, toTestResult, index, groupKey);
 };
 
-const resetDrag = (id: string, index: number, testResult: TestResult, toTestResult: TestResult) => {
+const resetDrag = (id: string, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult) => {
   const _index = caseDataMap.value[toTestResult].findIndex(item => item.id === id);
   const dragData = caseDataMap.value[toTestResult][_index];
   // 删除已被添加的数据
@@ -557,7 +557,7 @@ const resetDrag = (id: string, index: number, testResult: TestResult, toTestResu
   caseDataMap.value[testResult].splice(index, 0, dragData);
 };
 
-const resetGroupDrag = (id: string, index: number, testResult: TestResult, toTestResult: TestResult, groupKey: string) => {
+const resetGroupDrag = (id: string, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult, groupKey: string) => {
   const _index = groupDataMap.value[groupKey][toTestResult].findIndex(item => item.id === id);
   const dragData = groupDataMap.value[groupKey][toTestResult][_index];
   // 删除已被添加的数据
@@ -694,7 +694,7 @@ const drawerClose = () => {
   selectedIndex.value = undefined;
 };
 
-const dropdownClick = (menuItem: ActionMenuItem, data: CaseInfo, index: number, testResult: TestResult) => {
+const dropdownClick = (menuItem: ActionMenuItem, data: CaseInfo, index: number, testResult: CaseTestResult) => {
   const key = menuItem.key;
   if (key === 'edit') {
     toEdit(data, index, testResult);
@@ -771,7 +771,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: CaseInfo, index: number, 
   }
 };
 
-const toEdit = (data: CaseInfo, index: number, testResult: TestResult) => {
+const toEdit = (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
   selectedTestResult.value = testResult;
@@ -780,7 +780,7 @@ const toEdit = (data: CaseInfo, index: number, testResult: TestResult) => {
 
 const editOk = async (id:string) => {
   const index = selectedIndex.value as number;
-  const testResult = selectedTestResult.value as TestResult;
+  const testResult = selectedTestResult.value as CaseTestResult;
 
   emit('loadingChange', true);
   const [, res] = await funcCase.getCaseDetail(id);
@@ -813,7 +813,7 @@ const toDelete = (data: CaseInfo) => {
   });
 };
 
-const toFavourite = async (data: CaseInfo, index: number, testResult: TestResult) => {
+const toFavourite = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.AddFavouriteCase(data.id);
   emit('loadingChange', false);
@@ -825,7 +825,7 @@ const toFavourite = async (data: CaseInfo, index: number, testResult: TestResult
   caseDataMap.value[testResult][index].favouriteFlag = true;
 };
 
-const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: TestResult) => {
+const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFavouriteCase(data.id);
   emit('loadingChange', false);
@@ -837,7 +837,7 @@ const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: Test
   caseDataMap.value[testResult][index].favouriteFlag = false;
 };
 
-const toFollow = async (data: CaseInfo, index: number, testResult: TestResult) => {
+const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.addFollowCase(data.id);
   emit('loadingChange', false);
@@ -849,7 +849,7 @@ const toFollow = async (data: CaseInfo, index: number, testResult: TestResult) =
   caseDataMap.value[testResult][index].followFlag = true;
 };
 
-const toDeleteFollow = async (data: CaseInfo, index: number, testResult: TestResult) => {
+const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFollowCase(data.id);
   emit('loadingChange', false);
@@ -929,7 +929,7 @@ const updateTestResultCancel = () => {
   selectedToTestResult.value = undefined;
 };
 
-const toAddBug = (data: CaseInfo, index: number, testResult: TestResult) => {
+const toAddBug = (data: CaseInfo, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
   selectedTestResult.value = testResult;

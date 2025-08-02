@@ -1,23 +1,6 @@
 import { Extraction } from '../extract/PropsType';
-
-export type AssertCondition = 'CONTAIN' |
-    'EQUAL' |
-    'GREATER_THAN' |
-    'GREATER_THAN_EQUAL' |
-    'IS_EMPTY' |
-    'IS_NULL' |
-    'LESS_THAN' |
-    'LESS_THAN_EQUAL' |
-    'NOT_CONTAIN' |
-    'NOT_EMPTY' |
-    'NOT_EQUAL' |
-    'NOT_NULL' |
-    'REG_MATCH' |
-    'XPATH_MATCH' |
-    'JSON_PATH_MATCH';
-
-export type AssertType = 'STATUS' | 'HEADER' | 'BODY' | 'BODY_SIZE' | 'SIZE' | 'DURATION';
-
+import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
+// TODO 存在重复代码
 export type ConditionResult = {
     failure: boolean;// 执行结果
     name: string;// 提取的变量名
@@ -30,11 +13,11 @@ export type ConditionResult = {
 
 export type AssertResult = {
     name: string;
-    type: AssertType;
+    type: AssertionType;
     parameterName: string;
     condition: string;
     extraction: boolean;// 是否是提取期望值
-    assertionCondition: AssertCondition;
+    assertionCondition: AssertionCondition;
     result: {
         expectedData: {
             data: string|null;
@@ -76,7 +59,7 @@ export type Parameter = {
 }
 
 export type AssertConfig = {
-    assertionCondition: AssertCondition;
+    assertionCondition: AssertionCondition;
     condition: string;
     description: string;
     enabled: boolean;
@@ -84,7 +67,7 @@ export type AssertConfig = {
     extraction: Extraction;
     parameterName: string;
     name: string;
-    type: AssertType;
+    type: AssertionType;
     result?: {
         failure: boolean;
         message: string;

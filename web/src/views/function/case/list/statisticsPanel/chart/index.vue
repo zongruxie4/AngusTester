@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 
 import { CountObj } from './type';
 import Charts from './charts.vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { ReviewStatus, enumUtils } from '@xcan-angus/infra';
 
 interface Props {
   dataSource:CountObj;
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const ReviewStatusEnum = ref({});
+const reviewStatusEnum = ref({});
 
 const testData = computed(() => {
   const result = [
@@ -32,16 +32,16 @@ const testData = computed(() => {
     { name: '评审未通过', value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
   ];
   result.forEach((i) => {
-    i.name = ReviewStatusEnum.value?.[i.enumKey]?.message || i.name;
+    i.name = reviewStatusEnum.value?.[i.enumKey]?.message || i.name;
   });
   return result;
 });
 
-onMounted( () => {
-  const data = enumUtils.enumToMessages('ReviewStatus');
-  ReviewStatusEnum.value = {};
+onMounted(() => {
+  const data = enumUtils.enumToMessages(ReviewStatus);
+  reviewStatusEnum.value = {};
   data?.forEach(i => {
-    ReviewStatusEnum.value[i.value] = i;
+    reviewStatusEnum.value[i.value] = i;
   });
 });
 </script>

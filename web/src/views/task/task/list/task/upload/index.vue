@@ -3,6 +3,7 @@ import { computed, inject, ref, watch, Ref } from 'vue';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { TESTER, enumUtils } from '@xcan-angus/infra';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { task } from '@/api/tester';
 
@@ -61,8 +62,8 @@ const validateFile = async () => {
 };
 
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('StrategyWhenDuplicated');
-  strategyWhenDuplicatedOpt.value = (data || []).map(i => ({ value: i.value, label: i.message }));
+  const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
+  strategyWhenDuplicatedOpt.value = data.map(i => ({ value: i.value, label: i.message }));
 };
 
 const cancel = () => {

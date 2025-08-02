@@ -4,11 +4,12 @@ import { Arrow, AsyncComponent, Hints, Icon, IconRefresh, Input, Spin } from '@x
 import { Button } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { enumUtils, duration } from '@xcan-angus/infra';
+import { ServicesCompType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 
 import { CompObj, ComponentsType } from './PropsType';
 
-const AddMoal = defineAsyncComponent(() => import('./AddModal.vue'));
+const AddModal = defineAsyncComponent(() => import('./AddModal.vue'));
 
 interface Props {
   id: string;
@@ -134,10 +135,7 @@ const oldCompListObj = ref<Record<ComponentsType, {
 );
 
 const getCompTypesEnum = () => {
-  const data = enumUtils.enumToMessages('ServicesCompType');
-  if (!data?.length) {
-    return;
-  }
+  const data = enumUtils.enumToMessages(ServicesCompType);
   for (let i = 0; i < data.length; i++) {
     if (data[i].value === 'securitySchemes') {
       continue;
@@ -310,7 +308,7 @@ const refreshList = () => {
       </div>
     </div>
     <AsyncComponent :visible="visible">
-      <AddMoal
+      <AddModal
         v-if="visible"
         :id="props?.id"
         v-model:visible="visible"

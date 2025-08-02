@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
-import { Icon, Input, Modal, notification, ShortDuration } from '@xcan-angus/vue-ui';
-import type { TreeProps } from 'ant-design-vue';
-import { Button, Form, FormItem, RadioGroup, Textarea, Tree } from 'ant-design-vue';
-import { toClipboard, utils, enumUtils, DomainManager } from '@xcan-angus/infra';
-import { space } from '@/api/storage';
+import {computed, reactive, ref, watch} from 'vue';
+import {Icon, Input, Modal, notification, ShortDuration} from '@xcan-angus/vue-ui';
+import type {TreeProps} from 'ant-design-vue';
+import {Button, Form, FormItem, RadioGroup, Textarea, Tree} from 'ant-design-vue';
+import {AppOrServiceRoute, DomainManager, enumUtils, ShortTimeUnit, toClipboard, utils} from '@xcan-angus/infra';
+import {space} from '@/api/storage';
 import store from '@/store';
 
-import { randomString } from '@/utils/utils';
+import {randomString} from '@/utils/utils';
 
 interface Props {
   visible:boolean,
@@ -33,7 +33,6 @@ const resetDefaultData = () => {
   treeData.value = [{ name: props.spaceName, id: props.spaceId, key: props.spaceId, type: 'SPACE', disabled: true }];
 };
 
-// 记录点击 checke 结果
 const checkedMap = {};
 const handleChecked = (_checkedKeys, { checked, node }) => {
   if (checked) {
@@ -113,9 +112,9 @@ const loadUnit = () => {
   if (state.unitEnum.length) {
     return;
   }
-  const excludeUnit = ['Millisecond', 'Second'];
-  const data = enumUtils.enumToMessages('ShortTimeUnit');
-  state.unitEnum = (data || []).filter(unit => !excludeUnit.includes(unit.value));
+  const excludeUnit = [ShortTimeUnit.Millisecond, ShortTimeUnit.Second];
+  const data = enumUtils.enumToMessages(ShortTimeUnit);
+  state.unitEnum = data.filter(unit => !excludeUnit.includes(unit.value));
 };
 
 let initParams = {};
@@ -143,7 +142,7 @@ const loadShareInfo = async () => {
 
 // 获取分享的url
 const loadShareUrl = async () => {
-  const host = DomainManager.getInstance().getAppDomain('tester');
+  const host = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   const route = '/share/file';
   return `${host}${route}`;
 };

@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, Percentile, ShortTimeUnit, enumUtils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { splitDuration } from '@/utils/utils';
 
@@ -20,10 +20,9 @@ const handleEditPerform = () => {
   }));
 };
 
-const durationUnitOpt = ref<{value: string, message: string}[]>([]);
+const durationUnitOpt = ref<EnumMessage<ShortTimeUnit>[]>([]);
 const loadDurationUnitOpt = () => {
-  const data = enumUtils.enumToMessages('ShortTimeUnit');
-  durationUnitOpt.value = (data || []);
+  durationUnitOpt.value = enumUtils.enumToMessages(ShortTimeUnit);
 };
 
 const editInfo = ref({
@@ -39,7 +38,7 @@ const editInfo = ref({
   tps: ''
 });
 
-const info = reactive({ // 展示 info
+const info = reactive({
   cpu: '',
   threads: '',
   disk: '',
@@ -52,10 +51,9 @@ const info = reactive({ // 展示 info
   tps: ''
 });
 
-const percentileOpt = ref<{value: string, message: string}[]>([]);
+const percentileOpt = ref<EnumMessage<Percentile>[]>([]);
 const loadPercentileOpt = async () => {
-  const data = enumUtils.enumToMessages('Percentile');
-  percentileOpt.value = data;
+  percentileOpt.value = enumUtils.enumToMessages(Percentile);
 };
 
 const loadInfo = async () => {

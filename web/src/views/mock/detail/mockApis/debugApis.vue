@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
-import { utils, enumUtils, axiosClient } from '@xcan-angus/infra';
+import { EnumMessage, HttpStatus, utils, enumUtils, axiosClient } from '@xcan-angus/infra';
 
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/mock/detail/mockApis/components/urlForm/index.vue';
@@ -35,18 +35,6 @@ let apiUuid;
 const WS = inject('WS', ref());
 const uuid = inject('uuid', ref());
 const wsResponse = inject('wsResponse', ref());
-// const currentProxy = ref(); // CLIENT_PROXY|NO_PROXY|SERVER_PROXY
-// const currentProxyUrl = ref();
-
-// const BodyFormType = [null, 'application/x-www-form-urlencode', 'multipart/form-data'].map(i => ({ label: i || 'none', value: i }));
-// const BodyRawType = [
-//   'application/json',
-//   'text/html',
-//   'application/xml',
-//   'application/javascript',
-//   'text/plain',
-//   '*/*'
-// ].map(i => ({ label: i, value: i }));
 
 const { valueKey } = API_EXTENSION_KEY;
 // 展开收起
@@ -64,69 +52,30 @@ const changeShowDebug = (value: boolean) => {
   showDebug.value = value;
 };
 
-let statusOpt:{value: string, message: string}[] = [];
+let statusOpt:EnumMessage<HttpStatus>[] = [];
 const loadStatusEnum = () => {
   if (statusOpt.length) {
     return;
   }
-  const data = enumUtils.enumToMessages('HttpStatus');
-  statusOpt = data || [];
+  statusOpt = enumUtils.enumToMessages(HttpStatus);
 };
 const method = ref();
 const server = ref();
 const endpoint = ref();
 const contentType = ref<string|undefined>(undefined);
-// raw 选中效果
-// const checkeRaw = computed(() => {
-//   return !!BodyRawType.find(i => i.value === contentType.value);
-// });
-
-// const queryRef = ref();
-// const headerRef = ref();
-// const cookieRef = ref();
-// const formUrlEncodeRef = ref();
-// const formDataRef = ref();
 
 // const requestBody = ref();
 const inputGroupRef = ref();
 const requestBodyRef = ref();
 
-// // 添加query
-// const addQuery = () => {
-//   queryRef.value.add();
-// };
-// // 添加header
-// const addHeader = () => {
-//   headerRef.value.add();
-// };
-// // 添加cookie
-// const addCookie = () => {
-//   cookieRef.value.add();
-// };
-
-// const addForm = () => {
-//   if (contentType.value === 'application/x-www-form-urlencode') {
-//     formUrlEncodeRef.value.add();
-//   } else {
-//     formDataRef.value.add();
-//   }
-// };
-
-// const clickRawRadio = (RadioEvent) => {
-//   const checked = RadioEvent.target.checked;
-//   if (checked) {
-//     contentType.value = BodyRawType[0].value;
-//   }
-// };
-
 let controller;
 
-const debuging = ref(false);
+const debugging = ref(false);
 const responseContent = ref();
 const openHeader = ref(true);
 const openBody = ref(true);
 const stopDebug = () => {
-  debuging.value = false;
+  debugging.value = false;
   if (WS.value && WS.value.readyState === 1) {
     apiUuid = '';
   } else {
@@ -139,7 +88,7 @@ const sendRequest = async () => {
   if (!urlRef.value?.isValid()) {
     return;
   }
-  debuging.value = true;
+  debugging.value = true;
   const parameters:any[] = [];
   if (typeof inputGroupRef.value?.getData === 'function') {
     parameters.push(...inputGroupRef.value.getData());
@@ -234,7 +183,7 @@ const sendRequest = async () => {
     WS.value.send(api);
   } else if (WS.value && WS.value.readyState !== 1) {
     notification.error('代理未链接， 请检查代理配置');
-    debuging.value = false;
+    debugging.value = false;
   } else {
     const header: Record<string, string> = {};
     if (headerData.length) {
@@ -276,7 +225,7 @@ const sendRequest = async () => {
 // 本地响应
 const onHttpResponse = async (resp) => {
   const status = resp.request.status;
-  debuging.value = false;
+  debugging.value = false;
   if (status === 0) {
     const responseHeader = [];
     const responseBody = resp.message;
@@ -303,7 +252,7 @@ const onHttpResponse = async (resp) => {
 };
 // 代理响应
 const onWsResponse = () => {
-  debuging.value = false;
+  debugging.value = false;
   try {
     const respJson = JSON.parse(wsResponse.value);
     const status = +respJson.response.status;
@@ -399,7 +348,7 @@ watch(() => props.mockAPIInfo.id, () => {
 
 watch(() => uuid.value, newValue => {
   if (newValue === apiUuid) {
-    debuging.value = false;
+    debugging.value = false;
     onWsResponse();
   }
 });
@@ -442,7 +391,7 @@ onMounted(() => {
       <InputGroup ref="inputGroupRef" />
       <RequestBody ref="requestBodyRef" />
       <div>
-        <template v-if="debuging">
+        <template v-if="debugging">
           <Button
             size="small"
             @click="stopDebug">

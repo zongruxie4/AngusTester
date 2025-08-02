@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PushSetting } from './interface';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, ReceiverType, NoticeType, enumUtils } from '@xcan-angus/infra';
 import { event } from '@/api/gm';
 import { Modal, notification, SelectUser } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Form, FormItem } from 'ant-design-vue';
@@ -22,11 +22,14 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'refr
 const { t } = useI18n();
 const formRef = ref();
 
-const receiversType = ref<{value:string, message:string}[]>([]);
-const otherType = ref<{value:string, message:string}>({ value: '', message: '' });
-const defaultUsers = ref<{value:string, label:string}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
+const receiversType = ref<EnumMessage<string>[]>([]);
+const otherReceiversType = ref<EnumMessage<string>>({ value: '', message: '' });
+const defaultUsers = ref<{
+  value: string,
+  label: string
+}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
 const users = ref<string[]>(defaultUsers.value.map(user => user.value));
-const noticeTypeOpt = ref<{value:string, message:string}[]>([]);
+const noticeTypeOpt = ref<{ value: string, message: string }[]>([]);
 const noticeType = ref<string[]>((props.selectedItem?.receiveSetting?.receivers?.noticeTypes || []).map(i => i.value));
 
 const init = () => {
@@ -35,21 +38,26 @@ const init = () => {
 };
 
 const loadReceiverEnum = () => {
-  const data = enumUtils.enumToMessages('ReceiverType');
+  const data = enumUtils.enumToMessages(ReceiverType);
   receiversType.value = (data || []).filter(type => type.value !== 'OTHER');
-  otherType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', message: '' };
+  otherReceiversType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', message: '' };
 };
 
 const loadNoticeType = () => {
-  const data = enumUtils.enumToMessages('NoticeType');
+  const data = enumUtils.enumToMessages(NoticeType);
   noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.message }));
 };
 
 const receivingMethods = ref<string[]>(props.selectedItem?.receiveSetting?.receivers?.receiverTypes.map(m => m.value) || []);
 
 const handleOk = async () => {
-  const otherTypeValue = users.value.length ? [otherType.value.value] : [];
-  const [error] = await event.putReceiver({ id: props.selectedItem.id, receiverIds: users.value, receiverTypes: [...receivingMethods.value, ...otherTypeValue], noticeTypes: noticeType.value });
+  const otherTypeValue = users.value.length ? [otherReceiversType.value.value] : [];
+  const [error] = await event.putReceiver({
+    id: props.selectedItem.id,
+    receiverIds: users.value,
+    receiverTypes: [...receivingMethods.value, ...otherTypeValue],
+    noticeTypes: noticeType.value
+  });
 
   if (error) {
     return;
@@ -88,7 +96,7 @@ onMounted(() => {
           </Checkbox>
         </CheckboxGroup>
         <div class="flex text-3">
-          <span class="mr-2 leading-7">{{ otherType.message }}</span>
+          <span class="mr-2 leading-7">{{ otherReceiversType.message }}</span>
           <SelectUser
             v-model:value="users"
             :allowClear="false"

@@ -2,9 +2,9 @@
 import { ref, onMounted, computed, watchEffect } from 'vue';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
-import { enumUtils, utils } from '@xcan-angus/infra';
+import { BasicAssertionType, AssertionCondition, enumUtils, utils } from '@xcan-angus/infra';
 
-import { AssertionConfig, AssertionType, AssertionCondition } from './PropsType';
+import { AssertionConfig } from './PropsType';
 import ExpectedPopover from './ExpectedPopover.vue';
 
 export interface Props {
@@ -41,7 +41,7 @@ const checkedSet = ref<Set<string>>(new Set());
 const repeatNameSet = ref<Set<string>>(new Set());
 
 const loadConditionOptions = () => {
-  const data = enumUtils.enumToMessages('AssertionCondition');
+  const data = enumUtils.enumToMessages(AssertionCondition);
   const numberConditions = data.filter(item => NUMBER_CONDITIONS.includes(item.value));
   conditionOptions.value = {
     BODY: data,
@@ -141,7 +141,7 @@ const nameChange = (event: { target: { value: string; } }, id: string, index: nu
   }
 };
 
-const typeChange = (value: AssertionType, id: string) => {
+const typeChange = (value: BasicAssertionType, id: string) => {
   dataMap.value[id].type = value;
   const condition = dataMap.value[id].assertionCondition;
   typeErrorSet.value.delete(id);
@@ -409,7 +409,7 @@ defineExpose({
           </Tooltip>
           <SelectEnum
             style="flex: 0 0 calc((100% - 32px)/7);"
-            enumKey="AssertionType"
+            enumKey="BasicAssertionType"
             placeholder="断言类型"
             title="断言类型"
             :error="typeErrorSet.has(item)"

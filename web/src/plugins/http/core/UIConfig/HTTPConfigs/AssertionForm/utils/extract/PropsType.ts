@@ -1,20 +1,20 @@
-export type ExtractionLocation = 'QUERY_PARAMETER' | 'PATH_PARAMETER' | 'REQUEST_HEADER' | 'FORM_PARAMETER' | 'REQUEST_RAW_BODY' | 'RESPONSE_HEADER' | 'RESPONSE_BODY';
+import { ExtractionMethod, AuthClientIn, SecurityIn } from '@xcan-angus/infra';
 
-export type ExtractMethod = 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+// TODO 存在重复定义
 
 export type DefaultExtraction = {
   defaultValue: string;
   expression: string;
   failureMessage: string;
   finalValue: string;
-  method: ExtractMethod;
+  method: ExtractionMethod;
   name: string;
   value: string;
 }
 
 export type OAuth2Flow = {
   clientId: string;
-  clientIn: 'BASIC_AUTH_HEADER' | 'REQUEST_BODY';
+  clientIn: AuthClientIn;
   clientSecret: string;
   extensions: { [key: string]: any };
   password: string;
@@ -36,7 +36,7 @@ export type OAuth2Flows = {
 
 export type ApiKeyRes = {
   extensions: { [key: string]: any };
-  in: 'COOKIE' | 'HEADER' | 'QUERY';
+  in: SecurityIn;
   name: string;
   value: string;
 }
@@ -70,7 +70,7 @@ export type Request = {
 }
 
 export type Extraction = {
-  method: ExtractMethod|undefined;
+  method: ExtractionMethod|undefined;
   expression: string|undefined;
   location: string|undefined;
   matchItem: string|undefined;

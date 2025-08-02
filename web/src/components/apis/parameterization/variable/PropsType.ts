@@ -1,27 +1,29 @@
+import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+
 export type VariableItem = {
     createdBy: string;
     createdByName: string;
     createdDate: string;
     extracted: boolean;
-    extraction: {
+    extraction: { // TODO 可以复用定义
         defaultValue: string;
         expression: string;
         failureMessage: string;
         finalValue: string;
         matchItem: string;
         method: {
-            value: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+            value: ExtractionMethod;
             message: string;
         };
         name: string;
-        source: 'FILE' | 'http' | 'HTTP_ASSERTION' | 'HTTP_SAMPLING' | 'JDBC' | 'VALUE';
+        source: ExtractionSource;
         value: string;
         fileType: {
-            value: 'CSV' | 'EXCEL' | 'TXT';
+            value: ExtractionFileType;
             message: string;
         };
         path: string;
-        encoding: 'UTF-8' | 'UTF-16' | 'UTF-16BE' | 'UTF-16LE' | 'US-ASCII' | 'ISO-8859-1';
+        encoding: Encoding
         quoteChar: string;
         escapeChar: string;
         separatorChar: string;

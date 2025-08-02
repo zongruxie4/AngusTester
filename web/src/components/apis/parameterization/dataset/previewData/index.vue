@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/infra';
+import { utils, duration, ExtractionSource, ExtractionMethod, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 
@@ -16,19 +16,19 @@ type Props = {
     projectId: string;
     extracted: boolean;
     name: string;
-    extraction: {
+    extraction: { // TODO extraction可以复用的
       defaultValue: string;
       expression: string;
       failureMessage: string;
       finalValue: string;
       matchItem: string;
-      method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+      method: ExtractionSource;
       name: string;
-      source: 'FILE' | 'http' | 'HTTP_ASSERTION' | 'HTTP_SAMPLING' | 'JDBC' | 'VALUE';
+      source: ExtractionMethod;
       value: string;
-      fileType: 'CSV' | 'EXCEL' | 'TXT';
+      fileType: ExtractionFileType;
       path: string;
-      encoding: 'UTF-8' | 'UTF-16' | 'UTF-16BE' | 'UTF-16LE' | 'US-ASCII' | 'ISO-8859-1';
+      encoding: Encoding;
       quoteChar: string;
       escapeChar: string;
       separatorChar: string;

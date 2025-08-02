@@ -1,8 +1,8 @@
 import { Extraction } from './utils/extract/PropsType';
-import { AssertCondition, AssertType } from './utils/assert/PropsType';
+import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
 
 export type FormItem = {
-    assertionCondition: AssertCondition|undefined;
+    assertionCondition: AssertionCondition|undefined;
     condition?: string|undefined;
     expression: string|undefined;
     matchItem: string|undefined;
@@ -12,7 +12,7 @@ export type FormItem = {
     extraction: Extraction;
     parameterName: string|undefined;
     name: string|undefined;
-    type: {message:string;value:AssertType}|AssertType|undefined;
+    type: {message:string;value:AssertionType}|AssertionType|undefined;
     result?: {
         failure: boolean;
         message: string;

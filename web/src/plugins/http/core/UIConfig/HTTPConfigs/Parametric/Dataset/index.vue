@@ -2,7 +2,7 @@
 import { ref, onMounted, defineAsyncComponent, watch, computed } from 'vue';
 import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
 
 import { DatasetItem } from './PropsType';
 import { HTTPConfig } from '../../PropsType';
@@ -10,21 +10,21 @@ import { HTTPConfig } from '../../PropsType';
 type Props = {
   projectId: string;
   datasets: HTTPConfig['datasets'];
-  actionOnEOF: 'RECYCLE' | 'STOP_THREAD';
-  sharingMode: 'ALL_THREAD' | 'CURRENT_THREAD';
+  actionOnEOF: ActionOnEOF;
+  sharingMode: SharingMode;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   datasets: () => [],
-  actionOnEOF: 'RECYCLE',
-  sharingMode: 'ALL_THREAD'
+  actionOnEOF: ActionOnEOF.RECYCLE,
+  sharingMode: SharingMode.ALL_THREAD
 });
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'change', value: HTTPConfig['datasets']): void;
-  (e: 'targetInfoChange', value: { actionOnEOF?: 'RECYCLE' | 'STOP_THREAD'; sharingMode?: 'ALL_THREAD' | 'CURRENT_THREAD'; }): void;
+  (e: 'targetInfoChange', value: { actionOnEOF?: ActionOnEOF; sharingMode?: SharingMode; }): void;
 }>();
 
 const DatasetModal = defineAsyncComponent(() => import('./DatasetModal/index.vue'));
@@ -38,8 +38,8 @@ const modalVisible = ref(false);
 
 const collapseActiveKeys = ref<string[]>([]);
 
-const eofEnums = ref<{ message: string; value: 'RECYCLE' | 'STOP_THREAD'; }[]>([]);
-const sharingModeEnums = ref<{ message: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[]>([]);
+const eofEnums = ref<EnumMessage<ActionOnEOF>[]>([]);
+const sharingModeEnums = ref<EnumMessage<SharingMode>[]>([]);
 
 const arrowChange = (open: boolean, id: string) => {
   if (!open) {
@@ -54,13 +54,13 @@ const toUse = () => {
   modalVisible.value = true;
 };
 
-const datasetActionOnEOFChange = async (event: { target: { value: 'RECYCLE' | 'STOP_THREAD' } }) => {
+const datasetActionOnEOFChange = async (event: { target: { value: ActionOnEOF } }) => {
   const value = event.target.value;
   const params = { actionOnEOF: value };
   emit('targetInfoChange', params);
 };
 
-const datasetSharingModeChange = async (event: { target: { value: 'ALL_THREAD' | 'CURRENT_THREAD' } }) => {
+const datasetSharingModeChange = async (event: { target: { value: SharingMode } }) => {
   const value = event.target.value;
   const params = { sharingMode: value };
   emit('targetInfoChange', params);
@@ -83,13 +83,11 @@ const toDelete = async (data: DatasetItem) => {
 };
 
 const loadActionOnEOFEnums = () => {
-  const res = enumUtils.enumToMessages('ActionOnEOF');
-  eofEnums.value = (res || []) as { message: string; value: 'RECYCLE' | 'STOP_THREAD'; }[];
+  eofEnums.value = enumUtils.enumToMessages(ActionOnEOF);
 };
 
 const loadSharingModeEnums = () => {
-  const res = enumUtils.enumToMessages('SharingMode');
-  sharingModeEnums.value = (res || []) as { message: string; value: 'ALL_THREAD' | 'CURRENT_THREAD'; }[];
+  sharingModeEnums.value = enumUtils.enumToMessages(SharingMode);
 };
 
 const reset = () => {
@@ -107,7 +105,6 @@ onMounted(() => {
     if (!newValue?.length) {
       return;
     }
-
     tableData.value = newValue;
   }, { immediate: true });
 });

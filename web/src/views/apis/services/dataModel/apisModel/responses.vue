@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Dropdown, Icon, Input } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, HttpStatus, enumUtils } from '@xcan-angus/infra';
 
 import ResponseSchema from '../responseSchema.vue';
 
@@ -16,10 +16,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const responseSchemaRef = ref([]);
 
-const allStatus = ref<{ value:string, message:string }[]>([]);
+const allStatus = ref<EnumMessage<HttpStatus>[]>([]);
 const loadAllStatus = () => {
-  const data = enumUtils.enumToMessages('HttpStatus');
-  allStatus.value = data;
+  allStatus.value = enumUtils.enumToMessages(HttpStatus);
 };
 
 const data = ref({});

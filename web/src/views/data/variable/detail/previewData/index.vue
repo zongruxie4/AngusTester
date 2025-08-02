@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Spin } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
+import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 
 type Props = {
   dataSource: {
@@ -10,19 +11,19 @@ type Props = {
     value: string;
     id: string;
     projectId: string;
-    extraction: {
+    extraction: { // TODO 可复用定义
       defaultValue: string;
       expression: string;
       failureMessage: string;
       finalValue: string;
       matchItem: string;
-      method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+      method: ExtractionMethod;
       name: string;
-      source: 'FILE' | 'http' | 'HTTP_ASSERTION' | 'HTTP_SAMPLING' | 'JDBC' | 'VALUE';
+      source: ExtractionSource;
       value: string;
-      fileType: 'CSV' | 'EXCEL' | 'TXT';
+      fileType: ExtractionFileType;
       path: string;
-      encoding: 'UTF-8' | 'UTF-16' | 'UTF-16BE' | 'UTF-16LE' | 'US-ASCII' | 'ISO-8859-1';
+      encoding: Encoding;
       quoteChar: string;
       escapeChar: string;
       separatorChar: string;

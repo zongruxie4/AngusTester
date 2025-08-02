@@ -2,6 +2,7 @@
 import { computed, inject, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
+import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 
@@ -29,8 +30,8 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
 const loadStatusEnum = () => {
-  const data = enumUtils.enumToMessages('FuncPlanStatus');
-  planStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
+  const data = enumUtils.enumToMessages(FuncPlanStatus);
+  planStatusTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
 };
 
 const searchPanelOptions = [
@@ -48,13 +49,6 @@ const searchPanelOptions = [
     options: [{ label: '是', value: true }, { label: '否', value: false }],
     placeholder: '是否评审'
   },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncPlanStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
   {
     valueKey: 'ownerId',
     type: 'select-user',

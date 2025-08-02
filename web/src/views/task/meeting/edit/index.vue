@@ -2,7 +2,7 @@
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Icon, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
-import { http, utils, TESTER, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { task, project } from '@/api/tester';
 
@@ -34,7 +34,7 @@ const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void
 
 const formRef = ref();
 
-const evalWorkloadMethodOptions = ref<{ value: string, message: string }[]>([]);
+const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const dataSource = ref<MeetingInfo>();
 const formState = ref<FormState>({
   content: '',
@@ -129,8 +129,7 @@ const cancel = () => {
 };
 
 const loadEnums = async () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  evalWorkloadMethodOptions.value = data as { message: string; value: string; }[];
+  evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 const loadData = async (id: string) => {

@@ -2,6 +2,7 @@
 import { computed, inject, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
+import { TaskSprintStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 
@@ -27,10 +28,10 @@ const tenantInfo = inject('tenantInfo', ref({ id: '' }));
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
-const taskStatusTypeOpt = ref<{name: string; key: string}[]>([]);
+const taskStatusTypeOpt = ref<EnumMessage<TaskSprintStatus>[]>([]);
 const loadStatusEnum = () => {
-  const data = enumUtils.enumToMessages('TaskSprintStatus');
-  taskStatusTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
+  const data = enumUtils.enumToMessages(TaskSprintStatus);
+  taskStatusTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
 };
 
 const searchPanelOptions = [
@@ -41,13 +42,6 @@ const searchPanelOptions = [
     allowClear: true,
     maxlength: 100
   },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'TaskSprintStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
   {
     valueKey: 'ownerId',
     type: 'select-user',

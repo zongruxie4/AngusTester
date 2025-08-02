@@ -1,24 +1,8 @@
-export type AssertionType = 'BODY' | 'DURATION'|'BODY_SIZE'
-
-export type AssertionCondition = 'CONTAIN' |
-  'EQUAL' |
-  'GREATER_THAN' |
-  'GREATER_THAN_EQUAL' |
-  'IS_EMPTY' |
-  'IS_NULL' |
-  'LESS_THAN' |
-  'LESS_THAN_EQUAL' |
-  'NOT_CONTAIN' |
-  'NOT_EMPTY' |
-  'NOT_EQUAL' |
-  'NOT_NULL' |
-  'REG_MATCH' |
-  'XPATH_MATCH' |
-  'JSON_PATH_MATCH';
+import { BasicAssertionType, AssertionCondition } from '@xcan-angus/infra';
 
 export type AssertionConfig = {
   name: string;
-  type: AssertionType;
+  type: BasicAssertionType;
   description: string;
   expected: string;
   assertionCondition: AssertionCondition;
@@ -29,7 +13,7 @@ export type AssertionConfig = {
 
 export type AssertionInfo = {
   name: string;
-  type: {value:AssertionType;message:string;};
+  type: {value:BasicAssertionType;message:string;};
   description: string;
   expected: string;
   assertionCondition: {value:AssertionCondition;message:string;};

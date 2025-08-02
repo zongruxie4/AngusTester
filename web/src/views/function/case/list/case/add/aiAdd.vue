@@ -17,7 +17,8 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumUtils, TESTER, upload, utils } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, enumUtils, TESTER, upload, utils } from '@xcan-angus/infra';
+import { CaseStepView } from '@/enums/enums';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
@@ -183,7 +184,6 @@ const validateList = () => {
       formRef.value.validate(_ruleKeys)
         .then(async () => {
           if (stupsErr.value) {
-
           }
         });
     });
@@ -380,11 +380,12 @@ const getModuleTreeData = async () => {
   moduleTreeData.value = data || [];
 };
 
-const stepViewOpt = ref<{name: string, key: string}[]>([]);
+const stepViewOpt = ref<EnumMessage<CaseStepView>[]>([]);
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  const data1 = enumUtils.enumToMessages('CaseStepView');
-  evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
+  const data = enumUtils.enumToMessages(EvalWorkloadMethod);
+  evalWorkloadMethod.value = data?.filter(item => item.value === EvalWorkloadMethod.STORY_POINT)[0];
+
+  const data1 = enumUtils.enumToMessages(CaseStepView);
   stepViewOpt.value = data1.map(i => ({ name: i.message, key: i.value }));
 };
 const changeStepView = ({ key }) => {
@@ -392,16 +393,13 @@ const changeStepView = ({ key }) => {
 };
 
 const preRichRef = ref();
-const validateCOndition = () => {
+const validateCondition = () => {
   if (!formState.value.precondition) {
     return Promise.resolve();
   }
   if (preRichRef.value && preRichRef.value.getLength() > 2000) {
     return Promise.reject('富文本字符不能超过2000');
   }
-  // if (formState.value.precondition.length > 2000) {
-  //   return Promise.reject('富文本字符不能超过2000');
-  // }
   return Promise.resolve();
 };
 
@@ -522,7 +520,7 @@ const delCase = (caseItem, idx) => {
               </FormItem>
               <FormItem
                 name="precondition"
-                :rules="[{validator: validateCOndition}]">
+                :rules="[{validator: validateCondition}]">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
                     <span>前置条件</span>

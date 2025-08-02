@@ -2,8 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { Input, Select, SelectEnum, Validate } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
-
+import { AssertionCondition, AssertionType, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
 import MatchItemPopover from './matchItemPopover.vue';
 import ExpectedPopover from './expectedPopover.vue';
 import jsonpath from './utils/jsonpath';
@@ -11,14 +10,12 @@ import xpath from './utils/xpath';
 import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
-import { AssertCondition, AssertType } from './utils/assert/PropsType';
 
 interface Props {
   value: FormItem;
   num?: number;
   viewType?: boolean;
   vertical: boolean;
-
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -69,7 +66,7 @@ const extractDisabled = ref(false);// 禁止选择提取值集合
 
 // const typeError = ref<<string>>(new ());
 const typeError = ref(false);
-const headerNameeError = ref(false);
+const headerNameError = ref(false);
 const assertionConditionError = ref(false);
 const expectedError = ref(false);
 
@@ -86,7 +83,8 @@ const NOT_PARAMETER_NAME: readonly ['REQUEST_RAW_BODY', 'RESPONSE_BODY'] = ['REQ
 // 是否显示期望值或提取值的输入框，只有断言条件不是['为空','不为空','为null','不为null']才显示
 // const showExpected = ref<<string>>(new ());
 const showExpected = ref(false);
-const NOT_SHOW_CONDITION: readonly Partial<AssertCondition>[] = ['IS_NULL', 'IS_EMPTY', 'NOT_EMPTY', 'NOT_NULL'];
+const NOT_SHOW_CONDITION: readonly Partial<AssertionCondition>[] = [
+  AssertionCondition.IS_NULL, AssertionCondition.NOT_NULL, AssertionCondition.IS_EMPTY, AssertionCondition.NOT_EMPTY];
 
 // 只有断言条件为正则表达式、xpath表达式、jsonpath表达式才显示
 const expressionShow = ref();
@@ -96,8 +94,7 @@ const expressionErrorMsgMap = ref();
 // 断言条件枚举
 const assertionConditionOptions = ref<{ message: string; value: string; }[]>([]);
 const loadAssertionConditionOptions = () => {
-  const data = enumUtils.enumToMessages('AssertionCondition');
-  assertionConditionOptions.value = data;
+  assertionConditionOptions.value = enumUtils.enumToMessages(AssertionCondition);
 };
 
 const NUMBER_CONDITION = ['EQUAL', 'NOT_EQUAL', 'GREATER_THAN', 'GREATER_THAN_EQUAL', 'LESS_THAN', 'LESS_THAN_EQUAL'];
@@ -119,8 +116,7 @@ const optionsMap = computed(() => {
 // 提取位置枚举
 const locationOptions = ref<{ message: string; value: string; }[]>([]);
 const loadLocationOptions = () => {
-  const data = enumUtils.enumToMessages('HttpExtractionLocation');
-  locationOptions.value = data;
+  locationOptions.value = enumUtils.enumToMessages(HttpExtractionLocation);
 };
 
 const locationOptionsMap = computed(() => {
@@ -158,12 +154,12 @@ const inputBlur = () => {
   focus.value = false;
 };
 
-const typeChange = (value: AssertType) => {
+const typeChange = (value: AssertionType) => {
   typeError.value = false;
 
   if (value !== 'HEADER') {
     dataMap.value.parameterName = '';
-    headerNameeError.value = false;
+    headerNameError.value = false;
   }
 
   const _condition = dataMap.value.assertionCondition || '';
@@ -177,7 +173,7 @@ const typeChange = (value: AssertType) => {
     }
 
     if (!NUMBER_CONDITION.includes(_condition)) {
-      dataMap.value.assertionCondition = 'EQUAL';
+      dataMap.value.assertionCondition = AssertionCondition.EQUAL;
       showExpected.value = true;
     }
 
@@ -193,7 +189,7 @@ const typeChange = (value: AssertType) => {
 };
 
 const headerNameeChange = () => {
-  headerNameeError.value = false;
+  headerNameError.value = false;
 };
 
 const assertionConditionChange = (value: typeof NOT_SHOW_CONDITION[number]) => {
@@ -291,7 +287,7 @@ const expectedChange = () => {
 
 const resetError = () => {
   typeError.value = false;
-  headerNameeError.value = false;
+  headerNameError.value = false;
   assertionConditionError.value = false;
   expectedError.value = false;
 
@@ -375,7 +371,7 @@ const toValidate = (): boolean => {
     // 断言类型是响应头时，响应头名称必须
     if (currentInfo.type === 'HEADER') {
       if (!currentInfo.parameterName) {
-        headerNameeError.value = true;
+        headerNameError.value = true;
       }
     }
   }
@@ -423,7 +419,7 @@ const toValidate = (): boolean => {
   }
 
   return !(typeError.value ||
-    headerNameeError.value ||
+    headerNameError.value ||
     assertionConditionError.value ||
     expressionError.value ||
     expectedError.value ||
@@ -477,7 +473,7 @@ onMounted(() => {
     reset();
     const data = newValue as FormItem;
     const extraction = data.extraction;
-    const assertionCondition = data.assertionCondition?.value || data.assertionCondition;
+    const assertionCondition = data.assertionCondition || AssertionCondition.EQUAL;
 
     dataMap.value = {
       assertionCondition,
@@ -489,7 +485,7 @@ onMounted(() => {
       extraction: data.extraction || generateDefaultExtraction(),
       parameterName: data.parameterName,
       name: data.name,
-      type: data.type?.value || data.type
+      type: data.type
     };
 
     if (extraction) {
@@ -558,7 +554,7 @@ const filterStatus = (value) => {
             v-model:value="dataMap.parameterName"
             :disabled="dataMap.type !== 'HEADER'"
             :readonly="props.viewType"
-            :error="headerNameeError"
+            :error="headerNameError"
             :maxlength="400"
             placeholder="响应头名称"
             title="响应头名称"

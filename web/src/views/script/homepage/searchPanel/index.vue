@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { TESTER, XCanDexie, enumUtils } from '@xcan-angus/infra';
+import { ScriptType, TESTER, XCanDexie, enumUtils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
@@ -46,8 +46,8 @@ const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undef
 
 const scriptTypeOpt = ref<MenuItem[]>([]);
 const loadEnum = () => {
-  const data = enumUtils.enumToMessages('ScriptType');
-  scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== 'MOCK_APIS');
+  const data = enumUtils.enumToMessages(ScriptType);
+  scriptTypeOpt.value = data.map(i => ({ name: i.message, key: i.value })).filter(i => i.key !== ScriptType.MOCK_APIS);
 };
 
 const menuItemClick = (data: MenuItem) => {

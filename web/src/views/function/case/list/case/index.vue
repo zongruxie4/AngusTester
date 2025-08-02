@@ -22,7 +22,7 @@ import {
   TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie } from '@xcan-angus/infra';
+import { EnumMessage, NumberCompareCondition, toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
@@ -873,19 +873,11 @@ const getPlanAuth = async () => {
       permissions: (data[planId].permissions || []).map(i => i.value)
     };
   });
-  // if (data.funcPlanAuth) {
-  //   planAuthList.value = data.permissions.map(item => {
-  //     return item.value;
-  //   });
-  // } else {
-  //   planAuthList.value = CASE_PROJECT_PERMISSIONS;
-  // }
 };
 
-const NumberMatchCondition = ref<{ value: string, message: string }[]>([{ value: 'EQUAL', message: '等于' }]);
+const numberMatchCondition = ref<EnumMessage<NumberCompareCondition>[]>([NumberCompareCondition.EQUAL]);
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('NumberCompareCondition');
-  NumberMatchCondition.value = data;
+  numberMatchCondition.value = enumUtils.enumToMessages(NumberCompareCondition);
 };
 
 // 模块相关
@@ -1818,7 +1810,7 @@ defineExpose({
                   <Select
                     :value="testNumScope"
                     size="small"
-                    :options="NumberMatchCondition"
+                    :options="numberMatchCondition"
                     :fieldNames="{ label: 'description', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"
@@ -1842,7 +1834,7 @@ defineExpose({
                   <Select
                     v-model:value="testFailScope"
                     size="small"
-                    :options="NumberMatchCondition"
+                    :options="numberMatchCondition"
                     :fieldNames="{ label: 'description', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"
@@ -1866,7 +1858,7 @@ defineExpose({
                   <Select
                     :value="reviewNumScope"
                     size="small"
-                    :options="NumberMatchCondition"
+                    :options="numberMatchCondition"
                     :fieldNames="{ label: 'message', value: 'value' }"
                     :allowClear="false"
                     :bordered="false"

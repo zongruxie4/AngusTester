@@ -15,6 +15,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
+import { ExtractionMethod, Encoding, ExtractionFileType } from '@xcan-angus/infra';
 
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
@@ -53,15 +54,15 @@ const variableName = ref<string>('');
 const variableNameError = ref(false);
 const description = ref<string>('');
 const filePath = ref<string>('');
-const fileType = ref<'CSV' | 'EXCEL' | 'TXT'>('CSV');
-const encoding = ref<'UTF-8' | 'UTF-16' | 'UTF-16BE' | 'UTF-16LE' | 'US-ASCII' | 'ISO-8859-1'>('UTF-8');
+const fileType = ref<ExtractionFileType>('CSV');
+const encoding = ref<Encoding>('UTF-8');
 const rowIndex = ref<string>('0');
 const columnIndex = ref<string>('0');
 const separatorChar = ref<string>(',');
 const escapeChar = ref<string>('\\');
 const quoteChar = ref<string>('"');
 
-const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
+const method = ref<ExtractionMethod>(ExtractionMethod.EXACT_VALUE);
 const defaultValue = ref<string>('');
 const expression = ref<string>('');
 const matchItem = ref<string>('');
@@ -70,7 +71,7 @@ const previewData = ref<{
   name: string;
   extraction: {
     source: 'FILE';
-    fileType: 'CSV' | 'EXCEL' | 'TXT';
+    fileType: ExtractionFileType;
     path: string;
     encoding: string;
     quoteChar: string;
@@ -78,7 +79,7 @@ const previewData = ref<{
     separatorChar: string;
     rowIndex: string;
     columnIndex: string;
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+    method: ExtractionMethod;
     defaultValue: string;
     expression: string;
     matchItem: string;

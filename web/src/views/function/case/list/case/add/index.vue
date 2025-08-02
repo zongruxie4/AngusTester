@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import {
   DatePicker,
   Hints,
@@ -16,7 +16,8 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { enumUtils, TESTER, upload, localStore, utils } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, enumUtils, TESTER, upload, localStore, utils } from '@xcan-angus/infra';
+import { CaseStepView } from '@/enums/enums';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
@@ -376,9 +377,10 @@ const getModuleTreeData = async () => {
 
 const stepViewOpt = ref<{name: string, key: string}[]>([]);
 const loadEnums = async () => {
-  const data = enumUtils.enumToMessages('EvalWorkloadMethod');
-  const data1 = enumUtils.enumToMessages('CaseStepView');
-  evalWorkloadMethod.value = data?.filter(item => item.value === 'STORY_POINT')[0];
+  const data = enumUtils.enumToMessages(EvalWorkloadMethod);
+  evalWorkloadMethod.value = data?.filter(item => item.value === EvalWorkloadMethod.STORY_POINT)[0];
+
+  const data1 = enumUtils.enumToMessages(CaseStepView);
   stepViewOpt.value = data1.map(i => ({ name: i.message, key: i.value }));
 };
 
@@ -394,9 +396,6 @@ const validateCondition = () => {
   if (conditionRichRef.value && conditionRichRef.value.getLength() > 2000) {
     return Promise.reject('富文本字符不能超过2000');
   }
-  // if (formState.value.precondition.length > 2000) {
-  //   return Promise.reject('富文本字符不能超过2000');
-  // }
   return Promise.resolve();
 };
 

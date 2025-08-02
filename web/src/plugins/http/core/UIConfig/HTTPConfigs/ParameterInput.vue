@@ -13,7 +13,7 @@ export interface OptionProps {
   id: string;
   value: string;
   type: 'string';
-  in: 'query' | 'path' | 'header' | 'cookie';
+  in: ParameterIn;
 }
 
 export interface Props {
@@ -21,7 +21,7 @@ export interface Props {
   value: OptionProps[];
   enabled: boolean;
   errorNum:number;
-  defaultIn?: 'query' | 'path' | 'header' | 'cookie';
+  defaultIn?: ParameterIn;
   showInType?: boolean;
   readonly?: boolean;
 }

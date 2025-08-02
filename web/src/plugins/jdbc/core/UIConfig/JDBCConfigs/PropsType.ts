@@ -7,7 +7,6 @@ export type VariableInfo = {
     id:string;
     name:string;
     description:string;
-    enabled:boolean;
     enabled?:boolean;
     scope: {
         value: 'GLOBAL' | 'CURRENT';

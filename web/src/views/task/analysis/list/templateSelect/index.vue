@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
+import { AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from '../PropTypes';
 
@@ -22,10 +23,10 @@ const emits = defineEmits<{(e: 'update:template', value: string):void;
 const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部分析', value: '' }]);
 
 const loadOpt = () => {
-  const data = enumUtils.enumToMessages('AnalysisTaskTemplate');
+  const data = enumUtils.enumToMessages(AnalysisTaskTemplate);
   moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
   emits('update:templateData', data);
-  const desc = enumUtils.enumToMessages('AnalysisTaskTemplateDesc');
+  const desc = enumUtils.enumToMessages(AnalysisTaskTemplateDesc);
   emits('update:templateDesc', desc);
 };
 

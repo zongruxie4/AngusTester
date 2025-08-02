@@ -7,7 +7,8 @@ import * as eCharts from 'echarts';
 import { throttle } from 'throttle-debounce';
 import { kanban } from 'src/api/tester';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils } from '@xcan-angus/infra';
+import { ReportCategory } from '@/enums/enums';
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 const chartSeriesColorConfig = {
@@ -43,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const targetType = ref('TASK');
-const targetDataCategery = {
+const targetDataCategory = {
   TEST_CUSTOMIZATION: '自定义测试',
   TEST_FUNCTIONALITY: '功能测试',
   TEST_PERFORMANCE: '性能测试',
@@ -66,10 +67,9 @@ const targetDataCategery = {
   REPORT: '报告',
   REPORT_RECORD: '记录'
 };
-const reportCategoryOpt = ref<{value: string, message: string}[]>([]);
+const reportCategoryOpt = ref<EnumMessage<ReportCategory>[]>([]);
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages('ReportCategory');
-  reportCategoryOpt.value = data || [];
+  reportCategoryOpt.value = enumUtils.enumToMessages(ReportCategory);
   if (reportCategoryOpt.value.length) {
     reportBarChartsConfig.xAxis.data = reportCategoryOpt.value.map(i => i.message);
   }
@@ -125,7 +125,7 @@ const loadGrowthTrendData = async () => {
     });
     increaseEchartConfig.series = keys.map((key, idx) => {
       return {
-        name: targetDataCategery[key],
+        name: targetDataCategory[key],
         data: xData.map(i => {
           const target = data[key].find(item => item.timeSeries === i);
           if (target) {

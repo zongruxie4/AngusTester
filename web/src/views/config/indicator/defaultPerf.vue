@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { Icon, Input, notification, Select, ShortDuration, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, Percentile, enumUtils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 
 import ExpandGrid from './expandGrid.vue';
@@ -29,9 +29,9 @@ const info = reactive({ // 展示 info
   rampUpThreads: undefined,
   rampUpInterval: '1min'
 });
-const percentileOpt = ref<{value: string, message: string}[]>([]);
+const percentileOpt = ref<EnumMessage<Percentile>[]>([]);
 const loadPercentileOpt = () => {
-  const data = enumUtils.enumToMessages('Percentile');
+  const data = enumUtils.enumToMessages(Percentile);
   percentileOpt.value = (data || []);
 };
 

@@ -21,6 +21,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { TESTER, duration, enumUtils, XCanDexie } from '@xcan-angus/infra';
+import { TaskType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
@@ -104,8 +105,8 @@ const totalNumFilter = ref<{ key: 'totalNum'; op: string; value: string | undefi
 const taskTypeList = ref<MenuItem[]>([]);
 
 const loadTaskTypeEnum = () => {
-  const data = enumUtils.enumToMessages('TaskType');
-  taskTypeList.value = (data || []).map(item => {
+  const data = enumUtils.enumToMessages(TaskType);
+  taskTypeList.value = data.map(item => {
     return {
       name: item.message,
       key: item.value

@@ -1,11 +1,11 @@
 import { isEqual } from 'lodash-es';
-import { utils } from '@xcan-angus/infra';
+import { AssertionCondition, AssertionType, utils } from '@xcan-angus/infra';
 
 import expressionUtils from '../expression';
 import { Operator } from '../expression/PropsType';
 import extract from '../extract';
 import proxy, { VariableInfo } from '../proxy';
-import { AssertConfig, AssertType, AssertResult, AssertCondition, ConditionResult, Parameter } from './PropsType';
+import { AssertConfig, AssertResult, ConditionResult, Parameter } from './PropsType';
 
 const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:VariableInfo[]): Promise<AssertResult[]> => {
   if (!configs?.length || !data) {
@@ -216,7 +216,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
   return assertResult;
 };
 
-const getErrorMessage = (type: AssertType, name: string): string => {
+const getErrorMessage = (type: AssertionType, name: string): string => {
   if (type === 'BODY') {
     return '响应体';
   }
@@ -232,11 +232,11 @@ const calculate = ({
   type,
   extraction
 }: {
-  assertionCondition: AssertCondition;
+  assertionCondition: AssertionCondition;
   realValueData: string | null;
   expectedData: string | null;
   parameterName: string;
-  type: AssertType;
+  type: AssertionType;
   extraction:{[key:string]:string}|null;
 }): { failure: boolean; message: string; } => {
   // 计算结果是否符合预期
@@ -316,12 +316,12 @@ const getRealvalue = (
     assertionCondition
   }:
     {
-      type: AssertType;
+      type: AssertionType;
       data: Parameter;
       parameterName: string;
       expression: string;
       matchItem: number | undefined;
-      assertionCondition: AssertCondition;
+      assertionCondition: AssertionCondition;
     }): {
       data: string | null;
       message: string;
