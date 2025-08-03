@@ -14,11 +14,11 @@ import lombok.experimental.Accessors;
 public class NodeOnlinePurchaseDto {
 
   @NotNull
-  @Schema(example = "10002929288887", required = true)
+  @Schema(description = "Order identifier for online node purchase transaction", example = "10002929288887", required = true)
   private Long orderId;
 
   @NotNull
-  @Schema(required = true)
+  @Schema(description = "Tenant identifier for multi-tenant node allocation", required = true)
   private Long tenantId;
 
 }

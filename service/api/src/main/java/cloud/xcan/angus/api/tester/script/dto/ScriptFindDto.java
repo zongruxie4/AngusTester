@@ -26,43 +26,55 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Accessors(chain = true)
 public class ScriptFindDto extends PageQuery {
 
+  @Schema(description = "Script identifier for specific script lookup")
   private Long id;
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for script filtering and organization", requiredMode = RequiredMode.REQUIRED)
   private Long projectId;
 
+  @Schema(description = "Service identifier for service-specific script filtering")
   private Long serviceId;
 
   @Length(max = MAX_NAME_LENGTH_X2)
+  @Schema(description = "Script name for partial matching search")
   private String name;
 
+  @Schema(description = "Script execution type for methodology filtering", example = "TEST_PERFORMANCE")
   private ScriptType type;
 
+  @Schema(description = "Script source type for origin classification", example = "CREATED")
   private ScriptSource source;
 
+  @Schema(description = "Source identifier for external script reference tracking")
   private String sourceId;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Script tag for classification and organization")
   private String tag;
 
   @Length(max = MAX_NAME_LENGTH)
+  @Schema(description = "Script plugin for extension functionality filtering")
   private String plugin;
 
-  @Schema(description = "Required when app administrators query all scripts")
+  @Schema(description = "Administrator access flag for cross-project script querying")
   private Boolean admin;
 
-  @Schema(description = "Required when the user query has the one permission script")
+  @Schema(description = "Permission level filter for user access control validation")
   private ScriptPermission hasPermission;
 
+  @Schema(description = "User identifier who created the script")
   private Long createdBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Script creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 
+  @Schema(description = "User identifier who last modified the script")
   private Long lastModifiedBy;
 
   @DateTimeFormat(pattern = DATE_FMT)
+  @Schema(description = "Script last modification timestamp for version tracking")
   private LocalDateTime lastModifiedDate;
 
   @Override

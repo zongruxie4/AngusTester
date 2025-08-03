@@ -14,15 +14,15 @@ import lombok.experimental.Accessors;
 public class NodeRenewDto {
 
   @NotNull
-  @Schema(example = "10002929288887", required = true)
+  @Schema(description = "New order identifier for node renewal transaction", required = true)
   private Long orderId;
 
   @NotNull
-  @Schema(example = "10002929288888", required = true)
+  @Schema(description = "Original order identifier for renewal reference tracking", required = true)
   private Long originalOrderId;
 
   @NotNull
-  @Schema(required = true)
+  @Schema(description = "Tenant identifier for multi-tenant node renewal", required = true)
   private Long tenantId;
 
 }

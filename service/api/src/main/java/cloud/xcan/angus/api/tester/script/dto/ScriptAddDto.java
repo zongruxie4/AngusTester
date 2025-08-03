@@ -20,19 +20,19 @@ import org.hibernate.validator.constraints.Length;
 public class ScriptAddDto {
 
   @NotNull
-  @Schema(description = "Project id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(description = "Project identifier for script organization and access control", requiredMode = Schema.RequiredMode.REQUIRED)
   private Long projectId;
 
   @NotBlank
   @Length(max = MAX_NAME_LENGTH_X2)
-  @Schema(description = "Script name", example = "script-01", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(description = "Script display name for identification and organization", example = "script-01", requiredMode = Schema.RequiredMode.REQUIRED)
   private String name;
 
-  @Schema(description = "Whether to enable authorization control, default disabled")
+  @Schema(description = "Authorization control flag for script access management, defaults to disabled")
   public Boolean auth;
 
   @NotNull
-  @Schema(description = "Script type, priority is higher than the type in the script content, which controls the actual type of test execution", example = "TEST_PERFORMANCE", required = true)
+  @Schema(description = "Script execution type for test methodology control, overrides content-based type detection", example = "TEST_PERFORMANCE", required = true)
   private ScriptType type;
 
   //@NotNull
@@ -40,12 +40,12 @@ public class ScriptAddDto {
   //private ScriptSource source;
 
   @Length(max = MAX_DESC_LENGTH_X4)
-  @Schema(description = "Script description")
+  @Schema(description = "Script description for documentation and context")
   private String description;
 
   @NotBlank
   @Length(max = ANGUS_SCRIPT_LENGTH) // 10MB
-  @Schema(description = "Yaml or json format script content", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(description = "Script content in YAML or JSON format for test execution configuration", requiredMode = Schema.RequiredMode.REQUIRED)
   private String content;
 
 }
