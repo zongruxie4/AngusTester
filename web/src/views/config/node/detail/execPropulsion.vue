@@ -3,6 +3,7 @@ import { inject, onMounted, ref } from 'vue';
 import { modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { node } from '@/api/tester';
+import { appContext } from '@xcan-angus/infra';
 
 interface Props {
   nodeId: string;
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   tenantId: undefined
 });
 
-const tenantInfo = inject('tenantInfo', ref({}));
+const tenantInfo = ref(appContext.getTenant());
 
 const dataSource = ref({});
 
@@ -238,7 +239,7 @@ onMounted(() => {
       <template #bodyCell="{record, column}">
         <template v-if="column.dataIndex === 'action'">
           <Button
-            :disabled="tenantId !== tenantInfo?.tenantId"
+            :disabled="tenantId !== tenantInfo?.id"
             type="link"
             size="small"
             @click="killProcess(record)">

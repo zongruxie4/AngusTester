@@ -3,7 +3,7 @@ import { ref, computed, onMounted, inject } from 'vue';
 import { Icon, SearchPanel, IconRefresh, Colon, DropdownSort } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 
 interface Props {
   loading: boolean;
@@ -24,7 +24,7 @@ const emits = defineEmits<{(e: 'change', value: {
   filters: {key: string; op: string; value: string|string[]}[];
 }):void,
  (e: 'refresh'):void}>();
-const tenantInfo = inject('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.getUser());
 
 const statusOpt = [{ name: '未执行', key: 'PENDING' }, { name: '成功', key: 'SUCCESS' }, { name: '失败', key: 'FAILURE' }];
 const statusKeys = statusOpt.map(i => i.key);
@@ -177,7 +177,7 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
     assocKeys.forEach(key => {
       if (['createdBy'].includes(key)) {
         const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== tenantInfo.value?.id) {
+        if (!filterItem || filterItem.value !== userInfo.value?.id) {
           delete selectedMenuMap.value[key];
         }
       } else if (key === 'createdDate') {
@@ -244,7 +244,7 @@ const menuItemClick = (data) => {
       selectedMenuMap.value[key] = true;
     }
   }
-  const userId = tenantInfo.value?.id;
+  const userId = userInfo.value?.id;
   // let timeFilters: {key: string; op: string; value: string}[] = [];
   const assocFiltersInQuick:{valueKey: string, value: string|string[]}[] = [];
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {

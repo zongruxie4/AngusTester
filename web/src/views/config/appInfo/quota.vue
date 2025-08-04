@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { inject, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { Icon, IconRefresh, Table } from '@xcan-angus/vue-ui';
 import { setting } from '@/api/gm';
+import { appContext } from '@xcan-angus/infra';
 
-const tenantInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 
 const columns = [
   {
@@ -40,7 +41,7 @@ const dataSource = ref([]);
 const loadData = async () => {
   loading.value = true;
   const { current, pageSize } = pagination;
-  const [error, res] = await setting.getQuotaList({ appCode: 'AngusTester', tenantId: tenantInfo.value.id, pageNo: current, pageSize });
+  const [error, res] = await setting.getQuotaList({ appCode: 'AngusTester', tenantId: userInfo.value.id, pageNo: current, pageSize });
   loading.value = false;
   if (error) {
     return;

@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
-import { duration } from '@xcan-angus/infra';
+import { duration, appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
 interface Props {
@@ -34,7 +34,7 @@ type FilterOp =
   | 'NOT_IN';
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
 
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 
 const TagList = defineAsyncComponent(() => import('@/views/function/case/list/case/tagSelector/index.vue'));
 

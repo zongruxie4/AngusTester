@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
@@ -7,9 +8,9 @@ const Projects = defineAsyncComponent(() => import('@/views/project/project/inde
 const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/project/activity/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 const aiAgent = inject('aiAgent', ref({ chatIframe: '' }));
 const aiEnabled = inject('aiEnabled', ref(false));
 

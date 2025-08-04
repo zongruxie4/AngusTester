@@ -29,7 +29,7 @@ type OrderSortKey = 'ASC' | 'DESC';
 const NavigationHeader = defineAsyncComponent(() => import('./components/navigationHeader.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/execution/searchPanel/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 
 const nameInputRefs = ref<{ [key: string]: any }>({});

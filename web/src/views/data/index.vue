@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
@@ -12,9 +12,9 @@ const DataSet = defineAsyncComponent(() => import('@/views/data/dataset/index.vu
 const FileData = defineAsyncComponent(() => import('@/views/data/file/index.vue'));
 const SourceData = defineAsyncComponent(() => import('@/views/data/datasource/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 
 const activeKey = ref<MenuKey>('homepage');
 

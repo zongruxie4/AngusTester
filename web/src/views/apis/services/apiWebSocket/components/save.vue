@@ -4,7 +4,7 @@
 import { inject, onMounted, reactive, ref } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectEnum, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 
 import { apis, services } from 'src/api/tester';
 
@@ -26,7 +26,7 @@ interface Props {
 const replaceTabPane = inject<(key:string, data: any) => void>('replaceTabPane', () => { });
 const close = inject('close', () => ({}));
 const auths = inject('auths', ref<string[]>([]));
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 const isUnarchived = inject('isUnarchived', { value: false });
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 

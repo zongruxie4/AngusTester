@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, Ref, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
@@ -20,9 +20,9 @@ const activeKey = ref<MenuKey>();
 const servicesRef = ref();
 const router = useRouter();
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 
 const projectId = computed(() => {
   return projectInfo.value?.id;

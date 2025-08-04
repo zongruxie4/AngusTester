@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 
 type MenuKey = 'homepage' | 'scenario' | 'trash' | 'monitor';
 
@@ -11,9 +11,9 @@ const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vu
 const Scenario = defineAsyncComponent(() => import('@/views/scenario/scenario/index.vue'));
 const Monitor = defineAsyncComponent(() => import('@/views/scenario/monitor/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 
 const activeKey = ref<MenuKey>();
 

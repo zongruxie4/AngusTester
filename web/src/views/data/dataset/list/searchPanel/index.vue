@@ -4,6 +4,7 @@ import { Colon, Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
+import { appContext } from '@xcan-angus/infra';
 
 interface Props {
   loading: boolean;
@@ -28,7 +29,7 @@ const emits = defineEmits<{(e: 'change', value: {
   (e: 'toImport'):void;
   (e: 'toExport'):void;
   (e: 'toCancelBatchDelete'):void}>();
-const tenantInfo = inject('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.setUser());
 
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
@@ -206,7 +207,7 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
     assocKeys.forEach(key => {
       if (key === 'createdBy' || key === 'lastModifiedBy') {
         const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== tenantInfo.value?.id) {
+        if (!filterItem || filterItem.value !== userInfo.value?.id) {
           delete selectedMenuMap.value[key];
         }
       }
@@ -267,7 +268,7 @@ const menuItemClick = (data) => {
       selectedMenuMap.value[key] = true;
     }
   }
-  const userId = tenantInfo.value?.id;
+  const userId = userInfo.value?.id;
   const timeFilters: {key: string; op: string; value: string}[] = [];
   const assocFiltersInQuick = [];
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {

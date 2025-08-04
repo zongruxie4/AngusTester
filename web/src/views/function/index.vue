@@ -14,9 +14,9 @@ const Baseline = defineAsyncComponent(() => import('@/views/function/baseline/in
 const Analysis = defineAsyncComponent(() => import('@/views/function/analysis/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/function/trash/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 const changeProjectInfo = inject('changeProjectInfo', () => undefined);
 
 const activeKey = ref<MenuKey>();

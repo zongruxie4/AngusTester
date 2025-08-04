@@ -39,7 +39,7 @@ const ok = async () => {
   let base64Content:string;
   const coding = contentEncoding.value;
   if (contentEncoding.value === 'gzip_base64') {
-    base64Content = codeUtils.(file);
+    base64Content = await codeUtils.gzip(file);
     emit('ok', base64Content, file, coding);
     close();
     return;

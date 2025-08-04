@@ -13,7 +13,7 @@ import {
   watch
 } from 'vue';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -47,9 +47,9 @@ const responseData = ref('');
 const readyState = ref(3); // ws 链接状态
 const responseCount = ref(0);
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp())
 
 const projectId = computed(() => {
   return projectInfo.value?.id;

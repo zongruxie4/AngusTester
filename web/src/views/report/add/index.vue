@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Menu, MenuItem, MenuItemGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
+import { appContext } from '@xcan-angus/infra';
 
 import { reportMenus } from './config';
 import dayjs from 'dayjs';
@@ -23,7 +24,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok')
 // const route = useRoute();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const projectInfo = inject('projectInfo', ref<{[key: string]: string}>({}));
-const tenantInfo = inject('tenantInfo');
+const tenantInfo = ref(appContext.getUser());
 const projectId = ref();
 const loading = ref(false);
 

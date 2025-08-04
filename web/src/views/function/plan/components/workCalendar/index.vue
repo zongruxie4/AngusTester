@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Modal } from '@xcan-angus/vue-ui';
-import { defineAsyncComponent, inject, ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
 
 interface Props {
   visible: boolean;
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
-const userInfo = inject('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.getUser());
 
 const WorkCalendar = defineAsyncComponent(() => import('@/views/function/homepage/workCalendar/index.vue'));
 

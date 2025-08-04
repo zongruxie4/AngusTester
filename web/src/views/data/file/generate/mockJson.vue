@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { appContext } from '@xcan-angus/infra'
 
 // eslint-disable-next-line import/no-absolute-path
 import { MockJson } from '@/plugins/gendata/jsonIndex';
@@ -18,7 +19,7 @@ const emit = defineEmits<{
     (e:'formatChange', value:{[key:string]:any}):void;
 }>();
 
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 const router = useRouter();
 
 const onFormatChange = (data) => {

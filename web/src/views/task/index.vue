@@ -15,9 +15,9 @@ const Meeting = defineAsyncComponent(() => import('@/views/task/meeting/index.vu
 const Analysis = defineAsyncComponent(() => import('@/views/task/analysis/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/task/trash/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
 const activeKey = ref<MenuKey>('');

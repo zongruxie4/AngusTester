@@ -16,7 +16,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, TESTER } from '@xcan-angus/infra';
+import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
@@ -1079,7 +1079,8 @@ watch(() => networkChartKey.value, () => {
 });
 
 const isAdmin = inject('isAdmin', ref(false));
-const tenantInfo = inject('tenantInfo', ref({}));
+const tenantInfo = ref(appContext.getTenant());
+const userInfo = ref(appContext.getUser());
 onMounted(async () => {
   id.value = route.params.id as string;
   loadInfo();
@@ -1198,7 +1199,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 v-if="!state.infos.enabled"
                 class="node-action-btn"
                 :loading="enableding"
-                :disabled="state.infos?.tenantId !== tenantInfo.tenantId || !(isAdmin || state.infos?.createdBy === tenantInfo.id)"
+                :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
                 <Icon icon="icon-qiyong" />启用
               </Button>
@@ -1206,11 +1207,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 v-else
                 class="node-action-btn"
                 :loading="enableding"
-                :disabled="state.infos?.tenantId !== tenantInfo.tenantId || !(isAdmin || state.infos?.createdBy === tenantInfo.id)"
+                :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
                 <Icon icon="icon-jinyong" />禁用
               </Button>
-              <Tooltip v-if="state.infos?.tenantId !== tenantInfo.tenantId || !(isAdmin || state.infos?.createdBy === tenantInfo.id) || state.infos?.enabled" :title="getDelTip(state.infos)">
+              <Tooltip v-if="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id) || state.infos?.enabled" :title="getDelTip(state.infos)">
                 <Button
                   class="node-action-btn"
                   :disabled="true">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, ref } from 'vue';
-import { duration } from '@xcan-angus/infra';
+import { duration, appContext } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
@@ -39,7 +39,7 @@ const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/proje
 
 const projectInfo = inject('projectInfo', ref({}));
 const isAdmin = inject('isAdmin', ref(false));
-const tenantInfo = inject('tenantInfo', ref({}));
+const userInfo = ref(appContext.getUser());
 
 const nameInputRef = ref();
 
@@ -232,7 +232,7 @@ const onMenuClick = (menu, record) => {
         placeholder="查询模块"
         @change="handleSearchModule" />
       <Button
-        :disabled="!isAdmin && projectInfo?.createdBy !== tenantInfo?.id && projectInfo.ownerId !== tenantInfo?.id"
+        :disabled="!isAdmin && projectInfo?.createdBy !== userInfo?.id && projectInfo.ownerId !== userInfo?.id"
         type="primary"
         size="small"
         @click="onMenuClick({key: 'add'}, {id: undefined})">

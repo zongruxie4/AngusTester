@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { inject, onBeforeMount, onMounted, Ref, ref, watch } from 'vue';
+import {  onBeforeMount, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { NoData } from '@xcan-angus/vue-ui';
-
 import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 
 import { LineChart } from 'echarts/charts';
@@ -30,7 +29,6 @@ echarts.use([
   CanvasRenderer
 ]);
 
-const tenantInfo:Ref = inject('tenantInfo', ref());
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -38,7 +36,7 @@ const initCharts = () => {
   if (!chartsRef.value) {
     return;
   }
-  myChart = echarts.init(chartsRef.value, tenantInfo.value.preference.themeCode, { renderer: 'canvas' });
+  myChart = echarts.init(chartsRef.value);
   myChart.setOption(chartsOption);
   window.addEventListener('resize', () => {
     myChart.resize();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
 import { Dropdown, Menu, MenuItem, TabPane, Tabs } from 'ant-design-vue';
-import { localStore } from '@xcan-angus/infra';
+import { localStore, appContext } from '@xcan-angus/infra';
 
 import { Icon, notification } from '@xcan-angus/vue-ui';
 
@@ -56,7 +56,7 @@ const emit = defineEmits<{
   (e: 'storageKeyChange', value:string): void;
 }>();
 
-const userInfo = inject<Ref<{ [key: string]: any }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 
 const MAX_PANE_LENGTH = 30;
 

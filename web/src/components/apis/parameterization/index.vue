@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, ref, Ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
 
 type Props = {
   targetId: string;
@@ -23,9 +24,9 @@ const emit = defineEmits<{
 const DataSet = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/index.vue'));
 const Variables = defineAsyncComponent(() => import('@/components/apis/parameterization/variable/index.vue'));
 
-const userInfo = inject<Ref<{ id: string }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 
 const targetInfoChange = (data: { id: string; datasetActionOnEOF: 'RECYCLE' | 'STOP_THREAD'; datasetSharingMode: 'ALL_THREAD' | 'CURRENT_THREAD'; }) => {
   emit('targetInfoChange', data);

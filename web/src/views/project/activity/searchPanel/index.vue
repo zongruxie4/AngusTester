@@ -4,7 +4,7 @@ import { Colon, IconCount, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { Tooltip } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -31,7 +31,7 @@ const emits = defineEmits<{(e: 'change', value: {
   (e: 'toImport'):void;
   (e: 'toExport'):void;
   (e: 'toCancelBatchDelete'):void}>();
-const tenantInfo = inject('tenantInfo', ref({ id: '' }));
+const userInfo = ref(appContext.getUser());
 
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
@@ -191,7 +191,7 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
     assocKeys.forEach(key => {
       if (key === 'userId') {
         const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== tenantInfo.value?.id) {
+        if (!filterItem || filterItem.value !== userInfo.value?.id) {
           delete selectedMenuMap.value[key];
         }
       }
@@ -252,7 +252,7 @@ const menuItemClick = (data) => {
       selectedMenuMap.value[key] = true;
     }
   }
-  const userId = tenantInfo.value?.id;
+  const userId = userInfo.value?.id;
   const timeFilters: {key: string; op: string; value: string}[] = [];
   const assocFiltersInQuick = [];
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {

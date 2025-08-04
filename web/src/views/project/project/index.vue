@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
 import { BrowserTab } from '@xcan-angus/vue-ui';
+import { appContext } from '@xcan-angus/infra';
 
 const projectHome = defineAsyncComponent(() => import('@/views/project/project/list/index.vue'));
 const EditProject = defineAsyncComponent(() => import('@/views/project/project/edit/index.vue'));
 const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project/detail/index.vue'));
 
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const browserTabRef = ref();
 const projectHomeRef = ref();

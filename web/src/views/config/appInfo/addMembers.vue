@@ -3,7 +3,7 @@ import { Tooltip } from 'ant-design-vue';
 import { computed, inject, Ref, ref } from 'vue';
 import { Grid, Modal, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { GM } from '@xcan-angus/infra';
+import { GM, appContext } from '@xcan-angus/infra';
 
 import { app } from 'src/api/gm';
 
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'update', refresh:boolean): void }>();
 
-const tenantInfo:Ref = inject('tenantInfo', ref());
+const userInfo:Ref = ref(appContext.getUser());
 const { t } = useI18n();
 
 // 选择的用户部门组id
@@ -135,7 +135,7 @@ const selectAction = computed(() => {
 
 // 策略请求（当前登录用户已有的策略）
 const policyAction = computed(() => {
-  return `${GM}/auth/user/${tenantInfo.value.id}/policy/associated?appId=${props.appId}`;
+  return `${GM}/auth/user/${userInfo.value.id}/policy/associated?appId=${props.appId}`;
 });
 
 // 用户的label是fullname

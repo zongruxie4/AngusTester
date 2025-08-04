@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button, Popover } from 'ant-design-vue';
-import { toClipboard, TESTER } from '@xcan-angus/infra';
+import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
 import { report } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
@@ -32,8 +32,8 @@ type Report = {
   };
 }
 
-const appInfo = inject('appInfo');
-const tenantInfo = inject('tenantInfo');
+const appInfo = ref(appContext.getAccessApp());
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject('projectInfo', ref({ id: '', type: { value: '' } }));
 
 const pagination = ref({
@@ -367,11 +367,11 @@ const columns = [
     </div>
 
     <SearchPanel
-      v-if="!!projectId && tenantInfo"
+      v-if="!!projectId && userInfo"
       :key="projectInfo?.type?.value"
       class="mt-3"
       :projectId="projectId"
-      :userInfo="tenantInfo"
+      :userInfo="userInfo"
       @add="addReport"
       @change="searchPanelChange"
       @openAuth="openAuth" />

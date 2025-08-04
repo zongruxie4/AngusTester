@@ -42,7 +42,6 @@ echarts.use([
   UniversalTransition
 ]);
 
-const tenantInfo:Ref = inject('tenantInfo', ref());
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -50,7 +49,7 @@ const initCharts = () => {
   if (!chartsRef.value) {
     return;
   }
-  myChart = echarts.init(chartsRef.value, tenantInfo.value.preference.themeCode, { renderer: 'canvas' });
+  myChart = echarts.init(chartsRef.value);
   myChart.setOption(chartsOption);
   window.addEventListener('resize', () => {
     myChart.resize();

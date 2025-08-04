@@ -2,6 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
 import { Tooltip } from 'ant-design-vue';
 import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper } from '@xcan-angus/vue-ui';
+import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
 import { funcCase } from '@/api/tester';
 
@@ -18,9 +19,9 @@ const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/lis
 const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/move/index.vue'));
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/updateResult/index.vue'));
 
-const userInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const appInfo = inject('appInfo', ref());
+const appInfo = ref(appContext.getAccessApp());
 
 const route = useRoute();
 const router = useRouter();

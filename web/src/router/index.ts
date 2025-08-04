@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { guard, app } from '@xcan-angus/infra';
+import { guard, appContext } from '@xcan-angus/infra';
 
 import routes from './routes';
 import store from '@/store';
@@ -15,7 +15,7 @@ const setCode = (code: number) => {
 
 const startupGuard = (): void => {
   // debugMode is true, turn on debug mode, do not check routing permissions
-  guard.navigationGuard(router, app.menuList, setCode, true); // TODO navigationGuard appContext#menuList
+  guard.navigationGuard(router, appContext.getAccessAppFuncTree() || [], setCode, true); // TODO navigationGuard appContext#menuList
 };
 
 export { startupGuard };

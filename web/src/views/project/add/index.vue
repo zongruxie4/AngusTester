@@ -3,7 +3,7 @@ import { computed, inject, ref, watch, defineAsyncComponent } from 'vue';
 import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Divider, Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
 import { project } from 'src/api/tester';
-import { GM, upload } from '@xcan-angus/infra';
+import { GM, upload, appContext } from '@xcan-angus/infra';
 
 export type Project = {
   name: string;
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   closable: true
 });
-const tenantInfo = inject('tenantInfo', ref());
+const userInfo = ref(appContext.getUser());
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -183,15 +183,15 @@ watch(() => props.visible, newValue => {
       importExample: true
     };
     members.value = {
-      USER: [tenantInfo.value.id],
+      USER: [userInfo.value.id],
       DEPT: [],
       GROUP: []
     };
     defaultOptionsUser.value = {
-      [tenantInfo.value.id]: {
-        fullName: tenantInfo.value.fullName,
-        id: tenantInfo.value.id,
-        name: tenantInfo.value.fullName,
+      [userInfo.value.id]: {
+        fullName: userInfo.value.fullName,
+        id: userInfo.value.id,
+        name: userInfo.value.fullName,
         disabled: true
       }
     };

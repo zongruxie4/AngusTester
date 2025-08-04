@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { PrinterOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { Watermark } from 'watermark-js-plus';
 import html2pdf from 'html3pdf';
@@ -24,9 +24,9 @@ const ScenarioReport = defineAsyncComponent(() => import('@/views/report/preview
 const ExecFunctionReport = defineAsyncComponent(() => import('@/views/report/preview/execFunction/index.vue'));
 const ExecPerfReport = defineAsyncComponent(() => import('@/views/report/preview/execPerf/index.vue'));
 
-const userInfo = inject<Ref<{ [key: string]: any }>>('tenantInfo');
+const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ [key: string]: any }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = inject<Ref<{ [key: string]: any }>>('appInfo', ref({ id: '', name: '' }));
+const appInfo = ref(appContext.getAccessApp());
 
 const route = useRoute();
 const recordId = ref();
