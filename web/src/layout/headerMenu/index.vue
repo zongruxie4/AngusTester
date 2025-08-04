@@ -11,7 +11,7 @@ type Tag = 'DYNAMIC_POSITION' | 'TOP_NAVIGATION' | 'FIXED_POSITION' | 'HEADER_ME
 
 interface IMenu {
   hasAuth: boolean;
-  tags: Tag[];
+  tags: {name: Tag}[];
   authCtrlFlag: boolean;
   code: string;
   icon: string;
@@ -21,8 +21,9 @@ interface IMenu {
   url: string;
   visible: boolean; // 显示的菜单
   width: number; // 菜单宽度
-  show: boolean;// 是否是可显示的菜单
   children?: IMenu[];
+  enabled: boolean;
+  authCtrl: boolean;
 }
 
 interface Props {
@@ -52,14 +53,14 @@ const overlayStyle = { minWidth: '120px' };
 
 const setMenuAttr = (_menus: IMenu[]) => {
   const domList: HTMLElement[] = [];
-  const temp = _menus?.filter(item => item.show)?.map(item => {
+  const temp = _menus?.map(item => {
     const ghostDom = document.createElement('a');
     ghostDom.innerText = item.showName;
     ghostDom.setAttribute('style', 'position:absolute;z-index:-999999;color:transparent;background:transparent;padding:0;font-size:14px;');
     document.body.appendChild(ghostDom);
     domList.push(ghostDom);
     item.width = ghostDom.offsetWidth;
-    item.visible = true;
+    item.show = true;
     return item;
   });
 
@@ -85,11 +86,11 @@ const isActive = (url: string): boolean => {
 };
 
 const visibleMenuList = computed(() => {
-  return menuList.value.filter(item => item.visible);
+  return menuList.value.filter(item => item.show);
 });
 
 const dropdownMenuList = computed(() => {
-  return menuList.value.filter(item => !item.visible);
+  return menuList.value.filter(item => !item.show);
 });
 
 const resizeHandler = debounce(duration.resize, () => {
@@ -98,17 +99,17 @@ const resizeHandler = debounce(duration.resize, () => {
   for (let i = 0, len = menuList.value.length; i < len; i++) {
     totalWidth += menuList.value[i].width + (i > 0 ? 28 : 0);
     if (totalWidth <= width) {
-      menuList.value[i].visible = true;
+      menuList.value[i].show = true;
     } else {
       for (let j = menuList.value.length; j--;) {
         if (j >= i) {
-          menuList.value[j].visible = false;
+          menuList.value[j].show = false;
         } else {
           totalWidth -= (menuList.value[j].width + (j > 0 ? 28 : 0));
           if ((totalWidth + moreElementWidth.value + 28) <= width) {
             break;
           } else {
-            menuList.value[j].visible = false;
+            menuList.value[j].show = false;
           }
         }
       }
@@ -128,8 +129,7 @@ onMounted(() => {
     if (!newValue?.length) {
       return;
     }
-
-    menuList.value = setMenuAttr(newValue.filter(i => i.code !== 'Mock'));
+    menuList.value = setMenuAttr(newValue.filter(i => i.code !== 'Mock' && (i.enabled || !i.authCtrl) && (i.tags || []).some(t  => t.name === 'DYNAMIC_POSITION')));
 
     if (menuList.value?.length) {
       const currentMenu = menuList.value?.find(item => {

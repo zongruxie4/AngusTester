@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 
 import { IPane } from './PropsType';
 
@@ -126,6 +126,8 @@ onMounted(() => {
     }
 
     hashChange(route.hash);
+  }, {
+    immediate: true
   });
 });
 
@@ -160,6 +162,7 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
+    :userId="props.userInfo.id"
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">
