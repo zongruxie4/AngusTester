@@ -167,6 +167,7 @@ provide('replaceTabPane', replaceTabPane);
     v-model:activeKey="activeKey"
     hideAdd
     class="h-full"
+    :userId="props.userInfo.id"
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">

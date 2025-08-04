@@ -73,7 +73,6 @@ const emit = defineEmits<{
 }>();
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
-
 const route = useRoute();
 
 let db: Dexie<{ id: string; data: any; }>;
@@ -1676,6 +1675,7 @@ const sortMenuItems = [
           placement="topLeft"
           :title="modeTitle">
           <Dropdown
+            :noAuth="true"
             :value="[props.viewMode]"
             :menuItems="modeOptions"
             @click="viewModeChange($event.key)">

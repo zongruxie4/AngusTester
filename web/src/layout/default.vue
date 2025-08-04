@@ -153,6 +153,7 @@ onMounted(async () => {
 
 const headerMenus = computed(() => {
   const menuList = appContext.getAccessAppFuncTree();
+
   return menuList?.filter(item => !['Projects', 'Config', !proTypeShowMap.value?.showTask ? 'Task' : ''].includes(item.code)) || [];
 });
 

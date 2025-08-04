@@ -166,7 +166,7 @@ onMounted(() => {
     // 重置数据
     echartOption.series![0].data = [];
 
-    const data = newValue.backlogByType;
+    const data = newValue.backlogByType || {};
     echartOption.series?.[0].data.push({ name: '故事', value: +data.STORY });
     echartOption.series?.[0].data.push({ name: '任务', value: +data.TASK });
     echartOption.series?.[0].data.push({ name: '缺陷', value: +data.BUG });
@@ -176,7 +176,7 @@ onMounted(() => {
 
     setEchartOption();
     renderChart();
-  }, { immediate: true });
+  }, );
 
   watch(() => windowResizeNotify.value, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
