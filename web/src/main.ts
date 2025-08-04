@@ -53,6 +53,7 @@ const bootstrap = async () => {
   }
 
   app.initAfterAuthentication({ code: 'tester' }).then(async () => {
+    await app.initializeDefaultThemeStyle();
     startupGuard();
     const locale = cookieUtils.getCurrentLanguage();
     const messages = (await import(`./locales/${locale}/index.js`)).default;
