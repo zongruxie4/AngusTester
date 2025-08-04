@@ -320,6 +320,7 @@ management:
       exposure:
         include:
           - enums
+          - messages
           - systemlog
           - appworkspace
           - health

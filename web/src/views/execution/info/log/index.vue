@@ -72,7 +72,6 @@ const schedulingLogItem = computed(() => {
 const nodeSelectChange = (_nodeId, options) => {
   nodeId.value = _nodeId;
   nodeIp.value = options?.publicIp || options.ip;
-  debugger;
   loadExecLog();
 };
 
@@ -134,7 +133,6 @@ const downloadLog = (type:'scheduling' | 'exec') => {
 
 const refreshExecLog = (event) => {
   event.preventDefault();
-  debugger;
   loadExecLog();
 };
 
