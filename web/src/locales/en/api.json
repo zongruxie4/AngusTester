@@ -1,0 +1,91 @@
+{
+  "welcome": {
+    "title": "欢迎进入Angus接口！",
+    "description": "在这里和的团队可以完成以下工作：",
+    "features": [
+      "在线编辑、调试接口；",
+      "管理项目、服务、接口以及测试任务；",
+      "开展接口功能测试、性能测试和稳定性测试，保证交付稳定且满足业务要求的系统。"
+    ]
+  },
+  "quickAccess": {
+    "title": "快速入口",
+    "debug": {
+      "title": "调试接口",
+      "description": "在线快速编辑、调试接口。",
+      "action": "调试"
+    },
+    "addProject": {
+      "title": "添加项目/服务",
+      "description": "通过项目或服务来组织接口，项目可以包含多个服务(如：微服务)和接口，服务只能包含接口。",
+      "addProject": "添加项目",
+      "addService": "添加服务"
+    },
+    "import": {
+      "title": "根据文件导入服务",
+      "description": "导入OpenAPI或Postman接口YAML文件或JSON文件。",
+      "action": "导入",
+      "template": "根据文件导入{type}"
+    }
+  },
+  "navigation": {
+    "myApis": "我的接口",
+    "projects": "项目",
+    "services": "服务",
+    "apis": "接口",
+    "scenarios": "场景",
+    "myTasks": "我的任务",
+    "favorites": "已收藏",
+    "follows": "已关注",
+    "activities": "活动",
+    "apiSamples": "API样例集合"
+  },
+  "statistics": {
+    "today": "今日：",
+    "lastWeek": "近一周："
+  },
+  "actions": {
+    "cancelAllFavorites": "取消全部收藏",
+    "cancelAllFollows": "取消全部关注",
+    "projectConfig": "项目配置"
+  },
+  "configuration": {
+    "sync": "同步配置",
+    "security": "安全方案配置",
+    "server": "服务器配置",
+    "performance": "服务性能指标",
+    "share": "添加分享",
+    "variables": "定义变量",
+    "syncDescription": "将外部OpenAPI自动导入到当前{type}",
+    "securityDescription": "定义当前{type}下所有接口可以使用的安全方案(Authorization)",
+    "serverDescription": "定义当前项目/服务下所有接口可以使用的服务器(Server URL)",
+    "performanceDescription": "为{type}下接口设置默认性能指标，性能指标会影响性能测试通过率；如果想为某个接口单独设置性能指标，可以在接口性能配置里设置",
+    "shareDescription": "通过分享能够授权其他人在指定时间内查看接口文档和调试接口",
+    "variablesDescription": "通过定义变量可以复用一个参数值或控制条件执行"
+  },
+  "search": {
+    "taskName": "查询任务名称",
+    "scenario": "查询场景"
+  },
+  "messages": {
+    "cancelAllFavoritesSuccess": "取消全部收藏成功",
+    "cancelAllFollowsSuccess": "取消全部关注成功",
+    "noFavorites": "暂无收藏",
+    "noFollows": "暂无关注",
+    "noData": "无数据",
+    "cancelSuccess": "取消成功",
+    "cancelFavorite": "取消收藏",
+    "cancelFollow": "取消关注",
+    "importProject": "导入项目",
+    "importSuccess": "导入成功"
+  },
+  "columns": {
+    "createdTime": "添加时间",
+    "executionId": "执行编号",
+    "executionStatus": "执行状态",
+    "taskStatus": "任务状态",
+    "testResult": "测试结果",
+    "dueTime": "到期时间",
+    "priority": "优先级"
+  }
+} 

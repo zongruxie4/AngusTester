@@ -1,0 +1,105 @@
+{
+  "overview": {
+    "myTasks": "我的任务",
+    "totalTasks": "总任务",
+    "oneTimePassRate": "一次性通过率",
+    "oneTimePassCount": "一次性通过数",
+    "interfaceScenario": "接口/场景",
+    "projectDirectory": "项目/目录",
+    "taskProcessFlow": "任务处理流程图"
+  },
+  "status": {
+    "pending": "待测试",
+    "processing": "处理中",
+    "completed": "已完成",
+    "cancelled": "已取消",
+    "success": "成功",
+    "failure": "失败",
+    "confirmed": "待确认"
+  },
+  "testType": {
+    "functional": "功能",
+    "performance": "性能",
+    "stability": "稳定性",
+    "all": "全部"
+  },
+  "form": {
+    "task": "任务",
+    "type": "类型",
+    "test": "测试",
+    "scenario": "场景",
+    "api": "接口",
+    "time": "时间",
+    "tags": "标签",
+    "description": "描述",
+    "addTask": "添加任务",
+    "editTask": "编辑任务",
+    "addAttachment": "添加附件",
+    "supportedFormats": "支持的格式：\"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\""
+  },
+  "details": {
+    "basicInfo": "基本信息",
+    "belonging": "所属",
+    "description": "描述"
+  },
+  "actions": {
+    "details": "详情",
+    "startProcessing": "开始处理",
+    "editTask": "编辑任务",
+    "cancelTask": "取消任务",
+    "deleteTask": "删除任务"
+  },
+  "search": {
+    "taskNameOrCode": "任务名称或编码",
+    "apiName": "查询接口名称"
+  },
+  "placeholder": {
+    "selectTestType": "选择测试类型",
+    "selectScenario": "选择场景",
+    "selectScenarioDirectory": "选择场景目录",
+    "selectPriority": "选择优先级",
+    "selectResult": "选择测试结果",
+    "selectStatus": "选择任务状态",
+    "selectStartTime": "选择开始时间",
+    "selectDueTime": "选择到期时间",
+    "selectCreator": "选择添加人",
+    "selectProject": "选择项目/服务",
+    "selectDirectory": "选择目录",
+    "inputTaskName": "请输入任务名称，最多支持{num}字符",
+    "selectScenario": "请选择场景",
+    "selectDueTime": "请选择到期时间",
+    "selectAssignee": "请选择经办人，最多选择{num}个",
+    "selectPriority": "请选择优先级",
+    "maxTags": "最多可添加5个标签",
+    "inputDescription": "请输入描述，最多支持{num}字符",
+    "selectTaskType": "请选择任务类型",
+    "selectApi": "请选择接口",
+    "inputStoryPoints": "请输入故事点,>0且<=2147483647",
+    "maxAttachments": "最多上传{num}个附件",
+    "selectConfirmer": "请选择确认人，最多选择{num}个"
+  },
+  "columns": {
+    "id": "编号",
+    "name": "名称",
+    "directory": "目录",
+    "scenario": "场景",
+    "priority": "优先级",
+    "result": "执行结果",
+    "status": "状态",
+    "startTime": "开始时间",
+    "endTime": "截止时间",
+    "creator": "添加人",
+    "failureCount": "失败次数",
+    "executionId": "执行编号",
+    "processCount": "处理次数",
+    "assignee": "经办人",
+    "lastModifier": "最后修改人",
+    "executor": "执行人",
+    "storyPoints": "故事点",
+    "executionTime": "执行时间",
+    "createdTime": "添加时间",
+    "modifiedTime": "最后修改时间",
+    "actions": "操作",
+    "confirmer": "确认人"
+  }
+} 
