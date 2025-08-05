@@ -328,7 +328,6 @@ const moveLevel = (record) => {
 };
 
 const onMenuClick = (menu, record) => {
-  // debugger;
   if (menu.key === 'edit') {
     toEdit(record);
   } else if (menu.key === 'add') {
