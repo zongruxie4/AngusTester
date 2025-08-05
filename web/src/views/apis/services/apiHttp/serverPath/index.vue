@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, toRaw, watch } from 'vue';
 import { AsyncComponent, Icon, Input, Spin, Tooltip, VuexHelper, Select } from '@xcan-angus/vue-ui';
-import {XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
+import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 
 import { Method } from '../interface';
