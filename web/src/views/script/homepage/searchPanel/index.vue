@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { ScriptType, TESTER, XCanDexie, enumUtils } from '@xcan-angus/infra';
+import { ScriptType, TESTER, XCanDexie, enumUtils, ScriptSource } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
@@ -587,7 +587,7 @@ const searchOptions = [
     valueKey: 'source',
     placeholder: '选择来源',
     type: 'select-enum',
-    enumKey: 'ScriptSource',
+    enumKey: ScriptSource,
     excludes: sourceExcludes
   },
   {

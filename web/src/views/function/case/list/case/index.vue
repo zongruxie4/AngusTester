@@ -22,13 +22,14 @@ import {
   TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { EnumMessage, NumberCompareCondition, toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie } from '@xcan-angus/infra';
+import { EnumMessage, NumberCompareCondition, toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
 
 import { CaseActionAuth, CaseInfoObj, CaseListObj, CountObj, EnabledGroup, travelTreeData } from './PropsType';
 import { PlanObj } from '../../PropsType';
+import { CaseTestResult } from '@/enums/enums';
 import { CASE_PROJECT_PERMISSIONS, useCaseActionAuth } from '../useCaseActionAuth';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
@@ -1534,14 +1535,14 @@ const searchOptions = computed(() => [
     placeholder: '选择优先级',
     valueKey: 'priority',
     type: 'select-enum',
-    enumKey: 'Priority',
+    enumKey: Priority,
     allowClear: true
   },
   {
     placeholder: '选择测试结果',
     valueKey: 'testResult',
     type: 'select-enum',
-    enumKey: 'CaseTestResult',
+    enumKey: CaseTestResult,
     allowClear: true
   },
   {
@@ -1554,7 +1555,7 @@ const searchOptions = computed(() => [
     placeholder: '选择评审状态',
     valueKey: 'reviewStatus',
     type: 'select-enum',
-    enumKey: 'ReviewStatus',
+    enumKey: ReviewStatusEnum,
     allowClear: true
   },
   {

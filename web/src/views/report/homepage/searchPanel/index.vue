@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, Icon, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, TESTER } from '@xcan-angus/infra';
+import { XCanDexie, TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
 import { MenuItem } from './PropsType';
 
@@ -491,7 +491,7 @@ const searchOptions = computed(() => [
     valueKey: 'targetType',
     placeholder: '选择资源类型',
     type: 'select-enum',
-    enumKey: 'CombinedTargetType',
+    enumKey: CombinedTargetType,
     excludes: (data: { message: string; value: 'PROJECT' | 'TAG' | 'MODULE' | 'SERVICE' | 'API' | 'API_CASE' | 'SCENARIO' | 'TASK' | 'TASK_SPRINT' | 'VARIABLE' | 'DATASET' | 'FUNC_PLAN' | 'FUNC_CASE' | 'SCRIPT' | 'MOCK_SERVICE' | 'MOCK_APIS' | 'REPORT' | 'EXECUTION' }) => {
       return !(['PROJECT', 'SERVICE', 'API', proTypeShowMap.value.showTask && 'TASK', proTypeShowMap.value.showSprint && 'TASK_SPRINT', 'FUNC_PLAN', 'FUNC_CASE', 'EXECUTION', 'SCENARIO'].filter(Boolean)).includes(data.value);
     }

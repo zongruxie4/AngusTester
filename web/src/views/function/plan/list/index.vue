@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
 import { funcPlan } from '@/api/tester';
 
+import { FuncPlanStatus } from '@/enums/enums';
 import { PlanInfo } from '../PropsType';
 
 import SearchPanel from '@/views/function/plan/list/searchPanel/index.vue';
@@ -442,7 +443,7 @@ const searchPanelOptions = [
   {
     valueKey: 'status',
     type: 'select-enum',
-    enumKey: 'FuncPlanStatus',
+    enumKey: FuncPlanStatus,
     placeholder: '选择状态',
     allowClear: true
   },

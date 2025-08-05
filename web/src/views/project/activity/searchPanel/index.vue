@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Colon, IconCount, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { Tooltip } from 'ant-design-vue';
-import { TESTER, appContext } from '@xcan-angus/infra';
+import { TESTER, appContext, CombinedTargetType } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -68,7 +68,7 @@ const searchPanelOptions = [
   {
     valueKey: 'targetType',
     type: 'select-enum',
-    enumKey: 'CombinedTargetType',
+    enumKey: CombinedTargetType,
     placeholder: t('选择活动资源'),
     allowClear: true
   },

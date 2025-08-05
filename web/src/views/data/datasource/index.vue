@@ -16,6 +16,7 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 
+import { DatabaseType } from '@xcan-angus/infra';
 import { dataSource } from 'src/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 
@@ -153,7 +154,7 @@ const searchOption = [
   {
     valueKey: 'database',
     type: 'select-enum',
-    enumKey: 'DatabaseType',
+    enumKey: DatabaseType,
     placeholder: t('选择数据库类型'),
     allowClear: true
   },
