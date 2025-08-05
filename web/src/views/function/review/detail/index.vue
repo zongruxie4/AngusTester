@@ -9,7 +9,6 @@ import {
   modal,
   notification,
   ReviewStatus,
-  SelectEnum,
   Spin,
   Table,
   TaskPriority
@@ -19,6 +18,7 @@ import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcPlan, func } from '@/api/tester';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 type Props = {
   projectId: string;

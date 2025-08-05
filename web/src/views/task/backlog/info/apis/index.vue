@@ -9,7 +9,6 @@ import {
   Input,
   ScriptTypeTag,
   Select,
-  SelectEnum,
   TaskPriority,
   TaskStatus
 } from '@xcan-angus/vue-ui';
@@ -17,6 +16,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '../../../PropsType';
 
 type Props = {

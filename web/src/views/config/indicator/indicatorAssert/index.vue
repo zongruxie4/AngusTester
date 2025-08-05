@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { Switch } from 'ant-design-vue';
-import { Input, Select, SelectEnum, Validate } from '@xcan-angus/vue-ui';
+import { Input, Select, Validate } from '@xcan-angus/vue-ui';
 import { AssertionCondition, AssertionType, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
 import MatchItemPopover from './matchItemPopover.vue';
 import ExpectedPopover from './expectedPopover.vue';
@@ -10,6 +10,7 @@ import xpath from './utils/xpath';
 import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 interface Props {
   value: FormItem;

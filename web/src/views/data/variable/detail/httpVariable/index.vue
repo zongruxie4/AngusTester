@@ -8,7 +8,6 @@ import {
   IconRequired,
   Input,
   notification,
-  SelectEnum,
   Toggle,
   Validate
   , SelectApisByServiceModal
@@ -16,6 +15,7 @@ import {
 import { isEqual } from 'lodash-es';
 import { variable, apis } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
 import { getRequestConfigs } from './getRequestConfigs';

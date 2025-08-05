@@ -15,7 +15,6 @@ import {
   Input,
   SearchPanel,
   Select,
-  SelectEnum,
   TaskPriority,
   TaskStatus,
   Tooltip
@@ -26,6 +25,7 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { MenuItem, SelectOption } from './PropsType';
 
 type Props = {

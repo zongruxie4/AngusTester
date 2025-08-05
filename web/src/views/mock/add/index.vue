@@ -1,11 +1,12 @@
 <script setup lang='ts'>
 import { computed, inject, onMounted, reactive, ref } from 'vue';
-import { Icon, Input, notification, PureCard, Select, SelectEnum, Tooltip } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, PureCard, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { formatBytes } from '@/utils/common';
 import { mock, node } from 'src/api/tester';

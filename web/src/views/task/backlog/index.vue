@@ -13,7 +13,6 @@ import {
   modal,
   notification,
   Popover,
-  SelectEnum,
   Spin,
   TaskPriority,
   Tooltip
@@ -25,6 +24,7 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { task, analysis } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { MemberCount, SprintInfo } from './PropsType';
 import { TaskInfo } from '../PropsType';
 

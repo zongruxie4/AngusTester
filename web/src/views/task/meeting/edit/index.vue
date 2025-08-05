@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
-import { Icon, Input, notification, Select, SelectEnum, Spin } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { task, project } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { FormState } from './PropsType';

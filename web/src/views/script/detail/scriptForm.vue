@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref, watch } from 'vue';
-import { Input, SelectEnum } from '@xcan-angus/vue-ui';
+import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { ScriptInfo } from '../PropsType';
 import { FormState } from './PropsType';
 

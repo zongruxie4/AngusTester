@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, Ref, ref, watch, inject } from 'vue';
-import { Icon, Image, NoData, SelectEnum } from '@xcan-angus/vue-ui';
+import { Icon, Image, NoData } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
 import * as eCharts from 'echarts';
@@ -9,6 +9,7 @@ import { kanban } from 'src/api/tester';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
 import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 const chartSeriesColorConfig = {

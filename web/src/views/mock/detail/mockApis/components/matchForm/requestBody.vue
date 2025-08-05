@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Input, notification, SelectEnum } from '@xcan-angus/vue-ui';
+import { Input, notification } from '@xcan-angus/vue-ui';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { Condition, ResponseMatchConfig } from './PropsType';
 import { utils } from '@xcan-angus/infra';
 

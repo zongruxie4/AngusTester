@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, inject, ref, watch } from 'vue';
-import { IconRequired, Input, Modal, notification, SelectEnum } from '@xcan-angus/vue-ui';
+import { IconRequired, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { dataSource } from 'src/api/tester';
-
+import SelectEnum from '@/components/SelectEnum/index.vue'
 interface Props {
   visible: boolean;
   editData?: Record<string, any>;

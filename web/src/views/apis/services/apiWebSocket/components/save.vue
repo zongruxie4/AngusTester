@@ -3,8 +3,9 @@
 <script lang="ts" setup>
 import { inject, onMounted, reactive, ref } from 'vue';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { Input, notification, Select, SelectEnum, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
+import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
 import { TESTER, appContext } from '@xcan-angus/infra';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { apis, services } from 'src/api/tester';
 

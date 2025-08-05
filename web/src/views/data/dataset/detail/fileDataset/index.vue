@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
-import { Hints, Icon, IconRequired, Input, notification, SelectEnum, SelectInput, Toggle, Tooltip } from '@xcan-angus/vue-ui';
+import { Hints, Icon, IconRequired, Input, notification, SelectInput, Toggle, Tooltip } from '@xcan-angus/vue-ui';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { DataSetItem } from '../../PropsType';
 import { FormState } from './PropsType';
 

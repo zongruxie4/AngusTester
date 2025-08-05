@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { Arrow, Hints, Icon, IconRequired, Input, notification, Select, SelectEnum, Spin, VuexHelper } from '@xcan-angus/vue-ui';
+import { Arrow, Hints, Icon, IconRequired, Input, notification, Select, Spin, VuexHelper } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
 
 interface Props {

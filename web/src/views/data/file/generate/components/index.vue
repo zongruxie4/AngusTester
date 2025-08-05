@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
-import { Hints, Icon, Input, notification, PureCard, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { Hints, Icon, Input, notification, PureCard, Select } from '@xcan-angus/vue-ui';
 import { Button, Checkbox, Form, FormItem, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import { useRouter } from 'vue-router';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { encode } from '@/utils/secure';
 import { TESTER } from '@xcan-angus/infra';
 import { mock } from 'src/api/tester';

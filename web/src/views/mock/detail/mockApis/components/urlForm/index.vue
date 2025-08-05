@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from '@xcan-angus/vue-ui';
+
+import SelectEnum from '@/components/SelectEnum/index.vue';
 
 interface Props {
   method:string;

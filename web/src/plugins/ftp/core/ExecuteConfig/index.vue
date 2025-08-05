@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { IconRequired, SelectEnum, ExecSettingForm } from '@xcan-angus/vue-ui';
+import { IconRequired, ExecSettingForm } from '@xcan-angus/vue-ui';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { SceneConfig } from '../PropsType';
 

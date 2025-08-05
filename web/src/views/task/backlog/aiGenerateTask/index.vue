@@ -8,7 +8,6 @@ import {
   Input,
   Modal,
   notification,
-  SelectEnum,
   SelectUser,
   Spin,
   TaskPriority,
@@ -20,6 +19,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { task } from '@/api/tester';
 import { ai } from 'src/api/gm';
+import SelectEnum from '@/components/SelectEnum/index.vue';
 
 import { TaskInfo } from '../../PropsType';
 

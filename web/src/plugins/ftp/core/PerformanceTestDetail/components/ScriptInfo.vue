@@ -2,7 +2,8 @@
 import { ref, reactive, watch } from 'vue';
 import { FormItem, Form } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
-import { Icon, Input, SelectEnum, Grid } from '@xcan-angus/vue-ui';
+import { Icon, Input, Grid } from '@xcan-angus/vue-ui';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 interface Props {
   scriptInfo: Record<string, any> | undefined;

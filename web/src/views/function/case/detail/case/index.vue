@@ -9,7 +9,6 @@ import {
   notification,
   ReviewStatus,
   Select,
-  SelectEnum,
   SelectUser,
   TaskPriority,
   TestResult,
@@ -22,6 +21,7 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseInfoObj, Priority } from '../PropsType';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,

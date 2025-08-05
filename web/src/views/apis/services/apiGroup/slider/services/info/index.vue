@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch } from 'vue';
-import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, SelectEnum } from '@xcan-angus/vue-ui';
+import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch, onMounted } from 'vue';
+import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, appContext } from '@xcan-angus/infra';
+import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
+import { ApiStatus } from '@/enums/enums';
 
 import { services } from 'src/api/tester';
 import { IInfomation, Status } from './PropsType';
@@ -158,6 +159,15 @@ const tipMap = {
   }
 };
 
+const apiStatusOpt = ref<{value: string; label: string}[]>([])
+const loadApiStatusOpt = () => {
+  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({value: i.value, label: i.message}));
+}
+
+onMounted(() => {
+  loadApiStatusOpt()
+});
+
 </script>
 <template>
   <Grid
@@ -222,10 +232,10 @@ const tipMap = {
       </template>
       <template v-else>
         <div class="flex items-center -mt-1.5">
-          <SelectEnum
+          <Select
             v-model:value="status"
             class="w-full"
-            enumKey="ApiStatus"
+            :options="apiStatusOpt"
             defaultActiveFirstOption
             @change="statusChange" />
           <Icon

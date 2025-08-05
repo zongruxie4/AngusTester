@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, defineAsyncComponent, watchEffect, onBeforeUnmount } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design-vue';
-import { Composite, Input, SelectEnum, Icon, Tooltip, Popover, ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
+import { Composite, Input, Icon, Tooltip, Popover, ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { HTTPConfig, HttpMethod } from './PropsType';
 

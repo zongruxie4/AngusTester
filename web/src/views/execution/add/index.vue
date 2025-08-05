@@ -3,10 +3,11 @@ import { computed, inject, onMounted, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { IconRequired, Input, notification, Select, SelectEnum, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
+import { IconRequired, Input, notification, Select, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { angusScript } from 'src/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { exec } from 'src/api/ctrl';
 
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));

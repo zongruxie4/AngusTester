@@ -11,7 +11,6 @@ import {
   Input,
   modal,
   notification,
-  SelectEnum,
   TaskPriority,
   TaskStatus,
   Table
@@ -19,6 +18,7 @@ import {
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '@/views/task/PropsType';
 
 type Props = {

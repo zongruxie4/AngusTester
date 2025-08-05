@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Colon, DropdownSort, Icon, Input, SearchPanel, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { Colon, DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { ScriptType, XCanDexie, TESTER, duration, enumUtils, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
-
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { MenuItem } from './PropsType';
 
 type OrderByKey = 'createdDate' | 'createdByName';
