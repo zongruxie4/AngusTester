@@ -7,7 +7,6 @@ import {
   Input,
   notification,
   Select,
-  SelectEnum,
   SelectUser,
   Tooltip,
   TreeSelect,
@@ -17,6 +16,7 @@ import {
 import { apis, services } from 'src/api/tester';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 interface Props {
   disabled:boolean

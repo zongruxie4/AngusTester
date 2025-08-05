@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
-import { DatePicker, Input, notification, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
 import {TESTER, GM, enumUtils, EnumMessage} from '@xcan-angus/infra';
 import { AnalysisCaseTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
 import { analysis } from '@/api/tester';
-
+import SelectEnum from '@/components/SelectEnum/index.vue'
 interface Props {
   projectId: string;
   userInfo: {id: string};

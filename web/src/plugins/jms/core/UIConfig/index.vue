@@ -3,8 +3,9 @@ import { nextTick, ref, onMounted, watch, computed } from 'vue';
 import { Badge, Button, Collapse, CollapsePanel, Switch, Tabs, TabPane, RadioGroup, Radio, Checkbox } from 'ant-design-vue';
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
-import { Icon, NoData, Input, Tooltip, Colon, Arrow, SelectEnum } from '@xcan-angus/vue-ui';
+import { Icon, NoData, Input, Tooltip, Colon, Arrow } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { PipelineConfig } from '../PropsType';
 

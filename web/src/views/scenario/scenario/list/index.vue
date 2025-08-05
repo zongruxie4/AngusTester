@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, ScriptType } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { GroupedKey, SceneInfo } from './PropsType';
@@ -214,7 +214,7 @@ const searchOptions = [
     placeholder: '选择脚本类型',
     valueKey: 'scriptType',
     allowClear: true,
-    enumKey: 'ScriptType',
+    enumKey: ScriptType,
     excludes: ({ value }) => ['MOCK_DATA', 'MOCK_APIS'].includes(value)
   },
   {

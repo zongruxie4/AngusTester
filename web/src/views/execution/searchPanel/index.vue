@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Colon, DropdownSort, Icon, Input, SearchPanel, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { Colon, DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { ScriptType, XCanDexie, TESTER, duration, enumUtils, appContext } from '@xcan-angus/infra';
+import { ScriptType, XCanDexie, TESTER, duration, enumUtils, appContext, ScriptSource } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
-
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { MenuItem } from './PropsType';
+import { ExecStatus } from '@/enums/enums';
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -590,7 +591,7 @@ const searchOptions = [
   {
     valueKey: 'status',
     type: 'select-enum',
-    enumKey: 'ExecStatus',
+    enumKey: ExecStatus,
     placeholder: '选择状态'
   },
   {
@@ -607,7 +608,7 @@ const searchOptions = [
   {
     valueKey: 'scriptSource',
     type: 'select-enum',
-    enumKey: 'ScriptSource',
+    enumKey: ScriptSource,
     placeholder: '选择关联资源类型'
   },
   {

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Composite, Icon, Input, SelectEnum, Validate } from '@xcan-angus/vue-ui';
+import { Composite, Icon, Input, Validate } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { Condition } from './PropsType';
 
 type Parameter = {

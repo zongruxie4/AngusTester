@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue';
-import { Grid, Icon, Input, SelectEnum } from '@xcan-angus/vue-ui';
+import { Grid, Icon, Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 interface Props {
   scriptInfo: Record<string, any> | undefined;
 }

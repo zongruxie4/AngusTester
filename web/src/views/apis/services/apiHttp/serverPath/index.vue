@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, toRaw, watch } from 'vue';
-import { AsyncComponent, Icon, Input, SelectEnum, Spin, Tooltip, VuexHelper } from '@xcan-angus/vue-ui';
-import { XCanDexie, utils } from '@xcan-angus/infra';
+import { AsyncComponent, Icon, Input, Spin, Tooltip, VuexHelper, Select } from '@xcan-angus/vue-ui';
+import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 
 import { Method } from '../interface';
@@ -106,6 +106,12 @@ const handleSelectServer = (value: string, item: HttpServer) => {
   currentHttpServer.value = JSON.parse(JSON.stringify(item));
   serverValue.value = value;
   emit('update:currentServer', item);
+};
+
+const httpMethodOpt = ref<{value: string; label: string}[]>([]);
+const loadHttpMethodOpt = () => {
+  const data = enumUtils.enumToMessages(HttpMethod);
+  httpMethodOpt.value = data.map(i => ({value: i.value, label: i.message}))
 };
 
 // 前端数据库存储的 server
@@ -227,6 +233,7 @@ const openCaseModal = () => {
 };
 
 onMounted(() => {
+  loadHttpMethodOpt();
   loadServerFromDB();
   loadApiServerSourceEnum();
 
@@ -283,13 +290,13 @@ const serverListOpt = computed(() => {
 <template>
   <div class="flex flex-nowrap whitespace-nowrap justify-between ">
     <div class="flex flex-nowrap whitespace-nowrap border overflow-hidden rounded flex-1">
-      <SelectEnum
+      <Select
         v-model:value="apiMethod"
         class="method-select w-23"
         style="height:30px;"
         :allowClear="false"
         size="normal"
-        enumKey="HttpMethod" />
+        :options="httpMethodOpt"/>
       <Divider type="vertical" class="h-auto mx-0" />
       <Dropdown :visible="showServerListDrop && !!serverListOpt.length">
         <ServerInput

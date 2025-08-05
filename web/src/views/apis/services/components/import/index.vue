@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
 import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { Icon, Input, notification, SelectEnum, Spin, Validate } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { services } from 'src/api/tester';
 import { formatBytes } from '@/utils/common';

@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { inject, reactive, ref, watch } from 'vue';
-import { Icon, Input, Modal, notification, SelectEnum, Spin } from '@xcan-angus/vue-ui';
+import { Icon, Input, Modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
 import { localStore, appContext } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { useI18n } from 'vue-i18n';
 

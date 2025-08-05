@@ -9,6 +9,7 @@ import { sortOpt } from './interface';
 import { pubStore } from '@/api/store';
 import { node } from 'src/api/tester';
 import { pureParams } from '@/utils/common';
+import { NodeSource } from '@/enums/enums';
 
 const NodeItems = defineAsyncComponent(() => import('./components/nodeItems/index.vue'));
 const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/nodeTip/index.vue'));
@@ -53,7 +54,7 @@ const searchOpt = [
     type: 'select-enum',
     allowClear: true,
     valueKey: 'role',
-    enumKey: 'NodeRole',
+    enumKey: NodeRole,
     label: '角色',
     op: 'IN',
     placeholder: '选择角色'
@@ -70,7 +71,7 @@ const searchOpt = [
     type: 'select-enum',
     allowClear: true,
     valueKey: 'source',
-    enumKey: 'NodeSource',
+    enumKey: NodeSource,
     label: '来源',
     placeholder: '选择来源'
   }

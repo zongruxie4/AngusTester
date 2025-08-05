@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { Input, Modal, notification, Select, SelectEnum, SelectApisTable } from '@xcan-angus/vue-ui';
+import { Input, Modal, notification, Select, SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import qs from 'qs';
 import { services } from '@/api/tester';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 interface Props {
   visible: boolean;
@@ -319,7 +320,7 @@ const delRefrenceDataset = async () => {
     notification.error('请至少选择一个数据集');
     return;
   }
-  const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config, `${TESTER}/services/${props.serviceId}/apis/dataset/reference?${config}`, {
+  const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config,  {
     names: parameters
   });
   if (error) {

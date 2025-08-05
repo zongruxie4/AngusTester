@@ -9,7 +9,6 @@ import {
   Input,
   Modal,
   notification,
-  SelectEnum,
   SelectUser,
   Spin,
   TaskPriority,
@@ -22,6 +21,7 @@ import { debounce } from 'throttle-debounce';
 import { ai } from 'src/api/gm';
 import { task } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '../../PropsType';
 
 interface Props {

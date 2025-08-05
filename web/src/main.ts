@@ -64,11 +64,21 @@ const bootstrap = async () => {
         [locale]: messages
       }
     });
+    // Merge locale messages
+    i18n.global.mergeLocaleMessage(SupportedLanguage.zh_CN, zhEnumCNLocale);
+    i18n.global.mergeLocaleMessage(SupportedLanguage.en, enEnumLocale);
+
+    const enumPluginOptions = {
+      i18n: i18n,
+      enumUtils: enumUtils,
+      appEnums: enumNamespaceMap
+    };
 
     const App = defineAsyncComponent(() => import('./App.vue'));
     createApp(App)
       .use(router)
       .use(store)
+      .use(EnumPlugin, enumPluginOptions)
       .use(i18n)
       .mount('#app');
   });

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { Hints, Modal, notification, SelectEnum } from '@xcan-angus/vue-ui';
+import { Hints, Modal, notification } from '@xcan-angus/vue-ui';
 import { apis, services } from 'src/api/tester';
+import SelectEnum from '@/components/SelectEnum/index.vue';
 
 interface Props {
   visible: boolean;

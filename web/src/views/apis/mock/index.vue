@@ -20,6 +20,7 @@ import {
 import { TESTER } from '@xcan-angus/infra';
 import { useRoute } from 'vue-router';
 
+import { MockServiceSource } from '@/enums/enums';
 import ViewType from '@/views/mock/viewType/index.vue';
 import { MockServiceObj, TableSelection } from './PropsType';
 import { mock } from 'src/api/tester';
@@ -530,7 +531,7 @@ const searchoptions = [
   {
     valueKey: 'source',
     type: 'select-enum',
-    enumKey: 'MockServiceSource',
+    enumKey: MockServiceSource,
     placeholder: t('选择来源'),
     allowClear: true
   },

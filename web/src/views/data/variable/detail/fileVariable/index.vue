@@ -7,7 +7,6 @@ import {
   IconRequired,
   Input,
   notification,
-  SelectEnum,
   SelectInput,
   Toggle,
   Tooltip,
@@ -17,6 +16,7 @@ import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { ExtractionMethod, Encoding, ExtractionFileType } from '@xcan-angus/infra';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
 

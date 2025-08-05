@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { IconRequired, Input, Modal, Select, SelectEnum, SelectInput } from '@xcan-angus/vue-ui';
+import { IconRequired, Input, Modal, Select, SelectInput } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
 import { ServicesCompType } from '@/enums/enums';
 import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
+import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { services } from 'src/api/tester';
 

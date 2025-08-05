@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Switch } from 'ant-design-vue';
-import { Composite, Icon, IconRequired, Input, notification, SelectEnum, Validate } from '@xcan-angus/vue-ui';
+import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
+import SelectEnum from '@/components/SelectEnum/index.vue'
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 

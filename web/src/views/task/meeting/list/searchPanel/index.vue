@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+
+import { TaskMeetingType } from '@/enums/enums';
 
 interface Props {
   loading: boolean;
@@ -38,7 +40,7 @@ const searchPanelOptions = [
   {
     valueKey: 'type',
     type: 'select-enum',
-    enumKey: 'TaskMeetingType',
+    enumKey: TaskMeetingType,
     allowClear: true,
     placeholder: '会议类型'
   },

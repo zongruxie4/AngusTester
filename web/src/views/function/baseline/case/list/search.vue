@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
+import { computed, defineAsyncComponent, ref } from 'vue';
 import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
-import { duration, appContext } from '@xcan-angus/infra';
+import { duration, appContext, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
+import { CaseTestResult } from '@/enums/enums';
 
 interface Props {
   established: boolean;
@@ -77,14 +78,14 @@ const searchOptions = computed(() => [
     placeholder: '选择优先级',
     valueKey: 'priority',
     type: 'select-enum',
-    enumKey: 'Priority',
+    enumKey: Priority,
     allowClear: true
   },
   {
     placeholder: '选择测试结果',
     valueKey: 'testResult',
     type: 'select-enum',
-    enumKey: 'CaseTestResult',
+    enumKey: CaseTestResult,
     allowClear: true
   },
   {
@@ -97,7 +98,7 @@ const searchOptions = computed(() => [
     placeholder: '选择评审状态',
     valueKey: 'reviewStatus',
     type: 'select-enum',
-    enumKey: 'ReviewStatus',
+    enumKey: ReviewStatusEnum,
     allowClear: true
   },
   {

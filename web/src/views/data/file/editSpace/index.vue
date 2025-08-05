@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
-import { Input, Modal, SelectEnum } from '@xcan-angus/vue-ui';
+import { Input, Modal } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { Form, FormItem } from 'ant-design-vue';
-
+import SelectEnum from '@/components/SelectEnum/index.vue'
 interface FormState {
   name: string,
   quotaSize: {

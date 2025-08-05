@@ -15,17 +15,17 @@ import {
   Input,
   SearchPanel,
   Select,
-  SelectEnum,
   TaskPriority,
   TaskStatus,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { TESTER, duration, enumUtils, XCanDexie } from '@xcan-angus/infra';
-import { TaskType } from '@/enums/enums';
+import { TESTER, duration, enumUtils, XCanDexie, Priority, Result } from '@xcan-angus/infra';
+import { TaskType, TaskStatus as TaskStatusEnum, TestType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { MenuItem, SelectOption } from './PropsType';
 
 type Props = {
@@ -1143,7 +1143,7 @@ const searchOptions = [
     type: 'select-enum',
     valueKey: 'status',
     placeholder: '选择任务状态',
-    enumKey: 'TaskStatus'
+    enumKey: TaskStatusEnum
   },
   // {
   //   type: 'select-enum',
@@ -1155,7 +1155,7 @@ const searchOptions = [
     type: 'select-enum',
     valueKey: 'priority',
     placeholder: '选择优先级',
-    enumKey: 'Priority'
+    enumKey: Priority
   },
   {
     type: 'select-user',
@@ -1191,7 +1191,7 @@ const searchOptions = [
     type: 'select-enum',
     valueKey: 'testType',
     placeholder: '选择测试类型',
-    enumKey: 'TestType'
+    enumKey: TestType
   },
   {
     type: 'select',
@@ -1206,7 +1206,7 @@ const searchOptions = [
     type: 'select-enum',
     valueKey: 'execResult',
     placeholder: '选择执行结果',
-    enumKey: 'Result'
+    enumKey: Result
   },
   {
     type: 'select',

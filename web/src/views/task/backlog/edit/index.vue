@@ -12,7 +12,6 @@ import {
   Modal,
   notification,
   Select,
-  SelectEnum,
   SelectUser,
   TaskPriority,
   Tooltip
@@ -22,6 +21,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { FormState } from './PropsType';
 import { TaskInfo } from '../../PropsType';
 

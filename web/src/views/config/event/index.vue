@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { CombinedTargetType, NoticeType, enumUtils, EnumMessage } from '@xcan-angus/infra';
+import { CombinedTargetType, NoticeType, enumUtils, EnumMessage, EventPushStatus } from '@xcan-angus/infra';
 
 import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
 import { event, setting } from '@/api/gm';
@@ -233,7 +233,7 @@ const searchLogOpt = [
   {
     valueKey: 'pushStatus',
     type: 'select-enum',
-    enumKey: 'EventPushStatus',
+    enumKey: EventPushStatus,
     placeholder: '选择推送状态',
     allowClear: true
   },

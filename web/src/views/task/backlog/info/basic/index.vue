@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, IconTask, Input, Select, SelectEnum, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
-
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '../../../PropsType';
 
 type Props = {
