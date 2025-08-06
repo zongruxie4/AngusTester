@@ -1,0 +1,115 @@
+{
+  "welcome": {
+    "title": "欢迎进入Angus场景！",
+    "description": "在这里您和您的团队可以完成以下工作：",
+    "features": [
+      "场景可以帮助编排更加复杂的需求或用户故事，相比单个步骤的测试用例，场景可以包含更多步骤和流程。",
+      "在线添加、编辑、调试场景；",
+      "管理我的场景和测试任务；",
+      "开展场景功能测试、稳定性和性能测试，保证交付稳定且满足性能指标要求的系统。"
+    ]
+  },
+  "navigation": {
+    "directory": "目录",
+    "scenario": "场景",
+    "execution": "执行"
+  },
+  "directory": {
+    "description": "目录用于组织测试场景或对有相同特点的测试场景分组，可以是项目名或模块名等。最大支持3级，每个目录的权限相互独立。",
+    "addDirectory": "添加目录",
+    "addScenario": "添加场景",
+    "httpScenario": "http场景",
+    "websocketScenario": "websocket场景"
+  },
+  "scenario": {
+    "description": "在线添加、编辑测试场景；系统默认提供了Http和WebSocket协议场景编排，其他协议或中间件需要进入",
+    "cloudStore": "云商店",
+    "installPlugin": "安装对应插件",
+    "executionDescription": "在场景编排和配置\"执行配置\"完成后，即可执行对场景进行功能、性能测试、稳定性测试",
+    "executeScenario": "执行场景"
+  },
+  "scriptInfo": {
+    "scenarioName": "场景名称",
+    "directory": "所属目录",
+    "creator": "添加人",
+    "createdTime": "添加时间",
+    "updatedTime": "更新时间",
+    "permission": "权限",
+    "description": "描述",
+    "directoryName": "目录名称",
+    "scenarioCount": "场景数量",
+    "addUser": "添加用户",
+    "viewPermission": "查看权限",
+    "link": "链接",
+    "password": "密码",
+    "validityPeriod": "有效期",
+    "selectDirectory": "选择目录",
+    "scenarioPerformanceMetrics": "场景性能指标",
+    "targetConcurrency": "目标并发(用户数)",
+    "averageResponseTime": "平均响应时间(RT)",
+    "tpsQps": "TPS/QPS",
+    "errorRate": "错误率(ERR)",
+    "modifyMetrics": "修改指标",
+    "selectProtocol": "选择协议"
+  },
+  "placeholder": {
+    "select": "请选择",
+    "deleteScenario": "删除场景",
+    "limitInput": "限制输入{n}字符以内",
+    "selectDirectory": "选择目录"
+  },
+  "tips": {
+    "dynamicValues": "为了让场景中的参数值更加接近真实业务数据，系统还提供了两种动态取值方式，可根据自己的业务需求选择参数值的取值方式。",
+    "uploadComplete": "上传完成",
+    "uploadFailed": "上传失败",
+    "copyLinkAndPassword": "复制链接和密码",
+    "copySuccess": "复制成功",
+    "copyFailed": "复制失败",
+    "deleteData": "删除数据",
+    "saveScenarioSuccess": "保存场景成功",
+    "addDirectorySuccess": "添加目录成功",
+    "confirmDeleteWithChildren": "删除【{name}】会删除其子目录和场景，请确认是否删除？",
+    "confirmDeleteWithFiles": "{name}目录下含有子文件，确定一起删除吗",
+    "directoryDeleteSuccess": "目录删除成功",
+    "deleteDirectory": "删除目录",
+    "confirmDeleteScenario": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除？",
+    "deleteScenarioSuccess": "删除{name}场景成功",
+    "performanceMetricsWarning": "执行会根据设定的性能指标来判断测试结果是否通过；请谨慎修改配置。",
+    "metricsModifySuccess": "指标修改成功",
+    "selectDirectory": "请选择目录"
+  },
+  "buttons": {
+    "uploadParamFile": "上传参数文件",
+    "generatedParamFile": "已生成参数文件"
+  },
+  "upload": {
+    "selectFile": "选择文件",
+    "continueUpload": "继续上传",
+    "confirm": "确定",
+    "cancel": "取消"
+  },
+  "form": {
+    "fileName": "文件名称",
+    "method": "调用方式",
+    "source": "来源",
+    "dataSource": "数据源",
+    "dataForm": "数据表",
+    "select": "选择",
+    "save": "保存",
+    "file": "文件",
+    "delete": "删除",
+    "scenario": "场景"
+  },
+  "export": {
+    "exportScenario": "导出场景",
+    "selectExportMethod": "选择导出方式"
+  },
+  "rules": {
+    "scenarioNameRequired": "场景名称不能为空"
+  },
+  "comment": {
+    "comment": "评论",
+    "publish": "发表"
+  },
+  "executeScript": "执行脚本"
+} 

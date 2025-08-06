@@ -1,75 +1,75 @@
 {
   "agent": {
-    "title": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。\n您可根据自身的网络环境选择适合的代理服务。",
-    "noProxy": "无代理",
-    "noProxyDescription": "通过浏览器直接请求接口，对非同源访问接口服务器端接口需要取消跨域限制。",
-    "clientProxy": "客户端代理",
-    "clientProxyDescription": "需要在访问浏览器所在电脑中安装\"代理程序\"，配置后将使用客户端代理发送请求。",
-    "serverProxy": "服务端代理",
-    "serverProxyDescription": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。",
-    "downloadProxy": "下载代理程序",
-    "windowsDesktopProxy": "Windows桌面代理",
-    "macDesktopProxy": "Mac桌面代理",
-    "linuxProxy": "Linux代理",
-    "manualInstallPackage": "手动安装包",
-    "serverRequestProxyConfig": "服务端请求代理配置",
-    "enable": "是否开启：",
-    "proxyAddress": "代理地址：",
-    "cancel": "取消",
-    "save": "保存",
-    "connected": "已连接",
-    "notConnected": "未链接",
-    "inputHost": "请输入host",
-    "inputPort": "请输入端口号,范围1~65535",
-    "proxyConfigModifiedSuccess": "代理配置修改成功",
-    "connectionSuccess": "连接成功",
-    "connectionFailed": "连接失败"
+    "title": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data.\nYou can choose a suitable proxy service according to your network environment.",
+    "noProxy": "No Proxy",
+    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed for non-same-origin access to server-side interfaces.",
+    "clientProxy": "Client Proxy",
+    "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
+    "serverProxy": "Server Proxy",
+    "serverProxyDescription": "Need to install \"proxy program\" separately on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers, after configuration, server proxy will be used to send requests.",
+    "downloadProxy": "Download Proxy Program",
+    "windowsDesktopProxy": "Windows Desktop Proxy",
+    "macDesktopProxy": "Mac Desktop Proxy",
+    "linuxProxy": "Linux Proxy",
+    "manualInstallPackage": "Manual Install Package",
+    "serverRequestProxyConfig": "Server Request Proxy Configuration",
+    "enable": "Enable:",
+    "proxyAddress": "Proxy Address:",
+    "cancel": "Cancel",
+    "save": "Save",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "inputHost": "Please enter host",
+    "inputPort": "Please enter port number, range 1~65535",
+    "proxyConfigModifiedSuccess": "Proxy configuration modified successfully",
+    "connectionSuccess": "Connection successful",
+    "connectionFailed": "Connection failed"
   },
   "notification": {
     "status": {
-      "pending": "待推送",
-      "success": "成功",
-      "failure": "失败"
+      "pending": "Pending",
+      "success": "Success",
+      "failure": "Failure"
     },
     "config": {
-      "pushConfig": "推送配置",
-      "pushRecords": "推送记录",
-      "configReceiveChannel": "配置接收通道",
-      "configReceiver": "配置接收人",
-      "selectReceiveMethod": "选择接收方式",
-      "selectReceiver": "选择接收人",
-      "receiver": "接收人",
-      "selectOtherUsers": "选择其他用户"
+      "pushConfig": "Push Configuration",
+      "pushRecords": "Push Records",
+      "configReceiveChannel": "Configure Receive Channel",
+      "configReceiver": "Configure Receiver",
+      "selectReceiveMethod": "Select Receive Method",
+      "selectReceiver": "Select Receiver",
+      "receiver": "Receiver",
+      "selectOtherUsers": "Select Other Users"
     },
     "columns": {
-      "notificationStatus": "通知状态",
-      "receiveChannel": "接收通道",
-      "sender": "发送人",
-      "actions": "操作",
-      "executionId": "执行编号",
-      "addTime": "添加时间",
-      "pushTime": "推送时间",
-      "pushResult": "推送结果"
+      "notificationStatus": "Notification Status",
+      "receiveChannel": "Receive Channel",
+      "sender": "Sender",
+      "actions": "Actions",
+      "executionId": "Execution ID",
+      "addTime": "Add Time",
+      "pushTime": "Push Time",
+      "pushResult": "Push Result"
     },
     "placeholder": {
-      "queryExecutionId": "查询执行编号",
-      "selectNotificationStatus": "选择通知状态",
-      "selectHttpAddress": "选择HTTP(S)地址",
-      "selectEmail": "选择邮箱",
-      "selectDingTalkBot": "选择钉钉机器人",
-      "selectWeChatBot": "选择企业微信机器人"
+      "queryExecutionId": "Query execution ID",
+      "selectNotificationStatus": "Select notification status",
+      "selectHttpAddress": "Select HTTP(S) address",
+      "selectEmail": "Select email",
+      "selectDingTalkBot": "Select DingTalk bot",
+      "selectWeChatBot": "Select WeChat bot"
     }
   },
   "app": {
-    "title": "应用设置",
-    "description": "配置应用的基本参数和功能选项"
+    "title": "Application Settings",
+    "description": "Configure basic parameters and function options of the application"
   },
   "script": {
-    "title": "脚本设置",
-    "description": "配置脚本执行的相关参数和选项"
+    "title": "Script Settings",
+    "description": "Configure script execution related parameters and options"
   },
   "permission": {
-    "title": "权限设置",
-    "description": "配置用户权限和访问控制"
+    "title": "Permission Settings",
+    "description": "Configure user permissions and access control"
   }
 } 

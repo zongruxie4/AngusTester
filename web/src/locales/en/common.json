@@ -1,27 +1,27 @@
 {
   "time": {
-    "year": "年",
-    "month": "月",
-    "week": "周",
-    "day": "天",
-    "hour": "时",
-    "minute": "分",
-    "second": "秒"
+    "year": "Year",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "hour": "Hour",
+    "minute": "Minute",
+    "second": "Second"
   },
   "status": {
-    "success": "成功",
-    "failure": "失败",
-    "pending": "待处理",
-    "processing": "处理中",
-    "completed": "已完成",
-    "cancelled": "已取消"
+    "success": "Success",
+    "failure": "Failure",
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
   },
   "actions": {
-    "add": "添加",
-    "edit": "编辑",
-    "delete": "删除",
-    "save": "保存",
-    "cancel": "取消",
-    "confirm": "确认"
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 } 

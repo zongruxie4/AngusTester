@@ -1,49 +1,49 @@
 {
   "basic": {
-    "execute": "执行",
-    "name": "名称",
-    "type": "类型",
-    "scenario": "脚本",
-    "configure": "配置",
-    "status": "状态",
-    "creator": "添加人",
-    "createdTime": "添加时间",
-    "concurrency": "并发数",
-    "startTime": "开始时间",
-    "endTime": "结束时间",
-    "executionTime": "执行时长（秒）",
-    "iterations": "迭代次数",
-    "errorRate": "错误率",
-    "scriptName": "脚本名称",
-    "priority": "优先级"
+    "execute": "Execute",
+    "name": "Name",
+    "type": "Type",
+    "scenario": "Script",
+    "configure": "Configure",
+    "status": "Status",
+    "creator": "Creator",
+    "createdTime": "Created Time",
+    "concurrency": "Concurrency",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "executionTime": "Execution Duration (seconds)",
+    "iterations": "Iterations",
+    "errorRate": "Error Rate",
+    "scriptName": "Script Name",
+    "priority": "Priority"
   },
   "actions": {
-    "createExecution": "添加执行",
-    "terminateExecution": "终止执行",
-    "retry": "重新执行",
-    "viewReport": "查看报告",
-    "immediately": "立即执行",
-    "timing": "定时执行"
+    "createExecution": "Create Execution",
+    "terminateExecution": "Terminate Execution",
+    "retry": "Retry",
+    "viewReport": "View Report",
+    "immediately": "Execute Immediately",
+    "timing": "Scheduled Execution"
   },
   "search": {
-    "executionName": "查询执行名称",
-    "inputName": "请输入名称",
-    "selectScript": "选择脚本",
-    "selectProject": "选择项目/服务"
+    "executionName": "Search execution name",
+    "inputName": "Please enter name",
+    "selectScript": "Select script",
+    "selectProject": "Select project/service"
   },
   "infoCard": {
-    "concurrency": "并发数(VU)",
-    "qps": "每秒查询数 (QPS)",
-    "tps": "每秒事务数 (TPS)",
-    "avgResponseTime": "平均响应时间(AVG RT)",
-    "errorRate": "错误率",
-    "executedTime": "已执行时间",
-    "iterations": "已迭代次数",
-    "percentileP90": "百分位P90"
+    "concurrency": "Concurrency (VU)",
+    "qps": "Queries Per Second (QPS)",
+    "tps": "Transactions Per Second (TPS)",
+    "avgResponseTime": "Average Response Time (AVG RT)",
+    "errorRate": "Error Rate",
+    "executedTime": "Executed Time",
+    "iterations": "Iterations",
+    "percentileP90": "Percentile P90"
   },
   "tips": {
-    "maxIterations": "当前最大迭代次数支持 100,000,000,000",
-    "priorityRange": "优先级高的最先被执行，值范围：0~2147483647，值越大优先级越高",
-    "concurrencyNodes": "每1万并发需要1个测试节点"
+    "maxIterations": "Current maximum iterations support 100,000,000,000",
+    "priorityRange": "Higher priority executes first, value range: 0~2147483647, higher value means higher priority",
+    "concurrencyNodes": "Every 10,000 concurrency requires 1 test node"
   }
 } 
