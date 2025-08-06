@@ -1,91 +1,93 @@
 {
-  "welcome": {
-    "title": "Welcome to Angus API!",
-    "description": "Here you and your team can complete the following work:",
-    "features": [
-      "Edit and debug APIs online;",
-      "Manage projects, services, APIs and test tasks;",
-      "Conduct API functional testing, performance testing and stability testing to ensure delivery of stable systems that meet business requirements."
-    ]
-  },
-  "quickAccess": {
-    "title": "Quick Access",
-    "debug": {
-      "title": "Debug API",
-      "description": "Edit and debug APIs online quickly.",
-      "action": "Debug"
+  "apis": {
+    "welcome": {
+      "title": "Welcome to Angus API!",
+      "description": "Here you and your team can complete the following work:",
+      "features": [
+        "Edit and debug APIs online;",
+        "Manage projects, services, APIs and test tasks;",
+        "Conduct API functional testing, performance testing and stability testing to ensure delivery of stable systems that meet business requirements."
+      ]
     },
-    "addProject": {
-      "title": "Add Project/Service",
-      "description": "Organize APIs through projects or services, projects can contain multiple services (such as microservices) and APIs, services can only contain APIs.",
-      "addProject": "Add Project",
-      "addService": "Add Service"
+    "quickAccess": {
+      "title": "Quick Access",
+      "debug": {
+        "title": "Debug API",
+        "description": "Edit and debug APIs online quickly.",
+        "action": "Debug"
+      },
+      "addProject": {
+        "title": "Add Project/Service",
+        "description": "Organize APIs through projects or services, projects can contain multiple services (such as microservices) and APIs, services can only contain APIs.",
+        "addProject": "Add Project",
+        "addService": "Add Service"
+      },
+      "import": {
+        "title": "Import Service from File",
+        "description": "Import OpenAPI or Postman API YAML files or JSON files.",
+        "action": "Import",
+        "template": "Import {type} from file"
+      }
     },
-    "import": {
-      "title": "Import Service from File",
-      "description": "Import OpenAPI or Postman API YAML files or JSON files.",
-      "action": "Import",
-      "template": "Import {type} from file"
+    "navigation": {
+      "myApis": "My APIs",
+      "projects": "Projects",
+      "services": "Services",
+      "apis": "APIs",
+      "scenarios": "Scenarios",
+      "myTasks": "My Tasks",
+      "favorites": "Favorites",
+      "follows": "Follows",
+      "activities": "Activities",
+      "apiSamples": "API Sample Collection"
+    },
+    "statistics": {
+      "today": "Today:",
+      "lastWeek": "Last Week:"
+    },
+    "actions": {
+      "cancelAllFavorites": "Cancel All Favorites",
+      "cancelAllFollows": "Cancel All Follows",
+      "projectConfig": "Project Configuration"
+    },
+    "configuration": {
+      "sync": "Sync Configuration",
+      "security": "Security Scheme Configuration",
+      "server": "Server Configuration",
+      "performance": "Service Performance Metrics",
+      "share": "Add Share",
+      "variables": "Define Variables",
+      "syncDescription": "Automatically import external OpenAPI to current {type}",
+      "securityDescription": "Define security schemes (Authorization) that can be used by all APIs under current {type}",
+      "serverDescription": "Define servers (Server URL) that can be used by all APIs under current project/service",
+      "performanceDescription": "Set default performance metrics for APIs under {type}, performance metrics will affect performance test pass rate; if you want to set performance metrics for a specific API separately, you can set it in API performance configuration",
+      "shareDescription": "Through sharing, you can authorize others to view API documentation and debug APIs within a specified time",
+      "variablesDescription": "Through defining variables, you can reuse a parameter value or control condition execution"
+    },
+    "search": {
+      "taskName": "Search task name",
+      "scenario": "Search scenario"
+    },
+    "messages": {
+      "cancelAllFavoritesSuccess": "Cancel all favorites successful",
+      "cancelAllFollowsSuccess": "Cancel all follows successful",
+      "noFavorites": "No favorites",
+      "noFollows": "No follows",
+      "noData": "No data",
+      "cancelSuccess": "Cancel successful",
+      "cancelFavorite": "Cancel favorite",
+      "cancelFollow": "Cancel follow",
+      "importProject": "Import project",
+      "importSuccess": "Import successful"
+    },
+    "columns": {
+      "createdTime": "Created Time",
+      "executionId": "Execution ID",
+      "executionStatus": "Execution Status",
+      "taskStatus": "Task Status",
+      "testResult": "Test Result",
+      "dueTime": "Due Time",
+      "priority": "Priority"
     }
-  },
-  "navigation": {
-    "myApis": "My APIs",
-    "projects": "Projects",
-    "services": "Services",
-    "apis": "APIs",
-    "scenarios": "Scenarios",
-    "myTasks": "My Tasks",
-    "favorites": "Favorites",
-    "follows": "Follows",
-    "activities": "Activities",
-    "apiSamples": "API Sample Collection"
-  },
-  "statistics": {
-    "today": "Today:",
-    "lastWeek": "Last Week:"
-  },
-  "actions": {
-    "cancelAllFavorites": "Cancel All Favorites",
-    "cancelAllFollows": "Cancel All Follows",
-    "projectConfig": "Project Configuration"
-  },
-  "configuration": {
-    "sync": "Sync Configuration",
-    "security": "Security Scheme Configuration",
-    "server": "Server Configuration",
-    "performance": "Service Performance Metrics",
-    "share": "Add Share",
-    "variables": "Define Variables",
-    "syncDescription": "Automatically import external OpenAPI to current {type}",
-    "securityDescription": "Define security schemes (Authorization) that can be used by all APIs under current {type}",
-    "serverDescription": "Define servers (Server URL) that can be used by all APIs under current project/service",
-    "performanceDescription": "Set default performance metrics for APIs under {type}, performance metrics will affect performance test pass rate; if you want to set performance metrics for a specific API separately, you can set it in API performance configuration",
-    "shareDescription": "Through sharing, you can authorize others to view API documentation and debug APIs within a specified time",
-    "variablesDescription": "Through defining variables, you can reuse a parameter value or control condition execution"
-  },
-  "search": {
-    "taskName": "Search task name",
-    "scenario": "Search scenario"
-  },
-  "messages": {
-    "cancelAllFavoritesSuccess": "Cancel all favorites successful",
-    "cancelAllFollowsSuccess": "Cancel all follows successful",
-    "noFavorites": "No favorites",
-    "noFollows": "No follows",
-    "noData": "No data",
-    "cancelSuccess": "Cancel successful",
-    "cancelFavorite": "Cancel favorite",
-    "cancelFollow": "Cancel follow",
-    "importProject": "Import project",
-    "importSuccess": "Import successful"
-  },
-  "columns": {
-    "createdTime": "Created Time",
-    "executionId": "Execution ID",
-    "executionStatus": "Execution Status",
-    "taskStatus": "Task Status",
-    "testResult": "Test Result",
-    "dueTime": "Due Time",
-    "priority": "Priority"
   }
 } 
