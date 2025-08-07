@@ -2,10 +2,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { utils } from '@xcan-angus/infra';
+import { utils, enumUtils } from '@xcan-angus/infra';
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 
+import { ApiStatus  } from '@/enums/enums';
 import { analysis } from 'src/api/tester';
 
 type Props = {
@@ -39,6 +40,7 @@ const state = reactive({
     unarchivedApisByLastMonth: '0'
   }
 });
+const apiStatusMap = {}
 
 const statusColorSet = {
   0: 'rgba(200, 202, 208, 1)',
@@ -57,6 +59,20 @@ const methodColorSet = {
   delete: 'rgba(255, 82, 82, 1)',
   options: 'rgba(0, 150, 136, 1)',
   trace: '#7F91FF'
+};
+
+const loadApiStatusEnum = () => {
+  // const data = enumUtils.enumToMessages(ApiStatus);
+  // data.forEach((item) => {
+  //   apiStatusMap[item.value] = item.message;
+  // });
+  // const chartData = [apiStatusMap[ApiStatus.UNKNOWN],
+  //   apiStatusMap[ApiStatus.IN_DESIGN],
+  //   apiStatusMap[ApiStatus.IN_DEV],
+  //   apiStatusMap[ApiStatus.DEV_COMPLETED],
+  //   apiStatusMap[ApiStatus.RELEASED]]
+  // serviceOption.yAxis.data = chartData;
+  // apiOption.yAxis.data = chartData;
 };
 
 const loadMyStatistics = async (): Promise<void> => {
@@ -136,7 +152,7 @@ const statisticConfig = [
     total: 'allService',
     week: 'serviceByLastWeek',
     month: 'serviceByLastMonth',
-    name: '服务'
+    name: t('apis.statisticsCreated.service')
   },
   {
     topClass: 'hong-top',
@@ -144,7 +160,7 @@ const statisticConfig = [
     total: 'allApis',
     week: 'apisByLastWeek',
     month: 'apisByLastMonth',
-    name: '接口'
+    name: t('apis.statisticsCreated.apis')
   },
   {
     topClass: 'lan-top',
@@ -152,7 +168,7 @@ const statisticConfig = [
     total: 'allUnarchivedApis',
     week: 'unarchivedApisByLastWeek',
     month: 'unarchivedApisByLastMonth',
-    name: '未归档接口'
+    name: t('apis.statisticsCreated.unfiled')
   }
 ];
 
@@ -194,7 +210,11 @@ const serviceOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['未知', '设计中', '开发中', '开发完成', '已发布']
+    data: [t('apis.apiStatus.unknown'),
+      t('apis.apiStatus.inDesign'),
+      t('apis.apiStatus.inDevelopment'),
+      t('apis.apiStatus.developmentCompleted'),
+      t('apis.apiStatus.released')]
   },
   series: [
     {
@@ -262,7 +282,11 @@ const apiOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['未知', '设计中', '开发中', '开发完成', '已发布']
+    data: [t('apis.apiStatus.unknown'),
+      t('apis.apiStatus.inDesign'),
+      t('apis.apiStatus.inDevelopment'),
+      t('apis.apiStatus.developmentCompleted'),
+      t('apis.apiStatus.released')]
   },
   series: [
     {
@@ -370,6 +394,7 @@ const resizeHandler = () => {
 };
 
 onMounted(() => {
+  loadApiStatusEnum();
   serviceEchart = echarts.init(serviceRef.value);
   apiEchart = echarts.init(apiRef.value);
   methodEchart = echarts.init(methodRef.value);
@@ -401,19 +426,19 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="mb-7.5 text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">我添加的</div>
+    <div class="text-3.5 font-semibold mb-3">{{t('apis.statisticsCreated.title')}}</div>
     <div class="flex space-x-3.75 text-content">
       <div
-        v-for="item,index in statisticConfig"
+        v-for="(item,index) in statisticConfig"
         :key="index"
         class="rounded w-1/3 relative">
         <div class="vertical-layout-top" :class="item.topClass"><div>{{ item.name }}</div><div>{{ state.statistic[item.total] }}</div></div>
         <div class="vertical-layout-bottom" :class="item.bottomClass">
           <div>
-            <div>{{ t('近7天') }}</div><div>{{ state.statistic[item.week] }}</div>
+            <div>{{ t('quickSearchTags.past7Day') }}</div><div>{{ state.statistic[item.week] }}</div>
           </div>
           <div>
-            <div>{{ t('近30天') }}</div>
+            <div>{{ t('quickSearchTags.past30Day') }}</div>
             <div>{{ state.statistic[item.month] }}</div>
           </div>
         </div>
@@ -431,18 +456,18 @@ onBeforeUnmount(() => {
   </div>
 
   <div class="text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">资源统计</div>
+    <div class="text-3.5 font-semibold mb-3">{{t('apis.statistics.title')}}</div>
     <div ref="echartsWrapRef" class="flex space-x-3.75">
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">总服务 <span class="text-4 ml-2">{{ allService }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{t('apis.statistics.service')}} <span class="text-4 ml-2">{{ allService }}</span></div>
         <div ref="serviceRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">总接口 <span class="text-4 ml-2">{{ allApis }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{t('apis.statistics.apis')}} <span class="text-4 ml-2">{{ allApis }}</span></div>
         <div ref="apiRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold">请求方法</div>
+        <div class="font-semibold">{{t('apis.statistics.method')}}</div>
         <div ref="methodRef" class="w-full h-65"></div>
       </div>
     </div>

@@ -147,9 +147,9 @@ const getListById = async (id) => {
     delete timersMap[newData.id];
     setData(newData);
     if (newData.status.value === 'RUNNING') {
-      notification.success('启动成功');
+      notification.success(t('mock.startSuccess'));
     } else {
-      notification.warning('启动失败,请尝试重新启动');
+      notification.warning(t('mock.startFail'));
     }
     return;
   }
@@ -239,16 +239,16 @@ const batchStart = async () => {
     if (failList.length !== data.length) {
       rouSelection.value.selectedRowKeys = rouSelection.value.selectedRowKeys.filter(f => !_failIds.includes(f));
     } else {
-      notification.success('批量启动失败');
+      notification.success(t('mock.batchStartFail'));
       return;
     }
   }
 
-  notification.success('正在启动中');
+  notification.success(t('mock.starting'));
   for (let i = 0; i < tableData.value.length; i++) {
     const _data = tableData.value[i];
     if (rouSelection.value.selectedRowKeys?.includes(_data.id)) {
-      _data.status = { value: 'STARTING', message: '启动中' };
+      _data.status = { value: 'STARTING', message: t('mock.startPending') };
       _data.currentAuthsValue = ['VIEW'];
     }
   }
@@ -282,7 +282,7 @@ const getListByIds = async (ids:string[]) => {
     const newData = newDataList[i];
     setData(newData);
     if (newData.status.value === 'RUNNING') {
-      notification.success('服务启动成功');
+      notification.success(t('mock.serviceStartSuccess'));
       _ids = _ids.filter(id => id !== newData.id);
       const key = ids.join('');
       if (timersMap[key]) {
@@ -301,7 +301,7 @@ const getListByIds = async (ids:string[]) => {
         const newData = newDataList[i];
         setData(newData);
       }
-      notification.warning('启动失败,请尝试重新启动');
+      notification.warning(t('mock.startFail'));
     } else {
       updateStatusByIds(_ids);
     }
@@ -311,7 +311,7 @@ const getListByIds = async (ids:string[]) => {
 const handleDelete = async (ids:string[]) => {
   modal.confirm({
     centered: true,
-    content: '确定删除吗？',
+    content: t('mock.deleteTip'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.deleteService(ids);
@@ -319,7 +319,7 @@ const handleDelete = async (ids:string[]) => {
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('mock.deleteSuccess'));
       params.value.pageNo = getCurrentPage(params.value.pageNo as number, params.value.pageSize as number, total.value);
       getList();
     }
@@ -329,7 +329,7 @@ const handleDelete = async (ids:string[]) => {
 const forceDelete = (record: MockServiceObj) => {
   modal.confirm({
     centered: true,
-    content: '确定强制删除吗？',
+    content: t('mock.deleteTip'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.deleteServiceByForce([record.id]);
@@ -337,7 +337,7 @@ const forceDelete = (record: MockServiceObj) => {
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('mock.deleteSuccess'));
       params.value.pageNo = getCurrentPage(params.value.pageNo as number, params.value.pageSize as number, total.value);
       getList();
     }
@@ -380,7 +380,7 @@ const batchDelete = async () => {
 
   modal.confirm({
     centered: true,
-    content: '确定删除吗？',
+    content: t('mock.deleteTip'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.deleteService(_selectKey);
@@ -388,7 +388,7 @@ const batchDelete = async () => {
       if (error) {
         return;
       }
-      notification.success('批量删除成功');
+      notification.success(t('mock.batchDelSuccess'));
       params.value.pageNo = getCurrentPage(params.value.pageNo as number, params.value.pageSize as number, total.value);
       getList();
 
@@ -420,17 +420,17 @@ const handleUpdateStatus = async (item:MockServiceObj) => {
   }
   if (!data[0].success) {
     item.failTips = data[0];
-    item.status?.value === 'RUNNING' ? notification.success('停止失败') : notification.success('启动失败');
+    item.status?.value === 'RUNNING' ? notification.success(t('mock.stop_fail')) : notification.success(t('mock.start_fail'));
     return;
   }
 
   if (item.status?.value === 'RUNNING') {
-    notification.success('停止成功');
+    notification.success(t('mock.stop_success'));
     getStopResById(item.id);
   } else {
-    notification.warning('正在启动中');
+    notification.warning(t('mock.in_starting'));
     if (item.status?.value === 'NOT_STARTED') {
-      item.status = { value: 'STARTING', message: '启动中' };
+      item.status = { value: 'STARTING', message: t('mock.startPending') };
       item.currentAuthsValue = ['VIEW'];
     }
     updateStatusById(item.id);
@@ -480,7 +480,7 @@ const handleResetInstance = async (item:MockServiceObj) => {
   }
   modal.confirm({
     centered: true,
-    content: '刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。',
+    content: t('mock.refreshInstance_tip'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.syncServiceInstanceConfig(item.id);
@@ -488,7 +488,7 @@ const handleResetInstance = async (item:MockServiceObj) => {
       if (error) {
         return;
       }
-      notification.success('刷新实例成功');
+      notification.success(t('mock.refreshInstance_success'));
     }
   });
 };
@@ -516,7 +516,7 @@ const searchoptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('查询服务ID、名称'),
+    placeholder: t('mock.searchPanel.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -524,7 +524,7 @@ const searchoptions = [
     valueKey: 'nodeIp',
     type: 'input',
     op: 'EQUAL',
-    placeholder: t('查询服务IP'),
+    placeholder: t('mock.searchPanel.nodeIpPlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -532,7 +532,7 @@ const searchoptions = [
     valueKey: 'source',
     type: 'select-enum',
     enumKey: MockServiceSource,
-    placeholder: t('选择来源'),
+    placeholder: t('mock.searchPanel.sourcePlaceholder'),
     allowClear: true
   },
   {
@@ -542,19 +542,19 @@ const searchoptions = [
     maxlength: 100,
     fieldNames: { label: 'name', value: 'id' },
     showSearch: true,
-    placeholder: t('选择或查询节点'),
+    placeholder: t('mock.searchPanel.nodeIdPlaceholder'),
     allowClear: true
   },
   {
     valueKey: 'createdBy',
     type: 'select-user',
-    placeholder: '选择添加人',
+    placeholder: t('mock.searchPanel.createdByPlaceholder'),
     maxlength: 100
   },
   {
     valueKey: 'createdDate',
     type: 'date-range',
-    placeholder: [t('添加时间从'), t('添加时间到')],
+    placeholder: [t('mock.searchPanel.createdDatePlaceholder1'), t('mock.searchPanel.createdDatePlaceholder2')],
     allowClear: true,
     showTime: true
   }
@@ -562,7 +562,7 @@ const searchoptions = [
 
 const columns = [
   {
-    title: t('服务ID'),
+    title: t('mock.columns.id'),
     dataIndex: 'id',
     width: '10%',
     customCell: () => {
@@ -570,23 +570,23 @@ const columns = [
     }
   },
   {
-    title: t('服务名称'),
+    title: t('mock.columns.name'),
     dataIndex: 'name',
     width: '13%'
   },
   {
-    title: t('所在节点'),
+    title: t('mock.columns.node'),
     dataIndex: 'nodeName',
     customRender: ({ text }):string => text || '--',
     width: '10%'
   },
   {
-    title: t('服务地址'),
+    title: t('mock.columns.address'),
     dataIndex: 'serviceHostUrl',
     customRender: ({ text }):string => text || '--'
   },
   {
-    title: t('状态'),
+    title: t('mock.columns.status'),
     dataIndex: 'status',
     width: '7%',
     customCell: () => {
@@ -594,7 +594,7 @@ const columns = [
     }
   },
   {
-    title: t('来源'),
+    title: t('mock.columns.source'),
     dataIndex: 'source',
     width: '7%',
     customCell: () => {
@@ -602,7 +602,7 @@ const columns = [
     }
   },
   {
-    title: '添加人',
+    title: t('mock.columns.createdBy'),
     dataIndex: 'createdByName',
     width: '8%',
     groupName: 'createdByName',
@@ -610,7 +610,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: '最后更新人',
+    title: t('mock.columns.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     width: '8%',
     groupName: 'createdByName',
@@ -619,7 +619,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: '添加时间',
+    title: t('mock.columns.createdDate'),
     dataIndex: 'createdDate',
     width: '10%',
     sorter: true,
@@ -629,7 +629,7 @@ const columns = [
     }
   },
   {
-    title: '更新时间',
+    title: t('mock.columns.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     width: '10%',
     sorter: true,
@@ -640,7 +640,7 @@ const columns = [
     }
   },
   {
-    title: t('操作'),
+    title: t('mock.columns.action'),
     dataIndex: 'action',
     width: 140
   }
@@ -650,26 +650,26 @@ const menus = [
   {
     key: 'del',
     icon: 'icon-qingchu',
-    name: '强制删除',
+    name: t('mock.actions.delete'),
     permission: 'DELETE',
     disabled: true
   },
   {
     key: 'auth',
     icon: 'icon-quanxian1',
-    name: '权限',
+    name: t('mock.actions.authority'),
     permission: 'GRANT'
   },
   {
     key: 'export',
     icon: 'icon-daochu',
-    name: '导出',
+    name: t('actions.export'),
     permission: 'EXPORT'
   },
   {
     key: 'reset',
     icon: 'icon-shuaxin',
-    name: '刷新实例',
+    name: t('mock.actions.refresh'),
     permission: 'MODIFY'
   }
 ];
@@ -738,7 +738,7 @@ const statusStyleMap = {
           href="/mockservice/add"
           class="inline-flex space-x-1">
           <Icon icon="icon-jia" class="text-3.5" />
-          添加Mock服务
+          {{t('mock.actions.addMock')}}
         </Button>
         <!-- <ButtonAuth
           code="MockServiceAdd"
@@ -750,13 +750,13 @@ const statusStyleMap = {
           size="small"
           @click="batchStart ">
           <Icon icon="icon-qidong" class="mr-1 text-3.5" />
-          <span>启动</span>
+          <span>{{t('mock.actions.start')}}</span>
         </Button>
         <Button
           size="small"
           @click="batchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-          <span>删除</span>
+          <span>{{t('actions.delete')}}</span>
         </Button>
         <ButtonAuth
           code="MockServiceExport"
@@ -768,7 +768,7 @@ const statusStyleMap = {
           :disabled="loading"
           @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span>刷新</span>
+          <span>{{t('actions.refresh')}}</span>
         </Button>
       </div>
     </div>
@@ -853,13 +853,13 @@ const statusStyleMap = {
               v-if="(!record.auth || record.currentAuthsValue.includes('RUN')) && record.status?.value !== 'STARTING'"
               class="ml-2 cursor-pointer flex items-center text-3"
               @click="handleUpdateStatus(record)">
-              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'?'启动':'停止' }}
+              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'? t('mock.actions.start') :t('mock.actions.stop')  }}
             </a>
             <a
               v-else
               class="ml-2 flex items-center text-3"
               disabled>
-              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'?'启动':'停止' }}
+              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'? t('mock.actions.start') :t('mock.actions.stop') }}
             </a>
             <a
               v-if="(!record.auth || record.currentAuthsValue.includes('DELETE')) && record.status?.value === 'NOT_STARTED' "
@@ -902,9 +902,9 @@ const statusStyleMap = {
       :updateUrl="`${TESTER}/mock/service/auth`"
       :enabledUrl="`${TESTER}/mock/service/${authData?.id}/auth/enabled`"
       :initStatusUrl="`${TESTER}/mock/service/${authData?.id}/auth/status`"
-      onTips="开启权限控制后，需要手动授权后才会有相应操作权限。"
-      offTips="无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-      title="服务权限"
+      :onTips="t('mock.auth.onTip')"
+      :offTips="t('mock.auth.offTips')"
+      :title="t('mock.auth.title')"
       @change="authFlagChange" />
   </AsyncComponent>
 </template>

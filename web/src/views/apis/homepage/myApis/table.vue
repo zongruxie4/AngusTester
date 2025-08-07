@@ -3,8 +3,9 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { HttpMethodText, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
-import { apis } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
+import { apis } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import { ApiItem } from './PropsType';
 
@@ -23,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined,
   deletedNotify: undefined
 });
-
+const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
@@ -65,7 +66,7 @@ const pagination = ref<{
     });
 
 const toCreateApi = () => {
-  addTabPane({ name: '添加API', value: 'API', _id: utils.uuid() + 'API' });
+  addTabPane({ name: t('apis.myApis.addApiTabName'), value: 'API', _id: utils.uuid() + 'API' });
 };
 
 const openApi = (api) => {
@@ -132,7 +133,7 @@ const loadData = async () => {
 
 const deleteHandler = (data: ApiItem) => {
   modal.confirm({
-    content: `确定删除接口【${data.summary}】吗？`,
+    content: t('apis.myApis.deleteTip', {name: data.summary}),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -141,7 +142,7 @@ const deleteHandler = (data: ApiItem) => {
         return;
       }
 
-      notification.success('删除接口成功');
+      notification.success(t('apis.myApis.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       // 删除已经打开的tabpane
@@ -162,7 +163,7 @@ const cancelFavourite = async (data: ApiItem) => {
     return;
   }
 
-  notification.success('接口取消收藏成功');
+  notification.success(t('apis.myApis.cancelFavoriteSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -178,7 +179,7 @@ const cancelFollow = async (data: ApiItem) => {
     return;
   }
 
-  notification.success('接口取消关注成功');
+  notification.success(t('apis.myApis.cancelFollowSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -225,23 +226,23 @@ const columns = computed(() => {
       width: '16%'
     },
     {
-      title: '名称',
+      title: t('apis.myApis.columns.summary'),
       dataIndex: 'summary',
       ellipsis: true,
       sorter: true
     },
     {
-      title: '路径',
+      title: t('apis.myApis.columns.endpoint'),
       dataIndex: 'endpoint',
       ellipsis: true
     },
     {
-      title: '状态',
+      title: t('apis.myApis.columns.status'),
       dataIndex: 'status',
       width: '7%'
     },
     {
-      title: '添加时间',
+      title: t('apis.myApis.columns.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
       sorter: true,
@@ -257,7 +258,7 @@ const columns = computed(() => {
     width?: string | number;
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
-    title: '操作',
+    title: t('apis.myApis.columns.action'),
     dataIndex: 'action',
     width: 50
   };
@@ -290,22 +291,22 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>尚未添加任何接口，立即</span>
+              <span>{{  t('apis.myApis.createdEmptyTip') }}</span>
               <Button
                 type="link"
                 size="small"
                 class="py-0 px-1 h-5 leading-5"
                 @click="toCreateApi">
-                添加接口
+                {{  t('apis.myApis.addApiAction') }}
               </Button>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>没有收藏的接口</span>
+              <span>{{  t('apis.myApis.favoriteEmptyTip') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>没有关注的接口</span>
+              <span>{{  t('apis.myApis.followEmptyTip') }}</span>
             </template>
           </div>
         </div>
@@ -350,7 +351,7 @@ const emptyTextStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                title="取消收藏"
+                :title="t('actions.unFavourite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -361,7 +362,7 @@ const emptyTextStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                title="取消关注"
+                :title="t('actions.unfollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -372,7 +373,7 @@ const emptyTextStyle = {
 
             <template v-else>
               <Button
-                title="删除"
+                :title="t('actions.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

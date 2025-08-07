@@ -29,7 +29,12 @@
     "download": "下载",
     "upload": "上传",
     "copy": "复制",
-    "publish": "发布"
+    "publish": "发布",
+    "follow": "关注",
+    "unfollow": "取消关注",
+    "favourite": "收藏",
+    "unFavourite": "取消收藏",
+    "refresh": "刷新"
   },
   "orgNames": {
     "user": "用户",
@@ -41,8 +46,14 @@
     "past1Day": "近1天",
     "past3Day": "近3天",
     "past7Day": "近7天",
+    "past30Day": "近30天",
     "createdByMe": "我创建的",
     "modifiedByMe": "我修改的",
     "addByMe": "我添加的"
+  },
+  "tips": {
+    "saveSuccess": "保存成功",
+    "deleteSuccess": "删除成功",
+    "cloneSuccess": "克隆成功"
   }
 } 

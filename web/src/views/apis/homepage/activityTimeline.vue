@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 type Props = {
   projectId: string;
@@ -11,12 +12,12 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined
 });
-
+const { t } = useI18n();
 const types = ['SERVICE', 'API', 'API_CASE'];
 </script>
 <template>
   <Tabs size="small">
-    <TabPane key="my" tab="我的活动">
+    <TabPane key="my" :tab="t('apis.activity.my')">
       <ActivityTimeline
         key="my"
         :types="types"
@@ -24,7 +25,7 @@ const types = ['SERVICE', 'API', 'API_CASE'];
         :userId="props.userInfo?.id"
         :showUserName="false" />
     </TabPane>
-    <TabPane key="all" tab="所有活动">
+    <TabPane key="all" :tab="t('apis.activity.all')">
       <ActivityTimeline
         key="all"
         :types="types"

@@ -1,9 +1,10 @@
 <script setup lang='ts'>
 import { Hints, Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { textList } from '../data';
-
-const tips = 'Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。';
+const { t } = useI18n();
+const tips = t('mock.introduce.description');
 </script>
 
 <template>

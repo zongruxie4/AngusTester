@@ -4,6 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
+import { useI18n } from "vue-i18n";
 
 import { ServerConfig } from './PropsType';
 
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined,
   data: undefined
 });
+const { t } = useI18n();
 
 const EditForm = defineAsyncComponent(() => import('./edit.vue'));
 
@@ -96,7 +98,7 @@ const toSave = async () => {
     return;
   }
 
-  notification.success('保存成功');
+  notification.success(t('tips.saveSuccess'));
 
   if (!serverId.value) {
     updateTabPane({ _id: 'serverList', notify: utils.uuid() });
@@ -180,7 +182,7 @@ const getDefaultServer = ():ServerConfig => {
 
 const toDelete = () => {
   modal.confirm({
-    content: '确定删除服务器吗？',
+    content: t('server.detail.deleteTip'),
     async onOk () {
       const id = serverId.value;
       loading.value = true;
@@ -216,15 +218,15 @@ const toClone = async () => {
     return;
   }
 
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
   updateTabPane({ _id: 'serverList', notify: utils.uuid() });
 };
 
 const toCopyLink = () => {
   toClipboard(window.location.origin + `/apis#server?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
-    notification.success('复制链接成功');
+    notification.success(t('server.detail.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制链接失败');
+    notification.error(t('server.detail.copyLinkFail'));
   });
 };
 
@@ -267,7 +269,7 @@ const serviceId = computed(() => {
         @click="toSave">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>
-          保存
+          {{t('actions.save')}}
         </span>
       </Button>
 
@@ -277,40 +279,37 @@ const serviceId = computed(() => {
         class="mr-3"
         @click="toAddServerDemo">
         <Icon icon="icon-jia" class="mr-1" />
-        <span class="mr-1">服务器示例</span>
+        <span class="mr-1">{{t('server.detail.serverExample')}}</span>
       </Button>
 
       <template v-if="!!serverId">
         <Button
-          type="default"
           size="small"
           class="flex items-center space-x-1"
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>
-            删除
+            {{t('actions.delete')}}
           </span>
         </Button>
 
         <Button
-          type="default"
           size="small"
           class="flex items-center space-x-1"
           @click="toClone">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
           <span>
-            克隆
+            {{t('actions.clone')}}
           </span>
         </Button>
 
         <Button
-          type="default"
           size="small"
           class="flex items-center space-x-1"
           @click="toCopyLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
           <span>
-            复制链接
+            {{ t('server.detail.copyLink')}}
           </span>
         </Button>
 
@@ -321,7 +320,7 @@ const serviceId = computed(() => {
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
           <span>
-            刷新
+            {{ t('actions.refresh') }}
           </span>
         </Button>
       </template>

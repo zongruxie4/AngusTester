@@ -2,7 +2,8 @@
   "apis": {
     "welcome": {
       "title": "欢迎进入Angus接口！",
-      "description": "在这里和的团队可以完成以下工作：",
+      "description": "接口可以帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
+      "featuresTitle": "在这里您和您的团队可以完成以下工作:",
       "features": [
         "在线编辑、调试接口；",
         "管理项目、服务、接口以及测试任务；",
@@ -11,6 +12,7 @@
     },
     "quickAccess": {
       "title": "快速入口",
+      "addApiTabName": "添加API",
       "debug": {
         "title": "调试接口",
         "description": "在线快速编辑、调试接口。",
@@ -43,7 +45,24 @@
     },
     "statistics": {
       "today": "今日：",
-      "lastWeek": "近一周："
+      "lastWeek": "近一周：",
+      "title": "资源统计",
+      "service": "总服务",
+      "apis": "总接口",
+      "method": "请求方法"
+    },
+    "apiStatus": {
+      "unknown": "未知",
+      "inDesign": "设计中",
+      "inDevelopment": "开发中",
+      "developmentCompleted": "开发完成",
+      "released": "已发布"
+    },
+    "statisticsCreated": {
+      "title": "我添加的",
+      "service": "服务",
+      "apis": "接口",
+      "unfiled": "未归档接口"
     },
     "actions": {
       "cancelAllFavorites": "取消全部收藏",
@@ -89,7 +108,34 @@
       "testResult": "测试结果",
       "dueTime": "到期时间",
       "priority": "优先级"
+    },
+    "myApis": {
+      "title": "我的接口",
+      "createdTab":"添加的",
+      "followTab": "关注的",
+      "favoriteTab": "收藏的",
+      "createdEmptyTip": "尚未添加任何接口，立即",
+      "addApiAction": "添加接口",
+      "addApiTabName": "添加API",
+      "followEmptyTip": "没有收藏的接口",
+      "favoriteEmptyTip": "没有关注的接口",
+      "deleteTip": "确定删除接口【{name}】吗？",
+      "deleteSuccess": "删除接口成功",
+      "cancelFavoriteSuccess": "接口取消收藏成功",
+      "cancelFollowSuccess": "接口取消关注成功",
+      "columns": {
+        "summary": "名称",
+        "endpoint": "路径",
+        "status": "状态",
+        "createdDate": "添加时间",
+        "action": "操作"
+      }
+    },
+    "activity": {
+      "my": "我的活动",
+      "all": "所有活动"
     }
+
   },
   "design": {
 
@@ -162,6 +208,144 @@
       "modifyTip": "最后修改于{time}"
     }
 
-  }
+  },
+  "mock": {
+    "starting": "正在启动中",
+    "startSuccess": "启动成功",
+    "startFail": "启动失败,请尝试重新启动",
+    "batchStartFail": "批量启动失败",
+    "startPending": "启动中",
+    "serviceStartSuccess": "服务启动成功",
+    "deleteTip": "确定删除吗？",
+    "deleteSuccess": "删除成功",
+    "batchDelSuccess": "批量删除成功",
+    "start_fail": "启动失败",
+    "start_success": "启动成功",
+    "stop_fail": "停止失败",
+    "stop_success": "停止成功",
+    "in_starting": "正在启动中",
+    "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
+    "refreshInstance_success": "刷新实例成功",
+    "searchPanel": {
+      "namePlaceholder": "查询服务ID、名称",
+      "nodeIpPlaceholder": "查询服务IP",
+      "sourcePlaceholder": "选择来源",
+      "nodeIdPlaceholder": "选择或查询节点",
+      "createdByPlaceholder": "选择添加人",
+      "createdDatePlaceholder1": "添加时间从",
+      "createdDatePlaceholder2": "添加时间到"
+    },
+    "columns": {
+      "id": "服务ID",
+      "name": "服务名称",
+      "node": "所在节点",
+      "address": "服务地址",
+      "status": "状态",
+      "source": "来源",
+      "createdBy": "添加人",
+      "lastModifiedBy": "最后更新人",
+      "createdDate": "添加时间",
+      "lastModifiedDate": "更新时间",
+      "action": "操作"
+    },
+    "actions": {
+      "delete": "强制删除",
+      "authority": "权限",
+      "refresh": "刷新实例",
+      "addMock": "添加Mock服务",
+      "start": "启动",
+      "stop": "停止"
+    },
+    "auth": {
+      "title": "服务权限",
+      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
+      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+    },
+    "introduce": {
+      "description": "Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。",
+      "addMockService": "添加Mock服务",
+      "addMockService_desc": "添加Mock服务后需要手动添加Mock接口",
+      "importService": "已有服务关联导入",
+      "importService_desc": "根据现有接口服务进行添加，用户可以选择需要Mock的接口，添加后系统将自动与接口服务建立关联。",
+      "importFile": "文件导入Mock",
+      "importFile_desc": "基于Swagger2.0、OpenAPI3.x、Postman2.0、Postman2.1、Angus格式数据创建Mock服务并导入接口。"
+    }
+  },
+  "server": {
+    "home": {
+      "tabTitle": "服务器",
+      "newTab": "添加服务器",
+      "searchPanel": {
+        "descriptionPlaceholder": "查询描述",
+        "servicePlaceholder": "选择服务"
+      },
+      "title": "已添加的服务器",
+      "addTip": "已添加{add}个，最多允许添加{max}个。",
+      "emptyTip": "尚未添加任何服务器，立即",
+      "actions": {
+        "addServer": "添加服务器",
+        "updateToApi": "更新到已关联接口"
+      },
+      "hasVariable": "有变量",
+      "hasNoVariable": "无变量",
+      "serviceBelong": "所属服务",
+      "cloneSuccess": "克隆成功",
+      "updateSuccess": "更新到已关联接口成功",
+      "noDescTip": "无描述~",
+      "deleteTip": "确认删除该服务器吗？"
+    },
+    "detail": {
+      "deleteTip": "确认删除服务器吗？",
+      "copyLinkSuccess": "复制链接成功",
+      "copyLinkFail": "复制链接失败",
+      "serverExample": "服务器示例",
+      "copyLink": "复制链接",
+      "serverTip": "Server URL已存在，请重新输入",
+      "serverVariableTip": "Server URL中的变量不允许重复",
+      "variableNameTip": "变量名称重复",
+      "variableValueTip": "变量值重复",
+      "serverConfigTip": "服务器配置错误，请检查更正后再保存。",
+      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
+      "serverLabel": "服务",
+      "serverPlaceholder": "选择服务",
+      "serverServiceTip": "服务器所属接口服务",
+      "descLabel": "描述",
+      "descPlaceholder": "服务器描述，最大支持400字符",
+      "variableTitle": "变量",
+      "variableLabel": "名称",
+      "variableNameTip1": "变量名称不能重复",
+      "variableTip": "最多可添加50个变量",
+      "variablePlaceholder": "变量名称，最大支持100字符",
+      "addVariable": "添加变量",
+      "deleteVariable": "删除变量",
+      "variableValueLabel": "值",
+      "variableValueTip1": "同一个变量的值不能重复",
+      "variableValuePlaceholder": "变量值，最大支持400字符",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "变量描述，最大支持400字符",
+      "variableDefault": "默认"
+    },
 
-} 
+    "introduce": {
+      "title": "关于服务器",
+      "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
+      "description2": "变量用于定义 URL 中的动态部分。它允许在服务器 URL 中使用占位符，这些占位符可以在不同的环境中被替换为实际的值。主要好处如下：",
+      "integration": {
+        "title": "易于与CICD集成",
+        "description": "在持续集成和持续部署的工作流中，定义的服务器可以帮助自动化测试流程，使得不同环境的 API 端点可以灵活配置，符合 DevOps 的要求。"
+      },
+      "env": {
+        "title": "支持多个环境",
+        "description": "通过定义多个服务器或通过不同变量值支持不同的环境（如开发、测试、生产等）。这使得开发者能够轻松切换环境，而不必在代码中手动更改 URL。"
+      },
+      "version": {
+        "title": "支持版本控制",
+        "description": "在不同版本的 API 中，可以通过定义不同的服务器或者变量值来管理和维护版本。可以在文档中清晰地区分各个版本的服务器，避免混淆。"
+      },
+      "url": {
+        "description": "完整 URL、服务器、和端点(endpoint)关系",
+        "title": "完整URL(path)"
+      }
+    }
+  }
+}
