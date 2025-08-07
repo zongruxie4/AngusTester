@@ -1,502 +1,500 @@
 {
-  "xcm": {
-    "enum": {
-      "NodeSource": {
-        "OWN_NODE": "自有节点",
-        "ONLINE_BUY": "在线购买"
-      },
-      "CountScriptType": {
-        "PERF": "性能",
-        "FUNCTIONAL": "功能",
-        "STABILITY": "稳定性",
-        "FILE": "文件",
-        "DATASOURCE": "数据源",
-        "ALL": "所有脚本"
-      },
-      "TaskTargetType": {
-        "TASK": "任务",
-        "TASK_SPRINT": "迭代"
-      },
-      "ApisTargetType": {
-        "SERVICE": "服务",
-        "API": "接口"
-      },
-      "AuthorizationType": {
-        "NO_AUTH": "不认证",
-        "BASIC_AUTH": "Basic",
-        "BEARER_TOKEN": "Bearer Token",
-        "CUSTOM": "自定义"
-      },
-      "ApiSource": {
-        "CREATED": "创建",
-        "EDITOR": "编辑器",
-        "IMPORT": "导入",
-        "SYNC": "同步"
-      },
-      "ApiStatus": {
-        "UNKNOWN": "未知",
-        "IN_DESIGN": "设计中",
-        "IN_DEV": "开发中",
-        "DEV_COMPLETED": "开发完成",
-        "RELEASED": "已发布"
-      },
-      "ActionWhenDuplicate": {
-        "COVER": "覆盖",
-        "IGNORE": "忽略"
-      },
-      "TestType": {
-        "PERFORMANCE": "性能测试",
-        "FUNCTIONAL": "功能测试",
-        "STABILITY": "稳定性测试",
-        "CUSTOMIZATION": "自定义测试"
-      },
-      "CountTestType": {
-        "PERF": "性能",
-        "FUNCTIONAL": "功能",
-        "STABILITY": "稳定性",
-        "ALL": "所有脚本"
-      },
-      "TaskType": {
-        "REQUIREMENT": "需求",
-        "STORY": "故事",
-        "TASK": "任务",
-        "BUG": "缺陷",
-        "API_TEST": "接口测试",
-        "SCENARIO_TEST": "场景测试"
-      },
-      "TaskStatus": {
-        "PENDING": "待处理",
-        "IN_PROGRESS": "进行中",
-        "CONFIRMING": "待确认",
-        "COMPLETED": "已完成",
-        "CANCELED": "已取消"
-      },
-      "SoftwareVersionStatus": {
-        "NOT_RELEASED": "规划中",
-        "RELEASED": "已发布",
-        "ARCHIVED": "已归档"
-      },
-      "BugLevel": {
-        "CRITICAL": "致命",
-        "MAJOR": "严重",
-        "MINOR": "一般",
-        "TRIVIAL": "轻微"
-      },
-      "OverdueRiskLevel": {
-        "HIGH": "高",
-        "LOW": "低",
-        "NONE": "无"
-      },
-      "AssociateUserType": {
-        "CREATOR": "创建人",
-        "ASSIGNEE": "经办人",
-        "CONFIRMOR": "确认人",
-        "OWNER": "负责人",
-        "SYS_ADMIN": "系统管理员",
-        "APP_ADMIN": "应用管理员"
-      },
-      "ServicesPermission": {
-        "ADD": "添加",
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "DELETE": "删除",
-        "TEST": "测试",
-        "GRANT": "授权",
-        "SHARE": "分享",
-        "RELEASE": "发布",
-        "EXPORT": "导出"
-      },
-      "ApiPermission": {
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "DELETE": "删除",
-        "DEBUG": "调试",
-        "TEST": "测试",
-        "GRANT": "授权",
-        "SHARE": "分享",
-        "RELEASE": "发布",
-        "EXPORT": "导出"
-      },
-      "StrategyWhenDuplicated": {
-        "COVER": "覆盖",
-        "IGNORE": "忽略"
-      },
-      "ScriptPermission": {
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "DELETE": "删除",
-        "TEST": "测试",
-        "GRANT": "授权",
-        "EXPORT": "导出"
-      },
-      "MockServiceStartStatus": {
-        "NOT_STARTED": "未启动",
-        "SUCCESS": "成功",
-        "FAILURE": "失败",
-        "UNKNOWN": "未知"
-      },
-      "ExecStatus": {
-        "CREATED": "已创建",
-        "PENDING": "调度中",
-        "RUNNING": "执行中",
-        "STOPPED": "已停止",
-        "FAILED": "失败",
-        "COMPLETED": "已完成",
-        "TIMEOUT": "超时"
-      },
-      "TestResultStatus": {
-        "NOT_ENABLED": "未开启",
-        "UNTESTED": "未测试",
-        "PARTIALLY_PASSED": "部分通过",
-        "FULLY_PASSED": "全部通过",
-        "FULLY_FAILED": "全部失败"
-      },
-      "ProjectType": {
-        "AGILE": "敏捷项目管理",
-        "GENERAL": "一般项目管理",
-        "TESTING": "软件测试项目"
-      },
-      "ServicesExportScope": {
-        "SERVICE": "服务",
-        "APIS": "按接口"
-      },
-      "ApisShareScope": {
-        "SERVICES": "服务",
-        "PARTIAL_APIS": "多接口",
-        "SINGLE_APIS": "单接口"
-      },
-      "IndicatorType": {
-        "FUNC": "功能",
-        "PERF": "性能",
-        "STABILITY": "稳定性"
-      },
-      "TaskSprintPermission": {
-        "MODIFY_SPRINT": "修改迭代",
-        "DELETE_SPRINT": "删除迭代",
-        "ADD_TASK": "添加任务",
-        "MODIFY_TASK": "修改任务",
-        "DELETE_TASK": "删除任务",
-        "EXPORT_TASK": "导出任务",
-        "RESTART_TASK": "重新开始任务",
-        "REOPEN_TASK": "重新打开任务",
-        "GRANT": "授权"
-      },
-      "ScenarioPermission": {
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "DELETE": "删除",
-        "TEST": "测试",
-        "GRANT": "授权",
-        "EXPORT": "导出"
-      },
-      "MockServicePermission": {
-        "ADD": "添加接口",
-        "VIEW": "查看",
-        "MODIFY": "编辑",
-        "DELETE": "删除",
-        "RUN": "运行",
-        "GRANT": "授权",
-        "EXPORT": "导出"
-      },
-      "MockServiceStatus": {
-        "NOT_STARTED": "未启动",
-        "RUNNING": "运行中"
-      },
-      "MockServiceSource": {
-        "CREATED": "手动创建",
-        "FILE_IMPORT": "文件导入",
-        "ASSOC_SERVICE": "关联服务"
-      },
-      "MockApisSource": {
-        "CREATED": "手动创建",
-        "ANGUS_IMPORT": "Angus文件导入",
-        "COPY_APIS": "复制接口",
-        "ASSOC_APIS": "关联接口"
-      },
-      "MockDataSourceStatus": {
-        "SUCCESS": "连接成功",
-        "FAIL": "连接失败"
-      },
-      "BinaryContentType": {
-        "FILE": "文件",
-        "BASE64_TEXT": "文件Base64文本",
-        "URL": "文件URL"
-      },
-      "MockAuthorizationType": {
-        "HTTP_BASIC": "HTTP Basic",
-        "REQUEST_HEADER_MATCH": "请求头匹配"
-      },
-      "MockDataTargetType": {
-        "FILE": "文件",
-        "DATASOURCE": "数据源"
-      },
-      "ServicesCompType": {
-        "schemas": "数据模型",
-        "responses": "响应",
-        "parameters": "参数",
-        "examples": "示例",
-        "requestBodies": "请求体",
-        "headers": "头",
-        "securitySchemes": "安全方案",
-        "links": "链接",
-        "callbacks": "回调",
-        "extensions": "扩展",
-        "pathItems": "接口"
-      },
-      "TaskSprintStatus": {
-        "PENDING": "待开始",
-        "IN_PROGRESS": "进行中",
-        "COMPLETED": "已完成",
-        "BLOCKED": "阻塞中"
-      },
-      "TaskMeetingType": {
-        "DAILY_STANDUP": "每日站会",
-        "PLANNING": "迭代计划会",
-        "REVIEW": "迭代回顾会",
-        "RETROSPECTIVE": "迭代总结会",
-        "BACKLOG_REFINEMENT": "产品梳理会",
-        "OTHER": "其他"
-      },
-      "ApisDesignSource": {
-        "SYNCHRONOUS_SERVICE": "同步服务",
-        "FILE_IMPORT": "文件导入",
-        "MANUAL_CREATED": "手动创建"
-      },
-      "DnsLine": {
-        "DEFAULT": "默认",
-        "TELECOM": "电信",
-        "UNICOM": "联通",
-        "MOBILE": "移动",
-        "OVERSEA": "海外"
-      },
-      "InstanceChargeType": {
-        "PrePaid": "包年包月",
-        "PostPaid": "按量付费"
-      },
-      "FuncTargetType": {
-        "PLAN": "测试计划",
-        "CASE": "用例"
-      },
-      "CaseTestResult": {
-        "PENDING": "待测试",
-        "PASSED": "测试通过",
-        "NOT_PASSED": "测试未通过",
-        "BLOCKED": "阻塞中",
-        "CANCELED": "已取消"
-      },
-      "CaseStepView": {
-        "TABLE": "表格视图",
-        "TEXT": "文本视图"
-      },
-      "FuncPlanPermission": {
-        "MODIFY_PLAN": "修改计划",
-        "DELETE_PLAN": "删除计划",
-        "ADD_CASE": "添加用例",
-        "MODIFY_CASE": "修改用例",
-        "DELETE_CASE": "删除用例",
-        "EXPORT_CASE": "导出用例",
-        "REVIEW": "评审",
-        "RESET_REVIEW_RESULT": "重置评审结果",
-        "TEST": "修改测试结果",
-        "RESET_TEST_RESULT": "重置测试结果",
-        "ESTABLISH_BASELINE": "建立基线",
-        "GRANT": "授权"
-      },
-      "FuncPlanStatus": {
-        "PENDING": "待开始",
-        "IN_PROGRESS": "进行中",
-        "COMPLETED": "已完成",
-        "BLOCKED": "阻塞中"
-      },
-      "ScenarioMonitorStatus": {
-        "PENDING": "待执行",
-        "SUCCESS": "成功",
-        "FAILURE": "失败"
-      },
-      "DataAssetsCategory": {
-        "FUNC": "功能",
-        "APIS": "接口",
-        "SCENARIO": "场景",
-        "TASK": "任务",
-        "SCRIPT": "脚本",
-        "MOCK": "Mock",
-        "DATA": "数据"
-      },
-      "ParameterizationDataSource": {
-        "STATIC_VALUE": "静态值",
-        "EXTRACT_VALUE": "值提取",
-        "EXTRACT_FILE": "文件提取",
-        "EXTRACT_HTTP": "Http提取",
-        "EXTRACT_HTTP_SAMPLING": "Http采样提取",
-        "EXTRACT_JDBC": "Jdbc提取"
-      },
-      "EfficiencyResourceType": {
-        "TASK": "任务",
-        "CASE": "用例"
-      },
-      "BurnDownResourceType": {
-        "NUM": "数据",
-        "WORKLOAD": "总工作量"
-      },
-      "AnalysisTimeRange": {
-        "ALL_TIME": "全部时间",
-        "THIS_WEEK": "本周",
-        "LAST_WEEK": "上一周",
-        "THIS_MONTH": "本月",
-        "LAST_MONTH": "上一月",
-        "THIS_YEAR": "本年",
-        "CUSTOM_TIME": "自定义时间"
-      },
-      "AnalysisDataSource": {
-        "REAL_TIME_DATA": "每次展示实时数据",
-        "SNAPSHOT_DATA": "保存数据快照，每次展示快照数据"
-      },
-      "AnalysisTaskObject": {
-        "CURRENT_PROJECT": "当前项目",
-        "SPRINT": "迭代",
-        "ASSIGNEE_ORG": "经办组织人员"
-      },
-      "AnalysisTaskTemplate": {
-        "PROGRESS": "进度分析",
-        "BURNDOWN": "燃尽分析",
-        "WORKLOAD": "工作量分析",
-        "OVERDUE_ASSESSMENT": "逾期评估分析",
-        "BUGS": "缺陷分析",
-        "HANDLING_EFFICIENCY": "处理效率分析",
-        "CORE_KPI": "核心KPI分析",
-        "FAILURES": "故障分析",
-        "BACKLOG_TASKS": "积压任务分析",
-        "RECENT_DELIVERY": "近期交付量分析",
-        "LEAD_TIME": "交付周期分析",
-        "UNPLANNED_TASKS": "计划外任务分析",
-        "TASK_GROWTH_TREND": "任务增长趋势分析",
-        "RESOURCE_CREATION": "资源创建分析",
-        "CUSTOM_DEFINITION": "自定义分析"
-      },
-      "AnalysisTaskTemplateDesc": {
-        "PROGRESS": "跟踪项目、迭代或经办人工作进展。帮助团队对任务时间安排、工作效率等方面的评估。",
-        "BURNDOWN": "跟踪全部工作在计划时间内完成目标的可能性。帮助团队取得的进展和作出相应的反应。",
-        "WORKLOAD": "了解团队工作负载、评估工作量和实际工作量偏差。帮助团队确保合理的工作量分配。",
-        "OVERDUE_ASSESSMENT": "评估未按时完成的任务，使团队能够及时调整策略并优化资源分配。帮助团队识别潜在的风险和瓶颈。",
-        "BUGS": "评估系统中不符合预期的问题。帮助团队识了解设计缺陷、实现问题或测试不足等方面问题。",
-        "HANDLING_EFFICIENCY": "评估任务重复处理频率，揭示完成质量不佳问题。帮助团队识别完成质量瓶颈，及时调整工作标准。",
-        "CORE_KPI": "评估关键绩效指标，如任务数、总工作量、逾期、缺陷。方便对研发团队快速进行绩效评估。",
-        "FAILURES": "评估缺陷发生的次数、等级分布情况和解决时效性。帮助团队分析故障发生原因、跟踪解决情况。",
-        "BACKLOG_TASKS": "总结未完成任务和工作量、评估完成耗时是否有逾期风险。帮助团队识逾期风险和管理进度。",
-        "RECENT_DELIVERY": "评估在最近完成的任务和交付成果。帮助团队识别完成的工作项与预期目标之间的差距，从而及时调整策略和资源分配。",
-        "LEAD_TIME": "评估任务完成所需时间以及处理周期分布情况。帮助团队监测交付过程的效率和稳定性。",
-        "UNPLANNED_TASKS": "评估在执行过程中出现的非计划内任务，理解对整体进度和资源分配的影响。帮助团队识别干扰因素和规避风险。",
-        "TASK_GROWTH_TREND": "评估在特定时间段内新增任务数量及其对项目进度影响。帮助团队及时调整策略，以应对持续增长的工作需求。",
-        "RESOURCE_CREATION": "评估各类资源创建情况，如Backlog、迭代、任务和会议等。帮助团队理解资源的有效利用和贡献情况。",
-        "CUSTOM_DEFINITION": "对关键指标进行自定义状态或时序分析。帮助团队深入理解特定数据变化、状态和分布情况。"
-      },
-      "AnalysisCaseObject": {
-        "CURRENT_PROJECT": "当前项目",
-        "PLAN": "计划",
-        "TESTER_ORG": "测试组织人员"
-      },
-      "AnalysisCaseTemplate": {
-        "PROGRESS": "进度分析",
-        "BURNDOWN": "燃尽分析",
-        "WORKLOAD": "工作量分析",
-        "OVERDUE_ASSESSMENT": "逾期评估分析",
-        "SUBMITTED_BUGS": "提交缺陷分析",
-        "TESTING_EFFICIENCY": "测试效率分析",
-        "CORE_KPI": "核心KPI分析",
-        "REVIEW_EFFICIENCY": "评审效率分析",
-        "BACKLOG_CASES": "积压用例分析",
-        "RECENT_DELIVERY": "近期交付量分析",
-        "LEAD_TIME": "交付周期分析",
-        "UNPLANNED_CASES": "计划外用例分析",
-        "CASE_GROWTH_TREND": "用例增长趋势分析",
-        "RESOURCE_CREATION": "资源创建分析",
-        "CUSTOM_DEFINITION": "自定义分析"
-      },
-      "AnalysisCaseTemplateDesc": {
-        "PROGRESS": "跟踪项目、计划或测试人工作进展。帮助团队对测试时间安排、工作效率等方面的评估。",
-        "BURNDOWN": "跟踪全部工作在计划时间内完成目标的可能性。帮助团队取得的进展和作出相应的反应。",
-        "WORKLOAD": "了解团队工作负载、评估工作量和实际工作量偏差。帮助团队确保合理的工作量分配。",
-        "OVERDUE_ASSESSMENT": "评估未按时完成的用例，使团队能够及时调整策略并优化资源分配。帮助团队识别潜在的风险和瓶颈。",
-        "SUBMITTED_BUGS": "评估测试测试人员提交缺陷情况。帮助团队识了解测试命中率、分析用例设计和功能实现不足问题。",
-        "TESTING_EFFICIENCY": "评估用例重复测试频率，揭示完成质量不佳问题。帮助团队识别完成质量瓶颈，及时调整工作标准。",
-        "CORE_KPI": "评估关键绩效指标，如用例数、总工作量、逾期、评审。方便对测试团队快速进行绩效评估。",
-        "REVIEW_EFFICIENCY": "评估测试用例的审核过程的效率。有助于团队优化测试策略，确保高质量的软件交付。",
-        "BACKLOG_CASES": "总结未完成用例和工作量、评估完成耗时是否有逾期风险。帮助团队识逾期风险和管理进度。",
-        "RECENT_DELIVERY": "评估在最近完成的用例和交付成果。帮助团队识别完成的工作项与预期目标之间的差距，从而及时调整策略和资源分配。",
-        "LEAD_TIME": "评估用例完成所需时间以及处理周期分布情况。帮助团队监测交付过程的效率和稳定性。",
-        "UNPLANNED_CASES": "评估在执行过程中出现的非计划内用例，理解对整体进度和资源分配的影响。帮助团队识别干扰因素和规避风险。",
-        "CASE_GROWTH_TREND": "评估在特定时间段内新增用例数量及其对项目进度影响。帮助团队及时调整策略，以应对持续增长的工作需求。",
-        "RESOURCE_CREATION": "评估各类资源创建情况，如计划、用例、评审和基线等。帮助团队理解资源的有效利用和贡献情况。",
-        "CUSTOM_DEFINITION": "对关键指标进行自定义状态或时序分析。帮助团队深入理解特定数据变化、状态和分布情况。"
-      },
-      "ReportPermission": {
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "GENERATE": "立即生成",
-        "DELETE": "删除",
-        "GRANT": "授权",
-        "EXPORT": "导出"
-      },
-      "SpacePermission": {
-        "VIEW": "查看",
-        "MODIFY": "修改",
-        "DELETE": "删除",
-        "SHARE": "分析",
-        "GRANT": "授权",
-        "OBJECT_READ": "读对象",
-        "OBJECT_WRITE": "写对象",
-        "OBJECT_DELETE": "删除对象"
-      },
-      "ReportStatus": {
-        "PENDING": "待生成",
-        "SUCCESS": "成功",
-        "FAILURE": "失败"
-      },
-      "ReportCategory": {
-        "PROJECT": "项目报告",
-        "TASK": "任务报告",
-        "FUNCTIONAL": "功能测试报告",
-        "APIS": "接口测试报告",
-        "SCENARIO": "场景测试报告",
-        "EXECUTION": "执行报告"
-      },
-      "ReportTemplate": {
-        "PROJECT_PROGRESS": "项目进度报告",
-        "PROJECT_DATA_ASSETS": "项目数据资产报告",
-        "PROJECT_EFFICIENCY": "项目效能报告",
-        "PROJECT_ACTIVITY": "项目活动报告",
-        "TASK_SPRINT": "迭代报告",
-        "TASK": "任务报告",
-        "FUNC_TESTING_PLAN": "测试计划报告",
-        "FUNC_TESTING_CASE": "测试用例报告",
-        "SERVICES_TESTING_RESULT": "服务测试结果报告",
-        "APIS_TESTING_RESULT": "接口测试结果报告",
-        "APIS_TESTING": "接口测试报告",
-        "SCENARIO_TESTING_RESULT": "场景测试结果报告",
-        "SCENARIO_TESTING": "场景测试报告",
-        "EXEC_FUNCTIONAL_RESULT": "执行功能测试报告",
-        "EXEC_PERFORMANCE_RESULT": "执行性能测试报告",
-        "EXEC_STABILITY_RESULT": "执行稳定性测试报告",
-        "EXEC_CUSTOMIZATION_RESULT": "执行自定义测试报告"
-      },
-      "ExampleDataType": {
-        "TAG": "标签",
-        "MODULE": "模块",
-        "TASK": "任务",
-        "FUNC": "功能",
-        "SERVICES": "服务",
-        "SCENARIO": "场景",
-        "SCRIPT": "脚本",
-        "MOCK": "Mock",
-        "VARIABLE": "变量",
-        "DATASET": "数据集",
-        "EXECUTION": "执行",
-        "REPORT": "报告"
-      },
-      "AssociateTargetType": {
-        "EXEC": "执行",
-        "REPORTER": "报告"
-      }
+  "enum": {
+    "NodeSource": {
+      "OWN_NODE": "自有节点",
+      "ONLINE_BUY": "在线购买"
+    },
+    "CountScriptType": {
+      "PERF": "性能",
+      "FUNCTIONAL": "功能",
+      "STABILITY": "稳定性",
+      "FILE": "文件",
+      "DATASOURCE": "数据源",
+      "ALL": "所有脚本"
+    },
+    "TaskTargetType": {
+      "TASK": "任务",
+      "TASK_SPRINT": "迭代"
+    },
+    "ApisTargetType": {
+      "SERVICE": "服务",
+      "API": "接口"
+    },
+    "AuthorizationType": {
+      "NO_AUTH": "不认证",
+      "BASIC_AUTH": "Basic",
+      "BEARER_TOKEN": "Bearer Token",
+      "CUSTOM": "自定义"
+    },
+    "ApiSource": {
+      "CREATED": "创建",
+      "EDITOR": "编辑器",
+      "IMPORT": "导入",
+      "SYNC": "同步"
+    },
+    "ApiStatus": {
+      "UNKNOWN": "未知",
+      "IN_DESIGN": "设计中",
+      "IN_DEV": "开发中",
+      "DEV_COMPLETED": "开发完成",
+      "RELEASED": "已发布"
+    },
+    "ActionWhenDuplicate": {
+      "COVER": "覆盖",
+      "IGNORE": "忽略"
+    },
+    "TestType": {
+      "PERFORMANCE": "性能测试",
+      "FUNCTIONAL": "功能测试",
+      "STABILITY": "稳定性测试",
+      "CUSTOMIZATION": "自定义测试"
+    },
+    "CountTestType": {
+      "PERF": "性能",
+      "FUNCTIONAL": "功能",
+      "STABILITY": "稳定性",
+      "ALL": "所有脚本"
+    },
+    "TaskType": {
+      "REQUIREMENT": "需求",
+      "STORY": "故事",
+      "TASK": "任务",
+      "BUG": "缺陷",
+      "API_TEST": "接口测试",
+      "SCENARIO_TEST": "场景测试"
+    },
+    "TaskStatus": {
+      "PENDING": "待处理",
+      "IN_PROGRESS": "进行中",
+      "CONFIRMING": "待确认",
+      "COMPLETED": "已完成",
+      "CANCELED": "已取消"
+    },
+    "SoftwareVersionStatus": {
+      "NOT_RELEASED": "规划中",
+      "RELEASED": "已发布",
+      "ARCHIVED": "已归档"
+    },
+    "BugLevel": {
+      "CRITICAL": "致命",
+      "MAJOR": "严重",
+      "MINOR": "一般",
+      "TRIVIAL": "轻微"
+    },
+    "OverdueRiskLevel": {
+      "HIGH": "高",
+      "LOW": "低",
+      "NONE": "无"
+    },
+    "AssociateUserType": {
+      "CREATOR": "创建人",
+      "ASSIGNEE": "经办人",
+      "CONFIRMOR": "确认人",
+      "OWNER": "负责人",
+      "SYS_ADMIN": "系统管理员",
+      "APP_ADMIN": "应用管理员"
+    },
+    "ServicesPermission": {
+      "ADD": "添加",
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "DELETE": "删除",
+      "TEST": "测试",
+      "GRANT": "授权",
+      "SHARE": "分享",
+      "RELEASE": "发布",
+      "EXPORT": "导出"
+    },
+    "ApiPermission": {
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "DELETE": "删除",
+      "DEBUG": "调试",
+      "TEST": "测试",
+      "GRANT": "授权",
+      "SHARE": "分享",
+      "RELEASE": "发布",
+      "EXPORT": "导出"
+    },
+    "StrategyWhenDuplicated": {
+      "COVER": "覆盖",
+      "IGNORE": "忽略"
+    },
+    "ScriptPermission": {
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "DELETE": "删除",
+      "TEST": "测试",
+      "GRANT": "授权",
+      "EXPORT": "导出"
+    },
+    "MockServiceStartStatus": {
+      "NOT_STARTED": "未启动",
+      "SUCCESS": "成功",
+      "FAILURE": "失败",
+      "UNKNOWN": "未知"
+    },
+    "ExecStatus": {
+      "CREATED": "已创建",
+      "PENDING": "调度中",
+      "RUNNING": "执行中",
+      "STOPPED": "已停止",
+      "FAILED": "失败",
+      "COMPLETED": "已完成",
+      "TIMEOUT": "超时"
+    },
+    "TestResultStatus": {
+      "NOT_ENABLED": "未开启",
+      "UNTESTED": "未测试",
+      "PARTIALLY_PASSED": "部分通过",
+      "FULLY_PASSED": "全部通过",
+      "FULLY_FAILED": "全部失败"
+    },
+    "ProjectType": {
+      "AGILE": "敏捷项目管理",
+      "GENERAL": "一般项目管理",
+      "TESTING": "软件测试项目"
+    },
+    "ServicesExportScope": {
+      "SERVICE": "服务",
+      "APIS": "按接口"
+    },
+    "ApisShareScope": {
+      "SERVICES": "服务",
+      "PARTIAL_APIS": "多接口",
+      "SINGLE_APIS": "单接口"
+    },
+    "IndicatorType": {
+      "FUNC": "功能",
+      "PERF": "性能",
+      "STABILITY": "稳定性"
+    },
+    "TaskSprintPermission": {
+      "MODIFY_SPRINT": "修改迭代",
+      "DELETE_SPRINT": "删除迭代",
+      "ADD_TASK": "添加任务",
+      "MODIFY_TASK": "修改任务",
+      "DELETE_TASK": "删除任务",
+      "EXPORT_TASK": "导出任务",
+      "RESTART_TASK": "重新开始任务",
+      "REOPEN_TASK": "重新打开任务",
+      "GRANT": "授权"
+    },
+    "ScenarioPermission": {
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "DELETE": "删除",
+      "TEST": "测试",
+      "GRANT": "授权",
+      "EXPORT": "导出"
+    },
+    "MockServicePermission": {
+      "ADD": "添加接口",
+      "VIEW": "查看",
+      "MODIFY": "编辑",
+      "DELETE": "删除",
+      "RUN": "运行",
+      "GRANT": "授权",
+      "EXPORT": "导出"
+    },
+    "MockServiceStatus": {
+      "NOT_STARTED": "未启动",
+      "RUNNING": "运行中"
+    },
+    "MockServiceSource": {
+      "CREATED": "手动创建",
+      "FILE_IMPORT": "文件导入",
+      "ASSOC_SERVICE": "关联服务"
+    },
+    "MockApisSource": {
+      "CREATED": "手动创建",
+      "ANGUS_IMPORT": "Angus文件导入",
+      "COPY_APIS": "复制接口",
+      "ASSOC_APIS": "关联接口"
+    },
+    "MockDataSourceStatus": {
+      "SUCCESS": "连接成功",
+      "FAIL": "连接失败"
+    },
+    "BinaryContentType": {
+      "FILE": "文件",
+      "BASE64_TEXT": "文件Base64文本",
+      "URL": "文件URL"
+    },
+    "MockAuthorizationType": {
+      "HTTP_BASIC": "HTTP Basic",
+      "REQUEST_HEADER_MATCH": "请求头匹配"
+    },
+    "MockDataTargetType": {
+      "FILE": "文件",
+      "DATASOURCE": "数据源"
+    },
+    "ServicesCompType": {
+      "schemas": "数据模型",
+      "responses": "响应",
+      "parameters": "参数",
+      "examples": "示例",
+      "requestBodies": "请求体",
+      "headers": "头",
+      "securitySchemes": "安全方案",
+      "links": "链接",
+      "callbacks": "回调",
+      "extensions": "扩展",
+      "pathItems": "接口"
+    },
+    "TaskSprintStatus": {
+      "PENDING": "待开始",
+      "IN_PROGRESS": "进行中",
+      "COMPLETED": "已完成",
+      "BLOCKED": "阻塞中"
+    },
+    "TaskMeetingType": {
+      "DAILY_STANDUP": "每日站会",
+      "PLANNING": "迭代计划会",
+      "REVIEW": "迭代回顾会",
+      "RETROSPECTIVE": "迭代总结会",
+      "BACKLOG_REFINEMENT": "产品梳理会",
+      "OTHER": "其他"
+    },
+    "ApisDesignSource": {
+      "SYNCHRONOUS_SERVICE": "同步服务",
+      "FILE_IMPORT": "文件导入",
+      "MANUAL_CREATED": "手动创建"
+    },
+    "DnsLine": {
+      "DEFAULT": "默认",
+      "TELECOM": "电信",
+      "UNICOM": "联通",
+      "MOBILE": "移动",
+      "OVERSEA": "海外"
+    },
+    "InstanceChargeType": {
+      "PrePaid": "包年包月",
+      "PostPaid": "按量付费"
+    },
+    "FuncTargetType": {
+      "PLAN": "测试计划",
+      "CASE": "用例"
+    },
+    "CaseTestResult": {
+      "PENDING": "待测试",
+      "PASSED": "测试通过",
+      "NOT_PASSED": "测试未通过",
+      "BLOCKED": "阻塞中",
+      "CANCELED": "已取消"
+    },
+    "CaseStepView": {
+      "TABLE": "表格视图",
+      "TEXT": "文本视图"
+    },
+    "FuncPlanPermission": {
+      "MODIFY_PLAN": "修改计划",
+      "DELETE_PLAN": "删除计划",
+      "ADD_CASE": "添加用例",
+      "MODIFY_CASE": "修改用例",
+      "DELETE_CASE": "删除用例",
+      "EXPORT_CASE": "导出用例",
+      "REVIEW": "评审",
+      "RESET_REVIEW_RESULT": "重置评审结果",
+      "TEST": "修改测试结果",
+      "RESET_TEST_RESULT": "重置测试结果",
+      "ESTABLISH_BASELINE": "建立基线",
+      "GRANT": "授权"
+    },
+    "FuncPlanStatus": {
+      "PENDING": "待开始",
+      "IN_PROGRESS": "进行中",
+      "COMPLETED": "已完成",
+      "BLOCKED": "阻塞中"
+    },
+    "ScenarioMonitorStatus": {
+      "PENDING": "待执行",
+      "SUCCESS": "成功",
+      "FAILURE": "失败"
+    },
+    "DataAssetsCategory": {
+      "FUNC": "功能",
+      "APIS": "接口",
+      "SCENARIO": "场景",
+      "TASK": "任务",
+      "SCRIPT": "脚本",
+      "MOCK": "Mock",
+      "DATA": "数据"
+    },
+    "ParameterizationDataSource": {
+      "STATIC_VALUE": "静态值",
+      "EXTRACT_VALUE": "值提取",
+      "EXTRACT_FILE": "文件提取",
+      "EXTRACT_HTTP": "Http提取",
+      "EXTRACT_HTTP_SAMPLING": "Http采样提取",
+      "EXTRACT_JDBC": "Jdbc提取"
+    },
+    "EfficiencyResourceType": {
+      "TASK": "任务",
+      "CASE": "用例"
+    },
+    "BurnDownResourceType": {
+      "NUM": "数据",
+      "WORKLOAD": "总工作量"
+    },
+    "AnalysisTimeRange": {
+      "ALL_TIME": "全部时间",
+      "THIS_WEEK": "本周",
+      "LAST_WEEK": "上一周",
+      "THIS_MONTH": "本月",
+      "LAST_MONTH": "上一月",
+      "THIS_YEAR": "本年",
+      "CUSTOM_TIME": "自定义时间"
+    },
+    "AnalysisDataSource": {
+      "REAL_TIME_DATA": "每次展示实时数据",
+      "SNAPSHOT_DATA": "保存数据快照，每次展示快照数据"
+    },
+    "AnalysisTaskObject": {
+      "CURRENT_PROJECT": "当前项目",
+      "SPRINT": "迭代",
+      "ASSIGNEE_ORG": "经办组织人员"
+    },
+    "AnalysisTaskTemplate": {
+      "PROGRESS": "进度分析",
+      "BURNDOWN": "燃尽分析",
+      "WORKLOAD": "工作量分析",
+      "OVERDUE_ASSESSMENT": "逾期评估分析",
+      "BUGS": "缺陷分析",
+      "HANDLING_EFFICIENCY": "处理效率分析",
+      "CORE_KPI": "核心KPI分析",
+      "FAILURES": "故障分析",
+      "BACKLOG_TASKS": "积压任务分析",
+      "RECENT_DELIVERY": "近期交付量分析",
+      "LEAD_TIME": "交付周期分析",
+      "UNPLANNED_TASKS": "计划外任务分析",
+      "TASK_GROWTH_TREND": "任务增长趋势分析",
+      "RESOURCE_CREATION": "资源创建分析",
+      "CUSTOM_DEFINITION": "自定义分析"
+    },
+    "AnalysisTaskTemplateDesc": {
+      "PROGRESS": "跟踪项目、迭代或经办人工作进展。帮助团队对任务时间安排、工作效率等方面的评估。",
+      "BURNDOWN": "跟踪全部工作在计划时间内完成目标的可能性。帮助团队取得的进展和作出相应的反应。",
+      "WORKLOAD": "了解团队工作负载、评估工作量和实际工作量偏差。帮助团队确保合理的工作量分配。",
+      "OVERDUE_ASSESSMENT": "评估未按时完成的任务，使团队能够及时调整策略并优化资源分配。帮助团队识别潜在的风险和瓶颈。",
+      "BUGS": "评估系统中不符合预期的问题。帮助团队识了解设计缺陷、实现问题或测试不足等方面问题。",
+      "HANDLING_EFFICIENCY": "评估任务重复处理频率，揭示完成质量不佳问题。帮助团队识别完成质量瓶颈，及时调整工作标准。",
+      "CORE_KPI": "评估关键绩效指标，如任务数、总工作量、逾期、缺陷。方便对研发团队快速进行绩效评估。",
+      "FAILURES": "评估缺陷发生的次数、等级分布情况和解决时效性。帮助团队分析故障发生原因、跟踪解决情况。",
+      "BACKLOG_TASKS": "总结未完成任务和工作量、评估完成耗时是否有逾期风险。帮助团队识逾期风险和管理进度。",
+      "RECENT_DELIVERY": "评估在最近完成的任务和交付成果。帮助团队识别完成的工作项与预期目标之间的差距，从而及时调整策略和资源分配。",
+      "LEAD_TIME": "评估任务完成所需时间以及处理周期分布情况。帮助团队监测交付过程的效率和稳定性。",
+      "UNPLANNED_TASKS": "评估在执行过程中出现的非计划内任务，理解对整体进度和资源分配的影响。帮助团队识别干扰因素和规避风险。",
+      "TASK_GROWTH_TREND": "评估在特定时间段内新增任务数量及其对项目进度影响。帮助团队及时调整策略，以应对持续增长的工作需求。",
+      "RESOURCE_CREATION": "评估各类资源创建情况，如Backlog、迭代、任务和会议等。帮助团队理解资源的有效利用和贡献情况。",
+      "CUSTOM_DEFINITION": "对关键指标进行自定义状态或时序分析。帮助团队深入理解特定数据变化、状态和分布情况。"
+    },
+    "AnalysisCaseObject": {
+      "CURRENT_PROJECT": "当前项目",
+      "PLAN": "计划",
+      "TESTER_ORG": "测试组织人员"
+    },
+    "AnalysisCaseTemplate": {
+      "PROGRESS": "进度分析",
+      "BURNDOWN": "燃尽分析",
+      "WORKLOAD": "工作量分析",
+      "OVERDUE_ASSESSMENT": "逾期评估分析",
+      "SUBMITTED_BUGS": "提交缺陷分析",
+      "TESTING_EFFICIENCY": "测试效率分析",
+      "CORE_KPI": "核心KPI分析",
+      "REVIEW_EFFICIENCY": "评审效率分析",
+      "BACKLOG_CASES": "积压用例分析",
+      "RECENT_DELIVERY": "近期交付量分析",
+      "LEAD_TIME": "交付周期分析",
+      "UNPLANNED_CASES": "计划外用例分析",
+      "CASE_GROWTH_TREND": "用例增长趋势分析",
+      "RESOURCE_CREATION": "资源创建分析",
+      "CUSTOM_DEFINITION": "自定义分析"
+    },
+    "AnalysisCaseTemplateDesc": {
+      "PROGRESS": "跟踪项目、计划或测试人工作进展。帮助团队对测试时间安排、工作效率等方面的评估。",
+      "BURNDOWN": "跟踪全部工作在计划时间内完成目标的可能性。帮助团队取得的进展和作出相应的反应。",
+      "WORKLOAD": "了解团队工作负载、评估工作量和实际工作量偏差。帮助团队确保合理的工作量分配。",
+      "OVERDUE_ASSESSMENT": "评估未按时完成的用例，使团队能够及时调整策略并优化资源分配。帮助团队识别潜在的风险和瓶颈。",
+      "SUBMITTED_BUGS": "评估测试测试人员提交缺陷情况。帮助团队识了解测试命中率、分析用例设计和功能实现不足问题。",
+      "TESTING_EFFICIENCY": "评估用例重复测试频率，揭示完成质量不佳问题。帮助团队识别完成质量瓶颈，及时调整工作标准。",
+      "CORE_KPI": "评估关键绩效指标，如用例数、总工作量、逾期、评审。方便对测试团队快速进行绩效评估。",
+      "REVIEW_EFFICIENCY": "评估测试用例的审核过程的效率。有助于团队优化测试策略，确保高质量的软件交付。",
+      "BACKLOG_CASES": "总结未完成用例和工作量、评估完成耗时是否有逾期风险。帮助团队识逾期风险和管理进度。",
+      "RECENT_DELIVERY": "评估在最近完成的用例和交付成果。帮助团队识别完成的工作项与预期目标之间的差距，从而及时调整策略和资源分配。",
+      "LEAD_TIME": "评估用例完成所需时间以及处理周期分布情况。帮助团队监测交付过程的效率和稳定性。",
+      "UNPLANNED_CASES": "评估在执行过程中出现的非计划内用例，理解对整体进度和资源分配的影响。帮助团队识别干扰因素和规避风险。",
+      "CASE_GROWTH_TREND": "评估在特定时间段内新增用例数量及其对项目进度影响。帮助团队及时调整策略，以应对持续增长的工作需求。",
+      "RESOURCE_CREATION": "评估各类资源创建情况，如计划、用例、评审和基线等。帮助团队理解资源的有效利用和贡献情况。",
+      "CUSTOM_DEFINITION": "对关键指标进行自定义状态或时序分析。帮助团队深入理解特定数据变化、状态和分布情况。"
+    },
+    "ReportPermission": {
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "GENERATE": "立即生成",
+      "DELETE": "删除",
+      "GRANT": "授权",
+      "EXPORT": "导出"
+    },
+    "SpacePermission": {
+      "VIEW": "查看",
+      "MODIFY": "修改",
+      "DELETE": "删除",
+      "SHARE": "分析",
+      "GRANT": "授权",
+      "OBJECT_READ": "读对象",
+      "OBJECT_WRITE": "写对象",
+      "OBJECT_DELETE": "删除对象"
+    },
+    "ReportStatus": {
+      "PENDING": "待生成",
+      "SUCCESS": "成功",
+      "FAILURE": "失败"
+    },
+    "ReportCategory": {
+      "PROJECT": "项目报告",
+      "TASK": "任务报告",
+      "FUNCTIONAL": "功能测试报告",
+      "APIS": "接口测试报告",
+      "SCENARIO": "场景测试报告",
+      "EXECUTION": "执行报告"
+    },
+    "ReportTemplate": {
+      "PROJECT_PROGRESS": "项目进度报告",
+      "PROJECT_DATA_ASSETS": "项目数据资产报告",
+      "PROJECT_EFFICIENCY": "项目效能报告",
+      "PROJECT_ACTIVITY": "项目活动报告",
+      "TASK_SPRINT": "迭代报告",
+      "TASK": "任务报告",
+      "FUNC_TESTING_PLAN": "测试计划报告",
+      "FUNC_TESTING_CASE": "测试用例报告",
+      "SERVICES_TESTING_RESULT": "服务测试结果报告",
+      "APIS_TESTING_RESULT": "接口测试结果报告",
+      "APIS_TESTING": "接口测试报告",
+      "SCENARIO_TESTING_RESULT": "场景测试结果报告",
+      "SCENARIO_TESTING": "场景测试报告",
+      "EXEC_FUNCTIONAL_RESULT": "执行功能测试报告",
+      "EXEC_PERFORMANCE_RESULT": "执行性能测试报告",
+      "EXEC_STABILITY_RESULT": "执行稳定性测试报告",
+      "EXEC_CUSTOMIZATION_RESULT": "执行自定义测试报告"
+    },
+    "ExampleDataType": {
+      "TAG": "标签",
+      "MODULE": "模块",
+      "TASK": "任务",
+      "FUNC": "功能",
+      "SERVICES": "服务",
+      "SCENARIO": "场景",
+      "SCRIPT": "脚本",
+      "MOCK": "Mock",
+      "VARIABLE": "变量",
+      "DATASET": "数据集",
+      "EXECUTION": "执行",
+      "REPORT": "报告"
+    },
+    "AssociateTargetType": {
+      "EXEC": "执行",
+      "REPORTER": "报告"
     }
   }
 }
