@@ -101,6 +101,7 @@ const columns = computed(() => {
 
   return columnsPriv;
 });
+
 </script>
 <template>
   <Grid :columns="columns" :dataSource="dataSource">
@@ -109,7 +110,7 @@ const columns = computed(() => {
       {{ text?.message }}
     </template>
     <template #endDate="{text}">
-      {{ text }} ( 剩余{{ dayjs(text).diff(dayjs().format(),'day') }}天 )
+      {{ text }} ( 剩余{{ dayjs(text).diff(dayjs().format(),'day') > 0 ? dayjs(text).diff(dayjs().format(),'day') : 0  }}天 )
     </template>
   </Grid>
 </template>

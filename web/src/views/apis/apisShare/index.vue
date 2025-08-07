@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, provide, watch } from 'vue';
-import { cookieUtils, site } from '@xcan-angus/infra';
+import { cookieUtils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useRoute } from 'vue-router';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
 import '@xcan-angus/rapidoc';
+import { useI18n } from 'vue-i18n';
 import { shareApis } from 'src/api/tester';
 
+const { t } = useI18n();
 const route = useRoute();
 const Agent = defineAsyncComponent(() => import('@/views/mock/detail/mockApis/components/agent/index.vue'));
 const id = ref();
@@ -81,7 +83,7 @@ onMounted(async () => {
   id.value = route.query.id;
   pat.value = route.query.pat;
   accessToken.value = cookieUtils.get('access_token');
-  docOrigin.value = await site.getUrl('apis');
+  docOrigin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   await loadData();
 
   watch(() => currentProxyUrl.value, (newValue) => {
@@ -139,7 +141,7 @@ provide('readyState', readyState);
           <div
             class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer">
             <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
-            <span style="writing-mode: vertical-lr;" class="mt-1">代理</span>
+            <span style="writing-mode: vertical-lr;" class="mt-1">{{t('apiShare.agentProxyTitle')}}</span>
           </div>
         </div>
         <div

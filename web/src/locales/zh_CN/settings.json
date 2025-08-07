@@ -7,6 +7,8 @@
     "clientProxyDescription": "需要在访问浏览器所在电脑中安装\"代理程序\"，配置后将使用客户端代理发送请求。",
     "serverProxy": "服务端代理",
     "serverProxyDescription": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。",
+    "cloudProxy": "云代理",
+    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。",
     "downloadProxy": "下载代理程序",
     "windowsDesktopProxy": "Windows桌面代理",
     "macDesktopProxy": "Mac桌面代理",
@@ -15,6 +17,7 @@
     "serverRequestProxyConfig": "服务端请求代理配置",
     "enable": "是否开启：",
     "proxyAddress": "代理地址：",
+    "addressTip": "请输入正确的代理地址",
     "cancel": "取消",
     "save": "保存",
     "connected": "已连接",
@@ -29,17 +32,22 @@
     "status": {
       "pending": "待推送",
       "success": "成功",
-      "failure": "失败"
+      "failure": "失败",
+      "ignore": "忽略",
+      "summary": "总共"
     },
+    "errMsg": "错误信息",
     "config": {
       "pushConfig": "推送配置",
+      "push_config_tip": "配置通知方式可以确保相关人员在事件发生时及时收到信息，提高反应速度。",
       "pushRecords": "推送记录",
       "configReceiveChannel": "配置接收通道",
       "configReceiver": "配置接收人",
       "selectReceiveMethod": "选择接收方式",
       "selectReceiver": "选择接收人",
       "receiver": "接收人",
-      "selectOtherUsers": "选择其他用户"
+      "selectOtherUsers": "选择其他用户",
+      "event_record": "事件记录"
     },
     "columns": {
       "notificationStatus": "通知状态",
@@ -49,7 +57,15 @@
       "executionId": "执行编号",
       "addTime": "添加时间",
       "pushTime": "推送时间",
-      "pushResult": "推送结果"
+      "pushResult": "推送结果",
+      "eventName": "事件名称",
+      "category": "分类",
+      "noticeType": "通知类型",
+      "eventId": "事件ID",
+      "content": "内容",
+      "receiver": "接收人",
+      "createdDate": "触发时间",
+      "pushStatus": "推送状态"
     },
     "placeholder": {
       "queryExecutionId": "查询执行编号",
@@ -62,7 +78,13 @@
   },
   "app": {
     "title": "应用设置",
-    "description": "配置应用的基本参数和功能选项"
+    "description": "配置应用的基本参数和功能选项",
+    "addMember": "加入成员",
+    "addDept": "加入部门",
+    "addGroup": "加入组",
+    "member_placeholder": "查询成员名称",
+    "dept_placeholder": "查询部门名称",
+    "group_placeholder": "查询组名称"
   },
   "script": {
     "title": "脚本设置",
@@ -72,4 +94,4 @@
     "title": "权限设置",
     "description": "配置用户权限和访问控制"
   }
-} 
+}

@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
+import { defineAsyncComponent,  onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Image, Input, NoData } from '@xcan-angus/vue-ui';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, Context } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
-
-import { AppInfo } from './interface';
-
 const Member = defineAsyncComponent(() => import('./memberData.vue'));
 const Quota = defineAsyncComponent(() => import('./quota.vue'));
 const PermitInfo = defineAsyncComponent(() => import('./permitInfo.vue'));
 
-const appInfo = inject('appInfo', ref<AppInfo>());
+const appInfo = ref(appContext.getAccessApp());
 const { t } = useI18n();
 
 const defaultImg = new URL('./AngusTester.png', import.meta.url).href;
 
 const editionType = ref<string>();
-const appName = ref('');
-const appUrl = ref('');
-const appId = ref('');
-const appIcon = ref('');
-const state:{appInfo:AppInfo} = reactive({ appInfo: {} as AppInfo });
+const appName = ref();
+const appUrl = ref();
+const appId = ref();
+const appIcon = ref();
+const state:{appInfo:Context['accessApp']} = reactive({ appInfo: {} as Context['accessApp'] });
 
 const activeTab = ref('member');
 
 onMounted(async () => {
   editionType.value = appContext.getEditionType();
 
-  watch(() => appInfo.value, (newValue:AppInfo) => {
+  watch(() => appInfo.value, (newValue) => {
+    if (!newValue) {
+      return;
+    }
     state.appInfo = newValue;
     appName.value = newValue.showName;
     appUrl.value = newValue.url;

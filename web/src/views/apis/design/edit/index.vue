@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Hints, Input, Modal, Select, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -21,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   apisIds: () => [],
   designScope: 'SERVICES'
 });
-
+const { t } = useI18n();
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
 const formState = ref({
   name: undefined,
@@ -124,7 +125,7 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
 </script>
 <template>
   <Modal
-    :title="props.designId ? '编辑设计' : '添加设计'"
+    :title="props.designId ? t('design.editModal.editTitle') : t('design.editModal.addTitle')"
     :visible="props.visible"
     :width="680"
     :okButtonProps="{
@@ -142,14 +143,14 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
       <FormItem
         required
         name="name"
-        label="名称">
+        :label="t('design.editModal.nameLabel')">
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          placeholder="输入设计名称，最多可输入100字符" />
+          :placeholder="t('design.editModal.namePlaceholder')" />
       </FormItem>
       <FormItem
-        label="版本"
+        :label="t('design.editModal.versionLabel')"
         name="openapiSpecVersion"
         required>
         <div class="flex items-center space-x-2">
@@ -157,7 +158,7 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
             v-model:value="formState.openapiSpecVersion"
             class="flex-1"
             :options="versionOpt" />
-          <Hints text="OpenAPI文档规范版本号，默认3.0.1。" />
+          <Hints :text="t('design.editModal.versionPlaceholder')" />
         </div>
       </FormItem>
     </Form>

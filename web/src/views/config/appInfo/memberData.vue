@@ -14,9 +14,9 @@ const activeKey = ref('USER');
       buttonStyle="solid"
       class="w-70 flex"
       size="small">
-      <RadioButton value="USER" :tab="$t('settingApp.user')">{{ $t('settingApp.user') }}</RadioButton>
-      <RadioButton value="DEPT" :tab="$t('settingApp.dept')">{{ $t('settingApp.dept') }}</RadioButton>
-      <RadioButton value="GROUP" :tab="$t('settingApp.group')">{{ $t('settingApp.group') }}</RadioButton>
+      <RadioButton value="USER" :tab="$t('orgNames.user')">{{ $t('orgNames.user') }}</RadioButton>
+      <RadioButton value="DEPT" :tab="$t('orgNames.dept')">{{ $t('orgNames.dept') }}</RadioButton>
+      <RadioButton value="GROUP" :tab="$t('orgNames.group')">{{ $t('orgNames.group') }}</RadioButton>
     </RadioGroup>
     <AsyncComponent :visible="activeKey === 'USER'">
       <ScrolllMembers v-show="activeKey === 'USER'" activeKey="USER" />

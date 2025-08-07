@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+
 
 interface Props {
   loading: boolean;
@@ -13,18 +15,6 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
-// const sortOpt = [
-//   {
-//     name: '按添加时间',
-//     key: 'createdDate',
-//     orderSort: 'DESC'
-//   },
-//   {
-//     name: '按名称',
-//     key: 'name',
-//     orderSort: 'ASC'
-//   }
-// ];
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
@@ -36,6 +26,7 @@ const emits = defineEmits<{(e: 'change', value: {
  (e: 'import'):void;
  (e: 'importService')}>();
 
+const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 
 const searchPanelRef = ref();
@@ -45,7 +36,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询名称、描述',
+    placeholder: t('design.home.searchPanel.name_placeholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -53,12 +44,12 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择添加人'
+    placeholder: t('design.home.searchPanel.created_placeholder')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('design.home.searchPanel.data_placeholder1'), t('design.home.searchPanel.data_placeholder2')],
     showTime: true
   }
 ];
@@ -66,23 +57,23 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('quickSearchTags.all')
   },
   {
     key: 'createdBy',
-    name: '我设计的'
+    name: t('design.home.designByMe')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('quickSearchTags.past1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('quickSearchTags.past3Day')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('quickSearchTags.past7Day')
   }
 ]);
 
@@ -287,7 +278,7 @@ onMounted(() => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>添加设计</span>
+          <span>{{t('design.home.add_action')}}</span>
         </Button>
 
         <Button
@@ -295,7 +286,7 @@ onMounted(() => {
           size="small"
           @click="importService">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>导入服务</span>
+          <span>{{t('design.home.import_service_action')}}</span>
         </Button>
 
         <Button
@@ -303,7 +294,7 @@ onMounted(() => {
           size="small"
           @click="importDesign">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>导入设计</span>
+          <span>{{t('design.home.import_design_action')}}</span>
         </Button>
 
         <IconRefresh
@@ -313,7 +304,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{t('design.home.refresh_action')}}</span>
             </div>
           </template>
         </IconRefresh>

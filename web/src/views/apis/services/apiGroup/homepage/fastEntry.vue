@@ -39,31 +39,22 @@ const openImport = () => {
   visible.value = true;
 };
 
-const entries:{titleIcon: string; title: string; content: string; icon: string; action: string; click:() => void, disabled: boolean }[] = computed(() => {
+const entries = computed(():{titleIcon: string; title: string; content: string; icon: string; action: string; click:() => void, disabled?: boolean }[] => {
   return [
     {
       titleIcon: 'icon-jiekoutiaoshi',
-      title: t('apis.text.t7'),
-      content: t('apis.text.t8'),
+      title: t('apis.quickAccess.debug.title'),
+      content: t('apis.quickAccess.debug.description'),
       icon: 'icon-tiaoshi',
-      action: t('apis.text.t9'),
+      action: t('apis.quickAccess.debug.action'),
       click: debugging
     },
-    // props.info.type === 'P' && {
-    //   titleIcon: 'icon-chuangjianxiangfuwu',
-    //   title: t('apis.home.h17'),
-    //   content: t('apis.text.t11'),
-    //   icon: 'icon-chuangjianfuwu',
-    //   action: t('apis.text.t13'),
-    //   click: createService,
-    //   disabled: !props.projectAuths.includes('ADD')
-    // },
     {
       titleIcon: 'icon-daoruxiangmufuwu',
-      title: t('apis.text.t31') + t('apis.text.t21'),
-      content: t('apis.text.t15'),
+      title: t('apis.quickAccess.import.title'),
+      content: t('apis.quickAccess.import.description'),
       icon: 'icon-daoru',
-      action: t('apis.text.t16'),
+      action: t('apis.quickAccess.import.action'),
       click: openImport,
       disabled: !props.projectAuths.includes('ADD')
     }
@@ -81,7 +72,7 @@ const guideStep = () => {
 </script>
 <template>
   <div class="space-y-2">
-    <div class="title-normal">{{ t('apis.text.t6') }}</div>
+    <div class="title-normal">{{ t('apis.quickAccess.title') }}</div>
     <div class="flex flex-nowrap space-x-5 px-4">
       <div
         v-for="(entery,index) in entries"

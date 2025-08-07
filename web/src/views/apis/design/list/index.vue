@@ -3,6 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { DesignInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/design/list/searchPanel/index.vue';
@@ -23,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
-
+const { t } = useI18n();
 const Introduce = defineAsyncComponent(() => import('@/views/apis/design/list/introduce/index.vue'));
 const EditModal = defineAsyncComponent(() => import('@/views/apis/design/edit/index.vue'));
 const ExportModal = defineAsyncComponent(() => import('@/views/apis/design/export/index.vue'));
@@ -231,24 +232,24 @@ const handleImportOk = () => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('design.home.columns.name'),
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,
     width: '16%'
   },
   {
-    title: '规范版本',
+    title: t('design.home.columns.openapiSpecVersion'),
     dataIndex: 'openapiSpecVersion',
     width: '8%'
   },
   {
-    title: '状态',
+    title: t('design.home.columns.status'),
     dataIndex: 'released',
     width: '8%'
   },
   {
-    title: '来源',
+    title: t('design.home.columns.designSource'),
     dataIndex: 'designSource',
     width: '8%',
     customRender: ({ text }) => {
@@ -256,39 +257,39 @@ const columns = [
     }
   },
   {
-    title: '关联服务',
+    title: t('design.home.columns.designService'),
     dataIndex: 'designSourceName',
     width: '10%',
     ellipsis: true
   },
   {
-    title: '添加人',
+    title: t('design.home.columns.createdBy'),
     dataIndex: 'createdByAvatar',
     width: '10%',
     sorter: true
   },
   {
-    title: '添加时间',
+    title: t('design.home.columns.createdDate'),
     dataIndex: 'createdDate',
     width: '10%',
     sorter: true
   },
   {
-    title: '最后修改人',
+    title: t('design.home.columns.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     width: '10%',
     groupName: 'lastModifiedByName',
     ellipsis: true
   },
   {
-    title: '最后修改时间',
+    title: t('design.home.columns.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
     hide: true,
     width: '10%'
   },
   {
-    title: '操作',
+    title: t('design.home.columns.actions'),
     dataIndex: 'actions',
     width: '12%'
   }
@@ -297,17 +298,17 @@ const moreButton = (record) => {
   return [
     {
       key: 'clone',
-      name: '克隆',
+      name: t('actions.clone'),
       icon: 'icon-fuzhi'
     },
     {
       key: 'export',
-      name: '导出',
+      name: t('actions.export'),
       icon: 'icon-daochu1'
     },
     {
       key: 'publish',
-      name: '发布',
+      name:  t('actions.publish'),
       icon: 'icon-fabu'
     },
     {
@@ -318,7 +319,7 @@ const moreButton = (record) => {
     },
     {
       key: 'delete',
-      name: '删除',
+      name: t('actions.delete'),
       icon: 'icon-qingchu'
     }
   ];
@@ -330,14 +331,14 @@ const moreButton = (record) => {
     <div class="flex space-x-1">
       <Introduce class="mb-5 flex-1" />
     </div>
-    <div class="text-3.5 font-semibold mb-1">已添加的设计</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('design.home.title') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>尚未添加任何设计，立即</span>
-            <Button type="link" @click="editDesign">添加设计</Button>
+            <span>{{ t('design.home.noDataTip') }}</span>
+            <Button type="link" @click="editDesign()">{{ t('design.home.add_action') }}</Button>
           </div>
         </div>
 
@@ -369,8 +370,8 @@ const moreButton = (record) => {
                   </div>
                 </template>
                 <template v-if="column.dataIndex=== 'released'">
-                  <Tag v-if="record.released" color="success">已发布</Tag>
-                  <Tag v-else color="default">草稿</Tag>
+                  <Tag v-if="record.released" color="success">{{ t('design.home.released') }}</Tag>
+                  <Tag v-else color="default">{{ t('design.home.unreleased') }}</Tag>
                 </template>
                 <template v-if="column.dataIndex === 'designSourceName'">
                   <RouterLink
@@ -389,14 +390,14 @@ const moreButton = (record) => {
                     size="small"
                     @click="editDesign(record)">
                     <Icon icon="icon-bianji" />
-                    编辑
+                    {{t('actions.edit')}}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="handleEnterDesign(record)">
                     <Icon icon="icon-sheji" />
-                    设计
+                    {{t('design.home.design_action')}}
                   </Button>
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
                     <Icon icon="icon-gengduo" class="ml-1" />

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Modal, notification, IconText, TreeSelect } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n'
 import { apis } from '@/api/tester';
 import { TESTER } from '@xcan-angus/infra';
 
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
-
+const { t } = useI18n();
 const loading = ref(false);
 const formRef = ref();
 const formState = ref({
@@ -39,7 +40,7 @@ const ok = async () => {
     if (error) {
       return;
     }
-    notification.success('导入成功');
+    notification.success(t('design.home.importSuccess'));
     cancel();
     emits('ok');
   });
@@ -48,7 +49,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    title="导入服务"
+    :title="t('design.importServiceModal.title')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -61,13 +62,13 @@ const ok = async () => {
       :model="formState">
       <FormItem
         name="serviceId"
-        label="服务"
+        :label="t('design.importServiceModal.serviceLabel')"
         required
         class="leading-8">
         <TreeSelect
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label:'name', value: 'id'}"
-          placeholder="请选择所属服务"
+          :placeholder="t('design.importServiceModal.servicePlaceholder')"
           :virtual="false"
           size="small"
           @change="handleServiceChange">

@@ -4,6 +4,7 @@ import { Tag, Button } from 'ant-design-vue';
 import { apis } from '@/api/tester';
 import OpenApiDesign from 'open-api-designer';
 import { notification, Spin } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   designId: string
@@ -12,7 +13,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   designId: ''
 });
-
+const { t } = useI18n();
 const designInfo = ref<{[key: string]: string}>({});
 const designContent = ref();
 const openAPIDesignInstance = ref();
@@ -47,7 +48,7 @@ const updateContent = async () => {
   if (error) {
     return;
   }
-  notification.success('保存成功');
+  notification.success(t('design.detail.saveSuccess'));
 };
 
 const releaseDesign = async () => {
@@ -56,7 +57,7 @@ const releaseDesign = async () => {
   if (error) {
     return;
   }
-  notification.success('发布成功');
+  notification.success(t('design.detail.publishSuccess'));
 };
 
 onMounted(async () => {
@@ -79,18 +80,18 @@ onMounted(async () => {
         <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
           <Tag color="green" class="text-3.5 rounded-full">{{ designInfo.openapiSpecVersion }}</Tag>
           <div class="text-5 font-medium">{{ designInfo.name }}</div>
-          <div>{{ designInfo.lastModifiedByName }}最后修改于{{ designInfo.lastModifiedDate }}</div>
+          <div>{{ designInfo.lastModifiedByName }}{{t('design.detail.modifyTip', {time: designInfo.lastModifiedDate})}}</div>
           <div class="relative left-20 space-x-2">
             <Button
               type="primary"
               size="small"
               @click="updateContent">
-              保存草稿
+              {{ t('design.detail.saveAction') }}
             </Button>
             <Button
               size="small"
               @click="releaseDesign">
-              发布设计
+              {{ t('design.detail.publishAction') }}
             </Button>
           </div>
         </div>

@@ -53,7 +53,7 @@ const eventDataNoticeType = ref<{eventCode: string; noticeTypes: EnumMessage<Com
 const { t } = useI18n();
 
 const init = async () => {
-  await loadEnums();
+  loadEnums();
   await loadEventNoticeTypeByEventCode();
   await loadPushConfigList();
   await loadStatistics();
@@ -62,14 +62,14 @@ const init = async () => {
 
 const loadEnums = () => {
   const data1 = enumUtils.enumToMessages(CombinedTargetType);
-  const data2 = enumUtils.enumToMessages(noticeType);
-  targetTypeEnums.value = data1 || [];
+  const data2 = enumUtils.enumToMessages(NoticeType);
+  targetTypeEnums.value = (data1 || []) as EnumMessage<CombinedTargetType>[];
   noticeType.value = (data2 || []).map(i => {
     return {
       ...i,
       label: i.message
     };
-  });
+  }) as EnumMessage<NoticeType>[];
 };
 
 const loadEventNoticeTypeByEventCode = async () => {
@@ -124,7 +124,7 @@ const loadPushConfigList = async () => {
     const noticeTypesObj = eventDataNoticeType.value.find(i => i.eventCode === item.eventCode)?.noticeTypes || [];
     return {
       ...item,
-      pushMsg: DOMPurify.sanitize(item.pushMsg),
+      pushMsg: DOMPurify.sanitize(item.pushMsg || ''),
       noticeTypes: noticeTypesObj.map(i => i.value)
     };
   }) || [];
@@ -164,22 +164,61 @@ const changeLogParams = (value) => {
   loadPushRecordList();
 };
 
-const configcolumns = computed(() => {
-  return _configColumns.map((item) => {
-    return {
-      ...item,
-      title: t(item.title)
-    };
-  });
+const configColumns = computed(() => {
+  return [
+    {
+      title: t('notification.columns.eventName'),
+      dataIndex: 'eventName'
+    },
+    {
+      title: t('notification.columns.category'),
+      dataIndex: 'targetType'
+    },
+    {
+      title: t('notification.columns.noticeType'),
+      dataIndex: 'noticeType'
+    }
+  ]
 });
 
 const recordColumns = computed(() => {
-  return _recordColumns.map((item) => {
-    return {
-      ...item,
-      title: t(item.title)
-    };
-  });
+  return [
+    {
+      title: t('notification.columns.eventId'),
+      dataIndex: 'id',
+      key: 'id',
+      width: '12%'
+    },
+    {
+      title: t('notification.columns.eventName'),
+      dataIndex: 'name',
+      width: '12%',
+      ellipsis: true
+    },
+    {
+      title: t('notification.columns.content'),
+      dataIndex: 'description',
+      ellipsis: true
+    },
+    {
+      title: t('notification.columns.receiver'),
+      dataIndex: 'fullName',
+      width: '12%'
+    },
+    {
+      title: t('notification.columns.createdDate'),
+      key: 'createdDate',
+      dataIndex: 'createdDate',
+      width: '12%'
+    },
+    {
+      title: t('notification.columns.pushStatus'),
+      dataIndex: 'pushStatus',
+      key: 'pushStatus',
+      width: '12%'
+    }
+
+  ];
 });
 
 const pagination = computed(() => {
@@ -268,51 +307,51 @@ onMounted(() => {
     <Hints text="AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。" class="!leading-4.5" />
     <div class="flex space-x-2 w-250 mt-2">
       <InfoCard
-        :name="t('总共')"
+        :name="t('notification.status.summary')"
         :value="state.count.total"
         icon="icon-zonglan" />
       <InfoCard
-        :name="t('settingNotification.title.t2')"
+        :name="t('notification.status.pending')"
         :value="state.count.pushSuccess"
         iconColor="rgba(255, 129, 0, 1)"
         icon="icon-tuisongchenggong" />
       <InfoCard
-        :name="t('settingNotification.title.t3')"
+        :name="t('notification.status.failure')"
         :value="state.count.pushFail"
         icon="icon-tuisongshibai" />
       <InfoCard
-        :name="t('忽略')"
+        :name="t('notification.status.ignore')"
         :value="state.count.ignore"
         icon="icon-yiquxiao" />
     </div>
-    <expand-head v-model:visible="showConfigure" class="mt-5">
+    <ExpandHead v-model:visible="showConfigure" class="mt-5">
       <template #title>
         <div>
-          <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('settingNotification.title.t4') }}</span>
+          <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('notification.config.pushConfig') }}</span>
           <Popover placement="right">
             <template #content>
               <div class="max-w-110">
-                配置通知方式可以确保相关人员在事件发生时及时收到信息，提高反应速度。
+                {{t('notification.config.push_config_tip')}}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />
           </Popover>
         </div>
       </template>
-    </expand-head>
+    </ExpandHead>
     <div :class="showConfigure ? 'open-info' : 'stop-info'" class="transition-height duration-500 overflow-hidden">
       <Table
         rowKey="id"
         size="small"
         class="my-3.5"
         :dataSource="pushSettingList"
-        :columns="configcolumns"
+        :columns="configColumns"
         :scroll="{y:pushSettingList.length>10?'180px':'220px'}"
         :loading="configLoading"
         :pagination="pushSettingList?.length > 10">
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.dataIndex === 'allowedChannelTypes'">
-            {{ text?.map(m=>m.message).join('、') }}
+            {{ (text || [])?.map(m=>m.message).join('、') }}
           </template>
           <template v-if="column.dataIndex === 'receiveSetting'">
             {{ getReceiver(text) }}
@@ -328,11 +367,11 @@ onMounted(() => {
           </template>
           <template v-if="column.dataIndex === 'operate'">
             <a class="text-theme-text-hover" @click="openReceiveChannel(record)">{{
-              t('settingNotification.title.t6')
+              t('notification.config.configReceiveChannel')
             }}</a>
             <Divider type="vertical" />
             <a class="text-theme-text-hover" @click="openReceiver(record)">{{
-              t('settingNotification.title.t7')
+              t('notification.config.configReceiver')
             }}</a>
           </template>
         </template>
@@ -353,7 +392,7 @@ onMounted(() => {
     </div>
     <expand-head v-model:visible="showRecord" class="mt-5">
       <template #title>
-        <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('事件记录') }}</span>
+        <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('notification.config.event_record') }}</span>
       </template>
     </expand-head>
     <div :class="showRecord ? 'open-record' : 'stop-record'" class="transition-height duration-500 overflow-hidden">
@@ -387,7 +426,7 @@ onMounted(() => {
                 icon="icon-shuoming"
                 class="text-3.5 text-theme-sub-content text-theme-text-hover ml-1" />
               <template #title>
-                {{ t('errMsg') }}
+                {{ t('notification.errMsg') }}
               </template>
               <template #content>
                 <div class="max-h-100 max-w-150 overflow-auto" v-html="record.pushMsg"></div>

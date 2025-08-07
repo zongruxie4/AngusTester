@@ -24,11 +24,19 @@ const bootstrap = async () => {
   if (sharePaths.includes(path)) {
     const locale = cookieUtils.getCurrentLanguage();
     const messages = (await import(`./locales/${locale}/index.js`)).default;
+    const localMessage = await getLocaleMessage(locale);
     const i18n = I18n.setupI18n({
       locale,
       legacy: false,
       messages: {
-        [locale]: messages
+        en: {
+          ...messages,
+          ...localMessage
+        },
+        zh_CN: {
+          ...messages,
+          ...localMessage
+        }
       }
     });
 
@@ -57,11 +65,19 @@ const bootstrap = async () => {
     startupGuard();
     const locale = cookieUtils.getCurrentLanguage();
     const messages = (await import(`./locales/${locale}/index.js`)).default;
+    const localMessage = await getLocaleMessage(locale);
     const i18n = I18n.setupI18n({
       locale,
       legacy: false,
       messages: {
-        [locale]: messages
+        en: {
+          ...messages,
+          ...localMessage
+        },
+        zh_CN: {
+          ...messages,
+          ...localMessage
+        }
       }
     });
     // Merge locale messages
@@ -82,6 +98,25 @@ const bootstrap = async () => {
       .use(i18n)
       .mount('#app');
   });
+};
+
+const getLocaleMessage = async (locale: SupportedLanguage) => {
+  const common = (await import(`./locales/${locale}/common.json`)).default;
+  const apis = (await import(`./locales/${locale}/api.json`)).default;
+  const execution = (await import(`./locales/${locale}/execution.json`)).default;
+  const scenario = (await import(`./locales/${locale}/scenario.json`)).default;
+  const setting = (await import(`./locales/${locale}/settings.json`)).default;
+  const task = (await import(`./locales/${locale}/task.json`)).default;
+  const apiShare = (await import(`./locales/${locale}/apiShare.json`)).default;
+  return {
+    ...apis,
+    ...execution,
+    ...scenario,
+    ...setting,
+    ...task,
+    ...apiShare,
+    ...common,
+  };
 };
 
 bootstrap();

@@ -83,7 +83,7 @@ const patchPorxySetting = async (params) => {
   if (error) {
     return;
   }
-  notification.success(t('settingAgent.title.t22'));
+  notification.success(t('agent.proxyConfigModifiedSuccess'));
   loadDataList();
 };
 
@@ -120,61 +120,59 @@ onBeforeUnmount(() => {
     <div class="border rounded p-5" style="border-color: #bcdcff;background-color: #f9fcff;">
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
-        <p class="text-theme-title font-medium text-3 ml-1.5 leading-5 whitespace-pre-wrap">{{ t('settingAgent.title.t1') }}</p>
+        <p class="text-theme-title font-medium text-3 ml-1.5 leading-5 whitespace-pre-wrap">{{ t('agent.title') }}</p>
       </div>
       <div class="text-3 leading-3 flex space-x-10 mx-5 mt-5">
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />{{ t('settingAgent.title.t2')
-            }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />{{ t('agent.noProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('settingAgent.title.t3') }}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">{{  t('agent.noProxyDescription') }}</div>
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />{{ t('settingAgent.title.t4')
-            }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />{{ t('agent.clientProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('settingAgent.title.t5') }}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.clientProxyDescription')}}</div>
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{ t('settingAgent.title.t6') }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{ t('agent.serverProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('settingAgent.title.t7') }}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.serverProxyDescription') }}</div>
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />云代理
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{t('agent.cloudProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。
+            {{t('agent.cloudProxyDescription') }}
           </div>
         </div>
       </div>
     </div>
     <template v-if="false">
-      <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mx-5 mt-10">{{ t('settingAgent.title.t8') }}</div>
+      <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mx-5 mt-10">{{ t('agent.downloadProxy') }}</div>
       <div class="flex 2xl:space-x-2 m-2 5xl:space-x-7.5  text-3 leading-3">
         <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="windows" class="w-7.5 mr-5" /><span>{{ t('settingAgent.title.t9') }}</span>
+          <img :src="windows" class="w-7.5 mr-5" /><span>{{ t('agent.windowsDesktopProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="apple" class="w-7.5 mr-5" /><span>{{ t('settingAgent.title.t10') }}</span>
+          <img :src="apple" class="w-7.5 mr-5" /><span>{{ t('agent.macDesktopProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="linux" class="w-7.5 mr-5" /><span>{{ t('settingAgent.title.t11') }}</span>
+          <img :src="linux" class="w-7.5 mr-5" /><span>{{ t('agent.linuxProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="sd" class="w-7.5 mr-5" /><span>{{ t('settingAgent.title.t12') }}</span>
+          <img :src="sd" class="w-7.5 mr-5" /><span>{{ t('agent.manualInstallPackage') }}</span>
         </div>
       </div>
     </template>
-    <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">{{ t('settingAgent.title.t13') }}</div>
+    <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">{{ t('agent.serverRequestProxyConfig') }}</div>
     <div class="flex space-x-5 text-theme-sub-content  text-3 leading-3">
       <div>
-        <div class="h-12" style="line-height: 48px;">{{ t('settingAgent.title.t14') }}</div>
-        <div class="h-12" style="line-height: 48px;">{{ t('settingAgent.title.t15') }}</div>
+        <div class="h-12" style="line-height: 48px;">{{ t('agent.enable') }}</div>
+        <div class="h-12" style="line-height: 48px;">{{ t('agent.proxyAddress') }}</div>
       </div>
       <div class="w-150 text-theme-content">
         <div class="h-12" style="line-height: 48px;">
@@ -206,19 +204,19 @@ onBeforeUnmount(() => {
                 </template>
               </template>
             </Input>
-            <div v-if="hostRule" class="absolute top-12 text-3 leading-3 text-status-error">请输入正确的代理地址</div>
+            <div v-if="hostRule" class="absolute top-12 text-3 leading-3 text-status-error">{{t('agent.addressTip')}}</div>
           </div>
           <template v-if="address">
             <template v-if="islinkSuccess">
               <div class="flex items-center ml-3">
                 <img :src="ylj" class="w-4 mr-2" /><span>
-                  {{ newLint ? t('settingAgent.title.t23') : t('settingAgent.title.t18') }}</span>
+                  {{ newLint ? t('agent.connectionSuccess') : t('agent.connected') }}</span>
               </div>
             </template>
             <template v-else>
               <div class="flex items-center ml-3">
                 <img :src="wlj" class="w-4 mr-2" /><span>{{
-                  newLint ? t('settingAgent.title.t24') : t('settingAgent.title.t19')
+                  newLint ? t('agent.connectionFailed') : t('agent.notConnected')
                 }}</span>
               </div>
             </template>

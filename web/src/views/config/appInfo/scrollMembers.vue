@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
-import { duration, GM } from '@xcan-angus/infra';
+import {appContext, duration, GM} from '@xcan-angus/infra';
 
 import { auth } from 'src/api/gm';
 import { Params, Policy, TableData } from './interface';
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   appId: ''
 });
 
-const appInfo = inject('appInfo', ref());
+const appInfo = ref(appContext.getAccessApp());
 const isAdmin = inject('isAdmin', ref(false));
 const { t } = useI18n();
 const AddMembers = defineAsyncComponent(() => import('./addMembers.vue'));
@@ -36,9 +36,9 @@ const policyKeyword = ref();
 const policyLoading = ref(false);
 const btnName = computed(() => {
   switch (props.activeKey) {
-    case 'USER': return t('settingApp.addMember');
-    case 'DEPT': return t('settingApp.addDept');
-    case 'GROUP': return t('settingApp.addGroup');
+    case 'USER': return t('app.addMember');
+    case 'DEPT': return t('app.addDept');
+    case 'GROUP': return t('app.addGroup');
   }
   return '';
 });
@@ -129,12 +129,12 @@ const addGroupPolicy = async (_addIds:string[]) => {
 
 const placeholder = computed(() => {
   if (props.activeKey === 'USER') {
-    return t('settingApp.placeholder.p1');
+    return t('app.member_placeholder');
   }
   if (props.activeKey === 'DEPT') {
-    return t('settingApp.placeholder.p2');
+    return t('app.dept_placeholder');
   }
-  return t('settingApp.placeholder.p3');
+  return t('app.group_placeholder');
 });
 
 const columns = computed(() => {

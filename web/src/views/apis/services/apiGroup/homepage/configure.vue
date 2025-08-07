@@ -26,27 +26,27 @@ const dataSource = computed(() => [[{
   id: 'syncConfig',
   key: 'syncConfig',
   icon: 'icon-peizhifuwutongbu',
-  title: t('apis.home.h1'),
+  title: t('apis.configuration.sync'),
   content: `将外部OpenAPI自动导入到当前${projectType.value}`,
-  linkText: t('apis.home.h13'),
+  linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
 {
   id: 'security',
   key: 'security',
   icon: 'icon-renzhengtou',
-  title: t('apis.home.h2'),
+  title: t('apis.configuration.security'),
   content: `定义当前${projectType.value}下所有接口可以使用的安全方案(Authorization)`,
-  linkText: t('apis.home.h13'),
+  linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
 {
   id: 'serverConfig',
   key: 'serverConfig',
   icon: 'icon-host',
-  title: t('apis.home.h3'),
+  title: t('apis.configuration.server'),
   content: `定义当前${projectType.value}下所有接口可以使用的服务器(Server URL)`,
-  linkText: t('apis.home.h13'),
+  linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 }
 ]
@@ -55,27 +55,27 @@ const dataSource = computed(() => [[{
 //   id: 'perf',
 //   key: 'perf',
 //   icon: 'icon-zhibiao',
-//   title: t('apis.home.h4'),
+//   title: t('apis.configuration.performance'),
 //   content: `为${projectType.value}下接口设置默认性能指标，性能指标会影响性能测试通过率；如果您想为某个接口单独设置性能指标，您可以在接口性能配置里设置`,
-//   linkText: t('apis.home.h14'),
+//   linkText: t('apis.configuration.action'),
 //   disabled: !props.projectAuths.includes('MODIFY')
 // },
 // {
 //   id: 'shareList',
 //   key: 'shareList',
 //   icon: 'icon-fenxiang',
-//   title: t('apis.home.h5'),
-//   content: t('apis.home.h11'),
-//   linkText: t('apis.home.h16'),
+//   title:  t('apis.configuration.share'),,
+//   content: t('apis.configuration.shareDescription'),
+//   linkText: t('apis.configuration.action'),
 //   disabled: !props.projectAuths.includes('SHARE')
 // },
   // {
   //   id: 'variable',
   //   key: 'variable',
   //   icon: 'icon-bianliang',
-  //   title: t('apis.home.h6'),
-  //   content: t('apis.home.h12'),
-  //   linkText: t('apis.home.h15'),
+  //   title: t('apis.configuration.variables'),
+  //   content: t('apis.configuration.variablesDescription'),
+  //   linkText: t('apis.configuration.action'),
   //   disabled: !props.projectAuths.includes('MODIFY')
   // }
 // ]
@@ -88,7 +88,7 @@ const openDrawer = (key: string) => {
 </script>
 <template>
   <div class="space-y-2">
-    <div class="title-normal">{{ t('apis.text.t30') }}</div>
+    <div class="title-normal">{{ t('apis.actions.projectConfig') }}</div>
     <div class="space-y-5 px-4">
       <div
         v-for="(element, index) in dataSource"

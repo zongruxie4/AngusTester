@@ -2,7 +2,10 @@
 import { ref } from 'vue';
 import { Modal, Input, notification, Icon } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Upload } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
 import { apis } from '@/api/tester';
+
 
 interface Props {
   visible: boolean;
@@ -15,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
-
+const { t } = useI18n();
 const loading = ref(false);
 const formRef = ref();
 const fileList = ref<{name: string, status: string}[]>([]);
@@ -60,7 +63,7 @@ const ok = async () => {
     if (error) {
       return;
     }
-    notification.success('导入成功');
+    notification.success(t('design.home.importSuccess'));
     cancel();
     emits('ok');
   });
@@ -69,7 +72,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    title="导入设计"
+    :title="t('design.importDesignModal.title')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -82,17 +85,17 @@ const ok = async () => {
       :model="formState">
       <FormItem
         name="name"
-        label="名称"
+        :label="t('design.importDesignModal.nameLabel')"
         required>
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          placeholder="输入设计名称, 限制100个字符" />
+          :placeholder="t('design.importDesignModal.namePlaceholder')" />
       </FormItem>
       <FormItem
         name="content"
-        label="文件"
-        :rules="[{required: true, message: '请上传文件'}]">
+        :label="t('design.importDesignModal.fileLabel')"
+        :rules="[{required: true, message: t('design.importDesignModal.fileRule')}]">
         <Upload
           v-model:fileList="fileList"
           class="w-full"
@@ -101,9 +104,9 @@ const ok = async () => {
           @remove="delFile">
           <div v-show="!formState.content" class="border border-dashed rounded p-4 flex flex-col items-center justify-around space-y-2 text-3 border-blue-1">
             <Icon icon="icon-daoru" class="text-blue-hover" />
-            <span class="text-blue-hover">上传文件</span>
+            <span class="text-blue-hover">{{ t('design.importDesignModal.uploadFile') }}</span>
             <div class="text-text-sub-content">
-              点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M
+              {{ t('design.importDesignModal.uploadTip') }}
             </div>
           </div>
         </Upload>

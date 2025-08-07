@@ -22,6 +22,27 @@
     "delete": "删除",
     "save": "保存",
     "cancel": "取消",
-    "confirm": "确认"
+    "confirm": "确认",
+    "clone": "克隆",
+    "import": "导入",
+    "export": "导出",
+    "download": "下载",
+    "upload": "上传",
+    "copy": "复制",
+    "publish": "发布"
+  },
+  "orgNames": {
+    "user": "用户",
+    "dept": "部门",
+    "group": "组"
+  },
+  "quickSearchTags": {
+    "all": "全部",
+    "past1Day": "近1天",
+    "past3Day": "近3天",
+    "past7Day": "近7天",
+    "createdByMe": "我创建的",
+    "modifiedByMe": "我修改的",
+    "addByMe": "我添加的"
   }
 } 

@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { IPane } from './PropsType';
 
@@ -11,6 +12,7 @@ type Props = {
   appInfo: { id: string; };
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -53,7 +55,7 @@ const initialize = () => {
         return {
           _id: 'designList',
           value: 'designList',
-          name: '设计',
+          name: t('design.home.tabTitle'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }

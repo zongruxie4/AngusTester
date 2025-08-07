@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import elementResizeDetector from 'element-resize-detector';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const wrapperRef = ref();
 
@@ -28,10 +30,10 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div ref="wrapperRef">
-    <div class="text-3.5 font-semibold mb-2.5">关于设计</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('design.home.introduceTitle') }}</div>
     <div class="mb-2">
       <div>
-        用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。
+        {{t('design.home.introduceContent')}}
       </div>
     </div>
   </div>

@@ -109,14 +109,14 @@ const title = computed(() => {
 // 选择用户部门组占位提示
 const placeholder = computed(() => {
   if (props.type === 'USER') {
-    return t('settingApp.placeholder.p1');
+    return t('app.member_placeholder');
   }
 
   if (props.type === 'DEPT') {
-    return t('settingApp.placeholder.p2');
+    return t('app.dept_placeholder');
   }
 
-  return t('settingApp.placeholder.p3');
+  return t('app.group_placeholder');
 });
 
 // 选择用户部门组请求
