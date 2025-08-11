@@ -4,6 +4,7 @@ import { AsyncComponent, AuthorizeModal, LeftDrawer, notification, IconText, Vue
 import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import { services, apis } from 'src/api/tester';
 import { actions, ModalsConfig, ServiceProject } from './PropsType';
@@ -35,6 +36,7 @@ const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/
 const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/sidebar/unarchived/index.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/execTest/index.vue'));
 
+const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const isAdmin = inject('isAdmin', ref(false));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
@@ -172,7 +174,7 @@ const foldActionClick = (key: FoldActionKey) => {
       exportVisible.value = true;
       break;
     case 'authorization':
-      addTabPane({ name: '权限', value: 'auth', id: authTabId, _id: authTabId + 'auth' });
+      addTabPane({ name: t('service.home.authTabName'), value: 'auth', id: authTabId, _id: authTabId + 'auth' });
       break;
   }
 };
@@ -189,7 +191,7 @@ const buttonDropdownClick = (item: {key: SuffixActionKey}) => {
       exportVisible.value = true;
       break;
     case 'authorization':
-      addTabPane({ name: '权限', value: 'auth', id: authTabId, _id: authTabId + 'auth' });
+      addTabPane({ name: t('service.home.authTabName'), value: 'auth', id: authTabId, _id: authTabId + 'auth' });
       break;
   }
 };
@@ -255,8 +257,8 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
       break;
     case 'delete':
       leftDrawerRef.value.del(item.id, `${TESTER}/services/${item.id}`, {
-        title: '删除服务',
-        content: '删除服务会删除服务下接口，以及关联关注、收藏、指标、变量等信息，请确认是否删除？'
+        title: t('service.sidebar.deleteService'),
+        content: t('service.sidebar.deleteServiceTip')
       });
       break;
     case 'translate':
@@ -278,7 +280,7 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
       addSocketByProject(item);
       break;
     case 'mock':
-      addTabPane({ ...item, _id: item.id + 'mock', name: 'Mock服务', value: 'mock' });
+      addTabPane({ ...item, _id: item.id + 'mock', name: t('service.home.mockTabName'), value: 'mock' });
       break;
     case 'setTest':
       toSetTest(item);
@@ -348,7 +350,7 @@ const restartContent = ref('');
 const restartTestTask = (item) => {
   modalsConfig.activeId = item.id;
   restartTestVisible.value = true;
-  restartContent.value = `将服务下所有已结束的任务状态更新为"待测试"， 相关统计计数和状态会被清除，您确认重新开始测试任务【${item.name}】吗？`;
+  restartContent.value = t('service.sidebar.restartServiceTip', {name: item.name});
 };
 
 // 重新打开测试任务
@@ -357,7 +359,7 @@ const reopenContent = ref('');
 const reopenTestTask = (item) => {
   modalsConfig.activeId = item.id;
   reopenTestVisible.value = true;
-  reopenContent.value = `将服务下所有已结束的任务状态更新为"待测试"， 不清理统计计数和状态。您确认重新打开测试任务【${item.name}】吗？`;
+  reopenContent.value = t('service.sidebar.reopenServiceTip', {name: item.name});
 };
 
 const translateVisible = ref(false);
@@ -367,19 +369,19 @@ const execTips = ref<string>();
 const execModalTitle = ref<string>();
 const okAction = ref<string>();
 const execTestTipConfig = {
-  funcTestExecSmoke: '执行当前服务下所有接口的冒烟测试用例，如果测试服务冒烟测试脚本不存在，将根据接口冒烟测试用例自动生成测试脚本，如果存在则启动对应测试脚本。',
-  funcTestExecSecurity: '执行当前服务下所有接口的安全测试用例，如果测试服务安全测试脚本不存在，将根据接口安全测试用例自动生成测试脚本，如果存在则启动对应测试脚本。',
-  funcTestExec: '执行当前服务下所有开启功能测试的接口测试，如果测试脚本不存在，将根据接口自动生成功能测试脚本，如果存在则启动对应功能测试脚本。',
-  perfTestExec: '执行当前服务下所有开启性能测试的接口测试，如果测试脚本不存在，将根据接口自动生成性能测试脚本，如果存在则启动对应性能测试脚本。',
-  stabilityTestExec: '执行当前服务下所有开启稳定测试的接口测试，将根据接口自动生成稳定性测试脚本，如果存在则启动对应稳定性测试脚本。'
+  funcTestExecSmoke: t('service.sidebar.funcTestExecSmokeTip'),
+  funcTestExecSecurity: t('service.sidebar.funcTestExecSecurityTip'),
+  funcTestExec: t('service.sidebar.funcTestExecTip'),
+  perfTestExec:  t('service.sidebar.perfTestExecTip'),
+  stabilityTestExec: t('service.sidebar.stabilityTestExecTip')
 };
 
 const execModalTitleConfig = {
-  funcTestExecSmoke: '执行冒烟测试',
-  funcTestExecSecurity: '执行安全测试',
-  funcTestExec: '执行功能测试',
-  perfTestExec: '执行性能测试',
-  stabilityTestExec: '执行稳定性测试'
+  funcTestExecSmoke: t('service.sidebar.execModalTitle.funcTestExecSmoke'),
+  funcTestExecSecurity: t('service.sidebar.execModalTitle.funcTestExecSecurity'),
+  funcTestExec: t('service.sidebar.execModalTitle.funcTestExec'),
+  perfTestExec: t('service.sidebar.execModalTitle.perfTestExec'),
+  stabilityTestExec: t('service.sidebar.execModalTitle.stabilityTestExec')
 };
 
 const getOkAction = (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestExec'|'perfTestExec'|'stabilityTestExec', id:string) => {
@@ -443,7 +445,7 @@ const cloneProject = async (item: any) => {
     return;
   }
   refreshHandler();
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
 };
 
 const projectStatus = ref();
@@ -527,7 +529,7 @@ const addSocketByProject = async (item) => {
 // 删除 callback
 const deleteProject = async (id: string) => {
   deleteTabPane([id + 'group', id + 'mock']);
-  notification.success('删除成功，您可以在回收站查看删除后的项目或服务');
+  notification.success(t('service.sidebar.deleteServiceSuccess'));
 };
 
 const editProject = (item) => {
@@ -694,14 +696,13 @@ defineExpose({
 });
 
 const modelTitleMap = {
-  // PROJECT: '项目权限',
-  SERVICE: '服务权限'
+  SERVICE: t('service.sidebar.authModel.title'),
 };
 
 const tipMap = {
   SERVICE: {
-    on: '开启"有权限控制"后，需要手动授权服务权限后才会有项目相应操作权限，默认开启"有权限控制"。注意：授权服务不会授权服务下接口权限，如果授权对象没有父级项目权限将自动授权查看权限。 ',
-    off: '开启"无权限控制"后，将允许账号下所有用户公开查看和操作服务及服务下接口。'
+    on: t('service.sidebar.authModel.onTip'),
+    off: t('service.sidebar.authModel.offTip')
   }
 };
 
@@ -744,13 +745,13 @@ const editInputProps = computed(() => ({
   createAction: `${TESTER}/services`, // 添加目录url
   createParams: { projectId: projectInfo.value?.id }, // 添加目录需要传递的参数
   allowClear: true,
-  placeholder: '最多输入100字符',
+  placeholder: t('service.sidebar.serviceNamePlaceholder'),
   maxlength: 100
 }));
 
 const collapseOptions = ref<{ name: string; key: string; icon: string; total: number; }[]>([
   {
-    name: '未归档',
+    name: t('service.sidebar.unarchivedTitle'),
     key: 'unarchived',
     icon: 'icon-weiguidang',
     total: 0
@@ -759,22 +760,22 @@ const collapseOptions = ref<{ name: string; key: string; icon: string; total: nu
 
 const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
   {
-    name: '添加服务',
+    name: t('service.sidebar.foldAction.addService'),
     key: 'creatService',
     icon: 'icon-chuangjianfuwu'
   },
   {
-    name: '本地导入',
+    name: t('service.sidebar.foldAction.localImport'),
     key: 'import',
     icon: 'icon-shangchuan'
   },
   {
-    name: '导出',
+    name: t('actions.export'),
     key: 'export',
     icon: 'icon-daochu1'
   },
   {
-    name: '权限',
+    name:  t('actions.authority'),
     key: 'authorization',
     icon: 'icon-quanxian1'
   }
@@ -786,20 +787,20 @@ const searchInputProps = {
   allowClear: true
 };
 const buttonProps = {
-  name: '添加服务',
+  name: t('service.sidebar.topAction.addService'),
   menuItems: [
     {
-      name: '导入',
+      name: t('actions.import'),
       key: 'import',
       icon: 'icon-shangchuan'
     },
     {
-      name: '导出',
+      name: t('actions.export'),
       key: 'export',
       icon: 'icon-daochu1'
     },
     {
-      name: '权限',
+      name: t('actions.authority'),
       key: 'authorization',
       icon: 'icon-quanxian1'
     }

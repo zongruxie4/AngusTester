@@ -3,6 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification, Select, SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import qs from 'qs';
 import { services } from '@/api/tester';
 import SelectEnum from '@/components/SelectEnum/index.vue'
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: '',
   type: 'batchAddParams'
 });
-
+const { t } = useI18n();
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
 
 const addOrModifyParamsRef = ref();
@@ -34,13 +35,13 @@ const refDatasetRef = ref();
 
 const modifyScopeOpt = ref([{
   value: 'ALL',
-  label: '全部接口'
+  label: t('service.sidebar.batchModifyModal.modifyScope_all')
 }, {
   value: 'SELECTED_APIS',
-  label: '指定接口'
+  label: t('service.sidebar.batchModifyModal.modifyScope_select')
 }, {
   value: 'MATCH_APIS',
-  label: '匹配接口'
+  label: t('service.sidebar.batchModifyModal.modifyScope_match')
 }]);
 
 const scope = ref('ALL');
@@ -73,11 +74,6 @@ onMounted(() => {
   });
 });
 
-const apiFielsNames = {
-  value: 'id',
-  label: 'summary'
-};
-
 const cancel = () => {
   emits('update:visible', false);
 };
@@ -85,13 +81,13 @@ const cancel = () => {
 const ok = () => {
   if (scope.value === 'MATCH_APIS') {
     if (!matchMethod.value && !matchEndpointRegex.value && !filterTags.value?.length) {
-      notification.error('请至少选择一种匹配方式');
+      notification.error(t('service.sidebar.batchModifyModal.matchMethodTip'));
       return;
     }
   }
   if (scope.value === 'SELECTED_APIS') {
     if (!selectedApisIds.value) {
-      notification.error('请至少选择一个接口');
+      notification.error(t('service.sidebar.batchModifyModal.selectedApisTip'));
       return;
     }
   }
@@ -124,10 +120,10 @@ const ok = () => {
       referenceDataset();
       break;
     case 'batchDelVariable':
-      delRefrenceVariable();
+      delReferenceVariable();
       break;
     case 'batchDelDataSet':
-      delRefrenceDataset();
+      delReferenceDataset();
       break;
   }
 };
@@ -266,7 +262,7 @@ const referenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
   if (!parameters.length) {
-    notification.error('请至少选择一个变量');
+    notification.error(t('service.sidebar.batchModifyModal.referenceVariableTip'));
     return;
   }
   const [error] = await services.batchUpdateReferenceVariable(props.serviceId, config, {
@@ -283,7 +279,7 @@ const referenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
   if (!parameters.length) {
-    notification.error('请至少选择一个数据集');
+    notification.error(t('service.sidebar.batchModifyModal.referenceDatasetTip'));
     return;
   }
   const [error] = await services.batchAddReferenceDataset(props.serviceId, config, {
@@ -296,11 +292,11 @@ const referenceDataset = async () => {
   cancel();
 };
 
-const delRefrenceVariable = async () => {
+const delReferenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
   if (!parameters.length) {
-    notification.error('请至少选择一个变量');
+    notification.error(t('service.sidebar.batchModifyModal.delReferenceVariableTip'));
     return;
   }
   const [error] = await services.batchDeleteReferenceVariable(props.serviceId, config, {
@@ -313,11 +309,11 @@ const delRefrenceVariable = async () => {
   cancel();
 };
 
-const delRefrenceDataset = async () => {
+const delReferenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
   if (!parameters.length) {
-    notification.error('请至少选择一个数据集');
+    notification.error(t('service.sidebar.batchModifyModal.delReferenceDatasetTip'));
     return;
   }
   const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config,  {
@@ -333,13 +329,13 @@ const delRefrenceDataset = async () => {
 </script>
 <template>
   <Modal
-    :title="props.title || '批量修改'"
+    :title="props.title || t('service.sidebar.batchModifyModal.title')"
     :width="1000"
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
     <div class="flex items-center">
-      <label class="w-20">接口范围</label>
+      <label class="w-20">{{t('service.sidebar.batchModifyModal.scopeLabel')}}</label>
       <div>
         <RadioGroup
           v-model:value="scope"
@@ -349,7 +345,7 @@ const delRefrenceDataset = async () => {
     </div>
 
     <div v-if="scope === 'SELECTED_APIS'" class="flex mt-3">
-      <label class="w-20">选择接口</label>
+      <label class="w-20">{{t('service.sidebar.batchModifyModal.apisLabel')}}</label>
       <div class="flex-1">
         <div class="inline-flex items-center space-x-2">
           <SelectApisTable
@@ -357,23 +353,13 @@ const delRefrenceDataset = async () => {
             :projectId="props.projectId"
             :scrollHeight="300"
             @change="handleChangeSelectApis" />
-          <!-- <Select
-            v-model:value="selectedApisIds"
-            class="w-100 select-api"
-            :action="`${TESTER}/apis/search?serviceId=${props.serviceId}&projectId=${props.projectId}`"
-            :field-names="apiFielsNames"
-            showSearch
-            mode="multiple">
-          </Select>
-          <span>已选择{{ selectedApisIds.length }} 个接口</span> -->
         </div>
-        <!-- <Tag v-for="api in selectedApisIds" :key="api.id">{{ api.introduce }}</Tag> -->
       </div>
     </div>
 
     <div v-if="scope === 'MATCH_APIS'" class="flex mt-3 items-center">
       <div class="inline-flex items-center">
-        <label class="w-20">请求方法</label>
+        <label class="w-20">{{t('service.sidebar.batchModifyModal.matchMethodLabel')}}</label>
         <div class="flex-1 w-30">
           <SelectEnum
             v-model:value="matchMethod"
@@ -385,20 +371,20 @@ const delRefrenceDataset = async () => {
       </div>
 
       <div class="inline-flex ml-10 items-center">
-        <label class="w-24">匹配路径表达式</label>
+        <label class="w-24">{{t('service.sidebar.batchModifyModal.matchEndpointRegexLabel')}}</label>
         <div class="flex-1 w-60">
           <Input
             v-model:value="matchEndpointRegex"
-            placeholder="请输入匹配正则表达式，如：.*?/search.*" />
+            :placeholder="t('service.sidebar.batchModifyModal.matchEndpointRegexPlaceholder')" />
         </div>
       </div>
 
       <div class="inline-flex ml-10 items-center">
-        <label class="w-20">选择标签</label>
+        <label class="w-20">{{t('service.sidebar.batchModifyModal.tagsLabel')}}</label>
         <div class="flex-1 w-60">
           <Select
             v-model:value="filterTags"
-            placeholder="选择匹配标签"
+            :placeholder="('service.sidebar.batchModifyModal.tagsPlaceholder')"
             :action="`${TESTER}/services/${props.serviceId}/schema/tag`"
             :fieldNames="{
               value: 'name',
@@ -413,39 +399,39 @@ const delRefrenceDataset = async () => {
     </div>
 
     <div v-if="['batchAddParams', 'batchModifyParams', ].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchAddParams'">添加参数</div>
-      <div v-if="props.type === 'batchModifyParams'">修改参数</div>
+      <div v-if="props.type === 'batchAddParams'">{{t('service.sidebar.batchModifyModal.addParams')}}</div>
+      <div v-if="props.type === 'batchModifyParams'">{{t('service.sidebar.batchModifyModal.modifyParams')}}</div>
       <div class="border px-2 pb-3 rounded">
         <AddOrModifyParams ref="addOrModifyParamsRef" />
       </div>
     </div>
 
     <div v-if="['batchDelParams', 'batchEnabledParams', 'batchDisabledParams'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchDelParams'">删除参数</div>
-      <div v-if="props.type === 'batchEnabledParams'">启用参数</div>
-      <div v-if="props.type === 'batchDisabledParams'">禁用参数</div>
+      <div v-if="props.type === 'batchDelParams'">{{t('service.sidebar.batchModifyModal.deleteParams')}}</div>
+      <div v-if="props.type === 'batchEnabledParams'">{{t('service.sidebar.batchModifyModal.enabledParams')}}</div>
+      <div v-if="props.type === 'batchDisabledParams'">{{t('service.sidebar.batchModifyModal.disabledParams')}}</div>
       <EnabledOrdDelParams ref="enableOrDelParamsRef" />
     </div>
 
     <div v-if="props.type === 'batchModifyAuth' && props.visible" class="space-y-2 mt-3">
-      <div>修改认证</div>
+      <div>{{t('service.sidebar.batchModifyModal.modifyAuth')}}</div>
       <ModifyAuth ref="modifyAuthRef" />
     </div>
 
     <div v-if="props.type === 'batchModifyServer' && props.visible" class="space-y-2 mt-3">
-      <div>修改服务器</div>
+      <div>{{t('service.sidebar.batchModifyModal.modifyServer')}}</div>
       <ModifyServer ref="modifyServerRef" />
     </div>
 
     <div v-if="['batchLinkVariable', 'batchDelVariable'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchLinkVariable'">引用变量</div>
-      <div v-if="props.type === 'batchDelVariable'">取消引用变量</div>
+      <div v-if="props.type === 'batchLinkVariable'">{{t('service.sidebar.batchModifyModal.linkVariable')}}</div>
+      <div v-if="props.type === 'batchDelVariable'">{{t('service.sidebar.batchModifyModal.unlinkVariable')}}</div>
       <RefVariable ref="refVariableRef" :projectId="props.projectId" />
     </div>
 
     <div v-if="['batchLinkDataSet', 'batchDelDataSet'].includes(props.type) && props.visible" class="space-y-2 mt-3">
-      <div v-if="props.type === 'batchLinkDataSet'">引用数据集</div>
-      <div v-if="props.type === 'batchDelDataSet'">取消引用数据集</div>
+      <div v-if="props.type === 'batchLinkDataSet'">{{t('service.sidebar.batchModifyModal.linkDataset')}}</div>
+      <div v-if="props.type === 'batchDelDataSet'">{{t('service.sidebar.batchModifyModal.unlinkDataset')}}</div>
       <RefDataset ref="refDatasetRef" :projectId="props.projectId" />
     </div>
   </Modal>

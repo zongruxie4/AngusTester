@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Dropdown, Icon } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
 import { CONTENT_TYPE } from '@/views/apis/utils';
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => ({}),
   viewType: false
 });
+const { t } = useI18n();
 const responseBodyData = ref<{
     description?: string;
     content?: Record<string, any>;
@@ -184,18 +186,6 @@ defineExpose({
       <div class="flex space-x-2 items-center mb-2">
         <!-- <span>数据类型</span> -->
         <span class="text-3.5 font-medium">Response Bodies</span>
-        <!-- <Select
-          v-model:value="selectResponseContentType"
-          :allowClear="true"
-          :readonly="props.viewType"
-          size="small"
-          :options="CONTENT_TYPE.filter(i => !['application/octet-stream'].includes(i)).map(i => ({value: i, label: i, disabled: contentTypes.includes(i)}))"
-          class="w-80" /> -->
-        <!-- <Icon
-          v-show="selectResponseContentType"
-          icon="icon-jia"
-          class="text-3.5"
-          @click="addContentType" /> -->
       </div>
       <Tabs
         type="editable-card"
@@ -232,17 +222,12 @@ defineExpose({
     </div>
     <div class="flex-1 min-w-0 px-2">
       <span class="text-3.5 mb-4">
-        响应头
+        {{ t('service.dataModel.responseTitle') }}
         <Icon
           v-show="!props.viewType"
           icon="icon-tianjiamokuai"
           class="ml-2"
           @click="addAttr()" /></span>
-      <!-- <div class="obj-top relative font-medium text-3.5 mb-1">
-        Object
-        <span>{ {{ headerObjList.length }} }</span>
-
-      </div> -->
       <AttrItemList
         :dataSource="headerObjList"
         parentType="object"

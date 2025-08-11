@@ -3,6 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, Switch, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   data: {[key: string]: any},
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   parentType: 'object',
   addType: 'attr'
 });
+const { t } = useI18n();
 
 const serviceId = inject('serviceId');
 
@@ -270,14 +272,14 @@ defineExpose({
   <template v-if="props.addType === 'attr'">
     <Input
       v-model:value="name"
-      placeholder="参数名称"
+      :placeholder="t('service.dataModel.form.paramsNamePlaceholder')"
       :disabled="(!!refComp && activeTab === 'refs') || props.parentType === 'array'"
       :error="validate && !name"
       :maxlength="200"
       data-type="en"
       includes="-_." />
     <div class="flex items-center mt-2 space-x-1">
-      <span>必填</span>
+      <span>{{t('service.dataModel.form.required')}}</span>
       <Switch
         v-model:checked="required"
         size="small" />
@@ -285,7 +287,7 @@ defineExpose({
       <Switch
         v-model:checked="nullable"
         size="small" />
-      <span class="pl-5">弃用</span>
+      <span class="pl-5">{{t('service.dataModel.form.deprecated')}}</span>
       <Switch
         v-model:checked="deprecated"
         size="small" />
@@ -297,18 +299,18 @@ defineExpose({
     size="small">
     <TabPane
       key="attr"
-      tab="属性">
+      :tab="t('service.dataModel.form.attrTab')">
     </TabPane>
     <TabPane
       key="refs"
-      tab="引用">
+      :tab="t('service.dataModel.form.refsTab')">
       <Select
         v-model:value="refComp"
         :action="`${TESTER}/services/${serviceId}/comp/type?ignoreModel=false`"
         :params="compParams"
         :fieldNames="{value: 'ref', label: 'key'}"
         class="w-full"
-        placeholder="选择引用组件"
+        :placeholder="t('service.dataModel.form.compPlaceholder')"
         :error="validate && activeTab === 'refs' && !refComp"
         @change="changeRef" />
     </TabPane>
@@ -318,7 +320,7 @@ defineExpose({
       <template v-if="props.addType === 'attr'">
         <Select
           v-model:value="type"
-          placeholder="类型"
+          :placeholder="t('service.dataModel.form.typePlaceholder')"
           :options="dataTypeOpt"
           :error="validate && activeTab === 'attr' && !type"
           @change="changeType" />
@@ -326,21 +328,21 @@ defineExpose({
       <template v-if="['string', 'number', 'integer'].includes(type)">
         <Select
           v-model:value="format"
-          placeholder="格式"
+          :placeholder="t('service.dataModel.form.formatPlaceholder')"
           :options="formatOpt" />
         <Input
           v-model:value="defaultValue"
           :maxlength="200"
-          placeholder="默认值" />
+          :placeholder="t('service.dataModel.form.defaultValuePlaceholder')" />
         <Input
           v-model:value="example"
           :maxlength="200"
-          placeholder="示例值" />
+          :placeholder="t('service.dataModel.form.examplePlaceholder')" />
       </template>
       <template v-if="type === 'boolean'">
         <Select
           v-model:value="defaultValue"
-          placeholder="默认值"
+          :placeholder="t('service.dataModel.form.defaultValuePlaceholder')"
           :allowClear="true"
           :options="[{value: true, label: 'true'}, {value: false, label: 'false'}]" />
         <!-- <Select
@@ -357,12 +359,12 @@ defineExpose({
             v-model:value="minLength"
             dataType="number"
             :decimalPoint="0"
-            placeholder="最小长度" />
+            :placeholder="t('service.dataModel.form.minLengthPlaceholder')" />
           <Input
             v-model:value="maxLength"
             dataType="number"
             :decimalPoint="0"
-            placeholder="最大长度" />
+            :placeholder="t('service.dataModel.form.maxLengthPlaceholder')" />
         </div>
         <div>
           <Button
@@ -392,13 +394,13 @@ defineExpose({
             dataType="number"
             :min="-9007199254740992"
             :max="9007199254740992"
-            placeholder="最小值" />
+            :placeholder="t('service.dataModel.form.minimumPlaceholder')" />
           <Input
             v-model:value="maximum"
             dataType="number"
             :min="-9007199254740992"
             :max="9007199254740992"
-            placeholder="最大值" />
+            :placeholder="t('service.dataModel.form.maximumPlaceholder')" />
         </div>
       </template>
       <template v-if="type === 'array'">
@@ -416,7 +418,7 @@ defineExpose({
       <Input
         v-model:value="description"
         :maxlength="1000"
-        placeholder="描述"
+        :placeholder="t('service.dataModel.form.description')"
         type="textarea" />
     </div>
   </template>

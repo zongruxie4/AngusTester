@@ -5,6 +5,7 @@ import { Button, Divider, TabPane, Tabs } from 'ant-design-vue';
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
 import { services } from 'src/api/tester';
 import { CONTENT_TYPE } from '@/views/apis/utils';
+import { useI18n } from 'vue-i18n';
 
 import AddAttrModal from './addAttrModal.vue';
 import AttrItemList from './attrItemList.vue';
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   pid: undefined
 });
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'cancel'):void;(e: 'ok'):void}>();
 
@@ -40,19 +42,19 @@ const modelType = ref<string|undefined>('object');
 const description = ref();
 const modelOpt = [
   {
-    label: '数据模型',
+    label: t('service.dataModel.dataModelOpt'),
     value: 'schemas'
   },
   {
-    label: '响应',
+    label: t('service.dataModel.respModalOpt'),
     value: 'responses'
   },
   {
-    label: '参数',
+    label: t('service.dataModel.paramsModelOpt'),
     value: 'parameters'
   },
   {
-    label: '请求体',
+    label: t('service.dataModel.requestBodyModelOpt'),
     value: 'requestBodies'
   }
 ];
@@ -92,32 +94,7 @@ const disabledBodyModelType = (type) => {
 };
 
 // const schema = ref<Record<string, any>>({});
-const objectAttrList = ref<{name: string, [key: string]: any}[]>([
-  {
-    name: 'name0',
-    schema: {
-      type: 'string'
-    }
-  },
-  {
-    name: 'name1',
-    schema: {
-      type: 'object'
-    },
-    children: [
-      {
-        name: 'name2',
-        $ref: '#components/schema/name2'
-      }
-    ]
-  },
-  {
-    name: 'name3',
-    schema: {
-      type: 'string'
-    }
-  }
-]);
+const objectAttrList = ref<{name: string, [key: string]: any}[]>([]);
 
 const addFromType = ref<'object'|'array'>('object');
 let currentAddNode;
@@ -268,7 +245,7 @@ const submitSchema = async () => {
   if (error) {
     return;
   }
-  notification.success('保存成功');
+  notification.success(t('tips.saveSuccess'));
   emits('ok');
 };
 // const activeDrawerKey = ref('componnet');
@@ -428,7 +405,7 @@ provide('serviceId', props.id);
           :readonly="props.data?.key"
           :error="validate && !schemaName"
           :maxlength="200"
-          placeholder="名称"
+          :placeholder="t('service.dataModel.nameLabel')"
           data-type="en"
           includes="-_." />
         <Select
@@ -443,10 +420,10 @@ provide('serviceId', props.id);
         type="textarea"
         class="mt-2"
         :maxlength="1000"
-        placeholder="描述" />
+        :placeholder="t('service.dataModel.descriptionPlaceholder')" />
       <div class="flex items-center space-x-2 mt-2 text-3.5">
         <template v-if="schemaType === 'schemas'">
-          <span>数据模型</span>
+          <span>{{ t('service.dataModel.modelLabel') }}</span>
           <Select
             v-model:value="modelType"
             :options="modelTypeOpt"
@@ -455,19 +432,13 @@ provide('serviceId', props.id);
             @change="changeModelType" />
         </template>
         <template v-if="schemaType === 'parameters'">
-          <span>参数</span>
+          <span>{{ t('service.dataModel.paramsLabel') }}</span>
           <Select
             v-model:value="parameterIn"
             placeholder="in"
             :options="['query', 'path', 'header', 'cookie'].map(i => ({value: i, label: i}))"
             class="w-20"
             size="small" />
-          <!-- <Select
-            v-model:value="modelType"
-            :options="modelTypeOpt"
-            size="small"
-            class="w-25"
-            @change="changeModelType" /> -->
         </template>
         <template v-if="schemaType === 'requestBodies'">
         </template>
@@ -536,12 +507,6 @@ provide('serviceId', props.id);
           @edit="editTab">
           <template #rightExtra>
             <div class="flex items-center">
-              <!-- <Select
-                v-model:value="selectRequestContentType"
-                placeholder="Add"
-                :allowClear="true"
-                :options="CONTENT_TYPE.map(i => ({value: i, label: i, disabled: contentTypes.includes(i)}))"
-                class="w-80" /> -->
               <Dropdown
                 :disabledKeys="contentTypes"
                 :menuItems="CONTENT_TYPE.map(i => ({key: i, name: i, disabled: contentTypes.includes(i)}))"
@@ -579,12 +544,12 @@ provide('serviceId', props.id);
           type="primary"
           size="small"
           @click="submitSchema">
-          保存
+          {{t('actions.save')}}
         </Button>
         <Button
           size="small"
           @click="closeCurrentTab">
-          取消
+          {{t('actions.cancel')}}
         </Button>
       </div>
       <AddAttrModal

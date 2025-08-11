@@ -16,13 +16,14 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { utils, appContext } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 import Sidebar from '@/views/apis/services/sidebar/index.vue';
 import { setting } from '@/api/gm';
 import { IPane } from './PropsType';
 
 type MenuKey = 'homepage' | 'services' | 'trash';
-
+const { t } = useI18n();
 const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/index.vue'));
 const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/index.vue'));
 const servicesMock = defineAsyncComponent(() => import('@/views/apis/services/mock/servicesMock.vue'));
@@ -35,8 +36,6 @@ const QuickStarted = defineAsyncComponent(() => import('@/views/apis/homepage/qu
 
 const route = useRoute();
 const router = useRouter();
-
-const activeKey = ref<MenuKey>();
 
 const sidebarRef = ref();
 const currentProxyUrl = ref();
@@ -141,7 +140,7 @@ const addHandler = () => {
       return {
         _id: key, // pane 的key，唯一标识
         pid: key,
-        name: '添加API', // pane 的tab文案
+        name: t('service.home.addApiTabName'), // pane 的tab文案
         value: 'API',
         closable: true, // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         forceRender: false, // 被隐藏时是否渲染 DOM 结构
@@ -244,8 +243,7 @@ onMounted(() => {
         value: result.value,
         closable: true,
         shouldCheckId: result.value === 'group'
-      }
-      );
+      });
     }
   }
 });

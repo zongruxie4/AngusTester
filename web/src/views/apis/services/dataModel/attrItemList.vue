@@ -72,6 +72,9 @@
 import { defineComponent } from 'vue';
 import { Arrow, Grid, Icon, IconRequired } from '@xcan-angus/vue-ui';
 import { Button, Popover } from 'ant-design-vue';
+// import { useI18n } from 'vue-i18n';
+
+
 
 export default defineComponent({
   name: 'AttrItemList',
@@ -100,11 +103,11 @@ export default defineComponent({
       columns: [[
         {
           dataIndex: 'name',
-          label: '名称'
+          label: this.$t('service.dataModel.form.name')
         },
         {
           dataIndex: 'required',
-          label: '必填'
+          label: this.$t('service.dataModel.form.required')
         },
         {
           dataIndex: 'nullabled',
@@ -112,23 +115,23 @@ export default defineComponent({
         },
         {
           dataIndex: 'deprecated',
-          label: '弃用'
+          label: this.$t('service.dataModel.form.deprecated')
         },
         {
           dataIndex: 'type',
-          label: '类型'
+          label: this.$t('service.dataModel.form.type')
         },
         {
           dataIndex: 'format',
-          label: '格式'
+          label: this.$t('service.dataModel.form.format')
         },
         {
           dataIndex: 'example',
-          label: '示例值'
+          label: this.$t('service.dataModel.form.example')
         },
         {
           dataIndex: 'description',
-          label: '描述'
+          label: this.$t('service.dataModel.form.description')
         }
       ]],
       typeColor: {

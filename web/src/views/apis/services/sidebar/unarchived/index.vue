@@ -3,6 +3,7 @@ import { computed, inject, ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n'
 import { apis } from '@/api/tester';
 
 import { UnarchivedItem } from './PropsType';
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   keywords: undefined,
   total: 0
 });
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -53,7 +55,7 @@ const toDelete = async (value:UnarchivedItem) => {
 
   const _key = getKey(value.protocol?.value);
   deleteTabPane([id + _key]);
-  notification.success('删除成功');
+  notification.success(t('tips.deleteSuccess'));
 };
 
 const scrollDelete = (id:string) => {
@@ -79,7 +81,7 @@ const deleteAll = async () => {
   }
 
   emit('deleteAll');
-  notification.success('全部删除成功');
+  notification.success(t('service.sidebar.deleteAllSuccess'));
 };
 
 const refresh = () => {
@@ -128,7 +130,7 @@ const menuItems:{
   noAuth:boolean;}[] = [
     {
       key: 'delete',
-      name: '删除',
+      name: t('actions.delete'),
       icon: 'icon-qingchu',
       noAuth: true
     }
@@ -170,7 +172,7 @@ defineExpose({
           </div>
 
           <div class="flex-shrink-0 flex items-center space-x-2 text-3.5 invisible">
-            <span title="删除" @click="toDelete(item)">
+            <span :title="t('actions.delete')" @click="toDelete(item)">
               <Icon icon="icon-qingchu" class="cursor-pointer text-theme-text-hover" />
             </span>
           </div>
@@ -178,22 +180,14 @@ defineExpose({
       </Dropdown>
     </Scroll>
 
-    <div class="flex items-center justify-between px-5 border-t border-solid border-theme-text-box">
-      <Button
-        :disabled="true"
-        size="small"
-        type="text"
-        style="visibility: hidden;">
-        <Icon icon="icon-huifu" class="text-3.5 mr-1" />
-        <span>全部还原</span>
-      </Button>
+    <div class="flex items-center justify-end space-x-3 px-5 border-t border-solid border-theme-text-box">
       <Button
         :disabled="buttonDisabled"
         size="small"
         type="text"
         @click="deleteAll">
         <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-        <span>全部删除</span>
+        <span>{{ t('service.sidebar.deleteAllAction') }}</span>
       </Button>
       <Button
         :disabled="loading"
@@ -201,7 +195,7 @@ defineExpose({
         type="text"
         @click="refresh">
         <IconRefresh class="text-3.5 mr-1" />
-        <span>刷新</span>
+        <span>{{t('actions.refresh')}}</span>
       </Button>
     </div>
   </div>

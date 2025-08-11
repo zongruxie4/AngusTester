@@ -6,9 +6,9 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
 import { mock, services } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import ApiList from '@/views/mock/add/apiList.vue';
-
 import HeadInfo from '@/components/layout/header/info/index.vue';
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
+const { t } = useI18n();
 
 const isPrivate = ref(false);
 const serviceInfo = ref();
@@ -84,9 +85,9 @@ const serviceDomainValidate = async (_rule: Rule, value: string) => {
 
 const rules = computed(() => {
   const baseRule = {
-    name: [{ required: true, message: '请输入名称', trigger: 'change' }],
-    servicePort: [{ required: true, message: '请输入端口（1~65535）', trigger: 'change' }],
-    nodeId: [{ required: true, message: '请选择节点', trigger: 'change' }]
+    name: [{ required: true, message: t('service.mock.nameRule'), trigger: 'change' }],
+    servicePort: [{ required: true, message: t('service.mock.servicePortRule'), trigger: 'change' }],
+    nodeId: [{ required: true, message: t('service.mock.nodeRule'), trigger: 'change' }]
   };
 
   const privateRule = {
@@ -121,7 +122,7 @@ const handleSave = () => {
     const [error] = serviceInfo.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(serviceInfo.value?.mockServiceId ? '更新成功' : '添加成功');
+    notification.success(serviceInfo.value?.mockServiceId ? t('tips.updateSuccess') : t('tips.addSuccess'));
     router.push('/apis#mock');
   }, () => { /** */ });
 };
@@ -153,7 +154,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="p-4 overflow-y-auto h-full">
-    <HeadInfo text="Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。" />
+    <HeadInfo :text="t('service.mock.description')" />
     <Form
       ref="formRef"
       size="small"
@@ -162,17 +163,17 @@ onMounted(async () => {
       :rules="rules">
       <div class="flex">
         <div>
-          <FormItem label="Mock方式" required />
-          <FormItem label="名称" required />
+          <FormItem :label="t('service.mock.createTypeLabel')" required />
+          <FormItem :label="t('service.mock.nameLabel')" required />
           <FormItem
-            label="域名"
+            :label="t('service.mock.serviceDomainUrlLabel')"
             :required="!isPrivate"
             :class="isPrivate?'pl-2.25':''" />
-          <FormItem label="端口" required />
-          <FormItem label="节点" required />
-          <FormItem label="服务" required />
+          <FormItem :label="t('service.mock.servicePortLabel')" required />
+          <FormItem :label="t('service.mock.nodeIdLabel')" required />
+          <FormItem :label="t('service.mock.serviceLabel')" required />
           <template v-if="formState.serviceId && serviceInfo?.hasApis">
-            <FormItem label="接口" />
+            <FormItem :label="t('service.mock.apiIdsLabel')" />
           </template>
         </div>
         <div class="w-150">
@@ -181,14 +182,14 @@ onMounted(async () => {
               disabled
               :value="createType"
               class="h-6.25 mt-0.75 add-mock-type">
-              <Radio :value="true">生成Mock服务</Radio>
-              <Radio :value="false">更新Mock服务</Radio>
+              <Radio :value="true">{{t('service.mock.mockNew')}}</Radio>
+              <Radio :value="false">{{t('service.mock.mockUpdate')}}</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem name="name">
             <Input
               v-model:value="formState.name"
-              placeholder="服务标识命名信息，最多允许100个字符"
+              :placeholder="t('service.mock.namePlaceholder')"
               :disabled="serviceInfo?.mockServiceId"
               :maxlength="100" />
           </FormItem>
@@ -196,7 +197,7 @@ onMounted(async () => {
             <Input
               v-model:value="formState.serviceDomainUrl"
               :disabled="serviceInfo?.mockServiceId"
-              placeholder="为服务设置域名后，可以通过域名访问Mock接口">
+              :placeholder="t('service.mock.serviceDomainUrlPlaceholder')">
               <template v-if="!isPrivate && !serviceInfo?.mockServiceId" #addonAfter>
                 <span>.angusmock.cloud</span>
               </template>
@@ -206,7 +207,7 @@ onMounted(async () => {
             <Input
               v-model:value="formState.servicePort"
               dataType="number"
-              placeholder="服务所监听的端口，服务添加后不允许修改(1~65535)"
+              :placeholder="t('service.mock.servicePortPlaceholder')"
               :disabled="serviceInfo?.mockServiceId"
               :min="1"
               :max="65535" />
@@ -219,7 +220,7 @@ onMounted(async () => {
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               showSearch
-              placeholder="服务所运行的节点，服务添加后不允许修改"
+              :placeholder="t('service.mock.nodePlaceholder')"
               size="small">
               <template #option="item">
                 {{ `${item.name} ( ${item.ip} )` }}
@@ -236,7 +237,7 @@ onMounted(async () => {
               disabled
               showSearch
               allowClear
-              placeholder="选择或查询服务"
+              :placeholder="t('service.mock.servicePlaceholder')"
               @change="treeSelectChange">
               <template #title="item">
                 <div class="text-3 leading-3 flex items-center h-6.5">
@@ -255,14 +256,14 @@ onMounted(async () => {
             </FormItem>
           </template>
           <FormItem>
-            <Button size="small" @click="handleCancel">取消</Button>
+            <Button size="small" @click="handleCancel">{{t('actions.confirm')}}</Button>
             <Button
               size="small"
               type="primary"
               class="ml-3"
               :loading="loading"
               @click="handleSave">
-              确定
+              {{t('actions.cancel')}}
             </Button>
           </FormItem>
         </div>

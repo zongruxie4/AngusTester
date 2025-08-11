@@ -5,6 +5,7 @@ import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { TESTER, download, utils, cookieUtils, duration, DomainManager, ApiUrlBuilder, routerUtils, ApiType } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 // import { createPdf } from '@xcan-angus/rapipdf';
 
 type ProjectService = {
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectedNode: undefined,
   id: undefined
 });
+const { t } = useI18n();
 
 let createPdf;
 const importCreatPdf = () => {
@@ -336,18 +338,18 @@ watch(() => props.visible, (newValue) => {
 });
 
 const exportTypes = [{
-  label: '按服务',
+  label: t('service.sidebar.exportServiceModal.exportType_service'),
   value: 'SERVICE'
 }, {
-  label: '按接口',
+  label: t('service.sidebar.exportServiceModal.exportType_api'),
   value: 'APIS'
 }];
 
 const compTypeOption = [{
-  label: '服务所有组件',
+  label: t('service.sidebar.exportServiceModal.compType_all'),
   value: false
 }, {
-  label: '仅接口关联组件',
+  label: t('service.sidebar.exportServiceModal.compType_api'),
   value: true
 }];
 
@@ -379,14 +381,14 @@ onMounted(async () => {
   <Modal
     :visible="props.visible"
     :width="800"
-    title="导出"
+    :title="t('service.sidebar.exportServiceModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <Spin :spinning="exportLoading">
       <div class="flex flex-wrap">
         <template v-if="props.type !=='APIS' && props.type !=='API'">
           <div class="flex-1/2">
-            <span>范围<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{t('service.sidebar.exportServiceModal.exportTypeLabel')}}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               :value="exportType"
               :options="exportTypes"
@@ -397,7 +399,7 @@ onMounted(async () => {
 
         <template v-if="props.type !=='API'">
           <div class="mt-1.5 flex-1/2">
-            <span>组件<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{t('service.sidebar.exportServiceModal.onlyApisComponentsLabel')}}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               v-model:value="onlyApisComponents"
               :options="compTypeOption">
@@ -406,7 +408,7 @@ onMounted(async () => {
         </template>
 
         <div class="mt-1.5 flex-1/2">
-          <span>格式<Colon class="ml-1 mr-3.5" /></span>
+          <span>{{t('service.sidebar.exportServiceModal.formatLabel')}}<Colon class="ml-1 mr-3.5" /></span>
           <RadioGroup
             v-model:value="format"
             :options="formatTypes">
@@ -415,7 +417,7 @@ onMounted(async () => {
 
         <template v-if="exportType === 'SERVICE'">
           <Input
-            placeholder="查询服务名称"
+            :placeholder="t('service.sidebar.exportServiceModal.serviceNamePlaceholder')"
             size="small"
             class="my-2 flex-1/2"
             allowClear
@@ -429,14 +431,14 @@ onMounted(async () => {
         <template v-if="exportType === 'APIS'">
           <div class="mt-2 inline-flex flex-1/2">
             <div class="inline-flex items-center">
-              <span>服务<Colon class="ml-1 mr-3.5" /></span>
+              <span>{{t('service.sidebar.exportServiceModal.serviceLabel')}}<Colon class="ml-1 mr-3.5" /></span>
             </div>
             <TreeSelect
               ref="treeRef"
               :allowClear="true"
               :action="`${TESTER}/services?projectId=${projectInfo.id}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-              placeholder="请选择服务"
+              :placeholder="t('service.sidebar.exportServiceModal.servicePlaceholder')"
               showSearch
               class="flex-1"
               v-bind="treeProps"
@@ -463,7 +465,7 @@ onMounted(async () => {
               :checked="projectCheckAll"
               :indeterminate="indeterminate"
               @change="onCheckAllChange">
-              服务名称
+              {{t('service.sidebar.exportServiceModal.serviceNameLabel')}}
             </Checkbox>
           </div>
           <Spin

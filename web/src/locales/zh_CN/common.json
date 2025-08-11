@@ -34,7 +34,8 @@
     "unfollow": "取消关注",
     "favourite": "收藏",
     "unFavourite": "取消收藏",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "authority": "权限"
   },
   "orgNames": {
     "user": "用户",
@@ -54,6 +55,8 @@
   "tips": {
     "saveSuccess": "保存成功",
     "deleteSuccess": "删除成功",
-    "cloneSuccess": "克隆成功"
+    "cloneSuccess": "克隆成功",
+    "addSuccess": "添加成功",
+    "updateSuccess": "更新成功"
   }
 } 

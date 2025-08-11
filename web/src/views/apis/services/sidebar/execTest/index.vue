@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select, notification } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 type Props = {
   projectId: string;
@@ -15,6 +16,7 @@ type Props = {
   title: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -23,8 +25,9 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   tips: undefined,
   okAction: undefined,
-  title: '执行测试'
+  title: t('service.sidebar.execTest.title')
 });
+
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -169,7 +172,7 @@ const ok = async () => {
     return;
   }
 
-  notification.success('执行启动成功，请在”执行“中查看状态和测试结果');
+  notification.success(t('service.sidebar.execTest.execSuccess'));
   reset();
   emit('update:visible', false);
   emit('update:id', undefined);
@@ -195,15 +198,15 @@ const okButtonProps = computed(() => {
 
       <div class="flex items-start mb-2.5">
         <div class="flex items-center flex-shrink-0 mr-2.5 leading-5.5">
-          <span>服务器配置</span>
+          <span>{{t('service.sidebar.execTest.serviceConfigLabel')}}</span>
           <Colon />
         </div>
         <RadioGroup
           v-model:value="checkedType"
           name="radioGroup"
           @change="radioChange">
-          <Radio value="none">使用默认（接口生成脚本时服务器配置）</Radio>
-          <Radio value="checked">修改变量配置（修改后会更新到接口和动态Http提取变量）</Radio>
+          <Radio value="none">{{t('service.sidebar.execTest.serviceConfigDefault')}}</Radio>
+          <Radio value="checked">{{t('service.sidebar.execTest.serviceConfigModify')}}</Radio>
         </RadioGroup>
       </div>
 
@@ -215,7 +218,7 @@ const okButtonProps = computed(() => {
           mode="multiple"
           style="width: 585px;margin-left: 75px;"
           class="mb-3"
-          placeholder="请选择服务器"
+          :placeholder="t('service.sidebar.execTest.selectServicePlaceholder')"
           @change="selectChange">
           <template #option="record">
             <div class="flex items-center overflow-hidden">
@@ -224,7 +227,7 @@ const okButtonProps = computed(() => {
                 v-if="!record.variables||!Object.keys(record.variables).length"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 -translate-y-0.25"
                 style="color: rgba(245, 34, 45, 100%);line-height: 15px;">
-                <span class="inline-block transform-gpu scale-90">无变量</span>
+                <span class="inline-block transform-gpu scale-90">{{t('service.sidebar.execTest.variableEmpty')}}</span>
               </div>
             </div>
           </template>
@@ -256,7 +259,7 @@ const okButtonProps = computed(() => {
 
             <div class="flex items-start leading-4.5 mb-2.5">
               <div v-if="false" class="flex-shrink-0 text-theme-sub-content mr-2">
-                <span>描述</span>
+                <span>{{t('service.sidebar.execTest.descLabel')}}</span>
                 <Colon />
               </div>
               <TypographyParagraph
@@ -264,11 +267,11 @@ const okButtonProps = computed(() => {
                 class="break-all"
                 :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
                 :content="item.description" />
-              <div v-else>无描述</div>
+              <div v-else>{{t('service.sidebar.execTest.descEmpty')}}</div>
             </div>
 
             <div v-if="!!item.variables?.length">
-              <div v-if="false" class="text-theme-sub-content mb-0.5">变量</div>
+              <div v-if="false" class="text-theme-sub-content mb-0.5">{{t('service.sidebar.execTest.variableLabel')}}</div>
               <div class="space-y-5">
                 <div
                   v-for="_variable in item.variables"
@@ -276,7 +279,7 @@ const okButtonProps = computed(() => {
                   class="space-y-2 relative variable-item">
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>名称</span>
+                      <span>{{t('service.sidebar.execTest.variableNameLabel')}}</span>
                       <Colon />
                     </div>
                     <div :title="_variable.name" class="text-theme-title font-semibold flex-1 truncate">
@@ -287,7 +290,7 @@ const okButtonProps = computed(() => {
 
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>值</span>
+                      <span>{{t('service.sidebar.execTest.variableValueLabel')}}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-1 pl-2.5">
@@ -297,7 +300,7 @@ const okButtonProps = computed(() => {
                         class="flex items-center justify-between">
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
-                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">默认</div>
+                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{t('service.sidebar.execTest.variableValueDefault')}}</div>
                           <Radio
                             size="small"
                             :checked="_enum.value === _variable.default"
@@ -311,7 +314,7 @@ const okButtonProps = computed(() => {
 
                   <div v-if="false" class="flex items-start leading-4.5">
                     <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>描述</span>
+                      <span>{{t('service.sidebar.execTest.variableDescLabel')}}</span>
                       <Colon />
                     </div>
                     <TypographyParagraph
@@ -322,7 +325,7 @@ const okButtonProps = computed(() => {
                 </div>
               </div>
             </div>
-            <div v-else>无变量</div>
+            <div v-else>{{t('service.sidebar.execTest.variableEmpty')}}</div>
           </div>
         </div>
       </template>

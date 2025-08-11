@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, ref } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   visible: boolean,
@@ -12,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   source: 'introduce'
 });
-
+const { t } = useI18n();
 const ImportFile = defineAsyncComponent(() => import('@/views/apis/services/components/import/index.vue'));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -49,7 +50,7 @@ const isLoading = ref(false);
 </script>
 <template>
   <Modal
-    title="本地导入"
+    :title="t('service.sidebar.localImportModal.title')"
     :visible="visible"
     :footer="false"
     @cancel="closeModal">

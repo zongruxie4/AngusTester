@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Arrow, Icon, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Popover } from 'ant-design-vue';
 import { services } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import Main from './main.vue';
 import ApiModel from '@/views/apis/services/dataModel/apisModel/index.vue';
@@ -20,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   pid: undefined
 });
-
+const { t } = useI18n();
 const loading = ref(false);
 const selectedOverview = ref(false);
 const selectedComp = ref();
@@ -125,7 +126,7 @@ const submitOpenapi = async (data) => {
   if (error) {
     return;
   }
-  notification.success('修改文档成功');
+  notification.success(t('service.dataModel.updateSuccess'));
   loadProjectOpenapi();
 };
 
@@ -137,7 +138,7 @@ const submitOverview = async (data) => {
   if (error) {
     return;
   }
-  notification.success('修改文档成功');
+  notification.success(t('service.dataModel.updateSuccess'));
   loadProjectOpenapi();
 };
 
@@ -149,14 +150,14 @@ const copyComp = async (comp, key) => {
   compPopVisibleMap.value[`${key}-${comp.key}`] = false;
   const [error, { data }] = await services.getRefInfo(props.id, comp.ref);
   if (error) {
-    notification.error('找不到该组件');
+    notification.error(t('service.dataModel.loadCompFail'));
     return;
   }
   const [error1] = await services.addComponent(props.id, comp.type.value, newCompName.value, data.model);
   if (error1) {
     return;
   }
-  notification.success('克隆组件成功');
+  notification.success(t('service.dataModel.cloneSuccess'));
   getProjectCompList();
 };
 
@@ -165,7 +166,7 @@ const delComp = async (comp) => {
   if (error) {
     return;
   }
-  notification.success('删除组件成功');
+  notification.success(t('service.dataModel.deleteSuccess'));
   getProjectCompList();
 };
 
@@ -184,7 +185,7 @@ onMounted(() => {
           type="primary"
           size="small"
           @click="selectComp({})">
-          添加组件
+          {{t('service.dataModel.addComp')}}
         </Button>
       </div>
       <div
@@ -193,7 +194,7 @@ onMounted(() => {
         @click="selectOverview">
         <Icon icon="icon-shoucang" class="text-4" /> <span>API overview</span>
       </div>
-      <div v-for="value,key in compListMap" :key="key">
+      <div v-for="(value,key) in compListMap" :key="key">
         <div
           class="h-8 leading-8 px-2 cursor-pointer flex items-center justify-between font-medium bg-bg-content"
           @click="toggleOpenValue(key)">
@@ -224,11 +225,11 @@ onMounted(() => {
                 placement="right"
                 @openChange="onPopoverVisibleChange">
                 <template #title>
-                  克隆组件
+                  {{t('service.dataModel.cloneComp')}}
                 </template>
                 <template #content>
                   <div>
-                    新组件名称：
+                    {{t('service.dataModel.compNameLabel')}}：
                     <Input
                       v-model:value="newCompName"
                       dataType="mixin-en"
@@ -239,7 +240,7 @@ onMounted(() => {
                       size="small"
                       class="mt-1"
                       @click.stop="copyComp(item, key)">
-                      确认
+                      {{t('actions.confirm')}}
                     </Button>
                   </div>
                 </template>

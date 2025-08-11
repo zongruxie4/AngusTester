@@ -1,26 +1,28 @@
 <script lang="ts" setup>
 import { Grid, Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
     dataSource: Record<string, any>
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
 
 const columns = [
   [
-    { dataIndex: 'serviceId', label: '服务ID' },
-    { dataIndex: 'serviceName', label: '服务名称' }
+    { dataIndex: 'serviceId', label: t('service.sidebar.smokeResult.id') },
+    { dataIndex: 'serviceName', label: t('service.sidebar.smokeResult.name') }
   ],
   [
-    { dataIndex: 'testByName', label: '测试人' },
-    { dataIndex: 'testByDate', label: '测试时间' }
+    { dataIndex: 'testByName', label: t('service.sidebar.smokeResult.testName') },
+    { dataIndex: 'testByDate', label: t('service.sidebar.smokeResult.testDate') }
   ],
   [
-    { dataIndex: 'scriptId', label: '脚本ID' },
-    { dataIndex: 'scriptName', label: '脚本名称' }
+    { dataIndex: 'scriptId', label: t('service.sidebar.smokeResult.scriptId')  },
+    { dataIndex: 'scriptName', label: t('service.sidebar.smokeResult.scriptName')  }
   ]
 ];
 
@@ -29,11 +31,11 @@ const columns = [
   <div class="p-5">
     <div class="flex items-center space-x-2">
       <Icon icon="icon-maoyanceshi" class="text-5" />
-      <span class="text-4 font-semibold">冒烟测试</span>
+      <span class="text-4 font-semibold">{{ t('service.sidebar.smokeResult.title') }}</span>
     </div>
     <div class="flex items-center space-x-5 mt-2">
       <div class="rounded-full w-14 h-14 border text-5 text-center flex flex-col justify-center">
-        通过
+        {{ t('service.sidebar.smokeResult.passed') }}
       </div>
       <Grid
         class="w-120"
