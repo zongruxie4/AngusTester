@@ -17,7 +17,6 @@ interface RequestItem {
 }
 
 const props = withDefaults(defineProps<Props>(), {});
-
 // 定义要渲染的请求数据的分组
 const sourceData = ref<RequestItem[]>([
   { name: 'General', value: [], spread: true },

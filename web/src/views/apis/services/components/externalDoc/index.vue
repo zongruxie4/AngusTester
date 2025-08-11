@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { Hints, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { apis } from 'src/api/tester';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   };
   id: string;
 }
+const { t } = useI18n();
 const emits = defineEmits<{(e: 'update:data', value: {url: string;description?: string}): void}>();
 
 const url = ref();
@@ -50,20 +52,20 @@ watch(() => props.data, newValue => {
 </script>
 <template>
   <div class="pl-2">
-    <Hints text="引用外部资源作为当前接口文档扩展" />
+    <Hints :text="t('service.externalDoc.hints')" />
     <div class="flex">
       <div>
         <Input
           v-model:value="url"
           :maxLength="100"
-          placeholder="链接地址"
+          :placeholder="t('service.externalDoc.urlPlaceholder')"
           :disabled="!editable" />
         <Input
           v-model:value="description"
           :disabled="!editable"
           :maxLength="100"
           type="textarea"
-          placeholder="外部链接描述"
+          :placeholder="t('service.externalDoc.descriptionPlaceholder')"
           class="mt-1" />
       </div>
       <Icon
@@ -76,13 +78,13 @@ watch(() => props.data, newValue => {
         type="link"
         size="small"
         @click="saveDoc">
-        保存
+        {{t('actions.save')}}
       </Button>
       <Button
         type="link"
         size="small"
         @click="cancel">
-        取消
+        {{t('actions.cancel')}}
       </Button>
     </template>
   </div>

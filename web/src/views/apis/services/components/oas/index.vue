@@ -6,6 +6,7 @@ import { services } from 'src/api/tester';
 import { enumUtils, duration } from '@xcan-angus/infra';
 import { ServicesCompType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 
 import { CompObj, ComponentsType } from './PropsType';
 
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: '',
   disabled: true
 });
+const { t } = useI18n();
 const addTabPane = inject('addTabPane', (value: {[key: string]: any}) => ({ value }));
 // const updateTabPane = inject('updateTabPane', (value: {[key: string]: any}) => ({ value }));
 const loading = ref(false);
@@ -50,7 +52,7 @@ const addComponent = () => {
     pid: props.id + 'model',
     value: 'model',
     id: props.id,
-    name: `${props.name}-组件`,
+    name: `${props.name}-${t('service.oas.comp')}`,
     type: props.type,
     data: undefined
   });
@@ -252,11 +254,11 @@ const refreshList = () => {
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">
-    <Hints text="通过组件可以定义用于复用的对象集合。支持的定义组件类型包括：数据模型、响应、参数、示例、请求体、请求体、头和安全方案。注意：组件没有被API属性引用时对API没有任何影响。" />
+    <Hints :text="t('service.oas.hints')" />
     <div class="flex items-center justify-between mt-3.5 space-x-2">
       <Input
         :value="name"
-        placeholder="查询组件名称、描述"
+        :placeholder="t('service.oas.searchPlaceholder')"
         :allowClear="true"
         @change="handleSearch" />
       <Button
@@ -266,7 +268,7 @@ const refreshList = () => {
         :disabled="props.disabled"
         @click="addComponent">
         <Icon icon="icon-jia" class="mr-1" />
-        设计组件
+        {{t('service.oas.designCompAction')}}
       </Button>
       <IconRefresh class="text-3.5" @click="refreshList" />
     </div>
@@ -275,7 +277,7 @@ const refreshList = () => {
       style="scrollbar-gutter: stable;"
       class="overflow-y-auto flex flex-col space-y-2 pr-1.5 -mr-3.5 mb-5 text-3 text-text-content flex-1">
       <div
-        v-for="value,key in compListObj"
+        v-for="(value,key) in compListObj"
         :key="key"
         class="mt-2">
         <div class="h-7 leading-7 flex items-center justify-between bg-bg-table-head px-2 rounded-sm cursor-pointer" @click="handleExpand(value)">
@@ -287,7 +289,7 @@ const refreshList = () => {
         <div class="space-y-2 transition-height duration-500 overflow-hidden" :class="value.isExpand ? 'open-info' : 'stop-info'">
           <AsyncComponent :visible="value.isExpand">
             <div
-              v-for="item,index in value.list"
+              v-for="(item,index) in value.list"
               :key="item.id"
               class="border border-border-divider p-2 rounded relative"
               :class="index === 0 ?'mt-2':''">

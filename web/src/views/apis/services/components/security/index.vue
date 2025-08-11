@@ -2,6 +2,7 @@
 import { inject, ref, watch } from 'vue';
 import { Hints, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { apis, services } from 'src/api/tester';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
   type: 'PROJECT'|'API';
   disabled: boolean;
 }
+const { t } = useI18n();
 
 const serviceId = inject('serviceId', ref());
 const emits = defineEmits<{(e: 'update:showSecurity', value: boolean):void}>();
@@ -184,7 +186,7 @@ defineExpose({ addSecurity: addSecurity });
 </script>
 <template>
   <div class="pl-2 -mt-2">
-    <Hints text="声明可用于接口的安全方案" />
+    <Hints :text="t('service.security.hints')" />
     <Icon
       v-show="!props.disabled && !edit && !!security.length"
       icon="icon-shuxie"
@@ -211,7 +213,7 @@ defineExpose({ addSecurity: addSecurity });
               v-model:value="subItem.key"
               :disabled="props.disabled || !edit"
               :error="isValid && repeatedKeys[idx].includes(subItem.key)"
-              placeholder="安全方案名称"
+              :placeholder="t('service.security.namePlaceholder')"
               size="small"
               class="w-full"
               @blur="blurKeys" />
@@ -225,7 +227,7 @@ defineExpose({ addSecurity: addSecurity });
             v-model:value="subItem.value"
             mode="tags"
             :disabled="props.disabled || !edit"
-            placeholder="访问scope，输入回车确认"
+            :placeholder="t('service.security.valuePlaceholder')"
             size="small"
             class="mt-1 w-full" />
         </div>
@@ -242,13 +244,13 @@ defineExpose({ addSecurity: addSecurity });
         type="link"
         size="small"
         @click="saveSecurity()">
-        保存
+        {{t('actions.save')}}
       </Button>
       <Button
         type="link"
         size="small"
         @click="cancelSecurity()">
-        取消
+        {{t('actions.cancel')}}
       </Button>
     </template>
   </div>

@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { MoveModal, notification, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   type: 'api';
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   admin: false,
   projectId: undefined
 });
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
@@ -41,7 +43,7 @@ const cancel = () => {
 const onOk = async () => {
   const id = props.id;
   cancel();
-  notification.success('移动成功');
+  notification.success(t('tips.moveSuccess'));
   emits('ok', { id: id!, fromId: props.pid });
 };
 
@@ -55,12 +57,7 @@ onMounted(() => {
 });
 
 const title = computed(() => {
-  switch (props.type) {
-    case 'api':
-      return '移动接口';
-    default:
-      return '移动接口';
-  }
+  return t('service.moveModal.title');
 });
 
 const params = computed(() => {
@@ -86,8 +83,7 @@ const filterOpt = () => {
 };
 
 const hints = computed(() => {
-  // return props.type === 'service' ? '移动服务到项目时，默认不授权被移动服务和接口关联用户查看项目权限，如果需要请通过项目“权限”来授权。' : '移动接口到项目或服务时，默认不授权接口关联用户查看项目和服务权限，如果需要请通过项目和服务“权限”来授权。';
-  return '移动接口到服务时，默认不授权接口关联用户查看服务权限，如果需要请通过服务“权限”来授权。';
+  return t('service.moveModal.hints');
 });
 
 const parent = computed(() => {
@@ -106,7 +102,7 @@ const parent = computed(() => {
     :fieldNames="fieldNames"
     :rootNode="false"
     :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-    subTitle="选择要移动到的服务"
+    :subTitle="t('service.moveModal.selectServiceTitle')"
     :hints="hints"
     :moveAction="getMoveAction"
     :excludes="filterOpt"

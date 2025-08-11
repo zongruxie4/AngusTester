@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { services } from 'src/api/tester';
 
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   pid: undefined
 });
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -51,17 +53,15 @@ const ok = async () => {
   refreshSidebar();
   emit('ok');
   cancel();
-  notification.success('添加成功');
+  notification.success(t('actions.addSuccess'));
 };
 
 const title = computed(() => {
-  // return props.targetType === 'PROJECT' ? '添加项目' : '添加服务';
-  return '添加服务';
+  return t('service.sidebar.addServiceModal.title');
 });
 
 const placeholder = computed(() => {
-  // return props.targetType === 'PROJECT' ? '请输入项目名称' : '请输入服务名称';
-  return '请输入服务名称';
+  return t('service.sidebar.addServiceModal.namePlaceholder');
 });
 
 const cancel = () => {

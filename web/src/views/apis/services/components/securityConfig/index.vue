@@ -5,6 +5,7 @@ import { Button, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/SelectEnum/index.vue'
 import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
@@ -14,7 +15,7 @@ interface Props {
   disabled: boolean;
   source:'modal' | 'home' | 'right'
 }
-
+const { t } = useI18n();
 const { basicAuthKey } = API_EXTENSION_KEY;
 
 const { useState } = VuexHelper;
@@ -192,7 +193,7 @@ const hanldeDelete = async (auth:AuthConfigObj) => {
   if (error) {
     return;
   }
-  notification.success('删除成功');
+  notification.success(t('tips.deleteSuccess'));
   emit('deleteSuccess');
   // 如果删除成功
   authConfigList.value = authConfigList.value.filter(item => item.id !== auth.id);
@@ -240,7 +241,7 @@ const handleSave = async (auth:AuthConfigObj) => {
     return false;
   }
 
-  notification.success('保存成功');
+  notification.success(t('tips.saveSuccess'));
   emit('saveSuccess');
   loadAuthConfig();
 };
@@ -661,7 +662,7 @@ const getChenkUpdateRes = () => {
   if (currEditData.value) {
     const hasUpdate = chenkUpdate(authConfigList.value.filter(item => item.id === currEditData.value?.id)[0]);
     if (hasUpdate) {
-      notification.warning('数据未保存，请先保存数据或者取消编辑');
+      notification.warning(t('service.securityModal.rule'));
       return true;
     }
   }
@@ -862,25 +863,25 @@ const apiKeyInOptions = [
 const OAuth2AuthorizationTypeOptions = [
   {
     value: 'authorizationCode',
-    label: '授权码模式（AuthorizationCode）'
+    label: t('service.securityModal.oauth2Opt.authorizationCode')
   },
   {
     value: 'password',
-    label: '密码模式（PasswordCredentials）'
+    label: t('service.securityModal.oauth2Opt.password')
   },
   {
     value: 'implicit',
-    label: '隐式模式（Implicit）'
+    label: t('service.securityModal.oauth2Opt.implicit')
   },
   {
     value: 'clientCredentials',
-    label: '客户端模式（ClientCredentials）'
+    label: t('service.securityModal.oauth2Opt.clientCredentials')
   }
 ];
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">
-    <Hints text="定义当前服务下所有接口可以使用的安全方案(Authorization)。" />
+    <Hints :text="t('service.securityModal.hints')" />
     <div class="flex items-end mt-2">
       <Button
         size="small"
@@ -889,7 +890,7 @@ const OAuth2AuthorizationTypeOptions = [
         :disabled="props.disabled || authConfigList?.length > 49 || addBtnDisabled"
         @click="addAuthConfig">
         <Icon icon="icon-jia" class="mr-1" />
-        添加
+        {{t('actions.add')}}
       </Button>
     </div>
     <div
@@ -923,7 +924,7 @@ const OAuth2AuthorizationTypeOptions = [
                 @click="(e) => handleEdit(e, auth)" />
             </template>
           </Tooltip>
-          <Tooltip title="删除" placement="top">
+          <Tooltip :title="t('actions.delete')" placement="top">
             <template v-if="props.disabled">
               <Icon
                 icon="icon-qingchu"
@@ -945,8 +946,8 @@ const OAuth2AuthorizationTypeOptions = [
             <div>
               <div class="flex items-end mt-2">
                 <IconRequired />
-                <span>名称</span>
-                <Tooltip title="组件名称只能包含 A-Z a-z 0-9 - . _ 字符" placement="topLeft">
+                <span>{{t('service.securityModal.nameLabel')}}</span>
+                <Tooltip :title="t('service.securityModal.nameTip')" placement="topLeft">
                   <Icon icon="icon-tishi1" class="ml-1 text-tips cursor-pointer text-3.5" />
                 </Tooltip>
               </div>
@@ -961,9 +962,9 @@ const OAuth2AuthorizationTypeOptions = [
                 :disabled="!auth.isEdit || !auth.isAdd"
                 dataType="mixin-en"
                 includes="_.-"
-                placeholder="请输入方案名称"
+                :placeholder="t('service.securityModal.namePlaceholder')"
                 @change="(event)=>authKeyChange(event.target.value,auth)" />
-              <div><IconRequired />认证类型</div>
+              <div><IconRequired />{{t('service.securityModal.typeLabel')}}</div>
               <RadioGroup
                 v-model:value="auth.model.type"
                 class="flex flex-wrap mt-2 mb-5"
@@ -972,7 +973,7 @@ const OAuth2AuthorizationTypeOptions = [
                 @change="modelTypeChange(auth)">
               </RadioGroup>
               <template v-if="auth.model.type === 'basic'">
-                <div><IconRequired />用户名</div>
+                <div><IconRequired />{{t('service.securityModal.usernameLabel')}}</div>
                 <Input
                   v-model:value="auth.model.username"
                   type="input"
@@ -982,9 +983,9 @@ const OAuth2AuthorizationTypeOptions = [
                   :error="auth.model.usernameErr"
                   :allowClear="false"
                   :disabled="!auth.isEdit"
-                  placeholder="请输入用户名"
+                  :placeholder="t('service.securityModal.usernamePlaceholder')"
                   @change="(event)=>usernameChange(event.target.value,auth)" />
-                <div><IconRequired />密码</div>
+                <div><IconRequired />{{t('service.securityModal.passwordLabel')}}</div>
                 <Input
                   v-model:value="auth.model.password"
                   :error="auth.model.passwordErr"
@@ -993,18 +994,18 @@ const OAuth2AuthorizationTypeOptions = [
                   class="mt-2 mb-5"
                   type="password"
                   size="small"
-                  placeholder="请输入密码"
+                  :placeholder="t('service.securityModal.passwordPlaceholder')"
                   @change="(event)=>passwordChange(event.target.value,auth)" />
               </template>
               <template v-if="auth.model.type === 'bearer'">
-                <div><IconRequired />令牌 </div>
+                <div><IconRequired />{{t('service.securityModal.tokenLabel')}} </div>
                 <template v-if="auth.isEdit">
                   <Input
                     v-model:value="auth.model.token"
                     size="small"
                     class="mt-2 mb-5"
                     prefix="Bearer"
-                    placeholder="请输入访问令牌"
+                    :placeholder="t('service.securityModal.tokenPlaceholder')"
                     :error="auth.model.tokenErr"
                     :disabled="!auth.isEdit"
                     @change="(event)=>tokenChange(event.target.value,auth)" />
@@ -1018,12 +1019,12 @@ const OAuth2AuthorizationTypeOptions = [
               <template v-if="auth.model.type === 'apiKey'">
                 <div v-if="auth.model.apiKeyList?.length" class="-mt-2">
                   <div
-                    v-for="item,apikeyIndex in auth.model.apiKeyList"
+                    v-for="(item,apikeyIndex) in auth.model.apiKeyList"
                     :key="apikeyIndex"
                     class="flex flex-col border-b border-dashed pb-4"
                     :class="{'border-b-0 pb-0': apikeyIndex === auth.model.apiKeyList.length-1}">
                     <div class="mt-4 flex justify-between">
-                      <span><IconRequired />名称</span>
+                      <span><IconRequired />{{t('service.securityModal.nameLabel')}}</span>
                       <span v-if="auth.isEdit" class="text-4 -mt-1">
                         <template v-if="auth.model.apiKeyList.length < 49">
                           <Icon
@@ -1046,7 +1047,7 @@ const OAuth2AuthorizationTypeOptions = [
                       :error="item.nameErr"
                       :allowClear="false"
                       :disabled="!auth.isEdit"
-                      placeholder="输入名称"
+                      :placeholder="t('service.securityModal.apiKeyNamePlaceholder')"
                       @change="(event)=>apiKeyNameChange(event.target.value,item)" />
                     <div><IconRequired />值</div>
                     <Input
@@ -1056,7 +1057,7 @@ const OAuth2AuthorizationTypeOptions = [
                       :error="item.valueErr"
                       :disabled="!auth.isEdit"
                       :allowClear="false"
-                      placeholder="输入值"
+                      :placeholder="t('service.securityModal.apiKeyValuePlaceholder')"
                       @change="(event)=>apiKeyValueChange(event.target.value,item)" />
                     <div> <IconRequired />位置</div>
                     <Select
@@ -1066,27 +1067,27 @@ const OAuth2AuthorizationTypeOptions = [
                       :disabled="!auth.isEdit"
                       :allowClear="false"
                       :options="apiKeyInOptions"
-                      placeholder="选择位置">
+                      :placeholder="t('service.securityModal.apiKeyInPlaceholder')">
                     </Select>
                   </div>
                 </div>
               </template>
               <template v-if="auth.model.type === 'oauth2'">
-                <div class="pl-1.75">配置令牌 </div>
+                <div class="pl-1.75">{{t('service.securityModal.configToken')}} </div>
                 <RadioGroup
                   v-model:value="auth.model['x-xc-oauth2-newToken']"
                   class="mt-2 mb-5"
                   :disabled="!auth.isEdit">
-                  <Radio :value="false">已有令牌</Radio>
-                  <Radio :value="true">生成令牌</Radio>
+                  <Radio :value="false">{{t('service.securityModal.token_had')}}</Radio>
+                  <Radio :value="true">{{t('service.securityModal.token_generate')}}</Radio>
                 </RadioGroup>
                 <template v-if="!auth.model['x-xc-oauth2-newToken']">
-                  <div>令牌</div>
+                  <div>{{ t('service.securityModal.tokenLabel') }}</div>
                   <template v-if="auth.isEdit">
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-token']"
                       size="small"
-                      placeholder="请输入授权KEY"
+                      :placeholder="t('service.securityModal.authKeyPlaceholder')"
                       class="mt-2 mb-5"
                       :maxlength="400"
                       :error="auth.model.tokenErr"
@@ -1099,7 +1100,7 @@ const OAuth2AuthorizationTypeOptions = [
                   </template>
                 </template>
                 <template v-else>
-                  <div class="pl-1.75">授权类型</div>
+                  <div class="pl-1.75">{{t('service.securityModal.authFlowLabel')}}</div>
                   <Select
                     v-model:value="auth.model['x-xc-oauth2-authFlow']"
                     size="small"
@@ -1107,11 +1108,11 @@ const OAuth2AuthorizationTypeOptions = [
                     :disabled="!auth.isEdit"
                     :options="OAuth2AuthorizationTypeOptions" />
                   <template v-if="['authorizationCode','implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
-                    <div><IconRequired />授权URL</div>
+                    <div><IconRequired />{{t('service.securityModal.authorizationUrlLabel')}}</div>
                     <Input
                       v-model:value="auth.model.authorizationUrl"
                       size="small"
-                      placeholder="请输入授权URL"
+                      :placeholder="t('service.securityModal.authorizationUrlPlaceholder')"
                       class="mt-2"
                       :disabled="!auth.isEdit"
                       :maxlength="400"
@@ -1119,32 +1120,32 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>tokenUrlChange(event.target.value,auth,'authorizationUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.authorizationUrlErr.isError">
-                        请输入正确的url地址
+                        {{t('service.securityModal.authorizationUrlRule')}}
                       </template>
                     </div>
                     <div class="pl-1.75">
-                      回调URL
+                      {{t('service.securityModal.callbackUrlLabel')}}
                     </div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-callbackUrl']"
                       size="small"
                       class="mt-2"
-                      placeholder="请输入回调URL"
+                      :placeholder="t('service.securityModal.callbackUrlPlaceholder')"
                       :disabled="!auth.isEdit"
                       :error="auth.model.callbackUrlErr.isError"
                       @change="(event)=>callbackUrlChange(event.target.value,auth,'callbackUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.callbackUrlErr.isError">
-                        请输入正确的url地址
+                        {{t('service.securityModal.callbackUrlRule')}}
                       </template>
                     </div>
                   </template>
                   <template v-if="!['implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
-                    <div><IconRequired />访问令牌URL</div>
+                    <div><IconRequired />{{t('service.securityModal.tokenUrlLabel')}}</div>
                     <Input
                       v-model:value="auth.model.tokenUrl"
                       size="small"
-                      placeholder="请输入访问令牌URL"
+                      :placeholder="t('service.securityModal.tokenUrlPlaceholder')"
                       class="mt-2"
                       :disabled="!auth.isEdit"
                       :maxlength="400"
@@ -1152,15 +1153,15 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>tokenUrlChange(event.target.value,auth,'tokenUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.tokenUrlErr.isError">
-                        请输入正确的url地址
+                        {{t('service.securityModal.tokenUrlRule')}}
                       </template>
                     </div>
                   </template>
-                  <div class="pl-1.75">刷新令牌URL</div>
+                  <div class="pl-1.75">{{t('service.securityModal.refreshUrlLabel')}}</div>
                   <Input
                     v-model:value="auth.model.refreshUrl"
                     size="small"
-                    placeholder="请输入刷新令牌URL"
+                    :placeholder="t('service.securityModal.refreshUrlPlaceholder')"
                     class="mt-2"
                     :maxlength="400"
                     :disabled="!auth.isEdit"
@@ -1168,28 +1169,28 @@ const OAuth2AuthorizationTypeOptions = [
                     @change="(event)=>callbackUrlChange(event.target.value,auth,'refreshUrlErr')" />
                   <div class="h-5 text-rule">
                     <template v-if="auth.model.refreshUrlErr.isError">
-                      请输入正确的url地址
+                      {{ t('service.securityModal.refreshUrlRule') }}
                     </template>
                   </div>
-                  <div class="pl-1.75">客户ID</div>
+                  <div class="pl-1.75">{{ t('service.securityModal.clientIdLabel') }}</div>
                   <Input
                     v-model:value="auth.model['x-xc-oauth2-clientId']"
                     size="small"
-                    placeholder="请输入客户ID"
+                    :placeholder="t('service.securityModal.clientIdPlaceholder')"
                     class="mt-2 mb-5"
                     :maxlength="400"
                     :disabled="!auth.isEdit" />
-                  <div class="pl-1.75">客户端秘钥</div>
+                  <div class="pl-1.75">{{ t('service.securityModal.clientSecretLabel') }}</div>
                   <Input
                     v-model:value="
                       auth.model['x-xc-oauth2-clientSecret']"
                     size="small"
                     class="mt-2 mb-5"
-                    placeholder="请输入客户Secret"
+                    :placeholder="t('service.securityModal.clientSecretPlaceholder')"
                     :maxlength="400"
                     :disabled="!auth.isEdit" />
                   <template v-if="auth.model['x-xc-oauth2-authFlow'] === 'password'">
-                    <div><IconRequired />用户名</div>
+                    <div><IconRequired />{{t('service.securityModal.usernameLabel')}}</div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-username']"
                       type="input"
@@ -1199,9 +1200,10 @@ const OAuth2AuthorizationTypeOptions = [
                       :error="auth.model.usernameErr"
                       :allowClear="false"
                       :disabled="!auth.isEdit"
-                      placeholder="请输入用户名"
+                      :placeholder="t('service.securityModal.usernamePlaceholder')"
                       @change="(event)=>usernameChange(event.target.value,auth)" />
-                    <div><IconRequired />密码</div>
+                    <div><IconRequired />
+                      {{ t('service.securityModal.passwordLabel') }}</div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-password']"
                       :error="auth.model.passwordErr"
@@ -1210,7 +1212,7 @@ const OAuth2AuthorizationTypeOptions = [
                       class="mt-2 mb-5"
                       type="password"
                       size="small"
-                      placeholder="请输入密码"
+                      :placeholder="t('service.securityModal.passwordPlaceholder')"
                       @change="(event)=>passwordChange(event.target.value,auth)" />
                   </template>
                   <div><IconRequired />Scopes</div>
@@ -1222,23 +1224,23 @@ const OAuth2AuthorizationTypeOptions = [
                     :error="auth.model.scopesErr"
                     :open="false"
                     :tokenSeparators="[',']"
-                    placeholder="输入scope，多个scope以英文逗号分隔"
+                    :placeholder="t('service.securityModal.scopesPlaceholder')"
                     @change="(value)=>scopesChange(value,auth)" />
-                  <div class="pl-1.75">客户端认证</div>
+                  <div class="pl-1.75">{{t('service.securityModal.clientAuthTypeLabel')}}</div>
                   <SelectEnum
                     v-model:value="auth.model['x-xc-oauth2-clientAuthType']"
                     :disabled="!auth.isEdit"
                     class="w-full mt-2 mb-5"
                     enumKey="AuthClientIn"
-                    placeholder="选择客户端认证" />
+                    :placeholder="t('service.securityModal.clientAuthTypePlaceholder')" />
                 </template>
               </template>
               <template v-if="auth.isEdit">
-                <div class="pl-1.75">描述</div>
+                <div class="pl-1.75">{{t('service.securityModal.description')}}</div>
                 <Input
                   v-model:value="auth.description"
                   size="small"
-                  placeholder="输入描述，支持Markdown语法"
+                  :placeholder="t('service.securityModal.descriptionPlaceholder')"
                   class="mt-2"
                   type="textarea"
                   :rows="3"
@@ -1247,7 +1249,7 @@ const OAuth2AuthorizationTypeOptions = [
               </template>
               <template v-else>
                 <template v-if="auth.description">
-                  <div>描述</div>
+                  <div>{{t('service.securityModal.description')}}</div>
                   <Input
                     :value="auth.description"
                     size="small"
@@ -1264,7 +1266,7 @@ const OAuth2AuthorizationTypeOptions = [
                   type="link"
                   :disabled="authConfigList.length === 1 && auth.isAdd"
                   @click="handleCancel(auth)">
-                  取消
+                  {{t('actions.cancel')}}
                 </Button>
                 <Button
                   type="link"
@@ -1272,7 +1274,7 @@ const OAuth2AuthorizationTypeOptions = [
                   class="px-0"
                   :disabled="props.disabled"
                   @click="handleSave(auth)">
-                  确定
+                  {{t('actions.confirm')}}
                 </Button>
               </div>
             </div>

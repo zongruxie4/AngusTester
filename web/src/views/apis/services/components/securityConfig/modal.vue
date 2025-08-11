@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
 import SecurityConfig from './index.vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   visible: boolean;
@@ -11,6 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   id: ''
 });
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void}>();
 
@@ -31,7 +33,7 @@ const saveSuccess = () => {
 </script>
 <template>
   <Modal
-    title="安全方案配置"
+    :title="t('service.securityModal.title')"
     :visible="visible"
     :reverse="true"
     :footer="null"

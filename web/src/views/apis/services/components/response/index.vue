@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { IconCopy, IconDownload, FormatHighlight } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   dataSource: any;
@@ -10,6 +11,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({ data: null })
 });
+const { t } = useI18n();
 
 const currentTabId = ref<'pretty' | 'raw' | 'preview'>('pretty');
 const handleSelect = (id: 'pretty' | 'raw' | 'preview'): void => {
@@ -164,19 +166,19 @@ const copyText = computed(() => {
           :class="{'res-tab-active':currentTabId==='pretty'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('pretty')">
-          美化格式
+          {{t('service.apis.response.pretty')}}
         </div>
         <div
           :class="{'res-tab-active':currentTabId==='raw'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('raw')">
-          原生格式
+          {{t('service.apis.response.raw')}}
         </div>
         <div
           :class="{'res-tab-active':currentTabId==='preview'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('preview')">
-          预览
+          {{t('service.apis.response.preview')}}
         </div>
       </div>
       <div

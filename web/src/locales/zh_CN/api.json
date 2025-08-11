@@ -135,10 +135,8 @@
       "my": "我的活动",
       "all": "所有活动"
     }
-
   },
   "design": {
-
     "home": {
       "introduceTitle": "关于设计",
       "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
@@ -469,7 +467,12 @@
         "variableValueLabel": "值",
         "variableValueDefault": "默认",
         "variableDescLabel": "描述"
+      },
+      "addServiceModal": {
+        "title": "添加服务",
+        "namePlaceholder": "请输入服务名称"
       }
+
     },
     "mock": {
       "description": "Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。",
@@ -607,6 +610,127 @@
         "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
 
       }
+    },
+    "externalDoc": {
+      "hints": "引用外部资源作为当前接口文档扩展",
+      "urlPlaceholder": "链接地址",
+      "descriptionPlaceholder": "外部链接描述"
+    },
+    "importForm": {
+      "nameLabel": "服务名称",
+      "namePlaceholder": "100个字符以内",
+      "sourceLabel": "选择导入来源",
+      "fileLabel": "选择文件",
+      "fileTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml类型文件。",
+      "strategyWhenDuplicated": "遇到重复时的处理策略",
+      "strategy_cover": "覆盖",
+      "strategy_ignore": "忽略",
+      "deleteWhenNotExisted": "当前接口在导入数据中不存在时是否删除",
+      "delete_y": "是",
+      "delete_n": "否",
+      "fileRule": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件！",
+      "sourceRule": "请选择导入来源",
+      "fileRule_required": "请上传本地文件",
+      "nameRule": "请输入名称"
+    },
+    "moveModal": {
+      "title": "移动接口",
+      "hints": "移动接口到服务时，默认不授权接口关联用户查看服务权限，如果需要请通过服务“权限”来授权。",
+      "selectServiceTitle": "选择要移动到的服务"
+
+    },
+    "oas": {
+      "comp": "组件",
+      "hints": "通过组件可以定义用于复用的对象集合。支持的定义组件类型包括：数据模型、响应、参数、示例、请求体、请求体、头和安全方案。注意：组件没有被API属性引用时对API没有任何影响。",
+      "searchPlaceholder": "查询组件名称、描述",
+      "designCompAction": "设计组件",
+      "addModal": {
+        "detail": "详情",
+        "add": "添加",
+        "edit": "编辑",
+        "typeLabel": "类型",
+        "typePlaceholder": "选择类型",
+        "nameLabel": "名称",
+        "namePlaceholder": "输入名称，最多400字符",
+        "refLabel": "引用",
+        "cancelRefs": "取消引用",
+        "useRefs": "恢复引用",
+        "summaryLabel": "摘要",
+        "summaryPlaceholder": "输入摘要，最多400字符",
+        "exampleLabel": "示例",
+        "examplePlaceholder": "输入示例",
+        "schemaTypeLabel": "属性类型",
+        "schemaTypePlaceholder": "选择类型",
+        "formatLabel": "格式",
+        "formatPlaceholder": "格式",
+        "valueLabel": "值",
+        "valuePlaceholder": "输入值，最多4096字符",
+        "descriptionLabel": "描述",
+        "descriptionPlaceholder": "输入描述，最多2000字符，支持Markdown语法"
+      }
+    },
+    "apis": {
+      "response": {
+        "pretty": "美化格式",
+        "raw": "原生格式",
+        "preview": "预览"
+      }
+    },
+    "security": {
+      "hints": "声明可用于接口的安全方案",
+      "namePlaceholder": "安全方案名称",
+      "valuePlaceholder": "访问scope，输入回车确认",
+      "nameRule": "定义名称重复"
+    },
+    "securityModal": {
+      "title": "安全方案配置",
+      "rule": "数据未保存，请先保存数据或者取消编辑",
+      "hints": "定义当前服务下所有接口可以使用的安全方案(Authorization)。",
+      "oauth2Opt": {
+        "authorizationCode": "授权码模式（AuthorizationCode）",
+        "password": "密码模式（PasswordCredentials）",
+        "implicit": "隐式模式（Implicit）",
+        "clientCredentials": "客户端模式（ClientCredentials）"
+      },
+      "nameLabel": "名称",
+      "nameTip": "组件名称只能包含 A-Z a-z 0-9 - . _ 字符",
+      "namePlaceholder": "请输入方案名称",
+      "typeLabel": "认证类型",
+      "usernameLabel": "用户名",
+      "usernamePlaceholder": "请输入用户名",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "请输入密码",
+      "tokenLabel": "令牌",
+      "tokenPlaceholder": "请输入访问令牌",
+      "apiKeyNamePlaceholder": "输入名称",
+      "apiKeyValuePlaceholder": "输入值",
+      "apiKeyInPlaceholder": "选择位置",
+      "configToken": "配置令牌",
+      "token_had": "已有令牌",
+      "token_generate": "生成令牌",
+      "authKeyPlaceholder": "请输入授权KEY",
+      "authFlowLabel": "授权类型",
+      "authorizationUrlLabel": "授权URL",
+      "authorizationUrlPlaceholder": "请输入授权URL",
+      "authorizationUrlRule": "请输入正确的url地址",
+      "callbackUrlLabel": "回调URL",
+      "callbackUrlPlaceholder": "请输入回调URL",
+      "callbackUrlRule": "请输入正确的url地址",
+      "tokenUrlLabel": "访问令牌URL",
+      "tokenUrlPlaceholder": "请输入访问令牌URL",
+      "tokenUrlRule": "请输入正确的url地址",
+      "refreshUrlLabel": "刷新令牌URL",
+      "refreshUrlPlaceholder": "请输入刷新令牌URL",
+      "refreshUrlRule": "请输入正确的url地址",
+      "clientIdLabel": "客户ID",
+      "clientIdPlaceholder": "请输入客户ID",
+      "clientSecretLabel": "客户端秘钥",
+      "clientSecretPlaceholder": "请输入客户Secret",
+      "scopesPlaceholder": "输入scope，多个scope以英文逗号分隔",
+      "clientAuthTypeLabel": "客户端认证",
+      "clientAuthTypePlaceholder": "选择客户端认证",
+      "description": "描述",
+      "descriptionPlaceholder": "输入描述，支持Markdown语法"
     }
   }
 }

@@ -6,6 +6,7 @@ import { ServicesCompType } from '@/enums/enums';
 import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
+import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { services } from 'src/api/tester';
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   modalType: 'view',
   component: undefined
 });
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void, (e: 'ok'): void}>();
 
@@ -142,7 +144,7 @@ onMounted(() => {
 
 const setDefaultData = () => {
   const model = props.component?.model;
-  switch (props.component.type?.value) {
+  switch (props.component?.type?.value) {
     case 'headers': {
       headers.value.schema.type = model?.schema?.type;
       if (!['object', 'array'].includes(model.schema?.type)) {
@@ -194,12 +196,12 @@ const openEdit = ref(false);
 
 const component = ref<CompObj>();
 const cancelRef = () => {
-  component.value.quoteName = '';
+  component.value && (component.value.quoteName = '');
   openEdit.value = true;
 };
 
 const recoveryRef = () => {
-  component.value.quoteName = props.component.quoteName;
+  component.value && (component.value.quoteName = props.component?.quoteName);
   openEdit.value = false;
   setDefaultData();
 };
@@ -215,13 +217,13 @@ onMounted(() => {
 const title = computed(() => {
   switch (props.modalType) {
     case 'view':
-      return '详情';
+      return t('service.oas.addModal.detail');
     case 'edit':
-      return '编辑';
+      return t('service.oas.addModal.edit');
     case 'add':
-      return '添加';
+      return t('service.oas.addModal.add');
     default:
-      return '详情';
+      return t('service.oas.addModal.detail');
   }
 });
 
@@ -241,33 +243,35 @@ const modeContent = computed(() => {
     @cancel="handleCancel">
     <div class="text-3 text-text-sub-content">
       <div class="flex flex-col">
-        <div><IconRequired />类型</div>
+        <div><IconRequired />
+          {{ t('service.oas.addModal.typeLabel') }}</div>
         <Select
           v-model:value="compType"
           :disabled="props.modalType === 'view' || props.modalType === 'edit'"
           :options="compTypesEnum"
-          placeholder="选择类型"
+          :placeholder="t('service.oas.addModal.typePlaceholder')"
           class="w-full mb-2" />
-        <div><IconRequired />名称</div>
+        <div><IconRequired />
+          {{ t('service.oas.addModal.nameLabel') }}</div>
         <Input
           v-model:value="compName"
           :disabled="props.modalType === 'view' || props.modalType === 'edit'"
           :maxlength="400"
           :error="compNameErr"
-          placeholder="输入名称，最多400字符"
+          :placeholder="t('service.oas.addModal.namePlaceholder')"
           class="w-full"
           @change="compNameChange" />
         <template v-if="props.component?.isQuote">
-          <div class="pl-1.5 mt-2">引用</div>
+          <div class="pl-1.5 mt-2">{{ t('service.oas.addModal.refLabel') }}</div>
           <Input :value="component?.quoteName" disabled>
             <template #suffix>
               <a
                 class="text-3 hover:text-text-link-hover text-text-content"
-                @click="cancelRef">取消引用</a>
+                @click="cancelRef">{{ t('service.oas.addModal.cancelRefs') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-3 hover:text-text-link-hover text-text-content"
-                @click="recoveryRef">恢复引用</a>
+                @click="recoveryRef">{{ t('service.oas.addModal.useRefs') }}</a>
             </template>
           </Input>
         </template>
@@ -280,52 +284,53 @@ const modeContent = computed(() => {
         </template>
         <template v-else>
           <template v-if="compType === 'examples'">
-            <div class="mt-2 pl-1.75">摘要</div>
+            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.summaryLabel') }}</div>
             <Input
               v-model:value="examples.summary"
               :maxlength="400"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               type="textarea"
-              placeholder="输入摘要，最多400字符"
+              :placeholder="t('service.oas.addModal.summaryPlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">描述</div>
+            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.descriptionLabel') }}</div>
             <Input
               v-model:value="examples.description"
               :maxlength="2000"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               type="textarea"
-              placeholder="输入描述，最多2000字符，支持Markdown语法"
+              :placeholder="t('service.oas.addModal.descriptionPlaceholder')"
               class="w-full" />
-            <div class="mt-2"><IconRequired />示例</div>
+            <div class="mt-2"><IconRequired />
+              {{ t('service.oas.addModal.exampleLabel') }}</div>
             <Input
               v-model:value="examples.value"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :maxlength="400"
               :autoSize="{ minRows: 8}"
               :error="exampleValueErr"
               type="textarea"
-              placeholder="输入示例"
+              :placeholder="t('service.oas.addModal.examplePlaceholder')"
               class="w-full"
               @change="exampleValueChange" />
           </template>
           <template v-if="compType === 'headers'">
-            <div class="mt-2"><IconRequired />属性类型</div>
+            <div class="mt-2"><IconRequired />{{t('service.oas.addModal.schemaTypeLabel')}}</div>
             <SelectEnum
               v-model:value="headers.schema.type"
               :excludes="getExcludes"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               size="small"
               enumKey="ParameterType"
-              placeholder="选择类型"
+              :placeholder="t('service.oas.addModal.schemaTypePlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">格式</div>
+            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.formatLabel') }}</div>
             <template v-if="['integer','number'].includes(headers.schema.type)">
               <SelectEnum
                 v-model:value="headers.schema.format"
                 :enumKey="enumKeyMap[headers.schema.type]"
-                :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+                :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
                 size="small"
-                placeholder="格式"
+                :placeholder="t('service.oas.addModal.formatPlaceholder')"
                 class="w-full" />
             </template>
             <template v-else-if="headers.schema.type === 'string'">
@@ -333,8 +338,8 @@ const modeContent = computed(() => {
                 v-model:value="headers.schema.format"
                 enumKey="StringParameterFormat"
                 :fieldNames="{label:'message',value:'value'}"
-                :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
-                placeholder="格式"
+                :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
+                :placeholder="t('service.oas.addModal.formatPlaceholder')"
                 class="w-full" />
             </template>
             <template v-else>
@@ -344,35 +349,35 @@ const modeContent = computed(() => {
                 class="w-full"
                 @change="()=>{headers.schema.format = headers.schema.type}" />
             </template>
-            <div class="pl-1.75 mt-2">值</div>
+            <div class="pl-1.75 mt-2">{{ t('service.oas.addModal.valueLabel') }}</div>
             <Input
               v-model:value="headers.schema['x-xc-value']"
               :maxlength="400"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
-              placeholder="输入值，最多4096字符"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
+              :placeholder="t('service.oas.addModal.valuePlaceholder')"
               class="w-full" />
-            <div class="mt-2 pl-1.75">描述</div>
+            <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.descriptionLabel') }}</div>
             <Input
               v-model:value="headers.description"
               :maxlength="2000"
-              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component.isQuote)"
+              :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :autoSize="{ minRows: 8}"
               type="textarea"
-              placeholder="输入描述，最多2000字符，支持Markdown语法"
+              :placeholder="t('service.oas.addModal.descriptionPlaceholder')"
               class="w-full" />
           </template>
         </template>
       </div>
     </div>
     <template v-if="props.modalType !=='view'" #footer>
-      <Button size="small" @click="handleCancel">取消</Button>
+      <Button size="small" @click="handleCancel">{{t('actions.cancel')}}</Button>
       <Button
         :disabled="!openEdit && modalType === 'edit' && props.component.isQuote"
         type="primary"
         size="small"
         :loading="loading"
         @click="handleSave">
-        确定
+        {{t('actions.confirm')}}
       </Button>
     </template>
   </Modal>
