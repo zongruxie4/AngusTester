@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { Button, Popover, RadioButton, RadioGroup, Tag, Tooltip } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import CodeView from './code.vue';
 import FormView from './form.vue';
@@ -13,6 +14,7 @@ interface Props {
     startKey?: string;
 }
 const emits = defineEmits<{(e: 'cancel'): void; (e: 'ok', value: {[key: string]: any})}>();
+const { t } = useI18n();
 const viewType = ref('form');
 const viewTypeOpt = [
   {
@@ -149,7 +151,7 @@ const confirm = () => {
         size="small"
         type="primary"
         @click="confirm">
-        确认
+        {{t('actions.confirm')}}
       </Button>
       <Button size="small" @click="cancel">取消</Button>
     </div>

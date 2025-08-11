@@ -2,6 +2,7 @@
 import { nextTick, ref, watch } from 'vue';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 import AddSchemaTypeModel from './addSchemaTypeModel.vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   visible: boolean;
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   parentType: 'object',
   excludesAttr: () => ([])
 });
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'ok', value: {name: string, [key: string]: any}): void, (e: 'cancel'):void}>();
 
@@ -30,7 +32,7 @@ const validate = ref(false);
 const submit = () => {
   const data = addSchemaModelRef.value.getData();
   if (props.excludesAttr.includes(data.name)) {
-    notification.warning('已存在该属性');
+    notification.warning(t('service.dataModel.addAttrTip'));
     return;
   }
   if (data) {
@@ -57,7 +59,7 @@ watch([() => type.value, activeTab.value], () => {
 </script>
 <template>
   <Modal
-    title="添加参数"
+    :title="t('service.dataModel.addAttrTitle')"
     :visible="props.visible"
     @cancel="cancel"
     @ok="submit">

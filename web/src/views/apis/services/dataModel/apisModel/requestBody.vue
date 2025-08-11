@@ -3,6 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Dropdown, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { CONTENT_TYPE } from '@/views/apis/utils';
 
 import BodyContentTypeTab from '../bodyContentTypeTab.vue';
@@ -18,6 +19,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
+const { t } = useI18n();
 
 const requestBodiesDataRef = ref([]);
 
@@ -124,7 +126,7 @@ defineExpose({
         <Select
           v-model:value="refComp"
           class="w-40 text-left"
-          placeholder="选择使用body模型"
+          :placeholder="t('select.dataModel.selectBodyCompPlaceholder')"
           :action="`${TESTER}/services/${serviceId}/comp/type?ignoreModel=false`"
           :params="compParams"
           :allowClear="true"

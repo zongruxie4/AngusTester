@@ -508,6 +508,13 @@
       "modelLabel": "数据模型",
       "paramsLabel": "参数",
       "responseTitle": "响应头",
+      "addAttrTip": "已存在该属性",
+      "addAttrTitle": "添加参数",
+      "generalTab": "常规",
+      "paramsTab": "参数",
+      "requestTab": "请求体",
+      "responseTab": "响应",
+      "selectBodyCompPlaceholder": "选择使用body模型",
       "form": {
         "name": "名称",
         "required": "必填",
@@ -529,6 +536,28 @@
         "minimumPlaceholder": "最小值",
         "maximumPlaceholder": "最大值"
       }
+    },
+    "agent": {
+      "connectSuccess": "已连接",
+      "unconnect": "未连接",
+      "urlLabel": "代理地址",
+      "noProxy": {
+        "title": "无代理",
+        "tip": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。"
+      },
+      "clientProxy": {
+        "title": "客户端代理",
+        "tip": "需要在访问浏览器所在电脑中安装”<a href='https://www.xcan.cloud/help' target=\"_blank\" class=\"text-text-link\">代理程序<a>“，配置后将使用客户端代理发送请求。"
+      },
+      "serverProxy": {
+        "title": "SERVER_PROXY",
+        "tip": "需要将”代理程序“单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式。"
+      },
+      "cloudProxy": {
+        "tip": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
+      },
+      "connectFailTip": "代理连接失败，请检查代理服务是否已运行。",
+      "configFailTip": "未配置或启用服务端代理，请检查“应用管理->代理配置”"
     }
   }
 }

@@ -3,6 +3,8 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Button, Radio } from 'ant-design-vue';
 import { setting } from '@/api/gm';
 import { Icon, Input } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
 import { type AgentValue } from './PropsTypes';
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   disabledEdit: false
 });
+const { t } = useI18n();
 
 const readyState = inject('readyState', ref(-1));
 const currentProxyUrl = inject('currentProxyUrl', ref(''));
@@ -19,21 +22,21 @@ const currentProxy = inject('currentProxy', ref(''));
 
 const status = ref('fail');
 const agentOptions = ref([{
-  label: '无代理',
+  label: t('service.agent.noProxy.title'),
   value: 'NO_PROXY',
   enabled: false,
   key: 'noProxy',
   url: '',
   disabled: true
 }, {
-  label: '客户端代理',
+  label: t('service.agent.clientProxy.title'),
   value: 'CLIENT_PROXY',
   enabled: false,
   key: 'clientProxy',
   url: '',
   disabled: true
 }, {
-  label: '服务端代理',
+  label: t('service.agent.serverProxy.title'),
   value: 'SERVER_PROXY',
   enabled: false,
   key: 'serverProxy',
@@ -42,10 +45,10 @@ const agentOptions = ref([{
 }]);
 
 const tipsMap = {
-  NO_PROXY: '通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。',
-  CLIENT_PROXY: '需要在访问浏览器所在电脑中安装”<a href=\'https://www.xcan.cloud/help\' target="_blank" class="text-text-link">代理程序<a>“，配置后将使用客户端代理发送请求。',
-  SERVER_PROXY: '需要将”代理程序“单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式。',
-  CLOUD_PROXY: '通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。'
+  NO_PROXY: t('service.agent.noProxy.tip'),
+  CLIENT_PROXY: t('service.agent.clientProxy.tip'),
+  SERVER_PROXY: t('service.agent.serverProxy.tip'),
+  CLOUD_PROXY: t('service.agent.cloudProxy.tip')
 };
 const agent = ref<AgentValue>('NO_PROXY');
 
@@ -147,18 +150,18 @@ onMounted(() => {
         <div v-show="agent === ag.value && ag.value !== 'NO_PROXY'" class="flex-1 text-right">
           <template v-if="status === 'fail'">
             <Icon icon="icon-zhongzhi1" class="text-execute-yellow" />
-            未连接
+            {{ t('service.agent.unconnect') }}
           </template>
           <template v-if="status === 'success'">
             <Icon icon="icon-duihao" class="text-execute-res4" />
-            已连接
+            {{ t('service.agent.connectSuccess') }}
           </template>
         </div>
       </div>
       <div class="mt-2 whitespace-normal text-gray-text" v-html="tipsMap[ag.value]"></div>
       <div v-if="ag.value!=='NO_PROXY'" class="mt-3">
         <div class="flex itens-center justify-between">
-          <span class="text-black-active">代理地址</span>
+          <span class="text-black-active">{{ t('service.agent.urlLabel') }}</span>
           <div v-if="ag.value==='CLIENT_PROXY' && !props.disabledEdit" class="flex text-text-link">
             <Icon
               v-if="ag.disabled"
@@ -171,7 +174,7 @@ onMounted(() => {
                 class="text-3 h-4 border-0 text-text-link hover:text-text-link"
                 :disabled="loading"
                 @click="cancelEdit(ag)">
-                取消
+                {{ t('actions.cancel') }}
               </Button>
               <Button
                 type="text"
@@ -179,7 +182,7 @@ onMounted(() => {
                 class="text-3 h-4 border-0 text-text-link hover:text-text-link"
                 :disabled="loading"
                 @click="saveUrl(ag)">
-                保存
+                {{ t('actions.save') }}
               </Button>
             </div>
           </div>
@@ -191,8 +194,8 @@ onMounted(() => {
           class="mt-2" />
       </div>
       <template v-if="agent !== 'NO_PROXY'">
-        <div v-show="!currentProxyUrl && agent === ag.value && status === 'fail'" class="mt-3 text-status-orange">未配置或启用服务端代理，请检查“应用管理->代理配置”</div>
-        <div v-show="currentProxyUrl && status === 'fail' && agent === ag.value" class="mt-3 text-status-orange">代理连接失败，请检查代理服务是否已运行。</div>
+        <div v-show="!currentProxyUrl && agent === ag.value && status === 'fail'" class="mt-3 text-status-orange">{{ t('service.agent.configFailTip') }}</div>
+        <div v-show="currentProxyUrl && status === 'fail' && agent === ag.value" class="mt-3 text-status-orange">{{ t('service.agent.connectFailTip') }}</div>
       </template>
     </div>
   </div>

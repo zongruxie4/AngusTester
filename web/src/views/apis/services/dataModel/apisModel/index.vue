@@ -3,7 +3,7 @@ import { onMounted, provide, ref, watch } from 'vue';
 import { AsyncComponent, Icon, Select } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { Button, Popover, RadioButton, RadioGroup, Switch, TabPane, Tabs, Tag, Tooltip } from 'ant-design-vue';
-
+import { useI18n } from 'vue-i18n';
 import { Props } from './PropTypes';
 
 import Genaral from './general.vue';
@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: '',
   openapiDoc: () => ({})
 });
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'cancel'):void, (e: 'ok', value: Props.dataSource):void}>();
 const activeKey = ref('general');
@@ -215,22 +216,22 @@ provide('serviceId', props.id);
       size="small">
       <TabPane
         key="general"
-        tab="常规">
+        :tab="t('service.dataModel.generalTab')">
         <Genaral ref="generalRef" :dataSource="props.dataSource" />
       </TabPane>
       <TabPane
         key="parameter"
-        tab="参数">
+        :tab="t('service.dataModel.paramsTab')">
         <Parameters ref="parametersRef" :dataSource="props.dataSource.parameters" />
       </TabPane>
       <TabPane
         key="request"
-        tab="请求体">
+        :tab="t('service.dataModel.requestTab')">
         <RequestBody ref="requestBodyRef" :dataSource="props.dataSource.requestBody" />
       </TabPane>
       <TabPane
         key="response"
-        tab="响应">
+        :tab="t('service.dataModel.responseTab')">
         <Responses ref="responsesRef" :dataSource="props.dataSource.responses" />
       </TabPane>
     </Tabs>
@@ -247,7 +248,7 @@ provide('serviceId', props.id);
         size="small"
         type="primary"
         @click="confirm">
-        确认
+        {{t('actions.confirm')}}
       </Button>
       <Button size="small" @click="cancel">取消</Button>
     </div>

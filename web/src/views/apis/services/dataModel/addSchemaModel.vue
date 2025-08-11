@@ -3,6 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
 import AddAttrModal from './addAttrModal.vue';
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabledType: false,
   viewType: false
 });
-
+const { t } = useI18n();
 const serviceId = inject('serviceId');
 const addVisible = ref(false);
 
@@ -353,12 +354,12 @@ defineExpose({
     size="small">
     <TabPane
       key="attr"
-      tab="属性"
+      :tab="t('service.dataModel.form.attrTab')"
       :disabled="props.viewType">
       <div class="flex flex-col space-y-2">
         <Select
           v-model:value="type"
-          placeholder="类型"
+          :placeholder="t('service.dataModel.form.typePlaceholder')"
           :options="dataTypeOpt"
           :error="validate && activeTab === 'attr' && !type"
           :readonly="props.disabledType || props.viewType"
@@ -366,24 +367,24 @@ defineExpose({
         <template v-if="['string', 'number', 'integer'].includes(type)">
           <Select
             v-model:value="format"
-            placeholder="格式"
+            :placeholder="t('service.dataModel.form.formatPlaceholder')"
             :readonly="props.viewType"
             :options="formatOpt" />
           <Input
             v-model:value="defaultValue"
             :readonly="props.viewType"
             :maxlength="200"
-            placeholder="默认值" />
+            :placeholder="t('service.dataModel.form.defaultValuePlaceholder')" />
           <Input
             v-model:value="example"
             :maxlength="200"
             :readonly="props.viewType"
-            placeholder="示例值" />
+            :placeholder="t('service.dataModel.form.examplePlaceholder')" />
         </template>
         <template v-if="type === 'boolean'">
           <Select
             v-model:value="defaultValue"
-            placeholder="默认值"
+            :placeholder="t('service.dataModel.form.defaultValuePlaceholder')"
             :allowClear="true"
             :readonly="props.viewType"
             :options="[{value: true, label: 'true'}, {value: false, label: 'false'}]" />
@@ -400,13 +401,13 @@ defineExpose({
               dataType="number"
               :decimalPoint="0"
               :readonly="props.viewType"
-              placeholder="最小长度" />
+              :placeholder="t('service.dataModel.form.minLengthPlaceholder')" />
             <Input
               v-model:value="maxLength"
               dataType="number"
               :decimalPoint="0"
               :readonly="props.viewType"
-              placeholder="最大长度" />
+              :placeholder="t('service.dataModel.form.maxLengthPlaceholder')" />
           </div>
           <div>
             <Button
@@ -440,14 +441,14 @@ defineExpose({
               :readonly="props.viewType"
               :min="-9007199254740992"
               :max="9007199254740992"
-              placeholder="最小值" />
+              :placeholder="t('service.dataModel.form.minimumPlaceholder')" />
             <Input
               v-model:value="maximum"
               dataType="number"
               :readonly="props.viewType"
               :min="-9007199254740992"
               :max="9007199254740992"
-              placeholder="最大值" />
+              :placeholder="t('service.dataModel.form.maximumPlaceholder')" />
           </div>
         </template>
         <template v-if="type === 'object'">
@@ -488,10 +489,6 @@ defineExpose({
             @del="delAttr"
             @edit="editAttr" />
         </template>
-        <!-- <Input
-          v-model:value="description"
-          placeholder="描述"
-          type="textarea" /> -->
         <AddAttrModal
           v-model:visible="addVisible"
           :parentType="addFromType"
@@ -503,7 +500,7 @@ defineExpose({
     </TabPane>
     <TabPane
       key="refs"
-      tab="引用"
+      :tab="t('service.dataModel.form.refsTab')"
       :disabled="props.viewType">
       <Select
         v-model:value="refComp"
@@ -511,7 +508,7 @@ defineExpose({
         :params="compParams"
         :fieldNames="{value: 'ref', label: 'key'}"
         class="w-full"
-        placeholder="选择引用组件"
+        :placeholder="t('service.dataModel.form.compPlaceholder')"
         :error="validate && activeTab === 'refs' && !refComp"
         @change="changeRef" />
     </TabPane>
