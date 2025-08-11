@@ -558,6 +558,55 @@
       },
       "connectFailTip": "代理连接失败，请检查代理服务是否已运行。",
       "configFailTip": "未配置或启用服务端代理，请检查“应用管理->代理配置”"
+    },
+    "case": {
+      "updateNameSuccess": "修改名称成功",
+      "searchPlaceholder": "查询名称",
+      "hints": "当前已添加{num}个用例，每个接口最大支持100条用例。",
+      "addCaseAction": "添加用例",
+      "execCaseAction": "执行测试",
+      "nameLabel": "名称",
+      "statusLabel": "状态",
+      "status_unTested": "未测试",
+      "enabled": "已启用",
+      "disabled": "未启用",
+      "columns": {
+        "name": "名称",
+        "status": "测试状态",
+        "type": "测试类型",
+        "enabled": "启用状态",
+        "description": "描述",
+        "createdByName": "创建人",
+        "createdDate": "创建时间",
+        "lastModifiedDate": "最后修改时间",
+        "action": "操作"
+      },
+      "execModalTitle": "执行用例",
+      "debugModal": {
+        "proxyError": "发送请求出现错误（请检查请求参数或代理连接状态）",
+        "wsProxyErr": "发送请求出现错误（请检查请求参数或是否触发浏览器“CORS-跨源资源共享”限制，若触发跨域限制请使用代理或配置接口服务允许跨域访问）",
+        "conditionMessageEmpty": "表达式为空，执行该条断言",
+        "conditionMsgFormat": "表达式格式错误，仅支持运算符[\"=\", \"!=\", \">=\", \"<=\", \">\", \"<\"]",
+        "conditionMsgFormatFail": "表达式格式错误，无法提取变量名",
+        "conditionMsgFormatErr": "表达式格式错误，忽略该条断言",
+        "conditionMsgDefineFail": "没有定义该变量，该变量的值按变量名处理",
+        "conditionMsgIgnore": "运算结果不成立，忽略该条断言",
+        "conditionMsgExec": "运算结果成立，执行该条断言",
+        "urlRule": "接口地址无效，请重新选择",
+        "assertRule": "断言数据校验不通过",
+        "apisLabel": "测试接口",
+        "caseLabel": "测试用例",
+        "paramsTab": "请求参数",
+        "headerTab": "请求头",
+        "requestBodyTab": "请求体",
+        "assertTab": "断言",
+        "duration": "耗时",
+        "respSize": "大小",
+        "debugAction": "调试用例",
+        "description": "描述",
+        "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
+
+      }
     }
   }
 }

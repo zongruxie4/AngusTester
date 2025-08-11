@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, nextTick, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, ref, watch } from 'vue';
 import {
   AsyncComponent,
   Icon,
@@ -10,6 +10,7 @@ import {
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { Case } from './type';
 import { apis } from 'src/api/tester';
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   serviceId: ''
 });
+const { t } = useI18n();
 
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
 const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/exec/index.vue'));
@@ -30,7 +32,6 @@ const projectInfo = inject('projectInfo', ref());
 const keywords = ref();
 const addCaseVisible = ref(false);
 const execCaseVisible = ref(false);
-const editInputRef = ref();
 const loading = ref(false);
 
 const pagination = ref({
@@ -48,56 +49,56 @@ const columns = [
   },
   {
     dataIndex: 'name',
-    title: '名称',
+    title: t('service.case.columns.name'),
     ellipsis: true,
     width: '18%'
   },
   {
     dataIndex: 'status',
-    title: '测试状态'
+    title: t('service.case.columns.status')
   },
   {
     dataIndex: 'type',
-    title: '测试类型',
+    title: t('service.case.columns.type'),
     customRender: ({ text }) => text?.message
   },
   {
     dataIndex: 'enabled',
-    title: '启用状态',
-    customRender: ({ text }) => text ? '已启用' : '未启用'
+    title: t('service.case.columns.enabled'),
+    customRender: ({ text }) => text ? t('service.case.enabled') :  t('service.case.disabled')
   },
   {
     dataIndex: 'description',
-    title: '描述',
+    title: t('service.case.columns.description'),
     ellipsis: true,
     width: '18%',
     customRender: ({ text }) => text || '无'
   },
   {
     dataIndex: 'createdByName',
-    title: '创建人',
+    title: t('service.case.columns.createdByName'),
     groupName: 'create'
   },
   {
     dataIndex: 'createdDate',
-    title: '创建时间',
+    title: t('service.case.columns.createdDate'),
     groupName: 'create',
     hide: true
   },
   {
     dataIndex: 'lastModifiedByName',
-    title: '最后修改人',
+    title: t('service.case.columns.lastModifiedByName'),
     groupName: 'modify'
   },
   {
     dataIndex: 'lastModifiedDate',
-    title: '最后修改时间',
+    title: t('service.case.columns.lastModifiedDate'),
     groupName: 'modify',
     hide: true
   },
   {
     dataIndex: 'action',
-    title: '操作',
+    title: t('service.case.columns.action'),
     width: 230
   }
 ];
@@ -127,17 +128,6 @@ const onKeywordChange = debounce(duration.search, () => {
   loadCaseData();
 });
 
-// 用例
-const caseAction = [
-  {
-    name: '克隆',
-    key: 'clone'
-  },
-  {
-    name: '删除',
-    key: 'del'
-  }
-];
 
 const caseData = ref<Case[]>([]);
 const editCaseId = ref();
@@ -192,7 +182,7 @@ const cloneCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
   loadCaseData();
 };
 
@@ -204,45 +194,10 @@ const enabled = async (item) => {
   if (error) {
     return;
   }
-  notification.success(`${item.enabled ? '禁用' : '启用'}成功`);
+  notification.success(item.enabled ? t('tips.disabledSuccess') : t('tips.enabledSuccess'));
   loadCaseData();
 };
 
-// 打开编辑用例名称
-const editableMap = ref({});
-const editableName = ref();
-const editCaseName = (caseItem) => {
-  editableName.value = caseItem.name;
-  editableMap.value[caseItem.id] = true;
-  nextTick(() => {
-    editInputRef.value.focus();
-  });
-};
-const onNameBlur = async (item) => {
-  if (item.name === editableName.value) {
-    editableMap.value[item.id] = false;
-    return;
-  }
-  const [error] = await apis.updateCaseName({ name: editableName.value, id: item.id });
-  if (error) {
-    return;
-  }
-  editableMap.value[item.id] = false;
-  notification.success('修改名称成功');
-  item.name = editableName.value;
-};
-
-const handleCase = (select, item: Case) => {
-  switch (select.key) {
-    case 'edit':
-      addOrEditCase(item);
-      return;
-    case 'del':
-      return delCase(item);
-    case 'clone':
-      return cloneCase(item);
-  }
-};
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -271,11 +226,11 @@ watch(() => props.id, newValue => {
         v-model:value="keywords"
         :allowClear="true"
         class="max-w-56"
-        placeholder="查询名称"
+        :placeholder="t('service.case.searchPlaceholder')"
         @change="onKeywordChange" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-normal text-theme-sub-content">
         <Icon icon="icon-tishi1" />
-        <span>当前已添加{{ caseData?.length }}个用例，每个接口最大支持100条用例。</span>
+        <span>{{t('service.case.hints', {num: caseData?.length})}}</span>
       </div>
       <div class="flex-1 min-w-0"></div>
       <Button
@@ -284,21 +239,21 @@ watch(() => props.id, newValue => {
         :disabled="loading"
         @click="addOrEditCase">
         <Icon icon="icon-jia" class="text-3.5 mr-1" />
-        <span>添加用例</span>
+        <span>{{t('service.case.addCaseAction')}}</span>
       </Button>
       <Button
         size="small"
         :disabled="loading || !caseData.length"
         @click="execAll">
         <Icon icon="icon-zhihangceshi" class="text-3.5 mr-1" />
-        <span>执行测试</span>
+        <span>{{t('service.case.execCaseAction')}}</span>
       </Button>
       <Button
         size="small"
         :loading="loading"
         @click="loadCaseData">
         <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-        <span>刷新</span>
+        <span>{{t('actions.refresh')}}</span>
       </Button>
     </div>
     <Table
@@ -325,7 +280,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="handleSingleDebug(record)">
             <Icon icon="icon-tiaoshi" class="mr-1" />
-            <span>调试</span>
+            <span>{{t('actions.debug')}}</span>
           </Button>
           <Button
             :loading="cloneLoadingMap[record.id]"
@@ -333,7 +288,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="cloneCase(record)">
             <Icon icon="icon-fuzhizujian2" class="mr-1 text-3.5" />
-            <span>克隆</span>
+            <span>{{t('actions.clone')}}</span>
           </Button>
           <Button
             :loading="enabledLoadingMap[record.id]"
@@ -341,7 +296,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="enabled(record)">
             <Icon icon="icon-qiyong" class="mr-1 text-3.5" />
-            <span>{{ record.enabled ? '禁用' : '启用' }}</span>
+            <span>{{ record.enabled ? t('actions.disabled') : t('actions.enabled') }}</span>
           </Button>
           <Button
             :loading="delLoadingMap[record.id]"
@@ -349,7 +304,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="delCase(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>删除</span>
+            <span>{{t('actions.delete')}}</span>
           </Button>
         </template>
       </template>

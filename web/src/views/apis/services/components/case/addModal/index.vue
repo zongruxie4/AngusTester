@@ -11,7 +11,7 @@ import SelectEnum from '@/components/SelectEnum/index.vue'
 import { useI18n } from 'vue-i18n';
 
 import ApiDebug from '@/views/apis/services/components/case/debug/index.vue';
-import { ApiInfo } from '@/views/apis/services/components/case/debug/PropsType.ts';
+import { ApiInfo } from '@/views/apis/services/components/case/debug/PropsType';
 
 const { t } = useI18n();
 
@@ -283,7 +283,7 @@ watch([() => apiDebugRef.value], () => {
           class="px-3"
           :loading="loading"
           @click.prevent="onSubmit(true)">
-          {{ t('确认') }}
+          {{ t('actions.confirm') }}
         </Button>
         <Button
           v-show="!props.caseId"
@@ -292,13 +292,13 @@ watch([() => apiDebugRef.value], () => {
           class="px-3 ml-5"
           :loading="loading"
           @click.prevent="onSubmit(false)">
-          保存并添加下一条
+          {{t('actions.saveAndAdd')}}
         </Button>
         <Button
           size="small"
           class="ml-5 px-3"
           @click="close">
-          {{ t('取消') }}
+          {{ t('actions.cancel') }}
         </Button>
       </div>
     </template>
@@ -355,7 +355,7 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="stopDebugCase">
                     <LoadingOutlined />
-                    终止
+                    {{t('actions.stop')}}
                   </Button>
                   <Button
                     v-else
@@ -364,18 +364,18 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="debugCase">
                     <Icon icon="icon-fasong" class="mr-1" />
-                    调试用例
+                    {{t('service.case.debugModal.debugAction')}}
                   </Button>
                 </div>
               </FormItem>
             </div>
             <FormItem
-              label="描述"
+              :label="t('service.case.debugModal.description')"
               name="description"
               class="pr-20">
               <Input
                 v-model:value="formState.description"
-                placeholder="输入用例描述，最多可输入800个字符"
+                :placeholder="t('service.case.debugModal.descriptionPlaceholder')"
                 type="textarea"
                 :maxlength="800" />
             </FormItem>

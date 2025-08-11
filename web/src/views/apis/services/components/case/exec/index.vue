@@ -3,6 +3,7 @@ import { inject, ref, watch } from 'vue';
 import { Modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { apis } from 'src/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 // import http from '@/utils/http';
 
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   apisId: ''
 });
+const { t } = useI18n();
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
@@ -42,7 +44,7 @@ const ok = async () => {
     if (error) {
       return;
     }
-    notification.success('执行成功');
+    notification.success(t('tips.execSuccess'));
   }
   emits('update:visible', false);
 };
@@ -62,7 +64,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    title="执行用例"
+    :title="t('service.case.execModalTitle')"
     :visible="props.visible"
     @ok="ok"
     @cancel="cancel">

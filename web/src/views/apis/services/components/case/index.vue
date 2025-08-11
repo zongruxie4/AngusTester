@@ -15,6 +15,7 @@ import {
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { Case } from './type';
 import { apis } from 'src/api/tester';
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   layout: 'horizontal'
 });
+const { t } = useI18n();
 
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
 const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/exec/index.vue'));
@@ -58,11 +60,11 @@ const onKeywordChange = debounce(duration.search, () => {
 // 用例
 const caseAction = [
   {
-    name: '克隆',
+    name: t('actions.clone'),
     key: 'clone'
   },
   {
-    name: '删除',
+    name: t('actions.delete'),
     key: 'del'
   }
 ];
@@ -103,7 +105,7 @@ const delCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success('删除成功');
+  notification.success(t('tips.deleteSuccess'));
   const delIdx = caseData.value.findIndex(i => i.id === item.id);
   caseData.value.splice(delIdx, 1);
 };
@@ -114,7 +116,7 @@ const cloneCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
   loadCaseData();
 };
 
@@ -138,7 +140,7 @@ const onNameBlur = async (item) => {
     return;
   }
   editableMap.value[item.id] = false;
-  notification.success('修改名称成功');
+  notification.success(t('service.case.updateNameSuccess'));
   item.name = editableName.value;
 };
 
@@ -180,23 +182,23 @@ watch(() => props.id, newValue => {
       <Input
         v-model:value="keywords"
         :allowClear="true"
-        placeholder="查询名称"
+        :placeholder="t('service.case.searchPlaceholder')"
         @change="onKeywordChange" />
-      <Hints :text="`当前已添加${caseData?.length}个用例，每个接口最大支持100条用例。`" class="mt-2" />
+      <Hints :text="t('service.case.hints', {num: caseData?.length})" class="mt-2" />
       <div class="space-x-2">
         <Button
           type="primary"
           size="small"
           :disabled="loading"
           @click="addOrEditCase">
-          添加用例
+          {{t('service.case.addCaseAction')}}
         </Button>
         <Button
           type="primary"
           size="small"
           :disabled="loading || !caseData.length"
           @click="execAll">
-          执行测试
+          {{t('service.case.execCaseAction')}}
         </Button>
         <Button
           type="primary"
@@ -216,7 +218,7 @@ watch(() => props.id, newValue => {
           :class="{'mr-2 w-1/4 min-w-25': props.layout === 'inline'}">
           <div class="flex items-center">
             <div class="flex items-center truncate flex-1">
-              <span class="text-gray-text">名称 <Colon /></span>
+              <span class="text-gray-text">{{t('service.case.nameLabel')}}<Colon /></span>
               <span v-if="!editableMap[item.id]" class="pl-1 flex-1 min-w-0 truncate">
                 {{ item.name }}
               </span>
@@ -238,21 +240,21 @@ watch(() => props.id, newValue => {
                   type="link"
                   class="px-1 py-0 text-3"
                   @click="handleCase({key: 'edit'}, item)">
-                  编辑
+                  {{t('actions.edit')}}
                 </Button>
                 <Button
                   type="link"
                   class="px-1 py-0 text-3"
                   @click="handleSingleDebug(item)">
-                  调试
+                  {{t('actions.debug')}}
                 </Button>
               </div>
             </div>
           </div>
           <div class="flex items-center justify-between">
             <div class="inline-flex items-center truncate flex-1">
-              <span class="text-gray-text">状态 <Colon /></span>
-              <div class="pl-1" :class="getStatusColor(item.execResult?.value)">{{ item.execResult?.message || '未测试' }}</div>
+              <span class="text-gray-text">{{t('service.case.statusLabel')}} <Colon /></span>
+              <div class="pl-1" :class="getStatusColor(item.execResult?.value)">{{ item.execResult?.message || t('service.case.status_unTested') }}</div>
               <div class="pl-1">{{ item.execFailureMessage }}</div>
             </div>
             <div class="px-1">

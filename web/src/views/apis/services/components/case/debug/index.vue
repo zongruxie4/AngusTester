@@ -5,6 +5,7 @@ import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
 import { axiosClient, utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis } from '@/api/tester';
@@ -42,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   caseInfoData: undefined,
   serviceId: ''
 });
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
@@ -339,10 +341,10 @@ const getData = async () => {
 const errorTitle = ref();
 const setErrTitle = () => {
   if (WS.value?.readyState === 1) {
-    errorTitle.value = '发送请求出现错误（请检查请求参数或代理连接状态）';
+    errorTitle.value = t('service.case.debugModal.proxyError');
     return;
   }
-  errorTitle.value = '发送请求出现错误（请检查请求参数或是否触发浏览器“CORS-跨源资源共享”限制，若触发跨域限制请使用代理或配置接口服务允许跨域访问）';
+  errorTitle.value = t('service.case.debugModal.wsProxyErr');
 };
 
 const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string, any>) => {
@@ -369,18 +371,7 @@ const getRealUri = (pathParams: Record<string, any>, queryParams: Record<string,
     // path 中的占位符使用参数值替换
     tempUri = '/' + endpoint.replace(/^\/+/, '');
   }
-  // const querys: ParamsItem[] = queryParams;
-  // if (querys?.length) {
-  //   const queryUri = querys.reduce((preValue, currentValue) => {
-  //     preValue = preValue + `${preValue ? '&' : ''}${currentValue.name}=${currentValue[valueKey] || ''}`;
-  //     return preValue;
-  //   }, '');
-  //   if (tempUri.includes('?')) {
-  //     tempUri = tempUri + '&' + queryUri;
-  //   } else {
-  //     tempUri = tempUri + '?' + queryUri;
-  //   }
-  // }
+
   const queryUri = qs.stringify(queryParams, { allowDots: true, encode: true });
   if (tempUri.includes('?')) {
     tempUri = tempUri + '&' + queryUri;
@@ -512,7 +503,7 @@ const setAssertResult = async (responseData) => {
       failureMessage: '', // 提取失败的原因
       value: '', // 提取变量的值
       ignored: false, // 是否忽略该条断言
-      message: '表达式为空，执行该条断言'
+      message: t('service.case.debugModal.conditionMessageEmpty')
     };
 
     let ignored = true;
@@ -529,7 +520,7 @@ const setAssertResult = async (responseData) => {
           failureMessage: '', // 提取失败的原因
           value: '', // 提取变量的值
           ignored: false, // 是否忽略该条断言
-          message: '表达式为空，执行该条断言'
+          message: t('service.case.debugModal.conditionMessageEmpty')
         };
       } else {
         const matchsMap = assertVariableExtra.value?.matchs || {};
@@ -539,11 +530,11 @@ const setAssertResult = async (responseData) => {
           _condition = {
             failure: false, // 执行结果
             name: '', // 提取的变量名
-            conditionMessage: '表达式格式错误，仅支持运算符["=", "!=", ">=", "<=", ">", "<"]', // 断言表达式错误的原因
-            failureMessage: '表达式格式错误，无法提取变量名', // 提取失败的原因
+            conditionMessage: t('service.case.debugModal.conditionMsgFormat'), // 断言表达式错误的原因
+            failureMessage: t('service.case.debugModal.conditionMsgFormatFail'), // 提取失败的原因
             value: '', // 提取变量的值
             ignored: true, // 是否忽略该条断言
-            message: '表达式格式错误，忽略该条断言'
+            message: t('service.case.debugModal.conditionMsgFormatErr')
           };
         } else {
           const [leftOperand] = matchs;
@@ -554,7 +545,7 @@ const setAssertResult = async (responseData) => {
             value = varValue.value;
             failureMessage = varValue.failureMessage;
           } else {
-            failureMessage = '没有定义该变量，该变量的值按变量名处理';
+            failureMessage = t('service.case.debugModal.conditionMsgDefineFail');
             value = leftOperand;
           }
 
@@ -566,7 +557,7 @@ const setAssertResult = async (responseData) => {
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: true, // 是否忽略该条断言
-              message: '运算结果不成立，忽略该条断言'
+              message: t('service.case.debugModal.conditionMsgIgnore')
             };
           } else {
             _condition = {
@@ -576,7 +567,7 @@ const setAssertResult = async (responseData) => {
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: false, // 是否忽略该条断言
-              message: '运算结果成立，执行该条断言'
+              message: t('service.case.debugModal.conditionMsgExec')
             };
           }
         }
@@ -697,7 +688,7 @@ const debug = async () => {
   if (!isValidUrl(caseInfo.currentServer?.url)) {
     debuging.value = false;
     emits('update:debuging', debuging.value);
-    notification.warning('接口地址无效，请重新选择');
+    notification.warning(t('service.case.debugModal.urlRule'));
     return;
   }
 
@@ -770,7 +761,7 @@ const debug = async () => {
   if (!validateAssertData) {
     debuging.value = false;
     emits('update:debuging', debuging.value);
-    notification.error('断言数据校验不通过');
+    notification.error(t('service.case.debugModal.assertRule'));
     return;
   }
 
@@ -1330,7 +1321,7 @@ defineExpose({
 </script>
 <template>
   <span class="text-3 ">
-    测试接口
+    {{t('service.case.debugModal.apisLabel')}}
   </span>
   <div class="flex space-x-2 pr-20">
     <Select
@@ -1351,13 +1342,13 @@ defineExpose({
       class="flex-1" />
   </div>
   <span class="text-3 mt-4">
-    测试用例
+    {{t('service.case.debugModal.caseLabel')}}
   </span>
   <div ref="apiEleRef" class="flex-1 min-h-0 overflow-auto pr-2">
     <Tabs v-model:activeKey="activeTab" size="small">
       <TabPane
         key="parameters"
-        :tab="`请求参数(${queryPathParameter?.length || 0})`"
+        :tab="`${t('service.case.debugModal.paramsTab')}(${queryPathParameter?.length || 0})`"
         :forceRender="true">
         <ApiParameter
           ref="queryPathRef"
@@ -1371,7 +1362,7 @@ defineExpose({
       </TabPane>
       <TabPane
         key="header"
-        :tab="`请求头(${headerCount || 0})`"
+        :tab="`${t('service.case.debugModal.headerTab')}(${headerCount || 0})`"
         :forceRender="true">
         <ApiHeader
           ref="headerRef"
@@ -1400,7 +1391,7 @@ defineExpose({
       <TabPane key="body" :forceRender="false">
         <template #tab>
           <Badge v-show="hasBodyContent" status="success" />
-          <span>请求体</span>
+          <span>{{ t('service.case.debugModal.requestBodyTab')}}</span>
         </template>
         <ApiBody
           ref="bodyRef"
@@ -1437,7 +1428,7 @@ defineExpose({
       </TabPane> -->
     </Tabs>
     <div v-show="assertionsParam.length || !props.viewType" class="mt-20">
-      <div class="border-b mb-3 text-3">断言</div>
+      <div class="border-b mb-3 text-3">{{ t('service.case.debugModal.assertTab')}}</div>
       <ApiAssert
         :id="caseInfo.apisId"
         ref="assertRef"
@@ -1500,12 +1491,12 @@ defineExpose({
         <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5 text-3 leading-3 text-text-sub-content">
           <ResponseStatus :status="responseState?.status" @rendered="rendered('responseStatus')" />
           <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-            <span class="mr-1">耗时:</span>
+            <span class="mr-1">{{t('service.case.debugModal.duration')}}:</span>
             <span class>{{ responseState?.performance?.duration && (responseState?.performance?.duration.toFixed(0)
               + 'ms') }}</span>
           </div>
           <div class="flex items-center flex-nowrap whitespace-nowrap">
-            <span class="mr-1">大小:</span>
+            <span class="mr-1">{{t('service.case.debugModal.respSize')}}:</span>
             <span class>{{ isNaN(Number(responseState?.size)) ? responseState?.size :
               apiUtils.formatBytes(Number(responseState?.size)) }}</span>
           </div>

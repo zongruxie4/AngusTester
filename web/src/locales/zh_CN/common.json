@@ -35,7 +35,12 @@
     "favourite": "收藏",
     "unFavourite": "取消收藏",
     "refresh": "刷新",
-    "authority": "权限"
+    "authority": "权限",
+    "debug": "调试",
+    "enabled": "启用",
+    "disabled": "禁用",
+    "saveAndAdd": "保存并添加下一条",
+    "stop": "终止"
   },
   "orgNames": {
     "user": "用户",
@@ -57,6 +62,9 @@
     "deleteSuccess": "删除成功",
     "cloneSuccess": "克隆成功",
     "addSuccess": "添加成功",
-    "updateSuccess": "更新成功"
+    "updateSuccess": "更新成功",
+    "disabledSuccess": "禁用成功",
+    "enabledSuccess": "启用成功",
+    "execSuccess": "执行成功"
   }
 } 
