@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 
 type Props = {
@@ -13,6 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   notify: undefined
 });
+
+const { t } = useI18n();
 
 const Table = defineAsyncComponent(() => import('./table.vue'));
 
@@ -60,12 +63,12 @@ const commentByParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">我的任务</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('taskHome.myTasks') }}</div>
     <Tabs size="small">
       <TabPane key="createBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的</span>
+            <span class="mr-1">{{ t('taskHome.added') }}</span>
             <span>(</span>
             <span>{{ createByTotal }}</span>
             <span>)</span>
@@ -82,7 +85,7 @@ const commentByParams = {
       <TabPane key="pending" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">待处理</span>
+            <span class="mr-1">{{ t('taskHome.pending') }}</span>
             <span>(</span>
             <span>{{ pendingTotal }}</span>
             <span>)</span>
@@ -99,7 +102,7 @@ const commentByParams = {
       <TabPane key="confirming" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">待确认</span>
+            <span class="mr-1">{{ t('taskHome.confirming') }}</span>
             <span>(</span>
             <span>{{ confirmingTotal }}</span>
             <span>)</span>
@@ -116,7 +119,7 @@ const commentByParams = {
       <TabPane key="completed" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">已完成</span>
+            <span class="mr-1">{{ t('taskHome.completedStatus') }}</span>
             <span>(</span>
             <span>{{ completedTotal }}</span>
             <span>)</span>
@@ -133,7 +136,7 @@ const commentByParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">关注的</span>
+            <span class="mr-1">{{ t('taskHome.followed') }}</span>
             <span>(</span>
             <span>{{ followTotal }}</span>
             <span>)</span>
@@ -150,7 +153,7 @@ const commentByParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">收藏的</span>
+            <span class="mr-1">{{ t('taskHome.favorited') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>
@@ -167,7 +170,7 @@ const commentByParams = {
       <TabPane key="commentBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">评论的</span>
+            <span class="mr-1">{{ t('taskHome.commented') }}</span>
             <span>(</span>
             <span>{{ commentTotal }}</span>
             <span>)</span>

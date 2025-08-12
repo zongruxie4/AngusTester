@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
@@ -13,6 +14,8 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
+
+const { t } = useI18n();
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const projectId = computed(() => {
   return projectInfo.value?.id;
@@ -20,11 +23,11 @@ const projectId = computed(() => {
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: '任务数'
+    label: t('taskHome.taskCount')
   },
   {
     value: 'WORKLOAD',
-    label: '工作量'
+    label: t('taskHome.workload')
   }
 ]);
 const burnDownData = ref();
@@ -63,12 +66,12 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('taskHome.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: '期望',
+      name: t('taskHome.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -131,7 +134,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="pt-1.5 flex flex-col">
     <div class="text-3.5 font-semibold flex justify-between">
-      我的燃尽图
+      {{ t('taskHome.myBurndownChart') }}
       <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
       </RadioGroup>
     </div>

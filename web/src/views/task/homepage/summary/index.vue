@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
 
 import { ResourceInfo } from '../PropsType';
@@ -15,6 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   notify: undefined
 });
+
+const { t } = useI18n();
 
 const Sprint = defineAsyncComponent(() => import('@/views/task/homepage/summary/sprint/index.vue'));
 const Task = defineAsyncComponent(() => import('@/views/task/homepage/summary/task/index.vue'));
@@ -103,7 +106,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">资源统计</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('taskHome.resourceStatistics') }}</div>
     <div class="flex">
       <Backlog :dataSource="dataSource" class="w-1/4-media mr-media" />
       <Sprint :dataSource="dataSource" class="w-1/4-media mr-media" />

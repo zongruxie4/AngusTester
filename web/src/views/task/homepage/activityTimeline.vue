@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 
@@ -12,19 +13,21 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
 
+const { t } = useI18n();
+
 const types = ['TASK', 'TASK_SPRINT', 'MEETING', 'TASK_ANALYSIS', 'SOFTWARE_VERSION'];
 </script>
 
 <template>
   <Tabs size="small">
-    <TabPane key="my" tab="我的活动">
+    <TabPane key="my" :tab="t('taskHome.myActivities')">
       <ActivityTimeline
         :types="types"
         :userId="props.userInfo?.id"
         :projectId="props.projectId"
         :showUserName="false" />
     </TabPane>
-    <TabPane key="total" tab="所有活动">
+    <TabPane key="total" :tab="t('taskHome.allActivities')">
       <ActivityTimeline :types="types" :projectId="props.projectId" />
     </TabPane>
   </Tabs>

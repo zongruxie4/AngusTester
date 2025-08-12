@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, Calendar } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconTask, Popover, Select, TaskStatus } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined,
   sprintId: undefined
 });
+
+const { t } = useI18n();
 
 const loaded = ref(false);
 const dataMap = ref<{ [key: string]: DataItem[] }>({});
@@ -125,15 +128,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>工作量</span>
+                      <span>{{ t('taskHome.workloadLabel') }}</span>
                       <span>{{ getTotalNum(getList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>已完成</span>
+                      <span>{{ t('taskHome.completed') }}</span>
                       <span>{{ geCompletedNum(getList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>剩余</span>
+                      <span>{{ t('taskHome.remainingLabel') }}</span>
                       <span>{{ geRemainNum(getList(current)) }}</span>
                     </div>
                   </div>
@@ -161,15 +164,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>工作量</span>
+                      <span>{{ t('taskHome.workloadLabel') }}</span>
                       <span>{{ getTotalNum(getOverdueList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>已完成</span>
+                      <span>{{ t('taskHome.completed') }}</span>
                       <span>{{ geCompletedNum(getOverdueList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>剩余</span>
+                      <span>{{ t('taskHome.remainingLabel') }}</span>
                       <span>{{ geRemainNum(getOverdueList(current)) }}</span>
                     </div>
                   </div>
@@ -185,7 +188,7 @@ onMounted(() => {
                       <span
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">已逾期</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('taskHome.overdue') }}</span>
                       </span>
                     </div>
                   </div>
