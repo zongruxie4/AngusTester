@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
@@ -18,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = string;
 type OrderSortKey = 'ASC' | 'DESC';
 
+const { t } = useI18n();
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
   orderSort?: 'ASC'|'DESC';
@@ -33,7 +35,7 @@ const searchPanelOptions = [
   {
     valueKey: 'subject',
     type: 'input',
-    placeholder: '查询会议主题',
+    placeholder: t('taskMeeting.placeholder.searchSubject'),
     allowClear: true,
     maxlength: 100
   },
@@ -42,24 +44,24 @@ const searchPanelOptions = [
     type: 'select-enum',
     enumKey: TaskMeetingType,
     allowClear: true,
-    placeholder: '会议类型'
+    placeholder: t('taskMeeting.placeholder.selectType')
   },
   {
     valueKey: 'moderatorId',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择主持人'
+    placeholder: t('taskMeeting.placeholder.selectModeratorSearch')
   },
   {
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择创建人'
+    placeholder: t('taskMeeting.placeholder.selectCreator')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('taskMeeting.placeholder.createTimeFrom'), t('taskMeeting.placeholder.createTimeTo')],
     showTime: true
   }
 ];
@@ -70,17 +72,17 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按添加时间',
+    name: t('taskMeeting.sort.byCreateTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('taskMeeting.sort.byCreator'),
     key: 'createdBy',
     orderSort: 'ASC'
   },
   {
-    name: '主题',
+    name: t('taskMeeting.sort.bySubject'),
     key: 'subject',
     orderSort: 'ASC'
   }
@@ -89,31 +91,31 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('taskMeeting.quickSearch.all')
   },
   {
     key: 'moderatorId',
-    name: '我主持的'
+    name: t('taskMeeting.quickSearch.myModerated')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('taskMeeting.quickSearch.myCreated')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('taskMeeting.quickSearch.myModified')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('taskMeeting.quickSearch.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('taskMeeting.quickSearch.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('taskMeeting.quickSearch.lastWeek')
   }
 ]);
 
@@ -294,7 +296,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -322,7 +324,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/task#meeting?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加会议</span>
+            <span>{{ t('taskMeeting.addMeeting') }}</span>
           </RouterLink>
         </Button>
 
@@ -333,7 +335,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>排序</span>
+            <span>{{ t('sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -344,7 +346,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

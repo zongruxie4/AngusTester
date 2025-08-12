@@ -154,7 +154,7 @@
     "welcomeToAngusTask": "欢迎进入Angus任务！",
     "taskDescription": "任务用于帮助团队管理和跟踪项目任务、问题和工作进展，提高团队协作和项目交付效率，确保项目按时完成并达到预期目标。",
     "teamWorkDescription": "在这里您和您的团队可以完成以下工作：",
-    "workItem1": "通过"迭代"组织规划团队成员开展项目活动和排期；",
+    "workItem1": "通过\"迭代\"组织规划团队成员开展项目活动和排期；",
     "workItem2": "以明确负责人方式进行任务分配、确认和协作；",
     "workItem3": "报告和分析项目的健康状况、进展情况和问题趋势。",
     "myTasks": "我的任务",
@@ -183,5 +183,98 @@
     "followed": "关注的",
     "favorited": "收藏的",
     "commented": "评论的"
+  },
+  "taskMeeting": {
+    "title": "会议",
+    "addMeeting": "添加会议",
+    "editMeeting": "编辑会议",
+    "aboutMeeting": "关于会议",
+    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。支持会议类型如下：",
+    "addedMeetings": "已添加的会议",
+    "notAddedYet": "您尚未添加任何会议，立即",
+    "confirmDelete": "确定删除会议【{name}】吗？",
+    "deleteSuccess": "会议删除成功， 您可以在回收站查看删除后的会议",
+    "addSuccess": "添加成功",
+    "editSuccess": "修改成功",
+    "columns": {
+      "id": "ID",
+      "subject": "会议主题",
+      "type": "会议类型",
+      "date": "会议日期",
+      "time": "会议时间",
+      "location": "会议地点",
+      "moderator": "会议主持",
+      "participants": "参会人员",
+      "content": "会议内容",
+      "sprint": "所属迭代",
+      "moderatorLabel": "主持人",
+      "participantsLabel": "参与成员",
+      "participantsCount": "共{count}个参与者",
+      "lastModifiedBy": "修改于"
+    },
+    "placeholder": {
+      "inputSubject": "最多支持200个字符",
+      "selectSprint": "选择所属迭代",
+      "selectModerator": "选择会议主持人",
+      "selectParticipants": "选择参会人员",
+      "inputLocation": "记录会议地点或在线会议的链接，最多支持100个字符",
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "searchSubject": "查询会议主题",
+      "selectType": "会议类型",
+      "selectModeratorSearch": "选择主持人",
+      "selectCreator": "选择创建人",
+      "createTimeFrom": "添加时间从",
+      "createTimeTo": "添加时间到"
+    },
+    "messages": {
+      "subjectRequired": "请输入会议主题",
+      "typeRequired": "请选择会议类型",
+      "dateRequired": "请选择会议日期",
+      "timeRequired": "请选择会议时间",
+      "moderatorRequired": "请选择会议主持人",
+      "participantsRequired": "请选择参会人员",
+      "contentRequired": "请输入会议内容",
+      "meetingTypeTip": "指定会议类型，以便识别和管理。"
+    },
+    "form": {
+      "subject": "会议主题",
+      "type": "会议类型",
+      "sprint": "迭代",
+      "date": "会议日期",
+      "time": "会议时间",
+      "location": "会议地点",
+      "moderator": "会议主持",
+      "participants": "参会人员",
+      "content": "会议内容"
+    },
+    "meetingTypes": {
+      "productGrooming": "产品梳理会",
+      "productGroomingDesc": "确认产品的长期愿景和近期目标，确保团队对产品方向的一致理解。对Backlog进行审查和梳理，确保其优先级和可行性。参与者包括产品负责人、开发团队、Scrum Master、相关利益相关者(市场、销售团队等)。",
+      "sprintPlanning": "迭代计划会议",
+      "sprintPlanningDesc": "确定在即将到来的迭代(Sprint)中要完成的工作。产品负责人展示产品中Backlog，团队讨论并估算这些项目，决定在迭代中可以完成的工作量。参与者包括Scrum Master、产品负责人和开发团队。",
+      "dailyStandup": "每日站会",
+      "dailyStandupDesc": "实时展示团队的工作进度和剩余工作量，让团队和利益相关者可以清晰了解当前迭代的状态，促进团队沟通和协调。",
+      "sprintReview": "迭代回顾会议",
+      "sprintReviewDesc": "展示迭代期间完成的工作，收集反馈，讨论改进点和后续计划。更新待办事项列表以反映新的需求或变更。参与者包括Scrum团队和相关利益相关者(如客户、管理层)。",
+      "sprintRetrospective": "迭代总结(反思)会",
+      "sprintRetrospectiveDesc": "反思迭代过程，识别改进的机会。分析迭代过程中的成功之处和需要改进的地方。制定改进计划，以提升团队的工作效率和协作。参与者包括Scrum团队(开发团队、Scrum Master和产品负责人)。",
+      "other": "其他会议",
+      "otherDesc": "敏捷过程中团队组织的其他类型会议，如：技术评审会议、需求评审会议、发布计划会议、障碍解决会议、团队建设会议等。"
+    },
+    "quickSearch": {
+      "all": "全部",
+      "myModerated": "我主持的",
+      "myCreated": "我创建的",
+      "myModified": "我修改的",
+      "lastDay": "近1天",
+      "lastThreeDays": "近3天",
+      "lastWeek": "近7天"
+    },
+    "sort": {
+      "byCreateTime": "按添加时间",
+      "byCreator": "按添加人",
+      "bySubject": "主题"
+    }
   }
 }

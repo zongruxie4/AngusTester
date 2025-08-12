@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils } from '@xcan-angus/infra';
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
+const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
@@ -86,7 +88,7 @@ const editOk = async () => {
     return;
   }
 
-  notification.success('修改成功');
+  notification.success(t('taskMeeting.editSuccess'));
 
   const id = params.id;
   const name = params.subject;
@@ -106,7 +108,7 @@ const addOk = async () => {
     return;
   }
 
-  notification.success('添加成功');
+  notification.success(t('taskMeeting.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;
@@ -255,11 +257,11 @@ onMounted(async () => {
 const contentRichRef = ref();
 const validateDescRequired = async () => {
   if (!formState.value.content) {
-    return Promise.reject(new Error('请输入会议内容'));
+    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
   }
   const values = contentRichRef.value.getData();
   if (!values) {
-    return Promise.reject(new Error('请输入会议内容'));
+    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
   }
   const valuesObj = JSON.parse(values);
 
@@ -267,7 +269,7 @@ const validateDescRequired = async () => {
     if (valuesObj.length === 1) {
       const inserValue = valuesObj[0].insert.replaceAll('\n', '');
       if (!inserValue) {
-        return Promise.reject(new Error('请输入会议内容'));
+        return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
       }
     }
   }
@@ -276,7 +278,7 @@ const validateDescRequired = async () => {
 
 const validateTime = async () => {
   if (!formState.value.timeEnd || !formState.value.timeStart) {
-    return Promise.reject(new Error('请选择会议时间'));
+    return Promise.reject(new Error(t('taskMeeting.messages.timeRequired')));
   }
   return Promise.resolve();
 };
@@ -300,13 +302,13 @@ const fieldNames = {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
       <Button
         size="small"
         class="flex items-center space-x-1"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
     <Form
@@ -319,16 +321,16 @@ const fieldNames = {
       <FormItem
         required
         name="subject"
-        label="会议主题">
+        :label="t('taskMeeting.form.subject')">
         <Input
           v-model:value="formState.subject"
           :maxlength="200"
-          placeholder="最多支持200个字符" />
+          :placeholder="t('taskMeeting.placeholder.inputSubject')" />
       </FormItem>
       <div class="flex space-x-2">
         <FormItem
           required
-          label="会议类型"
+          :label="t('taskMeeting.form.type')"
           name="type"
           class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
@@ -337,19 +339,19 @@ const fieldNames = {
               :lazy="false"
               class="flex-1 min-w-0"
               enumKey="TaskMeetingType" />
-            <Popover placement="right" content="指定会议类型，以便识别和管理。">
+            <Popover placement="right" :content="t('taskMeeting.messages.meetingTypeTip')">
               <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
             </Popover>
           </div>
         </FormItem>
         <FormItem
-          label="迭代"
+          :label="t('taskMeeting.form.sprint')"
           class="flex-1 min-w-0"
           name="sprintId">
           <div class="flex items-center space-x-1">
             <Select
               v-model:value="formState.sprintId"
-              placeholder="选择所属迭代"
+              :placeholder="t('taskMeeting.placeholder.selectSprint')"
               :fieldNames="{
                 value: 'id',
                 label: 'name'
@@ -363,7 +365,7 @@ const fieldNames = {
       <div class="flex space-x-2">
         <FormItem
           required
-          label="会议日期"
+          :label="t('taskMeeting.form.date')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -376,7 +378,7 @@ const fieldNames = {
           </div>
         </FormItem>
         <FormItem
-          label="会议时间"
+          :label="t('taskMeeting.form.time')"
           class="flex-1 min-w-0"
           name="time"
           :rules="{validator: validateTime, message: '请选择会议时间', required: true}">
@@ -385,25 +387,25 @@ const fieldNames = {
               v-model:value="formState.timeStart"
               mode="time"
               picker="time"
-              placeholder="开始时间"
+              :placeholder="t('taskMeeting.placeholder.startTime')"
               class="flex-1" />
             <span>-</span>
             <DatePicker
               v-model:value="formState.timeEnd"
               mode="time"
               picker="time"
-              placeholder="结束时间"
+              :placeholder="t('taskMeeting.placeholder.endTime')"
               class="flex-1" />
               <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
           </div>
         </FormItem>
       </div>
       <div class="flex space-x-2">
-        <FormItem label="会议地点" class="flex-1 min-w-0">
+        <FormItem :label="t('taskMeeting.form.location')" class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
             <Input
               v-model:value="formState.location"
-              placeholder="记录会议地点或在线会议的链接，最多支持100个字符"
+              :placeholder="t('taskMeeting.placeholder.inputLocation')"
               :maxlength="100"
               class="flex-1 min-w-0" />
             <Icon icon="" class="text-tips text-3.5 cursor-pointer" />
@@ -411,13 +413,13 @@ const fieldNames = {
         </FormItem>
         <FormItem
           required
-          label="会议主持"
+          :label="t('taskMeeting.form.moderator')"
           class="flex-1 min-w-0"
           name="moderator">
           <div class="flex items-center space-x-1">
             <Select
               v-model:value="formState.moderator"
-              placeholder="选择会议主持人"
+              :placeholder="t('taskMeeting.placeholder.selectModerator')"
               :options="members"
               :fieldNames="fieldNames"
               class="flex-1 min-w-0" />
@@ -427,13 +429,13 @@ const fieldNames = {
       </div>
       <FormItem
         required
-        label="参会人员"
+        :label="t('taskMeeting.form.participants')"
         class="min-w-0"
         name="participants">
         <div class="flex items-center space-x-1">
           <Select
             v-model:value="formState.participants"
-            placeholder="选择参会人员"
+            :placeholder="t('taskMeeting.placeholder.selectParticipants')"
             :maxTags="200"
             :options="members"
             :fieldNames="fieldNames"
@@ -443,7 +445,7 @@ const fieldNames = {
         </div>
       </FormItem>
       <FormItem
-        label="会议内容"
+        :label="t('taskMeeting.form.content')"
         class="flex-1 !mb-5"
         name="content"
         :rules="{required: true, validator: validateDescRequired}">

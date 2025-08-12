@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Spin } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
+const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 
 const dataSource = ref<MeetingInfo>();
@@ -94,7 +96,7 @@ onMounted(() => {
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>会议类型</span>
+            <span>{{ t('taskMeeting.columns.type') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -103,7 +105,7 @@ onMounted(() => {
 
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属迭代</span>
+            <span>{{ t('taskMeeting.columns.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -114,7 +116,7 @@ onMounted(() => {
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>会议日期</span>
+            <span>{{ t('taskMeeting.columns.date') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -122,7 +124,7 @@ onMounted(() => {
         </div>
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>会议时间</span>
+            <span>{{ t('taskMeeting.columns.time') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -137,7 +139,7 @@ onMounted(() => {
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>会议地点</span>
+            <span>{{ t('taskMeeting.columns.location') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -145,7 +147,7 @@ onMounted(() => {
         </div>
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>会议主持</span>
+            <span>{{ t('taskMeeting.columns.moderator') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -155,7 +157,7 @@ onMounted(() => {
 
       <div class="flex items-start">
         <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>参会人员</span>
+                      <span>{{ t('taskMeeting.columns.participants') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -163,7 +165,7 @@ onMounted(() => {
       </div>
       <div class="flex items-start">
         <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>会议内容</span>
+                      <span>{{ t('taskMeeting.columns.content') }}</span>
           <Colon class="w-1" />
         </div>
 

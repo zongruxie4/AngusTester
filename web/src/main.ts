@@ -108,7 +108,7 @@ const getLocaleMessage = async (locale: SupportedLanguage) => {
   const setting = (await import(`./locales/${locale}/settings.json`)).default;
   const task = (await import(`./locales/${locale}/task.json`)).default;
   const apiShare = (await import(`./locales/${locale}/apiShare.json`)).default;
-  debugger;
+
   return {
     ...apis,
     ...execution,

@@ -184,5 +184,98 @@
     "followed": "Followed",
     "favorited": "Favorited",
     "commented": "Commented"
+  },
+  "taskMeeting": {
+    "title": "Meeting",
+    "addMeeting": "Add Meeting",
+    "editMeeting": "Edit Meeting",
+    "aboutMeeting": "About Meeting",
+    "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection. Supported meeting types are as follows:",
+    "addedMeetings": "Added Meetings",
+    "notAddedYet": "You haven't added any meetings yet, immediately",
+    "confirmDelete": "Confirm delete meeting 【{name}】?",
+    "deleteSuccess": "Meeting deleted successfully, you can view deleted meetings in the recycle bin",
+    "addSuccess": "Add successful",
+    "editSuccess": "Edit successful",
+    "columns": {
+      "id": "ID",
+      "subject": "Meeting Subject",
+      "type": "Meeting Type",
+      "date": "Meeting Date",
+      "time": "Meeting Time",
+      "location": "Meeting Location",
+      "moderator": "Meeting Moderator",
+      "participants": "Participants",
+      "content": "Meeting Content",
+      "sprint": "Sprint",
+      "moderatorLabel": "Moderator",
+      "participantsLabel": "Participants",
+      "participantsCount": "{count} participants total",
+      "lastModifiedBy": "Modified by"
+    },
+    "placeholder": {
+      "inputSubject": "Maximum 200 characters",
+      "selectSprint": "Select sprint",
+      "selectModerator": "Select meeting moderator",
+      "selectParticipants": "Select participants",
+      "inputLocation": "Record meeting location or online meeting link, maximum 100 characters",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "searchSubject": "Search meeting subject",
+      "selectType": "Meeting type",
+      "selectModeratorSearch": "Select moderator",
+      "selectCreator": "Select creator",
+      "createTimeFrom": "Create time from",
+      "createTimeTo": "Create time to"
+    },
+    "messages": {
+      "subjectRequired": "Please enter meeting subject",
+      "typeRequired": "Please select meeting type",
+      "dateRequired": "Please select meeting date",
+      "timeRequired": "Please select meeting time",
+      "moderatorRequired": "Please select meeting moderator",
+      "participantsRequired": "Please select participants",
+      "contentRequired": "Please enter meeting content",
+      "meetingTypeTip": "Specify meeting type for identification and management."
+    },
+    "form": {
+      "subject": "Meeting Subject",
+      "type": "Meeting Type",
+      "sprint": "Sprint",
+      "date": "Meeting Date",
+      "time": "Meeting Time",
+      "location": "Meeting Location",
+      "moderator": "Meeting Moderator",
+      "participants": "Participants",
+      "content": "Meeting Content"
+    },
+    "meetingTypes": {
+      "productGrooming": "Product Grooming",
+      "productGroomingDesc": "Confirm the long-term vision and short-term goals of the product, ensuring consistent understanding of product direction across the team. Review and organize the Backlog to ensure its priority and feasibility. Participants include product owner, development team, Scrum Master, and relevant stakeholders (marketing, sales team, etc.).",
+      "sprintPlanning": "Sprint Planning",
+      "sprintPlanningDesc": "Determine the work to be completed in the upcoming iteration (Sprint). The product owner presents the product Backlog, the team discusses and estimates these items, and decides the amount of work that can be completed in the iteration. Participants include Scrum Master, product owner, and development team.",
+      "dailyStandup": "Daily Standup",
+      "dailyStandupDesc": "Display team work progress and remaining workload in real-time, allowing the team and stakeholders to clearly understand the current iteration status, promoting team communication and coordination.",
+      "sprintReview": "Sprint Review",
+      "sprintReviewDesc": "Show work completed during the iteration, collect feedback, discuss improvement points and follow-up plans. Update the backlog to reflect new requirements or changes. Participants include the Scrum team and relevant stakeholders (such as customers, management).",
+      "sprintRetrospective": "Sprint Retrospective",
+      "sprintRetrospectiveDesc": "Reflect on the iteration process and identify opportunities for improvement. Analyze what was successful and what needs improvement in the iteration process. Develop improvement plans to enhance team work efficiency and collaboration. Participants include the Scrum team (development team, Scrum Master, and product owner).",
+      "other": "Other Meetings",
+      "otherDesc": "Other types of meetings organized by teams in the agile process, such as: technical review meetings, requirement review meetings, release planning meetings, obstacle resolution meetings, team building meetings, etc."
+    },
+    "quickSearch": {
+      "all": "All",
+      "myModerated": "My Moderated",
+      "myCreated": "My Created",
+      "myModified": "My Modified",
+      "lastDay": "Last Day",
+      "lastThreeDays": "Last 3 Days",
+      "lastWeek": "Last Week"
+    },
+    "sort": {
+      "byCreateTime": "By Create Time",
+      "byCreator": "By Creator",
+      "bySubject": "Subject"
+    }
   }
 }

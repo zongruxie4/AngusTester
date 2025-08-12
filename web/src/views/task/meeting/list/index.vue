@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Avatar, Button, Pagination } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Icon, Image, modal, NoData, notification, Popover, Spin } from '@xcan-angus/vue-ui';
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
+const { t } = useI18n();
 const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/introduce/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
@@ -71,7 +73,7 @@ const searchChange = (data) => {
 
 const toDelete = async (data: MeetingInfo) => {
   modal.confirm({
-    content: `确定删除会议【${data.subject}】吗？`,
+    content: t('taskMeeting.confirmDelete', { name: data.subject }),
     async onOk () {
       const id = data.id;
       const [error] = await task.deleteMeeting(id);
@@ -79,7 +81,7 @@ const toDelete = async (data: MeetingInfo) => {
         return;
       }
 
-      notification.success('会议删除成功， 您可以在回收站查看删除后的会议');
+      notification.success(t('taskMeeting.deleteSuccess'));
       loadData();
       deleteTabPane([id]);
     }
@@ -192,15 +194,15 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
       <Introduce class="mb-7 flex-1" />
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">已添加的会议</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('taskMeeting.addedMeetings') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何会议，立即</span>
+            <span>{{ t('taskMeeting.notAddedYet') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/task#meeting?type=ADD`">
-              添加会议
+              {{ t('taskMeeting.addMeeting') }}
             </RouterLink>
           </div>
         </div>
@@ -273,7 +275,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                 <div class="flex leading-5">
                   <div class="flex mr-10 items-center">
                     <div class="mr-2">
-                      <span>主持人</span>
+                      <span>{{ t('taskMeeting.columns.moderatorLabel') }}</span>
                       <Colon />
                     </div>
                     <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
@@ -292,7 +294,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
                   <div class="flex items-center">
                     <div class="mr-2">
-                      <span>参与成员</span>
+                      <span>{{ t('taskMeeting.columns.participantsLabel') }}</span>
                       <Colon />
                     </div>
 
@@ -347,14 +349,14 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">共{{ item.participants?.length || 0 }}个参与者</div>
+                <div class="ml-8 text-theme-content">{{ t('taskMeeting.columns.participantsCount', { count: item.participants?.length || 0 }) }}</div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
                 <div class="flex flex-wrap">
                   <div class="flex mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>ID</span>
+                      <span>{{ t('taskMeeting.columns.id') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.id || "--" }}</div>
@@ -362,7 +364,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
                   <div class="flex mt-3 ml-8">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>会议类型</span>
+                      <span>{{ t('taskMeeting.columns.type') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.type?.message }}</div>
@@ -376,7 +378,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     :title="item.lastModifiedByName">
                     {{ item.lastModifiedByName }}
                   </div>
-                  <div class="mx-2 whitespace-nowrap">修改于</div>
+                  <div class="mx-2 whitespace-nowrap">{{ t('taskMeeting.columns.lastModifiedBy') }}</div>
                   <div class="whitespace-nowrap text-theme-content">
                     {{ item.lastModifiedDate }}
                   </div>
@@ -393,14 +395,14 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/task#meeting?id=${item.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>编辑</span>
+                    <span>{{ t('actions.edit') }}</span>
                   </RouterLink>
                   <Button
                     type="text"
                     size="small"
                     @click="toDelete(item)">
                     <Icon icon="icon-qingchu" />
-                    删除
+                    {{ t('actions.delete') }}
                   </Button>
                 </div>
               </div>
