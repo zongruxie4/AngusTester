@@ -1,102 +1,86 @@
 {
-  "overview": {
-    "myTasks": "我的任务",
-    "totalTasks": "总任务",
-    "oneTimePassRate": "一次性通过率",
-    "oneTimePassCount": "一次性通过数",
-    "interfaceScenario": "接口/场景",
-    "projectDirectory": "项目/目录",
-    "taskProcessFlow": "任务处理流程图"
-  },
-  "status": {
-    "pending": "待测试",
-    "processing": "处理中",
-    "completed": "已完成",
-    "cancelled": "已取消",
-    "success": "成功",
-    "failure": "失败",
-    "confirmed": "待确认"
-  },
-  "testType": {
-    "functional": "功能",
-    "performance": "性能",
-    "stability": "稳定性",
-    "all": "全部"
-  },
-  "form": {
-    "task": "任务",
-    "type": "类型",
-    "test": "测试",
-    "scenario": "场景",
-    "api": "接口",
-    "time": "时间",
-    "tags": "标签",
-    "description": "描述",
-    "addTask": "添加任务",
-    "editTask": "编辑任务",
-    "addAttachment": "添加附件",
-    "supportedFormats": "支持的格式：\"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\""
-  },
-  "details": {
-    "basicInfo": "基本信息",
-    "belonging": "所属",
-    "description": "描述"
-  },
-  "actions": {
-    "details": "详情",
-    "startProcessing": "开始处理",
-    "editTask": "编辑任务",
-    "cancelTask": "取消任务",
-    "deleteTask": "删除任务"
-  },
-  "search": {
-    "taskNameOrCode": "任务名称或编码",
-    "apiName": "查询接口名称"
-  },
-  "placeholder": {
-    "selectTestType": "选择测试类型",
-    "selectScenario": "请选择场景",
-    "selectScenarioDirectory": "选择场景目录",
-    "selectPriority": "请选择优先级",
-    "selectResult": "选择测试结果",
-    "selectStatus": "选择任务状态",
-    "selectStartTime": "选择开始时间",
-    "selectDueTime": "请选择到期时间",
+  "taskAnalysis": {
+    "title": "分析",
+    "addAnalysis": "添加分析",
+    "editAnalysis": "编辑分析",
+    "aboutAnalysis": "关于分析",
+    "aboutAnalysisDesc": "用于提供任务实时数据分析、促进数据驱动的决策，确保信息透明，增强团队协作和问题追踪，提升项目研发管理效率。AngusTester提供默认分析模版，如燃尽图、积压任务、风险评估等，帮助用户快速查看仪表板和关键性能指标（KPI），同时用户也可以根据业务关注点自定义分析仪表板。",
+    "addedAnalysis": "已添加的分析",
+    "notCreatedYet": "还未创建，点击创建",
+    "createdBy": "创建于",
+    "lastModifiedBy": "最后修改于",
+    "realTime": "实时",
+    "snapshot": "快照",
+    "charts": "图表",
+    "details": "明细",
+    "today": "今天",
+    "lastWeek": "近一周",
+    "lastMonth": "近一月",
+    "sortByCreator": "按添加人排序",
+    "sortByCreateTime": "按添加时间排序",
+    "createTimeFrom": "添加时间从",
+    "createTimeTo": "添加时间到",
+    "searchNameDesc": "查询名称、描述",
     "selectCreator": "选择添加人",
-    "selectProject": "选择项目/服务",
-    "selectDirectory": "选择目录",
-    "inputTaskName": "请输入任务名称，最多支持{num}字符",
-    "selectAssignee": "请选择经办人，最多选择{num}个",
-    "maxTags": "最多可添加5个标签",
-    "inputDescription": "请输入描述，最多支持{num}字符",
-    "selectTaskType": "请选择任务类型",
-    "selectApi": "请选择接口",
-    "inputStoryPoints": "请输入故事点,>0且<=2147483647",
-    "maxAttachments": "最多上传{num}个附件",
-    "selectConfirmer": "请选择确认人，最多选择{num}个"
-  },
-  "columns": {
-    "id": "编号",
-    "name": "名称",
-    "directory": "目录",
-    "scenario": "场景",
-    "priority": "优先级",
-    "result": "执行结果",
-    "status": "状态",
-    "startTime": "开始时间",
-    "endTime": "截止时间",
-    "creator": "添加人",
-    "failureCount": "失败次数",
-    "executionId": "执行编号",
-    "processCount": "处理次数",
-    "assignee": "经办人",
-    "lastModifier": "最后修改人",
-    "executor": "执行人",
-    "storyPoints": "故事点",
-    "executionTime": "执行时间",
-    "createdTime": "添加时间",
-    "modifiedTime": "最后修改时间",
-    "actions": "操作",
-    "confirmer": "确认人"
+    "columns": {
+      "name": "名称",
+      "template": "模版",
+      "description": "描述",
+      "object": "分析对象",
+      "timeRange": "分析期间",
+      "dataSource": "数据展示",
+      "createdBy": "创建人",
+      "createdDate": "创建时间",
+      "actions": "操作"
+    },
+    "placeholder": {
+      "inputAnalysisName": "输入分析名称，最多可输入100字符",
+      "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符",
+      "selectIteration": "选择或查询迭代",
+      "selectUser": "选择用户",
+      "selectDept": "选择部门",
+      "selectGroup": "选择组"
+    },
+    "messages": {
+      "confirmDelete": "确认删除分析【{name}】吗？",
+      "confirmUpdateSnapshot": "确认更新分析【{name}】的快照内容吗？",
+      "deleteSuccess": "删除成功",
+      "updateSuccess": "更新成功",
+      "addSuccess": "添加分析成功",
+      "editSuccess": "修改分析成功",
+      "templateRequired": "请选择分析模版",
+      "nameRequired": "请输入分析名称",
+      "objectRequired": "请选择分析对象",
+      "timeRangeRequired": "请选择分析期间",
+      "dataSourceRequired": "请选择数据展示方式",
+      "iterationRequired": "请选择迭代",
+      "orgRequired": "请选择组织"
+    },
+    "form": {
+      "template": "分析模版",
+      "name": "分析名称",
+      "description": "分析描述",
+      "object": "分析对象",
+      "selectIteration": "选择迭代",
+      "selectOrg": "选择组织",
+      "timeRange": "分析期间",
+      "dataSource": "数据展示",
+      "containsUserAnalysis": "包含经办人分析",
+      "containsDataDetail": "包含数据明细"
+    },
+    "dataSource": {
+      "realTime": "每次展示实时数据",
+      "snapshot": "保存数据快照，每次展示快照数据"
+    },
+    "orgType": {
+      "dept": "部门",
+      "group": "组",
+      "user": "用户"
+    },
+    "objectType": {
+      "currentProject": "当前项目",
+      "plan": "指定迭代",
+      "testerOrg": "指定组织"
+    }
   }
 }

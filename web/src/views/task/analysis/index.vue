@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
@@ -26,6 +27,7 @@ const AnalysisDetail = defineAsyncComponent(() => import('@/views/task/analysis/
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const browserTabRef = ref();
 const refreshListNotify = ref(0);
 const activeKey = ref('analysisList');
@@ -58,7 +60,7 @@ const initialize = () => {
         return {
           _id: 'analysisList',
           value: 'analysisList',
-          name: '分析',
+          name: t('taskAnalysis.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -106,7 +108,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加分析',
+          name: t('taskAnalysis.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
           data: { _id: id }

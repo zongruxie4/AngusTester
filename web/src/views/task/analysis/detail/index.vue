@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TESTER, download } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   onShow: false
 });
 
+const { t } = useI18n();
 const chartRef = ref();
 
 const Process = defineAsyncComponent(() => import('./progress/index.vue'));
@@ -167,15 +169,15 @@ onBeforeUnmount(() => {
             v-if="dataSource.datasource?.value"
             color="geekblue"
             class="ml-2">
-            {{ dataSource.datasource?.value === 'SNAPSHOT_DATA' ? '快照' : dataSource.datasource?.value === 'REAL_TIME_DATA' ? '实时' : '' }}
+            {{ dataSource.datasource?.value === 'SNAPSHOT_DATA' ? t('taskAnalysis.snapshot') : dataSource.datasource?.value === 'REAL_TIME_DATA' ? t('taskAnalysis.realTime') : '' }}
           </Tag>
         </div>
         <div class="mt-2">{{ dataSource.description }}</div>
-        <div><span class="font-semibold">{{ dataSource.lastModifiedByName }}</span> 最后修改于{{ dataSource.lastModifiedDate }}</div>
+        <div><span class="font-semibold">{{ dataSource.lastModifiedByName }}</span> {{ t('taskAnalysis.lastModifiedBy') }}{{ dataSource.lastModifiedDate }}</div>
       </div>
     </div>
     <div ref="chartWrapRef" class="mt-4">
-      <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">图表</div>
+      <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">{{ t('taskAnalysis.charts') }}</div>
       <div v-if="dataSource.template === 'PROGRESS'" class=" w-200">
         <Process ref="chartRef" :analysisInfo="dataSource" />
       </div>
@@ -222,7 +224,7 @@ onBeforeUnmount(() => {
 
     <div v-if="dataSource?.containsDataDetail" class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 flex items-center">
-        <span>明细</span>
+        <span>{{ t('taskAnalysis.details') }}</span>
         <Button
           v-show="props.data?.id"
           type="link"
@@ -231,12 +233,12 @@ onBeforeUnmount(() => {
           class="ml-3"
           @click="exportDetail">
           <Icon icon="icon-daochu1" class="mr-1" />
-          导出
+          {{ t('actions.export') }}
         </Button>
       </div>
       <template v-if="dataSource.template === 'RECENT_DELIVERY'">
         <div class="text-center mt-3">
-          今天
+          {{ t('taskAnalysis.today') }}
         </div>
         <Table
           key="taday"
@@ -247,7 +249,7 @@ onBeforeUnmount(() => {
           :columns="columns"
           :dataSource="recentDeliveryTodayTable" />
         <div class="text-center">
-          近一周
+          {{ t('taskAnalysis.lastWeek') }}
         </div>
         <Table
           key="lastWeek"
@@ -258,7 +260,7 @@ onBeforeUnmount(() => {
           :columns="columns"
           :dataSource="recentDeliveryLastWeekTable" />
         <div class="text-center">
-          近一周
+          {{ t('taskAnalysis.lastMonth') }}
         </div>
         <Table
           key="lastMonth"

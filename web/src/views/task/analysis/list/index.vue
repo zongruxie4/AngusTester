@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, modal, notification } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from './PropTypes';
 import { Button, Tag } from 'ant-design-vue';
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   onShow: false
 });
 
+const { t } = useI18n();
 const dataListWrapRef = ref();
 
 const TemplateSelectList = defineAsyncComponent(() => import('@/views/task/analysis/list/templateSelect/index.vue'));
@@ -77,9 +79,9 @@ const handleSearch = (data) => {
 
 const addAnalysis = (template = '') => {
   if (template) {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: '添加分析', data: { template } });
+    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('taskAnalysis.addAnalysis'), data: { template } });
   } else {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: '添加分析' });
+    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('taskAnalysis.addAnalysis') });
   }
 };
 
@@ -113,11 +115,11 @@ const handleDetail = (data) => {
 
 const delAnalysis = (data) => {
   modal.confirm({
-    content: `确认删除分析【${data.name}】吗？`,
+    content: t('taskAnalysis.messages.confirmDelete', { name: data.name }),
     onOk () {
       return analysis.deleteAnalysis([data.id])
         .then(() => {
-          notification.success('删除成功');
+          notification.success(t('taskAnalysis.messages.deleteSuccess'));
           pagination.pageNo = 1;
           loadAnalysisList();
         });
@@ -127,14 +129,14 @@ const delAnalysis = (data) => {
 
 const updateSnapShot = (data) => {
   modal.confirm({
-    content: `确认更新分析【${data.name}】的快照内容吗？`,
+    content: t('taskAnalysis.messages.confirmUpdateSnapshot', { name: data.name }),
     onOk () {
       return analysis.refreshAnalysis(data.id)
         .then(([error]) => {
           if (error) {
             return;
           }
-          notification.success('更新成功');
+          notification.success(t('taskAnalysis.messages.updateSuccess'));
         });
     }
   });
@@ -206,7 +208,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
     <Introduce />
-    <div class="text-3.5 font-semibold mb-2.5">已添加的分析</div>
+            <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.addedAnalysis') }}</div>
     <SearchPanel
       v-model:orderBy="orderData.orderBy"
       v-model:orderSort="orderData.orderSort"
@@ -243,14 +245,14 @@ onBeforeUnmount(() => {
                       {{ item.name }}
                     </div>
                     <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === 'REAL_TIME_DATA' ? '实时' : '快照' }}
+                      {{ item.datasource?.value === 'REAL_TIME_DATA' ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
                     </Tag>
                   </div>
                   <p class="">{{ TemplateDescConfig[item.template] }}</p>
                 </div>
               </div>
               <div class="mt-1 text-right">
-                <div><span class="font-semibold mr-1">{{ item.createdByName }}</span>创建于{{ item.createdDate }}</div>
+                <div><span class="font-semibold mr-1">{{ item.createdByName }}</span>{{ t('taskAnalysis.createdBy') }}{{ item.createdDate }}</div>
               </div>
             </div>
             <div class="flex justify-end">
@@ -311,7 +313,7 @@ onBeforeUnmount(() => {
         <Icon :icon="TemplateIconConfig[template]" class="text-20 mt-20" />
         <div>{{ TemplateDescConfig[template] }}</div>
         <div>
-          还未创建，点击创建
+          {{ t('taskAnalysis.notCreatedYet') }}
           <Button
             type="link"
             size="small"

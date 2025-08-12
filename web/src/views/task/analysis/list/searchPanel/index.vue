@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
@@ -54,6 +55,7 @@ const emit = defineEmits<{
 }>();
 
 const route = useRoute();
+const { t } = useI18n();
 
 let db: Dexie<{ id: string; data: any; }>;
 
@@ -809,27 +811,27 @@ const taskType = computed(() => {
 const menuItems: MenuItem[] = [
   {
     key: 'none',
-    name: '所有'
+    name: t('quickSearchTags.all')
   },
   {
     key: 'createdBy',
-    name: '我添加的'
+    name: t('quickSearchTags.addByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('quickSearchTags.modifiedByMe')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('quickSearchTags.past1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('quickSearchTags.past3Day')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('quickSearchTags.past7Day')
   }
 ];
 
@@ -837,18 +839,18 @@ const searchOptions = [
   {
     type: 'input',
     valueKey: 'name',
-    placeholder: '查询名称、描述'
+    placeholder: t('taskAnalysis.searchNameDesc')
   },
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: '选择添加人',
+    placeholder: t('taskAnalysis.selectCreator'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('taskAnalysis.createTimeFrom'), t('taskAnalysis.createTimeTo')],
     showTime: true
   }
 ];
@@ -856,17 +858,17 @@ const searchOptions = [
 const sortMenuItems = [
   {
     key: 'name',
-    name: '名称',
+    name: t('taskAnalysis.columns.name'),
     orderSort: 'ASC'
   },
   {
     key: 'createdByName',
-    name: '按添加人排序',
+    name: t('taskAnalysis.sortByCreator'),
     orderSort: 'ASC'
   },
   {
     key: 'createdDate',
-    name: '按添加时间排序',
+    name: t('taskAnalysis.sortByCreateTime'),
     orderSort: 'ASC'
   }];
 </script>
@@ -875,7 +877,7 @@ const sortMenuItems = [
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>快速查询</span>
+          <span>{{ t('quickSearch') }}</span>
           <Colon />
         </div>
         <div class="flex  flex-wrap ml-2">
@@ -905,7 +907,7 @@ const sortMenuItems = [
           @click="toCreate">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">添加分析</span>
+            <span class="ml-1">{{ t('taskAnalysis.addAnalysis') }}</span>
           </div>
         </Button>
 
@@ -918,7 +920,7 @@ const sortMenuItems = [
             size="small"
             class="flex items-center cursor-pointer ">
             <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-            <span class="ml-1">排序</span>
+            <span class="ml-1">{{ t('sort') }}</span>
           </Button>
         </DropdownSort>
 
@@ -927,7 +929,7 @@ const sortMenuItems = [
           size="small"
           @click="toRefresh">
           <IconRefresh class="text-4 flex-shrink-0" />
-          刷新
+          {{ t('actions.refresh') }}
         </Button>
       </div>
     </div>

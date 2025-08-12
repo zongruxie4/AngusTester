@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
@@ -22,31 +23,32 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'ok')}>();
 
+const { t } = useI18n();
 const deleteTabPane = inject('deleteTabPane', (value) => value);
 const formRef = ref<Analysis>();
 const showContentOpt = [
   {
     value: 'REAL_TIME_DATA',
-    label: '每次展示实时数据'
+    label: t('taskAnalysis.dataSource.realTime')
   },
   {
     value: 'SNAPSHOT_DATA',
-    label: '保存数据快照，每次展示快照数据'
+    label: t('taskAnalysis.dataSource.snapshot')
   }
 ];
 
 const orgOpt = [
   {
     value: 'DEPT',
-    label: '部门'
+    label: t('taskAnalysis.orgType.dept')
   },
   {
     value: 'GROUP',
-    label: '组'
+    label: t('taskAnalysis.orgType.group')
   },
   {
     value: 'USER',
-    label: '用户'
+    label: t('taskAnalysis.orgType.user')
   }
 ];
 
@@ -160,9 +162,9 @@ const save = async () => {
       return;
     }
     if (!params.id) {
-      notification.success('添加分析成功');
+      notification.success(t('taskAnalysis.messages.addSuccess'));
     } else {
-      notification.success('修改分析成功');
+      notification.success(t('taskAnalysis.messages.editSuccess'));
     }
 
     emits('ok');
@@ -202,10 +204,10 @@ onMounted(async () => {
         size="small"
         :loading="saving"
         @click="save">
-        保存
+        {{ t('actions.save') }}
       </Button>
       <Button size="small" @click="cancel">
-        取消
+        {{ t('actions.cancel') }}
       </Button>
     </div>
 
@@ -217,7 +219,7 @@ onMounted(async () => {
       class="w-200 mt-5">
       <FormItem
         name="template"
-        label="分析模版"
+        :label="t('taskAnalysis.form.template')"
         class="input-item"
         required>
         <SelectEnum
@@ -231,26 +233,26 @@ onMounted(async () => {
 
       <FormItem
         name="name"
-        label="分析名称"
+        :label="t('taskAnalysis.form.name')"
         class="input-item"
         required>
         <Input
           v-model:value="formData.name"
           :maxlength="100"
-          placeholder="输入分析名称，最多可输入100字符" />
+          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
       </FormItem>
 
-      <FormItem name="description" label="分析描述">
+      <FormItem name="description" :label="t('taskAnalysis.form.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
-          placeholder="输入分析描述，如分析的目的、背景等，最多支持200字符"
+          :placeholder="t('taskAnalysis.placeholder.inputAnalysisDesc')"
           @change="descChanged" />
       </FormItem>
 
       <FormItem
         name="object"
-        label="分析对象"
+        :label="t('taskAnalysis.form.object')"
         class="input-item"
         required>
         <RadioGroup
@@ -264,7 +266,7 @@ onMounted(async () => {
       <template v-if="formData.object === 'PLAN'">
         <FormItem
           name="planId"
-          label="选择迭代"
+          :label="t('taskAnalysis.form.selectIteration')"
           required
           class="ml-16 input-item">
           <Select
@@ -276,7 +278,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            placeholder="选择或查询迭代">
+            :placeholder="t('taskAnalysis.placeholder.selectIteration')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -290,7 +292,7 @@ onMounted(async () => {
       <template v-if="formData.object === 'TESTER_ORG'">
         <FormItem
           name="orgId"
-          label="选择组织"
+          :label="t('taskAnalysis.form.selectOrg')"
           required
           class="ml-16 input-item">
           <Select
@@ -304,7 +306,7 @@ onMounted(async () => {
             v-model:value="formData.orgId"
             class="!w-50"
             :showSearch="true"
-            placeholder="选择用户"
+            :placeholder="t('taskAnalysis.placeholder.selectUser')"
             :action="`${GM}/user?fullTextSearch=true`"
             :fieldNames="{ label: 'fullName', value: 'id' }">
           </Select>
@@ -312,7 +314,7 @@ onMounted(async () => {
             v-show="formData.orgType === 'DEPT'"
             v-model:value="formData.orgId"
             class="!w-50"
-            placeholder="选择部门"
+            :placeholder="t('taskAnalysis.placeholder.selectDept')"
             :showSearch="true"
             :action="`${GM}/dept?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">
@@ -321,7 +323,7 @@ onMounted(async () => {
             v-show="formData.orgType === 'GROUP'"
             v-model:value="formData.orgId"
             class="!w-50"
-            placeholder="选择组"
+            :placeholder="t('taskAnalysis.placeholder.selectGroup')"
             :showSearch="true"
             :action="`${GM}/group?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">
@@ -329,13 +331,13 @@ onMounted(async () => {
         </FormItem>
       </template>
       <FormItem label=" ">
-        <Checkbox v-show="formData.object !== 'TESTER_ORG' || formData.orgType !== 'USER'" v-model:checked="formData.containsUserAnalysis">包含经办人分析</Checkbox>
-        <Checkbox v-model:checked="formData.containsDataDetail">包含数据明细</Checkbox>
+        <Checkbox v-show="formData.object !== 'TESTER_ORG' || formData.orgType !== 'USER'" v-model:checked="formData.containsUserAnalysis">{{ t('taskAnalysis.form.containsUserAnalysis') }}</Checkbox>
+        <Checkbox v-model:checked="formData.containsDataDetail">{{ t('taskAnalysis.form.containsDataDetail') }}</Checkbox>
       </FormItem>
 
       <FormItem
         name="timeRange"
-        label="分析期间"
+        :label="t('taskAnalysis.form.timeRange')"
         required>
         <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOpt"></RadioGroup>
         <DatePicker
@@ -346,7 +348,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        label="数据展示"
+        :label="t('taskAnalysis.form.dataSource')"
         name="datasource"
         required>
         <RadioGroup v-model:value="formData.datasource" :options="showContentOpt" />

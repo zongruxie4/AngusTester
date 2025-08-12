@@ -22,6 +22,53 @@
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel",
-    "confirm": "Confirm"
-  }
+    "confirm": "Confirm",
+    "clone": "Clone",
+    "import": "Import",
+    "export": "Export",
+    "download": "Download",
+    "upload": "Upload",
+    "copy": "Copy",
+    "publish": "Publish",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "favourite": "Favourite",
+    "unFavourite": "Unfavourite",
+    "refresh": "Refresh",
+    "authority": "Authority",
+    "debug": "Debug",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "saveAndAdd": "Save and Add Next",
+    "stop": "Stop"
+  },
+  "orgNames": {
+    "user": "User",
+    "dept": "Department",
+    "group": "Group"
+  },
+  "quickSearchTags": {
+    "all": "All",
+    "past1Day": "Past 1 Day",
+    "past3Day": "Past 3 Days",
+    "past7Day": "Past 7 Days",
+    "past30Day": "Past 30 Days",
+    "createdByMe": "Created by Me",
+    "modifiedByMe": "Modified by Me",
+    "addByMe": "Added by Me"
+  },
+  "tips": {
+    "saveSuccess": "Save successful",
+    "deleteSuccess": "Delete successful",
+    "cloneSuccess": "Clone successful",
+    "addSuccess": "Add successful",
+    "updateSuccess": "Update successful",
+    "disabledSuccess": "Disable successful",
+    "enabledSuccess": "Enable successful",
+    "execSuccess": "Execute successful",
+    "importSuccess": "Import successful",
+    "moveSuccess": "Move successful"
+  },
+  "sort": "Sort",
+  "quickSearch": "Quick Search"
 } 

@@ -1,102 +1,87 @@
 {
-  "overview": {
-    "myTasks": "My Tasks",
-    "totalTasks": "Total Tasks",
-    "oneTimePassRate": "One-time Pass Rate",
-    "oneTimePassCount": "One-time Pass Count",
-    "interfaceScenario": "Interface/Scenario",
-    "projectDirectory": "Project/Directory",
-    "taskProcessFlow": "Task Process Flow"
-  },
-  "status": {
-    "pending": "Pending Test",
-    "processing": "Processing",
-    "completed": "Completed",
-    "cancelled": "Cancelled",
-    "success": "Success",
-    "failure": "Failure",
-    "confirmed": "Pending Confirmation"
-  },
-  "testType": {
-    "functional": "Functional",
-    "performance": "Performance",
-    "stability": "Stability",
-    "all": "All"
-  },
-  "form": {
-    "task": "Task",
-    "type": "Type",
-    "test": "Test",
-    "scenario": "Scenario",
-    "api": "API",
-    "time": "Time",
-    "tags": "Tags",
-    "description": "Description",
-    "addTask": "Add Task",
-    "editTask": "Edit Task",
-    "addAttachment": "Add Attachment",
-    "supportedFormats": "Supported formats: \"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\""
-  },
-  "details": {
-    "basicInfo": "Basic Information",
-    "belonging": "Belonging",
-    "description": "Description"
-  },
-  "actions": {
+  
+  "taskAnalysis": {
+    "title": "Analysis",
+    "addAnalysis": "Add Analysis",
+    "editAnalysis": "Edit Analysis",
+    "aboutAnalysis": "About Analysis",
+    "aboutAnalysisDesc": "Used to provide real-time task data analysis, promote data-driven decision making, ensure information transparency, enhance team collaboration and issue tracking, and improve project development management efficiency. AngusTester provides default analysis templates such as burndown charts, backlog tasks, risk assessment, etc., helping users quickly view dashboards and key performance indicators (KPI), while users can also customize analysis dashboards based on business focus areas.",
+    "addedAnalysis": "Added Analysis",
+    "notCreatedYet": "Not created yet, click to create",
+    "createdBy": "Created by",
+    "lastModifiedBy": "Last modified by",
+    "realTime": "Real-time",
+    "snapshot": "Snapshot",
+    "charts": "Charts",
     "details": "Details",
-    "startProcessing": "Start Processing",
-    "editTask": "Edit Task",
-    "cancelTask": "Cancel Task",
-    "deleteTask": "Delete Task"
-  },
-  "search": {
-    "taskNameOrCode": "Task name or code",
-    "apiName": "Search API name"
-  },
-  "placeholder": {
-    "selectTestType": "Select test type",
-    "selectScenario": "Please select scenario",
-    "selectScenarioDirectory": "Select scenario directory",
-    "selectPriority": "Please select priority",
-    "selectResult": "Select test result",
-    "selectStatus": "Select task status",
-    "selectStartTime": "Select start time",
-    "selectDueTime": "Please select due time",
+    "today": "Today",
+    "lastWeek": "Last Week",
+    "lastMonth": "Last Month",
+    "sortByCreator": "Sort by Creator",
+    "sortByCreateTime": "Sort by Create Time",
+    "createTimeFrom": "Create Time From",
+    "createTimeTo": "Create Time To",
+    "searchNameDesc": "Search name, description",
     "selectCreator": "Select creator",
-    "selectProject": "Select project/service",
-    "selectDirectory": "Select directory",
-    "inputTaskName": "Please enter task name, maximum {num} characters",
-    "selectAssignee": "Please select assignee, maximum {num} people",
-    "maxTags": "Maximum 5 tags can be added",
-    "inputDescription": "Please enter description, maximum {num} characters",
-    "selectTaskType": "Please select task type",
-    "selectApi": "Please select API",
-    "inputStoryPoints": "Please enter story points, >0 and <=2147483647",
-    "maxAttachments": "Maximum {num} attachments can be uploaded",
-    "selectConfirmer": "Please select confirmer, maximum {num} people"
-  },
-  "columns": {
-    "id": "ID",
-    "name": "Name",
-    "directory": "Directory",
-    "scenario": "Scenario",
-    "priority": "Priority",
-    "result": "Execution Result",
-    "status": "Status",
-    "startTime": "Start Time",
-    "endTime": "End Time",
-    "creator": "Creator",
-    "failureCount": "Failure Count",
-    "executionId": "Execution ID",
-    "processCount": "Process Count",
-    "assignee": "Assignee",
-    "lastModifier": "Last Modifier",
-    "executor": "Executor",
-    "storyPoints": "Story Points",
-    "executionTime": "Execution Time",
-    "createdTime": "Created Time",
-    "modifiedTime": "Modified Time",
-    "actions": "Actions",
-    "confirmer": "Confirmer"
+    "columns": {
+      "name": "Name",
+      "template": "Template",
+      "description": "Description",
+      "object": "Analysis Object",
+      "timeRange": "Analysis Period",
+      "dataSource": "Data Display",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "actions": "Actions"
+    },
+    "placeholder": {
+      "inputAnalysisName": "Enter analysis name, maximum 100 characters",
+      "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
+      "selectIteration": "Select or search iteration",
+      "selectUser": "Select user",
+      "selectDept": "Select department",
+      "selectGroup": "Select group"
+    },
+    "messages": {
+      "confirmDelete": "Confirm delete analysis 【{name}】?",
+      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis 【{name}】?",
+      "deleteSuccess": "Delete successful",
+      "updateSuccess": "Update successful",
+      "addSuccess": "Add analysis successful",
+      "editSuccess": "Edit analysis successful",
+      "templateRequired": "Please select analysis template",
+      "nameRequired": "Please enter analysis name",
+      "objectRequired": "Please select analysis object",
+      "timeRangeRequired": "Please select analysis period",
+      "dataSourceRequired": "Please select data display method",
+      "iterationRequired": "Please select iteration",
+      "orgRequired": "Please select organization"
+    },
+    "form": {
+      "template": "Analysis Template",
+      "name": "Analysis Name",
+      "description": "Analysis Description",
+      "object": "Analysis Object",
+      "selectIteration": "Select Iteration",
+      "selectOrg": "Select Organization",
+      "timeRange": "Analysis Period",
+      "dataSource": "Data Display",
+      "containsUserAnalysis": "Include Assignee Analysis",
+      "containsDataDetail": "Include Data Details"
+    },
+    "dataSource": {
+      "realTime": "Display real-time data each time",
+      "snapshot": "Save data snapshot, display snapshot data each time"
+    },
+    "orgType": {
+      "dept": "Department",
+      "group": "Group",
+      "user": "User"
+    },
+    "objectType": {
+      "currentProject": "Current Project",
+      "plan": "Specified Iteration",
+      "testerOrg": "Specified Organization"
+    }
   }
 }
