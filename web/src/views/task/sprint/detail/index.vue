@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { TESTER, toClipboard, utils, download } from '@xcan-angus/infra';
@@ -29,6 +30,7 @@ const BurnDownChart = defineAsyncComponent(() => import('@/views/task/sprint/det
 const MembersProgress = defineAsyncComponent(() => import('@/views/task/sprint/detail/memberProgress/index.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/homepage/workCalendar/index.vue'));
 
+const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const replaceTabPane = inject<(key:string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 const deleteTabPane = inject<(key:string, data: { [key: string]: any }) => void>('deleteTabPane', () => ({}));
@@ -136,9 +138,9 @@ const toExport = async () => {
 const toCopyHref = () => {
   const message = window.location.origin + '/task#sprint?id=' + sprintId.value;
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('taskSprint.messages.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('taskSprint.messages.copyLinkFailed'));
   });
 };
 
@@ -207,7 +209,7 @@ const meetings = computed(() => {
         class="flex items-center space-x-1"
         @click="toEdit">
         <Icon icon="icon-shuxie" class="text-3.5" />
-        <span>编辑</span>
+        <span>{{ t('taskSprint.actions.edit') }}</span>
       </Button>
 
       <Button
@@ -218,7 +220,7 @@ const meetings = computed(() => {
           class="flex items-center space-x-1 leading-6.5 px-1.75"
           :to="`/task#task?sprintId=${sprintId}&sprintName=${dataSource?.name}`">
           <Icon icon="icon-renwu2" class="text-3.5" />
-          <span>查看任务</span>
+          <span>{{ t('taskSprint.actions.viewTasks') }}</span>
         </RouterLink>
       </Button>
 
@@ -229,7 +231,7 @@ const meetings = computed(() => {
         class="flex items-center space-x-1"
         @click="toExport">
         <Icon icon="icon-daochu" class="text-3.5" />
-        <span>导出任务</span>
+        <span>{{ t('taskSprint.actions.exportTasks') }}</span>
       </Button>
 
       <Button
@@ -237,7 +239,7 @@ const meetings = computed(() => {
         class="flex items-center"
         @click="toCopyHref">
         <Icon class="mr-1 flex-shrink-0" icon="icon-fuzhi" />
-        <span>复制链接</span>
+        <span>{{ t('taskSprint.actions.copyLink') }}</span>
       </Button>
 
       <Button
@@ -246,7 +248,7 @@ const meetings = computed(() => {
         class="flex items-center"
         @click="toRefresh">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
-        <span>刷新</span>
+        <span>{{ t('taskSprint.actions.refresh') }}</span>
       </Button>
 
       <Button
@@ -254,17 +256,17 @@ const meetings = computed(() => {
         size="small"
         class="flex items-center"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('taskSprint.actions.cancel') }}</span>
       </Button>
     </div>
 
     <div class="max-w-250 mb-2">
-      <div class="text-theme-title mb-2">基本信息</div>
+      <div class="text-theme-title mb-2">{{ t('taskSprint.columns.basicInfo') }}</div>
       <div class="space-y-2.5">
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>名称</span>
+              <span>{{ t('taskSprint.columns.name') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -273,7 +275,7 @@ const meetings = computed(() => {
 
           <div class="w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>时间计划</span>
+              <span>{{ t('taskSprint.columns.timePlan') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -288,7 +290,7 @@ const meetings = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>负责人</span>
+              <span>{{ t('taskSprint.columns.owner') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -297,7 +299,7 @@ const meetings = computed(() => {
 
           <div class="w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>任务前缀</span>
+              <span>{{ t('taskSprint.columns.taskPrefix') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -308,7 +310,7 @@ const meetings = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-center">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>状态</span>
+              <span>{{ t('taskSprint.columns.status') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -320,7 +322,7 @@ const meetings = computed(() => {
 
           <div class="w-1/2 flex items-center">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>工作量评估</span>
+              <span>{{ t('taskSprint.columns.workloadAssessment') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -333,7 +335,7 @@ const meetings = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-center">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>进度</span>
+              <span>{{ t('taskSprint.columns.progress') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -344,7 +346,7 @@ const meetings = computed(() => {
         <div class="flex items-start">
           <div style="width:calc(50% - 10px);" class="flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>附件</span>
+              <span>{{ t('taskSprint.columns.attachments') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -364,7 +366,7 @@ const meetings = computed(() => {
     </div>
 
     <Tabs size="small" class="max-w-250">
-      <TabPane key="acceptanceCriteria" tab="验收标准">
+      <TabPane key="acceptanceCriteria" :tab="t('taskSprint.columns.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.acceptanceCriteria }} -->
           <RichEditor
@@ -373,7 +375,7 @@ const meetings = computed(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="otherInformation" tab="其他说明">
+      <TabPane key="otherInformation" :tab="t('taskSprint.columns.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.otherInformation }} -->
           <RichEditor
@@ -382,19 +384,19 @@ const meetings = computed(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="chart" tab="燃尽图">
+      <TabPane key="chart" :tab="t('taskSprint.columns.burndownChart')">
         <BurnDownChart :sprintId="sprintId" />
       </TabPane>
-      <TabPane key="progress" tab="成员进度">
+      <TabPane key="progress" :tab="t('taskSprint.columns.memberProgress')">
         <MembersProgress :sprintId="sprintId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="workCalendar" tab="工作日历">
+      <TabPane key="workCalendar" :tab="t('taskSprint.columns.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :sprintId="sprintId" />
       </TabPane>
-      <TabPane key="meetings" tab="会议记录">
+      <TabPane key="meetings" :tab="t('taskSprint.columns.meetingRecords')">
         <div
           v-for="(item, index) in meetings"
           :key="item.id"
@@ -403,7 +405,7 @@ const meetings = computed(() => {
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议类型</span>
+                <span>{{ t('taskSprint.meeting.type') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -412,7 +414,7 @@ const meetings = computed(() => {
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议日期</span>
+                <span>{{ t('taskSprint.meeting.date') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -423,7 +425,7 @@ const meetings = computed(() => {
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议时间</span>
+                <span>{{ t('taskSprint.meeting.time') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -436,7 +438,7 @@ const meetings = computed(() => {
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议地点</span>
+                <span>{{ t('taskSprint.meeting.location') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -447,7 +449,7 @@ const meetings = computed(() => {
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议主持</span>
+                <span>{{ t('taskSprint.meeting.moderator') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -456,7 +458,7 @@ const meetings = computed(() => {
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>参会人员</span>
+                <span>{{ t('taskSprint.meeting.participants') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -466,7 +468,7 @@ const meetings = computed(() => {
 
           <div class="flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>会议内容</span>
+              <span>{{ t('taskSprint.meeting.content') }}</span>
               <Colon class="w-1" />
             </div>
             <RichEditor

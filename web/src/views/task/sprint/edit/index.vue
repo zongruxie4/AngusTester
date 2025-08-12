@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, nextTick, onMounted, ref, watch, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent,
   AuthorizeModal,
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
+const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
@@ -134,7 +136,7 @@ const editOk = async () => {
     return;
   }
 
-  notification.success('修改成功');
+  notification.success(t('taskSprint.messages.editSuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -154,7 +156,7 @@ const addOk = async () => {
     return;
   }
 
-  notification.success('添加成功');
+  notification.success(t('taskSprint.messages.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;
@@ -167,13 +169,13 @@ const infoRichRef = ref();
 const validateMaxLen = (val) => {
   if (val.field === 'acceptanceCriteria') {
     if (criteriaRichRef.value && criteriaRichRef.value.getLength() > 2000) {
-      return Promise.reject('字符不能超过2000个字符');
+      return Promise.reject(t('taskSprint.messages.maxLengthExceeded'));
     }
   }
 
   if (val.field === 'otherInformation') {
     if (infoRichRef.value && infoRichRef.value.getLength() > 2000) {
-      return Promise.reject('字符不能超过2000个字符');
+      return Promise.reject(t('taskSprint.messages.maxLengthExceeded'));
     }
   }
   return Promise.resolve();
@@ -203,7 +205,7 @@ const toStart = async () => {
     return;
   }
 
-  notification.success('迭代开始成功');
+  notification.success(t('taskSprint.messages.startSuccess'));
   loadData(id);
   refreshList();
 };
@@ -221,7 +223,7 @@ const toCompleted = async () => {
     return;
   }
 
-  notification.success('迭代已完成');
+  notification.success(t('taskSprint.messages.completeSuccess'));
   loadData(id);
   refreshList();
 };
@@ -233,7 +235,7 @@ const toDelete = async () => {
   }
 
   modal.confirm({
-    content: `确定删除迭代【${data.name}】吗？`,
+    content: t('taskSprint.messages.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       loading.value = true;
@@ -243,7 +245,7 @@ const toDelete = async () => {
         return;
       }
 
-      notification.success('迭代删除成功， 您可以在回收站查看删除后的迭代');
+      notification.success(t('taskSprint.messages.deleteSuccess'));
       deleteTabPane([props.data._id]);
       refreshList();
     }
@@ -277,7 +279,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success('迭代克隆成功');
+  notification.success(t('taskSprint.messages.cloneSuccess'));
   refreshList();
 };
 
@@ -288,9 +290,9 @@ const toCopyLink = () => {
   }
 
   toClipboard(window.location.origin + `/task#sprint?id=${id}`).then(() => {
-    notification.success('复制链接成功');
+    notification.success(t('taskSprint.messages.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制链接失败');
+    notification.error(t('taskSprint.messages.copyLinkFailed'));
   });
 };
 
@@ -452,11 +454,11 @@ onMounted(() => {
 
 const validateDate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请选择迭代时间'));
+    return Promise.reject(new Error(t('taskSprint.messages.dateRequired')));
   } else if (!value[0]) {
-    return Promise.reject(new Error('请选择迭代开始时间'));
+    return Promise.reject(new Error(t('taskSprint.messages.startDateRequired')));
   } else if (!value[1]) {
-    return Promise.reject(new Error('请选择迭代截止时间'));
+    return Promise.reject(new Error(t('taskSprint.messages.endDateRequired')));
   } else {
     return Promise.resolve();
   }
@@ -519,7 +521,7 @@ const autoSize = {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('taskSprint.actions.save') }}</span>
       </Button>
 
       <template v-if="editFlag">
@@ -531,7 +533,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toStart">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>重新开始</span>
+          <span>{{ t('taskSprint.actions.restart') }}</span>
         </Button>
 
         <Button
@@ -542,7 +544,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toStart">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>开始</span>
+          <span>{{ t('taskSprint.actions.start') }}</span>
         </Button>
 
         <template v-if="status === 'IN_PROGRESS'">
@@ -553,7 +555,7 @@ const autoSize = {
             class="flex items-center space-x-1"
             @click="toCompleted">
             <Icon icon="icon-yiwancheng" class="text-3.5" />
-            <span>完成</span>
+            <span>{{ t('taskSprint.actions.complete') }}</span>
           </Button>
 
           <Button
@@ -563,7 +565,7 @@ const autoSize = {
             class="flex items-center space-x-1"
             @click="toCompleted">
             <Icon icon="icon-zusai" class="text-3.5" />
-            <span>阻塞</span>
+            <span>{{ t('taskSprint.actions.block') }}</span>
           </Button>
         </template>
 
@@ -574,7 +576,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>删除</span>
+          <span>{{ t('taskSprint.actions.delete') }}</span>
         </Button>
 
         <Button
@@ -584,7 +586,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toGrant">
           <Icon icon="icon-quanxian1" class="text-3.5" />
-          <span>权限</span>
+          <span>{{ t('taskSprint.actions.permission') }}</span>
         </Button>
 
         <Button
@@ -593,7 +595,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toClone">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
-          <span>克隆</span>
+          <span>{{ t('taskSprint.actions.clone') }}</span>
         </Button>
 
         <Button
@@ -602,7 +604,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toCopyLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
-          <span>复制链接</span>
+          <span>{{ t('taskSprint.actions.copyLink') }}</span>
         </Button>
 
         <Button
@@ -611,7 +613,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>刷新</span>
+          <span>{{ t('taskSprint.actions.refresh') }}</span>
         </Button>
       </template>
       <Button
@@ -619,7 +621,7 @@ const autoSize = {
         size="small"
         class="flex items-center"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('taskSprint.actions.cancel') }}</span>
       </Button>
     </div>
 
@@ -631,18 +633,18 @@ const autoSize = {
       class="max-w-242.5"
       layout="horizontal">
       <FormItem
-        label="名称"
+        :label="t('taskSprint.form.name')"
         name="name"
-        :rules="{ required: true, message: '请输入迭代名称' }">
+        :rules="{ required: true, message: t('taskSprint.messages.nameRequired') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="100"
-          placeholder="输入迭代名称，最多可输入100字符" />
+          :placeholder="t('taskSprint.placeholder.inputSprintName')" />
       </FormItem>
 
       <FormItem
-        label="时间计划"
+        :label="t('taskSprint.form.timePlan')"
         name="date"
         :rules="{ required: true, validator: validateDate, trigger: 'change' }">
         <DatePicker
@@ -656,14 +658,14 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="负责人"
+        :label="t('taskSprint.form.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: '请选择负责人' }">
+        :rules="{ required: true, message: t('taskSprint.messages.ownerRequired') }">
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          placeholder="选择负责人"
+          :placeholder="t('taskSprint.placeholder.selectOwner')"
           :defaultOptions="ownerDefaultOptions"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
@@ -672,14 +674,14 @@ const autoSize = {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>通过为迭代设置负责人，可以明确责任和权利，更好地促进任务的完成和进度控制，如：解决问题、推进进度、协作团队成员等。</div>
+            <div>{{ t('taskSprint.tips.ownerTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
       <FormItem
-        label="任务前缀"
+        :label="t('taskSprint.form.taskPrefix')"
         name="taskPrefix"
         class="relative">
         <Input
@@ -688,19 +690,19 @@ const autoSize = {
           :readonly="!!dataSource?.id"
           :disabled="!!dataSource?.id"
           :maxlength="40"
-          placeholder="输入任务前缀，最多可输入40个字符" />
+          :placeholder="t('taskSprint.placeholder.inputTaskPrefix')" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>设置后，迭代下任务名称会以该前缀作为开头。</div>
+            <div>{{ t('taskSprint.tips.taskPrefixTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
-      <FormItem label="工作量评估" name="evalWorkloadMethod">
+      <FormItem :label="t('taskSprint.form.workloadAssessment')" name="evalWorkloadMethod">
         <RadioGroup v-model:value="formState.evalWorkloadMethod" :disabled="editDisabled">
           <Radio
             v-for="item in evalWorkloadMethodOptions"
@@ -714,16 +716,13 @@ const autoSize = {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>
-              指定工作量评估方式。工时是指每个人员完成一项工作实际所花费的时间，
-              以小时为单位计算；故事点是基于工作任务量、综合难度、复杂度等的评估值，使用故事点能强制团队细分任务中问题，具有灵活、敏捷度高的特点，推荐使用。
-            </div>
+            <div>{{ t('taskSprint.tips.workloadAssessmentTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
-      <FormItem label="附件">
+      <FormItem :label="t('taskSprint.form.attachments')">
         <div class="flex items-center">
           <Upload
             :fileList="[]"
@@ -731,13 +730,13 @@ const autoSize = {
             :customRequest="() => { }"
             @change="upLoadFile">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
-              <Icon icon="icon-lianjie1" class="mr-1" /> <span class="whitespace-nowrap">上传附件</span>
+              <Icon icon="icon-lianjie1" class="mr-1" /> <span class="whitespace-nowrap">{{ t('taskSprint.form.uploadAttachment') }}</span>
             </a>
           </Upload>
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                支持的格式："jpg","bmp","png","gif","txt","docx","jpeg","rar","zip","doc","xlsx","xls","pdf"；最多上传10个附件。
+                {{ t('taskSprint.tips.attachmentTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-2 -mt-0.25 text-3.5 cursor-pointer" />
@@ -767,7 +766,7 @@ const autoSize = {
         </div>
       </FormItem>
       <Tabs size="small" class="pl-5">
-        <TabPane key="acceptanceCriteria" tab="验收标准">
+        <TabPane key="acceptanceCriteria" :tab="t('taskSprint.form.acceptanceCriteria')">
           <FormItem
             class="!mb-5"
             name="acceptanceCriteria"
@@ -775,7 +774,7 @@ const autoSize = {
             <RichEditor
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
-              :options="{placeholder: '明确计软件产品交付的具体条件和标准。'}" />
+              :options="{placeholder: t('taskSprint.placeholder.inputAcceptanceCriteria')}" />
             <!-- <Textarea
               v-model:value="formState.acceptanceCriteria"
               size="small"
@@ -785,7 +784,7 @@ const autoSize = {
               placeholder="明确计软件产品交付的具体条件和标准。" /> -->
           </FormItem>
         </TabPane>
-        <TabPane key="otherInformation" tab="其他说明">
+        <TabPane key="otherInformation" :tab="t('taskSprint.form.otherInformation')">
           <FormItem
             class="!mb-5"
             name="otherInformation"
@@ -793,7 +792,7 @@ const autoSize = {
             <RichEditor
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
-              :options="{placeholder: '其他说明，如迭代策略、风险评估和管理等。'}" />
+              :options="{placeholder: t('taskSprint.placeholder.inputOtherInformation')}" />
             <!-- <Textarea
               v-model:value="formState.otherInformation"
               size="small"

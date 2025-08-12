@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import {
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
+const { t } = useI18n();
 const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/introduce/index.vue'));
 const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/burndown/index.vue'));
 const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/progress/index.vue'));
@@ -121,7 +123,7 @@ const reopen = async (data: SprintInfo, idx: number) => {
   if (error) {
     return;
   }
-  notification.success('重新打开迭代');
+  notification.success(t('taskSprint.messages.reopenSuccess'));
   setTableData(data.id, idx);
 };
 
@@ -132,7 +134,7 @@ const restart = async (data: SprintInfo, idx: number) => {
   if (error) {
     return;
   }
-  notification.success('重新开始迭代');
+  notification.success(t('taskSprint.messages.restartSuccess'));
   setTableData(data.id, idx);
 };
 
@@ -146,7 +148,7 @@ const toStart = async (data: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success('迭代开始成功');
+  notification.success(t('taskSprint.messages.startSuccess'));
   setTableData(id, index);
 };
 
@@ -159,7 +161,7 @@ const toCompleted = async (data: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success('迭代已完成');
+  notification.success(t('taskSprint.messages.completeSuccess'));
   setTableData(id, index);
 };
 
@@ -171,13 +173,13 @@ const toBlock = async (data: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success('迭代标记为阻塞成功');
+  notification.success(t('taskSprint.messages.blockSuccess'));
   setTableData(id, index);
 };
 
 const toDelete = async (data: SprintInfo) => {
   modal.confirm({
-    content: `确定删除迭代【${data.name}】吗？`,
+    content: t('taskSprint.messages.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await task.deleteSprint(id);
@@ -185,7 +187,7 @@ const toDelete = async (data: SprintInfo) => {
         return;
       }
 
-      notification.success('迭代删除成功， 您可以在回收站查看删除后的迭代');
+      notification.success(t('taskSprint.messages.deleteSuccess'));
       loadData();
       deleteTabPane([id]);
     }
@@ -214,7 +216,7 @@ const toClone = async (data: SprintInfo) => {
     return;
   }
 
-  notification.success('迭代克隆成功');
+  notification.success(t('taskSprint.messages.cloneSuccess'));
   loadData();
 };
 
@@ -409,39 +411,39 @@ const getDropdownMenuItems = (sprint) => {
     {
       key: 'block',
       icon: 'icon-zusai',
-      name: '阻塞',
+      name: t('taskSprint.dropdownMenu.block'),
       permission: 'block'
     },
     {
       key: 'delete',
       icon: 'icon-qingchu',
-      name: '删除',
+      name: t('taskSprint.dropdownMenu.delete'),
       permission: 'delete'
     },
     {
       key: 'grant',
       icon: 'icon-quanxian1',
-      name: '权限',
+      name: t('taskSprint.dropdownMenu.permission'),
       permission: 'grant'
     },
     {
       key: 'clone',
       icon: 'icon-fuzhi',
-      name: '克隆',
+      name: t('taskSprint.dropdownMenu.clone'),
       noAuth: true,
       permission: 'clone'
     },
     {
       key: 'reopen',
       icon: 'icon-zhongxindakai',
-      name: '重新打开',
+      name: t('taskSprint.dropdownMenu.reopen'),
       noAuth: true,
       permission: 'modify'
     },
     {
       key: 'restart',
       icon: 'icon-zhongxinkaishi',
-      name: '重新开始',
+      name: t('taskSprint.dropdownMenu.restart'),
       noAuth: true,
       permission: 'modify'
     },
@@ -449,24 +451,24 @@ const getDropdownMenuItems = (sprint) => {
       key: 'viewBurnDown',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: '查看燃尽图'
+      name: t('taskSprint.dropdownMenu.viewBurndown')
     },
     {
       key: 'viewProgress',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: '查看成员进度'
+      name: t('taskSprint.dropdownMenu.viewProgress')
     },
     {
       key: 'viewWorkCalendar',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: '查看工作日历'
+      name: t('taskSprint.dropdownMenu.viewWorkCalendar')
     },
     {
       key: 'export',
       icon: 'icon-daochu',
-      name: '导出任务',
+      name: t('taskSprint.dropdownMenu.export'),
       permission: 'export'
     }
   ].filter(Boolean);
@@ -481,9 +483,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
     <div class="flex space-x-2">
       <Introduce class="mb-7 flex-1" />
       <div class="flex flex-col w-145">
-        <div class="text-3.5 font-semibold mb-2.5">Scrum敏捷流程</div>
+        <div class="text-3.5 font-semibold mb-2.5">{{ t('taskSprint.scrumAgileProcess') }}</div>
         <div>
-          Scrum敏捷软件开发框架，‌旨在通过迭代和增量的方式开发软件，‌这种方法可以有效加速产品交付，‌同时确保产品开发的方向始终和用户的需求和期望保持一致。
+          {{ t('taskSprint.scrumAgileProcessDesc') }}
         </div>
         <div class="flex-1 flex flex-col justify-center">
           <img :src="ProcessPng" class="mt-2 items-center w-4/5" />
@@ -491,15 +493,15 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
       </div>
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">已添加的迭代</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('taskSprint.addedSprints') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何迭代，立即</span>
+            <span>{{ t('taskSprint.notAddedYet') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/task#sprint?type=ADD`">
-              添加迭代
+              {{ t('taskSprint.addSprint') }}
             </RouterLink>
           </div>
         </div>
@@ -588,7 +590,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                 <div class="flex leading-5">
                   <div class="flex mr-10 items-center">
                     <div class="mr-2">
-                      <span>负责人</span>
+                      <span>{{ t('taskSprint.columns.owner') }}</span>
                       <Colon />
                     </div>
                     <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
@@ -607,7 +609,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
                   <div class="flex items-center">
                     <div class="mr-2">
-                      <span>成员</span>
+                      <span>{{ t('taskSprint.columns.members') }}</span>
                       <Colon />
                     </div>
 
@@ -628,7 +630,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                         placement="bottomLeft"
                         internal>
                         <template #title>
-                          <span class="text-3">所有成员</span>
+                          <span class="text-3">{{ t('taskSprint.allMembers') }}</span>
                         </template>
                         <template #content>
                           <div class="flex flex-wrap" style="max-width: 700px;">
@@ -662,14 +664,14 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">共{{ item.taskNum }}条任务</div>
+                <div class="ml-8 text-theme-content">{{ t('taskSprint.taskCount', { count: item.taskNum }) }}</div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
                 <div class="flex flex-wrap">
                   <div class="flex mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>ID</span>
+                      <span>{{ t('taskSprint.columns.id') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.id || "--" }}</div>
@@ -677,7 +679,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
                   <div class="flex ml-8  mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>工作量评估</span>
+                      <span>{{ t('taskSprint.columns.workloadAssessment') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.evalWorkloadMethod.message }}</div>
@@ -685,7 +687,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
                   <div v-if="item.taskPrefix" class="flex ml-8 mt-3 relative">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>任务前缀</span>
+                      <span>{{ t('taskSprint.columns.taskPrefix') }}</span>
                       <Colon />
                     </div>
                     <div
@@ -697,7 +699,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </div>
 
                   <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-                    <span>附件数</span>
+                    <span>{{ t('taskSprint.columns.attachmentCount') }}</span>
                     <Colon />
                     <Popover placement="bottomLeft" internal>
                       <template #content>
@@ -724,7 +726,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     :title="item.lastModifiedByName">
                     {{ item.lastModifiedByName }}
                   </div>
-                  <div class="mx-2 whitespace-nowrap">修改于</div>
+                  <div class="mx-2 whitespace-nowrap">{{ t('taskSprint.columns.lastModifiedBy') }}</div>
                   <div class="whitespace-nowrap text-theme-content">
                     {{ item.lastModifiedDate }}
                   </div>
@@ -741,12 +743,12 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>编辑</span>
+                    <span>{{ t('taskSprint.actions.edit') }}</span>
                   </RouterLink>
 
                   <RouterLink class="flex items-center space-x-1" :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
                     <Icon icon="icon-renwu2" class="text-3.5" />
-                    <span>查看任务</span>
+                    <span>{{ t('taskSprint.actions.viewTasks') }}</span>
                   </RouterLink>
 
                   <Button
@@ -756,7 +758,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     class="px-0 flex items-center"
                     @click="toStart(item, index)">
                     <Icon icon="icon-kaishi" class="mr-0.5" />
-                    <span>开始</span>
+                    <span>{{ t('taskSprint.actions.start') }}</span>
                   </Button>
 
                   <Button
@@ -766,7 +768,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     class="px-0 flex items-center"
                     @click="toCompleted(item, index)">
                     <Icon icon="icon-yiwancheng" class="mr-0.5" />
-                    <span>完成</span>
+                    <span>{{ t('taskSprint.actions.complete') }}</span>
                   </Button>
 
                   <Dropdown

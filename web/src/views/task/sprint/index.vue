@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
@@ -24,6 +25,7 @@ const SprintEdit = defineAsyncComponent(() => import('@/views/task/sprint/edit/i
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const browserTabRef = ref();
 
 const addTabPane = (data: IPane) => {
@@ -55,7 +57,7 @@ const initialize = () => {
         return {
           _id: 'sprintList',
           value: 'sprintList',
-          name: '迭代',
+          name: t('taskSprint.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -103,7 +105,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加迭代',
+          name: t('taskSprint.addSprint'),
           value: 'sprintEdit',
           noCache: true,
           data: { _id: id }
