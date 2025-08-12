@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
 import { IconTask, TaskStatus } from '@xcan-angus/vue-ui';
 
@@ -12,6 +13,7 @@ type Props = {
   pagination: { current: number; pageSize: number; total: number; };
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   checkedId: undefined,
@@ -50,7 +52,7 @@ const checkboxChange = (event:{target:{checked:boolean;value:string;}}) => {
 };
 
 const showTotal = (value: number) => {
-  return '共' + value + '条';
+  return t('task.detail.pagination.total', { total: value });
 };
 </script>
 <template>

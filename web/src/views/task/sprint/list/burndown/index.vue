@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { Modal } from '@xcan-angus/vue-ui';
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -24,11 +27,11 @@ const cancel = () => {
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: '任务数'
+    label: t('taskSprint.burndown.taskCount')
   },
   {
     value: 'WORKLOAD',
-    label: '工作量'
+    label: t('taskSprint.burndown.workload')
   }
 ]);
 const burnDownData = ref();
@@ -60,12 +63,12 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('taskSprint.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: '期望',
+      name: t('taskSprint.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -114,7 +117,7 @@ onMounted(() => {
     :visible="props.visible"
     :footer="null"
     :width="800"
-    title="燃尽图"
+    :title="t('taskSprint.burndown.title')"
     @cancel="cancel">
     <div class="pt-1.5">
       <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt" />

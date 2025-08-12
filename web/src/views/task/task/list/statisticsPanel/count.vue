@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
           <span>{{ props.dataSource?.progress?.replace(/(\d+\.\d{2})\d+/,'$1') }}</span>
           <span class="text-3.5">%</span>
         </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.progress') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.progress') }}</div>
       </div>
     </div>
 
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-meimiaoshiwushu" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.totalTaskNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.totalTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.totalTasks') }}</div>
       </div>
     </div>
 
@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-daiceshi" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.pendingNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.pendingTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.pendingTasks') }}</div>
       </div>
     </div>
 
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-renwuceshizhong" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.inProgressNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.inProgressTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.inProgressTasks') }}</div>
       </div>
     </div>
 
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-daiqueren" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.confirmingNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.confirmingTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.confirmingTasks') }}</div>
       </div>
     </div>
 
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-ceshiwancheng" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.completedNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.completedTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.completedTasks') }}</div>
       </div>
     </div>
 
@@ -72,7 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-yiquxiao" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.canceledNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.canceledTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.canceledTasks') }}</div>
       </div>
     </div>
 
@@ -80,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-yiyuqi1" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.overdueNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.overdueTasks') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.overdueTasks') }}</div>
       </div>
     </div>
 
@@ -88,7 +88,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-yiceshiyonglishu" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.evalWorkload }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.evalWorkload') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.evalWorkload') }}</div>
       </div>
     </div>
 
@@ -96,7 +96,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-chenggongshu" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.completedWorkload }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.completedWorkload') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.completedWorkload') }}</div>
       </div>
     </div>
 
@@ -104,7 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
       <Icon class="flex-shrink-0 text-9" icon="icon-yicixingtongguoshu" />
       <div class="ml-3">
         <div class="text-3.75"> {{ props.dataSource?.oneTimePassedNum }} </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.oneTimePassedNum') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.oneTimePassedNum') }}</div>
       </div>
     </div>
 
@@ -115,7 +115,7 @@ const props = withDefaults(defineProps<Props>(), {
           <span>{{ props.dataSource?.oneTimePassedRate?.replace(/(\d+\.\d{2})\d+/,'$1') }}</span>
           <span class="text-3.5">%</span>
         </div>
-        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.statistics.oneTimePassedRate') }}</div>
+        <div class="flex-shrink-0 whitespace-nowrap text-theme-sub-content">{{ t('task.list.statistics.oneTimePassedRate') }}</div>
       </div>
     </div>
   </div>

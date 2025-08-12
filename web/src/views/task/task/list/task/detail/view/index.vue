@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, http, utils, duration } from '@xcan-angus/infra';
@@ -57,6 +58,7 @@ const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/splitT
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocCase/index.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocTask/index.vue'));
 
+const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
@@ -120,7 +122,7 @@ const toDelete = () => {
 
   const { name, id } = taskInfo.value;
   modal.confirm({
-    content: `确定删除任务【${name}】吗？`,
+    content: t('task.detail.messages.confirmDelete', { name }),
     async onOk () {
       const [error] = await task.deleteTask([id]);
       if (error) {
@@ -129,7 +131,7 @@ const toDelete = () => {
 
       emit('refreshChange');
       emit('delete', id);
-      notification.success('任务删除成功，您可以在回收站查看删除后的任务');
+      notification.success(t('task.detail.messages.deleteSuccess'));
     }
   });
 };
@@ -145,7 +147,7 @@ const toFavourite = async () => {
     return;
   }
 
-  notification.success('任务收藏成功');
+  notification.success(t('task.detail.messages.favouriteSuccess'));
   emitDataChange({ id: id, favouriteFlag: true });
 };
 
@@ -160,7 +162,7 @@ const toDeleteFavourite = async () => {
     return;
   }
 
-  notification.success('任务取消收藏成功');
+  notification.success(t('task.detail.messages.cancelFavouriteSuccess'));
   emitDataChange({ id: id, favouriteFlag: false });
 };
 
@@ -175,7 +177,7 @@ const toFollow = async () => {
     return;
   }
 
-  notification.success('任务关注成功');
+  notification.success(t('task.detail.messages.followSuccess'));
   emitDataChange({ id: id, followFlag: true });
 };
 
@@ -190,7 +192,7 @@ const toDeleteFollow = async () => {
     return;
   }
 
-  notification.success('任务取消关注成功');
+  notification.success(t('task.detail.messages.cancelFollowSuccess'));
   emitDataChange({ id: id, followFlag: false });
 };
 
@@ -314,9 +316,9 @@ const toCancel = async () => {
 const toCopyHref = () => {
   const message = window.location.origin + props.linkUrl;
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('task.detail.messages.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('task.detail.messages.copyLinkFailed'));
   });
 };
 
@@ -873,7 +875,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toEdit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuxie" />
-          <span>编辑</span>
+          <span>{{ t('task.detail.actions.edit') }}</span>
         </Button>
 
         <Button
@@ -883,7 +885,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toSplit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-guanlianziyuan" />
-          <span>拆分</span>
+          <span>{{ t('task.detail.actions.split') }}</span>
         </Button>
 
         <Button
@@ -953,7 +955,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toMove">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yidong" />
-          <span>移动</span>
+          <span>{{ t('task.detail.actions.move') }}</span>
         </Button>
 
         <Button
@@ -961,7 +963,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toCopyHref">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-fuzhi" />
-          <span>复制链接</span>
+          <span>{{ t('task.detail.actions.copyLink') }}</span>
         </Button>
 
         <!-- <Button
@@ -970,7 +972,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toRefresh">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>刷新</span>
+          <span>{{ t('task.detail.actions.refresh') }}</span>
         </Button> -->
 
         <Button
@@ -981,12 +983,12 @@ const getRefTaskNum = (type = 'TASK') => {
           @click="toggleFullScreen">
           <template v-if="fullScreenFlag">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-tuichuzuida" />
-            <span>退出全屏</span>
+            <span>{{ t('task.detail.actions.exitFullScreen') }}</span>
           </template>
 
           <template v-else>
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zuidahua" />
-            <span>全屏</span>
+            <span>{{ t('task.detail.actions.fullScreen') }}</span>
           </template>
         </Button>
       </div>
@@ -998,7 +1000,7 @@ const getRefTaskNum = (type = 'TASK') => {
           :disabled="prevBtnDisabled"
           @click="fetchPrev">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanshangyitiao" />
-          <span>{{ prevBtnDisabled ? '没有了' : '上一条任务' }}</span>
+          <span>{{ prevBtnDisabled ? t('task.detail.noMore') : t('task.detail.previousTask') }}</span>
         </Button>
         <Button
           size="small"
@@ -1006,7 +1008,7 @@ const getRefTaskNum = (type = 'TASK') => {
           :disabled="nextBtnDisabled"
           @click="fetchNext">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanxiayitiao" />
-          <span>{{ nextBtnDisabled ? '没有了' : '下一条任务' }}</span>
+          <span>{{ nextBtnDisabled ? t('task.detail.noMore') : t('task.detail.nextTask') }}</span>
         </Button>
       </div>
     </div>
@@ -1023,10 +1025,10 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center mr-4"
           @click="toRefresh">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>刷新</span>
+          <span>{{ t('task.detail.actions.refresh') }}</span>
         </Button>
       </template>
-      <TabPane key="basicInfo" tab="详情">
+      <TabPane key="basicInfo" :tab="t('task.detail.tabs.basicInfo')">
         <BasicInfo
           v-if="largePageLayout === false || largePageLayout === true"
           v-model:loading="loading"
@@ -1041,7 +1043,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="taskChild">
         <template #tab>
           <div class="inline-flex">
-            <span>子任务</span>
+            <span>{{ t('task.detail.tabs.subTask') }}</span>
             <span>({{ taskInfo?.subTaskInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -1058,7 +1060,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="asscoTask">
         <template #tab>
           <div class="inline-flex">
-            <span>任务</span>
+            <span>{{ t('task.detail.tabs.assocTask') }}</span>
             <span>({{ getRefTaskNum('TASK') }})</span>
           </div>
         </template>
@@ -1188,7 +1190,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane
         v-if="showTestInfo"
         key="testInfo"
-        tab="测试信息">
+        :tab="t('task.detail.tabs.testInfo')">
         <TestInfo
           :projectId="props.projectId"
           :userInfo="props.userInfo"
@@ -1200,7 +1202,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="remark">
         <template #tab>
           <div class="inline-flex">
-            <span>备注</span>
+            <span>{{ t('task.detail.tabs.remark') }}</span>
             <span>({{ taskInfo?.remarkNum || 0 }})</span>
           </div>
         </template>
@@ -1215,7 +1217,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="comments">
         <template #tab>
           <div class="inline-flex">
-            <span>评论</span>
+            <span>{{ t('task.detail.tabs.comments') }}</span>
             <span>({{ taskInfo?.commentNum || 0 }})</span>
           </div>
         </template>
@@ -1230,7 +1232,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="activity">
         <template #tab>
           <div class="inline-flex">
-            <span>活动</span>
+            <span>{{ t('task.detail.tabs.activity') }}</span>
             <span>({{ taskInfo?.activityNum || 0 }})</span>
           </div>
         </template>

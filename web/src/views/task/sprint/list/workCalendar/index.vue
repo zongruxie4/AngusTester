@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { Modal } from '@xcan-angus/vue-ui';
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { appContext } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -29,7 +32,7 @@ const cancel = () => {
     :visible="props.visible"
     :footer="null"
     :width="800"
-    title="工作日历"
+    :title="t('taskSprint.workCalendar.title')"
     @cancel="cancel">
     <WorkCalendar
       :projectId="props.projectId"

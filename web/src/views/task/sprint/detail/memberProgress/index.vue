@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Image, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { TableDataObj } from './PropsType';
 
@@ -38,14 +41,14 @@ onMounted(() => {
 
 const tableColumns = [
   {
-    title: '成员',
+    title: t('taskSprint.progress.member'),
     dataIndex: 'assigneeName',
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
   },
   {
-    title: '进度',
+    title: t('taskSprint.progress.progress'),
     dataIndex: 'completedRate',
     width: '15%',
     sorter: (a, b) => +a.completedRate - (+b.completedRate),
@@ -54,7 +57,7 @@ const tableColumns = [
     }
   },
   {
-    title: '总任务数',
+    title: t('taskSprint.progress.totalTaskCount'),
     dataIndex: 'totalTaskNum',
     sorter: (a, b) => +a.totalTaskNum - (+b.totalTaskNum),
     customCell: () => {
@@ -62,7 +65,7 @@ const tableColumns = [
     }
   },
   {
-    title: '有效任务数',
+    title: t('taskSprint.progress.validTaskCount'),
     dataIndex: 'validTaskNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -70,7 +73,7 @@ const tableColumns = [
     }
   },
   {
-    title: '完成任务数',
+    title: t('taskSprint.progress.completedTaskCount'),
     dataIndex: 'completedNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -78,20 +81,20 @@ const tableColumns = [
     }
   },
   {
-    title: '评估工作量',
+    title: t('taskSprint.progress.estimatedWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
-    title: '完成工作量',
+    title: t('taskSprint.progress.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {
-    title: '工作量完成率',
+    title: t('taskSprint.progress.workloadCompletionRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
-    title: '逾期任务数',
+    title: t('taskSprint.progress.overdueTaskCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -99,7 +102,7 @@ const tableColumns = [
     }
   },
   {
-    title: '逾期率',
+    title: t('taskSprint.progress.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%',
     customCell: () => {
@@ -133,7 +136,7 @@ const tableColumns = [
             v-if="+record?.completedRate === 100"
             class="text-white rounded-full bg-status-success text-3 px-1"
             style="transform: scale(0.8);">
-            已完成
+            {{ t('taskSprint.progress.completed') }}
           </div>
         </div>
       </template>

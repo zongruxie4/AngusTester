@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
@@ -52,6 +53,7 @@ const List = defineAsyncComponent(() => import('./list.vue'));
 const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/index.vue'));
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/move/index.vue'));
 
+const { t } = useI18n();
 const MAX_NUM = 200;
 
 const batchCancelDisabled = ref(false);
@@ -72,7 +74,7 @@ const selectedDataMap = ref<{// 批量操作选中的任务
     status: TaskInfo['status']['value'];
     favouriteFlag: boolean;
     followFlag: boolean;
-    sprintId: string;
+    sprintId?: string;
   }
 }>({});
 
@@ -134,7 +136,7 @@ const toSelect = (ids: string[]) => {
 
   const selectedNum = selectedRowKeys.length;
   if (selectedNum > MAX_NUM) {
-    notification.info(`最大支持批量操作 ${MAX_NUM} 个任务，当前已选中 ${selectedNum} 个任务。`);
+    notification.info(t('task.detail.messages.maxBatchOperation', { maxNum: MAX_NUM, selectedNum }));
   }
 
   emit('update:selectedIds', selectedRowKeys);
@@ -148,7 +150,7 @@ const cancelBatchOperation = () => {
 const batchCancel = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定取消选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.confirmCancel', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -167,7 +169,7 @@ const batchCancel = async () => {
         const errorNum = errorIds.length;
         if (errorNum === 0) {
           emit('refreshChange');
-          notification.success(`选中的 ${num} 条任务全部取消成功`);
+          notification.success(t('task.detail.batchActions.cancelSuccess', { num }));
           emit('batchAction', 'cancel', ids);
           emit('update:selectedIds', []);
           selectedDataMap.value = {};
@@ -175,12 +177,12 @@ const batchCancel = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消失败`);
+          notification.error(t('task.detail.batchActions.cancelFailed', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消成功，${errorNum} 条任务取消失败`);
+        notification.warning(t('task.detail.batchActions.cancelPartialSuccess', { num: num - errorNum, errorNum }));
 
         emit('refreshChange');
         emit('batchAction', 'cancel', successIds);
@@ -198,7 +200,7 @@ const batchCancel = async () => {
 const batchDelete = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定删除选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.confirmDelete', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const [error] = await task.deleteTask(`${TESTER}/task`, ids);
@@ -207,7 +209,7 @@ const batchDelete = async () => {
       }
 
       emit('refreshChange');
-      notification.success(`选中的 ${num} 条任务删除成功`);
+      notification.success(t('task.detail.batchActions.deleteSuccess', { num }));
       emit('batchAction', 'delete', ids);
       emit('update:selectedIds', []);
       selectedDataMap.value = {};
@@ -218,7 +220,7 @@ const batchDelete = async () => {
 const batchFavourite = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定收藏选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.confirmFavourite', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -236,7 +238,7 @@ const batchFavourite = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部收藏成功`);
+          notification.success(t('task.detail.batchActions.favouriteSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           emit('update:selectedIds', []);
           selectedDataMap.value = {};
@@ -244,12 +246,12 @@ const batchFavourite = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部收藏失败`);
+          notification.error(t('task.detail.batchActions.favouriteFailed', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务收藏成功，${errorNum} 条任务收藏失败`);
+        notification.warning(t('task.detail.batchActions.favouritePartialSuccess', { num: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -509,7 +511,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancel">
-        取消
+        {{ t('task.detail.batchActions.cancel') }}
       </Button>
 
       <Button
@@ -518,7 +520,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchDelete">
-        删除
+        {{ t('task.detail.batchActions.delete') }}
       </Button>
 
       <Button
@@ -527,7 +529,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchFavourite">
-        收藏
+        {{ t('task.detail.batchActions.favourite') }}
       </Button>
 
       <Button
@@ -536,7 +538,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancelFavourite">
-        取消收藏
+        {{ t('task.detail.batchActions.cancelFavourite') }}
       </Button>
 
       <Button
@@ -545,7 +547,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchFollow">
-        关注
+        {{ t('task.detail.batchActions.follow') }}
       </Button>
 
       <Button
@@ -554,7 +556,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancelFollow">
-        取消关注
+        {{ t('task.detail.batchActions.cancelFollow') }}
       </Button>
 
       <Button
@@ -563,7 +565,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchMove">
-        移动
+        {{ t('task.detail.batchActions.move') }}
       </Button>
 
       <Button
@@ -572,7 +574,7 @@ const menuItems = computed(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="cancelBatchOperation">
-        <span>取消批量操作</span>
+        <span>{{ t('task.detail.batchActions.cancelBatchOperation') }}</span>
         <span class="ml-1">({{ selectedIds.length }})</span>
       </Button>
     </div>
