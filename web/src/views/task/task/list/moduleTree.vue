@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { duration } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
@@ -38,6 +39,7 @@ const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId
 const CreateModal = defineAsyncComponent(() => import('@/views/project/project/edit/module/add.vue'));
 const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/project/edit/module/move.vue'));
 
+const { t } = useI18n();
 const projectInfo = inject('projectInfo', ref({}));
 const isAdmin = inject('isAdmin', ref(false));
 const userInfo = ref(appContext.getUser());
@@ -93,7 +95,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('task.list.moduleUpdateSuccess'));
   editId.value = undefined;
   emits('loadData', keywords.value);
 };
@@ -109,7 +111,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: `确定删除模块【${data.name}】吗？`,
+    content: t('task.list.messages.confirmDeleteModule', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -120,7 +122,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success('删除模块成功');
+      notification.success(t('task.list.moduleDeleteSuccess'));
       emits('loadData', keywords.value);
     }
   });
@@ -170,7 +172,7 @@ const moveUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('task.list.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -198,7 +200,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('task.list.moduleMoveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -230,7 +232,7 @@ const onMenuClick = (menu, record) => {
     <div class="flex justify-between h-11 space-x-4 p-2">
       <Input
         v-model:value="keywords"
-        placeholder="查询模块"
+        :placeholder="t('task.list.placeholder.searchModule')"
         @change="handleSearchModule" />
       <Button
         :disabled="!isAdmin && projectInfo?.createdBy !== userInfo?.id && projectInfo.ownerId !== userInfo?.id"
@@ -238,7 +240,7 @@ const onMenuClick = (menu, record) => {
         size="small"
         @click="onMenuClick({key: 'add'}, {id: undefined})">
         <Icon icon="icon-jia" />
-        添加模块
+        {{ t('task.list.module.addModule') }}
       </Button>
     </div>
     <div
@@ -246,7 +248,7 @@ const onMenuClick = (menu, record) => {
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">全部任务</span>
+      <span class="flex-1">{{ t('task.list.module.allTasks') }}</span>
     </div>
     <Tree
       :treeData="props.dataList"
@@ -264,7 +266,7 @@ const onMenuClick = (menu, record) => {
         <div v-if="editId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            placeholder="请输入模块名称"
+            :placeholder="t('task.list.placeholder.inputModuleName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"
@@ -277,7 +279,7 @@ const onMenuClick = (menu, record) => {
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelEdit">
-            取消
+            {{ t('task.list.actions.cancel') }}
           </Button>
         </div>
         <div v-else class="flex items-center space-x-2 tree-title">
@@ -300,27 +302,27 @@ const onMenuClick = (menu, record) => {
               <Menu class="w-50" @click="onMenuClick($event, {name, id, index, ids, pid, childLevels})">
                 <MenuItem v-if="level < 4" key="add">
                   <Icon icon="icon-jia" />
-                  新建子模块
+                  {{ t('task.list.module.createSubModule') }}
                 </MenuItem>
                 <MenuItem v-if="index > 0 || +pid > 0" key="up">
                   <Icon icon="icon-shangyi" />
-                  {{ index < 1 ? '移到上一层' : '上移' }}
+                  {{ index < 1 ? t('task.list.module.moveToUpperLevel') : t('task.list.module.moveUp') }}
                 </MenuItem>
                 <MenuItem v-if="!isLast" key="down">
                   <Icon icon="icon-xiayi" />
-                  下移
+                  {{ t('task.list.module.moveDown') }}
                 </MenuItem>
                 <MenuItem key="move">
                   <Icon icon="icon-yidong" />
-                  移动
+                  {{ t('task.list.module.moveModule') }}
                 </MenuItem>
                 <MenuItem key="edit">
                   <Icon icon="icon-bianji" />
-                  编辑
+                  {{ t('task.list.module.editModule') }}
                 </MenuItem>
                 <MenuItem key="del">
                   <Icon icon="icon-qingchu" />
-                  删除
+                  {{ t('task.list.module.deleteModule') }}
                 </MenuItem>
               </Menu>
             </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { http, utils, TESTER, download } from '@xcan-angus/infra';
@@ -45,6 +46,7 @@ const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task
 const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/upload/index.vue'));
 const ModuleTree = defineAsyncComponent(() => import('./moduleTree.vue'));
 
+const { t } = useI18n();
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const isAdmin = inject('isAdmin', ref(false));
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
@@ -440,7 +442,7 @@ const setTableData = (data: Partial<TaskInfo>) => {
 };
 
 // 模块相关
-const moduleTreeData = ref([{ name: '无模块任务', id: '-1' }]);
+const moduleTreeData = ref([{ name: t('task.list.noModuleTask'), id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
@@ -456,7 +458,7 @@ const loadModuleTree = async (keywords?: string) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: '无模块任务', id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('task.list.noModuleTask'), id: '-1' }, ...travelTreeData(data || [])];
   if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
     moduleId.value = '';
   }
@@ -516,21 +518,21 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: '编辑',
+        name: t('task.actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
         hide: true
       },
       {
-        name: '删除',
+        name: t('task.actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
         disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
         hide: true
       },
       {
-        name: '拆分',
+        name: t('task.actions.split'),
         key: 'split',
         icon: 'icon-guanlianziyuan',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -540,7 +542,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (status === 'PENDING') {
       menuItems.push({
-        name: '开始处理',
+        name: t('task.actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
         disabled: !isAdministrator && !isAssignee,
@@ -550,7 +552,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (status === 'IN_PROGRESS') {
       menuItems.push({
-        name: '已处理',
+        name: t('task.actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
         disabled: !isAdministrator && !isAssignee,
@@ -560,7 +562,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (status === 'CONFIRMING') {
       menuItems.push({
-        name: '确认完成',
+        name: t('task.actions.confirmComplete'),
         key: 'completed',
         icon: 'icon-yiwancheng',
         disabled: !isAdministrator && !isConfirmor,
@@ -568,7 +570,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: '确认未完成',
+        name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
         disabled: !isAdministrator && !isConfirmor,
@@ -578,27 +580,27 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (status === 'CANCELED' || status === 'COMPLETED') {
       menuItems.push({
-        name: '重新打开',
+        name: t('task.actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
         hide: false,
-        tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
+        tip: t('task.tips.reopenTip')
       });
 
       menuItems.push({
-        name: '重新开始',
+        name: t('task.actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
         hide: false,
-        tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
+        tip: t('task.tips.restartTip')
       });
     }
 
     if (status !== 'CANCELED' && status !== 'COMPLETED') {
       menuItems.push({
-        name: '取消',
+        name: t('task.actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -609,7 +611,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
     const { favouriteFlag, followFlag } = item;
     if (favouriteFlag) {
       menuItems.push({
-        name: '取消收藏',
+        name: t('task.actions.unfavorite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -617,7 +619,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     } else {
       menuItems.push({
-        name: '收藏',
+        name: t('task.actions.favorite'),
         key: 'favourite',
         icon: 'icon-yishoucang',
         disabled: false,
@@ -627,7 +629,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (followFlag) {
       menuItems.push({
-        name: '取消关注',
+        name: t('task.actions.unfollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -635,7 +637,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     } else {
       menuItems.push({
-        name: '关注',
+        name: t('task.actions.follow'),
         key: 'follow',
         icon: 'icon-yiguanzhu',
         disabled: false,
@@ -644,7 +646,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
     }
 
     menuItems.push({
-      name: '移动',
+      name: t('task.actions.move'),
       key: 'move',
       icon: 'icon-yidong',
       disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -652,7 +654,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
     });
 
     menuItems.push({
-      name: '复制链接',
+      name: t('task.copyLink'),
       key: 'copyLink',
       icon: 'icon-fuzhi',
       disabled: false,

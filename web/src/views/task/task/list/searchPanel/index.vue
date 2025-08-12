@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, inject, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Button, Switch, Tag } from 'ant-design-vue';
 import {
@@ -72,6 +73,7 @@ const emit = defineEmits<{
   (e: 'update:moduleFlag', value: boolean): void;
 }>();
 
+const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const route = useRoute();
 
@@ -1291,13 +1293,13 @@ const searchOptions = [
 
 const buttonDropdownMenuItems = [
   {
-    name: '导出任务',
+    name: t('task.list.actions.exportTasks'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: true
   },
   {
-    name: '导入任务',
+    name: t('task.list.actions.importTasks'),
     key: 'import',
     icon: 'icon-shangchuan',
     noAuth: true
@@ -1406,7 +1408,7 @@ const sortMenuItems = [
             :value="selectedSprint?.id"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mr-5 mb-3"
-            placeholder="选择迭代"
+            :placeholder="t('task.list.search.sprintPlaceholder')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1420,7 +1422,7 @@ const sortMenuItems = [
             size="small"
             @click="toSelectSprint">
             <Icon icon="icon-jia" class="text-3 mr-1" />
-            <span>迭代</span>
+            <span>{{ t('task.list.search.sprint') }}</span>
           </Button>
 
           <Tag
@@ -1440,7 +1442,7 @@ const sortMenuItems = [
             :value="selectedTags"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mb-3 mr-5"
-            placeholder="选择标签"
+            :placeholder="t('task.list.search.tagsPlaceholder')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1454,7 +1456,7 @@ const sortMenuItems = [
             size="small"
             @click="toSelectTag">
             <Icon icon="icon-jia" class="text-3 mr-1" />
-            <span>标签</span>
+            <span>{{ t('task.list.search.tags') }}</span>
           </Button>
 
           <template v-if="props.viewMode === 'kanban'">
@@ -1468,7 +1470,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                <span class="ml-1">排序</span>
+                <span class="ml-1">{{ t('common.sort') }}</span>
               </Button>
             </DropdownSort>
 
@@ -1481,7 +1483,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-fenzu" class="text-3.5" />
-                <span class="ml-1">分组</span>
+                <span class="ml-1">{{ t('common.group') }}</span>
               </Button>
             </DropdownGroup>
           </template>
@@ -1528,7 +1530,7 @@ const sortMenuItems = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择选择服务"
+            :placeholder="t('task.list.search.servicePlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="targetParentIdChange">
@@ -1552,7 +1554,7 @@ const sortMenuItems = [
             :params="apiParams"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            placeholder="选择选择接口"
+            :placeholder="t('task.list.search.apiPlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange">
@@ -1573,7 +1575,7 @@ const sortMenuItems = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择选择场景"
+            :placeholder="t('task.list.search.scenarioPlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange">
@@ -1592,7 +1594,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            placeholder="工作量"
+            :placeholder="t('task.list.search.workloadPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="evalWorkloadChange">
             <template #prefix>
@@ -1611,7 +1613,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            placeholder="失败次数"
+            :placeholder="t('task.list.search.failNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="failNumChange">
             <template #prefix>
@@ -1630,7 +1632,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            placeholder="处理次数"
+            :placeholder="t('task.list.search.totalNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="totalNumChange">
             <template #prefix>
@@ -1651,7 +1653,7 @@ const sortMenuItems = [
           @click="toCreate">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">添加任务</span>
+            <span class="ml-1">{{ t('task.list.actions.addTask') }}</span>
           </div>
           <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
             <div class="w-5 h-5 flex items-center justify-center">
@@ -1663,7 +1665,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          title="任务流程">
+          :title="t('task.list.actions.flowChart')">
           <Icon
             icon="icon-liuchengtu"
             class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
@@ -1691,7 +1693,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="props.collapse ? '收起统计' : '查看统计'">
+          :title="props.collapse ? t('task.list.actions.collapse') : t('task.list.actions.expand')">
           <IconCount
             :value="!props.collapse"
             class="text-4 flex-shrink-0"
@@ -1701,7 +1703,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          title="刷新">
+          :title="t('task.list.actions.refresh')">
           <IconRefresh class="text-4 flex-shrink-0" @click="toRefresh" />
         </Tooltip>
       </div>
