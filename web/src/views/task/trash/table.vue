@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
 import { task } from 'src/api/tester';
@@ -32,6 +33,7 @@ const emit = defineEmits<{
   (e: 'listChange', value: TrashItem[]):void;
 }>();
 
+const { t } = useI18n();
 const isAdmin = inject('isAdmin', ref<boolean>());
 
 const loaded = ref(false);
@@ -53,7 +55,7 @@ const recoverHandler = async (data: TrashItem) => {
     return;
   }
 
-  notification.success('还原成功');
+  notification.success(t('taskTrash.messages.recoverSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -66,7 +68,7 @@ const deleteHandler = async (data: TrashItem) => {
     return;
   }
 
-  notification.success('删除成功');
+  notification.success(t('taskTrash.messages.deleteSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -150,32 +152,37 @@ const columns = [
   //   sorter: false
   // },
   {
-    title: '名称',
+    key: 'targetName',
+    title: t('taskTrash.columns.name'),
     dataIndex: 'targetName',
     width: '35%',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '添加人',
+    key: 'createdByName',
+    title: t('taskTrash.columns.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除人',
+    key: 'deletedByName',
+    title: t('taskTrash.columns.deleter'),
     dataIndex: 'deletedByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除时间',
+    key: 'deletedDate',
+    title: t('taskTrash.columns.deleteTime'),
     dataIndex: 'deletedDate',
     ellipsis: true,
     sorter: true
   },
   {
-    title: '操作',
+    key: 'action',
+    title: t('taskTrash.columns.actions'),
     dataIndex: 'action',
     width: 70
   }
@@ -225,7 +232,7 @@ const emptyTextStyle = {
       <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
         <Button
           :disabled="record.disabled"
-          title="还原"
+          :title="t('taskTrash.actions.recover')"
           size="small"
           type="text"
           class="space-x-1 flex items-center p-0"
@@ -234,7 +241,7 @@ const emptyTextStyle = {
         </Button>
         <Button
           :disabled="record.disabled"
-          title="删除"
+          :title="t('taskTrash.actions.delete')"
           size="small"
           type="text"
           class="space-x-1 flex items-center p-0"

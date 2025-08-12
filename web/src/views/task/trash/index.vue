@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, inject, Ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   refreshNotify: undefined
 });
+const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTaskStatistics: true }));
 
 const Table = defineAsyncComponent(() => import('./table.vue'));
@@ -39,7 +41,7 @@ const recoverAll = async () => {
     return;
   }
 
-  notification.success('全部还原成功');
+  notification.success(t('taskTrash.messages.recoverAllSuccess'));
 };
 
 const deleteAll = async () => {
@@ -51,7 +53,7 @@ const deleteAll = async () => {
     return;
   }
 
-  notification.success('全部删除成功');
+  notification.success(t('taskTrash.messages.deleteAllSuccess'));
   notify.value = utils.uuid();
 };
 
@@ -114,7 +116,7 @@ const handleChange = (listData, key) => {
           :allowClear="true"
           :maxlength="200"
           trim
-          placeholder="请输入查询关键字"
+          :placeholder="t('taskTrash.placeholder.searchKeyword')"
           class="w-75"
           @change="inputChange">
           <template #suffix>
@@ -123,7 +125,7 @@ const handleChange = (listData, key) => {
         </Input>
         <div class="flex-1 truncate text-theme-sub-content space-x-1 ml-2">
           <Icon icon="icon-tishi1" class="text-3.5 text-tips" />
-          <span>只允许管理员和删除人还原或彻底删除回收站数据。</span>
+          <span>{{ t('taskTrash.tips.adminOnly') }}</span>
         </div>
       </div>
       <div class="space-x-2.5">
@@ -133,7 +135,7 @@ const handleChange = (listData, key) => {
           type="primary"
           @click="recoverAll">
           <Icon icon="icon-zhongzhi" class="text-3.5 mr-1" />
-          <span class>全部还原</span>
+          <span class>{{ t('taskTrash.actions.recoverAll') }}</span>
         </Button>
         <Button
           :disabled="buttonDisabled"
@@ -142,14 +144,14 @@ const handleChange = (listData, key) => {
           danger
           @click="deleteAll">
           <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-          <span class>全部删除</span>
+          <span class>{{ t('taskTrash.actions.deleteAll') }}</span>
         </Button>
         <Button
           size="small"
           type="default"
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span class>刷新</span>
+          <span class>{{ t('taskTrash.actions.refresh') }}</span>
         </Button>
       </div>
     </div>
@@ -158,7 +160,7 @@ const handleChange = (listData, key) => {
       <TabPane
         v-if="proTypeShowMap.showSprint"
         key="TASK_SPRINT"
-        tab="迭代">
+        :tab="t('taskTrash.tabs.sprint')">
         <Table
           v-model:spinning="loading"
           :notify="notify"
@@ -168,7 +170,7 @@ const handleChange = (listData, key) => {
           @listChange="handleChange($event, 'TASK_SPRINT')" />
       </TabPane>
 
-      <TabPane key="TASK" tab="任务">
+      <TabPane key="TASK" :tab="t('taskTrash.tabs.task')">
         <Table
           v-model:spinning="loading"
           :notify="notify"

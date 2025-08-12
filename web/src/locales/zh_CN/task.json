@@ -981,5 +981,38 @@
     "workCalendar": {
       "title": "工作日历"
     }
+  },
+  "taskTrash": {
+    "title": "回收站",
+    "placeholder": {
+      "searchKeyword": "请输入查询关键字"
+    },
+    "tips": {
+      "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
+    },
+    "actions": {
+      "recoverAll": "全部还原",
+      "deleteAll": "全部删除",
+      "refresh": "刷新",
+      "recover": "还原",
+      "delete": "删除"
+    },
+    "messages": {
+      "recoverAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功",
+      "recoverSuccess": "还原成功",
+      "deleteSuccess": "删除成功"
+    },
+    "tabs": {
+      "sprint": "迭代",
+      "task": "任务"
+    },
+    "columns": {
+      "name": "名称",
+      "creator": "添加人",
+      "deleter": "删除人",
+      "deleteTime": "删除时间",
+      "actions": "操作"
+    }
   }
 }
