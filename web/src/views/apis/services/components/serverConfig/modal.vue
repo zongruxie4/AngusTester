@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
 import SecurityConfig from './index.vue';
 
@@ -11,6 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   id: ''
 });
+
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void}>();
 
@@ -31,7 +34,7 @@ const saveSuccess = () => {
 </script>
 <template>
   <Modal
-    title="服务器配置"
+    :title="t('service.serverConfig.title')"
     style="width:650px;"
     :visible="visible"
     :reverse="true"

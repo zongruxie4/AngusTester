@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Radio } from 'ant-design-vue';
 import { Icon, IconRequired, Input, notification, Tooltip, Validate } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
@@ -18,6 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
   urlMap: () => ({}),
   hideButton: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -174,7 +177,7 @@ const isServerUrl = (_url:string):boolean => {
   if (props.urlMap[_url]) {
     if (!serverId.value || props.urlMap[_url].length > 1 || !props.urlMap[_url].includes(serverId.value)) {
       urlError.value = true;
-      urlErrorMsg.value = 'Server URL已存在，请重新输入';
+      urlErrorMsg.value = t('service.serverConfig.messages.serverUrlExists');
       return false;
     }
   }
@@ -189,7 +192,7 @@ const isServerUrl = (_url:string):boolean => {
     }, [] as string[]);
     if (names.length > uniqueNames.length) {
       urlError.value = true;
-      urlErrorMsg.value = 'Server URL中的变量不允许重复';
+      urlErrorMsg.value = t('service.serverConfig.messages.variableNotRepeat');
       return false;
     }
   }
@@ -317,7 +320,7 @@ const cancel = () => {
 
 const save = () => {
   if (!isValid()) {
-    notification.error('服务器配置错误，请检查更正后再保存。');
+    notification.error(t('service.serverConfig.messages.configError'));
     return;
   }
 
@@ -380,7 +383,7 @@ const isValid = ():boolean => {
         errorNum++;
       } else {
         if (nameMap[name].length > 1) {
-          nameErrorMsgMap.value[id] = '变量名称重复';
+          nameErrorMsgMap.value[id] = t('service.serverConfig.messages.variableNameRepeat');
           nameErrorSet.value.add(id);
           errorNum++;
         }
@@ -423,7 +426,7 @@ const validVariableValue = (enumList:{id:string;value:string}[]):number => {
         } else {
           if (repeatEnumMap[_value] && repeatEnumMap[_value] > 1) {
             valueErrorSet.value.add(_id);
-            valueErrorMsgMap.value[_id] = '变量值重复';
+            valueErrorMsgMap.value[_id] = t('service.serverConfig.messages.variableValueRepeat');
             errorNum++;
           }
         }
@@ -568,10 +571,10 @@ const addServerBtnDisabled = computed(() => {
 
 defineExpose({
   getData: () => {
-    if (!isValid()) {
-      notification.error('服务器配置错误，请检查更正后再保存。');
-      return;
-    }
+          if (!isValid()) {
+        notification.error(t('service.serverConfig.messages.configError'));
+        return;
+      }
     const data = getData();
     return data;
   }
@@ -582,12 +585,12 @@ defineExpose({
     <div class="mb-3.5">
       <div class="flex items-center mb-0.5">
         <IconRequired />
-        <span>URL</span>
+        <span>{{ t('service.serverConfig.form.url') }}</span>
       </div>
       <Validate :text="urlErrorMsg">
         <Input
           v-model:value="url"
-          placeholder="指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}"
+          :placeholder="t('service.serverConfig.form.urlPlaceholder')"
           trimAll
           type="textarea"
           :autoSize="true"
@@ -600,7 +603,7 @@ defineExpose({
 
     <div class="mb-3.5">
       <div class="flex items-center mb-0.5">
-        <span>描述</span>
+        <span>{{ t('service.serverConfig.form.description') }}</span>
       </div>
       <Input
         v-model:value="description"
@@ -608,14 +611,14 @@ defineExpose({
         :autoSize="{ minRows: 3, maxRows: 5 }"
         :maxlength="400"
         trim
-        placeholder="服务器描述，最大支持400字符" />
+        :placeholder="t('service.serverConfig.form.descriptionPlaceholder')" />
     </div>
 
     <div>
       <div class="flex items-center justify-between mb-0.5">
         <div class="flex">
-          <div class="font-semibold mr-1">变量</div>
-          <Tooltip title="最多可添加50个变量">
+          <div class="font-semibold mr-1">{{ t('service.serverConfig.form.variables') }}</div>
+          <Tooltip :title="t('service.serverConfig.tips.maxVariables')">
             <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
           </Tooltip>
         </div>
@@ -626,7 +629,7 @@ defineExpose({
             type="link"
             size="small"
             @click="addVariable(false)">
-            添加变量
+            {{ t('service.serverConfig.actions.addVariable') }}
           </Button>
         </div>
       </div>
@@ -637,8 +640,8 @@ defineExpose({
               <div class="flex items-center justify-between mb-0.5">
                 <div class="flex items-center">
                   <IconRequired />
-                  <span class="mr-1">名称</span>
-                  <Tooltip title="变量名称不能重复">
+                  <span class="mr-1">{{ t('service.serverConfig.form.variableName') }}</span>
+                  <Tooltip :title="t('service.serverConfig.tips.variableNameNotRepeat')">
                     <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
                   </Tooltip>
                 </div>
@@ -647,14 +650,14 @@ defineExpose({
                   type="link"
                   size="small"
                   @click="deleteVariable(item,index)">
-                  删除变量
+                  {{ t('service.serverConfig.actions.deleteVariable') }}
                 </Button>
               </div>
               <Validate :text="nameErrorMsgMap[item]">
                 <Input
                   :value="variableDataMap[item].name"
                   trimAll
-                  placeholder="变量名称，最大支持100字符"
+                  :placeholder="t('service.serverConfig.form.variableNamePlaceholder')"
                   :maxlength="100"
                   :error="nameErrorSet.has(item)"
                   dataType="mixin-en"
@@ -666,8 +669,8 @@ defineExpose({
             <div class="mb-3.5">
               <div class="flex items-center mb-0.5">
                 <IconRequired />
-                <span class="mr-1">值</span>
-                <Tooltip title="同一个变量的值不能重复">
+                <span class="mr-1">{{ t('service.serverConfig.form.variableValue') }}</span>
+                <Tooltip :title="t('service.serverConfig.tips.variableValueNotRepeat')">
                   <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
                 </Tooltip>
               </div>
@@ -680,14 +683,14 @@ defineExpose({
                   <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
                     <Input
                       v-model:value="_enum.value"
-                      placeholder="变量值，最大支持400字符"
+                      :placeholder="t('service.serverConfig.form.variableValuePlaceholder')"
                       trim
                       :maxlength="400"
                       :error="valueErrorSet.has(_enum.id)"
                       @change="variableValueChange($event,item,_enum.id,_index)">
                       <template #suffix>
                         <div class="flex items-center leading-5">
-                          <div v-if="defaultValueMap[item]===_enum.id" class="mr-1 text-text-sub-content text-3">默认</div>
+                          <div v-if="defaultValueMap[item]===_enum.id" class="mr-1 text-text-sub-content text-3">{{ t('service.serverConfig.form.default') }}</div>
                           <Radio
                             size="small"
                             :disabled="_index===variableDataMap[item].enum.length-1"
@@ -708,7 +711,7 @@ defineExpose({
 
             <div>
               <div class="flex items-center mb-0.5">
-                <span>描述</span>
+                <span>{{ t('service.serverConfig.form.variableDescription') }}</span>
               </div>
               <Input
                 v-model:value="variableDataMap[item].description"
@@ -716,7 +719,7 @@ defineExpose({
                 :autoSize="{ minRows: 3, maxRows: 5 }"
                 :maxlength="400"
                 trim
-                placeholder="变量描述，最大支持400字符" />
+                :placeholder="t('service.serverConfig.form.variableDescriptionPlaceholder')" />
             </div>
           </div>
 
@@ -731,14 +734,14 @@ defineExpose({
         type="link"
         size="small"
         @click="cancel">
-        取消
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         class="p-0 leading-5 h-5"
         type="link"
         size="small"
         @click="save">
-        保存
+        {{ t('actions.save') }}
       </Button>
     </div>
   </div>

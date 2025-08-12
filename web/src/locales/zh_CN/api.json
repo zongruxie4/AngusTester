@@ -731,6 +731,56 @@
       "clientAuthTypePlaceholder": "选择客户端认证",
       "description": "描述",
       "descriptionPlaceholder": "输入描述，支持Markdown语法"
+    },
+    "serverConfig": {
+      "title": "服务器配置",
+      "hints": "定义当前服务下所有接口可以使用的服务器(Server URL)，最多添加50个。",
+      "actions": {
+        "addServerDemo": "服务器示例",
+        "addServer": "服务器",
+        "updateToApis": "更新到已关联接口",
+        "edit": "编辑",
+        "delete": "删除",
+        "cancel": "取消",
+        "save": "保存",
+        "addVariable": "添加变量",
+        "deleteVariable": "删除变量"
+      },
+      "messages": {
+        "updateToApisSuccess": "更新到已关联接口成功",
+        "confirmDelete": "确认删除该服务器吗？",
+        "configError": "服务器配置错误，请检查更正后再保存。",
+        "serverUrlExists": "Server URL已存在，请重新输入",
+        "variableNotRepeat": "Server URL中的变量不允许重复",
+        "variableNameRepeat": "变量名称重复",
+        "variableValueRepeat": "变量值重复"
+      },
+      "form": {
+        "url": "URL",
+        "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
+        "description": "描述",
+        "descriptionPlaceholder": "服务器描述，最大支持400字符",
+        "variables": "变量",
+        "variableName": "名称",
+        "variableNamePlaceholder": "变量名称，最大支持100字符",
+        "variableValue": "值",
+        "variableValuePlaceholder": "变量值，最大支持400字符",
+        "variableDescription": "描述",
+        "variableDescriptionPlaceholder": "变量描述，最大支持400字符",
+        "default": "默认"
+      },
+      "tips": {
+        "maxVariables": "最多可添加50个变量",
+        "variableNameNotRepeat": "变量名称不能重复",
+        "variableValueNotRepeat": "同一个变量的值不能重复"
+      },
+      "columns": {
+        "url": "URL",
+        "description": "描述",
+        "variables": "变量",
+        "name": "名称",
+        "value": "值"
+      }
     }
   }
 }

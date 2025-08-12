@@ -89,5 +89,58 @@
       "dueTime": "Due Time",
       "priority": "Priority"
     }
+  },
+  "service": {
+    "serverConfig": {
+      "title": "Server Configuration",
+      "hints": "Define servers (Server URL) that can be used by all APIs under current service, maximum 50 servers can be added.",
+      "actions": {
+        "addServerDemo": "Server Example",
+        "addServer": "Server",
+        "updateToApis": "Update to Associated APIs",
+        "edit": "Edit",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "save": "Save",
+        "addVariable": "Add Variable",
+        "deleteVariable": "Delete Variable"
+      },
+      "messages": {
+        "updateToApisSuccess": "Successfully updated to associated APIs",
+        "confirmDelete": "Confirm deletion of this server?",
+        "configError": "Server configuration error, please check and correct before saving.",
+        "serverUrlExists": "Server URL already exists, please re-enter",
+        "variableNotRepeat": "Variables in Server URL cannot be repeated",
+        "variableNameRepeat": "Variable name is duplicated",
+        "variableValueRepeat": "Variable value is duplicated"
+      },
+      "form": {
+        "url": "URL",
+        "urlPlaceholder": "URL prefix pointing to target host, e.g.: https://{env}.xcan.cloud:{prot}/{path}",
+        "description": "Description",
+        "descriptionPlaceholder": "Server description, maximum 400 characters",
+        "variables": "Variables",
+        "variableName": "Name",
+        "variableNamePlaceholder": "Variable name, maximum 100 characters",
+        "variableValue": "Value",
+        "variableValuePlaceholder": "Variable value, maximum 400 characters",
+        "variableDescription": "Description",
+        "variableDescriptionPlaceholder": "Variable description, maximum 400 characters",
+        "default": "Default"
+      },
+      "tips": {
+        "maxVariables": "Maximum 50 variables can be added",
+        "variableNameNotRepeat": "Variable names cannot be duplicated",
+        "variableValueNotRepeat": "Values of the same variable cannot be duplicated"
+      },
+      "columns": {
+        "url": "URL",
+        "description": "Description",
+        "variables": "Variables",
+        "name": "Name",
+        "value": "Value",
+        "description": "Description"
+      }
+    }
   }
 } 

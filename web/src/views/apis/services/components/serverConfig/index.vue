@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Collapse, CollapsePanel, Popconfirm, TypographyParagraph } from 'ant-design-vue';
 import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
@@ -16,6 +17,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
+
+const { t } = useI18n();
 
 const loading = ref(false);
 const adding = ref(false);
@@ -100,7 +103,7 @@ const toUpdate = async (data: ServerConfig) => {
     return;
   }
 
-  notification.success('更新到已关联接口成功');
+  notification.success(t('service.serverConfig.messages.updateToApisSuccess'));
 };
 
 const toEdit = (data: ServerConfig) => {
@@ -262,7 +265,7 @@ const urlMap = computed(() => {
   <Spin :spinning="loading" class="pb-3 h-full flex flex-col pr-0">
     <div class="flex items-start leading-5 pr-5 text-theme-sub-content">
       <Icon icon="icon-tishi1" class="text-3.5 text-text-tip flex-shrink-0 transform-gpu translate-y-0.5 mr-1" />
-      <span class="inline-block">定义当前服务下所有接口可以使用的服务器(Server URL)，最多添加50个。</span>
+      <span class="inline-block">{{ t('service.serverConfig.hints') }}</span>
     </div>
     <div class="flex items-center justify-end mt-3 mb-4 pr-5">
       <Button
@@ -272,7 +275,7 @@ const urlMap = computed(() => {
         class="mr-3"
         @click="addServerDemo">
         <Icon icon="icon-jia" class="mr-1" />
-        <span class="mr-1">服务器示例</span>
+        <span class="mr-1">{{ t('service.serverConfig.actions.addServerDemo') }}</span>
       </Button>
       <Button
         :disabled="addServerDisabled"
@@ -280,7 +283,7 @@ const urlMap = computed(() => {
         size="small"
         @click="addServer">
         <Icon icon="icon-jia" class="mr-1" />
-        <span class="mr-1">服务器</span>
+        <span class="mr-1">{{ t('service.serverConfig.actions.addServer') }}</span>
       </Button>
     </div>
 
@@ -318,13 +321,13 @@ const urlMap = computed(() => {
                     <Arrow :open="activeKey.includes(item.id)" @change="arrowChange($event, item)" />
                   </div>
                   <div class="flex items-center justify-end space-x-3">
-                    <Tooltip title="更新到已关联接口" placement="top">
+                    <Tooltip :title="t('service.serverConfig.actions.updateToApis')" placement="top">
                       <Icon
                         icon="icon-shoudongtuisong"
                         class="text-theme-text-hover cursor-pointer text-3.5"
                         @click="toUpdate(item)" />
                     </Tooltip>
-                    <Tooltip title="编辑" placement="top">
+                    <Tooltip :title="t('service.serverConfig.actions.edit')" placement="top">
                       <Icon
                         icon="icon-shuxie"
                         class="text-theme-text-hover cursor-pointer text-3.5"
@@ -333,7 +336,7 @@ const urlMap = computed(() => {
                     <!-- <Tooltip title="删除" placement="top"> -->
                     <Popconfirm
                       placement="topRight"
-                      title="确认删除该服务器吗？"
+                      :title="t('service.serverConfig.messages.confirmDelete')"
                       @confirm="toDelete(item,index)">
                       <Icon
                         icon="icon-qingchu"
@@ -346,7 +349,7 @@ const urlMap = computed(() => {
               <div>
                 <div class="flex items-start leading-4.5 mb-3">
                   <div class="flex-shrink-0 text-theme-sub-content mr-2">
-                    <span>URL</span>
+                    <span>{{ t('service.serverConfig.columns.url') }}</span>
                     <Colon />
                   </div>
                   <TypographyParagraph
@@ -357,7 +360,7 @@ const urlMap = computed(() => {
 
                 <div class="flex items-start leading-4.5 mb-3">
                   <div class="flex-shrink-0 text-theme-sub-content mr-2">
-                    <span>描述</span>
+                    <span>{{ t('service.serverConfig.columns.description') }}</span>
                     <Colon />
                   </div>
                   <TypographyParagraph
@@ -367,12 +370,12 @@ const urlMap = computed(() => {
                 </div>
 
                 <div v-if="!!item.variables?.length">
-                  <div class="text-theme-sub-content mb-0.5">变量</div>
+                  <div class="text-theme-sub-content mb-0.5">{{ t('service.serverConfig.columns.variables') }}</div>
                   <div class="border border-solid border-theme-text-box rounded px-3 py-3">
                     <div v-for="(_variable, _index) in item.variables" :key="_variable.id">
                       <div class="flex items-start leading-4.5 mb-2">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>名称</span>
+                          <span>{{ t('service.serverConfig.columns.name') }}</span>
                           <Colon />
                         </div>
                         <div :title="_variable.name" class="flex-1 truncate">{{ _variable.name }}</div>
@@ -380,7 +383,7 @@ const urlMap = computed(() => {
 
                       <div class="flex items-start leading-4.5 mb-2">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>值</span>
+                          <span>{{ t('service.serverConfig.columns.value') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 space-y-1">
@@ -389,14 +392,14 @@ const urlMap = computed(() => {
                             :key="_enum.id"
                             class="flex items-center justify-between">
                             <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
-                            <div :class="{invisible:_enum.value!==_variable.default}" class="flex-shrink-0">默认</div>
+                            <div :class="{invisible:_enum.value!==_variable.default}" class="flex-shrink-0">{{ t('service.serverConfig.form.default') }}</div>
                           </div>
                         </div>
                       </div>
 
                       <div class="flex items-start leading-4.5">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>描述</span>
+                          <span>{{ t('service.serverConfig.columns.description') }}</span>
                           <Colon />
                         </div>
                         <TypographyParagraph
