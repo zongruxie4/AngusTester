@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
+const { t } = useI18n();
 const commentRef = ref();
 
 onMounted(() => {
@@ -39,7 +41,7 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">评论</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.comment') }}</div>
 
     <SmartComment
       ref="commentRef"

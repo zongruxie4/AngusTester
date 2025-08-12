@@ -83,160 +83,72 @@
       "currentProject": "Current Project",
       "plan": "Specified Iteration",
       "testerOrg": "Specified Organization"
-    },
-    "detail": {
-      "total": "Total",
-      "bugs": {
-        "title": "Bug Count",
-        "bugLevel": "Bug Level",
-        "validBugRate": "Valid Bug Rate",
-        "missingBugRate": "Missing Bug Rate",
-        "bugWorkloadRate": "Bug Workload Rate",
-        "totalBugs": "Total Bugs",
-        "validBugs": "Valid Bugs",
-        "invalidBugs": "Invalid Bugs",
-        "missingBugs": "Missing Bugs",
-        "criticalBugs": "Critical Bugs",
-        "majorBugs": "Major Bugs",
-        "minorBugs": "Minor Bugs",
-        "trivialBugs": "Trivial Bugs",
-        "criticalCount": "Critical Count",
-        "majorCount": "Major Count",
-        "minorCount": "Minor Count",
-        "trivialCount": "Trivial Count",
-        "invalidBugCount": "Invalid Bugs",
-        "validBugCount": "Valid Bugs",
-        "nonMissingBugs": "Non-missing Bugs",
-        "missingBugCount": "Missing Bugs",
-        "nonBugWorkload": "Non-bug Workload",
-        "bugWorkload": "Bug Workload",
-        "unfinished": "Unfinished",
-        "completed": "Completed"
-      },
-      "burndown": {
-        "title": "Burndown Chart"
-      },
-      "progress": {
-        "title": "Progress",
-        "unfinished": "Unfinished",
-        "completed": "Completed"
-      },
-      "workload": {
-        "title": "Workload",
-        "unfinishedWorkload": "Unfinished Workload",
-        "completedWorkload": "Completed Workload",
-        "unfinishedSaving": "Unfinished Saving",
-        "completedSaving": "Completed Saving"
-      },
-      "overdueAssessment": {
-        "title": "Overdue Assessment",
-        "nonOverdueCount": "Non-overdue Count",
-        "overdueCount": "Overdue Count",
-        "nonOverdueWorkload": "Non-overdue Workload",
-        "overdueWorkload": "Overdue Workload"
-      },
-      "backlogTasks": {
-        "title": "Backlog Tasks",
-        "nonBackloggedCount": "Non-backlogged Count",
-        "backloggedCount": "Backlogged Count",
-        "nonBackloggedWorkload": "Non-backlogged Workload",
-        "backloggedWorkload": "Backlogged Workload"
-      },
-      "recentDelivery": {
-        "title": "Recent Delivery"
-      },
-      "leadTime": {
-        "title": "Lead Time"
-      },
-      "unplannedTasks": {
-        "title": "Unplanned Tasks"
-      },
-      "taskGrowthTrend": {
-        "title": "Task Growth Trend",
-        "customTest": "Custom Test",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "services": "Services",
-        "apis": "APIs",
-        "cases": "Cases",
-        "plan": "Plan",
-        "sprint": "Sprint",
-        "task": "Task",
-        "mockApis": "Mock APIs",
-        "mockPushback": "Mock Pushback",
-        "mockResponse": "Mock Response",
-        "mockService": "Mock Service",
-        "dataset": "Dataset",
-        "datasource": "Datasource",
-        "variable": "Variable",
-        "total": "Total",
-        "report": "Report",
-        "record": "Record",
-        "apiTest": "API Test",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "story": "Story",
-        "scenarioTest": "Scenario Test"
-      },
-      "resourceCreation": {
-        "title": "Resource Creation",
-        "customTest": "Custom Test",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "services": "Services",
-        "apis": "APIs",
-        "cases": "Cases",
-        "plan": "Plan",
-        "sprint": "Sprint",
-        "task": "Task",
-        "mockApis": "Mock APIs",
-        "mockPushback": "Mock Pushback",
-        "mockResponse": "Mock Response",
-        "mockService": "Mock Service",
-        "dataset": "Dataset",
-        "datasource": "Datasource",
-        "variable": "Variable",
-        "total": "Total",
-        "report": "Report",
-        "record": "Record",
-        "apiTest": "API Test",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "story": "Story",
-        "scenarioTest": "Scenario Test",
-        "analysis": "Analysis",
-        "backlog": "Backlog",
-        "meeting": "Meeting"
-      },
-      "coreKpi": {
-        "title": "Core KPI",
-        "unfinishedTaskCount": "Unfinished Task Count",
-        "completedTaskCount": "Completed Task Count",
-        "unfinishedWorkload": "Unfinished Workload",
-        "completedWorkload": "Completed Workload",
-        "unfinishedOverdueCount": "Unfinished Overdue Count",
-        "completedOverdueCount": "Completed Overdue Count",
-        "unfinishedBugCount": "Unfinished Bug Count",
-        "completedBugCount": "Completed Bug Count"
-      },
-      "handlingEfficiency": {
-        "title": "Handling Efficiency",
-        "unfinishedTaskCount": "Unfinished Task Count",
-        "completedTaskCount": "Completed Task Count",
-        "oneTimeUnfinishedTaskCount": "One-time Unfinished Task Count",
-        "oneTimeCompletedTaskCount": "One-time Completed Task Count",
-        "twoTimeUnfinishedTaskCount": "Two-time Unfinished Task Count",
-        "twoTimeCompletedTaskCount": "Two-time Completed Task Count"
-      },
-      "failures": {
-        "title": "Failure Analysis",
-        "criticalFailureCount": "Critical Failure Count",
-        "majorFailureCount": "Major Failure Count",
-        "minorFailureCount": "Minor Failure Count",
-        "trivialFailureCount": "Trivial Failure Count"
-      }
     }
+  },
+  "backlog": {
+    "title": "Backlog",
+    "aboutBacklog": "About Backlog",
+    "aboutBacklogDesc": "Backlog is a list of pending work items, divided into Product Backlog and Sprint Backlog. It is mainly used to manage and plan team work tasks, containing all work items that need to be completed, whether in the current iteration (Sprint) or future iterations.",
+    "productBacklog": "Product Backlog",
+    "productBacklogDesc": "Usually maintained by Product Manager (PM) or Product Owner (PO), it is a dynamic, evolving list of product work items that includes all product-related requirements, features, bug fixes, and technical improvements, ensuring the priority and clarity of each work item.",
+    "sprintBacklog": "Sprint Backlog",
+    "sprintBacklogDesc": "After the sprint planning meeting, the Product Backlog is decomposed into corresponding iterations according to the plan, or a set of work items selected from the Product Backlog at the beginning of each iteration as sprint tasks, which specifies the work that the team will complete in the current iteration.",
+    "sprintBacklogTitle": "Sprint Backlog",
+    "productBacklogTitle": "Product Backlog",
+    "sprintCount": "sprints",
+    "taskCount": "tasks",
+    "noTasksInSprint": "No tasks in this Sprint",
+    "noBacklog": "No Backlog",
+    "to": "to",
+    "enterSprint": "Enter Sprint",
+    "edit": "Edit",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "split": "Split",
+    "moveTo": "Move to",
+    "delete": "Delete",
+    "moveToBacklog": "Backlog",
+    "columns": {
+      "type": "Type",
+      "priority": "Priority",
+      "code": "Code",
+      "name": "Name",
+      "assignee": "Assignee",
+      "taskCount": "Task Count",
+      "storyPoint": "Story Point",
+      "workHours": "Work Hours"
+    },
+    "placeholder": {
+      "searchTaskName": "Search task name",
+      "taskName": "Task name, maximum 200 characters"
+    },
+    "messages": {
+      "confirmDelete": "Confirm delete task 【{name}】?",
+      "deleteSuccess": "Delete successful",
+      "addSuccess": "Add successful",
+      "editSuccess": "Edit successful",
+      "moveSuccess": "Move successful",
+      "splitSuccess": "Split successful",
+      "inputEvalWorkload": "Please enter evaluation workload",
+      "deadlineMustBeFuture": "Deadline must be a future time",
+      "taskNameRequired": "Task name, maximum 200 characters"
+    },
+    "quickSearch": {
+      "all": "All",
+      "createdByMe": "Created by Me",
+      "assignedToMe": "Assigned to Me",
+      "past1Day": "Past 1 Day",
+      "past3Days": "Past 3 Days",
+      "past7Days": "Past 7 Days"
+    },
+    "zoomIn": "Full Screen",
+    "zoomOut": "Zoom Out",
+    "comment": "Comment",
+    "activity": "Activity",
+    "remark": "Remark",
+    "addedRemark": "Added remark",
+    "basicInfo": "Basic Information",
+    "taskStatus": "Task Status",
+    "overdue": "Overdue"
   }
 }

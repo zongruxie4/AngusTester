@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
@@ -15,32 +13,32 @@ const props = withDefaults(defineProps<Props>(), {
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: t('taskAnalysis.detail.taskGrowthTrend.customTest'),
-  TEST_FUNCTIONALITY: t('taskAnalysis.detail.taskGrowthTrend.functionalTest'),
-  TEST_PERFORMANCE: t('taskAnalysis.detail.taskGrowthTrend.performanceTest'),
-  TEST_STABILITY: t('taskAnalysis.detail.taskGrowthTrend.stabilityTest'),
-  SERVICES: t('taskAnalysis.detail.taskGrowthTrend.services'),
-  APIS: t('taskAnalysis.detail.taskGrowthTrend.apis'),
-  CASES: t('taskAnalysis.detail.taskGrowthTrend.cases'),
-  PLAN: t('taskAnalysis.detail.taskGrowthTrend.plan'),
-  SPRINT: t('taskAnalysis.detail.taskGrowthTrend.sprint'),
-  TASK_SPRINT: t('taskAnalysis.detail.taskGrowthTrend.sprint'),
-  TASK: t('taskAnalysis.detail.taskGrowthTrend.task'),
-  MOCK_APIS: t('taskAnalysis.detail.taskGrowthTrend.mockApis'),
-  MOCK_PUSHBACK: t('taskAnalysis.detail.taskGrowthTrend.mockPushback'),
-  MOCK_RESPONSE: t('taskAnalysis.detail.taskGrowthTrend.mockResponse'),
-  MOCK_SERVICE: t('taskAnalysis.detail.taskGrowthTrend.mockService'),
-  DATA_DATASET: t('taskAnalysis.detail.taskGrowthTrend.dataset'),
-  DATA_DATASOURCE: t('taskAnalysis.detail.taskGrowthTrend.datasource'),
-  DATA_VARIABLE: t('taskAnalysis.detail.taskGrowthTrend.variable'),
-  TOTAL: t('taskAnalysis.detail.taskGrowthTrend.total'),
-  REPORT: t('taskAnalysis.detail.taskGrowthTrend.report'),
-  REPORT_RECORD: t('taskAnalysis.detail.taskGrowthTrend.record'),
-  API_TEST: t('taskAnalysis.detail.taskGrowthTrend.apiTest'),
-  BUG: t('taskAnalysis.detail.taskGrowthTrend.bug'),
-  REQUIREMENT: t('taskAnalysis.detail.taskGrowthTrend.requirement'),
-  STORY: t('taskAnalysis.detail.taskGrowthTrend.story'),
-  SCENARIO_TEST: t('taskAnalysis.detail.taskGrowthTrend.scenarioTest')
+  TEST_CUSTOMIZATION: '自定义测试',
+  TEST_FUNCTIONALITY: '功能测试',
+  TEST_PERFORMANCE: '性能测试',
+  TEST_STABILITY: '稳定性测试',
+  SERVICES: '服务',
+  APIS: '接口',
+  CASES: '用例',
+  PLAN: '计划',
+  SPRINT: '迭代',
+  TASK_SPRINT: '迭代',
+  TASK: '任务',
+  MOCK_APIS: 'Mock接口',
+  MOCK_PUSHBACK: 'Mock回推',
+  MOCK_RESPONSE: 'Mock响应',
+  MOCK_SERVICE: 'Mock服务',
+  DATA_DATASET: '数据集',
+  DATA_DATASOURCE: '数据源',
+  DATA_VARIABLE: '变量',
+  TOTAL: '合计',
+  REPORT: '报告',
+  REPORT_RECORD: '记录',
+  API_TEST: '接口测试',
+  BUG: '缺陷',
+  REQUIREMENT: '需求',
+  STORY: '故事',
+  SCENARIO_TEST: '场景测试'
 };
 
 const getChartData = (data) => {
@@ -146,7 +144,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.total') }}</div>
+    <div class="font-semibold pl-3">总共</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

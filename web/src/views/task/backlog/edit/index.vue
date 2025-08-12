@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
@@ -68,6 +69,7 @@ const emit = defineEmits<{
   (e: 'ok', value?: Partial<TaskInfo>): void;
 }>();
 
+const { t } = useI18n();
 const formRef = ref();
 
 const loading = ref<boolean>(false);
@@ -172,7 +174,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
 
   if (formState.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error('请输入评估工作量'));
+      return Promise.reject(new Error(t('backlog.messages.inputEvalWorkload')));
     }
 
     return Promise.resolve();
@@ -196,7 +198,7 @@ const evalWorkloadChange = (value: string) => {
 
 const validateDate = async (_rule: Rule, value: string) => {
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    return Promise.reject(new Error('截止时间必须是一个未来时间'));
+    return Promise.reject(new Error(t('backlog.messages.deadlineMustBeFuture')));
   }
 
   // 编辑时不校验截止时间是否超过迭代的截止时间
@@ -638,7 +640,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
     :visible="props.visible"
     class="relative max-w-full"
     @cancel="cancel">
-    <Tooltip :title="zoomInFlag ? '缩小' : '全屏'">
+    <Tooltip :title="zoomInFlag ? t('backlog.zoomOut') : t('backlog.zoomIn')">
       <Icon
         :icon="zoomInFlag ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -657,13 +659,13 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
         <div class="flex-1 pr-8">
           <FormItem
             name="name"
-            label="名称"
-            :rules="{ required: true, message: '任务名称，最大支持200字符' }">
+            :label="t('backlog.columns.name')"
+            :rules="{ required: true, message: t('backlog.messages.taskNameRequired') }">
             <Input
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              placeholder="任务名称，最大支持200字符" />
+              :placeholder="t('backlog.placeholder.taskName')" />
           </FormItem>
 
           <div class="flex space-x-4">

@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
@@ -50,17 +48,17 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.unfinishedTaskCount'), value: totalNum - completedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.completedTaskCount'), value: completedNum }]
+    value: [{ name: '未完成任务数', value: totalNum - completedNum }, { name: '完成任务数', value: completedNum }]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.oneTimeUnfinishedTaskCount'), value: oneTimeNotPassedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.oneTimeCompletedTaskCount'), value: oneTimePassedNum }]
+    value: [{ name: '一次性未完成任务数', value: oneTimeNotPassedNum }, { name: '一次性完成任务数', value: oneTimePassedNum }]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.twoTimeUnfinishedTaskCount'), value: completedNum - twoTimePassedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.twoTimeCompletedTaskCount'), value: twoTimePassedNum }]
+    value: [{ name: '两次未完成任务数', value: completedNum - twoTimePassedNum }, { name: '两次完成任务数', value: twoTimePassedNum }]
   };
   return res;
 };
@@ -115,7 +113,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.total') }}</div>
+    <div class="font-semibold pl-3">总共</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

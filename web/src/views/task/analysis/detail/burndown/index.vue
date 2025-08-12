@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
@@ -96,7 +94,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.total') }}</div>
+    <div class="font-semibold pl-3">总共</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Progress } from 'ant-design-vue';
 import {
   Arrow,
@@ -42,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined
 });
 
+const { t } = useI18n();
 const aiEnabled = inject('aiEnabled', ref(false));
 const isAdmin = inject('isAdmin', ref(false));
 
@@ -65,23 +67,23 @@ const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 
 const sortOption = [
   {
-    name: '类型',
+    name: t('backlog.columns.type'),
     key: 'taskType'
   },
   {
-    name: '优先级',
+    name: t('backlog.columns.priority'),
     key: 'priority'
   },
   {
-    name: '编码',
+    name: t('backlog.columns.code'),
     key: 'code'
   },
   {
-    name: '名称',
+    name: t('backlog.columns.name'),
     key: 'name'
   },
   {
-    name: '经办人',
+    name: t('backlog.columns.assignee'),
     key: 'assigneeId'
   }
 ];
@@ -491,7 +493,7 @@ const generateCancel = () => {
 
 const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
   modal.confirm({
-    content: `确定删除任务【${data.name}】吗？`,
+    content: t('backlog.messages.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -500,7 +502,7 @@ const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
         return;
       }
 
-      notification.success('删除任务成功');
+      notification.success(t('backlog.messages.deleteSuccess'));
 
       if (typeof deleteTabPane === 'function') {
         deleteTabPane([id]);
@@ -960,48 +962,48 @@ const selectNone = computed(() => {
           :maxlength="200"
           allowClear
           class="w-60 mr-5"
-          placeholder="查询任务名称"
+          :placeholder="t('backlog.placeholder.searchTaskName')"
           trim
           @change="searchChange" />
         <div class="whitespace-nowrap text-text-sub-content mr-2">
-          <span>快速查询</span>
+          <span>{{ t('quickSearch') }}</span>
           <Colon />
         </div>
         <div
           :class="{ 'active-key': !!selectNone }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryAll">
-          所有
+          {{ t('backlog.quickSearch.all') }}
         </div>
         <div
           :class="{ 'active-key': createdBy === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByCreatedMe">
-          我添加的
+          {{ t('backlog.quickSearch.createdByMe') }}
         </div>
         <div
           :class="{ 'active-key': assigneeId === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByMe">
-          分配给我的
+          {{ t('backlog.quickSearch.assignedToMe') }}
         </div>
         <div
           :class="{ 'active-key': quickDate === '1' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByDate('1')">
-          近1天
+          {{ t('backlog.quickSearch.past1Day') }}
         </div>
         <div
           :class="{ 'active-key': quickDate === '3' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByDate('3')">
-          近3天
+          {{ t('backlog.quickSearch.past3Days') }}
         </div>
         <div
           :class="{ 'active-key': quickDate === '7' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none"
           @click="queryByDate('7')">
-          近7天
+          {{ t('backlog.quickSearch.past7Days') }}
         </div>
       </div>
       <div class="h-0 border-t border-solid border-theme-text-box mt-2.5"></div>
@@ -1018,11 +1020,11 @@ const selectNone = computed(() => {
                     style="font-size: 12px;"
                     @change="openChange($event, 'sprintBacklog')" />
 
-                  <div class="font-semibold text-theme-title w-70 mr-5">迭代Backlog</div>
-                  <div class="w-25">{{ sprintList.length || 0 }} 个迭代</div>
+                  <div class="font-semibold text-theme-title w-70 mr-5">{{ t('backlog.sprintBacklogTitle') }}</div>
+                  <div class="w-25">{{ sprintList.length || 0 }} {{ t('backlog.sprintCount') }}</div>
                   <div class="w-25 flex-shrink-0 flex items-center space-x-1">
                     <span>{{ totalTaskNum || 0 }}</span>
-                    <span>个任务</span>
+                    <span>{{ t('backlog.taskCount') }}</span>
                   </div>
                 </div>
               </div>
@@ -1056,7 +1058,7 @@ const selectNone = computed(() => {
                       </div>
                       <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
                         <span>{{ taskTotalMap[item.id] || 0 }}</span>
-                        <span>个任务</span>
+                        <span>{{ t('backlog.taskCount') }}</span>
                       </div>
                       <div class="flex-shrink-0 flex items-center mr-5">
                         <div
@@ -1068,7 +1070,7 @@ const selectNone = computed(() => {
                       </div>
                       <div class="flex-shrink-0 text-theme-sub-content">
                         <span>{{ item.startDate }}</span>
-                        <span> 至 </span>
+                        <span> {{ t('backlog.to') }} </span>
                         <span>{{ item.deadlineDate }}</span>
                       </div>
                     </div>
@@ -1081,7 +1083,7 @@ const selectNone = computed(() => {
                           class="inline-flex space-x-1 items-center"
                           style="height:20px;padding:0;line-height:20px;">
                           <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                          <span>排序</span>
+                          <span>{{ t('backlog.sort') }}</span>
                         </Button>
                       </DropdownSort>
 
@@ -1092,7 +1094,7 @@ const selectNone = computed(() => {
                         style="height:20px;padding:0;line-height:20px;">
                         <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}`">
                           <Icon icon="icon-shuxie" class="text-3.5" />
-                          <span>编辑</span>
+                          <span>{{ t('backlog.edit') }}</span>
                         </RouterLink>
                       </Button>
 
@@ -1100,7 +1102,7 @@ const selectNone = computed(() => {
                         class="flex items-center space-x-1"
                         :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
                         <Icon icon="icon-renwu2" class="text-3.5" />
-                        <span>进入迭代</span>
+                        <span>{{ t('backlog.enterSprint') }}</span>
                       </RouterLink>
                     </div>
                   </div>
@@ -1114,14 +1116,14 @@ const selectNone = computed(() => {
                           <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
                           <div class="flex items-center mb-0.5">
                             <div class="flex items-center w-12.25">
-                              <span>任务数</span>
+                              <span>{{ t('backlog.columns.taskCount') }}</span>
                               <Colon class="w-1" />
                             </div>
                             <span>{{ membersCountMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
                           </div>
                           <div class="flex items-center">
                             <div class="flex items-center w-12.25">
-                              <span>{{ item.evalWorkloadMethod?.value === 'STORY_POINT' ? '故事点' : '工时' }}</span>
+                              <span>{{ item.evalWorkloadMethod?.value === 'STORY_POINT' ? t('backlog.columns.storyPoint') : t('backlog.columns.workHours') }}</span>
                               <Colon class="w-1" />
                             </div>
                             <span>{{ membersCountMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
@@ -1146,7 +1148,7 @@ const selectNone = computed(() => {
                   <div
                     v-show="openSet.has(item.id)"
                     class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
-                    此Sprint没有任务
+                    {{ t('backlog.noTasksInSprint') }}
                   </div>
                 </template>
               </template>
@@ -1170,7 +1172,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toSplit(element)">
                       <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                      <span>拆分</span>
+                      <span>{{ t('backlog.split') }}</span>
                     </Button>
 
                     <Popover
@@ -1180,12 +1182,12 @@ const selectNone = computed(() => {
                       @visibleChange="visibleChange($event, element.id)">
                       <template #content>
                         <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
-                          <div
-                            title="Backlog"
-                            class="popover-item truncate cursor-pointer px-2"
-                            @click="moveToBacklog(item.id, element, index)">
-                            Backlog
-                          </div>
+                                                      <div
+                              :title="t('backlog.moveToBacklog')"
+                              class="popover-item truncate cursor-pointer px-2"
+                              @click="moveToBacklog(item.id, element, index)">
+                              {{ t('backlog.moveToBacklog') }}
+                            </div>
                           <template v-for="_sprint in sprintList" :key="_sprint.id">
                             <div
                               v-if="_sprint.id !== item.id"
@@ -1204,7 +1206,7 @@ const selectNone = computed(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="">
                         <Icon icon="icon-diedai" class="text-3.5" />
-                        <span>移至</span>
+                        <span>{{ t('backlog.moveTo') }}</span>
                       </Button>
                     </Popover>
 
@@ -1215,7 +1217,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toDelete(element, index, item.id)">
                       <Icon icon="icon-qingchu" class="text-3.5" />
-                      <span>删除</span>
+                      <span>{{ t('backlog.delete') }}</span>
                     </Button>
 
                     <Button
@@ -1225,7 +1227,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toEdit(element.id, item.id)">
                       <Icon icon="icon-shuxie" class="text-3.5" />
-                      <span>编辑</span>
+                      <span>{{ t('backlog.edit') }}</span>
                     </Button>
                   </div>
                 </div>
@@ -1251,10 +1253,10 @@ const selectNone = computed(() => {
                       class="mr-1.5"
                       style="font-size: 12px;"
                       @change="openChange($event, 'productBacklog')" />
-                    <div class="truncate text-theme-title font-semibold w-70 mr-5">产品Backlog</div>
+                    <div class="truncate text-theme-title font-semibold w-70 mr-5">{{ t('backlog.productBacklogTitle') }}</div>
                     <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5">
                       <span>{{ backlogTotal || 0 }}</span>
-                      <span>个任务</span>
+                      <span>{{ t('backlog.taskCount') }}</span>
                     </div>
                   </div>
 
@@ -1266,7 +1268,7 @@ const selectNone = computed(() => {
                         class="inline-flex space-x-1 items-center"
                         style="height:20px;padding:0;line-height:20px;">
                         <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                        <span>排序</span>
+                        <span>{{ t('backlog.sort') }}</span>
                       </Button>
                     </DropdownSort>
                     <Button
@@ -1275,7 +1277,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="refreshBacklog">
                       <Icon class="text-3.5" icon="icon-shuaxin" />
-                      <span>刷新</span>
+                      <span>{{ t('backlog.refresh') }}</span>
                     </Button>
                   </div>
                 </div>
@@ -1283,7 +1285,7 @@ const selectNone = computed(() => {
                 <div
                   v-if="backlogLoaded && !backlogTotal"
                   class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
-                  没有Backlog
+                  {{ t('backlog.noBacklog') }}
                 </div>
               </template>
 

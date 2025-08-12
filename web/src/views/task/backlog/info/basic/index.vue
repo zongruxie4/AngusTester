@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -497,12 +500,12 @@ const onePassText = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">基本信息</div>
+      <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.basicInfo') }}</div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>编号</span>
+            <span>{{ t('backlog.columns.code') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -511,7 +514,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>名称</span>
+            <span>{{ t('backlog.columns.name') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -533,7 +536,7 @@ const onePassText = computed(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              placeholder="任务名称，最大支持200字符"
+              :placeholder="t('backlog.placeholder.taskName')"
               @blur="nameBlur"
               @pressEnter="namePressEnter" />
           </AsyncComponent>
@@ -541,7 +544,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>任务状态</span>
+            <span>{{ t('backlog.taskStatus') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -551,7 +554,7 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">已逾期</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('backlog.overdue') }}</span>
             </span>
           </div>
         </div>

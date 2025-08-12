@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
+const { t } = useI18n();
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
   mainTargetId:string;
@@ -49,7 +51,7 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">活动</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.activity') }}</div>
 
     <Scroll
       :action="`${TESTER}/activity`"

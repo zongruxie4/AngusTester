@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -28,7 +27,6 @@ interface Props {
     value: {name: string, value: string|number}[];
   }
 }
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
     chart0Value: [0, 0, 0, 0]
@@ -66,7 +64,7 @@ let bugWorkloadEchart;
 // 缺陷
 const bugsEchartConfig = {
   title: {
-    text: t('taskAnalysis.detail.bugs.title'),
+    text: '缺陷数',
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -81,7 +79,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.bugs.totalBugs'), t('taskAnalysis.detail.bugs.validBugs'), t('taskAnalysis.detail.bugs.invalidBugs'), t('taskAnalysis.detail.bugs.missingBugs')],
+    data: ['总缺陷', '有效缺陷', '无效缺陷', '漏测缺陷'],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -117,7 +115,7 @@ const bugLevelEchartConfig = {
     left: '35%',
     top: '35%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.bugs.bugLevel'),
+    subtext: '缺陷等级',
     // left: '25%',
     // top: '40%',
     itemGap: 60,
@@ -170,28 +168,28 @@ const bugLevelEchartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.bugs.criticalCount'),
+          name: '致命数',
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.majorCount'),
+          name: '严重数',
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.minorCount'),
+          name: '一般数',
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.trivialCount'),
+          name: '轻微数',
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -207,21 +205,21 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEchartConfig,
   title: {
     ...bugLevelEchartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.validBugRate'),
+    subtext: '有效缺陷占比',
     itemGap: 50
   },
   series: [{
     ...bugLevelEchartConfig.series[0],
     data: [
       {
-        name: t('taskAnalysis.detail.bugs.unfinished'),
+        name: '未完成',
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: t('taskAnalysis.detail.bugs.completed'),
+        name: '已完成',
         value: 0,
         itemStyle: {
           color: 'rgba(245, 34, 45, 0.6)'
@@ -236,7 +234,7 @@ const missingBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.missingBugRate')
+    subtext: '漏测缺陷占比'
   }
 }));
 
@@ -245,7 +243,7 @@ const bugWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.bugWorkloadRate')
+    subtext: '缺陷工作量占比'
   }
 }));
 
