@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
@@ -13,35 +15,35 @@ const props = withDefaults(defineProps<Props>(), {
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: '自定义测试',
-  TEST_FUNCTIONALITY: '功能测试',
-  TEST_PERFORMANCE: '性能测试',
-  TEST_STABILITY: '稳定性测试',
-  SERVICES: '服务',
-  APIS: '接口',
-  CASES: '用例',
-  PLAN: '计划',
-  SPRINT: '迭代',
-  TASK_SPRINT: '迭代',
-  TASK: '任务',
-  MOCK_APIS: 'Mock接口',
-  MOCK_PUSHBACK: 'Mock回推',
-  MOCK_RESPONSE: 'Mock响应',
-  MOCK_SERVICE: 'Mock服务',
-  DATA_DATASET: '数据集',
-  DATA_DATASOURCE: '数据源',
-  DATA_VARIABLE: '变量',
-  TOTAL: '合计',
-  REPORT: '报告',
-  REPORT_RECORD: '记录',
-  API_TEST: '接口测试',
-  BUG: '缺陷',
-  REQUIREMENT: '需求',
-  STORY: '故事',
-  SCENARIO_TEST: '场景测试',
-  ANALYSIS: '分析',
-  BACKLOG: 'backlog',
-  MEETING: '会议'
+  TEST_CUSTOMIZATION: t('taskAnalysis.detail.resourceCreation.customTest'),
+  TEST_FUNCTIONALITY: t('taskAnalysis.detail.resourceCreation.functionalTest'),
+  TEST_PERFORMANCE: t('taskAnalysis.detail.resourceCreation.performanceTest'),
+  TEST_STABILITY: t('taskAnalysis.detail.resourceCreation.stabilityTest'),
+  SERVICES: t('taskAnalysis.detail.resourceCreation.services'),
+  APIS: t('taskAnalysis.detail.resourceCreation.apis'),
+  CASES: t('taskAnalysis.detail.resourceCreation.cases'),
+  PLAN: t('taskAnalysis.detail.resourceCreation.plan'),
+  SPRINT: t('taskAnalysis.detail.resourceCreation.sprint'),
+  TASK_SPRINT: t('taskAnalysis.detail.resourceCreation.sprint'),
+  TASK: t('taskAnalysis.detail.resourceCreation.task'),
+  MOCK_APIS: t('taskAnalysis.detail.resourceCreation.mockApis'),
+  MOCK_PUSHBACK: t('taskAnalysis.detail.resourceCreation.mockPushback'),
+  MOCK_RESPONSE: t('taskAnalysis.detail.resourceCreation.mockResponse'),
+  MOCK_SERVICE: t('taskAnalysis.detail.resourceCreation.mockService'),
+  DATA_DATASET: t('taskAnalysis.detail.resourceCreation.dataset'),
+  DATA_DATASOURCE: t('taskAnalysis.detail.resourceCreation.datasource'),
+  DATA_VARIABLE: t('taskAnalysis.detail.resourceCreation.variable'),
+  TOTAL: t('taskAnalysis.detail.resourceCreation.total'),
+  REPORT: t('taskAnalysis.detail.resourceCreation.report'),
+  REPORT_RECORD: t('taskAnalysis.detail.resourceCreation.record'),
+  API_TEST: t('taskAnalysis.detail.resourceCreation.apiTest'),
+  BUG: t('taskAnalysis.detail.resourceCreation.bug'),
+  REQUIREMENT: t('taskAnalysis.detail.resourceCreation.requirement'),
+  STORY: t('taskAnalysis.detail.resourceCreation.story'),
+  SCENARIO_TEST: t('taskAnalysis.detail.resourceCreation.scenarioTest'),
+  ANALYSIS: t('taskAnalysis.detail.resourceCreation.analysis'),
+  BACKLOG: t('taskAnalysis.detail.resourceCreation.backlog'),
+  MEETING: t('taskAnalysis.detail.resourceCreation.meeting')
 };
 
 const getChartData = (data) => {
@@ -147,7 +149,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
@@ -18,12 +20,12 @@ const getChartData = (data) => {
   res.overdueAssessmentData = data;
   res.chart1Value = {
     title: overdueRate + '%',
-    value: [{ name: '未逾期数', value: totalNum - overdueNum }, { name: '逾期数', value: overdueNum }]
+    value: [{ name: t('taskAnalysis.detail.overdueAssessment.nonOverdueCount'), value: totalNum - overdueNum }, { name: t('taskAnalysis.detail.overdueAssessment.overdueCount'), value: overdueNum }]
   };
 
   res.chart2Value = {
     title: overdueWorkloadRate + '%',
-    value: [{ name: '未逾期工作量', value: totalWorkload - overdueWorkload }, { name: '逾期工作量', value: overdueWorkload }]
+    value: [{ name: t('taskAnalysis.detail.overdueAssessment.nonOverdueWorkload'), value: totalWorkload - overdueWorkload }, { name: t('taskAnalysis.detail.overdueAssessment.overdueWorkload'), value: overdueWorkload }]
   };
   return res;
 };
@@ -79,7 +81,7 @@ defineExpose({
 <template>
   <div>
     <div>
-      <div class="font-semibold pl-3">总共</div>
+      <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.total') }}</div>
       <Echart
         ref="totalChartRef"
         v-bind="totalValue"

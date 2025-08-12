@@ -22,6 +22,7 @@
     "createTimeTo": "添加时间到",
     "searchNameDesc": "查询名称、描述",
     "selectCreator": "选择添加人",
+    "all": "全部分析",
     "columns": {
       "name": "名称",
       "template": "模版",
@@ -81,6 +82,160 @@
       "currentProject": "当前项目",
       "plan": "指定迭代",
       "testerOrg": "指定组织"
+    },
+    "detail": {
+      "total": "总共",
+      "bugs": {
+        "title": "缺陷数",
+        "bugLevel": "缺陷等级",
+        "validBugRate": "有效缺陷占比",
+        "missingBugRate": "漏测缺陷占比",
+        "bugWorkloadRate": "缺陷工作量占比",
+        "totalBugs": "总缺陷",
+        "validBugs": "有效缺陷",
+        "invalidBugs": "无效缺陷",
+        "missingBugs": "漏测缺陷",
+        "criticalBugs": "致命缺陷数",
+        "majorBugs": "严重缺陷数",
+        "minorBugs": "一般缺陷数",
+        "trivialBugs": "轻微缺陷数",
+        "criticalCount": "致命数",
+        "majorCount": "严重数",
+        "minorCount": "一般数",
+        "trivialCount": "轻微数",
+        "invalidBugCount": "无效缺陷",
+        "validBugCount": "有效缺陷",
+        "nonMissingBugs": "非漏测缺陷数",
+        "missingBugCount": "漏测缺陷数",
+        "nonBugWorkload": "非缺陷工作量",
+        "bugWorkload": "缺陷工作量",
+        "unfinished": "未完成",
+        "completed": "已完成"
+      },
+      "burndown": {
+        "title": "燃尽图"
+      },
+      "progress": {
+        "title": "进度",
+        "unfinished": "未完成",
+        "completed": "已完成"
+      },
+      "workload": {
+        "title": "工作量",
+        "unfinishedWorkload": "未完成工作量",
+        "completedWorkload": "已完成工作量",
+        "unfinishedSaving": "未节省工作量",
+        "completedSaving": "已节省工作量"
+      },
+      "overdueAssessment": {
+        "title": "逾期评估",
+        "nonOverdueCount": "未逾期数",
+        "overdueCount": "逾期数",
+        "nonOverdueWorkload": "未逾期工作量",
+        "overdueWorkload": "逾期工作量"
+      },
+      "backlogTasks": {
+        "title": "积压任务",
+        "nonBackloggedCount": "未积压数",
+        "backloggedCount": "积压数",
+        "nonBackloggedWorkload": "未积压工作量",
+        "backloggedWorkload": "积压工作量"
+      },
+      "recentDelivery": {
+        "title": "最近交付"
+      },
+      "leadTime": {
+        "title": "交付周期"
+      },
+      "unplannedTasks": {
+        "title": "计划外任务"
+      },
+      "taskGrowthTrend": {
+        "title": "任务增长趋势",
+        "customTest": "自定义测试",
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "services": "服务",
+        "apis": "接口",
+        "cases": "用例",
+        "plan": "计划",
+        "sprint": "迭代",
+        "task": "任务",
+        "mockApis": "Mock接口",
+        "mockPushback": "Mock回推",
+        "mockResponse": "Mock响应",
+        "mockService": "Mock服务",
+        "dataset": "数据集",
+        "datasource": "数据源",
+        "variable": "变量",
+        "total": "合计",
+        "report": "报告",
+        "record": "记录",
+        "apiTest": "接口测试",
+        "bug": "缺陷",
+        "requirement": "需求",
+        "story": "故事",
+        "scenarioTest": "场景测试"
+      },
+      "resourceCreation": {
+        "title": "资源创建",
+        "customTest": "自定义测试",
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "services": "服务",
+        "apis": "接口",
+        "cases": "用例",
+        "plan": "计划",
+        "sprint": "迭代",
+        "task": "任务",
+        "mockApis": "Mock接口",
+        "mockPushback": "Mock回推",
+        "mockResponse": "Mock响应",
+        "mockService": "Mock服务",
+        "dataset": "数据集",
+        "datasource": "数据源",
+        "variable": "变量",
+        "total": "合计",
+        "report": "报告",
+        "record": "记录",
+        "apiTest": "接口测试",
+        "bug": "缺陷",
+        "requirement": "需求",
+        "story": "故事",
+        "scenarioTest": "场景测试",
+        "analysis": "分析",
+        "backlog": "backlog",
+        "meeting": "会议"
+      },
+      "coreKpi": {
+        "title": "核心KPI",
+        "unfinishedTaskCount": "未完成任务数",
+        "completedTaskCount": "完成任务数",
+        "unfinishedWorkload": "未完成工作量",
+        "completedWorkload": "完成工作量",
+        "unfinishedOverdueCount": "未完成逾期数",
+        "completedOverdueCount": "完成逾期数",
+        "unfinishedBugCount": "未完成缺陷数",
+        "completedBugCount": "完成缺陷数"
+      },
+      "handlingEfficiency": {
+        "title": "处理效率",
+        "unfinishedTaskCount": "未完成任务数",
+        "completedTaskCount": "完成任务数",
+        "oneTimeUnfinishedTaskCount": "一次性未完成任务数",
+        "oneTimeCompletedTaskCount": "一次性完成任务数",
+        "twoTimeUnfinishedTaskCount": "两次未完成任务数",
+        "twoTimeCompletedTaskCount": "两次完成任务数"
+      },
+      "failures": {
+        "title": "失败分析",
+        "criticalFailureCount": "致命故障数",
+        "majorFailureCount": "严重故障数",
+        "minorFailureCount": "一般故障数",
+        "trivialFailureCount": "轻微故障数"
+      }
     }
   }
 }

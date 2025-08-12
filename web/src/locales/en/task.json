@@ -23,6 +23,7 @@
     "createTimeTo": "Create Time To",
     "searchNameDesc": "Search name, description",
     "selectCreator": "Select creator",
+    "all": "All Analysis",
     "columns": {
       "name": "Name",
       "template": "Template",
@@ -82,6 +83,160 @@
       "currentProject": "Current Project",
       "plan": "Specified Iteration",
       "testerOrg": "Specified Organization"
+    },
+    "detail": {
+      "total": "Total",
+      "bugs": {
+        "title": "Bug Count",
+        "bugLevel": "Bug Level",
+        "validBugRate": "Valid Bug Rate",
+        "missingBugRate": "Missing Bug Rate",
+        "bugWorkloadRate": "Bug Workload Rate",
+        "totalBugs": "Total Bugs",
+        "validBugs": "Valid Bugs",
+        "invalidBugs": "Invalid Bugs",
+        "missingBugs": "Missing Bugs",
+        "criticalBugs": "Critical Bugs",
+        "majorBugs": "Major Bugs",
+        "minorBugs": "Minor Bugs",
+        "trivialBugs": "Trivial Bugs",
+        "criticalCount": "Critical Count",
+        "majorCount": "Major Count",
+        "minorCount": "Minor Count",
+        "trivialCount": "Trivial Count",
+        "invalidBugCount": "Invalid Bugs",
+        "validBugCount": "Valid Bugs",
+        "nonMissingBugs": "Non-missing Bugs",
+        "missingBugCount": "Missing Bugs",
+        "nonBugWorkload": "Non-bug Workload",
+        "bugWorkload": "Bug Workload",
+        "unfinished": "Unfinished",
+        "completed": "Completed"
+      },
+      "burndown": {
+        "title": "Burndown Chart"
+      },
+      "progress": {
+        "title": "Progress",
+        "unfinished": "Unfinished",
+        "completed": "Completed"
+      },
+      "workload": {
+        "title": "Workload",
+        "unfinishedWorkload": "Unfinished Workload",
+        "completedWorkload": "Completed Workload",
+        "unfinishedSaving": "Unfinished Saving",
+        "completedSaving": "Completed Saving"
+      },
+      "overdueAssessment": {
+        "title": "Overdue Assessment",
+        "nonOverdueCount": "Non-overdue Count",
+        "overdueCount": "Overdue Count",
+        "nonOverdueWorkload": "Non-overdue Workload",
+        "overdueWorkload": "Overdue Workload"
+      },
+      "backlogTasks": {
+        "title": "Backlog Tasks",
+        "nonBackloggedCount": "Non-backlogged Count",
+        "backloggedCount": "Backlogged Count",
+        "nonBackloggedWorkload": "Non-backlogged Workload",
+        "backloggedWorkload": "Backlogged Workload"
+      },
+      "recentDelivery": {
+        "title": "Recent Delivery"
+      },
+      "leadTime": {
+        "title": "Lead Time"
+      },
+      "unplannedTasks": {
+        "title": "Unplanned Tasks"
+      },
+      "taskGrowthTrend": {
+        "title": "Task Growth Trend",
+        "customTest": "Custom Test",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "services": "Services",
+        "apis": "APIs",
+        "cases": "Cases",
+        "plan": "Plan",
+        "sprint": "Sprint",
+        "task": "Task",
+        "mockApis": "Mock APIs",
+        "mockPushback": "Mock Pushback",
+        "mockResponse": "Mock Response",
+        "mockService": "Mock Service",
+        "dataset": "Dataset",
+        "datasource": "Datasource",
+        "variable": "Variable",
+        "total": "Total",
+        "report": "Report",
+        "record": "Record",
+        "apiTest": "API Test",
+        "bug": "Bug",
+        "requirement": "Requirement",
+        "story": "Story",
+        "scenarioTest": "Scenario Test"
+      },
+      "resourceCreation": {
+        "title": "Resource Creation",
+        "customTest": "Custom Test",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "services": "Services",
+        "apis": "APIs",
+        "cases": "Cases",
+        "plan": "Plan",
+        "sprint": "Sprint",
+        "task": "Task",
+        "mockApis": "Mock APIs",
+        "mockPushback": "Mock Pushback",
+        "mockResponse": "Mock Response",
+        "mockService": "Mock Service",
+        "dataset": "Dataset",
+        "datasource": "Datasource",
+        "variable": "Variable",
+        "total": "Total",
+        "report": "Report",
+        "record": "Record",
+        "apiTest": "API Test",
+        "bug": "Bug",
+        "requirement": "Requirement",
+        "story": "Story",
+        "scenarioTest": "Scenario Test",
+        "analysis": "Analysis",
+        "backlog": "Backlog",
+        "meeting": "Meeting"
+      },
+      "coreKpi": {
+        "title": "Core KPI",
+        "unfinishedTaskCount": "Unfinished Task Count",
+        "completedTaskCount": "Completed Task Count",
+        "unfinishedWorkload": "Unfinished Workload",
+        "completedWorkload": "Completed Workload",
+        "unfinishedOverdueCount": "Unfinished Overdue Count",
+        "completedOverdueCount": "Completed Overdue Count",
+        "unfinishedBugCount": "Unfinished Bug Count",
+        "completedBugCount": "Completed Bug Count"
+      },
+      "handlingEfficiency": {
+        "title": "Handling Efficiency",
+        "unfinishedTaskCount": "Unfinished Task Count",
+        "completedTaskCount": "Completed Task Count",
+        "oneTimeUnfinishedTaskCount": "One-time Unfinished Task Count",
+        "oneTimeCompletedTaskCount": "One-time Completed Task Count",
+        "twoTimeUnfinishedTaskCount": "Two-time Unfinished Task Count",
+        "twoTimeCompletedTaskCount": "Two-time Completed Task Count"
+      },
+      "failures": {
+        "title": "Failure Analysis",
+        "criticalFailureCount": "Critical Failure Count",
+        "majorFailureCount": "Major Failure Count",
+        "minorFailureCount": "Minor Failure Count",
+        "trivialFailureCount": "Trivial Failure Count"
+      }
     }
   }
 }
