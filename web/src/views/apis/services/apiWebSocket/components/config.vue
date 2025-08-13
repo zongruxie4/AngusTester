@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Form, FormItem } from 'ant-design-vue';
 import { Input } from '@xcan-angus/vue-ui';
 
@@ -8,6 +9,7 @@ interface Props {
   value: Record<string, string>;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: '',
   value: () => ({})
@@ -22,13 +24,13 @@ const form = reactive({
 const formRef = ref();
 const rules = {
   connectTimeout: [{
-    required: true, message: '请输入等待超时时间', trigger: 'blur'
+    required: true, message: t('service.webSocketSetting.validation.connectTimeout'), trigger: 'blur'
   }],
   maxReconnections: [{
-    required: true, message: '请输入重连次数', trigger: 'change'
+    required: true, message: t('service.webSocketSetting.validation.maxReconnections'), trigger: 'change'
   }],
   reconnectionInterval: [{
-    required: true, message: '请输入重连次间隔时间', trigger: 'change'
+    required: true, message: t('service.webSocketSetting.validation.reconnectionInterval'), trigger: 'change'
   }]
 };
 
@@ -54,7 +56,7 @@ onMounted(() => {
     :rules="rules">
     <FormItem name="connectTimeout">
       <template #label>
-        <p class="text-3">连接超时<span class="text-gray-text">(指定客户端和服务器建立连接的最长等待时间)</span></p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.connectTimeout.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.connectTimeout.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.connectTimeout"
@@ -62,7 +64,7 @@ onMounted(() => {
         :allowClear="false"
         dataType="number"
         class="rounded"
-        placeholder="请输入超时时间">
+        :placeholder="t('service.webSocketSetting.form.connectTimeout.placeholder')">
         <template #suffix>
           <span>ms</span>
         </template>
@@ -70,7 +72,7 @@ onMounted(() => {
     </FormItem>
     <FormItem name="maxReconnections">
       <template #label>
-        <p class="text-3">重新连接次数<span class="text-gray-text">(连接关闭时尝试重新连接次数，最大允许重连10次)</span></p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.maxReconnections.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.maxReconnections.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.maxReconnections"
@@ -79,17 +81,17 @@ onMounted(() => {
         :allowClear="false"
         dataType="number"
         class="rounded"
-        placeholder="请输入重新连接次数" />
+        :placeholder="t('service.webSocketSetting.form.maxReconnections.placeholder')" />
     </FormItem>
     <FormItem name="reconnectionInterval">
       <template #label>
-        <p class="text-3">重连间隔时间<span class="text-gray-text">(连接失败时的重试间隔，默认为200毫秒，允许的最大时间为30分钟)</span></p>
+        <p class="text-3">{{ t('service.webSocketSetting.form.reconnectionInterval.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.reconnectionInterval.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.reconnectionInterval"
         class="rounded-border"
         dataType="number"
-        placeholder="请输入重连间隔时间"
+        :placeholder="t('service.webSocketSetting.form.reconnectionInterval.placeholder')"
         :allowClear="false">
         <template #suffix>
           <span>ms</span>

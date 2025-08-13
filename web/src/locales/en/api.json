@@ -800,6 +800,32 @@
         "mock": "Mock",
         "history": "History"
       }
+    },
+    "webSocketSetting": {
+      "form": {
+        "connectTimeout": {
+          "label": "Connection Timeout",
+          "description": "Maximum wait time for client and server to establish connection",
+          "placeholder": "Please enter timeout time",
+          "unit": "ms"
+        },
+        "maxReconnections": {
+          "label": "Reconnection Count",
+          "description": "Number of reconnection attempts when connection is closed, maximum 10 times allowed",
+          "placeholder": "Please enter reconnection count"
+        },
+        "reconnectionInterval": {
+          "label": "Reconnection Interval",
+          "description": "Retry interval when connection fails, default 200ms, maximum allowed time is 30 minutes",
+          "placeholder": "Please enter reconnection interval",
+          "unit": "ms"
+        }
+      },
+      "validation": {
+        "connectTimeout": "Please enter timeout time",
+        "maxReconnections": "Please enter reconnection count",
+        "reconnectionInterval": "Please enter reconnection interval time"
+      }
     }
   }
 } 

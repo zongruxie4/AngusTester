@@ -1445,6 +1445,32 @@
         "mock": "Mock",
         "history": "历史记录"
       }
+    },
+    "webSocketSetting": {
+      "form": {
+        "connectTimeout": {
+          "label": "连接超时",
+          "description": "指定客户端和服务器建立连接的最长等待时间",
+          "placeholder": "请输入超时时间",
+          "unit": "ms"
+        },
+        "maxReconnections": {
+          "label": "重新连接次数",
+          "description": "连接关闭时尝试重新连接次数，最大允许重连10次",
+          "placeholder": "请输入重新连接次数"
+        },
+        "reconnectionInterval": {
+          "label": "重连间隔时间",
+          "description": "连接失败时的重试间隔，默认为200毫秒，允许的最大时间为30分钟",
+          "placeholder": "请输入重连间隔时间",
+          "unit": "ms"
+        }
+      },
+      "validation": {
+        "connectTimeout": "请输入等待超时时间",
+        "maxReconnections": "请输入重连次数",
+        "reconnectionInterval": "请输入重连次间隔时间"
+      }
     }
   }
 }
