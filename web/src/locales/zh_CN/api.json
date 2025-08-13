@@ -1210,6 +1210,22 @@
         "variableNameInvalid": "名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等",
         "debugFileSizeLimit": "调试时请求体总上传文件大小不能超过100MB"
       }
+    },
+    "apiRequestCookie": {
+      "form": {
+        "namePlaceholder": "参数名称",
+        "inputNamePlaceholder": "请输入参数名称",
+        "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符"
+      },
+      "actions": {
+        "copyValue": "复制值"
+      },
+      "tips": {
+        "componentReference": "组件引用：{ref}"
+      },
+      "messages": {
+        "copySuccess": "成功复制值到剪贴板"
+      }
     }
   }
 }

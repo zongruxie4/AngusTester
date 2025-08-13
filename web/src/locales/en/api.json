@@ -565,6 +565,22 @@
         "variableNameInvalid": "Name does not meet variable requirements, allows numbers, letters, !@$%^&*()_-+=./ etc.",
         "debugFileSizeLimit": "Total upload file size for request body during debugging cannot exceed 100MB"
       }
+    },
+    "apiRequestCookie": {
+      "form": {
+        "namePlaceholder": "Parameter Name",
+        "inputNamePlaceholder": "Please enter parameter name",
+        "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported"
+      },
+      "actions": {
+        "copyValue": "Copy Value"
+      },
+      "tips": {
+        "componentReference": "Component Reference: {ref}"
+      },
+      "messages": {
+        "copySuccess": "Successfully copied value to clipboard"
+      }
     }
   }
 } 
