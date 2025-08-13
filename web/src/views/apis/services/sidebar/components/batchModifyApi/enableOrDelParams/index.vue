@@ -3,7 +3,9 @@ import { ref } from 'vue';
 import { Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import _ from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const names = ref(['']);
 
 const addName = () => {
@@ -30,7 +32,7 @@ defineExpose({
       <Input
         v-model:value="names[idx]"
         class="w-60"
-        placeholder="请输入参数名" />
+        :placeholder="t('service.sidebar.batchModifyApi.paramsNamePlaceholder')" />
 
       <Button
         size="small"

@@ -333,6 +333,76 @@
         "waiting": "Waiting",
         "contentDownload": "Content Download"
       }
+    },
+    "apiAuthorization": {
+      "title": "Authentication Type",
+      "types": {
+        "noAuth": "No Authentication",
+        "basicAuth": "Basic Auth",
+        "bearerToken": "Bearer Token",
+        "apiKey": "Api Key",
+        "oauth2": "OAuth 2.0",
+        "extends": "Public"
+      },
+      "extends": {
+        "selectServiceSecurity": "Select Service Security Authentication"
+      },
+      "basic": {
+        "username": "Username",
+        "usernamePlaceholder": "Please enter username",
+        "password": "Password",
+        "passwordPlaceholder": "Please enter password"
+      },
+      "bearer": {
+        "token": "Token",
+        "tokenPlaceholder": "Please enter access token"
+      },
+      "oauth2": {
+        "configMethod": "Configuration Method:",
+        "existingToken": "Existing Token",
+        "generateToken": "Generate Token",
+        "accessToken": "Access Token",
+        "type": "Type",
+        "clientAuth": "Client Authentication",
+        "getToken": "Get Token"
+      },
+      "apiKey": {
+        "name": "Name",
+        "value": "Value",
+        "position": "Position"
+      },
+      "oauth2Fields": {
+        "authorizationUrl": "Authorization URL",
+        "callbackUrl": "Callback URL",
+        "tokenUrl": "Access Token URL",
+        "refreshUrl": "Refresh Token URL",
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "username": "Username",
+        "password": "Password",
+        "encryptionMethod": "Encryption Method",
+        "verificationCode": "Verification Code",
+        "scope": "Scope"
+      },
+      "flowTypes": {
+        "authorizationCode": "Authorization Code",
+        "password": "Password Credentials",
+        "implicit": "Implicit",
+        "clientCredentials": "Client Credentials"
+      },
+      "clientAuthTypes": {
+        "basicAuthHeader": "Send via Basic Auth Header",
+        "requestBody": "Send via Request Body"
+      },
+      "encryptionTypes": {
+        "sha256": "SHA-256",
+        "plain": "Plain"
+      },
+      "messages": {
+        "authorizationFailed": "Authorization failed Couldn't complete authentication.",
+        "proxyNotConnected": "Proxy not connected, please check proxy configuration",
+        "maxLengthTip": "Maximum {maxLength} characters allowed"
+      }
     }
   }
 } 

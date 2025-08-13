@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, IconRequired, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import { encode } from '@/utils/secure';
@@ -41,6 +42,8 @@ const authTypeOptions = computed(() => {
 const props = withDefaults(defineProps<Props>(), {
   defaultValue: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
@@ -316,7 +319,7 @@ const fetchOauth2Token = async () => {
       tokenUuid = utils.uuid('anthencation-token');
       if (props.ws) {
         if (props.ws.readyState !== 1) {
-          notification.error('代理未链接， 请检查代理配置');
+          notification.error(t('service.apiAuthorization.messages.proxyNotConnected'));
           return;
         }
         const params = {
@@ -671,7 +674,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
   <div class="rounded">
     <div class="p-2 text-3">
       <div class="flex items-center">
-        <span class="mr-3">认证类型</span>
+        <span class="mr-3">{{ t('service.apiAuthorization.title') }}</span>
         <RadioGroup
           v-model:value="type"
           :options="authTypeOptions"
@@ -682,7 +685,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
     <div class="min-h-50 p-2 text-3">
       <template v-if="type === 'extends'">
         <div class="flex items-center">
-          <span class="mr-2">选择服务安全认证</span>
+          <span class="mr-2">{{ t('service.apiAuthorization.extends.selectServiceSecurity') }}</span>
           <Select
             v-model:value="extendsId"
             class="w-100"
@@ -696,10 +699,10 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <div class="flex items-center flex-grow flex-shrink mb-3">
           <span class="text-3 leading-3 w-15 relative">
             <IconRequired class="absolute -left-2" />
-            用户名
+            {{ t('service.apiAuthorization.basic.username') }}
           </span>
           <Input
-            placeholder="请输入用户名"
+            :placeholder="t('service.apiAuthorization.basic.usernamePlaceholder')"
             :value="httpAuthData?.name"
             size="small"
             class="w-100"
@@ -707,9 +710,9 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
             @blur="handleBlur($event, 'name')" />
         </div>
         <div class="flex items-center flex-grow flex-shrink">
-          <span class="text-3 leading-3 w-15">密码</span>
+          <span class="text-3 leading-3 w-15">{{ t('service.apiAuthorization.basic.password') }}</span>
           <Input
-            placeholder="请输入密码"
+                          :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
             :value="httpAuthData?.value"
             :allowClear="true"
             type="password"
@@ -720,9 +723,9 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
       </template>
       <template v-if="type==='bearer'">
         <div class="flex items-center">
-          <span class="w-15">令牌</span>
+          <span class="w-15">{{ t('service.apiAuthorization.bearer.token') }}</span>
           <Input
-            placeholder="请输入访问令牌"
+                          :placeholder="t('service.apiAuthorization.bearer.tokenPlaceholder')"
             :value="httpAuthData?.name"
             :allowClear="true"
             class="w-100"
@@ -732,14 +735,14 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
       </template>
       <template v-if="type==='oauth2'">
         <div class="flex items-center mb-3">
-          <span class="w-25">配置方式：</span>
-          <RadioGroup v-model:value="oauthKey" :options="[{value: 1, label: '已有令牌'}, {value: 2, label: '生成令牌'}]">
+          <span class="w-25">{{ t('service.apiAuthorization.oauth2.configMethod') }}</span>
+          <RadioGroup v-model:value="oauthKey" :options="[{value: 1, label: t('service.apiAuthorization.oauth2.existingToken')}, {value: 2, label: t('service.apiAuthorization.oauth2.generateToken')}]">
           </RadioGroup>
         </div>
         <template v-if="oauthKey === 1">
           <div class="text-3 space-y-3">
             <div class="flex items-center">
-              <span class="w-25">访问令牌</span>
+              <span class="w-25">{{ t('service.apiAuthorization.oauth2.accessToken') }}</span>
               <Input
                 v-model:value="scheme"
                 :allowClear="true"
@@ -751,7 +754,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <template v-if="oauthKey === 2">
           <div class="text-3 space-y-3">
             <div class="flex items-center">
-              <span class="w-25">类型</span>
+              <span class="w-25">{{ t('service.apiAuthorization.oauth2.type') }}</span>
               <Select
                 v-model:value="authType"
                 class="w-100"
@@ -764,19 +767,19 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               :class="{'error': validate && !oauthData[item.valueKey] && !['scopes', 'refreshUrl'].includes(item.valueKey)}"
               class="flex items-center">
               <span class="w-25">
-                <IconRequired v-show="item.required" />{{ item.label }}
+                <IconRequired v-show="item.required" />{{ t(item.label) }}
               </span>
               <Select
                 v-if="item.valueKey === 'x-xc-oauth2-challengeMethod'"
                 v-model:value="oauthData[item.valueKey]"
                 class="w-100"
-                :placeholder="item.maxLength ? `最多可输入${ item.maxLength }个字符` : ''"
+                :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 :options="encryptionTypeOpt"
                 @change="onOauthChange" />
               <Select
                 v-else-if="item.valueKey==='scopes'"
                 v-model:value="oauthData[item.valueKey]"
-                :placeholder="item.maxLength ? `最多可输入${ item.maxLength }个字符` : ''"
+                :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 class="w-100"
                 mode="tags" />
               <Input
@@ -784,17 +787,13 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
                 v-model:value="oauthData[item.valueKey]"
                 class="w-100"
                 :allowClear="true"
-                :placeholder="item.maxLength ? `最多可输入${ item.maxLength }个字符` : ''"
+                :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 :maxLength="item.maxLength"
                 @blur="onOauthChange" />
-              <!-- <span
-                v-if="item.maxLength"
-                class="ml-2">
-                最多可输入{{ item.maxLength }}个字符
-              </span> -->
+
             </div>
             <div class="flex items-center">
-              <span class="w-25">客户端认证</span>
+              <span class="w-25">{{ t('service.apiAuthorization.oauth2.clientAuth') }}</span>
               <SelectEnum
                 v-model:value="oauthData['x-xc-oauth2-clientAuthType']"
                 class="w-100"
@@ -814,7 +813,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
             size="small"
             class="ml-25 mt-3"
             @click="fetchOauth2Token">
-            获取令牌
+            {{ t('service.apiAuthorization.oauth2.getToken') }}
           </Button>
         </template>
       </template>
@@ -824,7 +823,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
           :key="index"
           class="space-y-2 mb-4">
           <div class="flex items-center">
-            <span class="w-15">名称</span>
+            <span class="w-15">{{ t('service.apiAuthorization.apiKey.name') }}</span>
             <Input
               v-model:value="item.name"
               class="w-100"
@@ -844,7 +843,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               @click="handleAddApiKey" />
           </div>
           <div class="flex items-center">
-            <span class="w-15">值</span>
+            <span class="w-15">{{ t('service.apiAuthorization.apiKey.value') }}</span>
             <Input
               v-model:value="item[valueKey]"
               :allowClear="true"
@@ -852,7 +851,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               @blur="changeApiKey" />
           </div>
           <div class="flex items-center">
-            <span class="w-15">位置</span>
+            <span class="w-15">{{ t('service.apiAuthorization.apiKey.position') }}</span>
             <Select
               v-model:value="item.in"
               class="w-100"

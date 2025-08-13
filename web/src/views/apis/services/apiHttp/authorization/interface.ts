@@ -1,4 +1,7 @@
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
 
 // const { valueKey, securityApiKeyPerfix } = API_EXTENSION_KEY;
 const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
@@ -35,23 +38,23 @@ export const getAuthItem = () => {
 
 export const authTypeOptions = [
   {
-    label: '不认证',
+    label: t('service.apiAuthorization.types.noAuth'),
     value: null
   },
   {
-    label: 'basic Auth',
+    label: t('service.apiAuthorization.types.basicAuth'),
     value: 'basic'
   },
   {
-    label: 'Bearer Token',
+    label: t('service.apiAuthorization.types.bearerToken'),
     value: 'bearer'
   },
   {
-    label: 'Api Key',
+    label: t('service.apiAuthorization.types.apiKey'),
     value: 'apiKey'
   },
   {
-    label: 'OAuth 2.0',
+    label: t('service.apiAuthorization.types.oauth2'),
     value: 'oauth2'
   },
   // {
@@ -59,7 +62,7 @@ export const authTypeOptions = [
   //   value: 'openIdConnect'
   // },
   {
-    label: '公共',
+    label: t('service.apiAuthorization.types.extends'),
     value: 'extends'
   }
 ];
@@ -78,19 +81,19 @@ export const authInOpt = [
 export const flowAuthType = [
   {
     value: 'authorizationCode',
-    label: '授权码模式（Authorization Code）'
+    label: t('service.apiAuthorization.flowTypes.authorizationCode')
   },
   {
     value: 'password',
-    label: '密码模式（Password Credentials）'
+    label: t('service.apiAuthorization.flowTypes.password')
   },
   {
     value: 'implicit',
-    label: '隐式模式（Implicit）'
+    label: t('service.apiAuthorization.flowTypes.implicit')
   },
   {
     value: 'clientCredentials',
-    label: '客户端模式（Client Credentials））'
+    label: t('service.apiAuthorization.flowTypes.clientCredentials')
   }
   // {
   //   value: 'authorizationCodePKCE',
@@ -112,62 +115,62 @@ export const flowAuthType = [
 export const authLabels = [
   {
     valueKey: 'authorizationUrl',
-    label: '授权URL',
+    label: t('service.apiAuthorization.oauth2Fields.authorizationUrl'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-callbackUrl',
-    label: '回调URL',
+    label: t('service.apiAuthorization.oauth2Fields.callbackUrl'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'tokenUrl',
-    label: '访问令牌URL',
+    label: t('service.apiAuthorization.oauth2Fields.tokenUrl'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'refreshUrl',
-    label: '刷新令牌URL',
+    label: t('service.apiAuthorization.oauth2Fields.refreshUrl'),
     maxLength: 400
   },
   {
     valueKey: 'x-xc-oauth2-clientId',
-    label: '客户端ID',
+    label: t('service.apiAuthorization.oauth2Fields.clientId'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-clientSecret',
-    label: '客户端密钥',
+    label: t('service.apiAuthorization.oauth2Fields.clientSecret'),
     maxLength: 1024,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-username',
-    label: '用户名',
+    label: t('service.apiAuthorization.oauth2Fields.username'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-password',
-    label: '密码',
+    label: t('service.apiAuthorization.oauth2Fields.password'),
     maxLength: 1024,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-challengeMethod',
-    label: '加密方式'
+    label: t('service.apiAuthorization.oauth2Fields.encryptionMethod')
   },
   {
     valueKey: 'x-xc-oauth2-codeVerifier',
-    label: '验证码'
+    label: t('service.apiAuthorization.oauth2Fields.verificationCode')
   },
   {
     valueKey: 'scopes',
-    label: 'Scope',
+    label: t('service.apiAuthorization.oauth2Fields.scope'),
     maxLength: 200
   }
   // {

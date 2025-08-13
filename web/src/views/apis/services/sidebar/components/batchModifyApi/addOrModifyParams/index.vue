@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-// import { } from '@xcan-angus/vue-ui';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const RequestParams = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestParam/index.vue'));
 const RequestHeader = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestHeader/index.vue'));
 const RequestCookie = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestCookie/index.vue'));
@@ -32,12 +33,12 @@ defineExpose({
 </script>
 <template>
   <Tabs size="small">
-    <TabPane key="query" tab="请求参数">
+    <TabPane key="query" :tab="t('service.sidebar.batchModifyApi.requestParams')">
       <RequestParams
         :value="queryData"
         @change="changeQueryData" />
     </TabPane>
-    <TabPane key="header" tab="请求头">
+    <TabPane key="header" :tab="t('service.sidebar.batchModifyApi.requestHeader')">
       <RequestHeader
         :value="headerData"
         @change="changeHeaderData" />

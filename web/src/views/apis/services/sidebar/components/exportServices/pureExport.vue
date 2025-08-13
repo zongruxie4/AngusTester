@@ -13,6 +13,7 @@ import {
   TESTER
 } from '@xcan-angus/infra';
 import { createPdf } from '@xcan-angus/rapipdf';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   visible: boolean;
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'SERVICE',
   id: ''
 });
+const { t } = useI18n();
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const exportType = ref<'SERVICE' | 'API'>(props.type);
@@ -151,12 +153,12 @@ onMounted(async () => {
   <Modal
     :visible="props.visible"
     :width="800"
-    title="导出"
+    :title="t('service.exportModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <Spin :spinning="exportLoading">
       <div class="mt-1.5">
-        <span>格式<Colon class="ml-1 mr-3.5" /></span>
+        <span>{{ t('service.exportModal.formatLabel') }}<Colon class="ml-1 mr-3.5" /></span>
         <RadioGroup
           v-model:value="format"
           :options="formatTypes">

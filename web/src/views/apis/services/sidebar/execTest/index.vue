@@ -319,7 +319,7 @@ const okButtonProps = computed(() => {
                     </div>
                     <TypographyParagraph
                       class="break-all"
-                      :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                      :ellipsis="{ rows: 2, expandable: true, symbol: t('service.sidebar.execTest.more') }"
                       :content="_variable.description" />
                   </div>
                 </div>

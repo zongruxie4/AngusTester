@@ -413,7 +413,11 @@
         "selectedApisTip": "请至少选择一个接口",
         "modifyScope_all": "全部接口",
         "modifyScope_select": "指定接口",
-        "modifyScope_match": "匹配接口"
+        "modifyScope_match": "匹配接口",
+        "requestParams": "请求参数",
+        "requestHeader": "请求头",
+        "cookie": "Cookie",
+        "paramsNamePlaceholder": "请输入参数名"
       },
       "smokeResult": {
         "title": "冒烟测试",
@@ -466,7 +470,8 @@
         "variableNameLabel": "名称",
         "variableValueLabel": "值",
         "variableValueDefault": "默认",
-        "variableDescLabel": "描述"
+        "variableDescLabel": "描述",
+        "more": "更多"
       },
       "addServiceModal": {
         "title": "添加服务",
@@ -972,6 +977,76 @@
         "requestSent": "发送请求(Request sent)",
         "waiting": "等待处理(Waiting)",
         "contentDownload": "下载结果(Content download)"
+      }
+    },
+    "apiAuthorization": {
+      "title": "认证类型",
+      "types": {
+        "noAuth": "不认证",
+        "basicAuth": "basic Auth",
+        "bearerToken": "Bearer Token",
+        "apiKey": "Api Key",
+        "oauth2": "OAuth 2.0",
+        "extends": "公共"
+      },
+      "extends": {
+        "selectServiceSecurity": "选择服务安全认证"
+      },
+      "basic": {
+        "username": "用户名",
+        "usernamePlaceholder": "请输入用户名",
+        "password": "密码",
+        "passwordPlaceholder": "请输入密码"
+      },
+      "bearer": {
+        "token": "令牌",
+        "tokenPlaceholder": "请输入访问令牌"
+      },
+      "oauth2": {
+        "configMethod": "配置方式：",
+        "existingToken": "已有令牌",
+        "generateToken": "生成令牌",
+        "accessToken": "访问令牌",
+        "type": "类型",
+        "clientAuth": "客户端认证",
+        "getToken": "获取令牌"
+      },
+      "apiKey": {
+        "name": "名称",
+        "value": "值",
+        "position": "位置"
+      },
+      "oauth2Fields": {
+        "authorizationUrl": "授权URL",
+        "callbackUrl": "回调URL",
+        "tokenUrl": "访问令牌URL",
+        "refreshUrl": "刷新令牌URL",
+        "clientId": "客户端ID",
+        "clientSecret": "客户端密钥",
+        "username": "用户名",
+        "password": "密码",
+        "encryptionMethod": "加密方式",
+        "verificationCode": "验证码",
+        "scope": "Scope"
+      },
+      "flowTypes": {
+        "authorizationCode": "授权码模式（Authorization Code）",
+        "password": "密码模式（Password Credentials）",
+        "implicit": "隐式模式（Implicit）",
+        "clientCredentials": "客户端模式（Client Credentials）"
+      },
+      "clientAuthTypes": {
+        "basicAuthHeader": "通过Basic认证头发送",
+        "requestBody": "通过请求体发送"
+      },
+      "encryptionTypes": {
+        "sha256": "SHA-256",
+        "plain": "Plain"
+      },
+      "messages": {
+        "authorizationFailed": "Authorization failed Couldn't complete authentication.",
+        "proxyNotConnected": "代理未链接， 请检查代理配置",
+        "maxLengthTip": "最多可输入{maxLength}个字符"
       }
     }
   }
