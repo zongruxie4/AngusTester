@@ -1242,6 +1242,23 @@
       "messages": {
         "copySuccess": "成功复制值到剪贴板"
       }
+    },
+    "apiRequestParams": {
+      "form": {
+        "namePlaceholder": "参数名称",
+        "inputNamePlaceholder": "请输入参数名称",
+        "typePlaceholder": "请选择参数类型",
+        "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符"
+      },
+      "actions": {
+        "copyValue": "复制值"
+      },
+      "tips": {
+        "componentReference": "组件引用：{ref}"
+      },
+      "messages": {
+        "copySuccess": "成功复制值到剪贴板"
+      }
     }
   }
 }

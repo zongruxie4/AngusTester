@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
 import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -15,6 +16,7 @@ import { itemTypes } from '../requestBody/json/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 
+const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
 interface Props {
@@ -178,7 +180,7 @@ const copyValue = async (data: ParamsItem) => {
   }
 
   toClipboard(text).then(() => {
-    notification.success('成功复制值到剪贴板');
+    notification.success(t('service.apiRequestParams.messages.copySuccess'));
   });
 };
 
@@ -385,7 +387,7 @@ defineExpose({
               :id="apiBaseInfo?.serviceId"
               v-model:value="item.name"
               :disabled="item.$ref"
-              placeholder="参数名称"
+              :placeholder="t('service.apiRequestParams.form.namePlaceholder')"
               mode="pure"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
               :type="['parameters']"
@@ -396,20 +398,20 @@ defineExpose({
             <Input
               v-else
               v-model:value="item.name"
-              placeholder="请输入参数名称"
+              :placeholder="t('service.apiRequestParams.form.inputNamePlaceholder')"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
               :allowClear="false"
               @blur="handleBlur($event, index, item, 'name')"
               @keypress="enterHandle" />
           </div>
           <template v-if="item.$ref" #title>
-            组件引用：{{ item.$ref }}
+            {{ t('service.apiRequestParams.tips.componentReference', { ref: item.$ref }) }}
           </template>
         </Tooltip>
         <Select
           v-model:value="item.in"
           dropdownClassName="api-select-dropdown"
-          placeholder="请选择参数类型"
+          :placeholder="t('service.apiRequestParams.form.typePlaceholder')"
           :disabled="item.$ref"
           :allowClear="false"
           :options="paramsTypeOpt"
@@ -424,7 +426,7 @@ defineExpose({
         <div class="flex flex-col flex-25 ml-3 space-y-0.5">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
             :options="item.schema.enum"
             :value="item[valueKey] || item.schema?.[valueKey]"
@@ -432,7 +434,7 @@ defineExpose({
             @select="changeEmit(index, { ...item, [valueKey]: $event,schema: {...item?.schema|| {}, [valueKey]: $event} } )" />
           <ParamInput
             v-else-if="item.schema?.type !== 'array' && item.schema?.type !== 'object'"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestParams.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
             :value="item[valueKey]"
             :error="getErrValue(item)"
@@ -442,7 +444,7 @@ defineExpose({
         <Button
           type="primary"
           size="small"
-          title="复制值"
+          :title="t('service.apiRequestParams.actions.copyValue')"
           class="ml-2"
           @click="copyValue(item)">
           <Icon icon="icon-fuzhi" />
@@ -479,4 +481,4 @@ defineExpose({
   @apply text-3 leading-7 py-0 min-h-full;
 }
 </style>
-../RequestBody/JsonContent/util
+
