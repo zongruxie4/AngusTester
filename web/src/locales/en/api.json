@@ -738,6 +738,14 @@
       "messages": {
         "saveSuccess": "Saved successfully"
       }
+    },
+    "apiUpload": {
+      "actions": {
+        "selectFile": "Select File"
+      },
+      "messages": {
+        "fileSizeLimit": "Total upload file size cannot exceed 100MB during debugging"
+      }
     }
   }
 } 

@@ -1383,6 +1383,14 @@
       "messages": {
         "saveSuccess": "保存成功"
       }
+    },
+    "apiUpload": {
+      "actions": {
+        "selectFile": "选择文件"
+      },
+      "messages": {
+        "fileSizeLimit": "调试时总上传文件大小不能超过100MB"
+      }
     }
   }
 }

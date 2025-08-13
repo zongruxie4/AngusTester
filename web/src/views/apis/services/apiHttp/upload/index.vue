@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
@@ -23,6 +24,7 @@ interface Props {
   maxFileSize: number;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   maxFileSize: 0
@@ -39,7 +41,7 @@ const fileList = ref<any[]>([]);
 
 const beforeUpload: UploadProps['beforeUpload'] = async (file) => {
   if (totalSize + file.size > props.maxFileSize) {
-    notification.warning('调试时总上传文件大小不能超过100MB');
+    notification.warning(t('service.apiUpload.messages.fileSizeLimit'));
   }
   return false;
 };
@@ -130,7 +132,7 @@ watch(() => fileList.value, async () => {
     <template v-if="showSelectFile">
       <div class="flex items-center h-5 px-1.5 ml-1 my-0.5 select-none rounded text-3 border-none text-text-content bg-gray-bg">
         <Icon icon="icon-xuanze" class="mr-1 text-text-sub-content" />
-        选择文件
+        {{ t('service.apiUpload.actions.selectFile') }}
       </div>
     </template>
   </Upload>
