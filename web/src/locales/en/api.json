@@ -403,6 +403,53 @@
         "proxyNotConnected": "Proxy not connected, please check proxy configuration",
         "maxLengthTip": "Maximum {maxLength} characters allowed"
       }
+    },
+    "apiExecDetail": {
+      "tabs": {
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "customTest": "Custom Test",
+        "testTask": "Test Task"
+      },
+      "testSummary": {
+        "allTests": "All Tests",
+        "successRate": "Success Rate",
+        "functional": "Functional",
+        "performance": "Performance",
+        "stability": "Stability",
+        "custom": "Custom",
+        "testInterfaces": "Test Interfaces",
+        "resultIndicators": "Result Indicators",
+        "nonStandard": "Non-Standard"
+      },
+      "testStatus": {
+        "untested": "Untested",
+        "passed": "Passed",
+        "notPassed": "Not Passed"
+      },
+      "indicators": {
+        "total": "Total",
+        "success": "Success",
+        "failed": "Failed",
+        "disabled": "Disabled",
+        "tps": "Transactions Per Second (TPS)",
+        "responseTime": "Response Time (P90)",
+        "errorRate": "Error Rate"
+      },
+      "task": {
+        "noData": "No Data",
+        "columns": {
+          "code": "Code",
+          "name": "Name",
+          "sprint": "Sprint",
+          "priority": "Priority",
+          "assignee": "Assignee",
+          "confirmor": "Confirmor",
+          "deadline": "Deadline"
+        },
+        "overdue": "Overdue"
+      }
     }
   }
 } 

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { NoData } from '@xcan-angus/vue-ui';
 import { exec } from '@/api/ctrl';
@@ -14,6 +15,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   apisId: ''
 });
+
+const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const TestSummary = defineAsyncComponent(() => import('./testSummary/index.vue'));
 const Execdetail = defineAsyncComponent(() => import('@/views/execution/info/index.vue'));
@@ -68,7 +71,7 @@ onMounted(() => {
       size="small"
       type="card"
       class="flex-1 min-h-0">
-      <TabPane key="func" tab="功能测试">
+      <TabPane key="func" :tab="t('service.apiExecDetail.tabs.functionalTest')">
         <Execdetail
           class="p-0"
           :showBackBtn="false"
@@ -79,7 +82,7 @@ onMounted(() => {
 
         <!--        <NoData size="small" class="mt-25" />-->
       </TabPane>
-      <TabPane key="perf" tab="性能测试">
+      <TabPane key="perf" :tab="t('service.apiExecDetail.tabs.performanceTest')">
         <Execdetail
           :showBackBtn="false"
           :execId="perfExecId"
@@ -91,7 +94,7 @@ onMounted(() => {
         <!--          size="small"-->
         <!--          class="mt-25" />-->
       </TabPane>
-      <TabPane key="stability" tab="稳定性测试">
+      <TabPane key="stability" :tab="t('service.apiExecDetail.tabs.stabilityTest')">
         <Execdetail
           :showBackBtn="false"
           :execId="stabilityExecId"
@@ -103,7 +106,7 @@ onMounted(() => {
         <!--          size="small"-->
         <!--          class="mt-25" />-->
       </TabPane>
-      <TabPane key="custom" tab="自定义测试">
+      <TabPane key="custom" :tab="t('service.apiExecDetail.tabs.customTest')">
         <Execdetail
           :showBackBtn="false"
           :execId="customExecId"
@@ -118,7 +121,7 @@ onMounted(() => {
       <TabPane
         v-if="proTypeShowMap.showTask"
         key="task"
-        tab="测试任务">
+        :tab="t('service.apiExecDetail.tabs.testTask')">
         <Task :apisId="props.apisId" :projectId="props.projectId" />
       </TabPane>
     </Tabs>

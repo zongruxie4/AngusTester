@@ -1048,6 +1048,53 @@
         "proxyNotConnected": "代理未链接， 请检查代理配置",
         "maxLengthTip": "最多可输入{maxLength}个字符"
       }
+    },
+    "apiExecDetail": {
+      "tabs": {
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "customTest": "自定义测试",
+        "testTask": "测试任务"
+      },
+      "testSummary": {
+        "allTests": "全部测试",
+        "successRate": "成功率",
+        "functional": "功能",
+        "performance": "性能",
+        "stability": "稳定性",
+        "custom": "自定义",
+        "testInterfaces": "测试接口",
+        "resultIndicators": "结果指标",
+        "nonStandard": "非标准"
+      },
+      "testStatus": {
+        "untested": "未测试",
+        "passed": "通过",
+        "notPassed": "不通过"
+      },
+      "indicators": {
+        "total": "总共",
+        "success": "成功",
+        "failed": "失败",
+        "disabled": "未启用",
+        "tps": "每秒事务数(TPS)",
+        "responseTime": "响应时间(P90)",
+        "errorRate": "错误率"
+      },
+      "task": {
+        "noData": "暂无数据",
+        "columns": {
+          "code": "编码",
+          "name": "名称",
+          "sprint": "所属迭代",
+          "priority": "优先级",
+          "assignee": "经办人",
+          "confirmor": "确认人",
+          "deadline": "截止时间"
+        },
+        "overdue": "已逾期"
+      }
     }
   }
 }
