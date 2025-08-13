@@ -1360,6 +1360,29 @@
       "debug": {
         "example": "调试示例"
       }
+    },
+    "apiUnarchivedrSave": {
+      "form": {
+        "summaryPlaceholder": "请输入接口名称，40字符以内",
+        "descriptionPlaceholder": "限制输入20000字符以内，支持使用markdown语法"
+      },
+      "labels": {
+        "summary": "接口名称",
+        "description": "描述"
+      },
+      "actions": {
+        "save": "保存",
+        "cancel": "取消"
+      },
+      "tips": {
+        "unarchivedApiDescription": "未归档接口为用户临时调试接口，只对添加用户可见"
+      },
+      "validation": {
+        "summaryRequired": "请输入接口名称，100字符以内"
+      },
+      "messages": {
+        "saveSuccess": "保存成功"
+      }
     }
   }
 }

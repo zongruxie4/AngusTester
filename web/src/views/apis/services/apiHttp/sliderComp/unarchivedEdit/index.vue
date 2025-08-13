@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 import { apis } from 'src/api/tester';
 import { Button, Form, FormItem } from 'ant-design-vue';
@@ -9,6 +10,7 @@ interface Props {
   disabled:boolean
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
@@ -93,7 +95,7 @@ watch(() => state.id, async () => {
 
 const rules = {
   summary: [{
-    required: true, message: '请输入接口名称，100字符以内', trigger: 'blur'
+    required: true, message: t('service.apiUnarchivedrSave.validation.summaryRequired'), trigger: 'blur'
   }]
 };
 
@@ -119,7 +121,7 @@ const save = async () => {
       id: res.data?.[0].id || state.id,
       name: summary
     });
-    notification.success('保存成功');
+    notification.success(t('tips.saveSuccess'));
     handleClose();
   });
 };
@@ -134,7 +136,7 @@ const handleClose = () => {
 <template>
   <div class="py-3">
     <Hints
-      text="未归档接口为用户临时调试接口，只对添加用户可见"
+      :text="t('service.apiUnarchivedrSave.tips.unarchivedApiDescription')"
       class="mb-2" />
     <div v-if="state.id" class="mb-2">ID:  {{ state.id }}</div>
     <Form
@@ -142,7 +144,7 @@ const handleClose = () => {
       layout="vertical"
       :model="form"
       :rules="rules">
-      <FormItem label="接口名称" name="summary">
+      <FormItem :label="t('service.apiUnarchivedrSave.labels.summary')" name="summary">
         <Input
           v-model:value="form.summary"
           :maxlength="globalConfigs.VITE_API_SUMMARY_MAX_LENGTH"
@@ -150,9 +152,9 @@ const handleClose = () => {
           :allowClear="false"
           class="rounded"
           size="small"
-          placeholder="请输入接口名称，40字符以内" />
+          :placeholder="t('service.apiUnarchivedrSave.form.summaryPlaceholder')" />
       </FormItem>
-      <FormItem label="描述" name="externalDocs">
+      <FormItem :label="t('service.apiUnarchivedrSave.labels.description')" name="externalDocs">
         <Input
           v-model:value="form.description"
           type="textarea"
@@ -163,7 +165,7 @@ const handleClose = () => {
           :maxlength="globalConfigs.VITE_API_DESC_MAX_LENGTH"
           class="rounded-border"
           size="small"
-          placeholder="限制输入20000字符以内，支持使用markdown语法" />
+          :placeholder="t('service.apiUnarchivedrSave.form.descriptionPlaceholder')" />
       </FormItem>
       <FormItem class="mt-5">
         <Button
@@ -173,10 +175,10 @@ const handleClose = () => {
           :disabled="disabled"
           size="small"
           @click="save">
-          保存
+          {{ t('actions.save') }}
         </Button>
         <Button size="small" @click="handleClose">
-          取消
+          {{ t('actions.cancel') }}
         </Button>
       </FormItem>
     </Form>

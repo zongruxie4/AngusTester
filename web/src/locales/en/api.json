@@ -715,6 +715,29 @@
       "debug": {
         "example": "Debug Example"
       }
+    },
+    "apiUnarchivedrSave": {
+      "form": {
+        "summaryPlaceholder": "Please enter API name, within 40 characters",
+        "descriptionPlaceholder": "Limit input to 20000 characters, supports markdown syntax"
+      },
+      "labels": {
+        "summary": "API Name",
+        "description": "Description"
+      },
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "tips": {
+        "unarchivedApiDescription": "Unarchived APIs are temporary debugging interfaces for users, only visible to the user who added them"
+      },
+      "validation": {
+        "summaryRequired": "Please enter API name, within 100 characters"
+      },
+      "messages": {
+        "saveSuccess": "Saved successfully"
+      }
     }
   }
 } 
