@@ -781,6 +781,34 @@
         "name": "名称",
         "value": "值"
       }
+    },
+    "shareModal": {
+      "title": "分享管理",
+      "actions": {
+        "addShare": "添加分享",
+        "edit": "编辑",
+        "delete": "删除",
+        "copy": "复制",
+        "confirm": "确认",
+        "cancel": "取消",
+        "loadMore": "加载更多"
+      },
+      "messages": {
+        "deleteSuccess": "删除分享记录成功",
+        "passwordRequired": "输入的密码不能为空",
+        "updatePasswordSuccess": "修改密码成功",
+        "copySuccess": "复制成功"
+      },
+      "form": {
+        "link": "链接",
+        "password": "密码",
+        "validityPeriod": "有效期",
+        "permanent": "永久有效"
+      },
+      "copyFormat": {
+        "withPassword": "链接: {url} 密码: {password}",
+        "withoutPassword": "链接: {url}"
+      }
     }
   }
 }

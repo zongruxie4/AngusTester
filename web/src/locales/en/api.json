@@ -141,6 +141,34 @@
         "value": "Value",
         "description": "Description"
       }
+    },
+    "shareModal": {
+      "title": "Share Management",
+      "actions": {
+        "addShare": "Add Share",
+        "edit": "Edit",
+        "delete": "Delete",
+        "copy": "Copy",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "loadMore": "Load More"
+      },
+      "messages": {
+        "deleteSuccess": "Share record deleted successfully",
+        "passwordRequired": "Password cannot be empty",
+        "updatePasswordSuccess": "Password updated successfully",
+        "copySuccess": "Copied successfully"
+      },
+      "form": {
+        "link": "Link",
+        "password": "Password",
+        "validityPeriod": "Validity Period",
+        "permanent": "Permanent"
+      },
+      "copyFormat": {
+        "withPassword": "Link: {url} Password: {password}",
+        "withoutPassword": "Link: {url}"
+      }
     }
   }
 } 

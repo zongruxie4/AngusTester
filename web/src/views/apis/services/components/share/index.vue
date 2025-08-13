@@ -3,6 +3,7 @@ import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { AsyncComponent, Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Divider, Tooltip } from 'ant-design-vue';
 import { toClipboard } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
 import { apis } from 'src/api/tester';
@@ -23,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   type: 'API'
 });
+
+const { t } = useI18n();
 
 const pagination = reactive({
   total: 0,
@@ -76,7 +79,7 @@ const delShare = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success('删除分享记录成功');
+  notification.success(t('service.shareModal.messages.deleteSuccess'));
   pagination.current = 1;
   loadList();
 };
@@ -102,7 +105,7 @@ const openEditPassd = (item: ListType) => {
 // 修改密码
 const patchPassd = async (item:ListType) => {
   if (!item.tempPass) {
-    notification.error('输入的密码不能为空');
+    notification.error(t('service.shareModal.messages.passwordRequired'));
   }
   const { expiredDuration, apiIds, id, public0, remark, url } = item;
   const expiredFlag = !!expiredDuration.value;
@@ -122,7 +125,7 @@ const patchPassd = async (item:ListType) => {
   }
   item.password = item.tempPass as string;
   item.editPassd = false;
-  notification.success('修改密码成功');
+  notification.success(t('service.shareModal.messages.updatePasswordSuccess'));
 };
 
 // 取消修改密码
@@ -134,12 +137,12 @@ const cancelPassd = (item: ListType) => {
 const copy = (item:ListType) => {
   let message;
   if (!item.public0) {
-    message = `链接: ${item.url} 密码: ${item.password || ''}`;
+    message = t('service.shareModal.copyFormat.withPassword', { url: item.url, password: item.password || '' });
   } else {
-    message = `链接: ${item.url}`;
+    message = t('service.shareModal.copyFormat.withoutPassword', { url: item.url });
   }
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('service.shareModal.messages.copySuccess'));
   });
 };
 
@@ -158,12 +161,12 @@ onMounted(() => {
 <template>
   <div class="mr-5 mt-6">
     <Button
-      size="default"
+      size="middle"
       type="primary"
       class="rounded text-3 leading-3 h-7"
       :disabled="disabled"
       @click="openShareDialog">
-      添加分享
+      {{ t('service.shareModal.actions.addShare') }}
     </Button>
     <Divider class="my-3"></Divider>
     <template v-if="state.list.length">
@@ -171,7 +174,7 @@ onMounted(() => {
         v-for="(item,index) in state.list"
         :key="index">
         <column-item
-          label="链接"
+          :label="t('service.shareModal.form.link')"
           className="w-18">
           <Tooltip>
             <template #title>
@@ -182,7 +185,7 @@ onMounted(() => {
         </column-item>
         <column-item
           v-if="!item.public0"
-          label="密码"
+          :label="t('service.shareModal.form.password')"
           className="w-18">
           <div class="flex items-center">
             <template v-if="!item.editPassd">
@@ -203,23 +206,23 @@ onMounted(() => {
                 size="small"
                 class="mx-2.5 text-3 leading-3"
                 @click="patchPassd(item)">
-                确认
+                {{ t('actions.confirm') }}
               </Button>
               <Button
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPassd(item)">
-                取消
+                {{ t('actions.cancel') }}
               </Button>
             </template>
           </div>
         </column-item>
         <column-item
-          label="有效期"
+          :label="t('service.shareModal.form.validityPeriod')"
           className="w-18">
           <div class="flex justify-between w-full">
             <span>
-              {{ item.expiredFlag ? item.expiredDuration.value : '永久有效' }}
+              {{ item.expiredFlag ? item.expiredDuration.value : t('service.shareModal.form.permanent') }}
             </span>
             <span class="text-gray-icon">
               <Icon
@@ -242,7 +245,7 @@ onMounted(() => {
       <NoData></NoData>
     </template>
     <div v-show="showMore" class="w-full text-center">
-      <Button type="link" @click="loadList(true)">加载更多</Button>
+      <Button type="link" @click="loadList(true)">{{ t('service.shareModal.actions.loadMore') }}</Button>
     </div>
     <AsyncComponent :visible="state.visible">
       <Share
