@@ -919,6 +919,45 @@
         "enterUrl": "请输入url地址",
         "enterCorrectUrl": "请输入正确的url地址"
       }
+    },
+    "translateModal": {
+      "title": "翻译",
+      "description": {
+        "title": "OpenAPI翻译说明",
+        "useCases": {
+          "title": "使用场景",
+          "items": [
+            "为多语言API文档提供支持",
+            "国际化API服务",
+            "跨区域API服务部署",
+            "多语言开发者文档生成"
+          ]
+        },
+        "notes": {
+          "title": "注意事项",
+          "items": [
+            "AngusTester默认会使用DeepSeek进行翻译",
+            "翻译是异步处理的，完成后您会收到提示消息",
+            "翻译过程可能需要几分钟到几小时，取决于API规模",
+            "翻译完成后，您可以在"接口 → 服务"中查看"
+          ]
+        }
+      },
+      "configuration": {
+        "title": "OpenAPI翻译配置",
+        "service": "接口服务",
+        "servicePlaceholder": "请选择服务",
+        "sourceLanguage": "原语言",
+        "targetLanguage": "目标语言"
+      },
+      "actions": {
+        "cancel": "取消",
+        "submit": "提交"
+      },
+      "messages": {
+        "translateComplete": "翻译完成",
+        "selectService": "请选择服务"
+      }
     }
   }
 }

@@ -279,6 +279,45 @@
         "enterUrl": "Please enter URL address",
         "enterCorrectUrl": "Please enter correct URL address"
       }
+    },
+    "translateModal": {
+      "title": "Translation",
+      "description": {
+        "title": "OpenAPI Translation Instructions",
+        "useCases": {
+          "title": "Use Cases",
+          "items": [
+            "Provide support for multilingual API documentation",
+            "Internationalize API services",
+            "Cross-regional API service deployment",
+            "Generate multilingual developer documentation"
+          ]
+        },
+        "notes": {
+          "title": "Notes",
+          "items": [
+            "AngusTester will use DeepSeek for translation by default",
+            "Translation is processed asynchronously, you will receive a notification message when completed",
+            "Translation process may take from a few minutes to several hours, depending on API scale",
+            "After translation is completed, you can view it in \"APIs → Services\""
+          ]
+        }
+      },
+      "configuration": {
+        "title": "OpenAPI Translation Configuration",
+        "service": "API Service",
+        "servicePlaceholder": "Please select service",
+        "sourceLanguage": "Source Language",
+        "targetLanguage": "Target Language"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "submit": "Submit"
+      },
+      "messages": {
+        "translateComplete": "Translation completed",
+        "selectService": "Please select service"
+      }
     }
   }
 } 
