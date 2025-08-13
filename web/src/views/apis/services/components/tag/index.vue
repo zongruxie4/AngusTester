@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, Hints, Icon, IconRequired, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Textarea, Tooltip, TypographyParagraph } from 'ant-design-vue';
 import { services } from 'src/api/tester';
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: true,
   id: ''
 });
+
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void}>();
 
@@ -142,7 +145,7 @@ const hanldeDelete = async (tag:TagObj) => {
   if (error) {
     return;
   }
-  notification.success('删除成功');
+  notification.success(t('service.tag.messages.deleteSuccess'));
   // 如果删除成功
   tagList.value = tagList.value.filter(item => item.id !== tag.id);
   oldtagList.value = oldtagList.value.filter(item => item.id !== tag.id);
@@ -165,7 +168,7 @@ const handleSave = (tag:TagObj) => {
   if (tag.isAdd) {
     const len = tagList.value.filter(item => item.name === tag.name)?.length;
     if (len >= 2) {
-      notification.warning('标签名称已存在');
+      notification.warning(t('service.tag.messages.nameExists'));
       tag.nameErr = true;
       return;
     }
@@ -185,7 +188,7 @@ const saveNewData = async (tag:TagObj) => {
   if (tag.isAdd) {
     const len = tagList.value.filter(item => item.name === tag.name)?.length;
     if (len >= 2) {
-      notification.warning('标签名称已存在');
+      notification.warning(t('service.tag.messages.nameExists'));
       tag.nameErr = true;
       return;
     }
@@ -233,7 +236,7 @@ const saveNewData = async (tag:TagObj) => {
   tag.isExpand = lastIsExpandState.value;
   addBtnDisabled.value = false;
   currEditData.value = undefined;
-  notification.success('保存成功');
+  notification.success(t('service.tag.messages.saveSuccess'));
   if (tag.isAdd) {
     tag.isAdd = false;
   }
@@ -293,7 +296,7 @@ const getChenkUpdateRes = () => {
   if (currEditData.value) {
     const hasUpdate = chenkUpdate(tagList.value.filter(item => item.id === currEditData.value?.id)[0]);
     if (hasUpdate) {
-      notification.warning('数据未保存，请先保存数据或者取消编辑');
+      notification.warning(t('service.tag.messages.dataNotSaved'));
       return true;
     }
   }
@@ -455,8 +458,8 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">
-    <Hints text="标签作为API附加元信息用于对其分组，一个API可以有多个标签即归属于多个分组。定义标签的顺序会和API以标签分组时顺序、文档中接口展示顺序保持一致。" />
-    <Hints text="每个标签名必须是唯一的；并非所有接口都需要关联标签；最多添加2000个。" class="mt-2 hints-text" />
+    <Hints :text="t('service.tag.hints.main')" />
+    <Hints :text="t('service.tag.hints.sub')" class="mt-2 hints-text" />
     <div class="mt-2">
       <Button
         size="small"
@@ -465,7 +468,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
         :disabled="props.disabled || tagList.length > 1999 || addBtnDisabled"
         @click="addSyncInfo">
         <Icon icon="icon-jia" class="mr-1" />
-        添加
+        {{ t('service.tag.actions.add') }}
       </Button>
     </div>
     <div
@@ -490,7 +493,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               </div>
             </div>
             <div class="flex flex-none items-center mt-1.75 leading-5">
-              <Tooltip title="编辑" placement="top">
+              <Tooltip :title="t('service.tag.actions.edit')" placement="top">
                 <template v-if="props.disabled">
                   <Icon
                     icon="icon-shuxie"
@@ -504,7 +507,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                     @click="handleEdit(tag)" />
                 </template>
               </Tooltip>
-              <Tooltip title="删除" placement="top">
+              <Tooltip :title="t('service.tag.actions.delete')" placement="top">
                 <template v-if="props.disabled">
                   <Icon
                     icon="icon-qingchu"
@@ -529,10 +532,10 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
           class="transition-height duration-500 overflow-hidden leading-3 text-3">
           <template v-if="tag.isExpand">
             <div v-if="tag.isEdit" class="flex-1 text-3">
-              <div><IconRequired />名称</div>
+              <div><IconRequired />{{ t('service.tag.form.name') }}</div>
               <Input
                 v-model:value="tag.name"
-                placeholder="请输入标签名称"
+                :placeholder="t('service.tag.form.namePlaceholder')"
                 size="small"
                 class="mt-2 mb-5"
                 :maxlength="200"
@@ -541,12 +544,12 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                 @change="(event)=>tagNameChange(event.target.value,tag)" />
             </div>
             <template v-if="tag.isEdit">
-              <div class="pl-1.75">描述</div>
+              <div class="pl-1.75">{{ t('service.tag.form.description') }}</div>
               <Textarea
                 v-model:value="tag.description"
                 size="small"
                 class="mt-2 mb-5"
-                placeholder="输入描述，支持Markdown语法"
+                :placeholder="t('service.tag.form.descriptionPlaceholder')"
                 :rows="3"
                 :maxlength="400"
                 :disabled="!tag.isEdit" />
@@ -559,29 +562,29 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   :content="tag.description"
                   :copyable="tag.showEllipsis?{ tooltip: false }:false">
                   <template v-if="tag.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleDesExpand(e,tag)">{{ tag.ellipsis?'收起':'展开' }}</a>
+                    <a @click="(e)=>handleDesExpand(e,tag)">{{ tag.ellipsis ? t('service.tag.actions.collapse') : t('service.tag.actions.expand') }}</a>
                   </template>
                 </TypographyParagraph>
               </template>
             </template>
             <div v-if="tag.isExpand && !tag.isEdit && tag.externalDocs.url" class="border-t border-dashed border-border-divider mt-2"></div>
             <div v-if="tag.isEdit" class="flex-1">
-              <div class="pl-1.75">外部文档地址</div>
+              <div class="pl-1.75">{{ t('service.tag.form.externalDocsUrl') }}</div>
               <Input
                 v-model:value="tag.externalDocs.url"
-                placeholder="请输入外部文档地址"
+                :placeholder="t('service.tag.form.externalDocsUrlPlaceholder')"
                 size="small"
                 class="mt-2"
                 :maxlength="400"
                 :error="tag.externalDocs.urlErr.emptyUrl || tag.externalDocs.urlErr.errUrl"
                 @change="(event)=>externalDocsUrlChange(event.target.value,tag)" />
               <div v-if="tag.isEdit" class="text-rule text-3 h-5">
-                <template v-if="tag.externalDocs.urlErr.emptyUrl">请输入url地址</template>
-                <template v-if="!tag.externalDocs.urlErr.emptyUrl && tag.externalDocs.urlErr.errUrl">请输入正确的url地址</template>
+                <template v-if="tag.externalDocs.urlErr.emptyUrl">{{ t('service.tag.validation.enterUrl') }}</template>
+                <template v-if="!tag.externalDocs.urlErr.emptyUrl && tag.externalDocs.urlErr.errUrl">{{ t('service.tag.validation.enterCorrectUrl') }}</template>
               </div>
             </div>
             <template v-else>
-              <div v-if="tag.externalDocs.url" class="mt-2 mb-1 leading-5"><Icon icon="icon-lianjie2" class="text-3 mr-1 -mt-0.5" />外部文档链接</div>
+              <div v-if="tag.externalDocs.url" class="mt-2 mb-1 leading-5"><Icon icon="icon-lianjie2" class="text-3 mr-1 -mt-0.5" />{{ t('service.tag.form.externalDocsLink') }}</div>
               <a
                 :href="tag.externalDocs.url"
                 target="_blank"
@@ -590,12 +593,12 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               </a>
             </template>
             <template v-if="tag.isEdit">
-              <div class="pl-1.75">外部文档描述</div>
+              <div class="pl-1.75">{{ t('service.tag.form.externalDocsDescription') }}</div>
               <Textarea
                 v-model:value="tag.externalDocs.description"
                 size="small"
                 class="mt-2"
-                placeholder="输入描述，支持Markdown语法"
+                :placeholder="t('service.tag.form.externalDocsDescriptionPlaceholder')"
                 :rows="3"
                 :maxlength="400" />
             </template>
@@ -607,7 +610,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   :content="tag.externalDocs.description"
                   :copyable="tag.externalDocs.showEllipsis ? { tooltip: false }:false">
                   <template v-if="tag.externalDocs.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">{{ tag.externalDocs.ellipsis ?'收起':'展开' }}</a>
+                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">{{ tag.externalDocs.ellipsis ? t('service.tag.actions.collapse') : t('service.tag.actions.expand') }}</a>
                   </template>
                 </TypographyParagraph>
               </template>
@@ -620,7 +623,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   class="mr-2 px-0"
                   :disabled="tagList.length === 1 && tag.isAdd"
                   @click="cancelEdit(tag)">
-                  取消
+                  {{ t('actions.cancel') }}
                 </Button>
                 <Button
                   size="small"
@@ -628,7 +631,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   class="px-0"
                   :disabled="props.disabled || tag.saveLoading || !tagList.length"
                   @click="handleSave(tag)">
-                  保存
+                  {{ t('actions.save') }}
                 </Button>
               </template>
             </div>

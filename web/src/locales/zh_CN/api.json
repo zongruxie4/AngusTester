@@ -883,6 +883,42 @@
         "header": "header",
         "query": "query"
       }
+    },
+    "tag": {
+      "hints": {
+        "main": "标签作为API附加元信息用于对其分组，一个API可以有多个标签即归属于多个分组。定义标签的顺序会和API以标签分组时顺序、文档中接口展示顺序保持一致。",
+        "sub": "每个标签名必须是唯一的；并非所有接口都需要关联标签；最多添加2000个。"
+      },
+      "actions": {
+        "add": "添加",
+        "edit": "编辑",
+        "delete": "删除",
+        "save": "保存",
+        "cancel": "取消",
+        "expand": "展开",
+        "collapse": "收起"
+      },
+      "messages": {
+        "deleteSuccess": "删除成功",
+        "saveSuccess": "保存成功",
+        "nameExists": "标签名称已存在",
+        "dataNotSaved": "数据未保存，请先保存数据或者取消编辑"
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "请输入标签名称",
+        "description": "描述",
+        "descriptionPlaceholder": "输入描述，支持Markdown语法",
+        "externalDocsUrl": "外部文档地址",
+        "externalDocsUrlPlaceholder": "请输入外部文档地址",
+        "externalDocsDescription": "外部文档描述",
+        "externalDocsDescriptionPlaceholder": "输入描述，支持Markdown语法",
+        "externalDocsLink": "外部文档链接"
+      },
+      "validation": {
+        "enterUrl": "请输入url地址",
+        "enterCorrectUrl": "请输入正确的url地址"
+      }
     }
   }
 }

@@ -243,6 +243,42 @@
         "header": "header",
         "query": "query"
       }
+    },
+    "tag": {
+      "hints": {
+        "main": "Tags serve as additional metadata for APIs to group them. An API can have multiple tags, meaning it belongs to multiple groups. The order of tag definitions will be consistent with the order of APIs grouped by tags and the order of interface display in documentation.",
+        "sub": "Each tag name must be unique; not all interfaces need to be associated with tags; maximum 2000 tags can be added."
+      },
+      "actions": {
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "expand": "Expand",
+        "collapse": "Collapse"
+      },
+      "messages": {
+        "deleteSuccess": "Deleted successfully",
+        "saveSuccess": "Saved successfully",
+        "nameExists": "Tag name already exists",
+        "dataNotSaved": "Data not saved, please save data or cancel editing first"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Please enter tag name",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter description, supports Markdown syntax",
+        "externalDocsUrl": "External Documentation URL",
+        "externalDocsUrlPlaceholder": "Please enter external documentation URL",
+        "externalDocsDescription": "External Documentation Description",
+        "externalDocsDescriptionPlaceholder": "Enter description, supports Markdown syntax",
+        "externalDocsLink": "External Documentation Link"
+      },
+      "validation": {
+        "enterUrl": "Please enter URL address",
+        "enterCorrectUrl": "Please enter correct URL address"
+      }
     }
   }
 } 
