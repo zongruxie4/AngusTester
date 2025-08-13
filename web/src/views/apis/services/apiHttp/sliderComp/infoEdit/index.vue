@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   Hints,
   Icon,
@@ -22,6 +23,7 @@ interface Props {
   disabled:boolean
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
@@ -135,16 +137,16 @@ watch(() => state.id, async () => {
 
 const rules = {
   summary: [{
-    required: true, message: '请输入接口名称，100字符以内', trigger: 'blur'
+    required: true, message: t('service.apiSliderSave.validation.summaryRequired'), trigger: 'blur'
   }],
   ownerId: [{
-    required: true, message: '请选择接口负责人', trigger: 'change'
+    required: true, message: t('service.apiSliderSave.validation.ownerRequired'), trigger: 'change'
   }],
   serviceId: [{
-    required: true, message: '请选择所属服务', trigger: 'change'
+    required: true, message: t('service.apiSliderSave.validation.serviceRequired'), trigger: 'change'
   }],
   status: [{
-    required: true, message: '请选择接口状态', trigger: 'change'
+    required: true, message: t('service.apiSliderSave.validation.statusRequired'), trigger: 'change'
   }]
 };
 
@@ -191,7 +193,7 @@ const save = async () => {
     if (isUnarchivedApi.value) {
       refreshUnarchived();
     }
-    notification.success('保存成功');
+    notification.success(t('tips.saveSuccess'));
     handleClose();
   });
 };
@@ -215,7 +217,7 @@ const guideStep = (key:string) => {
 
 onMounted(() => {
   if (stepKey.value === 'debugApiSix' && stepVisible.value) {
-    form.summary = '调试示例';
+    form.summary = t('service.apiSliderSave.debug.example');
   }
 });
 
@@ -236,18 +238,18 @@ onMounted(() => {
           :disabled="disabled"
           size="small"
           @click="save">
-          保存
+          {{ t('actions.save') }}
         </Button>
         <Button size="small" @click="handleClose">
-          取消
+          {{ t('actions.cancel') }}
         </Button>
         <Hints
-          text="注意：相同服务下接口不允许重复，即请求方法和接口路径(不包含查询参数)组合必须唯一。"
+          :text="t('service.apiSliderSave.tips.duplicateApi')"
           class="mb-2 mt-2" />
         <div v-if="state.id" class="mb-2 flex items-center space-x-2"><span>ID:  {{ state.id }}</span> <IconCopy :copyText="state.id" /></div>
-        <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">已发布接口不允许修改</p>
+        <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">{{ t('service.apiSliderSave.tips.releasedApiNotEditable') }}</p>
       </FormItem>
-      <FormItem label="接口名称" name="summary">
+              <FormItem :label="t('service.apiSliderSave.labels.summary')" name="summary">
         <Tooltip
           :visible="stepVisible && stepKey === 'debugApiSix'"
           :overlayStyle="{'min-width': '240px'}"
@@ -262,7 +264,7 @@ onMounted(() => {
                   size="small"
                   type="primary"
                   @click="guideStep('debugApiSeven')">
-                  下一步
+                  {{ t('service.apiSliderSave.actions.nextStep') }}
                 </Button>
               </div>
             </div>
@@ -274,10 +276,10 @@ onMounted(() => {
             :allowClear="false"
             class="rounded"
             size="small"
-            placeholder="请输入接口名称，40字符以内" />
+            :placeholder="t('service.apiSliderSave.form.summaryPlaceholder')" />
         </Tooltip>
       </FormItem>
-      <FormItem label="编码">
+      <FormItem :label="t('service.apiSliderSave.labels.operationId')">
         <Input
           v-model:value="form.operationId"
           :maxlength="globalConfigs.VITE_API_CODE_MAX_LENGTH"
@@ -287,26 +289,26 @@ onMounted(() => {
           includes=":_-."
           class="rounded"
           size="small"
-          placeholder="请输入编码，40字符以内" />
+          :placeholder="t('service.apiSliderSave.form.operationIdPlaceholder')" />
       </FormItem>
-      <FormItem label="接口负责人" name="ownerId">
+              <FormItem :label="t('service.apiSliderSave.labels.owner')" name="ownerId">
         <SelectUser
           v-model:value="form.ownerId"
           class="rounded-border"
           :options="ownerOpt"
           :disabled="disabled"
           size="small"
-          placeholder="请选择接口负责人"
+          :placeholder="t('service.apiSliderSave.form.ownerPlaceholder')"
           :allowClear="false" />
       </FormItem>
-      <FormItem label="所属服务" name="serviceId">
+      <FormItem :label="t('service.apiSliderSave.labels.service')" name="serviceId">
         <TreeSelect
           v-model:defaultValue="defaultProject"
           :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
           :allowClear="false"
           :disabled="disabled || !isUnarchivedApi"
           :fieldNames="{children:'children', label:'name', value: 'id'}"
-          placeholder="请选择所属服务"
+          :placeholder="t('service.apiSliderSave.form.servicePlaceholder')"
           :virtual="false"
           size="small"
           @change="handleProjectChange">
@@ -326,38 +328,38 @@ onMounted(() => {
       <FormItem name="tags">
         <template #label>
           <div>
-            <span>标签</span>
+            <span>{{ t('service.apiSliderSave.labels.tags') }}</span>
             <Tooltip placement="left">
               <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
-              <template #title> 标签作为API附加元信息用于对其分组。 </template>
+              <template #title>{{ t('service.apiSliderSave.tips.tagsDescription') }}</template>
             </Tooltip>
           </div>
         </template>
         <Select
           v-model:value="form.tags"
           mode="tags"
-          placeholder="请输入或选择标签，输入需按Enter确认"
+          :placeholder="t('service.apiSliderSave.form.tagsPlaceholder')"
           :disabled="disabled"
           :options="tagsOpt"
           @dropdownVisibleChange="loadTagfromProject">
         </Select>
       </FormItem>
-      <FormItem label="状态" name="status">
+      <FormItem :label="t('service.apiSliderSave.labels.status')" name="status">
         <SelectEnum
           v-model:value="form.status"
           :disabled="disabled"
-          placeholder="请选择状态"
+          :placeholder="t('service.apiSliderSave.form.statusPlaceholder')"
           enumKey="ApiStatus">
         </SelectEnum>
       </FormItem>
-      <FormItem label="是否弃用" name="deprecated">
+      <FormItem :label="t('service.apiSliderSave.labels.deprecated')" name="deprecated">
         <Select
           v-model:value="form.deprecated"
           :disabled="disabled"
-          :options="[{label: '正常', value: false}, {label: '已弃用', value: true}]">
+          :options="[{label: t('service.apiSliderSave.options.normal'), value: false}, {label: t('service.apiSliderSave.options.deprecated'), value: true}]">
         </Select>
       </FormItem>
-      <FormItem label="描述" name="externalDocs">
+      <FormItem :label="t('service.apiSliderSave.labels.description')" name="externalDocs">
         <Input
           v-model:value="form.description"
           type="textarea"
@@ -368,28 +370,28 @@ onMounted(() => {
           :maxlength="globalConfigs.VITE_API_DESC_MAX_LENGTH"
           class="rounded-border"
           size="small"
-          placeholder="限制输入20000字符以内，支持使用markdown语法" />
+          :placeholder="t('service.apiSliderSave.form.descriptionPlaceholder')" />
       </FormItem>
       <FormItem>
         <template #label>
           <div>
-            外部文档
+            {{ t('service.apiSliderSave.labels.externalDocs') }}
             <Tooltip placement="left">
               <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
-              <template #title> 引用外部资源作为当前接口文档扩展。</template>
+              <template #title>{{ t('service.apiSliderSave.tips.externalDocsDescription') }}</template>
             </Tooltip>
           </div>
         </template>
         <Input
           v-model:value="form.externalDocs.url"
-          placeholder="输入外部文档链接"
+          :placeholder="t('service.apiSliderSave.form.externalDocsUrlPlaceholder')"
           :disabled="disabled"
           :maxLength="100" />
       </FormItem>
       <FormItem class="-mt-1">
         <Input
           v-model:value="form.externalDocs.description"
-          placeholder="输入外部文档描述"
+          :placeholder="t('service.apiSliderSave.form.externalDocsDescPlaceholder')"
           :disabled="disabled"
           :maxLength="200"
           type="textarea" />

@@ -664,6 +664,57 @@
         "milliseconds": "ms",
         "times": "times"
       }
+    },
+    "apiSliderSave": {
+      "form": {
+        "summaryPlaceholder": "Please enter API name, within 40 characters",
+        "operationIdPlaceholder": "Please enter operation ID, within 40 characters",
+        "ownerPlaceholder": "Please select API owner",
+        "servicePlaceholder": "Please select service",
+        "tagsPlaceholder": "Please enter or select tags, press Enter to confirm input",
+        "statusPlaceholder": "Please select status",
+        "descriptionPlaceholder": "Limit input to 20000 characters, supports markdown syntax",
+        "externalDocsUrlPlaceholder": "Enter external documentation link",
+        "externalDocsDescPlaceholder": "Enter external documentation description"
+      },
+      "labels": {
+        "summary": "API Name",
+        "operationId": "Operation ID",
+        "owner": "API Owner",
+        "service": "Service",
+        "tags": "Tags",
+        "status": "Status",
+        "deprecated": "Deprecated",
+        "description": "Description",
+        "externalDocs": "External Documentation"
+      },
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "nextStep": "Next Step"
+      },
+      "tips": {
+        "duplicateApi": "Note: APIs under the same service cannot be duplicated, i.e., the combination of request method and API path (excluding query parameters) must be unique.",
+        "tagsDescription": "Tags are used as additional metadata for API grouping.",
+        "externalDocsDescription": "Reference external resources as extensions to current API documentation.",
+        "releasedApiNotEditable": "Released APIs cannot be modified"
+      },
+      "validation": {
+        "summaryRequired": "Please enter API name, within 100 characters",
+        "ownerRequired": "Please select API owner",
+        "serviceRequired": "Please select service",
+        "statusRequired": "Please select status"
+      },
+      "messages": {
+        "saveSuccess": "Saved successfully"
+      },
+      "options": {
+        "normal": "Normal",
+        "deprecated": "Deprecated"
+      },
+      "debug": {
+        "example": "Debug Example"
+      }
     }
   }
 } 

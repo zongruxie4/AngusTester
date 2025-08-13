@@ -1309,6 +1309,57 @@
         "milliseconds": "ms",
         "times": "次"
       }
+    },
+    "apiSliderSave": {
+      "form": {
+        "summaryPlaceholder": "请输入接口名称，40字符以内",
+        "operationIdPlaceholder": "请输入编码，40字符以内",
+        "ownerPlaceholder": "请选择接口负责人",
+        "servicePlaceholder": "请选择所属服务",
+        "tagsPlaceholder": "请输入或选择标签，输入需按Enter确认",
+        "statusPlaceholder": "请选择状态",
+        "descriptionPlaceholder": "限制输入20000字符以内，支持使用markdown语法",
+        "externalDocsUrlPlaceholder": "输入外部文档链接",
+        "externalDocsDescPlaceholder": "输入外部文档描述"
+      },
+      "labels": {
+        "summary": "接口名称",
+        "operationId": "编码",
+        "owner": "接口负责人",
+        "service": "所属服务",
+        "tags": "标签",
+        "status": "状态",
+        "deprecated": "是否弃用",
+        "description": "描述",
+        "externalDocs": "外部文档"
+      },
+      "actions": {
+        "save": "保存",
+        "cancel": "取消",
+        "nextStep": "下一步"
+      },
+      "tips": {
+        "duplicateApi": "注意：相同服务下接口不允许重复，即请求方法和接口路径(不包含查询参数)组合必须唯一。",
+        "tagsDescription": "标签作为API附加元信息用于对其分组。",
+        "externalDocsDescription": "引用外部资源作为当前接口文档扩展。",
+        "releasedApiNotEditable": "已发布接口不允许修改"
+      },
+      "validation": {
+        "summaryRequired": "请输入接口名称，100字符以内",
+        "ownerRequired": "请选择接口负责人",
+        "serviceRequired": "请选择所属服务",
+        "statusRequired": "请选择接口状态"
+      },
+      "messages": {
+        "saveSuccess": "保存成功"
+      },
+      "options": {
+        "normal": "正常",
+        "deprecated": "已弃用"
+      },
+      "debug": {
+        "example": "调试示例"
+      }
     }
   }
 }
