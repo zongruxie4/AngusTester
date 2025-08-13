@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
     <div
       v-show="!value && !focused"
       class="absolute left-2 top-0 h-full leading-5.5 py-1 text-theme-placeholder select-none pointer-events-none">
-      服务器地址，接口地址URL前缀
+      {{ t('service.apiServerPath.form.serverPlaceholder') }}
     </div>
     <div
       ref="inputRef"
@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
       <template #content>
         <div class="text-3">
           <div v-show="showErrorPopover" class="text-rule">
-            找不到该变量，请先定义变量或刷新再试
+            {{ t('service.apiServerPath.tips.variableNotFound') }}
           </div>
           <div v-show="!showErrorPopover">
             <div class="font-bold text-text-title flex items-center">
@@ -240,7 +240,7 @@ onBeforeUnmount(() => {
                       {{ en }}
                     </div>
                     <div class="flex items-center">
-                      <span v-show="_value.default === en">默认</span>
+                      <span v-show="_value.default === en">{{ t('service.apiServerPath.tips.default') }}</span>
                       <Radio
                         size="small"
                         :checked="_value.default === en"

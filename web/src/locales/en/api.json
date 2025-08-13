@@ -614,6 +614,31 @@
       "messages": {
         "copySuccess": "Successfully copied value to clipboard"
       }
+    },
+    "apiServerPath": {
+      "form": {
+        "pathPlaceholder": "API path, starting with \"/\"",
+        "serverPlaceholder": "Server address, URL prefix for API address"
+      },
+      "actions": {
+        "sendRequest": "Send Request",
+        "abortRequest": "Abort Request",
+        "saveToUnarchived": "Save to Unarchived",
+        "archive": "Archive",
+        "generateCase": "Generate Case",
+        "copyUrl": "Copy URL",
+        "nextStep": "Next Step"
+      },
+      "tips": {
+        "variableNotFound": "Variable not found, please define the variable first or refresh and try again",
+        "default": "Default"
+      },
+      "labels": {
+        "current": "Current",
+        "public": "Public",
+        "mock": "Mock",
+        "history": "History"
+      }
     }
   }
 } 

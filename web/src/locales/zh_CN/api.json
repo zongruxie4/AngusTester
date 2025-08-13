@@ -1259,6 +1259,31 @@
       "messages": {
         "copySuccess": "成功复制值到剪贴板"
       }
+    },
+    "apiServerPath": {
+      "form": {
+        "pathPlaceholder": "接口路径，以 \" / \" 起始",
+        "serverPlaceholder": "服务器地址，接口地址URL前缀"
+      },
+      "actions": {
+        "sendRequest": "发送请求",
+        "abortRequest": "终止请求",
+        "saveToUnarchived": "保存到未归档",
+        "archive": "归档",
+        "generateCase": "生成用例",
+        "copyUrl": "复制Url",
+        "nextStep": "下一步"
+      },
+      "tips": {
+        "variableNotFound": "找不到该变量，请先定义变量或刷新再试",
+        "default": "默认"
+      },
+      "labels": {
+        "current": "当前",
+        "public": "公共",
+        "mock": "Mock",
+        "history": "历史记录"
+      }
     }
   }
 }

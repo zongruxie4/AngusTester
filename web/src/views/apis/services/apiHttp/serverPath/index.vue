@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, toRaw, watch } 
 import { AsyncComponent, Icon, Input, Spin, Tooltip, VuexHelper, Select } from '@xcan-angus/vue-ui';
 import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import { Method } from '../interface';
 import ServerInput from './serverInput.vue';
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   currentServer: () => ({ url: '', id: utils.uuid() }),
   availableServers: () => ([])
 });
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -312,7 +314,7 @@ const serverListOpt = computed(() => {
               <div class="flex items-center mb-1 leading-6">
                 <div class="flex items-center whitespace-nowrap bg-bg-table-head px-2 mr-2 rounded text-text-title font-medium">
                   <Icon icon="icon-dangqian" class="mr-1" />
-                  <span>当前</span>
+                  <span>{{ t('service.apiServerPath.labels.current') }}</span>
                 </div>
                 <div class="flex-1 h-0.25 border-t border-dashed border-border-divider"></div>
               </div>
@@ -325,7 +327,7 @@ const serverListOpt = computed(() => {
               <div class="flex items-center mb-1 leading-6">
                 <div class="flex items-center whitespace-nowrap bg-bg-table-head px-2 mr-2 rounded text-text-title font-medium">
                   <Icon icon="icon-dangqian" class="mr-1" />
-                  <span>公共</span>
+                  <span>{{ t('service.apiServerPath.labels.public') }}</span>
                 </div>
                 <div class="flex-1 h-0.25 border-t border-dashed border-border-divider"></div>
               </div>
@@ -345,7 +347,7 @@ const serverListOpt = computed(() => {
               <div class="flex items-center mb-1 leading-6">
                 <div class="flex items-center whitespace-nowrap bg-bg-table-head px-2 mr-2 rounded text-text-title font-medium">
                   <Icon icon="icon-dangqian" class="mr-1" />
-                  <span>Mock</span>
+                  <span>{{ t('service.apiServerPath.labels.mock') }}</span>
                 </div>
                 <div class="flex-1 h-0.25 border-t border-dashed border-border-divider"></div>
               </div>
@@ -363,7 +365,7 @@ const serverListOpt = computed(() => {
               <div class="flex items-center mb-1 leading-6">
                 <div class="flex items-center whitespace-nowrap bg-bg-table-head px-2 mr-2 rounded text-text-title font-medium">
                   <Icon icon="icon-dangqian" class="mr-1" />
-                  <span>历史记录</span>
+                  <span>{{ t('service.apiServerPath.labels.history') }}</span>
                 </div>
                 <div class="flex-1 h-0.25 border-t border-dashed border-border-divider"></div>
               </div>
@@ -405,7 +407,7 @@ const serverListOpt = computed(() => {
                 size="small"
                 type="primary"
                 @click="guideStep('debugApiThree')">
-                下一步
+                {{ t('service.apiServerPath.actions.nextStep') }}
               </Button>
             </div>
           </div>
@@ -417,7 +419,7 @@ const serverListOpt = computed(() => {
           @click="handleRequest">
           <template #icon>
             <Icon class="mr-2" icon="icon-fasong" />
-          </template>发送请求
+          </template>{{ t('service.apiServerPath.actions.sendRequest') }}
         </Button>
         <Spin
           v-else
@@ -429,7 +431,7 @@ const serverListOpt = computed(() => {
             <template #icon>
               <Icon class="mr-2" icon="icon-duankai" />
             </template>
-            <span>终止请求</span>
+            <span>{{ t('service.apiServerPath.actions.abortRequest') }}</span>
           </Button>
         </Spin>
       </Tooltip>
@@ -439,13 +441,13 @@ const serverListOpt = computed(() => {
             class="ml-2"
             :disabled="!auths.includes('MODIFY')"
             @click="emit('save')">
-            保存
+            {{t('actions.save')}}
           </Button>
           <Button
             class="ml-2"
             :disabled="!auths.includes('MODIFY')"
             @click="emit('archived')">
-            归档
+            {{ t('service.apiServerPath.actions.archive') }}
           </Button>
         </template>
         <template v-else>
@@ -453,7 +455,7 @@ const serverListOpt = computed(() => {
             class="ml-2"
             :disabled="!auths.includes('MODIFY')"
             @click="emit('save')">
-            保存到未归档
+            {{ t('service.apiServerPath.actions.saveToUnarchived') }}
           </Button>
           <Tooltip
             :visible="stepVisible && stepKey === 'debugApiFour'"
@@ -464,12 +466,12 @@ const serverListOpt = computed(() => {
                 <div class="text-4 text-text-title">{{ stepContent.title }}</div>
                 <div class="mt-2">{{ stepContent.content }}</div>
                 <div class="flex justify-end mt-5">
-                  <Button
-                    size="small"
-                    type="primary"
-                    @click="guideStep('debugApiSix')">
-                    下一步
-                  </Button>
+                                <Button
+                size="small"
+                type="primary"
+                @click="guideStep('debugApiSix')">
+                {{ t('service.apiServerPath.actions.nextStep') }}
+              </Button>
                 </div>
               </div>
             </template>
@@ -477,7 +479,7 @@ const serverListOpt = computed(() => {
               class="ml-2"
               :disabled="!auths.includes('MODIFY')"
               @click="emit('archived')">
-              归档
+              {{ t('service.apiServerPath.actions.archive') }}
             </Button>
           </Tooltip>
         </template>
@@ -490,17 +492,17 @@ const serverListOpt = computed(() => {
           <template #icon>
             <Icon class="mr-2" icon="icon-baocun" />
           </template>
-          保存
+          {{t('actions.save')}}
         </Button>
         <Button
           class="ml-2"
           :disabled="!auths.includes('MODIFY')"
           @click="openCaseModal">
-          生成用例
+          {{ t('service.apiServerPath.actions.generateCase') }}
         </Button>
       </template>
       <Button @click="copyUrl">
-        复制Url
+        {{ t('service.apiServerPath.actions.copyUrl') }}
       </Button>
       <AsyncComponent :visible="addCaseVisible">
         <AddCaseModal
