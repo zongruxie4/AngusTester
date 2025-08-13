@@ -823,6 +823,66 @@
         "servicePublish": "发布项服务会发布服务下接口，发布后的服务、接口不允许修改保存。",
         "apiPublish": "发布接口后接口基本信息和参数信息不允许修改保存"
       }
+    },
+    "syncConfig": {
+      "title": "同步配置",
+      "hints": "将外部OpenAPI自动导入到当前服务，最多允许添加10个。",
+      "actions": {
+        "add": "添加",
+        "demo": "示例",
+        "syncAll": "同步所有",
+        "edit": "编辑",
+        "sync": "同步",
+        "test": "测试",
+        "delete": "删除",
+        "save": "保存",
+        "cancel": "取消",
+        "clear": "清空",
+        "addAuth": "添加",
+        "deleteAuth": "删除"
+      },
+      "messages": {
+        "deleteSuccess": "删除成功",
+        "testSuccess": "配置测试通过",
+        "syncSuccess": "同步成功",
+        "syncAllSuccess": "同步所有成功",
+        "saveSuccess": "保存成功",
+        "nameExists": "名称已存在",
+        "authNameExists": "认证名称已存在",
+        "noValidConfig": "未找到有效的同步配置，请先保存数据",
+        "dataNotSaved": "数据未保存，请先保存数据或者取消编辑",
+        "inputContent": "请输入内容"
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "名称",
+        "source": "来源",
+        "address": "地址",
+        "addressPlaceholder": "地址",
+        "duplicateStrategy": "遇到重复时处理策略",
+        "cover": "覆盖",
+        "ignore": "忽略",
+        "deleteWhenNotExist": "同步接口不存在时是否删除本地接口",
+        "yes": "是",
+        "no": "否",
+        "auth": "认证",
+        "authRequired": "当同步地址受到保护时，它是必需的。最多允许添加10个。",
+        "paramName": "参数名",
+        "paramPosition": "参数位置",
+        "paramValue": "参数值",
+
+        "positionPlaceholder": "位置",
+        "valuePlaceholder": "值"
+      },
+      "tips": {
+        "addDemo": "添加示例数据",
+        "syncAllTip": "只同步已保存的配置",
+        "lastSync": "上次同步"
+      },
+      "options": {
+        "header": "header",
+        "query": "query"
+      }
     }
   }
 }

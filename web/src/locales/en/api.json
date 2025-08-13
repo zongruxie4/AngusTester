@@ -183,6 +183,66 @@
         "servicePublish": "Publishing a service will publish all APIs under the service. Published services and APIs cannot be modified or saved.",
         "apiPublish": "After publishing an API, the basic information and parameter information of the API cannot be modified or saved"
       }
+    },
+    "syncConfig": {
+      "title": "Sync Configuration",
+      "hints": "Automatically import external OpenAPI to current service, maximum 10 configurations allowed.",
+      "actions": {
+        "add": "Add",
+        "demo": "Demo",
+        "syncAll": "Sync All",
+        "edit": "Edit",
+        "sync": "Sync",
+        "test": "Test",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "clear": "Clear",
+        "addAuth": "Add",
+        "deleteAuth": "Delete"
+      },
+      "messages": {
+        "deleteSuccess": "Deleted successfully",
+        "testSuccess": "Configuration test passed",
+        "syncSuccess": "Sync successful",
+        "syncAllSuccess": "Sync all successful",
+        "saveSuccess": "Saved successfully",
+        "nameExists": "Name already exists",
+        "authNameExists": "Authentication name already exists",
+        "noValidConfig": "No valid sync configuration found, please save data first",
+        "dataNotSaved": "Data not saved, please save data or cancel editing first",
+        "inputContent": "Please enter content"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Name",
+        "source": "Source",
+        "address": "Address",
+        "addressPlaceholder": "Address",
+        "duplicateStrategy": "Strategy when encountering duplicates",
+        "cover": "Cover",
+        "ignore": "Ignore",
+        "deleteWhenNotExist": "Whether to delete local APIs when sync APIs do not exist",
+        "yes": "Yes",
+        "no": "No",
+        "auth": "Authentication",
+        "authRequired": "Required when sync address is protected. Maximum 10 allowed.",
+        "paramName": "Parameter Name",
+        "paramPosition": "Parameter Position",
+        "paramValue": "Parameter Value",
+        "namePlaceholder": "Name",
+        "positionPlaceholder": "Position",
+        "valuePlaceholder": "Value"
+      },
+      "tips": {
+        "addDemo": "Add demo data",
+        "syncAllTip": "Only sync saved configurations",
+        "lastSync": "Last Sync"
+      },
+      "options": {
+        "header": "header",
+        "query": "query"
+      }
     }
   }
 } 

@@ -236,8 +236,8 @@
       "participantsRequired": "Please select participants",
       "contentRequired": "Please enter meeting content",
       "meetingTypeTip": "Specify meeting type for identification and management."
-    },
-    "form": {
+  },
+  "form": {
       "subject": "Meeting Subject",
       "type": "Meeting Type",
       "sprint": "Sprint",
@@ -339,8 +339,8 @@
       "medium": "Medium",
       "high": "High",
       "urgent": "Urgent"
-    },
-    "actions": {
+  },
+  "actions": {
       "edit": "Edit",
       "delete": "Delete",
       "split": "Split",
@@ -506,8 +506,8 @@
         "lastThreeDays": "Last 3 Days",
         "lastWeek": "Last Week",
         "lastMonth": "Last Month"
-      },
-      "search": {
+  },
+  "search": {
         "taskName": "Task Name",
         "taskNamePlaceholder": "Please enter task name",
         "module": "Module",

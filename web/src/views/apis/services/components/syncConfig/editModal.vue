@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { Arrow, Colon, Hints, Icon, IconRequired, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
-import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
+import { Hints, Icon, IconRequired, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
+import { Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 
 import { SyncObj, AuthObj } from './PropsType';
 type CheckedType = typeof Switch.props.checked.type;
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: '',
   allNames: () => ([])
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'update:visible', boolean): void; (e: 'ok'):void}>();
 
@@ -141,7 +144,7 @@ const handleSave = async () => {
     return;
   }
   if (props.allNames.includes(sync.value.name)) {
-    notification.warning('名称已存在');
+    notification.warning(t('service.syncConfig.messages.nameExists'));
     sync.value.nameErr = true;
     return;
   }
@@ -170,7 +173,7 @@ const handleSave = async () => {
   if (error) {
     return false;
   }
-  notification.success('保存成功');
+  notification.success(t('tips.saveSuccess'));
   emits('ok');
 };
 
@@ -233,7 +236,7 @@ const addAuth = () => {
     // 判断最后添加的keyname是否已经存在
     const len = sync.value.auths.filter(item => item.keyName === sync.value.auths[sync.value.auths.length - 1].keyName)?.length;
     if (len >= 2) {
-      notification.warning('认证名称已存在');
+      notification.warning(t('service.syncConfig.messages.authNameExists'));
       return;
     }
   }
@@ -266,7 +269,7 @@ watch(() => props.visible, (newValue) => {
 </script>
 <template>
   <Modal
-    :title="props.syncData ? '编辑' : '添加'"
+    :title="props.syncData ? t('actions.edit') : t('actions.add')"
     :okButtonProps="{
       loading
     }"
@@ -276,59 +279,59 @@ watch(() => props.visible, (newValue) => {
     <div
       class="transition-height duration-500 overflow-hidden leading-3">
       <div class="flex flex-col">
-        <span><IconRequired />名称</span>
+        <span><IconRequired />{{ t('service.syncConfig.form.name') }}</span>
         <Input
           v-model:value="sync.name"
-          placeholder="名称"
+          :placeholder="t('service.syncConfig.form.namePlaceholder')"
           size="small"
           class="mt-2 mb-5"
           :maxlength="100"
 
           :error="sync?.nameErr"
           @change="(event)=>syncNameChange(event.target.value)" />
-        <span><IconRequired />来源</span>
+        <span><IconRequired />{{ t('service.syncConfig.form.source') }}</span>
         <Select
           value="OpenAPI"
           size="small"
           disabled
           class="mt-2 mb-5"
           :allowClear="false" />
-        <span><IconRequired />地址</span>
+        <span><IconRequired />{{ t('service.syncConfig.form.address') }}</span>
         <div class="relative mt-2 mb-5">
           <Input
             v-model:value="sync.apiDocsUrl"
-            placeholder="地址"
+            :placeholder="t('service.syncConfig.form.addressPlaceholder')"
             size="small"
             :maxlength="400"
             :error="sync?.apiDocsUrlErr.emptyUrl || sync?.apiDocsUrlErr.errUrl"
             @change="syncUrlChange($event.target.value)" />
           <div class="absolute text-rule text-3">
-            <template v-if="sync?.apiDocsUrlErr.errUrl">请输入正确的url地址</template>
+            <template v-if="sync?.apiDocsUrlErr.errUrl">{{ t('service.syncConfig.messages.inputContent') }}</template>
           </div>
         </div>
-        <span>遇到重复时处理策略</span>
+        <span>{{ t('service.syncConfig.form.duplicateStrategy') }}</span>
         <RadioGroup
           v-model:value="sync.strategyWhenDuplicated.value"
           class="mt-2 mb-5">
-          <Radio value="COVER">覆盖</Radio>
-          <Radio value="IGNORE">忽略</Radio>
+          <Radio value="COVER">{{ t('service.syncConfig.form.cover') }}</Radio>
+          <Radio value="IGNORE">{{ t('service.syncConfig.form.ignore') }}</Radio>
         </RadioGroup>
-        <span>同步接口不存在时是否删除本地接口</span>
+        <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
         <RadioGroup
           v-model:value="sync.deleteWhenNotExisted"
           class="mt-2 mb-5">
-          <Radio :value="true">是</Radio>
-          <Radio :value="false">否</Radio>
+          <Radio :value="true">{{ t('service.syncConfig.form.yes') }}</Radio>
+          <Radio :value="false">{{ t('service.syncConfig.form.no') }}</Radio>
         </RadioGroup>
         <div class="flex items-center">
-          <span class="mr-3.5">认证</span>
+          <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>
           <Switch
             v-model:checked="sync.auth"
             size="small"
             class="w-8 mr-2"
             @change="(checked:CheckedType)=>openAuth(checked)" />
         </div>
-        <Hints text="当同步地址受到保护时，它是必需的。最多允许添加10个。" class="mt-0.5" />
+        <Hints :text="t('service.syncConfig.form.authRequired')" class="mt-0.5" />
         <template v-if="sync?.auth">
           <div class="mt-2">
             <div
@@ -336,33 +339,33 @@ watch(() => props.visible, (newValue) => {
               :key="aindex"
               class="flex mb-5 items-center">
               <div class="flex flex-col space-y-3 flex-none mr-2">
-                <div class="h-7 leading-7">参数名</div>
-                <div class="h-7 leading-7">参数位置</div>
-                <div class="h-7 leading-7">参数值</div>
+                <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramName') }}</div>
+                <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramPosition') }}</div>
+                <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramValue') }}</div>
               </div>
               <div class="flex flex-col flex-1 space-y-3">
                 <Input
                   v-model:value="auth.keyName"
                   :error="auth.keyNameErr"
                   :maxlength="400"
-                  placeholder="名称"
+                  :placeholder="t('service.syncConfig.form.paramName')"
                   size="small"
                   @change="(event)=>keyNameChange(event.target.value,auth)" />
                 <Select
                   v-model:value="auth.in.value"
                   :options="inOptions"
                   size="small"
-                  placeholder="位置" />
+                  :placeholder="t('service.syncConfig.form.paramPosition')" />
                 <Input
                   v-model:value="auth.value"
                   :error="auth.valueErr"
                   :maxlength="1024"
-                  placeholder="值"
+                  :placeholder="t('service.syncConfig.form.paramValue')"
                   size="small"
                   @change="(event)=>authValueChange(event.target.value,auth)" />
               </div>
               <div class="flex-none flex flex-col ml-2 space-y-1">
-                <Tooltip title="删除" placement="top">
+                <Tooltip :title="t('service.syncConfig.actions.deleteAuth')" placement="top">
                   <Icon
                     icon="icon-jianshao"
                     class="text-5 mr-1 cursor-pointer text-text-sub-content hover:text-text-link-hover"
@@ -370,7 +373,7 @@ watch(() => props.visible, (newValue) => {
                 </Tooltip>
                 <template v-if="aindex == sync?.auths.length-1 && sync?.auths.length <= 9 ">
                   <template v-if="auth.value && auth.keyName">
-                    <Tooltip title="添加" placement="top">
+                    <Tooltip :title="t('service.syncConfig.actions.addAuth')" placement="top">
                       <Icon
                         icon="icon-tianjia"
                         class="text-5 cursor-pointer text-text-sub-content hover:text-text-link-hover"
@@ -378,7 +381,7 @@ watch(() => props.visible, (newValue) => {
                     </Tooltip>
                   </template>
                   <template v-else>
-                    <Tooltip title="请输入内容" placement="top">
+                    <Tooltip :title="t('service.syncConfig.messages.inputContent')" placement="top">
                       <Icon
                         icon="icon-tianjia"
                         class="text-5 cursor-not-allowed text-text-placeholder" />

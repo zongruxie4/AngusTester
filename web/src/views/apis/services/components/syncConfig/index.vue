@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch, defineAsyncComponent, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, Colon, Hints, Icon, IconRequired, Input, notification, Select, Spin, AsyncComponent, VuexHelper } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from 'src/api/tester';
@@ -25,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   source: 'right',
   vertical: true
 });
+
+const { t } = useI18n();
 
 const { useState } = VuexHelper;
 
@@ -203,10 +206,10 @@ const addAuth = (sync:SyncObj) => {
   if (sync.auths.length > 1) {
     // 判断最后添加的keyname是否已经存在
     const len = sync.auths.filter(item => item.keyName === sync.auths[sync.auths.length - 1].keyName)?.length;
-    if (len >= 2) {
-      notification.warning('认证名称已存在');
-      return;
-    }
+      if (len >= 2) {
+    notification.warning(t('service.syncConfig.messages.authNameExists'));
+    return;
+  }
   }
   sync.auths.push({
     keyName: '',
@@ -235,7 +238,7 @@ const handleDelSync = async (sync:SyncObj) => {
   if (error) {
     return;
   }
-  notification.success('删除成功');
+  notification.success(t('tips.deleteSuccess'));
   emit('deleteSuccess');
   syncList.value = syncList.value.filter(item => item.id !== sync.id);
   oldSyncList.value = oldSyncList.value.filter(item => item.id !== sync.id);
@@ -268,7 +271,7 @@ const handleTest = async (sync:SyncObj) => {
   if (error) {
     return;
   }
-  notification.success('配置测试通过');
+  notification.success(t('service.syncConfig.messages.testSuccess'));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
@@ -284,7 +287,7 @@ const handleSync = async (sync:SyncObj) => {
     return;
   }
 
-  notification.success('同步成功');
+  notification.success(t('service.syncConfig.messages.syncSuccess'));
   updateApiGroup(props.id);
   getSynchronizationList();
 };
@@ -300,7 +303,7 @@ const handleSave = async (sync:SyncObj) => {
   if (sync.isAdd) {
     const len = syncList.value.filter(item => item.name === sync.name)?.length;
     if (len >= 2) {
-      notification.warning('名称已存在');
+      notification.warning(t('service.syncConfig.messages.nameExists'));
       sync.nameErr = true;
       return;
     }
@@ -334,7 +337,7 @@ const handleSave = async (sync:SyncObj) => {
     return false;
   }
   currEditData.value = undefined;
-  notification.success('保存成功');
+  notification.success(t('service.syncConfig.messages.saveSuccess'));
   emit('saveSuccess');
   getSynchronizationList();
 };
@@ -371,7 +374,7 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
 const handleSyncAll = async () => {
   const hasSyncData = syncList.value.filter(item => !item.isAdd);
   if (!hasSyncData.length) {
-    notification.warning('未找到有效的同步配置，请先保存数据');
+    notification.warning(t('service.syncConfig.messages.noValidConfig'));
     return;
   }
   loading.value = true;
@@ -381,7 +384,7 @@ const handleSyncAll = async () => {
     return;
   }
 
-  notification.success('同步所有成功');
+  notification.success(t('service.syncConfig.messages.syncAllSuccess'));
   updateApiGroup(props.id);
   getSynchronizationList();
 };
@@ -424,7 +427,7 @@ const getChenkUpdateRes = () => {
   if (currEditData.value) {
     const hasUpdate = chenkUpdate(syncList.value.filter(item => item.id === currEditData.value?.id)[0]);
     if (hasUpdate) {
-      notification.warning('数据未保存，请先保存数据或者取消编辑');
+      notification.warning(t('service.syncConfig.messages.dataNotSaved'));
       return true;
     }
   }
@@ -642,7 +645,7 @@ const handleSaveOk = () => {
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">
-    <Hints text="将外部OpenAPI自动导入到当前服务，最多允许添加10个。" />
+    <Hints :text="t('service.syncConfig.hints')" />
     <div class="flex justify-between mt-2  pr-2">
       <div class="flex">
         <Button
@@ -652,7 +655,7 @@ const handleSaveOk = () => {
           :disabled="props.disabled || syncList.length > 9 || addBtnDisabled"
           @click="addSyncInfo">
           <Icon icon="icon-jia" class="mr-1" />
-          添加
+          {{ t('service.syncConfig.actions.add') }}
         </Button>
         <Button
           size="small"
@@ -660,8 +663,8 @@ const handleSaveOk = () => {
           :disabled="props.disabled || syncList.filter(f=>!f.isAdd).length > 9 || addDemoBtnDisabled"
           @click="addSyncInfoDemo">
           <Icon icon="icon-jia" class="mr-1" />
-          示例
-          <Tooltip title="添加示例数据" placement="top">
+          {{ t('service.syncConfig.actions.demo') }}
+          <Tooltip :title="t('service.syncConfig.tips.addDemo')" placement="top">
             <Icon icon="icon-tishi1" class="ml-1 text-tips text-3.5" />
           </Tooltip>
         </Button>
@@ -672,8 +675,8 @@ const handleSaveOk = () => {
         :disabled="props.disabled"
         @click="handleSyncAll">
         <Icon icon="icon-huifu" class="mr-1 -mt-0.5" />
-        同步所有
-        <Tooltip title="只同步已保存的配置" placement="top">
+        {{ t('service.syncConfig.actions.syncAll') }}
+        <Tooltip :title="t('service.syncConfig.tips.syncAllTip')" placement="top">
           <Icon icon="icon-tishi1" class="ml-1 text-tips text-3.5" />
         </Tooltip>
       </Button>
@@ -717,10 +720,10 @@ const handleSaveOk = () => {
         <div v-if="!sync.isAdd && !sync.isEdit" class="w-full break-all whitespace-pre-wrap text-content mt-2 leading-4">{{ sync.apiDocsUrl }}</div>
         <div v-if="!sync.isAdd && !sync.isEdit" class="flex items-center justify-between mt-2">
           <div class="text-3 text-text-sub-content">
-            上次同步<Colon class="ml-0.5 mr-2" />{{ sync?.lastSyncDate || "--" }}
+            {{ t('service.syncConfig.tips.lastSync') }}<Colon class="ml-0.5 mr-2" />{{ sync?.lastSyncDate || "--" }}
           </div>
           <div class="text-3 flex-none ml-2 -mt-1">
-            <Tooltip title="编辑" placement="top">
+            <Tooltip :title="t('service.syncConfig.actions.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-shuxie"
@@ -734,7 +737,7 @@ const handleSaveOk = () => {
                   @click="(e) => handleEdit(e, sync)" />
               </template>
             </Tooltip>
-            <Tooltip title="同步" placement="top">
+            <Tooltip :title="t('service.syncConfig.actions.sync')" placement="top">
               <template v-if="props.disabled || sync.syncLoading || sync.isEdit || sync.isAdd">
                 <Icon
                   icon="icon-huifu"
@@ -748,7 +751,7 @@ const handleSaveOk = () => {
                   @click="handleSync(sync)" />
               </template>
             </Tooltip>
-            <Tooltip title="测试" placement="top">
+            <Tooltip :title="t('service.syncConfig.actions.test')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-zhihangceshi"
@@ -762,7 +765,7 @@ const handleSaveOk = () => {
                   @click="handleTest(sync)" />
               </template>
             </Tooltip>
-            <Tooltip title="删除" placement="top">
+            <Tooltip :title="t('service.syncConfig.actions.delete')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-qingchu"
@@ -782,55 +785,55 @@ const handleSaveOk = () => {
           :class="sync.isExpand ? 'open-info' : 'stop-info'"
           class="transition-height duration-500 overflow-hidden leading-3">
           <div class="flex flex-col" :class="!sync.isEdit?'border-t border-dashed border-border-divider pt-2 mt-2':''">
-            <span><IconRequired />名称</span>
+            <span><IconRequired />{{ t('service.syncConfig.form.name') }}</span>
             <Input
               v-model:value="sync.name"
-              placeholder="名称"
+              :placeholder="t('service.syncConfig.form.namePlaceholder')"
               size="small"
               class="mt-2 mb-5"
               :maxlength="100"
               :disabled="!sync.isAdd || !sync.isEdit"
               :error="sync.nameErr"
               @change="(event)=>syncNameChange(event.target.value,sync)" />
-            <span><IconRequired />来源</span>
+            <span><IconRequired />{{ t('service.syncConfig.form.source') }}</span>
             <Select
               value="OpenAPI"
               size="small"
               disabled
               class="mt-2 mb-5"
               :allowClear="false" />
-            <span><IconRequired />地址</span>
+            <span><IconRequired />{{ t('service.syncConfig.form.address') }}</span>
             <div class="relative mt-2 mb-5">
               <Input
                 v-model:value="sync.apiDocsUrl"
-                placeholder="地址"
+                :placeholder="t('service.syncConfig.form.addressPlaceholder')"
                 size="small"
                 :maxlength="400"
                 :disabled="!sync.isEdit"
                 :error="sync.apiDocsUrlErr.emptyUrl || sync.apiDocsUrlErr.errUrl"
                 @change="syncUrlChange($event.target.value,sync)" />
               <div class="absolute text-rule text-3">
-                <template v-if="sync.apiDocsUrlErr.errUrl">请输入正确的url地址</template>
+                <template v-if="sync.apiDocsUrlErr.errUrl">{{ t('service.syncConfig.messages.inputContent') }}</template>
               </div>
             </div>
-            <span>遇到重复时处理策略</span>
+            <span>{{ t('service.syncConfig.form.duplicateStrategy') }}</span>
             <RadioGroup
               v-model:value="sync.strategyWhenDuplicated.value"
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
-              <Radio value="COVER">覆盖</Radio>
-              <Radio value="IGNORE">忽略</Radio>
+              <Radio value="COVER">{{ t('service.syncConfig.form.cover') }}</Radio>
+              <Radio value="IGNORE">{{ t('service.syncConfig.form.ignore') }}</Radio>
             </RadioGroup>
-            <span>同步接口不存在时是否删除本地接口</span>
+            <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
             <RadioGroup
               v-model:value="sync.deleteWhenNotExisted"
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
-              <Radio :value="true">是</Radio>
-              <Radio :value="false">否</Radio>
+              <Radio :value="true">{{ t('service.syncConfig.form.yes') }}</Radio>
+              <Radio :value="false">{{ t('service.syncConfig.form.no') }}</Radio>
             </RadioGroup>
             <div class="flex items-center">
-              <span class="mr-3.5">认证</span>
+              <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>
               <Switch
                 v-model:checked="sync.auth"
                 size="small"
@@ -838,7 +841,7 @@ const handleSaveOk = () => {
                 :disabled="!sync.isEdit"
                 @change="(checked:CheckedType)=>openAuth(checked,sync)" />
             </div>
-            <Hints text="当同步地址受到保护时，它是必需的。最多允许添加10个。" class="mt-0.5" />
+            <Hints :text="t('service.syncConfig.form.authRequired')" class="mt-0.5" />
             <template v-if="sync.auth">
               <div class="mt-2">
                 <div
@@ -846,9 +849,9 @@ const handleSaveOk = () => {
                   :key="aindex"
                   class="flex mb-5 items-center">
                   <div class="flex flex-col space-y-3 flex-none mr-2">
-                    <div class="h-7 leading-7">参数名</div>
-                    <div class="h-7 leading-7">参数位置</div>
-                    <div class="h-7 leading-7">参数值</div>
+                    <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramName') }}</div>
+                    <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramPosition') }}</div>
+                    <div class="h-7 leading-7">{{ t('service.syncConfig.form.paramValue') }}</div>
                   </div>
                   <div class="flex flex-col flex-1 space-y-3">
                     <Input
@@ -856,7 +859,7 @@ const handleSaveOk = () => {
                       :disabled="!sync.isEdit"
                       :error="auth.keyNameErr"
                       :maxlength="400"
-                      placeholder="名称"
+                      :placeholder="t('service.syncConfig.form.namePlaceholder')"
                       size="small"
                       @change="(event)=>keyNameChange(event.target.value,auth)" />
                     <Select
@@ -864,18 +867,18 @@ const handleSaveOk = () => {
                       :options="inOptions"
                       :disabled="!sync.isEdit"
                       size="small"
-                      placeholder="位置" />
+                      :placeholder="t('service.syncConfig.form.positionPlaceholder')" />
                     <Input
                       v-model:value="auth.value"
                       :disabled="!sync.isEdit"
                       :error="auth.valueErr"
                       :maxlength="1024"
-                      placeholder="值"
+                      :placeholder="t('service.syncConfig.form.valuePlaceholder')"
                       size="small"
                       @change="(event)=>authValueChange(event.target.value,auth)" />
                   </div>
                   <div v-if="sync.isEdit" class="flex-none flex flex-col ml-2 space-y-1">
-                    <Tooltip title="删除" placement="top">
+                    <Tooltip :title="t('service.syncConfig.actions.deleteAuth')" placement="top">
                       <Icon
                         icon="icon-jianshao"
                         class="text-5 mr-1"
@@ -884,7 +887,7 @@ const handleSaveOk = () => {
                     </Tooltip>
                     <template v-if="aindex == sync.auths.length-1 && sync.auths.length <= 9 ">
                       <template v-if="auth.value && auth.keyName">
-                        <Tooltip title="添加" placement="top">
+                        <Tooltip :title="t('service.syncConfig.actions.addAuth')" placement="top">
                           <Icon
                             icon="icon-tianjia"
                             class="text-5"
@@ -893,7 +896,7 @@ const handleSaveOk = () => {
                         </Tooltip>
                       </template>
                       <template v-else>
-                        <Tooltip title="请输入内容" placement="top">
+                        <Tooltip :title="t('service.syncConfig.messages.inputContent')" placement="top">
                           <Icon
                             icon="icon-tianjia"
                             class="text-5 cursor-not-allowed text-text-placeholder" />
@@ -912,7 +915,7 @@ const handleSaveOk = () => {
                   class="px-0"
                   :loading="sync.saveloading"
                   @click="emptyingExample">
-                  清空
+                  {{ t('service.syncConfig.actions.clear') }}
                 </Button>
               </template>
               <template v-if="sync.isEdit">
@@ -922,7 +925,7 @@ const handleSaveOk = () => {
                   class="px-0 mx-2"
                   :disabled="syncList.length === 1 && sync.isAdd"
                   @click="(e) => cancelEdit(e,sync)">
-                  取消
+                  {{ t('.actions.cancel') }}
                 </Button>
                 <Button
                   size="small"
@@ -930,7 +933,7 @@ const handleSaveOk = () => {
                   class="px-0"
                   :disabled="props.disabled"
                   @click="handleSave(sync)">
-                  保存
+                  {{ t('actions.save') }}
                 </Button>
               </template>
             </div>
