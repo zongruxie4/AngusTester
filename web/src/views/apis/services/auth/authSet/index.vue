@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
@@ -18,6 +19,7 @@ interface Props {
   projectPermissions: { value: string; message: string }[];
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   authObjectId: undefined,
   type: 'USER',
@@ -698,7 +700,7 @@ const projectCheckboxOptions = computed(() => {
       v-show="loading||!!showIdList?.length"
       :spinning="loading"
       :mask="false"
-      tip="加载中..."
+      :tip="t('service.authSetting.loading.tip')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"
@@ -726,7 +728,7 @@ const projectCheckboxOptions = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < apiCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                全部
+                {{ t('service.authSetting.actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
@@ -776,7 +778,7 @@ const projectCheckboxOptions = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < projectCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                全部
+                {{ t('service.authSetting.actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

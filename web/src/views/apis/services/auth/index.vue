@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { enumUtils } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
@@ -21,6 +22,7 @@ const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
 
+const { t } = useI18n();
 const apisPermissions = ref<{ value: string, message: string }[]>([]);
 const servicesPermissions = ref<{ value: string, message: string }[]>([]);
 const loaded = ref(false);
@@ -42,7 +44,7 @@ onMounted(() => {
       v-model:activeKey="activeKey"
       size="small"
       style="height: calc(100% - 18px);">
-      <TabPane key="user" tab="用户">
+      <TabPane key="user" :tab="t('service.authSetting.tabs.user')">
         <GroupSet
           key="user"
           v-model:checkedId="checkedUserId"
@@ -59,7 +61,7 @@ onMounted(() => {
           type="USER"
           class="flex-1" />
       </TabPane>
-      <TabPane key="dept" tab="部门">
+      <TabPane key="dept" :tab="t('service.authSetting.tabs.dept')">
         <GroupSet
           key="dept"
           v-model:checkedId="checkedDeptId"
@@ -76,7 +78,7 @@ onMounted(() => {
           :projectPermissions="servicesPermissions"
           class="flex-1" />
       </TabPane>
-      <TabPane key="group" tab="组">
+      <TabPane key="group" :tab="t('service.authSetting.tabs.group')">
         <GroupSet
           key="group"
           v-model:checkedId="checkedGroupId"

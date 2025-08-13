@@ -920,6 +920,27 @@
         "inputParameterValue": "Enter parameter value",
         "inputParameterDescription": "Enter parameter description"
       }
+    },
+    "authSetting": {
+      "hints": {
+        "authDescription": "Grant operation permissions for specified \"projects, services, interfaces\" to users, departments, and groups. When granting permissions, \"view\" permission is required. Users can only authorize projects/services/interfaces for which they have authorization permissions."
+      },
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "placeholder": {
+        "searchDept": "Search department",
+        "searchGroup": "Search group",
+        "searchUser": "Search user"
+      },
+      "loading": {
+        "tip": "Loading..."
+      },
+      "actions": {
+        "selectAll": "Select All"
+      }
     }
   }
 } 
