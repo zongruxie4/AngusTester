@@ -1095,6 +1095,53 @@
         },
         "overdue": "已逾期"
       }
+    },
+    "mockApi": {
+      "description": "Mock接口可快速生成并模拟您所依赖的API，使开发和测试能够并行进行，从而加快开发速度，实现更全面的测试，并更早地交付稳定的产品或应用。您可以通过\"生成Mock接口\"或\"关联Mock接口\"两种方式，为当前接口创建对应的模拟接口。模拟接口将提供模拟数据，便于进行接口调试和测试。",
+      "columns": {
+        "apiName": "接口名称",
+        "mockServiceName": "模拟服务名称",
+        "method": "方法",
+        "mockServiceHostUrl": "服务地址",
+        "createdBy": "添加人",
+        "createdDate": "添加时间"
+      },
+      "actions": {
+        "cancelAssociation": "取消关联",
+        "generateMockApi": "生成Mock接口",
+        "associateMockApi": "关联Mock接口"
+      },
+      "messages": {
+        "generateSuccess": "生成Mock接口成功",
+        "associateSuccess": "关联成功",
+        "cancelAssociationSuccess": "取消关联成功"
+      },
+      "createTypes": {
+        "generate": {
+          "title": "生成Mock接口",
+          "description": "基于当前接口创建新的模拟版本。创建后，您可以使用Mock接口进行数据模拟和状态测试，从而实现更高效的接口调试。"
+        },
+        "associate": {
+          "title": "关联Mock接口",
+          "description": "将当前接口与已有的Mock服务接口关联。关联后可以在接口调试中进行数据模拟和状态测试。"
+        }
+      },
+      "modal": {
+        "generateTitle": "生成Mock接口",
+        "associateTitle": "关联Mock接口",
+        "mockServicePlaceholder": "请选择Mock服务",
+        "mockApiPlaceholder": "请选择Mock接口",
+        "summaryPlaceholder": "请输入对应Mock接口名称，不指定时默认使用当前接口名称",
+        "generateHint": "基于当前接口生成Mock接口。",
+        "associateHint": "关联Mock服务下已存在的接口。"
+      },
+      "statistics": {
+        "requestNum": "请求数",
+        "pushbackNum": "回推数",
+        "simulateErrorNum": "模拟异常数",
+        "successNum": "成功数",
+        "exceptionNum": "异常数"
+      }
     }
   }
 }

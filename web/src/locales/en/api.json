@@ -450,6 +450,53 @@
         },
         "overdue": "Overdue"
       }
+    },
+    "mockApi": {
+      "description": "Mock APIs can quickly generate and simulate the APIs you depend on, enabling parallel development and testing, thereby accelerating development speed, achieving more comprehensive testing, and delivering stable products or applications earlier. You can create corresponding mock interfaces for the current interface through two methods: \"Generate Mock API\" or \"Associate Mock API\". Mock interfaces will provide simulated data for convenient interface debugging and testing.",
+      "columns": {
+        "apiName": "API Name",
+        "mockServiceName": "Mock Service Name",
+        "method": "Method",
+        "mockServiceHostUrl": "Service Address",
+        "createdBy": "Created By",
+        "createdDate": "Created Date"
+      },
+      "actions": {
+        "cancelAssociation": "Cancel Association",
+        "generateMockApi": "Generate Mock API",
+        "associateMockApi": "Associate Mock API"
+      },
+      "messages": {
+        "generateSuccess": "Mock API generated successfully",
+        "associateSuccess": "Association successful",
+        "cancelAssociationSuccess": "Association cancelled successfully"
+      },
+      "createTypes": {
+        "generate": {
+          "title": "Generate Mock API",
+          "description": "Create a new mock version based on the current interface. After creation, you can use the Mock API for data simulation and status testing, thereby achieving more efficient interface debugging."
+        },
+        "associate": {
+          "title": "Associate Mock API",
+          "description": "Associate the current interface with an existing Mock service interface. After association, data simulation and status testing can be performed during interface debugging."
+        }
+      },
+      "modal": {
+        "generateTitle": "Generate Mock API",
+        "associateTitle": "Associate Mock API",
+        "mockServicePlaceholder": "Please select Mock service",
+        "mockApiPlaceholder": "Please select Mock API",
+        "summaryPlaceholder": "Please enter the corresponding Mock API name, if not specified, the current interface name will be used by default",
+        "generateHint": "Generate Mock API based on the current interface.",
+        "associateHint": "Associate with existing interfaces under Mock service."
+      },
+      "statistics": {
+        "requestNum": "Request Count",
+        "pushbackNum": "Pushback Count",
+        "simulateErrorNum": "Simulate Error Count",
+        "successNum": "Success Count",
+        "exceptionNum": "Exception Count"
+      }
     }
   }
 } 

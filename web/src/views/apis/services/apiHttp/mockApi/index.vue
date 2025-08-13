@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
@@ -16,6 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
+const { t } = useI18n();
+
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
 const createType = ref();
@@ -31,15 +34,15 @@ const loadMockApiInfo = async (id:string) => {
 };
 
 const columns = [[
-  { label: '接口名称', dataIndex: 'name' },
-  { label: '模拟服务名称', dataIndex: 'mockServiceName' }
+  { label: t('service.mockApi.columns.apiName'), dataIndex: 'name' },
+  { label: t('service.mockApi.columns.mockServiceName'), dataIndex: 'mockServiceName' }
 ], [
-  { label: '方法', dataIndex: 'method' },
-  { label: '服务地址', dataIndex: 'mockServiceHostUrl' }
+  { label: t('service.mockApi.columns.method'), dataIndex: 'method' },
+  { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
 ],
 [
-  { label: '添加人', dataIndex: 'createdByName' },
-  { label: '添加时间', dataIndex: 'createdDate' }
+  { label: t('service.mockApi.columns.createdBy'), dataIndex: 'createdByName' },
+  { label: t('service.mockApi.columns.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const summary = ref('');
@@ -51,7 +54,7 @@ const createMockApiById = async () => {
   createApiLoading.value = false;
   if (error) { return; }
   mockApisId.value = data?.id;
-  notification.success('生成Mock接口成功');
+  notification.success(t('service.mockApi.messages.generateSuccess'));
   loadMockApiInfo(props.id);
 };
 
@@ -66,33 +69,33 @@ const relatedMockServiceApi = async () => {
     return;
   }
   mockApisId.value = selectedMockApiId.value;
-  notification.success('关联成功');
+  notification.success(t('service.mockApi.messages.associateSuccess'));
   loadMockApiInfo(props.id);
 };
 
 const mockServiceCount = [
   {
-    name: '请求数',
+    name: t('service.mockApi.statistics.requestNum'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-    name: '回推数',
+    name: t('service.mockApi.statistics.pushbackNum'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-    name: '模拟异常数',
+    name: t('service.mockApi.statistics.simulateErrorNum'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-    name: '成功数',
+    name: t('service.mockApi.statistics.successNum'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-    name: '异常数',
+    name: t('service.mockApi.statistics.exceptionNum'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }
@@ -103,7 +106,7 @@ const cencelProjcetMock = async () => {
   const [error] = await mock.cancelMockApiAssoc([mockApiInfo.value.id]);
   loading.value = false;
   if (error) { return; }
-  notification.success('取消关联成功');
+  notification.success(t('service.mockApi.messages.cancelAssociationSuccess'));
   mockApiInfo.value = undefined;
   mockServiceId.value = undefined;
 };
@@ -163,10 +166,10 @@ const format = (data) => {
             <div class="flex items-start text-3 leading-5">
               <span>{{ text }}</span>
               <template v-if="props.disabled">
-                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">取消关联</a>
+                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.mockApi.actions.cancelAssociation') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">取消关联</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.mockApi.actions.cancelAssociation') }}</a>
               </template>
             </div>
           </template>
@@ -215,17 +218,17 @@ const format = (data) => {
             :disabled="props.disabled"
             class="flex flex-col space-y-3.5">
             <Radio value="1">
-              <span class="font-semibold">生成Mock接口</span>
-              <div>基于当前接口创建新的模拟版本。创建后，您可以使用Mock接口进行数据模拟和状态测试，从而实现更高效的接口调试。</div>
+              <span class="font-semibold">{{ t('service.mockApi.createTypes.generate.title') }}</span>
+              <div>{{ t('service.mockApi.createTypes.generate.description') }}</div>
             </Radio>
             <Radio value="2">
-              <span class="font-semibold">关联Mock接口</span>
-              <div>将当前接口与已有的Mock服务接口关联。关联后可以在接口调试中进行数据模拟和状态测试。</div>
+              <span class="font-semibold">{{ t('service.mockApi.createTypes.associate.title') }}</span>
+              <div>{{ t('service.mockApi.createTypes.associate.description') }}</div>
             </Radio>
           </RadioGroup>
           <Modal
             :visible="!!createType"
-            :title="createType === '1' ? '生成Mock接口' : '关联Mock接口'"
+            :title="createType === '1' ? t('service.mockApi.modal.generateTitle') : t('service.mockApi.modal.associateTitle')"
             :okButtonProps="{loading: createApiLoading || relatedLoading, disabled: !mockServiceId || (createType === '2' && !selectedMockApiId)}"
             @ok="onOk"
             @cancel="cancel">
@@ -235,14 +238,14 @@ const format = (data) => {
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               class="w-full mb-4"
-              placeholder="请选择Mock服务"
+              :placeholder="t('service.mockApi.modal.mockServicePlaceholder')"
               showSearch />
             <template v-if="createType === '1'">
-              <Hints text="基于当前接口生成Mock接口。" class="mb-2" />
-              <Input v-model:value="summary" placeholder="请输入对应Mock接口名称，不指定时默认使用当前接口名称" />
+              <Hints :text="t('service.mockApi.modal.generateHint')" class="mb-2" />
+              <Input v-model:value="summary" :placeholder="t('service.mockApi.modal.summaryPlaceholder')" />
             </template>
             <template v-else>
-              <Hints text="关联Mock服务下已存在的接口。" class="mb-2" />
+              <Hints :text="t('service.mockApi.modal.associateHint')" class="mb-2" />
               <Select
                 v-model:value="selectedMockApiId"
                 :disabled="!mockServiceId"
@@ -253,7 +256,7 @@ const format = (data) => {
                 :format="format"
                 :maxlength="100"
                 allowClear
-                placeholder="请选择Mock接口"
+                :placeholder="t('service.mockApi.modal.mockApiPlaceholder')"
                 showSearch />
             </template>
           </Modal>
