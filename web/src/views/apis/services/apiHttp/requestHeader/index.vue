@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -16,6 +17,7 @@ import JsonContent from '../requestBody/json/index.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 
+const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
 // const exportVariableFlagKey = API_EXTENSION_KEY.exportVariableFlagKey;
@@ -164,7 +166,7 @@ const copyValue = async (data: ParamsItem) => {
   }
 
   toClipboard(text).then(() => {
-    notification.success('成功复制值到剪贴板');
+    notification.success(t('service.apiRequestHeader.messages.copySuccess'));
   });
 };
 
@@ -297,7 +299,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
       <Checkbox :checked="true" />
       <div class="flex flex-col w-100 ml-2  flex-shrink-0">
         <Input
-          placeholder="请输入参数名称"
+          :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
           value="Content-Type"
           size="small"
           :allowClear="false"
@@ -310,7 +312,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-25 ml-2">
         <Input
-          placeholder="请输入调试值"
+          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
           :value="props.contentType"
           :allowClear="false"
           size="small"
@@ -327,7 +329,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
       <Checkbox :checked="true" />
       <div class="flex flex-col w-100 ml-2 flex-shrink-0">
         <Input
-          placeholder="请输入参数名称"
+          :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
           :value="key"
           size="small"
           :allowClear="false"
@@ -340,7 +342,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         class="w-25 ml-2 flex-shrink-0" />
       <div class="flex flex-col flex-1 ml-2">
         <Input
-          placeholder="请输入调试值"
+          :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
           :value="value"
           :allowClear="false"
           size="small"
@@ -367,7 +369,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
               v-if="apiBaseInfo?.serviceId"
               :id="apiBaseInfo?.serviceId"
               v-model:value="item.name"
-              placeholder="参数名称"
+              :placeholder="t('service.apiRequestHeader.form.namePlaceholder')"
               mode="pure"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
               :params="{ ignoreModel: false, types: 'parameters'}"
@@ -379,7 +381,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
               @change="(...arg) => selectModels(...arg, index)" />
             <Input
               v-else
-              placeholder="请输入参数名称"
+              :placeholder="t('service.apiRequestHeader.form.inputNamePlaceholder')"
               :value="item.name"
               :allowClear="false"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
@@ -390,7 +392,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
               @keypress="enterHandle" />
           </div>
           <template v-if="item.$ref" #title>
-            组件引用：{{ item.$ref }}
+            {{ t('service.apiRequestHeader.tips.componentReference', { ref: item.$ref }) }}
           </template>
         </Tooltip>
         <Select
@@ -401,7 +403,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         <div class="flex flex-col flex-1">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :options="item.schema.enum || item.schema?.[valueKey]"
             :value="item[valueKey]"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
@@ -409,7 +411,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
             @select="changeEmit(index, { ...item, [valueKey]: $event, schema: {...item?.schema|| {}, [valueKey]: $event}})" />
           <ParamInput
             v-else-if="!['array', 'object'].includes(item.schema.type)"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestHeader.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
             :value="item[valueKey]"
             :error="getErrValue(item)"
@@ -419,7 +421,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
         <Button
           type="primary"
           size="small"
-          title="复制值"
+          :title="t('service.apiRequestHeader.actions.copyValue')"
           class="ml-2"
           @click="copyValue(item)">
           <Icon icon="icon-fuzhi" />
@@ -450,4 +452,4 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
     </div>
   </div>
 </template>
-../RequestParams/interface
+

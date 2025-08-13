@@ -581,6 +581,22 @@
       "messages": {
         "copySuccess": "Successfully copied value to clipboard"
       }
+    },
+    "apiRequestHeader": {
+      "form": {
+        "namePlaceholder": "Parameter Name",
+        "inputNamePlaceholder": "Please enter parameter name",
+        "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported"
+      },
+      "actions": {
+        "copyValue": "Copy Value"
+      },
+      "tips": {
+        "componentReference": "Component Reference: {ref}"
+      },
+      "messages": {
+        "copySuccess": "Successfully copied value to clipboard"
+      }
     }
   }
 } 
