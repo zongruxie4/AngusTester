@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, notification, Select } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import pretty from 'pretty';
@@ -18,6 +19,7 @@ import { getNewItem } from '../utils';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/views/apis/utils';
 import { services } from 'src/api/tester';
 
+const { t } = useI18n();
 const { gzip, ungzip } = codeUtils;
 const { valueKey, fileNameKey, enabledKey } = API_EXTENSION_KEY;
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestBody/form/index.vue'));
@@ -654,7 +656,7 @@ const gziping = ref(false);
 const fileSize = ref(0);
 const handleFile = async ({ file }) => {
   if (file.size > (globalConfigs.VITE_DEBUG_MAX_FILE_SIZE - formFileSize.value)) {
-    notification.error('调试时请求体总上传文件大小不能超过100MB');
+    notification.error(t('service.apiRequestBody.messages.debugFileSizeLimit'));
     return;
   }
   fileSize.value = file.size;
@@ -873,7 +875,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
   <div>
     <div class="flex items-center h-8 flex-nowrap whitespace-nowrap">
       <label class="text-3 leading-3 text-gray-content mr-4 select-none">
-        <span class="mr-0.25">Content-Type</span>:
+        <span class="mr-0.25">{{ t('service.apiRequestBody.contentType') }}</span>:
       </label>
       <RadioGroup
         v-model:value="_contentType"
@@ -901,13 +903,13 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
           type="link"
           size="small"
           @click="toggleOpenModel(true)">
-          引入组件
+          {{ t('service.apiRequestBody.actions.importComponent') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="toggleOpenModel(false)">
-          复制组件
+          {{ t('service.apiRequestBody.actions.copyComponent') }}
         </Button>
       </template>
       <template v-if="isRaw && state.rawContent">
@@ -915,18 +917,18 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
           type="link"
           size="small"
           @click="formatRawContent">
-          格式化
+          {{ t('service.apiRequestBody.actions.format') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          压缩
+          {{ t('service.apiRequestBody.actions.compress') }}
         </Button>
       </template>
       <template v-if="_contentType && ['multipart/form-data', 'application/octet-stream'].includes(_contentType)">
         <Tooltip>
-          <template #title><span>接口调试最大支持100MB文件，10MB以内可保存文件，超过不保存。</span></template>
+          <template #title><span>{{ t('service.apiRequestBody.tips.fileSizeLimit') }}</span></template>
           <Icon icon="icon-tishi1" class="ml-2 text-http-put text-3.5" />
         </Tooltip>
       </template>
@@ -944,12 +946,12 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
         @change="changeEncodeedList"
         @del="delEncodeedList" />
       <template v-if="urlencodedUseRef" #title>
-        组件引用：{{ urlencodedUseRef }}
+        {{ t('service.apiRequestBody.tips.componentReference', { ref: urlencodedUseRef }) }}
         <Button
           size="small"
           type="link"
           @click="cancelUrlEncodedRef">
-          取消引用
+          {{ t('service.apiRequestBody.actions.cancelReference') }}
         </Button>
       </template>
     </Tooltip>
@@ -967,12 +969,12 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
         @change="changeFormDataList"
         @del="delFormDataList" />
       <template v-if="formDataUseRef" #title>
-        组件引用：{{ formDataUseRef }}
+        {{ t('service.apiRequestBody.tips.componentReference', { ref: formDataUseRef }) }}
         <Button
           size="small"
           type="link"
           @click="cancelformDataRef">
-          取消引用
+          {{ t('service.apiRequestBody.actions.cancelReference') }}
         </Button>
       </template>
     </Tooltip>
@@ -1000,7 +1002,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
           :disabled="filename || !!binaryCt"
           class="text-3 bg-gray-bg rounded">
           <Icon icon="icon-tuisongtongzhi" class="mr-2" />
-          上传文件
+          {{ t('service.apiRequestBody.actions.uploadFile') }}
         </Button>
       </Upload>
       <div v-show="filename || binaryCt" class="flex items-center h-5 px-1.5 ml-1 select-none rounded text-3 border-none text-text-content bg-gray-bg">

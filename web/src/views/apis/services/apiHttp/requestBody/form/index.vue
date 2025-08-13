@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -14,6 +15,7 @@ import { deconstruct } from '@/utils/swagger';
 import { deepDelAttrFromObj, validateType } from '@/views/apis/services/apiHttp/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 
+const { t } = useI18n();
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 const apiBaseInfo = inject('apiBaseInfo', ref());
 const archivedId = inject('archivedId', ref());
@@ -215,7 +217,7 @@ const setToVariable = async (data:ParamsItem):void => {
   }
   setVariableLoading[data.name as string] = true;
   if (!variableNameReg.test(data.name as string)) {
-    notification.warning('名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等');
+    notification.warning(t('service.apiRequestBody.messages.variableNameInvalid'));
     return;
   }
 
@@ -225,7 +227,7 @@ const setToVariable = async (data:ParamsItem):void => {
   // changeEmit(index, temp);
   setVariableLoading[data.name as string] = false;
   if (!error) {
-    notification.success('设置变量成功');
+    notification.success(t('service.apiRequestBody.messages.setVariableSuccess'));
   }
 };
 
@@ -402,7 +404,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             v-if="apiBaseInfo?.serviceId"
             :id="apiBaseInfo?.serviceId"
             v-model:value="item.name"
-            placeholder="请输入参数名称"
+            :placeholder="t('service.apiRequestBody.form.namePlaceholder')"
             mode="pure"
             :type="['schemas']"
             :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
@@ -411,7 +413,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             @change="(_value, option) => selectModels(_value, option, index, item)" />
           <Input
             v-else
-            placeholder="请输入参数名称"
+            :placeholder="t('service.apiRequestBody.form.namePlaceholder')"
             :value="item.name"
             :allowClear="false"
             :disabled="!!props.useModel"
@@ -425,7 +427,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             v-model:value="item.type"
             class="w-full"
             dropdownClassName="api-select-dropdown"
-            placeholder="请选择参数类型"
+            :placeholder="t('service.apiRequestBody.form.typePlaceholder')"
             :disabled="!!item.$ref || !!props.useModel"
             :options="props.hasFileType ? formDataTypes : itemTypes"
             :allowClear="false"
@@ -446,7 +448,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
         <div v-else class="flex flex-col flex-1">
           <SimpleEditableSelect
             v-if="item.enum"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestBody.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
             :options="item.enum"
             :value="item[valueKey] || item.schema?.[valueKey]"
@@ -454,7 +456,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             @select="changeEmit(index, { ...item, [valueKey]: $event, schema: {...item?.schema|| {}, [valueKey]: $event} })" />
           <ParamInput
             v-else-if="!['array(json)', 'array(xml)', 'object(xml)', 'object(json)', 'array', 'object', 'file', 'file(array)'].includes(item.type)"
-            :placeholder="`请输入调试值，最大支持${globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH}个字符`"
+            :placeholder="t('service.apiRequestBody.form.valuePlaceholder', { maxLength: globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH })"
             :maxLength="globalConfigs.VITE_API_PARAMETER_VALUE_LENGTH"
             :value="item[valueKey]"
             :error="getErrValue(item)"
@@ -467,7 +469,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
           size="small"
           :disabled="!!props.useModel || !item.name || setVariableLoading[item.name]"
           @click="setToVariable(item)">
-          <Icon icon="icon-bianliang" title="设为变量" />
+          <Icon icon="icon-bianliang" :title="t('service.apiRequestBody.form.setVariable')" />
         </Button>
         <Button
           size="small"

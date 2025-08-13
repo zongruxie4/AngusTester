@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, NoData, Spin } from '@xcan-angus/vue-ui';
 import { Checkbox, Input } from 'ant-design-vue';
 import { services } from 'src/api/tester';
@@ -11,6 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
+const { t } = useI18n();
 const loading = ref(false);
 const keywords = ref();
 const apiBaseInfo = inject('apiBaseInfo', ref());
@@ -92,7 +94,7 @@ watch(() => props.visible, newValue => {
 <template>
   <Modal
     :visible="props.visible"
-    title="组件"
+    :title="t('service.apiRequestBody.modal.title')"
     @cancel="toggleOpenModel"
     @ok="handleImportModel">
     <!-- <Divider /> -->
@@ -103,14 +105,14 @@ watch(() => props.visible, newValue => {
     <Input
       v-model:value="keywords"
       class="w-50 mb-2"
-      placeholder="查询组件名称"
+      :placeholder="t('service.apiRequestBody.modal.searchPlaceholder')"
       size="small" />
-    <div class="leading-8 text-text-content">
-      <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
-        <div class="flex-1/3">组件名称</div>
-        <div class="flex-1/3">修改人</div>
-        <div class="flex-1/3">修改时间</div>
-      </div>
+          <div class="leading-8 text-text-content">
+        <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
+          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.componentName') }}</div>
+          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedBy') }}</div>
+          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedTime') }}</div>
+        </div>
       <Spin :spinning="loading">
         <template v-if="!loading&&!showOptions?.length">
           <NoData class="flex items-center min-h-26" />

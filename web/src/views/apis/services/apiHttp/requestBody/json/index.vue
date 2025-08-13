@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
@@ -15,6 +16,7 @@ import { services } from 'src/api/tester';
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 
+const { t } = useI18n();
 const ajv = new Ajv();
 addFormats(ajv);
 const { valueKey } = API_EXTENSION_KEY;
@@ -310,7 +312,7 @@ const copyValue = async (data: ParamsItem) => {
   }
 
   toClipboard(text).then(() => {
-    notification.success('成功复制值到剪贴板');
+    notification.success(t('service.apiRequestBody.messages.copySuccess'));
   });
 };
 
@@ -376,7 +378,7 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
         :id="apiBaseInfo?.serviceId"
         v-model:value="item.name"
         mode="pure"
-        placeholder="请输入参数名称"
+        :placeholder="t('service.apiRequestBody.placeholder.inputParameterName')"
         :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
         :type="['schemas']"
         :disabled="item.$ref || disabledName(item)"
@@ -385,7 +387,7 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
       <Input
         v-else
         v-model:value="item.name"
-        placeholder="请输入参数名称"
+        :placeholder="t('service.apiRequestBody.placeholder.inputParameterName')"
         :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
         :disabled="disabledName(item)"
         @blur="emitHandle" />
@@ -424,7 +426,7 @@ defineExpose({ addItem, validate, getModelResolve, updateComp });
     <Button
       type="primary"
       size="small"
-      title="复制值"
+      :title="t('service.apiRequestBody.actions.copyValue')"
       class="ml-2"
       @click="copyValue(item)">
       <Icon icon="icon-fuzhi" />

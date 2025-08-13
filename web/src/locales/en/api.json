@@ -497,6 +497,74 @@
         "successNum": "Success Count",
         "exceptionNum": "Exception Count"
       }
+    },
+    "apiRequestBody": {
+      "contentType": "Content-Type",
+      "actions": {
+        "importComponent": "Import Component",
+        "copyComponent": "Copy Component",
+        "format": "Format",
+        "compress": "Compress",
+        "uploadFile": "Upload File",
+        "cancelReference": "Cancel Reference"
+      },
+      "tips": {
+        "fileSizeLimit": "Interface debugging supports up to 100MB files, files within 10MB can be saved, exceeding this limit will not be saved.",
+        "componentReference": "Component Reference: {ref}"
+      },
+      "modal": {
+        "title": "Component",
+        "searchPlaceholder": "Search component name",
+        "columns": {
+          "componentName": "Component Name",
+          "modifiedBy": "Modified By",
+          "modifiedTime": "Modified Time"
+        }
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Please enter parameter name",
+        "type": "Type",
+        "typePlaceholder": "Please select parameter type",
+        "required": "Required",
+        "description": "Description",
+        "descriptionPlaceholder": "Please enter description",
+        "value": "Value",
+        "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported",
+        "format": "Format",
+        "formatPlaceholder": "Please select format",
+        "example": "Example",
+        "examplePlaceholder": "Please enter example value",
+        "defaultValue": "Default Value",
+        "defaultValuePlaceholder": "Please enter default value",
+        "minLength": "Min Length",
+        "minLengthPlaceholder": "Please enter minimum length",
+        "maxLength": "Max Length",
+        "maxLengthPlaceholder": "Please enter maximum length",
+        "minimum": "Minimum",
+        "minimumPlaceholder": "Please enter minimum value",
+        "maximum": "Maximum",
+        "maximumPlaceholder": "Please enter maximum value",
+        "pattern": "Pattern",
+        "patternPlaceholder": "Please enter regular expression",
+        "enum": "Enum Values",
+        "enumPlaceholder": "Please enter enum values, multiple values separated by commas",
+        "variable": "Variable",
+        "setVariable": "Set as Variable",
+        "cancelVariable": "Cancel Variable"
+      },
+      "messages": {
+        "fileUploadSuccess": "File uploaded successfully",
+        "fileUploadFailed": "File upload failed",
+        "fileRemoveSuccess": "File removed successfully",
+        "formatSuccess": "Formatted successfully",
+        "compressSuccess": "Compressed successfully",
+        "componentImportSuccess": "Component imported successfully",
+        "componentCopySuccess": "Component copied successfully",
+        "setVariableSuccess": "Variable set successfully",
+        "variableNameInvalid": "Name does not meet variable requirements, allows numbers, letters, !@$%^&*()_-+=./ etc.",
+        "debugFileSizeLimit": "Total upload file size for request body during debugging cannot exceed 100MB"
+      }
     }
   }
 } 

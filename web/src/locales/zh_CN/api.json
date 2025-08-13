@@ -1142,6 +1142,74 @@
         "successNum": "成功数",
         "exceptionNum": "异常数"
       }
+    },
+    "apiRequestBody": {
+      "contentType": "Content-Type",
+      "actions": {
+        "importComponent": "引入组件",
+        "copyComponent": "复制组件",
+        "format": "格式化",
+        "compress": "压缩",
+        "uploadFile": "上传文件",
+        "cancelReference": "取消引用"
+      },
+      "tips": {
+        "fileSizeLimit": "接口调试最大支持100MB文件，10MB以内可保存文件，超过不保存。",
+        "componentReference": "组件引用：{ref}"
+      },
+      "modal": {
+        "title": "组件",
+        "searchPlaceholder": "查询组件名称",
+        "columns": {
+          "componentName": "组件名称",
+          "modifiedBy": "修改人",
+          "modifiedTime": "修改时间"
+        }
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "请输入参数名称",
+        "type": "类型",
+        "typePlaceholder": "请选择参数类型",
+        "required": "必填",
+        "description": "描述",
+        "descriptionPlaceholder": "请输入描述",
+        "value": "值",
+        "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符",
+        "format": "格式",
+        "formatPlaceholder": "请选择格式",
+        "example": "示例",
+        "examplePlaceholder": "请输入示例值",
+        "defaultValue": "默认值",
+        "defaultValuePlaceholder": "请输入默认值",
+        "minLength": "最小长度",
+        "minLengthPlaceholder": "请输入最小长度",
+        "maxLength": "最大长度",
+        "maxLengthPlaceholder": "请输入最大长度",
+        "minimum": "最小值",
+        "minimumPlaceholder": "请输入最小值",
+        "maximum": "最大值",
+        "maximumPlaceholder": "请输入最大值",
+        "pattern": "正则表达式",
+        "patternPlaceholder": "请输入正则表达式",
+        "enum": "枚举值",
+        "enumPlaceholder": "请输入枚举值，多个值用逗号分隔",
+        "variable": "变量",
+        "setVariable": "设为变量",
+        "cancelVariable": "取消变量"
+      },
+      "messages": {
+        "fileUploadSuccess": "文件上传成功",
+        "fileUploadFailed": "文件上传失败",
+        "fileRemoveSuccess": "文件移除成功",
+        "formatSuccess": "格式化成功",
+        "compressSuccess": "压缩成功",
+        "componentImportSuccess": "组件导入成功",
+        "componentCopySuccess": "组件复制成功",
+        "setVariableSuccess": "设置变量成功",
+        "variableNameInvalid": "名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等",
+        "debugFileSizeLimit": "调试时请求体总上传文件大小不能超过100MB"
+      }
     }
   }
 }
