@@ -912,6 +912,14 @@
         "addSuccess": "API added successfully",
         "updateSuccess": "API updated successfully"
       }
+    },
+    "webSocketForm": {
+      "placeholder": {
+        "parameterName": "Parameter Name",
+        "inputParameterName": "Enter parameter name",
+        "inputParameterValue": "Enter parameter value",
+        "inputParameterDescription": "Enter parameter description"
+      }
     }
   }
 } 

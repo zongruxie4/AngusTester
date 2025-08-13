@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -16,6 +17,7 @@ interface Props {
   in: 'query'|'header'
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   data: () => ([]),
   in: 'query'
@@ -177,7 +179,7 @@ defineExpose({ getModelResolve, addItem });
             :id="apiBaseInfo.projectId"
             v-model:value="item.name"
             :disabled="!!item.$ref"
-            placeholder="参数名称"
+            :placeholder="t('service.webSocketForm.placeholder.parameterName')"
             mode="pure"
             :type="['parameters']"
             :params="{types: 'parameters', ignoreModel: false}"
@@ -188,7 +190,7 @@ defineExpose({ getModelResolve, addItem });
             v-else
             v-model:value="item.name"
             size="small"
-            placeholder="输入参数名"
+            :placeholder="t('service.webSocketForm.placeholder.inputParameterName')"
             class="flex-1"
             dataType="mixin-en"
             @blur="handleBlur" />
@@ -204,7 +206,7 @@ defineExpose({ getModelResolve, addItem });
           v-model:value="item[valueKey]"
           size="small"
           class="flex-1 min-w-15"
-          placeholder="输入参数值"
+          :placeholder="t('service.webSocketForm.placeholder.inputParameterValue')"
           @blur="handleValueBlur($event, index, item)" />
         <Input
           v-else
@@ -215,7 +217,7 @@ defineExpose({ getModelResolve, addItem });
           v-model:value="item.description"
           size="small"
           class="w-100"
-          placeholder="输入参数描述"
+          :placeholder="t('service.webSocketForm.placeholder.inputParameterDescription')"
           @blur="handleBlur" /> -->
         <Button
           v-show="item.schema?.type === 'array' || item.schema?.type === 'object'"

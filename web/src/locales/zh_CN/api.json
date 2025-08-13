@@ -1557,6 +1557,14 @@
         "addSuccess": "添加接口成功",
         "updateSuccess": "更新接口成功"
       }
+    },
+    "webSocketForm": {
+      "placeholder": {
+        "parameterName": "参数名称",
+        "inputParameterName": "输入参数名",
+        "inputParameterValue": "输入参数值",
+        "inputParameterDescription": "输入参数描述"
+      }
     }
   }
 }
