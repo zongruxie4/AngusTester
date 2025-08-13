@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Switch } from 'ant-design-vue';
 import { Input } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 interface Setting {
   enableParamValidation: boolean;
@@ -13,6 +14,7 @@ interface Setting {
 interface Props {
   value: Setting;
 }
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({ enableParamValidation: false, connectTimeout: 6000, readTimeout: 60000, retryNum: 0, maxRedirects: 1 })
 });
@@ -40,8 +42,8 @@ const onBlur = (key) => {
   <div class="leading-5 text-3 space-y-5">
     <div class="flex items-start">
       <div class="flex-1">
-        <div class="leading-7 text-text-title">参数格式验证</div>
-        <div class="mt-1 text-text-sub-content">启用后会先验证参数，只有在参数验证通过后才会发送请求，默认未开启。</div>
+        <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.paramValidation') }}</div>
+        <div class="mt-1 text-text-sub-content">{{ t('service.apiSetting.descriptions.paramValidation') }}</div>
       </div>
       <div class="flex-shrink-0 w-55 ml-10">
         <Switch
@@ -71,8 +73,8 @@ const onBlur = (key) => {
     </div> -->
     <div class="flex items-start">
       <div class="flex-1">
-        <div class="leading-7 text-text-title">连接超时</div>
-        <div class="mt-1 text-text-sub-content">指定客户端和服务器建立连接的最长等待时间，0为永不超时，默认为6秒。</div>
+        <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.connectTimeout') }}</div>
+        <div class="mt-1 text-text-sub-content">{{ t('service.apiSetting.descriptions.connectTimeout') }}</div>
       </div>
       <div class="flex-shrink-0 w-55 ml-10">
         <Input
@@ -81,17 +83,17 @@ const onBlur = (key) => {
           :min="0"
           :max="9007199254740991"
           :value="props.value.connectTimeout"
-          placeholder="0 ~ 9007199254740991"
+          :placeholder="t('service.apiSetting.form.timeoutPlaceholder')"
           dataType="number"
           @blur="onBlur('connectTimeout')"
           @change="change($event, 'connectTimeout')" /><span
-            class="ml-2">ms</span>
+            class="ml-2">{{ t('service.apiSetting.units.milliseconds') }}</span>
       </div>
     </div>
     <div class="flex items-start">
       <div class="flex-1">
-        <div class="leading-7 text-text-title">读超时</div>
-        <div class="mt-1 text-text-sub-content">指定建立连接后客户端未收到服务器关闭连接的最长等待时间，0为永不超时，默认为60秒。</div>
+        <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.readTimeout') }}</div>
+        <div class="mt-1 text-text-sub-content">{{ t('service.apiSetting.descriptions.readTimeout') }}</div>
       </div>
       <div class="flex-shrink-0 w-55 ml-10">
         <Input
@@ -100,17 +102,17 @@ const onBlur = (key) => {
           :min="0"
           :max="9007199254740991"
           :value="props.value.readTimeout"
-          placeholder="0 ~ 9007199254740991"
+          :placeholder="t('service.apiSetting.form.timeoutPlaceholder')"
           dataType="number"
           @blur="onBlur('readTimeout')"
           @change="change($event, 'readTimeout')" /><span
-            class="ml-2">ms</span>
+            class="ml-2">{{ t('service.apiSetting.units.milliseconds') }}</span>
       </div>
     </div>
     <div class="flex items-start">
       <div class="flex-1">
-        <div class="leading-7 text-text-title">失败时重试次数</div>
-        <div class="mt-1 text-text-sub-content">请求失败时的重试次数。默认不重试，最多允许重试6次。</div>
+        <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.retryNum') }}</div>
+        <div class="mt-1 text-text-sub-content">{{ t('service.apiSetting.descriptions.retryNum') }}</div>
       </div>
       <div class="flex-shrink-0 w-55 ml-10">
         <Input
@@ -119,10 +121,10 @@ const onBlur = (key) => {
           :min="0"
           :max="6"
           :value="props.value.retryNum"
-          placeholder="0 ~ 6"
+          :placeholder="t('service.apiSetting.form.retryNumPlaceholder')"
           dataType="number"
           @blur="onBlur('retryNum')"
-          @change="change($event, 'retryNum')" /><span class="ml-2">次</span>
+          @change="change($event, 'retryNum')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
       </div>
     </div>
     <!-- <div class="flex items-start">
@@ -145,8 +147,8 @@ const onBlur = (key) => {
     </div> -->
     <div class="flex items-start">
       <div class="flex-1">
-        <div class="leading-7 text-text-title">最大重定向次数</div>
-        <div class="mt-1 text-text-sub-content">请求返回3xx状态码时的重定向次数。默认1次，最多允许10次。</div>
+        <div class="leading-7 text-text-title">{{ t('service.apiSetting.labels.maxRedirects') }}</div>
+        <div class="mt-1 text-text-sub-content">{{ t('service.apiSetting.descriptions.maxRedirects') }}</div>
       </div>
       <div class="flex-shrink-0 w-55 ml-10">
         <Input
@@ -155,10 +157,10 @@ const onBlur = (key) => {
           :min="0"
           :max="10"
           :value="props.value.maxRedirects"
-          placeholder="0 ~ 10"
+          :placeholder="t('service.apiSetting.form.maxRedirectsPlaceholder')"
           dataType="number"
           @blur="onBlur('maxRedirects')"
-          @change="change($event, 'maxRedirects')" /><span class="ml-2">次</span>
+          @change="change($event, 'maxRedirects')" /><span class="ml-2">{{ t('service.apiSetting.units.times') }}</span>
       </div>
     </div>
   </div>

@@ -1284,6 +1284,31 @@
         "mock": "Mock",
         "history": "历史记录"
       }
+    },
+    "apiSetting": {
+      "form": {
+        "timeoutPlaceholder": "0 ~ 9007199254740991",
+        "retryNumPlaceholder": "0 ~ 6",
+        "maxRedirectsPlaceholder": "0 ~ 10"
+      },
+      "labels": {
+        "paramValidation": "参数格式验证",
+        "connectTimeout": "连接超时",
+        "readTimeout": "读超时",
+        "retryNum": "失败时重试次数",
+        "maxRedirects": "最大重定向次数"
+      },
+      "descriptions": {
+        "paramValidation": "启用后会先验证参数，只有在参数验证通过后才会发送请求，默认未开启。",
+        "connectTimeout": "指定客户端和服务器建立连接的最长等待时间，0为永不超时，默认为6秒。",
+        "readTimeout": "指定建立连接后客户端未收到服务器关闭连接的最长等待时间，0为永不超时，默认为60秒。",
+        "retryNum": "请求失败时的重试次数。默认不重试，最多允许重试6次。",
+        "maxRedirects": "请求返回3xx状态码时的重定向次数。默认1次，最多允许10次。"
+      },
+      "units": {
+        "milliseconds": "ms",
+        "times": "次"
+      }
     }
   }
 }

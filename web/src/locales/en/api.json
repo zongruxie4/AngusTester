@@ -639,6 +639,31 @@
         "mock": "Mock",
         "history": "History"
       }
+    },
+    "apiSetting": {
+      "form": {
+        "timeoutPlaceholder": "0 ~ 9007199254740991",
+        "retryNumPlaceholder": "0 ~ 6",
+        "maxRedirectsPlaceholder": "0 ~ 10"
+      },
+      "labels": {
+        "paramValidation": "Parameter Format Validation",
+        "connectTimeout": "Connection Timeout",
+        "readTimeout": "Read Timeout",
+        "retryNum": "Retry Count on Failure",
+        "maxRedirects": "Maximum Redirect Count"
+      },
+      "descriptions": {
+        "paramValidation": "When enabled, parameters will be validated first, and requests will only be sent after parameter validation passes. Default is disabled.",
+        "connectTimeout": "Specifies the maximum waiting time for establishing a connection between client and server. 0 means never timeout, default is 6 seconds.",
+        "readTimeout": "Specifies the maximum waiting time for the client to receive server connection closure after establishing a connection. 0 means never timeout, default is 60 seconds.",
+        "retryNum": "Number of retries when request fails. Default is no retry, maximum allowed is 6 times.",
+        "maxRedirects": "Number of redirects when request returns 3xx status code. Default is 1 time, maximum allowed is 10 times."
+      },
+      "units": {
+        "milliseconds": "ms",
+        "times": "times"
+      }
     }
   }
 } 
