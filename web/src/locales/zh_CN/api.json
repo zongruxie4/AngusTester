@@ -809,6 +809,20 @@
         "withPassword": "链接: {url} 密码: {password}",
         "withoutPassword": "链接: {url}"
       }
+    },
+    "statusModal": {
+      "title": "修改状态",
+      "messages": {
+        "updateStatusSuccess": "修改状态成功"
+      },
+      "form": {
+        "status": "状态"
+      },
+      "tips": {
+        "serviceStatusChange": "修改服务时会同步修改服务下所有接口状态。",
+        "servicePublish": "发布项服务会发布服务下接口，发布后的服务、接口不允许修改保存。",
+        "apiPublish": "发布接口后接口基本信息和参数信息不允许修改保存"
+      }
     }
   }
 }

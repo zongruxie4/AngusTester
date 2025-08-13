@@ -169,6 +169,20 @@
         "withPassword": "Link: {url} Password: {password}",
         "withoutPassword": "Link: {url}"
       }
+    },
+    "statusModal": {
+      "title": "Modify Status",
+      "messages": {
+        "updateStatusSuccess": "Status updated successfully"
+      },
+      "form": {
+        "status": "Status"
+      },
+      "tips": {
+        "serviceStatusChange": "Modifying service status will synchronously modify the status of all APIs under the service.",
+        "servicePublish": "Publishing a service will publish all APIs under the service. Published services and APIs cannot be modified or saved.",
+        "apiPublish": "After publishing an API, the basic information and parameter information of the API cannot be modified or saved"
+      }
     }
   }
 } 
