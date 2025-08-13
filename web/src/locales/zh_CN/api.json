@@ -1391,6 +1391,52 @@
       "messages": {
         "fileSizeLimit": "调试时总上传文件大小不能超过100MB"
       }
+    },
+    "apiWebSocket": {
+      "form": {
+        "uriPlaceholder": "输入uri",
+        "searchMessagePlaceholder": "查询消息",
+        "allMessagesPlaceholder": "全部消息"
+      },
+      "labels": {
+        "sendMessage": "发送消息",
+        "queryParams": "查询参数",
+        "requestHeader": "请求头",
+        "settings": "设置",
+        "responseMessage": "响应消息"
+      },
+      "actions": {
+        "disconnect": "断开连接",
+        "connect": "连接",
+        "save": "保存",
+        "saveToUnarchived": "保存到未归档",
+        "archive": "归档",
+        "copyUrl": "复制Url",
+        "send": "发送",
+        "clear": "清空"
+      },
+      "navigation": {
+        "saveToUnarchived": "保存到未归档",
+        "save": "保存",
+        "archiveToService": "归档到服务",
+        "variable": "变量",
+        "agent": "代理"
+      },
+      "messages": {
+        "updateApiSuccess": "更新接口成功",
+        "copyUrlSuccess": "复制Url成功",
+        "connectionFailed": "连接失败",
+        "sendFailed": "发送失败",
+        "closeFailed": "关闭失败",
+        "invalidUrl": "请输入正确链接地址"
+      },
+      "status": {
+        "connected": "已连接"
+      },
+      "options": {
+        "receiveMessage": "接收消息",
+        "sendMessage": "发送消息"
+      }
     }
   }
 }

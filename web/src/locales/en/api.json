@@ -746,6 +746,52 @@
       "messages": {
         "fileSizeLimit": "Total upload file size cannot exceed 100MB during debugging"
       }
+    },
+    "apiWebSocket": {
+      "form": {
+        "uriPlaceholder": "Enter URI",
+        "searchMessagePlaceholder": "Search messages",
+        "allMessagesPlaceholder": "All messages"
+      },
+      "labels": {
+        "sendMessage": "Send Message",
+        "queryParams": "Query Parameters",
+        "requestHeader": "Request Header",
+        "settings": "Settings",
+        "responseMessage": "Response Messages"
+      },
+      "actions": {
+        "disconnect": "Disconnect",
+        "connect": "Connect",
+        "save": "Save",
+        "saveToUnarchived": "Save to Unarchived",
+        "archive": "Archive",
+        "copyUrl": "Copy URL",
+        "send": "Send",
+        "clear": "Clear"
+      },
+      "navigation": {
+        "saveToUnarchived": "Save to Unarchived",
+        "save": "Save",
+        "archiveToService": "Archive to Service",
+        "variable": "Variable",
+        "agent": "Agent"
+      },
+      "messages": {
+        "updateApiSuccess": "API updated successfully",
+        "copyUrlSuccess": "URL copied successfully",
+        "connectionFailed": "Connection failed",
+        "sendFailed": "Send failed",
+        "closeFailed": "Close failed",
+        "invalidUrl": "Please enter a valid URL"
+      },
+      "status": {
+        "connected": "Connected"
+      },
+      "options": {
+        "receiveMessage": "Receive Message",
+        "sendMessage": "Send Message"
+      }
     }
   }
 } 

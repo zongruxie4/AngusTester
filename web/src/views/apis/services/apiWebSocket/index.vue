@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils, HttpTestInfo, Indicator } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
@@ -27,6 +28,7 @@ interface Props {
   responseCount: number;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   valueObj: undefined,
@@ -90,7 +92,7 @@ const connect = async () => {
     url.search = search;
     currentConnectUrl = url.toString();
   } catch {
-    notification.warning('请输入正确链接地址');
+    notification.warning(t('service.apiWebSocket.messages.invalidUrl'));
     return;
   }
   if (WS.value) {
@@ -171,17 +173,17 @@ const WS = ref<WebSocket|undefined>();
 const navs = computed(() => [
   props.valueObj.unarchived && {
     icon: 'icon-baocundaoweiguidang',
-    name: '保存到未归档',
+    name: t('service.apiWebSocket.navigation.saveToUnarchived'),
     key: 'saveUnarchived'
   },
   {
     icon: 'icon-baocun',
-    name: props.valueObj?.unarchived ? '归档到服务' : '保存',
+    name: props.valueObj?.unarchived ? t('service.apiWebSocket.navigation.archiveToService') : t('service.apiWebSocket.navigation.save'),
     key: 'save'
   },
   !props.valueObj.unarchived && {
     icon: 'icon-bianliang',
-    name: '变量',
+    name: t('service.apiWebSocket.navigation.variable'),
     key: 'variable'
   },
   // !props.valueObj.unarchived && {
@@ -191,7 +193,7 @@ const navs = computed(() => [
   // },
   {
     icon: 'icon-jiekoudaili',
-    name: '代理',
+    name: t('service.apiWebSocket.navigation.agent'),
     key: 'agent'
   }
 ].filter(Boolean));
@@ -199,7 +201,7 @@ const barHeight = ref(30);
 const moving = ref(false);
 const barMaxHeight = ref(500);
 const barMenus = ref([{
-  name: '响应消息',
+  name: t('service.apiWebSocket.labels.responseMessage'),
   value: 'message'
 }]);
 
@@ -281,7 +283,7 @@ const save = async () => {
     if (error) {
       return;
     }
-    notification.success('更新接口成功');
+    notification.success(t('service.apiWebSocket.messages.updateApiSuccess'));
   }
 };
 
@@ -367,7 +369,7 @@ const onResponse = async () => {
       });
       msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     } else {
-      notification.warning('连接失败: ' + (response.rawContent || ''));
+      notification.warning(t('service.apiWebSocket.messages.connectionFailed') + ': ' + (response.rawContent || ''));
       msgList.value.push({ type: 'connectErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     }
   }
@@ -378,7 +380,7 @@ const onResponse = async () => {
       toolbarRef.value.handleSelected(barMenus.value[0]);
       msgList.value.push({ type: 'send', content: content.value, size: calculateStringSize(content.value), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     } else {
-      notification.warning('发送失败 ' + (response.rawContent || ''));
+      notification.warning(t('service.apiWebSocket.messages.sendFailed') + ' ' + (response.rawContent || ''));
       msgList.value.push({ type: 'sendErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     }
   }
@@ -395,7 +397,7 @@ const onResponse = async () => {
       toolbarRef.value.handleSelected(barMenus.value[0]);
       msgList.value.push({ type: 'close', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     } else {
-      notification.warning('关闭失败：' + (response.rawContent || ''));
+      notification.warning(t('service.apiWebSocket.messages.closeFailed') + '：' + (response.rawContent || ''));
       msgList.value.push({ type: 'closeErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
     }
   }
@@ -419,7 +421,7 @@ const copyUrl = async () => {
     search = '?' + queryStr;
   }
   await toClipboard(url + search);
-  notification.success('复制Url成功');
+  notification.success(t('service.apiWebSocket.messages.copyUrlSuccess'));
 };
 
 watch(() => props.responseCount, () => {
@@ -504,7 +506,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             <Input
               v-model:value="endpoint"
               :readonly="isConnected"
-              placeholder="输入uri"
+              :placeholder="t('service.apiWebSocket.form.uriPlaceholder')"
               class="border-0 flex-1"
               @blur="onUriBlur" />
           </div>
@@ -513,7 +515,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             :loading="isClosing"
             class="ml-2 !bg-orange-500 text-white border-orange-500 hover:text-white hover:bg-orange-500 hover:border-orange-500"
             @click="closeConnect">
-            <Icon icon="icon-duankai" class="mr-2" />断开连接
+            <Icon icon="icon-duankai" class="mr-2" />{{ t('service.apiWebSocket.actions.disconnect') }}
           </Button>
           <Button
             v-else
@@ -522,30 +524,30 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             :loading="connecting"
             :disabled="disableConnect"
             @click="connect">
-            <Icon icon="icon-lianjie2" class="mr-2" />连接
+            <Icon icon="icon-lianjie2" class="mr-2" />{{ t('service.apiWebSocket.actions.connect') }}
           </Button>
           <template v-if="props.valueObj?.unarchived">
             <Button
               v-if="props.valueObj.id"
               class="ml-2"
               @click="save">
-              保存
+              {{ t('service.apiWebSocket.actions.save') }}
             </Button>
             <Button
               v-else
               class="ml-2"
               @click="save">
-              保存到未归档
+              {{ t('service.apiWebSocket.actions.saveToUnarchived') }}
             </Button>
             <Button
               class="ml-2"
               @click="archived">
-              归档
+              {{ t('service.apiWebSocket.actions.archive') }}
             </Button>
             <Button
               class="ml-2"
               @click="copyUrl">
-              复制Url
+              {{ t('service.apiWebSocket.actions.copyUrl') }}
             </Button>
           </template>
           <Button
@@ -553,7 +555,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             class="ml-2"
             :disabled="!auths.includes('MODIFY')"
             @click="save">
-            <Icon icon="icon-baocun" class="mr-2" />保存
+            <Icon icon="icon-baocun" class="mr-2" />{{ t('actions.save') }}
           </Button>
         </div>
         <div class="flex-1 overflow-auto flex flex-col justify-between">
@@ -562,7 +564,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             class="overflow-y-auto"
             :class="{'hide-pane': !showParams}"
             size="small">
-            <TabPane key="message" tab="发送消息">
+            <TabPane key="message" :tab="t('service.apiWebSocket.labels.sendMessage')">
               <MonacoEditor
                 v-model:value="content"
                 :language="language"
@@ -578,13 +580,13 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                   :disabled="!isConnected"
                   @click="postMessage">
                   <Icon icon="icon-fasong" class="mr-2" />
-                  发送
+                  {{ t('service.apiWebSocket.actions.send') }}
                 </Button>
               </div>
             </TabPane>
             <TabPane
               key="query"
-              tab="查询参数"
+              :tab="t('service.apiWebSocket.labels.queryParams')"
               :forceRender="true">
               <SocketForm
                 ref="queryParamRef"
@@ -595,7 +597,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             </TabPane>
             <TabPane
               key="header"
-              tab="请求头"
+              :tab="t('service.apiWebSocket.labels.requestHeader')"
               :forceRender="true">
               <SocketForm
                 ref="headerParamRef"
@@ -604,7 +606,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                 in="header"
                 @change="changeHeader" />
             </TabPane>
-            <TabPane key="config" tab="设置">
+            <TabPane key="config" :tab="t('service.apiWebSocket.labels.settings')">
               <Config
                 :id="apiInfo.id"
                 v-model:value="apiInfo[requestSettingKey]"
@@ -623,7 +625,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
           <div v-show="isConnected" class="text-3 text-text-content mr-3 flex items-center">
             <span class="mr-7.5">{{ connectedDate }}</span>
             <Icon icon="icon-duihao" class="text-status-success" />
-            <span class="ml-1 leading-3">已连接</span>
+            <span class="ml-1 leading-3">{{ t('service.apiWebSocket.status.connected') }}</span>
           </div>
         </template>
         <template #content="{activeMenu}">
@@ -633,7 +635,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                 <Input
                   v-model:value="msgKeyWords"
                   class="w-50"
-                  placeholder="查询消息"
+                  :placeholder="t('service.apiWebSocket.form.searchMessagePlaceholder')"
                   size="small">
                   <template #suffix>
                     <Icon icon="icon-sousuo" class="text-4 text-theme-sub-content" />
@@ -642,15 +644,15 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                 <Select
                   v-model:value="msgType"
                   class="w-50 ml-2"
-                  placeholder="全部消息"
+                  :placeholder="t('service.apiWebSocket.form.allMessagesPlaceholder')"
                   size="small"
                   :allowClear="true"
-                  :options="[{value: 'receive', label: '接收消息'}, {value: 'send', label: '发送消息'}]" />
+                  :options="[{value: 'receive', label: t('service.apiWebSocket.options.receiveMessage')}, {value: 'send', label: t('service.apiWebSocket.options.sendMessage')}]" />
                 <span class="flex-1"></span>
                 <Button
                   class="h-7 leading-7 py-0 px-3 text-3"
                   @click="delAllMsg">
-                  <Icon icon="icon-qingsao" class="mr-2 text-3 -mt-0.5" />清空
+                  <Icon icon="icon-qingsao" class="mr-2 text-3 -mt-0.5" />{{ t('service.apiWebSocket.actions.clear') }}
                 </Button>
               </div>
               <MessageList
