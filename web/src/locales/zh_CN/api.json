@@ -1471,6 +1471,17 @@
         "maxReconnections": "请输入重连次数",
         "reconnectionInterval": "请输入重连次间隔时间"
       }
+    },
+    "webSocketMsg": {
+      "types": {
+        "send": "发送请求",
+        "receive": "接收消息",
+        "connect": "连接成功",
+        "close": "连接关闭",
+        "closeErr": "关闭失败",
+        "sendErr": "发送失败",
+        "connectErr": "连接失败"
+      }
     }
   }
 }

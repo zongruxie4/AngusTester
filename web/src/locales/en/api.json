@@ -826,6 +826,17 @@
         "maxReconnections": "Please enter reconnection count",
         "reconnectionInterval": "Please enter reconnection interval time"
       }
+    },
+    "webSocketMsg": {
+      "types": {
+        "send": "Send Request",
+        "receive": "Receive Message",
+        "connect": "Connection Success",
+        "close": "Connection Closed",
+        "closeErr": "Close Failed",
+        "sendErr": "Send Failed",
+        "connectErr": "Connection Failed"
+      }
     }
   }
 } 

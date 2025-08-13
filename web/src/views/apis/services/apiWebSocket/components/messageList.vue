@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Message } from '../PropsType';
 import { Arrow, Icon, IconCopy } from '@xcan-angus/vue-ui';
 
@@ -8,6 +9,7 @@ interface Props {
   msgType: string;
   data: Message[];
 }
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   keyword: ''
 });
@@ -24,13 +26,13 @@ const data = ref<Message[]>([]);
 
 const getMsgText = (type) => {
   switch (type) {
-    case 'send': return '发送请求';
-    case 'receive': return '接收消息';
-    case 'connect': return '连接成功';
-    case 'close': return '连接关闭';
-    case 'closeErr': return '关闭失败';
-    case 'sendErr': return '发送失败';
-    case 'connectErr': return '连接失败';
+    case 'send': return t('service.webSocketMsg.types.send');
+    case 'receive': return t('service.webSocketMsg.types.receive');
+    case 'connect': return t('service.webSocketMsg.types.connect');
+    case 'close': return t('service.webSocketMsg.types.close');
+    case 'closeErr': return t('service.webSocketMsg.types.closeErr');
+    case 'sendErr': return t('service.webSocketMsg.types.sendErr');
+    case 'connectErr': return t('service.webSocketMsg.types.connectErr');
   }
 };
 
