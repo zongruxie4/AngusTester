@@ -1482,6 +1482,59 @@
         "sendErr": "发送失败",
         "connectErr": "连接失败"
       }
+    },
+    "webSocketSave": {
+      "form": {
+        "summary": {
+          "label": "接口名称",
+          "placeholder": "请输入接口名称，40字符以内",
+          "validation": "请输入接口名称，100字符以内"
+        },
+        "operationId": {
+          "label": "编码",
+          "placeholder": "请输入编码，40字符以内"
+        },
+        "ownerId": {
+          "label": "接口负责人",
+          "placeholder": "请选择接口负责人",
+          "validation": "请选择接口负责人"
+        },
+        "serviceId": {
+          "label": "所属服务",
+          "placeholder": "请选择所属服务",
+          "validation": "请选择所属服务"
+        },
+        "tags": {
+          "label": "标签",
+          "placeholder": "请输入或选择标签，输入需按Enter确认",
+          "description": "标签作为API附加元信息用于对其分组。"
+        },
+        "status": {
+          "label": "状态",
+          "validation": "请选择状态"
+        },
+        "deprecated": {
+          "label": "是否弃用",
+          "options": {
+            "normal": "正常",
+            "deprecated": "已弃用"
+          }
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "限制输入200字符以内"
+        }
+      },
+      "actions": {
+        "save": "保存",
+        "cancel": "取消"
+      },
+      "messages": {
+        "protocolWarning": "WebSocket协议必须以ws://或wss://开头",
+        "addSuccess": "添加接口成功",
+        "updateSuccess": "更新接口成功",
+        "releasedWarning": "已发布接口不允许修改"
+      }
     }
   }
 }

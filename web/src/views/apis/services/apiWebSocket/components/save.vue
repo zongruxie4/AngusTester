@@ -2,6 +2,7 @@
 <!-- eslint-disable @typescript-eslint/ban-types -->
 <script lang="ts" setup>
 import { inject, onMounted, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
 import { TESTER, appContext } from '@xcan-angus/infra';
@@ -40,6 +41,7 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 
 const defaultProject = ref();
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   getParameter: () => ({})
 });
@@ -61,16 +63,16 @@ const form = reactive({
 const formRef = ref();
 const rules = {
   summary: [{
-    required: true, message: '请输入接口名称，100字符以内', trigger: 'blur'
+    required: true, message: t('service.webSocketSave.form.summary.validation'), trigger: 'blur'
   }],
   ownerId: [{
-    required: true, message: '请选择接口负责人', trigger: 'change'
+    required: true, message: t('service.webSocketSave.form.ownerId.validation'), trigger: 'change'
   }],
   serviceId: [{
-    required: true, message: '请选择所属服务', trigger: 'change'
+    required: true, message: t('service.webSocketSave.form.serviceId.validation'), trigger: 'change'
   }],
   status: [{
-    required: true, message: '请选择状态', trigger: 'change'
+    required: true, message: t('service.webSocketSave.form.status.validation'), trigger: 'change'
   }]
 };
 const ownerOpt = ref([]);
@@ -99,7 +101,7 @@ const save = () => {
     const params = form;
     const apiInfo = await props.packageParams();
     if (apiInfo.protocol !== 'ws' && apiInfo.protocol !== 'wss') {
-      notification.warning('WebSocket协议必须以ws://或wss://开头');
+      notification.warning(t('service.webSocketSave.messages.protocolWarning'));
       return;
     }
     const [error, resp] = isUnarchived.value && props.id
@@ -111,10 +113,10 @@ const save = () => {
       return;
     }
     if (isUnarchived.value || !props.id) {
-      notification.success('添加接口成功');
+      notification.success(t('service.webSocketSave.messages.addSuccess'));
       refreshUnarchived();
     } else {
-      notification.success('更新接口成功');
+      notification.success(t('service.webSocketSave.messages.updateSuccess'));
     }
     const id = props.id || resp.data[0]?.id;
     if (props.id) {
@@ -168,16 +170,16 @@ onMounted(async () => {
     layout="vertical"
     :model="form"
     :rules="rules">
-    <FormItem label="接口名称" name="summary">
+    <FormItem :label="t('service.webSocketSave.form.summary.label')" name="summary">
       <Input
         v-model:value="form.summary"
         :maxlength="40"
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')"
         class="rounded"
-        placeholder="请输入接口名称，40字符以内" />
+        :placeholder="t('service.webSocketSave.form.summary.placeholder')" />
     </FormItem>
-    <FormItem label="编码">
+    <FormItem :label="t('service.webSocketSave.form.operationId.label')">
       <Input
         v-model:value="form.operationId"
         :maxlength="40"
@@ -186,25 +188,25 @@ onMounted(async () => {
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')"
         class="rounded"
-        placeholder="请输入编码，40字符以内" />
+        :placeholder="t('service.webSocketSave.form.operationId.placeholder')" />
     </FormItem>
-    <FormItem label="接口负责人" name="ownerId">
+    <FormItem :label="t('service.webSocketSave.form.ownerId.label')" name="ownerId">
       <SelectUser
         v-model:value="form.ownerId"
         class="rounded-border"
         :options="ownerOpt"
         :disabled="!auths.includes('MODIFY')"
-        placeholder="请选择接口负责人"
+        :placeholder="t('service.webSocketSave.form.ownerId.placeholder')"
         :allowClear="false" />
     </FormItem>
-    <FormItem label="所属服务" name="serviceId">
+    <FormItem :label="t('service.webSocketSave.form.serviceId.label')" name="serviceId">
       <TreeSelect
         v-model:defaultValue="defaultProject"
         :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')||!isUnarchived"
         :fieldNames="{children:'children', label:'name', value: 'id'}"
-        placeholder="请选择所属服务"
+        :placeholder="t('service.webSocketSave.form.serviceId.placeholder')"
         :virtual="false"
         size="small"
         @change="handleChanegProject">
@@ -224,37 +226,37 @@ onMounted(async () => {
     <FormItem name="tags">
       <template #label>
         <div>
-          <span>标签</span>
+          <span>{{ t('service.webSocketSave.form.tags.label') }}</span>
           <Tooltip placement="left">
             <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
-            <template #title> 标签作为API附加元信息用于对其分组。 </template>
+            <template #title> {{ t('service.webSocketSave.form.tags.description') }} </template>
           </Tooltip>
         </div>
       </template>
       <Select
         v-model:value="form.tags"
         mode="tags"
-        placeholder="请输入或选择标签，输入需按Enter确认"
+        :placeholder="t('service.webSocketSave.form.tags.placeholder')"
         :disabled="!auths.includes('MODIFY')"
         :options="tagsOpt"
         @dropdownVisibleChange="loadTagfromProject">
       </Select>
     </FormItem>
-    <FormItem label="状态" name="status">
+    <FormItem :label="t('service.webSocketSave.form.status.label')" name="status">
       <SelectEnum
         v-model:value="form.status"
         :disabled="!auths.includes('MODIFY')"
         enumKey="ApiStatus">
       </SelectEnum>
     </FormItem>
-    <FormItem label="是否弃用" name="deprecated">
+    <FormItem :label="t('service.webSocketSave.form.deprecated.label')" name="deprecated">
       <Select
         v-model:value="form.deprecated"
         :disabled="!auths.includes('MODIFY')"
-        :options="[{label: '正常', value: false}, {label: '已弃用', value: true}]">
+        :options="[{label: t('service.webSocketSave.form.deprecated.options.normal'), value: false}, {label: t('service.webSocketSave.form.deprecated.options.deprecated'), value: true}]">
       </Select>
     </FormItem>
-    <FormItem label="描述">
+    <FormItem :label="t('service.webSocketSave.form.description.label')">
       <Input
         v-model:value="form.description"
         type="textarea"
@@ -263,7 +265,7 @@ onMounted(async () => {
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')"
         class="rounded-border"
-        placeholder="限制输入200字符以内" />
+        :placeholder="t('service.webSocketSave.form.description.placeholder')" />
     </FormItem>
     <FormItem>
       <Button
@@ -273,15 +275,15 @@ onMounted(async () => {
         :loading="isLoading"
         :disabled="!auths.includes('MODIFY')"
         @click="save">
-        保存
+        {{ t('.actions.save') }}
       </Button>
       <Button
         class="rounded"
         size="small"
         @click="handleClose">
-        取消
+        {{ t('actions.cancel') }}
       </Button>
-      <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">已发布接口不允许修改</p>
+      <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">{{ t('service.webSocketSave.messages.releasedWarning') }}</p>
     </FormItem>
   </Form>
 </template>

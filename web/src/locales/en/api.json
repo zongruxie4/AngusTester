@@ -837,6 +837,59 @@
         "sendErr": "Send Failed",
         "connectErr": "Connection Failed"
       }
+    },
+    "webSocketSave": {
+      "form": {
+        "summary": {
+          "label": "API Name",
+          "placeholder": "Please enter API name, within 40 characters",
+          "validation": "Please enter API name, within 100 characters"
+        },
+        "operationId": {
+          "label": "Code",
+          "placeholder": "Please enter code, within 40 characters"
+        },
+        "ownerId": {
+          "label": "API Owner",
+          "placeholder": "Please select API owner",
+          "validation": "Please select API owner"
+        },
+        "serviceId": {
+          "label": "Service",
+          "placeholder": "Please select service",
+          "validation": "Please select service"
+        },
+        "tags": {
+          "label": "Tags",
+          "placeholder": "Please enter or select tags, press Enter to confirm",
+          "description": "Tags are used as additional metadata for API grouping."
+        },
+        "status": {
+          "label": "Status",
+          "validation": "Please select status"
+        },
+        "deprecated": {
+          "label": "Deprecated",
+          "options": {
+            "normal": "Normal",
+            "deprecated": "Deprecated"
+          }
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Limit input to 200 characters"
+        }
+      },
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "protocolWarning": "WebSocket protocol must start with ws:// or wss://",
+        "addSuccess": "API added successfully",
+        "updateSuccess": "API updated successfully",
+        "releasedWarning": "Released APIs cannot be modified"
+      }
     }
   }
 } 
