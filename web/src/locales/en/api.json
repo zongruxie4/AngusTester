@@ -230,7 +230,7 @@
         "paramName": "Parameter Name",
         "paramPosition": "Parameter Position",
         "paramValue": "Parameter Value",
-        "namePlaceholder": "Name",
+
         "positionPlaceholder": "Position",
         "valuePlaceholder": "Value"
       },
@@ -317,6 +317,21 @@
       "messages": {
         "translateComplete": "Translation completed",
         "selectService": "Please select service"
+      }
+    },
+    "timeline": {
+      "labels": {
+        "timeConsuming": "Time Consuming Items",
+        "time": "Time",
+        "totalTime": "Total Time Consuming"
+      },
+      "items": {
+        "dnsLookup": "DNS Lookup",
+        "tcpConnection": "TCP Connection",
+        "ssl": "SSL",
+        "requestSent": "Request Sent",
+        "waiting": "Waiting",
+        "contentDownload": "Content Download"
       }
     }
   }

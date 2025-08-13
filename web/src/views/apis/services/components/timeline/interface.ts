@@ -1,3 +1,8 @@
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
+
+
 export interface Column {
   name: string,
   key: string,
@@ -7,37 +12,37 @@ export interface Column {
 
 export const columns:Column[] = [
   {
-    name: '域名解析(DNS lookup)',
+    name: t('service.timeline.items.dnsLookup'),
     key: 'domainLookupEnd-domainLookupStart',
     time: 0,
     delay: 0
   },
   {
-    name: 'TCP连接',
+    name: t('service.timeline.items.tcpConnection'),
     key: 'connectEnd-connectStart',
     time: 0,
     delay: 0
   },
   {
-    name: 'SSL',
+    name: t('service.timeline.items.ssl'),
     key: 'secureConnectionEnd-secureConnectionStart',
     time: 0,
     delay: 0
   },
   {
-    name: '发送请求(Request sent)',
+    name: t('service.timeline.items.requestSent'),
     key: 'responseEnd-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '等待处理(Waiting)',
+    name: t('service.timeline.items.waiting'),
     key: 'responseStart-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '下载结果(Content download)',
+    name: t('service.timeline.items.contentDownload'),
     key: 'responseEnd-responseStart',
     time: 0,
     delay: 0

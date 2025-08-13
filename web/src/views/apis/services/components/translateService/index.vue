@@ -151,12 +151,12 @@ onMounted(() => {
     <div class="text-center space-x-3 mt-8">
       <Button
         @click="cancel">
-        {{ t('service.translateModal.actions.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         type="primary"
         @click="submit">
-        {{ t('service.translateModal.actions.submit') }}
+        {{ t('actions.submit') }}
       </Button>
     </div>
   </Modal>

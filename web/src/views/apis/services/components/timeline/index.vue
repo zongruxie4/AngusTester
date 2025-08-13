@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { Column, columns } from './interface';
 
@@ -10,6 +11,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({}) as PerformanceEntry
 });
+const { t } = useI18n();
 
 const duration = ref(0);
 const state = reactive<{
@@ -69,20 +71,20 @@ watch(() => props.dataSource, (newValue) => {
 <template>
   <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
     <div class="flex flex-col items-start text-3 leading-3 text-text-content mr-6">
-      <div class="mb-4 text-text-sub-content">耗时项</div>
+      <div class="mb-4 text-text-sub-content">{{ t('service.timeline.labels.timeConsuming') }}</div>
       <div
         v-for="(item,index) in state.data"
         :key="index"
         class="title-item-container"
         :class="{'pl-3': item.key=== 'responseStart-requestStart' || item.key=== 'responseEnd-responseStart'}">
-        {{ item.name }}
+        {{ t(item.name) }}
       </div>
       <div class="title-item-container">
-        总耗时(Total time consuming)
+        {{ t('service.timeline.labels.totalTime') }}
       </div>
     </div>
     <div class="flex flex-col flex-1 items-start text-3 leading-3 text-text-content pr-6">
-      <div class="mb-4 text-text-sub-content">时间</div>
+      <div class="mb-4 text-text-sub-content">{{ t('service.timeline.labels.time') }}</div>
       <div
         v-for="(item,index) in state.data"
         :key="index"

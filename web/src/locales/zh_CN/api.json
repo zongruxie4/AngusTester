@@ -939,7 +939,7 @@
             "AngusTester默认会使用DeepSeek进行翻译",
             "翻译是异步处理的，完成后您会收到提示消息",
             "翻译过程可能需要几分钟到几小时，取决于API规模",
-            "翻译完成后，您可以在"接口 → 服务"中查看"
+            "翻译完成后，您可以在\"接口 → 服务\"中查看"
           ]
         }
       },
@@ -957,6 +957,21 @@
       "messages": {
         "translateComplete": "翻译完成",
         "selectService": "请选择服务"
+      }
+    },
+    "timeline": {
+      "labels": {
+        "timeConsuming": "耗时项",
+        "time": "时间",
+        "totalTime": "总耗时(Total time consuming)"
+      },
+      "items": {
+        "dnsLookup": "域名解析(DNS lookup)",
+        "tcpConnection": "TCP连接",
+        "ssl": "SSL",
+        "requestSent": "发送请求(Request sent)",
+        "waiting": "等待处理(Waiting)",
+        "contentDownload": "下载结果(Content download)"
       }
     }
   }
