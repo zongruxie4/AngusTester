@@ -1437,6 +1437,14 @@
         "receiveMessage": "接收消息",
         "sendMessage": "发送消息"
       }
+    },
+    "webSocketServer": {
+      "labels": {
+        "current": "当前",
+        "public": "公共",
+        "mock": "Mock",
+        "history": "历史记录"
+      }
     }
   }
 }

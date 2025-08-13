@@ -792,6 +792,14 @@
         "receiveMessage": "Receive Message",
         "sendMessage": "Send Message"
       }
+    },
+    "webSocketServer": {
+      "labels": {
+        "current": "Current",
+        "public": "Public",
+        "mock": "Mock",
+        "history": "History"
+      }
     }
   }
 } 

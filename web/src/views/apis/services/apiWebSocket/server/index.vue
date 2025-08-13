@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, toRaw, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import { XCanDexie } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
@@ -23,6 +24,7 @@ interface Props {
   readonly: boolean;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   isUnarchivedApi: true,
   id: '',
@@ -156,7 +158,7 @@ onBeforeUnmount(() => {
         <div class="px-2 text-3">
           <div v-show="props.defaultCurrentServer?.url">
             <div class="border-t border-border-divider border-dashed relative my-3.5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-dangqian" class="mr-1" />当前</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-dangqian" class="mr-1" />{{ t('service.webSocketServer.labels.current') }}</div>
             </div>
             <MenuItem
               :key="props.defaultCurrentServer?.url"
@@ -167,7 +169,7 @@ onBeforeUnmount(() => {
           </div>
           <div v-show="!!serversFromParent.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />公共</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.public') }}</div>
             </div>
             <MenuItem
               v-for="item in serversFromParent"
@@ -179,7 +181,7 @@ onBeforeUnmount(() => {
           </div>
           <div v-show="!!serversFromMock.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />Mock</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-changjingguanli" class="mr-1" />{{ t('service.webSocketServer.labels.mock') }}</div>
             </div>
             <MenuItem
               v-for="item in serversFromMock"
@@ -191,7 +193,7 @@ onBeforeUnmount(() => {
           </div>
           <div v-show="!!serversFromIndexDB.length">
             <div class="border-t border-border-divider border-dashed relative mb-3.5 mt-5">
-              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-lishijilu" class="mr-1" />历史记录</div>
+              <div class="absolute -top-2.5 whitespace-nowrap bg-bg-table-head px-2 rounded leading-5 text-text-title font-medium"><Icon icon="icon-lishijilu" class="mr-1" />{{ t('service.webSocketServer.labels.history') }}</div>
             </div>
             <MenuItem
               v-for="item in serversFromIndexDB"
