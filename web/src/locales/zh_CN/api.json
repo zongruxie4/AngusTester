@@ -1535,6 +1535,28 @@
         "updateSuccess": "更新接口成功",
         "releasedWarning": "已发布接口不允许修改"
       }
+    },
+    "webSocketSaveUnarchived": {
+      "hints": {
+        "unarchivedDescription": "未归档接口为用户临时调试接口，只对添加用户可见"
+      },
+      "form": {
+        "summary": {
+          "label": "接口名称",
+          "placeholder": "请输入接口名称，40字符以内",
+          "validation": "请输入接口名称，100字符以内"
+        },
+        "description": {
+          "label": "描述",
+          "placeholder": "限制输入200字符以内"
+        }
+      },
+  
+      "messages": {
+        "protocolWarning": "WebSocket协议必须以ws://或wss://开头",
+        "addSuccess": "添加接口成功",
+        "updateSuccess": "更新接口成功"
+      }
     }
   }
 }

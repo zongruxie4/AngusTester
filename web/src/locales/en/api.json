@@ -890,6 +890,28 @@
         "updateSuccess": "API updated successfully",
         "releasedWarning": "Released APIs cannot be modified"
       }
+    },
+    "webSocketSaveUnarchived": {
+      "hints": {
+        "unarchivedDescription": "Unarchived APIs are temporary debugging interfaces for users, only visible to the user who added them"
+      },
+      "form": {
+        "summary": {
+          "label": "API Name",
+          "placeholder": "Please enter API name, within 40 characters",
+          "validation": "Please enter API name, within 100 characters"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Limit input to 200 characters"
+        }
+      },
+
+      "messages": {
+        "protocolWarning": "WebSocket protocol must start with ws:// or wss://",
+        "addSuccess": "API added successfully",
+        "updateSuccess": "API updated successfully"
+      }
     }
   }
 } 

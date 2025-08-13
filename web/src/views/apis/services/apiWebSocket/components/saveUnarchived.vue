@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { inject, onMounted, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 
@@ -30,6 +31,7 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const refreshUnarchived = inject('refreshUnarchived', () => {});
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   getParameter: () => ({})
 });
@@ -44,7 +46,7 @@ const form = reactive({
 const formRef = ref();
 const rules = {
   summary: [{
-    required: true, message: '请输入接口名称，100字符以内', trigger: 'blur'
+    required: true, message: t('service.webSocketSaveUnarchived.form.summary.validation'), trigger: 'blur'
   }]
 };
 
@@ -55,7 +57,7 @@ const save = () => {
     const params = form;
     const apiInfo = await props.packageParams();
     if (apiInfo.protocol !== 'ws' && apiInfo.protocol !== 'wss') {
-      notification.warning('WebSocket协议必须以ws://或wss://开头');
+      notification.warning(t('service.webSocketSaveUnarchived.messages.protocolWarning'));
       return;
     }
 
@@ -67,9 +69,9 @@ const save = () => {
       return;
     }
     if (props.id) {
-      notification.success('更新接口成功');
+      notification.success(t('service.webSocketSaveUnarchived.messages.updateSuccess'));
     } else {
-      notification.success('添加接口成功');
+      notification.success(t('service.webSocketSaveUnarchived.messages.addSuccess'));
       refreshUnarchived();
     }
     const id = props.id || resp.data[0]?.id;
@@ -113,17 +115,17 @@ onMounted(() => {
     :model="form"
     :rules="rules">
     <Hints
-      text="未归档接口为用户临时调试接口，只对添加用户可见"
+      :text="t('service.webSocketSaveUnarchived.hints.unarchivedDescription')"
       class="mb-1.5" />
-    <FormItem label="接口名称" name="summary">
+    <FormItem :label="t('service.webSocketSaveUnarchived.form.summary.label')" name="summary">
       <Input
         v-model:value="form.summary"
         :maxlength="40"
         :allowClear="false"
         class="rounded"
-        placeholder="请输入接口名称，40字符以内" />
+        :placeholder="t('service.webSocketSaveUnarchived.form.summary.placeholder')" />
     </FormItem>
-    <FormItem label="描述">
+    <FormItem :label="t('service.webSocketSaveUnarchived.form.description.label')">
       <Input
         v-model:value="form.description"
         type="textarea"
@@ -131,7 +133,7 @@ onMounted(() => {
         :rows="4"
         :allowClear="false"
         class="rounded-border"
-        placeholder="限制输入200字符以内" />
+        :placeholder="t('service.webSocketSaveUnarchived.form.description.placeholder')" />
     </FormItem>
     <FormItem>
       <Button
@@ -140,13 +142,13 @@ onMounted(() => {
         size="small"
         :loading="isLoading"
         @click="save">
-        保存
+        {{ t('actions.save') }}
       </Button>
       <Button
         class="rounded"
         size="small"
         @click="handleClose">
-        取消
+        {{ t('actions.cancel') }}
       </Button>
     </FormItem>
   </Form>
