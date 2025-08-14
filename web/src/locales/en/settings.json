@@ -74,6 +74,30 @@
   },
   "indicator": {
     "title": "Test indicators are quantitative values for evaluating software functionality, performance, and stability, and are also the basis for determining whether software functionality, performance, stability, and development quality meet standards. You can set platform default functionality, performance, and stability indicators through \"Setting Indicators\". If you want the indicators for interfaces/scenarios to be more lenient than the platform default indicators, you can also modify them on the corresponding indicator page for interfaces/scenarios.",
-    "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc."
+    "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc.",
+    "efficiency": {
+      "title": "Platform Default Efficiency Indicators",
+      "buttons": {
+      },
+      "table": {
+        "columns": {
+          "level": "Level",
+          "workload": "Workload",
+          "completedRate": "Completion Rate (≤)",
+          "overdueRate": "Overdue Rate (≤)",
+          "oneTimePassedRate": "One-time Pass Rate (≥)",
+          "savingWorkloadRate": "Workload Saving Rate (≥)"
+        },
+        "data": {
+          "levels": {
+            "veryPoor": "Very Poor",
+            "poor": "Poor",
+            "medium": "Medium",
+            "good": "Good",
+            "excellent": "Excellent"
+          }
+        }
+      }
+    }
   }
 } 
