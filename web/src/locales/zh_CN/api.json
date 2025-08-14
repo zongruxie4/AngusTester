@@ -1624,6 +1624,52 @@
         "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有接口相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级服务权限将自动授权查看权限。",
         "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级或服务权限。"
       }
+    },
+    "ApiMock": {
+      "columns": {
+        "id": "ID",
+        "name": "名称",
+        "mockServiceId": "服务ID",
+        "mockServiceName": "服务名称",
+        "mockServiceHostUrl": "服务地址",
+        "createdBy": "服务人",
+        "createdDate": "添加时间"
+      },
+      "messages": {
+        "createSuccess": "生成Mock接口成功",
+        "associateSuccess": "关联成功",
+        "cancelAssociateSuccess": "取消关联成功"
+      },
+      "stats": {
+        "requestNum": "请求数",
+        "pushbackNum": "回推数",
+        "simulateErrorNum": "模拟异常数",
+        "successNum": "成功数",
+        "exceptionNum": "异常数"
+      },
+      "actions": {
+        "cancelAssociate": "取消关联"
+      },
+      "tooltips": {
+        "copy": "复制"
+      },
+      "hints": {
+        "selectMockServiceFirst": "生成或关联Mock接口请先选择Mock服务。",
+        "generateMockApi": "基于当前接口生成Mock接口。",
+        "associateMockApi": "关联Mock服务下已存在的接口。"
+      },
+      "options": {
+        "generateMockApi": "生成Mock接口",
+        "associateMockApi": "关联Mock接口"
+      },
+      "placeholder": {
+        "selectMockService": "请选择Mock服务",
+        "selectMockApi": "请选择Mock接口",
+        "inputMockApiName": "请输入对应Mock接口名称，不指定时默认使用当前接口名称"
+      },
+      "buttons": {
+        "confirm": "确定"
+      }
     }
   }
 }

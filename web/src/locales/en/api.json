@@ -979,6 +979,52 @@
         "onTips": "After enabling \"has permission control\", you need to manually authorize service permissions to have corresponding API operation permissions. \"Has permission control\" is enabled by default. Note: If the authorized object does not have parent service permissions, view permissions will be automatically granted.",
         "offTips": "After enabling \"no permission control\", all users will be allowed to publicly view and operate the current API. Users viewing the API must also have current API parent or service permissions."
       }
+    },
+    "ApiMock": {
+      "columns": {
+        "id": "ID",
+        "name": "Name",
+        "mockServiceId": "Service ID",
+        "mockServiceName": "Service Name",
+        "mockServiceHostUrl": "Service URL",
+        "createdBy": "Creator",
+        "createdDate": "Created Date"
+      },
+      "messages": {
+        "createSuccess": "Mock API created successfully",
+        "associateSuccess": "Associated successfully",
+        "cancelAssociateSuccess": "Association cancelled successfully"
+      },
+      "stats": {
+        "requestNum": "Request Count",
+        "pushbackNum": "Pushback Count",
+        "simulateErrorNum": "Simulated Error Count",
+        "successNum": "Success Count",
+        "exceptionNum": "Exception Count"
+      },
+      "actions": {
+        "cancelAssociate": "Cancel Association"
+      },
+      "tooltips": {
+        "copy": "Copy"
+      },
+      "hints": {
+        "selectMockServiceFirst": "Please select a Mock service first to generate or associate Mock API.",
+        "generateMockApi": "Generate Mock API based on current API.",
+        "associateMockApi": "Associate with existing API under Mock service."
+      },
+      "options": {
+        "generateMockApi": "Generate Mock API",
+        "associateMockApi": "Associate Mock API"
+      },
+      "placeholder": {
+        "selectMockService": "Please select Mock service",
+        "selectMockApi": "Please select Mock API",
+        "inputMockApiName": "Please enter corresponding Mock API name, current API name will be used by default if not specified"
+      },
+      "buttons": {
+        "confirm": "Confirm"
+      }
     }
   }
 } 

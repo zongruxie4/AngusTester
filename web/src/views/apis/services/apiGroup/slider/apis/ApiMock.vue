@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
@@ -11,6 +12,7 @@ interface Props {
   id: string; // api id
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
@@ -31,13 +33,13 @@ const loadMockApiInfo = async (id:string) => {
 };
 
 const columns = [[
-  { label: 'ID', dataIndex: 'id' },
-  { label: '名称', dataIndex: 'name' },
-  { label: '服务ID', dataIndex: 'mockServiceId' },
-  { label: '服务名称', dataIndex: 'mockServiceName' },
-  { label: '服务地址', dataIndex: 'mockServiceHostUrl' },
-  { label: '服务人', dataIndex: 'createdBy' },
-  { label: '添加时间', dataIndex: 'createdDate' }
+  { label: t('service.ApiMock.columns.id'), dataIndex: 'id' },
+  { label: t('service.ApiMock.columns.name'), dataIndex: 'name' },
+  { label: t('service.ApiMock.columns.mockServiceId'), dataIndex: 'mockServiceId' },
+  { label: t('service.ApiMock.columns.mockServiceName'), dataIndex: 'mockServiceName' },
+  { label: t('service.ApiMock.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
+  { label: t('service.ApiMock.columns.createdBy'), dataIndex: 'createdBy' },
+  { label: t('service.ApiMock.columns.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const summary = ref('');
@@ -49,7 +51,7 @@ const createMockApiById = async () => {
   createApiLoading.value = false;
   if (error) { return; }
   mockApisId.value = data?.id;
-  notification.success('生成Mock接口成功');
+  notification.success(t('service.ApiMock.messages.createSuccess'));
   loadMockApiInfo(props.id);
 };
 
@@ -64,33 +66,33 @@ const relatedMockServiceApi = async () => {
     return;
   }
   mockApisId.value = selectedMockApiId.value;
-  notification.success('关联成功');
+  notification.success(t('service.ApiMock.messages.associateSuccess'));
   loadMockApiInfo(props.id);
 };
 
 const mockServiceCount = [
   {
-    name: '请求数',
+    name: t('service.ApiMock.stats.requestNum'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-    name: '回推数',
+    name: t('service.ApiMock.stats.pushbackNum'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-    name: '模拟异常数',
+    name: t('service.ApiMock.stats.simulateErrorNum'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-    name: '成功数',
+    name: t('service.ApiMock.stats.successNum'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-    name: '异常数',
+    name: t('service.ApiMock.stats.exceptionNum'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }
@@ -101,7 +103,7 @@ const cencelProjcetMock = async () => {
   const [error] = await mock.cancelMockApiAssoc([mockApiInfo.value.id]);
   loading.value = false;
   if (error) { return; }
-  notification.success('取消关联成功');
+  notification.success(t('service.ApiMock.messages.cancelAssociateSuccess'));
   mockApiInfo.value = undefined;
   mockServiceId.value = undefined;
 };
@@ -150,10 +152,10 @@ const format = (data) => {
             <div class="flex items-start text-3 leading-5">
               <span>{{ text }}</span>
               <template v-if="props.disabled">
-                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">取消关联</a>
+                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.ApiMock.actions.cancelAssociate') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">取消关联</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.ApiMock.actions.cancelAssociate') }}</a>
               </template>
             </div>
           </template>
@@ -165,11 +167,11 @@ const format = (data) => {
               <div>
                 <div v-if="mockApiInfo?.mockServiceDomainUrl">
                   <span>{{ mockApiInfo.mockServiceDomainUrl }}</span>
-                  <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" /></span>
+                  <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" /></span>
                 </div>
                 <div v-if="text" class="flex items-start">
                   <span>{{ text }}</span>
-                  <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
+                  <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
                 </div>
               </div>
             </template>
@@ -191,34 +193,34 @@ const format = (data) => {
       </template>
       <template v-if="!mockApiInfo && !loading">
         <div class="flex flex-col space-y-3.5">
-          <Hints text="生成或关联Mock接口请先选择Mock服务。" />
+          <Hints :text="t('service.ApiMock.hints.selectMockServiceFirst')" />
           <RadioGroup v-model:value="createType">
-            <Radio value="1">生成Mock接口</Radio>
-            <Radio value="2">关联Mock接口</Radio>
+            <Radio value="1">{{ t('service.ApiMock.options.generateMockApi') }}</Radio>
+            <Radio value="2">{{ t('service.ApiMock.options.associateMockApi') }}</Radio>
           </RadioGroup>
           <Select
             v-model:value="mockServiceId"
             :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
             :fieldNames="{label:'name',value:'id'}"
             :maxlength="100"
-            placeholder="请选择Mock服务"
+            :placeholder="t('service.ApiMock.placeholder.selectMockService')"
             showSearch />
           <template v-if="createType === '1'">
-            <Hints text="基于当前接口生成Mock接口。" />
-            <Input v-model:value="summary" placeholder="请输入对应Mock接口名称，不指定时默认使用当前接口名称" />
-            <div class="flex justify-end">
-              <Button
-                :disabled="!mockServiceId || props.disabled"
-                :loading="createApiLoading"
-                size="small"
-                type="primary"
-                @click="createMockApiById">
-                确定
-              </Button>
-            </div>
+            <Hints :text="t('service.ApiMock.hints.generateMockApi')" />
+            <Input v-model:value="summary" :placeholder="t('service.ApiMock.placeholder.inputMockApiName')" />
+                          <div class="flex justify-end">
+                <Button
+                  :disabled="!mockServiceId || props.disabled"
+                  :loading="createApiLoading"
+                  size="small"
+                  type="primary"
+                  @click="createMockApiById">
+                  {{ t('actions.confirm') }}
+                </Button>
+              </div>
           </template>
           <template v-else>
-            <Hints text="关联Mock服务下已存在的接口。" />
+            <Hints :text="t('service.ApiMock.hints.associateMockApi')" />
             <Select
               v-model:value="selectedMockApiId"
               :disabled="!mockServiceId"
@@ -228,17 +230,17 @@ const format = (data) => {
               :format="format"
               :maxlength="100"
               allowClear
-              placeholder="请选择Mock接口"
+              :placeholder="t('service.ApiMock.placeholder.selectMockApi')"
               showSearch />
-            <div class="flex justify-end">
-              <Button
-                :disabled="!mockServiceId || !selectedMockApiId || props.disabled"
-                size="small"
-                type="primary"
-                @click="relatedMockServiceApi">
-                确定
-              </Button>
-            </div>
+                          <div class="flex justify-end">
+                <Button
+                  :disabled="!mockServiceId || !selectedMockApiId || props.disabled"
+                  size="small"
+                  type="primary"
+                  @click="relatedMockServiceApi">
+                  {{ t('actions.confirm') }}
+                </Button>
+              </div>
           </template>
         </div>
       </template>
