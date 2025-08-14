@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, reactive, ref, Ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent,
   AuthorizeModal,
@@ -27,6 +28,7 @@ interface Props {
   serviceId: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
@@ -75,23 +77,23 @@ const securityRef = ref();
 const columns = computed(() => {
   return [
     [
-      { label: 'ID', dataIndex: 'id' },
-      { label: '名称', dataIndex: 'summary' },
-      { label: '编码', dataIndex: 'operationId' },
-      { label: '来源', dataIndex: 'source', type: '1' },
-      { label: '状态', dataIndex: 'status' },
-      { label: '权限', dataIndex: 'auth' },
-      { label: '是否弃用', dataIndex: 'deprecated' },
+      { label: t('service.groupApiDetail.columns.id'), dataIndex: 'id' },
+      { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
+      { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
+      { label: t('service.groupApiDetail.columns.source'), dataIndex: 'source', type: '1' },
+      { label: t('service.groupApiDetail.columns.status'), dataIndex: 'status' },
+      { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
+      { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
       // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },
-      { label: '添加人', dataIndex: 'createdByName' },
-      { label: '负责人', dataIndex: 'ownerName' },
-      { label: '标签', dataIndex: 'tags' },
-      { label: '添加时间', dataIndex: 'createdDate' },
-      { label: '更新时间', dataIndex: 'lastModifiedDate' },
-      { label: '描述', dataIndex: 'description' },
-      { label: '安全需求', dataIndex: 'securityTitle' },
+      { label: t('service.groupApiDetail.columns.createdByName'), dataIndex: 'createdByName' },
+      { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
+      { label: t('service.groupApiDetail.columns.tags'), dataIndex: 'tags' },
+      { label: t('service.groupApiDetail.columns.createdDate'), dataIndex: 'createdDate' },
+      { label: t('service.groupApiDetail.columns.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+      { label: t('service.groupApiDetail.columns.description'), dataIndex: 'description' },
+      { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
       { dataIndex: 'security', fullWidthContent: true },
-      { label: '外部文档', dataIndex: 'externalDocsTitle' },
+      { label: t('service.groupApiDetail.columns.externalDocsTitle'), dataIndex: 'externalDocsTitle' },
       { dataIndex: 'externalDocs', fullWidthContent: true }
     ].filter(Boolean)
   ];
@@ -105,7 +107,7 @@ watch(() => props.id, () => {
 
 const loadInfo = async () => {
   if (!props.id) {
-    notification.error('请先选择接口,再来查看');
+    notification.error(t('service.groupApiDetail.messages.selectApiFirst'));
     return;
   }
   const params = props.id;
@@ -229,7 +231,7 @@ const handleSaveDesc = async (value) => {
 };
 
 // 是否弃用
-const deprecatedOpt = [{ value: true, label: '是' }, { value: false, label: '否' }];
+const deprecatedOpt = [{ value: true, label: t('service.groupApiDetail.deprecated.yes') }, { value: false, label: t('service.groupApiDetail.deprecated.no') }];
 const editDeprecated = ref(false);
 const deprecatedInputRef = ref();
 let defaultDeprecated;
@@ -324,7 +326,7 @@ const openInterfaceAuthDialog = () => {
             @blur="handleOperationIdBlur" />
         </template>
         <template v-else>
-          {{ text || '--' }}
+          {{ text || t('service.groupApiDetail.placeholder.noData') }}
           <Icon
             v-if="!props.disabled && state.info.status?.value !== 'RELEASED'"
             icon="icon-shuxie"
@@ -333,7 +335,7 @@ const openInterfaceAuthDialog = () => {
         </template>
       </template>
       <template #auth="{text}">
-        {{ text ? '有权限限制' : '无权限限制' }}
+        {{ text ? t('service.groupApiDetail.auth.hasPermission') : t('service.groupApiDetail.auth.noPermission') }}
         <span v-show="!disabled">
           <Icon
             icon="icon-shuxie"
@@ -372,7 +374,7 @@ const openInterfaceAuthDialog = () => {
             @blur="toggleEditDeprecated" />
         </template>
         <template v-else>
-          {{ text ? '是' : '否' }}
+          {{ text ? t('service.groupApiDetail.deprecated.yes') : t('service.groupApiDetail.deprecated.no') }}
           <Icon
             v-show="(!disabled && state.info.status?.value !== 'RELEASED')"
             icon="icon-shuxie"
@@ -418,7 +420,7 @@ const openInterfaceAuthDialog = () => {
           </Tag>
         </template>
         <template v-else>
-          {{ '--' }}
+          {{ t('service.groupApiDetail.placeholder.noData') }}
         </template>
       </template>
       <template #securityTitle>
@@ -477,9 +479,9 @@ const openInterfaceAuthDialog = () => {
         :updateUrl="`${TESTER}/apis/auth`"
         :enabledUrl="`${TESTER}/apis/${props.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/apis/${props.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有接口相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级服务权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级或服务权限。"
-        title="接口权限"
+        :onTips="t('service.groupApiDetail.modal.onTips')"
+        :offTips="t('service.groupApiDetail.modal.offTips')"
+        :title="t('service.groupApiDetail.modal.title')"
         @change="authFlagChange" />
     </AsyncComponent>
     <AsyncComponent :visible="descriptionModalVisible">

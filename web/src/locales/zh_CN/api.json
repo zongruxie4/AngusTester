@@ -1586,6 +1586,44 @@
       "actions": {
         "selectAll": "全部"
       }
+    },
+    "groupApiDetail": {
+      "columns": {
+        "id": "ID",
+        "summary": "名称",
+        "operationId": "编码",
+        "source": "来源",
+        "status": "状态",
+        "auth": "权限",
+        "deprecated": "是否弃用",
+        "createdByName": "添加人",
+        "ownerName": "负责人",
+        "tags": "标签",
+        "createdDate": "添加时间",
+        "lastModifiedDate": "更新时间",
+        "description": "描述",
+        "securityTitle": "安全需求",
+        "externalDocsTitle": "外部文档"
+      },
+      "messages": {
+        "selectApiFirst": "请先选择接口,再来查看"
+      },
+      "auth": {
+        "hasPermission": "有权限限制",
+        "noPermission": "无权限限制"
+      },
+      "deprecated": {
+        "yes": "是",
+        "no": "否"
+      },
+      "placeholder": {
+        "noData": "--"
+      },
+      "modal": {
+        "title": "接口权限",
+        "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有接口相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级服务权限将自动授权查看权限。",
+        "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级或服务权限。"
+      }
     }
   }
 }

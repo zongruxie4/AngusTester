@@ -941,6 +941,44 @@
       "actions": {
         "selectAll": "Select All"
       }
+    },
+    "groupApiDetail": {
+      "columns": {
+        "id": "ID",
+        "summary": "Name",
+        "operationId": "Code",
+        "source": "Source",
+        "status": "Status",
+        "auth": "Permission",
+        "deprecated": "Deprecated",
+        "createdByName": "Creator",
+        "ownerName": "Owner",
+        "tags": "Tags",
+        "createdDate": "Created Date",
+        "lastModifiedDate": "Last Modified Date",
+        "description": "Description",
+        "securityTitle": "Security Requirements",
+        "externalDocsTitle": "External Documentation"
+      },
+      "messages": {
+        "selectApiFirst": "Please select an API first to view details"
+      },
+      "auth": {
+        "hasPermission": "Has permission restrictions",
+        "noPermission": "No permission restrictions"
+      },
+      "deprecated": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "placeholder": {
+        "noData": "--"
+      },
+      "modal": {
+        "title": "API Permission",
+        "onTips": "After enabling \"has permission control\", you need to manually authorize service permissions to have corresponding API operation permissions. \"Has permission control\" is enabled by default. Note: If the authorized object does not have parent service permissions, view permissions will be automatically granted.",
+        "offTips": "After enabling \"no permission control\", all users will be allowed to publicly view and operate the current API. Users viewing the API must also have current API parent or service permissions."
+      }
     }
   }
 } 

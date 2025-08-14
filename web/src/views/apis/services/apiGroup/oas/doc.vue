@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, onMounted } from 'vue';
 import '@xcan-angus/rapidoc';
-import { cookieUtils, site } from '@xcan-angus/infra';
+import { cookieUtils, DomainManager, AppOrServiceRoute } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import YAML from 'yaml';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   mode: 'UI'
 });
+const { t } = useI18n();
 
 const loading = ref(false);
 const openapiMetaDataStr = ref();
@@ -43,7 +45,8 @@ const accessToken = ref();
 const docOrigin = ref();
 onMounted(async () => {
   accessToken.value = cookieUtils.get('access_token');
-  docOrigin.value = await site.getUrl('apis');
+  // docOrigin.value = await site.getUrl('apis');
+  docOrigin.value = DomainManager.getInstance().getApiDomain(AppOrServiceRoute.tester);
   loadData();
 });
 
@@ -87,7 +90,7 @@ defineExpose({
         slot="extra"
         class="text-3 ml-2"
         @click="openExportModal">
-        导出
+        {{ t('actions.export') }}
       </Button>
     </rapi-doc>
   </div>
