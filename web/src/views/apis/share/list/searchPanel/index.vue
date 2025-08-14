@@ -4,6 +4,9 @@ import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   loading: boolean;
@@ -42,7 +45,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询名称、备注',
+    placeholder: t('apiShare.searchPanel.searchOptions.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -50,12 +53,12 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择分享人'
+    placeholder: t('apiShare.searchPanel.searchOptions.sharePersonPlaceholder')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: t('apiShare.searchPanel.searchOptions.dateRangePlaceholder'),
     showTime: true
   }
 ];
@@ -63,23 +66,23 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('apiShare.searchPanel.menuItems.all')
   },
   {
     key: 'createdBy',
-    name: '我分享的'
+    name: t('apiShare.searchPanel.menuItems.myShares')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('apiShare.searchPanel.menuItems.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('apiShare.searchPanel.menuItems.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('apiShare.searchPanel.menuItems.lastWeek')
   }
 ]);
 
@@ -249,7 +252,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('apiShare.searchPanel.title') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -276,7 +279,7 @@ onMounted(() => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>添加分享</span>
+          <span>{{ t('apiShare.searchPanel.addShare') }}</span>
         </Button>
 
         <IconRefresh
@@ -286,7 +289,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

@@ -2069,6 +2069,27 @@
         "lastModifiedTime": "最后修改时间",
         "actions": "操作"
       }
+    },
+    "searchPanel": {
+      "title": "快速查询",
+      "addShare": "添加分享",
+      "refresh": "刷新",
+      "menuItems": {
+        "all": "全部",
+        "myShares": "我分享的",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、备注",
+        "sharePersonPlaceholder": "选择分享人",
+        "dateRangePlaceholder": ["添加时间从", "添加时间到"]
+      }
+    },
+    "introduce": {
+      "title": "关于分享",
+      "description": "当需要与外部合作伙伴、客户或其他团队进行接口集成，可以通过\"分享\"功能将接口信息传递给他们，简化沟通流程。分享包含详细接口说明信息，包括接口服务器、认证、接口地址、请求格式和响应格式等，确保所有人对接口有一致的理解。"
     }
   }
 }
