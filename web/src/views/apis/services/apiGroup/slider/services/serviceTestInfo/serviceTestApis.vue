@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { watch, ref, onMounted, onBeforeUnmount, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Tooltip, Grid, Input, Select, NoData, HttpMethodText } from '@xcan-angus/vue-ui';
 import BaseVirtualList from '@/views/apis/services/apiGroup/list/baseVirtualList.vue';
 import { debounce } from 'throttle-debounce';
@@ -28,29 +29,30 @@ interface Props {
 }
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
+const { t } = useI18n();
+
 const columns = [
   [
-    { dataIndex: 'funcTestPassed', label: '功能测试' },
-    { dataIndex: 'perfTestPassed', label: '性能测试' },
-    { dataIndex: 'stabilityTestPassed', label: '稳定性测试' }
+    { dataIndex: 'funcTestPassed', label: t('service.serviceTestDetail.columns.functionalTest') },
+    { dataIndex: 'perfTestPassed', label: t('service.serviceTestDetail.columns.performanceTest') },
+    { dataIndex: 'stabilityTestPassed', label: t('service.serviceTestDetail.columns.stabilityTest') }
   ]
 ];
 
 const statusOptions = [
   {
-    label: '已通过',
+    label: t('service.serviceTestDetail.status.passed_'),
     value: 'passed'
   },
   {
-    label: '未通过',
+    label: t('service.serviceTestDetail.status.unpassed'),
     value: 'unpassed'
   },
   {
-    label: '未测试',
+    label: t('service.serviceTestDetail.status.unTested'),
     value: 'unTested'
   }
 ];
-
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ([
     // { apisName: '12432342354235asdf阿萨德', caseId: '1123', passed: false }
@@ -133,7 +135,7 @@ onBeforeUnmount(() => {
         v-model:value="keywords"
         class="w-100"
         :allowClear="true"
-        placeholder="搜索名称"
+        :placeholder="t('service.serviceTestDetail.placeholder.searchName')"
         @change="keywordsChange" />
       <div class="inline-flex items-center space-x-3">
         <div
@@ -166,10 +168,10 @@ onBeforeUnmount(() => {
                     :columns="columns">
                     <template #funcTestPassed>
                       <template v-if="item.funcTestPassed === true">
-                        <span class="text-status-success">通过</span>
+                        <span class="text-status-success">{{ t('service.serviceTestDetail.status.passed') }}</span>
                       </template>
                       <template v-else-if="item.funcTestPassed === false">
-                        <div class="text-status-error">未通过 <span>{{ item.funcTestFailureMessage }}</span></div>
+                        <div class="text-status-error">未通过 {{ t('service.serviceTestDetail.status.unpassed') }}<span>{{ item.funcTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
                         {{ props.enabledTestApiIds.FUNCTIONAL.includes(item.id) ? '未测试' : '未启用' }}
@@ -177,10 +179,10 @@ onBeforeUnmount(() => {
                     </template>
                     <template #perfTestPassed>
                       <template v-if="item.perfTestPassed === true">
-                        <span class="text-status-success">通过</span>
+                        <span class="text-status-success">{{ t('service.serviceTestDetail.status.passed') }}</span>
                       </template>
                       <template v-else-if="item.perfTestPassed === false">
-                        <div class="text-status-error">未通过 <span>{{ item.perfTestFailureMessage }}</span></div>
+                        <div class="text-status-error">未通过 {{ t('service.serviceTestDetail.status.unpassed') }}<span>{{ item.perfTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
                         {{ props.enabledTestApiIds.PERFORMANCE.includes(item.id) ? '未测试' : '未启用' }}
@@ -188,10 +190,10 @@ onBeforeUnmount(() => {
                     </template>
                     <template #stabilityTestPassed>
                       <template v-if="item.stabilityTestPassed === true">
-                        <span class="text-status-success">通过</span>
+                        <span class="text-status-success">{{ t('service.serviceTestDetail.status.passed') }}</span>
                       </template>
                       <template v-else-if="item.stabilityTestPassed === false">
-                        <div class="text-status-error">未通过 <span>{{ item.stabilityTestFailureMessage }}</span></div>
+                        <div class="text-status-error">未通过 {{ t('service.serviceTestDetail.status.unpassed') }}<span>{{ item.stabilityTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
                         {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? '未测试' : '未启用' }}
@@ -210,23 +212,23 @@ onBeforeUnmount(() => {
                   @click="openApiDetail(item)">{{ item.apisName || item.caseName || item.summary }}</span>
                 <span
                   v-if="!item.enabledTest"
-                  class="px-2 rounded">未启用
+                  class="px-2 rounded">未启用{{ t('service.serviceTestDetail.status.unTested') }}
                 </span>
                 <span
                   v-else-if="!item.tested"
-                  class="px-2 rounded">未测试
+                  class="px-2 rounded">未测试{{ t('service.serviceTestDetail.status.unTested') }}
                 </span>
                 <span
                   v-else-if="item.passed"
                   class="px-2 rounded text-status-success">
                   <template v-if="(props.enabledTestApiIds.FUNCTIONAL.includes(item.id) && item.funcTestPassed === undefined) || (props.enabledTestApiIds.PERFORMANCE.includes(item.id) && item.perfTestPassed === undefined) || (props.enabledTestApiIds.STABILITY.includes(item.id) && item.stabilityTestPassed === undefined)">
-                    部分通过
+                    部分通过{{ t('service.serviceTestDetail.status.partiallyPassed') }}
                   </template>
                   <template v-else>
-                    通过
+                    通过{{ t('service.serviceTestDetail.status.passed') }}
                   </template>
                 </span>
-                <span v-else class="px-2 rounded text-status-error ">未通过</span>
+                <span v-else class="px-2 rounded text-status-error ">未通过{{ t('service.serviceTestDetail.status.unpassed') }}</span>
               </div>
             </Tooltip>
           </div>

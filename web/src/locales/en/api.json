@@ -1184,6 +1184,50 @@
       "tooltips": {
         "view": "View"
       }
+    },
+    "serviceTestDetail": {
+      "hints": {
+        "testEnableDescription": "Only after API testing is enabled will testing be marked as a mandatory activity, and test results will be included in the overall analysis. This ensures comprehensive and accurate test coverage. You can enable API testing in the following two ways:",
+        "singleApiEnable": "1. Single API Enable: Go to API debug page -> Select \"API Metrics\" in the right tab bar -> Enable corresponding options for required test types.",
+        "batchEnable": "2. Batch Enable: Find the target service in the service list -> Right-click and select \"Enable or Disable Testing\" -> Batch operate all API tests under the service."
+      },
+      "stats": {
+        "progressRate": "API Test Progress",
+        "totalApis": "Total APIs",
+        "enabledTestApis": "Enabled Test APIs"
+      },
+      "title": {
+        "testDetail": "API Test Details"
+      },
+      "chart": {
+        "testApiStats": "Test API Statistics",
+        "testTypeStats": "API Test Type Statistics",
+        "tested": "Tested",
+        "unTested": "Untested",
+        "testPassed": "Test Passed",
+        "unPassed": "Failed",
+        "totalTestNum": "Total Tests",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test"
+      },
+      "columns": {
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test"
+      },
+      "status": {
+        "passed": "Passed",
+        "passed_": "Passed",
+        "unpassed": "Failed",
+        "unTested": "Untested",
+        "notEnabled": "Not Enabled",
+        "notTested": "Not Tested",
+        "partiallyPassed": "Partially Passed"
+      },
+      "placeholder": {
+        "searchName": "Search name"
+      }
     }
   }
 } 

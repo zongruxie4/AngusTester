@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   typeValues: number[];
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   progressValues: () => ([0, 0, 0, 0]),
   typeValues: () => ([0, 0, 0, 0])
@@ -16,7 +18,7 @@ const testProgressRef = ref();
 let testProgressChart;
 const testProgressChartConfig = {
   title: {
-    text: '测试接口统计',
+    text: t('service.serviceTestDetail.chart.testApiStats'),
     bottom: 5,
     left: 'center',
     textStyle: {
@@ -31,7 +33,7 @@ const testProgressChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['已测试', '未测试', '测试通过', '未通过']
+    data: [t('service.serviceTestDetail.chart.tested'), t('service.serviceTestDetail.chart.unTested'), t('service.serviceTestDetail.chart.testPassed'), t('service.serviceTestDetail.chart.unPassed')]
   },
   yAxis: {
     type: 'value'
@@ -60,7 +62,7 @@ const testTypeRef = ref();
 let testTypeChart;
 const testTypeChartConfig = {
   title: {
-    text: '接口测试类型统计',
+    text: t('service.serviceTestDetail.chart.testTypeStats'),
     bottom: 5,
     left: 'center',
     textStyle: {
@@ -75,7 +77,7 @@ const testTypeChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总测试数', '功能测试', '性能测试', '稳定性测试']
+    data: [t('service.serviceTestDetail.chart.totalTestNum'), t('service.serviceTestDetail.chart.functionalTest'), t('service.serviceTestDetail.chart.performanceTest'), t('service.serviceTestDetail.chart.stabilityTest')]
   },
   yAxis: {
     type: 'value'

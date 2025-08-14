@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Hints } from '@xcan-angus/vue-ui';
 import { services } from '@/api/tester';
 
@@ -7,6 +8,7 @@ interface Props {
   serviceId: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   serviceId: ''
 });
@@ -77,10 +79,10 @@ onMounted(() => {
 <template>
   <div class="pr-4 text-3 h-full flex flex-col">
     <div class="rounded border border-blue-6 p-3 bg-blue-5">
-      <Hints class="!text-text-title" text="只有接口测试被启用后，测试才会被标记为必须的活动，并且测试结果将包含在整体分析中。这确保了全面而精确的测试覆盖。您可以通过以下两种方式启用接口测试:" />
+      <Hints class="!text-text-title" :text="t('service.serviceTestDetail.hints.testEnableDescription')" />
       <div class="text-3 text-text-sub-content pl-4">
-        <li>1.单个接口启用：进入接口调试页面 -> 在右侧标签栏中选择"接口指标" -> 为所需的测试类型启用相应选项。</li>
-        <li>2.批量启用：在服务列表中找到目标服务 -> 右键点击，选择"启用或禁用测试" -> 批量操作服务下的所有接口测试。</li>
+        <li>{{ t('service.serviceTestDetail.hints.singleApiEnable') }}</li>
+        <li>{{ t('service.serviceTestDetail.hints.batchEnable') }}</li>
       </div>
     </div>
 
@@ -88,16 +90,16 @@ onMounted(() => {
       <div class="w-50 text-center space-y-2">
         <div>
           <div class="text-6 font-semibold">{{ progress.completedRate }}%</div>
-          <span>接口测试进度</span>
+          <span>{{ t('service.serviceTestDetail.stats.progressRate') }}</span>
         </div>
         <div class="flex items-center">
           <div class="flex-1">
             <div class="text-6  font-semibold">{{ progress.total }}</div>
-            <span>总接口数</span>
+            <span>{{ t('service.serviceTestDetail.stats.totalApis') }}</span>
           </div>
           <div class="flex-1">
             <div class="text-6  font-semibold">{{ testResultCount.enabledTestNum }}</div>
-            <span>开启测试接口数</span>
+            <span>{{ t('service.serviceTestDetail.stats.enabledTestApis') }}</span>
           </div>
         </div>
       </div>
@@ -105,7 +107,7 @@ onMounted(() => {
       <Chart :progressValues="progressValues" :typeValues="typeValues" />
     </div>
 
-    <div class="text-text-title text-3.5 font-medium mt-5">接口测试明细</div>
+    <div class="text-text-title text-3.5 font-medium mt-5">{{ t('service.serviceTestDetail.title.testDetail') }}</div>
     <ServiceTestApis
       class="flex-1 mt-2"
       :dataSource="testResultInfos"

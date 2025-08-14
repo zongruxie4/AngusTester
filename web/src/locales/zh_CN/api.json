@@ -1829,6 +1829,51 @@
       "tooltips": {
         "view": "查看"
       }
+    },
+    "serviceTestDetail": {
+      "hints": {
+        "testEnableDescription": "只有接口测试被启用后，测试才会被标记为必须的活动，并且测试结果将包含在整体分析中。这确保了全面而精确的测试覆盖。您可以通过以下两种方式启用接口测试:",
+        "singleApiEnable": "1.单个接口启用：进入接口调试页面 -> 在右侧标签栏中选择"接口指标" -> 为所需的测试类型启用相应选项。",
+        "batchEnable": "2.批量启用：在服务列表中找到目标服务 -> 右键点击，选择"启用或禁用测试" -> 批量操作服务下的所有接口测试。"
+      },
+      "stats": {
+        "progressRate": "接口测试进度",
+        "totalApis": "总接口数",
+        "enabledTestApis": "开启测试接口数"
+      },
+      "title": {
+        "testDetail": "接口测试明细"
+      },
+      "chart": {
+        "testApiStats": "测试接口统计",
+        "testTypeStats": "接口测试类型统计",
+        "tested": "已测试",
+        "unTested": "未测试",
+        "testPassed": "测试通过",
+        "unPassed": "未通过",
+        "totalTestNum": "总测试数",
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试"
+      },
+      "columns": {
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试"
+      },
+      "status": {
+        "passed_": "已通过",
+        "unpassed": "未通过",
+        "unTested": "未测试",
+        "passed": "通过",
+        "unPassed": "未通过",
+        "notEnabled": "未启用",
+        "notTested": "未测试",
+        "partiallyPassed": "部分通过"
+      },
+      "placeholder": {
+        "searchName": "搜索名称"
+      }
     }
   }
 }
