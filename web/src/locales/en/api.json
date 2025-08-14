@@ -1110,7 +1110,8 @@
       "modal": {
         "title": "Mock Service Permission",
         "onTips": "After enabling permission control, you need to manually authorize to have corresponding operation permissions.",
-        "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+        "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default.",
+        "associateTitle": "Associate Mock Service"
       },
       "form": {
         "title": "Generate Mock Service",
@@ -1136,10 +1137,7 @@
         "portRequired": "Please enter port (1~65535)",
         "nodeRequired": "Please select node"
       },
-      "messages": {
-        "addSuccess": "Added successfully",
-        "updateSuccess": "Updated successfully"
-      },
+  
       "buttons": {
         "cancel": "Cancel",
         "confirm": "Confirm"
@@ -1151,10 +1149,8 @@
         "title": "Mock services can quickly generate and simulate APIs you depend on, enabling parallel development and testing, thereby accelerating development speed, achieving more comprehensive testing, and delivering stable products or applications earlier. You can create corresponding simulated interfaces for current service APIs through two methods: \"Generate Mock Service\" or \"Associate Mock Service\". These simulated interfaces will provide mock data for API debugging and testing.",
         "generateMockService": "Create new Mock service based on current service APIs. After creation, you can use these Mock APIs for data simulation and state testing, achieving more efficient API debugging.",
         "associateMockService": "Associate current service with existing Mock service. After association, the system will automatically generate corresponding Mock APIs in the associated Mock service. These APIs can be used for data simulation and state testing in API debugging."
-      },
-      "modal": {
-        "associateTitle": "Associate Mock Service"
       }
+    
     },
     "serviceOpenApi": {
       "columns": {
