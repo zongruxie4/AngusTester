@@ -3,6 +3,13 @@
     "name": "数据集",
     "addStaticDataset": "添加静态数据集",
     "addFileDataset": "添加文件数据集",
-    "addJdbcDataset": "添加Jdbc数据集"
+    "addJdbcDataset": "添加Jdbc数据集",
+    "preview": {
+      "hints": "每次最多只允许预览1w条数据，Mock函数实际参数值在执行采样时生成。",
+      "previewRows": "预览行数",
+      "placeholder": "1 ~ 10000",
+      "refresh": "刷新",
+      "noData": "无数据"
+    }
   }
 }

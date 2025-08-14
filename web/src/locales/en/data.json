@@ -3,6 +3,13 @@
     "name": "Dataset",
     "addStaticDataset": "Add Static Dataset",
     "addFileDataset": "Add File Dataset",
-    "addJdbcDataset": "Add Jdbc Dataset"
+    "addJdbcDataset": "Add Jdbc Dataset",
+    "preview": {
+      "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
+      "previewRows": "Preview Rows",
+      "placeholder": "1 ~ 10000",
+      "refresh": "Refresh",
+      "noData": "No Data"
+    }
   }
 }
