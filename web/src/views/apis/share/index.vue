@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { IPane } from './PropsType';
 
@@ -55,7 +58,7 @@ const initialize = () => {
         return {
           _id: 'shareList',
           value: 'shareList',
-          name: '分享',
+          name: t('apiShare.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -120,7 +123,7 @@ const hashChange = async (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加分享',
+          name: t('apiShare.addShare'),
           value: 'shareEdit',
           noCache: true,
           data: { _id: id }

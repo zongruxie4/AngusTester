@@ -2008,5 +2008,67 @@
         "more": "更多"
       }
     }
+  },
+  "apiShare": {
+    "title": "分享",
+    "addShare": "添加分享",
+    "shareList": "分享列表",
+    "shareDetails": "分享详情",
+    "shareEdit": "分享编辑",
+    "editShare": "编辑分享",
+    "form": {
+      "name": "分享名称",
+      "namePlaceholder": "输入分享名称，最多可输入100字符",
+      "remark": "分享备注",
+      "remarkPlaceholder": "请输入分享备注，会展示在分享信息中，最多支持400字符",
+      "expiredDate": "到期日期",
+      "expiredDateHint": "不指定时永久有效。",
+      "displayOptions": "展示选项",
+      "includeServiceInfo": "展示服务说明",
+      "allowDebug": "允许调试",
+      "fieldStyle": "字段样式",
+      "shareScope": "分享范围",
+      "selectService": "选择服务",
+      "selectServicePlaceholder": "选择服务",
+      "apis": "接口",
+      "selectApiPlaceholder": "选择接口",
+      "selectedApis": "已选择{count}个接口"
+    },
+    "schemaStyle": {
+      "table": "表格",
+      "tree": "树"
+    },
+    "messages": {
+      "copySuccess": "分享信息成功复制到剪贴板",
+      "addSuccess": "分享成功",
+      "editSuccess": "分享成功",
+      "deleteSuccess": "删除成功",
+      "copyToClipboardSuccess": "成功复制到剪贴板"
+    },
+    "list": {
+      "title": "已添加的分享",
+      "noData": "尚未添加任何分享，立即",
+      "addShare": "添加分享",
+      "noRemark": "无~",
+      "expired": "已过期",
+      "notExpired": "未过期",
+      "copy": "复制",
+      "edit": "编辑",
+      "delete": "删除",
+      "confirmDelete": "确定删除分享【{name}】吗？",
+      "columns": {
+        "name": "名称",
+        "status": "状态",
+        "sharePerson": "分享人",
+        "shareScope": "分享范围",
+        "expiredDate": "到期日期",
+        "shareDate": "分享日期",
+        "viewCount": "查看次数",
+        "remark": "备注",
+        "lastModifiedBy": "最后修改人",
+        "lastModifiedTime": "最后修改时间",
+        "actions": "操作"
+      }
+    }
   }
 }

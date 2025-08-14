@@ -1362,5 +1362,67 @@
         "more": "More"
       }
     }
+  },
+  "apiShare": {
+    "title": "Share",
+    "addShare": "Add Share",
+    "shareList": "Share List",
+    "shareDetails": "Share Details",
+    "shareEdit": "Share Edit",
+    "editShare": "Edit Share",
+    "form": {
+      "name": "Share Name",
+      "namePlaceholder": "Enter share name, maximum 100 characters",
+      "remark": "Share Remark",
+      "remarkPlaceholder": "Please enter share remark, will be displayed in share information, maximum 400 characters",
+      "expiredDate": "Expiration Date",
+      "expiredDateHint": "Permanently valid when not specified.",
+      "displayOptions": "Display Options",
+      "includeServiceInfo": "Show Service Description",
+      "allowDebug": "Allow Debug",
+      "fieldStyle": "Field Style",
+      "shareScope": "Share Scope",
+      "selectService": "Select Service",
+      "selectServicePlaceholder": "Select service",
+      "apis": "APIs",
+      "selectApiPlaceholder": "Select API",
+      "selectedApis": "Selected {count} APIs"
+    },
+    "schemaStyle": {
+      "table": "Table",
+      "tree": "Tree"
+    },
+    "messages": {
+      "copySuccess": "Share information successfully copied to clipboard",
+      "addSuccess": "Share successful",
+      "editSuccess": "Share successful",
+      "deleteSuccess": "Delete successful",
+      "copyToClipboardSuccess": "Successfully copied to clipboard"
+    },
+    "list": {
+      "title": "Added Shares",
+      "noData": "No shares added yet, ",
+      "addShare": "Add Share",
+      "noRemark": "None~",
+      "expired": "Expired",
+      "notExpired": "Not Expired",
+      "copy": "Copy",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure to delete share 【{name}】?",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "sharePerson": "Share Person",
+        "shareScope": "Share Scope",
+        "expiredDate": "Expiration Date",
+        "shareDate": "Share Date",
+        "viewCount": "View Count",
+        "remark": "Remark",
+        "lastModifiedBy": "Last Modified By",
+        "lastModifiedTime": "Last Modified Time",
+        "actions": "Actions"
+      }
+    }
   }
 } 

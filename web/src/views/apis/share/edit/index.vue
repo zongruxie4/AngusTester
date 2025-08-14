@@ -5,6 +5,9 @@ import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-desi
 import { toClipboard, TESTER, enumUtils, DomainManager, AppOrServiceRoute, EnumMessage } from '@xcan-angus/infra';
 import { ApisShareScope } from '@/enums/enums';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -155,10 +158,10 @@ const addOk = async () => {
   loading.value = false;
   if (resp.data) {
     toClipboard(`分享“${resp.data.name}”，访问地址：${resp.data.url}`).then(() => {
-      notification.success('分享信息成功复制到剪贴板');
+      notification.success(t('apiShare.messages.copySuccess'));
     });
   } else {
-    notification.success('分享成功');
+    notification.success(t('apiShare.messages.addSuccess'));
   }
   emits('ok');
   emits('update:visible', false);
@@ -174,7 +177,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-  notification.success('分享成功');
+  notification.success(t('apiShare.messages.editSuccess'));
   emits('ok');
   emits('update:visible', false);
 };
@@ -206,18 +209,18 @@ onMounted(async () => {
 const schemaStyleOpt = [
   {
     value: 'TABLE',
-    label: '表格'
+    label: t('apiShare.schemaStyle.table')
   },
   {
     value: 'TREE',
-    label: '树'
+    label: t('apiShare.schemaStyle.tree')
   }
 ];
 
 </script>
 <template>
   <Modal
-    :title="props.shareId ? '编辑分享' : '添加分享'"
+    :title="props.shareId ? t('apiShare.editShare') : t('apiShare.addShare')"
     :visible="props.visible"
     :width="680"
     :okButtonProps="{
@@ -235,25 +238,25 @@ const schemaStyleOpt = [
       <FormItem
         required
         name="name"
-        label="分享名称">
+        :label="t('apiShare.form.name')">
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          placeholder="输入分享名称，最多可输入100字符" />
+          :placeholder="t('apiShare.form.namePlaceholder')" />
       </FormItem>
       <FormItem
-        label="分享备注"
+        :label="t('apiShare.form.remark')"
         class="!mb-5"
         name="remark">
         <Textarea
           v-model:value="formState.remark"
           :maxlength="400"
-          placeholder="请输入分享备注，会展示在分享信息中，最多支持400字符">
+          :placeholder="t('apiShare.form.remarkPlaceholder')">
         </Textarea>
       </FormItem>
       <FormItem
         name="expiredDate"
-        label="到期日期"
+        :label="t('apiShare.form.expiredDate')"
         class="min-w-0">
         <div class="flex items-center space-x-1">
           <DatePicker
@@ -261,24 +264,24 @@ const schemaStyleOpt = [
             showToday
             showTime
             class="flex-1 min-w-0" />
-          <Hints text="不指定时永久有效。" />
+          <Hints :text="t('apiShare.form.expiredDateHint')" />
         </div>
       </FormItem>
       <FormItem
-        label="展示选项"
+        :label="t('apiShare.form.displayOptions')"
         class="!mb-5"
         name="displayOptions">
         <div class="flex items-center">
           <Checkbox
             v-model:checked="formState.displayOptions.includeServiceInfo">
-            展示服务说明
+            {{ t('apiShare.form.includeServiceInfo') }}
           </Checkbox>
           <Checkbox
             v-model:checked="formState.displayOptions.allowDebug">
-            允许调试
+            {{ t('apiShare.form.allowDebug') }}
           </Checkbox>
           <div class="inline-flex items-center text-3 ml-2">
-            <span>字段样式</span>
+            <span>{{ t('apiShare.form.fieldStyle') }}</span>
             <Colon />
             <Select
               v-model:value="formState.displayOptions.schemaStyle"
@@ -291,7 +294,7 @@ const schemaStyleOpt = [
 
       <template v-if="!props.servicesId">
         <FormItem
-          label="分享范围"
+          :label="t('apiShare.form.shareScope')"
           name="shareScope"
           required>
           <RadioGroup
@@ -301,20 +304,20 @@ const schemaStyleOpt = [
           </RadioGroup>
         </FormItem>
         <FormItem
-          label="选择服务"
+          :label="t('apiShare.form.selectService')"
           name="servicesId"
           class="flex-1 min-w-0"
           required>
           <Select
             v-model:value="formState.servicesId"
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-            placeholder="选择服务"
+            :placeholder="t('apiShare.form.selectServicePlaceholder')"
             :fieldNames="{value: 'id', label: 'name'}"
             @change="handleServiceChange" />
         </FormItem>
         <FormItem
           v-if="['PARTIAL_APIS', 'SINGLE_APIS'].includes(formState.shareScope)"
-          label="接口"
+          :label="t('apiShare.form.apis')"
           name="apisIds"
           class="flex-1 min-w-0"
           required>
@@ -322,7 +325,7 @@ const schemaStyleOpt = [
             v-if="formState.shareScope === 'SINGLE_APIS'"
             :value="formState.apisIds[0]"
             :disabled="!formState.servicesId"
-            placeholder="选择接口"
+            :placeholder="t('apiShare.form.selectApiPlaceholder')"
             :action="`${TESTER}/services/${formState.servicesId}/apis`"
             :fieldNames="{value: 'id', label: 'summary'}"
             @change="handleSigngeApiChange" />
@@ -332,7 +335,7 @@ const schemaStyleOpt = [
               v-model:value="selectApiId"
               :disabled="!formState.servicesId"
               class="flex-1 min-w-0"
-              placeholder="选择接口"
+              :placeholder="t('apiShare.form.selectApiPlaceholder')"
               :action="`${TESTER}/services/${formState.servicesId}/apis`"
               :disabledList="formState.apisIds"
               :fieldNames="{value: 'id', label: 'summary'}"
@@ -345,7 +348,7 @@ const schemaStyleOpt = [
                 <Icon icon="icon-jia" />
               </Button> -->
 
-            <span>已选择{{ formState.apisIds?.length || 0 }}个接口</span>
+            <span>{{ t('apiShare.form.selectedApis', { count: formState.apisIds?.length || 0 }) }}</span>
           </div>
         </FormItem>
 

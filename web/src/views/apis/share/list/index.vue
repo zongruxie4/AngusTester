@@ -4,6 +4,9 @@ import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
@@ -67,14 +70,14 @@ const searchChange = (data) => {
 
 const toDelete = async (data: ShareInfo) => {
   modal.confirm({
-    content: `确定删除分享【${data.name}】吗？`,
+    content: t('apiShare.list.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await apis.deleteShare(id);
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('apiShare.messages.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
@@ -156,7 +159,7 @@ const editVersion = (record = {}) => {
 const copyLink = async (record: {id: string; name: string; url?: string} = { name: '', id: '' }) => {
   if (record.url) {
     toClipboard(`分享“${record.name}”，访问地址：${record.url}`).then(() => {
-      notification.success('成功复制到剪贴板');
+      notification.success(t('apiShare.messages.copyToClipboardSuccess'));
     });
     return;
   }
@@ -166,7 +169,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
   }
   record.url = data?.url;
   toClipboard(`分享“${record.name}”，访问地址：${record.url}`).then(() => {
-    notification.success('成功复制到剪贴板');
+    notification.success(t('apiShare.messages.copyToClipboardSuccess'));
   });
 };
 
@@ -182,32 +185,32 @@ const handleEnterShare = async (shareId: string) => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('apiShare.list.columns.name'),
     dataIndex: 'name',
     width: '15%',
     ellipsis: true,
     sorter: true
   },
   {
-    title: '状态',
+    title: t('apiShare.list.columns.status'),
     dataIndex: 'isExpired',
     width: '8%'
   },
   {
-    title: '分享人',
+    title: t('apiShare.list.columns.sharePerson'),
     dataIndex: 'createdByAvatar',
     width: '8%',
     sorter: true,
     ellipsis: true
   },
   {
-    title: '分享范围',
+    title: t('apiShare.list.columns.shareScope'),
     dataIndex: 'shareScope',
     width: '8%',
     customRender: ({ text }) => text?.message
   },
   {
-    title: '到期日期',
+    title: t('apiShare.list.columns.expiredDate'),
     dataIndex: 'expiredDate',
     width: '9%',
     sorter: true,
@@ -215,7 +218,7 @@ const columns = [
     groupName: 'date'
   },
   {
-    title: '分享日期',
+    title: t('apiShare.list.columns.shareDate'),
     dataIndex: 'createdDate',
     width: '9%',
     sorter: true,
@@ -223,32 +226,32 @@ const columns = [
     hide: true
   },
   {
-    title: '查看次数',
+    title: t('apiShare.list.columns.viewCount'),
     dataIndex: 'viewNum',
     width: '8%'
   },
   {
-    title: '备注',
+    title: t('apiShare.list.columns.remark'),
     dataIndex: 'remark',
     ellipsis: true,
     width: '12%'
   },
   {
-    title: '最后修改人',
+    title: t('apiShare.list.columns.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
     ellipsis: true,
     width: '8%'
   },
   {
-    title: '最后修改时间',
+    title: t('apiShare.list.columns.lastModifiedTime'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
     hide: true,
     width: '8%'
   },
   {
-    title: '操作',
+    title: t('apiShare.list.columns.actions'),
     dataIndex: 'actions',
     width: '15%'
   }
@@ -260,14 +263,14 @@ const columns = [
     <div class="flex space-x-1">
       <Introduce class="mb-5 flex-1" />
     </div>
-    <div class="text-3.5 font-semibold mb-1">已添加的分享</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('apiShare.list.title') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>尚未添加任何分享，立即</span>
-            <Button type="link" @click="editVersion">添加分享</Button>
+            <span>{{ t('apiShare.list.noData') }}</span>
+            <Button type="link" @click="editVersion">{{ t('apiShare.list.addShare') }}</Button>
           </div>
         </div>
 
@@ -304,10 +307,10 @@ const columns = [
                 </template>
                 <template v-if="column.dataIndex === 'remark'">
                   <template v-if="record.remark">{{ record.remark }}</template>
-                  <span v-else class="text-sub-content">无~</span>
+                  <span v-else class="text-sub-content">{{ t('apiShare.list.noRemark') }}</span>
                 </template>
                 <template v-if="column.dataIndex === 'isExpired'">
-                  <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? '已过期' : '未过期' }}</Tag>
+                  <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? t('apiShare.list.expired') : t('apiShare.list.notExpired') }}</Tag>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
@@ -315,21 +318,21 @@ const columns = [
                     size="small"
                     @click="copyLink(record)">
                     <Icon icon="icon-fuzhi" class="mr-1" />
-                    复制
+                    {{ t('actions.copy') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="editVersion(record)">
                     <Icon icon="icon-bianji" class="mr-1" />
-                    编辑
+                    {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="toDelete(record)">
                     <Icon icon="icon-qingchu" class="mr-1" />
-                    删除
+                    {{ t('actions.delete') }}
                   </Button>
                 </template>
               </template>
