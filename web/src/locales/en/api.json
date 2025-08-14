@@ -1224,6 +1224,32 @@
       "placeholder": {
         "searchName": "Search name"
       }
+    },
+    "groupHeader": {
+      "placeholder": {
+        "searchApi": "Search API ID, name, path"
+      },
+      "sort": {
+        "title": "Sort",
+        "byCreatedDate": "By Created Date",
+        "byName": "By Name",
+        "byCreatedBy": "By Creator"
+      },
+      "group": {
+        "title": "Group",
+        "noGroup": "No Group",
+        "byCreatedBy": "Group by Creator",
+        "byMethod": "Group by Method",
+        "byOwner": "Group by Owner",
+        "byTag": "Group by Tag"
+      },
+      "actions": {
+        "addHttpApi": "Add HTTP API",
+        "addWebSocketApi": "Add WebSocket API",
+        "serverConfig": "Server Config",
+        "authConfig": "Auth Config",
+        "refresh": "Refresh"
+      }
     }
   }
 } 

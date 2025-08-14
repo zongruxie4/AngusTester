@@ -1870,6 +1870,32 @@
       "placeholder": {
         "searchName": "搜索名称"
       }
+    },
+    "groupHeader": {
+      "placeholder": {
+        "searchApi": "查询接口ID、名称、路径"
+      },
+      "sort": {
+        "title": "排序",
+        "byCreatedDate": "按添加时间",
+        "byName": "按名称",
+        "byCreatedBy": "按添加人"
+      },
+      "group": {
+        "title": "分组",
+        "noGroup": "不分组",
+        "byCreatedBy": "按添加人分组",
+        "byMethod": "按请求方法分组",
+        "byOwner": "按负责人分组",
+        "byTag": "按标签分组"
+      },
+      "actions": {
+        "addHttpApi": "添加Http接口",
+        "addWebSocketApi": "添加WebSocket接口",
+        "serverConfig": "服务器配置",
+        "authConfig": "安全方案配置",
+        "refresh": "刷新"
+      }
     }
   }
 }

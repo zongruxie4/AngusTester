@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from 'ant-design-vue';
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { debounce, throttle } from 'throttle-debounce';
 import { Dropdown, DropdownGroup, DropdownSort, Icon, Input } from '@xcan-angus/vue-ui';
 import { duration, utils, appContext } from '@xcan-angus/infra';
@@ -20,6 +21,7 @@ interface Props{
   projectTargetType: {value: string};
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   name: undefined,
   serviceId: undefined,
@@ -53,39 +55,39 @@ const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 const enumList = reactive({
   sortList: [{
     key: 'createdDate',
-    name: '按添加时间',
+    name: t('service.groupHeader.sort.byCreatedDate'),
     orderSort: 'DESC'
   },
   {
     key: 'summary',
-    name: '按名称',
+    name: t('service.groupHeader.sort.byName'),
     orderSort: 'ASC'
   },
   {
     key: 'createdByName',
-    name: '按添加人',
+    name: t('service.groupHeader.sort.byCreatedBy'),
     orderSort: 'ASC'
   }],
   groupList: [
     {
       key: '',
-      name: '不分组'
+      name: t('service.groupHeader.group.noGroup')
     },
     {
       key: 'createdBy',
-      name: '按添加人分组'
+      name: t('service.groupHeader.group.byCreatedBy')
     },
     {
       key: 'method',
-      name: '按请求方法分组'
+      name: t('service.groupHeader.group.byMethod')
     },
     {
       key: 'ownerId',
-      name: '按负责人分组'
+      name: t('service.groupHeader.group.byOwner')
     },
     {
       key: 'tag',
-      name: '按标签分组'
+      name: t('service.groupHeader.group.byTag')
     }
   ]
 });
@@ -201,22 +203,22 @@ const grouped = (groupKey: string) => {
 const moreBtnsConfig = computed(() => [
   {
     key: 'addApi',
-    name: '添加Http接口',
+    name: t('service.groupHeader.actions.addHttpApi'),
     permission: 'ADD'
   },
   {
     key: 'addSocket',
-    name: '添加WebSocket接口',
+    name: t('service.groupHeader.actions.addWebSocketApi'),
     permission: 'ADD'
   },
   {
     key: 'serverConfig',
-    name: '服务器配置',
+    name: t('service.groupHeader.actions.serverConfig'),
     permission: 'CONFIG'
   },
   {
     key: 'authConfig',
-    name: '安全方案配置',
+    name: t('service.groupHeader.actions.authConfig'),
     permission: 'CONFIG'
   }
 ]);
@@ -279,7 +281,7 @@ onBeforeUnmount(() => {
     <div class="w-75">
       <Input
         v-model:value="state.name"
-        placeholder="查询接口ID、名称、路径"
+        :placeholder="t('service.groupHeader.placeholder.searchApi')"
         class="rounded"
         :maxlength="100"
         :trim="true"
@@ -296,7 +298,7 @@ onBeforeUnmount(() => {
           @click="addApi('API')">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-jia" />
-            <span>添加Http接口</span>
+            <span>{{ t('service.groupHeader.actions.addHttpApi') }}</span>
           </div>
         </Button>
         <Button
@@ -307,7 +309,7 @@ onBeforeUnmount(() => {
           @click="addApi('websocket')">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-jia" />
-            <span>添加WebSocket接口</span>
+            <span>{{ t('service.groupHeader.actions.addWebSocketApi') }}</span>
           </div>
         </Button>
         <Button
@@ -318,7 +320,7 @@ onBeforeUnmount(() => {
           @click="handleAddHost">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-host" />
-            <span>服务器配置</span>
+            <span>{{ t('service.groupHeader.actions.serverConfig') }}</span>
           </div>
         </Button>
         <Button
@@ -329,7 +331,7 @@ onBeforeUnmount(() => {
           @click="configuringAuthHeader">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-renzhengtou" />
-            <span>安全方案配置</span>
+            <span>{{ t('service.groupHeader.actions.authConfig') }}</span>
           </div>
         </Button>
       </template>
@@ -352,7 +354,7 @@ onBeforeUnmount(() => {
           class="px-0">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-shunxu" />
-            <span>排序</span>
+            <span>{{ t('sort') }}</span>
           </div>
         </Button>
       </DropdownSort>
@@ -366,7 +368,7 @@ onBeforeUnmount(() => {
           class="px-0">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-fenzu" />
-            <span>分组</span>
+            <span>{{ t('service.groupHeader.group.title') }}</span>
           </div>
         </Button>
       </DropdownGroup>
@@ -378,7 +380,7 @@ onBeforeUnmount(() => {
         @click="emit('loadInteface')">
         <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
           <Icon icon="icon-shuaxin" />
-          <span>刷新</span>
+                      <span>{{ t('actions.refresh') }}</span>
         </div>
       </Button>
     </div>
