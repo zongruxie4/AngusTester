@@ -3,6 +3,9 @@ import { computed, onMounted, ref } from 'vue';
 import { Grid, Icon } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { edition } from '@/api/store';
 
@@ -10,62 +13,62 @@ const editionType = ref<string>();
 
 const columnsPriv = [[
   {
-    label: '版本类型',
+    label: t('appConfig.permitInfo.columns.editionType'),
     dataIndex: 'editionType'
   },
   {
-    label: '商品编码',
+    label: t('appConfig.permitInfo.columns.goodsCode'),
     dataIndex: 'goodsCode'
   },
   {
-    label: '提供者',
+    label: t('appConfig.permitInfo.columns.provider'),
     dataIndex: 'provider'
   },
   {
-    label: '发行者',
+    label: t('appConfig.permitInfo.columns.issuer'),
     dataIndex: 'issuer'
   },
   {
-    label: '持有者',
+    label: t('appConfig.permitInfo.columns.holder'),
     dataIndex: 'holder'
   },
   {
-    label: '许可编号',
+    label: t('appConfig.permitInfo.columns.licenseNo'),
     dataIndex: 'licenseNo'
   },
   {
-    label: '许可发行日期',
+    label: t('appConfig.permitInfo.columns.beginDate'),
     dataIndex: 'beginDate'
   },
   {
-    label: '许可过期日期',
+    label: t('appConfig.permitInfo.columns.endDate'),
     dataIndex: 'endDate'
   },
   {
-    label: '许可证书MD5签名',
+    label: t('appConfig.permitInfo.columns.signature'),
     dataIndex: 'signature'
   }
 ]];
 
 const columnsCloud = [[
   {
-    label: '版本类型',
+    label: t('appConfig.permitInfo.columns.editionType'),
     dataIndex: 'editionType'
   },
   {
-    label: '商品编码',
+    label: t('appConfig.permitInfo.columns.goodsCode'),
     dataIndex: 'goodsCode'
   },
   {
-    label: '提供者',
+    label: t('appConfig.permitInfo.columns.provider'),
     dataIndex: 'provider'
   },
   {
-    label: '发行者',
+    label: t('appConfig.permitInfo.columns.issuer'),
     dataIndex: 'issuer'
   },
   {
-    label: '持有者',
+    label: t('appConfig.permitInfo.columns.holder'),
     dataIndex: 'holder'
   }
 ]];
@@ -110,7 +113,7 @@ const columns = computed(() => {
       {{ text?.message }}
     </template>
     <template #endDate="{text}">
-      {{ text }} ( 剩余{{ dayjs(text).diff(dayjs().format(),'day') > 0 ? dayjs(text).diff(dayjs().format(),'day') : 0  }}天 )
+      {{ text }} ( {{ t('appConfig.permitInfo.remainingDays', { days: dayjs(text).diff(dayjs().format(),'day') > 0 ? dayjs(text).diff(dayjs().format(),'day') : 0 }) }} )
     </template>
   </Grid>
 </template>

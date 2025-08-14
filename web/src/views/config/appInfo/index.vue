@@ -50,7 +50,7 @@ onMounted(async () => {
           :defaultImg="defaultImg" />
       </div>
       <div class="mt-5">
-        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('名称') }}</div>
+        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('appConfig.labels.name') }}</div>
         <Input
           v-model:value="appName"
           :maxlength="50"
@@ -58,7 +58,7 @@ onMounted(async () => {
           class="w-100 mt-2" />
       </div>
       <div class="mt-5">
-        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('域名') }}</div>
+        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('appConfig.labels.domain') }}</div>
         <Input
           v-model:value="appUrl"
           :maxlength="50"
@@ -69,16 +69,16 @@ onMounted(async () => {
         v-model:activeKey="activeTab"
         size="small"
         class="mt-5">
-        <TabPane key="member" tab="应用成员">
+        <TabPane key="member" :tab="t('appConfig.tabs.member')">
           <Member :appId="appId" />
         </TabPane>
-        <TabPane key="quota" tab="应用配额">
+        <TabPane key="quota" :tab="t('appConfig.tabs.quota')">
           <Quota />
         </TabPane>
         <TabPane
           v-if="!['CLOUD_SERVICE'].includes(editionType)"
           key="permission"
-          tab="许可信息">
+          :tab="t('appConfig.tabs.permission')">
           <PermitInfo />
         </TabPane>
       </Tabs>

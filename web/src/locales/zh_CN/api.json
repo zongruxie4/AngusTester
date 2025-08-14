@@ -2118,6 +2118,115 @@
         "recoverAllSuccess": "全部还原成功",
         "recoverSuccess": "还原成功"
       }
+    },
+    "appConfig": {
+      "title": "应用配置",
+      "labels": {
+        "name": "名称",
+        "domain": "域名"
+      },
+      "tabs": {
+        "member": "应用成员",
+        "quota": "应用配额",
+        "permission": "许可信息"
+      },
+      "permitInfo": {
+        "columns": {
+          "editionType": "版本类型",
+          "goodsCode": "商品编码",
+          "provider": "提供者",
+          "issuer": "发行者",
+          "holder": "持有者",
+          "licenseNo": "许可编号",
+          "beginDate": "许可发行日期",
+          "endDate": "许可过期日期",
+          "signature": "许可证书MD5签名"
+        },
+        "remainingDays": "剩余{days}天"
+      },
+      "addMembers": {
+        "title": {
+          "user": "加入用户",
+          "dept": "加入部门",
+          "group": "加入组"
+        },
+        "labels": {
+          "selectUser": "选择用户",
+          "selectDept": "选择部门",
+          "selectGroup": "选择组",
+          "selectPolicy": "选择策略"
+        },
+        "placeholders": {
+          "selectPolicy": "选择策略"
+        }
+      },
+      "scrollMembers": {
+        "buttons": {
+          "addMember": "添加成员",
+          "addDept": "添加部门",
+          "addGroup": "添加组",
+          "authorizePolicy": "授权策略"
+        },
+        "placeholders": {
+          "searchMember": "搜索成员",
+          "searchDept": "搜索部门",
+          "searchGroup": "搜索组",
+          "searchPolicy": "查询策略名称"
+        },
+        "hints": "为项目成员分配特定的功能菜单权限，可以明确每个成员在项目中的职责范围。只允许系统管理员和应用管理员添加应用成员和授权权限策略操作。",
+        "table": {
+          "columns": {
+            "policyId": "策略ID",
+            "policyName": "策略名称",
+            "policyCode": "策略编码",
+            "policyDescription": "策略描述",
+            "policySource": "策略来源",
+            "joinTime": "加入时间",
+            "action": "操作"
+          },
+          "actions": {
+            "cancelAuth": "取消授权"
+          },
+          "sources": {
+            "appDefault": "应用默认授权",
+            "openAuth": "开通授权"
+          }
+        }
+      },
+      "quota": {
+        "hints": "若有扩展资源配额的需求，可以提交工单联系工单工程师帮您处理！",
+        "table": {
+          "columns": {
+            "resourceName": "资源名称",
+            "quotaKey": "配额Key",
+            "currentQuota": "当前配额",
+            "defaultQuota": "默认配额",
+            "maxQuota": "允许上限"
+          }
+        }
+      },
+      "policyModal": {
+        "title": "授权策略",
+        "placeholders": {
+          "searchPolicy": "查询策略名称"
+        },
+        "table": {
+          "headers": {
+            "id": "ID",
+            "name": "名称",
+            "code": "编码",
+            "description": "描述",
+            "status": "状态"
+          },
+          "status": {
+            "enabled": "启用",
+            "disabled": "禁用"
+          }
+        },
+        "actions": {
+          "selectAll": "全选"
+        }
+      }
     }
   }
 }

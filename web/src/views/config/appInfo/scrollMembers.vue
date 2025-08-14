@@ -36,9 +36,9 @@ const policyKeyword = ref();
 const policyLoading = ref(false);
 const btnName = computed(() => {
   switch (props.activeKey) {
-    case 'USER': return t('app.addMember');
-    case 'DEPT': return t('app.addDept');
-    case 'GROUP': return t('app.addGroup');
+    case 'USER': return t('appConfig.scrollMembers.buttons.addMember');
+    case 'DEPT': return t('appConfig.scrollMembers.buttons.addDept');
+    case 'GROUP': return t('appConfig.scrollMembers.buttons.addGroup');
   }
   return '';
 });
@@ -129,50 +129,50 @@ const addGroupPolicy = async (_addIds:string[]) => {
 
 const placeholder = computed(() => {
   if (props.activeKey === 'USER') {
-    return t('app.member_placeholder');
+    return t('appConfig.scrollMembers.placeholders.searchMember');
   }
   if (props.activeKey === 'DEPT') {
-    return t('app.dept_placeholder');
+    return t('appConfig.scrollMembers.placeholders.searchDept');
   }
-  return t('app.group_placeholder');
+  return t('appConfig.scrollMembers.placeholders.searchGroup');
 });
 
 const columns = computed(() => {
   return [
     {
-      title: '策略ID',
+      title: t('appConfig.scrollMembers.table.columns.policyId'),
       dataIndex: 'id',
       width: '10%'
     },
     {
-      title: '策略名称',
+      title: t('appConfig.scrollMembers.table.columns.policyName'),
       dataIndex: 'name',
       ellipsis: true,
       width: '12%'
     },
     {
-      title: '策略编码',
+      title: t('appConfig.scrollMembers.table.columns.policyCode'),
       dataIndex: 'code',
       width: '18%',
       ellipsis: true
     },
     {
-      title: '策略描述',
+      title: t('appConfig.scrollMembers.table.columns.policyDescription'),
       dataIndex: 'description',
       ellipsis: true
     },
     props.activeKey === 'USER' && {
-      title: '策略来源',
+      title: t('appConfig.scrollMembers.table.columns.policySource'),
       dataIndex: 'source',
       width: '10%'
     },
     {
-      title: '加入时间',
+      title: t('appConfig.scrollMembers.table.columns.joinTime'),
       dataIndex: 'createdDate',
       width: 140
     },
     {
-      title: '操作',
+      title: t('appConfig.scrollMembers.table.columns.action'),
       dataIndex: 'action',
       align: 'center',
       width: 90
@@ -214,10 +214,10 @@ const selectMember = (id: string) => {
 const getTenantTypeName = (record) => {
   const result: string[] = [];
   if (record?.currentDefault) {
-    result.push('应用默认授权');
+    result.push(t('appConfig.scrollMembers.table.sources.appDefault'));
   }
   if (record?.openAuth) {
-    result.push('开通授权');
+    result.push(t('appConfig.scrollMembers.table.sources.openAuth'));
   }
   return result.join(',');
 };
@@ -338,10 +338,10 @@ watch(() => policyKeyword.value, debounce(duration.search, () => {
         <Input
           v-model:value="policyKeyword"
           :allowClear="true"
-          placeholder="查询策略名称"
+          :placeholder="t('appConfig.scrollMembers.placeholders.searchPolicy')"
           class="w-70" />
         <div class="flex-1 min-w-0 truncate px-2">
-          <Hints text="为项目成员分配特定的功能菜单权限，可以明确每个成员在项目中的职责范围。只允许系统管理员和应用管理员添加应用成员和授权权限策略操作。" />
+          <Hints :text="t('appConfig.scrollMembers.hints')" />
         </div>
         <Button
           :disabled="!isAdmin"
@@ -350,7 +350,7 @@ watch(() => policyKeyword.value, debounce(duration.search, () => {
           class="flex items-center"
           @click="handleAuthorize">
           <Icon icon="icon-jia" class="mr-1" />
-          授权策略
+          {{ t('appConfig.scrollMembers.buttons.authorizePolicy') }}
         </Button>
       </div>
       <Table
@@ -367,7 +367,7 @@ watch(() => policyKeyword.value, debounce(duration.search, () => {
               class="flex items-center"
               :disabled="props.activeKey === 'USER' && record.orgType.value !== 'USER' || !isAdmin"
               @click="handleCancel(record.id)">
-              <Icon icon="icon-zhongzhi2" class="mr-1" />取消授权
+              <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('appConfig.scrollMembers.table.actions.cancelAuth') }}
             </Button>
           </template>
           <template v-if="column.dataIndex === 'source'">

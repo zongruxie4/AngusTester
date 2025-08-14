@@ -96,27 +96,27 @@ const handleCancel = () => {
 // 弹窗title
 const title = computed(() => {
   if (props.type === 'USER') {
-    return t('加入用户');
+    return t('appConfig.addMembers.title.user');
   }
 
   if (props.type === 'DEPT') {
-    return t('加入部门');
+    return t('appConfig.addMembers.title.dept');
   }
 
-  return t('加入组');
+  return t('appConfig.addMembers.title.group');
 });
 
 // 选择用户部门组占位提示
 const placeholder = computed(() => {
   if (props.type === 'USER') {
-    return t('app.member_placeholder');
+    return t('appConfig.scrollMembers.placeholders.searchMember');
   }
 
   if (props.type === 'DEPT') {
-    return t('app.dept_placeholder');
+    return t('appConfig.scrollMembers.placeholders.searchDept');
   }
 
-  return t('app.group_placeholder');
+  return t('appConfig.scrollMembers.placeholders.searchGroup');
 });
 
 // 选择用户部门组请求
@@ -162,14 +162,14 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
 // 选择用户部门组 select前的label
 const selectLable = computed(() => {
   if (props.type === 'USER') {
-    return t('选择用户');
+    return t('appConfig.addMembers.labels.selectUser');
   }
 
   if (props.type === 'DEPT') {
-    return t('选择部门');
+    return t('appConfig.addMembers.labels.selectDept');
   }
 
-  return t('选择组');
+  return t('appConfig.addMembers.labels.selectGroup');
 });
 
 const gridColumns = [
@@ -179,7 +179,7 @@ const gridColumns = [
       dataIndex: 'users'
     },
     {
-      label: t('选择策略'),
+      label: t('appConfig.addMembers.labels.selectPolicy'),
       dataIndex: 'policys'
     }
   ]
@@ -221,7 +221,7 @@ const gridColumns = [
       <template #policys>
         <Select
           v-model:value="selectedPolicyIds"
-          placeholder="选择策略"
+          :placeholder="t('appConfig.addMembers.placeholders.selectPolicy')"
           class="w-full -mt-1.5"
           mode="multiple"
           :error="policyError"

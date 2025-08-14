@@ -3,28 +3,31 @@ import { onMounted, reactive, ref } from 'vue';
 import { Icon, IconRefresh, Table } from '@xcan-angus/vue-ui';
 import { setting } from '@/api/gm';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
 
 const columns = [
   {
-    title: '资源名称',
+    title: t('appConfig.quota.table.columns.resourceName'),
     dataIndex: 'name'
   },
   {
-    title: '配额Key',
+    title: t('appConfig.quota.table.columns.quotaKey'),
     dataIndex: 'key'
   },
   {
-    title: '当前配额',
+    title: t('appConfig.quota.table.columns.currentQuota'),
     dataIndex: 'quota'
   },
   {
-    title: '默认配额',
+    title: t('appConfig.quota.table.columns.defaultQuota'),
     dataIndex: 'default0'
   },
   {
-    title: '允许上限',
+    title: t('appConfig.quota.table.columns.maxQuota'),
     dataIndex: 'max'
   }
 ];
@@ -63,7 +66,7 @@ onMounted(() => {
 <template>
   <div class="flex items-center text-3">
     <Icon icon="icon-tishi1" class="text-blue-icon mr-2 text-3.5" />
-    <p class="flex-1">若有扩展资源配额的需求，可以提交工单联系工单工程师帮您处理！</p>
+    <p class="flex-1">{{ t('appConfig.quota.hints') }}</p>
     <IconRefresh
       :loading="loading"
       class="self-end text-4.5"

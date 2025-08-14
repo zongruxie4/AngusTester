@@ -91,7 +91,7 @@ const action = computed(() => {
 </script>
 <template>
   <Modal
-    :title="t('授权策略')"
+    :title="t('appConfig.policyModal.title')"
     :visible="props.visible"
     :centered="true"
     :keyboard="true"
@@ -102,7 +102,7 @@ const action = computed(() => {
     <div class="-mt-3">
       <div class="mb-2 flex space-x-2">
         <Input
-          placeholder="查询策略名称"
+          :placeholder="t('appConfig.policyModal.placeholders.searchPolicy')"
           size="small"
           class="w-1/2"
           allowClear
@@ -114,19 +114,19 @@ const action = computed(() => {
       </div>
       <div class="flex py-0.5 bg-theme-form-head text-theme-title text-3 font-normal mb-1">
         <div class="pl-6 w-46">
-          ID
+          {{ t('appConfig.policyModal.table.headers.id') }}
         </div>
         <div class="w-40 mr-2">
-          {{ t('名称') }}
+          {{ t('appConfig.policyModal.table.headers.name') }}
         </div>
         <div class="w-60 mr-2">
-          {{ t('编码') }}
+          {{ t('appConfig.policyModal.table.headers.code') }}
         </div>
         <div class="w-100 mr-2">
-          {{ t('描述') }}
+          {{ t('appConfig.policyModal.table.headers.description') }}
         </div>
         <div class="w-20">
-          {{ t('状态') }}
+          {{ t('appConfig.policyModal.table.headers.status') }}
         </div>
       </div>
       <Scroll
@@ -152,13 +152,13 @@ const action = computed(() => {
             <div class="truncate w-40 mr-2 mt-0.5" :title="item.name">{{ item.name }}</div>
             <div class="truncate w-60 mr-2 mt-0.5" :title="item.code">{{ item.code }}</div>
             <div class="truncate w-100 mr-2 mt-0.5" :title="item.description">{{ item.description }}</div>
-            <div class="truncate w-20 mt-0.5">{{ item.enabled?'启用':'禁用' }}</div>
+            <div class="truncate w-20 mt-0.5">{{ item.enabled ? t('appConfig.policyModal.table.status.enabled') : t('appConfig.policyModal.table.status.disabled') }}</div>
           </div>
         </CheckboxGroup>
       </Scroll>
       <Divider class="my-2" />
       <Checkbox :indeterminate="indeterminate" @change="onCheckAllChange">
-        全选
+        {{ t('appConfig.policyModal.actions.selectAll') }}
       </Checkbox>
     </div>
   </Modal>
