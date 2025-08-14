@@ -17,6 +17,9 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
@@ -78,11 +81,11 @@ const activeNetwork = ref(); // 选中的网络
 
 const notMerge = ref(true); // 图表数据覆盖是否重新渲染
 
-const memoryDataOptions = [{ label: '使用量', value: false }, { label: '使用率', value: true }];
+const memoryDataOptions = [{ label: t('node.nodeDetail.chartOptions.memory.usage'), value: false }, { label: t('node.nodeDetail.chartOptions.memory.usageRate'), value: true }];
 const diskDataOptions = [
   // { label: '使用量', value: 'disk' }, { label: '使用率', value: 'percent' },
-  { label: 'IOPS', value: 'rate' }, { label: '每秒MB数', value: 'bytesRate' }];
-const networkDataOptions = [{ label: '每秒MB 数', value: 'network' }, { label: '字节数', value: 'bytes' }, { label: '错误包数', value: 'packet' }];
+  { label: t('node.nodeDetail.chartOptions.disk.iops'), value: 'rate' }, { label: t('node.nodeDetail.chartOptions.disk.mbPerSecond'), value: 'bytesRate' }];
+const networkDataOptions = [{ label: t('node.nodeDetail.chartOptions.network.mbPerSecond'), value: 'network' }, { label: t('node.nodeDetail.chartOptions.network.bytes'), value: 'bytes' }, { label: t('node.nodeDetail.chartOptions.network.errorPackets'), value: 'packet' }];
 
 const showMemoryPercentChart = ref(false); // 显示内存百分比图表
 const diskChartKey = ref('rate'); // 显示文件系统百分比图表
@@ -403,7 +406,7 @@ const loadCpuEchartData = async (data) => {
   chartsData = data;
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
   // const dataType = ['idle', 'sys', 'sys', 'wait', 'other', 'total'];
-  const dataType = ['CPU 空闲百分比(%)', '系统空间占用 CPU 百分比(%)', '用户空间占 CPU 百分比(%)', '等待 IO 操作的 CPU 百分比(%)', '其他占用 CPU 百分比(%)', '当前占用的总 CPU 百分比(%)'];
+  const dataType = [t('node.nodeDetail.chartOptions.cpu.idle'), t('node.nodeDetail.chartOptions.cpu.sys'), t('node.nodeDetail.chartOptions.cpu.user'), t('node.nodeDetail.chartOptions.cpu.wait'), t('node.nodeDetail.chartOptions.cpu.other'), t('node.nodeDetail.chartOptions.cpu.total')];
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -468,7 +471,8 @@ const loadMemoryEchartData = async (data) => {
   // // loadingChartData.value = true;
   // const [error, res] = await nodeCtrl.getMemoryData({ id: id.value, ...param });
   // // '物理内存剩余量', '物理内存使用量', '实际空闲物理内存百分比', '实际使用物理内存的百分比', '实际空闲内存', '实际使用内存', '空闲内存占用的百分比', '使用内存占用的百分比', '交换区使用量', '交换区剩余量'
-  const dataType = ['物理内存剩余量(GB)', '物理内存使用量(GB)', '实际空闲物理内存百分比(%)', '实际使用物理内存的百分比(%)', '实际空闲内存(GB)', '实际使用内存(GB)', '空闲内存占用的百分比(%)', '使用内存占用的百分比(%)', '交换区使用量(GB)', '交换区剩余量(GB)'];
+  // const dataType = ['物理内存剩余量(GB)', '物理内存使用量(GB)', '实际空闲物理内存百分比(%)', '实际使用物理内存的百分比(%)', '实际空闲内存(GB)', '实际使用内存(GB)', '空闲内存占用的百分比(%)', '使用内存占用的百分比(%)', '交换区使用量(GB)', '交换区剩余量(GB)'];
+  const dataType = [t('node.nodeDetail.chartOptions.memory.free'), t('node.nodeDetail.chartOptions.memory.used'), t('node.nodeDetail.chartOptions.memory.freePercent'), t('node.nodeDetail.chartOptions.memory.usedPercent'), t('node.nodeDetail.chartOptions.memory.actualFree'), t('node.nodeDetail.chartOptions.memory.actualUsed'), t('node.nodeDetail.chartOptions.memory.actualFreePercent'), t('node.nodeDetail.chartOptions.memory.actualUsedPercent'), t('node.nodeDetail.chartOptions.memory.swapFree'), t('node.nodeDetail.chartOptions.memory.swapUsed')];
   const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
   // if (error) {
   //   return;
@@ -603,8 +607,10 @@ const loadDiskEchartData = async (data) => {
   chartsData = data;
   // loadingChartData.value = false;
   // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
+  // const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
+  // const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
+  const dataType = [t('node.nodeDetail.chartOptions.disk.total'), t('node.nodeDetail.chartOptions.disk.free'), t('node.nodeDetail.chartOptions.disk.used'), t('node.nodeDetail.chartOptions.disk.avail'), t('node.nodeDetail.chartOptions.disk.usePercent'), t('node.nodeDetail.chartOptions.disk.readsRate'), t('node.nodeDetail.chartOptions.disk.writesRate'), t('node.nodeDetail.chartOptions.disk.readBytesRate'), t('node.nodeDetail.chartOptions.disk.writeBytesRate')];
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -778,7 +784,8 @@ const loadNetworkEchartData = async (data) => {
   // loadingChartData.value = false;
   // '接收到的总字节数', '每秒接收的 MB 数', '接收到的错误包数', '发送的总字节数', '每秒发送的 MB 数'
   const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-  const dataType = ['接收到的总字节(GB)', '每秒接收的 MB 数(MB/s)', '接收到的错误包数(packets)', '发送的总字节(GB)', '每秒发送的 MB 数(MB/s)'];
+  // const dataType = ['接收到的总字节(GB)', '每秒接收的 MB 数(MB/s)', '接收到的错误包数(packets)', '发送的总字节(GB)', '每秒发送的 MB 数(MB/s)'];
+  const dataType = [t('node.nodeDetail.chartOptions.network.rxBytes'), t('node.nodeDetail.chartOptions.network.rxBytesRate'), t('node.nodeDetail.chartOptions.network.rxErrors'), t('node.nodeDetail.chartOptions.network.txBytes'), t('node.nodeDetail.chartOptions.network.txBytesRate')];
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -1006,11 +1013,11 @@ const refreshTimer = () => {
 const proxyActiveKey = ref('proxy');
 const proxyOpt = [
   {
-    label: '代理信息',
+    label: t('node.nodeDetail.proxyOpt.proxyInfo'),
     value: 'proxy'
   },
   {
-    label: '日志',
+    label: t('node.nodeDetail.proxyOpt.log'),
     value: 'log'
   }
 ];
@@ -1094,10 +1101,10 @@ onMounted(async () => {
 
 const getOnlineInstallTip = (node) => {
   if (node.infos.geAgentInstallationCmd) {
-    return '已安装';
+    return t('node.nodeDetail.labels.installed');
   }
   if (!isAdmin.value) {
-    return '安装代理需要系统管理员或应用管理员权限';
+    return t('node.nodeDetail.labels.installAgentTip');
   }
 };
 
@@ -1117,13 +1124,13 @@ const delNode = () => {
 // 删除按钮禁用提示
 const getDelTip = (node) => {
   if (node.enabled) {
-    return '节点禁用后才能删除';
+    return t('node.nodeDetail.labels.disableDelete');
   }
   if (!isAdmin.value) {
-    return '删除节点需要系统管理员或应用管理员权限';
+    return t('node.nodeDetail.labels.deleteNodeTip');
   }
   if (node.source?.value !== 'OWN_NODE') {
-    return '只能删除自有节点';
+    return t('node.nodeDetail.labels.onlyOwnNode');
   }
 };
 
@@ -1179,7 +1186,7 @@ const toggleShowCtrlAccessToken = () => {
 
 const copyContent = (text) => {
   toClipboard(text).then(() => {
-    notification.success('已复制到剪贴板');
+    notification.success(t('node.nodeDetail.labels.copySuccess'));
   });
 };
 
@@ -1201,7 +1208,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :loading="enableding"
                 :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
-                <Icon icon="icon-qiyong" />启用
+                <Icon icon="icon-qiyong" />{{ t('node.nodeDetail.buttons.enable') }}
               </Button>
               <Button
                 v-else
@@ -1209,14 +1216,14 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :loading="enableding"
                 :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
-                <Icon icon="icon-jinyong" />禁用
+                <Icon icon="icon-jinyong" />{{ t('node.nodeDetail.buttons.disable') }}
               </Button>
               <Tooltip v-if="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id) || state.infos?.enabled" :title="getDelTip(state.infos)">
                 <Button
                   class="node-action-btn"
                   :disabled="true">
                   <Icon icon="icon-qingchu" class="mr-1" />
-                  <span>删除</span>
+                  <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
                 </Button>
               </Tooltip>
               <Button
@@ -1224,7 +1231,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 class="node-action-btn"
                 @click="delNode()">
                 <Icon icon="icon-qingchu" class="mr-1" />
-                <span>删除</span>
+                                  <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
               </Button>
               <Tooltip v-if="state.infos.installNodeAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
                 <Button
@@ -1233,7 +1240,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   class="node-action-btn"
                   @click="installAgen">
                   <Icon icon="icon-anzhuangdaili" />
-                  在线安装代理
+                  {{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -1242,18 +1249,18 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :loading="installing"
                 class="node-action-btn"
                 @click="installAgen">
-                <Icon icon="icon-anzhuangdaili" />在线安装代理
+                                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
                 <Hints
                   v-if="installing"
                   class="absolute left-5 -bottom-3"
-                  text="预计需要一分钟" />
+                  :text="t('node.nodeDetail.labels.estimatedTime')" />
               </Button>
               <Tooltip v-if="!isAdmin || state.infos.free" :title="!isAdmin ? `安装代理需要系统管理员或应用管理员权限` : ''">
                 <Button
                   :disabled="true"
                   class="node-action-btn"
                   @click="getInstallStep">
-                  <Icon icon="icon-anzhuangdaili" />手动安装代理
+                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -1261,30 +1268,30 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :disabled="!isAdmin"
                 class="node-action-btn"
                 @click="getInstallStep">
-                <Icon icon="icon-anzhuangdaili" />手动安装代理
+                                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
               </Button>
               <Button class="node-action-btn" @click="turnback">
-                <Icon icon="icon-fanhui" />返回
+                <Icon icon="icon-fanhui" />{{ t('node.nodeDetail.buttons.back') }}
               </Button>
             </div>
           </div>
           <!-- 手动安装步骤 -->
           <div v-show="showInstallStep" class="pt-4 mb-4 relative">
             <Tabs size="small">
-              <TabPane key="linux" tab="Linux或者Mac系统自动安装步骤">
-                <div class="text-3">必须以root用户执行脚本, 安装目录为脚本所在目录</div>
+              <TabPane key="linux" :tab="t('node.nodeDetail.installSteps.linuxTitle')">
+                <div class="text-3">{{ t('node.nodeDetail.installSteps.description') }}</div>
                 <div class="text-3">
-                  安装方式1：<Icon
+                  {{ t('node.nodeDetail.installSteps.method1') }}<Icon
                     icon="icon-fuzhi"
                     class="cursor-pointer text-3.5 text-blue-1"
                     @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd)" />
                   <p class="install-step whitespace-pre-line">
                     {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
-                  安装方式2：
+                  {{ t('node.nodeDetail.installSteps.method2') }}
                   <p class="install-step whitespace-pre-line">
-                    1).下载自动安装脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                    2).将{{ state.linuxOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br />
+                    {{ t('node.nodeDetail.installSteps.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
+                    {{ t('node.nodeDetail.installSteps.copyScript', { scriptName: state.linuxOfflineInstallSteps?.installScriptName }) }}<br />
                     {{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                   </p>
                 </div>
@@ -1302,7 +1309,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <!--                  </p>-->
               <!--                </div>-->
               <!--              </TabPane>-->
-              <TabPane key="config" tab="安装配置信息">
+              <TabPane key="config" :tab="t('node.nodeDetail.installSteps.configTitle')">
                 <Grid
                   :dataSource="state.installConfig"
                   :columns="installConfigColumns">
@@ -1346,7 +1353,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               type="link"
               size="small"
               @click="foldInstallAgent">
-              收起
+              {{ t('node.nodeDetail.buttons.fold') }}
             </Button>
           </div>
           <Grid
@@ -1388,13 +1395,13 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <template v-else>--</template>
             </template>
             <template #enabled="{text}">
-              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '启用' : '禁用' }}</span>
+              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.enabled') : t('node.nodeDetail.status.disabled') }}</span>
             </template>
             <template #installAgent="{text}">
-              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '已安装' : '未安装' }}</span>
+              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.installed') : t('node.nodeDetail.status.notInstalled') }}</span>
             </template>
             <template #online="{text}">
-              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? '已连接' : '未连接' }}</span>
+              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.connected') : t('node.nodeDetail.status.notConnected') }}</span>
             </template>
           </Grid>
         </div>
@@ -1402,7 +1409,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
         <div class="source">
           <Tabs v-model:activeKey="activeKey" size="small">
             <TabPane key="source" forceRender>
-              <template #tab><span class="font-semibold">资源监控</span></template>
+              <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.resourceMonitoring') }}</span></template>
               <!-- <div class="title flex pt-4">
                 <span class="mr-15 font-semibold">资源使用</span>
               </div> -->
@@ -1426,11 +1433,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
                     <div v-if="item.valueKey !== 'network'" class="pl-5 w-35">
                       <span class="text-3">{{ item.label }}</span>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">已使用:</label>
+                        <label class="inline-block w-12 text-text-content">{{ t('node.nodeDetail.labels.used') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.valueKey] }}{{ item.unit }}</span>
                       </div>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? '空闲' : '总共' }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? t('node.nodeDetail.labels.idle') : t('node.nodeDetail.labels.total') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.totalKey] }}{{ item.unit }}</span>
                       </div>
                     </div>
@@ -1556,7 +1563,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               </Table> -->
             </TabPane>
             <TabPane key="proxy">
-              <template #tab><span class="font-semibold">代理服务</span></template>
+              <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.proxyService') }}</span></template>
               <RadioGroup
                 v-model:value="proxyActiveKey"
                 :options="proxyOpt"
@@ -1577,17 +1584,17 @@ const activeKey = ref<'source' | 'proxy'>('source');
             </TabPane>
             <template v-if="state.infos?.rolesValues?.includes('EXECUTION')">
               <TabPane key="execTask">
-                <template #tab><span class="font-semibold">执行中任务</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executingTasks') }}</span></template>
                 <Execute :id="id" />
               </TabPane>
               <TabPane key="execPropulsion">
-                <template #tab><span class="font-semibold">执行器进程</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executorProcess') }}</span></template>
                 <ExecPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>
             </template>
             <template v-if="state.infos?.rolesValues?.includes('MOCK_SERVICE')">
               <TabPane key="mock">
-                <template #tab><span class="font-semibold">Mock服务实例</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.mockServiceInstance') }}</span></template>
                 <MockService :nodeId="id" />
               </TabPane>
             </template>

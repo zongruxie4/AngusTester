@@ -4,6 +4,9 @@ import { Icon, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import axios from 'axios';
 import { routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface Props {
   ip: string;
@@ -17,15 +20,15 @@ const props = withDefaults(defineProps<Props>(), {
 const linesOpt = [
   {
     value: '500',
-    label: '末尾500行'
+    label: t('node.nodeDetail.log.options.500')
   },
   {
     value: '1000',
-    label: '末尾1000行'
+    label: t('node.nodeDetail.log.options.1000')
   },
   {
     value: '10000',
-    label: '末尾10000行'
+    label: t('node.nodeDetail.log.options.10000')
   }
 ];
 
@@ -131,7 +134,7 @@ const loadLogContent = async () => {
 
 const downloadLog = () => {
   if (!content.value) {
-    notification.warning('无可下载内容');
+    notification.warning(t('node.nodeDetail.log.noDownloadContent'));
     return;
   }
   const blob = new Blob([content.value], {
@@ -182,7 +185,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="text-3 pb-5">
     <div class="flex items-center space-x-2 my-2">
-      <span>浏览日志:</span>
+      <span>{{ t('node.nodeDetail.log.title') }}:</span>
       <Select
         v-model:value="logTextParam.logName"
         class="w-70"
@@ -192,20 +195,20 @@ onBeforeUnmount(() => {
         v-model:value="logTextParam.linesNum"
         :options="linesOpt"
         size="small" />
-      <div v-show="showErr">{{ errorText || `无访问代理信息，连接失败地址：http://${props.ip}:${props.port}` }}</div>
+      <div v-show="showErr">{{ errorText || t('node.nodeDetail.log.errorText', { ip: props.ip, port: props.port }) }}</div>
       <div class="inline-flex items-center flex-1 justify-end">
         <Button
           class="py-0 h-5"
           size="small"
           @click="downloadLog">
-          下载
+          {{ t('actions.download') }}
         </Button>
         <Button
           class="py-0 h-5 ml-2"
           size="small"
           :disabled="!logTextParam.logName"
           @click="loadLogContent">
-          刷新
+          {{ t('actions.refresh') }}
         </Button>
         <!-- <span class="ml-2">
           自动刷新：

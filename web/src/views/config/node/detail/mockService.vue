@@ -2,6 +2,9 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
 import { mock } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   nodeId: string
@@ -25,31 +28,31 @@ const pagination = ref({
 const columns = [
   {
     dataIndex: 'id',
-    title: '服务ID'
+    title: t('node.nodeDetail.mockService.columns.serviceId')
   },
   {
     dataIndex: 'name',
-    title: '名称'
+    title: t('node.nodeDetail.mockService.columns.name')
   },
   {
     dataIndex: 'status',
-    title: '状态'
+    title: t('node.nodeDetail.mockService.columns.status')
   },
   {
     dataIndex: 'serviceHostUrl',
-    title: '访问地址'
+    title: t('node.nodeDetail.mockService.columns.accessUrl')
   },
   {
     dataIndex: 'servicePort',
-    title: '访问端口'
+    title: t('node.nodeDetail.mockService.columns.accessPort')
   },
   {
     dataIndex: 'createdByName',
-    title: '添加人'
+    title: t('node.nodeDetail.mockService.columns.creator')
   },
   {
     dataIndex: 'createdDate',
-    title: '添加时间'
+    title: t('node.nodeDetail.mockService.columns.createTime')
   }
 ];
 // 服务ID、名称、状态、访问地址、端口、添加人、添加时间

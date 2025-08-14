@@ -5,6 +5,9 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { formatBytes } from '@/utils';
 
@@ -23,31 +26,31 @@ const columns = [
   [
     {
       dataIndex: 'version',
-      label: '版本'
+      label: t('node.nodeDetail.agentInfo.columns.version')
     },
     {
       dataIndex: 'home',
-      label: '安装路径'
+      label: t('node.nodeDetail.agentInfo.columns.home')
     }
   ],
   [
     {
       dataIndex: 'uptime',
-      label: '运行时长'
+      label: t('node.nodeDetail.agentInfo.columns.uptime')
     },
     {
       dataIndex: 'diskSpace',
-      label: '磁盘空间'
+      label: t('node.nodeDetail.agentInfo.columns.diskSpace')
     }
   ],
   [
     {
       dataIndex: 'port',
-      label: '占用端口'
+      label: t('node.nodeDetail.agentInfo.columns.port')
     },
     {
       dataIndex: 'health',
-      label: '健康状态'
+      label: t('node.nodeDetail.agentInfo.columns.health')
     }
   ]
 ];
@@ -81,7 +84,7 @@ watch(() => props.ip, async newValue => {
       const hour = dayjs.duration(+data.uptime).hours();
       const minute = dayjs.duration(+data.uptime).minutes();
       const seconds = dayjs.duration(+data.uptime).seconds();
-      dataSource.value.uptime = `${hour ? hour + '小时' : ''}${minute ? minute + '分钟' : ''}${seconds ? seconds + '秒' : ''}`;
+      dataSource.value.uptime = `${hour ? hour + t('node.nodeDetail.agentInfo.timeUnits.hour') : ''}${minute ? minute + t('node.nodeDetail.agentInfo.timeUnits.minute') : ''}${seconds ? seconds + t('node.nodeDetail.agentInfo.timeUnits.second') : ''}`;
       dataSource.value.diskSpace = data.diskSpace;
       dataSource.value.ip = data.server?.ip;
       dataSource.value.port = data.server?.port;
@@ -114,19 +117,19 @@ watch(() => props.ip, async newValue => {
       @click="closeErrInfo" />
   </div>
   <div class="font-medium text-3 my-5">
-    代理信息
+    {{ t('node.nodeDetail.agentInfo.title') }}
   </div>
   <Grid
     class="ml-6"
     :columns="columns"
     :dataSource="dataSource">
     <template #health="text">
-      <template v-if="text.text && text.text==='UP'">正常</template>
+      <template v-if="text.text && text.text==='UP'">{{ t('node.nodeDetail.agentInfo.health.normal') }}</template>
       <template v-else-if="text.text">
         <Tooltip>
           <template #title>{{ dataSource.errorTip }}</template>
           <span>
-            异常
+            {{ t('node.nodeDetail.agentInfo.health.abnormal') }}
             <Icon class="text-rule" icon="icon-jinggao" />
           </span>
         </Tooltip>

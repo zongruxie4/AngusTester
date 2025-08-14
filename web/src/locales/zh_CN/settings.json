@@ -214,6 +214,167 @@
           "label": "来源",
           "placeholder": "选择来源"
         }
+      },
+      "nodeDetail": {
+        "agentInfo": {
+          "columns": {
+            "version": "版本",
+            "home": "安装路径",
+            "uptime": "运行时长",
+            "diskSpace": "磁盘空间",
+            "port": "占用端口",
+            "health": "健康状态"
+          },
+          "timeUnits": {
+            "hour": "小时",
+            "minute": "分钟",
+            "second": "秒"
+          },
+          "title": "代理信息",
+          "health": {
+            "normal": "正常",
+            "abnormal": "异常"
+          }
+        },
+        "execPropulsion": {
+          "columns": {
+            "processId": "进程ID",
+            "runTime": "运行时间",
+            "user": "用户",
+            "virtualMemory": "可使用虚拟内存",
+            "threadCount": "线程数",
+            "openFiles": "打开文件数",
+            "writeDisk": "写磁盘",
+            "readDisk": "读磁盘",
+            "action": "操作"
+          },
+          "confirmKillProcess": "确认强制退出进程【{processId}】？",
+          "processExitSuccess": "进程退出成功",
+          "processCount": "进程数",
+          "threadCount": "线程数",
+          "openFiles": "打开文件数",
+          "writeDisk": "写磁盘",
+          "readDisk": "读磁盘",
+          "killProcess": "强制退出(kill)"
+        },
+        "log": {
+          "options": {
+            "500": "末尾500行",
+            "1000": "末尾1000行",
+            "10000": "末尾10000行"
+          },
+          "title": "浏览日志",
+          "errorText": "无访问代理信息，连接失败地址：http://{ip}:{port}",
+          "noDownloadContent": "无可下载内容"
+        },
+        "mockService": {
+          "columns": {
+            "serviceId": "服务ID",
+            "name": "名称",
+            "status": "状态",
+            "accessUrl": "访问地址",
+            "accessPort": "访问端口",
+            "creator": "添加人",
+            "createTime": "添加时间"
+          }
+        },
+        "execute": {
+          "columns": {
+            "execId": "执行ID",
+            "execName": "执行名称",
+            "testType": "测试类型",
+            "plugin": "插件",
+            "executor": "执行人",
+            "startTime": "开始时间"
+          }
+        },
+        "buttons": {
+          "enable": "启用",
+          "disable": "禁用",
+          "delete": "删除",
+          "onlineInstallAgent": "在线安装代理",
+          "manualInstallAgent": "手动安装代理",
+          "back": "返回",
+          "fold": "收起"
+        },
+        "labels": {
+          "resourceMonitoring": "资源监控",
+          "proxyService": "代理服务",
+          "executingTasks": "执行中任务",
+          "executorProcess": "执行器进程",
+          "mockServiceInstance": "Mock服务实例",
+          "used": "已使用",
+          "idle": "空闲",
+          "total": "总共",
+          "estimatedTime": "预计需要一分钟",
+          "disableDelete": "节点禁用后才能删除",
+          "deleteNodeTip": "删除节点需要系统管理员或应用管理员权限",
+          "onlyOwnNode": "只能删除自有节点",
+          "copySuccess": "已复制到剪贴板"
+        },
+        "installSteps": {
+          "linuxTitle": "Linux或者Mac系统自动安装步骤",
+          "configTitle": "安装配置信息",
+          "description": "必须以root用户执行脚本, 安装目录为脚本所在目录",
+          "method1": "安装方式1：",
+          "method2": "安装方式2：",
+          "downloadScript": "1).下载自动安装脚本：",
+          "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
+        },
+        "status": {
+          "enabled": "启用",
+          "disabled": "禁用",
+          "installed": "已安装",
+          "notInstalled": "未安装",
+          "connected": "已连接",
+          "notConnected": "未连接"
+        },
+        "proxyOpt": {
+          "proxyInfo": "代理信息",
+          "log": "日志",
+          "installAgentTip": "安装代理需要系统管理员或应用管理员权限"
+        },
+        "chartOptions": {
+          "cpu": {
+            "idle": "CPU空闲百分比",
+            "sys": "系统空间占用 CPU 百分比",
+            "user": "用户空间占 CPU 百分比",
+            "wait": "等待 IO 操作的 CPU 百分比",
+            "other": "其他占用 CPU 百分比",
+            "total": "当前占用的总 CPU 百分比"
+          },
+          "memory": {
+            "usage": "使用量",
+            "usageRate": "使用率",
+            "free": "物理内存剩余量(GB)",
+            "used": "物理内存使用量(GB)",
+            "freePercent": "实际空闲物理内存百分比(%)",
+            "usedPercent": "实际使用物理内存的百分比(%)",
+            "actualFree": "实际空闲内存(GB)",
+            "actualUsed": "实际使用内存(GB)",
+          },
+          "disk": {
+            "iops": "IOPS",
+            "mbPerSecond": "每秒MB数",
+            "total": "磁盘总大小(GB)",
+            "free": "本地文件系统剩余大小(GB)",
+            "used": "本地文件系统已用大小(GB)",
+            "avail": "本地文件系统可用大小(GB)",
+            "usePercent": "本地文件系统使用率(%)",
+            "readsRate": "每秒磁盘读次数(IO/s)",
+            "writesRate": "每秒磁盘写次数(IO/s)",
+          },
+          "network": {
+            "mbPerSecond": "每秒MB 数",
+            "bytes": "字节数",
+            "errorPackets": "错误包数",
+            "rxBytes": "接收到的总字节(GB)",
+            "rxBytesRate": "每秒接收的 MB 数(MB/s)",
+            "rxErrors": "接收到的错误包数(packets)",
+            "txBytes": "发送的总字节(GB)",
+            "txBytesRate": "每秒发送的 MB 数(MB/s)"
+          }
+        }
       }
     }
   }

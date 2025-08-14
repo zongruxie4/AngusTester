@@ -2,6 +2,9 @@
 import { ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
 import { nodeCtrl } from 'src/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   id: string; // node id
@@ -14,28 +17,28 @@ const props = withDefaults(defineProps<Props>(), {
 const columns = [
   {
     dataIndex: 'id',
-    title: '执行ID'
+    title: t('node.nodeDetail.execute.columns.execId')
   },
   {
     dataIndex: 'name',
-    title: '执行名称'
+    title: t('node.nodeDetail.execute.columns.execName')
   },
 
   {
     dataIndex: 'scriptType',
-    title: '测试类型'
+    title: t('node.nodeDetail.execute.columns.testType')
   },
   {
     dataIndex: 'plugin',
-    title: '插件'
+    title: t('node.nodeDetail.execute.columns.plugin')
   },
   {
     dataIndex: 'execByName',
-    title: '执行人'
+    title: t('node.nodeDetail.execute.columns.executor')
   },
   {
     dataIndex: 'actualStartDate',
-    title: '开始时间'
+    title: t('node.nodeDetail.execute.columns.startTime')
   }
 ];
 

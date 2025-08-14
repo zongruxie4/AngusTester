@@ -192,6 +192,170 @@
           "label": "Source",
           "placeholder": "Select source"
         }
+      },
+      "nodeDetail": {
+        "agentInfo": {
+          "columns": {
+            "version": "Version",
+            "home": "Installation Path",
+            "uptime": "Uptime",
+            "diskSpace": "Disk Space",
+            "port": "Occupied Port",
+            "health": "Health Status"
+          },
+          "timeUnits": {
+            "hour": "hour",
+            "minute": "minute",
+            "second": "second"
+          },
+          "title": "Agent Information",
+          "health": {
+            "normal": "Normal",
+            "abnormal": "Abnormal"
+          }
+        },
+        "execPropulsion": {
+          "columns": {
+            "processId": "Process ID",
+            "runTime": "Run Time",
+            "user": "User",
+            "virtualMemory": "Available Virtual Memory",
+            "threadCount": "Thread Count",
+            "openFiles": "Open Files",
+            "writeDisk": "Write Disk",
+            "readDisk": "Read Disk",
+            "action": "Action"
+          },
+          "confirmKillProcess": "Confirm to force exit process [{processId}]?",
+          "processExitSuccess": "Process exit successfully",
+          "processCount": "Process Count",
+          "threadCount": "Thread Count",
+          "openFiles": "Open Files",
+          "writeDisk": "Write Disk",
+          "readDisk": "Read Disk",
+          "killProcess": "Force Exit (kill)"
+        },
+        "log": {
+
+          "options": {
+            "500": "Last 500 lines",
+            "1000": "Last 1000 lines",
+            "10000": "Last 10000 lines"
+          },
+          "title": "View Log",
+          "errorText": "No access to proxy information, connection failed address: http://{ip}:{port}",
+          "noDownloadContent": "No downloadable content"
+        },
+        "mockService": {
+          "columns": {
+            "serviceId": "Service ID",
+            "name": "Name",
+            "status": "Status",
+            "accessUrl": "Access URL",
+            "accessPort": "Access Port",
+            "creator": "Creator",
+            "createTime": "Create Time"
+          }
+        },
+        "execute": {
+          "columns": {
+            "execId": "Execution ID",
+            "execName": "Execution Name",
+            "testType": "Test Type",
+            "plugin": "Plugin",
+            "executor": "Executor",
+            "startTime": "Start Time"
+          }
+        },
+        "buttons": {
+          "enable": "Enable",
+          "disable": "Disable",
+          "delete": "Delete",
+          "onlineInstallAgent": "Online Install Agent",
+          "manualInstallAgent": "Manual Install Agent",
+          "back": "Back",
+          "fold": "Fold"
+        },
+        "labels": {
+          "resourceMonitoring": "Resource Monitoring",
+          "proxyService": "Proxy Service",
+          "executingTasks": "Executing Tasks",
+          "executorProcess": "Executor Process",
+          "mockServiceInstance": "Mock Service Instance",
+          "used": "Used",
+          "idle": "Idle",
+          "total": "Total",
+          "estimatedTime": "Estimated to take one minute",
+          "disableDelete": "Node must be disabled before deletion",
+          "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
+          "onlyOwnNode": "Only own node can be deleted",
+          "copySuccess": "Copied to clipboard"
+        },
+        "installSteps": {
+          "linuxTitle": "Linux or Mac System Automatic Installation Steps",
+          "configTitle": "Installation Configuration Information",
+          "description": "Script must be executed as root user, installation directory is the directory where the script is located",
+          "method1": "Installation Method 1:",
+          "method2": "Installation Method 2:",
+          "downloadScript": "1). Download automatic installation script:",
+          "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
+        },
+        "status": {
+          "enabled": "Enabled",
+          "disabled": "Disabled",
+          "installed": "Installed",
+          "notInstalled": "Not Installed",
+          "connected": "Connected",
+          "notConnected": "Not Connected"
+        },
+        "proxyOpt": {
+          "proxyInfo": "Proxy Information",
+          "log": "Log",
+          "installAgentTip": "Install agent requires system administrator or application administrator permissions",
+          "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
+          "onlyOwnNode": "Only own node can be deleted"
+        },
+        "chartOptions": {
+          "cpu": {
+            "idle": "CPU Idle Percentage",
+            "sys": "System Space Occupied CPU Percentage",
+            "user": "User Space Occupied CPU Percentage",
+            "wait": "Waiting IO Operation CPU Percentage",
+            "other": "Other Occupied CPU Percentage",
+            "total": "Total Occupied CPU Percentage"
+          },
+          "memory": {
+            "usage": "Usage",
+            "usageRate": "Usage Rate",
+            "free": "Physical Memory Remaining (GB)",
+            "used": "Physical Memory Used (GB)",
+            "freePercent": "Actual Free Physical Memory Percentage (%)",
+            "usedPercent": "Actual Used Physical Memory Percentage (%)",
+            "actualFree": "Actual Free Memory (GB)",
+            "actualUsed": "Actual Used Memory (GB)"
+          },
+          "disk": {
+            "iops": "IOPS",
+            "mbPerSecond": "MB per Second",
+            "total": "Total Disk Size (GB)",
+            "free": "Free Disk Space (GB)",
+            "used": "Used Disk Space (GB)",
+            "avail": "Available Disk Space (GB)",
+            "usePercent": "Disk Usage Percentage (%)",
+            "readsRate": "Reads per Second (IO/s)",
+            "writesRate": "Writes per Second (IO/s)"
+          },
+          "network": {
+            "mbPerSecond": "MB per Second",
+            "bytes": "Bytes",
+            "errorPackets": "Error Packets",
+            "rxBytes": "Received Total Bytes (GB)",
+            "rxBytesRate": "Received MB per Second (MB/s)",
+            "rxErrors": "Received Error Packets (packets)",
+            "txBytes": "Sent Total Bytes (GB)",
+            "txBytesRate": "Sent MB per Second (MB/s)"
+          }
+        }
       }
     }
   }

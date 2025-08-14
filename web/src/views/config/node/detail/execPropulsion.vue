@@ -4,6 +4,9 @@ import { modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { node } from '@/api/tester';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   nodeId: string;
@@ -43,7 +46,7 @@ const loadNodeProcess = async () => {
 
 const columns = [
   {
-    title: '进程ID',
+    title: t('node.nodeDetail.execPropulsion.columns.processId'),
     dataIndex: 'processID',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -57,7 +60,7 @@ const columns = [
     }
   },
   {
-    title: '运行时间',
+    title: t('node.nodeDetail.execPropulsion.columns.runTime'),
     dataIndex: 'upTime',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -79,7 +82,7 @@ const columns = [
     }
   },
   {
-    title: '用户',
+    title: t('node.nodeDetail.execPropulsion.columns.user'),
     dataIndex: 'user',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -93,7 +96,7 @@ const columns = [
     }
   },
   {
-    title: '可使用虚拟内存',
+    title: t('node.nodeDetail.execPropulsion.columns.virtualMemory'),
     dataIndex: 'virtualSize',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -107,7 +110,7 @@ const columns = [
     }
   },
   {
-    title: '线程数',
+    title: t('node.nodeDetail.execPropulsion.columns.threadCount'),
     dataIndex: 'threadCount',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -121,7 +124,7 @@ const columns = [
     }
   },
   {
-    title: '打开文件数',
+    title: t('node.nodeDetail.execPropulsion.columns.openFiles'),
     dataIndex: 'openFiles',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -135,7 +138,7 @@ const columns = [
     }
   },
   {
-    title: '写磁盘',
+    title: t('node.nodeDetail.execPropulsion.columns.writeDisk'),
     dataIndex: 'bytesWritten',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -149,7 +152,7 @@ const columns = [
     }
   },
   {
-    title: '读磁盘',
+    title: t('node.nodeDetail.execPropulsion.columns.readDisk'),
     dataIndex: 'bytesRead',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -163,7 +166,7 @@ const columns = [
     }
   },
   {
-    title: '操作',
+    title: t('node.nodeDetail.execPropulsion.columns.action'),
     dataIndex: 'action',
     customCell: (_, idx) => {
       if (idx % 2 === 0) {
@@ -180,7 +183,7 @@ const columns = [
 
 const killProcess = (item) => {
   modal.confirm({
-    content: `确认强制退出进程【${item.processID}】？`,
+    content: `${t('node.nodeDetail.execPropulsion.confirmKillProcess', { processId: item.processID })}`,
     async onOk () {
       const [error] = await node.killRunnerProcess({
         nodeId: props.nodeId,
@@ -190,7 +193,7 @@ const killProcess = (item) => {
       if (error) {
         return;
       }
-      notification.success('进程退出成功');
+      notification.success(t('node.nodeDetail.execPropulsion.processExitSuccess'));
       loadNodeProcess();
     }
   });
@@ -208,23 +211,23 @@ onMounted(() => {
     <div class="flex space-x-8 pb-3">
       <div class="text-center p-2 rounded">
         <div class="text-6 font-semibold text-text-sub-content">{{ dataSource.processCount || '--' }}</div>
-        <div class="text-theme-title font-medium">进程数</div>
+        <div class="text-theme-title font-medium">{{ t('node.nodeDetail.execPropulsion.processCount') }}</div>
       </div>
       <div class="text-center p-2 rounded">
         <div class="text-6 font-semibold text-text-sub-content">{{ dataSource.threadCount || '--' }}</div>
-        <div class="text-theme-title font-medium">线程数</div>
+        <div class="text-theme-title font-medium">{{ t('node.nodeDetail.execPropulsion.threadCount') }}</div>
       </div>
       <div class="text-center p-2 rounded">
         <div class="text-6 font-semibold text-text-sub-content">{{ dataSource.openFiles || '--' }}</div>
-        <div class="text-theme-title font-medium">打开文件数</div>
+        <div class="text-theme-title font-medium">{{ t('node.nodeDetail.execPropulsion.openFiles') }}</div>
       </div>
       <div class="text-center p-2 rounded">
         <div class="text-6 font-semibold text-text-sub-content">{{ dataSource.bytesWritten || '--' }}</div>
-        <div class="text-theme-title font-medium">写磁盘</div>
+        <div class="text-theme-title font-medium">{{ t('node.nodeDetail.execPropulsion.writeDisk') }}</div>
       </div>
       <div class="text-center p-2 rounded">
         <div class="text-6 font-semibold text-text-sub-content">{{ dataSource.bytesRead || '--' }}</div>
-        <div class="text-theme-title font-medium">读磁盘</div>
+        <div class="text-theme-title font-medium">{{ t('node.nodeDetail.execPropulsion.readDisk') }}</div>
       </div>
     </div>
     <Table
@@ -243,7 +246,7 @@ onMounted(() => {
             type="link"
             size="small"
             @click="killProcess(record)">
-            强制退出(kill)
+            {{ t('node.nodeDetail.execPropulsion.killProcess') }}
           </Button>
         </template>
       </template>
