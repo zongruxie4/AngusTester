@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
 import { NodeRole, utils, enumUtils, appContext } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { sortOpt } from './interface';
 import { pubStore } from '@/api/store';
@@ -37,16 +40,16 @@ const searchOpt = [
     type: 'input',
     allowClear: true,
     valueKey: 'name',
-    label: '节点',
-    placeholder: '查询节点名称、ID',
+    label: t('node.searchOptions.node.label'),
+    placeholder: t('node.searchOptions.node.placeholder'),
     maxlength: 100
   },
   {
     type: 'input',
     allowClear: true,
     valueKey: 'ip',
-    label: 'IP',
-    placeholder: '查询节点IP',
+    label: t('node.searchOptions.ip.label'),
+    placeholder: t('node.searchOptions.ip.placeholder'),
     op: 'EQUAL',
     maxlength: 100
   },
@@ -55,16 +58,16 @@ const searchOpt = [
     allowClear: true,
     valueKey: 'role',
     enumKey: NodeRole,
-    label: '角色',
+    label: t('node.searchOptions.role.label'),
     op: 'IN',
-    placeholder: '选择角色'
+    placeholder: t('node.searchOptions.role.placeholder')
   },
   {
     type: 'select-user',
     allowClear: true,
     valueKey: 'createdBy',
-    label: '添加人',
-    placeholder: '选择添加人',
+    label: t('node.searchOptions.creator.label'),
+    placeholder: t('node.searchOptions.creator.placeholder'),
     maxlength: 100
   },
   {
@@ -72,15 +75,15 @@ const searchOpt = [
     allowClear: true,
     valueKey: 'source',
     enumKey: NodeSource,
-    label: '来源',
-    placeholder: '选择来源'
+    label: t('node.searchOptions.source.label'),
+    placeholder: t('node.searchOptions.source.placeholder')
   }
 ];
 
 const pagination = reactive({
   current: 1,
   pageSize: 5,
-  showTotal: total => `共${total}条`,
+  showTotal: total => t('node.labels.totalCount', { total }),
   showSizeChanger: true,
   total: 0
 });
@@ -198,7 +201,7 @@ onMounted(async () => {
           class="flex space-x-1"
           @click="handleAdd">
           <Icon icon="icon-jia" />
-          添加节点
+          {{ t('node.buttons.addNode') }}
         </Button>
         <!-- <ButtonAuth
           v-if="editionType === 'CLOUD_SERVICE'"
@@ -212,10 +215,10 @@ onMounted(async () => {
           class="flex space-x-1"
           @click="gotoBuy">
           <Icon icon="icon-zaixiangoumai" />
-          购买节点
+          {{ t('node.buttons.buyNode') }}
         </Button>
         <div>
-          <span class="text-3 mr-1">自动刷新</span>
+          <span class="text-3 mr-1">{{ t('node.labels.autoRefresh') }}</span>
           <Switch v-model:checked="autoRefresh" size="small"></Switch>
         </div>
         <DropdownSort
@@ -224,7 +227,7 @@ onMounted(async () => {
           @click="sort">
           <Button class="rounded ml-3" size="small">
             <Icon icon="icon-shunxu" class="text-3.5 mr-1" />
-            <span>排序</span>
+            <span>{{ t('node.buttons.sort') }}</span>
           </Button>
         </DropdownSort>
         <Button
@@ -233,7 +236,7 @@ onMounted(async () => {
           :disabled="loading"
           @click="handleRefreshList">
           <IconRefresh class="text-3.5 mr-1" :loading="loading" />
-          <span>刷新</span>
+          <span>{{ t('node.buttons.refresh') }}</span>
         </Button>
       </div>
     </div>

@@ -158,6 +158,41 @@
         "diskUsageMustBeLessThan100": "Disk usage must be less than 100%",
         "networkUsageMustBeLessThan10000MB": "Network usage must be less than 10000MB"
       }
+    },
+    "node": {
+      "title": "Node Management",
+      "buttons": {
+        "addNode": "Add Node",
+        "buyNode": "Buy Node",
+        "sort": "Sort",
+        "refresh": "Refresh"
+      },
+      "labels": {
+        "autoRefresh": "Auto Refresh",
+        "totalCount": "Total {total} items"
+      },
+      "searchOptions": {
+        "node": {
+          "label": "Node",
+          "placeholder": "Search node name, ID"
+        },
+        "ip": {
+          "label": "IP",
+          "placeholder": "Search node IP"
+        },
+        "role": {
+          "label": "Role",
+          "placeholder": "Select role"
+        },
+        "creator": {
+          "label": "Creator",
+          "placeholder": "Select creator"
+        },
+        "source": {
+          "label": "Source",
+          "placeholder": "Select source"
+        }
+      }
     }
   }
 } 

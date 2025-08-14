@@ -180,6 +180,41 @@
         "diskUsageMustBeLessThan100": "磁盘使用率须小于100%之间",
         "networkUsageMustBeLessThan10000MB": "网络使用量须小于10000MB"
       }
+    },
+    "node": {
+      "title": "节点管理",
+      "buttons": {
+        "addNode": "添加节点",
+        "buyNode": "购买节点",
+        "sort": "排序",
+        "refresh": "刷新"
+      },
+      "labels": {
+        "autoRefresh": "自动刷新",
+        "totalCount": "共{total}条"
+      },
+      "searchOptions": {
+        "node": {
+          "label": "节点",
+          "placeholder": "查询节点名称、ID"
+        },
+        "ip": {
+          "label": "IP",
+          "placeholder": "查询节点IP"
+        },
+        "role": {
+          "label": "角色",
+          "placeholder": "选择角色"
+        },
+        "creator": {
+          "label": "添加人",
+          "placeholder": "选择添加人"
+        },
+        "source": {
+          "label": "来源",
+          "placeholder": "选择来源"
+        }
+      }
     }
   }
 }
