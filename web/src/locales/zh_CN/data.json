@@ -102,6 +102,19 @@
           "description": "根据一个SQL语句从数据源表中提取一组值作为数据集。"
         }
       }
+    },
+    "importDataset": {
+      "title": "上传数据集",
+      "uploadArea": {
+        "selectFile": "选择文件",
+        "description": "可直接将文件拖入此区域直接上传，文件大小不超过{maxSize}M，支持.json,.yaml,.yml类型文件。"
+      },
+      "fileSizeError": "文件大小不能超过{maxSize}M",
+      "duplicateStrategy": {
+        "title": "遇到重复时的处理策略",
+        "cover": "覆盖",
+        "ignore": "忽略"
+      }
     }
   }
 }

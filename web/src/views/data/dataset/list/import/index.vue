@@ -3,8 +3,11 @@ import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
 import { dataSet } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { formatBytes } from '@/utils/common';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -38,7 +41,7 @@ const uploadChange = async ({ file }: { file: UploadFile }) => {
   }
 
   if (file?.size && file.size > maxFileSize.value) {
-    uploadErrorMsg.value = `文件大小不能超过${MAX_SIZE}M`;
+    uploadErrorMsg.value = t('dataset.importDataset.fileSizeError', { maxSize: MAX_SIZE });
     originFile.value = undefined;
     return;
   }
@@ -109,7 +112,7 @@ const ellipsis = computed(() => {
     :width="600"
     :okButtonProps="okButtonProps"
     :confirmLoading="loading"
-    title="上传数据集"
+    :title="t('dataset.importDataset.title')"
     @cancel="cancel"
     @ok="ok">
     <Spin :spinning="loading" class="mb-5">
@@ -123,9 +126,9 @@ const ellipsis = computed(() => {
         @change="uploadChange">
         <div class="flex flex-col items-center justify-center text-3 leading-5">
           <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-          <div class="mt-1 mb-1.5 text-text-link">选择文件</div>
+          <div class="mt-1 mb-1.5 text-text-link">{{ t('dataset.importDataset.uploadArea.selectFile') }}</div>
           <div class="text-theme-sub-content">
-            可直接将文件拖入此区域直接上传，文件大小不超过{{ MAX_SIZE }}M，支持.json,.yaml,.yml类型文件。
+            {{ t('dataset.importDataset.uploadArea.description', { maxSize: MAX_SIZE }) }}
           </div>
         </div>
       </UploadDragger>
@@ -153,10 +156,10 @@ const ellipsis = computed(() => {
     </Spin>
 
     <div class="space-y-0.5 leading-5 text-3">
-      <div>遇到重复时的处理策略</div>
+      <div>{{ t('dataset.importDataset.duplicateStrategy.title') }}</div>
       <RadioGroup v-model:value="strategyWhenDuplicated">
-        <Radio value="COVER">覆盖</Radio>
-        <Radio value="IGNORE">忽略</Radio>
+        <Radio value="COVER">{{ t('dataset.importDataset.duplicateStrategy.cover') }}</Radio>
+        <Radio value="IGNORE">{{ t('dataset.importDataset.duplicateStrategy.ignore') }}</Radio>
       </RadioGroup>
     </div>
   </Modal>

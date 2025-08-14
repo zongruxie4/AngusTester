@@ -102,6 +102,19 @@
           "description": "Extract a set of values from a data source table as a dataset according to an SQL statement."
         }
       }
+    },
+    "importDataset": {
+      "title": "Upload Dataset",
+      "uploadArea": {
+        "selectFile": "Select File",
+        "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+      },
+      "fileSizeError": "File size cannot exceed {maxSize}M",
+      "duplicateStrategy": {
+        "title": "Processing strategy when encountering duplicates",
+        "cover": "Cover",
+        "ignore": "Ignore"
+      }
     }
   }
 }
