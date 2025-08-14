@@ -113,6 +113,26 @@
           "description": "Used to prevent unauthorized or illegal access, such as sending requests with valid authentication tokens, ensuring that the response does not return 401 invalid authorization or 403 insufficient permissions."
         }
       }
+    },
+    "performance": {
+      "title": "Platform Default Performance Indicators",
+      "labels": {
+        "concurrentUsers": "Concurrent Users",
+        "testDuration": "Test Duration",
+        "responseTime": "Response Time (RT)",
+        "tps": "Transactions Per Second (TPS)",
+        "errorRate": "Error Rate (ErrorRate)",
+        "rampUpThreads": "Ramp-up Threads",
+        "rampUpDuration": "Ramp-up Duration"
+      },
+      "messages": {
+        "allFieldsRequired": "All fields are required",
+        "concurrentUsersMustBeGreaterThanZero": "Concurrent users must be greater than zero",
+        "testDurationMustBeGreaterThanZero": "Test duration must be greater than zero",
+        "responseTimeMustBeGreaterThanZero": "Response time must be greater than zero",
+        "tpsMustBeGreaterThanZero": "TPS must be greater than zero",
+        "errorRateMustBeBetween0And100": "Error rate must be between 0% and 100%"
+      }
     }
   }
 } 

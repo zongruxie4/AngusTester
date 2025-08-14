@@ -135,6 +135,26 @@
           "description": "用于防止未授权或不合法的访问，如使用有效的身份验证令牌发送请求，确保响应返回不是401无效授权或者403权限不足。"
         }
       }
+    },
+    "performance": {
+      "title": "平台默认性能指标",
+      "labels": {
+        "concurrentUsers": "并发数 (用户)",
+        "testDuration": "测试时长",
+        "responseTime": "响应时间 (RT)",
+        "tps": "每秒事务数 (TPS)",
+        "errorRate": "错误率 (ErrorRate)",
+        "rampUpThreads": "增压并发数",
+        "rampUpDuration": "增压测试时长"
+      },
+      "messages": {
+        "allFieldsRequired": "各项均为必填项",
+        "concurrentUsersMustBeGreaterThanZero": "并发数须大于零",
+        "testDurationMustBeGreaterThanZero": "测试时长须大于零",
+        "responseTimeMustBeGreaterThanZero": "响应时间须大于零",
+        "tpsMustBeGreaterThanZero": "吞吐量须大于零",
+        "errorRateMustBeBetween0And100": "错误率须在0% 到 100% 之间"
+      }
     }
   }
 }

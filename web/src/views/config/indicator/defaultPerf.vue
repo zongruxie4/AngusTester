@@ -7,6 +7,9 @@ import { Button } from 'ant-design-vue';
 import ExpandGrid from './expandGrid.vue';
 import { setting } from '@/api/gm';
 import { splitDuration } from '@/utils/utils';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const editable = ref(false);
 const editInfo = ref({
@@ -83,27 +86,27 @@ const blurRampUpInterval = () => {
 const saveInfo = async () => {
   const [durationValue] = splitDuration(editInfo.value.duration);
   if (!durationValue || !editInfo.value.art || !editInfo.value.threads || !editInfo.value.errorRate || !editInfo.value.tps) {
-    notification.error('各项均为必填项');
+    notification.error(t('indicator.performance.messages.allFieldsRequired'));
     return;
   }
   if (editInfo.value.threads === '0') {
-    notification.error('并发数须大于零');
+    notification.error(t('indicator.performance.messages.concurrentUsersMustBeGreaterThanZero'));
     return;
   }
   if (durationValue === '0') {
-    notification.error('测试时长须大于零');
+    notification.error(t('indicator.performance.messages.testDurationMustBeGreaterThanZero'));
     return;
   }
   if (editInfo.value.art === '0') {
-    notification.error('响应时间须大于零');
+    notification.error(t('indicator.performance.messages.responseTimeMustBeGreaterThanZero'));
     return;
   }
   if (editInfo.value.tps === '0') {
-    notification.error('吞吐量须大于零');
+    notification.error(t('indicator.performance.messages.tpsMustBeGreaterThanZero'));
     return;
   }
   if (+editInfo.value.errorRate < 0 || +editInfo.value.errorRate > 100) {
-    notification.error('错误率须在0% 到 100% 之间');
+    notification.error(t('indicator.performance.messages.errorRateMustBeBetween0And100'));
     return;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -123,16 +126,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <ExpandGrid title="平台默认性能指标">
+  <ExpandGrid :title="t('indicator.performance.title')">
     <template #button>
       <div class="text-3 flex items-center">
         <template v-if="editable">
-          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />取消</span>
+          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('actions.cancel') }}</span>
           <Button
             type="text"
             class="ml-2 text-3 py-0 h-5"
             @click.stop="saveInfo">
-            <Icon icon="icon-baocun" class="mr-1" />保存
+            <Icon icon="icon-baocun" class="mr-1" />{{ t('actions.save') }}
           </Button>
         </template>
         <Button
@@ -140,14 +143,14 @@ onMounted(() => {
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="handleEditPerform">
-          <Icon icon="icon-shuxie" class="mr-1" />编辑
+          <Icon icon="icon-shuxie" class="mr-1" />{{ t('actions.edit') }}
         </Button>
       </div>
     </template>
     <template #default>
       <ul class="flex text-3 pt-3 quota-wrapper pl-3 space-x-8">
         <li>
-          <div class="quota-label">并发数 (用户)</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.concurrentUsers') }}</div>
           <div v-if="editable">
             <Input
               v-model:value="editInfo.threads"
@@ -158,7 +161,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.threads }}</div>
         </li>
         <li>
-          <div class="quota-label">测试时长</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.testDuration') }}</div>
           <div v-if="editable" class="flex items-center">
             <!-- <span class="pr-3">>=</span> -->
             <ShortDuration
@@ -172,7 +175,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.duration }}</div>
         </li>
         <li>
-          <div class="quota-label">响应时间 (RT)</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.responseTime') }}</div>
           <div v-if="editable" class="flex items-center">
             <Select
               v-model:value="editInfo.percentile"
@@ -192,7 +195,7 @@ onMounted(() => {
           <div v-else class="min-w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.percentileName }}&lt;={{ info.art }}ms</div>
         </li>
         <li>
-          <div class="quota-label">每秒事务数 (TPS)</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.tps') }}</div>
           <div v-if="editable" class="flex items-center">
             <span class="pr-2">>=</span>
             <Input
@@ -204,7 +207,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2"> >= {{ info.tps }}</div>
         </li>
         <li>
-          <div class="quota-label">错误率 (ErrorRate)</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.errorRate') }}</div>
           <div v-if="editable">
             <span class="pr-2">&lt;=</span>
             <Input
@@ -218,7 +221,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2"> &lt;= {{ info.errorRate }}% </div>
         </li>
         <li>
-          <div class="quota-label">增压并发数</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.rampUpThreads') }}</div>
           <div v-if="editable">
             <Input
               v-model:value="editInfo.rampUpThreads"
@@ -229,7 +232,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2"> {{ info.rampUpThreads }} </div>
         </li>
         <li>
-          <div class="quota-label">增压测试时长</div>
+          <div class="quota-label">{{ t('indicator.performance.labels.rampUpDuration') }}</div>
           <div v-if="editable">
             <ShortDuration
               v-model:value="editInfo.rampUpInterval"
