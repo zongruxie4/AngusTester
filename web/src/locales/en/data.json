@@ -115,6 +115,10 @@
         "cover": "Cover",
         "ignore": "Ignore"
       }
+    },
+    "exportModal": {
+      "title": "Download Dataset",
+      "format": "Format"
     }
   }
 }
