@@ -5,6 +5,9 @@ import { Icon, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, utils } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -36,7 +39,7 @@ const recoverAll = async () => {
     return;
   }
 
-  notification.success('全部还原成功');
+  notification.success(t('apiTrash.messages.recoverAllSuccess'));
   refreshNotify.value = utils.uuid();
 };
 
@@ -49,7 +52,7 @@ const deleteAll = async () => {
     return;
   }
 
-  notification.success('全部删除成功');
+  notification.success(t('apiTrash.messages.deleteAllSuccess'));
   refreshNotify.value = utils.uuid();
 };
 
@@ -106,7 +109,7 @@ const handleTableChange = (listData, key) => {
           :allowClear="true"
           :maxlength="200"
           trim
-          placeholder="请输入查询关键字"
+          :placeholder="t('apiTrash.searchPlaceholder')"
           class="w-75"
           @change="inputChange">
           <template #suffix>
@@ -115,7 +118,7 @@ const handleTableChange = (listData, key) => {
         </Input>
         <div class="flex-1 truncate text-theme-sub-content space-x-1 ml-2">
           <Icon icon="icon-tishi1" class="text-3.5 text-tips" />
-          <span>只允许管理员和删除人还原或彻底删除回收站数据。</span>
+          <span>{{ t('apiTrash.tips') }}</span>
         </div>
       </div>
       <div class="space-x-2.5">
@@ -125,7 +128,7 @@ const handleTableChange = (listData, key) => {
           type="primary"
           @click="recoverAll">
           <Icon icon="icon-zhongzhi" class="text-3.5 mr-1" />
-          <span class>全部还原</span>
+          <span class>{{ t('apiTrash.buttons.recoverAll') }}</span>
         </Button>
         <Button
           :disabled="buttonDisabled"
@@ -134,20 +137,20 @@ const handleTableChange = (listData, key) => {
           danger
           @click="deleteAll">
           <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-          <span class>全部删除</span>
+          <span class>{{ t('actions.deleteAll') }}</span>
         </Button>
         <Button
           size="small"
           type="default"
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span class>刷新</span>
+          <span class>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
 
     <Tabs v-model:activeKey="activeKey">
-      <TabPane key="SERVICE" tab="服务">
+      <TabPane key="SERVICE" :tab="t('apiTrash.tabs.service')">
         <Table
           v-model:spinning="loading"
           :notify="refreshNotify"
@@ -157,7 +160,7 @@ const handleTableChange = (listData, key) => {
           @tableChange="handleTableChange($event, 'SERVICE')" />
       </TabPane>
 
-      <TabPane key="API" tab="接口">
+      <TabPane key="API" :tab="t('apiTrash.tabs.api')">
         <Table
           v-model:spinning="loading"
           :notify="refreshNotify"

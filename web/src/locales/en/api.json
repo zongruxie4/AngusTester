@@ -1444,6 +1444,34 @@
     "introduce": {
       "title": "About Sharing",
       "description": "When you need to integrate interfaces with external partners, customers, or other teams, you can use the \"Share\" feature to pass interface information to them, simplifying the communication process. Sharing includes detailed interface description information, including interface servers, authentication, interface addresses, request formats, and response formats, ensuring everyone has a consistent understanding of the interface."
+    },
+    "apiTrash": {
+      "title": "Trash",
+      "searchPlaceholder": "Please enter search keywords",
+      "tips": "Only administrators and deleters can restore or permanently delete trash data.",
+      "buttons": {
+        "recoverAll": "Restore All"
+      },
+      "tabs": {
+        "service": "Service",
+        "api": "API"
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "createdBy": "Created By",
+          "deletedBy": "Deleted By",
+          "deletedDate": "Deleted Date",
+          "action": "Action"
+        },
+        "actions": {
+          "recover": "Restore"
+        }
+      },
+      "messages": {
+        "recoverAllSuccess": "All restored successfully",
+        "recoverSuccess": "Restored successfully"
+      }
     }
   }
 } 

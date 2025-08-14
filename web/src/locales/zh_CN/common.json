@@ -40,7 +40,8 @@
     "enabled": "启用",
     "disabled": "禁用",
     "saveAndAdd": "保存并添加下一条",
-    "stop": "终止"
+    "stop": "终止",
+    "deleteAll": "全部删除"
   },
   "orgNames": {
     "user": "用户",

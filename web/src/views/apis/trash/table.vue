@@ -3,6 +3,9 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
@@ -53,7 +56,7 @@ const recoverHandler = async (data: TrashItem) => {
     return;
   }
 
-  notification.success('还原成功');
+  notification.success(t('apiTrash.messages.recoverSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -66,7 +69,7 @@ const deleteHandler = async (data: TrashItem) => {
     return;
   }
 
-  notification.success('删除成功');
+  notification.success(t('tips.deleteSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -150,32 +153,32 @@ const columns = [
   //   sorter: false
   // },
   {
-    title: '名称',
+    title: t('apiTrash.table.columns.name'),
     dataIndex: 'targetName',
     width: '35%',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '添加人',
+    title: t('apiTrash.table.columns.createdBy'),
     dataIndex: 'createdByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除人',
+    title: t('apiTrash.table.columns.deletedBy'),
     dataIndex: 'deletedByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除时间',
+    title: t('apiTrash.table.columns.deletedDate'),
     dataIndex: 'deletedDate',
     ellipsis: true,
     sorter: true
   },
   {
-    title: '操作',
+    title: t('apiTrash.table.columns.action'),
     dataIndex: 'action',
     width: 70
   }
@@ -225,7 +228,7 @@ const emptyTextStyle = {
       <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
         <Button
           :disabled="record.disabled"
-          title="还原"
+          :title="t('apiTrash.table.actions.recover')"
           size="small"
           type="text"
           class="space-x-1 flex items-center p-0"
@@ -234,7 +237,7 @@ const emptyTextStyle = {
         </Button>
         <Button
           :disabled="record.disabled"
-          title="删除"
+          :title="t('actions.delete')"
           size="small"
           type="text"
           class="space-x-1 flex items-center p-0"
