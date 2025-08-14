@@ -1,61 +1,64 @@
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
 
 export const formItems = [
   {
-    label: '节点名称',
+    label: t('node.nodeItem.interface.formItems.nodeName'),
     inputType: 'text',
-    placeholder: '输入限制200字符以内',
+    placeholder: t('node.nodeItem.interface.formItems.inputLimit200'),
     valueKey: 'name',
     required: true,
     maxlength: 200,
     width: '18%'
   },
   {
-    label: '内网IP',
+    label: t('node.nodeItem.interface.formItems.intranetIP'),
     inputType: 'text',
-    placeholder: '输入节点IP地址',
+    placeholder: t('node.nodeItem.interface.formItems.inputNodeIP'),
     valueKey: 'ip',
     required: true,
     maxlength: 15,
     width: '18%'
   },
   {
-    label: '公网IP',
+    label: t('node.nodeItem.interface.formItems.publicIP'),
     inputType: 'text',
-    placeholder: '输入节点IP地址',
+    placeholder: t('node.nodeItem.interface.formItems.inputNodeIP'),
     valueKey: 'publicIp',
     required: false,
     maxlength: 15,
     width: '18%'
   },
   {
-    label: '域名',
+    label: t('node.nodeItem.interface.formItems.domain'),
     inputType: 'text',
-    placeholder: '输入节点域名',
+    placeholder: t('node.nodeItem.interface.formItems.inputNodeDomain'),
     valueKey: 'domain',
     maxlength: 200,
     width: '33.3%'
   },
   {
-    label: '用户名',
+    label: t('node.nodeItem.interface.formItems.username'),
     inputType: 'text',
-    placeholder: '输入用户名',
+    placeholder: t('node.nodeItem.interface.formItems.inputUsername'),
     valueKey: 'username',
     maxlength: 200,
     width: '18%'
   },
   {
-    label: '密码',
+    label: t('node.nodeItem.interface.formItems.password'),
     inputType: 'text',
     type: 'password',
-    placeholder: '输入密码',
+    placeholder: t('node.nodeItem.interface.formItems.inputPassword'),
     valueKey: 'password',
     maxlength: 800,
     width: '18%'
   },
   {
-    label: 'SSH端口',
+    label: t('node.nodeItem.interface.formItems.sshPort'),
     inputType: 'number',
-    placeholder: '输入SSH端口',
+    placeholder: t('node.nodeItem.interface.formItems.inputSSHPort'),
     valueKey: 'sshPort',
     width: '18%'
   }
@@ -63,29 +66,29 @@ export const formItems = [
 
 export const roleOptions = [
   {
-    label: '管理节点',
+    label: t('node.nodeItem.interface.roleOptions.managementNode'),
     value: 'manage'
   },
   {
-    label: '压测节点',
+    label: t('node.nodeItem.interface.roleOptions.pressureTestNode'),
     value: 'test'
   },
   {
-    label: 'Mock节点',
+    label: t('node.nodeItem.interface.roleOptions.mockNode'),
     value: 'mock'
   },
   {
-    label: '应用节点',
+    label: t('node.nodeItem.interface.roleOptions.applicationNode'),
     value: 'application'
   }
 ];
 
 export const nodeStatus = [
   {
-    label: '启用状态：',
+    label: t('node.nodeItem.interface.nodeStatus.enabledStatus'),
     valueName: {
-      true: '已启用',
-      false: '未启用'
+      true: t('node.nodeItem.interface.nodeStatus.enabled'),
+      false: t('node.nodeItem.interface.nodeStatus.notEnabled')
     },
     status: {
       true: 'success',
@@ -94,11 +97,11 @@ export const nodeStatus = [
     valueKey: 'enabled'
   },
   {
-    label: '代理安装状态：',
+    label: t('node.nodeItem.interface.nodeStatus.agentInstallStatus'),
     valueKey: 'installAgent',
     valueName: {
-      true: '已安装',
-      false: '未安装'
+      true: t('node.nodeItem.interface.nodeStatus.installed'),
+      false: t('node.nodeItem.interface.nodeStatus.notInstalled')
     },
     status: {
       true: 'success',
@@ -106,11 +109,11 @@ export const nodeStatus = [
     }
   },
   {
-    label: '连接状态：',
+    label: t('node.nodeItem.interface.nodeStatus.connectionStatus'),
     valueKey: 'online',
     valueName: {
-      true: '已连接',
-      false: '未连接'
+      true: t('node.nodeItem.interface.nodeStatus.connected'),
+      false: t('node.nodeItem.interface.nodeStatus.notConnected')
     },
     status: {
       true: 'success',
@@ -121,32 +124,32 @@ export const nodeStatus = [
 
 export const viewItem = [
   {
-    label: 'ID: ',
+    label: t('node.nodeItem.interface.viewItem.id'),
     valueKey: 'id'
   },
   {
-    label: '内网IP: ',
+    label: t('node.nodeItem.interface.viewItem.intranetIP'),
     valueKey: 'ip'
   },
   {
-    label: '公网IP: ',
+    label: t('node.nodeItem.interface.viewItem.publicIP'),
     valueKey: 'publicIp'
   },
   {
-    label: '来源: ',
+    label: t('node.nodeItem.interface.viewItem.source'),
     valueKey: 'sourceName'
   },
   {
-    label: '角色: ',
+    label: t('node.nodeItem.interface.viewItem.role'),
     valueKey: 'roles',
     type: 'tag'
   },
   {
-    label: '规格: ',
+    label: t('node.nodeItem.interface.viewItem.specification'),
     valueKey: 'standard'
   },
   {
-    label: '系统: ',
+    label: t('node.nodeItem.interface.viewItem.system'),
     valueKey: 'os',
     type: 'tag'
   }
@@ -154,32 +157,32 @@ export const viewItem = [
 
 export const nodeUseProgresses = [
   {
-    label: 'CPU',
+    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu'
   },
   {
-    label: '内存',
+    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory'
   },
   {
-    label: '文件系统',
+    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk'
   },
   {
-    label: '交换区',
+    label: t('node.nodeItem.interface.nodeUseProgresses.swapArea'),
     value: 0,
     valueKey: 'swap'
   },
   {
-    label: '上传',
+    label: t('actions.upload'),
     value: 29,
     valueKey: 'network-up'
   },
   {
-    label: '下载',
+    label: t('actions.download'),
     value: 29,
     valueKey: 'network-down'
   }
