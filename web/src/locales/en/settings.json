@@ -98,6 +98,21 @@
           }
         }
       }
+    },
+    "function": {
+      "title": "Platform Default Function Indicators",
+      "buttons": {
+      },
+      "testCases": {
+        "smoke": {
+          "title": "Smoke Test Cases",
+          "description": "Used for developers or testers to quickly verify whether the basic functionality of the interface is available."
+        },
+        "security": {
+          "title": "Security Test Cases",
+          "description": "Used to prevent unauthorized or illegal access, such as sending requests with valid authentication tokens, ensuring that the response does not return 401 invalid authorization or 403 insufficient permissions."
+        }
+      }
     }
   }
 } 

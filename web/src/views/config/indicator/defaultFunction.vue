@@ -5,6 +5,9 @@ import ExpandGrid from './expandGrid.vue';
 import { Button, RadioGroup, Switch } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
 import { setting } from '@/api/gm';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 冒烟测试指标选项
 const smokeEnumOpt = ref<{value: string; label: string}[]>([]);
@@ -101,16 +104,16 @@ onMounted(() => {
 });
 </script>
 <template>
-  <ExpandGrid title="平台默认功能指标">
+  <ExpandGrid :title="t('indicator.function.title')">
     <template #button>
       <div class="text-3 flex items-center">
         <template v-if="editable">
-          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />取消</span>
+          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('actions.cancel') }}</span>
           <Button
             type="text"
             class="ml-2 text-3 py-0 h-5"
             @click.stop="saveInfo">
-            <Icon icon="icon-baocun" class="mr-1" />保存
+            <Icon icon="icon-baocun" class="mr-1" />{{ t('actions.save') }}
           </Button>
         </template>
         <Button
@@ -118,7 +121,7 @@ onMounted(() => {
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="handleEditPerform">
-          <Icon icon="icon-shuxie" class="mr-1" />编辑
+          <Icon icon="icon-shuxie" class="mr-1" />{{ t('actions.edit') }}
         </Button>
       </div>
     </template>
@@ -127,7 +130,7 @@ onMounted(() => {
         <div class="flex flex-1 pr-8 items-center">
           <Icon icon="icon-maoyanceshi" class="text-4" />
           <div class="px-4">
-            <div class="title-normal">冒烟测试用例</div>
+            <div class="title-normal">{{ t('indicator.function.testCases.smoke.title') }}</div>
           </div>
           <Switch
             v-model:checked="settingData.smoke"
@@ -137,7 +140,7 @@ onMounted(() => {
         <div class="flex flex-1 pr-8 items-center ">
           <Icon icon="icon-anquanceshi" class="text-4" />
           <div class="px-4">
-            <div class="title-normal">安全测试用例</div>
+            <div class="title-normal">{{ t('indicator.function.testCases.security.title') }}</div>
           </div>
           <Switch
             v-model:checked="settingData.security"
@@ -146,8 +149,8 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex text-3 px-3 items-center">
-        <div class="mt-2 pl-8 flex-1">用于开发人员或者测试人员快速验证接口基本功能是否可用。</div>
-        <div class="mt-2 pl-8 flex-1">用于防止未授权或不合法的访问，如使用有效的身份验证令牌发送请求，确保响应返回不是401无效授权或者403权限不足。</div>
+        <div class="mt-2 pl-8 flex-1">{{ t('indicator.function.testCases.smoke.description') }}</div>
+        <div class="mt-2 pl-8 flex-1">{{ t('indicator.function.testCases.security.description') }}</div>
       </div>
       <div class="flex text-3 px-3 pb-3">
         <div class="mt-2 pl-8 flex-1">
