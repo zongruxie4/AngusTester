@@ -1065,6 +1065,96 @@
           "off": "After enabling \"no permission control\", all users under the account will be allowed to publicly view and operate services and APIs under the service."
         }
       }
+    },
+    "mockService": {
+      "columns": {
+        "name": "Name",
+        "serviceDomainUrl": "Service URL",
+        "servicePort": "Port",
+        "nodeName": "Node",
+        "status": "Status",
+        "auth": "Permission",
+        "createdByName": "Creator",
+        "createdDate": "Created Date"
+      },
+      "stats": {
+        "apisNum": "API Count",
+        "requestNum": "Request Count",
+        "pushbackNum": "Pushback Count",
+        "simulateErrorNum": "Simulated Error Count",
+        "successNum": "Success Count",
+        "exceptionNum": "Exception Count"
+      },
+      "actions": {
+        "cancelAssociate": "Cancel Association",
+        "generate": "Generate",
+        "associate": "Associate",
+        "copy": "Copy"
+      },
+      "messages": {
+        "associateSuccess": "Associated successfully",
+        "cancelAssociateSuccess": "Association cancelled successfully"
+      },
+      "options": {
+        "generateMockService": "Generate Mock Service",
+        "associateMockService": "Associate Mock Service"
+      },
+      "hints": {
+        "generateMockService": "Generate Mock service based on current service.",
+        "associateMockService": "Associate current service with existing Mock service."
+      },
+      "auth": {
+        "hasPermission": "Has permission restrictions",
+        "noPermission": "No permission restrictions"
+      },
+      "modal": {
+        "title": "Mock Service Permission",
+        "onTips": "After enabling permission control, you need to manually authorize to have corresponding operation permissions.",
+        "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+      },
+      "form": {
+        "title": "Generate Mock Service",
+        "name": "Name",
+        "namePlaceholder": "Service identification naming information, maximum 100 characters allowed",
+        "domain": "Domain",
+        "domainPlaceholder": "After setting a domain for the service, you can access Mock APIs through the domain",
+        "port": "Port",
+        "portPlaceholder": "Port that the service listens on, cannot be modified after service is added (1~65535)",
+        "node": "Node",
+        "nodePlaceholder": "Node where the service runs, cannot be modified after service is added",
+        "service": "Service",
+        "servicePlaceholder": "Select or search service",
+        "api": "API",
+        "domainSuffix": ".angusmock.cloud",
+        "nodeFormat": "{name} ( {ip} )",
+        "serviceFormat": "S"
+      },
+      "validation": {
+        "nameRequired": "Please enter name",
+        "domainRequired": "Please enter domain",
+        "domainInvalid": "Please enter correct domain",
+        "portRequired": "Please enter port (1~65535)",
+        "nodeRequired": "Please select node"
+      },
+      "messages": {
+        "addSuccess": "Added successfully",
+        "updateSuccess": "Updated successfully"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      },
+      "placeholder": {
+        "selectMockService": "Please select Mock service"
+      },
+      "description": {
+        "title": "Mock services can quickly generate and simulate APIs you depend on, enabling parallel development and testing, thereby accelerating development speed, achieving more comprehensive testing, and delivering stable products or applications earlier. You can create corresponding simulated interfaces for current service APIs through two methods: \"Generate Mock Service\" or \"Associate Mock Service\". These simulated interfaces will provide mock data for API debugging and testing.",
+        "generateMockService": "Create new Mock service based on current service APIs. After creation, you can use these Mock APIs for data simulation and state testing, achieving more efficient API debugging.",
+        "associateMockService": "Associate current service with existing Mock service. After association, the system will automatically generate corresponding Mock APIs in the associated Mock service. These APIs can be used for data simulation and state testing in API debugging."
+      },
+      "modal": {
+        "associateTitle": "Associate Mock Service"
+      }
     }
   }
 } 

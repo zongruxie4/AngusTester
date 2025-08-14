@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Modal, notification, Select, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
@@ -13,6 +14,7 @@ interface Props {
   serviceId: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   serviceId: undefined
@@ -47,9 +49,9 @@ const loading = ref(false);
 const domainRegex = /^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9\\-]{0,61}[a-z0-9])\.angusmock\.cloud$/;
 const serviceDomainValidate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入域名'));
+    return Promise.reject(new Error(t('service.mockService.validation.domainRequired')));
   } else if (!domainRegex.test(value + '.angusmock.cloud')) {
-    return Promise.reject(new Error('请输入正确的域名'));
+    return Promise.reject(new Error(t('service.mockService.validation.domainInvalid')));
   } else {
     return Promise.resolve();
   }
@@ -57,9 +59,9 @@ const serviceDomainValidate = async (_rule: Rule, value: string) => {
 
 const rules = computed(() => {
   const baseRule = {
-    name: [{ required: true, message: '请输入名称', trigger: 'change' }],
-    servicePort: [{ required: true, message: '请输入端口（1~65535）', trigger: 'change' }],
-    nodeId: [{ required: true, message: '请选择节点', trigger: 'change' }]
+    name: [{ required: true, message: t('service.mockService.validation.nameRequired'), trigger: 'change' }],
+    servicePort: [{ required: true, message: t('service.mockService.validation.portRequired'), trigger: 'change' }],
+    nodeId: [{ required: true, message: t('service.mockService.validation.nodeRequired'), trigger: 'change' }]
   };
 
   const privateRule = {
@@ -97,7 +99,7 @@ const handleSave = () => {
     const [error, { data }] = projectDetail.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(projectDetail.value?.mockServiceId ? '更新成功' : '添加成功');
+    notification.success(projectDetail.value?.mockServiceId ? t('tips.updateSuccess') : t('tips.addSuccess'));
     emits('update:visible', false);
     emits('reload', data.id);
     reset();
@@ -146,7 +148,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="生成Mock服务"
+    :title="t('service.mockService.form.title')"
     :visible="props.visible"
     :width="760"
     :footer="null"
@@ -160,23 +162,23 @@ onMounted(() => {
         :rules="rules">
         <div class="flex">
           <div>
-            <FormItem label="名称" required />
+            <FormItem :label="t('service.mockService.form.name')" required />
             <FormItem
-              label="域名"
+              :label="t('service.mockService.form.domain')"
               :required="!isPrivate"
               :class="isPrivate?'pl-2.25':''" />
-            <FormItem label="端口" required />
-            <FormItem label="节点" required />
-            <FormItem label="服务" required />
+            <FormItem :label="t('service.mockService.form.port')" required />
+            <FormItem :label="t('service.mockService.form.node')" required />
+            <FormItem :label="t('service.mockService.form.service')" required />
             <template v-if="formState.serviceId && projectDetail?.hasApis">
-              <FormItem label="接口" />
+              <FormItem :label="t('service.mockService.form.api')" />
             </template>
           </div>
           <div class="w-150">
             <FormItem name="name">
               <Input
                 v-model:value="formState.name"
-                placeholder="服务标识命名信息，最多允许100个字符"
+                :placeholder="t('service.mockService.form.namePlaceholder')"
                 :disabled="projectDetail?.mockServiceId"
                 :maxlength="100" />
             </FormItem>
@@ -184,9 +186,9 @@ onMounted(() => {
               <Input
                 v-model:value="formState.serviceDomainUrl"
                 :disabled="projectDetail?.mockServiceId"
-                placeholder="为服务设置域名后，您可以通过域名访问Mock接口">
+                :placeholder="t('service.mockService.form.domainPlaceholder')">
                 <template v-if="!isPrivate && !projectDetail?.mockServiceId" #addonAfter>
-                  <span>.angusmock.cloud</span>
+                  <span>{{ t('service.mockService.form.domainSuffix') }}</span>
                 </template>
               </Input>
             </FormItem>
@@ -194,7 +196,7 @@ onMounted(() => {
               <Input
                 v-model:value="formState.servicePort"
                 dataType="number"
-                placeholder="服务所监听的端口，服务添加后不允许修改(1~65535)"
+                :placeholder="t('service.mockService.form.portPlaceholder')"
                 :disabled="projectDetail?.mockServiceId"
                 :min="1"
                 :max="65535" />
@@ -207,10 +209,10 @@ onMounted(() => {
                 :fieldNames="{label:'name',value:'id'}"
                 :maxlength="100"
                 showSearch
-                placeholder="服务所运行的节点，服务添加后不允许修改"
+                :placeholder="t('service.mockService.form.nodePlaceholder')"
                 size="small">
                 <template #option="item">
-                  {{ `${item.name} ( ${item.ip} )` }}
+                  {{ t('service.mockService.form.nodeFormat', { name: item.name, ip: item.ip }) }}
                 </template>
               </Select>
             </FormItem>
@@ -224,11 +226,11 @@ onMounted(() => {
                 disabled
                 showSearch
                 allowClear
-                placeholder="选择或查询服务"
+                :placeholder="t('service.mockService.form.servicePlaceholder')"
                 @change="treeSelectChange">
                 <template #title="item">
                   <div class="text-3 leading-3 flex items-center h-6.5">
-                    <label class="w-4 h-4 leading-4 rounded-full text-white text-center mr-1" :class="`bg-blue-badge-s`">S</label>
+                    <label class="w-4 h-4 leading-4 rounded-full text-white text-center mr-1" :class="`bg-blue-badge-s`">{{ t('service.mockService.form.serviceFormat') }}</label>
                     <div :title="item.name" class="truncate">{{ item.name }}</div>
                   </div>
                 </template>
@@ -245,12 +247,12 @@ onMounted(() => {
         </div>
       </Form>
       <div class="flex justify-end space-x-5 mt-5">
-        <Button size="small" @click="cancel">取消</Button>
+        <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
         <Button
           size="small"
           type="primary"
           @click="handleSave">
-          确定
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </Spin>

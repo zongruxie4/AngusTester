@@ -1710,6 +1710,96 @@
           "off": "开启\"无权限控制\"后，将允许账号下所有用户公开查看和操作服务及服务下接口。"
         }
       }
+    },
+    "mockService": {
+      "columns": {
+        "name": "名称",
+        "serviceDomainUrl": "服务地址",
+        "servicePort": "端口",
+        "nodeName": "节点",
+        "status": "状态",
+        "auth": "权限",
+        "createdByName": "添加人",
+        "createdDate": "添加时间"
+      },
+      "stats": {
+        "apisNum": "接口数",
+        "requestNum": "请求数",
+        "pushbackNum": "回推数",
+        "simulateErrorNum": "模拟异常数",
+        "successNum": "成功数",
+        "exceptionNum": "异常数"
+      },
+      "actions": {
+        "cancelAssociate": "取消关联",
+        "generate": "生成",
+        "associate": "关联",
+        "copy": "复制"
+      },
+      "messages": {
+        "associateSuccess": "关联成功",
+        "cancelAssociateSuccess": "取消关联成功"
+      },
+      "options": {
+        "generateMockService": "生成Mock服务",
+        "associateMockService": "关联Mock服务"
+      },
+      "hints": {
+        "generateMockService": "基于当前服务生成Mock服务。",
+        "associateMockService": "当前服务关联已存在的Mock服务。"
+      },
+      "auth": {
+        "hasPermission": "有权限控制",
+        "noPermission": "无权限控制"
+      },
+      "modal": {
+        "title": "Mock服务权限",
+        "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
+        "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+      },
+      "form": {
+        "title": "生成Mock服务",
+        "name": "名称",
+        "namePlaceholder": "服务标识命名信息，最多允许100个字符",
+        "domain": "域名",
+        "domainPlaceholder": "为服务设置域名后，您可以通过域名访问Mock接口",
+        "port": "端口",
+        "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
+        "node": "节点",
+        "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
+        "service": "服务",
+        "servicePlaceholder": "选择或查询服务",
+        "api": "接口",
+        "domainSuffix": ".angusmock.cloud",
+        "nodeFormat": "{name} ( {ip} )",
+        "serviceFormat": "S"
+      },
+      "validation": {
+        "nameRequired": "请输入名称",
+        "domainRequired": "请输入域名",
+        "domainInvalid": "请输入正确的域名",
+        "portRequired": "请输入端口（1~65535）",
+        "nodeRequired": "请选择节点"
+      },
+      "messages": {
+        "addSuccess": "添加成功",
+        "updateSuccess": "更新成功"
+      },
+      "buttons": {
+        "cancel": "取消",
+        "confirm": "确定"
+      },
+      "placeholder": {
+        "selectMockService": "请选择Mock服务"
+      },
+      "description": {
+        "title": "Mock服务可快速生成并模拟您所依赖的API，使开发和测试能够并行进行，从而加快开发速度，实现更全面的测试，并更早地交付稳定的产品或应用。您可以通过"生成Mock服务"或"关联Mock服务"两种方式，为当前服务的接口创建对应的模拟接口。这些模拟接口将提供模拟数据，便于进行接口调试和测试。",
+        "generateMockService": "基于当前服务接口创建新的Mock服务。创建后，您可以使用这些Mock接口进行数据模拟和状态测试，从而实现更高效的接口调试。",
+        "associateMockService": "将当前服务与已有的Mock服务关联。关联后，系统会在关联的Mock服务中自动生成对应的Mock接口。这些接口可用于接口调试中的数据模拟和状态测试。"
+      },
+      "modal": {
+        "associateTitle": "关联Mock服务"
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, IconCopy, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
@@ -14,6 +15,7 @@ interface Props {
   id: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
@@ -26,14 +28,14 @@ const mockServiceInfo = ref();
 const loading = ref();
 
 const columns = [[
-  { label: '名称', dataIndex: 'name' },
-  { label: '服务地址', dataIndex: 'serviceDomainUrl' },
-  { label: '端口', dataIndex: 'servicePort' },
-  { label: '节点', dataIndex: 'nodeName' },
-  { label: '状态', dataIndex: 'status' },
-  { label: '权限', dataIndex: 'auth' },
-  { label: '添加人', dataIndex: 'createdByName' },
-  { label: '添加时间', dataIndex: 'createdDate' }
+  { label: t('service.mockService.columns.name'), dataIndex: 'name' },
+  { label: t('service.mockService.columns.serviceDomainUrl'), dataIndex: 'serviceDomainUrl' },
+  { label: t('service.mockService.columns.servicePort'), dataIndex: 'servicePort' },
+  { label: t('service.mockService.columns.nodeName'), dataIndex: 'nodeName' },
+  { label: t('service.mockService.columns.status'), dataIndex: 'status' },
+  { label: t('service.mockService.columns.auth'), dataIndex: 'auth' },
+  { label: t('service.mockService.columns.createdByName'), dataIndex: 'createdByName' },
+  { label: t('service.mockService.columns.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const selectedMockServiceId = ref();
@@ -53,7 +55,7 @@ const relatedMockService = async () => {
   if (error) {
     return;
   }
-  notification.success('关联成功');
+  notification.success(t('service.mockService.messages.associateSuccess'));
   loadProjectMockService();
 };
 
@@ -68,32 +70,32 @@ const apisCount = ref({
 
 const mockServiceCount = [
   {
-    name: '接口数',
+    name: t('service.mockService.stats.apisNum'),
     key: 'apisNum',
     icon: 'icon-jiekoushu'
   },
   {
-    name: '请求数',
+    name: t('service.mockService.stats.requestNum'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-    name: '回推数',
+    name: t('service.mockService.stats.pushbackNum'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-    name: '模拟异常数',
+    name: t('service.mockService.stats.simulateErrorNum'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-    name: '成功数',
+    name: t('service.mockService.stats.successNum'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-    name: '异常数',
+    name: t('service.mockService.stats.exceptionNum'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }
@@ -119,7 +121,7 @@ const cencelProjcetMock = async () => {
   const [error] = await mock.cancelMockServiceAssoc(mockServiceInfo.value.id);
   loading.value = false;
   if (error) { return; }
-  notification.success('取消关联成功');
+  notification.success(t('service.mockService.messages.cancelAssociateSuccess'));
   mockServiceInfo.value = undefined;
 };
 
@@ -164,10 +166,10 @@ const statusStyleMap = {
             <div class="flex items-start text-3 leading-5">
               <a class="text-text-link" @click="gotoMock">{{ text }}</a>
               <template v-if="props.disabled">
-                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">取消关联</a>
+                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">取消关联</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
             </div>
           </template>
@@ -179,7 +181,7 @@ const statusStyleMap = {
           </template>
           <template #auth="{ text }">
             <div class="flex items-center text-3">
-              <div>{{ text ? '有权限控制' : '无权限控制' }}</div>
+              <div>{{ text ? t('service.mockService.auth.hasPermission') : t('service.mockService.auth.noPermission') }}</div>
               <template v-if="props.disabled">
                 <Icon icon="icon-shuxie" class="text-text-disabled text-3 cursor-not-allowed ml-2" />
               </template>
@@ -199,13 +201,13 @@ const statusStyleMap = {
               <div>
                 <div v-if="text" class="flex items-start">
                   <span>{{ text }}</span>
-                  <span title="复制">
+                  <span :title="t('service.mockService.actions.copy')">
                     <IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" />
                   </span>
                 </div>
                 <div v-if="mockServiceInfo?.serviceHostUrl">
                   <span>{{ mockServiceInfo.serviceHostUrl }}</span>
-                  <span title="复制">
+                  <span :title="t('service.mockService.actions.copy')">
                     <IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockServiceInfo.serviceHostUrl" />
                   </span>
                 </div>
@@ -230,29 +232,29 @@ const statusStyleMap = {
       <template v-else>
         <div class="flex flex-col space-y-3.5">
           <RadioGroup v-model:value="createType">
-            <Radio value="1">生成Mock服务</Radio>
-            <Radio value="2">关联Mock服务</Radio>
+            <Radio value="1">{{ t('service.mockService.options.generateMockService') }}</Radio>
+            <Radio value="2">{{ t('service.mockService.options.associateMockService') }}</Radio>
           </RadioGroup>
           <template v-if="createType === '1'">
-            <Hints text="基于当前服务生成Mock服务。" />
+            <Hints :text="t('service.mockService.hints.generateMockService')" />
             <div class="flex justify-end">
               <Button
                 size="small"
                 type="primary"
                 :disabled="props.disabled"
                 @click="createMockSeviceById">
-                生成
+                {{ t('service.mockService.actions.generate') }}
               </Button>
             </div>
           </template>
           <template v-else>
-            <Hints text="当前服务关联已存在的Mock服务。" />
+            <Hints :text="t('service.mockService.hints.associateMockService')" />
             <Select
               v-model:value="selectedMockServiceId"
               :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxlength="100"
-              placeholder="请选择Mock服务"
+              :placeholder="t('service.mockService.placeholder.selectMockService')"
               showSearch />
             <div class="flex justify-end">
               <Button
@@ -260,7 +262,7 @@ const statusStyleMap = {
                 size="small"
                 type="primary"
                 @click="relatedMockService">
-                关联
+                {{ t('service.mockService.actions.associate') }}
               </Button>
             </div>
           </template>
@@ -284,9 +286,9 @@ const statusStyleMap = {
         :updateUrl="`${TESTER}/mock/service/auth`"
         :enabledUrl="`${TESTER}/mock/service/${mockServiceInfo.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/mock/service/${mockServiceInfo.id}/auth/status`"
-        onTips="开启权限控制后，需要手动授权后才会有相应操作权限。"
-        offTips="无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-        title="Mock服务权限"
+        :onTips="t('service.mockService.modal.onTips')"
+        :offTips="t('service.mockService.modal.offTips')"
+        :title="t('service.mockService.modal.title')"
         @change="authFlagChange" />
     </AsyncComponent>
   </div>
