@@ -355,6 +355,79 @@
             "txBytes": "Sent Total Bytes (GB)",
             "txBytesRate": "Sent MB per Second (MB/s)"
           }
+        },
+        "nodeItem": {
+          "buttons": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "testConnection": "Test Connection",
+            "edit": "Edit",
+            "enable": "Enable",
+            "disable": "Disable",
+            "delete": "Delete",
+            "onlineInstall": "Online Install",
+            "manualInstall": "Manual Install",
+            "restartProxy": "Restart Proxy"
+          },
+          "labels": {
+            "role": "Role",
+            "required": "Required",
+            "portRangeTip": "Please enter port number range between 1 ~ 65535",
+            "selectRole": "Please select role",
+            "connectionSuccess": "Connection successful",
+            "connectionFailed": "Connection failed, please check and re-fill node information before testing connection again",
+            "estimatedTime": "Estimated to take one minute",
+            "installSuccess": "Installation successful",
+            "updateNodeSuccess": "Update node successful",
+            "addNodeSuccess": "Add node successful",
+            "modifyNodeNameSuccess": "Modify node name successful",
+            "addNode": "Add Node",
+            "inputLimit200": "Input limit 200 characters",
+            "installAgentTip": "Detect that the node has not installed the agent, please install the agent first and then use it",
+            "freeNode": "Free Node",
+            "nodeTip": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+            "nodeTip2": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+            "managerNode": "Management Node: ",
+            "controllerNode": "Controller Node: ",
+            "execNode": "Execution Node: ",
+            "mockNode": "Mock Node: ",
+            "appNode": "Application Node: ",
+            "managerNodeDesc": "Deploy and run Web UI applications",
+            "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and proxy services.",
+            "execNodeDesc": "Used for executing functional tests, performance tests, data generation, etc.",
+            "mockNodeDesc": "Runs Mock services and Mock interfaces.",
+            "appNodeDesc": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues.",
+            "copySuccess": "Copied to clipboard"
+          },
+          "tips": {
+            "editOwnNode": "Only own node can be deleted",
+            "editPermission": "Edit node requires system administrator or application administrator permissions",
+            "disableDelete": "Node must be disabled before deletion",
+            "deletePermission": "Delete node requires system administrator or application administrator permissions",
+            "deleteOwnNode": "Only own node can be deleted",
+            "alreadyInstalled": "Already installed",
+            "installPermission": "Online install agent requires system administrator or application administrator permissions",
+            "manualInstallPermission": "Manual install agent requires system administrator or application administrator permissions",
+            "roleDescription": "You can check the corresponding role of the node according to your actual needs",
+            "roleHint": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+            "managementNode": "Management Node: Deploy and run Web UI applications",
+            "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and proxy services.",
+            "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
+            "mockNode": "Mock Node: Runs Mock services and Mock interfaces.",
+            "applicationNode": "Application Node: The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues."
+          },
+          "confirm": {
+            "deleteNode": "Are you sure to delete node [{name}]?"
+          },
+          "installSteps": {
+            "linuxTitle": "Linux or Mac System Automatic Installation Steps",
+            "configTitle": "Installation Configuration Information",
+            "description": "Script must be executed as root user, installation directory is the directory where the script is located",
+            "method1": "Installation Method 1:",
+            "method2": "Installation Method 2:",
+            "downloadScript": "1). Download automatic installation script:",
+            "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
+          }
         }
       }
     }

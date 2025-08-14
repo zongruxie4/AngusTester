@@ -4,6 +4,9 @@ import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } fr
 import { Grid, Hints, Icon, Input, modal, notification, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { appContext, toClipboard } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
@@ -115,10 +118,10 @@ const cancel = (state) => {
 // 编辑几点按钮禁用提示
 const getEditTip = (node) => {
   if (node.source?.value !== 'OWN_NODE') {
-    return '只允许删除自有节点';
+    return t('node.nodeItem.tips.editOwnNode');
   }
   if (!props.isAdmin) {
-    return '编辑节点需要系统管理员或应用管理员权限';
+    return t('node.nodeItem.tips.editPermission');
   }
 };
 
@@ -157,9 +160,9 @@ const saveNode = async () => {
       return;
     }
     if (nodeParams.id) {
-      notification.success('更新节点成功');
+      notification.success(t('node.nodeItem.labels.updateNodeSuccess'));
     } else {
-      notification.success('添加节点成功');
+      notification.success(t('node.nodeItem.labels.addNodeSuccess'));
     }
     emits('loadList');
   }
@@ -168,20 +171,20 @@ const saveNode = async () => {
 // 删除按钮禁用提示
 const getDelTip = (node) => {
   if (node.enabled) {
-    return '节点禁用后才能删除';
+    return t('node.nodeItem.tips.disableDelete');
   }
   if (!props.isAdmin) {
-    return '删除节点需要系统管理员或应用管理员权限';
+    return t('node.nodeItem.tips.deletePermission');
   }
   if (node.source?.value !== 'OWN_NODE') {
-    return '只能删除自有节点';
+    return t('node.nodeItem.tips.deleteOwnNode');
   }
 };
 
 // 删除
 const delNode = (state) => {
   modal.confirm({
-    content: `确定删除节点【${state.name}】吗?`,
+    content: t('node.nodeItem.confirm.deleteNode', { name: state.name }),
     onOk: async () => {
       const [error] = await node.deleteNode({ ids: state.id });
       if (error) {
@@ -195,10 +198,10 @@ const delNode = (state) => {
 // 安装 代理按钮禁用提示
 const getOnlineInstallTip = (node) => {
   if (node.geAgentInstallationCmd) {
-    return '已安装';
+    return t('node.nodeItem.tips.alreadyInstalled');
   }
   if (props.isAdmin) {
-    return '在线安装代理需要系统管理员或应用管理员权限';
+    return t('node.nodeItem.tips.installPermission');
   }
 };
 
@@ -230,7 +233,7 @@ const installAgent = async (state) => {
     return;
   }
   emits('loadList');
-  notification.success('安装成功');
+  notification.success(t('node.nodeItem.labels.installSuccess'));
 };
 
 // 收起手动安装代理
@@ -329,7 +332,7 @@ const nodeNameBlur = async (name, id) => {
       node.name = editNameValue.value;
     }
   });
-  notification.success('修改节点名称成功');
+  notification.success(t('node.nodeItem.labels.modifyNodeNameSuccess'));
 };
 
 // 网络接口
@@ -515,7 +518,7 @@ const toggleShowCtrlAccessToken = (id) => {
 
 const copyContent = (text) => {
   toClipboard(text).then(() => {
-    notification.success('已复制到剪贴板');
+    notification.success(t('node.nodeItem.labels.copySuccess'));
   });
 };
 
@@ -533,7 +536,7 @@ defineExpose({ add, startInterval });
     :class="{'border-blue-text-active': state.editable}">
     <div class="py-2 px-4 font-semibold bg-gray-2 flex justify-between border-b text-3">
       <div class="flex items-center">
-        <span v-if="!state.id">添加节点</span>
+        <span v-if="!state.id">{{ t('node.nodeItem.buttons.addNode') }}</span>
         <template v-else>
           <template v-if="editNameId !== state.id">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
@@ -547,7 +550,7 @@ defineExpose({ add, startInterval });
             <Input
               ref="editNameInputref"
               v-model:value="editNameValue"
-              class="输入限制200字符以内'"
+              :placeholder="t('node.nodeItem.labels.inputLimit200')"
               trim
               :maxlength="200"
               @blur="nodeNameBlur(state.name, state.id)" />
@@ -557,7 +560,7 @@ defineExpose({ add, startInterval });
           color="#fff"
           overlayClassName="proxy-uninstall"
           placement="right">
-          <template #title><div class="text-3">检测到该节点还未安装代理，请先安装代理后在进行使用</div></template>
+          <template #title><div class="text-3">{{ t('node.nodeItem.labels.installAgentTip') }}</div></template>
           <p v-show="!state.installAgent && !!state.id" class="text-http-put ml-6 cursor-pointer"><Icon icon="icon-tishi1" class="text-3.5" /></p>
         </Tooltip>
       </div>
@@ -566,7 +569,7 @@ defineExpose({ add, startInterval });
           v-if="state.free"
           color="success"
           class="h-5 leading-5 mr-4">
-          免费节点
+          {{ t('node.nodeItem.labels.freeNode') }}
         </Tag>
         <div
           v-for="item in nodeStatus"
@@ -597,26 +600,26 @@ defineExpose({ add, startInterval });
             <span
               v-if="item.required"
               class="text-status-error absolute left-0 -bottom-1.5"
-              :class="[validated && !(nodeParams[item.valueKey]?.trim()) ? 'inline' : 'hidden']">必填项</span>
+              :class="[validated && !(nodeParams[item.valueKey]?.trim()) ? 'inline' : 'hidden']">{{ t('node.nodeItem.labels.required') }}</span>
             <span
               v-if="item.valueKey === 'sshPort'"
               class="text-status-error absolute left-0 -bottom-1.5"
-              :class="[showPortTip ? 'inline' : 'hidden']">请填写端口号范围在1 ~ 65535之间</span>
+              :class="[showPortTip ? 'inline' : 'hidden']">{{ t('node.nodeItem.labels.portRangeTip') }}</span>
           </div>
           <div class="mt-4 w-1/3">
-            角色 <span class="text-status-error">*</span>
+            {{ t('node.nodeItem.labels.role') }} <span class="text-status-error">*</span>
             <Popover
               title="可根据您的实际需求，勾选节点对应的角色"
               placement="bottomLeft"
               class="text-3">
               <template #content>
                 <div class="max-w-200 text-3">
-                  <p>提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。</p>
-                  <p class="pl-3"><span>-管理节点: </span>部署和运行Web UI应用</p>
-                  <p class="pl-3"><span>-控制器节点: </span>用于调度、管理、监控执行和代理服务。</p>
-                  <p class="pl-3"><span>-执行节点: </span>用于执行功能测试、性能测试、生成数据等。</p>
-                  <p class="pl-3"><span>-Mock节点: </span>运行Mock服务和Mock接口。</p>
-                  <p class="pl-3"><span>-应用节点: </span>测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题。</p>
+                  <p>{{ t('node.nodeItem.labels.nodeTip') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.managerNode') }}</span>{{ t('node.nodeItem.desc.managerNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.controllerNode') }}</span>{{ t('node.nodeItem.desc.controllerNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.execNode') }}</span>{{ t('node.nodeItem.desc.execNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.mockNode') }}</span>{{ t('node.nodeItem.desc.mockNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.appNode') }}</span>{{ t('node.nodeItem.desc.appNodeDesc') }}</p>
                 </div>
               </template>
               <Icon icon="icon-shuoming" class="text-blue-light text-3.5 leading-3 ml-1.5" />
@@ -629,7 +632,7 @@ defineExpose({ add, startInterval });
               </CheckboxGroup>
               <span
                 class="text-status-error"
-                :class="[validated && nodeParams.roles.length < 1 ? 'block' : 'hidden']">请选择角色</span>
+                :class="[validated && nodeParams.roles.length < 1 ? 'block' : 'hidden']">{{ t('node.nodeItem.labels.selectRole') }}</span>
             </div>
           </div>
         </div>
@@ -639,22 +642,22 @@ defineExpose({ add, startInterval });
             type="primary"
             class="node-normal-btn"
             @click="saveNode">
-            保存
+            {{ t('actions.save') }}
           </Button>
-          <Button class="node-normal-btn" @click="cancel(state)">取消</Button>
+          <Button class="node-normal-btn" @click="cancel(state)">{{ t('node.nodeItem.buttons.cancel') }}</Button>
           <Button
             :disabled="testBtnDisable"
             class="node-normal-btn"
             @click="test">
-            测试链接
+            {{ t('node.nodeItem.buttons.testConnection') }}
           </Button>
           <p v-show="showTested && testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-duihao" class="text-status-success mr-1.5 icon-text-3 leading-3" />
-            连接成功
+            {{ t('node.nodeItem.labels.connectionSuccess') }}
           </p>
           <p v-show="showTested && !testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-chahao" class="text-status-error mr-1.5 icon-text-3 leading-3" />
-            连接失败，请检查并重新填写节点信息后再次测试连接, {{ testFailContent }}
+            {{ t('node.nodeItem.labels.connectionFailed') }}, {{ testFailContent }}
           </p>
         </div>
       </div>
@@ -694,7 +697,7 @@ defineExpose({ add, startInterval });
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-shuxie" />
-                  编辑
+                  {{ t('actions.edit') }}
                 </Button>
               </Tooltip>
               <Button
@@ -704,7 +707,7 @@ defineExpose({ add, startInterval });
                 class="flex space-x-1"
                 @click="changeEditable(state)">
                 <Icon icon="icon-shuxie" />
-                编辑
+                {{ t('actions.edit') }}
               </Button>
               <Button
                 type="text"
@@ -714,7 +717,7 @@ defineExpose({ add, startInterval });
                 class="flex space-x-1"
                 @click="enable(state)">
                 <Icon :icon="state.enabled?'icon-jinyong':'icon-qiyong'" />
-                {{ state.enabled?'禁用':'启用' }}
+                {{ state.enabled ? t('node.nodeItem.buttons.disable') : t('node.nodeItem.buttons.enable') }}
               </Button>
               <Tooltip v-if="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id) || state.enabled" :title="getDelTip(state)">
                 <Button
@@ -724,7 +727,7 @@ defineExpose({ add, startInterval });
                   class="flex space-x-1"
                   @click="enable(state)">
                   <Icon icon="icon-qingchu" />
-                  删除
+                  {{ t('actions.delete') }}
                 </Button>
               </Tooltip>
               <!-- <ButtonAuth
@@ -740,7 +743,7 @@ defineExpose({ add, startInterval });
                 class="flex space-x-1"
                 @click="delNode(state)">
                 <Icon icon="icon-qingchu" />
-                删除
+                {{ t('actions.delete') }}
               </Button>
               <Tooltip v-if="state.free" :title="getOnlineInstallTip(state)">
                 <!-- <ButtonAuth
@@ -754,7 +757,7 @@ defineExpose({ add, startInterval });
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-anzhuangdaili" />
-                  在线安装
+                  {{ t('node.nodeItem.buttons.onlineInstall') }}
                 </Button>
               </Tooltip>
               <Button
@@ -764,11 +767,11 @@ defineExpose({ add, startInterval });
                 :loading="installingMap[state.id]"
                 @click="installAgent(state)">
                 <Icon icon="icon-anzhuangdaili" class="mr-1" />
-                <span> 在线安装 </span>
+                <span> {{ t('node.nodeItem.buttons.onlineInstall') }} </span>
                 <Hints
                   v-if="installingMap[state.id]"
                   class="ml-1"
-                  text="预计需要一分钟" />
+                  :text="t('node.nodeItem.labels.estimatedTime')" />
               </Button>
               <Tooltip v-if="state.free" :title="!props.isAdmin ? `手动安装代理需要系统管理员或应用管理员权限` : ''">
                 <!-- <ButtonAuth
@@ -782,7 +785,7 @@ defineExpose({ add, startInterval });
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-anzhuangdaili" />
-                  手动安装
+                  {{ t('node.nodeItem.buttons.manualInstall') }}
                 </Button>
               </Tooltip>
               <!-- <ButtonAuth
@@ -798,7 +801,7 @@ defineExpose({ add, startInterval });
                 class="flex space-x-1"
                 @click="showInstallStep(state)">
                 <Icon icon="icon-anzhuangdaili" />
-                手动安装
+                {{ t('node.nodeItem.buttons.manualInstall') }}
               </Button>
               <Button
                 type="text"
@@ -808,7 +811,7 @@ defineExpose({ add, startInterval });
                 :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
                 @click="restartProxy(state)">
                 <Icon icon="icon-zhongxinkaishi" />
-                重启代理
+                {{ t('node.nodeItem.buttons.restartProxy') }}
               </Button>
             </div>
           </div>
@@ -838,20 +841,20 @@ defineExpose({ add, startInterval });
         </div>
         <div v-show="state.showInstallAgent" class="border-t pt-4 pb-4 relative">
           <Tabs size="small">
-            <TabPane key="linux" tab="Linux或者Mac系统自动安装步骤">
-              <div class="text-3">必须以root用户执行脚本, 安装目录为脚本所在目录</div>
+            <TabPane key="linux" :tab="t('node.nodeItem.installSteps.linuxTitle')">
+              <div class="text-3">{{ t('node.nodeItem.installSteps.description') }}</div>
               <div class="text-3">
-                安装方式1：<Icon
+                {{ t('node.nodeItem.installSteps.method1') }}<Icon
                   icon="icon-fuzhi"
                   class="cursor-pointer text-3.5 text-blue-1"
                   @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd)" />
                 <p class="install-step whitespace-pre-line">
                   {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                 </p>
-                安装方式2：
+                {{ t('node.nodeItem.installSteps.method2') }}
                 <p class="install-step whitespace-pre-line">
-                  1).下载自动安装脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                  2).将{{ state.linuxOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br />
+                  {{ t('node.nodeItem.installSteps.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
+                  {{ t('node.nodeItem.installSteps.copyScript', { scriptName: state.linuxOfflineInstallSteps?.installScriptName }) }}<br />
                   {{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                 </p>
               </div>
@@ -871,7 +874,7 @@ defineExpose({ add, startInterval });
             <!--                </p>-->
             <!--              </div>-->
             <!--            </TabPane>-->
-            <TabPane key="config" tab="安装配置信息">
+            <TabPane key="config" :tab="t('node.nodeItem.installSteps.configTitle')">
               <Grid
                 :dataSource="state.installConfig"
                 :columns="installConfigColumns">
@@ -925,7 +928,7 @@ defineExpose({ add, startInterval });
             type="link"
             size="small"
             @click="foldInstallAgent(state)">
-            收起
+            {{ t('node.nodeItem.buttons.fold') }}
           </Button>
         </div>
       </div>
