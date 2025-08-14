@@ -133,6 +133,31 @@
         "tpsMustBeGreaterThanZero": "TPS must be greater than zero",
         "errorRateMustBeBetween0And100": "Error rate must be between 0% and 100%"
       }
+    },
+    "stability": {
+      "title": "Platform Default Stability Indicators",
+      "labels": {
+        "concurrentUsers": "Concurrent Users",
+        "testDuration": "Test Duration",
+        "responseTime": "Response Time (RT)",
+        "errorRate": "Error Rate (ErrorRate)",
+        "tps": "Transactions Per Second (TPS)",
+        "systemLoad": "Application System Average Load",
+        "cpuUsage": "CPU Usage",
+        "memoryUsage": "Memory Usage",
+        "diskUsage": "Disk Usage",
+        "networkUsage": "Network Usage"
+      },
+      "messages": {
+        "allFieldsRequired": "All fields are required",
+        "concurrentUsersMustBeGreaterThanZero": "Concurrent users must be greater than zero",
+        "testDurationMustBeGreaterThanZero": "Test duration must be greater than zero",
+        "errorRateMustBeBetween0And100": "Error rate must be between 0% and 100%",
+        "cpuUsageMustBeLessThan100": "CPU usage must be less than 100%",
+        "memoryUsageMustBeLessThan100": "Memory usage must be less than 100%",
+        "diskUsageMustBeLessThan100": "Disk usage must be less than 100%",
+        "networkUsageMustBeLessThan10000MB": "Network usage must be less than 10000MB"
+      }
     }
   }
 } 

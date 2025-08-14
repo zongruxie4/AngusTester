@@ -155,6 +155,31 @@
         "tpsMustBeGreaterThanZero": "吞吐量须大于零",
         "errorRateMustBeBetween0And100": "错误率须在0% 到 100% 之间"
       }
+    },
+    "stability": {
+      "title": "平台默认稳定性指标",
+      "labels": {
+        "concurrentUsers": "并发数 (用户)",
+        "testDuration": "测试时长",
+        "responseTime": "响应时间 (RT)",
+        "errorRate": "错误率 (ErrorRate)",
+        "tps": "每秒事务数（TPS）",
+        "systemLoad": "应用系统平均负载",
+        "cpuUsage": "CPU使用率",
+        "memoryUsage": "内存使用率",
+        "diskUsage": "磁盘使用率",
+        "networkUsage": "网络使用量"
+      },
+      "messages": {
+        "allFieldsRequired": "各项均为必填项",
+        "concurrentUsersMustBeGreaterThanZero": "并发数须大于零",
+        "testDurationMustBeGreaterThanZero": "测试时长须大于零",
+        "errorRateMustBeBetween0And100": "错误率须在0% 到 100% 之间",
+        "cpuUsageMustBeLessThan100": "CPU使用率须小于100%之间",
+        "memoryUsageMustBeLessThan100": "内存使用率须小于100%之间",
+        "diskUsageMustBeLessThan100": "磁盘使用率须小于100%之间",
+        "networkUsageMustBeLessThan10000MB": "网络使用量须小于10000MB"
+      }
     }
   }
 }

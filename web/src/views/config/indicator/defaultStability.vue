@@ -8,6 +8,9 @@ import { splitDuration } from '@/utils/utils';
 
 import ExpandGrid from './expandGrid.vue';
 import { setting } from '@/api/gm';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const editable = ref(false);
 const visible = ref(true);
@@ -84,35 +87,35 @@ const loadInfo = async () => {
 const saveInfo = async () => {
   const [durationValue] = splitDuration(editInfo.value.duration);
   if (!durationValue || !editInfo.value.threads || !editInfo.value.errorRate) {
-    notification.error('各项均为必填项');
+    notification.error(t('indicator.stability.messages.allFieldsRequired'));
     return;
   }
   if (editInfo.value.threads === '0') {
-    notification.error('并发数须大于零');
+    notification.error(t('indicator.stability.messages.concurrentUsersMustBeGreaterThanZero'));
     return;
   }
   if (durationValue === '0') {
-    notification.error('测试时长须大于零');
+    notification.error(t('indicator.stability.messages.testDurationMustBeGreaterThanZero'));
     return;
   }
   if (+editInfo.value.errorRate < 0 || +editInfo.value.errorRate > 100) {
-    notification.error('错误率须在0% 到 100% 之间');
+    notification.error(t('indicator.stability.messages.errorRateMustBeBetween0And100'));
     return;
   }
   if (+editInfo.value.cpu > 100) {
-    notification.error('CPU使用率须小于100%之间');
+    notification.error(t('indicator.stability.messages.cpuUsageMustBeLessThan100'));
     return;
   }
   if (+editInfo.value.memory > 100) {
-    notification.error('内存使用率须小于100%之间');
+    notification.error(t('indicator.stability.messages.memoryUsageMustBeLessThan100'));
     return;
   }
   if (+editInfo.value.disk > 100) {
-    notification.error('磁盘使用率须小于100%之间');
+    notification.error(t('indicator.stability.messages.diskUsageMustBeLessThan100'));
     return;
   }
   if (+editInfo.value.network > 100) {
-    notification.error('网络使用量须小于10000MB');
+    notification.error(t('indicator.stability.messages.networkUsageMustBeLessThan10000MB'));
     return;
   }
   const params = {
@@ -135,16 +138,16 @@ onMounted(() => {
 });
 </script>
 <template>
-  <ExpandGrid v-model:visible="visible" title="平台默认稳定性指标">
+  <ExpandGrid v-model:visible="visible" :title="t('indicator.stability.title')">
     <template #button>
       <div class="text-3 flex items-center">
         <template v-if="editable">
-          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />取消</span>
+          <span class="cursor-pointer" @click.stop="handleEditPerform"><Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('actions.cancel') }}</span>
           <Button
             type="text"
             class="ml-2 text-3 py-0 h-5"
             @click.stop="saveInfo">
-            <Icon icon="icon-baocun" class="mr-1" />保存
+            <Icon icon="icon-baocun" class="mr-1" />{{ t('actions.save') }}
           </Button>
         </template>
         <Button
@@ -152,14 +155,14 @@ onMounted(() => {
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="handleEditPerform">
-          <Icon icon="icon-shuxie" class="mr-1" />编辑
+          <Icon icon="icon-shuxie" class="mr-1" />{{ t('actions.edit') }}
         </Button>
       </div>
     </template>
     <template #default>
       <ul class="flex text-3 pt-3 quota-wrapper pl-3 space-x-8">
         <li>
-          <div class="quota-label">并发数 (用户)</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.concurrentUsers') }}</div>
           <div v-if="editable" class="flex items-center">
             <!-- <span class="pr-2">>=</span> -->
             <Input
@@ -171,7 +174,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.threads }}</div>
         </li>
         <li>
-          <div class="quota-label">测试时长</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.testDuration') }}</div>
           <div v-if="editable" class="flex items-center">
             <!-- <span class="pr-2">>=</span> -->
             <ShortDuration
@@ -182,7 +185,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.duration }}</div>
         </li>
         <li>
-          <div class="quota-label">响应时间 (RT)</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.responseTime') }}</div>
           <div v-if="editable" class="flex items-center">
             <Select
               v-model:value="editInfo.percentile"
@@ -202,7 +205,7 @@ onMounted(() => {
           <div v-else class="min-w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.percentileName }}&lt;={{ info.art }}ms</div>
         </li>
         <li>
-          <div class="quota-label">错误率 (ErrorRate)</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.errorRate') }}</div>
           <div v-if="editable" class="flex items-center">
             <span class="pr-2">&lt;=</span>
             <Input
@@ -217,7 +220,7 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2"> &lt;= {{ info.errorRate }}%</div>
         </li>
         <li>
-          <div class="quota-label">每秒事务数（TPS）</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.tps') }}</div>
           <div v-if="editable">
             <Input
               v-model:value="editInfo.tps"
@@ -228,10 +231,10 @@ onMounted(() => {
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2"> {{ info.tps }} </div>
         </li>
         <li>
-          <div class="quota-label">应用系统平均负载</div>
+          <div class="quota-label">{{ t('indicator.stability.labels.systemLoad') }}</div>
           <div v-if="editable" class="flex flex-wrap load-wrapper">
             <div class="flex items-center mr-2">
-              <span class="pr-2">CPU使用率：&lt;=</span>
+              <span class="pr-2">{{ t('indicator.stability.labels.cpuUsage') }}：&lt;=</span>
               <Input
                 v-model:value="editInfo.cpu"
                 size="small"
@@ -240,7 +243,7 @@ onMounted(() => {
               <span class="pl-2">%</span>
             </div>
             <div class="flex items-center mr-2">
-              <span class="pr-2">内存使用率：&lt;=</span>
+              <span class="pr-2">{{ t('indicator.stability.labels.memoryUsage') }}：&lt;=</span>
               <Input
                 v-model:value="editInfo.memory"
                 size="small"
@@ -249,7 +252,7 @@ onMounted(() => {
               <span class="pl-2">%</span>
             </div>
             <div class="flex items-center mr-2">
-              <span class="pr-2">磁盘使用率：&lt;=</span>
+              <span class="pr-2">{{ t('indicator.stability.labels.diskUsage') }}：&lt;=</span>
               <Input
                 v-model:value="editInfo.disk"
                 size="small"
@@ -258,7 +261,7 @@ onMounted(() => {
               <span class="pl-2">%</span>
             </div>
             <div class="flex items-center">
-              <span class="pr-2">网络使用量：&lt;=</span>
+              <span class="pr-2">{{ t('indicator.stability.labels.networkUsage') }}：&lt;=</span>
               <Input
                 v-model:value="editInfo.network"
                 size="small"
@@ -270,7 +273,7 @@ onMounted(() => {
             </div>
           </div>
           <div v-else class="min-w-30 bg-gray-light rounded h-7 leading-7 px-2">
-            CPU使用率：&lt;={{ info.cpu }}% | 内存使用率：&lt;= {{ info.memory }}% | 磁盘使用率：&lt;= {{ info.disk }}% | 网络使用量：&lt;={{ info.network }}MB
+            {{ t('indicator.stability.labels.cpuUsage') }}：&lt;={{ info.cpu }}% | {{ t('indicator.stability.labels.memoryUsage') }}：&lt;= {{ info.memory }}% | {{ t('indicator.stability.labels.diskUsage') }}：&lt;= {{ info.disk }}% | {{ t('indicator.stability.labels.networkUsage') }}：&lt;={{ info.network }}MB
           </div>
         </li>
       </ul>
