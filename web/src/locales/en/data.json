@@ -1,0 +1,8 @@
+{
+  "dataset": {
+    "name": "Dataset",
+    "addStaticDataset": "Add Static Dataset",
+    "addFileDataset": "Add File Dataset",
+    "addJdbcDataset": "Add Jdbc Dataset"
+  }
+}

@@ -3,6 +3,9 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { IPane } from './PropsType';
 
@@ -54,7 +57,7 @@ const initialize = () => {
         return {
           _id: 'dataSetList',
           value: 'dataSetList',
-          name: '数据集',
+          name: t('dataset.name'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -87,11 +90,11 @@ const hashChange = (hash:string) => {
     });
   } else if (source) {
     browserTabRef.value.add(() => {
-      let name = '添加静态数据集';
+      let name = t('dataset.addStaticDataset');
       if (source === 'FILE') {
-        name = '添加文件数据集';
+        name = t('dataset.addFileDataset');
       } else if (source === 'JDBC') {
-        name = '添加Jdbc数据集';
+        name = t('dataset.addJdbcDataset');
       }
 
       const uid = utils.uuid();

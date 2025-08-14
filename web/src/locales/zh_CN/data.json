@@ -1,0 +1,8 @@
+{
+  "dataset": {
+    "name": "数据集",
+    "addStaticDataset": "添加静态数据集",
+    "addFileDataset": "添加文件数据集",
+    "addJdbcDataset": "添加Jdbc数据集"
+  }
+}
