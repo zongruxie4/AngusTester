@@ -10,6 +10,41 @@
       "placeholder": "1 ~ 10000",
       "refresh": "刷新",
       "noData": "无数据"
+    },
+    "list": {
+      "title": "已添加的数据集",
+      "noDataText": "您尚未添加任何数据集，立即",
+      "or": "或",
+      "uploadDataset": "上传数据集",
+      "noDescription": "无描述~",
+      "buttonDropdown": {
+        "fileExtractDataset": "文件提取数据集",
+        "jdbcExtractDataset": "Jdbc提取数据集"
+      },
+      "columns": {
+        "name": "名称",
+        "description": "描述",
+        "valueSource": "值来源",
+        "lastModifiedBy": "最后修改人",
+        "createdBy": "创建人",
+        "lastModifiedDate": "最后修改时间",
+        "createdDate": "创建时间",
+        "action": "操作"
+      },
+      "tableDropdown": {
+        "previewData": "预览数据",
+        "export": "导出",
+        "clone": "克隆"
+      },
+      "messages": {
+        "deleteConfirm": "确定删除数据集【{name}】吗？",
+        "deleteSuccess": "数据集删除成功",
+        "cloneSuccess": "数据集克隆成功",
+        "batchDeleteMaxError": "最大支持批量删除 {maxNum} 个数据集，当前已选中 {num} 个数据集。",
+        "batchDeleteConfirm": "确定删除选中的 {num} 条数据集吗？",
+        "batchDeleteSuccess": "选中的数据集全部删除成功",
+        "batchDeleteMaxInfo": "最大支持批量删除 {maxNum} 个数据集，当前已选中 {num} 个数据集。"
+      }
     }
   }
 }

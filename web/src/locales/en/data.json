@@ -10,6 +10,41 @@
       "placeholder": "1 ~ 10000",
       "refresh": "Refresh",
       "noData": "No Data"
+    },
+    "list": {
+      "title": "Added Datasets",
+      "noDataText": "You haven't added any datasets yet, immediately",
+      "or": "or",
+      "uploadDataset": "Upload Dataset",
+      "noDescription": "No description~",
+      "buttonDropdown": {
+        "fileExtractDataset": "File Extract Dataset",
+        "jdbcExtractDataset": "Jdbc Extract Dataset"
+      },
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "valueSource": "Value Source",
+        "lastModifiedBy": "Last Modified By",
+        "createdBy": "Created By",
+        "lastModifiedDate": "Last Modified Date",
+        "createdDate": "Created Date",
+        "action": "Action"
+      },
+      "tableDropdown": {
+        "previewData": "Preview Data",
+        "export": "Export",
+        "clone": "Clone"
+      },
+      "messages": {
+        "deleteConfirm": "Are you sure to delete dataset [{name}]?",
+        "deleteSuccess": "Dataset deleted successfully",
+        "cloneSuccess": "Dataset cloned successfully",
+        "batchDeleteMaxError": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected.",
+        "batchDeleteConfirm": "Are you sure to delete the selected {num} datasets?",
+        "batchDeleteSuccess": "All selected datasets deleted successfully",
+        "batchDeleteMaxInfo": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected."
+      }
     }
   }
 }
