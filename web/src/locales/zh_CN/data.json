@@ -120,5 +120,58 @@
       "title": "下载数据集",
       "format": "格式"
     }
+  },
+  "datasource": {
+    "title": "关于数据源",
+    "description": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。",
+    "addedTitle": "已添加数据源",
+    "addDataSource": "添加数据源",
+    "searchOptions": {
+      "namePlaceholder": "查询数据源名称",
+      "databasePlaceholder": "选择数据库类型",
+      "lastModifiedByPlaceholder": "选择修改人",
+      "lastModifiedDatePlaceholder": ["修改时间从", "修改时间到"]
+    },
+    "testConnection": {
+      "testing": "测试中...",
+      "success": "成功",
+      "failed": "失败",
+      "retest": "重新测试",
+      "testConnection": "测试连接"
+    },
+    "lastModifiedBy": "最后修改于",
+    "messages": {
+      "deleteConfirm": "确定【{name}】吗？",
+      "deleteSuccess": "删除成功",
+      "addSuccess": "添加成功",
+      "editSuccess": "修改成功"
+    },
+    "form": {
+      "title": {
+        "add": "添加数据源",
+        "edit": "修改数据源"
+      },
+      "labels": {
+        "type": "类型",
+        "name": "名称",
+        "driverClassName": "驱动类名",
+        "jdbcUrl": "JBDC Url",
+        "username": "用户名",
+        "password": "密码"
+      },
+      "placeholders": {
+        "databaseType": "数据库类型",
+        "name": "名称",
+        "driverClassName": "驱动类名",
+        "jdbcUrl": "JBDC Url",
+        "username": "用户名",
+        "password": "密码"
+      },
+      "rules": {
+        "databaseType": "请选择数据库类型",
+        "name": "请输入名称",
+        "jdbcUrl": "请输入JDBC Url"
+      }
+    }
   }
 }

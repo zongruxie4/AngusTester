@@ -100,7 +100,7 @@ const handleEdit = (record) => {
 const handleDel = (record) => {
   modal.confirm({
     centered: true,
-    content: `确定【${record.name}】吗？`,
+    content: t('datasource.messages.deleteConfirm', { name: record.name }),
     async onOk () {
       loading.value = true;
       const [error] = await dataSource.deleteDataSource(record.id);
@@ -108,7 +108,7 @@ const handleDel = (record) => {
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('tips.deleteSuccess'));
       params.value.pageNo = getCurrentPage(params.value.pageNo as number, params.value.pageSize as number, total.value);
       getList();
     }
@@ -147,7 +147,7 @@ const searchOption = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('查询数据源名称'),
+    placeholder: t('datasource.searchOptions.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -155,19 +155,19 @@ const searchOption = [
     valueKey: 'database',
     type: 'select-enum',
     enumKey: DatabaseType,
-    placeholder: t('选择数据库类型'),
+    placeholder: t('datasource.searchOptions.databasePlaceholder'),
     allowClear: true
   },
   {
     valueKey: 'lastModifiedBy',
     type: 'select-user',
-    placeholder: '选择修改人',
+    placeholder: t('datasource.searchOptions.lastModifiedByPlaceholder'),
     maxlength: 100
   },
   {
     valueKey: 'lastModifiedDate',
     type: 'date-range',
-    placeholder: [t('修改时间从'), t('修改时间到')],
+    placeholder: t('datasource.searchOptions.lastModifiedDatePlaceholder'),
     allowClear: true,
     showTime: true
   }
@@ -188,11 +188,11 @@ const paginationChange = (page:number, size:number) => {
   <Spin
     :spinning="loading"
     class="pl-5 py-5 w-full h-full flex flex-col">
-    <div class="text-3.5 font-semibold mb-2.5">关于数据源</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.title') }}</div>
     <div class="mb-6 text-3">
-      <div>支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。</div>
+      <div>{{ t('datasource.description') }}</div>
     </div>
-    <div class="text-3.5 font-semibold mb-2.5">已添加数据源</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.addedTitle') }}</div>
     <div class="flex pr-5">
       <SearchPanel
         :options="searchOption"
@@ -211,7 +211,7 @@ const paginationChange = (page:number, size:number) => {
           class="flex space-x-1"
           @click="handleAdd">
           <Icon icon="icon-jia" />
-          添加数据源
+          {{ t('datasource.addDataSource') }}
         </Button>
         <Button
           class="flex items-center"
@@ -280,7 +280,7 @@ const paginationChange = (page:number, size:number) => {
                     :title="record.lastModifiedByName">
                     {{ record.lastModifiedByName }}
                   </div>
-                  <div class="flex-none leading-5">&nbsp;&nbsp;最后修改于&nbsp;&nbsp;{{ record.lastModifiedDate }}</div>
+                  <div class="flex-none leading-5">&nbsp;&nbsp;{{ t('datasource.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}</div>
                 </div>
               </div>
               <div class="border-t border-border-divider my-2.5"></div>
@@ -296,13 +296,13 @@ const paginationChange = (page:number, size:number) => {
                     @click="handleDel(record)" />
                 </div>
                 <div class="flex items-center h-3">
-                  <tempalte v-if="dataMap[record.id]?.testLoading" class="text-text-sub-content">测试中...</tempalte>
+                  <tempalte v-if="dataMap[record.id]?.testLoading" class="text-text-sub-content">{{ t('datasource.testConnection.testing') }}</tempalte>
                   <template v-else>
                     <template v-if="(typeof dataMap[record.id]?.connSuccess) === 'boolean'">
                       <div class="flex items-center">
                         <template v-if="dataMap[record.id]?.connSuccess">
                           <Icon icon="icon-duihao" class="text-status-success mr-1 text-3.25" />
-                          <span>成功</span>
+                          <span>{{ t('datasource.testConnection.success') }}</span>
                         </template>
                         <template v-else>
                           <Tooltip
@@ -312,15 +312,15 @@ const paginationChange = (page:number, size:number) => {
                             :overlayStyle="{'max-width': '400px'}">
                             <div class="flex items-center cursor-pointer">
                               <Icon icon="icon-jinggao" class="text-status-error mr-1 text-3.25 -mt-0.25" />
-                              <span>失败</span>
+                              <span>{{ t('datasource.testConnection.failed') }}</span>
                             </div>
                           </Tooltip>
-                          <div><a class="ml-2" @click="testLink(record)">重新测试</a></div>
+                          <div><a class="ml-2" @click="testLink(record)">{{ t('datasource.testConnection.retest') }}</a></div>
                         </template>
                       </div>
                     </template>
                     <template v-else>
-                      <div><a @click="testLink(record)">测试连接</a></div>
+                      <div><a @click="testLink(record)">{{ t('datasource.testConnection.testConnection') }}</a></div>
                     </template>
                   </template>
                 </div>

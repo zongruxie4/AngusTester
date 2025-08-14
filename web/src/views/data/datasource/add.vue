@@ -4,6 +4,9 @@ import { IconRequired, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { dataSource } from 'src/api/tester';
 import SelectEnum from '@/components/SelectEnum/index.vue'
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 interface Props {
   visible: boolean;
   editData?: Record<string, any>;
@@ -72,7 +75,7 @@ const edit = async () => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
   emits('update:visible', false);
   emits('refresh');
 };
@@ -87,7 +90,7 @@ const add = async () => {
   if (error) {
     return;
   }
-  notification.success('添加成功');
+  notification.success(t('tips.addSuccess'));
   emits('update:visible', false);
   emits('refresh');
 };
@@ -167,58 +170,58 @@ const databaseChange = (value:string) => {
 </script>
 <template>
   <Modal
-    :title="props.editData?'修改数据源':'添加数据源'"
+    :title="props.editData ? t('datasource.form.title.edit') : t('datasource.form.title.add')"
     :confirmLoading="loading"
     :visible="visible"
     @cancel="handleClose"
     @ok="handleOk">
     <div class="text-3 text-content flex">
       <div class="space-y-5 pt-1.5 mr-5">
-        <div class="h-7"><IconRequired />类型</div>
-        <div class="h-7"><IconRequired />名称</div>
-        <div class="h-7 pl-1.75">驱动类名</div>
-        <div class="h-7"><IconRequired />JBDC Url</div>
+        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.type') }}</div>
+        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.name') }}</div>
+        <div class="h-7 pl-1.75">{{ t('datasource.form.labels.driverClassName') }}</div>
+        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.jdbcUrl') }}</div>
         <template v-if="formState.database !== 'SQLITE'">
-          <div class="h-7 pl-1.75">用户名</div>
-          <div class="h-7 pl-1.75">密码</div>
+          <div class="h-7 pl-1.75">{{ t('datasource.form.labels.username') }}</div>
+          <div class="h-7 pl-1.75">{{ t('datasource.form.labels.password') }}</div>
         </template>
       </div>
       <Form
         ref="formRef"
         class="flex-1"
         :model="formState">
-        <FormItem name="database" :rules="{required:true,message:'请选择数据库类型'}">
+        <FormItem name="database" :rules="{required:true,message:t('datasource.form.rules.databaseType')}">
           <SelectEnum
             v-model:value="formState.database"
             :disabled="!!props.editData"
             enumKey="DatabaseType"
-            placeholder="数据库类型"
+            :placeholder="t('datasource.form.placeholders.databaseType')"
             @change="databaseChange" />
         </FormItem>
-        <FormItem name="name" :rules="{required:true,message:'请输入名称'}">
+        <FormItem name="name" :rules="{required:true,message:t('datasource.form.rules.name')}">
           <Input
             v-model:value="formState.name"
             :maxlength="100"
-            placeholder="名称" />
+            :placeholder="t('datasource.form.placeholders.name')" />
         </FormItem>
         <FormItem name="driverClassName">
-          <Input v-model:value="formState.driverClassName" placeholder="驱动类名" />
+          <Input v-model:value="formState.driverClassName" :placeholder="t('datasource.form.placeholders.driverClassName')" />
         </FormItem>
-        <FormItem name="jdbcUrl" :rules="{required:true,message:'请输入JDBC Url'}">
-          <Input v-model:value="formState.jdbcUrl" placeholder="JBDC Url" />
+        <FormItem name="jdbcUrl" :rules="{required:true,message:t('datasource.form.rules.jdbcUrl')}">
+          <Input v-model:value="formState.jdbcUrl" :placeholder="t('datasource.form.placeholders.jdbcUrl')" />
         </FormItem>
         <template v-if="formState.database !== 'SQLITE'">
           <FormItem name="username">
             <Input
               v-model:value="formState.username"
-              placeholder="用户名"
+              :placeholder="t('datasource.form.placeholders.username')"
               :disabled="formState.database === 'SQLITE' && !!props.editData"
               :maxlength="50" />
           </FormItem>
           <FormItem name="password">
             <Input
               v-model:value="formState.password"
-              placeholder="密码"
+              :placeholder="t('datasource.form.placeholders.password')"
               :maxlength="50"
               type="password" />
           </FormItem>

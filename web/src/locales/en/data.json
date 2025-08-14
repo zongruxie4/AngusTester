@@ -120,5 +120,58 @@
       "title": "Download Dataset",
       "format": "Format"
     }
+  },
+  "datasource": {
+    "title": "About Data Source",
+    "description": "Supports managing and connecting multiple data sources. After configuring data source information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
+    "addedTitle": "Added Data Sources",
+    "addDataSource": "Add Data Source",
+    "searchOptions": {
+      "namePlaceholder": "Search data source name",
+      "databasePlaceholder": "Select database type",
+      "lastModifiedByPlaceholder": "Select modifier",
+      "lastModifiedDatePlaceholder": ["Modified from", "Modified to"]
+    },
+    "testConnection": {
+      "testing": "Testing...",
+      "success": "Success",
+      "failed": "Failed",
+      "retest": "Retest",
+      "testConnection": "Test Connection"
+    },
+    "lastModifiedBy": "Last modified by",
+    "messages": {
+      "deleteConfirm": "Are you sure to delete [{name}]?",
+      "deleteSuccess": "Deleted successfully",
+      "addSuccess": "Added successfully",
+      "editSuccess": "Modified successfully"
+    },
+    "form": {
+      "title": {
+        "add": "Add Data Source",
+        "edit": "Edit Data Source"
+      },
+      "labels": {
+        "type": "Type",
+        "name": "Name",
+        "driverClassName": "Driver Class Name",
+        "jdbcUrl": "JBDC Url",
+        "username": "Username",
+        "password": "Password"
+      },
+      "placeholders": {
+        "databaseType": "Database Type",
+        "name": "Name",
+        "driverClassName": "Driver Class Name",
+        "jdbcUrl": "JBDC Url",
+        "username": "Username",
+        "password": "Password"
+      },
+      "rules": {
+        "databaseType": "Please select database type",
+        "name": "Please enter name",
+        "jdbcUrl": "Please enter JDBC Url"
+      }
+    }
   }
 }
