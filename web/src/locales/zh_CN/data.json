@@ -45,6 +45,44 @@
         "batchDeleteSuccess": "选中的数据集全部删除成功",
         "batchDeleteMaxInfo": "最大支持批量删除 {maxNum} 个数据集，当前已选中 {num} 个数据集。"
       }
+    },
+    "listSearchPanel": {
+      "quickQuery": "快速查询",
+      "menuItems": {
+        "all": "全部",
+        "myCreated": "我创建的",
+        "myModified": "我修改的",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "createdByPlaceholder": "选择创建人",
+        "createdDatePlaceholder": ["创建时间从", "创建时间到"]
+      },
+      "sortMenuItems": {
+        "byName": "按名称",
+        "byCreator": "按添加人",
+        "byCreateTime": "按添加时间",
+        "byLastModifier": "按最后修改人",
+        "byLastModifyTime": "按最后修改时间"
+      },
+      "buttons": {
+        "deleteSelected": "删除选中",
+        "cancelDelete": "取消删除",
+        "addStaticDataset": "添加静态数据集",
+        "batchDelete": "批量删除",
+        "refresh": "刷新"
+      },
+      "tooltips": {
+        "uploadDataset": "上传数据集",
+        "downloadDataset": "下载数据集"
+      },
+      "buttonDropdown": {
+        "fileExtractDataset": "文件提取数据集",
+        "jdbcExtractDataset": "Jdbc提取数据集"
+      }
     }
   }
 }

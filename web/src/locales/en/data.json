@@ -45,6 +45,44 @@
         "batchDeleteSuccess": "All selected datasets deleted successfully",
         "batchDeleteMaxInfo": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected."
       }
+    },
+    "listSearchPanel": {
+      "quickQuery": "Quick Query",
+      "menuItems": {
+        "all": "All",
+        "myCreated": "My Created",
+        "myModified": "My Modified",
+        "lastDay": "Last 1 Day",
+        "lastThreeDays": "Last 3 Days",
+        "lastWeek": "Last 7 Days"
+      },
+      "searchOptions": {
+        "namePlaceholder": "Search name, description",
+        "createdByPlaceholder": "Select creator",
+        "createdDatePlaceholder": ["Created from", "Created to"]
+      },
+      "sortMenuItems": {
+        "byName": "By Name",
+        "byCreator": "By Creator",
+        "byCreateTime": "By Create Time",
+        "byLastModifier": "By Last Modifier",
+        "byLastModifyTime": "By Last Modify Time"
+      },
+      "buttons": {
+        "deleteSelected": "Delete Selected",
+        "cancelDelete": "Cancel Delete",
+        "addStaticDataset": "Add Static Dataset",
+        "batchDelete": "Batch Delete",
+        "refresh": "Refresh"
+      },
+      "tooltips": {
+        "uploadDataset": "Upload Dataset",
+        "downloadDataset": "Download Dataset"
+      },
+      "buttonDropdown": {
+        "fileExtractDataset": "File Extract Dataset",
+        "jdbcExtractDataset": "Jdbc Extract Dataset"
+      }
     }
   }
 }
