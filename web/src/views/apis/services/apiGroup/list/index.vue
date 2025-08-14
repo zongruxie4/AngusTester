@@ -259,7 +259,7 @@ const patchClone = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('service.apiList.messages.cloneSuccess'));
   refreshList();
 };
 
@@ -269,7 +269,7 @@ const patchClone = async (id:string) => {
 const deleteConfirm = (id: string) => {
   modal.confirm({
     centered: true,
-    content: t('删除接口会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除？'),
+    content: t('service.apiList.messages.deleteConfirm'),
     onOk () {
       deleteInterface(id);
     }
@@ -288,7 +288,7 @@ const deleteInterface = async (id: string): Promise<void> => {
   state.type = undefined;
   deleteTabPane([id + 'API', id + 'socket', id + 'execute']);
   refreshRecycleBin('api');
-  notification.success('删除成功，您可以在回收站查看删除后的接口');
+  notification.success(t('service.apiList.messages.deleteSuccess'));
   refreshList();
 };
 
@@ -328,7 +328,7 @@ const restartContent = ref('');
 const restartTestTask = (item: DataSourceType) => {
   state.id = item.id;
   restartTestVisible.value = true;
-  restartContent.value = `将接口下测试任务更新为"待测试"，相关统计计数和状态会被清除，您确认重新开始测试任务【${item.summary}】吗？`;
+  restartContent.value = t('service.apiList.confirm.restartTestTask', { summary: item.summary });
 };
 
 const reopenTestVisible = ref(false);
@@ -336,7 +336,7 @@ const reopenContent = ref('');
 const reopenTestTask = (item: DataSourceType) => {
   state.id = item.id;
   reopenTestVisible.value = true;
-  reopenContent.value = `将接口下测试任务更新为"待测试"，不清理统计计数和状态， 您确认重新打开测试任务【${item.summary}】吗？`;
+  reopenContent.value = t('service.apiList.confirm.reopenTestTask', { summary: item.summary });
 };
 
 // 删除测试任务
@@ -383,7 +383,7 @@ const addFavourite = async (id:string) => {
       item.favouriteFlag = true;
     }
   });
-  notification.success('收藏成功');
+  notification.success(t('service.apiList.messages.favouriteSuccess'));
   refreshList();
   updateCollectNofify();
 };
@@ -399,7 +399,7 @@ const cancelFavourite = async (id:string) => {
       item.favouriteFlag = false;
     }
   });
-  notification.success('取消收藏成功');
+  notification.success(t('service.apiList.messages.unfavouriteSuccess'));
   refreshList();
   updateCollectNofify();
 };
@@ -415,7 +415,7 @@ const addWatch = async (id:string) => {
       item.followFlag = true;
     }
   });
-  notification.success('关注成功');
+  notification.success(t('service.apiList.messages.followSuccess'));
   refreshList();
   updateFocusNotify();
 };
@@ -431,7 +431,7 @@ const cancelWatch = async (id:string) => {
       item.followFlag = false;
     }
   });
-  notification.success('取消关注成功');
+  notification.success(t('service.apiList.messages.unfollowSuccess'));
   refreshList();
   updateFocusNotify();
 };
@@ -443,15 +443,15 @@ const execModalTitle = ref<string>();
 const okAction = ref<string>();
 
 const execTestTipConfig = {
-  funcTestExec: '执行当前接口功能测试，如果测试脚本不存在，将根据接口自动生成功能测试脚本，如果存在则启动对应功能测试脚本。',
-  perfTestExec: '执行当前接口性能测试，如果测试脚本不存在，将根据接口自动生成性能测试脚本，如果存在则启动对应性能测试脚本。',
-  stabilityTestExec: '执行当前接口稳定性测试，如果测试脚本不存在，将根据接口自动生成稳定性测试脚本，如果存在则启动对应稳定性测试脚本。'
+  funcTestExec: t('service.apiList.execTest.tips.funcTestExec'),
+  perfTestExec: t('service.apiList.execTest.tips.perfTestExec'),
+  stabilityTestExec: t('service.apiList.execTest.tips.stabilityTestExec')
 };
 
 const execModalTitleConfig = {
-  funcTestExec: '执行功能测试',
-  perfTestExec: '执行性能测试',
-  stabilityTestExec: '执行稳定性测试'
+  funcTestExec: t('service.apiList.execTest.titles.funcTestExec'),
+  perfTestExec: t('service.apiList.execTest.titles.perfTestExec'),
+  stabilityTestExec: t('service.apiList.execTest.titles.stabilityTestExec')
 };
 
 const getOkAction = (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestExec'|'perfTestExec'|'stabilityTestExec', id:string) => {
@@ -598,7 +598,7 @@ watch(() => [props.allData, props.groupedBy], () => {
         type: 'group',
         tag: 'key',
         spread: true,
-        name: key === 'null_tag' ? '其他' : key,
+        name: key === 'null_tag' ? t('service.apiList.template.other') : key,
         childrenNum: list.length,
         key
       }, ...list);
@@ -678,9 +678,9 @@ watch(() => [props.allData, props.groupedBy], () => {
         :updateUrl="`${TESTER}/apis/auth`"
         :enabledUrl="`${TESTER}/apis/${state.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/apis/${state.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有接口相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级项目/服务权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级项目或服务权限。"
-        title="接口权限"
+        :onTips="t('service.apiList.template.auth.onTips')"
+        :offTips="t('service.apiList.template.auth.offTips')"
+        :title="t('service.apiList.template.auth.title')"
         @change="authFlagChange" />
     </AsyncComponent>
     <AsyncComponent :visible="testVisible">

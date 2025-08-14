@@ -1250,6 +1250,91 @@
         "authConfig": "Auth Config",
         "refresh": "Refresh"
       }
+    },
+    "apiList": {
+      "messages": {
+        "cloneSuccess": "Cloned successfully",
+        "deleteConfirm": "Deleting the API will also delete associated follows, favorites, metrics, variables and other information. Please confirm deletion?",
+        "deleteSuccess": "Deleted successfully, you can view the deleted API in the recycle bin",
+        "favouriteSuccess": "Favourited successfully",
+        "unfavouriteSuccess": "Unfavourited successfully",
+        "followSuccess": "Followed successfully",
+        "unfollowSuccess": "Unfollowed successfully",
+        "execSuccess": "Executed successfully"
+      },
+      "test": {
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "notEnabled": "Not Enabled",
+        "passed": "Passed",
+        "unPassed": "Failed",
+        "notTested": "Not Tested"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "clone": "Clone",
+        "delete": "Delete",
+        "mockApi": "Mock API",
+        "follow": "Follow",
+        "unfollow": "Unfollow",
+        "favourite": "Favourite",
+        "unfavourite": "Unfavourite",
+        "move": "Move",
+        "permission": "Permission",
+        "export": "Export",
+        "modifyStatus": "Modify Status",
+        "testScript": "Test Script",
+        "generateTestScript": "Generate Test Script",
+        "deleteTestScript": "Delete Test Script",
+        "execTest": "Execute Test",
+        "execFuncTest": "Execute Functional Test",
+        "execPerfTest": "Execute Performance Test",
+        "execStabilityTest": "Execute Stability Test",
+        "testTask": "Test Task",
+        "generateTestTask": "Generate Test Task",
+        "restartTestTask": "Restart Test Task",
+        "reopenTestTask": "Reopen Test Task",
+        "deleteTestTask": "Delete Test Task"
+      },
+      "tips": {
+        "generateTestScript": "Generate functional, performance and stability test scripts for the API.",
+        "deleteTestScript": "Delete functional, performance and stability test scripts for the API.",
+        "generateTestTask": "Generate functional, performance and stability test tasks.",
+        "restartTestTask": "Update task to 'Pending', related statistics and status will be cleared.",
+        "reopenTestTask": "Update task status to 'Pending', without clearing statistics and status.",
+        "deleteTestTask": "Delete functional, performance and stability test tasks for the API, including test scripts."
+      },
+      "confirm": {
+        "restartTestTask": "Update the API test task to \"Pending\", related statistics and status will be cleared. Do you confirm to restart the test task 【{summary}】?",
+        "reopenTestTask": "Update the API test task to \"Pending\", without clearing statistics and status. Do you confirm to reopen the test task 【{summary}】?"
+      },
+      "execTest": {
+        "tips": {
+          "funcTestExec": "Execute current API functional test. If test script doesn't exist, it will automatically generate functional test script based on the API. If it exists, it will start the corresponding functional test script.",
+          "perfTestExec": "Execute current API performance test. If test script doesn't exist, it will automatically generate performance test script based on the API. If it exists, it will start the corresponding performance test script.",
+          "stabilityTestExec": "Execute current API stability test. If test script doesn't exist, it will automatically generate stability test script based on the API. If it exists, it will start the corresponding stability test script."
+        },
+        "titles": {
+          "funcTestExec": "Execute Functional Test",
+          "perfTestExec": "Execute Performance Test",
+          "stabilityTestExec": "Execute Stability Test"
+        }
+      },
+      "template": {
+        "other": "Other",
+        "auth": {
+          "title": "API Permission",
+          "onTips": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding API operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent project/service permissions, view permissions will be automatically granted.",
+          "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current API. Users viewing the API must also have parent project or service permissions."
+        },
+        "testTask": {
+          "infoText": "Generate corresponding task when API test task doesn't exist. If task already exists, it will override current test information.",
+          "funcTest": "Functional Test",
+          "perfTest": "Performance Test",
+          "stabilityTest": "Stability Test"
+        }
+      }
     }
   }
 } 

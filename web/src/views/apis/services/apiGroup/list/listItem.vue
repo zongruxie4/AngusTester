@@ -4,6 +4,7 @@ import { Button, ListItem, Popover, Tooltip } from 'ant-design-vue';
 import { Dropdown, HttpMethodTag, Icon } from '@xcan-angus/vue-ui';
 import { ButtonGroup, CollapseButtonGroup } from './interface';
 import { API_STATUS_COLOR_CONFIG } from '@/views/apis/utils';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   item: Record<string, any>;
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   item: () => ({}),
   activeApiId: ''
 });
+const { t } = useI18n();
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
@@ -148,9 +150,36 @@ const getResultColor = (testFlag, testPassd = undefined) => {
               :class="getResultIconColor(item)" />
           </span>
           <template #content>
-            <div class="flex"><span class="w-20">功能测试：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">{{ !item.testFuncFlag ? '未启用' : item.testFuncPassedFlag ? '通过' : item.testFuncPassedFlag === false ? '未通过' : '未测试' }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span></div></div>
-            <div class="flex"><span class="w-20">性能测试：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">{{ !item.testPerfFlag ? '未启用' : item.testPerfPassedFlag ? '通过' : item.testPerfPassedFlag === false ? '未通过' : '未测试' }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span></div></div>
-            <div class="flex"><span class="w-20">稳定性测试：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">{{ !item.testStabilityFlag ? '未启用' : item.testStabilityPassedFlag ? '通过' : item.testStabilityPassedFlag === false ? '未通过' : '未测试' }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span></div></div>
+            <div class="flex">
+              <span class="w-20">{{ t('service.apiList.template.testTask.funcTest') }}:</span>
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">{{ !item.testFuncFlag
+              ? t('service.apiList.test.notEnabled')
+              : item.testFuncPassedFlag
+              ? t('service.apiList.test.passed')
+              : item.testFuncPassedFlag === false
+              ? t('service.apiList.test.unPassed')
+              : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span></div>
+            </div>
+            <div class="flex">
+              <span class="w-20">{{ t('service.apiList.template.testTask.perfTest') }}:</span>
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">{{ !item.testPerfFlag
+              ? t('service.apiList.test.notEnabled')
+              : item.testPerfPassedFlag
+              ? t('service.apiList.test.passed')
+              : item.testPerfPassedFlag === false
+              ? t('service.apiList.test.unPassed')
+              : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span></div>
+            </div>
+            <div class="flex">
+              <span class="w-20">{{ t('service.apiList.template.testTask.stabilityTest') }}:</span>
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">{{ !item.testStabilityFlag
+              ? t('service.apiList.test.notEnabled')
+              : item.testStabilityPassedFlag
+              ? t('service.apiList.test.passed')
+              : item.testStabilityPassedFlag === false
+              ? t('service.apiList.test.unPassed')
+              : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span></div>
+            </div>
           </template>
         </Popover>
         <span :class="['w-20', API_STATUS_COLOR_CONFIG[item.status?.value]]">{{ item.status?.message }}</span>

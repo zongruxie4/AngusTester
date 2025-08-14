@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, ref } from 'vue';
-import { AsyncComponent, Icon, Tooltip, VuexHelper } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
@@ -61,14 +61,9 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
   ].filter(Boolean);
 });
 
-const { useMutations, useState } = VuexHelper;
-const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
-const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
 
-const guideStep = () => {
-  updateGuideStep({ visible: true, key: 'debugApiOne' });
-  entries.value[0].click();
-};
+
+
 </script>
 <template>
   <div class="space-y-2">
@@ -86,25 +81,7 @@ const guideStep = () => {
           </div>
           <div class="mt-3 text-content">{{ entery.content }}</div>
         </div>
-        <Tooltip
-          :visible="stepVisible && stepKey === 'selectDebugApi' && index === 0"
-          placement="rightTop"
-          destroyTooltipOnHide>
-          <template #title>
-            <div class="p-2 text-3">
-              <div class="text-4 text-text-title">{{ stepContent.title }}</div>
-              <div class="mt-2">{{ stepContent.content }}</div>
-              <div class="flex justify-end mt-5">
-                <Button
-                  size="small"
-                  type="primary"
-                  @click="guideStep">
-                  下一步
-                </Button>
-              </div>
-            </div>
-          </template>
-          <Button
+        <Button
             type="link"
             size="small"
             class="w-fit h-5 space-x-1 mt-2"
@@ -114,7 +91,6 @@ const guideStep = () => {
             <Icon :icon="entery.icon" />
             <span> {{ entery.action }}</span>
           </Button>
-        </Tooltip>
       </div>
     </div>
   </div>

@@ -1896,6 +1896,91 @@
         "authConfig": "安全方案配置",
         "refresh": "刷新"
       }
+    },
+    "apiList": {
+      "messages": {
+        "cloneSuccess": "克隆成功",
+        "deleteConfirm": "删除接口会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除？",
+        "deleteSuccess": "删除成功，您可以在回收站查看删除后的接口",
+        "favouriteSuccess": "收藏成功",
+        "unfavouriteSuccess": "取消收藏成功",
+        "followSuccess": "关注成功",
+        "unfollowSuccess": "取消关注成功",
+        "execSuccess": "执行成功"
+      },
+      "test": {
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "notEnabled": "未启用",
+        "passed": "通过",
+        "unPassed": "未通过",
+        "notTested": "未测试"
+      },
+      "buttons": {
+        "edit": "编辑",
+        "clone": "克隆",
+        "delete": "删除",
+        "mockApi": "Mock接口",
+        "follow": "关注",
+        "unfollow": "取消关注",
+        "favourite": "收藏",
+        "unfavourite": "取消收藏",
+        "move": "移动",
+        "permission": "权限",
+        "export": "导出",
+        "modifyStatus": "修改状态",
+        "testScript": "测试脚本",
+        "generateTestScript": "生成测试脚本",
+        "deleteTestScript": "删除测试脚本",
+        "execTest": "执行测试",
+        "execFuncTest": "执行功能测试",
+        "execPerfTest": "执行性能测试",
+        "execStabilityTest": "执行稳定性测试",
+        "testTask": "测试任务",
+        "generateTestTask": "生成测试任务",
+        "restartTestTask": "重新开始测试任务",
+        "reopenTestTask": "重新打开测试任务",
+        "deleteTestTask": "删除测试任务"
+      },
+      "tips": {
+        "generateTestScript": "生成接口功能、性能和稳定性测试脚本。",
+        "deleteTestScript": "删除接口功能、性能和稳定性测试脚本。",
+        "generateTestTask": "生成功能、性能和稳定性测试任务。",
+        "restartTestTask": "将任务更新为`待处理`，相关统计计数和状态会被清除。",
+        "reopenTestTask": "将任务状态更新为`待处理`、 不清理统计计数和状态。",
+        "deleteTestTask": "删除接口对应功能、性能和稳定性测试任务，包括测试脚本。"
+      },
+      "confirm": {
+        "restartTestTask": "将接口下测试任务更新为\"待测试\"，相关统计计数和状态会被清除，您确认重新开始测试任务【{summary}】吗？",
+        "reopenTestTask": "将接口下测试任务更新为\"待测试\"，不清理统计计数和状态， 您确认重新打开测试任务【{summary}】吗？"
+      },
+      "execTest": {
+        "tips": {
+          "funcTestExec": "执行当前接口功能测试，如果测试脚本不存在，将根据接口自动生成功能测试脚本，如果存在则启动对应功能测试脚本。",
+          "perfTestExec": "执行当前接口性能测试，如果测试脚本不存在，将根据接口自动生成性能测试脚本，如果存在则启动对应性能测试脚本。",
+          "stabilityTestExec": "执行当前接口稳定性测试，如果测试脚本不存在，将根据接口自动生成稳定性测试脚本，如果存在则启动对应稳定性测试脚本。"
+        },
+        "titles": {
+          "funcTestExec": "执行功能测试",
+          "perfTestExec": "执行性能测试",
+          "stabilityTestExec": "执行稳定性测试"
+        }
+      },
+      "template": {
+        "other": "其他",
+        "auth": {
+          "title": "接口权限",
+          "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有接口相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级项目/服务权限将自动授权查看权限。",
+          "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级项目或服务权限。"
+        },
+        "testTask": {
+          "infoText": "接口测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。",
+          "funcTest": "功能测试",
+          "perfTest": "性能测试",
+          "stabilityTest": "稳定性测试"
+        }
+      }
     }
   }
 }
