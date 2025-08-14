@@ -1800,6 +1800,35 @@
       "modal": {
         "associateTitle": "关联Mock服务"
       }
+    },
+    "serviceOpenApi": {
+      "columns": {
+        "title": "名称",
+        "summary": "摘要",
+        "openapi": "OpenAPI",
+        "termsOfService": "服务条款",
+        "contact": "联系人",
+        "license": "许可协议",
+        "version": "文档版本",
+        "externalDocs": "外部文档",
+        "description": "描述"
+      },
+      "placeholder": {
+        "title": "100字符以内",
+        "summary": "400字符以内",
+        "termsOfService": "800字符以内",
+        "contactName": "名称(100字符以内)",
+        "contactEmail": "邮箱",
+        "contactUrl": "url",
+        "licenseName": "名称(100字符以内)",
+        "licenseUrl": "url",
+        "version": "100字符以内",
+        "externalDocsUrl": "url",
+        "externalDocsDescription": "描述（800字符以内）"
+      },
+      "tooltips": {
+        "view": "查看"
+      }
     }
   }
 }

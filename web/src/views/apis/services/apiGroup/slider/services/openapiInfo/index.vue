@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 
@@ -12,6 +13,7 @@ interface Props {
   disabled: boolean;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   type: 'PROJECT',
@@ -21,15 +23,15 @@ const props = withDefaults(defineProps<Props>(), {
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/markdownDescModal/index.vue'));
 
 const columns = [[
-  { label: '名称', dataIndex: 'title' },
-  { label: '摘要', dataIndex: 'summary' },
-  { label: 'OpenAPI', dataIndex: 'openapi' },
-  { label: '服务条款', dataIndex: 'termsOfService' },
-  { label: '联系人', dataIndex: 'contact' },
-  { label: '许可协议', dataIndex: 'license' },
-  { label: '文档版本', dataIndex: 'version' },
-  { label: '外部文档', dataIndex: 'externalDocs' },
-  { label: '描述', dataIndex: 'description' }
+  { label: t('service.serviceOpenApi.columns.title'), dataIndex: 'title' },
+  { label: t('service.serviceOpenApi.columns.summary'), dataIndex: 'summary' },
+  { label: t('service.serviceOpenApi.columns.openapi'), dataIndex: 'openapi' },
+  { label: t('service.serviceOpenApi.columns.termsOfService'), dataIndex: 'termsOfService' },
+  { label: t('service.serviceOpenApi.columns.contact'), dataIndex: 'contact' },
+  { label: t('service.serviceOpenApi.columns.license'), dataIndex: 'license' },
+  { label: t('service.serviceOpenApi.columns.version'), dataIndex: 'version' },
+  { label: t('service.serviceOpenApi.columns.externalDocs'), dataIndex: 'externalDocs' },
+  { label: t('service.serviceOpenApi.columns.description'), dataIndex: 'description' }
 ]];
 
 const title = ref<string>();
@@ -271,7 +273,7 @@ onMounted(() => {
             type="textarea"
             showCount
             class="w-full"
-            placeholder="100字符以内"
+            :placeholder="t('service.serviceOpenApi.placeholder.title')"
             @pressEnter="confirmEditTitle"
             @change="titleChange" />
           <Icon
@@ -309,7 +311,7 @@ onMounted(() => {
             type="textarea"
             showCount
             class="w-full"
-            placeholder="400字符以内"
+            :placeholder="t('service.serviceOpenApi.placeholder.summary')"
             @pressEnter="confirmEditSummary" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
@@ -350,7 +352,7 @@ onMounted(() => {
             type="textarea"
             showCount
             class="w-full"
-            placeholder="800字符以内"
+            :placeholder="t('service.serviceOpenApi.placeholder.termsOfService')"
             @pressEnter="confirmEditTermsOfService" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
@@ -397,19 +399,19 @@ onMounted(() => {
             <Input
               v-model:value="contact.name"
               :maxlength="100"
-              placeholder="名称(100字符以内)"
+              :placeholder="t('service.serviceOpenApi.placeholder.contactName')"
               class="w-full"
               @pressEnter="confirmEditContact" />
             <Input
               v-model:value="contact.email"
               :maxlength="400"
-              placeholder="邮箱"
+              :placeholder="t('service.serviceOpenApi.placeholder.contactEmail')"
               class="w-full"
               @pressEnter="confirmEditContact" />
             <Input
               v-model:value="contact.url"
               :maxlength="800"
-              placeholder="url"
+              :placeholder="t('service.serviceOpenApi.placeholder.contactUrl')"
               class="w-full"
               @pressEnter="confirmEditContact" />
           </div>
@@ -454,13 +456,13 @@ onMounted(() => {
             <Input
               v-model:value="license.name"
               :maxlength="100"
-              placeholder="名称(100字符以内)"
+              :placeholder="t('service.serviceOpenApi.placeholder.licenseName')"
               class="w-full"
               @pressEnter="confirmEditLicense" />
             <Input
               v-model:value="license.url"
               :maxlength="800"
-              placeholder="url"
+              :placeholder="t('service.serviceOpenApi.placeholder.licenseUrl')"
               class="w-full"
               @pressEnter="confirmEditLicense" />
           </div>
@@ -492,7 +494,7 @@ onMounted(() => {
             v-model:value="version"
             :maxlength="100"
             class="w-full"
-            placeholder="100字符以内"
+            :placeholder="t('service.serviceOpenApi.placeholder.version')"
             @pressEnter="confirmEditVersion" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
@@ -535,7 +537,7 @@ onMounted(() => {
             <Input
               v-model:value="externalDocs.url"
               :maxlength="100"
-              placeholder="url"
+              :placeholder="t('service.serviceOpenApi.placeholder.externalDocsUrl')"
               class="w-full"
               @pressEnter="confirmEditExternalDocs" />
             <Input
@@ -546,7 +548,7 @@ onMounted(() => {
               type="textarea"
               showCount
               class="w-full"
-              placeholder="描述（800字符以内）"
+              :placeholder="t('service.serviceOpenApi.placeholder.externalDocsDescription')"
               @pressEnter="confirmEditExternalDocs" />
           </div>
           <Icon
@@ -566,7 +568,7 @@ onMounted(() => {
           class="flex-1"
           :content="description"
           :ellipsis="{ rows: 3, expandable: false }" />
-        <div title="查看" class="block leading-3 h-3 w-3 flex-shrink-0 ml-2 mt-0.25 cursor-pointer text-text-link">
+        <div :title="t('service.serviceOpenApi.tooltips.view')" class="block leading-3 h-3 w-3 flex-shrink-0 ml-2 mt-0.25 cursor-pointer text-text-link">
           <Icon icon="icon-spread" @click="previewDescription" />
         </div>
         <Icon

@@ -1155,6 +1155,35 @@
       "modal": {
         "associateTitle": "Associate Mock Service"
       }
+    },
+    "serviceOpenApi": {
+      "columns": {
+        "title": "Name",
+        "summary": "Summary",
+        "openapi": "OpenAPI",
+        "termsOfService": "Terms of Service",
+        "contact": "Contact",
+        "license": "License",
+        "version": "Document Version",
+        "externalDocs": "External Documentation",
+        "description": "Description"
+      },
+      "placeholder": {
+        "title": "Within 100 characters",
+        "summary": "Within 400 characters",
+        "termsOfService": "Within 800 characters",
+        "contactName": "Name (within 100 characters)",
+        "contactEmail": "Email",
+        "contactUrl": "URL",
+        "licenseName": "Name (within 100 characters)",
+        "licenseUrl": "URL",
+        "version": "Within 100 characters",
+        "externalDocsUrl": "URL",
+        "externalDocsDescription": "Description (within 800 characters)"
+      },
+      "tooltips": {
+        "view": "View"
+      }
     }
   }
 } 
