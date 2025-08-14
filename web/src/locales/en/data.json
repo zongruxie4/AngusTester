@@ -83,6 +83,25 @@
         "fileExtractDataset": "File Extract Dataset",
         "jdbcExtractDataset": "Jdbc Extract Dataset"
       }
+    },
+    "introduce": {
+      "title": "About Dataset",
+      "description": "Used to define a set of related data parameter values, usually actual test data, such as: user data, order data, account data, etc. After defining a dataset, you can use parameter name placeholders {parameter name} to reference dataset parameters.",
+      "note": "Note: Datasets are loaded before execution sampling, and parameter values are dynamically changed during the sampling process. AngusTester supports the following three ways to define datasets:",
+      "types": {
+        "staticDataset": {
+          "title": "Static Dataset",
+          "description": "Use Mock functions and constant values to define a set of values as a dataset."
+        },
+        "fileExtract": {
+          "title": "File Extract",
+          "description": "Extract a set of parameter values from a file as a dataset."
+        },
+        "jdbcExtract": {
+          "title": "Jdbc Extract",
+          "description": "Extract a set of values from a data source table as a dataset according to an SQL statement."
+        }
+      }
     }
   }
 }
