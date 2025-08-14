@@ -1335,6 +1335,32 @@
           "stabilityTest": "Stability Test"
         }
       }
+    },
+    "serviceExecTest": {
+      "title": "Execute Test",
+      "serverConfig": {
+        "label": "Server Configuration",
+        "options": {
+          "useDefault": "Use Default (Server configuration when generating interface scripts)",
+          "modifyVariables": "Modify Variable Configuration (Modifications will update to interface and dynamic HTTP extraction variables)"
+        }
+      },
+      "placeholder": {
+        "selectServer": "Please select server"
+      },
+      "labels": {
+        "noVariables": "No Variables",
+        "noDescription": "No Description",
+        "variables": "Variables",
+        "name": "Name",
+        "value": "Value",
+        "description": "Description",
+        "default": "Default",
+        "url": "URL"
+      },
+      "buttons": {
+        "more": "More"
+      }
     }
   }
 } 

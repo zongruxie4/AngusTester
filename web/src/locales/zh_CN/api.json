@@ -1981,6 +1981,32 @@
           "stabilityTest": "稳定性测试"
         }
       }
+    },
+    "serviceExecTest": {
+      "title": "执行测试",
+      "serverConfig": {
+        "label": "服务器配置",
+        "options": {
+          "useDefault": "使用默认（接口生成脚本时服务器配置）",
+          "modifyVariables": "修改变量配置（修改后会更新到接口和动态Http提取变量）"
+        }
+      },
+      "placeholder": {
+        "selectServer": "请选择服务器"
+      },
+      "labels": {
+        "noVariables": "无变量",
+        "noDescription": "无描述",
+        "variables": "变量",
+        "name": "名称",
+        "value": "值",
+        "description": "描述",
+        "default": "默认",
+        "url": "URL"
+      },
+      "buttons": {
+        "more": "更多"
+      }
     }
   }
 }

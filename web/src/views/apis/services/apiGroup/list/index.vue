@@ -687,7 +687,7 @@ watch(() => [props.allData, props.groupedBy], () => {
       <CreateTestTaskModal
         v-model:id="state.id"
         v-model:visible="testVisible"
-        infoText="接口测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
+        :infoText="t('service.apiList.template.testTask.infoText')"
         type="API" />
     </AsyncComponent>
     <!-- 重新开始测试 -->
