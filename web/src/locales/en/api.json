@@ -1025,6 +1025,46 @@
       "buttons": {
         "confirm": "Confirm"
       }
+    },
+    "serviceDetail": {
+      "columns": {
+        "id": "ID",
+        "name": "Name",
+        "parentName": "Parent Project",
+        "source": "Source",
+        "status": "Status",
+        "auth": "Permission",
+        "apisNum": "API Count",
+        "apisCaseNum": "Case Count",
+        "createdByName": "Creator",
+        "createdDate": "Created Date",
+        "lastModifiedDate": "Last Modified Date",
+        "securityTitle": "Security Requirements"
+      },
+      "placeholder": {
+        "nameInput": "Within 100 characters"
+      },
+      "hints": {
+        "maxApis": "Maximum 2000 supported"
+      },
+      "auth": {
+        "hasPermission": "Has permission restrictions",
+        "noPermission": "No permission restrictions"
+      },
+      "modal": {
+        "projectPermission": "Project Permission",
+        "servicePermission": "Service Permission"
+      },
+      "tips": {
+        "project": {
+          "on": "After enabling \"has permission control\", you need to manually authorize project permissions to have corresponding project operation permissions. \"Has permission control\" is enabled by default. Note: Authorizing projects will not authorize API permissions under the project.",
+          "off": "After enabling \"no permission control\", all users under the account will be allowed to publicly view and operate projects and APIs under the project."
+        },
+        "service": {
+          "on": "After enabling \"has permission control\", you need to manually authorize service permissions to have corresponding project operation permissions. \"Has permission control\" is enabled by default. Note: Authorizing projects will not authorize API permissions under the service. If the authorized object does not have parent project permissions, view permissions will be automatically granted.",
+          "off": "After enabling \"no permission control\", all users under the account will be allowed to publicly view and operate services and APIs under the service."
+        }
+      }
     }
   }
 } 

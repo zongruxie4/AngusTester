@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
@@ -14,6 +15,7 @@ interface Props {
   disabled: boolean;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   type: 'SERVICE',
@@ -30,18 +32,18 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const showSecurity = ref(true);
 const columns = computed(() => [
   [
-    { label: 'ID', dataIndex: 'id' },
-    { label: '名称', dataIndex: 'name' },
-    { label: '所属项目', dataIndex: 'parentName' },
-    { label: '来源', dataIndex: 'source' },
-    { label: '状态', dataIndex: 'status' },
-    { label: '权限', dataIndex: 'auth' },
-    { label: '接口数量', dataIndex: 'apisNum' },
-    { label: '用例数量', dataIndex: 'apisCaseNum' }, // @todo
-    { label: '添加人', dataIndex: 'createdByName' },
-    { label: '添加时间', dataIndex: 'createdDate' },
-    { label: '更新时间', dataIndex: 'lastModifiedDate' },
-    { label: '安全需求', dataIndex: 'securityTitle' },
+    { label: t('service.serviceDetail.columns.id'), dataIndex: 'id' },
+    { label: t('service.serviceDetail.columns.name'), dataIndex: 'name' },
+    { label: t('service.serviceDetail.columns.parentName'), dataIndex: 'parentName' },
+    { label: t('service.serviceDetail.columns.source'), dataIndex: 'source' },
+    { label: t('service.serviceDetail.columns.status'), dataIndex: 'status' },
+    { label: t('service.serviceDetail.columns.auth'), dataIndex: 'auth' },
+    { label: t('service.serviceDetail.columns.apisNum'), dataIndex: 'apisNum' },
+    { label: t('service.serviceDetail.columns.apisCaseNum'), dataIndex: 'apisCaseNum' }, // @todo
+    { label: t('service.serviceDetail.columns.createdByName'), dataIndex: 'createdByName' },
+    { label: t('service.serviceDetail.columns.createdDate'), dataIndex: 'createdDate' },
+    { label: t('service.serviceDetail.columns.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+    { label: t('service.serviceDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
     { dataIndex: 'security', fullWidthContent: true }
   ].filter(Boolean)
 ]);
@@ -144,18 +146,18 @@ watch(() => props.id, (newValue) => {
 }, { immediate: true });
 
 const modelTtileMap = {
-  PROJECT: '项目权限',
-  SERVICE: '服务权限'
+  PROJECT: t('service.serviceDetail.modal.projectPermission'),
+  SERVICE: t('service.serviceDetail.modal.servicePermission')
 };
 
 const tipMap = {
   PROJECT: {
-    on: '开启"有权限控制"后，需要手动授权项目权限后才会有项目相应操作权限，默认开启"有权限控制"。注意：授权项目不会授权项目下接口权限。',
-    off: '开启"无权限控制"后，将允许账号下所有用户公开查看和操作项目及项目下接口。'
+    on: t('service.serviceDetail.tips.project.on'),
+    off: t('service.serviceDetail.tips.project.off')
   },
   SERVICE: {
-    on: '开启"有权限控制"后，需要手动授权服务权限后才会有项目相应操作权限，默认开启"有权限控制"。注意：授权项目不会授权服务下接口权限，如果授权对象没有父级项目权限将自动授权查看权限。 ',
-    off: '开启"无权限控制"后，将允许账号下所有用户公开查看和操作服务及服务下接口。'
+    on: t('service.serviceDetail.tips.service.on'),
+    off: t('service.serviceDetail.tips.service.off')
   }
 };
 
@@ -198,7 +200,7 @@ onMounted(() => {
             :error="nameError"
             trim
             class="w-full"
-            placeholder="100字符以内"
+            :placeholder="t('service.serviceDetail.placeholder.nameInput')"
             @pressEnter="confirmEditName"
             @change="nameChange" />
           <Icon
@@ -215,7 +217,7 @@ onMounted(() => {
     <template #apiNum="{text}">
       <div class="flex items-center">
         {{ text }}
-        <Hints class="ml-2" text="最大支持2000个" />
+        <Hints class="ml-2" :text="t('service.serviceDetail.hints.maxApis')" />
         <!-- <Icon icon="icon-tishi" class="ml-2 text-blue-tips" /> -->
       </div>
     </template>
@@ -251,7 +253,7 @@ onMounted(() => {
     </template>
     <template #auth="{ text }">
       <div class="flex items-start">
-        <div class="flex-1">{{ text ? '有权限限制' : '无权限限制' }}</div>
+        <div class="flex-1">{{ text ? t('service.serviceDetail.auth.hasPermission') : t('service.serviceDetail.auth.noPermission') }}</div>
         <Icon
           v-if="!props.disabled"
           icon="icon-shuxie"
