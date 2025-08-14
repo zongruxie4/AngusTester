@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
@@ -17,11 +20,11 @@ const menuItems: {
   name: string;
   key: string;
 }[] = [
-  { icon: 'icon-yingyongxinxi', name: '应用', key: 'appInfo' },
-  { icon: 'icon-zhibiao', name: '指标', key: 'indicator' },
-  { icon: 'icon-tuisongtongzhi', name: '事件', key: 'event' },
-  { icon: 'icon-guanlijiedian', name: '节点', key: 'node' },
-  { icon: 'icon-jiekoudaili', name: '代理', key: 'agent' }
+  { icon: 'icon-yingyongxinxi', name: t('app.name'), key: 'appInfo' },
+  { icon: 'icon-zhibiao', name: t('indicator.name'), key: 'indicator' },
+  { icon: 'icon-tuisongtongzhi', name: t('notification.name'), key: 'event' },
+  { icon: 'icon-guanlijiedian', name: t('node.name'), key: 'node' },
+  { icon: 'icon-jiekoudaili', name: t('agent.name'), key: 'agent' }
 ];
 </script>
 <template>

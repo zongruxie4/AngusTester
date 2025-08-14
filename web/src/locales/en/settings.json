@@ -1,5 +1,6 @@
 {
   "agent": {
+    "name": "Proxy",
     "title": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data.\nYou can choose a suitable proxy service according to your network environment.",
     "noProxy": "No Proxy",
     "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed for non-same-origin access to server-side interfaces.",
@@ -26,6 +27,7 @@
     "connectionFailed": "Connection failed"
   },
   "notification": {
+    "name": "Event",
     "status": {
       "pending": "Pending",
       "success": "Success",
@@ -61,10 +63,12 @@
     }
   },
   "app": {
+    "name": "Application",
     "title": "Application Settings",
     "description": "Configure basic parameters and function options of the application"
   },
   "script": {
+    "name": "Script",
     "title": "Script Settings",
     "description": "Configure script execution related parameters and options"
   },
@@ -73,6 +77,7 @@
     "description": "Configure user permissions and access control"
   },
   "indicator": {
+    "name": "Indicator",
     "title": "Test indicators are quantitative values for evaluating software functionality, performance, and stability, and are also the basis for determining whether software functionality, performance, stability, and development quality meet standards. You can set platform default functionality, performance, and stability indicators through \"Setting Indicators\". If you want the indicators for interfaces/scenarios to be more lenient than the platform default indicators, you can also modify them on the corresponding indicator page for interfaces/scenarios.",
     "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc.",
     "efficiency": {
@@ -158,138 +163,268 @@
         "diskUsageMustBeLessThan100": "Disk usage must be less than 100%",
         "networkUsageMustBeLessThan10000MB": "Network usage must be less than 10000MB"
       }
+    }
+  },
+  "node": {
+    "name": "Node",
+    "title": "Node Management",
+    "buttons": {
+      "addNode": "Add Node",
+      "buyNode": "Buy Node",
+      "sort": "Sort",
+      "refresh": "Refresh"
     },
-    "node": {
-      "title": "Node Management",
-      "buttons": {
-        "addNode": "Add Node",
-        "buyNode": "Buy Node",
-        "sort": "Sort",
-        "refresh": "Refresh"
+    "labels": {
+      "autoRefresh": "Auto Refresh",
+      "totalCount": "Total {total} items"
+    },
+    "searchOptions": {
+      "node": {
+        "label": "Node",
+        "placeholder": "Search node name, ID"
       },
-      "labels": {
-        "autoRefresh": "Auto Refresh",
-        "totalCount": "Total {total} items"
+      "ip": {
+        "label": "IP",
+        "placeholder": "Search node IP"
       },
-      "searchOptions": {
-        "node": {
-          "label": "Node",
-          "placeholder": "Search node name, ID"
+      "role": {
+        "label": "Role",
+        "placeholder": "Select role"
+      },
+      "creator": {
+        "label": "Creator",
+        "placeholder": "Select creator"
+      },
+      "source": {
+        "label": "Source",
+        "placeholder": "Select source"
+      }
+    },
+    "nodeDetail": {
+      "agentInfo": {
+        "columns": {
+          "version": "Version",
+          "home": "Installation Path",
+          "uptime": "Uptime",
+          "diskSpace": "Disk Space",
+          "port": "Occupied Port",
+          "health": "Health Status"
         },
-        "ip": {
-          "label": "IP",
-          "placeholder": "Search node IP"
+        "timeUnits": {
+          "hour": "hour",
+          "minute": "minute",
+          "second": "second"
         },
-        "role": {
-          "label": "Role",
-          "placeholder": "Select role"
-        },
-        "creator": {
-          "label": "Creator",
-          "placeholder": "Select creator"
-        },
-        "source": {
-          "label": "Source",
-          "placeholder": "Select source"
+        "title": "Agent Information",
+        "health": {
+          "normal": "Normal",
+          "abnormal": "Abnormal"
         }
       },
-      "nodeDetail": {
-        "agentInfo": {
-          "columns": {
-            "version": "Version",
-            "home": "Installation Path",
-            "uptime": "Uptime",
-            "diskSpace": "Disk Space",
-            "port": "Occupied Port",
-            "health": "Health Status"
-          },
-          "timeUnits": {
-            "hour": "hour",
-            "minute": "minute",
-            "second": "second"
-          },
-          "title": "Agent Information",
-          "health": {
-            "normal": "Normal",
-            "abnormal": "Abnormal"
-          }
-        },
-        "execPropulsion": {
-          "columns": {
-            "processId": "Process ID",
-            "runTime": "Run Time",
-            "user": "User",
-            "virtualMemory": "Available Virtual Memory",
-            "threadCount": "Thread Count",
-            "openFiles": "Open Files",
-            "writeDisk": "Write Disk",
-            "readDisk": "Read Disk",
-            "action": "Action"
-          },
-          "confirmKillProcess": "Confirm to force exit process [{processId}]?",
-          "processExitSuccess": "Process exit successfully",
-          "processCount": "Process Count",
+      "execPropulsion": {
+        "columns": {
+          "processId": "Process ID",
+          "runTime": "Run Time",
+          "user": "User",
+          "virtualMemory": "Available Virtual Memory",
           "threadCount": "Thread Count",
           "openFiles": "Open Files",
           "writeDisk": "Write Disk",
           "readDisk": "Read Disk",
-          "killProcess": "Force Exit (kill)"
+          "action": "Action"
         },
-        "log": {
+        "confirmKillProcess": "Confirm to force exit process [{processId}]?",
+        "processExitSuccess": "Process exit successfully",
+        "processCount": "Process Count",
+        "threadCount": "Thread Count",
+        "openFiles": "Open Files",
+        "writeDisk": "Write Disk",
+        "readDisk": "Read Disk",
+        "killProcess": "Force Exit (kill)"
+      },
+      "log": {
 
-          "options": {
-            "500": "Last 500 lines",
-            "1000": "Last 1000 lines",
-            "10000": "Last 10000 lines"
-          },
-          "title": "View Log",
-          "errorText": "No access to proxy information, connection failed address: http://{ip}:{port}",
-          "noDownloadContent": "No downloadable content"
+        "options": {
+          "500": "Last 500 lines",
+          "1000": "Last 1000 lines",
+          "10000": "Last 10000 lines"
         },
-        "mockService": {
-          "columns": {
-            "serviceId": "Service ID",
-            "name": "Name",
-            "status": "Status",
-            "accessUrl": "Access URL",
-            "accessPort": "Access Port",
-            "creator": "Creator",
-            "createTime": "Create Time"
-          }
+        "title": "View Log",
+        "errorText": "No access to proxy information, connection failed address: http://{ip}:{port}",
+        "noDownloadContent": "No downloadable content"
+      },
+      "mockService": {
+        "columns": {
+          "serviceId": "Service ID",
+          "name": "Name",
+          "status": "Status",
+          "accessUrl": "Access URL",
+          "accessPort": "Access Port",
+          "creator": "Creator",
+          "createTime": "Create Time"
+        }
+      },
+      "execute": {
+        "columns": {
+          "execId": "Execution ID",
+          "execName": "Execution Name",
+          "testType": "Test Type",
+          "plugin": "Plugin",
+          "executor": "Executor",
+          "startTime": "Start Time"
+        }
+      },
+      "buttons": {
+        "enable": "Enable",
+        "disable": "Disable",
+        "delete": "Delete",
+        "onlineInstallAgent": "Online Install Agent",
+        "manualInstallAgent": "Manual Install Agent",
+        "back": "Back",
+        "fold": "Fold"
+      },
+      "labels": {
+        "resourceMonitoring": "Resource Monitoring",
+        "proxyService": "Proxy Service",
+        "executingTasks": "Executing Tasks",
+        "executorProcess": "Executor Process",
+        "mockServiceInstance": "Mock Service Instance",
+        "used": "Used",
+        "idle": "Idle",
+        "total": "Total",
+        "estimatedTime": "Estimated to take one minute",
+        "disableDelete": "Node must be disabled before deletion",
+        "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
+        "onlyOwnNode": "Only own node can be deleted",
+        "copySuccess": "Copied to clipboard"
+      },
+      "installSteps": {
+        "linuxTitle": "Linux or Mac System Automatic Installation Steps",
+        "configTitle": "Installation Configuration Information",
+        "description": "Script must be executed as root user, installation directory is the directory where the script is located",
+        "method1": "Installation Method 1:",
+        "method2": "Installation Method 2:",
+        "downloadScript": "1). Download automatic installation script:",
+        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
+      },
+      "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "installed": "Installed",
+        "notInstalled": "Not Installed",
+        "connected": "Connected",
+        "notConnected": "Not Connected"
+      },
+      "proxyOpt": {
+        "proxyInfo": "Proxy Information",
+        "log": "Log",
+        "installAgentTip": "Install agent requires system administrator or application administrator permissions",
+        "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
+        "onlyOwnNode": "Only own node can be deleted"
+      },
+      "chartOptions": {
+        "cpu": {
+          "idle": "CPU Idle Percentage",
+          "sys": "System Space Occupied CPU Percentage",
+          "user": "User Space Occupied CPU Percentage",
+          "wait": "Waiting IO Operation CPU Percentage",
+          "other": "Other Occupied CPU Percentage",
+          "total": "Total Occupied CPU Percentage"
         },
-        "execute": {
-          "columns": {
-            "execId": "Execution ID",
-            "execName": "Execution Name",
-            "testType": "Test Type",
-            "plugin": "Plugin",
-            "executor": "Executor",
-            "startTime": "Start Time"
-          }
+        "memory": {
+          "usage": "Usage",
+          "usageRate": "Usage Rate",
+          "free": "Physical Memory Remaining (GB)",
+          "used": "Physical Memory Used (GB)",
+          "freePercent": "Actual Free Physical Memory Percentage (%)",
+          "usedPercent": "Actual Used Physical Memory Percentage (%)",
+          "actualFree": "Actual Free Memory (GB)",
+          "actualUsed": "Actual Used Memory (GB)"
         },
+        "disk": {
+          "iops": "IOPS",
+          "mbPerSecond": "MB per Second",
+          "total": "Total Disk Size (GB)",
+          "free": "Free Disk Space (GB)",
+          "used": "Used Disk Space (GB)",
+          "avail": "Available Disk Space (GB)",
+          "usePercent": "Disk Usage Percentage (%)",
+          "readsRate": "Reads per Second (IO/s)",
+          "writesRate": "Writes per Second (IO/s)"
+        },
+        "network": {
+          "mbPerSecond": "MB per Second",
+          "bytes": "Bytes",
+          "errorPackets": "Error Packets",
+          "rxBytes": "Received Total Bytes (GB)",
+          "rxBytesRate": "Received MB per Second (MB/s)",
+          "rxErrors": "Received Error Packets (packets)",
+          "txBytes": "Sent Total Bytes (GB)",
+          "txBytesRate": "Sent MB per Second (MB/s)"
+        }
+      },
+      "nodeItem": {
         "buttons": {
+          "save": "Save",
+          "cancel": "Cancel",
+          "testConnection": "Test Connection",
+          "edit": "Edit",
           "enable": "Enable",
           "disable": "Disable",
           "delete": "Delete",
-          "onlineInstallAgent": "Online Install Agent",
-          "manualInstallAgent": "Manual Install Agent",
-          "back": "Back",
-          "fold": "Fold"
+          "onlineInstall": "Online Install",
+          "manualInstall": "Manual Install",
+          "restartProxy": "Restart Proxy"
         },
         "labels": {
-          "resourceMonitoring": "Resource Monitoring",
-          "proxyService": "Proxy Service",
-          "executingTasks": "Executing Tasks",
-          "executorProcess": "Executor Process",
-          "mockServiceInstance": "Mock Service Instance",
-          "used": "Used",
-          "idle": "Idle",
-          "total": "Total",
+          "role": "Role",
+          "required": "Required",
+          "portRangeTip": "Please enter port number range between 1 ~ 65535",
+          "selectRole": "Please select role",
+          "connectionSuccess": "Connection successful",
+          "connectionFailed": "Connection failed, please check and re-fill node information before testing connection again",
           "estimatedTime": "Estimated to take one minute",
-          "disableDelete": "Node must be disabled before deletion",
-          "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
-          "onlyOwnNode": "Only own node can be deleted",
+          "installSuccess": "Installation successful",
+          "updateNodeSuccess": "Update node successful",
+          "addNodeSuccess": "Add node successful",
+          "modifyNodeNameSuccess": "Modify node name successful",
+          "addNode": "Add Node",
+          "inputLimit200": "Input limit 200 characters",
+          "installAgentTip": "Detect that the node has not installed the agent, please install the agent first and then use it",
+          "freeNode": "Free Node",
+          "nodeTip": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+          "nodeTip2": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+          "managerNode": "Management Node: ",
+          "controllerNode": "Controller Node: ",
+          "execNode": "Execution Node: ",
+          "mockNode": "Mock Node: ",
+          "appNode": "Application Node: ",
+          "managerNodeDesc": "Deploy and run Web UI applications",
+          "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and proxy services.",
+          "execNodeDesc": "Used for executing functional tests, performance tests, data generation, etc.",
+          "mockNodeDesc": "Runs Mock services and Mock interfaces.",
+          "appNodeDesc": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues.",
           "copySuccess": "Copied to clipboard"
+        },
+        "tips": {
+          "editOwnNode": "Only own node can be deleted",
+          "editPermission": "Edit node requires system administrator or application administrator permissions",
+          "disableDelete": "Node must be disabled before deletion",
+          "deletePermission": "Delete node requires system administrator or application administrator permissions",
+          "deleteOwnNode": "Only own node can be deleted",
+          "alreadyInstalled": "Already installed",
+          "installPermission": "Online install agent requires system administrator or application administrator permissions",
+          "manualInstallPermission": "Manual install agent requires system administrator or application administrator permissions",
+          "roleDescription": "You can check the corresponding role of the node according to your actual needs",
+          "roleHint": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
+          "managementNode": "Management Node: Deploy and run Web UI applications",
+          "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and proxy services.",
+          "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
+          "mockNode": "Mock Node: Runs Mock services and Mock interfaces.",
+          "applicationNode": "Application Node: The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues."
+        },
+        "confirm": {
+          "deleteNode": "Are you sure to delete node [{name}]?"
         },
         "installSteps": {
           "linuxTitle": "Linux or Mac System Automatic Installation Steps",
@@ -300,208 +435,79 @@
           "downloadScript": "1). Download automatic installation script:",
           "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
         },
-        "status": {
-          "enabled": "Enabled",
-          "disabled": "Disabled",
-          "installed": "Installed",
-          "notInstalled": "Not Installed",
-          "connected": "Connected",
-          "notConnected": "Not Connected"
-        },
-        "proxyOpt": {
-          "proxyInfo": "Proxy Information",
-          "log": "Log",
-          "installAgentTip": "Install agent requires system administrator or application administrator permissions",
-          "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
-          "onlyOwnNode": "Only own node can be deleted"
-        },
-        "chartOptions": {
-          "cpu": {
-            "idle": "CPU Idle Percentage",
-            "sys": "System Space Occupied CPU Percentage",
-            "user": "User Space Occupied CPU Percentage",
-            "wait": "Waiting IO Operation CPU Percentage",
-            "other": "Other Occupied CPU Percentage",
-            "total": "Total Occupied CPU Percentage"
+        "interface": {
+          "formItems": {
+            "nodeName": "Node Name",
+            "intranetIP": "Intranet IP",
+            "publicIP": "Public IP",
+            "domain": "Domain",
+            "username": "Username",
+            "password": "Password",
+            "sshPort": "SSH Port",
+            "inputLimit200": "Input limit 200 characters",
+            "inputNodeIP": "Enter node IP address",
+            "inputNodeDomain": "Enter node domain",
+            "inputUsername": "Enter username",
+            "inputPassword": "Enter password",
+            "inputSSHPort": "Enter SSH port"
           },
-          "memory": {
-            "usage": "Usage",
-            "usageRate": "Usage Rate",
-            "free": "Physical Memory Remaining (GB)",
-            "used": "Physical Memory Used (GB)",
-            "freePercent": "Actual Free Physical Memory Percentage (%)",
-            "usedPercent": "Actual Used Physical Memory Percentage (%)",
-            "actualFree": "Actual Free Memory (GB)",
-            "actualUsed": "Actual Used Memory (GB)"
+          "roleOptions": {
+            "managementNode": "Management Node",
+            "pressureTestNode": "Pressure Test Node",
+            "mockNode": "Mock Node",
+            "applicationNode": "Application Node"
           },
-          "disk": {
-            "iops": "IOPS",
-            "mbPerSecond": "MB per Second",
-            "total": "Total Disk Size (GB)",
-            "free": "Free Disk Space (GB)",
-            "used": "Used Disk Space (GB)",
-            "avail": "Available Disk Space (GB)",
-            "usePercent": "Disk Usage Percentage (%)",
-            "readsRate": "Reads per Second (IO/s)",
-            "writesRate": "Writes per Second (IO/s)"
+          "nodeStatus": {
+            "enabledStatus": "Enabled Status:",
+            "agentInstallStatus": "Agent Install Status:",
+            "connectionStatus": "Connection Status:",
+            "enabled": "Enabled",
+            "notEnabled": "Not Enabled",
+            "installed": "Installed",
+            "notInstalled": "Not Installed",
+            "connected": "Connected",
+            "notConnected": "Not Connected"
           },
-          "network": {
-            "mbPerSecond": "MB per Second",
-            "bytes": "Bytes",
-            "errorPackets": "Error Packets",
-            "rxBytes": "Received Total Bytes (GB)",
-            "rxBytesRate": "Received MB per Second (MB/s)",
-            "rxErrors": "Received Error Packets (packets)",
-            "txBytes": "Sent Total Bytes (GB)",
-            "txBytesRate": "Sent MB per Second (MB/s)"
+          "viewItem": {
+            "id": "ID: ",
+            "intranetIP": "Intranet IP: ",
+            "publicIP": "Public IP: ",
+            "source": "Source: ",
+            "role": "Role: ",
+            "specification": "Specification: ",
+            "system": "System: "
+          },
+          "nodeUseProgresses": {
+            "cpu": "CPU",
+            "memory": "Memory",
+            "fileSystem": "File System",
+            "swapArea": "Swap Area",
+            "upload": "Upload",
+            "download": "Download"
           }
         },
-        "nodeItem": {
-          "buttons": {
-            "save": "Save",
-            "cancel": "Cancel",
-            "testConnection": "Test Connection",
-            "edit": "Edit",
-            "enable": "Enable",
-            "disable": "Disable",
-            "delete": "Delete",
-            "onlineInstall": "Online Install",
-            "manualInstall": "Manual Install",
-            "restartProxy": "Restart Proxy"
-          },
-          "labels": {
-            "role": "Role",
-            "required": "Required",
-            "portRangeTip": "Please enter port number range between 1 ~ 65535",
-            "selectRole": "Please select role",
-            "connectionSuccess": "Connection successful",
-            "connectionFailed": "Connection failed, please check and re-fill node information before testing connection again",
-            "estimatedTime": "Estimated to take one minute",
-            "installSuccess": "Installation successful",
-            "updateNodeSuccess": "Update node successful",
-            "addNodeSuccess": "Add node successful",
-            "modifyNodeNameSuccess": "Modify node name successful",
-            "addNode": "Add Node",
-            "inputLimit200": "Input limit 200 characters",
-            "installAgentTip": "Detect that the node has not installed the agent, please install the agent first and then use it",
-            "freeNode": "Free Node",
-            "nodeTip": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
-            "nodeTip2": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
-            "managerNode": "Management Node: ",
-            "controllerNode": "Controller Node: ",
-            "execNode": "Execution Node: ",
-            "mockNode": "Mock Node: ",
-            "appNode": "Application Node: ",
-            "managerNodeDesc": "Deploy and run Web UI applications",
-            "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and proxy services.",
-            "execNodeDesc": "Used for executing functional tests, performance tests, data generation, etc.",
-            "mockNodeDesc": "Runs Mock services and Mock interfaces.",
-            "appNodeDesc": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues.",
-            "copySuccess": "Copied to clipboard"
-          },
-          "tips": {
-            "editOwnNode": "Only own node can be deleted",
-            "editPermission": "Edit node requires system administrator or application administrator permissions",
-            "disableDelete": "Node must be disabled before deletion",
-            "deletePermission": "Delete node requires system administrator or application administrator permissions",
-            "deleteOwnNode": "Only own node can be deleted",
-            "alreadyInstalled": "Already installed",
-            "installPermission": "Online install agent requires system administrator or application administrator permissions",
-            "manualInstallPermission": "Manual install agent requires system administrator or application administrator permissions",
-            "roleDescription": "You can check the corresponding role of the node according to your actual needs",
-            "roleHint": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
-            "managementNode": "Management Node: Deploy and run Web UI applications",
-            "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and proxy services.",
-            "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
-            "mockNode": "Mock Node: Runs Mock services and Mock interfaces.",
-            "applicationNode": "Application Node: The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues."
-          },
-          "confirm": {
-            "deleteNode": "Are you sure to delete node [{name}]?"
-          },
-          "installSteps": {
-            "linuxTitle": "Linux or Mac System Automatic Installation Steps",
-            "configTitle": "Installation Configuration Information",
-            "description": "Script must be executed as root user, installation directory is the directory where the script is located",
-            "method1": "Installation Method 1:",
-            "method2": "Installation Method 2:",
-            "downloadScript": "1). Download automatic installation script:",
-            "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
-          },
-          "interface": {
-            "formItems": {
-              "nodeName": "Node Name",
-              "intranetIP": "Intranet IP",
-              "publicIP": "Public IP",
-              "domain": "Domain",
-              "username": "Username",
-              "password": "Password",
-              "sshPort": "SSH Port",
-              "inputLimit200": "Input limit 200 characters",
-              "inputNodeIP": "Enter node IP address",
-              "inputNodeDomain": "Enter node domain",
-              "inputUsername": "Enter username",
-              "inputPassword": "Enter password",
-              "inputSSHPort": "Enter SSH port"
+        "nodeTip": {
+          "title": "Tips: 1. Node System: Supports Linux, Mac, Windows operating systems, Linux is recommended. 2. Adding and Installing Agents: Before executing tasks, you need to add nodes and install agents for the nodes. If automatic agent installation fails due to network or server account issues, please follow the manual installation prompts. Please ensure that the agent is in a connected state before executing tasks (if the agent is not started, you need to start the agent first). 3. Node Role Configuration: A node can take on multiple roles, but to improve the accuracy of performance test results, please configure a single \"execution\" node role for stress test nodes. 4. Network Environment Selection: During stress testing, if you want to restore the user's real access environment (such as network latency) as much as possible, please use public network nodes for testing. If you want to exclude network latency interference on test results to test the application's ultimate performance, please add nodes in the same intranet environment as the test application for testing. 5. By default, only system administrators and application administrators are allowed to perform management operations on nodes.",
+          "steps": {
+            "managementNode": {
+              "title": "Management Node",
+              "content": "Used for deploying and running Web UI applications"
             },
-            "roleOptions": {
-              "managementNode": "Management Node",
-              "pressureTestNode": "Pressure Test Node",
-              "mockNode": "Mock Node",
-              "applicationNode": "Application Node"
+            "controllerNode": {
+              "title": "Controller Node",
+              "content": "Used for scheduling, managing, monitoring execution and proxy services"
             },
-            "nodeStatus": {
-              "enabledStatus": "Enabled Status:",
-              "agentInstallStatus": "Agent Install Status:",
-              "connectionStatus": "Connection Status:",
-              "enabled": "Enabled",
-              "notEnabled": "Not Enabled",
-              "installed": "Installed",
-              "notInstalled": "Not Installed",
-              "connected": "Connected",
-              "notConnected": "Not Connected"
+            "executionNode": {
+              "title": "Execution Node",
+              "content": "Used for executing functional tests, performance tests, data generation, etc."
             },
-            "viewItem": {
-              "id": "ID: ",
-              "intranetIP": "Intranet IP: ",
-              "publicIP": "Public IP: ",
-              "source": "Source: ",
-              "role": "Role: ",
-              "specification": "Specification: ",
-              "system": "System: "
+            "mockNode": {
+              "title": "Mock Node",
+              "content": "Runs Mock services and Mock interfaces"
             },
-            "nodeUseProgresses": {
-              "cpu": "CPU",
-              "memory": "Memory",
-              "fileSystem": "File System",
-              "swapArea": "Swap Area",
-              "upload": "Upload",
-              "download": "Download"
-            }
-          },
-          "nodeTip": {
-            "title": "Tips: 1. Node System: Supports Linux, Mac, Windows operating systems, Linux is recommended. 2. Adding and Installing Agents: Before executing tasks, you need to add nodes and install agents for the nodes. If automatic agent installation fails due to network or server account issues, please follow the manual installation prompts. Please ensure that the agent is in a connected state before executing tasks (if the agent is not started, you need to start the agent first). 3. Node Role Configuration: A node can take on multiple roles, but to improve the accuracy of performance test results, please configure a single \"execution\" node role for stress test nodes. 4. Network Environment Selection: During stress testing, if you want to restore the user's real access environment (such as network latency) as much as possible, please use public network nodes for testing. If you want to exclude network latency interference on test results to test the application's ultimate performance, please add nodes in the same intranet environment as the test application for testing. 5. By default, only system administrators and application administrators are allowed to perform management operations on nodes.",
-            "steps": {
-              "managementNode": {
-                "title": "Management Node",
-                "content": "Used for deploying and running Web UI applications"
-              },
-              "controllerNode": {
-                "title": "Controller Node",
-                "content": "Used for scheduling, managing, monitoring execution and proxy services"
-              },
-              "executionNode": {
-                "title": "Execution Node",
-                "content": "Used for executing functional tests, performance tests, data generation, etc."
-              },
-              "mockNode": {
-                "title": "Mock Node",
-                "content": "Runs Mock services and Mock interfaces"
-              },
-              "applicationNode": {
-                "title": "Application Node",
-                "content": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues"
-              }
+            "applicationNode": {
+              "title": "Application Node",
+              "content": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues"
             }
           }
         }
