@@ -4,6 +4,9 @@ import { Input, Modal } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { Form, FormItem } from 'ant-design-vue';
 import SelectEnum from '@/components/SelectEnum/index.vue'
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 interface FormState {
   name: string,
   quotaSize: {
@@ -122,7 +125,7 @@ const excludes = ({ value }):boolean => {
 </script>
 <template>
   <Modal
-    title="添加空间"
+    :title="t('fileSpace.spaceForm.title')"
     :visible="visible"
     @cancel="closeModal"
     @ok="confirm">
@@ -132,19 +135,19 @@ const excludes = ({ value }):boolean => {
       size="small"
       layout="vertical">
       <FormItem
-        label="空间名称"
+        :label="t('fileSpace.spaceForm.form.spaceName')"
         name="name"
-        :rules="[{required: true, message: '输入空间名称'}]">
+        :rules="[{required: true, message: t('fileSpace.spaceForm.rules.spaceName')}]">
         <Input
           v-model:value="form.name"
-          placeholder="输入空间名称,限制100字符以内"
+          :placeholder="t('fileSpace.spaceForm.placeholders.spaceName')"
           size="small"
           :maxlength="100" />
       </FormItem>
       <FormItem name="quotaSize">
         <template #label>
           <div class="flex items-end">
-            <span>空间配额 </span><span class="text-gray-text-light text-3">(限制空间可使用存储总大小，最小100MB)</span>
+            <span>{{ t('fileSpace.spaceForm.form.spaceQuota') }} </span><span class="text-gray-text-light text-3">{{ t('fileSpace.spaceForm.quotaDescription') }}</span>
           </div>
         </template>
         <Input
@@ -153,7 +156,7 @@ const excludes = ({ value }):boolean => {
           :max="2000"
           :min="0"
           :decimalPoint="4"
-          placeholder="输入空间配额"
+          :placeholder="t('fileSpace.spaceForm.placeholders.spaceQuota')"
           dataType="float"
           size="small"
           @blur="onSizeBlur">
@@ -166,11 +169,11 @@ const excludes = ({ value }):boolean => {
           </template>
         </Input>
       </FormItem>
-      <FormItem label="备注">
+      <FormItem :label="t('fileSpace.spaceForm.form.remark')">
         <Input
           v-model:value="form.remark"
           type="textarea"
-          placeholder="限制200字符以内"
+          :placeholder="t('fileSpace.spaceForm.placeholders.remark')"
           showCount
           class="h-25 mb-4"
           :maxlength="200" />

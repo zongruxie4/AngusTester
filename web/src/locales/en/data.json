@@ -313,6 +313,23 @@
         "allPermissions": "All",
         "loadingTip": "Loading..."
       }
+    },
+    "spaceForm": {
+      "title": "Add Space",
+      "form": {
+        "spaceName": "Space Name",
+        "spaceQuota": "Space Quota",
+        "remark": "Remark"
+      },
+      "placeholders": {
+        "spaceName": "Enter space name, limited to 100 characters",
+        "spaceQuota": "Enter space quota",
+        "remark": "Limited to 200 characters"
+      },
+      "rules": {
+        "spaceName": "Enter space name"
+      },
+      "quotaDescription": "(Limit the total storage size that the space can use, minimum 100MB)"
     }
   }
 }

@@ -313,6 +313,23 @@
         "allPermissions": "全部",
         "loadingTip": "加载中..."
       }
+    },
+    "spaceForm": {
+      "title": "添加空间",
+      "form": {
+        "spaceName": "空间名称",
+        "spaceQuota": "空间配额",
+        "remark": "备注"
+      },
+      "placeholders": {
+        "spaceName": "输入空间名称,限制100字符以内",
+        "spaceQuota": "输入空间配额",
+        "remark": "限制200字符以内"
+      },
+      "rules": {
+        "spaceName": "输入空间名称"
+      },
+      "quotaDescription": "(限制空间可使用存储总大小，最小100MB)"
     }
   }
 }
