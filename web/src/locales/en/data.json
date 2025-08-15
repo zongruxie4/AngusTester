@@ -266,6 +266,27 @@
         "link": "Link: {url}",
         "linkAndPassword": "Link: {url} Password: {password}"
       }
+    },
+    "introduce": {
+      "description": "Provides unified online generation and storage functions for test data and business data files, as well as support for multi-person collaborative management and sharing. The following are the main functions and features of AngusTester files:",
+      "features": {
+        "generateData": {
+          "title": "Generate Data",
+          "content": "Generate data files in multiple formats such as CSV, Excel, SQL, JSON, XML, etc., convenient for testing or business use."
+        },
+        "storageAndBackup": {
+          "title": "Storage and Backup",
+          "content": "You can upload work or other types of files to the file network disk to achieve data backup and secure storage, avoiding loss and sharing inconvenience issues."
+        },
+        "securityAndProtection": {
+          "title": "Security and Data Protection",
+          "content": "For uploaded file data, data-level permissions and encryption protection ensure data security and privacy protection."
+        },
+        "spaceManagement": {
+          "title": "Storage Space Management",
+          "content": "Provides storage space quota management functions, which can expand storage capacity as needed to meet storage requirements of different scales and needs."
+        }
+      }
     }
   }
 }

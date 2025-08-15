@@ -266,6 +266,27 @@
         "link": "链接: {url}",
         "linkAndPassword": "链接: {url} 密码: {password}" 
       }
+    },
+    "introduce": {
+      "description": "提供统一的测试数据和业务数据文件在线生成、存储功能，以及支持多人协同管理和共享等。以下是AngusTester文件的主要作用和特点：",
+      "features": {
+        "generateData": {
+          "title": "生成数据",
+          "content": "生成CSV、Excel、SQL、JSON、XML等多种格式数据文件，方便测试或业务使用。"
+        },
+        "storageAndBackup": {
+          "title": "存储和备份",
+          "content": "可以将工作或者其他类型的文件上传至文件网盘中，实现数据的备份和安全存储，避免丢失和共享不便问题。"
+        },
+        "securityAndProtection": {
+          "title": "安全性和数据保护",
+          "content": "对于上传后的文件数据，通过数据级别权限和加密保护，确保数据的安全性和隐私保护。"
+        },
+        "spaceManagement": {
+          "title": "存储空间管理",
+          "content": "提供存储空间配额管理功能，可以根据需要扩展存储容量，满足不同规模和需求的存储要求。"
+        }
+      }
     }
   }
 }
