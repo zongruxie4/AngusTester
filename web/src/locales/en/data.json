@@ -460,6 +460,121 @@
         "file": "Add File Variable",
         "http": "Add Http Variable",
         "jdbc": "Add Jdbc Variable"
+      },
+      "list": {
+        "title": "Added Variables",
+        "noData": "You haven't added any variables yet, ",
+        "addStaticVariable": "Add Static Variable",
+        "uploadVariable": "Upload Variable",
+        "or": "or",
+        "noDescription": "No description~",
+        "isPassword": "Yes",
+        "notPassword": "No",
+        "columns": {
+          "name": "Name",
+          "value": "Value",
+          "description": "Description",
+          "password": "Password",
+          "dataSource": "Data Source",
+          "lastModifiedBy": "Last Modified By",
+          "createdBy": "Created By",
+          "lastModifiedDate": "Last Modified Date",
+          "createdDate": "Created Date",
+          "action": "Action"
+        },
+        "buttons": {
+          "edit": "Edit",
+          "delete": "Delete"
+        },
+        "dropdown": {
+          "fileExtract": "File Extract Variable",
+          "httpExtract": "Http Extract Variable",
+          "jdbcExtract": "Jdbc Extract Variable",
+          "export": "Export",
+          "clone": "Clone"
+        },
+        "messages": {
+          "deleteConfirm": "Are you sure to delete variable 【{name}】?",
+          "deleteSuccess": "Variable deleted successfully",
+          "cloneSuccess": "Variable cloned successfully",
+          "batchDeleteConfirm": "Are you sure to delete the selected {num} variables?",
+          "batchDeleteSuccess": "All selected variables deleted successfully",
+          "maxBatchDelete": "Maximum {maxNum} variables can be batch deleted, currently {num} variables are selected.",
+          "maxBatchDeleteError": "Maximum {maxNum} variables can be batch deleted, currently {num} variables are selected."
+        },
+        "searchPanel": {
+          "quickSearch": "Quick Search",
+          "all": "All",
+          "createdByMe": "Created by Me",
+          "modifiedByMe": "Modified by Me",
+          "lastDay": "Last Day",
+          "lastThreeDays": "Last 3 Days",
+          "lastWeek": "Last Week",
+          "searchOptions": {
+            "namePlaceholder": "Search name, description",
+            "createdByPlaceholder": "Select creator",
+            "createdDatePlaceholder": ["Create time from", "Create time to"]
+          },
+          "sortOptions": {
+            "byName": "By Name",
+            "byCreator": "By Creator",
+            "byCreateTime": "By Create Time",
+            "byLastModifier": "By Last Modifier",
+            "byLastModifyTime": "By Last Modify Time"
+          },
+          "buttons": {
+            "deleteSelected": "Delete Selected",
+            "cancelDelete": "Cancel Delete",
+            "addStaticVariable": "Add Static Variable",
+            "batchDelete": "Batch Delete",
+            "refresh": "Refresh"
+          },
+          "tooltips": {
+            "uploadVariable": "Upload Variable",
+            "downloadVariable": "Download Variable"
+          },
+          "dropdown": {
+            "fileExtract": "File Extract Variable",
+            "httpExtract": "Http Extract Variable",
+            "jdbcExtract": "Jdbc Extract Variable"
+          }
+        },
+        "introduce": {
+          "title": "About Variables",
+          "description": "Used to define a value that can be reused. After defining a variable, you can use the variable placeholder {variableName} to reference the variable. Variables make testing and maintenance more efficient and flexible, while improving the repeatability and scalability of tests.",
+          "note": "Note: Before executing sampling, variable placeholders will be replaced with corresponding variable values, and the values will not change during execution. AngusTester variables support defining static variables and also support the following three ways to extract a variable:",
+          "types": {
+            "fileExtract": {
+              "title": "File Extract",
+              "description": "Extract a value from a file as a variable value. For example: reading a secret key."
+            },
+            "httpExtract": {
+              "title": "Http Extract",
+              "description": "Extract a value from an Http request as a variable value. For example: dynamically obtaining a token."
+            },
+            "jdbcExtract": {
+              "title": "Jdbc Extract",
+              "description": "Extract specified variable values from data source tables according to SQL, such as: current product price."
+            }
+          }
+        },
+        "importModal": {
+          "title": "Upload Variable",
+          "uploadArea": {
+            "selectFile": "Select File",
+            "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+          },
+          "fileSizeError": "File size cannot exceed {maxSize}M",
+          "duplicateStrategy": {
+            "title": "Processing strategy when encountering duplicates",
+            "cover": "Cover",
+            "ignore": "Ignore"
+          }
+        },
+        "exportModal": {
+          "title": "Download Variable",
+          "format": "Format"
+        }
       }
     }
   }

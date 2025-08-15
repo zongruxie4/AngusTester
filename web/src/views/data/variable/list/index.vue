@@ -4,11 +4,14 @@ import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
 import { VariableItem } from '../PropsType';
 
 import SearchPanel from '@/views/data/variable/list/searchPanel/index.vue';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -156,7 +159,7 @@ const toEdit = (data: VariableItem) => {
 
 const toDelete = (data: VariableItem) => {
   modal.confirm({
-    content: `确定删除变量【${data.name}】吗？`,
+    content: t('dataVariable.list.messages.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await variable.deleteVariables([id]);
@@ -164,7 +167,7 @@ const toDelete = (data: VariableItem) => {
         return;
       }
 
-      notification.success('变量删除成功');
+      notification.success(t('dataVariable.list.messages.deleteSuccess'));
       pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
       loadData();
 
@@ -184,7 +187,7 @@ const toClone = async (data: VariableItem) => {
     return;
   }
 
-  notification.success('变量克隆成功');
+  notification.success(t('dataVariable.list.messages.cloneSuccess'));
   loadData();
 };
 
@@ -211,12 +214,12 @@ const toBatchDelete = () => {
   }
 
   if (num > MAX_NUM) {
-    notification.error(`最大支持批量删除 ${MAX_NUM} 个变量，当前已选中 ${num} 个变量。`);
+    notification.error(t('dataVariable.list.messages.maxBatchDeleteError', { maxNum: MAX_NUM, num }));
     return;
   }
 
   modal.confirm({
-    content: `确定删除选中的 ${num} 条变量吗？`,
+    content: t('dataVariable.list.messages.batchDeleteConfirm', { num }),
     async onOk () {
       const ids = selectedRowKeys;
       loading.value = true;
@@ -226,7 +229,7 @@ const toBatchDelete = () => {
         return;
       }
 
-      notification.success('选中的变量全部删除成功');
+      notification.success(t('dataVariable.list.messages.batchDeleteSuccess'));
       rowSelection.value = undefined;
 
       for (let i = 0, len = ids.length; i < len; i++) {
@@ -296,7 +299,7 @@ const tableSelect = (keys: string[]) => {
 
   const num = selectedRowKeys.length;
   if (num > MAX_NUM) {
-    notification.info(`最大支持批量删除 ${MAX_NUM} 个变量，当前已选中 ${num} 个变量。`);
+    notification.info(t('dataVariable.list.messages.maxBatchDelete', { maxNum: MAX_NUM, num }));
   }
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
@@ -447,38 +450,38 @@ const selectedNum = computed(() => rowSelection.value?.selectedRowKeys?.length);
 
 const columns = [
   {
-    title: '名称',
+    title: t('dataVariable.list.columns.name'),
     dataIndex: 'name',
     ellipsis: true,
     width: '16%',
     sorter: true
   },
   {
-    title: '值',
+    title: t('dataVariable.list.columns.value'),
     dataIndex: 'value',
     ellipsis: true,
     width: '16%'
   },
   {
-    title: '描述',
+    title: t('dataVariable.list.columns.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '密码',
+    title: t('dataVariable.list.columns.password'),
     dataIndex: 'passwordValue',
     ellipsis: true,
     width: '4%'
   },
   {
-    title: '值来源',
+    title: t('dataVariable.list.columns.dataSource'),
     dataIndex: 'dataSource',
     ellipsis: true,
     width: '8%',
     customRender: ({ text }) => text?.message
   },
   {
-    title: '最后修改人',
+    title: t('dataVariable.list.columns.lastModifiedBy'),
     dataIndex: 'lastModifiedBy',
     ellipsis: true,
     width: '10%',
@@ -487,7 +490,7 @@ const columns = [
     customRender: ({ record }) => record.lastModifiedByName
   },
   {
-    title: '创建人',
+    title: t('dataVariable.list.columns.createdBy'),
     dataIndex: 'createdBy',
     ellipsis: true,
     width: '10%',
@@ -499,7 +502,7 @@ const columns = [
     }
   },
   {
-    title: '最后修改时间',
+    title: t('dataVariable.list.columns.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '11%',
@@ -508,7 +511,7 @@ const columns = [
   },
 
   {
-    title: '创建时间',
+    title: t('dataVariable.list.columns.createdDate'),
     dataIndex: 'createdDate',
     ellipsis: true,
     width: '11%',
@@ -517,7 +520,7 @@ const columns = [
     hide: true
   },
   {
-    title: '操作',
+    title: t('dataVariable.list.columns.action'),
     dataIndex: 'action',
     width: 140
   }
@@ -525,17 +528,17 @@ const columns = [
 
 const buttonDropdownMenuItems = [
   {
-    name: '文件提取变量',
+    name: t('dataVariable.list.dropdown.fileExtract'),
     key: 'file',
     noAuth: true
   },
   {
-    name: 'Http提取变量',
+    name: t('dataVariable.list.dropdown.httpExtract'),
     key: 'http',
     noAuth: true
   },
   {
-    name: 'Jdbc提取变量',
+    name: t('dataVariable.list.dropdown.jdbcExtract'),
     key: 'jdbc',
     noAuth: true
   }
@@ -547,12 +550,12 @@ const tableDropdownMenuItems: {
   icon: string;
 }[] = [
   {
-    name: '导出',
+    name: t('dataVariable.list.dropdown.export'),
     key: 'export',
     icon: 'icon-daochu1'
   },
   {
-    name: '克隆',
+    name: t('dataVariable.list.dropdown.clone'),
     key: 'clone',
     icon: 'icon-fuzhi'
   }
@@ -563,7 +566,7 @@ const tableDropdownMenuItems: {
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
 
-    <div class="text-3.5 font-semibold mb-1">已添加的变量</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('dataVariable.list.title') }}</div>
 
     <Spin
       :spinning="loading"
@@ -573,7 +576,7 @@ const tableDropdownMenuItems: {
         <div v-if="!searchedFlag && tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
-            <span>您尚未添加任何变量，立即</span>
+            <span>{{ t('dataVariable.list.noData') }}</span>
 
             <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
               <Button
@@ -581,18 +584,18 @@ const tableDropdownMenuItems: {
                 size="small"
                 class="text-3.5 py-0 px-0 mx-1"
                 @click="toCreateStaticVariable">
-                <span>添加静态变量</span>
+                <span>{{ t('dataVariable.list.addStaticVariable') }}</span>
               </Button>
             </Dropdown>
 
-            <span>或</span>
+            <span>{{ t('dataVariable.list.or') }}</span>
 
             <Button
               type="link"
               size="small"
               class="text-3.5 py-0 px-0 mx-1"
               @click="toImport">
-              <span>上传变量</span>
+              <span>{{ t('dataVariable.list.uploadVariable') }}</span>
             </Button>
           </div>
         </div>
@@ -631,7 +634,7 @@ const tableDropdownMenuItems: {
               </div>
 
               <template v-if="column.dataIndex === 'description'">
-                <span v-if="!record.description" class="text-text-sub-content">无描述~</span>
+                <span v-if="!record.description" class="text-text-sub-content">{{ t('dataVariable.list.noDescription') }}</span>
               </template>
 
               <template v-if="column.dataIndex === 'value'">
@@ -687,7 +690,7 @@ const tableDropdownMenuItems: {
               </template>
 
               <div v-if="column.dataIndex === 'passwordValue'" class="flex items-center">
-                {{ record.passwordValue ? '是' : '否' }}
+                {{ record.passwordValue ? t('dataVariable.list.isPassword') : t('dataVariable.list.notPassword') }}
               </div>
 
               <div v-else-if="column.dataIndex === 'action'" class="flex items-center">
@@ -697,7 +700,7 @@ const tableDropdownMenuItems: {
                   class="flex items-center px-0 mr-2.5"
                   @click="toEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-                  <span>编辑</span>
+                  <span>{{ t('dataVariable.list.buttons.edit') }}</span>
                 </Button>
 
                 <Button
@@ -706,7 +709,7 @@ const tableDropdownMenuItems: {
                   class="flex items-center px-0 mr-2.5"
                   @click="toDelete(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-                  <span>删除</span>
+                  <span>{{ t('dataVariable.list.buttons.delete') }}</span>
                 </Button>
 
                 <Dropdown :menuItems="tableDropdownMenuItems" @click="tableDropdownClick($event, record)">

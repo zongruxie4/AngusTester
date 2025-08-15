@@ -5,6 +5,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   loading: boolean;
@@ -36,17 +39,17 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 const buttonDropdownMenuItems = [
   {
-    name: '文件提取变量',
+    name: t('dataVariable.list.searchPanel.dropdown.fileExtract'),
     key: 'file',
     noAuth: true
   },
   {
-    name: 'Http提取变量',
+    name: t('dataVariable.list.searchPanel.dropdown.httpExtract'),
     key: 'http',
     noAuth: true
   },
   {
-    name: 'Jdbc提取变量',
+    name: t('dataVariable.list.searchPanel.dropdown.jdbcExtract'),
     key: 'jdbc',
     noAuth: true
   }
@@ -56,7 +59,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询名称、描述',
+    placeholder: t('dataVariable.list.searchPanel.searchOptions.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -71,14 +74,14 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择创建人',
+    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdByPlaceholder'),
     maxlength: 100
   },
   {
     valueKey: 'createdDate',
     type: 'date-range',
     allowClear: true,
-    placeholder: ['创建时间从', '创建时间到'],
+    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdDatePlaceholder'),
     maxlength: 100
   }
 ];
@@ -89,27 +92,27 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按名称',
+    name: t('dataVariable.list.searchPanel.sortOptions.byName'),
     key: 'name',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('dataVariable.list.searchPanel.sortOptions.byCreator'),
     key: 'createdBy',
     orderSort: 'ASC'
   },
   {
-    name: '按添加时间',
+    name: t('dataVariable.list.searchPanel.sortOptions.byCreateTime'),
     key: 'createdDate',
     orderSort: 'ASC'
   },
   {
-    name: '按最后修改人',
+    name: t('dataVariable.list.searchPanel.sortOptions.byLastModifier'),
     key: 'lastModifiedBy',
     orderSort: 'ASC'
   },
   {
-    name: '按最后修改时间',
+    name: t('dataVariable.list.searchPanel.sortOptions.byLastModifyTime'),
     key: 'lastModifiedDate',
     orderSort: 'DESC'
   }
@@ -118,27 +121,27 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('dataVariable.list.searchPanel.all')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('dataVariable.list.searchPanel.createdByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('dataVariable.list.searchPanel.modifiedByMe')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('dataVariable.list.searchPanel.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('dataVariable.list.searchPanel.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('dataVariable.list.searchPanel.lastWeek')
   }
 ]);
 
@@ -360,7 +363,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('dataVariable.list.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -390,7 +393,7 @@ onMounted(() => {
             @click="toBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
-              <span class="mr-0.5">删除选中</span>
+              <span class="mr-0.5">{{ t('dataVariable.list.searchPanel.buttons.deleteSelected') }}</span>
               <span>({{ selectedNum }})</span>
             </div>
           </Button>
@@ -400,7 +403,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toCancelBatchDelete">
             <Icon icon="icon-fanhui" class="mr-1" />
-            <span>取消删除</span>
+            <span>{{ t('dataVariable.list.searchPanel.buttons.cancelDelete') }}</span>
           </Button>
         </template>
 
@@ -412,7 +415,7 @@ onMounted(() => {
             @click="toCreateStaticVariable">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">添加静态变量</span>
+              <span class="ml-1">{{ t('dataVariable.list.searchPanel.buttons.addStaticVariable') }}</span>
             </div>
             <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
               <div class="w-5 h-5 flex items-center justify-center">
@@ -427,7 +430,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>批量删除</span>
+            <span>{{ t('dataVariable.list.searchPanel.buttons.batchDelete') }}</span>
           </Button>
 
           <IconRefresh
@@ -437,7 +440,7 @@ onMounted(() => {
             <template #default>
               <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                 <Icon icon="icon-shuaxin" class="text-3.5" />
-                <span class="ml-1">刷新</span>
+                <span class="ml-1">{{ t('dataVariable.list.searchPanel.buttons.refresh') }}</span>
               </div>
             </template>
           </IconRefresh>
@@ -445,7 +448,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            title="上传变量">
+            :title="t('dataVariable.list.searchPanel.tooltips.uploadVariable')">
             <Icon
               icon="icon-shangchuan"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
@@ -455,7 +458,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            title="下载变量">
+            :title="t('dataVariable.list.searchPanel.tooltips.downloadVariable')">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
