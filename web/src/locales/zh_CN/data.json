@@ -330,6 +330,50 @@
         "spaceName": "输入空间名称"
       },
       "quotaDescription": "(限制空间可使用存储总大小，最小100MB)"
+    },
+    "capacity": {
+      "loading": "加载中...",
+      "used": "已使用",
+      "upgradeCapacity": "升级容量"
+    },
+    "crumb": {
+      "currentPath": "当前路径:",
+      "home": "首页",
+      "ellipsis": "..."
+    },
+    "search": {
+      "title": "查询"
+    },
+    "sort": {
+      "title": "排序",
+      "menuItems": {
+        "lastModifiedDate": "按最后修改时间",
+        "type": "按添加类型"
+      }
+    },
+    "upload": {
+      "clickToUpload": "点击此处上传文件",
+      "uploadComplete": "上传完成",
+      "uploadFailed": "上传失败",
+      "continueUpload": "继续上传",
+      "cancel": "取消"
+    },
+    "moveModal": {
+      "title": "选择移动路径"
+    },
+    "spaceDetail": {
+      "columns": {
+        "name": "名称",
+        "id": "ID",
+        "actualSize": "实际大小",
+        "quota": "配额",
+        "format": "格式",
+        "createdBy": "添加人",
+        "createdDate": "添加时间",
+        "lastModifiedDate": "更新时间",
+        "remark": "备注",
+        "mockFunc": "调用表达式"
+      }
     }
   }
 }

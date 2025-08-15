@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import FileIcon from '@/views/data/file/components/icon/index.vue';
 import { DropdownSort } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface SortType {
     orderBy?: string,
@@ -8,15 +11,16 @@ interface SortType {
 }
 
 const emit = defineEmits<{(e: 'sort', param: SortType):void}>();
+
 const menus = [
   {
     key: 'lastModifiedDate',
-    name: '按最后修改时间',
+    name: t('fileSpace.sort.menuItems.lastModifiedDate'),
     orderSort: 'ASC'
   },
   {
     key: 'type',
-    name: '按添加类型',
+    name: t('fileSpace.sort.menuItems.type'),
     orderSort: 'ASC'
   }
 ];
@@ -27,7 +31,7 @@ const handleSelect = ({ orderBy, orderSort }) => {
 </script>
 <template>
   <DropdownSort :menuItems="menus" @click="handleSelect">
-    <file-icon icon="icon-shunxu" title="排序"></file-icon>
+    <file-icon icon="icon-shunxu" :title="t('fileSpace.sort.title')"></file-icon>
   </DropdownSort>
 </template>
 <style scoped>

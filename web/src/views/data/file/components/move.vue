@@ -3,9 +3,12 @@ import { computed, inject, ref, watch } from 'vue';
 import type { TreeProps } from 'ant-design-vue';
 import { Tree } from 'ant-design-vue';
 import { Icon, Modal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { space } from '@/api/storage';
 import store from '@/store';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean,
@@ -92,7 +95,7 @@ const handleSelect = (_selectedKeys, { selected, selectedNodes }) => {
 <template>
   <Modal
     :visible="visible"
-    title="选择移动路径"
+    :title="t('fileSpace.moveModal.title')"
     :okButtonProps="{
       disabled: !selectedKeys.length
     }"

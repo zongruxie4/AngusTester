@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { Breadcrumb, BreadcrumbItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface CrumbType {
     id: string,
@@ -29,14 +32,14 @@ const jump = (id?: string) => {
 </script>
 <template>
   <div class="flex items-center text-3.5">
-    <div class="mr-3">当前路径:</div>
+    <div class="mr-3">{{ t('fileSpace.crumb.currentPath') }}</div>
     <Breadcrumb separator=">">
       <BreadcrumbItem>
-        <a @click="jump()">首页</a>
+        <a @click="jump()">{{ t('fileSpace.crumb.home') }}</a>
       </BreadcrumbItem>
       <template v-if="crumb.length > 4">
         <BreadcrumbItem>
-          <span>...</span>
+          <span>{{ t('fileSpace.crumb.ellipsis') }}</span>
         </BreadcrumbItem>
         <BreadcrumbItem v-for="item in props.crumb.slice(-3)" :key="item.id">
           <a @click="jump(item.id)">{{ item.name }}</a>

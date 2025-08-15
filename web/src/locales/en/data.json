@@ -330,6 +330,50 @@
         "spaceName": "Enter space name"
       },
       "quotaDescription": "(Limit the total storage size that the space can use, minimum 100MB)"
+    },
+    "capacity": {
+      "loading": "Loading...",
+      "used": "Used",
+      "upgradeCapacity": "Upgrade Capacity"
+    },
+    "crumb": {
+      "currentPath": "Current Path:",
+      "home": "Home",
+      "ellipsis": "..."
+    },
+    "search": {
+      "title": "Search"
+    },
+    "sort": {
+      "title": "Sort",
+      "menuItems": {
+        "lastModifiedDate": "By Last Modified Time",
+        "type": "By Add Type"
+      }
+    },
+    "upload": {
+      "clickToUpload": "Click here to upload files",
+      "uploadComplete": "Upload Complete",
+      "uploadFailed": "Upload Failed",
+      "continueUpload": "Continue Upload",
+      "cancel": "Cancel"
+    },
+    "moveModal": {
+      "title": "Select Move Path"
+    },
+    "spaceDetail": {
+      "columns": {
+        "name": "Name",
+        "id": "ID",
+        "actualSize": "Actual Size",
+        "quota": "Quota",
+        "format": "Format",
+        "createdBy": "Created By",
+        "createdDate": "Created Date",
+        "lastModifiedDate": "Last Modified Date",
+        "remark": "Remark",
+        "mockFunc": "Mock Function"
+      }
     }
   }
 }

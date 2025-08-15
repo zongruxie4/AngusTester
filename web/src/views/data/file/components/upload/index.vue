@@ -4,8 +4,11 @@ import { useRoute } from 'vue-router';
 import { upload, cookieUtils } from '@xcan-angus/infra';
 import { Progress, Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { formatBytes } from '@/utils/common';
+
+const { t } = useI18n();
 
 interface SourceType {
   name: string,
@@ -103,7 +106,7 @@ watch(() => route.params.id, (val) => {
       ref="uploadInput"
       class="w-full h-30 border border-dashed border-border-selected leading bg-blue-2 mb-5 text-center pt-5.5 cursor-pointer">
       <Icon icon="icon-shangchuan" class="text-6 text-text-link mb-3 font-medium" />
-      <p class="text-theme-title font-medium">点击此处上传文件</p>
+      <p class="text-theme-title font-medium">{{ t('fileSpace.upload.clickToUpload') }}</p>
     </div>
   </Upload>
   <div v-show="uploadFileLength !== 0" class="text-3 mb-5 relative">
@@ -116,10 +119,10 @@ watch(() => route.params.id, (val) => {
         <div class="text-theme-title w-40 overflow-hidden whitespace-nowrap text-ellipsis">{{ item.name }}</div>
         <div class="text-theme-sub-content mx-20 w-15">{{ item.size }}</div>
         <div v-if="item.status ==2">
-          <Icon icon="icon-duihao" class="text-3 text-status-success mr-1.5" />上传完成
+          <Icon icon="icon-duihao" class="text-3 text-status-success mr-1.5" />{{ t('fileSpace.upload.uploadComplete') }}
         </div>
         <div v-if="item.status ==1">
-          <Icon icon="icon-chahao" class="text-3 text-status-error mr-1.5" />上传失败
+          <Icon icon="icon-chahao" class="text-3 text-status-error mr-1.5" />{{ t('fileSpace.upload.uploadFailed') }}
         </div>
         <Progress
           v-if="item.status==0"
@@ -130,8 +133,8 @@ watch(() => route.params.id, (val) => {
       </div>
     </div>
     <div class="absolute right-5 bottom-2 text-theme-special text-theme-text-hover:hove">
-      <a @click="uploadAgain">继续上传</a>
-      <a class="ml-3" @click="close">取消</a>
+      <a @click="uploadAgain">{{ t('fileSpace.upload.continueUpload') }}</a>
+      <a class="ml-3" @click="close">{{ t('actions.cancel') }}</a>
     </div>
   </div>
 </template>

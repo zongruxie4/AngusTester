@@ -2,6 +2,9 @@
 import { ref, watch } from 'vue';
 import { Grid, Spin } from '@xcan-angus/vue-ui';
 import { pubSpace, space } from '@/api/storage';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   id: string,
@@ -15,16 +18,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const infoColumns = [
   [
-    { dataIndex: 'name', label: '名称' },
-    { dataIndex: 'id', label: 'ID' },
-    props.type !== 'space' && { dataIndex: 'summary', label: '实际大小', customRender: ({ text }) => text?.usedSize },
-    props.type === 'space' && { dataIndex: 'quotaSize', label: '配额', customRender: ({ text }) => text ? text?.value + text?.unit?.message : '--' },
-    { dataIndex: 'type', label: '格式', customRender: ({ text }) => text?.message || '空间' },
-    { dataIndex: 'createdByName', label: '添加人' },
-    { dataIndex: 'createdDate', label: '添加时间' },
-    { dataIndex: 'lastModifiedDate', label: '更新时间' },
-    props.type === 'space' && { dataIndex: 'remark', label: '备注' },
-    props.type === 'file' && { dataIndex: 'mockFunc', label: '调用表达式' }
+    { dataIndex: 'name', label: t('fileSpace.spaceDetail.columns.name') },
+    { dataIndex: 'id', label: t('fileSpace.spaceDetail.columns.id') },
+    props.type !== 'space' && { dataIndex: 'summary', label: t('fileSpace.spaceDetail.columns.actualSize'), customRender: ({ text }) => text?.usedSize },
+    props.type === 'space' && { dataIndex: 'quotaSize', label: t('fileSpace.spaceDetail.columns.quota'), customRender: ({ text }) => text ? text?.value + text?.unit?.message : '--' },
+    { dataIndex: 'type', label: t('fileSpace.spaceDetail.columns.format'), customRender: ({ text }) => text?.message || '空间' },
+    { dataIndex: 'createdByName', label: t('fileSpace.spaceDetail.columns.createdBy') },
+    { dataIndex: 'createdDate', label: t('fileSpace.spaceDetail.columns.createdDate') },
+    { dataIndex: 'lastModifiedDate', label: t('fileSpace.spaceDetail.columns.lastModifiedDate') },
+    props.type === 'space' && { dataIndex: 'remark', label: t('fileSpace.spaceDetail.columns.remark') },
+    props.type === 'file' && { dataIndex: 'mockFunc', label: t('fileSpace.spaceDetail.columns.mockFunc') }
   ].filter(Boolean)
 ];
 

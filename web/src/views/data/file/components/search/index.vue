@@ -4,8 +4,11 @@ import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router';
 import { STORAGE } from '@xcan-angus/infra';
 import { Select } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import FileIcon from '@/views/data/file/components/icon/index.vue';
+
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'search', id: string):void}>();
 
@@ -50,7 +53,7 @@ const handleVisible = (visible) => {
   <div class="flex">
     <FileIcon
       v-if="!isShowIcon"
-      title="查询"
+      :title="t('fileSpace.search.title')"
       icon="icon-sousuo"
       class="text-4 text-theme-sub-content"
       @click="showSearch" />

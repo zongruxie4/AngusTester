@@ -7,6 +7,9 @@ import { space } from '@/api/storage';
 import { store } from '@/api/store';
 import { SourceType } from './type';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   id: string
@@ -70,7 +73,7 @@ onMounted(() => {
 <template>
   <div class="text-3 text-center px-4">
     <Spin
-      tip="Loading..."
+      :tip="t('fileSpace.capacity.loading')"
       :spinning="state.loading">
       <!-- <div class="mb-12.5 text-left">
         <span class="text-theme-title font-medium mr-2.5">{{ getSpaceName }}</span>
@@ -86,7 +89,7 @@ onMounted(() => {
         :width="100"
         strokeColor="#52C41A">
         <template #format>
-          <p class="text-3 text-theme-sub-content">已使用</p>
+          <p class="text-3 text-theme-sub-content">{{ t('fileSpace.capacity.used') }}</p>
           <p class="text-6 my-4 text-theme-title font-semibold">{{ percent }}%</p>
         </template>
       </Progress>
@@ -102,7 +105,7 @@ onMounted(() => {
           type="link"
           size="small"
           target="_blank">
-          <Icon icon="icon-shangchuan" class="mr-2" />升级容量
+          <Icon icon="icon-shangchuan" class="mr-2" />{{ t('fileSpace.capacity.upgradeCapacity') }}
         </Button>
       </div>
     </Spin>
