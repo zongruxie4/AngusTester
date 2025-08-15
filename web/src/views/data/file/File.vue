@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Drawer, Icon, Input, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { download, toClipboard } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { fileApi, space } from '@/api/storage';
 import { parseQuery } from '@/utils/url';
@@ -50,7 +53,7 @@ const state = reactive<{
 const drawerMenu = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '基本信息',
+    name: t('fileSpace.drawer.basicInfo'),
     key: 'info'
   }
   // {
@@ -119,7 +122,7 @@ const renameBlur = async (record: SourceType) => {
   if (error) {
     return;
   }
-  notification.success('文件重命名成功');
+  notification.success(t('fileSpace.fileManagement.messages.renameSuccess'));
   record.renameFlag = false;
 };
 
@@ -242,7 +245,7 @@ const sureAdd = async (record: SourceType) => {
   if (error) {
     return;
   }
-  notification.success('目录添加成功');
+  notification.success(t('fileSpace.fileManagement.messages.addDirectorySuccess'));
   getList();
 };
 
@@ -250,7 +253,7 @@ const sureAdd = async (record: SourceType) => {
 const delConfirm = (fileList = state.selectedRowKeys) => {
   modal.confirm({
     centered: true,
-    content: '确认删除文件/文件夹吗',
+    content: t('fileSpace.fileManagement.messages.deleteConfirm'),
     onOk: () => {
       delFile(fileList);
     }
@@ -263,7 +266,7 @@ const delFile = async (ids: (string | number)[]) => {
     return;
   }
   state.selectedRowKeys = [];
-  notification.success('文件删除成功');
+  notification.success(t('fileSpace.fileManagement.messages.deleteSuccess'));
   if (state.dataSource.length === ids.length && state.pagination.current > 1) {
     state.pagination.current--;
   }
@@ -309,7 +312,7 @@ const copyDownloadUrl = async (record) => {
     }
     setTimeout(async () => {
       await toClipboard(data);
-      notification.success('复制链接成功');
+      notification.success(t('fileSpace.fileManagement.messages.copyLinkSuccess'));
     });
   }
 };
@@ -485,29 +488,29 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
         <div class="flex items-center text-3">
           <FileIcon
             v-if="showAddDirectory"
-            title="目录"
+            :title="t('fileSpace.fileManagement.directory')"
             icon="icon-chuangjianwenjianjia"
             @click="create" />
           <FileIcon
             v-if="editAuth"
-            title="上传"
+            :title="t('actions.upload')"
             icon="icon-shangchuanxiao"
             @click="uploadFile" />
           <FileIcon
             v-if="state.selectedRowKeys?.length > 0 && deleteAuth"
-            title="删除"
+            :title="t('actions.delete')"
             icon="icon-qingchu"
             class="text-3.5"
             @click="delConfirm()" />
           <FileIcon
             v-if="state.selectedRowKeys?.length > 0 && editAuth"
-            title="移动"
+            :title="t('actions.move')"
             icon="icon-yidong"
             @click="handleMultiMove" />
           <file-search :spaceId="spaceId" @search="search" />
           <file-sort @sort="sort" />
           <FileIcon
-            title="刷新"
+            :title="t('actions.refresh')"
             icon="icon-shuaxin"
             @click="getList" />
         </div>
@@ -560,7 +563,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                   ref="createInput"
                   v-model:value="record.name"
                   trimAll
-                  placeholder="输入目录名称，限制20字符以内"
+                  :placeholder="t('fileSpace.fileManagement.createDirectory')"
                   :maxlength="400"
                   @click="(e) => e.stopPropagation()"
                   @keyup.enter="createEnter"
@@ -597,7 +600,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="delConfirm([record.id])">
                 <Icon icon="icon-qingchu" class="align-text-bottom mr-0.5" />
-                删除
+                {{ t('fileSpace.fileManagement.fileActions.delete') }}
               </Button>
               <Button
                 :disabled="!editAuth"
@@ -606,7 +609,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="rename(record)">
                 <Icon icon="icon-bianji" class="align-text-bottom mr-0.5" />
-                重命名
+                {{ t('fileSpace.fileManagement.fileActions.rename') }}
               </Button>
               <Button
                 :disabled="!editAuth"
@@ -615,7 +618,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="handleMove(record)">
                 <Icon icon="icon-yidong" class="align-text-bottom mr-0.5" />
-                移动
+                {{ t('fileSpace.fileManagement.fileActions.move') }}
               </Button>
               <Button
                 type="text"
@@ -623,7 +626,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="openSide(record)">
                 <Icon icon="icon-fuwuxinxi" class="align-text-bottom mr-0.5" />
-                详情
+                {{ t('fileSpace.fileManagement.fileActions.details') }}
               </Button>
               <Button
                 :disabled="!downloadAuth || record.type.value !== 'FILE'"
@@ -632,7 +635,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="downConfirm([record.id])">
                 <Icon icon="icon-daochu" class="align-text-bottom mr-0.5" />
-                下载
+                {{ t('fileSpace.fileManagement.fileActions.download') }}
               </Button>
               <Button
                 :disabled="!downloadAuth || record.type.value !== 'FILE'"
@@ -641,7 +644,7 @@ const confirmMove = async (target: {targetDirectoryId?: string, targetSpaceId: s
                 class="!h-6"
                 @click.stop="copyDownloadUrl(record)">
                 <Icon icon="icon-fuzhi" class="align-text-bottom mr-0.5" />
-                分享链接
+                {{ t('fileSpace.fileManagement.fileActions.shareLink') }}
               </Button>
             </div>
           </template>

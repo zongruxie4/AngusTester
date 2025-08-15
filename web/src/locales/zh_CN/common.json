@@ -68,7 +68,8 @@
     "enabledSuccess": "启用成功",
     "execSuccess": "执行成功",
     "importSuccess": "导入成功",
-    "moveSuccess": "移动成功"
+    "moveSuccess": "移动成功",
+    "modifySuccess": "修改成功"
   },
   "sort": "排序",
   "quickSearch": "快速查询"

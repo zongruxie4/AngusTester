@@ -173,5 +173,67 @@
         "jdbcUrl": "请输入JDBC Url"
       }
     }
+  },
+  "fileSpace": {
+    "title": "关于文件",
+    "addedTitle": "已添加空间",
+    "searchPlaceholder": "查询空间名称",
+    "buttons": {
+      "generateData": "生成数据",
+      "addSpace": "添加空间",
+      "spacePermission": "空间权限"
+    },
+    "columns": {
+      "spaceName": "空间名称",
+      "folderCount": "文件夹数",
+      "fileCount": "文件数",
+      "used": "已用",
+      "quota": "配额",
+      "addTime": "添加时间",
+      "addBy": "添加人",
+      "action": "操作"
+    },
+    "actions": {
+      "edit": "编辑",
+      "permission": "权限",
+      "delete": "删除"
+    },
+    "messages": {
+      "deleteConfirm": "确认删除【{name}】？",
+      "deleteSuccess": "删除成功"
+    },
+    "drawer": {
+      "basicInfo": "基本信息",
+      "spaceCapacity": "空间容量：",
+      "accountStorageCapacity": "账户存储容量："
+    },
+    "permissionModal": {
+      "title": "空间权限",
+      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
+      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+    },
+    "fileManagement": {
+      "directory": "目录",
+      "upload": "上传",
+      "delete": "删除",
+      "move": "移动",
+      "refresh": "刷新",
+      "createDirectory": "输入目录名称，限制20字符以内",
+      "fileActions": {
+        "delete": "删除",
+        "rename": "重命名",
+        "move": "移动",
+        "details": "详情",
+        "download": "下载",
+        "shareLink": "分享链接"
+      },
+      "messages": {
+        "renameSuccess": "文件重命名成功",
+        "addDirectorySuccess": "目录添加成功",
+        "deleteConfirm": "确认删除文件/文件夹吗",
+        "deleteSuccess": "文件删除成功",
+        "copyLinkSuccess": "复制链接成功"
+      }
+    }
   }
 }

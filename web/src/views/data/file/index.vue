@@ -4,7 +4,10 @@ import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, modal, Table } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { duration, STORAGE, site, appContext } from '@xcan-angus/infra';
+import { duration, STORAGE,  appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { space } from '@/api/storage';
 import { FileCapacity, SpaceInfo } from './components';
@@ -111,7 +114,7 @@ const selectName = ref();
 // 删除
 const delConfirm = (record) => {
   modal.confirm({
-    content: `确认删除【${record.name}】？`,
+    content: t('fileSpace.messages.deleteConfirm', { name: record.name }),
     onOk () {
       return new Promise<void>((resolve, reject) => {
         space.deleteSpace(record.id).then(([error]) => {
@@ -235,12 +238,12 @@ const drawerMenu = computed(() => {
   return [
     selectedRowKey.value && {
       icon: 'icon-fuwuxinxi',
-      name: '基本信息',
+      name: t('fileSpace.drawer.basicInfo'),
       key: 'info'
     },
     selectedRowKey.value && {
       icon: 'icon-rongliang',
-      name: selectedRowKey.value ? '空间容量：' + quotaSize?.value + quotaSize.unit?.message : '账户存储容量：',
+      name: selectedRowKey.value ? t('fileSpace.drawer.spaceCapacity') + quotaSize?.value + quotaSize.unit?.message : t('fileSpace.drawer.accountStorageCapacity'),
       key: 'size'
     }
     // selectedRowKey.value && {
@@ -255,42 +258,42 @@ const columns = [
   {
     dataIndex: 'name',
     key: 'name',
-    title: '空间名称'
+    title: t('fileSpace.columns.spaceName')
   },
   {
     dataIndex: 'subDirectoryNum',
     key: 'subDirectoryNum',
-    title: '文件夹数'
+    title: t('fileSpace.columns.folderCount')
   },
   {
     dataIndex: 'subFileNum',
     key: 'subFileNum',
-    title: '文件数'
+    title: t('fileSpace.columns.fileCount')
   },
   {
     dataIndex: 'size',
     key: 'size',
-    title: '已用'
+    title: t('fileSpace.columns.used')
   },
   {
     dataIndex: 'quotaSize',
     key: 'quotaSize',
-    title: '配额'
+    title: t('fileSpace.columns.quota')
   },
   {
     dataIndex: 'createdDate',
     key: 'createdDate',
-    title: '添加时间'
+    title: t('fileSpace.columns.addTime')
   },
   {
     dataIndex: 'createdByName',
     key: 'createdByName',
-    title: '添加人'
+    title: t('fileSpace.columns.addBy')
   },
   {
     dataIndex: 'action',
     key: 'action',
-    title: '操作',
+    title: t('fileSpace.columns.action'),
     width: 160
   }
 ];
@@ -298,16 +301,16 @@ const columns = [
 <template>
   <div class="flex h-full">
     <div class="p-5 flex-1 overflow-y-auto">
-      <div class="text-3.5 font-semibold mb-2.5">关于文件</div>
+      <div class="text-3.5 font-semibold mb-2.5">{{ t('fileSpace.title') }}</div>
       <Introduce />
-      <div class="text-3.5 font-semibold mb-2.5 mt-4">已添加空间</div>
+      <div class="text-3.5 font-semibold mb-2.5 mt-4">{{ t('fileSpace.addedTitle') }}</div>
       <div class="flex justify-between pb-3">
         <Input
           v-model:value="keyword"
           class="w-70"
           :maxlength="100"
           allowClear
-          placeholder="查询空间名称">
+          :placeholder="t('fileSpace.searchPlaceholder')">
           <template #suffix>
             <Icon icon="icon-sousuo" class="text-theme-placeholder" />
           </template>
@@ -325,7 +328,7 @@ const columns = [
             href="/data/generate"
             class="flex space-x-1">
             <Icon icon="icon-shengchengshuju" />
-            生成数据
+            {{ t('fileSpace.buttons.generateData') }}
           </Button>
           <!-- <ButtonAuth
             code="DataSpaceAdd"
@@ -338,7 +341,7 @@ const columns = [
             class="flex space-x-1"
             @click="createSpace">
             <Icon icon="icon-create-script" />
-            添加空间
+            {{ t('fileSpace.buttons.addSpace') }}
           </Button>
           <Button
             class="flex items-center"
@@ -346,7 +349,7 @@ const columns = [
             type="default"
             @click="openAuthorizeModal">
             <Icon icon="icon-quanxian1" class="mr-1" />
-            <span>空间权限</span>
+            <span>{{ t('fileSpace.buttons.spacePermission') }}</span>
           </Button>
           <Button
             :disabled="tableLoading"
@@ -385,25 +388,25 @@ const columns = [
               <template v-if="record.auth?.includes('MODIFY')">
                 <a class="whitespace-nowrap" @click.stop="editSpace(record.id)">
                   <Icon icon="icon-bianji" class="align-text-bottom" />
-                  编辑
+                  {{ t('actions.edit') }}
                 </a>
               </template>
               <template v-else>
                 <span class="text-text-disabled whitespace-nowrap">
                   <Icon icon="icon-bianji" class="align-text-bottom" />
-                  编辑
+                  {{ t('actions.edit') }}
                 </span>
               </template>
               <template v-if="record.auth?.includes('GRANT')">
                 <a class="whitespace-nowrap" @click.stop="editAuth(record)">
                   <Icon icon="icon-quanxian1" class="align-text-bottom" />
-                  权限
+                  {{ t('fileSpace.actions.permission') }}
                 </a>
               </template>
               <template v-else>
                 <span class="text-text-disabled whitespace-nowrap">
                   <Icon icon="icon-quanxian1" class="align-text-bottom" />
-                  权限
+                  {{ t('fileSpace.actions.permission') }}
                 </span>
               </template>
               <!-- <template v-if="record.auth?.includes('SHARE')">
@@ -421,13 +424,13 @@ const columns = [
               <template v-if="record.auth?.includes('DELETE')">
                 <a class="whitespace-nowrap" @click.stop="delConfirm(record)">
                   <Icon icon="icon-qingchu" class="align-text-bottom" />
-                  删除
+                  {{ t('actions.delete') }}
                 </a>
               </template>
               <template v-else>
                 <span class="text-text-disabled whitespace-nowrap">
                   <Icon icon="icon-qingchu" class="align-text-bottom" />
-                  删除
+                  {{ t('actions.delete') }}
                 </span>
               </template>
             </div>
@@ -489,9 +492,9 @@ const columns = [
         :updateUrl="`${STORAGE}/space/auth`"
         :enabledUrl="`${STORAGE}/space/${selectId}/auth/enabled`"
         :initStatusUrl="`${STORAGE}/space/${selectId}/auth/status`"
-        onTips="开启权限控制后，需要手动授权后才会有相应操作权限。"
-        offTips="无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-        title="空间权限"
+        :onTips="t('fileSpace.permissionModal.onTips')"
+        :offTips="t('fileSpace.permissionModal.offTips')"
+        :title="t('fileSpace.permissionModal.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 

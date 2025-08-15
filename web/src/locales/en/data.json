@@ -173,5 +173,67 @@
         "jdbcUrl": "Please enter JDBC Url"
       }
     }
+  },
+  "fileSpace": {
+    "title": "About Files",
+    "addedTitle": "Added Spaces",
+    "searchPlaceholder": "Search space name",
+    "buttons": {
+      "generateData": "Generate Data",
+      "addSpace": "Add Space",
+      "spacePermission": "Space Permission"
+    },
+    "columns": {
+      "spaceName": "Space Name",
+      "folderCount": "Folder Count",
+      "fileCount": "File Count",
+      "used": "Used",
+      "quota": "Quota",
+      "addTime": "Add Time",
+      "addBy": "Added By",
+      "action": "Action"
+    },
+    "actions": {
+      "edit": "Edit",
+      "permission": "Permission",
+      "delete": "Delete"
+    },
+    "messages": {
+      "deleteConfirm": "Confirm delete [{name}]?",
+      "deleteSuccess": "Deleted successfully"
+    },
+    "drawer": {
+      "basicInfo": "Basic Info",
+      "spaceCapacity": "Space Capacity: ",
+      "accountStorageCapacity": "Account Storage Capacity: "
+    },
+    "permissionModal": {
+      "title": "Space Permission",
+      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    },
+    "fileManagement": {
+      "directory": "Directory",
+      "upload": "Upload",
+      "delete": "Delete",
+      "move": "Move",
+      "refresh": "Refresh",
+      "createDirectory": "Enter directory name, limited to 20 characters",
+      "fileActions": {
+        "delete": "Delete",
+        "rename": "Rename",
+        "move": "Move",
+        "details": "Details",
+        "download": "Download",
+        "shareLink": "Share Link"
+      },
+      "messages": {
+        "renameSuccess": "File renamed successfully",
+        "addDirectorySuccess": "Directory added successfully",
+        "deleteConfirm": "Confirm delete file/folder?",
+        "deleteSuccess": "File deleted successfully",
+        "copyLinkSuccess": "Link copied successfully"
+      }
+    }
   }
 }
