@@ -110,7 +110,7 @@ const statisticConfig = [
     total: 'allVariable',
     week: 'variableByLastWeek',
     month: 'variableByLastMonth',
-    name: '变量'
+    name: t('dataHome.statistics.totalVariable')
   },
   {
     topClass: 'hong-top',
@@ -118,7 +118,7 @@ const statisticConfig = [
     total: 'allDataset',
     week: 'datasetByLastWeek',
     month: 'datasetByLastMonth',
-    name: '数据集'
+    name: t('dataHome.statistics.dataset')
   },
   {
     topClass: 'lan-top',
@@ -126,7 +126,7 @@ const statisticConfig = [
     total: 'allFile',
     week: 'fileByLastWeek',
     month: 'fileByLastMonth',
-    name: '文件'
+    name: t('dataHome.statistics.file')
   },
   {
     topClass: 'qin-top',
@@ -134,7 +134,7 @@ const statisticConfig = [
     total: 'allDatasource',
     week: 'datasourceByLastWeek',
     month: 'datasourceByLastMonth',
-    name: '数据源'
+    name: t('dataHome.statistics.dataSourceSet')
   }
 ];
 
@@ -194,14 +194,14 @@ const variableOption = {
       },
       data: [
         {
-          name: '使用数',
+          name: t('dataHome.statistics.usedCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '未使用数',
+          name: t('dataHome.statistics.unusedCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(173, 177, 185, 1)'
@@ -260,14 +260,14 @@ const dataSetOption = {
       },
       data: [
         {
-          name: '使用数',
+          name: t('dataHome.statistics.usedCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '未使用数',
+          name: t('dataHome.statistics.unusedCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(173, 177, 185, 1)'
@@ -289,7 +289,7 @@ const fileOption = {
   },
   xAxis: {
     type: 'category',
-    data: ['空间', '目录', '文件']
+    data: [t('dataHome.statistics.space'), t('dataHome.statistics.directory'), t('dataHome.statistics.file')]
   },
   yAxis: {
     type: 'value'
@@ -399,7 +399,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="mb-7.5 text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">我添加的</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('dataHome.statistics.myAdded') }}</div>
     <div class="flex space-x-3.75 text-content">
       <div
         v-for="item,index in statisticConfig"
@@ -408,10 +408,10 @@ onBeforeUnmount(() => {
         <div class="vertical-layout-top" :class="item.topClass"><div>{{ item.name }}</div><div>{{ state.statistic[item.total] }}</div></div>
         <div class="vertical-layout-bottom" :class="item.bottomClass">
           <div>
-            <div>{{ t('近7天') }}</div><div>{{ state.statistic[item.week] }}</div>
+            <div>{{ t('dataHome.statistics.last7Days') }}</div><div>{{ state.statistic[item.week] }}</div>
           </div>
           <div>
-            <div>{{ t('近30天') }}</div>
+            <div>{{ t('dataHome.statistics.last30Days') }}</div>
             <div>{{ state.statistic[item.month] }}</div>
           </div>
         </div>
@@ -432,22 +432,22 @@ onBeforeUnmount(() => {
   </div>
 
   <div class="text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">资源统计</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('dataHome.statistics.resourceStatistics') }}</div>
     <div ref="echartsWrapRef" class="flex space-x-3.75">
       <div class="border border-theme-text-box w-1/4 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">总变量 <span class="text-4 ml-2">{{ allVariable }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('dataHome.statistics.totalVariable') }} <span class="text-4 ml-2">{{ allVariable }}</span></div>
         <div ref="variableRef" class="w-full h-50"></div>
       </div>
       <div class="border border-theme-text-box w-1/4 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">数据集 <span class="text-4 ml-2">{{ allDataset }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('dataHome.statistics.dataset') }} <span class="text-4 ml-2">{{ allDataset }}</span></div>
         <div ref="dataSetRef" class="w-full h-50"></div>
       </div>
       <div class="border border-theme-text-box w-1/4 p-2 rounded">
-        <div class="font-semibold">文件 <span class="text-4 ml-2">{{ allFile }}</span></div>
+        <div class="font-semibold">{{ t('dataHome.statistics.file') }} <span class="text-4 ml-2">{{ allFile }}</span></div>
         <div ref="fileRef" class="w-full h-50"></div>
       </div>
       <div class="border border-theme-text-box w-1/4 px-2 pt-2 rounded">
-        <div class="font-semibold">数据源集 <span class="text-4 ml-2">{{ allDatasource }}</span></div>
+        <div class="font-semibold">{{ t('dataHome.statistics.dataSourceSet') }} <span class="text-4 ml-2">{{ allDatasource }}</span></div>
         <div ref="dataSourceRef" class="w-full h-50"></div>
       </div>
     </div>

@@ -6,9 +6,12 @@ import { Icon, IconCopy, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { dataSource, dataSet, variable } from 'src/api/tester';
 import { space } from '@/api/storage';
+import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
 import { CreatedItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -72,7 +75,7 @@ const pagination = ref<{
       showTotal: (total: number) => {
         if (typeof pagination.value === 'object') {
           const totalPage = Math.ceil(total / pagination.value.pageSize);
-          return `第${pagination.value.current}/${totalPage}页`;
+          return t('dataHome.summaryTable.pagination.pageInfo', { current: pagination.value.current, totalPage });
         }
         return '';
       }
@@ -131,14 +134,14 @@ const loadData = async () => {
 
 const deleteHandler = (data: CreatedItem) => {
   modal.confirm({
-    content: `确定删除【${data.name}】吗？`,
+    content: t('dataHome.summaryTable.messages.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await delDataApicConfig[props.type]([id]);
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('tips.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
       if (typeof updateRefreshNotify === 'function') {
         updateRefreshNotify(utils.uuid());
@@ -179,34 +182,34 @@ const columns = computed(() => {
     actionKey?: 'variableBy' | 'dataSetBy';
   }[] = [
     {
-      title: 'ID',
+      title: t('dataHome.summaryTable.columns.id'),
       dataIndex: 'id'
     },
     {
-      title: '名称',
+      title: t('dataHome.summaryTable.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       sorter: true
     },
     ['space', 'dataSource'].includes(props.type) && {
-      title: '添加人',
+      title: t('dataHome.summaryTable.columns.createdBy'),
       dataIndex: 'createdByName'
     },
     ['space', 'dataSource'].includes(props.type) && {
-      title: '添加时间',
+      title: t('dataHome.summaryTable.columns.createdDate'),
       dataIndex: 'createdDate'
     },
     ['variable', 'dataSet'].includes(props.type) && {
-      title: '最后修改人',
+      title: t('dataHome.summaryTable.columns.lastModifiedBy'),
       dataIndex: 'lastModifiedByName',
       ellipsis: true
     },
     ['variable', 'dataSet'].includes(props.type) && {
-      title: '最后修改时间',
+      title: t('dataHome.summaryTable.columns.lastModifiedDate'),
       dataIndex: 'lastModifiedDate'
     },
     {
-      title: '操作',
+      title: t('dataHome.summaryTable.columns.action'),
       dataIndex: 'action',
       width: 50
     }
@@ -228,30 +231,30 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="props.type === 'variable'">
-              <span>您尚未添加任何变量，立即</span>
+              <span>{{ t('dataHome.summaryTable.emptyData.noVariable') }}</span>
               <Button
                 type="link"
                 size="small"
                 class="py-0 px-1 h-5 leading-5"
                 @click="toCreateVariable">
-                添加变量
+                {{ t('dataHome.summaryTable.emptyData.addVariable') }}
               </Button>
             </template>
             <template v-else-if="props.type === 'dataSet'">
-              <span>您尚未添加任何数据集，立即</span>
+              <span>{{ t('dataHome.summaryTable.emptyData.noDataset') }}</span>
               <Button
                 type="link"
                 size="small"
                 class="py-0 px-1 h-5 leading-5"
                 @click="toCreateDataSet">
-                添加数据集
+                {{ t('dataHome.summaryTable.emptyData.addDataset') }}
               </Button>
             </template>
             <template v-else-if="props.type === 'space'">
-              <span>您没有添加空间</span>
+              <span>{{ t('dataHome.summaryTable.emptyData.noSpace') }}</span>
             </template>
             <template v-else-if="props.type === 'dataSource'">
-              <span>您没有添加数据源</span>
+              <span>{{ t('dataHome.summaryTable.emptyData.noDataSource') }}</span>
             </template>
           </div>
         </div>
@@ -294,7 +297,7 @@ const emptyTextStyle = {
 
           <div v-if="column.dataIndex === 'action'">
             <Button
-              title="删除"
+              :title="t('actions.delete')"
               size="small"
               type="text"
               class="space-x-1 flex items-center py-0 px-1"

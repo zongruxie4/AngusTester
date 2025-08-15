@@ -374,6 +374,84 @@
         "remark": "备注",
         "mockFunc": "调用表达式"
       }
+    },
+    "dataHome": {
+      "activityTimeline": {
+        "myActivity": "我的活动",
+        "allActivity": "所有活动"
+      },
+      "statistics": {
+        "myAdded": "我添加的",
+        "resourceStatistics": "资源统计",
+        "totalVariable": "总变量",
+        "dataset": "数据集",
+        "file": "文件",
+        "dataSourceSet": "数据源集",
+        "last7Days": "近7天",
+        "last30Days": "近30天",
+        "usedCount": "使用数",
+        "unusedCount": "未使用数",
+        "space": "空间",
+        "directory": "目录",
+
+      },
+      "myCreationSummary": {
+        "title": "我的参数化",
+        "addedVariables": "添加的变量",
+        "addedDataSets": "添加的数据集",
+        "addedSpaces": "添加的空间",
+        "addedDataSources": "添加的数据源"
+      },
+      "introduce": {
+        "welcome": "欢迎进入Angus数据！",
+        "description": "数据可以帮助您生成、管理业务数据和测试数据，并且基于数据生成参数化变量或数据集。",
+        "title": "AngusTester 提供了四种参数化方式，以满足不同的需求：",
+        "variable": {
+          "title": "变量",
+          "content": "定义一个可以在整个测试过程中共享和重复使用的常量值。"
+        },
+        "dataset": {
+          "title": "数据集",
+          "content": "定义一组相关的数据参数，通常为实际的测试数据，在执行时动态改变值。"
+        },
+        "mockFunction": {
+          "title": "Mock函数",
+          "content": "通过在测试中引用 mock 函数，在执行时动态生成对应参数值或随机值。"
+        },
+        "samplingExtraction": {
+          "title": "采样提取变量",
+          "content": "从上一个采样的请求或响应中提取一个值，作为后续采样的参数值，每次迭代时重新提取。"
+        }
+      },
+      "summaryTable": {
+        "columns": {
+          "id": "ID",
+          "name": "名称",
+          "createdBy": "添加人",
+          "createdDate": "添加时间",
+          "lastModifiedBy": "最后修改人",
+          "lastModifiedDate": "最后修改时间",
+          "action": "操作"
+        },
+        "pagination": {
+          "pageInfo": "第{current}/{totalPage}页"
+        },
+        "messages": {
+          "deleteConfirm": "确定删除【{name}】吗？",
+          "deleteSuccess": "删除成功"
+        },
+        "emptyData": {
+          "noVariable": "您尚未添加任何变量，立即",
+          "addVariable": "添加变量",
+          "noDataset": "您尚未添加任何数据集，立即",
+          "addDataset": "添加数据集",
+          "noSpace": "您没有添加空间",
+          "noDataSource": "您没有添加数据源"
+        },
+        "buttons": {
+          "delete": "删除"
+        }
+      }
     }
   }
 }

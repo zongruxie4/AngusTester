@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -24,12 +27,12 @@ const dataSetTotal = ref(0);
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">我的参数化</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('dataHome.myCreationSummary.title') }}</div>
     <Tabs size="small">
       <TabPane key="variable" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的变量</span>
+            <span class="mr-1">{{ t('dataHome.myCreationSummary.addedVariables') }}</span>
             <span>(</span>
             <span>{{ variableTotal }}</span>
             <span>)</span>
@@ -46,7 +49,7 @@ const dataSetTotal = ref(0);
       <TabPane key="dataSet" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的数据集</span>
+            <span class="mr-1">{{ t('dataHome.myCreationSummary.addedDataSets') }}</span>
             <span>(</span>
             <span>{{ dataSetTotal }}</span>
             <span>)</span>

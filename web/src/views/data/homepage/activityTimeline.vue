@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -16,7 +19,7 @@ const types = ['VARIABLE'];
 </script>
 <template>
   <Tabs size="small">
-    <TabPane key="my" tab="我的活动">
+    <TabPane key="my" :tab="t('dataHome.activityTimeline.myActivity')">
       <ActivityTimeline
         key="my"
         :types="types"
@@ -24,7 +27,7 @@ const types = ['VARIABLE'];
         :userId="props.userInfo?.id"
         :showUserName="false" />
     </TabPane>
-    <TabPane key="all" tab="所有活动">
+    <TabPane key="all" :tab="t('dataHome.activityTimeline.allActivity')">
       <ActivityTimeline
         key="all"
         :types="types"
