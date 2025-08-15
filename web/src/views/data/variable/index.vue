@@ -3,8 +3,11 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { IPane } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -54,7 +57,7 @@ const initialize = () => {
         return {
           _id: 'variableList',
           value: 'variableList',
-          name: '变量',
+          name: t('dataVariable.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -88,13 +91,13 @@ const hashChange = (hash:string) => {
     });
   } else if (source) {
     browserTabRef.value.add(() => {
-      let name = '添加静态变量';
+      let name = t('dataVariable.addVariable.static');
       if (source === 'FILE') {
-        name = '添加文件变量';
+        name = t('dataVariable.addVariable.file');
       } else if (source === 'http') {
-        name = '添加Http变量';
+        name = t('dataVariable.addVariable.http');
       } else if (source === 'JDBC') {
-        name = '添加Jdbc变量';
+        name = t('dataVariable.addVariable.jdbc');
       }
 
       const uid = utils.uuid();

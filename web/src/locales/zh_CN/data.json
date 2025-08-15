@@ -452,6 +452,15 @@
           "delete": "删除"
         }
       }
+    },
+    "dataVariable": {
+      "title": "变量",
+      "addVariable": {
+        "static": "添加静态变量",
+        "file": "添加文件变量",
+        "http": "添加Http变量",
+        "jdbc": "添加Jdbc变量"
+      }
     }
   }
 }

@@ -452,6 +452,15 @@
           "delete": "Delete"
         }
       }
+    },
+    "dataVariable": {
+      "title": "Variable",
+      "addVariable": {
+        "static": "Add Static Variable",
+        "file": "Add File Variable",
+        "http": "Add Http Variable",
+        "jdbc": "Add Jdbc Variable"
+      }
     }
   }
 }
