@@ -6,6 +6,9 @@ import {Button, Form, FormItem, RadioGroup, Textarea, Tree} from 'ant-design-vue
 import {AppOrServiceRoute, DomainManager, enumUtils, ShortTimeUnit, toClipboard, utils} from '@xcan-angus/infra';
 import {space} from '@/api/storage';
 import store from '@/store';
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n();
 
 import {randomString} from '@/utils/utils';
 
@@ -72,18 +75,18 @@ const isLoading = ref(false);
 
 const state = reactive({
   enums: [{
-    label: '公开',
+    label: t('fileSpace.share.permissionOptions.public'),
     value: true
   }, {
-    label: '私有（密码查看）',
+    label: t('fileSpace.share.permissionOptions.private'),
     value: false
   }],
   unitEnum: [],
   expiredEnums: [{
-    label: '设置有效期',
+    label: t('fileSpace.share.validityOptions.setValidity'),
     value: true
   }, {
-    label: '永久有效',
+    label: t('fileSpace.share.validityOptions.permanent'),
     value: false
   }]
 });
@@ -163,7 +166,7 @@ const durationSelectProps = {
 };
 
 const durationInputProps = {
-  placeholder: '请输入有效期'
+  placeholder: t('fileSpace.share.placeholders.validityPeriod')
 };
 
 // 增加分享成功
@@ -188,7 +191,7 @@ const addProjectShare = async () => {
     return;
   }
   emits('ok');
-  notification.success('生成分享链接');
+  notification.success(t('fileSpace.share.messages.generateShareLink'));
   form.url = res.data.url;
   form.id = res.data.id;
   initParams = {
@@ -243,7 +246,7 @@ const copy = () => {
     message = `链接: ${form.url} 密码: ${form.password || ''}`;
   }
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('tips.copySuccess'));
   });
 };
 
@@ -253,7 +256,7 @@ const changeType = () => {
 };
 
 const getOkText = computed(() => {
-  return form.url ? '确定' : '生成链接';
+  return form.url ? t('actions.confirm') : t('fileSpace.share.buttons.generateLink');
 });
 
 watch(() => props.visible, newValue => {
@@ -271,7 +274,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    title="分享"
+    :title="t('fileSpace.share.title')"
     :visible="visible"
     :reverse="true"
     :okButtonProps="{loading: isLoading}"
@@ -305,7 +308,7 @@ watch(() => props.visible, newValue => {
       </template>
     </Tree>
     <Form layout="vertical" size="small">
-      <FormItem label="查看权限">
+      <FormItem :label="t('fileSpace.share.form.viewPermission')">
         <div class="">
           <RadioGroup
             v-model:value="form.public0"
@@ -322,20 +325,20 @@ watch(() => props.visible, newValue => {
           dataType="mixin-en"
           :maxlength="40"
           size="small"
-          placeholder="请输入密码"
+          :placeholder="t('fileSpace.share.placeholders.password')"
           class="w-50 rounded mt-1"
           :class="{'!border-status-error': !form.password}" />
       </FormItem>
-      <FormItem v-if="form.url" label="查看链接">
+      <FormItem v-if="form.url" :label="t('fileSpace.share.form.viewLink')">
         <Input
           v-model:value="form.url"
           size="small"
           :disabled="true" />
         <div class="mt-3">
-          <Button size="small" @click="copy"><Icon icon="icon-fuzhi" class="mr-1.5" />复制链接和密码</Button>
+          <Button size="small" @click="copy"><Icon icon="icon-fuzhi" class="mr-1.5" />{{ t('fileSpace.share.buttons.copyLinkAndPassword') }}</Button>
         </div>
       </FormItem>
-      <FormItem label="有效期">
+      <FormItem :label="t('fileSpace.share.form.validityPeriod')">
         <div class="flex w-full justify-between items-center">
           <RadioGroup
             v-model:value="form.expiredFlag"
@@ -351,7 +354,7 @@ watch(() => props.visible, newValue => {
           class="!w-50 mt-1"
           :selectProps="durationSelectProps" />
       </FormItem>
-      <FormItem label="备注">
+      <FormItem :label="t('fileSpace.share.form.remark')">
         <Textarea
           v-model:value="form.remark"
           class="mb-3"

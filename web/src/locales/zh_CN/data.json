@@ -234,6 +234,36 @@
         "deleteSuccess": "文件删除成功",
         "copyLinkSuccess": "复制链接成功"
       }
+    },
+    "share": {
+      "title": "分享",
+      "form": {
+        "viewPermission": "查看权限",
+        "viewLink": "查看链接",
+        "validityPeriod": "有效期",
+        "remark": "备注"
+      },
+      "permissionOptions": {
+        "public": "公开",
+        "private": "私有（密码查看）"
+      },
+      "validityOptions": {
+        "setValidity": "设置有效期",
+        "permanent": "永久有效"
+      },
+      "placeholders": {
+        "password": "请输入密码",
+        "validityPeriod": "请输入有效期"
+      },
+      "buttons": {
+        "copyLinkAndPassword": "复制链接和密码",
+        "generateLink": "生成链接",
+        "confirm": "确定"
+      },
+      "messages": {
+        "generateShareLink": "生成分享链接",
+        "copySuccess": "复制成功"
+      }
     }
   }
 }

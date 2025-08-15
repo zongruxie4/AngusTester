@@ -234,6 +234,38 @@
         "deleteSuccess": "File deleted successfully",
         "copyLinkSuccess": "Link copied successfully"
       }
+    },
+    "share": {
+      "title": "Share",
+      "form": {
+        "viewPermission": "View Permission",
+        "viewLink": "View Link",
+        "validityPeriod": "Validity Period",
+        "remark": "Remark"
+      },
+      "permissionOptions": {
+        "public": "Public",
+        "private": "Private (Password Required)"
+      },
+      "validityOptions": {
+        "setValidity": "Set Validity Period",
+        "permanent": "Permanent"
+      },
+      "placeholders": {
+        "password": "Please enter password",
+        "validityPeriod": "Please enter validity period"
+      },
+      "buttons": {
+        "copyLinkAndPassword": "Copy Link and Password",
+        "generateLink": "Generate Link",
+        "confirm": "Confirm"
+      },
+      "messages": {
+        "generateShareLink": "Share link generated",
+        "copySuccess": "Copied successfully",
+        "link": "Link: {url}",
+        "linkAndPassword": "Link: {url} Password: {password}"
+      }
     }
   }
 }
