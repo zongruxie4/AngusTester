@@ -241,9 +241,9 @@ const resetPass = () => {
 const copy = () => {
   let message;
   if (form.public0) {
-    message = `链接: ${form.url}`;
+    message = t('fileSpace.share.messages.link', { url: form.url });
   } else {
-    message = `链接: ${form.url} 密码: ${form.password || ''}`;
+    message = t('fileSpace.share.messages.linkAndPassword', { url: form.url, password: form.password || '' });
   }
   toClipboard(message).then(() => {
     notification.success(t('tips.copySuccess'));
