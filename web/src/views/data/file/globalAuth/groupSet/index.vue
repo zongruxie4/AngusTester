@@ -3,6 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { GM, duration } from '@xcan-angus/infra';
 import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface ListInfo {
   [key: string]: string;
@@ -75,19 +78,19 @@ onMounted(() => {
       case 'dept':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = '查询部门';
+        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.dept');
         apiPath.value = `${GM}/app/${_appId}/auth/dept`;
         break;
       case 'group':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = '查询组';
+        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.group');
         apiPath.value = `${GM}/app/${_appId}/auth/group`;
         break;
       case 'user':
         nameKey.value = 'fullName';
         idKey.value = 'id';
-        placeholder.value = '查询用户';
+        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.user');
         apiPath.value = `${GM}/app/${_appId}/auth/user`;
     }
   }, { immediate: true });

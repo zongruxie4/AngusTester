@@ -6,6 +6,9 @@ import { duration } from '@xcan-angus/infra';
 import elementResizeDetector from 'element-resize-detector';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import CheckboxGroup from './CheckboxGroup.vue';
 
@@ -343,13 +346,13 @@ const permissionValues = computed(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      placeholder="查询名称"
+      :placeholder="t('fileSpace.globalAuth.authSet.searchPlaceholder')"
       class="mb-2"
       @change="searchInputChange" />
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
-      <div class="flex-1 px-2 truncate">名称</div>
-      <div style="width:70px;" class="flex-shrink-0 px-2">权限控制</div>
-      <div style="width:52%">权限</div>
+      <div class="flex-1 px-2 truncate">{{ t('fileSpace.globalAuth.authSet.headers.name') }}</div>
+      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('fileSpace.globalAuth.authSet.headers.permissionControl') }}</div>
+      <div style="width:52%">{{ t('fileSpace.globalAuth.authSet.headers.permissions') }}</div>
     </div>
     <NoData
       v-show="!loading && !idList?.length"
@@ -359,7 +362,7 @@ const permissionValues = computed(() => {
       v-show="loading||!!idList?.length"
       :mask="false"
       :spinning="loading"
-      tip="加载中..."
+      :tip="t('fileSpace.globalAuth.authSet.loadingTip')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"
@@ -387,7 +390,7 @@ const permissionValues = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                全部
+                {{ t('fileSpace.globalAuth.authSet.allPermissions') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

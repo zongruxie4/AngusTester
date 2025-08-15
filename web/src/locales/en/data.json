@@ -287,6 +287,32 @@
           "content": "Provides storage space quota management functions, which can expand storage capacity as needed to meet storage requirements of different scales and needs."
         }
       }
+    },
+    "globalAuth": {
+      "title": "Space Permission",
+      "description": "Grant specified \"function\" operation permissions to users, departments, and groups. When granting permissions, \"VIEW\" permission is required. Users can only authorize functions for which they have authorization permissions.",
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "groupSet": {
+        "placeholders": {
+          "user": "Search user",
+          "dept": "Search department",
+          "group": "Search group"
+        }
+      },
+      "authSet": {
+        "searchPlaceholder": "Search name",
+        "headers": {
+          "name": "Name",
+          "permissionControl": "Permission Control",
+          "permissions": "Permissions"
+        },
+        "allPermissions": "All",
+        "loadingTip": "Loading..."
+      }
     }
   }
 }

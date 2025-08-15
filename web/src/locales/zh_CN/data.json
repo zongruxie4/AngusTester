@@ -287,6 +287,32 @@
           "content": "提供存储空间配额管理功能，可以根据需要扩展存储容量，满足不同规模和需求的存储要求。"
         }
       }
+    },
+    "globalAuth": {
+      "title": "空间权限",
+      "description": "授权给指定的"功能"操作权限给用户、部门、组，授予权限时"查看"权限是必须的。用户只能授权自己有授权权限的功能。",
+      "tabs": {
+        "user": "用户",
+        "dept": "部门",
+        "group": "组"
+      },
+      "groupSet": {
+        "placeholders": {
+          "user": "查询用户",
+          "dept": "查询部门",
+          "group": "查询组"
+        }
+      },
+      "authSet": {
+        "searchPlaceholder": "查询名称",
+        "headers": {
+          "name": "名称",
+          "permissionControl": "权限控制",
+          "permissions": "权限"
+        },
+        "allPermissions": "全部",
+        "loadingTip": "加载中..."
+      }
     }
   }
 }
