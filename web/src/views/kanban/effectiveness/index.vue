@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import * as eCharts from 'echarts';
 import { caseOverViewConfig, taskOverViewConfig } from './config';
@@ -8,6 +9,7 @@ import noData from './Image/nodata.png';
 import { throttle } from 'throttle-debounce';
 import { RadioGroup } from 'ant-design-vue';
 
+const { t } = useI18n();
 interface Props {
   projectId: string;
   sprintId: string;
@@ -131,11 +133,11 @@ const priorityRef = ref();
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: props.countType === 'task' ? '任务数' : '用例数'
+    label: props.countType === 'task' ? t('kanban.effectiveness.taskCount') : t('kanban.effectiveness.useCaseCount')
   },
   {
     value: 'WORKLOAD',
-    label: '工作量'
+    label: t('kanban.effectiveness.workload')
   }
 ]);
 const burnDownTarget = ref('NUM');
@@ -188,13 +190,13 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('kanban.effectiveness.remaining'),
       data: [],
       type: 'line',
       smooth: true
     },
     {
-      name: '期望',
+      name: t('kanban.effectiveness.expected'),
       data: [],
       type: 'line'
     }
@@ -980,7 +982,7 @@ const oneTimeUnPassedTestConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -991,7 +993,7 @@ const oneTimeUnPassedTestConfig = {
       barGap: 0
     },
     {
-      name: '通过数',
+      name: t('kanban.effectiveness.oneTimeTestPassedCount'),
       type: 'bar',
       itemStyle: {
         // 任务下为rgba(82, 196, 26, 1)   用例下为rgba(255, 165, 43, 1)'
@@ -1129,11 +1131,11 @@ const loadData = async () => {
   }
   taskTypeEcharts.setOption(taskTypeEchartsConfig);
   if (props.countType === 'task') {
-    targetEchartsConfig.series[1].name = '完成数';
-    oneTimeUnPassedTestConfig.series[1].name = '缺陷数';
+    targetEchartsConfig.series[1].name = t('kanban.effectiveness.completedCount');
+    oneTimeUnPassedTestConfig.series[1].name = t('kanban.effectiveness.defectCount');
   } else {
-    targetEchartsConfig.series[1].name = '测试通过数';
-    oneTimeUnPassedTestConfig.series[1].name = '通过数';
+    targetEchartsConfig.series[1].name = t('kanban.effectiveness.oneTimeTestPassedCount');
+    oneTimeUnPassedTestConfig.series[1].name = t('kanban.effectiveness.oneTimeReviewPassedCount');
   }
 
   const ranking = data.assigneeRanking || data.testerRanking;
@@ -1495,7 +1497,7 @@ defineExpose({
   <div class="text-3 mt-2 space-y-2">
     <div class="flex items-center">
       <Icon icon="icon-zonglan" class="text-4 mr-1" />
-      <span class="text-3.5 font-medium text-theme-title">总览</span>
+      <span class="text-3.5 font-medium text-theme-title">{{ t('kanban.effectiveness.overview') }}</span>
     </div>
     <div class="flex space-x-2">
       <div class="border rounded p-2 flex flex-1 space-x-6">
@@ -1503,14 +1505,14 @@ defineExpose({
           <div class="flex-1 px-2 rounded flex" style="background: linear-gradient( 180deg, #EAF0FF 0%, #F5F8FF 100%)">
             <div class="flex flex-col justify-center flex-1">
               <span class="font-semibold text-4">{{ overViewData.totalTaskNum || overViewData.totalCaseNum || 0 }}</span>
-              <div>总数</div>
+              <div>{{ t('kanban.effectiveness.total') }}</div>
             </div>
             <img src="./Image/total.png" class="w-10 h-10 self-end" />
           </div>
           <div class="flex-1 px-2 rounded flex" style="background: linear-gradient( 180deg, #E7F7FF 0%, #F1F9FF 100%)">
             <div class="flex flex-col justify-center flex-1">
               <span class="font-semibold text-4">{{ overViewData.progress || 0 }}%</span>
-              <div>完成率</div>
+              <div>{{ t('kanban.effectiveness.completionRate') }}</div>
             </div>
             <img src="./Image/progress.png" class="w-10 h-10 self-end" />
           </div>
@@ -1554,7 +1556,7 @@ defineExpose({
         v-show="props.countType === 'task'"
         class="min-w-70 border rounded p-2 "
         style="width: calc(20% - 8px)">
-        <div class="font-semibold">分类统计</div>
+        <div class="font-semibold">{{ t('kanban.effectiveness.categoryStatistics') }}</div>
         <div ref="taskTypeRef" class="h-35"></div>
       </div>
       <!-- <div  v-show="props.countType === 'useCase'" class="min-w-70 border rounded p-2">
@@ -1563,7 +1565,7 @@ defineExpose({
       </div> -->
       <div class="min-w-60 border rounded p-2 w-1/5" style="width: calc(20% - 8px)">
         <div class="font-semibold flex justify-between">
-          燃尽图
+          {{ t('kanban.effectiveness.burnDownChart') }}
           <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
           </RadioGroup>
         </div>
@@ -1572,45 +1574,45 @@ defineExpose({
     </div>
     <div class="flex items-center">
       <Icon icon="icon-paihangbang" class="text-4 mr-1" />
-      <span class="text-3.5 font-medium text-theme-title">排行榜</span>
+      <span class="text-3.5 font-medium text-theme-title">{{ t('kanban.effectiveness.ranking') }}</span>
     </div>
     <div class="flex space-x-2">
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '任务数' : '用例数' }}</div>
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.taskCount') : t('kanban.effectiveness.useCaseCount') }}</div>
         <div ref="targetNumRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">工作量</div>
+        <div class="font-semibold">{{ t('kanban.effectiveness.workload') }}</div>
         <div ref="workloadRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">逾期数</div>
+        <div class="font-semibold">{{ t('kanban.effectiveness.overdueCount') }}</div>
         <div ref="overdueRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '一次性通过数' : '一次性测试通过数' }}</div>
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.oneTimePassedCount') : t('kanban.effectiveness.oneTimeTestPassedCount') }}</div>
         <div ref="oneTimePassedTestRef" class="h-70"></div>
       </div>
       <div v-if="isNormalSize" class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '缺陷数' : '一次性通过评审数' }}</div>
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</div>
         <div ref="oneTimeUnPassedTestRef" class="h-70"></div>
       </div>
     </div>
     <div class="flex space-x-2">
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '任务完成率' : '用例通过率' }}</div>
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.taskCompletionRate') : t('kanban.effectiveness.useCasePassRate') }}</div>
         <div ref="targetRateRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">节省工作量</div>
+        <div class="font-semibold">{{ t('kanban.effectiveness.workloadSaved') }}</div>
         <div ref="workloadRateRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">逾期率</div>
+        <div class="font-semibold">{{ t('kanban.effectiveness.overdueRate') }}</div>
         <div ref="overdueRateRef" class="h-70"></div>
       </div>
       <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '一次性通过率' : '一次性测试通过率' }}</div>
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.oneTimePassRate') : t('kanban.effectiveness.oneTimeTestPassRate') }}</div>
         <div ref="oneTimePassedTestRateRef" class="h-70"></div>
       </div>
       <div v-if="isNormalSize" class="min-w-70 border rounded p-2 flex-1">
@@ -1618,15 +1620,15 @@ defineExpose({
         <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
       </div>
     </div>
-    <div v-if="!isNormalSize" class="flex space-x-2">
-      <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '缺陷数' : '一次性通过评审数' }}</div>
-        <div ref="oneTimeUnPassedTestRef" class="h-70"></div>
+          <div v-if="!isNormalSize" class="flex space-x-2">
+        <div class="min-w-70 border rounded p-2 flex-1">
+          <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</div>
+          <div ref="oneTimeUnPassedTestRef" class="h-70"></div>
+        </div>
+        <div class="min-w-70 border rounded p-2 flex-1">
+          <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</div>
+          <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
+        </div>
       </div>
-      <div class="min-w-70 border rounded p-2 flex-1">
-        <div class="font-semibold">{{ props.countType ==='task' ? '缺陷率' : '一次性评审通过率' }}</div>
-        <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
-      </div>
-    </div>
   </div>
 </template>

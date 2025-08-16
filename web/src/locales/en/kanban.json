@@ -18,6 +18,55 @@
       "cto": "CTO",
       "effectiveness": "Effectiveness Statistics",
       "dataAssets": "Data Assets"
+    },
+    "effectiveness": {
+      "overview": "Overview",
+      "total": "Total",
+      "completionRate": "Completion Rate",
+      "taskCount": "Task Count",
+      "useCaseCount": "Use Case Count",
+      "workload": "Workload",
+      "remaining": "Remaining",
+      "expected": "Expected",
+      "categoryStatistics": "Category Statistics",
+      "reviewStatusDistribution": "Review Status Distribution",
+      "burnDownChart": "Burn Down Chart",
+      "ranking": "Ranking",
+      "completedCount": "Completed Count",
+      "overdueCount": "Overdue Count",
+      "oneTimePassedCount": "One-time Passed Count",
+      "oneTimeTestPassedCount": "One-time Test Passed Count",
+      "defectCount": "Defect Count",
+      "oneTimeReviewPassedCount": "One-time Review Passed Count",
+      "taskCompletionRate": "Task Completion Rate",
+      "useCasePassRate": "Use Case Pass Rate",
+      "workloadSaved": "Workload Saved",
+      "overdueRate": "Overdue Rate",
+      "oneTimePassRate": "One-time Pass Rate",
+      "oneTimeTestPassRate": "One-time Test Pass Rate",
+      "defectRate": "Defect Rate",
+      "oneTimeReviewPassRate": "One-time Review Pass Rate",
+      "priority": {
+        "highest": "Highest",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "lowest": "Lowest"
+      },
+      "reviewStatus": {
+        "noReview": "No Review",
+        "pendingReview": "Pending Review",
+        "reviewFailed": "Review Failed",
+        "reviewPassed": "Review Passed"
+      },
+      "taskType": {
+        "story": "Story",
+        "requirement": "Requirement",
+        "task": "Task",
+        "defect": "Defect",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      }
     }
   }
 }

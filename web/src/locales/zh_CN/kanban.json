@@ -18,6 +18,55 @@
       "cto": "CTO",
       "effectiveness": "效能统计",
       "dataAssets": "数据资产"
+    },
+    "effectiveness": {
+      "overview": "总览",
+      "total": "总数",
+      "completionRate": "完成率",
+      "taskCount": "任务数",
+      "useCaseCount": "用例数",
+      "workload": "工作量",
+      "remaining": "剩余",
+      "expected": "期望",
+      "categoryStatistics": "分类统计",
+      "reviewStatusDistribution": "评审状态分布",
+      "burnDownChart": "燃尽图",
+      "ranking": "排行榜",
+      "completedCount": "完成数",
+      "overdueCount": "逾期数",
+      "oneTimePassedCount": "一次性通过数",
+      "oneTimeTestPassedCount": "一次性测试通过数",
+      "defectCount": "缺陷数",
+      "oneTimeReviewPassedCount": "一次性通过评审数",
+      "taskCompletionRate": "任务完成率",
+      "useCasePassRate": "用例通过率",
+      "workloadSaved": "节省工作量",
+      "overdueRate": "逾期率",
+      "oneTimePassRate": "一次性通过率",
+      "oneTimeTestPassRate": "一次性测试通过率",
+      "defectRate": "缺陷率",
+      "oneTimeReviewPassRate": "一次性评审通过率",
+      "priority": {
+        "highest": "最高",
+        "high": "高",
+        "medium": "中",
+        "low": "低",
+        "lowest": "最低"
+      },
+      "reviewStatus": {
+        "noReview": "无需评审",
+        "pendingReview": "待评审",
+        "reviewFailed": "评审未通过",
+        "reviewPassed": "评审通过"
+      },
+      "taskType": {
+        "story": "故事",
+        "requirement": "需求",
+        "task": "任务",
+        "defect": "缺陷",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
+      }
     }
   }
 }
