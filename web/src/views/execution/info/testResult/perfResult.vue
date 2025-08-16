@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -33,6 +34,7 @@ interface Props {
   // }
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   indicatorPerf: () => ({
     duration: '',
@@ -91,39 +93,39 @@ const indicatorItem = computed(() => {
   }
   return [
     {
-      label: '并发数',
+      label: t('execution.testResult.concurrency'),
       dataIndex: 'threads',
       resultIndex: 'threadPoolSize'
     },
     {
-      label: '测试时长',
+      label: t('execution.testResult.testDuration'),
       dataIndex: 'duration',
       resultIndex: 'duration'
     },
     {
-      label: '增压并发时数',
+      label: t('execution.testResult.rampUpConcurrencyCount'),
       dataIndex: 'rampUpThreads',
       resultIndex: 'rampUpThreads'
     },
     {
-      label: '增压并发时长',
+      label: t('execution.testResult.rampUpConcurrencyDuration'),
       dataIndex: 'rampUpInterval',
       resultIndex: 'rampUpInterval'
     },
     {
-      label: '响应时间(RT)',
+      label: t('execution.testResult.responseTime'),
       dataIndex: 'art',
       compareOprate: '<=',
       resultIndex: percentitleKey || '--'
     },
     {
-      label: '每秒事务数(TPS)',
+      label: t('execution.testResult.transactionsPerSecond'),
       dataIndex: 'tps',
       compareOprate: '>=',
       resultIndex: 'tps'
     },
     {
-      label: '错误率(ErrorRate)',
+      label: t('execution.testResult.errorRate'),
       dataIndex: 'errorRate',
       compareOprate: '<=',
       resultIndex: 'errorRate',
@@ -215,9 +217,9 @@ const getDuration = (mseconds) => {
       {{ props.passedInfo.passed ? '通过' : '未通过：' }} {{ props.passedInfo?.failureMessage || '' }}
     </div> -->
     <div class="flex py-1 ">
-      <span class="w-50">性能测试</span>
-      <span class="flex-1">测试指标</span>
-      <span class="flex-1">测试结果</span>
+      <span class="w-50">{{ t('execution.testResult.performanceTest') }}</span>
+      <span class="flex-1">{{ t('execution.testResult.testIndicators') }}</span>
+      <span class="flex-1">{{ t('execution.testResult.testResults') }}</span>
     </div>
     <div
       v-for="item in indicatorItem"

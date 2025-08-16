@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Icon } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   largePageLayout: boolean;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   largePageLayout: true
@@ -16,10 +18,10 @@ const PerfResult = defineAsyncComponent(() => import('./perfResult.vue'));
 const StabilityResult = defineAsyncComponent(() => import('./stabilityResult.vue'));
 
 const configInfo = [
-  [{ label: '总共', dataIndex: 'totalNum' },
-    { label: '成功', dataIndex: 'successNum' },
-    { label: '失败', dataIndex: 'failNum' },
-    { label: '未启用', dataIndex: 'disabledNum' }
+  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum' },
+    { label: t('execution.testResult.success'), dataIndex: 'successNum' },
+    { label: t('execution.testResult.failure'), dataIndex: 'failNum' },
+    { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum' }
   ]
 ];
 
@@ -38,17 +40,17 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return testFailureNum.value === 0 ? '是' : '否';
+  return testFailureNum.value === 0 ? t('execution.testResult.yes') : t('execution.testResult.no');
 });
 </script>
 <template>
   <div class="text-3 leading-5">
-    <div class="font-semibold mb-2">基本信息</div>
+    <div class="font-semibold mb-2">{{ t('execution.testResult.basicInfo') }}</div>
     <div v-if="props.largePageLayout===false" class="space-y-2.5">
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>场景ID</span>
+            <span>{{ t('execution.testResult.scenarioId') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -57,7 +59,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>场景名称</span>
+            <span>{{ t('execution.testResult.scenarioName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -68,26 +70,26 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试结果</span>
+            <span>{{ t('execution.testResult.testResult') }}</span>
             <Colon class="w-1" />
           </div>
 
           <div class="flex items-center">
             <template v-if="passed">
               <Icon icon="icon-duihao" class="mr-1 text-status-success" />
-              <span>通过</span>
+              <span>{{ t('execution.testResult.passed') }}</span>
             </template>
 
             <template v-else>
               <Icon icon="icon-chahao" class="mr-1 text-status-error" />
-              <span>不通过</span>
+              <span>{{ t('execution.testResult.notPassed') }}</span>
             </template>
           </div>
         </div>
 
         <div class="relative w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>失败原因</span>
+            <span>{{ t('execution.testResult.failureReason') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -98,7 +100,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试次数</span>
+            <span>{{ t('execution.testResult.testCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -107,7 +109,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>失败次数</span>
+            <span>{{ t('execution.testResult.failureCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -118,7 +120,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>一次性通过</span>
+            <span>{{ t('execution.testResult.oneTimePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -131,7 +133,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>场景ID</span>
+            <span>{{ t('execution.testResult.scenarioId') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -140,26 +142,26 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试结果</span>
+            <span>{{ t('execution.testResult.testResult') }}</span>
             <Colon class="w-1" />
           </div>
 
           <div class="flex items-center">
             <template v-if="passed">
               <Icon icon="icon-duihao" class="mr-1 text-status-success" />
-              <span>通过</span>
+              <span>{{ t('execution.testResult.passed') }}</span>
             </template>
 
             <template v-else>
               <Icon icon="icon-chahao" class="mr-1 text-status-error" />
-              <span>不通过</span>
+              <span>{{ t('execution.testResult.notPassed') }}</span>
             </template>
           </div>
         </div>
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试次数</span>
+            <span>{{ t('execution.testResult.testCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -170,7 +172,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>场景名称</span>
+            <span>{{ t('execution.testResult.scenarioName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -179,7 +181,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>失败原因</span>
+            <span>{{ t('execution.testResult.failureReason') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -188,7 +190,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>失败次数</span>
+            <span>{{ t('execution.testResult.failureCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -199,7 +201,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>一次性通过</span>
+            <span>{{ t('execution.testResult.oneTimePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -209,7 +211,7 @@ const onePassText = computed(() => {
     </div>
 
     <div class="mt-5 mb-2 font-semibold">
-      测试场景
+      {{ t('execution.testResult.testScenario') }}
     </div>
 
     <div class="space-y-2">
@@ -229,12 +231,12 @@ const onePassText = computed(() => {
     </div>
 
     <template v-if="dataSource.scriptType?.value === 'TEST_PERFORMANCE'">
-      <div class="font-semibold mt-5 mb-2">结果信息</div>
+      <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <PerfResult :indicatorPerf="dataSource.indicatorPerf" :result="dataSource.sampleSummary" />
     </template>
 
     <template v-if="dataSource.scriptType?.value === 'TEST_STABILITY'">
-      <div class="font-semibold mt-5 mb-2">结果信息</div>
+      <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <StabilityResult :indicatorStability="dataSource.indicatorStability" :result="dataSource.sampleSummary" />
     </template>
   </div>

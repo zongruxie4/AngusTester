@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 interface Props {
@@ -33,6 +34,7 @@ interface Props {
   // }
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   indicatorStability: () => ({
     percentile: '',
@@ -90,33 +92,33 @@ const indicatorItem = computed(() => {
   }
   return [
     {
-      label: '并发数',
+      label: t('execution.testResult.concurrency'),
       dataIndex: 'threads',
       resultIndex: 'threadPoolSize'
     },
     {
-      label: '测试时长',
+      label: t('execution.testResult.testDuration'),
       dataIndex: 'duration',
       resultIndex: 'duration'
     },
     {
-      label: '响应时间(RT)',
+      label: t('execution.testResult.responseTime'),
       dataIndex: 'art',
       resultIndex: percentitleKey,
       compareOprate: '<='
     },
     {
-      label: '每秒事务数(TPS)',
+      label: t('execution.testResult.transactionsPerSecond'),
       dataIndex: 'tps',
       resultIndex: 'tps'
     },
     {
-      label: '错误率',
+      label: t('execution.testResult.errorRateSimple'),
       dataIndex: 'errorRate',
       resultIndex: 'errorRate'
     },
     {
-      label: '应用系统平均负载',
+      label: t('execution.testResult.applicationSystemAverageLoad'),
       dataIndex: 'sys'
     }
   ];
@@ -124,25 +126,25 @@ const indicatorItem = computed(() => {
 
 const sysIndicatorItem = [
   {
-    label: 'CPU使用率',
+    label: t('execution.testResult.cpuUsage'),
     dataIndex: 'meanCpu',
     idx: 'cpu',
     maxIndex: 'maxCpu'
   },
   {
-    label: '内存使用率',
+    label: t('execution.testResult.memoryUsage'),
     dataIndex: 'meanMemory',
     idx: 'memory',
     maxIndex: 'maxMemory'
   },
   {
-    label: '磁盘使用率',
+    label: t('execution.testResult.diskUsage'),
     dataIndex: 'meanFilesystem',
     idx: 'disk',
     maxIndex: 'maxFilesystem'
   },
   {
-    label: '网络使用量',
+    label: t('execution.testResult.networkUsage'),
     dataIndex: 'meanNetwork',
     idx: 'network',
     maxIndex: 'maxNetwork'
@@ -233,9 +235,9 @@ const getDuration = (mseconds) => {
 <template>
   <div class="border rounded bg-white">
     <div class="flex py-1 px-2">
-      <span class="w-30">测试参数</span>
-      <span class="flex-1">测试指标</span>
-      <span class="flex-1">测试结果</span>
+      <span class="w-30">{{ t('execution.testResult.testParameters') }}</span>
+      <span class="flex-1">{{ t('execution.testResult.testIndicators') }}</span>
+      <span class="flex-1">{{ t('execution.testResult.testResults') }}</span>
     </div>
     <div
       v-for="item in indicatorItem"
@@ -269,7 +271,7 @@ const getDuration = (mseconds) => {
               <Icon v-bind="getIcon(sysItem.dataIndex)" />
             </div>
             <div class="flex-1 text-text-sub-content">
-              {{ `最大 ${props.result[sysItem.maxIndex] || '--'}${sysItem.idx === 'network' ? 'MB' : '%'}` }}
+              {{ `${t('execution.testResult.maximum')} ${props.result[sysItem.maxIndex] || '--'}${sysItem.idx === 'network' ? 'MB' : '%'}` }}
             </div>
           </div>
         </template>

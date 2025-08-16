@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, HttpMethodTag } from '@xcan-angus/vue-ui';
 import { Badge } from 'ant-design-vue';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 const PerfResult = defineAsyncComponent(() => import('./perfResult.vue'));
 const StabilityResult = defineAsyncComponent(() => import('./stabilityResult.vue'));
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ([
     { apisName: 'string', method: 'string', uri: 'string', passed: false, apisId: 'string', open: false }
@@ -42,7 +44,7 @@ const toggleOpen = (apisId) => {
         <HttpMethodTag :value="api.method" />
         <div class="pl-5 flex-1">{{ api.uri }}</div>
         <div class="w-30 flex justify-between">
-          <Badge :color="api.passed ? 'green' : 'red'" :text="api.passed ? '通过' : '未通过'" />
+          <Badge :color="api.passed ? 'green' : 'red'" :text="api.passed ? t('execution.testResult.passed') : t('execution.testResult.notPassed')" />
           <Arrow v-model:open="openMap[api.apisId]" />
         </div>
       </div>

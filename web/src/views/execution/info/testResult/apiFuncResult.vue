@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
 interface Props {
   dataSource: {[key: string]: string}
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
 
 const configInfo = [
-  [{ label: '总共', dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: '通过', dataIndex: 'successNum', bgColor: 'bg-status-success' }, { label: '未通过', dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: '未启用', dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('execution.testResult.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' }, { label: t('execution.testResult.notPassed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 //   [],
 ];
 const CaseTypeIconConfig = {
@@ -33,7 +35,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="font-semibold mt-5 mb-2">测试用例</div>
+  <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.testCases') }}</div>
   <div class="space-y-2 text-3">
     <div
       v-for="(line, idx) in configInfo"
@@ -47,7 +49,7 @@ onMounted(() => {
         <span class="flex-1 bg-gray-light px-2 rounded-r">{{ statisticsData[item.dataIndex] }}</span>
       </div>
     </div>
-    <div class="font-semibold mt-5 mb-2">已测试用例</div>
+    <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.testedCases') }}</div>
     <div class="text-3 space-y-1">
       <div
         v-for="item in caseResult"
@@ -66,12 +68,12 @@ onMounted(() => {
           <span class="min-w-10 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
           <span
             v-if="!item.enabled"
-            class="px-2 rounded">未启用</span>
+            class="px-2 rounded">{{ t('execution.testResult.notEnabled') }}</span>
           <span
             v-else-if="item.passed"
-            class="px-2 rounded text-status-success">通过</span>
+            class="px-2 rounded text-status-success">{{ t('execution.testResult.passed') }}</span>
           <span v-else class="px-2 rounded text-status-error ">
-            未通过：{{ item.failureMessage }}
+            {{ t('execution.testResult.notPassedWithReason') }}{{ item.failureMessage }}
           </span>
         </div>
         <!-- </Tooltip> -->
