@@ -158,6 +158,28 @@
       "maximum": "最大",
       "yes": "是",
       "no": "否"
+    },
+    "infoServer": {
+      "noDescription": "无描述~",
+      "noVariables": "无变量~",
+      "default": "默认"
+    },
+    "infoLog": {
+      "selectNode": "选择节点",
+      "totalSchedulingCount": "总调度次数",
+      "lastSchedulingTime": "最后调度时间",
+      "schedulingLog": "调度日志",
+      "executionLog": "执行日志",
+      "schedulingResult": "调度结果",
+      "processExitCode": "进程退出码",
+      "success": "成功",
+      "failure": "失败",
+      "export": "导出",
+      "refresh": "刷新",
+      "file": "文件",
+      "noAccessProxyInfo": "无访问代理信息，连接失败地址：",
+      "runnerLog": "runner.log",
+      "schedulingLogFile": "scheduling.log"
     }
   }
 } 

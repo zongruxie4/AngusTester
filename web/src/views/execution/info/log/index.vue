@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, Colon, Icon, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { getDataByProxy } from 'src/api/proxy';
@@ -13,6 +14,7 @@ interface Props {
   lastSchedulingResult:{console:string[], deviceId:string, success:boolean, exitCode:string}[];
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   execId: '',
   loading: false,
@@ -123,7 +125,7 @@ const downloadLog = (type:'scheduling' | 'exec') => {
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = type === 'exec' ? 'runner.log' : 'scheduling.log';
+  a.download = type === 'exec' ? t('execution.infoLog.runnerLog') : t('execution.infoLog.schedulingLogFile');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -145,7 +147,7 @@ const refreshExecLog = (event) => {
         :options="props.execNodes"
         :fieldNames="{label:'name',value:'id'}"
         class="w-full"
-        placeholder="选择节点"
+        placeholder="{{ t('execution.infoLog.selectNode') }}"
         size="small"
         @change="nodeSelectChange">
         <template #option="item">
@@ -154,8 +156,8 @@ const refreshExecLog = (event) => {
       </Select>
       <div class="flex ml-1.5 mt-5">
         <div class="mr-2 space-y-5">
-          <div class="h-3">总调度次数<Colon /></div>
-          <div class="h-3">最后调度时间<Colon /></div>
+          <div class="h-3">{{ t('execution.infoLog.totalSchedulingCount') }}<Colon /></div>
+          <div class="h-3">{{ t('execution.infoLog.lastSchedulingTime') }}<Colon /></div>
         </div>
         <div class="space-y-5">
           <div class="h-3">{{ props.schedulingNum }}</div>
@@ -180,19 +182,19 @@ const refreshExecLog = (event) => {
               @click="handleDoubleClick('scheduling')">
               <div class="flex items-center space-x-2">
                 <div class="h-3 bg-text-link-hover w-1"></div>
-                <span class="text-text-title font-medium text-3 leading-3" @click.stop="openSchedulingLog">调度日志</span>
+                <span class="text-text-title font-medium text-3 leading-3" @click.stop="openSchedulingLog">{{ t('execution.infoLog.schedulingLog') }}</span>
                 <Arrow :open="showSchedulingLog === '1'" @click.stop="openSchedulingLog" />
-                <div class="!ml-20">调度结果<Colon /></div>
+                <div class="!ml-20">{{ t('execution.infoLog.schedulingResult') }}<Colon /></div>
                 <template v-if="props.execNodes?.length">
                   <div class="flex items-center">
                     <div class="w-1.5 h-1.5 mr-1 rounded" :class="schedulingLogItem?.success?'bg-status-success':'bg-status-error'"></div>
-                    {{ schedulingLogItem?.success?'成功':'失败' }}
+                    {{ schedulingLogItem?.success ? t('execution.infoLog.success') : t('execution.infoLog.failure') }}
                   </div>
                 </template>
                 <template v-else>
                   --
                 </template>
-                <div class="!ml-20">进程退出码<Colon /></div>
+                <div class="!ml-20">{{ t('execution.infoLog.processExitCode') }}<Colon /></div>
                 <template v-if="props.execNodes?.length">
                   <div>{{ schedulingLogItem?.exitCode || '--' }}</div>
                 </template>
@@ -201,7 +203,7 @@ const refreshExecLog = (event) => {
                 </template>
               </div>
               <div>
-                <Tooltip title="导出" placement="top">
+                <Tooltip :title="t('execution.infoLog.export')" placement="top">
                   <Icon
                     icon="icon-daochu1"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
@@ -232,27 +234,27 @@ const refreshExecLog = (event) => {
               <div class="flex flex-1 items-center space-x-20">
                 <div class="flex items-center space-x-2">
                   <div class="h-3 bg-text-link-hover w-1"></div>
-                  <span class="text-text-title font-medium text-3 leading-3" @click.stop="openExecLog">执行日志</span>
+                  <span class="text-text-title font-medium text-3 leading-3" @click.stop="openExecLog">{{ t('execution.infoLog.executionLog') }}</span>
                   <Arrow :open="showExecLog === '1'" @click.stop="openExecLog" />
                 </div>
                 <template v-if="!execLogErr && execLogPath">
                   <div>
-                    <span class="mr-2">文件<Colon /></span>
+                    <span class="mr-2">{{ t('execution.infoLog.file') }}<Colon /></span>
                     <span>{{ execLogPath }}</span>
                   </div>
                 </template>
                 <template v-else-if="execLogErr">
-                  <span v-if="!loading" class="text-rule">{{ errorText || `无访问代理信息，连接失败地址：http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
+                  <span v-if="!loading" class="text-rule">{{ errorText || t('execution.infoLog.noAccessProxyInfo') + `http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
                 </template>
               </div>
               <div>
-                <Tooltip title="导出" placement="top">
+                <Tooltip :title="t('execution.infoLog.export')" placement="top">
                   <Icon
                     icon="icon-daochu1"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
                     @click="downloadLog('exec')" />
                 </Tooltip>
-                <Tooltip title="刷新" placement="top">
+                <Tooltip :title="t('execution.infoLog.refresh')" placement="top">
                   <Icon
                     icon="icon-shuaxin"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"

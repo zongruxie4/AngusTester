@@ -188,6 +188,28 @@
       "maximum": "Maximum",
       "yes": "Yes",
       "no": "No"
+    },
+    "infoServer": {
+      "noDescription": "No description~",
+      "noVariables": "No variables~",
+      "default": "Default"
+    },
+    "infoLog": {
+      "selectNode": "Select Node",
+      "totalSchedulingCount": "Total Scheduling Count",
+      "lastSchedulingTime": "Last Scheduling Time",
+      "schedulingLog": "Scheduling Log",
+      "executionLog": "Execution Log",
+      "schedulingResult": "Scheduling Result",
+      "processExitCode": "Process Exit Code",
+      "success": "Success",
+      "failure": "Failure",
+      "export": "Export",
+      "refresh": "Refresh",
+      "file": "File",
+      "noAccessProxyInfo": "No access proxy info, connection failed address: ",
+      "runnerLog": "runner.log",
+      "schedulingLogFile": "scheduling.log"
     }
   }
 } 

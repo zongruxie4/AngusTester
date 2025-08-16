@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { notification, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { exec } from 'src/api/ctrl';
 
@@ -18,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   scriptInfo: undefined,
   loading: false
 });
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:loading', value: boolean): void
 }>();
@@ -100,10 +102,10 @@ const saveSetting = async () => {
           type="primary"
           class="mr-5"
           @click="saveSetting">
-          保存
+          {{ t('actions.save') }}
         </Button>
         <RouterLink to="/execution">
-          <Button size="small">取消</Button>
+          <Button size="small">{{ t('actions.cancel') }}</Button>
         </RouterLink>
       </div>
     </div>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
 import { exec } from '@/api/tester';
@@ -8,6 +9,7 @@ interface Props {
   execId: string
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   execId: ''
 });
@@ -44,7 +46,7 @@ onMounted(() => {
       <div class="font-bold text-text-title flex items-center">
         <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
       </div>
-      <div class="my-3 ">{{ serverObj.description || '无描述~' }}</div>
+      <div class="my-3 ">{{ serverObj.description || t('execution.infoServer.noDescription') }}</div>
       <ul v-if="hasVariable(serverObj.variables)" class="list-disc space-y-1 pl-4">
         <li v-for="(_value, key) in (serverObj.variables || defaultVariable)" :key="key">
           <div
@@ -65,7 +67,7 @@ onMounted(() => {
                 {{ en }}
               </div>
               <div class="inline-flex items-center space-x-1">
-                <span v-show="_value.default === en">默认</span>
+                <span v-show="_value.default === en">{{ t('execution.infoServer.default') }}</span>
                 <Radio
                   size="small"
                   disabled
@@ -77,7 +79,7 @@ onMounted(() => {
         </li>
       </ul>
       <div v-else>
-        无变量~
+        {{ t('execution.infoServer.noVariables') }}
       </div>
     </div>
   </div>
