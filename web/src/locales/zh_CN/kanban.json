@@ -1,0 +1,23 @@
+{
+  "kanban": {
+    "organizationPersonnel": "组织人员",
+    "statisticsType": "统计类型",
+    "task": "任务",
+    "test": "测试",
+    "time": "时间",
+    "pleaseSelectSprint": "请选择迭代",
+    "pleaseSelectPlan": "请选择计划",
+    "selectOrganizationPersonnel": "选择组织人员",
+    "user": "用户",
+    "department": "部门",
+    "group": "组",
+    "selectUser": "选择用户",
+    "selectDepartment": "选择部门",
+    "selectGroup": "选择组",
+    "viewType": {
+      "cto": "CTO",
+      "effectiveness": "效能统计",
+      "dataAssets": "数据资产"
+    }
+  }
+}

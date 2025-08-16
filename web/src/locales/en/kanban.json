@@ -1,0 +1,23 @@
+{
+  "kanban": {
+    "organizationPersonnel": "Organization Personnel",
+    "statisticsType": "Statistics Type",
+    "task": "Task",
+    "test": "Test",
+    "time": "Time",
+    "pleaseSelectSprint": "Please select sprint",
+    "pleaseSelectPlan": "Please select plan",
+    "selectOrganizationPersonnel": "Select Organization Personnel",
+    "user": "User",
+    "department": "Department",
+    "group": "Group",
+    "selectUser": "Select user",
+    "selectDepartment": "Select department",
+    "selectGroup": "Select group",
+    "viewType": {
+      "cto": "CTO",
+      "effectiveness": "Effectiveness Statistics",
+      "dataAssets": "Data Assets"
+    }
+  }
+}

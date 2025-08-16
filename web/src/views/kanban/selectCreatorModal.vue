@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { RadioButton, RadioGroup } from 'ant-design-vue';
 import { GM } from '@xcan-angus/infra';
 
+const { t } = useI18n();
 interface Props {
     visible: boolean
 }
@@ -46,7 +48,7 @@ const ok = () => {
 <template>
   <Modal
     :visible="props.visible"
-    title="选择组织人员"
+    :title="t('kanban.selectOrganizationPersonnel')"
     @cancel="close"
     @ok="ok">
     <RadioGroup
@@ -55,13 +57,13 @@ const ok = () => {
       size="small"
       @change="handleChangeType">
       <RadioButton value="USER">
-        用户
+        {{ t('kanban.user') }}
       </RadioButton>
       <RadioButton value="DEPT">
-        部门
+        {{ t('kanban.department') }}
       </RadioButton>
       <RadioButton value="GROUP">
-        组
+        {{ t('kanban.group') }}
       </RadioButton>
     </RadioGroup>
     <div class="mt-3.5">
@@ -70,7 +72,7 @@ const ok = () => {
         v-model:value="creatorObjectId"
         class="w-100"
         :showSearch="true"
-        placeholder="选择用户"
+        placeholder="t('kanban.selectUser')"
         :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }"
         @change="setCreator">
@@ -79,7 +81,7 @@ const ok = () => {
         v-show="creatorObjectType === 'DEPT'"
         v-model:value="creatorObjectId"
         class="w-100"
-        placeholder="选择部门"
+        placeholder="t('kanban.selectDepartment')"
         :showSearch="true"
         :action="`${GM}/dept?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
@@ -89,7 +91,7 @@ const ok = () => {
         v-show="creatorObjectType === 'GROUP'"
         v-model:value="creatorObjectId"
         class="w-100"
-        placeholder="选择组"
+        placeholder="t('kanban.selectGroup')"
         :showSearch="true"
         :action="`${GM}/group?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"

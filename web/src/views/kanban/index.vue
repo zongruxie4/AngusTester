@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
 
+const { t } = useI18n();
 import { ProjectInfo } from './PropsType';
 
 // const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
@@ -106,15 +108,15 @@ onMounted(() => {
 const viewTypeOpt = [
   {
     value: 'cto',
-    label: 'CTO'
+    label: t('kanban.viewType.cto')
   },
   {
     value: 'effectiveness',
-    label: '效能统计'
+    label: t('kanban.viewType.effectiveness')
   },
   {
     value: 'data',
-    label: '数据资产'
+    label: t('kanban.viewType.dataAssets')
   }
 ];
 
@@ -129,7 +131,7 @@ const viewTypeOpt = [
       <div class="flex items-center flex-1 flex-nowrap space-x-5">
         <div class="flex items-center space-x-1">
           <div class="flex items-center flex-shrink-0">
-            <span class="flex-shrink-0 whitespace-nowrap">组织人员</span>
+            <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.organizationPersonnel') }}</span>
             <Colon class="mr-1 flex-shrink-0" />
             <div :title="creatorObjectName" class="truncate max-w-20 flex-shrink-0 whitespace-nowrap">
               {{
@@ -151,15 +153,15 @@ const viewTypeOpt = [
         <template v-if="['effectiveness', 'cto'].includes(viewMode)">
           <div class="flex items-center flex-shrink-0">
             <div class="mr-1 flex-shrink-0">
-              <span class="flex-shrink-0 whitespace-nowrap">统计类型</span>
+              <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.statisticsType') }}</span>
               <Colon />
             </div>
             <RadioGroup
               v-model:value="countType"
               name="countType"
               class="radio-group-small">
-              <Radio v-if="proTypeShowMap.showTask" value="task">任务</Radio>
-              <Radio value="useCase">测试</Radio>
+              <Radio v-if="proTypeShowMap.showTask" value="task">{{ t('kanban.task') }}</Radio>
+              <Radio value="useCase">{{ t('kanban.test') }}</Radio>
             </RadioGroup>
           </div>
 
@@ -171,7 +173,7 @@ const viewTypeOpt = [
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
             :action="projectId ? `${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true` : undefined"
-            placeholder="请选择迭代" />
+            placeholder="t('kanban.pleaseSelectSprint')" />
 
           <Select
             v-show="countType === 'useCase'"
@@ -181,11 +183,11 @@ const viewTypeOpt = [
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
             :action="projectId ? `${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true` : undefined"
-            placeholder="请选择计划" />
+            placeholder="t('kanban.pleaseSelectPlan')" />
         </template>
 
         <div class="flex items-center flex-shrink-0">
-          <span class="flex-shrink-0 whitespace-nowrap">时间</span>
+          <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.time') }}</span>
           <Colon class="mr-1 flex-shrink-0" />
           <DatePicker
             v-model:value="dateRange"
