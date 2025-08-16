@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
@@ -21,6 +22,7 @@ type Props = {
   notify: string;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -552,32 +554,32 @@ const isScenarioTargetType = computed(() => {
 const menuItems = computed(() => [
   {
     key: 'none',
-    name: '所有'
+    name: t('execution.searchPanel.all')
   },
   {
     key: 'createdBy',
-    name: '我添加的'
+    name: t('execution.searchPanel.createdByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('execution.searchPanel.modifiedByMe')
   },
   {
     key: 'execBy',
-    name: '我执行的'
+    name: t('execution.searchPanel.executedByMe')
   },
   ...scriptTypeOpt.value,
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('execution.searchPanel.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('execution.searchPanel.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('execution.searchPanel.lastWeek')
   }
 ]);
 
@@ -585,21 +587,21 @@ const searchOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询名称、描述',
+    placeholder: t('execution.searchPanel.searchNameDesc'),
     maxlength: 100
   },
   {
     valueKey: 'status',
     type: 'select-enum',
     enumKey: ExecStatus,
-    placeholder: '选择状态'
+    placeholder: t('execution.searchPanel.selectStatus')
   },
   {
     valueKey: 'scriptId',
     type: 'select',
     action: `${TESTER}/script?projectId=${props.projectId}&fullTextSearch=true`,
     fieldNames: { label: 'name', value: 'id' },
-    placeholder: '选择脚本',
+    placeholder: t('execution.searchPanel.selectScript'),
     maxlength: 100
   },
   {
@@ -609,56 +611,56 @@ const searchOptions = [
     valueKey: 'scriptSource',
     type: 'select-enum',
     enumKey: ScriptSource,
-    placeholder: '选择关联资源类型'
+    placeholder: t('execution.searchPanel.selectResourceType')
   },
   {
     valueKey: 'scriptSourceId',
     type: 'select',
-    placeholder: '选择关联资源',
+    placeholder: t('execution.searchPanel.selectResource'),
     noDefaultSlot: true
   },
   {
     valueKey: 'startDate',
     type: 'date-range',
-    placeholder: ['计划开始时间从', '计划开始时间到'],
+    placeholder: [t('execution.searchPanel.plannedStartTimeFrom'), t('execution.searchPanel.plannedStartTimeTo')],
     showTime: true
   },
   {
     valueKey: 'actualStartDate',
     type: 'date-range',
-    placeholder: ['实际开始时间从', '实际开始时间到'],
+    placeholder: [t('execution.searchPanel.actualStartTimeFrom'), t('execution.searchPanel.actualStartTimeTo')],
     showTime: true
   },
   {
     valueKey: 'endDate',
     type: 'date-range',
-    placeholder: ['结束时间从', '结束时间到'],
+    placeholder: [t('execution.searchPanel.endTimeFrom'), t('execution.searchPanel.endTimeTo')],
     showTime: true
   },
   {
     valueKey: 'execBy',
     type: 'select-user',
-    placeholder: '选择执行人'
+    placeholder: t('execution.searchPanel.selectExecutor')
   },
   {
     valueKey: 'createdBy',
     type: 'select-user',
-    placeholder: '选择添加人'
+    placeholder: t('execution.searchPanel.selectCreator')
   },
   {
     valueKey: 'createdDate',
     type: 'date-range',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('execution.searchPanel.createdTimeFrom'), t('execution.searchPanel.createdTimeTo')],
     showTime: true
   },
   {
     valueKey: 'lastModifiedBy',
-    placeholder: '选择最后修改人',
+    placeholder: t('execution.searchPanel.selectLastModifier'),
     type: 'select-user'
   },
   {
     valueKey: 'lastModifiedDate',
-    placeholder: ['最后修改时间从', '最后修改时间到'],
+    placeholder: [t('execution.searchPanel.lastModifiedTimeFrom'), t('execution.searchPanel.lastModifiedTimeTo')],
     type: 'date-range',
     showTime: true
   }
@@ -666,12 +668,12 @@ const searchOptions = [
 
 const sortMenus = [
   {
-    name: '按添加时间',
+    name: t('execution.searchPanel.sortByCreatedTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按优先级',
+    name: t('execution.searchPanel.sortByPriority'),
     key: 'priority',
     orderSort: 'DESC'
   }
@@ -682,7 +684,7 @@ const sortMenus = [
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>快速查询</span>
+          <span>{{ t('execution.searchPanel.quickSearch') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
@@ -710,7 +712,7 @@ const sortMenus = [
             dataType="float"
             size="small"
             allowClear
-            placeholder="优先级"
+            placeholder="{{ t('execution.searchPanel.priority') }}"
             class="w-72 ml-2"
             :min="0"
             @change="priorityInputChange">
@@ -734,7 +736,7 @@ const sortMenus = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择服务"
+            placeholder="{{ t('execution.searchPanel.selectService') }}"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange" />
@@ -745,7 +747,7 @@ const sortMenus = [
             :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            placeholder="选择接口"
+            placeholder="{{ t('execution.searchPanel.selectApi') }}"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange">
@@ -765,7 +767,7 @@ const sortMenus = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择场景"
+            placeholder="{{ t('execution.searchPanel.selectScenario') }}"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange">
@@ -791,7 +793,7 @@ const sortMenus = [
             class="flex items-center space-x-1 leading-6.5 px-1.75"
             to="/execution/experience?type=expr">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>体验执行</span>
+            <span>{{ t('execution.searchPanel.experienceExecution') }}</span>
           </RouterLink>
         </Button>
 
@@ -804,20 +806,20 @@ const sortMenus = [
             class="flex items-center space-x-1 leading-6.5 px-1.75"
             to="/execution/add">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加执行</span>
+            <span>{{ t('execution.searchPanel.addExecution') }}</span>
           </RouterLink>
         </Button>
 
         <DropdownSort :menuItems="sortMenus" @click="toSort">
           <Button size="small">
             <Icon icon="icon-biaotoupaixu" class="text-3.5 mr-1" />
-            <span>排序</span>
+            <span>{{ t('execution.searchPanel.sort') }}</span>
           </Button>
         </DropdownSort>
 
         <Button size="small" @click="toRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>刷新</span>
+          <span>{{ t('execution.searchPanel.refresh') }}</span>
         </Button>
       </div>
     </div>
