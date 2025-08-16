@@ -146,6 +146,155 @@
         "task": "任务",
         "execution": "执行"
       }
+    },
+    "cto": {
+      "recentDate": {
+        "today": "今天",
+        "lastWeek": "近一周",
+        "lastMonth": "近一月"
+      },
+      "progress": {
+        "totalProgress": "总进度",
+        "incomplete": "未完成",
+        "completed": "已完成",
+        "totalTaskCount": "总任务数",
+        "totalUseCaseCount": "总用例数",
+        "totalWorkload": "总工作量",
+        "teamMember": "团队成员"
+      },
+      "recentMetrics": {
+        "completionRate": "近期完成率",
+        "recentCompletionCount": "近期完成数",
+        "nonRecentCompletionCount": "非近期完成数",
+        "overdueRate": "近期逾期率",
+        "recentOverdueRate": "近期逾期率",
+        "nonRecentOverdueRate": "非近期逾期率",
+        "deliveryWorkload": "近期交付工作量",
+        "deliveryWorkloadCompletionRate": "交付工作量完成率",
+        "recentCompletionAmount": "近期完成量",
+        "nonRecentCompletionAmount": "非近期完成量",
+        "workloadSavingRate": "近期工作量节省率",
+        "deliveryWorkloadSavingRate": "交付工作量节省率",
+        "recentSavingAmount": "近期节省量",
+        "nonRecentSavingAmount": "非近期节省量",
+        "timeChange": "近期时间变更",
+        "deliveryTaskOverdueCount": "交付任务逾期数"
+
+      },
+      "recentDelivery": {
+        "recentDeliveryTitle": "近期交付（交付量/总量）",
+        "recentDelivery": "近期交付",
+        "deliveryTaskCount": "交付任务数",
+        "deliveryTaskOverdueCount": "交付任务逾期数",
+        "deliveryWorkload": "交付工作量",
+        "deliveryWorkloadSaving": "交付节省工作量"
+      },
+      "backlog": {
+        "taskBacklogCount": "任务积压数",
+        "backlogTaskRatio": "积压任务占比",
+        "backlogCount": "积压数",
+        "completionCount": "完成数",
+        "taskBacklogWorkload": "任务积压工作量",
+        "backlogWorkloadRatio": "积压工作量占比",
+        "backlogWorkload": "积压工作量",
+        "completionWorkload": "完成工作量",
+        "backlogTask": "积压任务",
+        "backlogUseCase": "积压用例",
+        "backlogTaskCount": "积压任务数",
+        "backlogUseCaseCount": "积压用例数",
+        "estimatedTime": "预计耗时"
+      },
+      "overdue": {
+        "overdueAssessment": "逾期评估",
+        "overdueTaskRatio": "逾期任务占比",
+        "overdueCount": "逾期数",
+        "nonOverdueCount": "非逾期数",
+        "overdueRisk": "逾期风险",
+        "overdueWorkload": "逾期工作量",
+        "overdueWorkloadProcessingTime": "逾期时长"
+      },
+      "unplanned": {
+        "unplannedWork": "计划外工作",
+        "unplannedTaskCount": "计划外工作任务数",
+        "unplannedTaskRatio": "计划外任务占比",
+        "unplannedCount": "计划外数",
+        "nonUnplannedCount": "非计划外数",
+        "unplannedWorkload": "计划外工作量",
+        "unplannedWorkloadRatio": "计划外工作量占比",
+        "unplannedAmount": "计划外量",
+        "nonUnplannedAmount": "非计划外量"
+      },
+      "failure": {
+        "failureAssessment": "故障评估",
+        "criticalFailureRatio": "致命故障占比",
+        "criticalCount": "致命数",
+        "nonCriticalCount": "非致命数",
+        "majorFailureRatio": "严重故障占比",
+        "majorCount": "严重数",
+        "nonMajorCount": "非严重数",
+        "minorFailureRatio": "一般故障占比",
+        "minorCount": "一般数",
+        "nonMinorCount": "非一般数",
+        "trivialFailureRatio": "轻微故障占比",
+        "trivialCount": "轻微数",
+        "nonTrivialCount": "非轻微数"
+      },
+      "taskTypes": {
+        "total": "总数",
+        "story": "故事",
+        "requirement": "需求",
+        "task": "任务",
+        "defect": "缺陷",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
+      },
+      "taskStatus": {
+        "pendingConfirmation": "待确认",
+        "inProgress": "进行中",
+        "pending": "待处理",
+        "completed": "已完成",
+        "cancelled": "已取消"
+      },
+      "deliveryCycle": {
+        "deliveryCycle": "交付周期",
+        "average": "平均",
+        "minimum": "最小",
+        "maximum": "最大",
+        "participantCount": "参与人数",
+        "totalDuration": "总时长",
+        "averageDuration": "平均时长",
+        "hours": "小时",
+        "hoursPerPerson": "小时/人",
+        "recentDelivery": "近期交付",
+        "deliveryTaskCount": "交付任务数",
+        "estimatedTime": "预计耗时",
+        "deliveryTaskOverdueCount": "交付任务逾期数"
+      },
+      "apiTest": {
+        "apiTest": "接口测试",
+        "enabledTestCount": "开启测试数",
+        "passedTestCount": "通过测试数",
+        "enabledTestRatio": "开启测试数占比",
+        "enabledCount": "开启数",
+        "nonEnabledCount": "未开启数",
+        "passedTestRatio": "通过测试占比",
+        "passedCount": "通过数",
+        "nonPassedCount": "未通过数"
+      },
+      "scenarioTest": {
+        "scenarioTest": "场景测试"
+      },
+      "failureAssessment": {
+        "failureAssessment": "故障评估",
+        "failureCount": "故障数",
+        "failureWorkload": "故障工作量",
+        "failureCompletedNum": "故障修复数",
+        "failureOverdueNum": "故障逾期数"
+      },
+      "taskType": "任务类型",
+      "testStatus": "测试状态",
+      "taskStatusName": "任务状态",
+      "reviewStatus": "评审状态"
     }
   }
 }

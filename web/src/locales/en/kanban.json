@@ -137,6 +137,155 @@
         "task": "Task",
         "execution": "Execution"
       }
+    },
+    "cto": {
+      "recentDate": {
+        "today": "Today",
+        "lastWeek": "Last Week",
+        "lastMonth": "Last Month"
+      },
+      "progress": {
+        "totalProgress": "Total Progress",
+        "incomplete": "Incomplete",
+        "completed": "Completed",
+        "totalTaskCount": "Total Task Count",
+        "totalUseCaseCount": "Total Use Case Count",
+        "totalWorkload": "Total Workload",
+        "teamMember": "Team Member"
+      },
+      "recentMetrics": {
+        "completionRate": "Recent Completion Rate",
+        "recentCompletionCount": "Recent Completion Count",
+        "nonRecentCompletionCount": "Non-Recent Completion Count",
+        "overdueRate": "Recent Overdue Rate",
+        "recentOverdueRate": "Recent Overdue Rate",
+        "nonRecentOverdueRate": "Non-Recent Overdue Rate",
+        "deliveryWorkload": "Recent Delivery Workload",
+        "deliveryWorkloadCompletionRate": "Delivery Workload Completion Rate",
+        "recentCompletionAmount": "Recent Completion Amount",
+        "nonRecentCompletionAmount": "Non-Recent Completion Amount",
+        "workloadSavingRate": "Recent Workload Saving Rate",
+        "deliveryWorkloadSavingRate": "Delivery Workload Saving Rate",
+        "recentSavingAmount": "Recent Saving Amount",
+        "nonRecentSavingAmount": "Non-Recent Saving Amount",
+        "timeChange": "Recent Time Change",
+        "deliveryTaskOverdueCount": "Delivery Task Overdue Count"
+      },
+      "recentDelivery": {
+        "recentDeliveryTitle": "Recent Delivery (Delivery Amount/Total Amount)",
+        "recentDelivery": "Recent Delivery",
+        "deliveryTaskCount": "Delivery Task Count",
+        "deliveryTaskOverdueCount": "Delivery Task Overdue Count",
+        "deliveryWorkload": "Delivery Workload",
+        "deliveryWorkloadSaving": "Delivery Workload Saving"
+      },
+      "backlog": {
+        "taskBacklogCount": "Task Backlog Count",
+        "backlogTaskRatio": "Backlog Task Ratio",
+        "backlogCount": "Backlog Count",
+        "completionCount": "Completion Count",
+        "taskBacklogWorkload": "Task Backlog Workload",
+        "backlogWorkloadRatio": "Backlog Workload Ratio",
+        "backlogWorkload": "Backlog Workload",
+        "completionWorkload": "Completion Workload",
+        "backlogTask": "Backlog Task",
+        "backlogUseCase": "Backlog Use Case",
+        "backlogTaskCount": "Backlog Task Count",
+        "backlogUseCaseCount": "Backlog Use Case Count",
+        "estimatedTime": "Estimated Time"
+        
+      },
+      "overdue": {
+        "overdueAssessment": "Overdue Assessment",
+        "overdueTaskRatio": "Overdue Task Ratio",
+        "overdueCount": "Overdue Count",
+        "nonOverdueCount": "Non-Overdue Count",
+        "overdueRisk": "Overdue Risk",
+        "overdueWorkload": "Overdue Workload",
+        "overdueWorkloadProcessingTime": "Overdue Workload Processing Time"
+      },
+      "unplanned": {
+        "unplannedWork": "Unplanned Work",
+        "unplannedTaskCount": "Unplanned Task Count",
+        "unplannedTaskRatio": "Unplanned Task Ratio",
+        "unplannedCount": "Unplanned Count",
+        "nonUnplannedCount": "Non-Unplanned Count",
+        "unplannedWorkload": "Unplanned Workload",
+        "unplannedWorkloadRatio": "Unplanned Workload Ratio",
+        "unplannedAmount": "Unplanned Amount",
+        "nonUnplannedAmount": "Non-Unplanned Amount"
+      },
+      "failure": {
+        "failureAssessment": "Failure Assessment",
+        "criticalFailureRatio": "Critical Failure Ratio",
+        "criticalCount": "Critical Count",
+        "nonCriticalCount": "Non-Critical Count",
+        "majorFailureRatio": "Major Failure Ratio",
+        "majorCount": "Major Count",
+        "nonMajorCount": "Non-Major Count",
+        "minorFailureRatio": "Minor Failure Ratio",
+        "minorCount": "Minor Count",
+        "nonMinorCount": "Non-Minor Count",
+        "trivialFailureRatio": "Trivial Failure Ratio",
+        "trivialCount": "Trivial Count",
+        "nonTrivialCount": "Non-Trivial Count"
+      },
+      "taskTypes": {
+        "total": "Total",
+        "story": "Story",
+        "requirement": "Requirement",
+        "task": "Task",
+        "defect": "Defect",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "taskStatus": {
+        "pendingConfirmation": "Pending Confirmation",
+        "inProgress": "In Progress",
+        "pending": "Pending",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "deliveryCycle": {
+        "deliveryCycle": "Delivery Cycle",
+        "average": "Average",
+        "minimum": "Minimum",
+        "maximum": "Maximum",
+        "participantCount": "Participant Count",
+        "totalDuration": "Total Duration",
+        "averageDuration": "Average Duration",
+        "hours": "Hours",
+        "hoursPerPerson": "Hours/Person",
+        "recentDelivery": "Recent Delivery",
+        "deliveryTaskCount": "Delivery Task Count",
+        "estimatedTime": "Estimated Time",
+        "deliveryTaskOverdueCount": "Delivery Task Overdue Count"
+      },
+      "apiTest": {
+        "apiTest": "API Test",
+        "enabledTestCount": "Enabled Test Count",
+        "passedTestCount": "Passed Test Count",
+        "enabledTestRatio": "Enabled Test Ratio",
+        "enabledCount": "Enabled Count",
+        "nonEnabledCount": "Non-Enabled Count",
+        "passedTestRatio": "Passed Test Ratio",
+        "passedCount": "Passed Count",
+        "nonPassedCount": "Non-Passed Count"
+      },
+      "scenarioTest": {
+        "scenarioTest": "Scenario Test"
+      },
+      "failureAssessment": {
+        "failureAssessment": "Failure Assessment",
+        "failureCount": "Failure Count",
+        "failureWorkload": "Failure Workload",
+        "failureCompletedNum": "Failure Completed Num",
+        "failureOverdueNum": "Failure Overdue Num"
+      },
+      "taskType": "Task Type",
+      "testStatus": "Test Status",
+      "taskStatusName": "Task Status",
+      "reviewStatus": "Review Status"
     }
   }
 }

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
 import { kanban } from 'src/api/tester';
 import { throttle } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -34,15 +37,15 @@ const recentDate = ref('today');
 const recentDateOpt = [
   {
     value: 'today',
-    label: '今天'
+    label: t('kanban.cto.recentDate.today')
   },
   {
     value: 'lastWeek',
-    label: '近一周'
+    label: t('kanban.cto.recentDate.lastWeek')
   },
   {
     value: 'lastMonth',
-    label: '近一月'
+    label: t('kanban.cto.recentDate.lastMonth')
   }
 ];
 
@@ -120,14 +123,14 @@ const progressEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('kanban.cto.progress.incomplete'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('kanban.cto.progress.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
@@ -149,7 +152,7 @@ const recentCompleteEchartConfig = {
     left: '25%',
     top: '40%',
     itemGap: 40,
-    subtext: '近期完成率'
+    subtext: t('kanban.cto.recentMetrics.completionRate')
   },
   legend: {
     top: 'middle',
@@ -177,14 +180,14 @@ const recentCompleteEchartConfig = {
     },
     data: [
       {
-        name: '近期完成数',
+        name: t('kanban.cto.recentMetrics.recentCompletionCount'),
         value: 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '非近期完成数',
+        name: t('kanban.cto.recentMetrics.nonRecentCompletionCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -201,20 +204,20 @@ const recentoverdueEchartConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '近期逾期率'
+    subtext: t('kanban.cto.recentMetrics.overdueRate')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '近期逾期率',
+        name: t('kanban.cto.recentMetrics.recentOverdueRate'),
         value: 0,
         itemStyle: {
           color: 'rgba(245, 34, 45, 1)'
         }
       },
       {
-        name: '非近期逾期率',
+        name: t('kanban.cto.recentMetrics.nonRecentOverdueRate'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -231,20 +234,20 @@ const recentCompletedWorkloadEchartConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '交付工作量完成率'
+    subtext: t('kanban.cto.recentMetrics.deliveryWorkloadCompletionRate')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '近期完成量',
+        name: t('kanban.cto.recentMetrics.recentCompletionAmount'),
         value: 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '非近期完成量',
+        name: t('kanban.cto.recentMetrics.nonRecentCompletionAmount'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -261,20 +264,20 @@ const recentSavingRateConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '交付工作量节省率'
+    subtext: t('kanban.cto.recentMetrics.deliveryWorkloadSavingRate')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '近期节省量',
+        name: t('kanban.cto.recentMetrics.recentSavingAmount'),
         value: 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '非近期节省量',
+        name: t('kanban.cto.recentMetrics.nonRecentSavingAmount'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -328,20 +331,20 @@ const blockTaskConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '积压任务占比'
+    subtext: t('kanban.cto.backlog.backlogTaskRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '积压数',
+        name: t('kanban.cto.backlog.backlogCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(255, 165, 43, 1)'
         }
       },
       {
-        name: '完成数',
+        name: t('kanban.cto.backlog.completionCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -358,20 +361,20 @@ const blockTaskWorkloadConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '积压工作量占比'
+    subtext: t('kanban.cto.backlog.backlogWorkloadRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '积压工作量',
+        name: t('kanban.cto.backlog.backlogWorkload'),
         value: 0,
         itemStyle: {
           color: 'rgba(255, 165, 43, 1)'
         }
       },
       {
-        name: '完成工作量',
+        name: t('kanban.cto.backlog.completionWorkload'),
         value: 0,
         itemStyle: {
           color: 'rgba(45, 142, 255, 1)'
@@ -396,7 +399,7 @@ const overdueTaskConfig = {
     silent: true,
     invisible: false,
     style: {
-      text: '逾期任务占比'
+      text: t('kanban.cto.overdue.overdueTaskRatio')
     }
   },
   title: {
@@ -670,42 +673,42 @@ const taskTypeEchartsConfig = {
       },
       data: [
         {
-          name: '故事',
+          name: t('kanban.cto.taskTypes.story'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
           }
         },
         {
-          name: '需求',
+          name: t('kanban.cto.taskTypes.requirement'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '任务',
+          name: t('kanban.cto.taskTypes.task'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '缺陷',
+          name: t('kanban.cto.taskTypes.defect'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '接口测试',
+          name: t('kanban.cto.taskTypes.apiTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '场景测试',
+          name: t('kanban.cto.taskTypes.scenarioTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(0,119,255,1)'
@@ -762,35 +765,35 @@ const taskStatusEchartsConfig = {
       // CANCELED, COMPLETED, CONFIRMING,  IN_PROGRESS, PENDING
       data: [
         {
-          name: '待确认',
+          name: t('kanban.cto.taskStatus.pendingConfirmation'),
           value: 0,
           itemStyle: {
             color: '#7F91FF'
           }
         },
         {
-          name: '进行中',
+          name: t('kanban.cto.taskStatus.inProgress'),
           value: 0,
           itemStyle: {
             color: '#FF8100'
           }
         },
         {
-          name: '待处理',
+          name: t('kanban.cto.taskStatus.pending'),
           value: 0,
           itemStyle: {
             color: '#FFB925'
           }
         },
         {
-          name: '已完成',
+          name: t('kanban.cto.taskStatus.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
           }
         },
         {
-          name: '已取消',
+          name: t('kanban.cto.taskStatus.cancelled'),
           value: 0,
           itemStyle: {
             color: 'rgba(200, 202, 208, 1)'
@@ -814,7 +817,7 @@ const leadTimeConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['平均', '最小', '最大', 'P50', 'P75', 'P90', 'P95'],
+    data: [t('kanban.cto.deliveryCycle.average'), t('kanban.cto.deliveryCycle.minimum'), t('kanban.cto.deliveryCycle.maximum'), 'P50', 'P75', 'P90', 'P95'],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -1504,45 +1507,45 @@ defineExpose({
     <div class="flex space-x-2 h-65">
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">总进度</div>
+          <div class="font-semibold">总进度{{ t('kanban.cto.progress.totalProgress') }}</div>
           <div ref="progressRef" class="h-1/2 w-2/3"></div>
           <div class="flex justify-around mt-3">
             <div class="text-center">
               <div class="font-semibold text-5">{{ progressDatas.totalNum || 0 }}</div>
               <div>
-                {{ props.countType === 'task' ? '总任务数' : '总用例数' }}
+                {{ props.countType === 'task' ? t('kanban.cto.progress.totalTaskCount' ) : t('kanban.cto.progress.totalUseCaseCount') }}
               </div>
             </div>
 
             <div class="text-center">
               <div class="font-semibold text-5">{{ progressDatas.totalWorkload || 0 }}</div>
               <div>
-                总工作量
+                {{ t('kanban.cto.progress.totalWorkload') }}
               </div>
             </div>
 
             <div class="text-center">
               <div class="font-semibold text-5">{{ memberNum || 0 }}</div>
               <div>
-                团队成员
+                {{ t('kanban.cto.progress.teamMember') }}
               </div>
             </div>
           </div>
         </div>
         <div class="flex-1/2 border rounded p-2 space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? '积压任务' : '积压用例' }}</div>
+          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTask') : t('kanban.cto.backlog.backlogUseCase') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ backloggedData.backloggedNum || 0 }}</span></div>
-              <div>{{ props.countType === 'task' ? '积压任务数' : '积压用例数' }}</div>
+              <div>{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTaskCount') : t('kanban.cto.backlog.backlogUseCaseCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
-              <div><span class="font-semibold text-6">{{ backloggedData.backloggedCompletionTime || 0 }}</span>小时</div>
-              <div>预计耗时</div>
+              <div><span class="font-semibold text-6">{{ backloggedData.backloggedCompletionTime || 0 }}</span>小时{{ t('kanban.cto.deliveryCycle.hours') }}</div>
+              <div>{{ t('kanban.cto.backlog.estimatedTime') }}</div>
             </div>
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ backloggedData.backloggedWorkload || 0 }}</span></div>
-              <div>积压工作量</div>
+              <div>{{ t('kanban.cto.backlog.backlogWorkload') }}</div>
             </div>
           </div>
           <div class="flex h-1/2 mt-2">
@@ -1553,7 +1556,7 @@ defineExpose({
       </div>
       <div class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
-          <div class="font-semibold ">近期交付（交付量/总量）</div>
+          <div class="font-semibold ">{{ t('kanban.cto.recentDelivery.recentDelivery') }}</div>
           <RadioGroup
             v-model:value="recentDate"
             optionType="button"
@@ -1565,19 +1568,19 @@ defineExpose({
         <div class="flex space-x-2 justify-around">
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ recentDeliveryDatas?.[recentDate]?.completedNum || 0 }}</span>/{{ recentDeliveryDatas?.[recentDate]?.totalNum || 0 }}</div>
-            <div>交付任务数</div>
+            <div>{{ t('kanban.cto.recentDelivery.deliveryTaskCount') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ recentDeliveryDatas?.[recentDate]?.OverdueNum || 0 }}</span>/{{ recentDeliveryDatas?.[recentDate]?.totalNum || 0 }}</div>
-            <div>交付任务逾期数</div>
+            <div>{{ t('kanban.cto.recentDelivery.deliveryTaskOverdueCount') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ recentDeliveryDatas?.[recentDate]?.completedWorkload || 0 }}</span>/{{ recentDeliveryDatas?.[recentDate]?.totalWorkload || 0 }}</div>
-            <div>交付工作量</div>
+            <div>{{ t('kanban.cto.recentDelivery.deliveryWorkload') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ recentDeliveryDatas?.[recentDate]?.savingWorkload || 0 }}</span>/{{ recentDeliveryDatas?.[recentDate]?.totalWorkload || 0 }}</div>
-            <div>交付节省工作量</div>
+            <div>{{ t('kanban.cto.recentDelivery.deliveryWorkloadSaving') }}</div>
           </div>
         </div>
         <div class="flex space-x-2 h-1/2">
@@ -1592,12 +1595,12 @@ defineExpose({
     <div class="flex space-x-2 h-65">
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">逾期评估</div>
+          <div class="font-semibold">{{ t('kanban.cto.overdue.overdueAssessment') }}</div>
           <div class="flex h-1/2 items-center">
             <div ref="overdueTaskRef" class="h-full w-2/3"></div>
             <div class="text-center flex-1">
               <div :class="`risk-level-${overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">{{ overdueAssessmentData?.riskLevel?.message }}</div>
-              <div>逾期风险</div>
+              <div>{{ t('kanban.cto.overdue.overdueRisk') }}</div>
             </div>
           </div>
 
@@ -1605,39 +1608,39 @@ defineExpose({
             <div class="text-center">
               <div class="font-semibold text-5">{{ overdueAssessmentData.overdueNum || 0 }}</div>
               <div>
-                逾期数
+                {{ t('kanban.cto.overdue.overdueCount') }}
               </div>
             </div>
 
             <div class="text-center">
               <div class="font-semibold text-5">{{ overdueAssessmentData.overdueWorkload || 0 }}</div>
               <div>
-                逾期工作量
+                {{ t('kanban.cto.overdue.overdueWorkload') }}
               </div>
             </div>
 
             <div class="text-center">
               <div class="font-semibold text-5">{{ overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}</div>
               <div>
-                逾期时长
+                {{ t('kanban.cto.overdue.overdueWorkloadProcessingTime') }}
               </div>
             </div>
           </div>
         </div>
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">计划外工作</div>
+          <div class="font-semibold">{{ t('kanban.cto.unplanned.unplannedWork') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedNum || 0 }}</span></div>
-              <div>计划外任务数</div>
+              <div>{{ t('kanban.cto.unplanned.unplannedTaskCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedWorkloadProcessingTime || 0 }}</span>小时</div>
-              <div>预计耗时</div>
+              <div>{{ t('kanban.cto.unplanned.estimatedTime') }}</div>
             </div>
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedWorkload || 0 }}</span></div>
-              <div>计划外工作量</div>
+              <div>{{ t('kanban.cto.unplanned.unplannedWorkload') }}</div>
             </div>
           </div>
           <div class="flex h-1/2 mt-2">
@@ -1648,24 +1651,24 @@ defineExpose({
       </div>
       <div v-show="props.countType === 'task'" class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
-          <div class="font-semibold ">故障评估（故障量/总量）</div>
+          <div class="font-semibold ">{{ t('kanban.cto.failureAssessment.failureAssessment ') }}</div>
         </div>
         <div class="flex space-x-2 justify-around">
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureNum || 0 }}</span>/{{ failureAssessmentData?.totalNum || 0 }}</div>
-            <div>故障数</div>
+            <div>{{t('kanban.cto.failureAssessment.failureCount')}}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureWorkload || 0 }}</span>/{{ failureAssessmentData?.totalWorkload || 0 }}</div>
-            <div>故障工作量</div>
+            <div>{{t('kanban.cto.failureAssessment.failureWorkload')}}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureCompletedNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
-            <div>故障修复数</div>
+            <div>{{ t('kanban.cto.failureAssessment.failureCompletedNum') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureOverdueNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
-            <div>故障逾期数</div>
+            <div>{{ t('kanban.cto.failureAssessment.failureOverdueNum') }}</div>
           </div>
         </div>
         <div class="flex space-x-2 h-1/2 mt-2">
@@ -1677,15 +1680,15 @@ defineExpose({
       </div>
       <div v-show="props.countType === 'useCase'" class="h-full flex-1/2 space-x-2 flex">
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">接口测试</div>
+          <div class="font-semibold">{{ t('kanban.cto.apiTest.apiTest') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ apiTestData.enabledTestNum || 0 }}</span></div>
-              <div>开启测试数</div>
+              <div>{{ t('kanban.cto.apiTest.enabledTestCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ apiTestData.passedTestNum || 0 }}</span></div>
-              <div>通过测试数</div>
+              <div>{{ t('kanban.cto.apiTest.passedTestCount') }}</div>
             </div>
           </div>
           <div class="flex space-x-2 justify-around mt-2 h-1/2">
@@ -1694,15 +1697,15 @@ defineExpose({
           </div>
         </div>
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">场景测试</div>
+          <div class="font-semibold">{{ t('kanban.cto.scenarioTest.scenarioTest') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ scenarioTestData.enabledTestNum || 0 }}</span></div>
-              <div>开启测试数</div>
+              <div>{{ t('kanban.cto.apiTest.enabledTestCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ scenarioTestData.passedTestNum || 0 }}</span></div>
-              <div>通过测试数</div>
+              <div>{{ t('kanban.cto.apiTest.passedTestCount') }}</div>
             </div>
           </div>
           <div class="flex space-x-2 justify-around mt-2 h-1/2">
@@ -1716,7 +1719,7 @@ defineExpose({
     <div class="flex space-x-2 h-50">
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? '任务类型' : '测试状态' }}</div>
+          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskType') : t('kanban.cto.testStatus') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskTypeRef"
@@ -1727,7 +1730,7 @@ defineExpose({
             class="flex-1"></div>
         </div>
         <div class="flex-1/2  border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? '任务状态' : '评审状态' }}</div>
+          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatus') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskStatusRef"
@@ -1739,23 +1742,23 @@ defineExpose({
         </div>
       </div>
       <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-        <div class="font-semibold">交付周期</div>
+        <div class="font-semibold">{{ t('kanban.cto.deliveryCycle.deliveryCycle') }}</div>
         <div class="flex-1 flex space-x-3 items-center">
           <div class="w-60 pl-4">
             <div class="flex space-x-2 items-center">
-              <span class="flex-2/5">参与人数</span>
+              <span class="flex-2/5">{{ t('kanban.cto.deliveryCycle.participantCount') }}</span>
               <span class="flex-3/5 font-semibold text-5">{{ leadTimeData.userNum || 0 }}</span>
             </div>
             <div class="flex space-x-2 items-center">
-              <span class="flex-2/5">总时长</span>
+              <span class="flex-2/5">{{ t('kanban.cto.deliveryCycle.totalDuration') }}</span>
               <div class="flex-3/5 min-w-0">
-                <span class="font-semibold text-5">{{ leadTimeData.totalProcessingTime || 0 }} </span> 小时
+                                  <span class="font-semibold text-5">{{ leadTimeData.totalProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hours') }}
               </div>
             </div>
             <div class="flex space-x-2 items-center">
-              <span class="flex-2/5">平均时长</span>
+              <span class="flex-2/5">{{ t('kanban.cto.deliveryCycle.averageDuration') }}</span>
               <div class="flex-3/5 min-w-0">
-                <span class=" font-semibold text-5">{{ leadTimeData.userAvgProcessingTime || 0 }} </span> 小时/人
+                                  <span class=" font-semibold text-5">{{ leadTimeData.userAvgProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hoursPerPerson') }}
               </div>
             </div>
           </div>

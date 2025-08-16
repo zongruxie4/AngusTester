@@ -173,7 +173,7 @@ const viewTypeOpt = [
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
             :action="projectId ? `${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true` : undefined"
-            placeholder="t('kanban.pleaseSelectSprint')" />
+            :placeholder="t('kanban.pleaseSelectSprint')" />
 
           <Select
             v-show="countType === 'useCase'"
@@ -183,7 +183,7 @@ const viewTypeOpt = [
             :disabled="!projectId"
             :fieldNames="{ value: 'id', label: 'name' }"
             :action="projectId ? `${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true` : undefined"
-            placeholder="t('kanban.pleaseSelectPlan')" />
+            :placeholder="t('kanban.pleaseSelectPlan')" />
         </template>
 
         <div class="flex items-center flex-shrink-0">
