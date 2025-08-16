@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Select, Spin } from '@xcan-angus/vue-ui';
@@ -24,6 +25,7 @@ interface Props {
   plugin?: string;
 
 }
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   execId: undefined,
   showBackBtn: true,
@@ -59,7 +61,7 @@ const loadscriptContent = async () => {
 
 const getDetail = async () => {
   loading.value = true;
-  const [error, { data }] = await exec.getExecDetail(id);
+  const [error, { data }] = await exec.getDetail(id);
 
   if (error) {
     loading.value = false;
@@ -101,10 +103,10 @@ const getInfo = (data) => {
 onMounted(async () => {
   if (!id) {
     const scriptTypeMsgConfig = {
-      TEST_PERFORMANCE: '性能测试',
-      TEST_STABILITY: '稳定性测试',
-      TEST_FUNCTIONALITY: '功能能测试',
-      TEST_CUSTOMIZATION: '自定义测试'
+      TEST_PERFORMANCE: t('execution.info.performanceTest'),
+      TEST_STABILITY: t('execution.info.stabilityTest'),
+      TEST_FUNCTIONALITY: t('execution.info.functionalityTest'),
+      TEST_CUSTOMIZATION: t('execution.info.customizationTest')
     };
     if (props.scriptType) {
       detail.value = {
@@ -145,7 +147,7 @@ const handleRestart = async (item:ExecObj) => {
   if (error) {
     loading.value = false;
     if (error?.message) {
-      exception.value = { code: error?.code, message: error.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: error?.code, message: error.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
     }
     return;
   }
@@ -154,11 +156,11 @@ const handleRestart = async (item:ExecObj) => {
   if (currItemDataList.length) {
     const successFalseItem = currItemDataList.find(f => f.success);
     if (successFalseItem) {
-      notification.success('启动成功');
+      notification.success(t('execution.info.startSuccess'));
       exception.value = undefined;
     } else {
       notification.error(currItemDataList[0].message);
-      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
     }
   }
 
@@ -173,11 +175,11 @@ const handleStop = async (item:ExecObj) => {
     id: item.id
   };
   loading.value = true;
-  const [error, { data }] = await exec.stopExec(_params);
+  const [error, { data }] = await exec.stop(_params);
   loading.value = false;
   if (error) {
     if (error?.message) {
-      exception.value = { code: error?.code || '', message: error.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: error?.code || '', message: error.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
     }
     return;
   }
@@ -186,11 +188,11 @@ const handleStop = async (item:ExecObj) => {
   if (currItemDataList.length) {
     const successFalseItem = currItemDataList.find(f => f.success);
     if (successFalseItem) {
-      notification.success('停止成功');
+      notification.success(t('execution.info.stopSuccess'));
       exception.value = undefined;
     } else {
       notification.error(currItemDataList[0].message);
-      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
     }
   }
 
@@ -201,15 +203,15 @@ const handleStop = async (item:ExecObj) => {
 const handleDelete = async (item:ExecObj) => {
   modal.confirm({
     centered: true,
-    content: `确定删除【${item.name}】吗？`,
+    content: t('execution.info.deleteConfirm', { name: item.name }),
     async onOk () {
       loading.value = true;
-      const [error] = await exec.deleteExec([item.id]);
+      const [error] = await exec.delete([item.id]);
       loading.value = false;
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('execution.info.deleteSuccess'));
       if (props.showBackBtn) {
         router.push('/execution');
       } else {
@@ -254,18 +256,18 @@ const setException = () => {
   if (lastSchedulingResult?.length) {
     const foundItem = lastSchedulingResult.find(f => !f.success);
     if (foundItem) {
-      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
       return;
     }
 
     if (meterMessage) {
-      exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: '采样状态', messageName: '失败原因' };
+      exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: t('execution.info.samplingStatus'), messageName: t('execution.info.failureReason') };
       return;
     }
   }
 
   if (meterMessage) {
-    exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: '采样状态', messageName: '失败原因' };
+    exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: t('execution.info.samplingStatus'), messageName: t('execution.info.failureReason') };
     return;
   }
 
@@ -290,7 +292,7 @@ const setException = () => {
               <Icon
                 icon="icon-huifu"
                 class="mr-1 -mt-0.5 text-3" />
-              启动
+              {{ t('execution.info.start') }}
             </Button>
           </template>
           <template v-if="detail && ['PENDING','RUNNING'].includes(detail?.status?.value) && detail?.hasOperationPermission">
@@ -302,7 +304,7 @@ const setException = () => {
               <Icon
                 icon="icon-jinyong"
                 class="mr-1 -mt-0.5 text-3" />
-              停止
+              {{ t('execution.info.stop') }}
             </Button>
           </template>
           <template v-if="detail?.hasOperationPermission">
@@ -314,7 +316,7 @@ const setException = () => {
               <Icon
                 icon="icon-qingchu"
                 class="mr-1 -mt-0.5 text-3" />
-              删除
+              {{ t('actions.delete') }}
             </Button>
           </template>
         </template>
@@ -327,13 +329,13 @@ const setException = () => {
             <Icon
               icon="icon-fanhui"
               class="mr-1 -mt-0.5 text-3" />
-            返回
+            {{ t('execution.info.back') }}
           </Button>
         </RouterLink>
       </template>
       <TabPane
         key="1"
-        tab="执行详情">
+        :tab="t('execution.info.executionDetails')">
         <Performance
           v-if="detail && ['TEST_PERFORMANCE','TEST_STABILITY', 'MOCK_DATA', 'TEST_CUSTOMIZATION'].includes(detail.scriptType.value)"
           ref="performanceRef"
@@ -349,7 +351,7 @@ const setException = () => {
           :exception="exception"
           @loaded="getInfo" />
       </TabPane>
-      <TabPane key="2" tab="执行配置">
+      <TabPane key="2" :tab="t('execution.info.executionConfig')">
         <ExecSetting
           v-model:loading="loading"
           :execId="id"
@@ -359,10 +361,10 @@ const setException = () => {
       <TabPane
         v-if="detail?.plugin === 'Http'"
         key="serviceConfig"
-        tab="服务器配置">
+        :tab="t('execution.info.serverConfig')">
         <ServiceConfig :execId="id" />
       </TabPane>
-      <TabPane key="3" tab="执行脚本">
+      <TabPane key="3" :tab="t('execution.info.executionScript')">
         <Select
           :value="scriptLanguageType"
           class="w-40 mb-2"
@@ -378,7 +380,7 @@ const setException = () => {
           :readOnly="true"
           :language="scriptLanguageType" />
       </TabPane>
-      <TabPane key="4" tab="日志">
+      <TabPane key="4" :tab="t('execution.info.log')">
         <ExecLog
           v-model:loading="loading"
           :execId="detail?.id"
@@ -390,7 +392,7 @@ const setException = () => {
       <TabPane
         v-if="detail?.plugin === 'Http' && ['API', 'SCENARIO'].includes(detail.scriptSource?.value) && detail.status.value === 'COMPLETED'"
         key="5"
-        tab="测试结果">
+        :tab="t('execution.info.testResult')">
         <TestResult
           :execId="detail?.id"
           :execInfo="detail" />

@@ -712,7 +712,7 @@ const sortMenus = [
             dataType="float"
             size="small"
             allowClear
-            placeholder="{{ t('execution.searchPanel.priority') }}"
+            :placeholder="t('execution.searchPanel.priority')"
             class="w-72 ml-2"
             :min="0"
             @change="priorityInputChange">
@@ -736,7 +736,7 @@ const sortMenus = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="{{ t('execution.searchPanel.selectService') }}"
+            :placeholder="t('execution.searchPanel.selectService')"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange" />
@@ -747,7 +747,7 @@ const sortMenus = [
             :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            placeholder="{{ t('execution.searchPanel.selectApi') }}"
+            :placeholder="t('execution.searchPanel.selectApi')"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange">
@@ -767,7 +767,7 @@ const sortMenus = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="{{ t('execution.searchPanel.selectScenario') }}"
+            :placeholder="t('execution.searchPanel.selectScenario')"
             class="w-72 ml-2"
             showSearch
             @change="scriptSourceIdChange">

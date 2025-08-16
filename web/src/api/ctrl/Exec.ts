@@ -30,7 +30,7 @@ export default class API {
     return http.post(`${baseUrl}/stop`, params);
   }
 
-  delete (ids:any): Promise<[Error | null, any]> {
+  delete (ids:string[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, ids, { dataType: true });
   }
 

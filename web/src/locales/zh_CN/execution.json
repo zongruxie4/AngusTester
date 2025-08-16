@@ -92,6 +92,29 @@
       "addExecution": "添加执行",
       "sort": "排序",
       "refresh": "刷新"
+    },
+    "info": {
+      "executionDetails": "执行详情",
+      "executionConfig": "执行配置",
+      "serverConfig": "服务器配置",
+      "executionScript": "执行脚本",
+      "log": "日志",
+      "testResult": "测试结果",
+      "start": "启动",
+      "stop": "停止",
+      "delete": "删除",
+      "back": "返回",
+      "performanceTest": "性能测试",
+      "stabilityTest": "稳定性测试",
+      "functionalityTest": "功能测试",
+      "customizationTest": "自定义测试",
+      "startSuccess": "启动成功",
+      "stopSuccess": "停止成功",
+      "deleteSuccess": "删除成功",
+      "deleteConfirm": "确定删除【{name}】吗？",
+      "exitCode": "退出码",
+      "failureReason": "失败原因",
+      "samplingStatus": "采样状态"
     }
   }
 } 

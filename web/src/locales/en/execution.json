@@ -122,6 +122,29 @@
       "addExecution": "Add Execution",
       "sort": "Sort",
       "refresh": "Refresh"
+    },
+    "info": {
+      "executionDetails": "Execution Details",
+      "executionConfig": "Execution Config",
+      "serverConfig": "Server Config",
+      "executionScript": "Execution Script",
+      "log": "Log",
+      "testResult": "Test Result",
+      "start": "Start",
+      "stop": "Stop",
+      "delete": "Delete",
+      "back": "Back",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "functionalityTest": "Functionality Test",
+      "customizationTest": "Customization Test",
+      "startSuccess": "Started successfully",
+      "stopSuccess": "Stopped successfully",
+      "deleteSuccess": "Deleted successfully",
+      "deleteConfirm": "Are you sure to delete 【{name}】?",
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status"
     }
   }
 } 
