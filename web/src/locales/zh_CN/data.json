@@ -451,131 +451,130 @@
         "remark": "备注",
         "mockFunc": "调用表达式"
       }
+    }
+  },
+  "dataVariable": {
+    "title": "变量",
+    "addVariable": {
+      "static": "添加静态变量",
+      "file": "添加文件变量",
+      "http": "添加Http变量",
+      "jdbc": "添加Jdbc变量"
     },
-    
-    "dataVariable": {
-      "title": "变量",
-      "addVariable": {
-        "static": "添加静态变量",
-        "file": "添加文件变量",
-        "http": "添加Http变量",
-        "jdbc": "添加Jdbc变量"
+    "list": {
+      "title": "已添加的变量",
+      "noData": "您尚未添加任何变量，立即",
+      "addStaticVariable": "添加静态变量",
+      "uploadVariable": "上传变量",
+      "or": "或",
+      "noDescription": "无描述~",
+      "isPassword": "是",
+      "notPassword": "否",
+      "columns": {
+        "name": "名称",
+        "value": "值",
+        "description": "描述",
+        "password": "密码",
+        "dataSource": "值来源",
+        "lastModifiedBy": "最后修改人",
+        "createdBy": "创建人",
+        "lastModifiedDate": "最后修改时间",
+        "createdDate": "创建时间",
+        "action": "操作"
       },
-      "list": {
-        "title": "已添加的变量",
-        "noData": "您尚未添加任何变量，立即",
-        "addStaticVariable": "添加静态变量",
-        "uploadVariable": "上传变量",
-        "or": "或",
-        "noDescription": "无描述~",
-        "isPassword": "是",
-        "notPassword": "否",
-        "columns": {
-          "name": "名称",
-          "value": "值",
-          "description": "描述",
-          "password": "密码",
-          "dataSource": "值来源",
-          "lastModifiedBy": "最后修改人",
-          "createdBy": "创建人",
-          "lastModifiedDate": "最后修改时间",
-          "createdDate": "创建时间",
-          "action": "操作"
+      "buttons": {
+        "edit": "编辑",
+        "delete": "删除"
+      },
+      "dropdown": {
+        "fileExtract": "文件提取变量",
+        "httpExtract": "Http提取变量",
+        "jdbcExtract": "Jdbc提取变量",
+        "export": "导出",
+        "clone": "克隆"
+      },
+      "messages": {
+        "deleteConfirm": "确定删除变量【{name}】吗？",
+        "deleteSuccess": "变量删除成功",
+        "cloneSuccess": "变量克隆成功",
+        "batchDeleteConfirm": "确定删除选中的 {num} 条变量吗？",
+        "batchDeleteSuccess": "选中的变量全部删除成功",
+        "maxBatchDelete": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。",
+        "maxBatchDeleteError": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。"
+      },
+      "searchPanel": {
+        "quickSearch": "快速查询",
+        "all": "全部",
+        "createdByMe": "我创建的",
+        "modifiedByMe": "我修改的",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天",
+        "searchOptions": {
+          "namePlaceholder": "查询名称、描述",
+          "createdByPlaceholder": "选择创建人",
+          "createdDatePlaceholder": ["创建时间从", "创建时间到"]
+        },
+        "sortOptions": {
+          "byName": "按名称",
+          "byCreator": "按添加人",
+          "byCreateTime": "按添加时间",
+          "byLastModifier": "按最后修改人",
+          "byLastModifyTime": "按最后修改时间"
         },
         "buttons": {
-          "edit": "编辑",
-          "delete": "删除"
+          "deleteSelected": "删除选中",
+          "cancelDelete": "取消删除",
+          "addStaticVariable": "添加静态变量",
+          "batchDelete": "批量删除",
+          "refresh": "刷新"
+        },
+        "tooltips": {
+          "uploadVariable": "上传变量",
+          "downloadVariable": "下载变量"
         },
         "dropdown": {
           "fileExtract": "文件提取变量",
           "httpExtract": "Http提取变量",
-          "jdbcExtract": "Jdbc提取变量",
-          "export": "导出",
-          "clone": "克隆"
-        },
-        "messages": {
-          "deleteConfirm": "确定删除变量【{name}】吗？",
-          "deleteSuccess": "变量删除成功",
-          "cloneSuccess": "变量克隆成功",
-          "batchDeleteConfirm": "确定删除选中的 {num} 条变量吗？",
-          "batchDeleteSuccess": "选中的变量全部删除成功",
-          "maxBatchDelete": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。",
-          "maxBatchDeleteError": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。"
-        },
-        "searchPanel": {
-          "quickSearch": "快速查询",
-          "all": "全部",
-          "createdByMe": "我创建的",
-          "modifiedByMe": "我修改的",
-          "lastDay": "近1天",
-          "lastThreeDays": "近3天",
-          "lastWeek": "近7天",
-          "searchOptions": {
-            "namePlaceholder": "查询名称、描述",
-            "createdByPlaceholder": "选择创建人",
-            "createdDatePlaceholder": ["创建时间从", "创建时间到"]
-          },
-          "sortOptions": {
-            "byName": "按名称",
-            "byCreator": "按添加人",
-            "byCreateTime": "按添加时间",
-            "byLastModifier": "按最后修改人",
-            "byLastModifyTime": "按最后修改时间"
-          },
-          "buttons": {
-            "deleteSelected": "删除选中",
-            "cancelDelete": "取消删除",
-            "addStaticVariable": "添加静态变量",
-            "batchDelete": "批量删除",
-            "refresh": "刷新"
-          },
-          "tooltips": {
-            "uploadVariable": "上传变量",
-            "downloadVariable": "下载变量"
-          },
-          "dropdown": {
-            "fileExtract": "文件提取变量",
-            "httpExtract": "Http提取变量",
-            "jdbcExtract": "Jdbc提取变量"
-          }
+          "jdbcExtract": "Jdbc提取变量"
         }
-      },
-      "introduce": {
-        "title": "关于变量",
-        "description": "用于定义一个可以被重复的使用的值，定义变量后可以使用变量占位符 {变量名} 来引用变量。变量使得测试和维护变得更加高效和灵活，同时能够提升测试的可重复性和可扩展性。",
-        "note": "注意：在执行采样前，变量占位符会被替换成对应的变量值，并且执行过程中值不会改变。AngusTester 变量除了支持定义静态变量外，还支持下面三种方式提取一个变量：",
-        "types": {
-          "fileExtract": {
-            "title": "文件提取",
-            "description": "从文件中提取一个值作为变量值。如：读取秘钥。"
-          },
-          "httpExtract": {
-            "title": "Http提取",
-            "description": "从Http请求中提取一个值作为变量值。如：动态获取一个令牌。"
-          },
-          "jdbcExtract": {
-            "title": "Jdbc提取",
-            "description": "根据SQL从数据源表中提取指定的变量值，如：商品当前报价。"
-          }
-        }
-      },
-      "importModal": {
-        "title": "上传变量",
-        "uploadArea": {
-          "selectFile": "选择文件",
-          "description": "可直接将文件拖入此区域直接上传，文件大小不超过{maxSize}M，支持.json,.yaml,.yml类型文件。"
-        },
-        "fileSizeError": "文件大小不能超过{maxSize}M",
-        "duplicateStrategy": {
-          "title": "遇到重复时的处理策略",
-          "cover": "覆盖",
-          "ignore": "忽略"
-        }
-      },
-      "exportModal": {
-        "title": "下载变量",
-        "format": "格式"
       }
+    },
+    "introduce": {
+      "title": "关于变量",
+      "description": "用于定义一个可以被重复的使用的值，定义变量后可以使用变量占位符 {变量名} 来引用变量。变量使得测试和维护变得更加高效和灵活，同时能够提升测试的可重复性和可扩展性。",
+      "note": "注意：在执行采样前，变量占位符会被替换成对应的变量值，并且执行过程中值不会改变。AngusTester 变量除了支持定义静态变量外，还支持下面三种方式提取一个变量：",
+      "types": {
+        "fileExtract": {
+          "title": "文件提取",
+          "description": "从文件中提取一个值作为变量值。如：读取秘钥。"
+        },
+        "httpExtract": {
+          "title": "Http提取",
+          "description": "从Http请求中提取一个值作为变量值。如：动态获取一个令牌。"
+        },
+        "jdbcExtract": {
+          "title": "Jdbc提取",
+          "description": "根据SQL从数据源表中提取指定的变量值，如：商品当前报价。"
+        }
+      }
+    },
+    "importModal": {
+      "title": "上传变量",
+      "uploadArea": {
+        "selectFile": "选择文件",
+        "description": "可直接将文件拖入此区域直接上传，文件大小不超过{maxSize}M，支持.json,.yaml,.yml类型文件。"
+      },
+      "fileSizeError": "文件大小不能超过{maxSize}M",
+      "duplicateStrategy": {
+        "title": "遇到重复时的处理策略",
+        "cover": "覆盖",
+        "ignore": "忽略"
+      }
+    },
+    "exportModal": {
+      "title": "下载变量",
+      "format": "格式"
     }
   }
 }
