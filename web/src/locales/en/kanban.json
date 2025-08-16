@@ -67,6 +67,76 @@
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
       }
+    },
+    "dataAssets": {
+      "growthTrend": "Growth Trend",
+      "contributionRanking": "Contribution Ranking",
+      "rankingDescription": "Use cases, interfaces, tasks, scenarios, scripts, parameter data, reports and Mock interface summary ranking.",
+      "categories": {
+        "testCustomization": "Custom Test",
+        "testFunctionality": "Functional Test",
+        "testPerformance": "Performance Test",
+        "testStability": "Stability Test",
+        "services": "Services",
+        "apis": "APIs",
+        "cases": "Use Cases",
+        "plan": "Plan",
+        "sprint": "Sprint",
+        "taskSprint": "Sprint",
+        "task": "Task",
+        "mockApis": "Mock APIs",
+        "mockPushback": "Mock Pushback",
+        "mockResponse": "Mock Response",
+        "mockService": "Mock Service",
+        "dataDataset": "Dataset",
+        "dataDatasource": "Data Source",
+        "dataVariable": "Variable",
+        "total": "Total",
+        "report": "Report",
+        "reportRecord": "Record",
+        "script": "Script",
+        "case": "Case",
+        "scenario": "Scenario"
+      },
+      "status": {
+        "cancelled": "Cancelled",
+        "blocked": "Blocked",
+        "testFailed": "Test Failed",
+        "testPassed": "Test Passed",
+        "pendingTest": "Pending Test",
+        "unknown": "Unknown",
+        "designing": "Designing",
+        "developing": "Developing",
+        "developmentCompleted": "Development Completed",
+        "published": "Published",
+        "completed": "Completed",
+        "pendingConfirmation": "Pending Confirmation",
+        "inProgress": "In Progress",
+        "pending": "Pending",
+        "pendingStart": "Pending Start",
+        "blockedStatus": "Blocked"
+      },
+      "reviewStatus": {
+        "pendingReview": "Pending Review",
+        "reviewPassed": "Review Passed",
+        "reviewFailed": "Review Failed"
+      },
+      "taskTypes": {
+        "story": "Story",
+        "requirement": "Requirement",
+        "task": "Task",
+        "defect": "Defect",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "reportCategories": {
+        "api": "API",
+        "functionalCase": "Functional Case",
+        "project": "Project",
+        "scenario": "Scenario",
+        "task": "Task",
+        "execution": "Execution"
+      }
     }
   }
 }

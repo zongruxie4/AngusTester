@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, Ref, ref, watch, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Image, NoData } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
@@ -11,6 +12,7 @@ import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
+const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 const chartSeriesColorConfig = {
   0: '84,112,198',
@@ -46,27 +48,27 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const targetType = ref('TASK');
 const targetDataCategory = {
-  TEST_CUSTOMIZATION: '自定义测试',
-  TEST_FUNCTIONALITY: '功能测试',
-  TEST_PERFORMANCE: '性能测试',
-  TEST_STABILITY: '稳定性测试',
-  SERVICES: '服务',
-  APIS: '接口',
-  CASES: '用例',
-  PLAN: '计划',
-  SPRINT: '迭代',
-  TASK_SPRINT: '迭代',
-  TASK: '任务',
-  MOCK_APIS: 'Mock接口',
-  MOCK_PUSHBACK: 'Mock回推',
-  MOCK_RESPONSE: 'Mock响应',
-  MOCK_SERVICE: 'Mock服务',
-  DATA_DATASET: '数据集',
-  DATA_DATASOURCE: '数据源',
-  DATA_VARIABLE: '变量',
-  TOTAL: '合计',
-  REPORT: '报告',
-  REPORT_RECORD: '记录'
+  TEST_CUSTOMIZATION: t('kanban.dataAssets.categories.testCustomization'),
+  TEST_FUNCTIONALITY: t('kanban.dataAssets.categories.testFunctionality'),
+  TEST_PERFORMANCE: t('kanban.dataAssets.categories.testPerformance'),
+  TEST_STABILITY: t('kanban.dataAssets.categories.testStability'),
+  SERVICES: t('kanban.dataAssets.categories.services'),
+  APIS: t('kanban.dataAssets.categories.apis'),
+  CASES: t('kanban.dataAssets.categories.cases'),
+  PLAN: t('kanban.dataAssets.categories.plan'),
+  SPRINT: t('kanban.dataAssets.categories.sprint'),
+  TASK_SPRINT: t('kanban.dataAssets.categories.taskSprint'),
+  TASK: t('kanban.dataAssets.categories.task'),
+  MOCK_APIS: t('kanban.dataAssets.categories.mockApis'),
+  MOCK_PUSHBACK: t('kanban.dataAssets.categories.mockPushback'),
+  MOCK_RESPONSE: t('kanban.dataAssets.categories.mockResponse'),
+  MOCK_SERVICE: t('kanban.dataAssets.categories.mockService'),
+  DATA_DATASET: t('kanban.dataAssets.categories.dataDataset'),
+  DATA_DATASOURCE: t('kanban.dataAssets.categories.dataDatasource'),
+  DATA_VARIABLE: t('kanban.dataAssets.categories.dataVariable'),
+  TOTAL: t('kanban.dataAssets.categories.total'),
+  REPORT: t('kanban.dataAssets.categories.report'),
+  REPORT_RECORD: t('kanban.dataAssets.categories.reportRecord')
 };
 const reportCategoryOpt = ref<EnumMessage<ReportCategory>[]>([]);
 const loadEnums = () => {
@@ -290,7 +292,7 @@ const caseBarEchartsConfig = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已取消', '阻塞', '测试未通过', '测试通过', '待测试']
+    data: [t('kanban.dataAssets.status.cancelled'), t('kanban.dataAssets.status.blocked'), t('kanban.dataAssets.status.testFailed'), t('kanban.dataAssets.status.testPassed'), t('kanban.dataAssets.status.pendingTest')]
   },
   series: [
     {
@@ -330,7 +332,7 @@ const caseBarEchartsConfig = {
 const casePieEchartsConfig = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('kanban.dataAssets.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -356,7 +358,7 @@ const casePieEchartsConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.dataAssets.total'),
       type: 'pie',
       radius: ['40%', '60%'],
       center: ['30%', '50%'],
@@ -380,21 +382,21 @@ const casePieEchartsConfig = {
       },
       data: [
         {
-          name: '待评审',
+          name: t('kanban.dataAssets.reviewStatus.pendingReview'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '评审通过',
+          name: t('kanban.dataAssets.reviewStatus.reviewPassed'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '评审未通过',
+          name: t('kanban.dataAssets.reviewStatus.reviewFailed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -489,7 +491,7 @@ const apiBarEchartsConfig = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['未知', '设计中', '开发中', '开发完成', '已发布']
+    data: [t('kanban.dataAssets.status.unknown'), t('kanban.dataAssets.status.designing'), t('kanban.dataAssets.status.developing'), t('kanban.dataAssets.status.developmentCompleted'), t('kanban.dataAssets.status.published')]
   },
   series: [
     {
@@ -734,7 +736,7 @@ const taskBarEchartsConfig = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已取消', '已完成', '待确认', '进行中', '待处理']
+    data: [t('kanban.dataAssets.status.cancelled'), t('kanban.dataAssets.status.completed'), t('kanban.dataAssets.status.pendingConfirmation'), t('kanban.dataAssets.status.inProgress'), t('kanban.dataAssets.status.pending')]
   },
   series: [
     {
@@ -774,7 +776,7 @@ const taskBarEchartsConfig = {
 const taskPieEchartsConfig = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('kanban.dataAssets.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -825,42 +827,42 @@ const taskPieEchartsConfig = {
       },
       data: [
         {
-          name: '故事',
+          name: t('kanban.dataAssets.taskTypes.story'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
           }
         },
         {
-          name: '需求',
+          name: t('kanban.dataAssets.taskTypes.requirement'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '任务',
+          name: t('kanban.dataAssets.taskTypes.task'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '缺陷',
+          name: t('kanban.dataAssets.taskTypes.defect'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '接口测试',
+          name: t('kanban.dataAssets.taskTypes.apiTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '场景测试',
+          name: t('kanban.dataAssets.taskTypes.scenarioTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(0,119,255,1)'
@@ -878,7 +880,7 @@ const planReviewRef = ref();
 const planPieEchartsConfig = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('kanban.dataAssets.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -929,28 +931,28 @@ const planPieEchartsConfig = {
       },
       data: [
         {
-          name: '待开始',
+          name: t('kanban.dataAssets.status.pendingStart'),
           value: 0,
           itemStyle: {
             color: 'rgba(45, 142, 255, 1)'
           }
         },
         {
-          name: '进行中',
+          name: t('kanban.dataAssets.status.inProgress'),
           value: 0,
           itemStyle: {
             color: 'rgba(103, 215, 255, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('kanban.dataAssets.status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '阻塞中',
+          name: t('kanban.dataAssets.status.blockedStatus'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -968,7 +970,7 @@ const interationReviewRef = ref();
 const interationPieEchartsConfig = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('kanban.dataAssets.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -1019,28 +1021,28 @@ const interationPieEchartsConfig = {
       },
       data: [
         {
-          name: '待开始',
+          name: t('kanban.dataAssets.status.pendingStart'),
           value: 0,
           itemStyle: {
             color: 'rgba(45, 142, 255, 1)'
           }
         },
         {
-          name: '进行中',
+          name: t('kanban.dataAssets.status.inProgress'),
           value: 0,
           itemStyle: {
             color: 'rgba(103, 215, 255, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('kanban.dataAssets.status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '阻塞中',
+          name: t('kanban.dataAssets.status.blockedStatus'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -1081,7 +1083,7 @@ const scenairoRef = ref();
 const scenairoPieChartsConfig = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('kanban.dataAssets.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -1132,28 +1134,28 @@ const scenairoPieChartsConfig = {
       },
       data: [
         {
-          name: '性能测试',
+          name: t('kanban.dataAssets.categories.testPerformance'),
           value: 0,
           itemStyle: {
             color: 'rgba(45, 142, 255, 1)'
           }
         },
         {
-          name: '稳定性测试',
+          name: t('kanban.dataAssets.categories.testStability'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '功能测试',
+          name: t('kanban.dataAssets.categories.testFunctionality'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 102, 0, 1)'
           }
         },
         {
-          name: '自定义测试',
+          name: t('kanban.dataAssets.categories.testCustomization'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
@@ -1281,7 +1283,7 @@ const reportBarChartsConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['接口', '功能用例', '项目', '场景', '任务', '执行'],
+    data: [t('kanban.dataAssets.categories.apis'), t('kanban.dataAssets.categories.cases'), t('kanban.dataAssets.categories.project'), t('kanban.dataAssets.categories.scenario'), t('kanban.dataAssets.categories.task'), t('kanban.dataAssets.categories.execution')],
     axisLabel: {
       interval: 0,
       rotate: -15,
@@ -1562,7 +1564,7 @@ defineExpose({
   <div class="flex space-x-2 mt-2 text-3">
     <div class="py-2 border rounded flex-1 min-w-0">
       <div class="px-2">
-        增长趋势：<SelectEnum
+        {{ t('kanban.dataAssets.growthTrend') }}：<SelectEnum
           v-model:value="targetType"
           :lazy="false"
           :excludes="(opt) => opt.value === 'TASK' && !proTypeShowMap.showTask"
@@ -1580,9 +1582,9 @@ defineExpose({
       :style="{ width: rightPercent }"
       class="border rounded p-2">
       <div class="flex space-x-1 items-center">
-        <span class="font-semibold">贡献排行榜</span>
+        <span class="font-semibold">{{ t('kanban.dataAssets.contributionRanking') }}</span>
         <Popover
-          content="用例、接口、任务、场景、脚本、参数数据、报告和Mock接口汇总排名。">
+          :content="t('kanban.dataAssets.rankingDescription')">
           <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
         </Popover>
       </div>
@@ -1605,7 +1607,7 @@ defineExpose({
         <NoData
           v-if="!rankingData.length"
           size="small"
-          text="暂无排名数据" />
+          text="t('common.noData')" />
       </div>
     </div>
   </div>
@@ -1614,7 +1616,7 @@ defineExpose({
       <div class="flex space-x-2">
         <!--任务-->
         <div class="border rounded p-2 min-w-0" :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">任务</div>
+          <div class="font-semibold">{{ t('kanban.dataAssets.categories.task') }}</div>
           <div class="flex">
             <!-- <div class="px-2 text-center flex flex-col justify-center">
                             <div class="text-5 font-semibold">{{ taskTotal }}</div>
@@ -1629,7 +1631,7 @@ defineExpose({
         <div
           class=" border rounded p-2 min-w-0"
           :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">用例</div>
+          <div class="font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
           <div class="flex">
             <div ref="caseReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -1641,7 +1643,7 @@ defineExpose({
           v-if="echartsCol === 3"
           class=" border rounded p-2 min-w-0"
           :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">接口</div>
+          <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
           <div class="flex">
             <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -1651,7 +1653,7 @@ defineExpose({
       <div v-if="echartsCol === 2" class="flex space-x-2 mt-2">
         <!--接口-->
         <div class=" border rounded p-2 min-w-0" :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">接口</div>
+          <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
           <div class="flex">
             <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -1665,47 +1667,47 @@ defineExpose({
               <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/service.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="mockData.allService" class="text-5 truncate">{{ mockData.allService }}</div>
-                <div>服务</div>
+                <div>{{ t('kanban.dataAssets.categories.service') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/apis.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="mockData.allApi" class="text-5 truncate">{{ mockData.allApi }}</div>
-                <div>接口</div>
+                <div>{{ t('kanban.dataAssets.categories.apis') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="mockData.allResponse" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                <div>响应</div>
+                <div>{{ t('kanban.dataAssets.categories.response') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="mockData.allPushback" class="text-5 truncate">{{ mockData.allPushback }}</div>
-                <div>回推</div>
+                <div>{{ t('kanban.dataAssets.categories.pushback') }}</div>
               </div>
             </div>
           </div>
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 font-semibold">数据</div>
+            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
             <div class=" flex-1 flex justify-around items-center space-x-2">
               <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="dataData.allVariable" class="text-5 truncate">{{ dataData.allVariable }}</div>
-                <div>变量</div>
+                <div>{{ t('kanban.dataAssets.categories.variable') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="dataData.allDataset" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                <div>数据集</div>
+                <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="dataData.allFile" class="text-5 truncate">{{ dataData.allFile }}</div>
-                <div>文件</div>
+                <div>{{ t('kanban.dataAssets.categories.file') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="dataData.allDatasource" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                <div>数据源</div>
+                <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
               </div>
             </div>
           </div>
@@ -1724,53 +1726,53 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/service.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allService" class="text-5 truncate">{{ mockData.allService }}</div>
-                  <div>服务</div>
+                  <div>{{ t('kanban.dataAssets.categories.service') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/apis.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allApi" class="text-5 truncate">{{ mockData.allApi }}</div>
-                  <div>接口</div>
+                  <div>{{ t('kanban.dataAssets.categories.apis') }}</div>
                 </div>
               </div>
               <div class="flex flex-1  space-x-2">
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allResponse" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                  <div>响应</div>
+                  <div>{{ t('kanban.dataAssets.categories.response') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allPushback" class="text-5 truncate">{{ mockData.allPushback }}</div>
-                  <div>回推</div>
+                  <div>{{ t('kanban.dataAssets.categories.pushback') }}</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 font-semibold">数据</div>
+            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
             <div class=" flex-1 flex flex-col justify-around space-y-2">
               <div class="flex flex-1  space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allVariable" class="text-5 truncate">{{ dataData.allVariable }}</div>
-                  <div>变量</div>
+                  <div>{{ t('kanban.dataAssets.categories.variable') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allDataset" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                  <div>数据集</div>
+                  <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
                 </div>
               </div>
               <div class="flex flex-1 space-x-2">
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allFile" class="text-5 truncate">{{ dataData.allFile }}</div>
-                  <div>文件</div>
+                  <div>{{ t('kanban.dataAssets.categories.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allDatasource" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                  <div>数据源</div>
+                  <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
                 </div>
               </div>
             </div>
@@ -1779,11 +1781,11 @@ defineExpose({
 
         <!--脚本-->
         <div class="border rounded py-2 min-w-0" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
-          <div class="px-2 font-semibold">脚本</div>
+          <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
           <div class="flex px-2">
             <div class="px-2 text-center flex flex-col justify-center">
               <div class="font-semibold">{{ scriptTotal }}</div>
-              <div>总数</div>
+              <div>{{ t('kanban.dataAssets.total') }}</div>
             </div>
             <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -1809,7 +1811,7 @@ defineExpose({
           class="min-w-0 flex-grow-0 pr-2"
           :class="`flex-1/${echartsCol}`">
           <div class="border rounded p-2 pb-2">
-            <div class="font-semibold">用例</div>
+            <div class="font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
             <div class="flex">
               <div ref="caseReviewRef" class="h-35 flex-1 min-w-0"></div>
             </div>
@@ -1820,7 +1822,7 @@ defineExpose({
         <!--接口-->
         <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-1/${echartsCol}`">
           <div class="border rounded p-2">
-            <div class="font-semibold">接口</div>
+            <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
             <div class="flex">
               <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
             </div>
@@ -1837,47 +1839,47 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/service.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allService" class="text-5 truncate">{{ mockData.allService }}</div>
-                  <div>服务</div>
+                  <div>{{ t('kanban.dataAssets.categories.service') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/apis.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allApi" class="text-5 truncate">{{ mockData.allApi }}</div>
-                  <div>接口</div>
+                  <div>{{ t('kanban.dataAssets.categories.apis') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allResponse" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                  <div>响应</div>
+                  <div>{{ t('kanban.dataAssets.categories.response') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="mockData.allPushback" class="text-5 truncate">{{ mockData.allPushback }}</div>
-                  <div>回推</div>
+                  <div>{{ t('kanban.dataAssets.categories.pushback') }}</div>
                 </div>
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">数据</div>
+              <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
               <div class=" flex-1 flex justify-around items-center space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allVariable" class="text-5 truncate">{{ dataData.allVariable }}</div>
-                  <div>变量</div>
+                  <div>{{ t('kanban.dataAssets.categories.variable') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allDataset" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                  <div>数据集</div>
+                  <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allFile" class="text-5 truncate">{{ dataData.allFile }}</div>
-                  <div>文件</div>
+                  <div>{{ t('kanban.dataAssets.categories.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="dataData.allDatasource" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                  <div>数据源</div>
+                  <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
                 </div>
               </div>
             </div>
@@ -1893,53 +1895,53 @@ defineExpose({
                   <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/service.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="mockData.allService" class="text-5 truncate">{{ mockData.allService }}</div>
-                    <div>服务</div>
+                    <div>{{ t('kanban.dataAssets.categories.service') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/apis.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="mockData.allApi" class="text-5 truncate">{{ mockData.allApi }}</div>
-                    <div>接口</div>
+                    <div>{{ t('kanban.dataAssets.categories.apis') }}</div>
                   </div>
                 </div>
                 <div class="flex flex-1  space-x-2">
                   <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="mockData.allResponse" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                    <div>响应</div>
+                    <div>{{ t('kanban.dataAssets.categories.response') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="mockData.allPushback" class="text-5 truncate">{{ mockData.allPushback }}</div>
-                    <div>回推</div>
+                    <div>{{ t('kanban.dataAssets.categories.pushback') }}</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">数据</div>
+              <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
               <div class=" flex-1 flex flex-col justify-around space-y-2">
                 <div class="flex flex-1  space-x-2">
                   <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="dataData.allVariable" class="text-5 truncate">{{ dataData.allVariable }}</div>
-                    <div>变量</div>
+                    <div>{{ t('kanban.dataAssets.categories.variable') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="dataData.allDataset" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                    <div>数据集</div>
+                    <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
                   </div>
                 </div>
                 <div class="flex flex-1 space-x-2">
                   <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="dataData.allFile" class="text-5 truncate">{{ dataData.allFile }}</div>
-                    <div>文件</div>
+                    <div>{{ t('kanban.dataAssets.categories.file') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="dataData.allDatasource" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                    <div>数据源</div>
+                    <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
                   </div>
                 </div>
               </div>
@@ -1950,11 +1952,11 @@ defineExpose({
         <!--脚本-->
         <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
           <div class="border rounded py-2">
-            <div class="px-2 font-semibold">脚本</div>
+            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
             <div class="flex px-2">
               <div class="px-2 text-center flex flex-col justify-center">
                 <div class="font-semibold">{{ scriptTotal }}</div>
-                <div>总数</div>
+                <div>{{ t('kanban.dataAssets.total') }}</div>
               </div>
               <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
             </div>
@@ -1983,7 +1985,7 @@ defineExpose({
       class="flex flex-col space-y-2">
       <!--场景-->
       <div class="flex-1/3 flex-grow-0 border rounded p-2 flex flex-col" :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">场景</div>
+        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.scenario') }}</div>
         <div class="flex flex-1">
           <!-- <div class="px-2 text-center flex flex-col justify-center">
                         <div class="text-5 font-semibold">{{scenarioTotal}}</div>
@@ -1995,7 +1997,7 @@ defineExpose({
 
       <!--计划-->
       <div class=" border rounded p-2 flex-1/3 flex-grow-0 flex flex-col" :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">计划</div>
+        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.plan') }}</div>
         <div class="flex flex-1">
           <!-- <div class="px-2 text-center flex flex-col justify-center">
                         <div class="text-5 font-semibold">{{ planTotal }}</div>
@@ -2010,7 +2012,7 @@ defineExpose({
         v-if="proTypeShowMap.showSprint"
         class="border rounded p-2 flex-1/3 flex-grow-0 flex flex-col"
         :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">迭代</div>
+        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.sprint') }}</div>
         <div class="flex flex-1">
           <div ref="interationReviewRef" class="h-full flex-1 min-w-0"></div>
         </div>
