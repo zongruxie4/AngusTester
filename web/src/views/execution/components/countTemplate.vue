@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Select } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, RadioButton, RadioGroup, Slider } from 'ant-design-vue';
 import { allCvsNames } from '../info/ChartConfig';
 
+const { t } = useI18n();
 const LineChart = defineAsyncComponent(() => import('./lineChart.vue'));
 const InfoTable = defineAsyncComponent(() => import('./infoTable.vue'));
 
@@ -248,9 +250,9 @@ const tableColumns = computed(() => {
         size="small"
         class="whitespace-nowrap"
         @change="radioGroupChange">
-        <RadioButton value="api">按接口</RadioButton>
-        <RadioButton value="metric">按指标</RadioButton>
-        <RadioButton value="overlay">叠加分析</RadioButton>
+        <RadioButton value="api">{{ t('execution.count.byInterface') }}</RadioButton>
+        <RadioButton value="metric">{{ t('execution.count.byMetric') }}</RadioButton>
+        <RadioButton value="overlay">{{ t('execution.count.overlayAnalysis') }}</RadioButton>
       </RadioGroup>
       <template v-if="!isSingleInterface">
         <Select

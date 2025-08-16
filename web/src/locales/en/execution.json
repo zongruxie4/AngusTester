@@ -210,6 +210,38 @@
       "noAccessProxyInfo": "No access proxy info, connection failed address: ",
       "runnerLog": "runner.log",
       "schedulingLogFile": "scheduling.log"
+    },
+    "scriptInfo": {
+      "scriptName": "Script Name",
+      "scriptType": "Script Type",
+      "plugin": "Plugin",
+      "source": "Source",
+      "creator": "Creator",
+      "createdTime": "Created Time",
+      "lastModifier": "Last Modifier",
+      "lastModifiedTime": "Last Modified Time",
+      "description": "Description",
+      "selectScriptType": "Please select script type",
+      "selectScriptTypeRequired": "Please select script type",
+      "enterScriptName": "Please enter script name, max 200 characters",
+      "scriptNameRequired": "Please enter script name",
+      "enterScriptDescription": "Please enter script description, max 800 characters"
+    },
+    "header": {
+      "title": "Through \"Execution\" you can directly run a test script or Mock data script. When running a test script, you can specify whether to update the execution test results to test resources (scenarios, interfaces, or test cases) through the \"Update Test Results\" option in the execution configuration.",
+      "subTitle": "Note: \"Execution\" configuration has higher priority than \"Script\" configuration; after execution is added, only the execution creator, execution script creator, application administrator and system administrator can modify and run, other users are only allowed to view.",
+      "contentTitle": "Here you and your team can complete the following work:",
+      "contentList1": "Initiate testing based on a test script or generate test data based on a Mock data script;",
+      "contentList2": "View execution sampling indicators in real-time and analyze test results."
+    },
+    "count": {
+      "byInterface": "By Interface",
+      "byMetric": "By Metric",
+      "overlayAnalysis": "Overlay Analysis"
+    },
+    "chartInfo": {
+      "scriptType": "Script Type",
+      "executionStatus": "Execution Status"
     }
   }
 } 

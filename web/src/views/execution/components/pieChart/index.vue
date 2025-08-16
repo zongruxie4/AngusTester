@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { PieData, PieSetting } from './PropsType';
 import { ScriptType, enumUtils } from '@xcan-angus/infra';
 import { ExecStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
 
+const { t } = useI18n();
 import Charts from './charts.vue';
 
 const groupByGroup = ref<PieSetting[]>([
-  { key: 'script_type', value: '脚本类型', type: [] },
-  { key: 'status', value: '执行状态', type: [] }
+  { key: 'script_type', value: t('execution.chartInfo.scriptType'), type: [] },
+  { key: 'status', value: t('execution.chartInfo.executionStatus'), type: [] }
 ]);
 
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
@@ -203,7 +205,7 @@ defineExpose({
       key="1"
       style="width: 228px;"
       class="chart-item"
-      title="脚本类型"
+      :title="t('execution.chartInfo.scriptType')"
       type="script_type"
       :color="scriptTypeColor"
       :total="pieChartData[0]?.total"
@@ -212,7 +214,7 @@ defineExpose({
       key="2"
       style="width: 274px;"
       class="chart-item"
-      title="执行状态"
+      :title="t('execution.chartInfo.executionStatus')"
       type="status"
       :color="statusColor"
       :total="pieChartData[1]?.total"

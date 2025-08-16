@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Grid, Icon, Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
@@ -9,6 +10,7 @@ interface Props {
   scriptInfo: Record<string, any> | undefined;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   scriptInfo: undefined
 });
@@ -49,39 +51,39 @@ const formData = reactive({
 
 const infoConfig = [[
   {
-    label: '脚本名称',
+    label: t('execution.scriptInfo.scriptName'),
     dataIndex: 'name'
   },
   {
-    label: '脚本类型',
+    label: t('execution.scriptInfo.scriptType'),
     dataIndex: 'typeName'
   },
   {
-    label: '插件',
+    label: t('execution.scriptInfo.plugin'),
     dataIndex: 'plugin'
   },
   {
-    label: '来源',
+    label: t('execution.scriptInfo.source'),
     dataIndex: 'sourceName'
   },
   {
-    label: '添加人',
+    label: t('execution.scriptInfo.creator'),
     dataIndex: 'createdBy'
   },
   {
-    label: '添加时间',
+    label: t('execution.scriptInfo.createdTime'),
     dataIndex: 'createdDate'
   },
   {
-    label: '最后更新人',
+    label: t('execution.scriptInfo.lastModifier'),
     dataIndex: 'lastModifiedByName'
   },
   {
-    label: '最后更新时间',
+    label: t('execution.scriptInfo.lastModifiedTime'),
     dataIndex: 'lastModifiedDate'
   },
   {
-    label: '描述',
+    label: t('execution.scriptInfo.description'),
     dataIndex: 'description'
   }
 ]];
@@ -131,28 +133,28 @@ defineExpose({ getFormData, validate, isSpread, toggle });
         layout="vertical"
         size="small">
         <FormItem
-          label="脚本类型"
+          :label="t('execution.scriptInfo.scriptType')"
           name="type"
-          :rules="[{required: true, message: '请选择脚本类型'}]">
+          :rules="[{required: true, message: t('execution.scriptInfo.selectScriptTypeRequired')}]">
           <SelectEnum
             v-model:value="formData.type"
             enumKey="ScriptType"
-            placeholder="请选择脚本类型" />
+            :placeholder="t('execution.scriptInfo.selectScriptType')" />
         </FormItem>
         <FormItem
-          label="脚本名称"
+          :label="t('execution.scriptInfo.scriptName')"
           name="name"
           size="small"
-          :rules="[{required: true, message: '请填写脚本名称'}]">
+          :rules="[{required: true, message: t('execution.scriptInfo.scriptNameRequired')}]">
           <Input
             v-model:value="formData.name"
             :maxlength="200"
-            placeholder="请输入脚本名称,最多200字符" />
+            :placeholder="t('execution.scriptInfo.enterScriptName')" />
         </FormItem>
-        <FormItem label="描述" name="description">
+        <FormItem :label="t('execution.scriptInfo.description')" name="description">
           <Input
             v-model:value="formData.description"
-            placeholder="请输入脚本描述，最多800字符"
+            :placeholder="t('execution.scriptInfo.enterScriptDescription')"
             type="textarea"
             :showCount="!!formData.description"
             :autosize="{ minRows: 4, maxRows: 6 }"

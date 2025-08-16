@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
+const { t } = useI18n();
 const PieChart = defineAsyncComponent(() => import('@/views/execution/components/pieChart/index.vue'));
 
-const presentation = {
-  title: '通过“执行”可以直接运行一个测试脚本或Mock数据脚本，当运行测试脚本时，可以通过执行配置中“更新测试结果”选项指定是否将执行测试结果更新到测试资源(场景、接口或用例)。',
-  subTitle: '注意：“执行”配置比“脚本”配置优先级高；执行添加后只允许执行添加人、执行脚本添加人、应用管理员和系统管理员修改和运行，其他用户只允许查看。',
+const presentation = computed(() => ({
+  title: t('execution.header.title'),
+  subTitle: t('execution.header.subTitle'),
   content: {
-    title: '在这里您和您的团队可以完成以下工作：',
-    list: ['根据一个测试脚本发起测试或者根据一个Mock数据脚本生成测试数据；', '实时查看执行采样指标及对测试结果进行分析。']
+    title: t('execution.header.contentTitle'),
+    list: [t('execution.header.contentList1'), t('execution.header.contentList2')]
   }
-};
+}));
 
 const countRef = ref();
 const updateCount = () => {
