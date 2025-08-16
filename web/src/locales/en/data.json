@@ -174,6 +174,84 @@
       }
     }
   },
+  "dataHome": {
+      "activityTimeline": {
+        "myActivity": "My Activity",
+        "allActivity": "All Activity"
+      },
+      "statistics": {
+        "myAdded": "My Added",
+        "resourceStatistics": "Resource Statistics",
+        "totalVariable": "Total Variable",
+        "dataset": "Dataset",
+        "file": "File",
+        "dataSourceSet": "Data Source Set",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "usedCount": "Used Count",
+        "unusedCount": "Unused Count",
+        "space": "Space",
+        "directory": "Directory",
+
+      },
+      "myCreationSummary": {
+        "title": "My Parameterization",
+        "addedVariables": "Added Variables",
+        "addedDataSets": "Added Datasets",
+        "addedSpaces": "Added Spaces",
+        "addedDataSources": "Added Data Sources"
+      },
+      "introduce": {
+        "welcome": "Welcome to Angus Data!",
+        "description": "Data can help you generate and manage business data and test data, and generate parameterized variables or datasets based on data.",
+        "title": "AngusTester provides four parameterization methods to meet different needs:",
+        "variable": {
+          "title": "Variable",
+          "content": "Define a constant value that can be shared and reused throughout the testing process."
+        },
+        "dataset": {
+          "title": "Dataset",
+          "content": "Define a set of related data parameters, usually actual test data, that dynamically change values during execution."
+        },
+        "mockFunction": {
+          "title": "Mock Function",
+          "content": "By referencing mock functions in tests, dynamically generate corresponding parameter values or random values during execution."
+        },
+        "samplingExtraction": {
+          "title": "Sampling Extraction Variable",
+          "content": "Extract a value from the previous sampling request or response as a parameter value for subsequent sampling, and re-extract it each time it iterates."
+        }
+      },
+      "summaryTable": {
+        "columns": {
+          "id": "ID",
+          "name": "Name",
+          "createdBy": "Created By",
+          "createdDate": "Created Date",
+          "lastModifiedBy": "Last Modified By",
+          "lastModifiedDate": "Last Modified Date",
+          "action": "Action"
+        },
+        "pagination": {
+          "pageInfo": "Page {current}/{totalPage}"
+        },
+        "messages": {
+          "deleteConfirm": "Are you sure to delete 【{name}】?",
+          "deleteSuccess": "Delete successful"
+        },
+        "emptyData": {
+          "noVariable": "You haven't added any variables yet, ",
+          "addVariable": "Add Variable",
+          "noDataset": "You haven't added any datasets yet, ",
+          "addDataset": "Add Dataset",
+          "noSpace": "You haven't added any spaces",
+          "noDataSource": "You haven't added any data sources"
+        },
+        "buttons": {
+          "delete": "Delete"
+        }
+      }
+    },
   "fileSpace": {
     "title": "About Files",
     "addedTitle": "Added Spaces",
@@ -375,84 +453,7 @@
         "mockFunc": "Mock Function"
       }
     },
-    "dataHome": {
-      "activityTimeline": {
-        "myActivity": "My Activity",
-        "allActivity": "All Activity"
-      },
-      "statistics": {
-        "myAdded": "My Added",
-        "resourceStatistics": "Resource Statistics",
-        "totalVariable": "Total Variable",
-        "dataset": "Dataset",
-        "file": "File",
-        "dataSourceSet": "Data Source Set",
-        "last7Days": "Last 7 Days",
-        "last30Days": "Last 30 Days",
-        "usedCount": "Used Count",
-        "unusedCount": "Unused Count",
-        "space": "Space",
-        "directory": "Directory",
-
-      },
-      "myCreationSummary": {
-        "title": "My Parameterization",
-        "addedVariables": "Added Variables",
-        "addedDataSets": "Added Datasets",
-        "addedSpaces": "Added Spaces",
-        "addedDataSources": "Added Data Sources"
-      },
-      "introduce": {
-        "welcome": "Welcome to Angus Data!",
-        "description": "Data can help you generate and manage business data and test data, and generate parameterized variables or datasets based on data.",
-        "title": "AngusTester provides four parameterization methods to meet different needs:",
-        "variable": {
-          "title": "Variable",
-          "content": "Define a constant value that can be shared and reused throughout the testing process."
-        },
-        "dataset": {
-          "title": "Dataset",
-          "content": "Define a set of related data parameters, usually actual test data, that dynamically change values during execution."
-        },
-        "mockFunction": {
-          "title": "Mock Function",
-          "content": "By referencing mock functions in tests, dynamically generate corresponding parameter values or random values during execution."
-        },
-        "samplingExtraction": {
-          "title": "Sampling Extraction Variable",
-          "content": "Extract a value from the previous sampling request or response as a parameter value for subsequent sampling, and re-extract it each time it iterates."
-        }
-      },
-      "summaryTable": {
-        "columns": {
-          "id": "ID",
-          "name": "Name",
-          "createdBy": "Created By",
-          "createdDate": "Created Date",
-          "lastModifiedBy": "Last Modified By",
-          "lastModifiedDate": "Last Modified Date",
-          "action": "Action"
-        },
-        "pagination": {
-          "pageInfo": "Page {current}/{totalPage}"
-        },
-        "messages": {
-          "deleteConfirm": "Are you sure to delete 【{name}】?",
-          "deleteSuccess": "Delete successful"
-        },
-        "emptyData": {
-          "noVariable": "You haven't added any variables yet, ",
-          "addVariable": "Add Variable",
-          "noDataset": "You haven't added any datasets yet, ",
-          "addDataset": "Add Dataset",
-          "noSpace": "You haven't added any spaces",
-          "noDataSource": "You haven't added any data sources"
-        },
-        "buttons": {
-          "delete": "Delete"
-        }
-      }
-    },
+    
     "dataVariable": {
       "title": "Variable",
       "addVariable": {
@@ -538,43 +539,43 @@
             "httpExtract": "Http Extract Variable",
             "jdbcExtract": "Jdbc Extract Variable"
           }
-        },
-        "introduce": {
-          "title": "About Variables",
-          "description": "Used to define a value that can be reused. After defining a variable, you can use the variable placeholder {variableName} to reference the variable. Variables make testing and maintenance more efficient and flexible, while improving the repeatability and scalability of tests.",
-          "note": "Note: Before executing sampling, variable placeholders will be replaced with corresponding variable values, and the values will not change during execution. AngusTester variables support defining static variables and also support the following three ways to extract a variable:",
-          "types": {
-            "fileExtract": {
-              "title": "File Extract",
-              "description": "Extract a value from a file as a variable value. For example: reading a secret key."
-            },
-            "httpExtract": {
-              "title": "Http Extract",
-              "description": "Extract a value from an Http request as a variable value. For example: dynamically obtaining a token."
-            },
-            "jdbcExtract": {
-              "title": "Jdbc Extract",
-              "description": "Extract specified variable values from data source tables according to SQL, such as: current product price."
-            }
-          }
-        },
-        "importModal": {
-          "title": "Upload Variable",
-          "uploadArea": {
-            "selectFile": "Select File",
-            "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
-          },
-          "fileSizeError": "File size cannot exceed {maxSize}M",
-          "duplicateStrategy": {
-            "title": "Processing strategy when encountering duplicates",
-            "cover": "Cover",
-            "ignore": "Ignore"
-          }
-        },
-        "exportModal": {
-          "title": "Download Variable",
-          "format": "Format"
         }
+      },
+      "introduce": {
+        "title": "About Variables",
+        "description": "Used to define a value that can be reused. After defining a variable, you can use the variable placeholder {variableName} to reference the variable. Variables make testing and maintenance more efficient and flexible, while improving the repeatability and scalability of tests.",
+        "note": "Note: Before executing sampling, variable placeholders will be replaced with corresponding variable values, and the values will not change during execution. AngusTester variables support defining static variables and also support the following three ways to extract a variable:",
+        "types": {
+          "fileExtract": {
+            "title": "File Extract",
+            "description": "Extract a value from a file as a variable value. For example: reading a secret key."
+          },
+          "httpExtract": {
+            "title": "Http Extract",
+            "description": "Extract a value from an Http request as a variable value. For example: dynamically obtaining a token."
+          },
+          "jdbcExtract": {
+            "title": "Jdbc Extract",
+            "description": "Extract specified variable values from data source tables according to SQL, such as: current product price."
+          }
+        }
+      },
+      "importModal": {
+        "title": "Upload Variable",
+        "uploadArea": {
+          "selectFile": "Select File",
+          "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+        },
+        "fileSizeError": "File size cannot exceed {maxSize}M",
+        "duplicateStrategy": {
+          "title": "Processing strategy when encountering duplicates",
+          "cover": "Cover",
+          "ignore": "Ignore"
+        }
+      },
+      "exportModal": {
+        "title": "Download Variable",
+        "format": "Format"
       }
     }
   }
