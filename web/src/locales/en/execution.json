@@ -1,49 +1,89 @@
 {
-  "basic": {
-    "execute": "Execute",
-    "name": "Name",
-    "type": "Type",
-    "scenario": "Script",
-    "configure": "Configure",
-    "status": "Status",
-    "creator": "Creator",
-    "createdTime": "Created Time",
-    "concurrency": "Concurrency",
-    "startTime": "Start Time",
-    "endTime": "End Time",
-    "executionTime": "Execution Duration (seconds)",
-    "iterations": "Iterations",
-    "errorRate": "Error Rate",
-    "scriptName": "Script Name",
-    "priority": "Priority"
-  },
-  "actions": {
-    "createExecution": "Create Execution",
-    "terminateExecution": "Terminate Execution",
-    "retry": "Retry",
-    "viewReport": "View Report",
-    "immediately": "Execute Immediately",
-    "timing": "Scheduled Execution"
-  },
-  "search": {
-    "executionName": "Search execution name",
-    "inputName": "Please enter name",
-    "selectScript": "Select script",
-    "selectProject": "Select project/service"
-  },
-  "infoCard": {
-    "concurrency": "Concurrency (VU)",
-    "qps": "Queries Per Second (QPS)",
-    "tps": "Transactions Per Second (TPS)",
-    "avgResponseTime": "Average Response Time (AVG RT)",
-    "errorRate": "Error Rate",
-    "executedTime": "Executed Time",
-    "iterations": "Iterations",
-    "percentileP90": "Percentile P90"
-  },
-  "tips": {
+  "execution": {
+    "basic": {
+      "execute": "Execute",
+      "name": "Name",
+      "type": "Type",
+      "scenario": "Script",
+      "configure": "Configure",
+      "status": "Status",
+      "creator": "Creator",
+      "createdTime": "Created Time",
+      "concurrency": "Concurrency",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "executionTime": "Execution Time (seconds)",
+      "iterations": "Iterations",
+      "errorRate": "Error Rate",
+      "scriptName": "Script Name",
+      "priority": "Priority"
+    },
+    "actions": {
+      "createExecution": "Add Execution",
+      "terminateExecution": "Terminate Execution",
+      "retry": "Retry",
+      "viewReport": "View Report",
+      "immediately": "Execute Immediately",
+      "timing": "Scheduled Execution",
+      "start": "Start",
+      "stop": "Stop",
+      "editExecutionConfig": "Edit Execution Config",
+      "viewScheduleLog": "View Schedule Log",
+      "clear": "Clear"
+    },
+    "search": {
+      "executionName": "Search execution name",
+      "inputName": "Please enter name",
+      "selectScript": "Select script",
+      "selectProject": "Select project/service"
+    },
+    "infoCard": {
+      "concurrency": "Concurrency (VU)",
+      "qps": "Queries Per Second (QPS)",
+      "tps": "Transactions Per Second (TPS)",
+      "avgResponseTime": "Average Response Time (AVG RT)",
+      "errorRate": "Error Rate",
+      "executedTime": "Executed Time",
+      "iterations": "Executed Iterations",
+      "percentileP90": "Percentile P90"
+    },
+    "tips": {
+      "concurrency": "Concurrency (VU): Number of virtual users executing simultaneously",
+      "qps": "Queries Per Second (QPS): Number of queries executed per second",
+      "tps": "Transactions Per Second (TPS): Number of transactions executed per second",
+      "avgResponseTime": "Average Response Time (AVG RT): Average response time of all requests",
+      "errorRate": "Error Rate: Ratio of error requests to total requests",
+      "executedTime": "Executed Time: Time from execution start to end",
+      "iterations": "Executed Iterations: Number of iterations completed during execution",
+      "percentileP90": "Percentile P90: 90% of request response times are less than or equal to this value"
+    },
     "maxIterations": "Current maximum iterations support 100,000,000,000",
-    "priorityRange": "Higher priority executes first, value range: 0~2147483647, higher value means higher priority",
-    "concurrencyNodes": "Every 10,000 concurrency requires 1 test node"
+    "priorityRange": "Higher priority is executed first, value range: 0~2147483647, higher value means higher priority",
+    "concurrencyNodes": "1 test node required for every 10,000 concurrency",
+    "messages": {
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status",
+      "modifySuccess": "Modified successfully",
+      "startSuccess": "Started successfully",
+      "stopSuccess": "Stopped successfully",
+      "deleteConfirm": "Are you sure to delete 【{name}】?",
+      "totalRecords": "Total {total} records, page {current} / {totalPage}",
+      "executionDuration": "Execution Duration",
+      "reportInterval": "Report Interval",
+      "ignoreAssertions": "Ignore Assertions",
+      "updateTestResult": "Update Test Result",
+      "trial": "Trial",
+      "id": "ID",
+      "modifiedBy": "Modified by",
+      "modified": "modified"
+    },
+    "units": {
+      "millisecond": "millisecond",
+      "second": "second",
+      "minute": "minute",
+      "hour": "hour",
+      "day": "day"
+    }
   }
 } 

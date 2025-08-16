@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import {
   Colon,
   Dropdown,
@@ -29,6 +30,7 @@ type OrderSortKey = 'ASC' | 'DESC';
 const NavigationHeader = defineAsyncComponent(() => import('./components/navigationHeader.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/execution/searchPanel/index.vue'));
 
+const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 
@@ -116,18 +118,18 @@ const getMessage = (item: ExecuteListObj): { code: string, message: string, code
   if (item?.lastSchedulingResult?.length) {
     const foundItem = item.lastSchedulingResult.find(f => !f.success);
     if (foundItem) {
-      return { code: foundItem.exitCode, message: foundItem.message, codeName: '退出码', messageName: '失败原因' };
+      return { code: foundItem.exitCode, message: foundItem.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
     }
 
     if (item?.meterMessage) {
-      return { code: item.meterStatus, message: item.meterMessage, codeName: '采样状态', messageName: '失败原因' };
+      return { code: item.meterStatus, message: item.meterMessage, codeName: t('execution.messages.samplingStatus'), messageName: t('execution.messages.failureReason') };
     }
 
     return undefined;
   }
 
   if (item?.meterMessage) {
-    return { code: item.meterStatus, message: item.meterMessage, codeName: '采样状态', messageName: '失败原因' };
+    return { code: item.meterStatus, message: item.meterMessage, codeName: t('execution.messages.samplingStatus'), messageName: t('execution.messages.failureReason') };
   }
 
   return undefined;
@@ -140,19 +142,19 @@ const getStrokeColor = (value: string, status: string) => {
   }
 
   switch (status) {
-    case 'CREATED': // 已添加
+    case 'CREATED': // Created
       return 'rgba(45, 142, 255, 1)';
-    case 'PENDING': // 调度中
+    case 'PENDING': // Pending
       return 'rgba(45, 142, 255, 1)';
-    case 'RUNNING': // 执行中
+    case 'RUNNING': // Running
       return 'rgba(45, 142, 255, 1)';
-    case 'STOPPED': // 已停止
+    case 'STOPPED': // Stopped
       return 'rgba(255, 77, 79, 1)';
-    case 'FAILED': // 失败
+    case 'FAILED': // Failed
       return 'rgba(255, 77, 79, 1)';
-    case 'COMPLETED': // 已完成
+    case 'COMPLETED': // Completed
       return 'rgba(45, 142, 255, 1)';
-    case 'TIMEOUT': // 失败
+    case 'TIMEOUT': // Failed
       return 'rgba(255, 77, 79, 1)';
   }
 };
@@ -302,7 +304,11 @@ const loadDataList = async (): Promise<void> => {
 
 const showTotal = (total: number) => {
   const totalPage = Math.ceil(total / pagination.value.pageSize);
-  return `共${total}条记录,第${pagination.value.current} / ${totalPage}页`;
+  return t('execution.messages.totalRecords', { 
+    total, 
+    current: pagination.value.current, 
+    totalPage 
+  });
 };
 
 const updateName = (item: ExecuteListObj) => {
@@ -327,7 +333,7 @@ const editName = async (name: string, item: ExecuteListObj) => {
 
   item.editname = false;
   item.name = name;
-  notification.success('修改成功');
+  notification.success(t('execution.messages.modifySuccess'));
 };
 
 const updateThread = (item: ExecuteListObj) => {
@@ -356,7 +362,7 @@ const editThread = async (value: string, item: ExecuteListObj) => {
 
   item.thread = value;
   item.editThread = false;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const updateDuration = (item: ExecuteListObj) => {
@@ -381,7 +387,7 @@ const editDuration = async (value: string, item: ExecuteListObj) => {
 
   item.duration = value;
   item.editduration = false;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const updateIterations = (item: ExecuteListObj) => {
@@ -405,7 +411,7 @@ const editIterations = async (value: string, item: ExecuteListObj) => {
   }
   item.iterations = value;
   item.edititerations = false;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const getNumFixed = (str: string) => {
@@ -434,7 +440,7 @@ const editPriority = async (value: string, item: ExecuteListObj) => {
 
   item.editpriority = false;
   item.priority = value;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const updateReportInterval = (item: ExecuteListObj) => {
@@ -459,7 +465,7 @@ const editReportInterval = async (value: string, item: ExecuteListObj) => {
 
   item.editreportInterval = false;
   item.reportInterval = value;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
@@ -476,7 +482,7 @@ const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
 
   item.editstartDate = false;
   item.ignoreAssertions = value;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
@@ -493,7 +499,7 @@ const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
 
   item.editstartDate = false;
   item.updateTestResult = value;
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
 };
 
 const handleRestart = async (item: ExecuteListObj) => {
@@ -519,7 +525,7 @@ const handleRestart = async (item: ExecuteListObj) => {
   if (error) {
     let errMessage;
     if (error?.code || error?.message) {
-      errMessage = { code: error.code, message: error.message, codeName: '退出码', messageName: '失败原因' };
+      errMessage = { code: error.code, message: error.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
     }
     item.errMessage = errMessage;
 
@@ -530,10 +536,10 @@ const handleRestart = async (item: ExecuteListObj) => {
   if (currItemDataList.length) {
     const successFalseItem = currItemDataList.find(f => f.success);
     if (successFalseItem) {
-      notification.success('启动成功');
+      notification.success(t('execution.messages.startSuccess'));
     } else {
       notification.error(currItemDataList[0].message);
-      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: '退出码', messageName: '失败原因' };
+      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
     }
   }
 
@@ -560,7 +566,7 @@ const handleStop = async (item: ExecuteListObj) => {
   if (error) {
     let errMessage;
     if (error?.code || error?.message) {
-      errMessage = { code: error.code, message: error.message, codeName: '退出码', messageName: '失败原因' };
+      errMessage = { code: error.code, message: error.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
     }
     item.errMessage = errMessage;
     return;
@@ -570,10 +576,10 @@ const handleStop = async (item: ExecuteListObj) => {
   if (currItemDataList.length) {
     const successFalseItem = currItemDataList.find(f => f.success);
     if (successFalseItem) {
-      notification.success('停止成功');
+      notification.success(t('execution.messages.stopSuccess'));
     } else {
       notification.error(currItemDataList[0].message);
-      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: '退出码', messageName: '失败原因' };
+      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
     }
   }
 
@@ -591,7 +597,7 @@ const handleDelete = async (item: ExecuteListObj) => {
 
   modal.confirm({
     centered: true,
-    content: `确定删除【${item.name}】吗？`,
+    content: t('execution.messages.deleteConfirm', { name: item.name }),
     async onOk () {
       loading.value = true;
       const [error] = await exec.deleteExec([item.id], { dataType: true });
@@ -599,7 +605,7 @@ const handleDelete = async (item: ExecuteListObj) => {
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('tips.deleteSuccess'));
       pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, total.value);
       loadDataList();
     }
@@ -660,11 +666,11 @@ const projectId = computed(() => {
 });
 
 const letterMap = {
-  ms: '毫秒',
-  s: '秒',
-  min: '分钟',
-  h: '小时',
-  d: '天'
+  ms: t('execution.units.millisecond'),
+  s: t('execution.units.second'),
+  min: t('execution.units.minute'),
+  h: t('execution.units.hour'),
+  d: t('execution.units.day')
 };
 
 const scriptTypes = {
@@ -704,13 +710,13 @@ const dropdownMockMenuItems = [
   {
     key: 'viewLog',
     icon: 'icon-zhihangcanshu',
-    name: '查看调度日志',
+    name: t('execution.actions.viewScheduleLog'),
     noAuth: true
   },
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: '删除',
+    name: t('common.actions.delete'),
     permission: 'delete'
   }
 ];
@@ -719,19 +725,19 @@ const dropdownMenuItems = [
   {
     key: 'edit',
     icon: 'icon-shuxie',
-    name: '修改执行配置',
+    name: t('execution.actions.editExecutionConfig'),
     permission: 'edit'
   },
   {
     key: 'viewLog',
     icon: 'icon-zhihangcanshu',
-    name: '查看调度日志',
+    name: t('execution.actions.viewScheduleLog'),
     noAuth: true
   },
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: '删除',
+    name: t('common.actions.delete'),
     permission: 'delete'
   }
 ];
@@ -804,7 +810,7 @@ const reportIntervalSelectProps = {
                   <tmeplate v-if="item?.trial">
                     <div
                       class="px-2 h-4 rounded-full text-3 flex-none leading-4 border border-status-success text-status-success whitespace-nowrap">
-                      试用
+                      {{ t('execution.messages.trial') }}
                     </div>
                   </tmeplate>
                 </div>
@@ -851,7 +857,7 @@ const reportIntervalSelectProps = {
                 </template>
               </div>
               <div class="flex items-center" style="width:20%">
-                <span class="whitespace-nowrap">并发数
+                <span class="whitespace-nowrap">{{ t('execution.basic.concurrency') }}
                   <Colon class="mr-1.5" />
                 </span>
                 <div class="whitespace-nowrap flex-1">
@@ -882,19 +888,19 @@ const reportIntervalSelectProps = {
             </div>
             <div class="flex items-center text-text-sub-content font-medium flex-none space-x-2 justify-end">
               <div style="width:150px">
-                <span>ID
+                <span>{{ t('execution.messages.id') }}
                   <Colon class="mr-1.5" />
                 </span>
                 <span class="text-text-content"> {{ item?.id || "--" }}</span>
               </div>
               <div style="width:180px">
-                <span class="whitespace-nowrap">开始时间
+                <span class="whitespace-nowrap">{{ t('execution.basic.startTime') }}
                   <Colon class="mr-1.5" />
                 </span>
                 <span class="text-text-content  whitespace-nowrap">{{ item?.actualStartDate || "--" }}</span>
               </div>
               <div style="width:180px">
-                <span class="whitespace-nowrap">结束时间
+                <span class="whitespace-nowrap">{{ t('execution.basic.endTime') }}
                   <Colon class="mr-1.5" />
                 </span>
                 <span class="text-text-content">{{ item?.endDate || "--" }}</span>
@@ -930,7 +936,7 @@ const reportIntervalSelectProps = {
                           class="flex-1"
                           style="max-width: 180px;"
                           :selectProps="selectProps"
-                          placeholder="执行时长"
+                          placeholder="{{ t('execution.messages.executionDuration') }}"
                           @blur="editDuration($event, item)" />
                       </template>
                     </div>
@@ -987,7 +993,7 @@ const reportIntervalSelectProps = {
                       <div
                         class="px-2.25 py-1.5  rounded-l text-text-sub-content flex items-center"
                         style="min-width: 90px;">
-                        <Icon class="mr-1 text-4.5 text-status-pending" icon="icon-QPS" /><span>QPS</span>
+                        <Icon class="mr-1 text-4.5 text-status-pending" icon="icon-QPS" /><span>{{ t('execution.infoCard.qps') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{ getNumFixed(item?.sampleSummaryInfo?.ops) }}
@@ -997,7 +1003,7 @@ const reportIntervalSelectProps = {
                       <div
                         class="px-2.25 py-1.5 rounded-l text-text-sub-content flex items-center"
                         style="min-width: 90px;">
-                        <Icon class="mr-1 text-4.5 text-status-success" icon="icon-RT" /><span>AVG/RT</span>
+                        <Icon class="mr-1 text-4.5 text-status-success" icon="icon-RT" /><span>{{ t('execution.infoCard.avgResponseTime') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{
@@ -1010,7 +1016,7 @@ const reportIntervalSelectProps = {
                       <div
                         class="px-2.25 py-1.5  rounded-l text-text-sub-content flex items-center"
                         style="min-width: 90px;">
-                        <Icon class="mr-1 text-4.5 text-status-warn" icon="icon-TPS" /><span>TPS</span>
+                        <Icon class="mr-1 text-4.5 text-status-warn" icon="icon-TPS" /><span>{{ t('execution.infoCard.tps') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{ getNumFixed(item?.sampleSummaryInfo?.tps) }}
@@ -1020,7 +1026,7 @@ const reportIntervalSelectProps = {
                       <div
                         class="px-2.25 py-1.5 rounded-l text-text-sub-content flex items-center"
                         style="min-width: 90px;">
-                        <Icon class="mr-1 text-4.5 text-status-error" icon="icon-cuowushuai1" /><span>错误率</span>
+                        <Icon class="mr-1 text-4.5 text-status-error" icon="icon-cuowushuai1" /><span>{{ t('execution.basic.errorRate') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{
@@ -1032,20 +1038,20 @@ const reportIntervalSelectProps = {
               </div>
               <div class="flex leading-7 justify-center mx-5 flex-none" style="width:40%">
                 <div class="flex w-1/2">
-                  <div class="text-text-sub-content space-y-1 flex-none w-15">
-                    <div class="whitespace-nowrap h-7">
-                      脚本名称
-                      <Colon />
+                                      <div class="text-text-sub-content space-y-1 flex-none w-15">
+                      <div class="whitespace-nowrap h-7">
+                        {{ t('execution.basic.scriptName') }}
+                        <Colon />
+                      </div>
+                      <div class="whitespace-nowrap h-7">
+                        {{ t('execution.basic.priority') }}
+                        <Colon />
+                      </div>
+                      <div class="whitespace-nowrap h-7">
+                        {{ t('execution.messages.modifiedBy') }}
+                        <Colon />
+                      </div>
                     </div>
-                    <div class="whitespace-nowrap h-7">
-                      优先级
-                      <Colon />
-                    </div>
-                    <div class="whitespace-nowrap h-7">
-                      修改人
-                      <Colon />
-                    </div>
-                  </div>
                   <div class="ml-2 space-y-1" style="width: calc(100% - 68px);min-width:160px">
                     <div class="truncate h-7" :title="item?.scriptName">
                       <template v-if="item?.scriptName">
@@ -1084,22 +1090,22 @@ const reportIntervalSelectProps = {
                       <div class="truncate cursor-pointer" :title="item?.lastModifiedByName">
                         {{ item?.lastModifiedByName || "--" }}
                       </div>
-                      <span class="ml-2 flex-none">{{ item?.lastModifiedDate || "--" }}修改</span>
+                      <span class="ml-2 flex-none">{{ item?.lastModifiedDate || "--" }}{{ t('execution.messages.modified') }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="flex ml-5 flex-1 ">
                   <div class="text-text-sub-content leading-7 space-y-1">
                     <div class="whitespace-nowrap h-7">
-                      报告间隔
+                      {{ t('execution.messages.reportInterval') }}
                       <Colon />
                     </div>
                     <div class="whitespace-nowrap h-7">
-                      忽略断言
+                      {{ t('execution.messages.ignoreAssertions') }}
                       <Colon />
                     </div>
                     <div class="whitespace-nowrap h-7">
-                      更新测试结果
+                      {{ t('execution.messages.updateTestResult') }}
                       <Colon />
                     </div>
                   </div>
@@ -1161,22 +1167,22 @@ const reportIntervalSelectProps = {
               <template
                 v-if="['CREATED', 'STOPPED', 'FAILED', 'COMPLETED', 'TIMEOUT'].includes(item?.status.value) && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleRestart(item)">
-                  <Icon icon="icon-huifu" class="mr-2" /><span>启动</span>
+                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
                 </a>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
-                  <Icon icon="icon-huifu" class="mr-2" /><span>启动</span>
+                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
                 </span>
               </template>
               <template v-if="['PENDING', 'RUNNING'].includes(item?.status.value) && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleStop(item)">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>停止</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
                 </a>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>停止</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
                 </span>
               </template>
               <Dropdown

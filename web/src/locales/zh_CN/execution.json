@@ -1,47 +1,57 @@
 {
-  "basic": {
-    "execute": "执行",
-    "name": "名称",
-    "type": "类型",
-    "scenario": "脚本",
-    "configure": "配置",
-    "status": "状态",
-    "creator": "添加人",
-    "createdTime": "添加时间",
-    "concurrency": "并发数",
-    "startTime": "开始时间",
-    "endTime": "结束时间",
-    "executionTime": "执行时长（秒）",
-    "iterations": "迭代次数",
-    "errorRate": "错误率",
-    "scriptName": "脚本名称",
-    "priority": "优先级"
-  },
-  "actions": {
-    "createExecution": "添加执行",
-    "terminateExecution": "终止执行",
-    "retry": "重新执行",
-    "viewReport": "查看报告",
-    "immediately": "立即执行",
-    "timing": "定时执行"
-  },
-  "search": {
-    "executionName": "查询执行名称",
-    "inputName": "请输入名称",
-    "selectScript": "选择脚本",
-    "selectProject": "选择项目/服务"
-  },
-  "infoCard": {
-    "concurrency": "并发数(VU)",
-    "qps": "每秒查询数 (QPS)",
-    "tps": "每秒事务数 (TPS)",
-    "avgResponseTime": "平均响应时间(AVG RT)",
-    "errorRate": "错误率",
-    "executedTime": "已执行时间",
-    "iterations": "已迭代次数",
-    "percentileP90": "百分位P90"
-  },
-  "tips": {
+  "execution": {
+    "basic": {
+      "execute": "执行",
+      "name": "名称",
+      "type": "类型",
+      "scenario": "脚本",
+      "configure": "配置",
+      "status": "状态",
+      "creator": "添加人",
+      "createdTime": "添加时间",
+      "concurrency": "并发数",
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "executionTime": "执行时长（秒）",
+      "iterations": "迭代次数",
+      "errorRate": "错误率",
+      "scriptName": "脚本名称",
+      "priority": "优先级"
+    },
+    "actions": {
+      "createExecution": "添加执行",
+      "terminateExecution": "终止执行",
+      "retry": "重新执行",
+      "viewReport": "查看报告",
+      "immediately": "立即执行",
+      "timing": "定时执行"
+    },
+    "search": {
+      "executionName": "查询执行名称",
+      "inputName": "请输入名称",
+      "selectScript": "选择脚本",
+      "selectProject": "选择项目/服务"
+    },
+    "infoCard": {
+      "concurrency": "并发数(VU)",
+      "qps": "每秒查询数 (QPS)",
+      "tps": "每秒事务数 (TPS)",
+      "avgResponseTime": "平均响应时间(AVG RT)",
+      "errorRate": "错误率",
+      "executedTime": "已执行时间",
+      "iterations": "已迭代次数",
+      "percentileP90": "百分位P90"
+    },
+    "tips": {
+      "concurrency": "并发数(VU)：同时执行的虚拟用户数",
+      "qps": "每秒查询数 (QPS)：每秒执行的查询数",
+      "tps": "每秒事务数 (TPS)：每秒执行的事务数",
+      "avgResponseTime": "平均响应时间(AVG RT)：所有请求的平均响应时间",
+      "errorRate": "错误率：错误请求数占总请求数的比例",
+      "executedTime": "已执行时间：执行开始到结束的时间",
+      "iterations": "已迭代次数：执行过程中已经完成的迭代次数",
+      "percentileP90": "百分位P90：90%的请求响应时间小于等于该值"
+    },
     "maxIterations": "当前最大迭代次数支持 100,000,000,000",
     "priorityRange": "优先级高的最先被执行，值范围：0~2147483647，值越大优先级越高",
     "concurrencyNodes": "每1万并发需要1个测试节点"
