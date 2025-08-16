@@ -242,6 +242,22 @@
     "chartInfo": {
       "scriptType": "Script Type",
       "executionStatus": "Execution Status"
+    },
+    "add": {
+      "name": "Name",
+      "script": "Script",
+      "type": "Type",
+      "config": "Configuration",
+      "enterExecutionName": "Please enter execution name, max 100 characters",
+      "enterExecutionNameRequired": "Please enter execution name",
+      "selectExecutionScript": "Please select execution script",
+      "selectScript": "Please select script",
+      "selectTestType": "Please select test type",
+      "selectTestTypeRequired": "Please select test type",
+      "save": "Save",
+      "cancel": "Cancel",
+      "modifySuccess": "Modified successfully",
+      "addSuccess": "Added successfully"
     }
   }
 } 

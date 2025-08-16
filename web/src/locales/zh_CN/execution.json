@@ -212,6 +212,22 @@
     "chartInfo": {
       "scriptType": "脚本类型",
       "executionStatus": "执行状态"
+    },
+    "add": {
+      "name": "名称",
+      "script": "脚本",
+      "type": "类型",
+      "config": "配置",
+      "enterExecutionName": "请输入执行名称，最多100字符",
+      "enterExecutionNameRequired": "请输入执行名称",
+      "selectExecutionScript": "请选择执行脚本",
+      "selectScript": "请选择脚本",
+      "selectTestType": "请选择测试类型",
+      "selectTestTypeRequired": "请选择测试类型",
+      "save": "保存",
+      "cancel": "取消",
+      "modifySuccess": "修改成功",
+      "addSuccess": "添加成功"
     }
   }
 } 
