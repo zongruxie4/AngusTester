@@ -42,7 +42,7 @@ const state = reactive<{
 const emit = defineEmits<{(e:'close'):void, (e: 'success'):void}>();
 
 const headers = {
-  authorization: `Bearer ${cookieUtils.get('access_token')}`
+  authorization: `Bearer ${cookieUtils.getTokenInfo().access_token}`
 };
 
 const uploadInput = ref();

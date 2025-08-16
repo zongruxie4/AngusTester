@@ -44,7 +44,7 @@ const loadData = async () => {
 const accessToken = ref();
 const docOrigin = ref();
 onMounted(async () => {
-  accessToken.value = cookieUtils.get('access_token');
+  accessToken.value = cookieUtils.getTokenInfo().access_token;
   // docOrigin.value = await site.getUrl('apis');
   docOrigin.value = DomainManager.getInstance().getApiDomain(AppOrServiceRoute.tester);
   loadData();

@@ -144,7 +144,7 @@ const formatTypes = [{
 }];
 
 onMounted(async () => {
-  accessToken.value = cookieUtils.get('access_token');
+  accessToken.value = cookieUtils.getTokenInfo().access_token;
   docOrigin.value = DomainManager.getInstance().getApiDomain('tester');
 });
 

@@ -300,7 +300,7 @@ const copyDownloadUrl = async (record) => {
     // let { url } = file;
     // if (url.includes('/api/')) {
     //   const urlObj = new URL(url);
-    //   urlObj.searchParams.set('access_token', cookieUtils.get('access_token') || '');
+    //   urlObj.searchParams.set('access_token', cookieUtils.getTokenInfo().access_token || '');
     //   url = urlObj.toString();
     // }
     // clipboard.toClipboard(url).then(() => {

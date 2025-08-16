@@ -367,7 +367,7 @@ const formatTypes = computed(() => [{
 }].filter(Boolean));
 
 onMounted(async () => {
-  accessToken.value = cookieUtils.get('access_token');
+  accessToken.value = cookieUtils.getTokenInfo().access_token;
   // docOrigin.value = await site.getUrl('apis');
   docOrigin.value = DomainManager.getInstance().getApiDomain('tester');
   if (props.type === 'API') {

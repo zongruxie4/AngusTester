@@ -82,7 +82,7 @@ const docOrigin = ref();
 onMounted(async () => {
   id.value = route.query.id;
   pat.value = route.query.pat;
-  accessToken.value = cookieUtils.get('access_token');
+  accessToken.value = cookieUtils.getTokenInfo().access_token;
   docOrigin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   await loadData();
 
