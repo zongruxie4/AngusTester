@@ -1,14 +1,75 @@
 {
-    "project": {
-        "name": "Project"
+  "project": {
+    "name": "Project",
+    "project": "Project",
+    "addProject": "Add Project",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project",
+    "projectList": "Project List",
+    "addedProjects": "Added Projects",
+    "projectDescription": "Projects are the basic units for managing and organizing R&D activities, workflows, and various resources. They provide teams with a centralized way to plan, track, report, and accept work progress. The main benefits are as follows:",
+    "confirmDelete": "Are you sure you want to delete project 【{name}】?",
+    "deleteSuccess": "Project deleted successfully",
+    "searchPlaceholder": "Enter search keywords",
+    "adminHint": "Only administrators, creators, and responsible persons can modify and delete projects.",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "noDescription": "No description~",
+    "owner": "Owner",
+    "members": "Members",
+    "allMembers": "All Members",
+    "user": "User",
+    "department": "Department",
+    "group": "Group",
+    "modifyTime": "Modify Time",
+    "edit": "Edit",
+    "delete": "Delete",
+    "myActivity": "My Activity",
+    "allActivity": "All Activity",
+    "agileProjectManagement": "Agile Project Management",
+    "sortByAddTime": "Sort by Add Time",
+    "sortByCreator": "Sort by Creator",
+    "configSoftwareModule": "Configure Software Module",
+    "configManagementSoftwareVersion": "Configure Management Software Version",
+    "configDataTag": "Configure Data Tag",
+    "aboutProject": "About Project",
+    "manageAndOrganizeWork": "Manage and Organize Work",
+    "manageAndOrganizeWorkDesc": "By adding projects, teams can choose different project templates and divide work into multiple phases and subtasks to meet structured management requirements.",
+    "promoteTeamCollaboration": "Promote Team Collaboration",
+    "promoteTeamCollaborationDesc": "Projects provide team members with a centralized management platform where all related resources, tasks, documents, and communications can be conducted, facilitating collaboration and communication.",
+    "trackAndReportProgress": "Track and Report Progress",
+    "trackAndReportProgressDesc": "Through projects, teams can track the progress of each task in real-time, understand current work status and remaining workload, and generate various reports based on projects, such as resource statistics and efficiency analysis.",
+    "improveWorkTransparency": "Improve Work Transparency",
+    "improveWorkTransparencyDesc": "Provides rich visualization tools such as kanban boards and reports to help teams and management clearly understand project team members' progress and bottlenecks.",
+    "projectTeamInfoSharing": "Project Team Information Sharing",
+    "projectTeamInfoSharingDesc": "All project-related information is centralized in one place, where team members and stakeholders can access it anytime, ensuring information visibility.",
+    "riskAndIssueManagement": "Risk and Issue Management",
+    "riskAndIssueManagementDesc": "Helps teams identify and track potential risks and issues, develop corresponding response strategies, track and resolve encountered problems, ensuring smooth project progress.",
+    "projectProcess": "Project Process",
+    "addProjectStep": {
+      "title": "Add Project",
+      "text": "Establish a basic unit for managing and organizing development and testing activities. Provides teams with a centralized way to plan, track, report, and accept work progress."
     },
-    "AI": {
-        "name": "AI"
+    "planIterationAndTest": {
+      "title": "Plan Iteration and Test",
+      "text": "Clarify the responsible person, time, goals, acceptance criteria, etc. for development and testing activities. Help teams carry out activities in an organized manner, ensuring software product quality and reliability."
     },
-    "projectActivity": {
-        "name": "Activity"
+    "developAndTest": {
+      "title": "Develop and Test Activities",
+      "text": "Carry out development and testing activities according to the plan. Continuously track and manage work tasks, defects, requirements, user stories, tests, and other work items in the project."
     },
-    "projectTrash": {
-        "name": "Trash"
+    "reportResults": {
+      "title": "Report Results",
+      "text": "Summarize all aspects of R&D activities, including project progress, efficiency analysis, data assets, test results, etc. Provide strong support for successful project delivery."
+    },
+    "moreButton": {
+      "module": "Configure Software Module",
+      "version": "Configure Management Software Version",
+      "tag": "Configure Data Tag"
+    },
+    "sortMenu": {
+      "createdDate": "Sort by Add Time",
+      "createdByName": "Sort by Creator"
     }
+  }
 }
