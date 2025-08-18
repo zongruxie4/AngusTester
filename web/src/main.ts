@@ -110,6 +110,7 @@ const getLocaleMessage = async (locale: SupportedLanguage) => {
   const apiShare = (await import(`./locales/${locale}/apiShare.json`)).default;
   const data = (await import(`./locales/${locale}/data.json`)).default;
   const kanban = (await import(`./locales/${locale}/kanban.json`)).default;
+  const project = (await import(`./locales/${locale}/project.json`)).default;
 
   return {
     ...apis,
@@ -120,6 +121,7 @@ const getLocaleMessage = async (locale: SupportedLanguage) => {
     ...apiShare,
     ...data,
     ...kanban,
+    ...project,
     ...common,
   };
 };

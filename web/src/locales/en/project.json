@@ -1,0 +1,14 @@
+{
+    "project": {
+        "name": "Project"
+    },
+    "AI": {
+        "name": "AI"
+    },
+    "projectActivity": {
+        "name": "Activity"
+    },
+    "projectTrash": {
+        "name": "Trash"
+    }
+}

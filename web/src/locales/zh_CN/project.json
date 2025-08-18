@@ -1,0 +1,14 @@
+{
+    "project": {
+        "name": "项目"
+    },
+    "AI": {
+        "name": "助手"
+    },
+    "projectActivity": {
+        "name": "活动"
+    },
+    "projectTrash": {
+        "name": "回收站"
+    }
+}
