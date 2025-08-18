@@ -67,6 +67,46 @@
         "generateReport": "根据报告模版在指定时间生成报告，并通过事件通知到相关人。",
         "viewReport": "查看我添加的或者授权给我的报告及内容。"
       }
+    },
+    "searchPanel": {
+      "quickQuery": "快速查询",
+      "menuItems": {
+        "all": "所有",
+        "myAdded": "我添加的",
+        "myModified": "我修改的",
+        "last1Day": "近1天",
+        "last3Days": "近3天",
+        "last7Days": "近7天"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "resourceTypePlaceholder": "选择资源类型",
+        "resourcePlaceholder": "选择资源",
+        "creatorPlaceholder": "添加人",
+        "createTimeFrom": "添加时间从",
+        "createTimeTo": "添加时间到"
+      },
+      "resourceSelect": {
+        "project": "选择项目",
+        "service": "选择服务",
+        "api": "选择接口",
+        "task": "选择任务",
+        "sprint": "选择迭代",
+        "plan": "选择计划",
+        "case": "选择用例",
+        "execution": "选择执行",
+        "scenario": "选择场景"
+      },
+      "sortMenus": {
+        "byCreateTime": "按添加时间",
+        "byCreator": "按添加人"
+      },
+      "actions": {
+        "addReport": "添加报告",
+        "reportPermission": "报告权限",
+        "sort": "排序",
+        "refresh": "刷新"
+      }
     }
   }
 } 

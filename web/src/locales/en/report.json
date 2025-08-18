@@ -67,6 +67,46 @@
         "generateReport": "Generate reports based on report templates at specified times and notify relevant personnel through events.",
         "viewReport": "View reports I added or reports authorized to me and their content."
       }
+    },
+    "searchPanel": {
+      "quickQuery": "Quick Query",
+      "menuItems": {
+        "all": "All",
+        "myAdded": "My Added",
+        "myModified": "My Modified",
+        "last1Day": "Last 1 Day",
+        "last3Days": "Last 3 Days",
+        "last7Days": "Last 7 Days"
+      },
+      "searchOptions": {
+        "namePlaceholder": "Search name, description",
+        "resourceTypePlaceholder": "Select resource type",
+        "resourcePlaceholder": "Select resource",
+        "creatorPlaceholder": "Creator",
+        "createTimeFrom": "Create time from",
+        "createTimeTo": "Create time to"
+      },
+      "resourceSelect": {
+        "project": "Select project",
+        "service": "Select service",
+        "api": "Select API",
+        "task": "Select task",
+        "sprint": "Select sprint",
+        "plan": "Select plan",
+        "case": "Select case",
+        "execution": "Select execution",
+        "scenario": "Select scenario"
+      },
+      "sortMenus": {
+        "byCreateTime": "By create time",
+        "byCreator": "By creator"
+      },
+      "actions": {
+        "addReport": "Add Report",
+        "reportPermission": "Report Permission",
+        "sort": "Sort",
+        "refresh": "Refresh"
+      }
     }
   }
 } 
