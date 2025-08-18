@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import {  onBeforeMount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 import { NoData } from '@xcan-angus/vue-ui';
 import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
+
+const { t } = useI18n();
 
 import { LineChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -55,7 +58,7 @@ const chartsOption = {
     left: 40
   },
   title: {
-    text: `${props.title} ( ${props.unit} , 总数: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`,
+    text: `${props.title} ( ${props.unit} , ${t('projectActivity.chart.total')}: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`,
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -117,7 +120,7 @@ const chartsOption = {
 
 // Enable data zoom when user click bar.
 watch(() => props.xData, () => {
-  chartsOption.title.text = `${props.title} ( ${props.unit} , 总数: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`;
+  chartsOption.title.text = `${props.title} ( ${props.unit} , ${t('projectActivity.chart.total')}: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`;
   chartsOption.xAxis[0].data = props.xData;
   chartsOption.yAxis[0].max = props.yData.every(element => element === null) ? 100 : 'dataMax';
   chartsOption.series[0].data = props.yData;

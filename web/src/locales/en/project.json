@@ -280,5 +280,59 @@
          "clickToReplaceIcon": "Click to replace icon"
        }
      }
-   }
-}
+    },
+    "projectActivity": {
+     "name": "Activity",
+      "table": {
+        "operator": "Operator",
+        "activityTime": "Activity Time",
+        "projectName": "Project Name",
+        "projectId": "Project ID",
+        "resourceType": "Resource Type",
+        "targetId": "Target ID",
+        "targetName": "Target Name",
+        "activityContent": "Activity Content"
+      },
+      "hints": {
+        "maxResourceActivities": "Each resource only saves the latest {maxResource} activities, exceeding {maxResource} will be automatically deleted."
+      },
+      "chart": {
+        "activity": "Activity",
+        "resourceType": "Resource Type",
+        "add": "Add",
+        "timeUnit": "Time Unit",
+        "total": "Total",
+        "today": "Today",
+        "last7Days": "Last 7 Days",
+        "last1Month": "Last 1 Month",
+        "last1Year": "Last 1 Year"
+      },
+      "searchPanel": {
+        "dropdownMenu": {
+          "fileExtractDataset": "File Extract Dataset",
+          "jdbcExtractDataset": "Jdbc Extract Dataset"
+        },
+        "searchOptions": {
+          "queryActivityDetail": "Query Activity Detail",
+          "selectActivityResource": "Select Activity Resource",
+          "selectProject": "Select Project",
+          "selectOperator": "Select Operator",
+          "activityTimeFrom": "Activity Time From",
+          "activityTimeTo": "Activity Time To"
+        },
+        "quickQuery": {
+          "all": "All",
+          "myActivity": "My Activity",
+          "last1Day": "Last 1 Day",
+          "last3Days": "Last 3 Days",
+          "last7Days": "Last 7 Days"
+        },
+        "ui": {
+          "quickQuery": "Quick Query",
+          "hideStatistics": "Hide Statistics",
+          "viewStatistics": "View Statistics",
+          "refresh": "Refresh"
+        }
+      }
+    }
+  }

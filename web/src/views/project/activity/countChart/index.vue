@@ -33,7 +33,7 @@ const { t } = useI18n();
 
 // User statistics configuration
 const activityGroup = ref<PieSetting[]>([
-  { key: 'target_type', value: t('资源类型'), type: [], color: [] }
+  { key: 'target_type', value: t('projectActivity.chart.resourceType'), type: [], color: [] }
 ]);
 
 const hasPieChart = ref(false);

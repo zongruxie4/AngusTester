@@ -280,5 +280,59 @@
          "clickToReplaceIcon": "点击替换图标"
        }
      }
-   }
-}
+    },
+    "projectActivity": {
+      "name": "活动",
+      "table": {
+        "operator": "活动人",
+        "activityTime": "活动时间",
+        "projectName": "所属项目",
+        "projectId": "所属项目ID",
+        "resourceType": "资源类型",
+        "targetId": "操作资源ID",
+        "targetName": "操作资源",
+        "activityContent": "活动内容"
+      },
+      "hints": {
+        "maxResourceActivities": "每个资源只保存最近{maxResource}条活动，超过{maxResource}条时将自动被删除。"
+      },
+      "chart": {
+        "activity": "活动",
+        "resourceType": "资源类型",
+        "add": "添加",
+        "timeUnit": "时间单位",
+        "total": "总数",
+        "today": "今日",
+        "last7Days": "近7天",
+        "last1Month": "近1月",
+        "last1Year": "近1年"
+      },
+      "searchPanel": {
+        "dropdownMenu": {
+          "fileExtractDataset": "文件提取数据集",
+          "jdbcExtractDataset": "Jdbc提取数据集"
+        },
+        "searchOptions": {
+          "queryActivityDetail": "查询活动详情",
+          "selectActivityResource": "选择活动资源",
+          "selectProject": "选择项目",
+          "selectOperator": "选择活动人",
+          "activityTimeFrom": "活动时间从",
+          "activityTimeTo": "活动时间到"
+        },
+        "quickQuery": {
+          "all": "全部",
+          "myActivity": "我的活动",
+          "last1Day": "近1天",
+          "last3Days": "近3天",
+          "last7Days": "近7天"
+        },
+        "ui": {
+          "quickQuery": "快速查询",
+          "hideStatistics": "收起统计",
+          "viewStatistics": "查看统计",
+          "refresh": "刷新"
+        }
+      }
+    }
+  }

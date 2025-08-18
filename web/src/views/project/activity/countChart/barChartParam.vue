@@ -53,11 +53,11 @@ const dataType = ref(props.dateType);
       size="small"
       class="whitespace-nowrap"
       @change="radioGroupChange">
-      <RadioButton value="DAY">{{ t('今日') }}</RadioButton>
-      <RadioButton value="WEEK">{{ t('近7天') }}</RadioButton>
-      <RadioButton value="MONTH">{{ t('近1月') }}</RadioButton>
+      <RadioButton value="DAY">{{ t('projectActivity.chart.today') }}</RadioButton>
+      <RadioButton value="WEEK">{{ t('projectActivity.chart.last7Days') }}</RadioButton>
+      <RadioButton value="MONTH">{{ t('projectActivity.chart.last1Month') }}</RadioButton>
       <template v-if="!['ApiLogs', 'OperationLog'].includes(props.resource)">
-        <RadioButton value="YEAR">{{ t('近1年') }}</RadioButton>
+        <RadioButton value="YEAR">{{ t('projectActivity.chart.last1Year') }}</RadioButton>
       </template>
     </RadioGroup>
     <DatePicker
