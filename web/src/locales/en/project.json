@@ -336,6 +336,7 @@
     }
   },
   "projectTrash": {
+    "name": "Trash",
     "messages": {
       "recoverAllSuccess": "All items recovered successfully",
       "deleteAllSuccess": "All items deleted successfully",
@@ -358,5 +359,8 @@
       "recover": "Recover",
       "delete": "Delete"
     }
+  },
+  "AI": {
+    "name": "AI Assistant"
   }
 }

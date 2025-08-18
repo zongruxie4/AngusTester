@@ -336,6 +336,7 @@
     }
   },
   "projectTrash": {
+    "name": "回收站",
     "messages": {
       "recoverAllSuccess": "全部还原成功",
       "deleteAllSuccess": "全部删除成功",
@@ -358,5 +359,8 @@
       "recover": "还原",
       "delete": "删除"
     }
+  },
+  "AI": {
+    "name": "AI助手"
   }
 }
