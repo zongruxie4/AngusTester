@@ -407,7 +407,7 @@ const columns = [
                   :disabled="!record.currentAuths.includes('MODIFY')"
                   @click="addReport(record.id)">
                   <Icon icon="icon-xiugai" class="mr-1" />
-                  {{ t('reportHome.actions.edit') }}
+                  {{ t('actions.edit') }}
                 </Button>
                 <Button
                   type="text"
