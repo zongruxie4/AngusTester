@@ -460,7 +460,7 @@ onMounted(() => {
       v-if="props.projectId"
       v-model:activeKey="activeKey"
       size="small">
-      <TabPane key="basic" :tab="t('project.projectEdit.tab.basic')">
+      <TabPane key="basic" :tab="t('project.projectEdit.tabs.basicInfo')">
         <Form
           ref="formRef"
           labelAlign="right"
@@ -610,14 +610,14 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('project.projectEdit.form.description')"
+                :label="t('project.projectEdit.form.projectDescription')"
                 name="description"
                 :rules="[{validator: validateDesc}]">
                 <RichEditor
                   ref="descRef"
                   v-model:value="projectData.description"
                   :toolbarOptions="toolbarOptions"
-                  :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}" />
+                  :options="{placeholder: t('project.projectEdit.form.projectDescriptionPlaceholder')}" />
               </FormItem>
             </div>
             <div class="w-100 pt-12">
@@ -668,16 +668,16 @@ onMounted(() => {
           </FormItem>
         </Form>
       </TabPane>
-      <TabPane key="module" :tab="t('project.projectEdit.tab.module')">
+      <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
         <Module :projectId="props.projectId" :projectName="projectData.name" />
       </TabPane>
-      <TabPane key="version" :tab="t('project.projectEdit.tab.version')">
+      <TabPane key="version" :tab="t('project.projectEdit.tabs.version')">
         <Version
           :projectId="props.projectId"
           class="!p-0"
           :showDetail="false" />
       </TabPane>
-      <TabPane key="biaoqian" :tab="t('project.projectEdit.tab.tag')">
+      <TabPane key="biaoqian" :tab="t('project.projectEdit.tabs.tag')">
         <Tags :projectId="props.projectId" />
       </TabPane>
     </Tabs>

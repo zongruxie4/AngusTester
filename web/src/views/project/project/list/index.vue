@@ -371,7 +371,7 @@ defineExpose({
               <div class="flex-1 space-y-2.5">
                 <div class="flex">
                   <span>{{ t('project.owner') }}:<span>{{ item.ownerName }}</span></span>
-                  <div class="ml-6">{{ t('project.member') }}: </div>
+                  <div class="ml-6">{{ t('project.members') }}：</div>
                   <div class="inline-flex space-x-1 flex-1 flex-wrap">
                     <Tooltip
                       v-for="(avatars, idx) in item.showMembers.USER || []"

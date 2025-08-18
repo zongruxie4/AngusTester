@@ -126,7 +126,10 @@
           "uploadIcon": "Upload Icon"
         },
         "tabs": {
-          "basicInfo": "Basic Information"
+          "basicInfo": "Basic Information",
+          "module": "Software Modules",
+          "version": "Software Version",
+          "tag": "Data Tags"
         },
         "module": {
           "title": "Software Modules",
