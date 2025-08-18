@@ -176,8 +176,50 @@
           "addSuccess": "Tag added successfully",
           "updateSuccess": "Updated successfully",
           "deleteSuccess": "Tag deleted successfully",
-          "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
-        }
-      }
-    }
-  }
+                   "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
+       }
+     },
+     "projectDetail": {
+       "projectTypeTip": {
+         "agile": {
+           "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
+           "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+         },
+         "general": {
+           "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
+           "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+         },
+         "testing": {
+           "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
+           "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+         }
+       },
+       "projectTypeName": {
+         "agile": "Agile Project Management",
+         "general": "General Project Management",
+         "testing": "Testing Project Management"
+       },
+       "messages": {
+         "updateSuccess": "Project updated successfully",
+         "addSuccess": "Project added successfully"
+       },
+       "tabs": {
+         "basicInfo": "Basic Information",
+         "module": "Software Modules",
+         "version": "Software Version",
+         "tag": "Data Tags"
+       },
+       "form": {
+         "projectName": "Project Name",
+         "timePlan": "Time Plan",
+         "owner": "Owner",
+         "projectMembers": "Project Members",
+         "user": "User",
+         "group": "Group",
+         "department": "Department",
+         "projectDescription": "Project Description",
+         "noDescription": "No description~"
+       }
+     }
+   }
+}
