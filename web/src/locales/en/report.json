@@ -1,0 +1,42 @@
+{
+  "reportHome": {
+    "messages": {
+      "deleteSuccess": "Delete successful",
+      "getTokenFailed": "Failed to get token",
+      "shareLinkCopied": "Share link copied to clipboard",
+      "generatingReport": "Generating report"
+    },
+    "modal": {
+      "deleteReport": "Delete Report",
+      "confirmDelete": "Are you sure you want to delete report 【{name}】?",
+      "reportPermission": "Report Permission"
+    },
+    "actions": {
+      "generateNow": "Generate Now",
+      "permission": "Permission",
+      "delete": "Delete",
+      "edit": "Edit",
+      "view": "View"
+    },
+    "table": {
+      "name": "Name",
+      "version": "Version",
+      "template": "Template",
+      "status": "Status",
+      "resourceName": "Resource Name",
+      "resourceType": "Resource Type",
+      "resourceId": "Resource ID",
+      "description": "Description",
+      "creator": "Creator",
+      "createTime": "Create Time",
+      "lastModifier": "Last Modifier",
+      "lastModifyTime": "Last Modify Time",
+      "nextGenerateTime": "Next Generate Time",
+      "actions": "Actions"
+    },
+    "permission": {
+      "onTips": "After enabling permission control, manual authorization is required for corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    }
+  }
+} 

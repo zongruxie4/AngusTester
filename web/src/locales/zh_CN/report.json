@@ -1,0 +1,42 @@
+{
+  "reportHome": {
+    "messages": {
+      "deleteSuccess": "删除成功",
+      "getTokenFailed": "获取token失败",
+      "shareLinkCopied": "已复制分享链接到剪贴板",
+      "generatingReport": "正在生成报告"
+    },
+    "modal": {
+      "deleteReport": "删除报告",
+      "confirmDelete": "确认删除报告【{name}】吗？",
+      "reportPermission": "报告权限"
+    },
+    "actions": {
+      "generateNow": "立即生成",
+      "permission": "权限",
+      "delete": "删除",
+      "edit": "编辑",
+      "view": "查看"
+    },
+    "table": {
+      "name": "名称",
+      "version": "版本",
+      "template": "模板",
+      "status": "状态",
+      "resourceName": "资源名称",
+      "resourceType": "资源类型",
+      "resourceId": "资源ID",
+      "description": "描述",
+      "creator": "添加人",
+      "createTime": "添加时间",
+      "lastModifier": "最后修改人",
+      "lastModifyTime": "最后修改时间",
+      "nextGenerateTime": "下次生成时间",
+      "actions": "操作"
+    },
+    "permission": {
+      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
+      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+    }
+  }
+} 

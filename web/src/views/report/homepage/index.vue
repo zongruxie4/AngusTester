@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button, Popover } from 'ant-design-vue';
 import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
 import { report } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { getCurrentPage } from '@/utils/utils';
 
@@ -170,8 +173,8 @@ const actionClick = (action, report) => {
 // 删除
 const deleteReport = (report) => {
   modal.confirm({
-    title: '删除报告',
-    content: `确认删除报告【${report.name}】吗？`,
+    title: t('reportHome.modal.deleteReport'),
+    content: t('reportHome.modal.confirmDelete', { name: report.name }),
     onOk () {
       return report.deleteReport([report.id]).then((resp) => {
         const [error] = resp;
@@ -181,7 +184,7 @@ const deleteReport = (report) => {
 
         pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
         loadDataList();
-        notification.success('删除成功');
+        notification.success(t('reportHome.messages.deleteSuccess'));
       });
     }
   });
@@ -191,12 +194,12 @@ const deleteReport = (report) => {
 const getShareToken = async (report) => {
   const [error, { data }] = await report.getReportShareToken(report.id);
   if (error) {
-    notification.error('获取token失败');
+    notification.error(t('reportHome.messages.getTokenFailed'));
     return;
   }
   const url = data;
   await toClipboard(url);
-  notification.success('已复制分享链接到剪贴板');
+  notification.success(t('reportHome.messages.shareLinkCopied'));
 };
 
 const addReport = (reportId?: string) => {
@@ -228,7 +231,7 @@ const generateReport = async (report) => {
   if (error) {
     return;
   }
-  notification.success('正在生成报告');
+  notification.success(t('reportHome.messages.generatingReport'));
   loadDataList();
 };
 const projectId = computed(() => {
@@ -237,19 +240,19 @@ const projectId = computed(() => {
 
 const actionItems = [
   {
-    name: '立即生成',
+    name: t('reportHome.actions.generateNow'),
     key: 'generate',
     icon: 'icon-guanlijiedian',
     permission: 'GENERATE'
   },
   {
-    name: '权限',
+    name: t('reportHome.actions.permission'),
     key: 'auth',
     icon: 'icon-quanxian1',
     permission: 'GRANT'
   },
   {
-    name: '删除',
+    name: t('actions.delete'),
     key: 'delete',
     icon: 'icon-qingchu',
     permission: 'DELETE'
@@ -259,18 +262,18 @@ const actionItems = [
 const columns = [
   {
     dataIndex: 'name',
-    title: '名称',
+    title: t('reportHome.table.name'),
     sorter: true
   },
   {
     dataIndex: 'version',
-    title: '版本',
+    title: t('reportHome.table.version'),
     width: 70,
     sorter: true
   },
   {
     dataIndex: 'template',
-    title: '模板',
+    title: t('reportHome.table.template'),
     customRender: ({ text }) => {
       return text?.message;
     },
@@ -278,7 +281,7 @@ const columns = [
   },
   {
     dataIndex: 'status',
-    title: '状态',
+    title: t('reportHome.table.status'),
     customRender: ({ text }) => {
       return text?.message;
     },
@@ -286,13 +289,13 @@ const columns = [
   },
   {
     dataIndex: 'targetName',
-    title: '资源名称',
+    title: t('reportHome.table.resourceName'),
     groupName: 'resource',
     hide: false
   },
   {
     dataIndex: 'targetType',
-    title: '资源类型',
+    title: t('reportHome.table.resourceType'),
     groupName: 'resource',
     hide: true,
     customRender: ({ text }) => {
@@ -301,18 +304,18 @@ const columns = [
   },
   {
     dataIndex: 'targetId',
-    title: '资源ID',
+    title: t('reportHome.table.resourceId'),
     groupName: 'resource',
     hide: true
   },
   {
     dataIndex: 'description',
-    title: '描述',
+    title: t('reportHome.table.description'),
     ellipsis: true
   },
   {
     dataIndex: 'createdBy',
-    title: '添加人',
+    title: t('reportHome.table.creator'),
     groupName: 'creat',
     hide: false,
     width: 90,
@@ -321,7 +324,7 @@ const columns = [
   },
   {
     dataIndex: 'createdDate',
-    title: '添加时间',
+    title: t('reportHome.table.createTime'),
     groupName: 'creat',
     hide: true,
     width: 160,
@@ -329,7 +332,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedBy',
-    title: '最后修改人',
+    title: t('reportHome.table.lastModifier'),
     groupName: 'creat',
     hide: true,
     width: 130,
@@ -338,7 +341,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedDate',
-    title: '最后修改时间',
+    title: t('reportHome.table.lastModifyTime'),
     groupName: 'creat',
     hide: true,
     width: 160,
@@ -346,7 +349,7 @@ const columns = [
   },
   {
     dataIndex: 'nextGenerationDate',
-    title: '下次生成时间',
+    title: t('reportHome.table.nextGenerateTime'),
     groupName: 'creat',
     hide: true,
     width: 160,
@@ -354,7 +357,7 @@ const columns = [
   },
   {
     dataIndex: 'action',
-    title: '操作',
+    title: t('reportHome.table.actions'),
     width: 160
   }
 ];
@@ -404,14 +407,14 @@ const columns = [
                   :disabled="!record.currentAuths.includes('MODIFY')"
                   @click="addReport(record.id)">
                   <Icon icon="icon-xiugai" class="mr-1" />
-                  编辑
+                  {{ t('reportHome.actions.edit') }}
                 </Button>
                 <Button
                   type="text"
                   size="small"
                   @click="viewReport(record)">
                   <Icon icon="icon-chakanhuodong" class="mr-1" />
-                  查看
+                  {{ t('reportHome.actions.view') }}
                 </Button>
                 <Dropdown
                   :menuItems="actionItems"
@@ -456,9 +459,9 @@ const columns = [
         :updateUrl="`${TESTER}/report/auth`"
         :enabledUrl="`${TESTER}/report/${selectId}/auth/enabled`"
         :initStatusUrl="`${TESTER}/report/${selectId}/auth/status`"
-        onTips="开启权限控制后，需要手动授权后才会有相应操作权限。"
-        offTips="无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-        title="报告权限"
+        :onTips="t('reportHome.permission.onTips')"
+        :offTips="t('reportHome.permission.offTips')"
+        :title="t('reportHome.modal.reportPermission')"
         @change="authFlagChange" />
     </AsyncComponent>
     <AsyncComponent :visible="reportModalVisible">
