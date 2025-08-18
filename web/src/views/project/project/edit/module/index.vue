@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { duration } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
@@ -7,6 +8,8 @@ import { debounce } from 'throttle-debounce';
 import { modules } from '@/api/tester';
 
 import { travelTreeData } from './utils';
+
+const { t } = useI18n();
 
 type TagItem = {
   id: string;
@@ -177,7 +180,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('tips.modifySuccess'));
   editId.value = undefined;
   loadData();
 };
@@ -193,7 +196,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: `确定删除模块【${data.name}】吗？`,
+    content: t('project.projectEdit.module.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -204,7 +207,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success('删除模块成功');
+      notification.success(t('project.projectEdit.module.deleteSuccess'));
       // 删除列表中该条数据
       // dataList.value.splice(index, 1);
       // total.value -= 1;
@@ -317,7 +320,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('tips.moveSuccess'));
   loadData();
 };
 
@@ -362,11 +365,11 @@ onMounted(() => {
 <template>
   <div class="w-full h-full leading-5 text-3 overflow-auto">
     <div class="mb-6">
-      <div class="text-3.5 font-medium mb-2.5">关于软件模块</div>
-      <div>软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。</div>
+      <div class="text-3.5 font-medium mb-2.5">{{ t('project.projectEdit.module.about') }}</div>
+      <div>{{ t('project.projectEdit.module.aboutDescription') }}</div>
     </div>
 
-    <div class="text-3.5 font-medium">已添加的软件模块</div>
+    <div class="text-3.5 font-medium">{{ t('project.projectEdit.module.addedModules') }}</div>
 
     <Spin
       :spinning="loading"
@@ -376,16 +379,16 @@ onMounted(() => {
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../../assets/images/nodata.png">
           <div v-if="!props.disabled" class="flex items-center text-theme-sub-content text-3 leading-7">
-            <span>您尚未添加任何模块，立即</span>
+            <span>{{ t('project.projectEdit.module.noModules') }}</span>
             <Button
               type="link"
               size="small"
               class="text-3 py-0 px-1"
               @click="toCreate">
-              添加模块
+              {{ t('project.projectEdit.module.addModule') }}
             </Button>
           </div>
-          <div v-else class="text-theme-sub-content text-3 leading-7">您尚未添加任何模块。</div>
+          <div v-else class="text-theme-sub-content text-3 leading-7">{{ t('project.projectEdit.module.noModulesDescription') }}</div>
         </div>
 
         <template v-else>
@@ -393,7 +396,7 @@ onMounted(() => {
             <div class="flex items-center">
               <Input
                 v-model:value="inputValue"
-                placeholder="请输入模块名称"
+                :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
                 class="w-75 mr-2"
                 trimAll
                 :allowClear="true"
@@ -420,14 +423,14 @@ onMounted(() => {
                 class="flex space-x-1"
                 @click="toCreate">
                 <Icon icon="icon-jia" />
-                添加模块
+                {{ t('project.projectEdit.module.addModule') }}
               </Button>
 
               <IconRefresh @click="refresh">
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">刷新</span>
+                    <span class="ml-1">{{ t('project.projectEdit.module.refresh') }}</span>
                   </div>
                 </template>
               </IconRefresh>
@@ -452,7 +455,7 @@ onMounted(() => {
                 <div v-if="editId === id" class="flex items-center">
                   <Input
                     ref="nameInputRef"
-                    placeholder="请输入模块名称"
+                    :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
                     class="flex-1 mr-2 bg-white"
                     trim
                     :value="name"
@@ -465,7 +468,7 @@ onMounted(() => {
                     size="small"
                     class="px-0 py-0 mr-1"
                     @click="cancelEdit">
-                    取消
+                    {{ t('project.projectEdit.module.cancel') }}
                   </Button>
                 </div>
                 <div v-else class="flex items-center space-x-2 tree-title">
@@ -483,27 +486,27 @@ onMounted(() => {
                       <Menu class="w-50" @click="onMenuClick($event, {name, id, index, ids, level, childLevels, pid})">
                         <MenuItem v-if="level < 4" key="add">
                           <Icon icon="icon-jia" />
-                          新建子模块
+                          {{ t('project.projectEdit.module.newSubModule') }}
                         </MenuItem>
                         <MenuItem v-if="index > 0 || +pid > 0" key="up">
                           <Icon icon="icon-shangyi" />
-                          {{ index < 1 ? '移到上一层' : '上移' }}
+                          {{ index < 1 ? t('project.projectEdit.module.moveUp') : t('project.projectEdit.module.moveUpOne') }}
                         </MenuItem>
                         <MenuItem v-if="!isLast" key="down">
                           <Icon icon="icon-xiayi" />
-                          下移
+                          {{ t('project.projectEdit.module.moveDown') }}
                         </MenuItem>
                         <MenuItem key="move">
                           <Icon icon="icon-yidong" />
-                          移动
+                          {{ t('project.projectEdit.module.move') }}
                         </MenuItem>
                         <MenuItem key="edit">
                           <Icon icon="icon-bianji" />
-                          编辑
+                          {{ t('actions.edit') }}
                         </MenuItem>
                         <MenuItem key="del">
                           <Icon icon="icon-qingchu" />
-                          删除
+                          {{ t('actions.delete') }}
                         </MenuItem>
                       </Menu>
                     </template>

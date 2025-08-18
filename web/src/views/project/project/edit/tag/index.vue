@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { duration } from '@xcan-angus/infra';
 import { AsyncComponent, Hints, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { tag } from '@/api/tester';
+
+const { t } = useI18n();
 
 type TagItem = {
   id: string;
@@ -174,7 +177,7 @@ const pressEnter = async (id: string, index: number, event: { target: { value: s
   }
 
   dataList.value[index] = format({ id: dataList.value[index].id, name: value });
-  notification.success('修改成功');
+          notification.success(t('project.projectEdit.tag.updateSuccess'));
   editId.value = undefined;
 };
 
@@ -189,7 +192,7 @@ const hadleblur = (id: string, index: number, event: { target: { value: string }
 // 删除弹框
 const toDelete = (data: TagItem, index:number) => {
   modal.confirm({
-    content: `确定删除标签【${data.name}】吗？`,
+    content: t('project.projectEdit.tag.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       loading.value = true;
@@ -199,7 +202,7 @@ const toDelete = (data: TagItem, index:number) => {
         return;
       }
 
-      notification.success('删除标签成功');
+              notification.success(t('project.projectEdit.tag.deleteSuccess'));
       // 删除列表中该条数据
       dataList.value.splice(index, 1);
       total.value -= 1;
@@ -257,15 +260,15 @@ const showLoadMore = computed(() => {
 <template>
   <div class="w-full h-full leading-5 text-3 overflow-auto">
     <div class="mb-6">
-      <div class="text-3.5 font-medium mb-2.5">关于数据标签</div>
-      <div>数据标签可以方便对任务、功能用例等分类、提高检索和管理效率，促进团队高效协作。示例：边界测试、业务流程测试、错误处理、输入验证、输出验证、异常条件测试、安全性测试、兼容性测试等。</div>
+      <div class="text-3.5 font-medium mb-2.5">{{ t('project.projectEdit.tag.about') }}</div>
+      <div>{{ t('project.projectEdit.tag.aboutDescription') }}</div>
     </div>
 
     <div class="flex space-x-2 items-center">
-      <div class="text-3.5 font-medium">已添加的数据标签</div>
+      <div class="text-3.5 font-medium">{{ t('project.projectEdit.tag.addedTags') }}</div>
       <Hints
         v-if="!props.disabled"
-        text="回车或鼠标失焦时保存添加标签，双击已存在标签可进入编辑状态。"
+                  :text="t('project.projectEdit.tag.addTagHint')"
         class="flex-1" />
     </div>
 
@@ -277,17 +280,17 @@ const showLoadMore = computed(() => {
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../../assets/images/nodata.png">
           <div v-if="!props.disabled" class="flex items-center text-theme-sub-content text-3 leading-7">
-            <span>您尚未添加任何标签，立即</span>
+            <span>{{ t('project.projectEdit.tag.noTags') }}</span>
             <Button
               type="link"
               size="small"
               class="text-3 py-0 px-1"
               @click="toCreate">
-              添加标签
+              {{ t('project.projectEdit.tag.addTag') }}
             </Button>
           </div>
           <div v-else="props.disabled">
-            您尚未添加任何标签。
+            {{ t('project.projectEdit.tag.noTagsDescription') }}
           </div>
         </div>
         <template v-else>
@@ -295,7 +298,7 @@ const showLoadMore = computed(() => {
             <div class="flex items-center">
               <Input
                 v-model:value="inputValue"
-                placeholder="请输入标签名称"
+                :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
                 class="w-75 mr-2"
                 trimAll
                 :allowClear="true"
@@ -320,14 +323,14 @@ const showLoadMore = computed(() => {
                 class="flex space-x-1"
                 @click="toCreate">
                 <Icon icon="icon-jia" />
-                添加标签
+                {{ t('project.projectEdit.tag.addTag') }}
               </Button>
 
               <IconRefresh @click="refresh">
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">刷新</span>
+                    <span class="ml-1">{{ t('project.projectEdit.tag.refresh') }}</span>
                   </div>
                 </template>
               </IconRefresh>
@@ -345,7 +348,7 @@ const showLoadMore = computed(() => {
               class="mr-3.5 mb-3.5">
               <div v-if="editId === item.id" class="flex items-center">
                 <Input
-                  placeholder="请输入标签名称"
+                  :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
                   class="w-50 mr-2"
                   trim
                   :value="item.name"
@@ -358,7 +361,7 @@ const showLoadMore = computed(() => {
                   size="small"
                   class="px-0 py-0"
                   @click="cancelEdit">
-                  取消
+                  {{ t('actions.cancel') }}
                 </Button>
               </div>
 
