@@ -332,7 +332,31 @@
           "hideStatistics": "收起统计",
           "viewStatistics": "查看统计",
           "refresh": "刷新"
-        }
-      }
+              }
+    }
+  },
+  "projectTrash": {
+    "messages": {
+      "recoverAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功",
+      "recoverSuccess": "还原成功",
+      "deleteSuccess": "删除成功"
+    },
+    "table": {
+      "name": "名称",
+      "creator": "添加人",
+      "deleter": "删除人",
+      "deleteTime": "删除时间",
+      "actions": "操作"
+    },
+    "ui": {
+      "searchPlaceholder": "请输入查询关键字",
+      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",
+      "recoverAll": "全部还原",
+      "deleteAll": "全部删除",
+      "refresh": "刷新",
+      "recover": "还原",
+      "delete": "删除"
     }
   }
+}

@@ -332,7 +332,31 @@
           "hideStatistics": "Hide Statistics",
           "viewStatistics": "View Statistics",
           "refresh": "Refresh"
-        }
-      }
+              }
+    }
+  },
+  "projectTrash": {
+    "messages": {
+      "recoverAllSuccess": "All items recovered successfully",
+      "deleteAllSuccess": "All items deleted successfully",
+      "recoverSuccess": "Item recovered successfully",
+      "deleteSuccess": "Item deleted successfully"
+    },
+    "table": {
+      "name": "Name",
+      "creator": "Creator",
+      "deleter": "Deleter",
+      "deleteTime": "Delete Time",
+      "actions": "Actions"
+    },
+    "ui": {
+      "searchPlaceholder": "Please enter search keywords",
+      "adminHint": "Only administrators and deleters can recover or permanently delete trash data.",
+      "recoverAll": "Recover All",
+      "deleteAll": "Delete All",
+      "refresh": "Refresh",
+      "recover": "Recover",
+      "delete": "Delete"
     }
   }
+}
