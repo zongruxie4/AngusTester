@@ -220,6 +220,65 @@
          "projectDescription": "Project Description",
          "noDescription": "No description~"
        }
+     },
+     "projectAddModal": {
+       "projectTypeTip": {
+         "agile": {
+           "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
+           "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+         },
+         "general": {
+           "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
+           "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+         },
+         "testing": {
+           "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
+           "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+         }
+       },
+       "projectTypeName": {
+         "agile": "Agile Project Management",
+         "general": "General Project Management",
+         "testing": "Testing Project Management"
+       },
+       "validation": {
+         "maxCharacters": "Cannot exceed 2000 characters",
+         "timeRequired": "Please enter time",
+         "ownerRequired": "Please enter owner"
+       },
+       "messages": {
+         "updateSuccess": "Project updated successfully",
+         "addSuccess": "Project added successfully"
+       },
+       "modal": {
+         "editProject": "Edit Project",
+         "addProject": "Add Project"
+       },
+       "form": {
+         "name": "Name",
+         "projectNamePlaceholder": "Project name, maximum 100 characters",
+         "timePlan": "Time Plan",
+         "time": "Time",
+         "timeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
+         "owner": "Owner",
+         "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress promotion, team member collaboration, etc.",
+         "ownerPlaceholder": "Please select project owner",
+         "importExample": "Import Example",
+         "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
+         "yes": "Yes",
+         "no": "No",
+         "members": "Members",
+         "user": "User",
+         "department": "Department",
+         "group": "Group",
+         "membersDescription": "Clearly define project participants, project members will automatically be assigned project data permissions for convenient team collaboration.",
+         "selectUser": "Select User",
+         "selectDepartment": "Select Department",
+         "selectGroup": "Select Group",
+         "description": "Description",
+         "descriptionPlaceholder": "Description, maximum 2000 characters",
+         "clickToReplaceIcon": "Click to replace icon"
+       }
      }
    }
 }
