@@ -37,6 +37,28 @@
     "permission": {
       "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
       "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+    },
+    "globalAuth": {
+      "title": "报告权限",
+      "description": "授权给指定的"功能"操作权限给用户、部门、组，授予权限时"查看"权限是必须的。用户只能授权自己有授权权限的功能。",
+      "tabs": {
+        "user": "用户",
+        "dept": "部门",
+        "group": "组"
+      },
+      "authSet": {
+        "searchPlaceholder": "查询名称",
+        "name": "名称",
+        "permissionControl": "权限控制",
+        "permission": "权限",
+        "loading": "加载中...",
+        "all": "全部"
+      },
+      "groupSet": {
+        "searchUser": "查询用户",
+        "searchDept": "查询部门",
+        "searchGroup": "查询组"
+      }
     }
   }
 } 

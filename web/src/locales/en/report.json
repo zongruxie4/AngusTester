@@ -37,6 +37,28 @@
     "permission": {
       "onTips": "After enabling permission control, manual authorization is required for corresponding operation permissions.",
       "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    },
+    "globalAuth": {
+      "title": "Report Permission",
+      "description": "Grant operation permissions for specified 'functions' to users, departments, and groups. 'View' permission is required when granting permissions. Users can only authorize functions they have permission to authorize.",
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "authSet": {
+        "searchPlaceholder": "Search name",
+        "name": "Name",
+        "permissionControl": "Permission Control",
+        "permission": "Permission",
+        "loading": "Loading...",
+        "all": "All"
+      },
+      "groupSet": {
+        "searchUser": "Search user",
+        "searchDept": "Search department",
+        "searchGroup": "Search group"
+      }
     }
   }
 } 
