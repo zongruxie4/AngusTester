@@ -77,43 +77,43 @@ const transformUnit = (byteStr: string) => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>汇总结果</span>
+      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.execPerf.samplingSummary.title') }}</span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>名称</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.name') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>采样数</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.samplingCount') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>事务数</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.transactionCount') }}</span>
         </div>
 
         <div
           class="w-20 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>每秒事务数</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.tps') }}</span>
         </div>
         <div
           class="w-14 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>错误率</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.errorRate') }}</span>
         </div>
 
         <div
           class="w-65 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>平均/最小/最大/P50/P75/P90/P99/P999(ms)</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.responseTimeStats') }}</span>
         </div>
         <div
           class="w-19 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>下载/秒</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.downloadPerSecond') }}</span>
         </div>
         <div class="w-19 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          <span>上传/秒</span>
+          <span>{{ t('reportPreview.execPerf.samplingSummary.fields.uploadPerSecond') }}</span>
         </div>
       </div>
 

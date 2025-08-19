@@ -437,6 +437,123 @@
            }
          }
        }
+     },
+     "execPerf": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "execInfo": "Execution Information",
+           "execBasicInfo": "Execution Basic Information",
+           "execResult": "Execution Result",
+           "summaryResult": "Summary Result",
+           "samplingIndicators": "Sampling Indicators",
+           "throughput": "Throughput",
+           "concurrency": "Concurrency",
+           "responseTime": "Response Time",
+           "error": "Error",
+           "statusCode": "Status Code",
+           "nodeResources": "Node Resources",
+           "overlayAnalysis": "Overlay Analysis",
+           "logInfo": "Log Information",
+           "schedulingLog": "Execution Scheduling Log",
+           "samplingLog": "Execution Sampling Log"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "testPassed": "Test Passed",
+           "execStatus": "Execution Status",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         },
+         "status": {
+           "passed": "Passed",
+           "failed": "Failed"
+         }
+       },
+       "detail": {
+         "title": "Execution Information",
+         "basicInfo": {
+           "title": "Execution Basic Information",
+           "fields": {
+             "execName": "Execution Name",
+             "scriptName": "Script Name",
+             "testScriptId": "Test Script ID",
+             "plugin": "Plugin",
+             "status": "Status",
+             "type": "Type",
+             "priority": "Priority",
+             "startTime": "Start Time",
+             "endTime": "End Time",
+             "nodeCount": "Node Count",
+             "samplingInterval": "Sampling Interval",
+             "ignoreAssertions": "Ignore Assertions",
+             "updateTestResult": "Update Test Result",
+             "creator": "Creator",
+             "createTime": "Create Time"
+           },
+           "options": {
+             "ignore": "Ignore",
+             "notIgnore": "Not Ignore",
+             "update": "Update",
+             "notUpdate": "Not Update"
+           }
+         },
+         "execResult": {
+           "title": "Execution Result",
+           "fields": {
+             "failureReason": "Failure Reason"
+           }
+         }
+       },
+       "samplingSummary": {
+         "title": "Summary Result",
+         "fields": {
+           "name": "Name",
+           "samplingCount": "Sampling Count",
+           "transactionCount": "Transaction Count",
+           "tps": "TPS",
+           "errorRate": "Error Rate",
+           "responseTimeStats": "Average/Min/Max/P50/P75/P90/P99/P999(ms)",
+           "downloadPerSecond": "Download/Second",
+           "uploadPerSecond": "Upload/Second"
+         }
+       },
+       "sampling": {
+         "title": "Sampling Indicators",
+         "fields": {
+           "exitCode": "Exit Code",
+           "samplingStatus": "Sampling Status",
+           "failureReason": "Failure Reason"
+         }
+       },
+       "log": {
+         "title": "Log Information",
+         "schedulingLog": {
+           "title": "Execution Scheduling Information",
+           "fields": {
+             "schedulingResult": "Scheduling Result",
+             "processExitCode": "Process Exit Code"
+           },
+           "status": {
+             "success": "Success",
+             "failed": "Failed"
+           }
+         },
+         "samplingLog": {
+           "title": "Execution Sampling Information",
+           "fields": {
+             "file": "File"
+           },
+           "messages": {
+             "noProxyInfo": "No proxy access information, connection failed address: "
+           }
+         }
+       }
      }
    }
 } 

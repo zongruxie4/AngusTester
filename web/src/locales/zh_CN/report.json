@@ -436,6 +436,123 @@
            }
          }
        }
+     },
+     "execPerf": {
+       "content": "内容",
+       "catalog": {
+         "title": "目录",
+         "sections": {
+           "execInfo": "执行信息",
+           "execBasicInfo": "执行基本信息",
+           "execResult": "执行结果",
+           "summaryResult": "汇总结果",
+           "samplingIndicators": "采样指标",
+           "throughput": "吞吐量",
+           "concurrency": "并发数",
+           "responseTime": "响应时间",
+           "error": "错误",
+           "statusCode": "状态码",
+           "nodeResources": "节点资源",
+           "overlayAnalysis": "叠加分析",
+           "logInfo": "日志信息",
+           "schedulingLog": "执行调度日志",
+           "samplingLog": "执行采样日志"
+         }
+       },
+       "summary": {
+         "title": "摘要",
+         "fields": {
+           "testPassed": "测试是否通过",
+           "execStatus": "执行状态",
+           "description": "描述",
+           "contact": "联系人",
+           "copyright": "版权说明",
+           "other": "其他"
+         },
+         "status": {
+           "passed": "通过",
+           "failed": "未通过"
+         }
+       },
+       "detail": {
+         "title": "执行信息",
+         "basicInfo": {
+           "title": "执行基本信息",
+           "fields": {
+             "execName": "执行名称",
+             "scriptName": "脚本名称",
+             "testScriptId": "测试脚本ID",
+             "plugin": "插件",
+             "status": "状态",
+             "type": "类型",
+             "priority": "优先级",
+             "startTime": "开始时间",
+             "endTime": "结束时间",
+             "nodeCount": "节点数",
+             "samplingInterval": "采样间隔",
+             "ignoreAssertions": "忽略断言",
+             "updateTestResult": "更新测试结果",
+             "creator": "添加人",
+             "createTime": "添加时间"
+           },
+           "options": {
+             "ignore": "忽略",
+             "notIgnore": "不忽略",
+             "update": "更新",
+             "notUpdate": "不更新"
+           }
+         },
+         "execResult": {
+           "title": "执行结果",
+           "fields": {
+             "failureReason": "失败原因"
+           }
+         }
+       },
+       "samplingSummary": {
+         "title": "汇总结果",
+         "fields": {
+           "name": "名称",
+           "samplingCount": "采样数",
+           "transactionCount": "事务数",
+           "tps": "每秒事务数",
+           "errorRate": "错误率",
+           "responseTimeStats": "平均/最小/最大/P50/P75/P90/P99/P999(ms)",
+           "downloadPerSecond": "下载/秒",
+           "uploadPerSecond": "上传/秒"
+         }
+       },
+       "sampling": {
+         "title": "采样指标",
+         "fields": {
+           "exitCode": "退出码",
+           "samplingStatus": "采样状态",
+           "failureReason": "失败原因"
+         }
+       },
+       "log": {
+         "title": "日志信息",
+         "schedulingLog": {
+           "title": "执行调度信息",
+           "fields": {
+             "schedulingResult": "调度结果",
+             "processExitCode": "进程退出码"
+           },
+           "status": {
+             "success": "成功",
+             "failed": "失败"
+           }
+         },
+         "samplingLog": {
+           "title": "执行采样信息",
+           "fields": {
+             "file": "文件"
+           },
+           "messages": {
+             "noProxyInfo": "无访问代理信息，连接失败地址："
+           }
+         }
+       }
      }
    }
 } 
