@@ -1,3 +1,6 @@
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
 export type ExecResult = {
     caseResults: {
         apisId: string;
@@ -1536,26 +1539,26 @@ export const chartSeriesColorConfig = {
 };
 
 export const bigSequence = [
-  '一',
-  '二',
-  '三',
-  '四',
-  '五',
-  '六',
-  '七',
-  '八',
-  '九',
-  '十',
-  '十一',
-  '十二',
-  '十三',
-  '十四',
-  '十五',
-  '十六',
-  '十七',
-  '十八',
-  '十九',
-  '二十'
+  t('reportPreview.serial.1'),
+  t('reportPreview.serial.2'),
+  t('reportPreview.serial.3'),
+  t('reportPreview.serial.4'),
+  t('reportPreview.serial.5'),
+  t('reportPreview.serial.6'),
+  t('reportPreview.serial.7'),
+  t('reportPreview.serial.8'),
+  t('reportPreview.serial.9'),
+  t('reportPreview.serial.10'),
+  t('reportPreview.serial.11'),
+  t('reportPreview.serial.12'),
+  t('reportPreview.serial.13'),
+  t('reportPreview.serial.14'),
+  t('reportPreview.serial.15'),
+  t('reportPreview.serial.16'),
+  t('reportPreview.serial.17'),
+  t('reportPreview.serial.18'),
+  t('reportPreview.serial.19'),
+  t('reportPreview.serial.20')
 ];
 export const smallSequnce = [
   ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11', '1.12'],

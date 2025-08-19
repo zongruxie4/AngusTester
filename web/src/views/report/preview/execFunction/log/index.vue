@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { getDataByProxy } from '@/api/proxy/index';
-
+import { useI18n } from 'vue-i18n';
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -88,7 +90,7 @@ const schedulingLog = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a5" class="text-4 text-theme-title font-medium">三、<em class="inline-block w-0.25"></em>日志信息</span>
+      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>日志信息</span>
     </h1>
 
     <div class="mb-7">

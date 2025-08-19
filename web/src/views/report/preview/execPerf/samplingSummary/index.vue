@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import { ExecContent, ExecInfo, ExecResult, ReportInfo, SummaryListItem } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -75,7 +77,7 @@ const transformUnit = (byteStr: string) => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a4" class="text-4 text-theme-title font-medium">二、<em class="inline-block w-0.25"></em>汇总结果</span>
+      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>汇总结果</span>
     </h1>
 
     <div class="border border-solid border-border-input">

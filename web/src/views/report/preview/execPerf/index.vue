@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
-
+import { useI18n } from 'vue-i18n'; 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo, SummaryListItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };

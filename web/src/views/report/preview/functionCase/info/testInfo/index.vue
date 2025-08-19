@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -35,7 +37,7 @@ const onePassText = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a8" class="text-4 text-theme-title font-medium">八、<em class="inline-block w-0.25"></em>测试信息</span>
+      <span id="a8" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25"></em>测试信息</span>
     </h1>
 
     <div class="border border-solid border-border-input">

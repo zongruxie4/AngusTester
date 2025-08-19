@@ -2,6 +2,9 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { ExecInfo, ReportInfo } from '../../PropsType';
 import { exec } from 'src/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const Performance = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/index.vue'));
 
@@ -112,7 +115,7 @@ onMounted(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a5" class="text-4 text-theme-title font-medium">三、<em class="inline-block w-0.25"></em>采样指标</span>
+      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>采样指标</span>
     </h1>
     <Performance
       v-if="detail"
