@@ -110,6 +110,7 @@
     },
     "chart": {
       "categories": {
+        "allReports": "All Reports",
         "project": "Project",
         "functional": "Functional",
         "api": "API",
@@ -124,6 +125,62 @@
       "labels": {
         "category": "Category",
         "status": "Status"
+      }
+    },
+    "reportDetail": {
+      "title": "View Report",
+      "info": {
+        "category": "Category",
+        "creator": "Creator",
+        "description": "Description"
+      },
+      "form": {
+        "name": "Name",
+        "version": "Version",
+        "description": "Description"
+      },
+      "tabs": {
+        "createdDate": "Created Date",
+        "basic": "Basic Info",
+        "content": "Content",
+        "record": "Report Record",
+        "activity": "Activity"
+      },
+      "generateTime": {
+        "nextGenerateTime": "Next Generate Time",
+        "dayOfMonth": "Day"
+      },
+      "content": {
+        "organizationPersonnel": "Organization Personnel",
+        "time": "Time",
+        "project": "Project",
+        "sprint": "Sprint",
+        "task": "Task",
+        "plan": "Plan",
+        "case": "Case",
+        "service": "Service",
+        "api": "API",
+        "scenario": "Scenario",
+        "execution": "Execution",
+        "content": "Content",
+        "contentHint": "The following is the report output content directory information.",
+        "memberTypes": {
+          "user": "User",
+          "dept": "Department",
+          "group": "Group"
+        }
+      },
+      "generateRecord": {
+        "reportName": "Report Name",
+        "type": "Type",
+        "template": "Template",
+        "creator": "Creator",
+        "generateTime": "Generate Time",
+        "actions": "Actions",
+        "delete": "Delete",
+        "deleteRecord": "Delete Report Record",
+        "confirmDelete": "Confirm delete report record【{name}】?",
+        "deleteSuccess": "Delete successful"
       }
     }
   }

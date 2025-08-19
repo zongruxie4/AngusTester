@@ -110,6 +110,7 @@
     },
     "chart": {
       "categories": {
+        "allReports": "全部报告",
         "project": "项目",
         "functional": "功能",
         "api": "接口",
@@ -124,6 +125,62 @@
       "labels": {
         "category": "分类",
         "status": "状态"
+      }
+    },
+    "reportDetail": {
+      "title": "查看报告",
+      "info": {
+        "category": "分类",
+        "creator": "报告人",
+        "description": "描述"
+      },
+      "form": {
+        "name": "名称",
+        "version": "版本号",
+        "description": "描述"
+      },
+      "tabs": {
+        "createdDate": "添加时间",
+        "basic": "基本信息",
+        "content": "内容",
+        "record": "报告记录",
+        "activity": "活动"
+      },
+      "generateTime": {
+        "nextGenerateTime": "下次生成时间",
+        "dayOfMonth": "日"
+      },
+      "content": {
+        "organizationPersonnel": "组织人员",
+        "time": "时间",
+        "project": "项目",
+        "sprint": "迭代",
+        "task": "任务",
+        "plan": "计划",
+        "case": "用例",
+        "service": "服务",
+        "api": "接口",
+        "scenario": "场景",
+        "execution": "执行",
+        "content": "内容",
+        "contentHint": "以下是报告输出内容目录信息。",
+        "memberTypes": {
+          "user": "用户",
+          "dept": "部门",
+          "group": "组"
+        }
+      },
+      "generateRecord": {
+        "reportName": "报告名称",
+        "type": "类型",
+        "template": "模板",
+        "creator": "添加人",
+        "generateTime": "生成时间",
+        "actions": "操作",
+        "delete": "删除",
+        "deleteRecord": "删除报告记录",
+        "confirmDelete": "确认删除报告记录【{name}】吗？",
+        "deleteSuccess": "删除成功"
       }
     }
   }

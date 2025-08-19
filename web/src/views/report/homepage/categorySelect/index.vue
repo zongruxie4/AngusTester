@@ -4,6 +4,9 @@ import { Tree } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   category: string;
@@ -14,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:category', value: string):void}>();
-const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部报告', value: '' }]);
+const moduleTreeData = ref<{name: string; value: string}[]>([{ name: t('reportHome.chart.categories.allReports'), value: '' }]);
 
 const loadOpt = () => {
   const data = enumUtils.enumToMessages(ReportCategory);

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button } from 'ant-design-vue';
 import { report } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   reportId: string;
@@ -37,39 +40,45 @@ const pagination = ref({
 
 const columns = [
   {
+    key: 'id',
     dataIndex: 'id',
-    title: 'ID'
+    title: t('reportHome.reportDetail.generateRecord.reportName')
   },
   {
+    key: 'reportName',
     dataIndex: 'reportName',
-    title: '报告名称'
+    title: t('reportHome.reportDetail.generateRecord.reportName')
   },
-
   {
+    key: 'category',
     dataIndex: 'category',
-    title: '类型',
+    title: t('reportHome.reportDetail.generateRecord.type'),
     customRender: ({ text }) => {
       return text?.message;
     }
   },
   {
+    key: 'template',
     dataIndex: 'template',
-    title: '模板',
+    title: t('reportHome.reportDetail.generateRecord.template'),
     customRender: ({ text }) => {
       return text?.message;
     }
   },
   {
+    key: 'createdByName',
     dataIndex: 'createdByName',
-    title: '添加人'
+    title: t('reportHome.reportDetail.generateRecord.creator')
   },
   {
+    key: 'createdDate',
     dataIndex: 'createdDate',
-    title: '生成时间'
+    title: t('reportHome.reportDetail.generateRecord.generateTime')
   },
   {
+    key: 'action',
     dataIndex: 'action',
-    title: '操作'
+    title: t('reportHome.reportDetail.generateRecord.actions')
   }
 ];
 
@@ -96,8 +105,8 @@ const changePage = (page) => {
 // 删除记录
 const delRecord = (record: Record) => {
   modal.confirm({
-    title: '删除报告记录',
-    content: `确认删除报告记录【${record.reportName}】吗？`,
+    title: t('reportHome.reportDetail.generateRecord.deleteRecord'),
+    content: t('reportHome.reportDetail.generateRecord.confirmDelete', { name: record.reportName }),
     onOk () {
       return report.deleteReportRecord([record.id])
         .then((resp) => {
@@ -109,7 +118,7 @@ const delRecord = (record: Record) => {
             pagination.value.current -= 1;
           }
           loadRecord();
-          notification.success('删除成功');
+          notification.success(t('tips.deleteSuccess'));
         });
     }
   });
@@ -157,7 +166,7 @@ onMounted(() => {
           :disabled="!props.permissions.includes('DELETE')"
           @click="delRecord(record)">
           <Icon icon="icon-qingchu" class="mr-1" />
-          删除
+          {{ t('actions.delete') }}
         </Button>
       </template>
     </template>

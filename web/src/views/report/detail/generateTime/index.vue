@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { EnumMessage, CreatedAt, PeriodicCreationUnit, DayOfWeek, enumUtils } from '@xcan-angus/infra';
 import { Colon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 type CreateTimeSetting = {
   createdAt: {value: CreatedAt, message: string},
@@ -65,11 +68,11 @@ onMounted(() => {
         <span>{{ props.createTimeSetting.createdAt?.message }}</span><Colon />
         <div>{{ props.createTimeSetting?.periodicCreationUnit?.message }}</div>
         <div v-if="props.createTimeSetting.dayOfWeek">{{ getWeekName() }}</div>
-        <div v-if="props.createTimeSetting.dayOfMonth">{{ props.createTimeSetting.dayOfMonth }}日</div>
+        <div v-if="props.createTimeSetting.dayOfMonth">{{ props.createTimeSetting.dayOfMonth }}{{ t('reportHome.reportDetail.generateTime.dayOfMonth') }}</div>
         <div v-if="props.createTimeSetting.timeOfDay">{{ props.createTimeSetting.timeOfDay }}</div>
       </div>
       <div class="flex items-center space-x-2 mt-2">
-        <span>下次生成时间</span><Colon />
+        <span>{{ t('reportHome.reportDetail.generateTime.nextGenerateTime') }}</span><Colon />
         <div>{{ props.createTimeSetting?.nextGenerationDate }}</div>
       </div>
     </tmplate>
