@@ -182,6 +182,14 @@
         "confirmDelete": "确认删除报告记录【{name}】吗？",
         "deleteSuccess": "删除成功"
       }
+    },
+    "reportPreview": {
+      "loading": "数据加载中...",
+      "generating": "生成pdf文件中...",
+      "actions": {
+        "exportPDF": "导出PDF",
+        "printPDF": "打印PDF"
+      }
     }
   }
 } 

@@ -182,6 +182,14 @@
         "confirmDelete": "Confirm delete report record【{name}】?",
         "deleteSuccess": "Delete successful"
       }
+    },
+    "reportPreview": {
+      "loading": "Loading data...",
+      "generating": "Generating PDF file...",
+      "actions": {
+        "exportPDF": "Export PDF",
+        "printPDF": "Print PDF"
+      }
     }
   }
 } 
