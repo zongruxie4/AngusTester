@@ -1,0 +1,367 @@
+{
+  "project": {
+    "name": "项目",
+    "project": "项目",
+    "addProject": "添加项目",
+    "editProject": "编辑项目",
+    "deleteProject": "删除项目",
+    "projectList": "项目列表",
+    "addedProjects": "已添加的项目",
+    "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。主要好处如下：",
+    "confirmDelete": "确定删除项目【{name}】吗？",
+    "deleteSuccess": "删除项目成功",
+    "searchPlaceholder": "输入查询关键词",
+    "adminHint": "只允许管理员、创建人和负责人修改和删除项目。",
+    "sort": "排序",
+    "refresh": "刷新",
+    "noDescription": "无描述~",
+    "owner": "负责人",
+    "members": "成员",
+    "allMembers": "所有成员",
+    "user": "用户",
+    "department": "部门",
+    "group": "组",
+    "modifyTime": "修改时间",
+    "edit": "编辑",
+    "delete": "删除",
+    "myActivity": "我的活动",
+    "allActivity": "全部活动",
+    "agileProjectManagement": "敏捷项目管理",
+    "sortByAddTime": "按添加时间",
+    "sortByCreator": "按添加人",
+    "configSoftwareModule": "配置软件模块",
+    "configManagementSoftwareVersion": "配置管理软件版本",
+    "configDataTag": "配置数据标签",
+    "aboutProject": "关于项目",
+    "manageAndOrganizeWork": "管理和组织工作",
+    "manageAndOrganizeWorkDesc": "通过添加项目，团队可以选择不同项目模版，将工作划分为多个阶段和子任务，来满足结构化管理方式。",
+    "promoteTeamCollaboration": "促进团队协作",
+    "promoteTeamCollaborationDesc": "项目为团队成员提供了一个集中管理的平台，所有相关资源、任务、文档和交流都可以在项目中进行，方便协作和沟通。",
+    "trackAndReportProgress": "跟踪和报告进度",
+    "trackAndReportProgressDesc": "通过项目，团队可以实时跟踪每个任务的进度，了解当前工作状态和剩余工作量，基于项目可以生成各种报告，如资源统计、效能分析等。",
+    "improveWorkTransparency": "提高工作透明度",
+    "improveWorkTransparencyDesc": "提供了丰富的可视化工具，如看板、报告等，帮助团队和管理层清晰了解项目团队成员的进展和瓶颈。",
+    "projectTeamInfoSharing": "项目团队信息共享",
+    "projectTeamInfoSharingDesc": "所有项目相关的信息都集中在一个地方，团队成员和利益相关者可以随时访问，确保信息的可见性。",
+    "riskAndIssueManagement": "风险和问题管理",
+    "riskAndIssueManagementDesc": "帮助团队识别和跟踪潜在的风险和问题，制定相应的应对策略，跟踪和解决遇到的问题，确保项目顺利进行。",
+    "projectProcess": "项目流程",
+    "addProjectStep": {
+      "title": "添加项目",
+      "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
+    },
+    "planIterationAndTest": {
+      "title": "制定迭代和测试计划",
+      "text": "明确开发和测试活动的负责人、时间、目标、验收标准等。帮助团队有组织地开展活动，保证软件产品的质量和可靠性。"
+    },
+    "developAndTest": {
+      "title": "开展开发和测试活动",
+      "text": "按照计划开展开发和测试活动。随时跟踪和管理项目中的工作任务、缺陷、需求、用户故事、测试等工作项。"
+    },
+    "reportResults": {
+      "title": "报告结果",
+      "text": "总结研发活动的各个方面，包括项目进展、效能分析、数据资产、测试结果等。为项目的成功交付提供有力支持。"
+    },
+    "moreButton": {
+      "module": "配置软件模块",
+      "version": "配置管理软件版本",
+      "tag": "配置数据标签"
+    },
+    "sortMenu": {
+      "createdDate": "按添加时间",
+      "createdByName": "按添加人"
+    },
+    "projectEdit": {
+      "projectTypeTip": {
+        "agile": {
+          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+        },
+        "general": {
+          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+        },
+        "testing": {
+          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+          "scenarios": "适用场景：质量保障团队专项测试项目。"
+        }
+      },
+      "projectTypeName": {
+        "agile": "敏捷项目管理",
+        "general": "一般项目管理",
+        "testing": "测试项目管理"
+      },
+      "validation": {
+        "maxCharacters": "不能超过2000字符"
+      },
+      "messages": {
+        "updateSuccess": "修改项目成功",
+        "createSuccess": "创建项目成功"
+      },
+      "form": {
+        "projectName": "项目名称",
+        "projectNamePlaceholder": "项目名称，最多100个字符",
+        "timePlan": "时间计划",
+        "timePlanDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
+        "owner": "负责人",
+        "ownerPlaceholder": "请选择项目负责人",
+        "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
+        "importExample": "导入示例",
+        "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
+        "projectMembers": "项目成员",
+        "user": "用户",
+        "department": "部门",
+        "group": "组",
+        "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
+        "selectUser": "选择用户",
+        "selectDepartment": "选择部门",
+        "selectGroup": "选择组",
+        "projectDescription": "项目描述",
+        "descriptionPlaceholder": "描述，最多2000个字符"
+      },
+      "actions": {
+        "save": "保存",
+        "cancel": "取消",
+        "clickToReplaceIcon": "点击替换图标",
+        "uploadIcon": "上传图标"
+      },
+      "tabs": {
+        "basicInfo": "基本信息",
+        "module": "软件模块",
+        "version": "软件版本",
+        "tag": "数据标签"
+      },
+      "module": {
+        "title": "软件模块",
+        "about": "关于软件模块",
+        "aboutDescription": "软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。",
+        "addedModules": "已添加的软件模块",
+        "noModules": "您尚未添加任何模块，立即",
+        "addModule": "添加模块",
+        "noModulesDescription": "您尚未添加任何模块。",
+        "moduleNamePlaceholder": "请输入模块名称",
+        "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
+        "refresh": "刷新",
+        "cancel": "取消",
+        "newSubModule": "新建子模块",
+        "moveUp": "移到上一层",
+        "moveUpOne": "上移",
+        "moveDown": "下移",
+        "move": "移动",
+        "edit": "编辑",
+        "delete": "删除",
+        "loadMore": "加载更多",
+        "moveModule": "移动模块",
+        "addModuleTitle": "添加模块",
+        "addSuccess": "模块添加成功",
+        "updateSuccess": "修改成功",
+        "deleteSuccess": "删除模块成功",
+        "moveSuccess": "移动成功",
+        "confirmDelete": "确定删除模块【{name}】吗？"
+      },
+      "tag": {
+        "title": "数据标签",
+        "about": "关于数据标签",
+        "aboutDescription": "数据标签可以方便对任务、功能用例等分类、提高检索和管理效率，促进团队高效协作。示例：边界测试、业务流程测试、错误处理、输入验证、输出验证、异常条件测试、安全性测试、兼容性测试等。",
+        "addedTags": "已添加的数据标签",
+        "addTagHint": "回车或鼠标失焦时保存添加标签，双击已存在标签可进入编辑状态。",
+        "noTags": "您尚未添加任何标签，立即",
+        "addTag": "添加标签",
+        "noTagsDescription": "您尚未添加任何标签。",
+        "tagNamePlaceholder": "请输入标签名称",
+        "refresh": "刷新",
+        "cancel": "取消",
+        "loadMore": "加载更多",
+        "addTagTitle": "添加标签",
+        "addSuccess": "标签添加成功",
+        "updateSuccess": "修改成功",
+        "deleteSuccess": "删除标签成功",
+                 "confirmDelete": "确定删除标签【{name}】吗？"
+       }
+     },
+    "projectDetail": {
+       "projectTypeTip": {
+         "agile": {
+           "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+           "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+         },
+         "general": {
+           "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+           "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+         },
+         "testing": {
+           "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+           "scenarios": "适用场景：质量保障团队专项测试项目。"
+         }
+       },
+       "projectTypeName": {
+         "agile": "敏捷项目管理",
+         "general": "一般项目管理",
+         "testing": "测试项目管理"
+       },
+       "messages": {
+         "updateSuccess": "修改项目成功",
+         "addSuccess": "添加项目成功"
+       },
+       "tabs": {
+         "basicInfo": "基本信息",
+         "module": "软件模块",
+         "version": "软件版本",
+         "tag": "数据标签"
+       },
+       "form": {
+         "projectName": "项目名称",
+         "timePlan": "时间计划",
+         "owner": "负责人",
+         "projectMembers": "项目成员",
+         "user": "用户",
+         "group": "组",
+         "department": "部门",
+         "projectDescription": "项目描述",
+         "noDescription": "无描述~"
+       }
+    },
+    "projectAddModal": {
+       "projectTypeTip": {
+         "agile": {
+           "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+           "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+         },
+         "general": {
+           "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+           "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+         },
+         "testing": {
+           "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+           "scenarios": "适用场景：质量保障团队专项测试项目。"
+         }
+       },
+       "projectTypeName": {
+         "agile": "敏捷项目管理",
+         "general": "一般项目管理",
+         "testing": "测试项目管理"
+       },
+       "validation": {
+         "maxCharacters": "不能超过2000字符",
+         "timeRequired": "请输入时间",
+         "ownerRequired": "请输入负责人"
+       },
+       "messages": {
+         "updateSuccess": "修改项目成功",
+         "addSuccess": "添加项目成功"
+       },
+       "modal": {
+         "editProject": "编辑项目",
+         "addProject": "添加项目"
+       },
+       "form": {
+         "name": "名称",
+         "projectNamePlaceholder": "项目名称，最多100个字符",
+         "timePlan": "时间计划",
+         "time": "时间",
+         "timeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
+         "owner": "负责人",
+         "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
+         "ownerPlaceholder": "请选择项目负责人",
+         "importExample": "导入示例",
+         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
+         "yes": "是",
+         "no": "否",
+         "members": "成员",
+         "user": "用户",
+         "department": "部门",
+         "group": "组",
+         "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
+         "selectUser": "选择用户",
+         "selectDepartment": "选择部门",
+         "selectGroup": "选择组",
+         "description": "描述",
+         "descriptionPlaceholder": "描述，最多2000个字符",
+         "clickToReplaceIcon": "点击替换图标"
+       }
+    }
+  },
+  "projectActivity": {
+    "name": "活动",
+    "table": {
+      "operator": "活动人",
+      "activityTime": "活动时间",
+      "projectName": "所属项目",
+      "projectId": "所属项目ID",
+      "resourceType": "资源类型",
+      "targetId": "操作资源ID",
+      "targetName": "操作资源",
+      "activityContent": "活动内容"
+    },
+    "hints": {
+      "maxResourceActivities": "每个资源只保存最近{maxResource}条活动，超过{maxResource}条时将自动被删除。"
+    },
+    "chart": {
+      "activity": "活动",
+      "resourceType": "资源类型",
+      "add": "添加",
+      "timeUnit": "时间单位",
+      "total": "总数",
+      "today": "今日",
+      "last7Days": "近7天",
+      "last1Month": "近1月",
+      "last1Year": "近1年"
+    },
+    "searchPanel": {
+      "dropdownMenu": {
+        "fileExtractDataset": "文件提取数据集",
+        "jdbcExtractDataset": "Jdbc提取数据集"
+      },
+      "searchOptions": {
+        "queryActivityDetail": "查询活动详情",
+        "selectActivityResource": "选择活动资源",
+        "selectProject": "选择项目",
+        "selectOperator": "选择活动人",
+        "activityTimeFrom": "活动时间从",
+        "activityTimeTo": "活动时间到"
+      },
+      "quickQuery": {
+        "all": "全部",
+        "myActivity": "我的活动",
+        "last1Day": "近1天",
+        "last3Days": "近3天",
+        "last7Days": "近7天"
+      },
+      "ui": {
+        "quickQuery": "快速查询",
+        "hideStatistics": "收起统计",
+        "viewStatistics": "查看统计",
+        "refresh": "刷新"
+      }
+    }
+  },
+  "projectTrash": {
+    "name": "回收站",
+    "messages": {
+      "recoverAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功",
+      "recoverSuccess": "还原成功",
+      "deleteSuccess": "删除成功"
+    },
+    "table": {
+      "name": "名称",
+      "creator": "添加人",
+      "deleter": "删除人",
+      "deleteTime": "删除时间",
+      "actions": "操作"
+    },
+    "ui": {
+      "searchPlaceholder": "请输入查询关键字",
+      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",
+      "recoverAll": "全部还原",
+      "deleteAll": "全部删除",
+      "refresh": "刷新",
+      "recover": "还原",
+      "delete": "删除"
+    }
+  },
+  "AI": {
+    "name": "AI助手"
+  }
+}
+

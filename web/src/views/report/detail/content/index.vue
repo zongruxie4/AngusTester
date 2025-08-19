@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
 import { user, dept, group } from 'src/api/gm';
+
+const { t } = useI18n();
 
 import { treeData } from './config';
 
@@ -31,9 +34,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const checked = ref<string[]>([]);
 const creatorTypeConfig = {
-  USER: '用户',
-  DEPT: '部门',
-  GROUP: '组'
+  USER: t('reportHome.reportDetail.content.memberTypes.user'),
+  DEPT: t('reportHome.reportDetail.content.memberTypes.dept'),
+  GROUP: t('reportHome.reportDetail.content.memberTypes.group')
 };
 const creatorObjectName = ref();
 const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
@@ -202,13 +205,13 @@ onMounted(() => {
       v-if="props.template && ['PROJECT_PROGRESS', 'TASK_SPRINT', 'FUNC_TESTING_PLAN'].includes(props.template)"
       class="spacey-2">
       <div class="leading-7 flex items-center space-x-2">
-        <span class="w-12">组织人员</span>
+        <span class="w-12">{{ t('reportHome.reportDetail.content.organizationPersonnel') }}</span>
         <span v-if="props.contentSetting.creatorObjectType">（{{ creatorTypeConfig[props.contentSetting.creatorObjectType] }}）</span>
         <Colon />
         <span>{{ creatorObjectName || '--' }}</span>
       </div>
       <div class="leading-7 flex items-center space-x-2">
-        <span class="w-12">时间</span>
+        <span class="w-12">{{ t('reportHome.reportDetail.content.time') }}</span>
         <Colon />
         <div v-if="props.contentSetting.createdDateStart && props.contentSetting.createdDateEnd">
           {{ props.contentSetting.createdDateStart }} - {{ props.contentSetting.createdDateEnd }}
@@ -220,7 +223,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template === 'PROJECT_PROGRESS'" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">项目</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.project') }}</span>
       <Colon />
       <div>
         {{ props.projectName }}
@@ -228,7 +231,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['TASK_SPRINT', 'TASK'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">迭代</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.sprint') }}</span>
       <Colon />
       <div>
         {{ sprintName }}
@@ -236,7 +239,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['TASK'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">任务</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.task') }}</span>
       <Colon />
       <div>
         {{ taskName }}
@@ -244,7 +247,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['FUNC_TESTING_PLAN', 'FUNC_TESTING_CASE'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">计划</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.plan') }}</span>
       <Colon />
       <div>
         {{ planName }}
@@ -252,7 +255,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['FUNC_TESTING_CASE'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">用例</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.case') }}</span>
       <Colon />
       <div>
         {{ caseName }}
@@ -260,7 +263,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['SERVICES_TESTING_RESULT', 'APIS_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">服务</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.service') }}</span>
       <Colon />
       <div>
         {{ serviceName }}
@@ -268,7 +271,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['APIS_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">接口</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.api') }}</span>
       <Colon />
       <div>
         {{ apisName }}
@@ -276,7 +279,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && ['SCENARIO_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">场景</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.scenario') }}</span>
       <Colon />
       <div>
         {{ scenarioName }}
@@ -284,7 +287,7 @@ onMounted(() => {
     </div>
 
     <div v-if="props.template && props.template.includes('EXEC')" class="leading-7 flex items-center space-x-2">
-      <span class="w-12">执行</span>
+      <span class="w-12">{{ t('reportHome.reportDetail.content.execution') }}</span>
       <Colon />
       <div>
         {{ execName }}
@@ -293,8 +296,8 @@ onMounted(() => {
 
     <div class="flex items-center space-x-1 mt-4">
       <span class="h-4 w-1.5 bg-blue-border1"></span>
-      <span>内容</span>
-      <Hints text="以下是报告输出内容目录信息。" />
+      <span>{{ t('reportHome.reportDetail.content.content') }}</span>
+      <Hints :text="t('reportHome.reportDetail.content.contentHint')" />
     </div>
     <Tree
       v-model:checkedKeys="checked"

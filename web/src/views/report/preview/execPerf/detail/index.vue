@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -31,13 +33,13 @@ const scriptType = computed(() => props.execInfo?.scriptType?.value);
 const resultInfo = computed(() => {
   if (props.execResult) {
     return {
-      label: '测试是否通过',
-      value: props.execResult?.passed ? '通过' : '未通过'
+      label: t('reportPreview.execPerf.summary.fields.testPassed'),
+      value: props.execResult?.passed ? t('reportPreview.execPerf.summary.status.passed') : t('reportPreview.execPerf.summary.status.failed')
     };
   }
 
   return {
-    label: '执行状态',
+    label: t('reportPreview.execPerf.summary.fields.execStatus'),
     value: props.execInfo?.status?.message
   };
 });
@@ -46,12 +48,12 @@ const resultInfo = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a1" class="text-4 text-theme-title font-medium">一、<em class="inline-block w-0.25"></em>执行信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.execPerf.detail.title') }}</span>
     </h1>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a2">1.1<em class="inline-block w-3.5"></em>执行基本信息</span>
+        <span id="a2">1.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.detail.basicInfo.title') }}</span>
       </h2>
       <div class="border border-solid border-border-input">
         <div class="flex border-b border-solid border-border-input">
@@ -64,14 +66,14 @@ const resultInfo = computed(() => {
           </div> -->
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            执行名称
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.execName') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.name }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            脚本名称
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.scriptName') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.scriptName }}
@@ -92,14 +94,14 @@ const resultInfo = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            插件
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.plugin') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.plugin }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            状态
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.status') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.status?.message }}
@@ -109,14 +111,14 @@ const resultInfo = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            类型
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.type') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            优先级
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.priority') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.priority }}
@@ -126,14 +128,14 @@ const resultInfo = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            开始时间
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.startTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.actualStartDate }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            结束时间
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.endTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.endDate }}
@@ -143,14 +145,14 @@ const resultInfo = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            节点数
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.nodeCount') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.execNodes?.length || 0 }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            采样间隔
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.samplingInterval') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.reportInterval }}
@@ -177,14 +179,14 @@ const resultInfo = computed(() => {
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加人
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.creator') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加时间
+            {{ t('reportPreview.execPerf.detail.basicInfo.fields.createTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.createdDate }}
@@ -195,7 +197,7 @@ const resultInfo = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3">1.2<em class="inline-block w-3.5"></em>执行结果</span>
+        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.detail.execResult.title') }}</span>
       </h2>
       <div class="flex items-start">
         <div class="flex items-center flex-shrink-0 mr-10">
@@ -203,7 +205,7 @@ const resultInfo = computed(() => {
           <div>{{ resultInfo?.value }}</div>
         </div>
         <div v-if="props.execResult?.failureMessage" class="flex items-start">
-          <div class="flex-shrink-0 mr-0.5">失败原因：</div>
+          <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execPerf.detail.execResult.fields.failureReason') }}：</div>
           <div class="break-all whitespace-pre-wrap text-status-error">{{ props.execResult?.failureMessage }}</div>
         </div>
       </div>

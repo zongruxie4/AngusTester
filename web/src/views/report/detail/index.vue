@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ActivityTimeline, Colon, Modal } from '@xcan-angus/vue-ui';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { report as reportApi } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { reportMenus } from '@/views/report/add/config';
 
@@ -63,7 +66,7 @@ const activityType = ['REPORT'];
 <template>
   <Modal
     :visible="props.visible"
-    title="查看报告"
+    :title="t('reportHome.reportDetail.title')"
     :width="1000"
     :footer="null"
     @cancel="cancel">
@@ -73,17 +76,17 @@ const activityType = ['REPORT'];
         <div class="space-y-2 flex-1 min-w-0">
           <div class="font-semibold text-3.5">{{ report?.template?.message }}</div>
           <div class="flex justify-between">
-            <div class="text-3 flex-1">分类： {{ report.category?.message }}</div>
-            <div class="text-3 flex-1">报告人： {{ report.createdByName }}</div>
+            <div class="text-3 flex-1">{{ t('reportHome.reportDetail.info.category') }}： {{ report.category?.message }}</div>
+            <div class="text-3 flex-1">{{ t('reportHome.reportDetail.info.creator') }}： {{ report.createdByName }}</div>
           </div>
-          <div class="text-3">描述： {{ reportTypeObj?.description }}</div>
+          <div class="text-3">{{ t('reportHome.reportDetail.info.description') }}： {{ reportTypeObj?.description }}</div>
         </div>
       </div>
 
       <div class="flex items-start space-x-4 mt-5">
         <div class="flex-1/2 inline-flex min-w-0">
           <div class="w-12 px-1 text-right h-7" style="line-height: 28px; ">
-            名称
+            {{ t('reportHome.reportDetail.form.name') }}
           </div>
           <Colon class="h-7" style="line-height: 28px;" />
           <div class="px-1" style="line-height: 28px;">
@@ -92,7 +95,7 @@ const activityType = ['REPORT'];
         </div>
         <div class="flex-1/2 inline-flex min-w-0">
           <div class="w-12 px-1 text-right h-7" style="line-height: 28px;">
-            版本号
+            {{ t('reportHome.reportDetail.form.version') }}
           </div>
           <Colon class="h-7" style="line-height: 28px;" />
           <div class="px-1" style="line-height: 28px;">
@@ -102,7 +105,7 @@ const activityType = ['REPORT'];
       </div>
       <div class="flex leading-7">
         <div class="w-12 px-1 text-right h-7" style="line-height: 28px;">
-          描述
+          {{ t('reportHome.reportDetail.form.description') }}
         </div>
         <Colon class="h-7" style="line-height: 28px;" />
         <div class="px-1">
@@ -111,16 +114,16 @@ const activityType = ['REPORT'];
       </div>
 
       <Tabs size="small" class="mt-4 flex-1">
-        <TabPane key="createdDate" tab="添加时间">
+        <TabPane key="createdDate" :tab="t('reportHome.reportDetail.tabs.createdDate')">
           <GenerateTime :createTimeSetting="report.createTimeSetting" />
         </TabPane>
-        <TabPane key="basic" tab="基本信息">
+        <TabPane key="basic" :tab="t('reportHome.reportDetail.tabs.basic')">
           <Basic
             :basicInfoSetting="report.basicInfoSetting"
             :viewType="true"
             class="overflow-y-auto h-full" />
         </TabPane>
-        <TabPane key="content" tab="内容">
+        <TabPane key="content" :tab="t('reportHome.reportDetail.tabs.content')">
           <Content
             class="overflow-y-auto h-full"
             :contentSetting="report.contentSetting?.filter"
@@ -128,14 +131,14 @@ const activityType = ['REPORT'];
             :projectName="report.projectId"
             :template="report.template?.value" />
         </TabPane>
-        <TabPane key="record" tab="报告记录">
+        <TabPane key="record" :tab="t('reportHome.reportDetail.tabs.record')">
           <GenerateRecord
             class="overflow-y-auto h-full"
             :projectId="report.projectId"
             :reportId="reportId"
             :permissions="props.permissions" />
         </TabPane>
-        <TabPane key="activity" tab="活动">
+        <TabPane key="activity" :tab="t('reportHome.reportDetail.tabs.activity')">
           <ActivityTimeline
             :id="reportId"
             class="w-120"

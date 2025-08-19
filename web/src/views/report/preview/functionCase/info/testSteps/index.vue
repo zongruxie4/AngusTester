@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -33,22 +35,22 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a6" class="text-4 text-theme-title font-medium">五、<em class="inline-block w-0.25"></em>测试步骤</span>
+      <span id="a6" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.info.testSteps.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-22 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编号
+          {{ t('reportPreview.functionCase.info.testSteps.fields.stepNumber') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试步骤
+          {{ t('reportPreview.functionCase.info.testSteps.fields.step') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          预期结果
+          {{ t('reportPreview.functionCase.info.testSteps.fields.expectedResult') }}
         </div>
       </div>
 

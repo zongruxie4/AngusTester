@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -33,7 +34,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a9" class="text-4 text-theme-title font-medium">九、<em class="inline-block w-0.25"></em>关联任务</span>
+      <span id="a9" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.assocTask.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
@@ -44,23 +45,23 @@ const len = computed(() => {
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编码
+          {{ t('reportPreview.functionCase.assocTask.fields.code') }}
         </div>
         <div
           class="w-22 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          类型
+          {{ t('reportPreview.functionCase.assocTask.fields.type') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.functionCase.assocTask.fields.name') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          状态
+          {{ t('reportPreview.functionCase.assocTask.fields.status') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5">
-          经办人
+          {{ t('reportPreview.functionCase.assocTask.fields.assignee') }}
         </div>
       </div>
 
@@ -90,7 +91,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.assocTask.noData') }}</div>
   </div>
 </template>
 

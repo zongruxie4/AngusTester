@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { enumUtils } from '@xcan-angus/infra';
 import { ReportPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 const GroupSet = defineAsyncComponent(() => import('@/views/report/homepage/globalAuth/groupSet/index.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/report/homepage/globalAuth/authSet/index.vue'));
@@ -70,7 +73,7 @@ const bodyStyle = {
 
 <template>
   <Modal
-    title="报告权限"
+    :title="t('reportHome.globalAuth.title')"
     :footer="false"
     :visible="props.visible"
     :bodyStyle="bodyStyle"
@@ -78,12 +81,12 @@ const bodyStyle = {
     wrapClassName="authorize-modal-wrapper"
     @cancel="cancel">
     <div class="h-full pt-2">
-      <Hints :text="text" />
+      <Hints :text="t('reportHome.globalAuth.description')" />
       <Tabs
         v-model:activeKey="activeKey"
         size="small"
         style="height: calc(100% - 18px);">
-        <TabPane key="user" tab="用户">
+        <TabPane key="user" :tab="t('reportHome.globalAuth.tabs.user')">
           <GroupSet
             key="user"
             v-model:checkedId="checkedUserId"
@@ -101,7 +104,7 @@ const bodyStyle = {
             :authObjectId="checkedUserId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="dept" tab="部门">
+        <TabPane key="dept" :tab="t('reportHome.globalAuth.tabs.dept')">
           <GroupSet
             key="dept"
             v-model:checkedId="checkedDeptId"
@@ -119,7 +122,7 @@ const bodyStyle = {
             :authObjectId="checkedDeptId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="group" tab="组">
+        <TabPane key="group" :tab="t('reportHome.globalAuth.tabs.group')">
           <GroupSet
             key="group"
             v-model:checkedId="checkedGroupId"

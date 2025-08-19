@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
-
+import { useI18n } from 'vue-i18n'; 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo, SummaryListItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -85,7 +87,7 @@ const reportContent = computed(() => {
     :execResult="props.execResult"
     class="mb-8" />
   <div class="text-theme-title font-medium text-4.5 mb-4">
-    <span>内容</span>
+    <span>{{ t('reportPreview.execPerf.content') }}</span>
     <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
   </div>
   <ExecuteDetail

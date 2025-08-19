@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Pagination, TabPane, Tabs, Tag, Tooltip, Popover } from 'ant-design-vue';
 import {
   ActivityTimeline,
@@ -21,6 +22,8 @@ import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import DefaultProjectImage from '@/views/project/project/images/default.png';
+
+const { t } = useI18n();
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -86,7 +89,7 @@ const addProject = () => {
   addTabPane({
     type: 'project',
     _id: 'addProject',
-    name: '添加项目'
+    name: t('project.addProject')
   });
 };
 
@@ -197,14 +200,14 @@ const editProject = (record: Project, key?: string) => {
 
 const delProject = (data: Project) => {
   modal.confirm({
-    content: `确定删除项目【${data.name}】吗？`,
+    content: t('project.confirmDelete', { name: data.name }),
     async onOk () {
       const [error] = await project.deleteProject(data.id);
       if (error) {
         return;
       }
 
-      notification.success('删除项目成功');
+              notification.success(t('project.deleteSuccess'));
       pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
       loadData();
       emits('delOk', [data.id, `${data.id}_detail`, `${data.id}_project`]);
@@ -229,15 +232,15 @@ const handleDetail = async (data: Project) => {
 const moreButton = [
   {
     key: 'module',
-    name: '配置软件模块'
+    name: t('project.moreButton.module')
   },
   {
     key: 'version',
-    name: '配置管理软件版本'
+    name: t('project.moreButton.version')
   },
   {
     key: 'biaoqian',
-    name: '配置数据标签'
+    name: t('project.moreButton.tag')
   }
 ];
 
@@ -261,12 +264,12 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按添加时间',
+    name: t('project.sortMenu.createdDate'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('project.sortMenu.createdByName'),
     key: 'createdByName',
     orderSort: 'ASC'
   }
@@ -285,7 +288,7 @@ defineExpose({
     <Process class="mb-7 mt-1" />
     <div class="flex space-x-6 min-h-0 flex-1">
       <div class="flex-1 space-y-2 mr-8 min-w-0">
-        <div class="text-3.5 font-semibold mb-1">已添加的项目</div>
+        <div class="text-3.5 font-semibold mb-1">{{ t('project.addedProjects') }}</div>
         <Spin
           :spinning="loading"
           :delay="0"
@@ -298,9 +301,9 @@ defineExpose({
                 trim
                 :maxlength="200"
                 :allowClear="true"
-                placeholder="输入查询关键词"
+                :placeholder="t('project.searchPlaceholder')"
                 @change="onKeywordChange" />
-              <Hints text="只允许管理员、创建人和负责人修改和删除项目。" class="ml-2" />
+                              <Hints :text="t('project.adminHint')" class="ml-2" />
             </div>
 
             <div class="flex items-center space-x-3">
@@ -309,7 +312,7 @@ defineExpose({
                 size="small"
                 @click="addProject">
                 <Icon icon="icon-jia" />
-                <span class="ml-1">添加项目</span>
+                <span class="ml-1">{{ t('project.addProject') }}</span>
               </Button>
 
               <DropdownSort
@@ -319,7 +322,7 @@ defineExpose({
                 @click="toSort">
                 <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                   <Icon icon="icon-shunxu" />
-                  <span>排序</span>
+                  <span>{{ t('project.sort') }}</span>
                 </div>
               </DropdownSort>
 
@@ -330,7 +333,7 @@ defineExpose({
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">刷新</span>
+                    <span class="ml-1">{{ t('actions.refresh') }}</span>
                   </div>
                 </template>
               </IconRefresh>
@@ -363,12 +366,12 @@ defineExpose({
                   class="truncate">
                   <RichText :value="item.description" />
                 </p>
-                <p v-else class="text-gray-3">无描述~</p>
+                <p v-else class="text-gray-3">{{ t('project.noDescription') }}</p>
               </div>
               <div class="flex-1 space-y-2.5">
                 <div class="flex">
-                  <span>负责人：<span>{{ item.ownerName }}</span></span>
-                  <div class="ml-6">成员： </div>
+                  <span>{{ t('project.owner') }}:<span>{{ item.ownerName }}</span></span>
+                  <div class="ml-6">{{ t('project.members') }}：</div>
                   <div class="inline-flex space-x-1 flex-1 flex-wrap">
                     <Tooltip
                       v-for="(avatars, idx) in item.showMembers.USER || []"
@@ -387,18 +390,18 @@ defineExpose({
                     <Tooltip
                       v-for="(avatars, idx) in item.showMembers.GROUP || []"
                       :key="idx"
-                      title="组">
+                      :title="t('project.group')">
                       <template #title>
-                        <span>组</span>
+                        <span>{{t('project.group')}}</span>
                       </template>
                       <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
                     </Tooltip>
                     <Tooltip
                       v-for="(avatars, idx) in item.showMembers.DEPT || []"
                       :key="idx"
-                      title="部门">
+                      :title="t('project.department')">
                       <template #title>
-                        <span>部门</span>
+                        <span>{{ t('project.department') }}</span>
                       </template>
                       <div>
                         <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
@@ -406,11 +409,11 @@ defineExpose({
                     </Tooltip>
 
                     <Popover v-if="item.membersNum > 10">
-                      <template #title>所有成员</template>
+                      <template #title>{{ t('project.allMembers') }}</template>
                       <template #content>
                         <div class="space-y-2 max-w-100">
                           <div v-if="item.members?.USER?.length" class="flex">
-                            <span class="w-15 text-right">用户： </span>
+                            <span class="w-15 text-right">{{t('project.user')}}： </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members.USER || []"
@@ -426,7 +429,7 @@ defineExpose({
                           </div>
 
                           <div v-if="item.members?.GROUP?.length" class="flex">
-                            <span class="w-15 text-right">组： </span>
+                            <span class="w-15 text-right">{{t('project.group')}}： </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members?.GROUP || []"
@@ -438,7 +441,7 @@ defineExpose({
                           </div>
 
                           <div v-if="item.members?.DEPT?.length" class="flex">
-                            <span class="w-15 text-right">部门： </span>
+                            <span class="w-15 text-right">{{t('project.department')}}： </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members?.DEPT || []"
@@ -455,30 +458,30 @@ defineExpose({
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <span>修改时间：{{ item.lastModifiedDate }}</span>
+                  <span>{{t('project.modifyTime')}}：{{ item.lastModifiedDate }}</span>
                 </div>
               </div>
               <div class="flex items-center flex-wrap">
                 <Button
-                  title="编辑"
+                  :title="t('actions.edit')"
                   size="small"
                   type="text"
                   :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
                   class="space-x-1 flex items-center py-0 px-1"
                   @click="editProject(item)">
                   <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                  编辑
+                  {{ t('actions.edit') }}
                 </Button>
 
                 <Button
-                  title="删除"
+                  :title="t('actions.delete')"
                   size="small"
                   type="text"
                   :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
                   class="space-x-1 flex items-center py-0 px-1"
                   @click="delProject(item)">
                   <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                  删除
+                  {{ t('actions.delete') }}
                 </Button>
 
                 <Dropdown :menuItems="moreButton" @click="editProject(item, $event.key)">
@@ -500,14 +503,14 @@ defineExpose({
       </div>
 
       <Tabs size="small" class="w-right h-115">
-        <TabPane key="my" tab="我的活动">
+        <TabPane key="my" :tab="t('project.myActivity')">
           <ActivityTimeline
             :types="activityType"
             :userId="props.userInfo?.id"
             :showUserName="false" />
         </TabPane>
 
-        <TabPane key="all" tab="全部活动">
+        <TabPane key="all" :tab="t('project.allActivity')">
           <ActivityTimeline :types="activityType" />
         </TabPane>
       </Tabs>

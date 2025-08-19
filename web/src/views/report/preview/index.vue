@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { PrinterOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { IconDownload, Spin } from '@xcan-angus/vue-ui';
@@ -9,6 +10,8 @@ import { Watermark } from 'watermark-js-plus';
 import html2pdf from 'html3pdf';
 import print from 'print-js';
 import { exec, report } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { ExecContent, ExecInfo, ExecResult, ReportContent, ReportInfo } from './PropsType';
 
@@ -267,11 +270,11 @@ const templateType = computed(() => {
 
 const tipText = computed(() => {
   if (loading.value) {
-    return '数据加载中...';
+    return t('reportPreview.loading');
   }
 
   if (generating.value) {
-    return '生成pdf文件中...';
+    return t('reportPreview.generating');
   }
 
   return '';
@@ -292,7 +295,7 @@ const tipText = computed(() => {
         class="inline-flex items-center space-x-1"
         @click="toExport">
         <IconDownload class="text-4" />
-        <span>导出PDF</span>
+        <span>{{ t('reportPreview.actions.exportPDF') }}</span>
       </Button>
 
       <Button
@@ -302,7 +305,7 @@ const tipText = computed(() => {
         class="inline-flex items-center space-x-1"
         @click="printDom">
         <PrinterOutlined class="text-3.5" />
-        <span>打印PDF</span>
+        <span>{{ t('reportPreview.actions.printPDF') }}</span>
       </Button>
     </div>
 

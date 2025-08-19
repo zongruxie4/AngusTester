@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -25,21 +27,21 @@ const caseInfo = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a2" class="text-4 text-theme-title font-medium">二、<em class="inline-block w-0.25"></em>人员信息</span>
+      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>  {{ t('reportPreview.functionCase.info.personnel.title') }}</span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试人
+          {{ t('reportPreview.functionCase.info.personnel.fields.tester') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.testerName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          添加人
+          {{ t('reportPreview.functionCase.info.personnel.fields.addPerson') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.createdByName }}
@@ -49,14 +51,14 @@ const caseInfo = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评审人
+          {{ t('reportPreview.functionCase.info.personnel.fields.reviewer') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.reviewerName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          最后修改人
+          {{ t('reportPreview.functionCase.info.personnel.fields.lastModifiedPerson') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.lastModifiedByName }}

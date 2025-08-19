@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -56,22 +58,22 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a12" class="text-4 text-theme-title font-medium">十二、<em class="inline-block w-0.25"></em>评论</span>
+      <span id="a12" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.12') }}<em class="inline-block w-0.25"></em>评论</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-35 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评论时间
+          {{t('reportPreview.functionCase.comment.fields.commentTime')}}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评论人
+          {{t('reportPreview.functionCase.comment.fields.commentPerson')}}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          评论内容
+          {{t('reportPreview.functionCase.comment.fields.commentContent')}}
         </div>
       </div>
 
@@ -88,7 +90,7 @@ const len = computed(() => {
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           <template v-if="item.parentName">
-            <span class="mr-1">回复</span>
+            <span class="mr-1">{{ t('reportPreview.functionCase.comment.fields.reply') }}</span>
             <span>{{ item.parentName }}</span>
             <span class="mr-2.5">:</span>
           </template>
@@ -97,7 +99,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{t('reportPreview.functionCase.comment.noData')}}</div>
   </div>
 </template>
 

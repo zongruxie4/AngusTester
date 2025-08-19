@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ButtonProps } from 'ant-design-vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { tag } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -44,7 +47,7 @@ const ok = async () => {
 
   inputValue.value = undefined;
   emit('update:visible', false);
-  notification.success('标签添加成功');
+  notification.success(t('project.projectEdit.tag.addSuccess'));
 };
 
 const cancel = () => {
@@ -66,7 +69,7 @@ const hanedleEnterPress = () => {
 
 <template>
   <Modal
-    title="添加标签"
+    :title="t('project.projectEdit.tag.addTagTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
@@ -74,7 +77,7 @@ const hanedleEnterPress = () => {
     @ok="ok">
     <Input
       v-model:value="inputValue"
-      placeholder="标签名称，最大支持50个字符"
+      :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"

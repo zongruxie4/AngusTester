@@ -45,12 +45,12 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 const buttonDropdownMenuItems = [
   {
-    name: '文件提取数据集',
+    name: t('projectActivity.searchPanel.dropdownMenu.fileExtractDataset'),
     key: 'file',
     noAuth: true
   },
   {
-    name: 'Jdbc提取数据集',
+    name: t('projectActivity.searchPanel.dropdownMenu.jdbcExtractDataset'),
     key: 'jdbc',
     noAuth: true
   }
@@ -60,7 +60,7 @@ const searchPanelOptions = [
   {
     valueKey: 'detail',
     type: 'input',
-    placeholder: t('查询活动详情'),
+    placeholder: t('projectActivity.searchPanel.searchOptions.queryActivityDetail'),
     allowClear: true,
     trim: true,
     maxlength: 100
@@ -69,13 +69,13 @@ const searchPanelOptions = [
     valueKey: 'targetType',
     type: 'select-enum',
     enumKey: CombinedTargetType,
-    placeholder: t('选择活动资源'),
+    placeholder: t('projectActivity.searchPanel.searchOptions.selectActivityResource'),
     allowClear: true
   },
   {
     valueKey: 'projectId',
     type: 'select',
-    placeholder: '选择项目',
+    placeholder: t('projectActivity.searchPanel.searchOptions.selectProject'),
     allowClear: true,
     action: `${TESTER}/project?fullTextSearch=true`,
     fieldNames: {
@@ -86,14 +86,14 @@ const searchPanelOptions = [
   {
     valueKey: 'userId',
     type: 'select-user',
-    placeholder: t('选择活动人'),
+    placeholder: t('projectActivity.searchPanel.searchOptions.selectOperator'),
     allowClear: true,
     maxlength: 100
   },
   {
     valueKey: 'optDate',
     type: 'date-range',
-    placeholder: [t('活动时间从'), t('活动时间到')],
+    placeholder: [t('projectActivity.searchPanel.searchOptions.activityTimeFrom'), t('projectActivity.searchPanel.searchOptions.activityTimeTo')],
     allowClear: true
   }
 ];
@@ -101,23 +101,23 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('projectActivity.searchPanel.quickQuery.all')
   },
   {
     key: 'userId',
-    name: '我的活动'
+    name: t('projectActivity.searchPanel.quickQuery.myActivity')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('projectActivity.searchPanel.quickQuery.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('projectActivity.searchPanel.quickQuery.last3Days')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('projectActivity.searchPanel.quickQuery.last7Days')
   }
 ]);
 
@@ -303,7 +303,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -328,7 +328,7 @@ onMounted(() => {
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="props.showCount?'收起统计':'查看统计'">
+          :title="props.showCount ? t('projectActivity.searchPanel.ui.hideStatistics') : t('projectActivity.searchPanel.ui.viewStatistics')">
           <IconCount
             :value="props.showCount"
             class="flex-none text-4.5"
@@ -337,7 +337,7 @@ onMounted(() => {
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          title="刷新">
+          :title="t('projectActivity.searchPanel.ui.refresh')">
           <IconRefresh
             :loading="loading"
             class="text-4.5 ml-2"

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, inject, ref, watch, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Divider, Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
 import { project } from 'src/api/tester';
 import { GM, upload, appContext } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 export type Project = {
   name: string;
@@ -44,9 +47,9 @@ const memberType = ref('user');
 const projectType = ref('AGILE');
 
 const projectTypeTipConfig = {
-  AGILE: ['核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。', '适用场景：敏捷开发团队快速迭代产品。'],
-  GENERAL: ['核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。', '适用场景：传统研发团队跨部门协作项目。'],
-  TESTING: ['核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。', '适用场景：质量保障团队专项测试项目。']
+  AGILE: [t('project.projectAddModal.projectTypeTip.agile.features'), t('project.projectAddModal.projectTypeTip.agile.scenarios')],
+  GENERAL: [t('project.projectAddModal.projectTypeTip.general.features'), t('project.projectAddModal.projectTypeTip.general.scenarios')],
+  TESTING: [t('project.projectAddModal.projectTypeTip.testing.features'), t('project.projectAddModal.projectTypeTip.testing.scenarios')]
 };
 
 const loading = ref(false);
@@ -136,7 +139,7 @@ const setDefaultData = () => {
 const descRichRef = ref();
 const validateDesc = () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject('不能超过2000字符');
+    return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
   }
   // if (formData.value?.description?.length && formData.value.description.length > 2000) {
   //   return Promise.reject('不能超过2000字符');
@@ -157,9 +160,9 @@ const ok = async () => {
       return;
     }
     if (formData.value.id) {
-      notification.success('修改项目成功');
+      notification.success(t('project.projectAddModal.messages.updateSuccess'));
     } else {
-      notification.success('添加项目成功');
+      notification.success(t('project.projectAddModal.messages.addSuccess'));
     }
 
     emit('update:visible', false);
@@ -203,7 +206,7 @@ watch(() => props.visible, newValue => {
 });
 
 const modalTitle = computed(() => {
-  return props.dataSource?.id ? '编辑项目' : '添加项目';
+  return props.dataSource?.id ? t('project.projectAddModal.modal.editProject') : t('project.projectAddModal.modal.addProject');
 });
 </script>
 <template>
@@ -232,7 +235,7 @@ const modalTitle = computed(() => {
               icon="icon-xuanzhongduigou"
               class="text-theme-special text-5 right-0 bottom-0 absolute " />
             <Icon icon="icon-minjiexiangmuguanli" class="text-10" />
-            <div>敏捷项目管理</div>
+            <div>{{ t('project.projectAddModal.projectTypeName.agile') }}</div>
           </div>
 
           <div
@@ -244,7 +247,7 @@ const modalTitle = computed(() => {
               icon="icon-xuanzhongduigou"
               class="text-theme-special text-5 right-0 bottom-0 absolute " />
             <Icon icon="icon-jiandanxiangmuguanli" class="text-10" />
-            <div>一般项目管理</div>
+            <div>{{ t('project.projectAddModal.projectTypeName.general') }}</div>
           </div>
 
           <div
@@ -256,7 +259,7 @@ const modalTitle = computed(() => {
               icon="icon-xuanzhongduigou"
               class="text-theme-special text-5 right-0 bottom-0 absolute " />
             <Icon icon="icon-ceshixiangmuguanli" class="text-10" />
-            <div>测试项目管理</div>
+            <div>{{ t('project.projectAddModal.projectTypeName.testing') }}</div>
           </div>
         </div>
 
@@ -309,33 +312,33 @@ const modalTitle = computed(() => {
               :customRequest="uploadImg">
               <div class="ant-upload-text bg-blue-2 h-full w-full flex flex-col items-center spacey-2 justify-around">
                 <img src="../project/images/default.png" class="w-15" />
-                <div class="text-3">点击替换图标</div>
+                <div class="text-3">{{ t('project.projectAddModal.form.clickToReplaceIcon') }}</div>
               </div>
             </Upload>
           </div>
         </FormItem>
         <FormItem
-          label="名称"
+                      :label="t('project.projectAddModal.form.name')"
           name="name"
           required>
           <Input
             v-model:value="formData.name"
-            placeholder="项目名称，最多100个字符"
+            :placeholder="t('project.projectAddModal.form.projectNamePlaceholder')"
             :maxlength="100">
           </Input>
         </FormItem>
 
         <FormItem
-          label="时间计划"
+                      :label="t('project.projectAddModal.form.timePlan')"
           name="dateRange"
-          :rules="[{ required: true, message: '请输入时间'}]">
+                      :rules="[{ required: true, message: t('project.projectAddModal.validation.timeRequired')}]">
           <template #label>
             <div class="flex items-center">
-              <span>时间</span>
+                              <span>{{ t('project.projectAddModal.form.time') }}</span>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
-                    时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。
+                    {{ t('project.projectAddModal.form.timeDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -352,14 +355,14 @@ const modalTitle = computed(() => {
 
         <FormItem
           name="ownerId"
-          :rules="[{ required: true, message: '请输入负责人'}]">
+                      :rules="[{ required: true, message: t('project.projectAddModal.validation.ownerRequired')}]">
           <template #label>
             <div class="flex items-center">
-              <span>负责人</span>
+                              <span>{{ t('project.projectAddModal.form.owner') }}</span>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
-                    通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                    {{ t('project.projectAddModal.form.ownerDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -369,18 +372,18 @@ const modalTitle = computed(() => {
           <SelectUser
             v-model:value="formData.ownerId"
             size="small"
-            placeholder="请选择项目负责人"
+                          :placeholder="t('project.projectAddModal.form.ownerPlaceholder')"
             :allowClear="false" />
         </FormItem>
 
         <FormItem>
           <template #label>
             <div class="flex items-center">
-              <span>导入示例</span>
+              <span>{{ t('project.projectAddModal.form.importExample') }}</span>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
-                    导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。
+                    {{ t('project.projectAddModal.form.importExampleDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -389,28 +392,28 @@ const modalTitle = computed(() => {
           </template>
           <RadioGroup
             v-model:value="formData.importExample"
-            :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
+            :options="[{ value: true, label: t('project.projectAddModal.form.yes')}, { value: false, label: t('project.projectAddModal.form.no') }]">
           </RadioGroup>
         </FormItem>
-        <FormItem label="成员" required>
+        <FormItem :label="t('project.projectAddModal.form.members')" required>
           <RadioGroup
             v-model:value="memberType"
             buttonStyle="solid"
             size="small">
             <RadioButton value="user">
-              用户
+              {{ t('project.projectAddModal.form.user') }}
             </RadioButton>
             <RadioButton value="dept">
-              部门
+              {{ t('project.projectAddModal.form.department') }}
             </RadioButton>
             <RadioButton value="group">
-              组
+              {{ t('project.projectAddModal.form.group') }}
             </RadioButton>
           </RadioGroup>
           <Popover placement="right">
             <template #content>
               <div class="max-w-110">
-                明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。
+                {{ t('project.projectAddModal.form.membersDescription') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />
@@ -420,7 +423,7 @@ const modalTitle = computed(() => {
               v-show="memberType === 'user'"
               v-model:value="members.USER"
               :showSearch="true"
-              placeholder="选择用户"
+              :placeholder="t('project.projectAddModal.form.selectUser')"
               :action="`${GM}/user?fullTextSearch=true`"
               :defaultOptions="defaultOptionsUser"
               mode="multiple"
@@ -430,7 +433,7 @@ const modalTitle = computed(() => {
             <Select
               v-show="memberType === 'dept'"
               v-model:value="members.DEPT"
-              placeholder="选择部门"
+              :placeholder="t('project.projectAddModal.form.selectDepartment')"
               :showSearch="true"
               :action="`${GM}/dept?fullTextSearch=true`"
               :defaultOptions="defaultOptionsDept"
@@ -441,7 +444,7 @@ const modalTitle = computed(() => {
             <Select
               v-show="memberType === 'group'"
               v-model:value="members.GROUP"
-              placeholder="选择组"
+              :placeholder="t('project.projectAddModal.form.selectGroup')"
               :showSearch="true"
               :action="`${GM}/group?fullTextSearch=true`"
               :defaultOptions="defaultOptionsGroup"
@@ -452,7 +455,7 @@ const modalTitle = computed(() => {
         </FormItem>
 
         <FormItem
-          label="描述"
+          :label="t('project.projectAddModal.form.description')"
           name="description"
           :rules="[{validator: validateDesc}]">
           <RichEditor
@@ -460,7 +463,7 @@ const modalTitle = computed(() => {
             v-model:value="formData.description"
             class="border rounded border-border-input"
             :height="80"
-            :options="{placeholder: '描述，最多2000个字符', theme: 'bubble'}" />
+            :options="{placeholder: t('project.projectAddModal.form.descriptionPlaceholder'), theme: 'bubble'}" />
           <!-- <Textarea
             v-model:value="formData.description"
             type="textarea"

@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 // import { NoData } from '@xcan-angus/vue-ui';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
 
 import deletePng from './Image/delete.png';
@@ -10,6 +10,8 @@ import shanghongPng from './Image/shanghong.png';
 import shanglvPng from './Image/shanglv.png';
 import xialvPng from './Image/xialv.png';
 import xiahongPng from './Image/xiahong.png';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -554,7 +556,7 @@ const sysItems = [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3" class="text-4 text-theme-title font-medium">三、<em class="inline-block w-0.25"></em>场景测试详细结果信息</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>场景测试详细结果信息</span>
     </h1>
 
     <h1 class="text-theme-title font-medium mb-3.5">

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -31,18 +34,18 @@ const basicInfoSetting = computed(() => {
 <template>
   <div>
     <div class="text-theme-title font-medium text-4.5 mb-4">
-      <span>摘要</span>
+      <span>{{ t('reportPreview.execFunction.summary.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center justify-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试是否通过
+          {{ t('reportPreview.execFunction.summary.fields.testPassed') }}
         </div>
         <div
           class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          描述
+          {{ t('reportPreview.execFunction.summary.fields.description') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-solid border-border-input">
           {{ props.reportInfo?.description }}
@@ -52,14 +55,14 @@ const basicInfoSetting = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center justify-center space-x-5 px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ props.execResult?.passed?'通过':'未通过' }}
+          {{ props.execResult?.passed ? t('reportPreview.execFunction.summary.status.passed') : t('reportPreview.execFunction.summary.status.failed') }}
         </div>
 
         <div class="flex-1">
           <div class="flex border-b border-solid border-border-input">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              联系人
+              {{ t('reportPreview.execFunction.summary.fields.contact') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-solid border-border-input">
               {{ basicInfoSetting?.reportContacts }}
@@ -68,7 +71,7 @@ const basicInfoSetting = computed(() => {
           <div class="flex border-b border-solid border-border-input">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              版权说明
+              {{ t('reportPreview.execFunction.summary.fields.copyright') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-solid border-border-input">
               {{ basicInfoSetting?.reportCopyright }}
@@ -78,7 +81,7 @@ const basicInfoSetting = computed(() => {
           <div class="flex">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              其他
+              {{ t('reportPreview.execFunction.summary.fields.other') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
               {{ basicInfoSetting?.otherInformation }}

@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Image, notification, Icon } from '@xcan-angus/vue-ui';
 import { Form, FormItem, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { project } from 'src/api/tester';
 import DefaultProjectPng from '@/views/project/project/images/default.png';
 import dayjs from 'dayjs';
+
+const { t } = useI18n();
 
 export type Project = {
   name: string;
@@ -46,15 +49,15 @@ const emit = defineEmits<{
 }>();
 
 const projectTypeTipConfig = {
-  AGILE: ['核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。', '适用场景：敏捷开发团队快速迭代产品。'],
-  GENERAL: ['核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。', '适用场景：传统研发团队跨部门协作项目。'],
-  TESTING: ['核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。', '适用场景：质量保障团队专项测试项目。']
+  AGILE: [t('project.projectDetail.projectTypeTip.agile.features'), t('project.projectDetail.projectTypeTip.agile.scenarios')],
+  GENERAL: [t('project.projectDetail.projectTypeTip.general.features'), t('project.projectDetail.projectTypeTip.general.scenarios')],
+  TESTING: [t('project.projectDetail.projectTypeTip.testing.features'), t('project.projectDetail.projectTypeTip.testing.scenarios')]
 };
 
 const projectTypeName = {
-  AGILE: '敏捷项目管理',
-  GENERAL: '一般项目管理',
-  TESTING: '测试项目管理'
+  AGILE: t('project.projectDetail.projectTypeName.agile'),
+  GENERAL: t('project.projectDetail.projectTypeName.general'),
+  TESTING: t('project.projectDetail.projectTypeName.testing')
 };
 const activeKey = ref('basic');
 const formRef = ref();
@@ -120,9 +123,9 @@ const ok = async () => {
       return;
     }
     if (formData.value.id) {
-      notification.success('修改项目成功');
+              notification.success(t('project.projectDetail.messages.updateSuccess'));
     } else {
-      notification.success('添加项目成功');
+              notification.success(t('project.projectDetail.messages.addSuccess'));
     }
 
     emit('update:visible', false);
@@ -146,7 +149,7 @@ watch(() => props.projectId, newValue => {
 <template>
   <div class="p-5 h-full overflow-auto">
     <Tabs v-model:activeKey="activeKey" size="small">
-      <TabPane key="basic" tab="基本信息">
+      <TabPane key="basic" :tab="t('project.projectDetail.tabs.basicInfo')">
         <div class="flex space-x-5">
           <Form
             ref="formRef"
@@ -167,27 +170,27 @@ watch(() => props.projectId, newValue => {
                   :src="DefaultProjectPng" />
               </div>
             </FormItem>
-            <FormItem label="项目名称:" name="name">
+            <FormItem :label="t('project.projectDetail.form.projectName') + ':'" name="name">
               <div class="text-3">
                 {{ formData.name }}
               </div>
             </FormItem>
 
-            <FormItem label="时间计划:">
+            <FormItem :label="t('project.projectDetail.form.timePlan') + ':'">
               <div v-if="formData.startDate" class="text-3">
                 {{ dayjs(formData.startDate).format('YYYY-MM-DD') }} - {{ dayjs(formData.deadlineDate).format('YYYY-MM-DD') || '' }}
               </div>
             </FormItem>
 
-            <FormItem label="负责人:" name="ownerId">
+            <FormItem :label="t('project.projectDetail.form.owner') + ':'" name="ownerId">
               <div class="text-3">
                 {{ formData.ownerName }}
               </div>
             </FormItem>
 
-            <FormItem label="项目成员:" class="member-item">
+            <FormItem :label="t('project.projectDetail.form.projectMembers') + ':'" class="member-item">
               <Tabs size="small" class="-mt-1.5">
-                <TabPane key="user" tab="用户">
+                                  <TabPane key="user" :tab="t('project.projectDetail.form.user')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.USER || []"
@@ -202,7 +205,7 @@ watch(() => props.projectId, newValue => {
                     </div>
                   </div>
                 </TabPane>
-                <TabPane key="group" tab="组">
+                                  <TabPane key="group" :tab="t('project.projectDetail.form.group')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.GROUP || []"
@@ -212,7 +215,7 @@ watch(() => props.projectId, newValue => {
                     </div>
                   </div>
                 </TabPane>
-                <TabPane key="dept" tab="部门">
+                                  <TabPane key="dept" :tab="t('project.projectDetail.form.department')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.DEPT || []"
@@ -225,10 +228,10 @@ watch(() => props.projectId, newValue => {
               </Tabs>
             </FormItem>
 
-            <FormItem label="项目描述:" class="desc-item">
+            <FormItem :label="t('project.projectDetail.form.projectDescription') + ':'" class="desc-item">
               <RichEditor
                 :value="formData.description"
-                emptyText="无描述~"
+                :emptyText="t('project.projectDetail.form.noDescription')"
                 mode="view" />
             </FormItem>
           </Form>
@@ -260,19 +263,19 @@ watch(() => props.projectId, newValue => {
           </div>
         </div>
       </TabPane>
-      <TabPane key="module" tab="软件模块">
+      <TabPane key="module" :tab="t('project.projectDetail.tabs.module')">
         <Module
           :projectId="props.projectId"
           :disabled="true"
           :projectName="formData.name" />
       </TabPane>
-      <TabPane key="version" tab="软件版本">
+      <TabPane key="version" :tab="t('project.projectDetail.tabs.version')">
         <Version
           :projectId="props.projectId"
           class="!p-0"
           :showDetail="false" />
       </TabPane>
-      <TabPane key="biaoqian" tab="数据标签">
+      <TabPane key="biaoqian" :tab="t('project.projectDetail.tabs.tag')">
         <Tags :projectId="props.projectId" :disabled="true" />
       </TabPane>
     </Tabs>

@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { getDataByProxy } from '@/api/proxy/index';
-
+import { useI18n } from 'vue-i18n';
 import { ExecContent, ExecInfo, ExecResult, ReportInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -88,27 +90,27 @@ const schedulingLog = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a5" class="text-4 text-theme-title font-medium">三、<em class="inline-block w-0.25"></em>日志信息</span>
+      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.execFunction.log.title') }}</span>
     </h1>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a6">3.1<em class="inline-block w-3.5"></em>执行调度信息</span>
+        <span id="a6">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.execFunction.log.schedulingLog.title') }}</span>
       </h2>
       <div class="flex items-center mb-2">
         <div class="flex items-center mr-20">
-          <div class="mr-0.5">调度结果：</div>
+          <div class="mr-0.5">{{ t('reportPreview.execFunction.log.schedulingLog.fields.schedulingResult') }}：</div>
           <div v-if="nodeIp" class="flex items-center">
             <div
               class="w-1.5 h-1.5 mr-1 rounded"
               :class="schedulingLog?.success ? 'bg-status-success' : 'bg-status-error'">
             </div>
-            {{ schedulingLog?.success ? '成功' : '失败' }}
+            {{ schedulingLog?.success ? t('reportPreview.execFunction.log.schedulingLog.status.success') : t('reportPreview.execFunction.log.schedulingLog.status.failed') }}
           </div>
           <div v-else>--</div>
         </div>
         <div class="flex items-center">
-          <div class="mr-0.5">进程退出码：</div>
+          <div class="mr-0.5">{{ t('reportPreview.execFunction.log.schedulingLog.fields.processExitCode') }}：</div>
           <div v-if="nodeIp">{{ schedulingLog?.exitCode }}</div>
           <div v-else>--</div>
         </div>
@@ -126,17 +128,17 @@ const schedulingLog = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a7">3.2<em class="inline-block w-3.5"></em>执行采样信息</span>
+        <span id="a7">3.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.execFunction.log.samplingLog.title') }}</span>
       </h2>
       <div class="flex items-center mb-2">
         <div class="flex items-start">
-          <div class="mr-0.5 flex-shrink-0">文件：</div>
+          <div class="mr-0.5 flex-shrink-0">{{ t('reportPreview.execFunction.log.samplingLog.fields.file') }}：</div>
           <div v-if="!execLogErr && execLogPath" class="whitespace-pre-wrap break-all">
             {{ execLogPath }}
           </div>
           <div v-else class="text-rule whitespace-pre-wrap break-all">
             {{ errorText ||
-              `无访问代理信息，连接失败地址：http://${nodeIp}:6807/actuator/runner/log/${props.execInfo?.id}` }}
+              `${t('reportPreview.execFunction.log.samplingLog.messages.noProxyInfo')}http://${nodeIp}:6807/actuator/runner/log/${props.execInfo?.id}` }}
           </div>
         </div>
       </div>

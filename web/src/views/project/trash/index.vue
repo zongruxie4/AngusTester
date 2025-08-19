@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, Input, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
@@ -51,7 +54,7 @@ const recoverAll = async () => {
     return;
   }
 
-  notification.success('全部还原成功');
+  notification.success(t('projectTrash.messages.recoverAllSuccess'));
   pagination.value.current = 1;
   loadData();
 };
@@ -65,7 +68,7 @@ const deleteAll = async () => {
     return;
   }
 
-  notification.success('全部删除成功');
+  notification.success(t('projectTrash.messages.deleteAllSuccess'));
   pagination.value.current = 1;
   loadData();
 };
@@ -83,7 +86,7 @@ const recoverHandler = async (data:TrashItem) => {
     return;
   }
 
-  notification.success('还原成功');
+  notification.success(t('projectTrash.messages.recoverSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -96,7 +99,7 @@ const deleteHandler = async (data:TrashItem) => {
     return;
   }
 
-  notification.success('删除成功');
+  notification.success(t('projectTrash.messages.deleteSuccess'));
   pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
   loadData();
 };
@@ -177,32 +180,32 @@ const columns = [
     sorter: false
   },
   {
-    title: '名称',
+    title: t('projectTrash.table.name'),
     dataIndex: 'targetName',
     width: '35%',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '添加人',
+    title: t('projectTrash.table.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除人',
+    title: t('projectTrash.table.deleter'),
     dataIndex: 'deletedByName',
     ellipsis: true,
     sorter: false
   },
   {
-    title: '删除时间',
+    title: t('projectTrash.table.deleteTime'),
     dataIndex: 'deletedDate',
     ellipsis: true,
     sorter: true
   },
   {
-    title: '操作',
+    title: t('projectTrash.table.actions'),
     dataIndex: 'action',
     width: 70
   }
@@ -222,7 +225,7 @@ const emptyTextStyle = {
           :allowClear="true"
           :maxlength="200"
           trim
-          placeholder="请输入查询关键字"
+          :placeholder="t('projectTrash.ui.searchPlaceholder')"
           class="w-75"
           @change="inputChange">
           <template #suffix>
@@ -231,7 +234,7 @@ const emptyTextStyle = {
         </Input>
         <div class="flex-1 truncate text-theme-sub-content space-x-1 ml-2">
           <Icon icon="icon-tishi1" class="text-3.5 text-tips" />
-          <span>只允许管理员和删除人还原或彻底删除回收站数据。</span>
+          <span>{{ t('projectTrash.ui.adminHint') }}</span>
         </div>
       </div>
       <div class="space-x-2.5">
@@ -241,7 +244,7 @@ const emptyTextStyle = {
           type="primary"
           @click="recoverAll">
           <Icon icon="icon-zhongzhi" class="text-3.5 mr-1" />
-          <span class>全部还原</span>
+          <span class>{{ t('projectTrash.ui.recoverAll') }}</span>
         </Button>
         <Button
           :disabled="!tableData?.length"
@@ -250,14 +253,14 @@ const emptyTextStyle = {
           danger
           @click="deleteAll">
           <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-          <span class>全部删除</span>
+          <span class>{{ t('projectTrash.ui.deleteAll') }}</span>
         </Button>
         <Button
           size="small"
           type="default"
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span class>刷新</span>
+          <span class>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
@@ -298,7 +301,7 @@ const emptyTextStyle = {
         <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
           <Button
             :disabled="record.disabled"
-            title="还原"
+            :title="t('projectTrash.ui.recover')"
             size="small"
             type="text"
             class="space-x-1 flex items-center p-0"
@@ -307,7 +310,7 @@ const emptyTextStyle = {
           </Button>
           <Button
             :disabled="record.disabled"
-            title="删除"
+            :title="t('actions.delete')"
             size="small"
             type="text"
             class="space-x-1 flex items-center p-0"

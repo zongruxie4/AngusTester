@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, inject, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie, TESTER, CombinedTargetType } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { MenuItem } from './PropsType';
 
@@ -450,34 +453,34 @@ const isScenarioTargetType = computed(() => {
 const menuItems: MenuItem[] = [
   {
     key: 'none',
-    name: '所有'
+    name: t('reportHome.searchPanel.menuItems.all')
   },
   {
     key: 'createdBy',
-    name: '我添加的'
+    name: t('reportHome.searchPanel.menuItems.myAdded')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('reportHome.searchPanel.menuItems.myModified')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('reportHome.searchPanel.menuItems.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('reportHome.searchPanel.menuItems.last3Days')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('reportHome.searchPanel.menuItems.last7Days')
   }
 ];
 
 const searchOptions = computed(() => [
   {
     valueKey: 'name',
-    placeholder: '查询名称、描述',
+    placeholder: t('reportHome.searchPanel.searchOptions.namePlaceholder'),
     type: 'input',
     maxlength: 100
   },
@@ -489,7 +492,7 @@ const searchOptions = computed(() => [
   // },
   {
     valueKey: 'targetType',
-    placeholder: '选择资源类型',
+    placeholder: t('reportHome.searchPanel.searchOptions.resourceTypePlaceholder'),
     type: 'select-enum',
     enumKey: CombinedTargetType,
     excludes: (data: { message: string; value: 'PROJECT' | 'TAG' | 'MODULE' | 'SERVICE' | 'API' | 'API_CASE' | 'SCENARIO' | 'TASK' | 'TASK_SPRINT' | 'VARIABLE' | 'DATASET' | 'FUNC_PLAN' | 'FUNC_CASE' | 'SCRIPT' | 'MOCK_SERVICE' | 'MOCK_APIS' | 'REPORT' | 'EXECUTION' }) => {
@@ -499,30 +502,30 @@ const searchOptions = computed(() => [
   {
     type: 'select',
     valueKey: 'targetId',
-    placeholder: '选择资源',
+    placeholder: t('reportHome.searchPanel.searchOptions.resourcePlaceholder'),
     noDefaultSlot: true
   },
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: '添加人'
+    placeholder: t('reportHome.searchPanel.searchOptions.creatorPlaceholder')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('reportHome.searchPanel.searchOptions.createTimeFrom'), t('reportHome.searchPanel.searchOptions.createTimeTo')],
     showTime: true
   }
 ]);
 
 const sortMenus = [
   {
-    name: '按添加时间',
+    name: t('reportHome.searchPanel.sortMenus.byCreateTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('reportHome.searchPanel.sortMenus.byCreator'),
     key: 'createdByName',
     orderSort: 'DESC'
   }
@@ -533,7 +536,7 @@ const sortMenus = [
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>快速查询</span>
+          <span>{{ t('reportHome.searchPanel.quickQuery') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
@@ -562,7 +565,7 @@ const sortMenus = [
             :action="`${TESTER}/project?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择项目"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.project')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -573,7 +576,7 @@ const sortMenus = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择服务"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.service')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -584,7 +587,7 @@ const sortMenus = [
             :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            placeholder="选择接口"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.api')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange">
@@ -605,7 +608,7 @@ const sortMenus = [
             :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择任务"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.task')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -616,7 +619,7 @@ const sortMenus = [
             :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择迭代"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.sprint')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -627,7 +630,7 @@ const sortMenus = [
             :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择计划"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.plan')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -638,7 +641,7 @@ const sortMenus = [
             :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择用例"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.case')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -649,7 +652,7 @@ const sortMenus = [
             :action="`${TESTER}/exec?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择执行"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.execution')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -660,7 +663,7 @@ const sortMenus = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择场景"
+            :placeholder="t('reportHome.searchPanel.resourceSelect.scenario')"
             class="w-72 ml-2"
             showSearch
             @change="targetIdChange" />
@@ -673,12 +676,12 @@ const sortMenus = [
           class="flex space-x-1"
           @click="emit('add')">
           <Icon icon="icon-jia" class="text-3.5" />
-          <span>添加报告</span>
+          <span>{{ t('reportHome.searchPanel.actions.addReport') }}</span>
         </Button>
 
         <Button size="small" @click="toAuth">
           <Icon icon="icon-quanxian1" class="mr-1 text-3.5" />
-          <span>报告权限</span>
+          <span>{{ t('reportHome.searchPanel.actions.reportPermission') }}</span>
         </Button>
 
         <!-- <DropdownSort :menuItems="sortMenus" @click="toSort">
@@ -690,7 +693,7 @@ const sortMenus = [
 
         <Button size="small" @click="toRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>刷新</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>

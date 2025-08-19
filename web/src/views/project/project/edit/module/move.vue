@@ -4,6 +4,9 @@ import { Icon, Modal } from '@xcan-angus/vue-ui';
 import { travelTreeData } from './utils';
 import { Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -90,7 +93,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="移动模块"
+    :title="t('project.projectEdit.module.moveModule')"
     :okButtonProps="{
       disabled: !pid.length,
       loading: loading

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ButtonProps } from 'ant-design-vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { modules } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -47,7 +50,7 @@ const ok = async () => {
 
   inputValue.value = undefined;
   emit('update:visible', false);
-  notification.success('模块添加成功');
+  notification.success(t('project.projectEdit.module.addSuccess'));
 };
 
 const cancel = () => {
@@ -69,7 +72,7 @@ const hanedleEnterPress = () => {
 
 <template>
   <Modal
-    title="添加模块"
+    :title="t('project.projectEdit.module.addModuleTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
@@ -77,7 +80,7 @@ const hanedleEnterPress = () => {
     @ok="ok">
     <Input
       v-model:value="inputValue"
-      placeholder="模块名称，最大支持50个字符"
+      :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"

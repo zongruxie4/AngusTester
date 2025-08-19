@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
+import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../../PropsType';
 
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 const caseStatusRef = ref();
 const caseBarEchartsConfig = {
@@ -49,7 +52,7 @@ const caseBarEchartsConfig = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已取消', '阻塞', '测试未通过', '测试通过', '待测试']
+    data: [t('reportPreview.functionPlan.caseSummary.groupStats.statuses.cancelled'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.blocked'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.testFailed'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.testPassed'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.pendingTest')]
   },
   series: [
     {
@@ -135,23 +138,23 @@ const priorityOptions = {
       },
       data: [
         {
-          name: '最高',
+          name: t('reportPreview.functionPlan.caseSummary.groupStats.priorities.highest'),
           value: 0
         },
         {
-          name: '高',
+          name: t('reportPreview.functionPlan.caseSummary.groupStats.priorities.high'),
           value: 0
         },
         {
-          name: '中',
+          name: t('reportPreview.functionPlan.caseSummary.groupStats.priorities.medium'),
           value: 0
         },
         {
-          name: '底',
+          name: t('reportPreview.functionPlan.caseSummary.groupStats.priorities.low'),
           value: 0
         },
         {
-          name: '最底',
+          name: t('reportPreview.functionPlan.caseSummary.groupStats.priorities.lowest'),
           value: 0
         }
       ]
@@ -192,13 +195,13 @@ onMounted(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3">
-      <span class="text-3 text-theme-title font-medium">按状态分组</span>
+      <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.functionPlan.caseSummary.groupStats.byStatus') }}</span>
     </h1>
     <div ref="caseStatusRef" class="flex-1 h-50 w-120 mb-7">
     </div>
 
     <h1 class="text-theme-title font-medium mb-3">
-      <span class="text-3 text-theme-title font-medium">按优先级分组</span>
+      <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.functionPlan.caseSummary.groupStats.byPriority') }}</span>
     </h1>
     <div ref="priorityRef" class="flex-1 h-50  w-120">
     </div>

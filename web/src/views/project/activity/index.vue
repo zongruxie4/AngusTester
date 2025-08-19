@@ -107,13 +107,13 @@ onMounted(() => {
 
 const columns = [
   {
-    title: t('活动人'),
+    title: t('projectActivity.table.operator'),
     dataIndex: 'fullName',
     width: '10%',
     ellipsis: true
   },
   {
-    title: t('活动时间'),
+    title: t('projectActivity.table.activityTime'),
     dataIndex: 'optDate',
     sorter: true,
     width: '10%',
@@ -122,27 +122,27 @@ const columns = [
     }
   },
   {
-    title: '所属项目',
+    title: t('projectActivity.table.projectName'),
     dataIndex: 'projectName',
     groupName: 'project',
     width: '15%',
     ellipsis: true
   },
   {
-    title: '所属项目ID',
+    title: t('projectActivity.table.projectId'),
     dataIndex: 'projectId',
     groupName: 'project',
     hide: true,
     width: '15%'
   },
   {
-    title: t('资源类型'),
+    title: t('projectActivity.table.resourceType'),
     dataIndex: 'targetType',
     customRender: ({ text }) => text?.message,
     width: '8%'
   },
   {
-    title: t('操作资源ID'),
+    title: t('projectActivity.table.targetId'),
     dataIndex: 'targetId',
     width: '17%',
     groupName: 'source',
@@ -152,14 +152,14 @@ const columns = [
     }
   },
   {
-    title: t('操作资源'),
+    title: t('projectActivity.table.targetName'),
     dataIndex: 'targetName',
     width: '17%',
     ellipsis: true,
     groupName: 'source'
   },
   {
-    title: t('活动内容'),
+    title: t('projectActivity.table.activityContent'),
     width: '40%',
     dataIndex: 'detail'
   }
@@ -171,10 +171,10 @@ const columns = [
   <div class="p-3.5 px-5 text-3">
     <Statistics
       :visible="showCount"
-      barTitle="活动"
+      :barTitle="t('projectActivity.chart.activity')"
       resource="Activity"
       :geteway="TESTER" />
-    <Hints class="mb-2" :text="`每个资源只保存最近${maxResource}条活动，超过${maxResource}条时将自动被删除。`" />
+    <Hints class="mb-2" :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
     <SearchPanel
       :loading="loading"
       :showCount="showCount"

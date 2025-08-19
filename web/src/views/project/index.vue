@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
+
+const { t } = useI18n();
 const Projects = defineAsyncComponent(() => import('@/views/project/project/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/project/activity/index.vue'));
@@ -29,16 +32,16 @@ const iframeSrc = computed(() => {
 });
 
 const menuItems = [
-  { icon: 'icon-xiangmu', name: '项目', key: 'project' },
-  { icon: 'icon-AIzhushou', name: '助手', key: 'AI' },
-  { icon: 'icon-fabu', name: '活动', key: 'activity' },
-  { icon: 'icon-qingchu', name: '回收站', key: 'trash' }
+  { icon: 'icon-xiangmu', name: t('project.name'), key: 'project' },
+  { icon: 'icon-AIzhushou', name: t('AI.name'), key: 'AI' },
+  { icon: 'icon-fabu', name: t('projectActivity.name'), key: 'activity' },
+  { icon: 'icon-qingchu', name: t('projectTrash.name'), key: 'trash' }
 ];
 
 const menuItems2 = [
-  { icon: 'icon-xiangmu', name: '项目', key: 'project' },
-  { icon: 'icon-fabu', name: '活动', key: 'activity' },
-  { icon: 'icon-qingchu', name: '回收站', key: 'trash' }
+  { icon: 'icon-xiangmu', name: t('project.name'), key: 'project' },
+  { icon: 'icon-fabu', name: t('projectActivity.name'), key: 'activity' },
+  { icon: 'icon-qingchu', name: t('projectTrash.name'), key: 'trash' }
 ];
 </script>
 <template>

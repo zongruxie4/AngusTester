@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -41,37 +43,37 @@ const showTestInfo = computed(() => {
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">一、<em class="inline-block w-0.25 font-medium"></em>基本信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>基本信息</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span class="h1">二、<em class="inline-block w-0.25 font-medium"></em>人员信息</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>人员信息</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span class="h1">三、<em class="inline-block w-0.25 font-medium"></em>日期信息</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>日期信息</span>
         <DashedLine />
       </a>
       <a href="#a4" class="flex items-center space-x-2.5">
-        <span class="h1">四、<em class="inline-block w-0.25 font-medium"></em>描述</span>
+        <span class="h1">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25 font-medium"></em>描述</span>
         <DashedLine />
       </a>
       <a href="#a5" class="flex items-center space-x-2.5">
-        <span class="h1">五、<em class="inline-block w-0.25 font-medium"></em>子任务</span>
+        <span class="h1">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25 font-medium"></em>子任务</span>
         <DashedLine />
       </a>
       <a href="#a6" class="flex items-center space-x-2.5">
-        <span class="h1">六、<em class="inline-block w-0.25 font-medium"></em>关联任务</span>
+        <span class="h1">{{ t('reportPreview.serial.6') }}<em class="inline-block w-0.25 font-medium"></em>关联任务</span>
         <DashedLine />
       </a>
       <a href="#a7" class="flex items-center space-x-2.5">
-        <span class="h1">七、<em class="inline-block w-0.25 font-medium"></em>关联用例</span>
+        <span class="h1">{{ t('reportPreview.serial.7') }}<em class="inline-block w-0.25 font-medium"></em>关联用例</span>
         <DashedLine />
       </a>
 
       <template v-if="showTestInfo">
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">八、<em class="inline-block w-0.25 font-medium"></em>测试信息</span>
+          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>测试信息</span>
           <DashedLine />
         </a>
         <a href="#a8" class="flex items-center space-x-2.5">
@@ -87,30 +89,30 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">九、<em class="inline-block w-0.25 font-medium"></em>备注</span>
+          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>备注</span>
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">十、<em class="inline-block w-0.25 font-medium"></em>活动</span>
+          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>活动</span>
           <DashedLine />
         </a>
         <a href="#a11" class="flex items-center space-x-2.5">
-          <span class="h1">十一、<em class="inline-block w-0.25 font-medium"></em>评论</span>
+          <span class="h1">{{ t('reportPreview.serial.11') }}<em class="inline-block w-0.25 font-medium"></em>评论</span>
           <DashedLine />
         </a>
       </template>
 
       <template v-else>
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">八、<em class="inline-block w-0.25 font-medium"></em>备注</span>
+          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>备注</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">九、<em class="inline-block w-0.25 font-medium"></em>活动</span>
+          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>活动</span>
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">十、<em class="inline-block w-0.25 font-medium"></em>评论</span>
+          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>评论</span>
           <DashedLine />
         </a>
       </template>

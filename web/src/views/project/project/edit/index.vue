@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   Button,
   Form,
@@ -13,6 +14,8 @@ import {
 import { DatePicker, Icon, Image, Input, notification, Select, SelectUser, Cropper } from '@xcan-angus/vue-ui';
 import { GM } from '@xcan-angus/infra';
 import { project } from 'src/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -34,15 +37,15 @@ const delTabPane = inject('delTabPane');
 
 const activeKey = ref('basic');
 const projectTypeTipConfig = {
-  AGILE: ['核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。', '适用场景：敏捷开发团队快速迭代产品。'],
-  GENERAL: ['核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。', '适用场景：传统研发团队跨部门协作项目。'],
-  TESTING: ['核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。', '适用场景：质量保障团队专项测试项目。']
+  AGILE: [t('project.projectEdit.projectTypeTip.agile.features'), t('project.projectEdit.projectTypeTip.agile.scenarios')],
+  GENERAL: [t('project.projectEdit.projectTypeTip.general.features'), t('project.projectEdit.projectTypeTip.general.scenarios')],
+  TESTING: [t('project.projectEdit.projectTypeTip.testing.features'), t('project.projectEdit.projectTypeTip.testing.scenarios')]
 };
 
 const projectTypeName = {
-  AGILE: '敏捷项目管理',
-  GENERAL: '一般项目管理',
-  TESTING: '测试项目管理'
+  AGILE: t('project.projectEdit.projectTypeName.agile'),
+  GENERAL: t('project.projectEdit.projectTypeName.general'),
+  TESTING: t('project.projectEdit.projectTypeName.testing')
 };
 
 const members = ref({
@@ -146,7 +149,7 @@ const selectProjectType = (value) => {
 
 const validateDesc = () => {
   if (descRef.value && descRef.value.getLength() > 2000) {
-    return Promise.reject('不能超过2000字符');
+    return Promise.reject(t('project.projectEdit.validation.maxCharacters'));
   }
   return Promise.resolve();
 };
@@ -168,9 +171,9 @@ const ok = async () => {
     }
     emit('ok');
     if (props.projectId) {
-      notification.success('修改项目成功');
+              notification.success(t('project.projectEdit.messages.updateSuccess'));
     } else {
-      notification.success('创建项目成功');
+              notification.success(t('project.projectEdit.messages.createSuccess'));
       delTabPane('addProject');
     }
     getNewCurrentProject();
@@ -213,7 +216,7 @@ onMounted(() => {
                 icon="icon-xuanzhongduigou"
                 class="text-theme-special text-5 right-0 bottom-0 absolute " />
               <Icon icon="icon-minjiexiangmuguanli" class="text-10" />
-              <div>敏捷项目管理</div>
+              <div>{{ t('project.projectEdit.projectTypeName.agile') }}</div>
             </div>
             <div
               class="flex-1 flex flex-col items-center justify-around space-y-3  px-2 rounded py-4 border ant-card-hoverable relative"
@@ -224,7 +227,7 @@ onMounted(() => {
                 icon="icon-xuanzhongduigou"
                 class="text-theme-special text-5 right-0 bottom-0 absolute " />
               <Icon icon="icon-jiandanxiangmuguanli" class="text-10" />
-              <div>一般项目管理</div>
+              <div>{{ t('project.projectEdit.projectTypeName.general') }}</div>
             </div>
 
             <div
@@ -236,7 +239,7 @@ onMounted(() => {
                 icon="icon-xuanzhongduigou"
                 class="text-theme-special text-5 right-0 bottom-0 absolute " />
               <Icon icon="icon-ceshixiangmuguanli" class="text-10" />
-              <div>测试项目管理</div>
+              <div>{{ t('project.projectEdit.projectTypeName.testing') }}</div>
             </div>
           </div>
           <div class="w-186">
@@ -260,24 +263,24 @@ onMounted(() => {
                   class="ant-upload-text w-25 h-25 rounded cursor-pointer bg-blue-2  flex flex-col items-center spacey-2 justify-around"
                   @click="openCropper">
                   <img src="../images/default.png" class="w-15" />
-                  <div class="text-3">点击替换图标</div>
+                  <div class="text-3">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                 </div>
               </div>
             </FormItem>
             <FormItem
-              label="项目名称"
+              :label="t('project.projectEdit.form.projectName')"
               name="name"
               class="input_select"
               required>
               <Input
                 v-model:value="projectData.name"
-                placeholder="项目名称，最多100个字符"
+                :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
                 :maxlength="100">
               </Input>
             </FormItem>
 
             <FormItem
-              label="时间计划"
+              :label="t('project.projectEdit.form.timePlan')"
               name="dateRange"
               class="input_select"
               required>
@@ -290,7 +293,7 @@ onMounted(() => {
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
-                    时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。
+                    {{ t('project.projectEdit.form.timePlanDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
@@ -298,25 +301,25 @@ onMounted(() => {
             </FormItem>
             <div class="flex items-center space-x-3">
               <FormItem
-                label="负责人"
+                :label="t('project.projectEdit.form.owner')"
                 name="ownerId"
                 required
                 class="relative input_select flex-1">
                 <SelectUser
                   v-model:value="projectData.ownerId"
                   size="small"
-                  placeholder="请选择项目负责人"
+                  :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
                   :allowClear="false" />
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                      通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                     {{ t('project.projectEdit.form.ownerDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
                 </Popover>
               </FormItem>
-              <FormItem label="导入示例" class="import-example-label  flex-1 !mb-5 !ml-10">
+              <FormItem :label="t('project.projectEdit.form.importExample')" class="import-example-label  flex-1 !mb-5 !ml-10">
                 <RadioGroup
                   v-model:value="projectData.importExample"
                   :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
@@ -324,7 +327,7 @@ onMounted(() => {
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                      导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。
+                      {{t('project.projectEdit.form.importExampleDescription')}}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips text-3.5" />
@@ -333,7 +336,7 @@ onMounted(() => {
             </div>
 
             <FormItem
-              label="项目成员"
+              :label="t('project.projectEdit.form.projectMembers')"
               class="input_select"
               required>
               <RadioGroup
@@ -341,19 +344,19 @@ onMounted(() => {
                 buttonStyle="solid"
                 size="small">
                 <RadioButton value="user">
-                  用户
+                  {{t('project.projectEdit.form.user')}}
                 </RadioButton>
                 <RadioButton value="dept">
-                  部门
+                  {{ t('project.projectEdit.form.department') }}
                 </RadioButton>
                 <RadioButton value="group">
-                  组
+                  {{ t('project.projectEdit.form.group') }}
                 </RadioButton>
               </RadioGroup>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-110">
-                    明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。
+                    {{ t('project.projectEdit.form.membersDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />
@@ -363,7 +366,7 @@ onMounted(() => {
                   v-show="memberType === 'user'"
                   v-model:value="members.USER"
                   :showSearch="true"
-                  placeholder="选择用户"
+                  :placeholder="t('project.projectEdit.form.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsUser"
                   mode="multiple"
@@ -373,7 +376,7 @@ onMounted(() => {
                 <Select
                   v-show="memberType === 'dept'"
                   v-model:value="members.DEPT"
-                  placeholder="选择部门"
+                  :placeholder="t('project.projectEdit.form.selectDepartment')"
                   :showSearch="true"
                   :action="`${GM}/dept?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsDept"
@@ -384,7 +387,7 @@ onMounted(() => {
                 <Select
                   v-show="memberType === 'group'"
                   v-model:value="members.GROUP"
-                  placeholder="选择组"
+                  :placeholder="t('project.projectEdit.form.selectGroup')"
                   :showSearch="true"
                   :action="`${GM}/group?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsGroup"
@@ -394,14 +397,14 @@ onMounted(() => {
               </div>
             </FormItem>
             <FormItem
-              label="项目描述"
+              :label="t('project.projectEdit.form.description')"
               name="description"
               :rules="[{validator: validateDesc}]">
               <RichEditor
                 ref="descRef"
                 v-model:value="projectData.description"
                 :toolbarOptions="toolbarOptions"
-                :options="{placeholder: '描述，最多2000个字符'}" />
+                :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}" />
             </FormItem>
           </div>
           <div class="w-100">
@@ -440,13 +443,13 @@ onMounted(() => {
               :loading="loading"
               @click="ok">
               <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-              保存
+              {{ t('actions.save') }}
             </Button>
             <Button
               size="small"
               class="ml-2"
               @click="cancel">
-              取消
+              {{t('actions.cancel')}}
             </Button>
           </div>
         </FormItem>
@@ -457,7 +460,7 @@ onMounted(() => {
       v-if="props.projectId"
       v-model:activeKey="activeKey"
       size="small">
-      <TabPane key="basic" tab="基本信息">
+      <TabPane key="basic" :tab="t('project.projectEdit.tabs.basicInfo')">
         <Form
           ref="formRef"
           labelAlign="right"
@@ -487,7 +490,7 @@ onMounted(() => {
                     class="ant-upload-text w-25 h-25 rounded cursor-pointer bg-blue-2  flex flex-col items-center spacey-2 justify-around"
                     @click="openCropper">
                     <img src="../images/default.png" class="w-15" />
-                    <div class="text-3">点击替换图标</div>
+                    <div class="text-3">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                   </div>
                 </div>
               </FormItem>
@@ -517,7 +520,7 @@ onMounted(() => {
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                      时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。
+                      {{ t('project.projectEdit.form.timePlanDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
@@ -532,12 +535,12 @@ onMounted(() => {
                 <SelectUser
                   v-model:value="projectData.ownerId"
                   size="small"
-                  placeholder="请选择项目负责人"
+                  :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
                   :allowClear="false" />
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                      通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。
+                      {{ t('project.projectEdit.form.ownerDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
@@ -553,19 +556,19 @@ onMounted(() => {
                   buttonStyle="solid"
                   size="small">
                   <RadioButton value="user">
-                    用户
+                    {{t('project.projectEdit.form.user')}}
                   </RadioButton>
                   <RadioButton value="dept">
-                    部门
+                    {{ t('project.projectEdit.form.department') }}
                   </RadioButton>
                   <RadioButton value="group">
-                    组
+                    {{t('project.projectEdit.form.group')}}
                   </RadioButton>
                 </RadioGroup>
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-110">
-                      明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。
+                      {{ t('project.projectEdit.form.membersDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />
@@ -575,7 +578,7 @@ onMounted(() => {
                     v-show="memberType === 'user'"
                     v-model:value="members.USER"
                     :showSearch="true"
-                    placeholder="选择用户"
+                    :placeholder="t('project.projectEdit.form.selectUser')"
                     :action="`${GM}/user?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsUser"
                     mode="multiple"
@@ -585,7 +588,7 @@ onMounted(() => {
                   <Select
                     v-show="memberType === 'dept'"
                     v-model:value="members.DEPT"
-                    placeholder="选择部门"
+                    :placeholder="t('project.projectEdit.form.selectDepartment')"
                     :showSearch="true"
                     :action="`${GM}/dept?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsDept"
@@ -596,7 +599,7 @@ onMounted(() => {
                   <Select
                     v-show="memberType === 'group'"
                     v-model:value="members.GROUP"
-                    placeholder="选择组"
+                    :placeholder="t('project.projectEdit.form.selectGroup')"
                     :showSearch="true"
                     :action="`${GM}/group?fullTextSearch=true`"
                     :defaultOptions="defaultOptionsGroup"
@@ -607,14 +610,14 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                label="项目描述"
+                :label="t('project.projectEdit.form.projectDescription')"
                 name="description"
                 :rules="[{validator: validateDesc}]">
                 <RichEditor
                   ref="descRef"
                   v-model:value="projectData.description"
                   :toolbarOptions="toolbarOptions"
-                  :options="{placeholder: '描述，最多2000个字符'}" />
+                  :options="{placeholder: t('project.projectEdit.form.projectDescriptionPlaceholder')}" />
               </FormItem>
             </div>
             <div class="w-100 pt-12">
@@ -653,34 +656,34 @@ onMounted(() => {
                 :loading="loading"
                 @click="ok">
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-                保存
+                {{t('actions.save')}}
               </Button>
               <Button
                 size="small"
                 class="ml-2"
                 @click="cancel">
-                取消
+                {{t('actions.cancel')}}
               </Button>
             </div>
           </FormItem>
         </Form>
       </TabPane>
-      <TabPane key="module" tab="软件模块">
+      <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
         <Module :projectId="props.projectId" :projectName="projectData.name" />
       </TabPane>
-      <TabPane key="version" tab="软件版本">
+      <TabPane key="version" :tab="t('project.projectEdit.tabs.version')">
         <Version
           :projectId="props.projectId"
           class="!p-0"
           :showDetail="false" />
       </TabPane>
-      <TabPane key="biaoqian" tab="数据标签">
+      <TabPane key="biaoqian" :tab="t('project.projectEdit.tabs.tag')">
         <Tags :projectId="props.projectId" />
       </TabPane>
     </Tabs>
     <Cropper
       v-model:visible="uploadAvatarVisible"
-      title="上传图标"
+      :title="t('project.projectEdit.actions.uploadIcon')"
       :params="uploadParams"
       :options="uploadOption"
       @success="uploadImgSuccess" />

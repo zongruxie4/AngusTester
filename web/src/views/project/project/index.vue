@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 const projectHome = defineAsyncComponent(() => import('@/views/project/project/list/index.vue'));
 const EditProject = defineAsyncComponent(() => import('@/views/project/project/edit/index.vue'));
@@ -20,7 +23,7 @@ onMounted(() => {
         if (!tabData.includes('projecthome')) {
           browserTabRef.value.add(() => ({
             _id: 'project_home',
-            name: '项目',
+            name: t('project.project'),
             type: 'projecthome',
             closable: false,
             icon: 'icon-zhuye',

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -33,7 +35,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a10" class="text-4 text-theme-title font-medium">十、<em class="inline-block w-0.25"></em>关联用例</span>
+      <span id="a10" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.assocCase.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
@@ -44,23 +46,23 @@ const len = computed(() => {
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编码
+          {{ t('reportPreview.functionCase.assocCase.fields.code') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          名称
+          {{ t('reportPreview.functionCase.assocCase.fields.name') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试状态
+         {{ t('reportPreview.functionCase.assocCase.fields.testStatus') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评审状态
+          {{t('reportPreview.functionCase.assocCase.fields.reviewStatus')}}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 ">
-          测试人
+          {{t('reportPreview.functionCase.assocCase.fields.tester')}}
         </div>
       </div>
 
@@ -90,7 +92,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{t('reportPreview.functionCase.assocCase.noData')}}</div>
   </div>
 </template>
 

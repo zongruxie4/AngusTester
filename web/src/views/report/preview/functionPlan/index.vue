@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -47,7 +49,7 @@ const CaseDetail = defineAsyncComponent(() => import('@/views/report/preview/fun
     :dataSource="props.dataSource"
     class="mb-8" />
   <div class="text-theme-title font-medium text-4.5 mb-4">
-    <span>内容</span>
+    <span>{{ t('reportPreview.functionPlan.content') }}</span>
     <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
   </div>
   <PlanDetail

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
