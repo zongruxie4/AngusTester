@@ -27,12 +27,12 @@ const precondition = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25"></em>前置条件</span>
+      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.info.precondition.title') }}</span>
     </h1>
 
     <div v-if="!!precondition?.length" class="break-all whitespace-pre-wrap">{{ precondition }}</div>
 
-    <div v-else class="content-text-container ">无</div>
+    <div v-else class="content-text-container ">{{ t('reportPreview.functionCase.info.precondition.noData') }}</div>
   </div>
 </template>
 

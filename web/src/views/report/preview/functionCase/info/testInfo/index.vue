@@ -37,21 +37,21 @@ const onePassText = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a8" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25"></em>测试信息</span>
+      <span id="a8" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.info.testInfo.title') }}</span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试次数
+          {{ t('reportPreview.functionCase.info.testInfo.fields.testCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.testNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试失败次数
+          {{ t('reportPreview.functionCase.info.testInfo.fields.testFailCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.testFailNum }}
@@ -61,14 +61,14 @@ const onePassText = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性测试通过
+          {{ t('reportPreview.functionCase.info.testInfo.fields.oneTimeTestPass') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ onePassText }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          测试备注
+          {{ t('reportPreview.functionCase.info.testInfo.fields.testRemark') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.testRemark }}

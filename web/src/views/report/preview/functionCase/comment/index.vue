@@ -65,15 +65,15 @@ const len = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-35 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评论时间
+          {{t('reportPreview.functionCase.comment.fields.commentTime')}}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评论人
+          {{t('reportPreview.functionCase.comment.fields.commentPerson')}}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          评论内容
+          {{t('reportPreview.functionCase.comment.fields.commentContent')}}
         </div>
       </div>
 
@@ -90,7 +90,7 @@ const len = computed(() => {
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           <template v-if="item.parentName">
-            <span class="mr-1">回复</span>
+            <span class="mr-1">{{ t('reportPreview.functionCase.comment.fields.reply') }}</span>
             <span>{{ item.parentName }}</span>
             <span class="mr-2.5">:</span>
           </template>
@@ -99,7 +99,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{t('reportPreview.functionCase.comment.noData')}}</div>
   </div>
 </template>
 

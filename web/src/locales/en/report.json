@@ -554,6 +554,171 @@
            }
          }
        }
+     },
+     "functionCase": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "basicInfo": "Basic Information",
+           "personnelInfo": "Personnel Information",
+           "dateInfo": "Date Information",
+           "precondition": "Precondition",
+           "testSteps": "Test Steps",
+           "description": "Description",
+           "reviewInfo": "Review Information",
+           "testInfo": "Test Information",
+           "assocTask": "Associated Tasks",
+           "assocCase": "Associated Cases",
+           "activity": "Activity",
+           "comment": "Comments"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "testResult": "Test Result",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         }
+       },
+       "info": {
+         "basic": {
+           "title": "Basic Information",
+           "fields": {
+             "name": "Name",
+             "priority": "Priority",
+             "testResult": "Test Result",
+             "code": "Code",
+             "reviewStatus": "Review Status",
+             "project": "Project",
+             "module": "Module",
+             "tags": "Tags",
+             "workloadEvalMethod": "Workload Evaluation Method",
+             "evalWorkload": "Estimated Workload",
+             "actualWorkload": "Actual Workload",
+             "processCount": "Process Count",
+             "processFailCount": "Process Failure Count",
+             "overdue": "Overdue",
+             "oneTimePass": "One-time Pass",
+             "unplannedCase": "Unplanned Case"
+           },
+           "options": {
+             "yes": "Yes",
+             "no": "No",
+             "storyPoint": "Story Points",
+             "workTime": "Work Hours",
+             "actualStoryPoint": "Actual Story Points",
+             "actualWorkTime": "Actual Work Hours"
+           }
+         },
+         "personnel": {
+           "title": "Personnel Information",
+           "fields": {
+             "tester": "Tester",
+             "creator": "Creator",
+             "reviewer": "Reviewer",
+             "lastModifier": "Last Modifier"
+           }
+         },
+         "date": {
+           "title": "Date Information",
+           "fields": {
+             "testCompleteTime": "Test Complete Time",
+             "deadline": "Deadline",
+             "reviewTime": "Review Time",
+             "createTime": "Create Time",
+             "lastModifyTime": "Last Modify Time"
+           }
+         },
+         "precondition": {
+           "title": "Precondition",
+           "noData": "None"
+         },
+         "testSteps": {
+           "title": "Test Steps",
+           "fields": {
+             "code": "Code",
+             "testStep": "Test Step",
+             "expectedResult": "Expected Result"
+           },
+           "noData": "None"
+         },
+         "description": {
+           "title": "Description",
+           "noData": "None"
+         },
+         "testInfo": {
+           "title": "Test Information",
+           "fields": {
+             "testCount": "Test Count",
+             "testFailCount": "Test Failure Count",
+             "oneTimeTestPass": "One-time Test Pass",
+             "testRemark": "Test Remark"
+           },
+           "options": {
+             "yes": "Yes",
+             "no": "No"
+           }
+         }
+       },
+       "review": {
+         "title": "Review Information",
+         "fields": {
+           "enableReview": "Enable Review",
+           "reviewCount": "Review Count",
+           "reviewFailCount": "Review Failure Count",
+           "oneTimeReviewPass": "One-time Review Pass",
+           "reviewOpinion": "Review Opinion"
+         },
+         "options": {
+           "yes": "Yes",
+           "no": "No"
+         }
+       },
+       "assocTask": {
+         "title": "Associated Tasks",
+         "fields": {
+           "code": "Code",
+           "type": "Type",
+           "name": "Name",
+           "status": "Status",
+           "assignee": "Assignee"
+         },
+         "noData": "None"
+       },
+       "assocCase": {
+         "title": "Associated Cases",
+         "fields": {
+           "code": "Code",
+           "name": "Name",
+           "testStatus": "Test Status",
+           "reviewStatus": "Review Status",
+           "tester": "Tester"
+         },
+         "noData": "None"
+       },
+       "activity": {
+         "title": "Activity",
+         "fields": {
+           "activityTime": "Activity Time",
+           "activityPerson": "Activity Person",
+           "activityDescription": "Activity Description"
+         },
+         "noData": "None"
+       },
+       "comment": {
+         "title": "Comments",
+         "fields": {
+           "commentTime": "Comment Time",
+           "commenter": "Commenter",
+           "commentContent": "Comment Content",
+           "reply": "Reply"
+         },
+         "noData": "None"
+       }
      }
    }
 } 
