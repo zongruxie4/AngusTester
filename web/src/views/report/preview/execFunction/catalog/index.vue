@@ -10,39 +10,39 @@ const DashedLine = defineAsyncComponent(() => import('./dashedline.vue'));
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>目录</span>
+      <span>{{ t('reportPreview.execFunction.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>执行信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.execInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span>1.1<em class="inline-block w-4.25 font-medium"></em>执行基本信息</span>
+        <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.execBasicInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span>1.2<em class="inline-block w-4.25 font-medium"></em>执行结果</span>
+        <span>1.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.execResult') }}</span>
         <DashedLine />
       </a>
 
       <a href="#a4" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>迭代结果</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.iterationResult') }}</span>
         <DashedLine />
       </a>
 
       <a href="#a5" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>日志信息</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.logInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a6" class="flex items-center space-x-2.5">
-        <span>3.1<em class="inline-block w-4.25 font-medium"></em>执行调度日志</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.schedulingLog') }}</span>
         <DashedLine />
       </a>
       <a href="#a7" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>执行采样日志</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execFunction.catalog.sections.samplingLog') }}</span>
         <DashedLine />
       </a>
     </div>

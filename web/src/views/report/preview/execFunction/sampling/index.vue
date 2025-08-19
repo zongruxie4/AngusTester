@@ -32,7 +32,7 @@ const plugin = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>迭代结果</span>
+      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.execFunction.catalog.sections.iterationResult') }}</span>
     </h1>
 
     <HttpTestDetail

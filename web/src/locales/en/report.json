@@ -343,6 +343,101 @@
            }
          }
        }
-    }
-  }
+     },
+     "execFunction": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "execInfo": "Execution Information",
+           "execBasicInfo": "Execution Basic Information",
+           "execResult": "Execution Result",
+           "iterationResult": "Iteration Result",
+           "logInfo": "Log Information",
+           "schedulingLog": "Execution Scheduling Log",
+           "samplingLog": "Execution Sampling Log"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "testPassed": "Test Passed",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         },
+         "status": {
+           "passed": "Passed",
+           "failed": "Failed"
+         }
+       },
+       "detail": {
+         "title": "Execution Information",
+         "basicInfo": {
+           "title": "Execution Basic Information",
+           "fields": {
+             "name": "Name",
+             "testScriptId": "Test Script ID",
+             "testScriptName": "Test Script Name",
+             "plugin": "Plugin",
+             "status": "Status",
+             "type": "Type",
+             "priority": "Priority",
+             "startTime": "Start Time",
+             "endTime": "End Time",
+             "nodeCount": "Node Count",
+             "reportInterval": "Report Interval",
+             "ignoreAssertions": "Ignore Assertions",
+             "updateTestResult": "Update Test Result",
+             "creator": "Creator",
+             "createTime": "Create Time"
+           },
+           "options": {
+             "ignore": "Ignore",
+             "notIgnore": "Not Ignore",
+             "update": "Update",
+             "notUpdate": "Not Update"
+           }
+         },
+         "execResult": {
+           "title": "Execution Result",
+           "fields": {
+             "testResult": "Test Result",
+             "failureReason": "Failure Reason",
+             "testCases": "Test Cases"
+           },
+           "summary": {
+             "total": "Total",
+             "passed": "Passed",
+             "failed": "Failed",
+             "disabled": "Disabled"
+           }
+         }
+       },
+       "log": {
+         "title": "Log Information",
+         "schedulingLog": {
+           "title": "Execution Scheduling Information",
+           "fields": {
+             "schedulingResult": "Scheduling Result",
+             "processExitCode": "Process Exit Code"
+           },
+           "status": {
+             "success": "Success",
+             "failed": "Failed"
+           }
+         },
+         "samplingLog": {
+           "title": "Execution Sampling Information",
+           "fields": {
+             "file": "File"
+           },
+           "messages": {
+             "noProxyInfo": "No proxy access information, connection failed address: "
+           }
+         }
+       }
+     }
+   }
 } 
