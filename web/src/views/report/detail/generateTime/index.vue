@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const createdAtAllOpt = ref<EnumMessage<CreatedAt>[]>([]);
 const periodicCreationUnitOpt = ref<EnumMessage<PeriodicCreationUnit>[]>([]);
-const dayOfWeekOpt = refEnumMessage<DayOfWeek>[]>([]);
+const dayOfWeekOpt = ref<EnumMessage<DayOfWeek>[]>([]);
 
 const loadEnum = async () => {
   createdAtAllOpt.value = enumUtils.enumToMessages(CreatedAt);

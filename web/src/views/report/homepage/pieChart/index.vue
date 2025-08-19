@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { analysis } from '@/api/tester';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -79,27 +82,27 @@ const echartOption: EChartsOption = {
       },
       data: [
         {
-          name: '项目',
+          name: t('reportHome.chart.categories.project'),
           value: 0
         },
         {
-          name: '功能',
+          name: t('reportHome.chart.categories.functional'),
           value: 0
         },
         {
-          name: '接口',
+          name: t('reportHome.chart.categories.api'),
           value: 0
         },
         {
-          name: '场景',
+          name: t('reportHome.chart.categories.scenario'),
           value: 0
         },
         {
-          name: '任务',
+          name: t('reportHome.chart.categories.task'),
           value: 0
         },
         {
-          name: '执行',
+          name: t('reportHome.chart.categories.execution'),
           value: 0
         }
       ]
@@ -162,11 +165,11 @@ const statusEchartOption: EChartsOption = {
       },
       data: [
         {
-          name: '成功',
+          name: t('reportHome.chart.status.success'),
           value: 0
         },
         {
-          name: '失败',
+          name: t('reportHome.chart.status.failure'),
           value: 0
         }
       ]
@@ -252,7 +255,7 @@ onMounted(() => {
         ref="typeChartRef"
         class="w-70 h-34"></div>
       <div class="mark-container">
-        <div class="text-center">分类</div>
+        <div class="text-center">{{ t('reportHome.chart.labels.category') }}</div>
         <div class="text-3.5 text-center font-semibold">{{ total || 0 }}</div>
       </div>
     </div>
@@ -261,7 +264,7 @@ onMounted(() => {
         ref="statusChartRef"
         class="w-70 h-34"></div>
       <div class="mark-container">
-        <div class="text-center">状态</div>
+        <div class="text-center">{{ t('reportHome.chart.labels.status') }}</div>
         <div class="text-3.5 text-center font-semibold">{{ total || 0 }}</div>
       </div>
     </div>

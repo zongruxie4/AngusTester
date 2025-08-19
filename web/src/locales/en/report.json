@@ -107,6 +107,24 @@
         "sort": "Sort",
         "refresh": "Refresh"
       }
+    },
+    "chart": {
+      "categories": {
+        "project": "Project",
+        "functional": "Functional",
+        "api": "API",
+        "scenario": "Scenario",
+        "task": "Task",
+        "execution": "Execution"
+      },
+      "status": {
+        "success": "Success",
+        "failure": "Failure"
+      },
+      "labels": {
+        "category": "Category",
+        "status": "Status"
+      }
     }
   }
 } 
