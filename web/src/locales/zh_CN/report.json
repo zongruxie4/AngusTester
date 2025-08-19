@@ -182,165 +182,163 @@
         "confirmDelete": "确认删除报告记录【{name}】吗？",
         "deleteSuccess": "删除成功"
       }
+    }
+  },
+  "reportPreview": {
+    "loading": "数据加载中...",
+    "generating": "生成pdf文件中...",
+    "actions": {
+      "exportPDF": "导出PDF",
+      "printPDF": "打印PDF"
     },
-    "reportPreview": {
-      "loading": "数据加载中...",
-      "generating": "生成pdf文件中...",
-      "actions": {
-        "exportPDF": "导出PDF",
-        "printPDF": "打印PDF"
-      },
-             "serial": {
-         "1": "一、",
-         "2": "二、",
-         "3": "三、",
-         "4": "四、",
-         "5": "五、",
-         "6": "六、",
-         "7": "七、",
-         "8": "八、",
-         "9": "九、",
-         "10": "十、",
-         "11": "十一、",
-         "12": "十二、",
-         "13": "十三、",
-         "14": "十四、",
-         "15": "十五、",
-         "16": "十六、",
-         "17": "十七、",
-         "18": "十八、",
-         "19": "十九、",
-         "20": "二十、",
-         "21": "二十一、",
-         "22": "二十二、",
-         "23": "二十三、",
-         "24": "二十四、",
-         "25": "二十五、",
-         "26": "二十六、",
-         "27": "二十七、"
+    "serial": {
+       "1": "一、",
+       "2": "二、",
+       "3": "三、",
+       "4": "四、",
+       "5": "五、",
+       "6": "六、",
+       "7": "七、",
+       "8": "八、",
+       "9": "九、",
+       "10": "十、",
+       "11": "十一、",
+       "12": "十二、",
+       "13": "十三、",
+       "14": "十四、",
+       "15": "十五、",
+       "16": "十六、",
+       "17": "十七、",
+       "18": "十八、",
+       "19": "十九、",
+       "20": "二十、",
+       "21": "二十一、",
+       "22": "二十二、",
+       "23": "二十三、",
+       "24": "二十四、",
+       "25": "二十五、",
+       "26": "二十六、",
+       "27": "二十七、"
+     },
+     "apis": {
+       "content": "内容",
+       "catalog": {
+         "title": "目录",
+         "sections": {
+           "apiInfo": "接口信息",
+           "apiTestSummary": "接口测试汇总结果",
+           "apiTestDetail": "接口测试结果详细信息",
+           "functionalTest": "功能测试结果",
+           "performanceTest": "性能测试结果",
+           "stabilityTest": "稳定性测试结果"
+         }
        },
-       "apis": {
-         "content": "内容",
-         "catalog": {
-           "title": "目录",
-           "sections": {
-             "apiInfo": "接口信息",
-             "apiTestSummary": "接口测试汇总结果",
-             "apiTestDetail": "接口测试结果详细信息",
-             "functionalTest": "功能测试结果",
-             "performanceTest": "性能测试结果",
-             "stabilityTest": "稳定性测试结果"
+       "info": {
+         "title": "接口信息",
+         "fields": {
+           "apiUrl": "接口地址",
+           "requestMethod": "请求方法",
+           "operationId": "操作ID",
+           "owner": "负责人",
+           "description": "描述",
+           "status": "状态",
+           "creator": "添加人",
+           "createTime": "添加时间",
+           "lastModifier": "最后修改人",
+           "lastModifyTime": "最后修改时间"
+         }
+       },
+       "summary": {
+         "title": "摘要",
+         "fields": {
+           "apiStatus": "接口状态",
+           "description": "描述",
+           "contact": "联系人",
+           "copyright": "版权说明",
+           "other": "其他"
+         }
+       },
+       "testResult": {
+         "title": "接口测试汇总结果",
+         "fields": {
+           "isPassed": "是否通过",
+           "enableFunctionalTest": "开启功能测试",
+           "functionalTestPassed": "功能测试通过",
+           "functionalTestFailureReason": "功能测试失败原因",
+           "enablePerformanceTest": "开启性能测试",
+           "performanceTestPassed": "性能测试通过",
+           "performanceTestFailureReason": "性能测试失败原因",
+           "enableStabilityTest": "开启稳定性测试",
+           "stabilityTestPassed": "稳定性测试通过",
+           "stabilityTestFailureReason": "稳定性测试失败原因"
+         },
+         "status": {
+           "passed": "通过",
+           "failed": "未通过",
+           "notTested": "未测试",
+           "enabled": "开启",
+           "disabled": "未开启"
+         }
+       },
+       "testResultDetail": {
+         "title": "场景测试结果详细信息",
+          "noData": "无",
+         "functionalTest": {
+           "title": "功能测试结果",
+           "basicInfo": "测试基本信息",
+           "testCases": "测试用例",
+           "testCaseResults": "测试用例结果明细",
+           "noData": "无"
+         },
+         "performanceTest": {
+           "title": "性能测试",
+           "basicInfo": "测试基本信息",
+           "indicatorsAndResults": "测试指标和结果",
+           "performanceIndicators": "性能指标",
+           "results": "结果",
+           "indicators": {
+             "concurrency": "并发数",
+             "testDuration": "测试时长",
+             "pressureConcurrency": "增压并发数",
+             "pressureTestDuration": "增压测试时长",
+             "responseTime": "响应时间",
+             "tps": "每秒事务数",
+             "errorRate": "错误率"
            }
          },
-         "info": {
-           "title": "接口信息",
-           "fields": {
-             "apiUrl": "接口地址",
-             "requestMethod": "请求方法",
-             "operationId": "操作ID",
-             "owner": "负责人",
-             "description": "描述",
-             "status": "状态",
-             "creator": "添加人",
-             "createTime": "添加时间",
-             "lastModifier": "最后修改人",
-             "lastModifyTime": "最后修改时间"
-           }
+         "stabilityTest": {
+           "title": "稳定性测试",
+           "basicInfo": "测试基本信息",
+           "indicatorsAndResults": "测试指标和结果",
+           "stabilityIndicators": "稳定性指标",
+           "results": "结果",
+           "systemLoad": "应用系统平均负载",
+           "average": "平均",
+           "maximum": "最大"
          },
-         "summary": {
-           "title": "摘要",
-           "fields": {
-             "apiStatus": "接口状态",
-             "description": "描述",
-             "contact": "联系人",
-             "copyright": "版权说明",
-             "other": "其他"
-           }
-         },
-         "testResult": {
-           "title": "接口测试汇总结果",
-           "fields": {
-             "isPassed": "是否通过",
-             "enableFunctionalTest": "开启功能测试",
-             "functionalTestPassed": "功能测试通过",
-             "functionalTestFailureReason": "功能测试失败原因",
-             "enablePerformanceTest": "开启性能测试",
-             "performanceTestPassed": "性能测试通过",
-             "performanceTestFailureReason": "性能测试失败原因",
-             "enableStabilityTest": "开启稳定性测试",
-             "stabilityTestPassed": "稳定性测试通过",
-             "stabilityTestFailureReason": "稳定性测试失败原因"
-           },
-           "status": {
-             "passed": "通过",
-             "failed": "未通过",
-             "notTested": "未测试",
-             "enabled": "开启",
-             "disabled": "未开启"
-           }
-         },
-         "testResultDetail": {
-           "title": "场景测试结果详细信息",
-            "noData": "无",
-           "functionalTest": {
-             "title": "功能测试结果",
-             "basicInfo": "测试基本信息",
-             "testCases": "测试用例",
-             "testCaseResults": "测试用例结果明细",
-             "noData": "无"
-           },
-           "performanceTest": {
-             "title": "性能测试",
-             "basicInfo": "测试基本信息",
-             "indicatorsAndResults": "测试指标和结果",
-             "performanceIndicators": "性能指标",
-             "results": "结果",
-             "indicators": {
-               "concurrency": "并发数",
-               "testDuration": "测试时长",
-               "pressureConcurrency": "增压并发数",
-               "pressureTestDuration": "增压测试时长",
-               "responseTime": "响应时间",
-               "tps": "每秒事务数",
-               "errorRate": "错误率"
-             }
-           },
-           "stabilityTest": {
-             "title": "稳定性测试",
-             "basicInfo": "测试基本信息",
-             "indicatorsAndResults": "测试指标和结果",
-             "stabilityIndicators": "稳定性指标",
-             "results": "结果",
-             "systemLoad": "应用系统平均负载",
-             "average": "平均",
-             "maximum": "最大"
-           },
-           "fields": {
-             "testResult": "测试结果",
-             "testFailureReason": "测试失败原因",
-             "testCount": "测试次数",
-             "failureCount": "失败次数",
-             "testScriptId": "测试脚本ID",
-             "testScriptName": "测试脚本名称",
-             "executionId": "执行ID",
-             "executionName": "执行名称",
-             "lastExecutor": "最后执行人",
-             "lastExecutionTime": "最后执行时间",
-             "totalCases": "用例总数",
-             "passedCount": "通过数",
-             "failedCount": "未通过数",
-             "disabledCount": "未启用数",
-             "type": "类型",
-             "isEnabled": "是否启用",
-             "isTestPassed": "是否测试通过",
-             "testFailureReason": "测试失败原因",
-             "testCount": "测试次数",
-             "testFailureCount": "测试失败次数",
-             "cpuUsage": "cpu使用率",
-             "memoryUsage": "内存使用率",
-             "diskUsage": "磁盘使用率",
-             "networkUsage": "网络使用量"
-           }
+         "fields": {
+           "testResult": "测试结果",
+           "testFailureReason": "测试失败原因",
+           "testCount": "测试次数",
+           "failureCount": "失败次数",
+           "testScriptId": "测试脚本ID",
+           "testScriptName": "测试脚本名称",
+           "executionId": "执行ID",
+           "executionName": "执行名称",
+           "lastExecutor": "最后执行人",
+           "lastExecutionTime": "最后执行时间",
+           "totalCases": "用例总数",
+           "passedCount": "通过数",
+           "failedCount": "未通过数",
+           "disabledCount": "未启用数",
+           "type": "类型",
+           "isEnabled": "是否启用",
+           "isTestPassed": "是否测试通过",
+           "testFailureCount": "测试失败次数",
+           "cpuUsage": "cpu使用率",
+           "memoryUsage": "内存使用率",
+           "diskUsage": "磁盘使用率",
+           "networkUsage": "网络使用量"
          }
        }
      },
