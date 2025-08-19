@@ -4,30 +4,11 @@ import { useRoute } from 'vue-router';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { AuthAppFuncTree, WebTagValue, duration } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 
-type Tag = 'DYNAMIC_POSITION' | 'TOP_NAVIGATION' | 'FIXED_POSITION' | 'HEADER_MENU_POPOVER'
-
-interface IMenu {
-  hasAuth: boolean;
-  tags: {name: Tag}[];
-  authCtrlFlag: boolean;
-  code: string;
-  icon: string;
-  name: string;
-  showName: string;
-  type: 'BUTTON' | 'MENU' | 'PANEL';
-  url: string;
-  visible: boolean; // 显示的菜单
-  width: number; // 菜单宽度
-  children?: IMenu[];
-  enabled: boolean;
-  authCtrl: boolean;
-}
-
 interface Props {
-  menus: IMenu[];
+  menus: AuthAppFuncTree[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,12 +16,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const route = useRoute();
-const emit = defineEmits<{(e: 'change', menus: Array<IMenu>): void }>();
+const emit = defineEmits<{(e: 'change', menus: Array<AuthAppFuncTree>): void }>();
 
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const containerRef = ref();
 
-const menuList = ref<IMenu[]>([]);
+const menuList = ref<AuthAppFuncTree[]>([]);
 
 const moreRef = ref();
 
@@ -51,7 +32,7 @@ const moreElementWidth = computed(() => {
 const selectedUrl = ref(location.pathname);
 const overlayStyle = { minWidth: '120px' };
 
-const setMenuAttr = (_menus: IMenu[]) => {
+const setMenuAttr = (_menus: AuthAppFuncTree[]) => {
   const domList: HTMLElement[] = [];
   const temp = _menus?.map(item => {
     const ghostDom = document.createElement('a');
@@ -72,7 +53,7 @@ const setMenuAttr = (_menus: IMenu[]) => {
   return temp;
 };
 
-const handleSelect = (menu: IMenu) => {
+const handleSelect = (menu: AuthAppFuncTree) => {
   selectedUrl.value = menu.url;
   emit('change', menu.children || []);
 };
@@ -129,7 +110,7 @@ onMounted(() => {
     if (!newValue?.length) {
       return;
     }
-    menuList.value = setMenuAttr(newValue.filter(i => i.code !== 'Mock' && (i.enabled || !i.authCtrl) && (i.tags || []).some(t  => t.name === 'DYNAMIC_POSITION')));
+    menuList.value = setMenuAttr(newValue.filter(i => i.code !== 'Mock' && (i.enabled || !i.authCtrl) && (i.tags || []).some(t => t.name === WebTagValue.DYNAMIC_POSITION)));
 
     if (menuList.value?.length) {
       const currentMenu = menuList.value?.find(item => {
