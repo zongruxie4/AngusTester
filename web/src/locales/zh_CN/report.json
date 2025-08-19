@@ -937,6 +937,244 @@
            }
          }
        }
+     },
+     "projectProgress": {
+       "content": "内容",
+       "catalog": {
+         "title": "目录",
+         "sections": {
+           "projectInfo": "项目信息",
+           "devTask": "研发任务",
+           "taskSummary": "任务汇总结果",
+           "taskBurndownChart": "任务燃尽图",
+           "taskGroupStats": "任务分组统计",
+           "funcTest": "功能测试",
+           "caseTestSummary": "用例测试汇总结果",
+           "caseReviewSummary": "用例评审汇总结果",
+           "caseBurndownChart": "用例燃尽图",
+           "caseGroupStats": "用例分组统计",
+           "apiTest": "接口测试",
+           "apiTestSummary": "接口测试汇总结果",
+           "apiGroupStats": "接口分组统计",
+           "scenarioTest": "场景测试",
+           "scenarioTestSummary": "场景测试汇总结果",
+           "scenarioGroupStats": "场景分组统计"
+         }
+       },
+       "summary": {
+         "title": "摘要",
+         "fields": {
+           "progress": "进度",
+           "description": "描述",
+           "contact": "联系人",
+           "copyright": "版权说明",
+           "other": "其他"
+         }
+       },
+       "info": {
+         "title": "项目信息",
+         "fields": {
+           "name": "名称",
+           "planTime": "计划时间",
+           "owner": "负责人",
+           "members": "成员",
+           "description": "描述"
+         }
+       },
+       "taskSummary": {
+         "title": "研发任务",
+         "summary": {
+           "title": "任务汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalTasks": "任务总数",
+             "validTasks": "有效任务数",
+             "totalBugs": "缺陷总数",
+             "validBugs": "有效缺陷数",
+             "pendingCount": "待处理数",
+             "processingCount": "处理中数",
+             "pendingConfirmCount": "待确认数",
+             "completedCount": "完成数",
+             "cancelledCount": "取消数",
+             "overdueCount": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimePassCount": "一次性通过数",
+             "oneTimePassRate": "一次性通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "burndownChart": {
+           "title": "任务燃尽图",
+           "remaining": "剩余",
+           "expected": "期望",
+           "caseCount": "用例数",
+           "workload": "工作量",
+           "taskCount": "任务数"
+         },
+         "groupStats": {
+           "title": "任务分组统计",
+           "byStatus": "按状态分组",
+           "byPriority": "按优先级分组",
+           "byTaskType": "按任务类型分组",
+           "total": "总数",
+           "statuses": {
+             "cancelled": "已取消",
+             "completed": "已完成",
+             "pendingConfirm": "待确认",
+             "processing": "进行中",
+             "pending": "待处理"
+           },
+           "priorities": {
+             "highest": "最高",
+             "high": "高",
+             "medium": "中",
+             "low": "低",
+             "lowest": "最低"
+           },
+           "taskTypes": {
+             "bug": "缺陷",
+             "task": "任务",
+             "story": "故事",
+             "requirement": "需求",
+             "apiTest": "接口测试",
+             "scenarioTest": "场景测试"
+           }
+         }
+       },
+       "funcCaseSummary": {
+         "title": "功能用例",
+         "testSummary": {
+           "title": "用例测试汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalCases": "用例总数",
+             "validCases": "有效用例数",
+             "pendingTest": "待测试数",
+             "passed": "通过数",
+             "failed": "未通过数",
+             "blocked": "阻塞数",
+             "cancelled": "取消数",
+             "overdue": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimeTestPass": "一次性测试通过数",
+             "oneTimeTestPassRate": "一次性测试通过率",
+             "oneTimeReviewPassRate": "一次性评审通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "reviewSummary": {
+           "title": "用例评审汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalReviewCases": "总评审用例数",
+             "pendingReview": "待评审数",
+             "reviewPassed": "评审通过数",
+             "reviewFailed": "评审未通过数",
+             "reviewed": "已评审数",
+             "notReviewed": "未评审数",
+             "totalReviewCount": "总评审次数",
+             "oneTimeReviewPass": "一次性通过评审数",
+             "oneTimeReviewPassRate": "一次性评审通过率"
+           }
+         },
+         "burndownChart": {
+           "title": "用例燃尽图",
+           "remaining": "剩余",
+           "expected": "期望",
+           "caseCount": "用例数",
+           "workload": "工作量"
+         },
+         "groupStats": {
+           "title": "用例分组统计",
+           "byStatus": "按状态分组",
+           "byPriority": "按优先级分组",
+           "total": "总数",
+           "statuses": {
+             "cancelled": "已取消",
+             "blocked": "阻塞",
+             "testFailed": "测试未通过",
+             "testPassed": "测试通过",
+             "pendingTest": "待测试"
+           },
+           "priorities": {
+             "highest": "最高",
+             "high": "高",
+             "medium": "中",
+             "low": "低",
+             "lowest": "最低"
+           }
+         }
+       },
+       "apiSummary": {
+         "title": "接口测试",
+         "testSummary": {
+           "title": "接口测试汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalApis": "接口总数",
+             "enabledApiTest": "启用接口测试",
+             "disabledApiTest": "未启用接口测试",
+             "apiFuncTest": "接口功能测试",
+             "apiPerfTest": "接口性能测试",
+             "apiStabilityTest": "接口稳定性测试",
+             "testedApis": "已测试接口",
+             "passedApis": "已通过接口",
+             "failedApis": "未通过接口"
+           }
+         },
+         "groupStats": {
+           "title": "接口分组统计",
+           "byStatus": "按状态分组",
+           "byRequestMethod": "按请求方法分组",
+           "total": "总数",
+           "statuses": {
+             "published": "已发布",
+             "devCompleted": "开发完成",
+             "devInProgress": "开发中",
+             "designing": "设计中",
+             "unknown": "未知"
+           }
+         }
+       },
+       "scenarioTestSummary": {
+         "title": "场景测试",
+         "testSummary": {
+           "title": "场景测试汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalScenarios": "场景总数",
+             "enabledScenarioTest": "启用场景测试",
+             "disabledScenarioTest": "未启用场景测试",
+             "scenarioFuncTest": "场景功能测试",
+             "scenarioPerfTest": "场景性能测试",
+             "scenarioStabilityTest": "场景稳定性测试",
+             "testedScenarios": "已测试场景",
+             "passedScenarios": "已通过场景",
+             "failedScenarios": "未通过场景"
+           }
+         },
+         "groupStats": {
+           "title": "场景分组统计",
+           "byProtocol": "按协议分组",
+           "byTestType": "按测试类型分组",
+           "total": "总数",
+           "quantity": "数量",
+           "testTypes": {
+             "perfTest": "性能测试",
+             "stabilityTest": "稳定性测试",
+             "funcTest": "功能测试",
+             "customTest": "自定义测试"
+           }
+         }
+       }
      }
    }
 } 

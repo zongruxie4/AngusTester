@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
 
 type Props = {
@@ -13,6 +13,8 @@ type Props = {
     small: number[]
   }
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -37,21 +39,21 @@ const projectInfo = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ sequence.big }}、<em class="inline-block w-0.25"></em>项目信息</span>
+        <span id="a1" class="text-4 text-theme-title font-medium">{{ sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.info.title') }}</span>
     </h1>
 
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.projectProgress.info.fields.name') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ projectInfo?.name }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          计划时间
+          {{ t('reportPreview.projectProgress.info.fields.planTime') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ projectInfo?.startDate }} ~ {{ projectInfo?.deadlineDate }}
@@ -61,14 +63,14 @@ const projectInfo = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          负责人
+          {{ t('reportPreview.projectProgress.info.fields.owner') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ projectInfo?.ownerName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          成员
+          {{ t('reportPreview.projectProgress.info.fields.members') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ projectInfo?.members?.USER?.map(item=>item.name).join('，') }}
@@ -78,7 +80,7 @@ const projectInfo = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          描述
+          {{ t('reportPreview.projectProgress.info.fields.description') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ projectInfo?.description }}

@@ -299,13 +299,13 @@ onMounted(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按状态分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.apiSummary.groupStats.byStatus') }}</span>
   </h1>
   <div ref="taskStatusRef" class="flex-1 h-50 w-120 mb-7">
   </div>
 
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按请求方法分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.apiSummary.groupStats.byRequestMethod') }}</span>
   </h1>
   <div ref="priorityRef" class="flex-1 h-50  w-120">
   </div>

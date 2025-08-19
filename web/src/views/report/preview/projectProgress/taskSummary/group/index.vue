@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
   appInfo: { [key: string]: any };
   dataSource: ReportContent;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -77,7 +79,7 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已取消', '已完成', '待确认', '进行中', '待处理']
+    data: [t('reportPreview.projectProgress.taskSummary.groupStats.statuses.cancelled'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.completed'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.pendingConfirm'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.processing'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.pending')]
   },
   series: [
     {
@@ -127,7 +129,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.projectProgress.taskSummary.groupStats.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,
@@ -178,35 +180,35 @@ const priorityOptions = {
       },
       data: [
         {
-          name: '最高',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.priorities.highest'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.HIGHEST
           }
         },
         {
-          name: '高',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.priorities.high'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.HIGH
           }
         },
         {
-          name: '中',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.priorities.medium'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.MEDIUM
           }
         },
         {
-          name: '低',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.priorities.low'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.LOW
           }
         },
         {
-          name: '最低',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.priorities.lowest'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.LOWEST
@@ -220,7 +222,7 @@ const priorityOptions = {
 const taskTypeOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.projectProgress.taskSummary.groupStats.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,
@@ -271,42 +273,42 @@ const taskTypeOptions = {
       },
       data: [
         {
-          name: '缺陷',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.bug'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.BUG
           }
         },
         {
-          name: '任务',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.task'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.TASK
           }
         },
         {
-          name: '故事',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.story'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.STORY
           }
         },
         {
-          name: '需求',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.requirement'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.REQUIREMENT
           }
         },
         {
-          name: '接口测试',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.apiTest'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.API_TEST
           }
         },
         {
-          name: '场景测试',
+          name: t('reportPreview.projectProgress.taskSummary.groupStats.taskTypes.scenarioTest'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.SCENARIO_TEST
@@ -407,19 +409,19 @@ onMounted(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按状态分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.taskSummary.groupStats.byStatus') }}</span>
   </h1>
   <div ref="taskStatusRef" class="flex-1 h-50 w-120 mb-7">
   </div>
 
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按优先级分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.taskSummary.groupStats.byPriority') }}</span>
   </h1>
   <div ref="priorityRef" class="flex-1 h-50  w-120">
   </div>
 
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按任务类型分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.taskSummary.groupStats.byTaskType') }}</span>
   </h1>
   <div ref="taskTypeRef" class="flex-1 h-50  w-120">
   </div>

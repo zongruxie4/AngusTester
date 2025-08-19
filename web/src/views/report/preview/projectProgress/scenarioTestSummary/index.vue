@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
 
 type Props = {
@@ -13,6 +13,8 @@ type Props = {
     small: number[]
   }
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -56,36 +58,36 @@ const percent = computed(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-5">
-    <span id="a14" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>场景测试</span>
+    <span id="a14" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.scenarioTestSummary.title') }}</span>
   </h1>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a15">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>场景测试汇总结果</span>
+    <span id="a15">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.title') }}</span>
   </h2>
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="percent"
-      text="进度"
+      :text="t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          场景总数
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.totalScenarios') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalScenarioNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          启用场景测试
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.enabledScenarioTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ enabledTestNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未启用场景测试
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.disabledScenarioTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ unenabledTestNum }}
@@ -95,21 +97,21 @@ const percent = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          场景功能测试
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.scenarioFuncTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testScenarios?.enabledFuncTestNum || 0 }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          场景性能测试
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.scenarioPerfTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testScenarios?.enabledPerfTestNum || 0 }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          场景稳定性测试
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.scenarioStabilityTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ testScenarios?.enabledStabilityTestNum || 0 }}
@@ -119,21 +121,21 @@ const percent = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          已测试场景
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.testedScenarios') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testResultCount?.testedNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          已通过场景
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.passedScenarios') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testResultCount?.testPassedNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未通过场景
+          {{ t('reportPreview.projectProgress.scenarioTestSummary.testSummary.fields.failedScenarios') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ testResultCount?.testUnPassedNum }}
@@ -143,7 +145,7 @@ const percent = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a16">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em>场景分组统计</span>
+    <span id="a16">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em> {{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.title')  }}</span>
   </h2>
   <SceneTestGrouped
     :projectInfo="props.projectInfo"

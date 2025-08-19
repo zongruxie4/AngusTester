@@ -938,6 +938,242 @@
            }
          }
        }
+     },
+     "projectProgress": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "projectInfo": "Project Information",
+           "devTask": "Development Tasks",
+           "taskSummary": "Task Summary Results",
+           "taskBurndownChart": "Task Burndown Chart",
+           "taskGroupStats": "Task Group Statistics",
+           "funcTest": "Functional Testing",
+           "caseTestSummary": "Case Test Summary Results",
+           "caseReviewSummary": "Case Review Summary Results",
+           "caseBurndownChart": "Case Burndown Chart",
+           "caseGroupStats": "Case Group Statistics",
+           "apiTest": "API Testing",
+           "apiTestSummary": "API Test Summary Results",
+           "apiGroupStats": "API Group Statistics",
+           "scenarioTest": "Scenario Testing",
+           "scenarioTestSummary": "Scenario Test Summary Results",
+           "scenarioGroupStats": "Scenario Group Statistics"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "progress": "Progress",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         }
+       },
+       "info": {
+         "title": "Project Information",
+         "fields": {
+           "name": "Name",
+           "planTime": "Plan Time",
+           "owner": "Owner",
+           "members": "Members",
+           "description": "Description"
+         }
+       },
+       "taskSummary": {
+         "title": "Development Tasks",
+         "summary": {
+           "title": "Task Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalTasks": "Total Tasks",
+             "validTasks": "Valid Tasks",
+             "totalBugs": "Total Bugs",
+             "validBugs": "Valid Bugs",
+             "pendingCount": "Pending Count",
+             "processingCount": "Processing Count",
+             "pendingConfirmCount": "Pending Confirm Count",
+             "completedCount": "Completed Count",
+             "cancelledCount": "Cancelled Count",
+             "overdueCount": "Overdue Count",
+             "overdueRate": "Overdue Rate",
+             "oneTimePassCount": "One-time Pass Count",
+             "oneTimePassRate": "One-time Pass Rate",
+             "estimatedWorkload": "Estimated Workload",
+             "actualWorkload": "Actual Workload",
+             "completedWorkload": "Completed Workload",
+             "savedWorkload": "Saved Workload",
+             "workloadSaveRate": "Workload Save Rate"
+           }
+         },
+         "burndownChart": {
+           "title": "Task Burndown Chart",
+           "remaining": "Remaining",
+           "expected": "Expected",
+           "caseCount": "Case Count",
+           "workload": "Workload",
+           "taskCount": "Task Count"
+         },
+         "groupStats": {
+           "title": "Task Group Statistics",
+           "byStatus": "By Status",
+           "byPriority": "By Priority",
+           "byTaskType": "By Task Type",
+           "total": "Total",
+           "statuses": {
+             "cancelled": "Cancelled",
+             "completed": "Completed",
+             "pendingConfirm": "Pending Confirm",
+             "processing": "Processing",
+             "pending": "Pending"
+           },
+           "priorities": {
+             "highest": "Highest",
+             "high": "High",
+             "medium": "Medium",
+             "low": "Low",
+             "lowest": "Lowest"
+           },
+           "taskTypes": {
+             "bug": "Bug",
+             "task": "Task",
+             "story": "Story",
+             "requirement": "Requirement",
+             "apiTest": "API Test",
+             "scenarioTest": "Scenario Test"
+           }
+         }
+       },
+       "funcCaseSummary": {
+         "title": "Functional Cases",
+         "testSummary": {
+           "title": "Case Test Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalCases": "Total Cases",
+             "validCases": "Valid Cases",
+             "pendingTest": "Pending Test",
+             "passed": "Passed",
+             "failed": "Failed",
+             "blocked": "Blocked",
+             "cancelled": "Cancelled",
+             "overdue": "Overdue",
+             "overdueRate": "Overdue Rate",
+             "oneTimeTestPass": "One-time Test Pass",
+             "oneTimeTestPassRate": "One-time Test Pass Rate",
+             "oneTimeReviewPassRate": "One-time Review Pass Rate",
+             "estimatedWorkload": "Estimated Workload",
+             "actualWorkload": "Actual Workload",
+             "completedWorkload": "Completed Workload",
+             "savedWorkload": "Saved Workload",
+             "workloadSaveRate": "Workload Save Rate"
+           }
+         },
+         "reviewSummary": {
+           "title": "Case Review Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalReviewCases": "Total Review Cases",
+             "pendingReview": "Pending Review",
+             "reviewPassed": "Review Passed",
+             "reviewFailed": "Review Failed",
+             "reviewed": "Reviewed",
+             "notReviewed": "Not Reviewed",
+             "totalReviewCount": "Total Review Count",
+             "oneTimeReviewPass": "One-time Review Pass",
+             "oneTimeReviewPassRate": "One-time Review Pass Rate"
+           }
+         },
+         "burndownChart": {
+           "title": "Case Burndown Chart",
+           "remaining": "Remaining",
+           "expected": "Expected"
+         },
+         "groupStats": {
+           "title": "Case Group Statistics",
+           "byStatus": "By Status",
+           "byPriority": "By Priority",
+           "total": "Total",
+           "statuses": {
+             "cancelled": "Cancelled",
+             "blocked": "Blocked",
+             "testFailed": "Test Failed",
+             "testPassed": "Test Passed",
+             "pendingTest": "Pending Test"
+           },
+           "priorities": {
+             "highest": "Highest",
+             "high": "High",
+             "medium": "Medium",
+             "low": "Low",
+             "lowest": "Lowest"
+           }
+         }
+       },
+       "apiSummary": {
+         "title": "API Testing",
+         "testSummary": {
+           "title": "API Test Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalApis": "Total APIs",
+             "enabledApiTest": "Enabled API Test",
+             "disabledApiTest": "Disabled API Test",
+             "apiFuncTest": "API Functional Test",
+             "apiPerfTest": "API Performance Test",
+             "apiStabilityTest": "API Stability Test",
+             "testedApis": "Tested APIs",
+             "passedApis": "Passed APIs",
+             "failedApis": "Failed APIs"
+           }
+         },
+         "groupStats": {
+           "title": "API Group Statistics",
+           "byStatus": "By Status",
+           "byRequestMethod": "By Request Method",
+           "total": "Total",
+           "statuses": {
+             "published": "Published",
+             "devCompleted": "Development Completed",
+             "devInProgress": "Development In Progress",
+             "designing": "Designing",
+             "unknown": "Unknown"
+           }
+         }
+       },
+       "scenarioTestSummary": {
+         "title": "Scenario Testing",
+         "testSummary": {
+           "title": "Scenario Test Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalScenarios": "Total Scenarios",
+             "enabledScenarioTest": "Enabled Scenario Test",
+             "disabledScenarioTest": "Disabled Scenario Test",
+             "scenarioFuncTest": "Scenario Functional Test",
+             "scenarioPerfTest": "Scenario Performance Test",
+             "scenarioStabilityTest": "Scenario Stability Test",
+             "testedScenarios": "Tested Scenarios",
+             "passedScenarios": "Passed Scenarios",
+             "failedScenarios": "Failed Scenarios"
+           }
+         },
+         "groupStats": {
+           "title": "Scenario Group Statistics",
+           "byProtocol": "By Protocol",
+           "byTestType": "By Test Type",
+           "total": "Total",
+           "quantity": "Quantity",
+           "testTypes": {
+             "perfTest": "Performance Test",
+             "stabilityTest": "Stability Test",
+             "funcTest": "Functional Test",
+             "customTest": "Custom Test"
+           }
+         }
+       }
      }
    }
 } 
