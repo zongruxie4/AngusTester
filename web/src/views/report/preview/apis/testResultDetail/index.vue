@@ -47,54 +47,54 @@ const basicColumns = computed(() => [
   [
     {
       dataIndex: 'passed',
-      name: '测试结果',
+      name: t('reportPreview.apis.testResultDetail.fields.testResult'),
       customRender: (text) => {
-        return text === true ? '通过' : text === false ? '未通过' : '未测试';
+        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
       }
     },
     {
       dataIndex: 'failureMessage',
-      name: '测试失败原因'
+      name: t('reportPreview.apis.testResultDetail.fields.testFailureReason')
     }
   ],
   [
     {
       dataIndex: 'testNum',
-      name: '测试次数'
+      name: t('reportPreview.apis.testResultDetail.fields.testCount')
     },
     {
       dataIndex: 'testFailureNum',
-      name: '失败次数'
+      name: t('reportPreview.apis.testResultDetail.fields.failureCount')
     }
   ],
   [
     {
       dataIndex: 'scriptId',
-      name: '测试脚本ID'
+      name: t('reportPreview.apis.testResultDetail.fields.testScriptId')
     },
     {
       dataIndex: 'scriptName',
-      name: '测试脚本名称'
+      name: t('reportPreview.apis.testResultDetail.fields.testScriptName')
     }
   ],
   [
     {
       dataIndex: 'execId',
-      name: '执行ID'
+      name: t('reportPreview.apis.testResultDetail.fields.executionId')
     },
     {
       dataIndex: 'execName',
-      name: '执行名称'
+      name: t('reportPreview.apis.testResultDetail.fields.executionName')
     }
   ],
   [
     {
       dataIndex: 'execByName',
-      name: '最后执行人'
+      name: t('reportPreview.apis.testResultDetail.fields.lastExecutor')
     },
     {
       dataIndex: 'lastExecDate',
-      name: '最后执行时间'
+      name: t('reportPreview.apis.testResultDetail.fields.lastExecutionTime')
     }
   ]
 ]);
@@ -102,21 +102,21 @@ const basicColumns = computed(() => [
 const caseSummaryColumns = computed(() => [
   [
     {
-      name: '用例总数',
+      name: t('reportPreview.apis.testResultDetail.fields.totalCases'),
       dataIndex: 'totalNum'
     },
     {
-      name: '通过数',
+      name: t('reportPreview.apis.testResultDetail.fields.passedCount'),
       dataIndex: 'successNum'
     }
   ],
   [
     {
-      name: '未通过数',
+      name: t('reportPreview.apis.testResultDetail.fields.failedCount'),
       dataIndex: 'failNum'
     },
     {
-      name: '未启用数',
+      name: t('reportPreview.apis.testResultDetail.fields.disabledCount'),
       dataIndex: 'disabledNum'
     }
   ]
@@ -125,40 +125,40 @@ const caseSummaryColumns = computed(() => [
 const caseColumns = computed(() => [
   [
     {
-      name: '类型',
+      name: t('reportPreview.apis.testResultDetail.fields.type'),
       dataIndex: 'caseType',
       customRender: (text) => {
         return text?.message;
       }
     },
     {
-      name: '是否启用',
+      name: t('reportPreview.apis.testResultDetail.fields.isEnabled'),
       dataIndex: 'enabled',
       customRender: (text) => {
-        return text ? '开启' : '未开启';
+        return text ? t('reportPreview.apis.testResult.status.enabled') : t('reportPreview.apis.testResult.status.disabled');
       }
     }
   ],
   [
     {
-      name: '是否测试通过',
+      name: t('reportPreview.apis.testResultDetail.fields.isTestPassed'),
       dataIndex: 'passed',
       customRender: (text) => {
-        return text === true ? '通过' : text === false ? '未通过' : '未测试';
+        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
       }
     },
     {
-      name: '测试失败原因',
+      name: t('reportPreview.apis.testResultDetail.fields.testFailureReason'),
       dataIndex: 'failureMessage'
     }
   ],
   [
     {
-      name: '测试次数',
+      name: t('reportPreview.apis.testResultDetail.fields.testCount'),
       dataIndex: 'testNum'
     },
     {
-      name: '测试失败次数',
+      name: t('reportPreview.apis.testResultDetail.fields.testFailureCount'),
       dataIndex: 'testFailureNum'
     }
   ]
@@ -166,33 +166,33 @@ const caseColumns = computed(() => [
 
 const indicatorPerfItem = [
   {
-    label: '并发数',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.concurrency'),
     dataIndex: 'threads'
   },
   {
-    label: '测试时长',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.testDuration'),
     dataIndex: 'duration'
   },
   {
-    label: '增压并发数',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.pressureConcurrency'),
     dataIndex: 'rampUpThreads'
   },
   {
-    label: '增压测试时长',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.pressureTestDuration'),
     dataIndex: 'rampUpInterval'
   },
   {
-    label: '响应时间',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime'),
     dataIndex: 'art',
     compareOprate: '<='
   },
   {
-    label: '每秒事务数',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.tps'),
     dataIndex: 'tps',
     compareOprate: '>='
   },
   {
-    label: '错误率',
+    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.errorRate'),
     dataIndex: 'errorRate',
     compareOprate: '<=',
     unit: '%'
@@ -229,31 +229,31 @@ const indicatorPerfResultItem = computed(() => {
   }
   return [
     {
-      label: '并发数',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.concurrency'),
       dataIndex: 'threadPoolSize'
     },
     {
-      label: '测试时长',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.testDuration'),
       dataIndex: 'duration'
     },
     {
-      label: '增压并发时数',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.pressureConcurrency'),
       dataIndex: 'rampUpThreads'
     },
     {
-      label: '增压并发时长',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.pressureTestDuration'),
       dataIndex: 'rampUpInterval'
     },
     {
-      label: `响应时间(${percentile || '--'})`,
+      label: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime')} (${percentile || '--'})`,
       dataIndex: percentitleKey || '--'
     },
     {
-      label: '每秒事务数(TPS)',
+      label: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.tps')} (${percentile || '--'})`,
       dataIndex: 'tps'
     },
     {
-      label: '错误率',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.errorRate'),
       dataIndex: 'errorRate',
       unit: '%'
     }
@@ -379,34 +379,34 @@ const indicatorStabilityItem = computed(() => {
   }
   return [
     {
-      label: '并发数',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.concurrency'),
       dataIndex: 'threads',
-      resultLabel: '并发数',
+      resultLabel: t('reportPreview.apis.testResultDetail.performanceTest.indicators.concurrency'),
       resultDataIndex: 'threadPoolSize'
     },
     {
-      label: '测试时长',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.testDuration'),
       dataIndex: 'duration',
-      resultLabel: '测试时长',
+      resultLabel: t('reportPreview.apis.testResultDetail.performanceTest.indicators.testDuration'),
       resultDataIndex: 'duration'
     },
     {
-      label: '响应时间',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime'),
       dataIndex: 'art',
-      resultLabel: `响应时间(${percentile || '--'})`,
+      resultLabel: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime')} (${percentile || '--'})`,
       resultDataIndex: percentitleKey || '--'
     },
     {
-      label: '每秒事务数',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.tps'),
       dataIndex: 'tps',
       compareOprate: '>=',
-      resultLabel: '每秒事务数(TPS)',
+      resultLabel: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.tps')} (${percentile || '--'})`,
       resultDataIndex: 'tps'
     },
     {
-      label: '错误率',
+      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.errorRate'),
       dataIndex: 'errorRate',
-      resultLabel: '错误率',
+      resultLabel: t('reportPreview.apis.testResultDetail.performanceTest.indicators.errorRate'),
       resultDataIndex: 'errorRate'
     }
   ];
@@ -522,28 +522,28 @@ const getStabilityIcon = (valueKey) => {
 
 const sysItems = [
   {
-    label: 'cpu使用率',
+    label: t('reportPreview.apis.testResultDetail.fields.cpuUsage'),
     dataIndex: 'cpu',
     meanDataIndex: 'meanCpu',
     maxDataIndex: 'maxCpu',
     unit: '%'
   },
   {
-    label: '内存使用率',
+    label: t('reportPreview.apis.testResultDetail.fields.memoryUsage'),
     dataIndex: 'memory',
     meanDataIndex: 'meanMemory',
     maxDataIndex: 'maxMemory',
     unit: '%'
   },
   {
-    label: '磁盘使用率',
+    label: t('reportPreview.apis.testResultDetail.fields.diskUsage'),
     dataIndex: 'disk',
     meanDataIndex: 'meanFilesystem',
     maxDataIndex: 'maxFilesystem',
     unit: '%'
   },
   {
-    label: '网络使用量',
+    label: t('reportPreview.apis.testResultDetail.fields.networkUsage'),
     dataIndex: 'network',
     meanDataIndex: 'meanNetwork',
     maxDataIndex: 'maxNetwork',
@@ -556,15 +556,15 @@ const sysItems = [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>场景测试结果详细信息</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.title') }}</span>
     </h1>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1、<em class="inline-block w-0.25"></em>功能测试结果</span>
+      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1、<em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.functionalTest.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.functionalTest.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY" class="mb-5">
@@ -586,11 +586,11 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.apis.testResultDetail.noData') }}
     </div>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试用例</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.functionalTest.testCases') }}</span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY?.caseSummary" class="mb-5">
@@ -609,7 +609,7 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.apis.testResultDetail.noData') }}
     </div>
 
     <li class="mb-2">
@@ -633,7 +633,7 @@ const sysItems = [
       </template>
     </div>
     <div v-if="!TEST_FUNCTIONALITY?.caseResults?.length" class="mb-5">
-      无
+      {{ t('reportPreview.apis.testResultDetail.noData') }}
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5">
@@ -660,17 +660,17 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.apis.testResultDetail.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试指标和结果</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.performanceTest.indicatorsAndResults') }}</span>
     </li>
 
     <div class="flex border border-solid border-border-input bg-blue-table">
-      <div class="flex-1 p-1.5 border-r border-border-input">性能指标</div>
-      <div class="flex-1 p-1.5">结果</div>
+      <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.apis.testResultDetail.performanceTest.performanceIndicators') }}</div>
+      <div class="flex-1 p-1.5">{{ t('reportPreview.apis.testResultDetail.performanceTest.results') }}</div>
     </div>
     <div
       v-for="(perf, index) in indicatorPerfItem"
@@ -702,11 +702,11 @@ const sysItems = [
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5 mt-5">
-      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>稳定性测试</span>
+      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.stabilityTest.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.stabilityTest.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_STABILITY" class="mb-5">
@@ -725,17 +725,17 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.apis.testResultDetail.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试指标和结果</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.stabilityTest.indicatorsAndResults') }}</span>
     </li>
 
     <div>
       <div class="flex border border-solid border-border-input bg-blue-table">
-        <div class="flex-1 p-1.5 border-r border-border-input">稳定性指标</div>
-        <div class="flex-1 p-1.5">结果</div>
+        <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.apis.testResultDetail.stabilityTest.stabilityIndicators') }}</div>
+        <div class="flex-1 p-1.5">{{ t('reportPreview.apis.testResultDetail.stabilityTest.results') }}</div>
       </div>
       <div v-for="stability in indicatorStabilityItem" class="flex border-l border-border-input">
         <div
@@ -775,7 +775,7 @@ const sysItems = [
       <div class="flex border-l border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-b border-solid border-border-input">
-          应用系统平均负载
+          {{ t('reportPreview.apis.testResultDetail.stabilityTest.systemLoad') }}
         </div>
         <div class="flex-1">
           <div
@@ -800,14 +800,14 @@ const sysItems = [
             :key="sys.dataIndex"
             class="px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-b border-solid border-border-input flex">
             <div class="flex-1">
-              平均 {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE[sys.meanDataIndex]}${sys.unit}` : '--' }}
+              {{ t('reportPreview.apis.testResultDetail.stabilityTest.average') }} {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE[sys.meanDataIndex]}${sys.unit}` : '--' }}
               <img
                 v-if="getStabilityIcon(sys.meanDataIndex)"
                 :src="getStabilityIcon(sys.meanDataIndex)"
                 class="w-3" />
             </div>
             <div class="flex-1">
-              最大 {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
+              {{ t('reportPreview.apis.testResultDetail.stabilityTest.maximum') }} {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
             </div>
           </div>
         </div>

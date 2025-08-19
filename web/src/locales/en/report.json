@@ -190,35 +190,159 @@
         "exportPDF": "Export PDF",
         "printPDF": "Print PDF"
       },
-      "serial": {
-        "1": "1.",
-        "2": "2.",
-        "3": "3.",
-        "4": "4.",
-        "5": "5.",
-        "6": "6.",
-        "7": "7.",
-        "8": "8.",
-        "9": "9.",
-        "10": "10.",
-        "11": "11.",
-        "12": "12.",
-        "13": "13.",
-        "14": "14.",
-        "15": "15.",
-        "16": "16.",
-        "17": "17.",
-        "18": "18.",
-        "19": "19.",
-        "20": "20.",
-        "21": "21.",
-        "22": "22.",
-        "23": "23.",
-        "24": "24.",
-        "25": "25.",
-        "26": "26.",
-        "27": "27."
-      }
+             "serial": {
+         "1": "1.",
+         "2": "2.",
+         "3": "3.",
+         "4": "4.",
+         "5": "5.",
+         "6": "6.",
+         "7": "7.",
+         "8": "8.",
+         "9": "9.",
+         "10": "10.",
+         "11": "11.",
+         "12": "12.",
+         "13": "13.",
+         "14": "14.",
+         "15": "15.",
+         "16": "16.",
+         "17": "17.",
+         "18": "18.",
+         "19": "19.",
+         "20": "20.",
+         "21": "21.",
+         "22": "22.",
+         "23": "23.",
+         "24": "24.",
+         "25": "25.",
+         "26": "26.",
+         "27": "27."
+       },
+       "apis": {
+         "content": "Content",
+         "catalog": {
+           "title": "Catalog",
+           "sections": {
+             "apiInfo": "API Information",
+             "apiTestSummary": "API Test Summary Results",
+             "apiTestDetail": "API Test Result Details",
+             "functionalTest": "Functional Test Results",
+             "performanceTest": "Performance Test Results",
+             "stabilityTest": "Stability Test Results"
+           }
+         },
+         "info": {
+           "title": "API Information",
+           "fields": {
+             "apiUrl": "API URL",
+             "requestMethod": "Request Method",
+             "operationId": "Operation ID",
+             "owner": "Owner",
+             "description": "Description",
+             "status": "Status",
+             "creator": "Creator",
+             "createTime": "Create Time",
+             "lastModifier": "Last Modifier",
+             "lastModifyTime": "Last Modify Time"
+           }
+         },
+         "summary": {
+           "title": "Summary",
+           "fields": {
+             "apiStatus": "API Status",
+             "description": "Description",
+             "contact": "Contact",
+             "copyright": "Copyright",
+             "other": "Other"
+           }
+         },
+         "testResult": {
+           "title": "API Test Summary Results",
+           "fields": {
+             "isPassed": "Is Passed",
+             "enableFunctionalTest": "Enable Functional Test",
+             "functionalTestPassed": "Functional Test Passed",
+             "functionalTestFailureReason": "Functional Test Failure Reason",
+             "enablePerformanceTest": "Enable Performance Test",
+             "performanceTestPassed": "Performance Test Passed",
+             "performanceTestFailureReason": "Performance Test Failure Reason",
+             "enableStabilityTest": "Enable Stability Test",
+             "stabilityTestPassed": "Stability Test Passed",
+             "stabilityTestFailureReason": "Stability Test Failure Reason"
+           },
+           "status": {
+             "passed": "Passed",
+             "failed": "Failed",
+             "notTested": "Not Tested",
+             "enabled": "Enabled",
+             "disabled": "Disabled"
+           }
+         },
+         "testResultDetail": {
+           "title": "Scenario Test Result Details",
+           "noData": "None",
+           "functionalTest": {
+             "title": "Functional Test Results",
+             "basicInfo": "Test Basic Information",
+             "testCases": "Test Cases",
+             "testCaseResults": "Test Case Result Details",
+             "noData": "None"
+           },
+           "performanceTest": {
+             "title": "Performance Test",
+             "basicInfo": "Test Basic Information",
+             "indicatorsAndResults": "Test Indicators and Results",
+             "performanceIndicators": "Performance Indicators",
+             "results": "Results",
+             "indicators": {
+               "concurrency": "Concurrency",
+               "testDuration": "Test Duration",
+               "pressureConcurrency": "Pressure Concurrency",
+               "pressureTestDuration": "Pressure Test Duration",
+               "responseTime": "Response Time",
+               "tps": "TPS",
+               "errorRate": "Error Rate"
+             }
+           },
+           "stabilityTest": {
+             "title": "Stability Test",
+             "basicInfo": "Test Basic Information",
+             "indicatorsAndResults": "Test Indicators and Results",
+             "stabilityIndicators": "Stability Indicators",
+             "results": "Results",
+             "systemLoad": "Application System Average Load",
+             "average": "Average",
+             "maximum": "Maximum"
+           },
+           "fields": {
+             "testResult": "Test Result",
+             "testFailureReason": "Test Failure Reason",
+             "testCount": "Test Count",
+             "failureCount": "Failure Count",
+             "testScriptId": "Test Script ID",
+             "testScriptName": "Test Script Name",
+             "executionId": "Execution ID",
+             "executionName": "Execution Name",
+             "lastExecutor": "Last Executor",
+             "lastExecutionTime": "Last Execution Time",
+             "totalCases": "Total Cases",
+             "passedCount": "Passed Count",
+             "failedCount": "Failed Count",
+             "disabledCount": "Disabled Count",
+             "type": "Type",
+             "isEnabled": "Is Enabled",
+             "isTestPassed": "Is Test Passed",
+             "testFailureReason": "Test Failure Reason",
+             "testCount": "Test Count",
+             "testFailureCount": "Test Failure Count",
+             "cpuUsage": "CPU Usage",
+             "memoryUsage": "Memory Usage",
+             "diskUsage": "Disk Usage",
+             "networkUsage": "Network Usage"
+           }
+         }
+       }
     }
   }
 } 

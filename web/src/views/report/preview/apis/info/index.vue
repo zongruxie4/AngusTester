@@ -27,11 +27,11 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'endpoint',
-      name: '接口地址'
+      name: t('reportPreview.apis.info.fields.apiUrl')
     },
     {
       dataIndex: 'method',
-      name: '请求方法',
+      name: t('reportPreview.apis.info.fields.requestMethod'),
       customRender: (text) => {
         return text?.message;
       }
@@ -40,21 +40,21 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'operationId',
-      name: '操作ID'
+      name: t('reportPreview.apis.info.fields.operationId')
     },
     {
       dataIndex: 'ownerName',
-      name: '负责人'
+      name: t('reportPreview.apis.info.fields.owner')
     }
   ],
   [
     {
       dataIndex: 'description',
-      name: '描述'
+      name: t('reportPreview.apis.info.fields.description')
     },
     {
       dataIndex: 'status',
-      name: '状态',
+      name: t('reportPreview.apis.info.fields.status'),
       customRender: (text) => {
         return text?.message;
       }
@@ -63,21 +63,21 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'createdByName',
-      name: '添加人'
+      name: t('reportPreview.apis.info.fields.creator')
     },
     {
       dataIndex: 'createdDate',
-      name: '添加时间'
+      name: t('reportPreview.apis.info.fields.createTime')
     }
   ],
   [
     {
       dataIndex: 'lastModifiedByName',
-      name: '最后修改人'
+      name: t('reportPreview.apis.info.fields.lastModifier')
     },
     {
       dataIndex: 'lastModifiedDate',
-      name: '最后修改时间'
+      name: t('reportPreview.apis.info.fields.lastModifyTime')
     }
   ]
 ]);
@@ -87,7 +87,7 @@ const columns = computed(() => [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>接口信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.info.title') }}</span>
     </h1>
     <div class="border-t border-l border-solid border-border-input">
       <div v-for="column in columns" class="flex border-b border-solid border-border-input">
