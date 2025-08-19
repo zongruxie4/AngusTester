@@ -48,20 +48,20 @@ const testerResponsibilities = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>基本信息</span>
+        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.basicInfo') }}</span>
       </h2>
       <div class="border border-solid border-border-input">
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            计划名称
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.planName') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.name }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            用例前缀
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.casePrefix') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.casePrefix }}
@@ -71,14 +71,14 @@ const testerResponsibilities = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            状态
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.status') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.status?.message }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            负责人
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.owner') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.ownerName }}
@@ -88,14 +88,14 @@ const testerResponsibilities = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            所属项目
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.project') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.projectName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            时间计划
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.timePlan') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.startDate }} 至 {{ plan?.deadlineDate }}
@@ -105,14 +105,14 @@ const testerResponsibilities = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加人
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.creator') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加时间
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.createTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.createdDate }}
@@ -122,14 +122,14 @@ const testerResponsibilities = computed(() => {
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            工作量评估方式
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.workloadEvalMethod') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ plan?.evalWorkloadMethod?.message }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            是否评审用例
+            {{ t('reportPreview.functionPlan.detail.basicInfo.fields.reviewCase') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ plan?.review?'是':'否' }}
@@ -140,17 +140,17 @@ const testerResponsibilities = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a.2">1.2<em class="inline-block w-3.5"></em>测试人与职责</span>
+        <span id="a.2">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.testerAndDuty.title') }}</span>
       </h2>
       <div class="border border-solid border-border-input">
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            测试人
+            {{ t('reportPreview.functionPlan.detail.testerAndDuty.fields.tester') }}
           </div>
           <div
             class="flex-1 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5">
-            职责
+            {{ t('reportPreview.functionPlan.detail.testerAndDuty.fields.duty') }}
           </div>
         </div>
 
@@ -172,37 +172,37 @@ const testerResponsibilities = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.3">1.3<em class="inline-block w-3.5"></em>测试目标</span>
+        <span id="a1.3">1.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.testTarget.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.testingObjectives || '无' }}
+        {{ plan?.testingObjectives || t('reportPreview.functionPlan.detail.testTarget.noData') }}
       </div>
     </div>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.4">1.4<em class="inline-block w-3.5"></em>测试范围</span>
+        <span id="a1.4">1.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.testScope.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.testingScope || '无' }}
+        {{ plan?.testingScope || t('reportPreview.functionPlan.detail.testScope.noData') }}
       </div>
     </div>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.5">1.5<em class="inline-block w-3.5"></em>验收标准</span>
+        <span id="a1.5">1.5<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.acceptanceCriteria.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.acceptanceCriteria || '无' }}
+        {{ plan?.acceptanceCriteria || t('reportPreview.functionPlan.detail.acceptanceCriteria.noData') }}
       </div>
     </div>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.6">1.6<em class="inline-block w-3.5"></em>其他说明</span>
+        <span id="a1.6">1.6<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.otherInfo.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.otherInformation || '无' }}
+        {{ plan?.otherInformation || t('reportPreview.functionPlan.detail.otherInfo.noData') }}
       </div>
     </div>
   </div>

@@ -46,12 +46,12 @@ const testers = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>测试人汇总结果</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionPlan.catalog.sections.testerSummary') }}</span>
     </h1>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-      <span id="a3.1">3.1<em class="inline-block w-3.5"></em>测试汇总结果</span>
+      <span id="a3.1">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.catalog.sections.testSummary') }}</span>
       </h2>
       <div
         v-for="(item) in testers"
@@ -68,21 +68,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                用例总数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.totalCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalCaseNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                有效用例数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.validCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.validCaseNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                待测试数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.pendingTest') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.pendingTestNum || 0 }}
@@ -92,21 +92,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                通过数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.passed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.passedTestNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                未通过数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.failed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.notPassedTestNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                阻塞数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.blocked') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.blockedTestNum || 0 }}
@@ -116,21 +116,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                取消数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.cancelled') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.canceledTestNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                逾期数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.overdue') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.overdueNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                逾期率
+                {{ t('reportPreview.functionPlan.caseSummary.fields.overdueRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.overdueRate }}
@@ -140,21 +140,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                一次性测试通过数
+                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeTestPass') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedNum }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                一次性测试通过率
+                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeTestPassRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedRate }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                一次性评审通过率
+                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeReviewPassRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedReviewRate }}
@@ -164,21 +164,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                评估工作量
+                  {{ t('reportPreview.functionPlan.caseSummary.fields.estimatedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.evalWorkload }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                实际工作量
+                {{ t('reportPreview.functionPlan.caseSummary.fields.actualWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.actualWorkload }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                完成工作量
+                {{ t('reportPreview.functionPlan.caseSummary.fields.completedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.completedWorkload }}
@@ -188,14 +188,14 @@ const testers = computed(() => {
             <div class="flex">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                节省工作量
+                {{ t('reportPreview.functionPlan.caseSummary.fields.savedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.savingWorkload }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                工作量节省率
+                  {{ t('reportPreview.functionPlan.caseSummary.fields.workloadSaveRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.savingWorkloadRate }}
@@ -213,7 +213,7 @@ const testers = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>评审汇总结果</span>
+        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.reviewSummary.title') }}</span>
       </h2>
       <div
         v-for="(item) in testers"
@@ -226,21 +226,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                总评审用例数
+                  {{ t('reportPreview.functionPlan.reviewSummary.fields.totalReviewCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalReviewCaseNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                待评审数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.pendingReview') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.pendingReviewNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                评审通过数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.reviewPassed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.passedReviewNum || 0 }}
@@ -249,21 +249,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                评审未通过数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.reviewFailed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.failedReviewNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                已评审数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.reviewed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalReviewedCaseNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                未评审数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.notReviewed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.totalNotReviewCaseNum || 0 }}
@@ -272,21 +272,21 @@ const testers = computed(() => {
             <div class="flex border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                总评审次数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.totalReviewCount') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalReviewTimes || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                一次性通过评审数
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.oneTimeReviewPass') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedReviewNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                一次性评审通过率
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.oneTimeReviewPassRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.oneTimePassedReviewRate || 0 }}%
@@ -299,7 +299,7 @@ const testers = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>燃尽图</span>
+        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.burndownChart.title') }}</span>
       </h2>
       <div
         v-for="(item) in testers"
@@ -313,7 +313,7 @@ const testers = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.4">3.4<em class="inline-block w-3.5"></em>分组统计</span>
+        <span id="a3.4">3.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.groupStats.title') }}</span>
       </h2>
       <div
         v-for="(item) in testers"

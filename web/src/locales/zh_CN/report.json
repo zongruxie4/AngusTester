@@ -718,6 +718,225 @@
          },
          "noData": "无"
        }
+     },
+     "functionPlan": {
+       "content": "内容",
+       "catalog": {
+         "title": "目录",
+         "sections": {
+           "planInfo": "测试计划信息",
+           "basicInfo": "基本信息",
+           "testerAndDuty": "测试人与职责",
+           "testTarget": "测试目标",
+           "testScope": "测试范围",
+           "acceptanceCriteria": "验收标准",
+           "otherInfo": "其他说明",
+           "caseSummary": "用例汇总结果",
+           "testSummary": "测试汇总结果",
+           "reviewSummary": "评审汇总结果",
+           "burndownChart": "燃尽图",
+           "groupStats": "分组统计",
+           "testerSummary": "测试人汇总结果"
+         }
+       },
+       "summary": {
+         "title": "摘要",
+         "fields": {
+           "progress": "进度",
+           "description": "描述",
+           "contact": "联系人",
+           "copyright": "版权说明",
+           "other": "其他"
+         }
+       },
+       "detail": {
+         "title": "计划详细信息",
+         "basicInfo": {
+           "title": "基本信息",
+           "fields": {
+             "planName": "计划名称",
+             "casePrefix": "用例前缀",
+             "status": "状态",
+             "owner": "负责人",
+             "project": "所属项目",
+             "timePlan": "时间计划",
+             "creator": "添加人",
+             "createTime": "添加时间",
+             "workloadEvalMethod": "工作量评估方式",
+             "reviewCase": "是否评审用例"
+           },
+           "options": {
+             "yes": "是",
+             "no": "否"
+           }
+         },
+         "testerAndDuty": {
+           "title": "测试人与职责",
+           "fields": {
+             "tester": "测试人",
+             "duty": "职责"
+           }
+         },
+         "testTarget": {
+           "title": "测试目标",
+           "noData": "无"
+         },
+         "testScope": {
+           "title": "测试范围",
+           "noData": "无"
+         },
+         "acceptanceCriteria": {
+           "title": "验收标准",
+           "noData": "无"
+         },
+         "otherInfo": {
+           "title": "其他说明",
+           "noData": "无"
+         }
+       },
+       "caseSummary": {
+         "title": "用例汇总结果",
+         "testSummary": {
+           "title": "测试汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalCases": "用例总数",
+             "validCases": "有效用例数",
+             "pendingTest": "待测试数",
+             "passed": "通过数",
+             "failed": "未通过数",
+             "blocked": "阻塞数",
+             "cancelled": "取消数",
+             "overdue": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimeTestPass": "一次性测试通过数",
+             "oneTimeTestPassRate": "一次性测试通过率",
+             "oneTimeReviewPassRate": "一次性评审通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "reviewSummary": {
+           "title": "评审汇总结果",
+           "fields": {
+             "totalReviewCases": "总评审用例数",
+             "pendingReview": "待评审数",
+             "reviewPassed": "评审通过数",
+             "reviewFailed": "评审未通过数",
+             "reviewed": "已评审数",
+             "notReviewed": "未评审数",
+             "totalReviewCount": "总评审次数",
+             "oneTimeReviewPass": "一次性通过评审数",
+             "oneTimeReviewPassRate": "一次性评审通过率"
+           }
+         },
+         "burndownChart": {
+           "title": "燃尽图",
+           "caseCount": "用例数",
+           "workload": "工作量",
+           "remaining": "剩余",
+           "expected": "期望"
+         },
+         "groupStats": {
+           "title": "分组统计",
+           "byStatus": "按状态分组",
+           "byPriority": "按优先级分组",
+           "statuses": {
+             "cancelled": "已取消",
+             "blocked": "阻塞",
+             "testFailed": "测试未通过",
+             "testPassed": "测试通过",
+             "pendingTest": "待测试"
+           },
+           "priorities": {
+             "highest": "最高",
+             "high": "高",
+             "medium": "中",
+             "low": "底",
+             "lowest": "最底"
+           }
+         }
+       },
+       "caseDetail": {
+         "title": "测试人汇总结果",
+         "testSummary": {
+           "title": "测试汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalCases": "用例总数",
+             "validCases": "有效用例数",
+             "pendingTest": "待测试数",
+             "passed": "通过数",
+             "failed": "未通过数",
+             "blocked": "阻塞数",
+             "cancelled": "取消数",
+             "overdue": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimeTestPass": "一次性测试通过数",
+             "oneTimeTestPassRate": "一次性测试通过率",
+             "oneTimeReviewPassRate": "一次性评审通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "reviewSummary": {
+           "title": "评审汇总结果",
+           "fields": {
+             "totalReviewCases": "总评审用例数",
+             "pendingReview": "待评审数",
+             "reviewPassed": "评审通过数",
+             "reviewFailed": "评审未通过数",
+             "reviewed": "已评审数",
+             "notReviewed": "未评审数",
+             "totalReviewCount": "总评审次数",
+             "oneTimeReviewPass": "一次性通过评审数",
+             "oneTimeReviewPassRate": "一次性评审通过率"
+           }
+         },
+         "burndownChart": {
+           "title": "燃尽图"
+         },
+         "groupStats": {
+           "title": "分组统计"
+         },
+         "caseList": {
+           "fields": {
+             "code": "编码",
+             "priority": "优先级",
+             "module": "所属模块",
+             "overdue": "是否逾期",
+             "deadline": "截止时间",
+             "tester": "测试人",
+             "testResult": "测试结果",
+             "testResultRemark": "测试结果备注",
+             "testCompleteTime": "测试完成时间",
+             "reviewCase": "是否评审用例",
+             "reviewStatus": "评审状态",
+             "reviewer": "评审人",
+             "reviewOpinion": "评审意见",
+             "reviewTime": "评审时间",
+             "workloadEvalMethod": "工作量评估方式",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "totalTestCount": "总测试次数",
+             "testFailCount": "测试失败次数",
+             "creator": "添加人",
+             "createTime": "添加时间",
+             "lastModifier": "最后修改人",
+             "lastModifyTime": "最后修改时间"
+           },
+           "options": {
+             "yes": "是",
+             "no": "否"
+           }
+         }
+       }
      }
    }
 } 

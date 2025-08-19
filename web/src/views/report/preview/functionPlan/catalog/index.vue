@@ -33,79 +33,79 @@ const testers = computed(() => {
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>目录</span>
+      <span>{{ t('reportPreview.functionPlan.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>测试计划信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.planInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.1" class="flex items-center space-x-2.5">
-        <span>1.1<em class="inline-block w-4.25 font-medium"></em>基本信息</span>
+        <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.basicInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.2" class="flex items-center space-x-2.5">
-        <span>1.2<em class="inline-block w-4.25 font-medium"></em>测试人与职责</span>
+        <span>1.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testerAndDuty') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.3" class="flex items-center space-x-2.5">
-        <span>1.3<em class="inline-block w-4.25 font-medium"></em>测试目标</span>
+        <span>1.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testTarget') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.4" class="flex items-center space-x-2.5">
-        <span>1.4<em class="inline-block w-4.25 font-medium"></em>测试范围</span>
+        <span>1.4<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testScope') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.5" class="flex items-center space-x-2.5">
-        <span>1.5<em class="inline-block w-4.25 font-medium"></em>验收标准</span>
+        <span>1.5<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.acceptanceCriteria') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.6" class="flex items-center space-x-2.5">
-        <span>1.6<em class="inline-block w-4.25 font-medium"></em>其他说明</span>
+        <span>1.6<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.otherInfo') }}</span>
         <DashedLine />
       </a>
 
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>用例汇总结果</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.caseSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.1" class="flex items-center space-x-2.5">
-        <span>2.1<em class="inline-block w-4.25 font-medium"></em>测试汇总结果</span>
+        <span>2.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.2" class="flex items-center space-x-2.5">
-        <span>2.2<em class="inline-block w-4.25 font-medium"></em>评审汇总结果</span>
+        <span>2.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.reviewSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.3" class="flex items-center space-x-2.5">
-        <span>2.3<em class="inline-block w-4.25 font-medium"></em>燃尽图</span>
+        <span>2.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.burndownChart') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.4" class="flex items-center space-x-2.5">
-        <span>2.4<em class="inline-block w-4.25 font-medium"></em>分组统计</span>
+        <span>2.4<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.groupStats') }}</span>
         <DashedLine />
       </a>
 
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>测试人汇总结果</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testerSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.1" class="flex items-center space-x-2.5">
-        <span>3.1<em class="inline-block w-4.25 font-medium"></em>测试汇总结果</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.testSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.2" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>评审汇总结果</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.reviewSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">
-        <span>3.3<em class="inline-block w-4.25 font-medium"></em>燃尽图</span>
+        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.burndownChart') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.4" class="flex items-center space-x-2.5">
-        <span>3.4<em class="inline-block w-4.25 font-medium"></em>分组统计</span>
+        <span>3.4<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.groupStats') }}</span>
         <DashedLine />
       </a>
     </div>
