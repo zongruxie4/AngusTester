@@ -184,5 +184,32 @@
       "successCount": "Success Count",
       "failureCount": "Failure Count"
     }
+  },
+  "scenarioTrash": {
+    "title": "Trash",
+    "description": "Only administrators and deleters can restore or permanently delete data from the trash.",
+    "actions": {
+      "restore": "Restore",
+      "delete": "Delete",
+      "restoreAll": "Restore All",
+      "deleteAll": "Delete All",
+      "refresh": "Refresh"
+    },
+    "messages": {
+      "restoreSuccess": "Restored successfully",
+      "deleteSuccess": "Deleted successfully",
+      "restoreAllSuccess": "All restored successfully",
+      "deleteAllSuccess": "All deleted successfully"
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "creator": "Creator",
+        "deleter": "Deleter",
+        "deleteTime": "Delete Time",
+        "operation": "Operation"
+      },
+      "searchPlaceholder": "Please enter search keywords"
+    }
   }
 } 
