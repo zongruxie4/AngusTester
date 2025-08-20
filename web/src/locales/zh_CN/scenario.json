@@ -211,5 +211,114 @@
       },
       "searchPlaceholder": "请输入查询关键字"
     }
-  }
-} 
+  },
+  "scenario": {
+    "title": "场景",
+    "list": {
+      "searchPlaceholder": "查询场景ID、名称、描述",
+      "pluginTypePlaceholder": "插件类型",
+      "scriptTypePlaceholder": "选择脚本类型",
+      "dateRangePlaceholder": ["添加时间开始", "添加时间结束"],
+      "pluginTypes": {
+        "jdbc": "Jdbc场景",
+        "webSocket": "WebSocket场景",
+        "ftp": "Ftp场景",
+        "ldap": "Ldap场景",
+        "mail": "Mail场景",
+        "smtp": "Smtp场景",
+        "tcp": "Tcp场景"
+      },
+      "sortOptions": {
+        "byAddTime": "按添加时间",
+        "byName": "按名称",
+        "byCreator": "按添加人"
+      },
+      "groupOptions": {
+        "noGroup": "不分组",
+        "byCreator": "按添加人分组",
+        "byPlugin": "按插件分组",
+        "byScriptType": "按脚本类型分组"
+      },
+      "actions": {
+        "addHttpScenario": "添加Http场景",
+        "scenarioAuth": "场景权限",
+        "sort": "排序",
+        "group": "分组",
+        "refresh": "刷新",
+        "follow": "关注",
+        "cancelFollow": "取消关注",
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "auth": "权限",
+        "export": "导出脚本",
+        "delete": "删除",
+        "createTestTask": "生成测试任务",
+        "restartTestTask": "重新开始测试任务",
+        "reopenTestTask": "重新打开测试任务",
+        "deleteTestTask": "删除测试任务",
+        "executeTest": "执行测试",
+        "edit": "编辑",
+        "clone": "克隆"
+      },
+      "table": {
+        "columns": {
+          "name": "名称",
+          "plugin": "插件",
+          "scriptType": "脚本类型",
+          "creator": "添加人",
+          "addTime": "添加时间",
+          "lastExecStatus": "最后执行状态",
+          "operation": "操作"
+        },
+        "noDescription": "无描述~",
+        "createdBy": "创建于"
+      },
+      "messages": {
+        "cancelFavouriteSuccess": "取消收藏成功",
+        "cancelFollowSuccess": "取消关注成功",
+        "cloneSuccess": "克隆成功",
+        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【{name}】？",
+        "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
+        "favouriteSuccess": "收藏成功",
+        "followSuccess": "关注成功",
+        "reopenConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 不清理统计计数和状态，您确认重新打开测试任务【{name}】吗？",
+        "restartConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试【{name}】吗？"
+      },
+      "tips": {
+        "authOn": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+        "authOff": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。",
+        "authTitle": "场景权限",
+        "testTaskInfo": "场景测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
+      },
+      "execTest": {
+        "title": "执行测试",
+        "serverConfig": "服务器配置",
+        "radioOptions": {
+          "useDefault": "使用默认（场景中默认服务器配置）",
+          "modifyConfig": "修改变量配置（修改后会更新到接口和变量服务器）"
+        },
+        "selectServer": "请选择服务器",
+        "noVariables": "无变量",
+        "noDescription": "无描述",
+        "variables": "变量",
+        "labels": {
+          "name": "名称",
+          "value": "值",
+          "description": "描述",
+          "default": "默认"
+        },
+        "ellipsis": {
+          "more": "更多"
+        },
+                 "messages": {
+           "updateSuccess": "更新到已关联接口成功"
+         }
+       },
+       "drawer": {
+         "menuItems": {
+           "activity": "活动"
+         }
+       }
+     }
+   }
+ } 

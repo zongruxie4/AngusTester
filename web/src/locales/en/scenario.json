@@ -211,5 +211,114 @@
       },
       "searchPlaceholder": "Please enter search keywords"
     }
-  }
-} 
+  },
+  "scenario": {
+    "title": "Scenario",
+    "list": {
+      "searchPlaceholder": "Search scenario ID, name, description",
+      "pluginTypePlaceholder": "Plugin type",
+      "scriptTypePlaceholder": "Select script type",
+      "dateRangePlaceholder": ["Add time start", "Add time end"],
+      "pluginTypes": {
+        "jdbc": "Jdbc Scenario",
+        "webSocket": "WebSocket Scenario",
+        "ftp": "Ftp Scenario",
+        "ldap": "Ldap Scenario",
+        "mail": "Mail Scenario",
+        "smtp": "Smtp Scenario",
+        "tcp": "Tcp Scenario"
+      },
+      "sortOptions": {
+        "byAddTime": "By Add Time",
+        "byName": "By Name",
+        "byCreator": "By Creator"
+      },
+      "groupOptions": {
+        "noGroup": "No Group",
+        "byCreator": "By Creator Group",
+        "byPlugin": "By Plugin Group",
+        "byScriptType": "By Script Type Group"
+      },
+      "actions": {
+        "addHttpScenario": "Add Http Scenario",
+        "scenarioAuth": "Scenario Auth",
+        "sort": "Sort",
+        "group": "Group",
+        "refresh": "Refresh",
+        "follow": "Follow",
+        "cancelFollow": "Cancel Follow",
+        "favourite": "Favourite",
+        "cancelFavourite": "Cancel Favourite",
+        "auth": "Auth",
+        "export": "Export Script",
+        "delete": "Delete",
+        "createTestTask": "Create Test Task",
+        "restartTestTask": "Restart Test Task",
+        "reopenTestTask": "Reopen Test Task",
+        "deleteTestTask": "Delete Test Task",
+        "executeTest": "Execute Test",
+        "edit": "Edit",
+        "clone": "Clone"
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "plugin": "Plugin",
+          "scriptType": "Script Type",
+          "creator": "Creator",
+          "addTime": "Add Time",
+          "lastExecStatus": "Last Exec Status",
+          "operation": "Operation"
+        },
+        "noDescription": "No description~",
+        "createdBy": "Created by"
+      },
+      "messages": {
+        "cancelFavouriteSuccess": "Cancel favourite successfully",
+        "cancelFollowSuccess": "Cancel follow successfully",
+        "cloneSuccess": "Clone successfully",
+        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 【{name}】?",
+        "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
+        "favouriteSuccess": "Favourite successfully",
+        "followSuccess": "Follow successfully",
+        "reopenConfirm": "Update all completed task statuses under the scenario to \"Pending Test\", without clearing statistical counts and status. Do you confirm to reopen the test task 【{name}】?",
+        "restartConfirm": "Update all completed task statuses under the scenario to \"Pending Test\", related statistical counts and status will be cleared. Do you confirm to restart the test 【{name}】?"
+      },
+      "tips": {
+        "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
+        "authOff": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing need to have current scenario parent directory permissions.",
+        "authTitle": "Scenario Permission",
+        "testTaskInfo": "Generate corresponding tasks when scenario test tasks do not exist. If tasks already exist, current test information will be overwritten."
+      },
+      "execTest": {
+        "title": "Execute Test",
+        "serverConfig": "Server Configuration",
+        "radioOptions": {
+          "useDefault": "Use Default (Default server configuration in scenario)",
+          "modifyConfig": "Modify Variable Configuration (Will update to interface and variable server after modification)"
+        },
+        "selectServer": "Please select server",
+        "noVariables": "No Variables",
+        "noDescription": "No Description",
+        "variables": "Variables",
+        "labels": {
+          "name": "Name",
+          "value": "Value",
+          "description": "Description",
+          "default": "Default"
+        },
+        "ellipsis": {
+          "more": "More"
+        },
+                 "messages": {
+           "updateSuccess": "Successfully updated to associated interfaces"
+         }
+       },
+       "drawer": {
+         "menuItems": {
+           "activity": "Activity"
+         }
+       }
+     }
+   }
+ } 
