@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Review", description = "Functional Test Review Management - Comprehensive APIs for systematic analysis and discussion of test cases through formal reviews with process management and lifecycle control")
+@Tag(name = "Functional Test Review", description = "Functional Test Review Management - APIs for systematic analysis and discussion of test cases through formal reviews with process management and lifecycle control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/review")
@@ -45,7 +45,7 @@ public class FuncReviewRest {
   private FuncReviewFacade funcReviewFacade;
 
   @Operation(summary = "Create functional test review", 
-      description = "Create a new functional test review with comprehensive configuration for systematic analysis",
+      description = "Create a new functional test review with configuration for systematic analysis",
       operationId = "func:review:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Functional test review created successfully")})
@@ -69,7 +69,7 @@ public class FuncReviewRest {
   }
 
   @Operation(summary = "Replace functional test review", 
-      description = "Replace an existing functional test review with complete new configuration",
+      description = "Replace an existing functional test review with new configuration",
       operationId = "func:review:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test review replaced successfully"),
@@ -177,7 +177,7 @@ public class FuncReviewRest {
   }
 
   @Operation(summary = "Get functional test review details", 
-      description = "Retrieve comprehensive details of a specific functional test review for analysis and review",
+      description = "Retrieve details of a specific functional test review for analysis and review",
       operationId = "func:review:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test review details retrieved successfully"),
@@ -189,7 +189,7 @@ public class FuncReviewRest {
   }
 
   @Operation(summary = "List functional test reviews", 
-      description = "Retrieve paginated list of functional test reviews with comprehensive filtering and search options",
+      description = "Retrieve paginated list of functional test reviews with filtering and search options",
       operationId = "func:review:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test review list retrieved successfully")})

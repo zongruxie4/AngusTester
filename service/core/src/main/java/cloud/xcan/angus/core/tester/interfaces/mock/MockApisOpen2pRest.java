@@ -48,7 +48,7 @@ public class MockApisOpen2pRest {
   }
 
   @Operation(summary = "Query mock service details",
-      description = "Retrieve comprehensive information about specific mock service configuration and status",
+      description = "Retrieve information about specific mock service configuration and status",
       operationId = "mock:service:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service details retrieved successfully")})
@@ -59,7 +59,7 @@ public class MockApisOpen2pRest {
   }
 
   @Operation(summary = "Query mock APIs with filtering",
-      description = "Retrieve list of mock APIs with comprehensive filtering and search capabilities for service synchronization",
+      description = "Retrieve list of mock APIs with filtering and search capabilities for service synchronization",
       operationId = "mock:apis:detail:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock APIs retrieved successfully")})

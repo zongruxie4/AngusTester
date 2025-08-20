@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.domain.task.sprint.auth.TaskSprintAuth;
 import cloud.xcan.angus.idgen.UidGenerator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class TaskSprintAuthConverter {

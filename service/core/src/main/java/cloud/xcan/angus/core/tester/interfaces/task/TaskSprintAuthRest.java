@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task Sprint Authorization", description = "Task Sprint Authorization Management API - Comprehensive access control system for sprint-level permissions including user roles, data access rights, and administrative privileges.")
+@Tag(name = "Task Sprint Authorization", description = "Task Sprint Authorization Management API - Access control system for sprint-level permissions including user roles, data access rights, and administrative privileges")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")
@@ -44,7 +44,7 @@ public class TaskSprintAuthRest {
   @Resource
   private TaskSprintAuthFacade taskSprintAuthFacade;
 
-  @Operation(summary = "Grant sprint authorization to user", operationId = "task:sprint:auth:add", description = "Assign specific permissions to a user for a task sprint, enabling controlled access to sprint data and operations.")
+  @Operation(summary = "Grant sprint authorization to user", operationId = "task:sprint:auth:add", description = "Assign specific permissions to a user for a task sprint, enabling controlled access to sprint data and operations")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Sprint authorization granted successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success(taskSprintAuthFacade.add(sprintId, dto));
   }
 
-  @Operation(summary = "Update sprint authorization permissions", operationId = "task:sprint:auth:replace", description = "Modify existing authorization permissions for a user within a task sprint, updating access levels and role assignments.")
+  @Operation(summary = "Update sprint authorization permissions", operationId = "task:sprint:auth:replace", description = "Modify existing authorization permissions for a user within a task sprint, updating access levels and role assignments")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint authorization updated successfully"),
       @ApiResponse(responseCode = "404", description = "Sprint authorization not found")
@@ -68,7 +68,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Enable or disable sprint authorization", operationId = "task:sprint:auth:enabled", description = "Activate or deactivate authorization system for a task sprint, controlling overall access to sprint data.")
+  @Operation(summary = "Enable or disable sprint authorization", operationId = "task:sprint:auth:enabled", description = "Activate or deactivate authorization system for a task sprint, controlling overall access to sprint data")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint authorization status updated successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")})
@@ -81,7 +81,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get sprint authorization status", operationId = "task:sprint:auth:status", description = "Retrieve the current authorization status for a task sprint to determine if access control is active.")
+  @Operation(summary = "Get sprint authorization status", operationId = "task:sprint:auth:status", description = "Retrieve the current authorization status for a task sprint to determine if access control is active")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint authorization status retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")})
@@ -92,7 +92,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success(taskSprintAuthFacade.status(sprintId));
   }
 
-  @Operation(summary = "Revoke sprint authorization", operationId = "task:sprint:auth:delete", description = "Remove authorization permissions for a user from a task sprint, revoking all associated access rights.")
+  @Operation(summary = "Revoke sprint authorization", operationId = "task:sprint:auth:delete", description = "Remove authorization permissions for a user from a task sprint, revoking all associated access rights")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Sprint authorization revoked successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,7 +102,7 @@ public class TaskSprintAuthRest {
     taskSprintAuthFacade.delete(id);
   }
 
-  @Operation(summary = "Get user sprint permissions", operationId = "task:sprint:user:auth", description = "Retrieve all authorization permissions assigned to a specific user for a task sprint.")
+  @Operation(summary = "Get user sprint permissions", operationId = "task:sprint:user:auth", description = "Retrieve all authorization permissions assigned to a specific user for a task sprint")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User sprint permissions retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")})
@@ -115,7 +115,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success(taskSprintAuthFacade.userAuth(sprintId, userId, admin));
   }
 
-  @Operation(summary = "Get current user sprint permissions", operationId = "task:sprint:user:auth:current", description = "Retrieve authorization permissions for the currently authenticated user within a specific task sprint.")
+  @Operation(summary = "Get current user sprint permissions", operationId = "task:sprint:user:auth:current", description = "Retrieve authorization permissions for the currently authenticated user within a specific task sprint")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Current user sprint permissions retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")})
@@ -127,7 +127,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success(taskSprintAuthFacade.currentUserAuth(sprintId, admin));
   }
 
-  @Operation(summary = "Verify user sprint permission", operationId = "task:sprint:auth:check", description = "Validate that a specific user has the required authorization permission for a task sprint operation.")
+  @Operation(summary = "Verify user sprint permission", operationId = "task:sprint:auth:check", description = "Validate that a specific user has the required authorization permission for a task sprint operation")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User permission verified successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -141,7 +141,7 @@ public class TaskSprintAuthRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Get paginated sprint authorizations list", operationId = "task:sprint:auth:list", description = "Retrieve a paginated list of all sprint authorizations with filtering options for user, permission type, and status.")
+  @Operation(summary = "Get paginated sprint authorizations list", operationId = "task:sprint:auth:list", description = "Retrieve a paginated list of all sprint authorizations with filtering options for user, permission type, and status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint authorizations list retrieved successfully")})
   @GetMapping("/auth")

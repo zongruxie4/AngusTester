@@ -30,18 +30,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of service authorization command operations.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing service authorizations,
  * including adding, replacing, deleting, and enabling/disabling authorization controls.</p>
- * 
+ *
  * <p>It handles both creator and regular user authorizations with proper permission
  * validation and activity logging for audit purposes.</p>
- * 
+ *
  * <p>The implementation uses the BizTemplate pattern to ensure consistent business
  * logic execution with proper parameter validation and transaction management.</p>
  */
@@ -65,14 +64,14 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Adds a new service authorization for a user or group.
-   * 
+   *
    * <p>This method performs comprehensive validation including checking service existence,
    * preventing creator self-authorization, verifying user permissions, and ensuring
    * no duplicate authorizations exist.</p>
-   * 
+   *
    * <p>For non-creator authorizations, it also logs the authorization activity
    * for audit purposes.</p>
-   * 
+   *
    * @param auth the service authorization to add
    * @return the ID key of the created authorization
    * @throws IllegalArgumentException if validation fails
@@ -87,18 +86,18 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
       protected void checkParams() {
         // Verify the service exists and retrieve it
         serviceDb = servicesQuery.checkAndFind(auth.getServiceId());
-        
+
         // Prevent creator from authorizing themselves
         BizAssert.assertTrue(!serviceDb.getCreatedBy().equals(auth.getAuthObjectId()),
             FORBID_AUTH_CREATOR_CODE, FORBID_AUTH_CREATOR);
-        
+
         // Verify current user has authorization grant permissions for this service
         servicesAuthQuery.checkGrantAuth(getUserId(), auth.getServiceId());
-        
+
         // Verify the authorization object (user/group) exists and get its name
         authObjectName = commonQuery
             .checkAndGetAuthName(auth.getAuthObjectType(), auth.getAuthObjectId());
-        
+
         // Check for duplicate authorizations to prevent conflicts
         servicesAuthQuery.checkRepeatAuth(auth.getServiceId(), auth.getAuthObjectId(),
             auth.getAuthObjectType(), false);
@@ -118,14 +117,14 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Replaces the permissions of an existing service authorization.
-   * 
+   *
    * <p>This method updates the authorization permissions while maintaining the same
    * authorization object and service relationship. It validates that the authorization
    * exists, is not a creator authorization, and that the current user has proper
    * permissions to modify it.</p>
-   * 
+   *
    * <p>The method logs the modification activity for audit tracking.</p>
-   * 
+   *
    * @param auth the authorization with updated permissions
    * @throws IllegalArgumentException if validation fails or authorization not found
    */
@@ -141,17 +140,17 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
       protected void checkParams() {
         // Verify the authorization exists and retrieve it
         authDb = servicesAuthQuery.checkAndFind(auth.getId());
-        
+
         // Prevent modification of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Verify the associated service exists
         serviceDb = servicesQuery.checkAndFind(authDb.getServiceId());
-        
+
         // Verify current user has authorization grant permissions
         servicesAuthQuery.checkGrantAuth(getUserId(), authDb.getServiceId());
-        
+
         // Get the authorization object name for activity logging
         authObjectName = commonQuery.checkAndGetAuthName(authDb.getAuthObjectType(),
             authDb.getAuthObjectId());
@@ -175,14 +174,14 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Deletes a service authorization by its ID.
-   * 
+   *
    * <p>This method removes an authorization while performing proper validation
    * and logging. It handles cases where the authorization object may have been
    * deleted, ensuring graceful degradation.</p>
-   * 
+   *
    * <p>The method logs the cancellation activity before deletion to maintain
    * audit trail integrity.</p>
-   * 
+   *
    * @param authId the ID of the authorization to delete
    * @throws IllegalArgumentException if validation fails or authorization not found
    */
@@ -197,14 +196,14 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
       protected void checkParams() {
         // Verify the authorization exists
         authDb = servicesAuthQuery.checkAndFind(authId);
-        
+
         // Prevent deletion of creator authorizations
         BizAssert.assertTrue(!authDb.getCreator(), FORBID_AUTH_CREATOR_CODE,
             FORBID_AUTH_CREATOR);
-        
+
         // Verify the associated service exists
         serviceDb = servicesQuery.checkAndFind(authDb.getServiceId());
-        
+
         // Verify current user has authorization grant permissions
         servicesAuthQuery.checkGrantAuth(getUserId(), authDb.getServiceId());
       }
@@ -235,13 +234,13 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Enables or disables authorization control for a service.
-   * 
+   *
    * <p>This method controls whether authorization checks are enforced for a service.
    * When disabled, the service becomes accessible without authorization validation.</p>
-   * 
+   *
    * <p>The method also updates the authorization status of all associated APIs
    * and logs the enable/disable activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service to modify authorization control
    * @param enabled true to enable authorization control, false to disable
    * @throws IllegalArgumentException if service not found or user lacks permissions
@@ -265,7 +264,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
       protected Void process() {
         // Update service authorization control setting
         servicesRepo.updateAuthById(serviceId, enabled);
-        
+
         // Update authorization status for all associated APIs
         apisRepo.updateServiceAuthByServiceId(serviceId, enabled);
 
@@ -279,12 +278,12 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Enables or disables authorization control for APIs within a service.
-   * 
+   *
    * <p>This method specifically controls authorization for APIs within a service
    * without affecting the service-level authorization control.</p>
-   * 
+   *
    * <p>The method logs the API authorization control change activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service whose APIs should be modified
    * @param enabled true to enable API authorization control, false to disable
    * @throws IllegalArgumentException if service not found or user lacks permissions
@@ -319,11 +318,11 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Adds creator authorizations for multiple users to a service.
-   * 
+   *
    * <p>This method replaces any existing creator authorizations with the new set
    * of creator IDs. It first removes all existing creator authorizations for the
    * service, then adds the new ones.</p>
-   * 
+   *
    * @param serviceId the ID of the service to modify
    * @param creatorIds set of user IDs to grant creator permissions
    */
@@ -341,11 +340,11 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Moves creator authorization for a specific user to a service.
-   * 
+   *
    * <p>This method is used when services are moved between projects or when
    * creator permissions need to be transferred. It removes the creator authorization
    * for the specified user from the current service and adds it to the target service.</p>
-   * 
+   *
    * @param serviceId the ID of the target service
    * @param creatorId the ID of the user whose creator permissions should be moved
    */
@@ -360,10 +359,10 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Deletes all authorizations for multiple services.
-   * 
+   *
    * <p>This method is typically used during bulk operations such as service deletion
    * or project cleanup to remove all associated authorizations efficiently.</p>
-   * 
+   *
    * @param serviceIds collection of service IDs whose authorizations should be deleted
    */
   @Override
@@ -373,7 +372,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the service authorization repository
    */
   @Override

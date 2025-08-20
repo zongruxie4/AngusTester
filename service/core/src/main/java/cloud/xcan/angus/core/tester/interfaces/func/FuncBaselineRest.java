@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Baseline", description = "Functional Test Baseline Management - Comprehensive APIs for defining and recording standard/reference attributes of functional test cases with version control and establishment capabilities")
+@Tag(name = "Functional Test Baseline", description = "Functional Test Baseline Management - APIs for defining and recording standard/reference attributes of functional test cases with version control and establishment capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/baseline")
@@ -47,7 +47,7 @@ public class FuncBaselineRest {
   private FuncBaselineFacade funcBaselineFacade;
 
   @Operation(summary = "Create functional test baseline", 
-      description = "Create a new functional test baseline with comprehensive configuration for standard/reference attributes",
+      description = "Create a new functional test baseline with configuration for standard/reference attributes",
       operationId = "func:baseline:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Functional test baseline created successfully")})
@@ -69,7 +69,7 @@ public class FuncBaselineRest {
   }
 
   @Operation(summary = "Replace functional test baseline", 
-      description = "Replace an existing functional test baseline with complete new configuration",
+      description = "Replace an existing functional test baseline with new configuration",
       operationId = "func:baseline:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test baseline replaced successfully")})
@@ -105,7 +105,7 @@ public class FuncBaselineRest {
   }
 
   @Operation(summary = "Get functional test baseline details", 
-      description = "Retrieve comprehensive details of a specific functional test baseline for analysis and review",
+      description = "Retrieve details of a specific functional test baseline for analysis and review",
       operationId = "func:baseline:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test baseline details retrieved successfully"),
@@ -117,7 +117,7 @@ public class FuncBaselineRest {
   }
 
   @Operation(summary = "List functional test baselines", 
-      description = "Retrieve paginated list of functional test baselines with comprehensive filtering and search options",
+      description = "Retrieve paginated list of functional test baselines with filtering and search options",
       operationId = "func:baseline:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test baseline list retrieved successfully")})

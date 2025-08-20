@@ -6,7 +6,6 @@ import cloud.xcan.angus.core.tester.domain.func.baseline.FuncBaselineCase;
 import cloud.xcan.angus.core.tester.domain.func.cases.FuncCase;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FuncBaselineCaseConverter {
 

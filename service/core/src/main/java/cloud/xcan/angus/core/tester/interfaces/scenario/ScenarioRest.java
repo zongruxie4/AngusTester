@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario", description = "Scenario Design and Management API - Visual workflow design and orchestration system for creating, managing, and executing complex test scenarios through UI-driven interfaces.")
+@Tag(name = "Scenario", description = "Scenario Design and Management API - Visual workflow design and orchestration system for creating, managing, and executing complex test scenarios through UI-driven interfaces")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -49,7 +49,7 @@ public class ScenarioRest {
   private ScenarioFacade scenarioFacade;
 
   @Operation(summary = "Create scenario",
-      description = "Create new test scenario with visual workflow design and configuration.",
+      description = "Create new test scenario with visual workflow design and configuration",
       operationId = "scenario:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario created successfully")})
@@ -60,7 +60,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Update scenario",
-      description = "Modify existing scenario configuration, workflow design, and properties.",
+      description = "Modify existing scenario configuration, workflow design, and properties",
       operationId = "scenario:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario updated successfully"),
@@ -73,7 +73,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Replace scenario",
-      description = "Replace scenario with new configuration or create new scenario if identifier is null.",
+      description = "Replace scenario with new configuration or create new scenario if identifier is null",
       operationId = "scenario:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario replaced successfully")})
@@ -83,7 +83,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Move scenario to another project",
-      description = "Transfer scenario ownership and location to a different project.",
+      description = "Transfer scenario ownership and location to a different project",
       operationId = "scenario:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario moved successfully"),
@@ -97,7 +97,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Clone scenario",
-      description = "Create a duplicate copy of existing scenario with all configuration and workflow design.",
+      description = "Create a duplicate copy of existing scenario with all configuration and workflow design",
       operationId = "scenario:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario cloned successfully"),
@@ -111,7 +111,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Import scenario examples",
-      description = "Import predefined example scenarios for rapid setup and demonstration purposes.",
+      description = "Import predefined example scenarios for rapid setup and demonstration purposes",
       operationId = "scenario:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario examples imported successfully")})
@@ -123,7 +123,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Delete scenario",
-      description = "Permanently delete scenario and move to recycle bin for potential recovery.",
+      description = "Permanently delete scenario and move to recycle bin for potential recovery",
       operationId = "scenario:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Scenario deleted successfully")})
@@ -135,7 +135,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Query scenario detail",
-      description = "Retrieve comprehensive scenario information including workflow design and configuration.",
+      description = "Retrieve scenario information including workflow design and configuration",
       operationId = "scenario:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario detail retrieved successfully"),
@@ -147,7 +147,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Query scenarios by identifiers",
-      description = "Retrieve basic information for multiple scenarios specified by their identifiers.",
+      description = "Retrieve basic information for multiple scenarios specified by their identifiers",
       operationId = "scenario:list:byIds")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenarios retrieved successfully"),
@@ -159,7 +159,7 @@ public class ScenarioRest {
   }
 
   @Operation(summary = "Query scenario list",
-      description = "Retrieve paginated list of scenarios with filtering and search capabilities.",
+      description = "Retrieve paginated list of scenarios with filtering and search capabilities",
       operationId = "scenario:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario list retrieved successfully")})

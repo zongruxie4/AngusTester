@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Apis Response", description = "Mock Response Definition and Management - Comprehensive management of mock response templates including status codes, headers, body schemas, and response variations")
+@Tag(name = "Mock Apis Response", description = "Mock Response Definition and Management - Management of mock response templates including status codes, headers, body schemas, and response variations")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/apis")

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task- Favourite", description = "Task Favorites Management API - Comprehensive bookmarking system for quick access to frequently used tasks with project-based organization.")
+@Tag(name = "Task- Favourite", description = "Task Favorites Management API - Bookmarking system for quick access to frequently used tasks with project-based organization")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -35,7 +35,7 @@ public class TaskFavoriteRest {
   @Resource
   private TaskFavouriteFacade taskFavouriteFacade;
 
-  @Operation(summary = "Add task to favorites", operationId = "task:favourite:add", description = "Add a specific task to the user's favorites list for quick access and priority visibility.")
+  @Operation(summary = "Add task to favorites", operationId = "task:favourite:add", description = "Add a specific task to the user's favorites list for quick access and priority visibility")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task added to favorites successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskFavoriteRest {
     return ApiLocaleResult.success(taskFavouriteFacade.add(id));
   }
 
-  @Operation(summary = "Remove task from favorites", operationId = "task:favourite:delete", description = "Remove a specific task from the user's favorites list.")
+  @Operation(summary = "Remove task from favorites", operationId = "task:favourite:delete", description = "Remove a specific task from the user's favorites list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Task removed from favorites successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancel(id);
   }
 
-  @Operation(summary = "Clear all task favorites in project", operationId = "task:favourite:delete:all", description = "Remove all favorited tasks within a specific project from the user's favorites list.")
+  @Operation(summary = "Clear all task favorites in project", operationId = "task:favourite:delete:all", description = "Remove all favorited tasks within a specific project from the user's favorites list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "All project favorites cleared successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class TaskFavoriteRest {
     taskFavouriteFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Get paginated favorites list", operationId = "task:favourite:list", description = "Retrieve a paginated list of favorited tasks with detailed information including task metadata and favorite timestamps.")
+  @Operation(summary = "Get paginated favorites list", operationId = "task:favourite:list", description = "Retrieve a paginated list of favorited tasks with detailed information including task metadata and favorite timestamps")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Favorites list retrieved successfully")})
   @GetMapping("/favourite")
@@ -74,7 +74,7 @@ public class TaskFavoriteRest {
     return ApiLocaleResult.success(taskFavouriteFacade.list(dto));
   }
 
-  @Operation(summary = "Get favorites count by project", operationId = "task:favourite:count", description = "Retrieve the total count of favorited tasks within a specific project for statistical purposes.")
+  @Operation(summary = "Get favorites count by project", operationId = "task:favourite:count", description = "Retrieve the total count of favorited tasks within a specific project for statistical purposes")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Favorites count retrieved successfully")})
   @GetMapping("/favourite/count")

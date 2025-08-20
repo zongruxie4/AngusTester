@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Indicator - Performance Test", description = "Performance Test Indicator Management - Comprehensive APIs for defining and adjusting performance test parameters (concurrency levels, TPS targets, error rate thresholds) with target-based configuration")
+@Tag(name = "Indicator - Performance Test", description = "Performance Test Indicator Management - APIs for defining and adjusting performance test parameters (concurrency levels, TPS targets, error rate thresholds) with target-based configuration")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -41,7 +41,7 @@ public class IndicatorPerfRest {
   private IndicatorPerfFacade indicatorPerfFacade;
 
   @Operation(summary = "Create performance test indicator", 
-      description = "Create a new performance test indicator with comprehensive configuration for performance parameters",
+      description = "Create a new performance test indicator with configuration for performance parameters",
       operationId = "indicator:perf:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Performance test indicator created successfully")})
@@ -52,7 +52,7 @@ public class IndicatorPerfRest {
   }
 
   @Operation(summary = "Replace performance test indicator", 
-      description = "Replace an existing performance test indicator with complete new configuration",
+      description = "Replace an existing performance test indicator with new configuration",
       operationId = "indicator:perf:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Performance test indicator replaced successfully"),
@@ -79,7 +79,7 @@ public class IndicatorPerfRest {
   }
 
   @Operation(summary = "Get performance test indicator details", 
-      description = "Retrieve comprehensive details of performance test indicator for a specific target",
+      description = "Retrieve details of performance test indicator for a specific target",
       operationId = "indicator:perf:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Performance test indicator details retrieved successfully"),
@@ -107,7 +107,7 @@ public class IndicatorPerfRest {
   }
 
   @Operation(summary = "List performance test indicators", 
-      description = "Retrieve paginated list of performance test indicators with comprehensive filtering and search options",
+      description = "Retrieve paginated list of performance test indicators with filtering and search options",
       operationId = "indicator:perf:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Performance test indicator list retrieved successfully")})

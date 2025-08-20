@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services Test - Internal", description = "API Test and Analytics Internal API - Internal query endpoints for API test execution statistics including success rates and latency percentiles.")
+@Tag(name = "Services Test - Internal", description = "API Test and Analytics Internal API - Internal query endpoints for API test execution statistics including success rates and latency percentiles")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -30,7 +30,7 @@ public class ServicesTestInnerRest {
   private ServicesTestFacade servicesTestFacade;
 
   @Operation(summary = "Query service API testing count",
-      description = "Retrieve API testing execution statistics for service performance analysis.",
+      description = "Retrieve API testing execution statistics for service performance analysis",
       operationId = "services:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service API testing count retrieved successfully"),
@@ -44,7 +44,7 @@ public class ServicesTestInnerRest {
   }
 
   @Operation(summary = "Query project API testing count",
-      description = "Retrieve API testing execution statistics for project performance analysis.",
+      description = "Retrieve API testing execution statistics for project performance analysis",
       operationId = "project:test:apis:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Project API testing count retrieved successfully"),

@@ -45,18 +45,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of task sprint command operations for sprint management.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing task sprints,
  * including creation, status management, task operations, and lifecycle control.</p>
- * 
+ *
  * <p>It handles the complete sprint lifecycle from creation to completion,
  * including task management, authorization, and activity logging.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Sprint CRUD operations with comprehensive validation</li>
@@ -95,13 +94,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Adds a new sprint with comprehensive validation and setup.
-   * 
+   *
    * <p>This method creates a new sprint with extensive validation including
    * project membership, name uniqueness, quota limits, and owner verification.</p>
-   * 
+   *
    * <p>The method automatically initializes creator authorization and logs
    * sprint creation activity.</p>
-   * 
+   *
    * @param sprint the sprint to add
    * @return the ID key of the created sprint
    * @throws IllegalArgumentException if validation fails
@@ -145,13 +144,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Updates a sprint with comprehensive validation.
-   * 
+   *
    * <p>This method updates a sprint with extensive validation including
    * name uniqueness, permission checks, and owner verification.</p>
-   * 
+   *
    * <p>The method handles workload method updates and logs sprint
    * update activities.</p>
-   * 
+   *
    * @param sprint the sprint to update
    * @throws IllegalArgumentException if validation fails
    */
@@ -203,13 +202,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Replaces a sprint with comprehensive validation and activity logging.
-   * 
+   *
    * <p>This method performs a complete replacement of a sprint with extensive
    * validation including name uniqueness, permission checks, and owner verification.</p>
-   * 
+   *
    * <p>The method handles workload method updates and logs sprint
    * replacement activities for audit purposes.</p>
-   * 
+   *
    * @param sprint the sprint to replace
    * @return the ID key of the replaced sprint
    * @throws IllegalArgumentException if validation fails
@@ -265,12 +264,12 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Starts a sprint with status validation.
-   * 
+   *
    * <p>This method changes a sprint status to IN_PROGRESS after verifying
    * the current status allows starting and user has modification permissions.</p>
-   * 
+   *
    * <p>The method logs sprint status update activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to start
    * @throws IllegalArgumentException if validation fails
    */
@@ -306,13 +305,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Ends a sprint with comprehensive validation.
-   * 
+   *
    * <p>This method changes a sprint status to COMPLETED after verifying
    * the current status allows ending, user has modification permissions,
    * and all tasks are completed.</p>
-   * 
+   *
    * <p>The method logs sprint status update activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to end
    * @throws IllegalArgumentException if validation fails
    */
@@ -351,12 +350,12 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Blocks a sprint with status validation and activity logging.
-   * 
+   *
    * <p>This method changes a sprint status to BLOCKED after verifying
    * the current status allows blocking and user has modification permissions.</p>
-   * 
+   *
    * <p>The method logs sprint status update activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to block
    * @throws IllegalArgumentException if validation fails
    */
@@ -392,12 +391,12 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Clones a sprint with comprehensive setup and activity logging.
-   * 
+   *
    * <p>This method creates a copy of an existing sprint with all its
    * properties and automatically generates a unique name for the clone.</p>
-   * 
+   *
    * <p>The method logs sprint cloning activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to clone
    * @return the ID key of the cloned sprint
    * @throws IllegalArgumentException if validation fails
@@ -428,13 +427,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Moves a sprint to a different project with comprehensive validation.
-   * 
+   *
    * <p>This method moves a sprint and all its tasks to a target project
    * after verifying project existence and user permissions.</p>
-   * 
+   *
    * <p>The method updates project associations and logs sprint movement
    * activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to move
    * @param targetProjectId the target project ID
    * @throws IllegalArgumentException if validation fails
@@ -492,13 +491,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Restarts tasks within sprints with comprehensive cleanup and status reset.
-   * 
+   *
    * <p>This method restarts all tasks within the specified sprints, clearing
    * historical test statistics and status. It also restarts completed sprints
    * to pending status.</p>
-   * 
+   *
    * <p>The method logs task restart activities for audit purposes.</p>
-   * 
+   *
    * @param ids the set of sprint IDs to restart tasks for
    * @throws IllegalArgumentException if validation fails
    */
@@ -531,13 +530,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Reopens tasks within sprints without clearing historical data.
-   * 
+   *
    * <p>This method reopens all tasks within the specified sprints without
    * clearing historical test statistics and status. It also reopens completed
    * sprints to pending status.</p>
-   * 
+   *
    * <p>The method logs task reopen activities for audit purposes.</p>
-   * 
+   *
    * @param ids the set of sprint IDs to reopen tasks for
    * @throws IllegalArgumentException if validation fails
    */
@@ -570,13 +569,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Deletes a sprint with logical deletion and cleanup.
-   * 
+   *
    * <p>This method performs logical deletion of a sprint after verifying
    * user has deletion permissions. It moves the sprint to trash and
    * updates associated task deletion status.</p>
-   * 
+   *
    * <p>The method logs sprint deletion activities for audit purposes.</p>
-   * 
+   *
    * @param id the sprint ID to delete
    * @throws IllegalArgumentException if validation fails
    */
@@ -623,13 +622,13 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Permanently deletes sprints with cascade cleanup (internal use).
-   * 
+   *
    * <p>This method performs permanent deletion of sprints and all associated
    * tasks without validation or permission checks.</p>
-   * 
+   *
    * <p>Note: This method is intended for internal use and should be called
    * after proper validation and permission checks.</p>
-   * 
+   *
    * @param ids the list of sprint IDs to permanently delete
    */
   @Override
@@ -646,10 +645,10 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Restarts completed sprints to pending status.
-   * 
+   *
    * <p>This method identifies completed sprints and changes their status
    * to pending, allowing them to be restarted.</p>
-   * 
+   *
    * @param sprintsDb the list of sprints to check and restart
    */
   private void startSprintIfCompleted(List<TaskSprint> sprintsDb) {
@@ -666,7 +665,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the task sprint repository
    */
   @Override

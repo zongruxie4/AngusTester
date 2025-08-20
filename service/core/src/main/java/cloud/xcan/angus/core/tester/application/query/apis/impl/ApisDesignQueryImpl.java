@@ -21,6 +21,7 @@ import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfoRepo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignInfoSearchRepo;
 import cloud.xcan.angus.core.tester.domain.apis.design.ApisDesignRepo;
 import cloud.xcan.angus.core.tester.domain.services.Services;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -36,13 +37,13 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of API design query operations for design management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and managing
  * API designs, including design details, pagination, search, and validation.</p>
- * 
+ *
  * <p>It handles design lifecycle management, service synchronization,
  * OpenAPI content management, and comprehensive data enrichment.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>API design detail and info queries with pagination</li>
@@ -76,13 +77,13 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   /**
    * Retrieves detailed API design information with comprehensive enrichment.
-   * 
+   *
    * <p>This method fetches complete API design details with extensive enrichment
    * including latest OpenAPI content, service information, and permission validation.</p>
-   * 
+   *
    * <p>The method validates user permissions based on design source type
    * and handles service synchronization for latest content retrieval.</p>
-   * 
+   *
    * @param id the API design ID to retrieve details for
    * @return the detailed API design information with all enrichments
    * @throws ResourceNotFound if the design is not found
@@ -127,13 +128,13 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   /**
    * Lists API designs with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves API designs based on specification criteria with support
    * for pagination and optional full-text search capabilities.</p>
-   * 
+   *
    * <p>The method automatically enriches design data with service names
    * and user information for enhanced display.</p>
-   * 
+   *
    * @param spec the specification for filtering API designs
    * @param pageable the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
@@ -184,10 +185,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   /**
    * Checks if a service already has an associated API design.
-   * 
+   *
    * <p>This method validates that a service does not already have an API design,
    * preventing duplicate design creation for the same service.</p>
-   * 
+   *
    * @param serviceId the service ID to check for existing designs
    * @throws ResourceExisted if a design already exists for the service
    */
@@ -201,10 +202,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   /**
    * Sets service name for a single API design.
-   * 
+   *
    * <p>This method enriches an API design with its associated service name
    * for enhanced display and identification.</p>
-   * 
+   *
    * @param design the API design to enrich with service name
    */
   @Override
@@ -219,10 +220,10 @@ public class ApisDesignQueryImpl implements ApisDesignQuery {
 
   /**
    * Sets service names for multiple API designs in batch.
-   * 
+   *
    * <p>This method enriches multiple API designs with their associated service names
    * for enhanced display and identification, using efficient batch processing.</p>
-   * 
+   *
    * @param designs the list of API designs to enrich with service names
    */
   @Override

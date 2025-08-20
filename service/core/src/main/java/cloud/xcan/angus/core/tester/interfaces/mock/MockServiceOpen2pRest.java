@@ -30,7 +30,7 @@ public class MockServiceOpen2pRest {
 
   @Unused
   @Operation(summary = "Query mock service configuration information",
-      description = "Retrieve comprehensive mock service configuration information for internal service coordination and management",
+      description = "Retrieve mock service configuration information for internal service coordination and management",
       operationId = "mock:service:info:openapi2p")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service configuration information retrieved successfully"),

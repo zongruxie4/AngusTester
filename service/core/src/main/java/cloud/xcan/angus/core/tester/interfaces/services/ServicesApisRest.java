@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services APIs", description = "Service APIs and Parameters Management API - Comprehensive configuration system for global parameters, authentication headers, and versioning across all APIs under a service.")
+@Tag(name = "Services APIs", description = "Service APIs and Parameters Management API - Configuration system for global parameters, authentication headers, and versioning across all APIs under a service")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -45,7 +45,7 @@ public class ServicesApisRest {
   private ApisFacade apisFacade;
 
   @Operation(summary = "Add API parameters",
-      description = "Add global parameters to APIs with scope-based targeting and value override capability.",
+      description = "Add global parameters to APIs with scope-based targeting and value override capability",
       operationId = "apis:parameter:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API parameters added successfully"),
@@ -61,7 +61,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Update API parameters",
-      description = "Update existing API parameters with scope-based targeting and value modification.",
+      description = "Update existing API parameters with scope-based targeting and value modification",
       operationId = "apis:parameter:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API parameters updated successfully"),
@@ -77,7 +77,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Delete API parameters",
-      description = "Remove API parameters by name with scope-based targeting.",
+      description = "Remove API parameters by name with scope-based targeting",
       operationId = "apis:parameter:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "API parameters deleted successfully"),
@@ -93,7 +93,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Enable or disable API parameters",
-      description = "Toggle parameter status for scope-based API parameter management.",
+      description = "Toggle parameter status for scope-based API parameter management",
       operationId = "apis:parameter:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API parameter status updated successfully"),
@@ -110,7 +110,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Update API authentication",
-      description = "Configure authentication scheme for scope-based API access control.",
+      description = "Configure authentication scheme for scope-based API access control",
       operationId = "apis:authentication:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API authentication updated successfully"),
@@ -125,7 +125,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Update API server configuration",
-      description = "Configure server settings for scope-based API execution environment.",
+      description = "Configure server settings for scope-based API execution environment",
       operationId = "apis:server:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API server configuration updated successfully"),
@@ -140,7 +140,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Add API variable references",
-      description = "Configure variable references for scope-based API parameter substitution.",
+      description = "Configure variable references for scope-based API parameter substitution",
       operationId = "apis:variable:reference:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API variable references added successfully"),
@@ -156,7 +156,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Delete API variable references",
-      description = "Remove variable references for scope-based API parameter management.",
+      description = "Remove variable references for scope-based API parameter management",
       operationId = "apis:variable:reference:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "API variable references deleted successfully"),
@@ -172,7 +172,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Add API dataset reference",
-      description = "Configure dataset references for scope-based API data integration.",
+      description = "Configure dataset references for scope-based API data integration",
       operationId = "apis:dataset:reference:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API dataset references added successfully"),
@@ -188,7 +188,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Delete API dataset references",
-      description = "Remove dataset references for scope-based API data management.",
+      description = "Remove dataset references for scope-based API data management",
       operationId = "apis:dataset:reference:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "API dataset references deleted successfully"),
@@ -204,7 +204,7 @@ public class ServicesApisRest {
   }
 
   @Operation(summary = "Query HTTP and WebSocket APIs list",
-      description = "Retrieve paginated list of HTTP and WebSocket APIs with comprehensive filtering capabilities.",
+      description = "Retrieve paginated list of HTTP and WebSocket APIs with filtering capabilities",
       operationId = "services:apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "APIs list retrieved successfully")})

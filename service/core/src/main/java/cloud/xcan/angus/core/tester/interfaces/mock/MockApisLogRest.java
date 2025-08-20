@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Apis Log", description = "Mock Log Analytics and Query - Comprehensive query and analysis of mock interface request logs with statistical metrics including success/failure rates and latency distributions")
+@Tag(name = "Mock Apis Log", description = "Mock Log Analytics and Query - Query and analysis of mock interface request logs with statistical metrics including success/failure rates and latency distributions")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")
@@ -43,7 +43,7 @@ public class MockApisLogRest {
   }
 
   @Operation(summary = "Query mock API request logs with filtering",
-      description = "Retrieve paginated list of mock API request logs with comprehensive filtering and search capabilities",
+      description = "Retrieve paginated list of mock API request logs with filtering and search capabilities",
       operationId = "mock:service:apis:log:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock API request logs retrieved successfully")})

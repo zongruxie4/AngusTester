@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.interfaces.mock.facade.internal.assembler.Mo
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component

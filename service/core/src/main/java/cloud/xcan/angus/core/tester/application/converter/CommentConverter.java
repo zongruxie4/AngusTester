@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.tester.domain.comment.summary.CommentTreeSummary;
 import cloud.xcan.angus.spec.utils.TreeUtils;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CommentConverter {
 

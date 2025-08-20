@@ -13,9 +13,6 @@ import cloud.xcan.angus.core.tester.interfaces.exec.facade.dto.ExecFindDto;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecDetailVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecInfoVo;
 import cloud.xcan.angus.core.tester.interfaces.exec.facade.vo.ExecVo;
-import cloud.xcan.angus.remote.search.SearchCriteria;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ExecAssembler {
 

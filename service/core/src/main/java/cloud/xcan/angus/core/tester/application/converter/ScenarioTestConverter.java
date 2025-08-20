@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.scenario.Scenario;
 import cloud.xcan.angus.model.scenario.ScenarioTestCount;
 import cloud.xcan.angus.model.script.TestType;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ScenarioTestConverter {
 

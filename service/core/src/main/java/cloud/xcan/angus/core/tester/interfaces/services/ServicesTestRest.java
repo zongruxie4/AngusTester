@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services Test", description = "API Test and Analytics Management API - Comprehensive configuration and analysis system for user-initiated API testing and result management.")
+@Tag(name = "Services Test", description = "API Test and Analytics Management API - Configuration and analysis system for user-initiated API testing and result management")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -51,7 +51,7 @@ public class ServicesTestRest {
   private ServicesSchemaFacade servicesSchemaFacade;
 
   @Operation(summary = "Enable or disable service API testing",
-      description = "Configure mandatory testing activity for service APIs with performance analysis inclusion.",
+      description = "Configure mandatory testing activity for service APIs with performance analysis inclusion",
       operationId = "services:test:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service API testing status updated successfully"),
@@ -67,7 +67,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Query service API testing count",
-      description = "Retrieve API testing execution statistics for service performance analysis.",
+      description = "Retrieve API testing execution statistics for service performance analysis",
       operationId = "services:test:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service API testing count retrieved successfully"),
@@ -81,7 +81,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Query project API testing count",
-      description = "Retrieve API testing execution statistics for project performance analysis.",
+      description = "Retrieve API testing execution statistics for project performance analysis",
       operationId = "project:test:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Project API testing count retrieved successfully"),
@@ -95,7 +95,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Configure and generate service testing scripts",
-      description = "Create and configure testing scripts for service with comprehensive test type support.",
+      description = "Create and configure testing scripts for service with test type support",
       operationId = "services:test:script:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service testing scripts generated successfully"),
@@ -110,7 +110,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Delete service testing scripts",
-      description = "Remove testing scripts by test types for service management.",
+      description = "Remove testing scripts by test types for service management",
       operationId = "services:test:script:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service testing scripts deleted successfully")})
@@ -123,7 +123,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Configure and generate service testing tasks",
-      description = "Create and configure testing tasks for service with sprint integration support.",
+      description = "Create and configure testing tasks for service with sprint integration support",
       operationId = "services:test:task:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service testing tasks generated successfully"),
@@ -138,7 +138,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Restart existing service testing tasks",
-      description = "Restart existing testing tasks for service execution management.",
+      description = "Restart existing testing tasks for service execution management",
       operationId = "services:test:task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service testing tasks restarted successfully"),
@@ -151,7 +151,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Reopen existing service testing tasks",
-      description = "Reopen existing testing tasks for service execution management.",
+      description = "Reopen existing testing tasks for service execution management",
       operationId = "services:test:task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service testing tasks reopened successfully"),
@@ -164,7 +164,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Delete service testing tasks",
-      description = "Remove testing tasks by test types for service management.",
+      description = "Remove testing tasks by test types for service management",
       operationId = "services:test:task:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service testing tasks deleted successfully")})
@@ -177,7 +177,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Query all service server configurations",
-      description = "Retrieve all server configurations for service testing environment.",
+      description = "Retrieve all server configurations for service testing environment",
       operationId = "services:test:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service server configurations retrieved successfully"),
@@ -190,7 +190,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Create service API testing execution",
-      description = "Create testing execution for service APIs with automatic script generation if not exists.",
+      description = "Create testing execution for service APIs with automatic script generation if not exists",
       operationId = "services:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service API testing execution created successfully"),
@@ -206,7 +206,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Create service smoke testing execution",
-      description = "Create smoke testing execution for service APIs with automatic script generation if not exists.",
+      description = "Create smoke testing execution for service APIs with automatic script generation if not exists",
       operationId = "services:smoke:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service smoke testing execution created successfully"),
@@ -221,7 +221,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Create service security testing execution",
-      description = "Create security testing execution for service APIs with automatic script generation if not exists.",
+      description = "Create security testing execution for service APIs with automatic script generation if not exists",
       operationId = "services:security:test:apis:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service security testing execution created successfully"),
@@ -236,7 +236,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Query service test results",
-      description = "Retrieve comprehensive test results for service performance analysis.",
+      description = "Retrieve test results for service performance analysis",
       operationId = "services:test:apis:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service test results retrieved successfully")})
@@ -247,7 +247,7 @@ public class ServicesTestRest {
   }
 
   @Operation(summary = "Query project test results",
-      description = "Retrieve comprehensive test results for project performance analysis.",
+      description = "Retrieve test results for project performance analysis",
       operationId = "project:test:apis:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Project test results retrieved successfully")})

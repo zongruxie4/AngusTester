@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Activity", description = "User Activity Management - Comprehensive APIs for querying and analyzing user activity logs including resource access patterns, operational events, and audit trail management with granular filtering and export capabilities")
+@Tag(name = "Activity", description = "User Activity Management - APIs for querying user activity logs with filtering and pagination support")
 @Validated
 @RestController
 @RequestMapping("/api/v1/activity")
@@ -27,8 +27,8 @@ public class ActivityRest {
   @Resource
   private ActivityFacade activityFacade;
 
-  @Operation(summary = "Activity list query", 
-      description = "Query and retrieve comprehensive activity logs with advanced filtering options and pagination support",
+  @Operation(summary = "Query activity logs", 
+      description = "Retrieve paginated list of user activity logs with filtering and search capabilities",
       operationId = "activity:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Activity list retrieved successfully")})

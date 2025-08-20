@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Case Follow", description = "Functional Test Case Follow Management - Comprehensive APIs for subscribing to test case modifications and receiving notifications with change tracking capabilities")
+@Tag(name = "Functional Test Case Follow", description = "Functional Test Case Follow Management - APIs for subscribing to test case modifications and receiving notifications with change tracking capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/case")

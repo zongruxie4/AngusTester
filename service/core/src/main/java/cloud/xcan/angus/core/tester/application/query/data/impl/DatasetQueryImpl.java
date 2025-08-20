@@ -17,6 +17,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetQuery;
@@ -133,7 +134,7 @@ public class DatasetQueryImpl implements DatasetQuery {
           Map<String, ReadDynamicValue> dynamicValueMap
               = defaultDatasetExtractor.extract(angusDataset, ActionOnEOF.STOP_THREAD);
           Long finalRowNum = nullSafe(rowNum, DEFAULT_DATASET_REVIEW_ROWS);
-          
+
           // Generate preview values for each parameter
           for (DatasetParameter parameter : datasetDb.getParameters()) {
             List<String> values = new ArrayList<>();
@@ -185,7 +186,7 @@ public class DatasetQueryImpl implements DatasetQuery {
             cloud.xcan.angus.model.element.dataset.Dataset angusDataset = toAngusDataset(datasetDb);
             Map<String, ReadDynamicValue> dynamicValueMap
                 = defaultDatasetExtractor.extract(angusDataset, ActionOnEOF.STOP_THREAD);
-            
+
             // Read one value from each parameter
             for (DatasetParameter parameter : datasetDb.getParameters()) {
               ReadDynamicValue readDynamicValue = dynamicValueMap.get(parameter.getName());

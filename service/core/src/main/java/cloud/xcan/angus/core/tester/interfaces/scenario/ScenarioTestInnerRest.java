@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Test - Internal", description = "Scenario Testing Internal API - System-level interfaces for managing and auditing automated test scenario executions with internal monitoring capabilities.")
+@Tag(name = "Scenario Test - Internal", description = "Scenario Testing Internal API - System-level interfaces for managing and auditing automated test scenario executions with internal monitoring capabilities")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1")
@@ -32,7 +32,7 @@ public class ScenarioTestInnerRest {
   private ScenarioTestFacade scenarioTestFacade;
 
   @Operation(summary = "Query enabled test types for scenario",
-      description = "Retrieve all enabled test types configured for the specified scenario.",
+      description = "Retrieve all enabled test types configured for the specified scenario",
       operationId = "scenario:test:enabled:find:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled test types retrieved successfully"),
@@ -45,7 +45,7 @@ public class ScenarioTestInnerRest {
   }
 
   @Operation(summary = "Query project test scenario count",
-      description = "Get comprehensive count of test scenarios and their execution statistics for the project.",
+      description = "Get count of test scenarios and their execution statistics for the project",
       operationId = "project:test:scenario:count:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Project test scenario count retrieved successfully"),

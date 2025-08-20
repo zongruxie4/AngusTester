@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Favorites", description = "Scenario Favorites Management API - Quick-access bookmarking system for frequently used test scenarios with organizational capabilities.")
+@Tag(name = "Scenario Favorites", description = "Scenario Favorites Management API - Quick-access bookmarking system for frequently used test scenarios with organizational capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -36,7 +36,7 @@ public class ScenarioFavoriteRest {
   private ScenarioFavouriteFacade scenarioFavouriteFacade;
 
   @Operation(summary = "Add scenario to favorites",
-      description = "Bookmark a scenario for quick access and easy retrieval.",
+      description = "Bookmark a scenario for quick access and easy retrieval",
       operationId = "scenario:favourite:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario added to favorites successfully")})
@@ -48,7 +48,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Remove scenario from favorites",
-      description = "Remove scenario bookmark and clear from favorites list.",
+      description = "Remove scenario bookmark and clear from favorites list",
       operationId = "scenario:favourite:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Scenario removed from favorites successfully")})
@@ -60,7 +60,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Clear all scenario favorites",
-      description = "Remove all scenario bookmarks for the specified project.",
+      description = "Remove all scenario bookmarks for the specified project",
       operationId = "scenario:favourite:delete:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "All scenario favorites cleared successfully")})
@@ -72,7 +72,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Query scenario favorites list",
-      description = "Retrieve paginated list of favorited scenarios with filtering capabilities.",
+      description = "Retrieve paginated list of favorited scenarios with filtering capabilities",
       operationId = "scenario:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario favorites list retrieved successfully")})
@@ -83,7 +83,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Query scenario favorites count",
-      description = "Get total count of favorited scenarios for the specified project.",
+      description = "Get total count of favorited scenarios for the specified project",
       operationId = "scenario:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario favorites count retrieved successfully")})

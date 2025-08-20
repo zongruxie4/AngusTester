@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "APIs", description = "APIs Management - Comprehensive APIs for interface registry maintenance, schema definitions, version history, and API lifecycle management with debug value tracking")
+@Tag(name = "APIs", description = "APIs Management - APIs for interface registry maintenance, schema definitions, version history, and API lifecycle management with debug value tracking")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")
@@ -61,7 +61,7 @@ public class ApisRest {
   private ApisFacade apisFacade;
 
   @Operation(summary = "Archive unarchived APIs", 
-      description = "Move unarchived APIs to archive with comprehensive version control and lifecycle management",
+      description = "Move unarchived APIs to archive with version control and lifecycle management",
       operationId = "apis:archive")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "APIs archived successfully"),
@@ -75,7 +75,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Update APIs", 
-      description = "Update multiple APIs with comprehensive configuration and validation",
+      description = "Update multiple APIs with configuration and validation",
       operationId = "apis:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "APIs updated successfully"),
@@ -89,7 +89,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Replace APIs", 
-      description = "Replace multiple APIs with complete new configuration and comprehensive validation",
+      description = "Replace multiple APIs with new configuration and validation",
       operationId = "apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "APIs replaced successfully")})
@@ -100,7 +100,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Rename API", 
-      description = "Update API name with comprehensive validation and metadata management",
+      description = "Update API name with validation and metadata management",
       operationId = "apis:replace:name")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API name updated successfully"),
@@ -114,7 +114,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Move API to another service", 
-      description = "Relocate API to different service with comprehensive validation and relationship management",
+      description = "Relocate API to different service with validation and relationship management",
       operationId = "apis:move")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API moved successfully"),
@@ -141,7 +141,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Delete APIs", 
-      description = "Remove multiple APIs from the system with batch operation support and comprehensive cleanup",
+      description = "Remove multiple APIs from the system with batch operation support and cleanup",
       operationId = "apis:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "APIs deleted successfully")})
@@ -154,7 +154,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Update API status", 
-      description = "Modify API status with comprehensive lifecycle management and validation",
+      description = "Modify API status with lifecycle management and validation",
       operationId = "apis:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API status updated successfully"),
@@ -169,7 +169,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Replace API server configuration", 
-      description = "Update API server configuration with comprehensive validation and deployment settings",
+      description = "Update API server configuration with validation and deployment settings",
       operationId = "apis:schema:server:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API server configuration replaced successfully"),
@@ -184,7 +184,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Replace all API server configurations", 
-      description = "Update all API server configurations with comprehensive validation and deployment settings",
+      description = "Update all API server configurations with validation and deployment settings",
       operationId = "apis:schema:server:all:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All API server configurations replaced successfully"),
@@ -199,7 +199,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Delete API servers", 
-      description = "Remove specific servers from API configuration with comprehensive cleanup",
+      description = "Remove specific servers from API configuration with cleanup",
       operationId = "apis:schema:server:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "API servers deleted successfully"),
@@ -214,7 +214,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Get API server configuration", 
-      description = "Retrieve comprehensive server configuration including current API request server, servers configuration, and parent services servers configuration",
+      description = "Retrieve server configuration including current API request server, servers configuration, and parent services servers configuration",
       operationId = "apis:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API server configuration retrieved successfully"),
@@ -227,7 +227,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Add mock API association", 
-      description = "Establish association between API and mock APIs with comprehensive configuration",
+      description = "Establish association between API and mock APIs with configuration",
       operationId = "apis:association:mock:apis:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Mock API association created successfully")})
@@ -240,7 +240,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Get mock API associations", 
-      description = "Retrieve comprehensive mock API associations for specific API with detailed information",
+      description = "Retrieve mock API associations for specific API with detailed information",
       operationId = "apis:association:mock:apis:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock API associations retrieved successfully"),
@@ -252,7 +252,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Get API details", 
-      description = "Retrieve comprehensive API details including schema definitions, metadata, and configuration",
+      description = "Retrieve API details including schema definitions, metadata, and configuration",
       operationId = "apis:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API details retrieved successfully"),
@@ -266,7 +266,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Get API OpenAPI document", 
-      description = "Retrieve OpenAPI specification document for specific API with comprehensive format support",
+      description = "Retrieve OpenAPI specification document for specific API with format support",
       operationId = "apis:openapi:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API OpenAPI document retrieved successfully"),
@@ -280,7 +280,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Check API existence", 
-      description = "Validate API existence with comprehensive resource validation",
+      description = "Validate API existence with resource validation",
       operationId = "apis:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API exists and is valid"),
@@ -294,7 +294,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Get API details list", 
-      description = "Retrieve comprehensive details for multiple APIs with batch operation support",
+      description = "Retrieve details for multiple APIs with batch operation support",
       operationId = "apis:list:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API details list retrieved successfully"),
@@ -309,7 +309,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Query API list", 
-      description = "Retrieve paginated list of APIs with comprehensive filtering, search options, and basic information",
+      description = "Retrieve paginated list of APIs with filtering, search options, and basic information",
       operationId = "apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API list retrieved successfully")})
@@ -320,7 +320,7 @@ public class ApisRest {
   }
 
   @Operation(summary = "Export API OpenAPI specification", 
-      description = "Export API to OpenAPI specification format with comprehensive configuration options and format support",
+      description = "Export API to OpenAPI specification format with configuration options and format support",
       operationId = "apis:openapi:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "API OpenAPI specification exported successfully")})

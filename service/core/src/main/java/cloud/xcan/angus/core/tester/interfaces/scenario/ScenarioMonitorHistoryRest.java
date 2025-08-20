@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Monitor History", description = "Scenario Monitoring History API - Historical data and audit trail for scenario monitoring activities, including metrics, alerts, and resolution timelines.")
+@Tag(name = "Scenario Monitor History", description = "Scenario Monitoring History API - Historical data and audit trail for scenario monitoring activities, including metrics, alerts, and resolution timelines")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor/history")
@@ -31,7 +31,7 @@ public class ScenarioMonitorHistoryRest {
   private ScenarioMonitorHistoryFacade scenarioMonitorHistoryFacade;
 
   @Operation(summary = "Query scenario monitor history detail",
-      description = "Retrieve detailed historical record of a specific monitoring event or alert.",
+      description = "Retrieve detailed historical record of a specific monitoring event or alert",
       operationId = "scenario:monitor:history:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Monitor history detail retrieved successfully"),
@@ -43,7 +43,7 @@ public class ScenarioMonitorHistoryRest {
   }
 
   @Operation(summary = "Query scenario monitor history list",
-      description = "Retrieve paginated list of monitoring history records with filtering and search capabilities.",
+      description = "Retrieve paginated list of monitoring history records with filtering and search capabilities",
       operationId = "scenario:monitor:history:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Monitor history list retrieved successfully")})

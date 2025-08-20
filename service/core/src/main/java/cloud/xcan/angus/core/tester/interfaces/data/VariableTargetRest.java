@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Variable Target", description = "Variable Target Management - Comprehensive APIs for establishing and maintaining associations between test variables and test resources including APIs, API cases, and scenarios with value preview capabilities")
+@Tag(name = "Variable Target", description = "Variable Target Management - APIs for establishing and maintaining associations between test variables and test resources including APIs, API cases, and scenarios with value preview capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1")

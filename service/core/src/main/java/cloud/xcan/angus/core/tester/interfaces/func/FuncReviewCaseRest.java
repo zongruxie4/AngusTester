@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Review-Case", description = "Functional Test Review-Case Management - Comprehensive APIs for linking test reviews to specific test cases with review process management and result tracking")
+@Tag(name = "Functional Test Review-Case", description = "Functional Test Review-Case Management - APIs for linking test reviews to specific test cases with review process management and result tracking")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/review/case")

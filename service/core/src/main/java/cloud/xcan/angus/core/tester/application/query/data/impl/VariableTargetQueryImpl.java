@@ -12,6 +12,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.tester.application.query.apis.ApisAuthQuery;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.VariableQuery;

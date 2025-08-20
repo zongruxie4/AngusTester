@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author XiaoLong Liu
- */
-@Tag(name = "APIs Sharing Public Access", description = "APIs Sharing Public Access - Public access entry for shared service and API resources with comprehensive query capabilities")
+@Tag(name = "APIs Sharing Public Access", description = "APIs Sharing Public Access - Public access entry for shared service and API resources with query capabilities")
 @Validated
 @RestController
 @RequestMapping("/pubapi/v1/apis/share")

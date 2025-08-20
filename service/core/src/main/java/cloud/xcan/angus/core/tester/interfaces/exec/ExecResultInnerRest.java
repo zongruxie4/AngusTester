@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Tag(name = "Execution Result - Internal", description = "Internal Execution Result Management - Service internal access to test artifacts including services, interfaces, executions, scripts, and scenarios with comprehensive result analysis")
+@Tag(name = "Execution Result - Internal", description = "Internal Execution Result Management - Service internal access to test artifacts including services, interfaces, executions, scripts, and scenarios with result analysis")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec")

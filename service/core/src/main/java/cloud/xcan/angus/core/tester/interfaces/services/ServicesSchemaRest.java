@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @io.swagger.v3.oas.annotations.tags.Tag(name = "Services Schema",
-    description = "API Metadata and Schema Management API - Comprehensive management system for OpenAPI metadata and JSON Schema definitions with synchronization capabilities.")
+    description = "API Metadata and Schema Management API - Management system for OpenAPI metadata and JSON Schema definitions with synchronization capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -61,7 +61,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query service schema info",
-      description = "Retrieve metadata information for service API documentation.",
+      description = "Retrieve metadata information for service API documentation",
       operationId = "services:schema:info:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service schema info retrieved successfully"),
@@ -73,7 +73,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Replace service external documentation reference",
-      description = "Configure external resource references for extended API documentation.",
+      description = "Configure external resource references for extended API documentation",
       operationId = "services:schema:externalDoc:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service external documentation replaced successfully"),
@@ -88,7 +88,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query service external documentation",
-      description = "Retrieve external documentation configuration for service API.",
+      description = "Retrieve external documentation configuration for service API",
       operationId = "services:schema:externalDoc:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service external documentation retrieved successfully"),
@@ -131,7 +131,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Delete service security requirements",
-      description = "Remove security requirements by schema names for service access control.",
+      description = "Remove security requirements by schema names for service access control",
       operationId = "services:schema:securityRequirement:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service security requirements deleted successfully"),
@@ -146,7 +146,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query all service security requirements",
-      description = "Retrieve all security requirements for service access control configuration.",
+      description = "Retrieve all security requirements for service access control configuration",
       operationId = "services:schema:securityRequirement:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service security requirements retrieved successfully"),
@@ -174,7 +174,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Synchronize server configuration to service APIs",
-      description = "Apply server configuration to all APIs under the service for consistent execution environment.",
+      description = "Apply server configuration to all APIs under the service for consistent execution environment",
       operationId = "services:schema:server:apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Server configuration synchronized successfully"),
@@ -204,7 +204,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Delete service servers",
-      description = "Remove server configurations by identifiers for service execution environment.",
+      description = "Remove server configurations by identifiers for service execution environment",
       operationId = "services:schema:server:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service servers deleted successfully"),
@@ -219,7 +219,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query all service server configurations",
-      description = "Retrieve all server configurations for service execution environment.",
+      description = "Retrieve all server configurations for service execution environment",
       operationId = "services:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service server configurations retrieved successfully"),
@@ -232,7 +232,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query service server detail configuration",
-      description = "Retrieve detailed server configuration for service execution environment.",
+      description = "Retrieve detailed server configuration for service execution environment",
       operationId = "services:schema:server:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service server detail retrieved successfully"),
@@ -246,7 +246,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query all project server configurations",
-      description = "Retrieve all server configurations across project services for execution environment management.",
+      description = "Retrieve all server configurations across project services for execution environment management",
       operationId = "services:schema:server:byProject")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All project server configurations retrieved successfully"),
@@ -289,7 +289,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Delete service tags",
-      description = "Remove API tags by names for service documentation organization.",
+      description = "Remove API tags by names for service documentation organization",
       operationId = "services:schema:tag:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service tags deleted successfully"),
@@ -304,7 +304,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query all service tags",
-      description = "Retrieve all API tags for service documentation organization.",
+      description = "Retrieve all API tags for service documentation organization",
       operationId = "services:schema:tag:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service tags retrieved successfully"),
@@ -332,7 +332,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query all service schema extensions",
-      description = "Retrieve all schema extensions for service API specification.",
+      description = "Retrieve all schema extensions for service API specification",
       operationId = "services:schema:extensions:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service schema extensions retrieved successfully"),
@@ -345,7 +345,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query service schema detail",
-      description = "Retrieve comprehensive schema configuration and metadata for service API.",
+      description = "Retrieve schema configuration and metadata for service API",
       operationId = "services:schema:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service schema detail retrieved successfully"),
@@ -364,7 +364,7 @@ public class ServicesSchemaRest {
    * @param content         OpenAPI document yaml or json content
    */
   @Operation(summary = "Replace service OpenAPI document",
-      description = "Replace OpenAPI document configuration for service with validation and processing options.",
+      description = "Replace OpenAPI document configuration for service with validation and processing options",
       operationId = "services:openapi:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service OpenAPI document replaced successfully"),
@@ -381,7 +381,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Query service OpenAPI document",
-      description = "Retrieve OpenAPI document configuration for service with format customization.",
+      description = "Retrieve OpenAPI document configuration for service with format customization",
       operationId = "services:openapi:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service OpenAPI document retrieved successfully"),
@@ -395,7 +395,7 @@ public class ServicesSchemaRest {
   }
 
   @Operation(summary = "Translate OpenAPI specification text",
-      description = "Translate OpenAPI specification content between supported languages for internationalization.",
+      description = "Translate OpenAPI specification content between supported languages for internationalization",
       operationId = "services:schema:translate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "OpenAPI specification translated successfully"),

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Plan Authorization", description = "Functional Test Plan Authorization Management - Comprehensive APIs for managing data access permissions of test plans, their linked cases, and baseline references with granular permission control")
+@Tag(name = "Functional Test Plan Authorization", description = "Functional Test Plan Authorization Management - APIs for managing data access permissions of test plans, their linked cases, and baseline references with granular permission control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")
@@ -48,7 +48,7 @@ public class FuncPlanAuthRest {
   private FuncPlanAuthFacade funcPlanAuthFacade;
 
   @Operation(summary = "Add test plan authorization", 
-      description = "Create authorization for a specific functional test plan with comprehensive permission settings",
+      description = "Create authorization for a specific functional test plan with permission settings",
       operationId = "func:plan:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Test plan authorization created successfully")})
@@ -61,7 +61,7 @@ public class FuncPlanAuthRest {
   }
 
   @Operation(summary = "Replace test plan authorization", 
-      description = "Update authorization settings for a specific functional test plan with complete permission replacement",
+      description = "Update authorization settings for a specific functional test plan with permission replacement",
       operationId = "func:plan:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test plan authorization replaced successfully"),
@@ -173,7 +173,7 @@ public class FuncPlanAuthRest {
   }
 
   @Operation(summary = "List test plan authorizations", 
-      description = "Retrieve paginated list of test plan authorizations with comprehensive filtering and search options",
+      description = "Retrieve paginated list of test plan authorizations with filtering and search options",
       operationId = "func:plan:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test plan authorization list retrieved successfully")})

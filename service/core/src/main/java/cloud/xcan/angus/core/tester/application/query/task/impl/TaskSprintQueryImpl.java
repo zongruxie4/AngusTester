@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.application.query.task.impl;
 
-import static cloud.xcan.angus.core.biz.ProtocolAssert.assertResourceNotFound;
 import static cloud.xcan.angus.core.jpa.criteria.CriteriaUtils.findFirstAndRemove;
 import static cloud.xcan.angus.core.tester.application.converter.TaskSprintConverter.getSprintCreatorResourcesFilter;
 import static cloud.xcan.angus.core.tester.domain.TesterCoreMessage.TASK_SPRINT_DATE_RANGE_ERROR_T;
@@ -225,7 +224,7 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
   @Override
   public List<TaskSprint> checkAndFind(Collection<Long> ids) {
     List<TaskSprint> sprints = taskSprintRepo.findAllById(ids);
-    
+
     // Validate that all requested sprints were found
     if (sprints.size() != ids.size()) {
       // Find missing IDs for better error reporting
@@ -235,12 +234,12 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
       Set<Long> missingIds = ids.stream()
           .filter(id -> !foundIds.contains(id))
           .collect(Collectors.toSet());
-      
+
       if (!missingIds.isEmpty()) {
         throw ResourceNotFound.of(missingIds.iterator().next(), "Sprint");
       }
     }
-    
+
     return sprints;
   }
 
@@ -375,12 +374,12 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
       Map<Long, Long> taskNumsMap = taskInfoRepo.findSprintTaskNumsGroupBySprintId(sprintIds)
           .stream()
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
-      
+
       // Batch retrieve valid task counts for all sprints
       Map<Long, Long> validTaskNumsMap = taskInfoRepo.findValidSprintTaskNumsGroupBySprintId(sprintIds)
           .stream()
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
-      
+
       // Set task counts for each sprint efficiently
       for (TaskSprint sprint : sprints) {
         Long sprintId = sprint.getId();
@@ -409,20 +408,20 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
       Map<Long, Long> sprintPassedNumsMap = taskInfoRepo.findSprintPassedTaskNumsGroupBySprintId(sprintIds)
           .stream()
           .collect(Collectors.toMap(SprintTaskNum::getSprintId, SprintTaskNum::getTaskNum));
-      
+
       // Calculate and set progress for each sprint
       for (TaskSprint sprint : sprints) {
         Long sprintId = sprint.getId();
         Long validTaskNum = sprint.getValidTaskNum();
         Long passedTaskNum = sprintPassedNumsMap.getOrDefault(sprintId, 0L);
-        
+
         // Calculate completion rate with proper decimal precision
-        BigDecimal completedRate = validTaskNum > 0 
+        BigDecimal completedRate = validTaskNum > 0
             ? BigDecimal.valueOf(passedTaskNum)
                 .divide(BigDecimal.valueOf(validTaskNum), 4, RoundingMode.HALF_UP)
                 .multiply(BigDecimal.valueOf(100)) // Convert to percentage
             : BigDecimal.ZERO;
-        
+
         sprint.setProgress(new Progress()
             .setTotal(validTaskNum)
             .setCompleted(passedTaskNum)
@@ -448,17 +447,17 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
       for (TaskSprint sprint : sprints) {
         // Get associated user IDs for this sprint
         Set<Long> memberIds = taskQuery.getAssociateUsersBySprintId(sprint.getId());
-        
+
         if (isNotEmpty(memberIds)) {
           // Batch retrieve user information for all members
           Map<Long, UserBase> users = userManager.getUserBaseMap(memberIds);
-          
+
           // Convert UserBase to UserInfo and filter valid users
           List<UserInfo> members = memberIds.stream()
               .filter(users::containsKey)
               .map(memberId -> CoreUtils.copyProperties(users.get(memberId), new UserInfo()))
               .toList();
-          
+
           sprint.setMembers(members);
         } else {
           sprint.setMembers(new ArrayList<>());
@@ -482,17 +481,17 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
     String originalName = sprint.getName();
     String baseCloneName = originalName + "-Copy";
     String saltName = randomAlphanumeric(3);
-    
+
     // Check if base clone name already exists
-    String clonedName = taskSprintRepo.existsByProjectIdAndName(sprint.getProjectId(), baseCloneName) 
-        ? baseCloneName + "." + saltName 
+    String clonedName = taskSprintRepo.existsByProjectIdAndName(sprint.getProjectId(), baseCloneName)
+        ? baseCloneName + "." + saltName
         : baseCloneName;
-    
+
     // Ensure name length constraints are met
     if (clonedName.length() > MAX_NAME_LENGTH) {
       clonedName = clonedName.substring(0, MAX_NAME_LENGTH_X2 - 3) + saltName;
     }
-    
+
     sprint.setName(clonedName);
   }
 
@@ -512,17 +511,17 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
     // Extract admin criteria if present
     SearchCriteria adminCriteria = findFirstAndRemove(criteria, "admin");
     boolean isAdminQuery = false;
-    
+
     if (Objects.nonNull(adminCriteria)) {
       String adminValue = adminCriteria.getValue().toString().replaceAll("\"", "");
       isAdminQuery = parseBoolean(adminValue);
     }
-    
+
     // Add authorization filtering if not admin query or user is not admin
     if (!isAdminQuery || !taskSprintAuthQuery.isAdminUser()) {
       criteria.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));
     }
-    
+
     return false; // Legacy return value
   }
 

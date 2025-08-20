@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.domain.task.TaskType;
 import cloud.xcan.angus.core.tester.interfaces.scenario.facade.dto.test.ScenarioTestTaskGenerateDto;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ScenarioTestAssembler {
 

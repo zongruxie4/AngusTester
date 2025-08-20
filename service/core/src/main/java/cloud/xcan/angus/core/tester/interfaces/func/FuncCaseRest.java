@@ -59,7 +59,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Case", description = "Functional Test Case Management - Comprehensive APIs for creating, updating, organizing, and managing functional test cases with advanced batch operations, association management, and lifecycle control")
+@Tag(name = "Functional Test Case", description = "Functional Test Case Management - APIs for creating, updating, organizing, and managing functional test cases with advanced batch operations, association management, and lifecycle control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/case")

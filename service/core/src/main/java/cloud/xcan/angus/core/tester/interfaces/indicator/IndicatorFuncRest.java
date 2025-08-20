@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Indicator - Functional Test", description = "Functional Test Indicator Management - Comprehensive APIs for configuring and managing functional test types (smoke testing, security testing) and their evaluation criteria with target-based configuration")
+@Tag(name = "Indicator - Functional Test", description = "Functional Test Indicator Management - APIs for configuring and managing functional test types (smoke testing, security testing) and their evaluation criteria with target-based configuration")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -41,7 +41,7 @@ public class IndicatorFuncRest {
   private IndicatorFuncFacade indicatorFuncFacade;
 
   @Operation(summary = "Create functional test indicator", 
-      description = "Create a new functional test indicator with comprehensive configuration for test type evaluation",
+      description = "Create a new functional test indicator with configuration for test type evaluation",
       operationId = "indicator:func:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Functional test indicator created successfully")})
@@ -52,7 +52,7 @@ public class IndicatorFuncRest {
   }
 
   @Operation(summary = "Replace functional test indicator", 
-      description = "Replace an existing functional test indicator with complete new configuration",
+      description = "Replace an existing functional test indicator with new configuration",
       operationId = "indicator:func:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test indicator replaced successfully"),
@@ -79,7 +79,7 @@ public class IndicatorFuncRest {
   }
 
   @Operation(summary = "Get functional test indicator details", 
-      description = "Retrieve comprehensive details of functional test indicator for a specific target",
+      description = "Retrieve details of functional test indicator for a specific target",
       operationId = "indicator:func:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test indicator details retrieved successfully"),
@@ -107,7 +107,7 @@ public class IndicatorFuncRest {
   }
 
   @Operation(summary = "List functional test indicators", 
-      description = "Retrieve paginated list of functional test indicators with comprehensive filtering and search options",
+      description = "Retrieve paginated list of functional test indicators with filtering and search options",
       operationId = "indicator:func:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test indicator list retrieved successfully")})

@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Node Info", description = "Node Information & Agent Control API - User-accessible interfaces for node system information, agent status monitoring, and process control operations.")
+@Tag(name = "Node Info", description = "Node Information & Agent Control API - User-accessible interfaces for node system information, agent status monitoring, and process control operations")
 @Validated
 @RestController
 public class NodeInfoRest {

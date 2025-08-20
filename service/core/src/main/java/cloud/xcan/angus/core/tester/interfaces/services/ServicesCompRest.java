@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services Component", description = "Service OpenAPI Component Management API - Centralized management system for OpenAPI components including schemas, responses, and security schemes across services.")
+@Tag(name = "Services Component", description = "Service OpenAPI Component Management API - Centralized management system for OpenAPI components including schemas, responses, and security schemes across services")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -54,7 +54,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Delete service OpenAPI components by type",
-      description = "Delete OpenAPI components by type for service. If component keys parameter is empty, all components under the type will be deleted.",
+      description = "Delete OpenAPI components by type for service. If component keys parameter is empty, all components under the type will be deleted",
       operationId = "services:comp:deleteByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service OpenAPI components deleted successfully")
@@ -69,7 +69,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Delete service OpenAPI components by reference",
-      description = "Remove OpenAPI components by reference identifiers for service.",
+      description = "Remove OpenAPI components by reference identifiers for service",
       operationId = "services:comp:deleteByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service OpenAPI components deleted successfully")
@@ -83,7 +83,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Delete all OpenAPI components of service",
-      description = "Remove all OpenAPI components for service configuration cleanup.",
+      description = "Remove all OpenAPI components for service configuration cleanup",
       operationId = "services:comp:all:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "All service OpenAPI components deleted successfully")
@@ -96,7 +96,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Query service OpenAPI component by reference",
-      description = "Retrieve OpenAPI component configuration by reference identifier.",
+      description = "Retrieve OpenAPI component configuration by reference identifier",
       operationId = "services:comp:detailByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service OpenAPI component retrieved successfully")
@@ -109,7 +109,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Query service OpenAPI components by type",
-      description = "Retrieve OpenAPI components of specified types with optional key filtering.",
+      description = "Retrieve OpenAPI components of specified types with optional key filtering",
       operationId = "services:comp:listByType")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service OpenAPI components retrieved successfully")
@@ -125,7 +125,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Query service OpenAPI components by reference",
-      description = "Retrieve OpenAPI components by reference identifiers with optional model filtering.",
+      description = "Retrieve OpenAPI components by reference identifiers with optional model filtering",
       operationId = "services:comp:listByRef")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service OpenAPI components retrieved successfully")
@@ -139,7 +139,7 @@ public class ServicesCompRest {
   }
 
   @Operation(summary = "Query all service OpenAPI components",
-      description = "Retrieve all OpenAPI components for service with optional model filtering.",
+      description = "Retrieve all OpenAPI components for service with optional model filtering",
       operationId = "services:comp:listAll")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "All service OpenAPI components retrieved successfully")

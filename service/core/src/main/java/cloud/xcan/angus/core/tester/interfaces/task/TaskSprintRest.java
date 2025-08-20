@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task Sprint", description = "Task Sprint Management API - Comprehensive iteration management system for Agile development cycles with progress tracking, timeline control, and team collaboration features.")
+@Tag(name = "Task Sprint", description = "Task Sprint Management API - Iteration management system for Agile development cycles with progress tracking, timeline control, and team collaboration features")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/sprint")
@@ -44,7 +44,7 @@ public class TaskSprintRest {
   @Resource
   private TaskSprintFacade taskSprintFacade;
 
-  @Operation(summary = "Create new task sprint", operationId = "task:sprint:add", description = "Create a new sprint iteration with defined timeline, goals, and team assignments for organized task execution.")
+  @Operation(summary = "Create new task sprint", operationId = "task:sprint:add", description = "Create a new sprint iteration with defined timeline, goals, and team assignments for organized task execution")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task sprint created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +53,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.add(dto));
   }
 
-  @Operation(summary = "Update task sprint details", operationId = "task:sprint:update", description = "Modify specific fields of an existing sprint while preserving other information and maintaining workflow integrity.")
+  @Operation(summary = "Update task sprint details", operationId = "task:sprint:update", description = "Modify specific fields of an existing sprint while preserving other information and maintaining workflow integrity")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint updated successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -64,7 +64,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace task sprint completely", operationId = "task:sprint:replace", description = "Replace all sprint information with new data, effectively recreating the sprint with updated comprehensive details.")
+  @Operation(summary = "Replace task sprint completely", operationId = "task:sprint:replace", description = "Replace all sprint information with new data, effectively recreating the sprint with updated details")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -75,7 +75,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.replace(dto));
   }
 
-  @Operation(summary = "Start task sprint execution", operationId = "task:sprint:start", description = "Activate a sprint to begin task execution phase, enabling team members to start working on assigned tasks.")
+  @Operation(summary = "Start task sprint execution", operationId = "task:sprint:start", description = "Activate a sprint to begin task execution phase, enabling team members to start working on assigned tasks")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint started successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -87,7 +87,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "End task sprint execution", operationId = "task:sprint:end", description = "Complete a sprint iteration, finalizing all tasks and preparing for retrospective and planning phases.")
+  @Operation(summary = "End task sprint execution", operationId = "task:sprint:end", description = "Complete a sprint iteration, finalizing all tasks and preparing for retrospective and planning phases")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint ended successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -99,7 +99,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Block task sprint", operationId = "task:sprint:block", description = "Temporarily pause sprint execution due to blockers or issues that prevent normal progress.")
+  @Operation(summary = "Block task sprint", operationId = "task:sprint:block", description = "Temporarily pause sprint execution due to blockers or issues that prevent normal progress")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint blocked successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -111,7 +111,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Clone task sprint", operationId = "task:sprint:clone", description = "Create a duplicate of an existing sprint with all its configuration, tasks, and settings for reuse.")
+  @Operation(summary = "Clone task sprint", operationId = "task:sprint:clone", description = "Create a duplicate of an existing sprint with all its configuration, tasks, and settings for reuse")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint cloned successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")
@@ -122,7 +122,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.clone(id));
   }
 
-  @Operation(summary = "Move task sprint to different project", operationId = "task:sprint:move", description = "Transfer a sprint and all its associated tasks to another project for organizational restructuring.")
+  @Operation(summary = "Move task sprint to different project", operationId = "task:sprint:move", description = "Transfer a sprint and all its associated tasks to another project for organizational restructuring")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint moved successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint or target project not found")
@@ -135,7 +135,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Restart tasks in sprint", operationId = "task:sprint:task:restart", description = "Reset multiple tasks within a sprint to their initial state for re-execution or testing purposes.")
+  @Operation(summary = "Restart tasks in sprint", operationId = "task:sprint:task:restart", description = "Reset multiple tasks within a sprint to their initial state for re-execution or testing purposes")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint tasks restarted successfully"),
       @ApiResponse(responseCode = "404", description = "Sprint or tasks not found")
@@ -147,7 +147,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Reopen tasks in sprint", operationId = "task:sprint:task:reopen", description = "Reopen completed or closed tasks within a sprint for additional work or corrections.")
+  @Operation(summary = "Reopen tasks in sprint", operationId = "task:sprint:task:reopen", description = "Reopen completed or closed tasks within a sprint for additional work or corrections")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Sprint tasks reopened successfully"),
       @ApiResponse(responseCode = "404", description = "Sprint or tasks not found")
@@ -159,7 +159,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete task sprint", operationId = "task:sprint:delete", description = "Permanently remove a sprint and all its associated data including tasks, progress, and configuration.")
+  @Operation(summary = "Delete task sprint", operationId = "task:sprint:delete", description = "Permanently remove a sprint and all its associated data including tasks, progress, and configuration")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Task sprint deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -169,7 +169,7 @@ public class TaskSprintRest {
     taskSprintFacade.delete(id);
   }
 
-  @Operation(summary = "Get task sprint details", operationId = "task:sprint:detail", description = "Retrieve comprehensive details of a specific sprint including tasks, progress, timeline, and team assignments.")
+  @Operation(summary = "Get task sprint details", operationId = "task:sprint:detail", description = "Retrieve details of a specific sprint including tasks, progress, timeline, and team assignments")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprint details retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Task sprint not found")})
@@ -179,7 +179,7 @@ public class TaskSprintRest {
     return ApiLocaleResult.success(taskSprintFacade.detail(id));
   }
 
-  @Operation(summary = "Get paginated task sprints list", operationId = "task:sprint:list", description = "Retrieve a paginated list of sprints with filtering options for project, status, date range, and team criteria.")
+  @Operation(summary = "Get paginated task sprints list", operationId = "task:sprint:list", description = "Retrieve a paginated list of sprints with filtering options for project, status, date range, and team criteria")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task sprints list retrieved successfully")})
   @GetMapping

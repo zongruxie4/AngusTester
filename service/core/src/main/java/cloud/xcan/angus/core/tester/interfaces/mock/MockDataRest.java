@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Data", description = "Mock Data Generation - Comprehensive test data generation and debug dependency management via JMock rules with advanced data simulation capabilities")
+@Tag(name = "Mock Data", description = "Mock Data Generation - Test data generation and debug dependency management via JMock rules with data simulation capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock")
@@ -43,7 +43,7 @@ public class MockDataRest {
   private MockDataFacade mockDataFacade;
 
   @Operation(summary = "Generate data using mock function expressions",
-      description = "Generate test data based on JMock function expressions with configurable iterations for comprehensive testing scenarios",
+      description = "Generate test data based on JMock function expressions with configurable iterations for testing scenarios",
       operationId = "mock:function:data")
   @ApiResponse(responseCode = "200", description = "Mock function data generated successfully")
   @PostMapping(value = "/function/data")
@@ -54,7 +54,7 @@ public class MockDataRest {
   }
 
   @Operation(summary = "Generate batch data using mock function expressions",
-      description = "Generate multiple test data sets using JMock function expressions for comprehensive batch testing scenarios",
+      description = "Generate multiple test data sets using JMock function expressions for batch testing scenarios",
       operationId = "mock:function:batch:data")
   @ApiResponse(responseCode = "200", description = "Batch mock function data generated successfully")
   @PostMapping(value = "/function/data/batch")
@@ -75,7 +75,7 @@ public class MockDataRest {
   }
 
   @Operation(summary = "Batch replace function expressions in text content",
-      description = "Process multiple text contents with embedded JMock function expressions for comprehensive batch text generation",
+      description = "Process multiple text contents with embedded JMock function expressions for batch text generation",
       operationId = "mock:text:batch:data")
   @ApiResponse(responseCode = "200", description = "Batch text content with function expressions replaced successfully")
   @PostMapping(value = "/text/data/batch")
@@ -85,7 +85,7 @@ public class MockDataRest {
   }
 
   @Operation(summary = "Generate mock data script",
-      description = "Create executable script for mock data generation with comprehensive configuration and automation capabilities",
+      description = "Create executable script for mock data generation with configuration and automation capabilities",
       operationId = "mock:data:script:generate")
   @ApiResponse(responseCode = "200", description = "Mock data script generated successfully")
   @PostMapping(value = "/data/script")
@@ -104,7 +104,7 @@ public class MockDataRest {
   }
 
   @Operation(summary = "Create execution and generate data",
-      description = "Execute mock data generation with comprehensive execution management and result tracking",
+      description = "Execute mock data generation with execution management and result tracking",
       operationId = "mock:data:execution:generate")
   @ApiResponse(responseCode = "200", description = "Mock data execution created successfully")
   @PostMapping(value = "/data/execution")
@@ -113,7 +113,7 @@ public class MockDataRest {
   }
 
   @Operation(summary = "Query all available mock functions",
-      description = "Retrieve comprehensive list of all available JMock functions for data generation reference and discovery",
+      description = "Retrieve list of all available JMock functions for data generation reference and discovery",
       operationId = "mock:function:all")
   @ApiResponse(responseCode = "200", description = "All mock functions retrieved successfully")
   @GetMapping(value = "/functions")

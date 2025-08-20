@@ -11,6 +11,7 @@ import cloud.xcan.angus.api.commonlink.CombinedTargetType;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetQuery;
 import cloud.xcan.angus.core.tester.application.query.data.DatasetTargetQuery;
@@ -103,14 +104,14 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
         Map<Long, List<Dataset>> targetDatasetsMap = new HashMap<>();
         List<DatasetTarget> datasetTargets = datasetTargetRepo.findByTargetIdInAndType(
             targetIds, targetType);
-        
+
         // Handle API case inheritance from associated APIs
         if (API_CASE.getValue().equals(targetType) && isNotEmpty(caseApiMap)) {
           // Retrieve datasets associated with the APIs
           Map<Long, List<DatasetTarget>> apisDatsetTargetMap = datasetTargetRepo.findByTargetIdInAndType(
                   new HashSet<>(caseApiMap.values()), CombinedTargetType.API.getValue()).stream()
               .collect(Collectors.groupingBy(DatasetTarget::getTargetId));
-          
+
           if (isNotEmpty(apisDatsetTargetMap)) {
             // Create inherited dataset targets for cases
             for (Long caseId : targetIds) {
@@ -127,11 +128,11 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
             }
           }
         }
-        
+
         if (datasetTargets.isEmpty()) {
           return targetDatasetsMap;
         }
-        
+
         // Retrieve all datasets and build the result map
         List<Dataset> datasets = datasetRepo.findAllById(
             datasetTargets.stream().map(DatasetTarget::getDatasetId)
@@ -139,12 +140,12 @@ public class DatasetTargetQueryImpl implements DatasetTargetQuery {
         if (datasets.isEmpty()) {
           return targetDatasetsMap;
         }
-        
+
         // Group dataset IDs by target ID
         Map<Long, List<Long>> caseDatasetIdsMap = datasetTargets.stream()
             .collect(Collectors.groupingBy(DatasetTarget::getTargetId,
                 Collectors.mapping(DatasetTarget::getDatasetId, Collectors.toList())));
-        
+
         // Build final result map
         for (DatasetTarget vt : datasetTargets) {
           List<Long> datasetIds = caseDatasetIdsMap.get(vt.getTargetId());

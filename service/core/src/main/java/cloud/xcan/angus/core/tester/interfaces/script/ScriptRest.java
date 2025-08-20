@@ -52,7 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Script", description = "Script Management API - Comprehensive test script lifecycle management system with dependency mapping and execution controls.")
+@Tag(name = "Script", description = "Script Management API - Test script lifecycle management system with dependency mapping and execution controls")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")
@@ -62,7 +62,7 @@ public class ScriptRest {
   private ScriptFacade scriptFacade;
 
   @Operation(summary = "Create script",
-      description = "Create new test script with comprehensive configuration and metadata.",
+      description = "Create new test script with configuration and metadata",
       operationId = "script:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Script created successfully")})
@@ -73,7 +73,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Update script",
-      description = "Modify existing script configuration and metadata.",
+      description = "Modify existing script configuration and metadata",
       operationId = "script:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script updated successfully"),
@@ -86,7 +86,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Replace script",
-      description = "Replace script with new configuration or create new script if identifier is null.",
+      description = "Replace script with new configuration or create new script if identifier is null",
       operationId = "script:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script replaced successfully")})
@@ -96,7 +96,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Clone script",
-      description = "Create duplicate script with new identifier while preserving original configuration.",
+      description = "Create duplicate script with new identifier while preserving original configuration",
       operationId = "script:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Script cloned successfully"),
@@ -109,7 +109,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Import script",
-      description = "Import script from file or content with format validation and processing.",
+      description = "Import script from file or content with format validation and processing",
       operationId = "script:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Script imported successfully")})
@@ -121,7 +121,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Import script examples",
-      description = "Import predefined example scripts for rapid setup and demonstration.",
+      description = "Import predefined example scripts for rapid setup and demonstration",
       operationId = "script:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Script examples imported successfully")})
@@ -133,7 +133,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Delete scripts",
-      description = "Remove multiple scripts and their associated configurations.",
+      description = "Remove multiple scripts and their associated configurations",
       operationId = "script:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scripts deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -145,7 +145,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query script detail",
-      description = "Retrieve comprehensive script configuration and metadata.",
+      description = "Retrieve script configuration and metadata",
       operationId = "script:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script detail retrieved successfully"),
@@ -157,7 +157,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query script info",
-      description = "Retrieve script information and metadata for management purposes.",
+      description = "Retrieve script information and metadata for management purposes",
       operationId = "script:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script info retrieved successfully"),
@@ -169,7 +169,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query multiple scripts info",
-      description = "Retrieve information for multiple scripts in batch for management purposes.",
+      description = "Retrieve information for multiple scripts in batch for management purposes",
       operationId = "script:infos")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scripts info retrieved successfully"),
@@ -183,7 +183,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query script target info",
-      description = "Retrieve script target information and dependency mapping.",
+      description = "Retrieve script target information and dependency mapping",
       operationId = "script:target:info")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script target info retrieved successfully"),
@@ -195,7 +195,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query script list",
-      description = "Retrieve paginated list of scripts with filtering and sorting capabilities.",
+      description = "Retrieve paginated list of scripts with filtering and sorting capabilities",
       operationId = "script:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script list retrieved successfully"),
@@ -207,7 +207,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Query script info list",
-      description = "Retrieve paginated list of script information for management purposes.",
+      description = "Retrieve paginated list of script information for management purposes",
       operationId = "script:info:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script info list retrieved successfully"),
@@ -220,7 +220,7 @@ public class ScriptRest {
   }
 
   @Operation(summary = "Export script",
-      description = "Export script configuration in specified format for backup or sharing.",
+      description = "Export script configuration in specified format for backup or sharing",
       operationId = "script:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script exported successfully")

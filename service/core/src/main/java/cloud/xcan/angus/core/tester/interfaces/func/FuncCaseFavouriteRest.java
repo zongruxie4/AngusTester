@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Case Favorites", description = "Functional Test Case Favorites Management - Comprehensive APIs for bookmarking and managing frequently used test cases with quick access and organization capabilities")
+@Tag(name = "Functional Test Case Favorites", description = "Functional Test Case Favorites Management - APIs for bookmarking and managing frequently used test cases with quick access and organization capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/case")

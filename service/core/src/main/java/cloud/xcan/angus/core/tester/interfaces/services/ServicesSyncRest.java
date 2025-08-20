@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services Synchronization", description = "OpenAPI Document Synchronization Management API - Comprehensive synchronization system for service implementations with Swagger/OpenAPI documentation.")
+@Tag(name = "Services Synchronization", description = "OpenAPI Document Synchronization Management API - Synchronization system for service implementations with Swagger/OpenAPI documentation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")

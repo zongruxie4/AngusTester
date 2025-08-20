@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Kanban - Efficiency", description = "Efficiency Analytics - Comprehensive statistical analysis of R&D task efficiency and functional test effectiveness with performance metrics and productivity insights")
+@Tag(name = "Kanban - Efficiency", description = "Efficiency Analytics - Statistical analysis of R&D task efficiency and functional test effectiveness with performance metrics and productivity insights")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/efficiency")
@@ -28,7 +28,7 @@ public class KanbanEfficiencyRest {
   private KanbanEfficiencyFacade kanbanEfficiencyFacade;
 
   @Operation(summary = "Generate task efficiency statistics overview",
-      description = "Provides comprehensive task efficiency analysis including completion rates, time tracking, and productivity metrics for performance optimization",
+      description = "Provides task efficiency analysis including completion rates, time tracking, and productivity metrics for performance optimization",
       operationId = "kanban:efficiency:task:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task efficiency statistics overview generated successfully")})
@@ -39,7 +39,7 @@ public class KanbanEfficiencyRest {
   }
 
   @Operation(summary = "Generate testing efficiency statistics overview",
-      description = "Provides comprehensive testing efficiency analysis including case execution rates, quality metrics, and effectiveness indicators for process improvement",
+      description = "Provides testing efficiency analysis including case execution rates, quality metrics, and effectiveness indicators for process improvement",
       operationId = "kanban:efficiency:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Testing efficiency statistics overview generated successfully")})

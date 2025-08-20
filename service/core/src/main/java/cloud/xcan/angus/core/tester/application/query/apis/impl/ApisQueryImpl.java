@@ -48,6 +48,7 @@ import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizAssert;
 import cloud.xcan.angus.core.biz.BizTemplate;
 import cloud.xcan.angus.core.biz.NameJoin;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.event.EventSender;
 import cloud.xcan.angus.core.event.source.EventContent;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
@@ -92,6 +93,7 @@ import cloud.xcan.angus.core.tester.domain.services.ServicesRepo;
 import cloud.xcan.angus.core.tester.domain.services.comp.ServicesComp;
 import cloud.xcan.angus.core.tester.domain.services.schema.SchemaFormat;
 import cloud.xcan.angus.core.tester.infra.util.RefResolver;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.http.HttpMethod;
@@ -120,14 +122,14 @@ import org.springframework.data.domain.PageRequest;
 
 /**
  * Implementation of API query operations for comprehensive API management and reporting.
- * 
+ *
  * <p>This class provides extensive functionality for querying and retrieving
  * API data, including detailed information, pagination, search, and various
  * enrichment operations.</p>
- * 
+ *
  * <p>It handles API lifecycle management, mock service integration, server
  * configuration, reference resolution, and comprehensive data enrichment.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>API detail and basic info queries with pagination</li>
@@ -190,14 +192,14 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Retrieves detailed API information with comprehensive enrichment.
-   * 
+   *
    * <p>This method fetches complete API details with extensive enrichment including
    * favourite/follow status, mock service associations, available servers,
    * tag schemas, and optional reference resolution.</p>
-   * 
+   *
    * <p>The method validates user permissions and handles deleted API access
    * with appropriate authorization checks.</p>
-   * 
+   *
    * @param id the API ID to retrieve details for
    * @param resolveRef whether to resolve OpenAPI references
    * @return the detailed API information with all enrichments
@@ -248,13 +250,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds mock API information associated with a specific API.
-   * 
+   *
    * <p>This method retrieves mock API details and validates consistency
    * between the original API and mock API configurations.</p>
-   * 
+   *
    * <p>The method checks for operation inconsistencies and enriches
    * mock service information for display purposes.</p>
-   * 
+   *
    * @param id the API ID to find mock information for
    * @return the mock API information or null if not found
    * @throws IllegalArgumentException if validation fails
@@ -307,13 +309,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Generates OpenAPI specification for an API with format and compression options.
-   * 
+   *
    * <p>This method generates OpenAPI documentation for an API with support for
    * different schema formats (JSON/YAML) and optional gzip compression.</p>
-   * 
+   *
    * <p>The method validates export permissions and handles schema generation
    * with proper error handling.</p>
-   * 
+   *
    * @param id the API ID to generate OpenAPI specification for
    * @param format the schema format (JSON or YAML)
    * @param gzipCompression whether to apply gzip compression
@@ -351,10 +353,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Checks if an API exists by ID.
-   * 
+   *
    * <p>This method validates that an API with the specified ID exists
    * in the system, throwing a ResourceNotFound exception if not found.</p>
-   * 
+   *
    * @param id the API ID to check for existence
    * @throws ResourceNotFound if the API is not found
    */
@@ -374,13 +376,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Retrieves detailed API information for multiple APIs with optional reference resolution.
-   * 
+   *
    * <p>This method fetches detailed information for multiple APIs, ensuring they all belong
    * to the same service and optionally resolving OpenAPI references.</p>
-   * 
+   *
    * <p>The method validates user permissions for all APIs and enriches data with
    * tag schemas and reference models when requested.</p>
-   * 
+   *
    * @param ids the set of API IDs to retrieve details for
    * @param resolveRef whether to resolve OpenAPI references
    * @return list of detailed API information
@@ -420,13 +422,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds APIs by service ID with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves APIs for a specific service with support for pagination,
    * filtering, and optional full-text search capabilities.</p>
-   * 
+   *
    * <p>The method validates service view permissions and automatically filters
    * out deleted APIs and services.</p>
-   * 
+   *
    * @param serviceId the service ID to find APIs for
    * @param spec the specification for filtering APIs
    * @param pageable the pagination and sorting parameters
@@ -460,13 +462,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Lists APIs with pagination, filtering, and optional full-text search.
-   * 
+   *
    * <p>This method retrieves APIs based on specification criteria with support
    * for pagination and optional full-text search capabilities.</p>
-   * 
+   *
    * <p>The method automatically enriches API data with mock associations
    * for enhanced display.</p>
-   * 
+   *
    * @param spec the specification for filtering APIs
    * @param pageable the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
@@ -497,10 +499,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Internal method for listing APIs with common enrichment logic.
-   * 
+   *
    * <p>This method handles the core listing logic with authorization filtering,
    * search execution, and comprehensive data enrichment.</p>
-   * 
+   *
    * @param criteria the search criteria for filtering APIs
    * @param pageable the pagination and sorting parameters
    * @param fullTextSearch whether to use full-text search
@@ -534,10 +536,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Gets the list of available servers for an API.
-   * 
+   *
    * <p>This method retrieves all available servers for an API, including
    * API-specific servers, parent service servers, and mock service servers.</p>
-   * 
+   *
    * @param id the API ID to get servers for
    * @return list of available servers for the API
    */
@@ -561,14 +563,14 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Generates API creation statistics for reporting and analysis.
-   * 
+   *
    * <p>This method calculates comprehensive creation statistics including
    * API counts, service counts, and unarchived API counts within specified
    * date ranges and creator criteria.</p>
-   * 
+   *
    * <p>The method supports filtering by project, creator type, and date
    * ranges for detailed analytics.</p>
-   * 
+   *
    * @param projectId the project ID to filter statistics
    * @param creatorObjectType the type of creator object
    * @param creatorObjectId the creator object ID
@@ -644,10 +646,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds API base information by IDs, including deleted APIs.
-   * 
+   *
    * <p>This method retrieves API base information for the specified IDs,
    * including APIs that have been marked as deleted.</p>
-   * 
+   *
    * @param ids the collection of API IDs to find
    * @return list of API base information including deleted ones
    */
@@ -673,10 +675,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds an API by ID with OpenAPI reference resolution.
-   * 
+   *
    * <p>This method retrieves an API and resolves its OpenAPI references
    * to provide complete schema information.</p>
-   * 
+   *
    * @param id the API ID to find
    * @return the API with resolved OpenAPI references or null if not found
    */
@@ -691,10 +693,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Creates a mapping of case IDs to simple activity resources.
-   * 
+   *
    * <p>This method converts functional case information into simple activity
    * resources for activity tracking and reporting purposes.</p>
-   * 
+   *
    * @param caseIds the collection of case IDs to map
    * @return map of case ID to simple activity resource
    */
@@ -710,10 +712,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Checks if an API has authorization control enabled.
-   * 
+   *
    * <p>This method determines whether both the service and API have
    * authorization control enabled, requiring permission checks for access.</p>
-   * 
+   *
    * @param id the API ID to check authorization control for
    * @return true if authorization control is enabled, false otherwise
    */
@@ -757,13 +759,13 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds and validates service APIs based on modification scope and criteria.
-   * 
+   *
    * <p>This method retrieves APIs for a service based on the specified scope
    * (all, selected, or matched by criteria) and validates user modification permissions.</p>
-   * 
+   *
    * <p>The method supports filtering by endpoint regex, HTTP method, and tags
    * for match-based scoping.</p>
-   * 
+   *
    * @param serviceId the service ID to find APIs for
    * @param modifyScope the scope for API selection (all, selected, or matched)
    * @param matchEndpointRegex the endpoint regex pattern for matching
@@ -803,10 +805,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that API owners exist in the system.
-   * 
+   *
    * <p>This method checks that all API owners (users) still exist in the system,
    * preventing issues after user deletion.</p>
-   * 
+   *
    * @param apis the collection of APIs to validate owners for
    * @throws ResourceNotFound if any API owner no longer exists
    */
@@ -848,10 +850,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that APIs to be added do not already exist in their services.
-   * 
+   *
    * <p>This method checks for duplicate API operations (method + endpoint combinations)
    * within the same service to prevent conflicts during API creation.</p>
-   * 
+   *
    * @param apis the collection of APIs to validate for existence
    * @throws ResourceExisted if any API operation already exists in the service
    */
@@ -878,10 +880,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that API operations do not conflict during updates.
-   * 
+   *
    * <p>This method checks for duplicate API operations when updating APIs,
    * handling method and endpoint updates with proper conflict detection.</p>
-   * 
+   *
    * @param apis the collection of APIs being updated
    * @param apisDb the collection of existing APIs in the database
    * @param serviceId the service ID for the APIs
@@ -928,10 +930,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that adding APIs would not exceed service and tenant quotas.
-   * 
+   *
    * <p>This method checks both service-level API quotas and tenant-level
    * API quotas to ensure limits are not exceeded.</p>
-   * 
+   *
    * @param apis the list of APIs to be added
    * @throws QuotaException if adding APIs would exceed quota limits
    */
@@ -954,10 +956,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that an API is not in released status for modification.
-   * 
+   *
    * <p>This method ensures that released APIs cannot be modified,
    * maintaining data integrity for published APIs.</p>
-   * 
+   *
    * @param apisInfoDb the API basic info to check release status for
    * @throws BizException if the API is in released status
    */
@@ -970,10 +972,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that an API is not in released status for modification.
-   * 
+   *
    * <p>This method ensures that released APIs cannot be modified,
    * maintaining data integrity for published APIs.</p>
-   * 
+   *
    * @param apisDb the API to check release status for
    * @throws BizException if the API is in released status
    */
@@ -986,10 +988,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Validates that multiple APIs are not in released status for modification.
-   * 
+   *
    * <p>This method ensures that none of the APIs in the collection are in released status,
    * preventing modification of published APIs.</p>
-   * 
+   *
    * @param apisDbs the collection of APIs to check release status for
    * @throws BizException if any API is in released status
    */
@@ -1023,10 +1025,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets favourite status for a list of APIs.
-   * 
+   *
    * <p>This method enriches APIs with their favourite status for the current user,
    * providing personalized display information.</p>
-   * 
+   *
    * @param apis the list of APIs to set favourite status for
    */
   @Override
@@ -1046,10 +1048,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets follow status for a list of APIs.
-   * 
+   *
    * <p>This method enriches APIs with their follow status for the current user,
    * providing personalized display information.</p>
-   * 
+   *
    * @param apis the list of APIs to set follow status for
    */
   @Override
@@ -1069,10 +1071,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets associated mock API information for basic API info objects.
-   * 
+   *
    * <p>This method enriches basic API information with associated mock service
    * and mock API IDs for enhanced display.</p>
-   * 
+   *
    * @param apis the list of basic API info objects to enrich
    */
   @Override
@@ -1093,10 +1095,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets associated mock API information for full API objects.
-   * 
+   *
    * <p>This method enriches full API objects with associated mock service
    * and mock API IDs for enhanced display.</p>
-   * 
+   *
    * @param apis the list of API objects to enrich
    */
   @Override
@@ -1129,10 +1131,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets and retrieves all available servers for an API.
-   * 
+   *
    * <p>This method assembles all available servers for an API including
    * API-specific servers, parent service servers, and mock service servers.</p>
-   * 
+   *
    * @param apis the API to set and get servers for
    * @return list of all available servers for the API
    */
@@ -1151,10 +1153,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets available servers for an API with custom parent servers.
-   * 
+   *
    * <p>This method sets available servers for an API using provided parent servers
    * instead of automatically retrieving them.</p>
-   * 
+   *
    * @param apis the API to set servers for
    * @param parentServers the custom parent servers to include
    */
@@ -1173,10 +1175,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets and retrieves referenced authentication for an API.
-   * 
+   *
    * <p>This method resolves authentication schema references and sets
    * the resolved authentication component for the API.</p>
-   * 
+   *
    * @param apis the API to set referenced authentication for
    */
   @Override
@@ -1195,10 +1197,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets tag schemas for an API based on available tag definitions.
-   * 
+   *
    * <p>This method filters and sets tag schemas that match the API's tags,
    * providing complete tag information for display and validation.</p>
-   * 
+   *
    * @param apisDb the API to set tag schemas for
    * @param tagSchemas the list of available tag schemas
    */
@@ -1212,10 +1214,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Gets parent service servers for an API.
-   * 
+   *
    * <p>This method retrieves servers from the parent service of an API,
    * adding source extensions for identification.</p>
-   * 
+   *
    * @param apiId the API ID to get parent service servers for
    * @return list of parent service servers or null if not found
    */
@@ -1238,10 +1240,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Assembles and sends modification notice events for multiple APIs.
-   * 
+   *
    * <p>This method processes multiple API modifications and sends appropriate
    * notification events to relevant users.</p>
-   * 
+   *
    * @param apisDb the list of APIs that were modified
    * @param activities the list of activities corresponding to the modifications
    */
@@ -1257,10 +1259,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Assembles and sends modification notice event for a single API.
-   * 
+   *
    * <p>This method creates and sends notification events for API modifications
    * to the API creator and followers.</p>
-   * 
+   *
    * @param apisDb the API that was modified
    * @param activity the activity corresponding to the modification
    */
@@ -1289,10 +1291,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds mock API association mapping for a set of API IDs.
-   * 
+   *
    * <p>This method retrieves mock API associations for the specified APIs
    * and creates a mapping for efficient lookup.</p>
-   * 
+   *
    * @param apisIds the set of API IDs to find mock associations for
    * @return map of API ID to mock API association information
    */
@@ -1306,10 +1308,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Assembles parent service servers for an API.
-   * 
+   *
    * <p>This method retrieves servers from the parent service and adds them
    * to the server list with source extensions for identification.</p>
-   * 
+   *
    * @param servers the list to add parent service servers to
    * @param apiId the API ID to get parent service servers for
    */
@@ -1331,10 +1333,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Assembles mock service servers for an API.
-   * 
+   *
    * <p>This method retrieves mock service information for an API and adds
    * mock service servers to the server list with source extensions.</p>
-   * 
+   *
    * @param servers the list to add mock service servers to
    * @param apiId the API ID to get mock service servers for
    */
@@ -1360,10 +1362,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Assembles API-specific servers.
-   * 
+   *
    * <p>This method adds API-specific servers including current request server
    * and configured API servers to the server list.</p>
-   * 
+   *
    * @param apis the API to get servers from
    * @param servers the list to add API servers to
    */
@@ -1387,10 +1389,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Sets OpenAPI path reference models for an API.
-   * 
+   *
    * <p>This method resolves OpenAPI references and sets the resolved
    * reference models for the API.</p>
-   * 
+   *
    * @param apisDb the API to set reference models for
    */
   @Override
@@ -1401,10 +1403,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Finds all OpenAPI references for an API.
-   * 
+   *
    * <p>This method extracts all $ref properties from an API's OpenAPI specification
    * and resolves them using service component models.</p>
-   * 
+   *
    * @param apisDb the API to find references for
    * @return map of reference paths to resolved model content
    * @throws RuntimeException if JSON processing fails
@@ -1428,10 +1430,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Converts basic API information to summary format.
-   * 
+   *
    * <p>This method transforms basic API information into summary format
    * for reporting and display purposes.</p>
-   * 
+   *
    * @param apis the list of basic API information to convert
    * @return list of API information summaries or null if input is empty
    */
@@ -1443,10 +1445,10 @@ public class ApisQueryImpl implements ApisQuery {
 
   /**
    * Converts API detail information to summary format.
-   * 
+   *
    * <p>This method transforms detailed API information into summary format
    * for reporting and display purposes.</p>
-   * 
+   *
    * @param apis the API detail information to convert
    * @return API detail summary
    */

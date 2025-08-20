@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services", description = "API Service Registry Management API - Comprehensive lifecycle management system for API services with import/export capabilities.")
+@Tag(name = "Services", description = "API Service Registry Management API - Lifecycle management system for API services with import/export capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -53,7 +53,7 @@ public class ServicesRest {
   private ServicesFacade serviceFacade;
 
   @Operation(summary = "Create service",
-      description = "Create new API service with comprehensive configuration and metadata.",
+      description = "Create new API service with configuration and metadata",
       operationId = "services:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Service created successfully")})
@@ -64,7 +64,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Replace service name",
-      description = "Update service name for identification and management purposes.",
+      description = "Update service name for identification and management purposes",
       operationId = "services:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service name replaced successfully"),
@@ -79,7 +79,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Update service status",
-      description = "Modify service status with cascading updates to all associated services and APIs.",
+      description = "Modify service status with cascading updates to all associated services and APIs",
       operationId = "services:status:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service status updated successfully"),
@@ -94,7 +94,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Clone service",
-      description = "Create duplicate service with new identifier while preserving original configuration.",
+      description = "Create duplicate service with new identifier while preserving original configuration",
       operationId = "services:clone")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Service cloned successfully"),
@@ -108,7 +108,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Import APIs to service",
-      description = "Import API specifications to service with format validation and processing.",
+      description = "Import API specifications to service with format validation and processing",
       operationId = "services:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "APIs imported successfully")})
@@ -120,7 +120,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Import service example",
-      description = "Import predefined service examples for demonstration and testing purposes.",
+      description = "Import predefined service examples for demonstration and testing purposes",
       operationId = "services:example:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service examples imported successfully")})
@@ -132,7 +132,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Delete service",
-      description = "Remove service and all associated configurations from the system.",
+      description = "Remove service and all associated configurations from the system",
       operationId = "services:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service deleted successfully")})
@@ -144,7 +144,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Query service detail",
-      description = "Retrieve comprehensive service configuration and metadata with optional schema information.",
+      description = "Retrieve service configuration and metadata with optional schema information",
       operationId = "services:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service detail retrieved successfully"),
@@ -157,7 +157,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Query associated mock service information",
-      description = "Retrieve mock service configuration associated with the service for testing purposes.",
+      description = "Retrieve mock service configuration associated with the service for testing purposes",
       operationId = "services:association:mock:service")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Associated mock service information retrieved successfully")})
@@ -168,7 +168,7 @@ public class ServicesRest {
   }
 
   @Operation(summary = "Query services list",
-      description = "Retrieve paginated list of services with comprehensive filtering and search capabilities.",
+      description = "Retrieve paginated list of services with filtering and search capabilities",
       operationId = "services:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Services list retrieved successfully")})
@@ -180,7 +180,7 @@ public class ServicesRest {
 
   @DoInFuture("Limit the number of exports")
   @Operation(summary = "Export APIs from service",
-      description = "Export API specifications from service with format customization and selective data export.",
+      description = "Export API specifications from service with format customization and selective data export",
       operationId = "services:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "APIs exported successfully")})

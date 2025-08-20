@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Recycle Bin", description = "Scenario Recycle Bin Management API - Temporary storage and recovery system for deleted scenarios with restore capabilities and permanent deletion controls.")
+@Tag(name = "Scenario Recycle Bin", description = "Scenario Recycle Bin Management API - Temporary storage and recovery system for deleted scenarios with restore capabilities and permanent deletion controls")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/trash")
@@ -35,7 +35,7 @@ public class ScenarioTrashRest {
   private ScenarioTrashFacade trashScenarioFacade;
 
   @Operation(summary = "Permanently delete scenario from trash",
-      description = "Permanently remove a specific scenario from the recycle bin with no recovery option.",
+      description = "Permanently remove a specific scenario from the recycle bin with no recovery option",
       operationId = "scenario:trash:clear")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scenario permanently deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -46,7 +46,7 @@ public class ScenarioTrashRest {
   }
 
   @Operation(summary = "Clear all scenarios from trash",
-      description = "Permanently remove all scenarios from the recycle bin for the specified project.",
+      description = "Permanently remove all scenarios from the recycle bin for the specified project",
       operationId = "scenario:trash:clear:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "All scenarios permanently deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -57,7 +57,7 @@ public class ScenarioTrashRest {
   }
 
   @Operation(summary = "Restore scenario from trash",
-      description = "Recover a specific scenario from the recycle bin and restore it to active status.",
+      description = "Recover a specific scenario from the recycle bin and restore it to active status",
       operationId = "scenario:trash:back")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Scenario restored successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -69,7 +69,7 @@ public class ScenarioTrashRest {
   }
 
   @Operation(summary = "Restore all scenarios from trash",
-      description = "Recover all scenarios from the recycle bin for the specified project.",
+      description = "Recover all scenarios from the recycle bin for the specified project",
       operationId = "scenario:trash:back:all")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All scenarios restored successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -81,7 +81,7 @@ public class ScenarioTrashRest {
   }
 
   @Operation(summary = "Query scenario trash count",
-      description = "Get the total count of scenarios currently in the recycle bin for the project.",
+      description = "Get the total count of scenarios currently in the recycle bin for the project",
       operationId = "scenario:trash:count")
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Scenario trash count retrieved successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -92,7 +92,7 @@ public class ScenarioTrashRest {
   }
 
   @Operation(summary = "Query scenario trash list",
-      description = "Retrieve paginated list of deleted scenarios in the recycle bin with filtering capabilities.",
+      description = "Retrieve paginated list of deleted scenarios in the recycle bin with filtering capabilities",
       operationId = "scenario:trash:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario trash list retrieved successfully")})

@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import cloud.xcan.angus.api.commonlink.setting.quota.QuotaResource;
 import cloud.xcan.angus.core.biz.Biz;
 import cloud.xcan.angus.core.biz.BizTemplate;
+import cloud.xcan.angus.core.biz.exception.QuotaException;
 import cloud.xcan.angus.core.jpa.criteria.GenericSpecification;
 import cloud.xcan.angus.core.tester.application.query.common.CommonQuery;
 import cloud.xcan.angus.core.tester.application.query.data.VariableQuery;
@@ -42,7 +43,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -229,13 +229,13 @@ public class VariableQueryImpl implements VariableQuery {
         if (isEmpty(variableIds)) {
           return emptyList();
         }
-        
+
         // Retrieve extracted variables
         List<Variable> variables = variablesRepo.findByIdAndExtracted(variableIds, true);
         if (isEmpty(variables)) {
           return emptyList();
         }
-        
+
         // Extract server information from HTTP extraction configurations
         return variables.stream().filter(x -> x.getExtraction() instanceof HttpExtraction)
             .map(x -> (HttpExtraction) x.getExtraction())
@@ -458,10 +458,10 @@ public class VariableQueryImpl implements VariableQuery {
       throw ProtocolException.of(
           nonNull(e.getCause()) ? e.getCause().getMessage() : e.getMessage());
     }
-    
+
     // Perform variable extraction
     defaultVariableExtractor.extract(List.of(angusVariable));
-    
+
     // Check for extraction failures
     if (nonNull(angusVariable.getExtraction())
         && nonNull(angusVariable.getExtraction().getFailureMessage())) {

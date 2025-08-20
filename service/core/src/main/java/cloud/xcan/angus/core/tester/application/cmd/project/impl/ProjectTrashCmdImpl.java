@@ -24,7 +24,6 @@ import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrash;
 import cloud.xcan.angus.core.tester.domain.project.trash.ProjectTrashRepo;
 import jakarta.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

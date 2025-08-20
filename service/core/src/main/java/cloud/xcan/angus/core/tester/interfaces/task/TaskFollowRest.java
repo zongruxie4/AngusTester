@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task Follow", description = "Task Follow Management API - Comprehensive notification system for subscribing to task updates and receiving real-time alerts when followed tasks are modified.")
+@Tag(name = "Task Follow", description = "Task Follow Management API - Notification system for subscribing to task updates and receiving real-time alerts when followed tasks are modified")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -35,7 +35,7 @@ public class TaskFollowRest {
   @Resource
   private TaskFollowFacade taskFollowFacade;
 
-  @Operation(summary = "Follow task for notifications", operationId = "task:follow:add", description = "Subscribe to a specific task to receive notifications when the task is updated, assigned, or has status changes.")
+  @Operation(summary = "Follow task for notifications", operationId = "task:follow:add", description = "Subscribe to a specific task to receive notifications when the task is updated, assigned, or has status changes")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task follow subscription created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.add(id));
   }
 
-  @Operation(summary = "Unfollow task notifications", operationId = "task:follow:cancel", description = "Unsubscribe from notifications for a specific task to stop receiving update alerts.")
+  @Operation(summary = "Unfollow task notifications", operationId = "task:follow:cancel", description = "Unsubscribe from notifications for a specific task to stop receiving update alerts")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Task follow subscription removed successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskFollowRest {
     taskFollowFacade.cancel(id);
   }
 
-  @Operation(summary = "Unfollow all tasks in project", operationId = "task:follow:cancel:all", description = "Unsubscribe from notifications for all followed tasks within a specific project.")
+  @Operation(summary = "Unfollow all tasks in project", operationId = "task:follow:cancel:all", description = "Unsubscribe from notifications for all followed tasks within a specific project")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "All project task follows removed successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -65,7 +65,7 @@ public class TaskFollowRest {
     taskFollowFacade.cancelAll(projectId);
   }
 
-  @Operation(summary = "Get paginated followed tasks list", operationId = "task:follow:list", description = "Retrieve a paginated list of followed tasks with detailed information including follow timestamps and task metadata.")
+  @Operation(summary = "Get paginated followed tasks list", operationId = "task:follow:list", description = "Retrieve a paginated list of followed tasks with detailed information including follow timestamps and task metadata")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Followed tasks list retrieved successfully")})
   @GetMapping("/follow")
@@ -74,7 +74,7 @@ public class TaskFollowRest {
     return ApiLocaleResult.success(taskFollowFacade.list(dto));
   }
 
-  @Operation(summary = "Get followed tasks count by project", operationId = "task:follow:count", description = "Retrieve the total count of followed tasks within a specific project for statistical and dashboard purposes.")
+  @Operation(summary = "Get followed tasks count by project", operationId = "task:follow:count", description = "Retrieve the total count of followed tasks within a specific project for statistical and dashboard purposes")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Followed tasks count retrieved successfully")})
   @GetMapping("/follow/count")

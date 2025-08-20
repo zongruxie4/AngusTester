@@ -16,7 +16,6 @@ import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.jmock.core.parser.docs.model.MockFunction;
 import jakarta.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component

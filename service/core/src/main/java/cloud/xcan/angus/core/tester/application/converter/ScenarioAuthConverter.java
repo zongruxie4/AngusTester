@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.scenario.auth.ScenarioPermission;
 import cloud.xcan.angus.idgen.UidGenerator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class ScenarioAuthConverter {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Kanban - CTO", description = "CTO-Level Dashboard Analytics - Executive dashboard endpoints for CTO-level strategic insights and performance metrics with comprehensive task completion trends and functional test KPIs for executive decision making")
+@Tag(name = "Kanban - CTO", description = "CTO-Level Dashboard Analytics - Executive dashboard endpoints for CTO-level strategic insights and performance metrics with task completion trends and functional test KPIs for executive decision making")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/cto")
@@ -28,7 +28,7 @@ public class KanbanCtoRest {
   private KanbanCtoFacade kanbanCtoFacade;
 
   @Operation(summary = "Generate CTO-level task overview with executive metrics",
-      description = "Provides comprehensive task completion analysis, resource utilization trends, and performance indicators for executive decision making and strategic planning",
+      description = "Provides task completion analysis, resource utilization trends, and performance indicators for executive decision making and strategic planning",
       operationId = "kanban:cto:task:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "CTO task overview generated successfully with executive-level metrics")})
@@ -39,7 +39,7 @@ public class KanbanCtoRest {
   }
 
   @Operation(summary = "Generate CTO-level case efficiency overview with executive metrics",
-      description = "Provides comprehensive case efficiency analysis, quality metrics, and performance indicators for executive decision making and strategic planning",
+      description = "Provides case efficiency analysis, quality metrics, and performance indicators for executive decision making and strategic planning",
       operationId = "kanban:cto:case:overview")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "CTO case efficiency overview generated successfully with executive-level metrics")})

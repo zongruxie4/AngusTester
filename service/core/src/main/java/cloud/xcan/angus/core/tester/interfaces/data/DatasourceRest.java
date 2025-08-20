@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Datasource", description = "Datasource Management - Comprehensive APIs for managing database connections and executing JDBC-based tests with connection testing and validation capabilities")
+@Tag(name = "Datasource", description = "Datasource Management - APIs for managing database connections and executing JDBC-based tests with connection testing and validation capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/data/datasource")
@@ -42,7 +42,7 @@ public class DatasourceRest {
   private DatasourceFacade datasourceFacade;
 
   @Operation(summary = "Create new datasource", 
-      description = "Create a new database datasource with comprehensive connection configuration and validation",
+      description = "Create a new database datasource with connection configuration and validation",
       operationId = "data:datasource:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Datasource created successfully")})
@@ -53,7 +53,7 @@ public class DatasourceRest {
   }
 
   @Operation(summary = "Replace datasource", 
-      description = "Replace existing datasource with complete new configuration and connection settings",
+      description = "Replace existing datasource with new configuration and connection settings",
       operationId = "data:datasource:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Datasource replaced successfully"),
@@ -66,7 +66,7 @@ public class DatasourceRest {
   }
 
   @Operation(summary = "Delete datasource", 
-      description = "Remove datasource from the system with proper cleanup and validation",
+      description = "Remove datasource from the system with cleanup and validation",
       operationId = "data:datasource:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Datasource deleted successfully")})
@@ -78,7 +78,7 @@ public class DatasourceRest {
   }
 
   @Operation(summary = "Test datasource connection by ID", 
-      description = "Test database connection for existing datasource with comprehensive validation and error reporting",
+      description = "Test database connection for existing datasource with validation and error reporting",
       operationId = "data:datasource:sync:test:byId")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Datasource connection test completed successfully"),
@@ -102,7 +102,7 @@ public class DatasourceRest {
   }
 
   @Operation(summary = "Get datasource details", 
-      description = "Retrieve comprehensive datasource details including configuration, status, and metadata",
+      description = "Retrieve datasource details including configuration, status, and metadata",
       operationId = "data:datasource:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Datasource details retrieved successfully"),
@@ -114,7 +114,7 @@ public class DatasourceRest {
   }
 
   @Operation(summary = "Query datasource list", 
-      description = "Retrieve paginated list of datasources with comprehensive filtering and search options",
+      description = "Retrieve paginated list of datasources with filtering and search options",
       operationId = "data:datasource:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Datasource list retrieved successfully")})

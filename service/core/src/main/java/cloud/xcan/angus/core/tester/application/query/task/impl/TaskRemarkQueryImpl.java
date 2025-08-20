@@ -18,7 +18,6 @@ import cloud.xcan.angus.core.tester.domain.task.summary.TaskRemarkSummary;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

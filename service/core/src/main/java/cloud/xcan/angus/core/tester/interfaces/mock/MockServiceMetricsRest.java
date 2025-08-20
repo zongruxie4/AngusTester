@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Service Metrics", description = "Mock Service Monitoring & Metrics - Comprehensive access point for mock service observability data with performance analytics and health monitoring")
+@Tag(name = "Mock Service Metrics", description = "Mock Service Monitoring & Metrics - Access point for mock service observability data with performance analytics and health monitoring")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/service")
@@ -29,7 +29,7 @@ public class MockServiceMetricsRest {
   private MockServiceMetricsFacade mockServiceMetricsFacade;
 
   @Operation(summary = "Query mock service metrics with filtering",
-      description = "Retrieve comprehensive mock service metrics with pagination and filtering for performance analysis and monitoring",
+      description = "Retrieve mock service metrics with pagination and filtering for performance analysis and monitoring",
       operationId = "mock:service:metrics")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service metrics retrieved successfully")})

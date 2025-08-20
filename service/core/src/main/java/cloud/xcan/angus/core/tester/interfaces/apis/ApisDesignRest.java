@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "API Design", description = "API Design Management - Comprehensive APIs for OpenAPI specification development, version control, compliance monitoring, and service generation with design lifecycle management")
+@Tag(name = "API Design", description = "API Design Management - APIs for OpenAPI specification development, version control, compliance monitoring, and service generation with design lifecycle management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/design")
@@ -53,7 +53,7 @@ public class ApisDesignRest {
   private ApisDesignFacade apisDesignFacade;
 
   @Operation(summary = "Create API design", 
-      description = "Create new API design specification with comprehensive OpenAPI configuration and version control",
+      description = "Create new API design specification with OpenAPI configuration and version control",
       operationId = "apis:design:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "API design created successfully")})
@@ -64,7 +64,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Update API design name", 
-      description = "Update API design name with comprehensive version control and metadata management",
+      description = "Update API design name with version control and metadata management",
       operationId = "apis:design:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design name updated successfully"),
@@ -76,7 +76,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Replace API design content", 
-      description = "Replace API design content with complete new OpenAPI specification and version control",
+      description = "Replace API design content with new OpenAPI specification and version control",
       operationId = "apis:design:content:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design content replaced successfully"),
@@ -88,7 +88,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Release API design", 
-      description = "Release API design specification with comprehensive version control and service generation",
+      description = "Release API design specification with version control and service generation",
       operationId = "apis:design:release")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design released successfully"),
@@ -113,7 +113,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Associate API design with service", 
-      description = "Establish association between API design and existing service with comprehensive integration",
+      description = "Establish association between API design and existing service with integration",
       operationId = "apis:design:services:associate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design service association created successfully"),
@@ -126,7 +126,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Generate services from API design", 
-      description = "Generate API services from design specification with comprehensive service creation and configuration",
+      description = "Generate API services from design specification with service creation and configuration",
       operationId = "apis:design:services:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API services generated successfully"),
@@ -139,7 +139,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Import API design", 
-      description = "Import API design from external files with comprehensive format support and validation",
+      description = "Import API design from external files with format support and validation",
       operationId = "apis:design:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design imported successfully")})
@@ -165,7 +165,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Get API design details", 
-      description = "Retrieve comprehensive API design details including specification, version control, and metadata",
+      description = "Retrieve API design details including specification, version control, and metadata",
       operationId = "space:design:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design details retrieved successfully"),
@@ -177,7 +177,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Query API design list", 
-      description = "Retrieve paginated list of API designs with comprehensive filtering and search options",
+      description = "Retrieve paginated list of API designs with filtering and search options",
       operationId = "apis:design:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API design list retrieved successfully")})
@@ -188,7 +188,7 @@ public class ApisDesignRest {
   }
 
   @Operation(summary = "Export API design specification", 
-      description = "Export API design to OpenAPI specification format with comprehensive configuration options",
+      description = "Export API design to OpenAPI specification format with configuration options",
       operationId = "apis:design:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "API design specification exported successfully")})

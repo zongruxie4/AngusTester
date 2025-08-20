@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "APIs Sharing", description = "APIs Sharing Management - Comprehensive APIs for unified management of service and API resource sharing with access control and collaboration features")
+@Tag(name = "APIs Sharing", description = "APIs Sharing Management - APIs for unified management of service and API resource sharing with access control and collaboration features")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/share")

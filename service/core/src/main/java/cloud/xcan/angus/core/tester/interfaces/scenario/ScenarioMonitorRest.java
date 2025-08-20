@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Monitor", description = "Scenario Monitoring Management API - Comprehensive monitoring configuration and management system for proactive issue detection and remediation at the API level.")
+@Tag(name = "Scenario Monitor", description = "Scenario Monitoring Management API - Monitoring configuration and management system for proactive issue detection and remediation at the API level")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario/monitor")
@@ -47,7 +47,7 @@ public class ScenarioMonitorRest {
   private ScenarioMonitorFacade scenarioMonitorFacade;
 
   @Operation(summary = "Create scenario monitor",
-      description = "Create new monitoring configuration for proactive issue detection and alerting.",
+      description = "Create new monitoring configuration for proactive issue detection and alerting",
       operationId = "scenario:monitor:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario monitor created successfully")})
@@ -58,7 +58,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Update scenario monitor",
-      description = "Modify existing monitoring configuration and alert settings.",
+      description = "Modify existing monitoring configuration and alert settings",
       operationId = "scenario:monitor:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario monitor updated successfully"),
@@ -71,7 +71,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Replace scenario monitor",
-      description = "Replace monitoring configuration with new settings or create new monitor if identifier is null.",
+      description = "Replace monitoring configuration with new settings or create new monitor if identifier is null",
       operationId = "scenario:monitor:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario monitor replaced successfully"),
@@ -83,7 +83,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Execute scenario monitoring immediately",
-      description = "Trigger immediate monitoring execution for real-time health check and alert generation.",
+      description = "Trigger immediate monitoring execution for real-time health check and alert generation",
       operationId = "scenario:monitor:run:now")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Monitoring execution triggered successfully"),
@@ -97,7 +97,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Delete scenario monitors",
-      description = "Remove monitoring configurations and stop associated alerting for specified monitors.",
+      description = "Remove monitoring configurations and stop associated alerting for specified monitors",
       operationId = "scenario:monitor:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Scenario monitors deleted successfully")})
@@ -110,7 +110,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Query scenario monitor detail",
-      description = "Retrieve comprehensive monitoring configuration and current status.",
+      description = "Retrieve monitoring configuration and current status",
       operationId = "scenario:monitor:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario monitor detail retrieved successfully"),
@@ -122,7 +122,7 @@ public class ScenarioMonitorRest {
   }
 
   @Operation(summary = "Query scenario monitor list",
-      description = "Retrieve paginated list of monitoring configurations with filtering capabilities.",
+      description = "Retrieve paginated list of monitoring configurations with filtering capabilities",
       operationId = "scenario:monitor:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario monitor list retrieved successfully")})

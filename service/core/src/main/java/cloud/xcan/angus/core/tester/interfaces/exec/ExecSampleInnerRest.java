@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Execution Sample - Internal", description = "Internal Execution Sample Management - Service internal detailed execution sampling data access with comprehensive performance metrics and analysis")
+@Tag(name = "Execution Sample - Internal", description = "Internal Execution Sample Management - Service internal detailed execution sampling data access with performance metrics and analysis")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/exec")

@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Node", description = "Node Resource Management API - Unified control plane for AngusTester server resource allocation, lifecycle management, and monitoring operations.")
+@Tag(name = "Node", description = "Node Resource Management API - Unified control plane for AngusTester server resource allocation, lifecycle management, and monitoring operations")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node")
@@ -54,7 +54,7 @@ public class NodeRest {
   private NodeFacade nodeFacade;
 
   @Operation(summary = "Create new nodes",
-      description = "Batch create new nodes for resource allocation and testing infrastructure setup.",
+      description = "Batch create new nodes for resource allocation and testing infrastructure setup",
       operationId = "node:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Nodes created successfully")})
@@ -66,7 +66,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Update node configurations",
-      description = "Batch update node properties and configuration settings for resource management.",
+      description = "Batch update node properties and configuration settings for resource management",
       operationId = "node:update")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Nodes updated successfully"),
@@ -81,7 +81,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Rename node",
-      description = "Update the display name of a specific node for better resource identification.",
+      description = "Update the display name of a specific node for better resource identification",
       operationId = "node:name:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node renamed successfully"),
@@ -96,7 +96,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Stop cloud nodes",
-      description = "Stop purchased cloud nodes to suspend resource consumption. Note: Only stopping purchased cloud nodes is supported.",
+      description = "Stop purchased cloud nodes to suspend resource consumption. Note: Only stopping purchased cloud nodes is supported",
       operationId = "node:stop")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Nodes stopped successfully"),
@@ -110,7 +110,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Restart cloud nodes",
-      description = "Restart purchased cloud nodes to restore service availability. Note: Only restart of purchased cloud nodes is supported.",
+      description = "Restart purchased cloud nodes to restore service availability. Note: Only restart of purchased cloud nodes is supported",
       operationId = "node:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Nodes restarted successfully"),
@@ -124,7 +124,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Enable or disable nodes",
-      description = "Control node availability by enabling or disabling nodes for resource management.",
+      description = "Control node availability by enabling or disabling nodes for resource management",
       operationId = "node:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node status updated successfully"),
@@ -140,7 +140,7 @@ public class NodeRest {
   // TODO 运营端设置免费共享节点
 
   @Operation(summary = "Delete nodes",
-      description = "Permanently remove nodes from the system to free up resources and clean up infrastructure.",
+      description = "Permanently remove nodes from the system to free up resources and clean up infrastructure",
       operationId = "node:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Nodes deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -152,7 +152,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Test node configuration",
-      description = "Validate node configuration and connectivity to ensure proper setup and operation.",
+      description = "Validate node configuration and connectivity to ensure proper setup and operation",
       operationId = "node:test")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node configuration tested successfully")})
@@ -163,7 +163,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Install node agent",
-      description = "Generate agent installation command for a specific node to enable automated deployment.",
+      description = "Generate agent installation command for a specific node to enable automated deployment",
       operationId = "node:agent:install")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Agent installation command generated successfully")})
@@ -175,7 +175,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Restart node agent",
-      description = "Restart the agent service on a specific node to refresh connections and reload configurations.",
+      description = "Restart the agent service on a specific node to refresh connections and reload configurations",
       operationId = "node:agent:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Agent restarted successfully")})
@@ -187,7 +187,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Purchase cloud node",
-      description = "Initiate cloud node purchase workflow for automated resource provisioning and billing.",
+      description = "Initiate cloud node purchase workflow for automated resource provisioning and billing",
       operationId = "node:purchase")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node purchase initiated successfully")})
@@ -198,7 +198,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Query node details",
-      description = "Retrieve comprehensive information about a specific node including configuration and status.",
+      description = "Retrieve information about a specific node including configuration and status",
       operationId = "node:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node details retrieved successfully"),
@@ -210,7 +210,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Query node count",
-      description = "Get the total count of nodes matching specified criteria for resource planning and monitoring.",
+      description = "Get the total count of nodes matching specified criteria for resource planning and monitoring",
       operationId = "node:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node count retrieved successfully")})
@@ -220,7 +220,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Query mock service instances on node",
-      description = "Retrieve list of mock service instances running on a specific node for service management.",
+      description = "Retrieve list of mock service instances running on a specific node for service management",
       operationId = "node:mock:service:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service instances retrieved successfully")})
@@ -231,7 +231,7 @@ public class NodeRest {
   }
 
   @Operation(summary = "Query node list",
-      description = "Retrieve paginated list of nodes with filtering and search capabilities for resource management.",
+      description = "Retrieve paginated list of nodes with filtering and search capabilities for resource management",
       operationId = "node:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Node list retrieved successfully")})

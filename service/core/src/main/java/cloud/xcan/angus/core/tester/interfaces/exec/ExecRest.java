@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Execution", description = "Test Execution Management - Comprehensive APIs for scenario and script execution management including execution creation, configuration, monitoring, and result access with real-time control capabilities")
+@Tag(name = "Execution", description = "Test Execution Management - APIs for scenario and script execution management including execution creation, configuration, monitoring, and result access with real-time control capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec")
@@ -54,7 +54,7 @@ public class ExecRest {
   private ExecFacade execFacade;
 
   @Operation(summary = "Create execution by script content", 
-      description = "Create a new test execution using script content with comprehensive configuration options",
+      description = "Create a new test execution using script content with configuration options",
       operationId = "exec:byContent:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution created successfully by script content")
@@ -90,7 +90,7 @@ public class ExecRest {
   }
 
   @Operation(summary = "Replace execution configuration", 
-      description = "Update execution configuration with comprehensive parameter and setting modifications",
+      description = "Update execution configuration with parameter and setting modifications",
       operationId = "exec:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution configuration replaced successfully")
@@ -104,7 +104,7 @@ public class ExecRest {
   }
 
   @Operation(summary = "Replace execution script configuration", 
-      description = "Update execution script configuration with comprehensive script parameter modifications",
+      description = "Update execution script configuration with script parameter modifications",
       operationId = "exec:script:config:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution script configuration replaced successfully")
@@ -118,7 +118,7 @@ public class ExecRest {
   }
 
   @Operation(summary = "Start execution", 
-      description = "Initiate test execution with comprehensive runner management and real-time monitoring",
+      description = "Initiate test execution with runner management and real-time monitoring",
       operationId = "exec:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution started successfully")
@@ -151,7 +151,7 @@ public class ExecRest {
   }
 
   @Operation(summary = "Get execution details", 
-      description = "Retrieve comprehensive execution details including configuration, status, and metadata",
+      description = "Retrieve execution details including configuration, status, and metadata",
       operationId = "exec:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution details retrieved successfully"),
@@ -200,7 +200,7 @@ public class ExecRest {
   }
 
   @Operation(summary = "Query execution list", 
-      description = "Retrieve paginated list of executions with comprehensive filtering and search options",
+      description = "Retrieve paginated list of executions with filtering and search options",
       operationId = "exec:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution list retrieved successfully")})

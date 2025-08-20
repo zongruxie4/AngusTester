@@ -24,6 +24,7 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorPerfSearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -86,10 +87,10 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
       protected IndicatorPerf process() {
         // Retrieve performance indicator from database
         IndicatorPerf perfDb = indicatorPerfRepo.findByTargetIdAndTargetType(targetId, targetType);
-        
+
         // Validate that the indicator exists
         assertResourceNotFound(isNotEmpty(perfDb), targetId, "IndicatorPerf");
-        
+
         // Enrich indicator with target name information
         assembleTargetName(perfDb, targetType, targetId);
         return perfDb;
@@ -128,10 +129,10 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
         try {
           // Retrieve tenant-specific platform settings
           SettingTenant setting = settingTenantManager.checkAndFindSetting(getOptTenantId());
-          
+
           // Convert platform data to indicator format
           IndicatorPerf perf = toIndicatorPerf(setting.getPerfData(), targetId, targetType);
-          
+
           // Enrich indicator with target name information
           assembleTargetName(perf, targetType, targetId);
           return perf;
@@ -207,7 +208,7 @@ public class IndicatorPerfQueryImpl implements IndicatorPerfQuery {
       Long targetId) {
     // Retrieve combined target information including name
     CombinedTarget combinedTarget = commonQuery.getCombinedTarget(targetType, targetId, true);
-    
+
     // Set target name on the indicator
     perf.setTargetName(combinedTarget.getTargetName());
   }

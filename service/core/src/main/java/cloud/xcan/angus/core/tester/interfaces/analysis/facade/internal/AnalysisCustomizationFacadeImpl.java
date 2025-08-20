@@ -9,7 +9,6 @@ import cloud.xcan.angus.core.tester.interfaces.analysis.facade.AnalysisCustomiza
 import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component

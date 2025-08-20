@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "API Favorites", description = "API Favorites Management - Comprehensive APIs for personal bookmark management, quick access classification, and frequently used API endpoint organization")
+@Tag(name = "API Favorites", description = "API Favorites Management - APIs for personal bookmark management, quick access classification, and frequently used API endpoint organization")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")

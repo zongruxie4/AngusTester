@@ -22,6 +22,7 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilityRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorStabilitySearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -85,10 +86,10 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
         // Retrieve stability indicator from database
         IndicatorStability stabilizeDb = indicatorStabilityRepo
             .findByTargetIdAndTargetType(targetId, targetType);
-            
+
         // Validate that the indicator exists
         assertResourceNotFound(nonNull(stabilizeDb), targetId, "IndicatorStability");
-        
+
         // Enrich indicator with target name information
         assembleTargetName(stabilizeDb, targetType, targetId);
         return stabilizeDb;
@@ -128,11 +129,11 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
         try {
           // Retrieve tenant-specific platform settings
           SettingTenant setting = settingTenantManager.checkAndFindSetting(getOptTenantId());
-          
+
           // Convert platform data to indicator format
           IndicatorStability stability = toIndicatorStability(setting.getStabilityData(),
               targetId, targetType);
-              
+
           // Enrich indicator with target name information
           assembleTargetName(stability, targetType, targetId);
           return stability;
@@ -168,7 +169,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
       protected Page<IndicatorStability> process() {
         // Set authorization conditions when you are not an administrator or only query yourself
         commonQuery.checkAndSetAuthObjectIdCriteria(spec.getCriteria());
-        
+
         // Execute search based on search type with appropriate converter
         return fullTextSearch
             ? indicatorStabilitySearchRepo.find(spec.getCriteria(), pageable,
@@ -208,7 +209,7 @@ public class IndicatorStabilityQueryImpl implements IndicatorStabilityQuery {
       CombinedTargetType targetType, Long targetId) {
     // Retrieve combined target information including name
     CombinedTarget combinedTarget = commonQuery.getCombinedTarget(targetType, targetId, true);
-    
+
     // Set target name on the indicator
     stability.setTargetName(combinedTarget.getTargetName());
   }

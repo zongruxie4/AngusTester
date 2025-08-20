@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Node Metrics", description = "Node Monitoring & Metrics API - Comprehensive monitoring interfaces for node performance metrics, including CPU, memory, disk, network, and filesystem monitoring with real-time data collection.")
+@Tag(name = "Node Metrics", description = "Node Monitoring & Metrics API - Monitoring interfaces for node performance metrics, including CPU, memory, disk, network, and filesystem monitoring with real-time data collection")
 @Validated
 @RestController
 @RequestMapping("/api/v1/node")

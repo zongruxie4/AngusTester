@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Service Manage", description = "Mock Service Status Management - Comprehensive control interface for mock service state management with agent-based orchestration")
+@Tag(name = "Mock Service Manage", description = "Mock Service Status Management - Control interface for mock service state management with agent-based orchestration")
 @Validated
 @RequestMapping("/api/v1/mock/service")
 @RestController
@@ -34,7 +34,7 @@ public class MockServiceManageRest {
   private MockServiceManageFacade mockServiceMangeFacade;
 
   @Operation(summary = "Start mock service via agent",
-      description = "Initiate mock service startup through agent with comprehensive status monitoring and health checks",
+      description = "Initiate mock service startup through agent with status monitoring and health checks",
       operationId = "mock:service:manage:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service startup initiated successfully")
@@ -56,7 +56,7 @@ public class MockServiceManageRest {
   }
 
   @Operation(summary = "Query mock service status via agent",
-      description = "Retrieve comprehensive mock service status through agent with real-time health monitoring",
+      description = "Retrieve mock service status through agent with real-time health monitoring",
       operationId = "mock:service:manage:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service status retrieved successfully")
@@ -67,7 +67,7 @@ public class MockServiceManageRest {
   }
 
   @Operation(summary = "Synchronize mock service APIs via agent",
-      description = "Deploy mock service API configurations through agent with comprehensive synchronization and validation",
+      description = "Deploy mock service API configurations through agent with synchronization and validation",
       operationId = "mock:service:apis:manage:sync")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service APIs synchronized successfully")
@@ -78,7 +78,7 @@ public class MockServiceManageRest {
   }
 
   @Operation(summary = "Delete mock service APIs via agent",
-      description = "Remove mock service API configurations through agent with comprehensive cleanup and validation",
+      description = "Remove mock service API configurations through agent with cleanup and validation",
       operationId = "mock:service:apis:manage:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service APIs deleted successfully")

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Angus Script", description = "Angus Script Management API - Standardized test script configuration and management system for workflow-compliant test execution.")
+@Tag(name = "Angus Script", description = "Angus Script Management API - Standardized test script configuration and management system for workflow-compliant test execution")
 @Validated
 @RestController
 @RequestMapping("/api/v1/angus/script")
@@ -34,7 +34,7 @@ public class AngusScriptRest {
   private ScriptFacade scriptFacade;
 
   @Operation(summary = "Create Angus script",
-      description = "Create new test script using standardized Angus model for workflow compliance.",
+      description = "Create new test script using standardized Angus model for workflow compliance",
       operationId = "script:angus:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Angus script created successfully")})
@@ -47,7 +47,7 @@ public class AngusScriptRest {
   }
 
   @Operation(summary = "Replace Angus script",
-      description = "Replace existing Angus script with new standardized configuration.",
+      description = "Replace existing Angus script with new standardized configuration",
       operationId = "script:angus:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Angus script replaced successfully")})
@@ -60,7 +60,7 @@ public class AngusScriptRest {
   }
 
   @Operation(summary = "Query Angus script detail",
-      description = "Retrieve comprehensive Angus script configuration and metadata.",
+      description = "Retrieve Angus script configuration and metadata",
       operationId = "script:angus:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Angus script detail retrieved successfully"),

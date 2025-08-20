@@ -10,7 +10,6 @@ import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestCaseResult;
 import cloud.xcan.angus.core.tester.domain.exec.result.ExecTestResult;
 import cloud.xcan.angus.core.tester.infra.metricsds.domain.sample.ExecSampleContent;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ExecResultConverter {
 

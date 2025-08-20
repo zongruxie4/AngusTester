@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Execution Sample", description = "Execution Sample Management - End-user detailed execution sampling data access with comprehensive performance metrics, analysis, and reporting capabilities")
+@Tag(name = "Execution Sample", description = "Execution Sample Management - End-user detailed execution sampling data access with performance metrics, analysis, and reporting capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec")

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Follow", description = "Scenario Follow Management API - Notification and subscription system for tracking changes and updates to test scenarios.")
+@Tag(name = "Scenario Follow", description = "Scenario Follow Management API - Notification and subscription system for tracking changes and updates to test scenarios")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -36,7 +36,7 @@ public class ScenarioFollowRest {
   private ScenarioFollowFacade scenarioFollowFacade;
 
   @Operation(summary = "Follow scenario for notifications",
-      description = "Subscribe to scenario updates and receive notifications for changes.",
+      description = "Subscribe to scenario updates and receive notifications for changes",
       operationId = "scenario:follow:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario follow subscription created successfully")})
@@ -48,7 +48,7 @@ public class ScenarioFollowRest {
   }
 
   @Operation(summary = "Unfollow scenario",
-      description = "Cancel follow subscription and stop receiving notifications for the scenario.",
+      description = "Cancel follow subscription and stop receiving notifications for the scenario",
       operationId = "scenario:follow:cancel")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Scenario follow subscription canceled successfully")})
@@ -60,7 +60,7 @@ public class ScenarioFollowRest {
   }
 
   @Operation(summary = "Unfollow all scenarios",
-      description = "Cancel all follow subscriptions for scenarios in the specified project.",
+      description = "Cancel all follow subscriptions for scenarios in the specified project",
       operationId = "scenario:follow:cancel:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "All scenario follow subscriptions canceled successfully")})
@@ -72,7 +72,7 @@ public class ScenarioFollowRest {
   }
 
   @Operation(summary = "Query scenario follow list",
-      description = "Retrieve paginated list of followed scenarios with filtering capabilities.",
+      description = "Retrieve paginated list of followed scenarios with filtering capabilities",
       operationId = "scenario:follow:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario follow list retrieved successfully")})
@@ -83,7 +83,7 @@ public class ScenarioFollowRest {
   }
 
   @Operation(summary = "Query scenario follow count",
-      description = "Get total count of followed scenarios for the specified project.",
+      description = "Get total count of followed scenarios for the specified project",
       operationId = "scenario:follow:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario follow count retrieved successfully")})

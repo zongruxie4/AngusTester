@@ -22,7 +22,6 @@ import cloud.xcan.angus.remote.PageResult;
 import cloud.xcan.angus.remote.search.SearchCriteria;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class MockApisAssembler {

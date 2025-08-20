@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Analysis Common", description = "Common Resource Analytics - Comprehensive analytics for shared infrastructure resources including scenarios, scripts, data, and mock services with aggregated metrics and performance insights")
+@Tag(name = "Analysis Common", description = "Common Resource Analytics - Analytics for shared infrastructure resources including scenarios, scripts, data, and mock services with aggregated metrics")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")
@@ -34,7 +34,7 @@ public class AnalysisCommonRest {
   private AnalysisCommonFacade analysisAngusFacade;
 
   @Operation(summary = "Scenario creation resource statistics", 
-      description = "Retrieve comprehensive statistics on scenario resource creation patterns and utilization metrics",
+      description = "Retrieve statistics on scenario resource creation patterns and utilization metrics",
       operationId = "analysis:scenario:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario creation statistics retrieved successfully")})
@@ -45,7 +45,7 @@ public class AnalysisCommonRest {
   }
 
   @Operation(summary = "Scenario testing result statistics", 
-      description = "Query and analyze scenario testing results with comprehensive performance metrics and outcome analysis",
+      description = "Query and analyze scenario testing results with performance metrics and outcome analysis",
       operationId = "analysis:scenario:test:result:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario testing result statistics retrieved successfully")})
@@ -56,7 +56,7 @@ public class AnalysisCommonRest {
   }
 
   @Operation(summary = "Script creation resource statistics", 
-      description = "Retrieve comprehensive statistics on script resource creation patterns and development metrics",
+      description = "Retrieve statistics on script resource creation patterns and development metrics",
       operationId = "analysis:script:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script creation statistics retrieved successfully")})
@@ -78,7 +78,7 @@ public class AnalysisCommonRest {
   }
 
   @Operation(summary = "Mock service statistics", 
-      description = "Retrieve comprehensive statistics on mock service resources and service status metrics",
+      description = "Retrieve statistics on mock service resources and service status metrics",
       operationId = "analysis:mock:service:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service statistics retrieved successfully")})
@@ -89,7 +89,7 @@ public class AnalysisCommonRest {
   }
 
   @Operation(summary = "Data resource creation statistics", 
-      description = "Retrieve comprehensive statistics on data resource creation patterns and storage utilization",
+      description = "Retrieve statistics on data resource creation patterns and storage utilization",
       operationId = "analysis:data:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Data resource creation statistics retrieved successfully")})

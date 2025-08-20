@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "API Recycle Bin", description = "API Recycle Bin Management - Comprehensive APIs for temporary storage of deleted service and API resources with restore capabilities, permanent deletion controls, and lifecycle management")
+@Tag(name = "API Recycle Bin", description = "API Recycle Bin Management - APIs for temporary storage of deleted service and API resources with restore capabilities, permanent deletion controls, and lifecycle management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis/trash")

@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Dataset", description = "Test Dataset Management - Comprehensive APIs for creating, editing, organizing, and managing complete test datasets with import/export capabilities and value preview functionality")
+@Tag(name = "Dataset", description = "Test Dataset Management - APIs for creating, editing, organizing, and managing test datasets with import/export capabilities and value preview functionality")
 @Validated
 @RestController
 @RequestMapping("/api/v1/dataset")
@@ -57,7 +57,7 @@ public class DatasetRest {
   private DatasetFacade datasetFacade;
 
   @Operation(summary = "Create new dataset", 
-      description = "Create a new test dataset with comprehensive configuration and parameter settings",
+      description = "Create a new test dataset with configuration and parameter settings",
       operationId = "data:dataset:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Dataset created successfully")})
@@ -81,7 +81,7 @@ public class DatasetRest {
   }
 
   @Operation(summary = "Replace dataset", 
-      description = "Replace existing dataset with complete new configuration and parameter settings",
+      description = "Replace existing dataset with new configuration and parameter settings",
       operationId = "data:dataset:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Dataset replaced successfully"),
@@ -106,7 +106,7 @@ public class DatasetRest {
   }
 
   @Operation(summary = "Import datasets", 
-      description = "Import datasets from external files with comprehensive format support and validation",
+      description = "Import datasets from external files with format support and validation",
       operationId = "data:dataset:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Datasets imported successfully")})
@@ -143,7 +143,7 @@ public class DatasetRest {
   }
 
   @Operation(summary = "Get dataset details", 
-      description = "Retrieve comprehensive details and configuration for a specific dataset",
+      description = "Retrieve details and configuration for a specific dataset",
       operationId = "data:dataset:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Dataset details retrieved successfully")})
@@ -165,7 +165,7 @@ public class DatasetRest {
   }
 
   @Operation(summary = "Query dataset list", 
-      description = "Retrieve paginated list of datasets with comprehensive filtering and search options",
+      description = "Retrieve paginated list of datasets with filtering and search options",
       operationId = "data:dataset:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Dataset list retrieved successfully")})
@@ -176,7 +176,7 @@ public class DatasetRest {
   }
 
   @Operation(summary = "Export datasets", 
-      description = "Export datasets to external files with comprehensive format support and configuration options",
+      description = "Export datasets to external files with format support and configuration options",
       operationId = "data:dataset:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Datasets exported successfully")

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Authorization", description = "Scenario Authorization Management API - Comprehensive access control system for managing data permissions, user roles, and security policies for test scenarios.")
+@Tag(name = "Scenario Authorization", description = "Scenario Authorization Management API - Access control system for managing data permissions, user roles, and security policies for test scenarios")
 @Validated
 @RestController
 @RequestMapping("/api/v1/scenario")
@@ -45,7 +45,7 @@ public class ScenarioAuthRest {
   private ScenarioAuthFacade scenarioAuthFacade;
 
   @Operation(summary = "Create scenario authorization",
-      description = "Create new authorization rules for scenario access control and permission management.",
+      description = "Create new authorization rules for scenario access control and permission management",
       operationId = "scenario:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Scenario authorization created successfully")})
@@ -58,7 +58,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Replace scenario authorization",
-      description = "Replace existing authorization configuration with new permission settings.",
+      description = "Replace existing authorization configuration with new permission settings",
       operationId = "scenario:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario authorization replaced successfully"),
@@ -73,7 +73,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Enable or disable scenario authorization",
-      description = "Toggle authorization status to control access to the scenario.",
+      description = "Toggle authorization status to control access to the scenario",
       operationId = "scenario:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Authorization status updated successfully"),
@@ -88,7 +88,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Query scenario authorization status",
-      description = "Retrieve current authorization status for the specified scenario.",
+      description = "Retrieve current authorization status for the specified scenario",
       operationId = "scenario:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Authorization status retrieved successfully"),
@@ -101,7 +101,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Delete scenario authorization",
-      description = "Remove authorization record and revoke associated permissions.",
+      description = "Remove authorization record and revoke associated permissions",
       operationId = "scenario:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Scenario authorization deleted successfully")})
@@ -113,7 +113,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Query user's scenario permissions",
-      description = "Retrieve all permissions granted to a specific user for the scenario.",
+      description = "Retrieve all permissions granted to a specific user for the scenario",
       operationId = "scenario:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User permissions retrieved successfully"),
@@ -128,7 +128,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Query current user's scenario permissions",
-      description = "Retrieve permissions for the currently authenticated user on the specified scenario.",
+      description = "Retrieve permissions for the currently authenticated user on the specified scenario",
       operationId = "scenario:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Current user permissions retrieved successfully"),
@@ -142,7 +142,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Check user authorization permission",
-      description = "Verify if a user has specific permission or administrator access to the scenario.",
+      description = "Verify if a user has specific permission or administrator access to the scenario",
       operationId = "scenario:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Authorization check completed successfully")})
@@ -158,7 +158,7 @@ public class ScenarioAuthRest {
   }
 
   @Operation(summary = "Query scenario authorization list",
-      description = "Retrieve paginated list of all authorization records with filtering capabilities.",
+      description = "Retrieve paginated list of all authorization records with filtering capabilities",
       operationId = "scenario:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Authorization list retrieved successfully")})

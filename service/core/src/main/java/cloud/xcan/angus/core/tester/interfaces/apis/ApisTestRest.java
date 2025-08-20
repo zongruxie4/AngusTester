@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "APIs Testing", description = "APIs Testing Management - Comprehensive APIs for user test management, historical results tracking, test configuration management, and execution control")
+@Tag(name = "APIs Testing", description = "APIs Testing Management - APIs for user test management, historical results tracking, test configuration management, and execution control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")

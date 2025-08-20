@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Analysis APIs", description = "API Resource Analytics - Comprehensive monitoring and statistical analysis of API resource creation, status tracking, and testing result aggregation")
+@Tag(name = "Analysis APIs", description = "API Resource Analytics - Monitoring and statistical analysis of API resource creation, status tracking, and testing result aggregation")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis")
@@ -28,7 +28,7 @@ public class AnalysisApisRest {
   private AnalysisApisFacade analysisAngusApisFacade;
 
   @Operation(summary = "API and service creation statistics", 
-      description = "Retrieve comprehensive statistics on API and service resource creation patterns and trends",
+      description = "Retrieve statistics on API and service resource creation patterns and trends",
       operationId = "analysis:apis:resources:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API creation statistics retrieved successfully")})
@@ -39,7 +39,7 @@ public class AnalysisApisRest {
   }
 
   @Operation(summary = "API testing result statistics", 
-      description = "Query and analyze API testing results with comprehensive metrics and performance indicators",
+      description = "Query and analyze API testing results with metrics and performance indicators",
       operationId = "analysis:apis:test:result:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API testing result statistics retrieved successfully")})

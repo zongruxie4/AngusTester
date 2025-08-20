@@ -22,7 +22,6 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 

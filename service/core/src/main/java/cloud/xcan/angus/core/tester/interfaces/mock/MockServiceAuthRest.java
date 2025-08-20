@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Service Authorization", description = "Mock Service Access Control - Comprehensive management of data permissions and authorization policies for mock services with granular access control")
+@Tag(name = "Mock Service Authorization", description = "Mock Service Access Control - Management of data permissions and authorization policies for mock services with granular access control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/service")
@@ -43,7 +43,7 @@ public class MockServiceAuthRest {
   private MockServiceAuthFacade mockServiceAuthFacade;
 
   @Operation(summary = "Add mock service authorization",
-      description = "Create new authorization policy for mock service with comprehensive permission management",
+      description = "Create new authorization policy for mock service with permission management",
       operationId = "mock:service:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Mock service authorization created successfully")})
@@ -56,7 +56,7 @@ public class MockServiceAuthRest {
   }
 
   @Operation(summary = "Replace mock service authorization",
-      description = "Update existing authorization policy for mock service with comprehensive permission modifications",
+      description = "Update existing authorization policy for mock service with permission modifications",
       operationId = "mock:service:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service authorization replaced successfully"),
@@ -99,7 +99,7 @@ public class MockServiceAuthRest {
   }
 
   @Operation(summary = "Delete mock service authorization",
-      description = "Remove authorization policy from mock service with comprehensive cleanup",
+      description = "Remove authorization policy from mock service with cleanup",
       operationId = "mock:service:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Mock service authorization deleted successfully")})
@@ -111,7 +111,7 @@ public class MockServiceAuthRest {
   }
 
   @Operation(summary = "Query user authorization permissions for mock service",
-      description = "Retrieve comprehensive user authorization permissions for mock service with administrative override support",
+      description = "Retrieve user authorization permissions for mock service with administrative override support",
       operationId = "mock:service:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User authorization permissions retrieved successfully"),
@@ -126,7 +126,7 @@ public class MockServiceAuthRest {
   }
 
   @Operation(summary = "Check user authorization permission for mock service",
-      description = "Verify specific authorization permission for user on mock service with comprehensive validation",
+      description = "Verify specific authorization permission for user on mock service with validation",
       operationId = "mock:service:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User authorization permission verified successfully")})
@@ -141,7 +141,7 @@ public class MockServiceAuthRest {
   }
 
   @Operation(summary = "Query mock service authorization list",
-      description = "Retrieve paginated list of authorization policies for mock service with comprehensive filtering",
+      description = "Retrieve paginated list of authorization policies for mock service with filtering",
       operationId = "mock:service:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock service authorization list retrieved successfully")})

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Node - Internal", description = "Internal Node Procurement API - Internal service interfaces for cloud node resource purchase, renewal, and lifecycle management workflows.")
+@Tag(name = "Node - Internal", description = "Internal Node Procurement API - Internal service interfaces for cloud node resource purchase, renewal, and lifecycle management workflows")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/node")

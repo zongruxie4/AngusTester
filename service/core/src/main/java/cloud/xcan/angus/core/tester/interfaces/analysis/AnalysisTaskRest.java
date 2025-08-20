@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Analysis Task", description = "Task Management Analytics - Comprehensive analytics for R&D task management including sprints, backlogs, tasks, bugs, progress tracking, efficiency metrics, and performance insights")
+@Tag(name = "Analysis Task", description = "Task Management Analytics - Analytics for R&D task management including sprints, backlogs, tasks, bugs, progress tracking, efficiency metrics, and performance insights")
 @Validated
 @RestController
 @RequestMapping("/api/v1/analysis/task")

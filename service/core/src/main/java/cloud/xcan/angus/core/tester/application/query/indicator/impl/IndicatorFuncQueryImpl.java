@@ -24,6 +24,7 @@ import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncListRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncRepo;
 import cloud.xcan.angus.core.tester.domain.indicator.IndicatorFuncSearchRepo;
 import cloud.xcan.angus.remote.message.SysException;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -86,10 +87,10 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
       protected IndicatorFunc process() {
         // Retrieve functional indicator from database
         IndicatorFunc funcDb = indicatorFuncRepo.findByTargetIdAndTargetType(targetId, targetType);
-        
+
         // Validate that the indicator exists
         assertResourceNotFound(isNotEmpty(funcDb), targetId, "IndicatorFunc");
-        
+
         // Enrich indicator with target name information
         assembleTargetName(funcDb, targetType, targetId);
         return funcDb;
@@ -128,10 +129,10 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
         try {
           // Retrieve tenant-specific platform settings
           SettingTenant setting = settingTenantManager.checkAndFindSetting(getOptTenantId());
-          
+
           // Convert platform data to indicator format
           IndicatorFunc func = toIndicatorFunc(setting.getFuncData(), targetId, targetType);
-          
+
           // Enrich indicator with target name information
           assembleTargetName(func, targetType, targetId);
           return func;
@@ -205,7 +206,7 @@ public class IndicatorFuncQueryImpl implements IndicatorFuncQuery {
       Long targetId) {
     // Retrieve combined target information including name
     CombinedTarget combinedTarget = commonQuery.getCombinedTarget(targetType, targetId, true);
-    
+
     // Set target name on the indicator
     func.setTargetName(combinedTarget.getTargetName());
   }

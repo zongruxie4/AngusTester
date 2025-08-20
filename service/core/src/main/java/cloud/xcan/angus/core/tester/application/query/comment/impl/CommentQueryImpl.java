@@ -27,7 +27,6 @@ import cloud.xcan.angus.core.tester.domain.comment.summary.CommentSummary;
 import cloud.xcan.angus.core.tester.domain.comment.summary.CommentTreeSummary;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

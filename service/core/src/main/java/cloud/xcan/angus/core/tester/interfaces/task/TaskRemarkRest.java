@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task Remark", description = "Task Remark Management API - Comprehensive comment and annotation system for task collaboration including threaded discussions and contextual notes.")
+@Tag(name = "Task Remark", description = "Task Remark Management API - Comment and annotation system for task collaboration including threaded discussions and contextual notes")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task/remark")
@@ -36,7 +36,7 @@ public class TaskRemarkRest {
   @Resource
   private TaskRemarkFacade taskRemarkFacade;
 
-  @Operation(summary = "Add task remark/comment", operationId = "task:remark:add", description = "Create a new remark or comment on a task for collaboration, feedback, or contextual information sharing.")
+  @Operation(summary = "Add task remark/comment", operationId = "task:remark:add", description = "Create a new remark or comment on a task for collaboration, feedback, or contextual information sharing")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task remark created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -45,7 +45,7 @@ public class TaskRemarkRest {
     return ApiLocaleResult.success(taskRemarkFacade.add(dto));
   }
 
-  @Operation(summary = "Delete task remark", operationId = "task:remark:delete", description = "Permanently remove a specific remark or comment from a task, including all associated metadata.")
+  @Operation(summary = "Delete task remark", operationId = "task:remark:delete", description = "Permanently remove a specific remark or comment from a task, including all associated metadata")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Task remark deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,7 +55,7 @@ public class TaskRemarkRest {
     taskRemarkFacade.delete(id);
   }
 
-  @Operation(summary = "Get paginated task remarks list", operationId = "task:remark:list", description = "Retrieve a paginated list of task remarks with filtering options for task, author, and date range criteria.")
+  @Operation(summary = "Get paginated task remarks list", operationId = "task:remark:list", description = "Retrieve a paginated list of task remarks with filtering options for task, author, and date range criteria")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task remarks list retrieved successfully")})
   @GetMapping

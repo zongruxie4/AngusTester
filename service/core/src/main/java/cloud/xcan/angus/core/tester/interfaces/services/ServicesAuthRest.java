@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Services Authorization", description = "Service Authorization Management API - Comprehensive access control system for service permissions and user authorization management.")
+@Tag(name = "Services Authorization", description = "Service Authorization Management API - Access control system for service permissions and user authorization management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/services")
@@ -45,7 +45,7 @@ public class ServicesAuthRest {
   private ServicesAuthFacade servicesAuthFacade;
 
   @Operation(summary = "Add service authorization",
-      description = "Create new authorization configuration for service access control.",
+      description = "Create new authorization configuration for service access control",
       operationId = "services:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Service authorization created successfully")})
@@ -58,7 +58,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Replace service authorization",
-      description = "Update existing authorization configuration with new permission settings.",
+      description = "Update existing authorization configuration with new permission settings",
       operationId = "services:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service authorization replaced successfully"),
@@ -73,7 +73,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Delete service authorization",
-      description = "Remove authorization configuration and revoke access permissions.",
+      description = "Remove authorization configuration and revoke access permissions",
       operationId = "services:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Service authorization deleted successfully")})
@@ -85,7 +85,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Enable or disable service authorization",
-      description = "Toggle authorization control status for service access management.",
+      description = "Toggle authorization control status for service access management",
       operationId = "services:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service authorization status updated successfully"),
@@ -100,7 +100,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Query service authorization status",
-      description = "Retrieve current authorization control status for service access.",
+      description = "Retrieve current authorization control status for service access",
       operationId = "services:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service authorization status retrieved successfully"),
@@ -113,7 +113,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Enable or disable service APIs authorization",
-      description = "Toggle authorization control status for service APIs access management.",
+      description = "Toggle authorization control status for service APIs access management",
       operationId = "services:apis:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service APIs authorization status updated successfully")})
@@ -127,7 +127,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Query user service permissions",
-      description = "Retrieve specific user's authorization permissions for service access.",
+      description = "Retrieve specific user's authorization permissions for service access",
       operationId = "services:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User service permissions retrieved successfully"),
@@ -142,7 +142,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Query current user service permissions",
-      description = "Retrieve current authenticated user's authorization permissions for service access.",
+      description = "Retrieve current authenticated user's authorization permissions for service access",
       operationId = "services:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Current user service permissions retrieved successfully"),
@@ -156,7 +156,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Check user service permission",
-      description = "Verify specific user's authorization permission or administrator access for service.",
+      description = "Verify specific user's authorization permission or administrator access for service",
       operationId = "services:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User permission verification successful")})
@@ -171,7 +171,7 @@ public class ServicesAuthRest {
   }
 
   @Operation(summary = "Query service authorization list",
-      description = "Retrieve paginated list of service authorization configurations with filtering capabilities.",
+      description = "Retrieve paginated list of service authorization configurations with filtering capabilities",
       operationId = "services:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Service authorization list retrieved successfully")})

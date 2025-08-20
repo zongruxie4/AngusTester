@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task Test", description = "Task Test Associations and Results API - Comprehensive query system for task-related test resources, execution results, and performance analytics.")
+@Tag(name = "Task Test", description = "Task Test Associations and Results API - Query system for task-related test resources, execution results, and performance analytics")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -30,7 +30,7 @@ public class TaskTestRest {
   @Resource
   private TaskTestFacade taskTestFacade;
 
-  @Operation(summary = "Get task-associated test resources", operationId = "task:assoc:list", description = "Retrieve all test resources associated with a specific task, organized by script type for comprehensive test coverage analysis.")
+  @Operation(summary = "Get task-associated test resources", operationId = "task:assoc:list", description = "Retrieve all test resources associated with a specific task, organized by script type for test coverage analysis")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task-associated test resources retrieved successfully")})
   @GetMapping("/{taskType}/{targetId}/test/association")
@@ -40,7 +40,7 @@ public class TaskTestRest {
     return ApiLocaleResult.success(taskTestFacade.assocList(taskType, targetId));
   }
 
-  @Operation(summary = "Get task test execution results", operationId = "apis:test:result:info", description = "Retrieve detailed test execution results for a specific task, including performance metrics, success rates, and execution summaries.")
+  @Operation(summary = "Get task test execution results", operationId = "apis:test:result:info", description = "Retrieve detailed test execution results for a specific task, including performance metrics, success rates, and execution summaries")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task test results retrieved successfully")})
   @GetMapping(value = "/{taskType}/{targetId}/{testType}/result")

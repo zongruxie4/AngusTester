@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Variable", description = "Test Variable Management - Comprehensive APIs for declaring, maintaining, and managing test variables including environment variables, global parameters, and dynamic value processing")
+@Tag(name = "Variable", description = "Test Variable Management - APIs for declaring, maintaining, and managing test variables including environment variables, global parameters, and dynamic value processing")
 @Validated
 @RestController
 @RequestMapping("/api/v1/variable")
@@ -55,7 +55,7 @@ public class VariableRest {
   private VariableFacade variableFacade;
 
   @Operation(summary = "Create new variable", 
-      description = "Create a new test variable with comprehensive configuration and value processing settings",
+      description = "Create a new test variable with configuration and value processing settings",
       operationId = "data:variable:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Variable created successfully")})
@@ -79,7 +79,7 @@ public class VariableRest {
   }
 
   @Operation(summary = "Replace variable", 
-      description = "Replace existing variable with complete new configuration and value processing settings",
+      description = "Replace existing variable with new configuration and value processing settings",
       operationId = "data:variable:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Variable replaced successfully"),
@@ -104,7 +104,7 @@ public class VariableRest {
   }
 
   @Operation(summary = "Import variables", 
-      description = "Import variables from external files with comprehensive format support and validation",
+      description = "Import variables from external files with format support and validation",
       operationId = "data:variable:import")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Variables imported successfully")})
@@ -141,7 +141,7 @@ public class VariableRest {
   }
 
   @Operation(summary = "Get variable details", 
-      description = "Retrieve comprehensive details and configuration for a specific variable",
+      description = "Retrieve details and configuration for a specific variable",
       operationId = "data:variable:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Variable details retrieved successfully")})
@@ -162,7 +162,7 @@ public class VariableRest {
   }
 
   @Operation(summary = "Query variable list", 
-      description = "Retrieve paginated list of variables with comprehensive filtering and search options",
+      description = "Retrieve paginated list of variables with filtering and search options",
       operationId = "data:variable:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Variable list retrieved successfully")})
@@ -172,7 +172,7 @@ public class VariableRest {
   }
 
   @Operation(summary = "Export variables", 
-      description = "Export variables to external files with comprehensive format support and configuration options",
+      description = "Export variables to external files with format support and configuration options",
       operationId = "data:variable:export")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Variables exported successfully")

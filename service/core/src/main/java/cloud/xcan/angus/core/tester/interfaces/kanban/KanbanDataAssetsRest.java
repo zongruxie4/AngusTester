@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Kanban - Data Assets", description = "Data Assets Analytics - Comprehensive platform-wide business data growth trends and categorical statistics for resource utilization analysis and strategic planning")
+@Tag(name = "Kanban - Data Assets", description = "Data Assets Analytics - Platform-wide business data growth trends and categorical statistics for resource utilization analysis and strategic planning")
 @Validated
 @RestController
 @RequestMapping("/api/v1/kanban/dataassets")
@@ -42,7 +42,7 @@ public class KanbanDataAssetsRest {
   private KanbanDataAssetsFacade kanbanDataAssetsFacade;
 
   @Operation(summary = "Query data assets growth trend analysis",
-      description = "Retrieve comprehensive growth trend data for various business assets with time series analysis for strategic planning",
+      description = "Retrieve growth trend data for various business assets with time series analysis for strategic planning",
       operationId = "kanban:dataassets:growthtrend")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Data assets growth trend retrieved successfully"),
@@ -54,7 +54,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "Functional testing resources statistics",
-      description = "Generate comprehensive statistics for functional testing resources including test cases, plans, and execution metrics",
+      description = "Generate statistics for functional testing resources including test cases, plans, and execution metrics",
       operationId = "kanban:dataassets:func:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional testing resources statistics generated successfully")})
@@ -65,7 +65,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "API resources statistics",
-      description = "Generate comprehensive statistics for API resources including endpoints, services, and integration metrics",
+      description = "Generate statistics for API resources including endpoints, services, and integration metrics",
       operationId = "kanban:dataassets:apis:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "API resources statistics generated successfully")})
@@ -76,7 +76,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "Scenario resources statistics",
-      description = "Generate comprehensive statistics for test scenario resources including scenario definitions and execution metrics",
+      description = "Generate statistics for test scenario resources including scenario definitions and execution metrics",
       operationId = "kanban:dataassets:scenario:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario resources statistics generated successfully")})
@@ -87,7 +87,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "Task resources statistics",
-      description = "Generate comprehensive statistics for task resources including task assignments, progress tracking, and completion metrics",
+      description = "Generate statistics for task resources including task assignments, progress tracking, and completion metrics",
       operationId = "kanban:dataassets:task:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task resources statistics generated successfully")})
@@ -98,7 +98,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "Script resources statistics",
-      description = "Generate comprehensive statistics for script resources including automation scripts and execution metrics",
+      description = "Generate statistics for script resources including automation scripts and execution metrics",
       operationId = "kanban:dataassets:script:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script resources statistics generated successfully")})
@@ -111,7 +111,7 @@ public class KanbanDataAssetsRest {
   // Plan -> Do in funcResourcesStatistics() and taskResourcesStatistics() with main resources
 
   @Operation(summary = "Mock resources statistics",
-      description = "Generate comprehensive statistics for mock service resources including mock endpoints and usage metrics",
+      description = "Generate statistics for mock service resources including mock endpoints and usage metrics",
       operationId = "kanban:dataassets:mock:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock resources statistics generated successfully")})
@@ -122,7 +122,7 @@ public class KanbanDataAssetsRest {
   }
 
   @Operation(summary = "Data resources statistics",
-      description = "Generate comprehensive statistics for data resources including datasets, variables, and datasource metrics",
+      description = "Generate statistics for data resources including datasets, variables, and datasource metrics",
       operationId = "kanban:dataassets:data:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Data resources statistics generated successfully")})

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "API Authorization", description = "API Authorization Management - Comprehensive APIs for managing user access permissions, authorization controls, and security policies for API resources")
+@Tag(name = "API Authorization", description = "API Authorization Management - APIs for managing user access permissions, authorization controls, and security policies for API resources")
 @Validated
 @RestController
 @RequestMapping("/api/v1/apis")

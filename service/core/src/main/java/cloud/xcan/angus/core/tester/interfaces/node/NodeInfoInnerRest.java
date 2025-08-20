@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Node Info - Internal", description = "Internal Node Management API - Internal service interfaces for node information management and agent control operations.")
+@Tag(name = "Node Info - Internal", description = "Internal Node Management API - Internal service interfaces for node information management and agent control operations")
 @Validated
 @RestController
 public class NodeInfoInnerRest {

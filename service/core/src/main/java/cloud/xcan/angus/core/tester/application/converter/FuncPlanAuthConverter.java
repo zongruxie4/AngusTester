@@ -8,7 +8,6 @@ import cloud.xcan.angus.core.tester.domain.func.plan.auth.FuncPlanPermission;
 import cloud.xcan.angus.idgen.uid.impl.CachedUidGenerator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class FuncPlanAuthConverter {

@@ -7,7 +7,6 @@ import cloud.xcan.angus.core.tester.domain.script.auth.ScriptAuth;
 import cloud.xcan.angus.idgen.UidGenerator;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class ScriptAuthConverter {

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Software Version", description = "Software Version Management API - Comprehensive lifecycle management system for software version control, release planning, and deployment tracking across projects.")
+@Tag(name = "Software Version", description = "Software Version Management API - Lifecycle management system for software version control, release planning, and deployment tracking across projects")
 @Validated
 @RestController
 @RequestMapping("/api/v1/software/version")
@@ -47,7 +47,7 @@ public class SoftwareVersionRest {
   @Resource
   private SoftwareVersionFacade softwareVersionFacade;
 
-  @Operation(summary = "Create new software version", operationId = "software:version:add", description = "Create a new software version with comprehensive metadata including timeline planning and release documentation.")
+  @Operation(summary = "Create new software version", operationId = "software:version:add", description = "Create a new software version with metadata including timeline planning and release documentation")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Software version created successfully")})
   @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.add(dto));
   }
 
-  @Operation(summary = "Update software version", operationId = "software:version:update", description = "Update existing software version metadata including name, dates, and description.")
+  @Operation(summary = "Update software version", operationId = "software:version:update", description = "Update existing software version metadata including name, dates, and description")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software version updated successfully"),
       @ApiResponse(responseCode = "404", description = "Software version not found")
@@ -67,7 +67,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace or create software version", operationId = "software:version:replace", description = "Replace existing software version or create new one based on identifier presence.")
+  @Operation(summary = "Replace or create software version", operationId = "software:version:replace", description = "Replace existing software version or create new one based on identifier presence")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software version replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Software version not found")
@@ -78,7 +78,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.replace(dto));
   }
 
-  @Operation(summary = "Modify software version status", operationId = "software:version:status:modify", description = "Update the lifecycle status of a software version for workflow management.")
+  @Operation(summary = "Modify software version status", operationId = "software:version:status:modify", description = "Update the lifecycle status of a software version for workflow management")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software version status modified successfully"),
       @ApiResponse(responseCode = "404", description = "Software version not found")})
@@ -91,7 +91,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Merge software versions", operationId = "software:version:merge", description = "Merge source version into target version, consolidating version history and artifacts.")
+  @Operation(summary = "Merge software versions", operationId = "software:version:merge", description = "Merge source version into target version, consolidating version history and artifacts")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software versions merged successfully"),
       @ApiResponse(responseCode = "404", description = "Software version not found")})
@@ -103,7 +103,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Delete software versions", operationId = "software:version:delete", description = "Permanently remove multiple software versions from the system.")
+  @Operation(summary = "Delete software versions", operationId = "software:version:delete", description = "Permanently remove multiple software versions from the system")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Software versions deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -113,7 +113,7 @@ public class SoftwareVersionRest {
     softwareVersionFacade.delete(ids);
   }
 
-  @Operation(summary = "Get software version details", operationId = "software:version:detail", description = "Retrieve comprehensive details of a specific software version including metadata and relationships.")
+  @Operation(summary = "Get software version details", operationId = "software:version:detail", description = "Retrieve details of a specific software version including metadata and relationships")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software version details retrieved successfully"),
       @ApiResponse(responseCode = "404", description = "Software version not found")})
@@ -123,7 +123,7 @@ public class SoftwareVersionRest {
     return ApiLocaleResult.success(softwareVersionFacade.detail(id));
   }
 
-  @Operation(summary = "List software versions", operationId = "software:version:list", description = "Retrieve paginated list of software versions with filtering and sorting capabilities.")
+  @Operation(summary = "List software versions", operationId = "software:version:list", description = "Retrieve paginated list of software versions with filtering and sorting capabilities")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Software version list retrieved successfully")})
   @GetMapping

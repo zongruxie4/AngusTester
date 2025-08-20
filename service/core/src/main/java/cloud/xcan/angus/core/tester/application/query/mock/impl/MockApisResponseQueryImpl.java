@@ -12,6 +12,7 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.MockApis;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponse;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponseRepo;
 import cloud.xcan.angus.remote.message.http.ResourceExisted;
+import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.utils.ObjectUtils;
 import jakarta.annotation.Resource;
 import java.util.List;
@@ -68,7 +69,7 @@ public class MockApisResponseQueryImpl implements MockApisResponseQuery {
       protected void checkParams() {
         // Validate that the Mock API exists and retrieve it
         MockApis mockApis = mockApisQuery.checkAndFind(apisId);
-        
+
         // Validate user authorization for viewing responses from the Mock API
         mockServiceAuthQuery.checkViewAuth(getUserId(), mockApis.getMockServiceId());
       }
@@ -99,7 +100,7 @@ public class MockApisResponseQueryImpl implements MockApisResponseQuery {
       // Group responses by Mock API ID for efficient batch processing
       Map<Long, List<MockApisResponse>> apisResponsesMap = apisResponses0.stream()
           .collect(Collectors.groupingBy(MockApisResponse::getMockApisId));
-      
+
       for (Entry<Long, List<MockApisResponse>> entry : apisResponsesMap.entrySet()) {
         // Check for duplicate names within the provided response list
         List<MockApisResponse> mockApisResponses = entry.getValue().stream()

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Execution Debug", description = "Scenario & Script Debugging Management - Comprehensive APIs for execution debugging, result inspection, and step-by-step analysis with real-time debugging capabilities")
+@Tag(name = "Execution Debug", description = "Scenario & Script Debugging Management - APIs for execution debugging, result inspection, and step-by-step analysis with real-time debugging capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/exec/debug")
@@ -33,7 +33,7 @@ public class ExecDebugRest {
   private ExecDebugFacade execDebugFacade;
 
   @Operation(summary = "Start execution debug session", 
-      description = "Initiate a new execution debug session with comprehensive debugging configuration and real-time monitoring",
+      description = "Initiate a new execution debug session with debugging configuration and real-time monitoring",
       operationId = "exec:debug:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Execution debug session started successfully")
@@ -44,7 +44,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Start debug execution by script", 
-      description = "Initiate script-based debug execution with comprehensive script analysis and debugging capabilities",
+      description = "Initiate script-based debug execution with script analysis and debugging capabilities",
       operationId = "exec:debug:script:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script debug execution started successfully")
@@ -56,7 +56,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Start debug execution by scenario", 
-      description = "Initiate scenario-based debug execution with comprehensive scenario analysis and debugging capabilities",
+      description = "Initiate scenario-based debug execution with scenario analysis and debugging capabilities",
       operationId = "exec:debug:scenario:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario debug execution started successfully")
@@ -68,7 +68,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Start debug execution by monitor", 
-      description = "Initiate monitor-based debug execution with comprehensive monitoring analysis and debugging capabilities",
+      description = "Initiate monitor-based debug execution with monitoring analysis and debugging capabilities",
       operationId = "exec:debug:monitor:start")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Monitor debug execution started successfully")
@@ -80,7 +80,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Get script debug execution details", 
-      description = "Retrieve comprehensive script debug execution details including step-by-step analysis and debugging information",
+      description = "Retrieve script debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:script:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script debug execution details retrieved successfully"),
@@ -92,7 +92,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Get scenario debug execution details", 
-      description = "Retrieve comprehensive scenario debug execution details including step-by-step analysis and debugging information",
+      description = "Retrieve scenario debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:scenario:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario debug execution details retrieved successfully"),
@@ -104,7 +104,7 @@ public class ExecDebugRest {
   }
 
   @Operation(summary = "Get monitor debug execution details", 
-      description = "Retrieve comprehensive monitor debug execution details including step-by-step analysis and debugging information",
+      description = "Retrieve monitor debug execution details including step-by-step analysis and debugging information",
       operationId = "exec:debug:monitor:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Monitor debug execution details retrieved successfully"),

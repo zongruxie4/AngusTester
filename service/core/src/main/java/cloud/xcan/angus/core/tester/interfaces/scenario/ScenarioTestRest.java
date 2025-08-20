@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Scenario Test", description = "Scenario Testing Management API - End-user interfaces for executing, configuring, and tracking custom test scenarios with comprehensive result analysis.")
+@Tag(name = "Scenario Test", description = "Scenario Testing Management API - End-user interfaces for executing, configuring, and tracking custom test scenarios with result analysis")
 @Validated
 @RestController
 @RequestMapping("/api/v1")
@@ -46,7 +46,7 @@ public class ScenarioTestRest {
   private ScenarioTestFacade scenarioTestFacade;
 
   @Operation(summary = "Enable or disable scenario testing",
-      description = "Configure test types for scenario execution and include results in performance analysis.",
+      description = "Configure test types for scenario execution and include results in performance analysis",
       operationId = "scenario:test:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario testing configuration updated successfully"),
@@ -62,7 +62,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Query enabled test types for scenario",
-      description = "Retrieve all enabled test types configured for the specified scenario.",
+      description = "Retrieve all enabled test types configured for the specified scenario",
       operationId = "scenario:test:enabled:find")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Enabled test types retrieved successfully"),
@@ -75,7 +75,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Query project test scenario count",
-      description = "Get comprehensive count of test scenarios and their execution statistics for the project.",
+      description = "Get count of test scenarios and their execution statistics for the project",
       operationId = "project:test:scenario:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Project test scenario count retrieved successfully"),
@@ -89,7 +89,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Generate scenario testing tasks",
-      description = "Configure and create testing tasks for scenario execution with sprint integration.",
+      description = "Configure and create testing tasks for scenario execution with sprint integration",
       operationId = "scenario:test:task:generate")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Testing tasks generated successfully"),
@@ -105,7 +105,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Restart scenario testing tasks",
-      description = "Restart existing testing tasks for the specified scenario.",
+      description = "Restart existing testing tasks for the specified scenario",
       operationId = "scenario:test:task:restart")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Testing tasks restarted successfully"),
@@ -118,7 +118,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Reopen scenario testing tasks",
-      description = "Reopen existing testing tasks for the specified scenario.",
+      description = "Reopen existing testing tasks for the specified scenario",
       operationId = "scenario:test:task:reopen")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Testing tasks reopened successfully"),
@@ -131,7 +131,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Delete scenario testing tasks",
-      description = "Remove testing tasks for specified test types of the scenario.",
+      description = "Remove testing tasks for specified test types of the scenario",
       operationId = "scenario:test:task:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Testing tasks deleted successfully")})
@@ -144,7 +144,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Query scenario server configurations",
-      description = "Retrieve all server configurations associated with the scenario for testing.",
+      description = "Retrieve all server configurations associated with the scenario for testing",
       operationId = "scenario:test:schema:server:all")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Server configurations retrieved successfully"),
@@ -157,7 +157,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Create scenario test execution",
-      description = "Initiate test execution for the scenario with optional server configurations. Note: Only HTTP servers are supported.",
+      description = "Initiate test execution for the scenario with optional server configurations. Note: Only HTTP servers are supported",
       operationId = "scenario:test:exec:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test execution created successfully"),
@@ -172,7 +172,7 @@ public class ScenarioTestRest {
   }
 
   @Operation(summary = "Query scenario test results",
-      description = "Retrieve comprehensive test results and analysis for the specified scenario.",
+      description = "Retrieve test results and analysis for the specified scenario",
       operationId = "scenario:test:result:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Test results retrieved successfully")})

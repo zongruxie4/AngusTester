@@ -36,6 +36,7 @@ import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponse;
 import cloud.xcan.angus.core.tester.domain.mock.apis.response.MockApisResponseRepo;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockService;
 import cloud.xcan.angus.core.tester.domain.mock.service.MockServiceInfo;
+import cloud.xcan.angus.remote.message.http.ResourceExisted;
 import cloud.xcan.angus.remote.message.http.ResourceNotFound;
 import cloud.xcan.angus.spec.http.PathMatchers;
 import jakarta.annotation.Resource;

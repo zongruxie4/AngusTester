@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Mock Apis", description = "Mock API Management - Comprehensive unified management portal for creating, simulating, and organizing mock APIs with full lifecycle management capabilities")
+@Tag(name = "Mock Apis", description = "Mock API Management - Unified management portal for creating, simulating, and organizing mock APIs with full lifecycle management capabilities")
 @Validated
 @RestController
 @RequestMapping("/api/v1/mock/apis")
@@ -49,7 +49,7 @@ public class MockApisRest {
   private MockApisFacade mockApisFacade;
 
   @Operation(summary = "Create mock APIs",
-      description = "Create new mock API definitions with comprehensive configuration for API simulation and testing",
+      description = "Create new mock API definitions with configuration for API simulation and testing",
       operationId = "mock:apis:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Mock APIs created successfully")})
@@ -75,7 +75,7 @@ public class MockApisRest {
   }
 
   @Operation(summary = "Replace mock APIs",
-      description = "Replace existing mock API configurations with complete new definitions for comprehensive updates",
+      description = "Replace existing mock API configurations with new definitions for updates",
       operationId = "mock:apis:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock APIs replaced successfully")
@@ -180,7 +180,7 @@ public class MockApisRest {
   }
 
   @Operation(summary = "Delete mock APIs",
-      description = "Remove mock API definitions from system with comprehensive cleanup",
+      description = "Remove mock API definitions from system with cleanup",
       operationId = "mock:apis:delete")
   @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Mock APIs deleted successfully")})
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -192,7 +192,7 @@ public class MockApisRest {
   }
 
   @Operation(summary = "Query mock API details",
-      description = "Retrieve comprehensive information about specific mock API including configuration and status",
+      description = "Retrieve information about specific mock API including configuration and status",
       operationId = "mock:apis:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock API details retrieved successfully"),
@@ -204,7 +204,7 @@ public class MockApisRest {
   }
 
   @Operation(summary = "Query mock APIs with filtering",
-      description = "Retrieve paginated list of mock APIs with comprehensive filtering and search capabilities",
+      description = "Retrieve paginated list of mock APIs with filtering and search capabilities",
       operationId = "mock:apis:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Mock APIs retrieved successfully")})

@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Script - Internal", description = "Script Internal Management API - Internal system interfaces for programmatic script metadata retrieval and execution record management.")
+@Tag(name = "Script - Internal", description = "Script Internal Management API - Internal system interfaces for programmatic script metadata retrieval and execution record management")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/script")
@@ -40,7 +40,7 @@ public class ScriptInnerRest {
   private ScriptFacade scriptFacade;
 
   @Operation(summary = "Query script detail",
-      description = "Retrieve comprehensive script configuration and metadata for internal processing.",
+      description = "Retrieve script configuration and metadata for internal processing",
       operationId = "script:detail:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script detail retrieved successfully"),
@@ -52,7 +52,7 @@ public class ScriptInnerRest {
   }
 
   @Operation(summary = "Query script info",
-      description = "Retrieve script information and metadata for internal system integration.",
+      description = "Retrieve script information and metadata for internal system integration",
       operationId = "script:info:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script info retrieved successfully"),
@@ -64,7 +64,7 @@ public class ScriptInnerRest {
   }
 
   @Operation(summary = "Query multiple scripts info",
-      description = "Retrieve information for multiple scripts in batch for internal processing.",
+      description = "Retrieve information for multiple scripts in batch for internal processing",
       operationId = "script:infos")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scripts info retrieved successfully"),
@@ -78,7 +78,7 @@ public class ScriptInnerRest {
   }
 
   @Operation(summary = "Query script info list",
-      description = "Retrieve paginated list of script information for internal system management.",
+      description = "Retrieve paginated list of script information for internal system management",
       operationId = "script:info:list:inner")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script info list retrieved successfully"),

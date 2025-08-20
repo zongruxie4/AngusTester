@@ -43,7 +43,6 @@ import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;

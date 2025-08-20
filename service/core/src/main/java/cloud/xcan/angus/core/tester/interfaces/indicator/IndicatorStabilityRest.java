@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Indicator - Stability Test", description = "Stability Test Indicator Management - Comprehensive APIs for configuring stability test profiles (duration, concurrency, error tolerance) with target-based configuration and batch operations")
+@Tag(name = "Indicator - Stability Test", description = "Stability Test Indicator Management - APIs for configuring stability test profiles (duration, concurrency, error tolerance) with target-based configuration and batch operations")
 @Validated
 @RestController
 @RequestMapping("/api/v1/indicator")
@@ -49,7 +49,7 @@ public class IndicatorStabilityRest {
 
   @Unused
   @Operation(summary = "Create stability test indicator", 
-      description = "Create a new stability test indicator with comprehensive configuration for stability parameters",
+      description = "Create a new stability test indicator with configuration for stability parameters",
       operationId = "indicator:stability:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Stability test indicator created successfully")})
@@ -60,7 +60,7 @@ public class IndicatorStabilityRest {
   }
 
   @Operation(summary = "Replace stability test indicator", 
-      description = "Replace an existing stability test indicator with complete new configuration",
+      description = "Replace an existing stability test indicator with new configuration",
       operationId = "indicator:stability:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stability test indicator replaced successfully"),
@@ -99,7 +99,7 @@ public class IndicatorStabilityRest {
   }
 
   @Operation(summary = "Get stability test indicator details", 
-      description = "Retrieve comprehensive details of stability test indicator for a specific target",
+      description = "Retrieve details of stability test indicator for a specific target",
       operationId = "indicator:stability:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stability test indicator details retrieved successfully"),
@@ -125,7 +125,7 @@ public class IndicatorStabilityRest {
   }
 
   @Operation(summary = "List stability test indicators", 
-      description = "Retrieve paginated list of stability test indicators with comprehensive filtering and search options",
+      description = "Retrieve paginated list of stability test indicators with filtering and search options",
       operationId = "indicator:stability:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Stability test indicator list retrieved successfully")})

@@ -8,7 +8,6 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.BACK;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getUserId;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isEmpty;
 import static cloud.xcan.angus.spec.utils.ObjectUtils.isNotEmpty;
-import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 
 import cloud.xcan.angus.core.biz.Biz;
@@ -31,7 +30,6 @@ import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

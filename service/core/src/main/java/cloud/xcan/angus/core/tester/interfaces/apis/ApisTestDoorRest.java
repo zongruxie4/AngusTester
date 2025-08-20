@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "APIs Internal Testing", description = "Internal APIs Testing - Service internal API testing query entrance with comprehensive test type management and internal service integration")
+@Tag(name = "APIs Internal Testing", description = "Internal APIs Testing - Service internal API testing query entrance with test type management and internal service integration")
 @Validated
 @RestController
 @RequestMapping("/innerapi/v1/apis")

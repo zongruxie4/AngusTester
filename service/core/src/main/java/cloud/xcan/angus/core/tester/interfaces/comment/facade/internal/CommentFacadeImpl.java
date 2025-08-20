@@ -18,7 +18,6 @@ import cloud.xcan.angus.core.tester.interfaces.comment.facade.vo.AngusCommentDet
 import cloud.xcan.angus.core.tester.interfaces.comment.facade.vo.AngusCommentTreeVo;
 import jakarta.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component

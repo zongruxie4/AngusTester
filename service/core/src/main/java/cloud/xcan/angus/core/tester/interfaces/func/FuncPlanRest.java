@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Functional Test Plan", description = "Functional Test Plan Management - Comprehensive APIs for creating, maintaining, and managing test plans that define testing scope, methodology, resources, and lifecycle control")
+@Tag(name = "Functional Test Plan", description = "Functional Test Plan Management - APIs for creating, maintaining, and managing test plans that define testing scope, methodology, resources, and lifecycle control")
 @Validated
 @RestController
 @RequestMapping("/api/v1/func/plan")
@@ -47,7 +47,7 @@ public class FuncPlanRest {
   private FuncPlanFacade funcPlanFacade;
 
   @Operation(summary = "Create functional test plan", 
-      description = "Create a new functional test plan with comprehensive configuration for testing scope and methodology",
+      description = "Create a new functional test plan with configuration for testing scope and methodology",
       operationId = "func:plan:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Functional test plan created successfully")})
@@ -71,7 +71,7 @@ public class FuncPlanRest {
   }
 
   @Operation(summary = "Replace functional test plan", 
-      description = "Replace an existing functional test plan with complete new configuration",
+      description = "Replace an existing functional test plan with new configuration",
       operationId = "func:plan:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test plan replaced successfully"),
@@ -178,7 +178,7 @@ public class FuncPlanRest {
   }
 
   @Operation(summary = "Get functional test plan details", 
-      description = "Retrieve comprehensive details of a specific functional test plan for analysis and review",
+      description = "Retrieve details of a specific functional test plan for analysis and review",
       operationId = "func:plan:detail")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test plan details retrieved successfully"),
@@ -190,7 +190,7 @@ public class FuncPlanRest {
   }
 
   @Operation(summary = "List functional test plans", 
-      description = "Retrieve paginated list of functional test plans with comprehensive filtering and search options",
+      description = "Retrieve paginated list of functional test plans with filtering and search options",
       operationId = "func:plan:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Functional test plan list retrieved successfully")})

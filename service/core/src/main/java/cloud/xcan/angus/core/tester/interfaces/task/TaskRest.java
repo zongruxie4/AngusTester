@@ -65,7 +65,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Task", description = "R&D and Testing Task Management API - Comprehensive lifecycle management system for research, development, and testing tasks with full workflow support.")
+@Tag(name = "Task", description = "R&D and Testing Task Management API - Lifecycle management system for research, development, and testing tasks with full workflow support")
 @Validated
 @RestController
 @RequestMapping("/api/v1/task")
@@ -74,7 +74,7 @@ public class TaskRest {
   @Resource
   private TaskFacade taskFacade;
 
-  @Operation(summary = "Create new task", operationId = "task:add", description = "Create a new R&D or testing task with comprehensive metadata including assignments, priorities, and workflow configuration.")
+  @Operation(summary = "Create new task", operationId = "task:add", description = "Create a new R&D or testing task with metadata including assignments, priorities, and workflow configuration")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task created successfully")})
   @ResponseStatus(HttpStatus.OK)
@@ -83,7 +83,7 @@ public class TaskRest {
     return ApiLocaleResult.success(taskFacade.add(dto));
   }
 
-  @Operation(summary = "Update task details", operationId = "task:update", description = "Update specific fields of an existing task while preserving other information and maintaining workflow integrity.")
+  @Operation(summary = "Update task details", operationId = "task:update", description = "Update specific fields of an existing task while preserving other information and maintaining workflow integrity")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task updated successfully"),
       @ApiResponse(responseCode = "404", description = "Task not found")})
@@ -96,7 +96,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace task completely", operationId = "task:replace", description = "Replace all task information with new data, effectively recreating the task with updated comprehensive details.")
+  @Operation(summary = "Replace task completely", operationId = "task:replace", description = "Replace all task information with new data, effectively recreating the task with updated details")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Task not found")})
@@ -109,7 +109,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Rename task", operationId = "task:name:replace", description = "Update the display name of a task for better identification and organization.")
+  @Operation(summary = "Rename task", operationId = "task:name:replace", description = "Update the display name of a task for better identification and organization")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task renamed successfully"),
       @ApiResponse(responseCode = "404", description = "Task not found")})
@@ -122,7 +122,7 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Move task to different sprint", operationId = "task:move", description = "Transfer a task from one sprint to another for better project organization and timeline management.")
+  @Operation(summary = "Move task to different sprint", operationId = "task:move", description = "Transfer a task from one sprint to another for better project organization and timeline management")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Task moved successfully"),
       @ApiResponse(responseCode = "404", description = "Task or sprint not found")

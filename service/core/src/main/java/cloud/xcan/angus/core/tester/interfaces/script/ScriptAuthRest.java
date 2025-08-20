@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Script Authorization", description = "Script Authorization Management API - Comprehensive access control system for test script permissions and user authorization management.")
+@Tag(name = "Script Authorization", description = "Script Authorization Management API - Access control system for test script permissions and user authorization management")
 @Validated
 @RestController
 @RequestMapping("/api/v1/script")
@@ -48,7 +48,7 @@ public class ScriptAuthRest {
   private ScriptAuthFacade scriptAuthFacade;
 
   @Operation(summary = "Add script authorization",
-      description = "Create new authorization configuration for script access control.",
+      description = "Create new authorization configuration for script access control",
       operationId = "script:auth:add")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Script authorization created successfully")})
@@ -61,7 +61,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Replace script authorization",
-      description = "Update existing authorization configuration with new permission settings.",
+      description = "Update existing authorization configuration with new permission settings",
       operationId = "script:auth:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script authorization replaced successfully"),
@@ -76,7 +76,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Enable or disable script authorization",
-      description = "Toggle authorization control status for script access management.",
+      description = "Toggle authorization control status for script access management",
       operationId = "script:auth:enabled")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script authorization status updated successfully")})
@@ -90,7 +90,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Query script authorization status",
-      description = "Retrieve current authorization control status for script access.",
+      description = "Retrieve current authorization control status for script access",
       operationId = "script:auth:status")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script authorization status retrieved successfully"),
@@ -103,7 +103,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Delete script authorization",
-      description = "Remove authorization configuration and revoke access permissions.",
+      description = "Remove authorization configuration and revoke access permissions",
       operationId = "script:auth:delete")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Script authorization deleted successfully")})
@@ -115,7 +115,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Query user script permissions",
-      description = "Retrieve specific user's authorization permissions for script access.",
+      description = "Retrieve specific user's authorization permissions for script access",
       operationId = "script:user:auth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User script permissions retrieved successfully"),
@@ -130,7 +130,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Query current user script permissions",
-      description = "Retrieve current authenticated user's authorization permissions for script access.",
+      description = "Retrieve current authenticated user's authorization permissions for script access",
       operationId = "script:user:auth:current")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Current user script permissions retrieved successfully"),
@@ -144,7 +144,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Query current user permissions for multiple scripts",
-      description = "Retrieve current authenticated user's authorization permissions for multiple scripts.",
+      description = "Retrieve current authenticated user's authorization permissions for multiple scripts",
       operationId = "script:user:auth:current:batch")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Current user script permissions retrieved successfully"),
@@ -158,7 +158,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Check user script permission",
-      description = "Verify specific user's authorization permission or administrator access for script.",
+      description = "Verify specific user's authorization permission or administrator access for script",
       operationId = "script:auth:check")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User permission verification successful")})
@@ -173,7 +173,7 @@ public class ScriptAuthRest {
   }
 
   @Operation(summary = "Query script authorization list",
-      description = "Retrieve paginated list of script authorization configurations with filtering capabilities.",
+      description = "Retrieve paginated list of script authorization configurations with filtering capabilities",
       operationId = "script:auth:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Script authorization list retrieved successfully")})

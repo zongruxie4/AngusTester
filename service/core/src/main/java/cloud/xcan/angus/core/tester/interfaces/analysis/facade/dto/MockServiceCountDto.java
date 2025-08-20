@@ -1,8 +1,8 @@
 package cloud.xcan.angus.core.tester.interfaces.analysis.facade.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Setter
 @Getter

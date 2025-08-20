@@ -12,7 +12,6 @@ import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorHisto
 import cloud.xcan.angus.core.tester.domain.scenario.monitor.ScenarioMonitorStatus;
 import cloud.xcan.angus.spec.http.HttpSender.Request;
 import cloud.xcan.angus.spec.http.HttpSender.Response;
-import java.util.stream.Collectors;
 
 public class ScenarioMonitorHistoryConverter {
 
