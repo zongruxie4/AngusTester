@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import { GridComponent, GridComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
@@ -7,6 +8,8 @@ import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 
 import { ResourceInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -46,7 +49,7 @@ const echartOption :EChartsOption = {
   }],
   yAxis: [{ type: 'value' }],
   series: [{
-    name: '数量',
+    name: t('scenarioHome.chart.quantity'),
     type: 'bar',
     barWidth: '20px',
     data: [],
@@ -118,7 +121,7 @@ onMounted(() => {
 <template>
   <div class="rounded border border-solid border-theme-text-box px-4 py-3.5">
     <div class="font-semibold">
-      <span class="mr-2">总场景</span>
+      <span class="mr-2">{{ t('scenarioHome.chart.totalScenarios') }}</span>
       <span class="text-4">{{ total }}</span>
     </div>
     <div :id="domId" class="w-full h-50"></div>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { ResourceInfo } from './PropsType';
 
@@ -70,7 +73,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">资源统计</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('scenarioHome.chart.resourceStats') }}</div>
     <div class="flex space-x-3.75">
       <ChartBar
         :dataSource="dataSource"

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -37,12 +40,12 @@ const favouriteByParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">我的场景</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('scenarioHome.myScenarios.title') }}</div>
     <Tabs size="small">
       <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的</span>
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.added') }}</span>
             <span>(</span>
             <span>{{ createByMeTotal }}</span>
             <span>)</span>
@@ -58,7 +61,7 @@ const favouriteByParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">关注的</span>
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.followed') }}</span>
             <span>(</span>
             <span>{{ followTotal }}</span>
             <span>)</span>
@@ -74,7 +77,7 @@ const favouriteByParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">收藏的</span>
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.favorited') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>

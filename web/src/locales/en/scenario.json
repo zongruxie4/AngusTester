@@ -1,115 +1,60 @@
 {
-  "welcome": {
-    "title": "Welcome to Angus Scenario!",
-    "description": "Here you and your team can complete the following work:",
-    "features": [
-      "Scenarios can help orchestrate more complex requirements or user stories, compared to single-step test cases, scenarios can contain more steps and processes.",
-      "Add, edit, and debug scenarios online;",
-      "Manage my scenarios and test tasks;",
-      "Conduct scenario functional testing, stability and performance testing to ensure delivery of stable systems that meet performance indicator requirements."
-    ]
-  },
-  "navigation": {
-    "directory": "Directory",
-    "scenario": "Scenario",
-    "execution": "Execution"
-  },
-  "directory": {
-    "description": "Directories are used to organize test scenarios or group test scenarios with similar characteristics, which can be project names or module names, etc. Maximum support for 3 levels, each directory's permissions are independent.",
-    "addDirectory": "Add Directory",
-    "addScenario": "Add Scenario",
-    "httpScenario": "HTTP Scenario",
-    "websocketScenario": "WebSocket Scenario"
-  },
-  "scenario": {
-    "description": "Add and edit test scenarios online; the system provides HTTP and WebSocket protocol scenario orchestration by default, other protocols or middleware need to enter",
-    "cloudStore": "Cloud Store",
-    "installPlugin": "Install corresponding plugin",
-    "executionDescription": "After scenario orchestration and \"execution configuration\" is completed, you can execute functional, performance testing, and stability testing on scenarios",
-    "executeScenario": "Execute Scenario"
-  },
-  "scriptInfo": {
-    "scenarioName": "Scenario Name",
-    "directory": "Directory",
-    "creator": "Creator",
-    "createdTime": "Created Time",
-    "updatedTime": "Updated Time",
-    "permission": "Permission",
-    "description": "Description",
-    "directoryName": "Directory Name",
-    "scenarioCount": "Scenario Count",
-    "addUser": "Add User",
-    "viewPermission": "View Permission",
-    "link": "Link",
-    "password": "Password",
-    "validityPeriod": "Validity Period",
-    "selectDirectory": "Select Directory",
-    "scenarioPerformanceMetrics": "Scenario Performance Metrics",
-    "targetConcurrency": "Target Concurrency (User Count)",
-    "averageResponseTime": "Average Response Time (RT)",
-    "tpsQps": "TPS/QPS",
-    "errorRate": "Error Rate (ERR)",
-    "modifyMetrics": "Modify Metrics",
-    "selectProtocol": "Select Protocol"
-  },
-  "placeholder": {
-    "select": "Please select",
-    "deleteScenario": "Delete scenario",
-    "limitInput": "Limit input to {n} characters",
-    "selectDirectory": "Select directory"
-  },
-  "tips": {
-    "dynamicValues": "To make parameter values in scenarios closer to real business data, the system also provides two dynamic value methods, you can choose parameter value methods according to your business needs.",
-    "uploadComplete": "Upload complete",
-    "uploadFailed": "Upload failed",
-    "copyLinkAndPassword": "Copy link and password",
-    "copySuccess": "Copy successful",
-    "copyFailed": "Copy failed",
-    "deleteData": "Delete data",
-    "saveScenarioSuccess": "Save scenario successful",
-    "addDirectorySuccess": "Add directory successful",
-    "confirmDeleteWithChildren": "Deleting 【{name}】 will delete its subdirectories and scenarios, please confirm whether to delete?",
-    "confirmDeleteWithFiles": "{name} directory contains sub-files, are you sure to delete them together?",
-    "directoryDeleteSuccess": "Directory deleted successfully",
-    "deleteDirectory": "Delete directory",
-    "confirmDeleteScenario": "Deleting scenario will synchronously delete associated follows, favorites, metrics, variables and other information, please confirm whether to delete?",
-    "deleteScenarioSuccess": "Delete {name} scenario successful",
-    "performanceMetricsWarning": "Execution will judge whether test results pass based on set performance metrics; please modify configuration carefully.",
-    "metricsModifySuccess": "Metrics modified successfully",
-    "selectDirectory": "Please select directory"
-  },
-  "buttons": {
-    "uploadParamFile": "Upload parameter file",
-    "generatedParamFile": "Generated parameter file"
-  },
-  "upload": {
-    "selectFile": "Select file",
-    "continueUpload": "Continue upload",
-    "confirm": "Confirm",
-    "cancel": "Cancel"
-  },
-  "form": {
-    "fileName": "File name",
-    "method": "Call method",
-    "source": "Source",
-    "dataSource": "Data source",
-    "dataForm": "Data table",
-    "select": "Select",
-    "save": "Save",
-    "file": "File",
-    "delete": "Delete",
-    "scenario": "Scenario"
-  },
-  "export": {
-    "exportScenario": "Export scenario",
-    "selectExportMethod": "Select export method"
-  },
-  "rules": {
-    "scenarioNameRequired": "Scenario name cannot be empty"
-  },
-  "comment": {
-    "comment": "Comment",
-    "publish": "Publish"
-  },
-  "executeScript": "Execute script"
+  "scenarioHome": {
+    "activityTimeline": {
+      "myActivity": "My Activities",
+      "allActivity": "All Activities"
+    },
+    "chart": {
+      "resourceStats": "Resource Statistics",
+      "testType": "Test Type",
+      "total": "Total",
+      "quantity": "Quantity",
+      "totalScenarios": "Total Scenarios",
+      "testTypes": {
+        "perfTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "funcTest": "Functional Test",
+        "customTest": "Custom Test"
+      }
+    },
+    "myScenarios": {
+      "title": "My Scenarios",
+      "added": "Added",
+      "followed": "Followed",
+      "favorited": "Favorited",
+      "table": {
+        "columns": {
+          "name": "Name",
+          "plugin": "Plugin",
+          "testType": "Test Type",
+          "addTime": "Add Time",
+          "operation": "Operation"
+        },
+        "actions": {
+          "unfavorite": "Unfavorite",
+          "unfollow": "Unfollow",
+          "delete": "Delete"
+        },
+        "messages": {
+          "noAddedScenarios": "You haven't added any scenarios yet, ",
+          "addScenario": "Add Scenario",
+          "noFavoritedScenarios": "You don't have any favorited scenarios",
+          "noFollowedScenarios": "You don't have any followed scenarios",
+          "deleteConfirm": "Are you sure you want to delete scenario 【{name}】?",
+          "deleteSuccess": "Scenario deleted successfully",
+          "unfavoriteSuccess": "Scenario unfavorited successfully",
+          "unfollowSuccess": "Scenario unfollowed successfully",
+          "pageInfo": "Page {current}/{total}"
+        }
+      }
+    },
+    "introduce": {
+      "welcome": "Welcome to Augus Scenarios!",
+      "description": "Scenarios help you orchestrate more complex requirements or user stories. Compared to single-step test cases, scenarios can contain more steps and processes.",
+      "capabilities": "Here you and your team can complete the following work:",
+      "capability1": "Online editing and debugging scenarios;",
+      "capability2": "Add and manage scenario resources;",
+      "capability3": "Quickly generate scenario test scripts and tasks."
+    }
+  }
 } 
