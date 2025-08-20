@@ -5,6 +5,7 @@ import { GridComponent, LegendComponent, TitleComponent, ToolboxComponent, Toolt
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../../PropsType';
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
@@ -13,6 +14,8 @@ type Props = {
   title:string;
   dataSource: ReportContent['content']['tasks']['burnDownCharts']['NUM'];
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   title: undefined,
@@ -58,7 +61,7 @@ const echartOption = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('reportPreview.sprint.assigneeSummary.burndownChart.remaining'),
       data: [],
       type: 'line',
       itemStyle: {
@@ -70,7 +73,7 @@ const echartOption = {
       areaStyle: {}
     },
     {
-      name: '期望',
+      name: t('reportPreview.sprint.assigneeSummary.burndownChart.expected'),
       data: [],
       type: 'line',
       smooth: true,

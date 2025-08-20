@@ -1490,6 +1490,205 @@
            "notTested": "Not Tested"
          }
        }
+     },
+     "sprint": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "sprintDetail": "Sprint Detailed Information",
+           "basicInfo": "Basic Information",
+           "acceptanceCriteria": "Acceptance Criteria",
+           "testScope": "Test Scope",
+           "otherInfo": "Other Information",
+           "devTask": "Development Tasks",
+           "taskSummary": "Task Summary Results",
+           "burndownChart": "Burndown Chart",
+           "groupStats": "Group Statistics",
+           "assigneeSummary": "Assignee Summary Results"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "progress": "Progress",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         }
+       },
+       "sprintDetail": {
+         "title": "Sprint Information",
+         "basicInfo": {
+           "title": "Basic Information",
+           "fields": {
+             "name": "Name",
+             "taskPrefix": "Task Prefix",
+             "status": "Status",
+             "owner": "Owner",
+             "project": "Project",
+             "sprintTime": "Sprint Time",
+             "creator": "Creator",
+             "createTime": "Create Time",
+             "workloadEstimationMethod": "Workload Estimation Method"
+           }
+         },
+         "acceptanceCriteria": {
+           "title": "Acceptance Criteria",
+           "noData": "None"
+         },
+         "meetingRecord": {
+           "title": "Meeting Records",
+           "noData": "None",
+           "meetingTopic": "Meeting Topic",
+           "fields": {
+             "meetingType": "Meeting Type",
+             "meetingDate": "Meeting Date",
+             "meetingTime": "Meeting Time",
+             "to": "to",
+             "meetingLocation": "Meeting Location",
+             "meetingHost": "Meeting Host",
+             "attendees": "Attendees",
+             "meetingContent": "Meeting Content"
+           }
+         },
+         "otherInfo": {
+           "title": "Other Information",
+           "noData": "None"
+         }
+       },
+       "taskDetail": {
+         "title": "Task Details",
+         "fields": {
+           "code": "Code",
+           "priority": "Priority",
+           "module": "Module",
+           "taskType": "Task Type",
+           "testType": "Test Type",
+           "taskStatus": "Task Status",
+           "completionTime": "Completion Time",
+           "overdue": "Overdue",
+           "deadline": "Deadline",
+           "assignee": "Assignee",
+           "startTime": "Start Time",
+           "confirmTask": "Confirm Task",
+           "confirmer": "Confirmer",
+           "workloadEstimationMethod": "Workload Estimation Method",
+           "estimatedWorkload": "Estimated Workload",
+           "actualWorkload": "Actual Workload",
+           "totalProcessCount": "Total Process Count",
+           "failedProcessCount": "Failed Process Count",
+           "creator": "Creator",
+           "createTime": "Create Time",
+           "lastModifier": "Last Modifier",
+           "lastModifyTime": "Last Modify Time"
+         },
+         "options": {
+           "yes": "Yes",
+           "no": "No"
+         }
+       },
+       "taskSummary": {
+         "title": "Development Tasks",
+         "summary": {
+           "title": "Task Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalTasks": "Total Tasks",
+             "validTasks": "Valid Tasks",
+             "totalBugs": "Total Bugs",
+             "validBugs": "Valid Bugs",
+             "pendingCount": "Pending Count",
+             "processingCount": "Processing Count",
+             "pendingConfirmCount": "Pending Confirm Count",
+             "completedCount": "Completed Count",
+             "cancelledCount": "Cancelled Count",
+             "overdueCount": "Overdue Count",
+             "overdueRate": "Overdue Rate",
+             "oneTimePassCount": "One-time Pass Count",
+             "oneTimePassRate": "One-time Pass Rate",
+             "estimatedWorkload": "Estimated Workload",
+             "actualWorkload": "Actual Workload",
+             "completedWorkload": "Completed Workload",
+             "savedWorkload": "Saved Workload",
+             "workloadSaveRate": "Workload Save Rate"
+           }
+         },
+         "burndownChart": {
+           "title": "Burndown Chart",
+           "taskCount": "Task Count",
+           "workload": "Workload",
+           "remaining": "Remaining",
+           "expected": "Expected"
+         },
+         "groupStats": {
+           "title": "Group Statistics",
+           "byStatus": "By Status",
+           "byPriority": "By Priority",
+           "byTaskType": "By Task Type",
+           "total": "Total",
+           "statuses": {
+             "cancelled": "Cancelled",
+             "completed": "Completed",
+             "pendingConfirm": "Pending Confirm",
+             "processing": "Processing",
+             "pending": "Pending"
+           },
+           "priorities": {
+             "highest": "Highest",
+             "high": "High",
+             "medium": "Medium",
+             "low": "Low",
+             "lowest": "Lowest"
+           },
+           "taskTypes": {
+             "bug": "Bug",
+             "task": "Task",
+             "story": "Story",
+             "requirement": "Requirement",
+             "apiTest": "API Test",
+             "scenarioTest": "Scenario Test"
+           }
+         }
+       },
+       "assigneeSummary": {
+         "title": "Assignee Summary Results",
+         "summary": {
+           "title": "Task Summary Results",
+           "fields": {
+             "progress": "Progress",
+             "totalTasks": "Total Tasks",
+             "validTasks": "Valid Tasks",
+             "totalBugs": "Total Bugs",
+             "validBugs": "Valid Bugs",
+             "pendingCount": "Pending Count",
+             "processingCount": "Processing Count",
+             "pendingConfirmCount": "Pending Confirm Count",
+             "completedCount": "Completed Count",
+             "cancelledCount": "Cancelled Count",
+             "overdueCount": "Overdue Count",
+             "overdueRate": "Overdue Rate",
+             "oneTimePassCount": "One-time Pass Count",
+             "oneTimePassRate": "One-time Pass Rate",
+             "estimatedWorkload": "Estimated Workload",
+             "actualWorkload": "Actual Workload",
+             "completedWorkload": "Completed Workload",
+             "savedWorkload": "Saved Workload",
+             "workloadSaveRate": "Workload Save Rate"
+           }
+         },
+         "burndownChart": {
+           "title": "Burndown Chart",
+           "taskCount": "Task Count",
+           "workload": "Workload",
+           "remaining": "Remaining",
+           "expected": "Expected"
+         },
+         "groupStats": {
+           "title": "Group Statistics"
+         }
+       }
      }
    }
 } 

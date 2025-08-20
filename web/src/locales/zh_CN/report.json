@@ -1491,6 +1491,205 @@
            "notTested": "未测试"
          }
        }
+     },
+     "sprint": {
+       "content": "内容",
+       "catalog": {
+         "title": "目录",
+         "sections": {
+           "sprintDetail": "迭代详细信息",
+           "basicInfo": "基本信息",
+           "acceptanceCriteria": "验收标准",
+           "testScope": "测试范围",
+           "otherInfo": "其他说明",
+           "devTask": "研发任务",
+           "taskSummary": "任务汇总结果",
+           "burndownChart": "燃尽图",
+           "groupStats": "分组统计",
+           "assigneeSummary": "经办人汇总结果"
+         }
+       },
+       "summary": {
+         "title": "摘要",
+         "fields": {
+           "progress": "进度",
+           "description": "描述",
+           "contact": "联系人",
+           "copyright": "版权说明",
+           "other": "其他"
+         }
+       },
+       "sprintDetail": {
+         "title": "迭代信息",
+         "basicInfo": {
+           "title": "基本信息",
+           "fields": {
+             "name": "名称",
+             "taskPrefix": "任务前缀",
+             "status": "状态",
+             "owner": "负责人",
+             "project": "所属项目",
+             "sprintTime": "迭代时间",
+             "creator": "添加人",
+             "createTime": "添加时间",
+             "workloadEstimationMethod": "工作量评估方式"
+           }
+         },
+         "acceptanceCriteria": {
+           "title": "验收标准",
+           "noData": "无"
+         },
+         "meetingRecord": {
+           "title": "会议记录",
+           "noData": "无",
+           "meetingTopic": "会议主题",
+           "fields": {
+             "meetingType": "会议类型",
+             "meetingDate": "会议日期",
+             "meetingTime": "会议时间",
+             "to": "至",
+             "meetingLocation": "会议地点",
+             "meetingHost": "会议主持",
+             "attendees": "参会人员",
+             "meetingContent": "会议内容"
+           }
+         },
+         "otherInfo": {
+           "title": "其他说明",
+           "noData": "无"
+         }
+       },
+       "taskDetail": {
+         "title": "任务详情",
+         "fields": {
+           "code": "编码",
+           "priority": "优先级",
+           "module": "所属模块",
+           "taskType": "任务类型",
+           "testType": "测试类型",
+           "taskStatus": "任务状态",
+           "completionTime": "完成时间",
+           "overdue": "是否逾期",
+           "deadline": "截止时间",
+           "assignee": "经办人",
+           "startTime": "开始时间",
+           "confirmTask": "是否确认任务",
+           "confirmer": "确认人",
+           "workloadEstimationMethod": "工作量评估方式",
+           "estimatedWorkload": "评估工作量",
+           "actualWorkload": "实际工作量",
+           "totalProcessCount": "总处理次数",
+           "failedProcessCount": "处理失败次数",
+           "creator": "添加人",
+           "createTime": "添加时间",
+           "lastModifier": "最后修改人",
+           "lastModifyTime": "最后修改时间"
+         },
+         "options": {
+           "yes": "是",
+           "no": "否"
+         }
+       },
+       "taskSummary": {
+         "title": "研发任务",
+         "summary": {
+           "title": "任务汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalTasks": "任务总数",
+             "validTasks": "有效任务数",
+             "totalBugs": "缺陷总数",
+             "validBugs": "有效缺陷数",
+             "pendingCount": "待处理数",
+             "processingCount": "处理中数",
+             "pendingConfirmCount": "待确认数",
+             "completedCount": "完成数",
+             "cancelledCount": "取消数",
+             "overdueCount": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimePassCount": "一次性通过数",
+             "oneTimePassRate": "一次性通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "burndownChart": {
+           "title": "燃尽图",
+           "taskCount": "任务数",
+           "workload": "工作量",
+           "remaining": "剩余",
+           "expected": "期望"
+         },
+         "groupStats": {
+           "title": "分组统计",
+           "byStatus": "按状态分组",
+           "byPriority": "按优先级分组",
+           "byTaskType": "按任务类型分组",
+           "total": "总数",
+           "statuses": {
+             "cancelled": "已取消",
+             "completed": "已完成",
+             "pendingConfirm": "待确认",
+             "processing": "进行中",
+             "pending": "待处理"
+           },
+           "priorities": {
+             "highest": "最高",
+             "high": "高",
+             "medium": "中",
+             "low": "低",
+             "lowest": "最低"
+           },
+           "taskTypes": {
+             "bug": "缺陷",
+             "task": "任务",
+             "story": "故事",
+             "requirement": "需求",
+             "apiTest": "接口测试",
+             "scenarioTest": "场景测试"
+           }
+         }
+       },
+       "assigneeSummary": {
+         "title": "经办人汇总结果",
+         "summary": {
+           "title": "任务汇总结果",
+           "fields": {
+             "progress": "进度",
+             "totalTasks": "任务总数",
+             "validTasks": "有效任务数",
+             "totalBugs": "缺陷总数",
+             "validBugs": "有效缺陷数",
+             "pendingCount": "待处理数",
+             "processingCount": "处理中数",
+             "pendingConfirmCount": "待确认数",
+             "completedCount": "完成数",
+             "cancelledCount": "取消数",
+             "overdueCount": "逾期数",
+             "overdueRate": "逾期率",
+             "oneTimePassCount": "一次性通过数",
+             "oneTimePassRate": "一次性通过率",
+             "estimatedWorkload": "评估工作量",
+             "actualWorkload": "实际工作量",
+             "completedWorkload": "完成工作量",
+             "savedWorkload": "节省工作量",
+             "workloadSaveRate": "工作量节省率"
+           }
+         },
+         "burndownChart": {
+           "title": "燃尽图",
+           "taskCount": "任务数",
+           "workload": "工作量",
+           "remaining": "剩余",
+           "expected": "期望"
+         },
+         "groupStats": {
+           "title": "分组统计"
+         }
+       }
      }
    }
 } 

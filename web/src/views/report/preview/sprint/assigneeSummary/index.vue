@@ -52,12 +52,12 @@ const totalOverview = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>经办人汇总结果</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.sprint.assigneeSummary.title') }}</span>
     </h1>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a3.1">3.1<em class="inline-block w-3.5"></em>任务汇总结果</span>
+        <span id="a3.1">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.assigneeSummary.summary.title') }}</span>
       </h2>
       <div class="space-y-5">
         <div
@@ -67,28 +67,28 @@ const totalOverview = computed(() => {
           <div class="flex items-center space-x-7">
             <Progress
               :percent="+item.totalOverview?.progress"
-              text="进度"
+              :text="t('reportPreview.sprint.assigneeSummary.summary.fields.progress')"
               :title="item.fullName"
               class="ml-4" />
             <div class="flex-shrink-0 w-157.75 border border-solid border-border-input">
               <div class="flex border-b border-solid border-border-input">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  任务总数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.totalTasks') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.totalTaskNum || 0 }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  有效任务数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.validTasks') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.validTaskNum || 0 }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  缺陷总数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.totalBugs') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.bugNum || 0 }}
@@ -98,21 +98,21 @@ const totalOverview = computed(() => {
               <div class="flex border-b border-solid border-border-input">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  有效缺陷数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.validBugs') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.validBugNum || 0 }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  待处理数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.pendingCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.pendingNum || 0 }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  处理中数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.processingCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.inProgressNum || 0 }}
@@ -122,21 +122,21 @@ const totalOverview = computed(() => {
               <div class="flex border-b border-solid border-border-input">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  待确认数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.pendingConfirmCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.confirmingNum }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  完成数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.completedCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.completedNum }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  取消数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.cancelledCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.canceledNum }}
@@ -146,21 +146,21 @@ const totalOverview = computed(() => {
               <div class="flex border-b border-solid border-border-input">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  逾期数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.overdueCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.overdueNum }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  逾期率
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.overdueRate') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.overdueRate }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  一次性通过数
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.oneTimePassCount') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.oneTimePassedNum }}
@@ -170,21 +170,21 @@ const totalOverview = computed(() => {
               <div class="flex border-b border-solid border-border-input">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  一次性通过率
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.oneTimePassRate') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.oneTimePassedRate }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  评估工作量
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.estimatedWorkload') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.evalWorkload }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  实际工作量
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.actualWorkload') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.actualWorkload }}
@@ -194,21 +194,21 @@ const totalOverview = computed(() => {
               <div class="flex">
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  完成工作量
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.completedWorkload') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                   {{ item.totalOverview?.completedWorkload }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  节省工作量
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.savedWorkload') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.savingWorkload }}
                 </div>
                 <div
                   class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  工作量节省率
+                  {{ t('reportPreview.sprint.assigneeSummary.summary.fields.workloadSaveRate') }}
                 </div>
                 <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                   {{ item.totalOverview?.savingWorkloadRate }}
@@ -222,7 +222,7 @@ const totalOverview = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>燃尽图</span>
+        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.assigneeSummary.burndownChart.title') }}</span>
       </h2>
       <div class="space-y-5">
         <div
@@ -236,7 +236,7 @@ const totalOverview = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>分组统计</span>
+        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.assigneeSummary.groupStats.title') }}</span>
       </h2>
       <div class="space-y-5">
         <div
