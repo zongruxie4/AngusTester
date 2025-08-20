@@ -1385,6 +1385,111 @@
            "noData": "None"
          }
        }
+     },
+     "services": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "serviceInfo": "Service Information",
+           "apiGroupStats": "API Group Statistics",
+           "testResultSummary": "Test Result Summary",
+           "testProgress": "Test Progress",
+           "testApiStats": "Test API Statistics",
+           "testStatusStats": "Test Status Statistics"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "serviceStatus": "Service Status",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         }
+       },
+       "info": {
+         "title": "Service Information",
+         "fields": {
+           "name": "Name",
+           "status": "Status",
+           "project": "Project",
+           "apiCount": "API Count",
+           "apiCaseCount": "API Case Count",
+           "creator": "Creator",
+           "createTime": "Create Time",
+           "lastModifier": "Last Modifier",
+           "lastModifyTime": "Last Modify Time"
+         }
+       },
+       "apisGroup": {
+         "title": "API Group Statistics",
+         "byStatus": {
+           "title": "By Status",
+           "statuses": {
+             "unknown": "Unknown",
+             "designing": "Designing",
+             "devInProgress": "Development In Progress",
+             "devCompleted": "Development Completed",
+             "published": "Published"
+           }
+         },
+         "byRequestMethod": {
+           "title": "By Request Method"
+         },
+         "total": "Total"
+       },
+       "result": {
+         "title": "Test Result Summary",
+         "testProgress": {
+           "title": "Test Progress",
+           "totalApis": "Total APIs",
+           "progress": "Progress"
+         },
+         "testApiStats": {
+           "title": "Test API Statistics",
+           "columns": {
+             "totalTestCount": "Total Test Count",
+             "funcTest": "Functional Test",
+             "perfTest": "Performance Test",
+             "stabilityTest": "Stability Test"
+           }
+         },
+         "testStatusStats": {
+           "title": "Test Status Statistics",
+           "fields": {
+             "tested": "Tested",
+             "notTested": "Not Tested",
+             "passed": "Passed",
+             "failed": "Failed"
+           }
+         }
+       },
+       "apiResultDetail": {
+         "title": "API Test Result Details",
+         "fields": {
+           "apiUrl": "API URL",
+           "requestMethod": "Request Method",
+           "operationId": "Operation ID",
+           "owner": "Owner",
+           "description": "Description",
+           "enableFuncTest": "Enable Functional Test",
+           "funcTestPassed": "Functional Test Passed",
+           "funcTestFailReason": "Functional Test Failure Reason",
+           "enablePerfTest": "Enable Performance Test",
+           "perfTestPassed": "Performance Test Passed",
+           "perfTestFailReason": "Performance Test Failure Reason",
+           "enableStabilityTest": "Enable Stability Test",
+           "stabilityTestPassed": "Stability Test Passed",
+           "stabilityTestFailReason": "Stability Test Failure Reason"
+         },
+         "options": {
+           "yes": "Yes",
+           "no": "No",
+           "notTested": "Not Tested"
+         }
+       }
      }
    }
 } 

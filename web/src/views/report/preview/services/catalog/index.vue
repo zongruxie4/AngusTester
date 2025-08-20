@@ -10,33 +10,33 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>目录</span>
+      <span>{{ t('reportPreview.services.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>服务信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.serviceInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>接口分组统计</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.apiGroupStats') }}</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>测试结果汇总</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.testResultSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.1" class="flex items-center space-x-2.5">
-        <span>3.1<em class="inline-block w-4.25 font-medium"></em>测试进度</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.testProgress') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.2" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>测试接口统计</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.testApiStats') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">
-        <span>3.3<em class="inline-block w-4.25 font-medium"></em>测试状态统计</span>
+        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.services.catalog.sections.testStatusStats') }}</span>
         <DashedLine />
       </a>
     </div>

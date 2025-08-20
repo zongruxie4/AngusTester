@@ -35,11 +35,11 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'endpoint',
-      name: '接口地址'
+      name: t('reportPreview.services.apiResultDetail.fields.apiUrl')
     },
     {
       dataIndex: 'method',
-      name: '请求方法',
+      name: t('reportPreview.services.apiResultDetail.fields.requestMethod'),
       customRender: (text) => {
         return text?.message;
       }
@@ -48,41 +48,41 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'operationId',
-      name: '操作ID'
+      name: t('reportPreview.services.apiResultDetail.fields.operationId')
     },
     {
       dataIndex: 'ownerName',
-      name: '负责人'
+      name: t('reportPreview.services.apiResultDetail.fields.owner')
     }
   ],
   [
     {
       dataIndex: 'description',
-      name: '描述'
+      name: t('reportPreview.services.apiResultDetail.fields.description')
     },
     {
       dataIndex: 'testFuncFlag',
-      name: '开启功能测试',
+      name: t('reportPreview.services.apiResultDetail.fields.enableFuncTest'),
       customRender: (text) => {
-        return text ? '是' : '否';
+        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
       }
     }
   ],
   [
     {
       dataIndex: 'id',
-      name: '功能测试通过',
+      name: t('reportPreview.services.apiResultDetail.fields.funcTestPassed'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.funcTestPassed === true ? '是' : target.funcTestPassed === false ? '否' : '未测试';
+          return target.funcTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.funcTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }
     },
     {
       dataIndex: 'id',
-      name: '功能测试失败原因',
+      name: t('reportPreview.services.apiResultDetail.fields.funcTestFailReason'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
@@ -95,18 +95,18 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'testPerfFlag',
-      name: '开启性能测试',
+      name: t('reportPreview.services.apiResultDetail.fields.enablePerfTest'),
       customRender: (text) => {
-        return text ? '是' : '否';
+        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
       }
     },
     {
       dataIndex: 'id',
-      name: '性能测试通过',
+      name: t('reportPreview.services.apiResultDetail.fields.perfTestPassed'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.perfTestPassed === true ? '是' : target.perfTestPassed === false ? '否' : '未测试';
+          return target.perfTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.perfTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }
@@ -115,7 +115,7 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'id',
-      name: '性能测试失败原因',
+      name: t('reportPreview.services.apiResultDetail.fields.perfTestFailReason'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
@@ -126,27 +126,27 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'testStabilityFlag',
-      name: '开启稳定性测试',
+      name: t('reportPreview.services.apiResultDetail.fields.enableStabilityTest'),
       customRender: (text) => {
-        return text ? '是' : '否';
+        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
       }
     }
   ],
   [
     {
       dataIndex: 'id',
-      name: '稳定性测试通过',
+      name: t('reportPreview.services.apiResultDetail.fields.stabilityTestPassed'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.stabilityTestPassed === true ? '是' : target.stabilityTestPassed === false ? '否' : '未测试';
+          return target.stabilityTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.stabilityTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }
     },
     {
       dataIndex: 'id',
-      name: '稳定性测试失败原因',
+      name: t('reportPreview.services.apiResultDetail.fields.stabilityTestFailReason'),
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
@@ -163,7 +163,7 @@ const columns = computed(() => [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>接口测试结果明细</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.services.apiResultDetail.title') }}</span>
     </h1>
     <template v-for="api in apis">
       <li class="mb-2.5">
