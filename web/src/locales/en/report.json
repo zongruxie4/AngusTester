@@ -1174,6 +1174,217 @@
            }
          }
        }
+     },
+     "scenario": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "scenarioInfo": "Scenario Information",
+           "scenarioTestSummary": "Scenario Test Summary Results",
+           "scenarioTestResultDetail": "Scenario Test Result Detailed Information",
+           "funcTestResult": "Functional Test Results",
+           "perfTestResult": "Performance Test Results",
+           "stabilityTestResult": "Stability Test Results"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "testPassed": "Test Passed",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         },
+         "options": {
+           "passed": "Passed",
+           "failed": "Failed",
+           "notTested": "Not Tested"
+         }
+       },
+       "info": {
+         "title": "Scenario Information",
+         "fields": {
+           "name": "Name",
+           "description": "Description",
+           "project": "Project",
+           "plugin": "Plugin",
+           "scriptType": "Script Type",
+           "scriptId": "Script ID",
+           "scriptName": "Script Name",
+           "creator": "Creator",
+           "createTime": "Create Time",
+           "lastModifier": "Last Modifier",
+           "lastModifyTime": "Last Modify Time"
+         }
+       },
+       "testResult": {
+         "title": "Scenario Test Summary Results",
+         "fields": {
+           "passed": "Passed",
+           "enableFuncTest": "Enable Functional Test",
+           "funcTestPassed": "Functional Test Passed",
+           "funcTestFailReason": "Functional Test Failure Reason",
+           "enablePerfTest": "Enable Performance Test",
+           "perfTestPassed": "Performance Test Passed",
+           "perfTestFailReason": "Performance Test Failure Reason",
+           "enableStabilityTest": "Enable Stability Test",
+           "stabilityTestPassed": "Stability Test Passed",
+           "stabilityTestFailReason": "Stability Test Failure Reason"
+         },
+         "options": {
+           "passed": "Passed",
+           "failed": "Failed",
+           "notTested": "Not Tested",
+           "enabled": "Enabled",
+           "disabled": "Disabled"
+         }
+       },
+       "testResultDetail": {
+         "title": "Scenario Test Result Detailed Information",
+         "funcTestResult": {
+           "title": "Functional Test Results",
+           "basicInfo": {
+             "title": "Test Basic Information",
+             "fields": {
+               "testResult": "Test Result",
+               "testFailReason": "Test Failure Reason",
+               "testCount": "Test Count",
+               "failCount": "Failure Count",
+               "testScriptId": "Test Script ID",
+               "testScriptName": "Test Script Name",
+               "execId": "Execution ID",
+               "execName": "Execution Name",
+               "lastExecutor": "Last Executor",
+               "lastExecTime": "Last Execution Time"
+             },
+             "options": {
+               "passed": "Passed",
+               "failed": "Failed",
+               "notTested": "Not Tested"
+             }
+           },
+           "apiStats": {
+             "title": "Test API Statistics",
+             "fields": {
+               "totalCases": "Total Cases",
+               "passedCount": "Passed Count",
+               "failedCount": "Failed Count",
+               "disabledCount": "Disabled Count"
+             }
+           },
+           "caseResultDetail": {
+             "title": "Test Case Result Details",
+             "fields": {
+               "type": "Type",
+               "enabled": "Enabled",
+               "testPassed": "Test Passed",
+               "testFailReason": "Test Failure Reason",
+               "testCount": "Test Count",
+               "testFailCount": "Test Failure Count"
+             },
+             "options": {
+               "enabled": "Enabled",
+               "disabled": "Disabled",
+               "passed": "Passed",
+               "failed": "Failed",
+               "notTested": "Not Tested"
+             }
+           },
+           "noData": "None"
+         },
+         "perfTestResult": {
+           "title": "Performance Test",
+           "basicInfo": {
+             "title": "Test Basic Information",
+             "fields": {
+               "testResult": "Test Result",
+               "testFailReason": "Test Failure Reason",
+               "testCount": "Test Count",
+               "failCount": "Failure Count",
+               "testScriptId": "Test Script ID",
+               "testScriptName": "Test Script Name",
+               "execId": "Execution ID",
+               "execName": "Execution Name",
+               "lastExecutor": "Last Executor",
+               "lastExecTime": "Last Execution Time"
+             },
+             "options": {
+               "passed": "Passed",
+               "failed": "Failed",
+               "notTested": "Not Tested"
+             }
+           },
+           "metrics": {
+             "title": "Test Metrics and Results",
+             "performanceMetrics": "Performance Metrics",
+             "result": "Result",
+             "fields": {
+               "concurrency": "Concurrency",
+               "testDuration": "Test Duration",
+               "rampUpConcurrency": "Ramp-up Concurrency",
+               "rampUpDuration": "Ramp-up Duration",
+               "responseTime": "Response Time",
+               "tps": "Transactions Per Second",
+               "errorRate": "Error Rate"
+             }
+           },
+           "noData": "None"
+         },
+         "stabilityTestResult": {
+           "title": "Stability Test",
+           "basicInfo": {
+             "title": "Test Basic Information",
+             "fields": {
+               "testResult": "Test Result",
+               "testFailReason": "Test Failure Reason",
+               "testCount": "Test Count",
+               "failCount": "Failure Count",
+               "testScriptId": "Test Script ID",
+               "testScriptName": "Test Script Name",
+               "execId": "Execution ID",
+               "execName": "Execution Name",
+               "lastExecutor": "Last Executor",
+               "lastExecTime": "Last Execution Time"
+             },
+             "options": {
+               "passed": "Passed",
+               "failed": "Failed",
+               "notTested": "Not Tested"
+             }
+           },
+           "metrics": {
+             "title": "Test Metrics and Results",
+             "stabilityMetrics": "Stability Metrics",
+             "result": "Result",
+             "fields": {
+               "concurrency": "Concurrency",
+               "testDuration": "Test Duration",
+               "rampUpConcurrency": "Ramp-up Concurrency",
+               "rampUpDuration": "Ramp-up Duration",
+               "responseTime": "Response Time",
+               "tps": "Transactions Per Second (TPS)",
+               "errorRate": "Error Rate"
+             }
+           },
+           "nodeResources": {
+             "title": "Node Resources",
+             "fields": {
+               "cpuUsage": "CPU Usage",
+               "memoryUsage": "Memory Usage",
+               "diskUsage": "Disk Usage",
+               "networkUsage": "Network Usage"
+             }
+           },
+           "systemLoad": {
+             "title": "Application System Average Load",
+             "average": "Average",
+             "maximum": "Maximum"
+           },
+           "noData": "None"
+         }
+       }
      }
    }
 } 

@@ -379,34 +379,34 @@ const indicatorStabilityItem = computed(() => {
   }
   return [
     {
-      label: '并发数',
+      label: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.concurrency'),
       dataIndex: 'threads',
-      resultLabel: '并发数',
+      resultLabel: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.concurrency'),
       resultDataIndex: 'threadPoolSize'
     },
     {
-      label: '测试时长',
+      label: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.testDuration'),
       dataIndex: 'duration',
-      resultLabel: '测试时长',
+      resultLabel: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.testDuration'),
       resultDataIndex: 'duration'
     },
     {
-      label: '响应时间',
+      label: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.responseTime'),
       dataIndex: 'art',
-      resultLabel: `响应时间(${percentile || '--'})`,
+      resultLabel: `${t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.responseTime')}(${percentile || '--'})`,
       resultDataIndex: percentitleKey || '--'
     },
     {
-      label: '每秒事务数',
+      label: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.tps'),
       dataIndex: 'tps',
       compareOprate: '>=',
-      resultLabel: '每秒事务数(TPS)',
+      resultLabel: `${t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.tps')}(TPS)`,
       resultDataIndex: 'tps'
     },
     {
-      label: '错误率',
+      label: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.errorRate'),
       dataIndex: 'errorRate',
-      resultLabel: '错误率',
+      resultLabel: t('reportPreview.scenario.testResultDetail.perfTestResult.metrics.fields.errorRate'),
       resultDataIndex: 'errorRate'
     }
   ];
@@ -522,28 +522,28 @@ const getStabilityIcon = (valueKey) => {
 
 const sysItems = [
   {
-    label: 'cpu使用率',
+    label: t('reportPreview.scenario.testResultDetail.stabilityTestResult.nodeResources.fields.cpuUsage'),
     dataIndex: 'cpu',
     meanDataIndex: 'meanCpu',
     maxDataIndex: 'maxCpu',
     unit: '%'
   },
   {
-    label: '内存使用率',
+    label: t('reportPreview.scenario.testResultDetail.stabilityTestResult.nodeResources.fields.memoryUsage'),
     dataIndex: 'memory',
     meanDataIndex: 'meanMemory',
     maxDataIndex: 'maxMemory',
     unit: '%'
   },
   {
-    label: '磁盘使用率',
+    label: t('reportPreview.scenario.testResultDetail.stabilityTestResult.nodeResources.fields.diskUsage'),
     dataIndex: 'disk',
     meanDataIndex: 'meanFilesystem',
     maxDataIndex: 'maxFilesystem',
     unit: '%'
   },
   {
-    label: '网络使用量',
+    label: t('reportPreview.scenario.testResultDetail.stabilityTestResult.nodeResources.fields.networkUsage'),
     dataIndex: 'network',
     meanDataIndex: 'meanNetwork',
     maxDataIndex: 'maxNetwork',
@@ -556,15 +556,15 @@ const sysItems = [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>场景测试详细结果信息</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.title') }}</span>
     </h1>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1、<em class="inline-block w-0.25"></em>功能测试结果</span>
+      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1、<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.funcTestResult.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.funcTestResult.basicInfo.title') }}</span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY" class="mb-5">
@@ -583,12 +583,12 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.scenario.testResultDetail.funcTestResult.basicInfo.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试接口统计</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.funcTestResult.apiStats.title') }}</span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY?.caseSummary" class="mb-5">
@@ -607,12 +607,12 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.scenario.testResultDetail.funcTestResult.apiStats.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试用例结果明细</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.funcTestResult.caseResultDetail.title') }}</span>
     </li>
 
     <div class="mb-5">
@@ -632,16 +632,16 @@ const sysItems = [
       </template>
     </div>
     <div v-if="!TEST_FUNCTIONALITY?.caseResults?.length" class="mb-5">
-      无
+      {{ t('reportPreview.scenario.testResultDetail.funcTestResult.caseResultDetail.noData') }}
     </div>
     <!-- <NoData v-if="!TEST_FUNCTIONALITY.caseResults?.length" size="small" class="my-5"/> -->
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>性能测试</span>
+      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.perfTestResult.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.perfTestResult.basicInfo.title') }}</span>
     </li>
 
     <div v-if="TEST_PERFORMANCE" class="mb-5">
@@ -660,17 +660,17 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.scenario.testResultDetail.perfTestResult.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试指标和结果</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.perfTestResult.indicatorAndResult.title') }}</span>
     </li>
 
     <div class="flex border border-solid border-border-input bg-blue-table">
-      <div class="flex-1 p-1.5 border-r border-border-input">性能指标</div>
-      <div class="flex-1 p-1.5">结果</div>
+      <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.scenario.testResultDetail.perfTestResult.indicatorAndResult.fields.indicator') }}</div>
+      <div class="flex-1 p-1.5">{{ t('reportPreview.scenario.testResultDetail.perfTestResult.indicatorAndResult.fields.result') }}</div>
     </div>
     <div
       v-for="(perf, index) in indicatorPerfItem"
@@ -702,11 +702,11 @@ const sysItems = [
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5 mt-5">
-      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>稳定性测试</span>
+      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.basicInfo.title') }}</span>
     </li>
 
     <div v-if="TEST_STABILITY" class="mb-5">
@@ -725,17 +725,17 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      无
+      {{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试指标和结果</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.indicatorAndResult.title') }}</span>
     </li>
 
     <div>
       <div class="flex border border-solid border-border-input bg-blue-table">
-        <div class="flex-1 p-1.5 border-r border-border-input">稳定性指标</div>
-        <div class="flex-1 p-1.5">结果</div>
+        <div class="flex-1 p-1.5 border-r border-border-input">{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.indicatorAndResult.fields.indicator') }}</div>
+        <div class="flex-1 p-1.5">{{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.indicatorAndResult.fields.result') }}</div>
       </div>
       <div v-for="stability in indicatorStabilityItem" class="flex border-l border-border-input">
         <div
@@ -775,7 +775,7 @@ const sysItems = [
       <div class="flex border-l border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-b border-solid border-border-input">
-          应用系统平均负载
+          {{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.indicatorAndResult.fields.appSystemAverageLoad') }}
         </div>
         <div class="flex-1">
           <div
@@ -800,14 +800,14 @@ const sysItems = [
             :key="sys.dataIndex"
             class="px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-b border-solid border-border-input flex">
             <div class="flex-1">
-              平均 {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE?.[sys.meanDataIndex]}${sys.unit}` : '--' }}
+              {{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.systemLoad.average') }} {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE?.[sys.meanDataIndex]}${sys.unit}` : '--' }}
               <img
                 v-if="getStabilityIcon(sys.meanDataIndex)"
                 :src="getStabilityIcon(sys.meanDataIndex)"
                 class="w-3" />
             </div>
             <div class="flex-1">
-              最大 {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
+              {{ t('reportPreview.scenario.testResultDetail.stabilityTestResult.systemLoad.maximum') }} {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
             </div>
           </div>
         </div>
