@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   scenarioId: string;
@@ -51,6 +54,7 @@ onMounted(() => {
 
 const columns = computed(() => {
   const _columns: {
+    key: string;
     title: string;
     dataIndex: string;
     ellipsis?: boolean;
@@ -59,41 +63,48 @@ const columns = computed(() => {
     actionKey?: 'createdBy' | 'favouriteBy' | 'followBy';
   }[] = [
     {
-      title: '编码',
+      key: 'code',
+      title: t('scenario.detail.task.table.columns.code'),
       dataIndex: 'code',
       ellipsis: true,
       width: 100
     },
     {
-      title: '名称',
+      key: 'name',
+      title: t('scenario.detail.task.table.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: '所属迭代',
+      key: 'sprintName',
+      title: t('scenario.detail.task.table.columns.iteration'),
       dataIndex: 'sprintName',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: '优先级',
+      key: 'priority',
+      title: t('scenario.detail.task.table.columns.priority'),
       dataIndex: 'priority',
       ellipsis: true,
       width: '9%'
     },
     {
-      title: '经办人',
+      key: 'assigneeName',
+      title: t('scenario.detail.task.table.columns.assignee'),
       dataIndex: 'assigneeName',
       width: 120
     },
     {
-      title: '确认人',
+      key: 'confirmorName',
+      title: t('scenario.detail.task.table.columns.confirmer'),
       dataIndex: 'confirmorName',
       width: 120
     },
     {
-      title: '截止时间',
+      key: 'deadlineDate',
+      title: t('scenario.detail.task.table.columns.deadline'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
       width: '17%'
@@ -114,7 +125,7 @@ const emptyTextStyle = {
       <div class="flex-1 flex flex-col items-center justify-center">
         <img class="w-27.5" src="./images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
-          暂无数据
+          {{ t('scenario.detail.task.noData') }}
         </div>
       </div>
     </template>
@@ -127,6 +138,8 @@ const emptyTextStyle = {
       :pagination="pagination"
       rowKey="id"
       size="small"
+      noDataSize="small"
+      noDataText=""
       @change="handleChange">
       <template #bodyCell="{ record, column }">
         <div v-if="column.dataIndex === 'name'" class="flex items-center">
@@ -141,7 +154,7 @@ const emptyTextStyle = {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">已逾期</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('scenario.detail.task.overdue') }}</span>
           </span>
         </div>
 

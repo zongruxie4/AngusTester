@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
 import { scenario, exec } from 'src/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 interface Props {
   data: {
@@ -58,13 +61,13 @@ const loadPermissions = async () => {
 const del = () => {
   modal.confirm({
     centered: true,
-    content: `删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【${sceanrioData.value?.name}】？`,
+    content: t('scenario.detail.messages.deleteConfirm', { name: sceanrioData.value?.name }),
     async onOk () {
       const [error] = await scenario.deleteScenario(sceanrioData.value?.id);
       if (error) {
         return;
       }
-      notification.success('删除成功，您可以在回收站查看删除后的场景。');
+      notification.success(t('scenario.detail.messages.deleteSuccess'));
       deleteTabPane([sceanrioData.value?.id, sceanrioData.value?.id + '-detail']);
     }
   });
@@ -89,9 +92,9 @@ const handleFollow = async () => {
     return;
   }
   if (sceanrioData.value.followFlag) {
-    notification.success('取消关注');
+    notification.success(t('scenario.detail.messages.cancelFollowSuccess'));
   } else {
-    notification.success('关注成功');
+    notification.success(t('scenario.detail.messages.followSuccess'));
   }
   sceanrioData.value.followFlag = !sceanrioData.value.followFlag;
 };
@@ -105,9 +108,9 @@ const handleFavourite = async () => {
     return;
   }
   if (sceanrioData.value.favouriteFlag) {
-    notification.success('取消收藏');
+    notification.success(t('scenario.detail.messages.cancelFavouriteSuccess'));
   } else {
-    notification.success('收藏成功');
+    notification.success(t('scenario.detail.messages.favouriteSuccess'));
   }
   sceanrioData.value.favouriteFlag = !sceanrioData.value.favouriteFlag;
 };
@@ -158,7 +161,7 @@ onMounted(() => {
       <RouterLink :to="`/scenario#scenario?id=${sceanrioData?.id}&name=${sceanrioData?.name}&plugin=${sceanrioData?.plugin}`">
         <Button size="small" type="text">
           <Icon icon="icon-xiugai" class="mr-1" />
-          编辑
+          {{ t('scenario.detail.actions.edit') }}
         </Button>
       </RouterLink>
       <Button
@@ -167,7 +170,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes('DELETE')"
         @click="del">
         <Icon icon="icon-qingchu" class="mr-1" />
-        删除
+        {{ t('scenario.detail.actions.delete') }}
       </Button>
       <Button
         size="small"
@@ -175,7 +178,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes('EXPORT')"
         @click="exportScript">
         <Icon icon="icon-daochu" class="mr-1" />
-        导出脚本
+        {{ t('scenario.detail.actions.export') }}
       </Button>
       <Button
         size="small"
@@ -183,7 +186,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes('GRANT')"
         @click="toAuth">
         <Icon icon="icon-quanxian1" class="mr-1" />
-        权限
+        {{ t('scenario.detail.actions.auth') }}
       </Button>
       <Button
         :loading="followLoading"
@@ -191,7 +194,7 @@ onMounted(() => {
         type="text"
         @click="handleFollow">
         <Icon :icon="sceanrioData.followFlag ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu'" class="mr-1" />
-        {{ sceanrioData.followFlag ? '取消关注' : '关注' }}
+        {{ sceanrioData.followFlag ? t('scenario.detail.actions.cancelFollow') : t('scenario.detail.actions.follow') }}
       </Button>
       <Button
         :loading="favouriteLoading"
@@ -199,7 +202,7 @@ onMounted(() => {
         type="text"
         @click="handleFavourite">
         <Icon :icon="sceanrioData.favouriteFlag ? 'icon-quxiaoshoucang' : 'icon-yishoucang'" class="mr-1" />
-        {{ sceanrioData.favouriteFlag ? '取消收藏' : '收藏' }}
+        {{ sceanrioData.favouriteFlag ? t('scenario.detail.actions.cancelFavourite') : t('scenario.detail.actions.favourite') }}
       </Button>
     </div>
     <TestSummary
@@ -215,7 +218,7 @@ onMounted(() => {
       type="card"
       :class="[['activity', 'comment'].includes(activeTab) ? 'min-h-0' : '']"
       class="flex-1">
-      <TabPane key="func" tab="功能测试">
+      <TabPane key="func" :tab="t('scenario.detail.tabs.func')">
         <Execdetail
           v-if="sceanrioData"
           class="p-0"
@@ -230,7 +233,7 @@ onMounted(() => {
         <!--          size="small"-->
         <!--          class="mt-25" />-->
       </TabPane>
-      <TabPane key="perf" tab="性能测试">
+      <TabPane key="perf" :tab="t('scenario.detail.tabs.perf')">
         <Execdetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
@@ -238,7 +241,7 @@ onMounted(() => {
           scriptType="TEST_PERFORMANCE"
           @del="handleDel" />
       </TabPane>
-      <TabPane key="stability" tab="稳定性测试">
+      <TabPane key="stability" :tab="t('scenario.detail.tabs.stability')">
         <Execdetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
@@ -250,7 +253,7 @@ onMounted(() => {
         <!--          size="small"-->
         <!--          class="mt-25" />-->
       </TabPane>
-      <TabPane key="custom" tab="自定义测试">
+      <TabPane key="custom" :tab="t('scenario.detail.tabs.custom')">
         <Execdetail
           :monicaEditorStyle="{height: '600px'}"
           :showBackBtn="false"
@@ -262,17 +265,17 @@ onMounted(() => {
         <!--          size="small"-->
         <!--          class="mt-25" />-->
       </TabPane>
-      <TabPane key="task" tab="测试任务">
+      <TabPane key="task" :tab="t('scenario.detail.tabs.task')">
         <Task :scenarioId="props.data?.scenarioId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="activity" tab="活动记录">
+      <TabPane key="activity" :tab="t('scenario.detail.tabs.activity')">
         <ActivityTimeline
           :id="props.data?.scenarioId"
           :projectId="props.projectId"
           :types="['SCENARIO']"
           class="w-150 h-full" />
       </TabPane>
-      <TabPane key="comment" tab="评论">
+      <TabPane key="comment" :tab="t('scenario.detail.tabs.comment')">
         <SmartComment
           ref="smartCommentRef"
           targetType="SCENARIO"
@@ -302,9 +305,9 @@ onMounted(() => {
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${props.data?.scenarioId}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${props.data?.scenarioId}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有场景相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级目录权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-        title="场景权限"
+        :onTips="t('scenario.detail.tips.authOn')"
+        :offTips="t('scenario.detail.tips.authOff')"
+        :title="t('scenario.detail.tips.authTitle')"
         @change="authFlagChange" />
     </AsyncComponent>
   </div>

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { Icon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 import { Popover } from 'ant-design-vue';
 
 interface Props {
@@ -36,7 +39,7 @@ const echartConfig = {
     left: '30%',
     bottom: '0%',
     padding: 2,
-    subtext: '成功率',
+    subtext: t('scenario.detail.testSummary.successRate'),
     itemGap: 35,
     textAlign: 'center',
     textStyle: {
@@ -87,14 +90,14 @@ const echartConfig = {
       },
       data: [
         {
-          name: '成功数',
+          name: t('scenario.detail.testSummary.successCount'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
           }
         },
         {
-          name: '失败数',
+          name: t('scenario.detail.testSummary.failCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 0.7)'
@@ -175,8 +178,8 @@ const getErrIconName = (testData) => {
 };
 
 const configInfo = [
-  [{ label: '总共', dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: '成功', dataIndex: 'successNum', bgColor: 'bg-status-success' }],
-  [{ label: '失败', dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: '未启用', dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('scenario.detail.testSummary.table.labels.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('scenario.detail.testSummary.table.labels.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
+  [{ label: t('scenario.detail.testSummary.table.labels.fail'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('scenario.detail.testSummary.table.labels.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
 const resize = () => {
@@ -196,7 +199,7 @@ onMounted(() => {
 <template>
   <div class="flex space-x-2">
     <div v-show="resultSummary" class="flex-1 border rounded p-1 space-y-3 flex flex-col justify-between">
-      <div class="font-semibold text-text-title">全部测试</div>
+      <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.allTests') }}</div>
 
       <div class="font-semibold text-6 text-center" :class="resultSummary?.resultStatus?.value">
         {{ resultSummary?.resultStatus?.message }}
@@ -206,9 +209,9 @@ onMounted(() => {
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-3">
-      <div class="font-semibold text-text-title">功能</div>
+      <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.functionality') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? '未测试' : TEST_FUNCTIONALITY.passed ? '通过' : '不通过' }}</span>
+        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? t('scenario.detail.testSummary.status.notTested') : TEST_FUNCTIONALITY.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -240,13 +243,13 @@ onMounted(() => {
         </li>
       </div>
 
-      <div class="text-center font-semibold text-text-title">测试接口</div>
+      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.testInterfaces') }}</div>
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
-      <div class="font-semibold text-text-title">性能</div>
+      <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.performance') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? '未测试' : TEST_PERFORMANCE.passed ? '通过' : '不通过' }}</span>
+        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? t('scenario.detail.testSummary.status.notTested') : TEST_PERFORMANCE.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -266,31 +269,31 @@ onMounted(() => {
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.tps || '--' }}</span>
             <Icon v-if="TEST_PERFORMANCE" :icon="getTpsIconName(TEST_PERFORMANCE)" />
           </div>
-          <div>每秒事务数(TPS)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.tps') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.tranP90 || '--' }}</span>
             <Icon v-if="TEST_PERFORMANCE" :icon="getTranIconName(TEST_PERFORMANCE)" />
           </div>
-          <div>响应时间(P90)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.errorRate || '--' }}%</span>
             <Icon v-if="TEST_PERFORMANCE" :icon="getErrIconName(TEST_PERFORMANCE)" />
           </div>
-          <div>错误率</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.errorRate') }}</div>
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">结果指标</div>
+      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.resultMetrics') }}</div>
     </div>
 
     <div v-show="TEST_STABILITY" class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
-      <div class="font-semibold text-text-title">稳定性</div>
+      <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.stability') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? '未测试' : TEST_STABILITY.passed ? '通过' : '不通过' }}</span>
+        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? t('scenario.detail.testSummary.status.notTested') : TEST_STABILITY.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -310,47 +313,47 @@ onMounted(() => {
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.tps || '--' }}</span>
             <Icon v-if="TEST_STABILITY" :icon="getTpsIconName(TEST_STABILITY)" />
           </div>
-          <div>每秒事务数(TPS)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.tps') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.tranP90 || '--' }}</span>
             <Icon v-if="TEST_STABILITY" :icon="getTranIconName(TEST_STABILITY)" />
           </div>
-          <div>响应时间(P90)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.errorRate || '--' }}%</span>
             <Icon v-if="TEST_STABILITY" :icon="getErrIconName(TEST_STABILITY)" />
           </div>
-          <div>错误率</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.errorRate') }}</div>
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">结果指标</div>
+      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.resultMetrics') }}</div>
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
-      <div class="font-semibold text-text-title">自定义</div>
-      <div class="font-semibold text-6 text-center">非标准</div>
+      <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.custom') }}</div>
+      <div class="font-semibold text-6 text-center">{{ t('scenario.detail.testSummary.sections.nonStandard') }}</div>
 
       <div class="flex">
         <div class="text-center flex-1 min-w-0">
           <div class="text-4">{{ TEST_CUSTOMIZATION?.sampleSummary?.tps || '--' }}</div>
-          <div>每秒事务数(TPS)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.tps') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="text-4">{{ TEST_CUSTOMIZATION?.sampleSummary?.tranP90 || '--' }}</div>
-          <div>响应时间(P90)</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="text-4">{{ TEST_CUSTOMIZATION?.sampleSummary?.errorRate || '--' }}%</div>
-          <div>错误率</div>
+          <div>{{ t('scenario.detail.testSummary.metrics.errorRate') }}</div>
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">结果指标</div>
+      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.resultMetrics') }}</div>
     </div>
   </div>
 </template>
