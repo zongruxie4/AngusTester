@@ -56,5 +56,133 @@
       "capability2": "Add and manage scenario resources;",
       "capability3": "Quickly generate scenario test scripts and tasks."
     }
+  },
+  "scenarioMonitor": {
+    "monitor": "Monitor",
+    "addMonitor": "Add Monitor",
+    "edit": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "monitorScene": "Monitor Scene",
+      "selectScene": "Select Scene",
+      "monitorName": "Monitor Name",
+      "monitorNamePlaceholder": "Enter monitor name, up to 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter monitor description, up to 200 characters",
+      "monitorTime": "Monitor Time",
+      "serverConfig": "Server Configuration",
+      "noDescription": "No description~",
+      "default": "Default",
+      "noVariables": "No variables~",
+      "notificationConfig": "Notification Configuration",
+      "notificationOptions": {
+        "notify": "Notify",
+        "noNotify": "No Notify"
+      },
+      "notificationHint": "After enabling notifications, messages will be automatically sent to recipients when monitoring runs fail.",
+      "recipient": "Recipient",
+      "recipientOptions": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "selectUser": "Select User",
+      "selectDept": "Select Department",
+      "selectGroup": "Select Group"
+    },
+    "detail": {
+      "successRate": "Success Rate",
+      "responseDelay": "Response Delay",
+      "executionRecords": "Execution Records",
+      "executionRecordsHint": "Note: Only shows the last 100 monitoring records.",
+      "timeRanges": {
+        "last24Hours": "Last 24 Hours",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days"
+      },
+      "metrics": {
+        "average": "Average",
+        "min": "Min",
+        "max": "Max"
+      },
+      "executionStatus": {
+        "success": "Run Successfully",
+        "failure": "Run Failed",
+        "reason": "Reason"
+      },
+      "tabs": {
+        "debugResult": "Debug Result",
+        "scheduleLog": "Schedule Log",
+        "execLog": "Execution Log"
+      }
+    },
+    "list": {
+      "addedMonitors": "Added Monitors",
+      "noMonitors": "You haven't added any monitors yet, ",
+      "addMonitor": "Add Monitor",
+      "successRate": "Success Rate",
+      "averageDelay": "Average Delay",
+      "willRun": "Will run",
+      "lastRun": "Last run",
+      "createdBy": "Created by",
+      "executeNow": "Execute Now",
+      "deleteConfirm": "Are you sure you want to delete monitor 【{name}】?",
+      "executeConfirm": "Execute monitor 【{name}】 immediately"
+    },
+    "searchPanel": {
+      "statusOptions": {
+        "pending": "Pending",
+        "success": "Success",
+        "failure": "Failure"
+      },
+      "searchNamePlaceholder": "Search name, description",
+      "selectScenePlaceholder": "Select scene name",
+      "selectCreatorPlaceholder": "Select creator",
+      "dateRangePlaceholder": ["Add time from", "Add time to"],
+      "sortOptions": {
+        "byAddTime": "By Add Time",
+        "byCreator": "By Creator"
+      },
+      "filterOptions": {
+        "all": "All",
+        "myCreated": "My Created",
+        "myModified": "My Modified"
+      },
+      "timeRanges": {
+        "last1Day": "Last 1 Day",
+        "last3Days": "Last 3 Days",
+        "last7Days": "Last 7 Days"
+      },
+      "quickSearch": "Quick Search",
+      "addMonitor": "Add Monitor",
+      "sort": "Sort",
+      "refresh": "Refresh"
+    },
+    "introduce": {
+      "aboutMonitor": "About Monitor",
+      "description": "Scenario monitoring helps us understand system or business status from an interface perspective, identify and resolve potential issues in a timely manner, thereby improving system reliability and user satisfaction, and providing strong support for stable business operations. Main application scenarios are as follows:",
+      "scenarios": {
+        "apiDelay": {
+          "title": "API Delay Monitoring",
+          "description": "Track API response times to ensure access experience. For example: Monitor the average response time of payment APIs to ensure it doesn't exceed 500ms."
+        },
+        "healthCheck": {
+          "title": "Check System Health Status",
+          "description": "Determine if the system is running normally in a quick and simple way. For example: Verify the running status of components in system or service health check endpoints (/health)."
+        },
+        "apiFunctionality": {
+          "title": "API Functionality Correctness Check",
+          "description": "Regularly test the functional correctness of APIs to ensure expected behavior. For example: Automatically test user registration APIs to verify account creation processes."
+        },
+        "businessProcess": {
+          "title": "Critical Business Process Monitoring",
+          "description": "Monitor the integrity and correctness of core business processes. For example: Whether payment orders and payment amounts are consistent in business up to the current time."
+        }
+      }
+    },
+    "chart": {
+      "successCount": "Success Count",
+      "failureCount": "Failure Count"
+    }
   }
 } 

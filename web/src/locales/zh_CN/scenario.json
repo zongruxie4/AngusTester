@@ -56,5 +56,133 @@
       "capability2": "添加并管理场景资源；",
       "capability3": "快速生成场景测试脚本和任务。"
     }
+  },
+  "scenarioMonitor": {
+    "monitor": "监控",
+    "addMonitor": "添加监控",
+    "edit": {
+      "save": "保存",
+      "cancel": "取消",
+      "monitorScene": "监控场景",
+      "selectScene": "选择场景",
+      "monitorName": "监控名称",
+      "monitorNamePlaceholder": "输入监控名称，最多可输入100字符",
+      "description": "描述",
+      "descriptionPlaceholder": "输入监控描述，最多可输入200字符",
+      "monitorTime": "监控时间",
+      "serverConfig": "服务器配置",
+      "noDescription": "无描述~",
+      "default": "默认",
+      "noVariables": "无变量~",
+      "notificationConfig": "通知配置",
+      "notificationOptions": {
+        "notify": "通知",
+        "noNotify": "不通知"
+      },
+      "notificationHint": "开启通知后，将在监控运行失败后自动发送消息给接收对象。",
+      "recipient": "接收对象",
+      "recipientOptions": {
+        "user": "接收人",
+        "dept": "接收部门",
+        "group": "接收组"
+      },
+      "selectUser": "选择用户",
+      "selectDept": "选择部门",
+      "selectGroup": "选择组"
+    },
+    "detail": {
+      "successRate": "成功率",
+      "responseDelay": "响应延迟",
+      "executionRecords": "执行记录",
+      "executionRecordsHint": "注意：只展示近100次监控记录。",
+      "timeRanges": {
+        "last24Hours": "近24小时",
+        "last7Days": "近7天",
+        "last30Days": "近30天"
+      },
+      "metrics": {
+        "average": "平均",
+        "min": "最小",
+        "max": "最大"
+      },
+      "executionStatus": {
+        "success": "运行成功",
+        "failure": "运行失败",
+        "reason": "原因"
+      },
+      "tabs": {
+        "debugResult": "调试结果",
+        "scheduleLog": "调度日志",
+        "execLog": "执行日志"
+      }
+    },
+    "list": {
+      "addedMonitors": "已添加的监控",
+      "noMonitors": "您尚未添加任何监控，立即",
+      "addMonitor": "添加监控",
+      "successRate": "成功率",
+      "averageDelay": "平均延迟",
+      "willRun": "将运行",
+      "lastRun": "最后运行",
+      "createdBy": "创建于",
+      "executeNow": "立即执行",
+      "deleteConfirm": "确定删除监控【{name}】吗？",
+      "executeConfirm": "立即执行监控【{name}】"
+    },
+    "searchPanel": {
+      "statusOptions": {
+        "pending": "未执行",
+        "success": "成功",
+        "failure": "失败"
+      },
+      "searchNamePlaceholder": "查询名称，描述",
+      "selectScenePlaceholder": "选择场景名称",
+      "selectCreatorPlaceholder": "选择创建人",
+      "dateRangePlaceholder": ["添加时间从", "添加时间到"],
+      "sortOptions": {
+        "byAddTime": "按添加时间",
+        "byCreator": "按添加人"
+      },
+      "filterOptions": {
+        "all": "全部",
+        "myCreated": "我创建的",
+        "myModified": "我修改的"
+      },
+      "timeRanges": {
+        "last1Day": "近1天",
+        "last3Days": "近3天",
+        "last7Days": "近7天"
+      },
+      "quickSearch": "快速查询",
+      "addMonitor": "添加监控",
+      "sort": "排序",
+      "refresh": "刷新"
+    },
+    "introduce": {
+      "aboutMonitor": "关于监控",
+      "description": "场景监控可以帮助我们从接口维度掌握系统或者业务状态，及时发现并解决潜在问题，从而提高系统的可靠性和用户满意度，为业务的稳定运营提供有力支持。主要应用场景如下：",
+      "scenarios": {
+        "apiDelay": {
+          "title": "API延迟监测",
+          "description": "跟踪API的响应时间，确保访问体验。例如：监控支付API的平均响应时间，确保不超过500ms。"
+        },
+        "healthCheck": {
+          "title": "检查系统健康状态",
+          "description": "以快速、简单的方式来确定系统是否正常运行。 例如：验证系统或服务健康检查端点(/health)中组件的运行状态。"
+        },
+        "apiFunctionality": {
+          "title": "API功能正确性检查",
+          "description": "定期测试API的功能正确性，确保预期行为。 例如：自动化测试用户注册API，验证账户创建流程。"
+        },
+        "businessProcess": {
+          "title": "关键业务流程监控",
+          "description": "监控核心业务流程的完整性和正确性。 例如：截止到当前时间支付订单和支付金额在业务上是否一致。"
+        }
+      }
+    },
+    "chart": {
+      "successCount": "成功数",
+      "failureCount": "失败数"
+    }
   }
 } 
