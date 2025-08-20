@@ -584,7 +584,7 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
       Map<String, List<T>> firstNodeNameSampMap, List<T> otherNodeSamp) {
     if (isEmpty(otherNodeSamp)) {
       return firstNodeNameSampMap.values().stream().flatMap(Collection::stream)
-          .collect(Collectors.toList());
+          .toList();
     }
 
     otherNodeSamp.sort(Comparator.comparing(T::getTimestamp));
@@ -793,7 +793,7 @@ public class ExecSampleQueryImpl implements ExecSampleQuery {
     ExecSample firstSample = null;
     if (isNotEmpty(latestSamples)) {
       List<ExecSample> nodeLastSamples = latestSamples.stream()
-          .filter(distinctByKey(ExecSample::getNodeId)).collect(Collectors.toList());
+          .filter(distinctByKey(ExecSample::getNodeId)).toList();
       for (ExecSample sample : nodeLastSamples) {
         if (isNull(firstSample)) {
           firstSample = sample;

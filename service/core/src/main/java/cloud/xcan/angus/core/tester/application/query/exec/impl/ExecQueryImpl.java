@@ -313,7 +313,7 @@ public class ExecQueryImpl implements ExecQuery {
         }
         return servers.stream()
             .filter(cloud.xcan.angus.spec.utils.ObjectUtils.distinctByKey(Server::getUrl))
-            .collect(Collectors.toList());
+            .toList();
       }
     }.execute();
   }
@@ -880,7 +880,7 @@ public class ExecQueryImpl implements ExecQuery {
           exec.setAvailableNodes(nodeMap.entrySet().stream()
               .filter(x -> availableNodesIds.contains(x.getKey()))
               .map(x -> CoreUtils.copyProperties(x.getValue(), new NodeInfo()))
-              .collect(Collectors.toList()));
+              .toList());
         }
         Set<Long> execNodesIds = isNotEmpty(exec.getExecNodeIds()) ? exec.getExecNodeIds()
             : isEmpty(exec.getLastSchedulingResult())
@@ -892,14 +892,14 @@ public class ExecQueryImpl implements ExecQuery {
           exec.setExecNodes(nodeMap.entrySet().stream()
               .filter(x -> execNodesIds.contains(x.getKey()))
               .map(x -> CoreUtils.copyProperties(x.getValue(), new NodeInfo()))
-              .collect(Collectors.toList()));
+              .toList());
         }
         if (isNotEmpty(exec.getAppNodeIds())) {
           Set<Long> appNodesIds = exec.getAppNodeIds();
           exec.setAppNodes(nodeMap.entrySet().stream()
               .filter(x -> appNodesIds.contains(x.getKey()))
               .map(x -> CoreUtils.copyProperties(x.getValue(), new NodeInfo()))
-              .collect(Collectors.toList()));
+              .toList());
         }
       }
     }

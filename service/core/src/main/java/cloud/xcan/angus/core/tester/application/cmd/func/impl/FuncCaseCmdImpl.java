@@ -267,7 +267,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure all cases to update exist in DB
         updatedCasesDb = funcCaseQuery.checkAndFind(
-            cases.stream().map(FuncCase::getId).collect(Collectors.toList()));
+            cases.stream().map(FuncCase::getId).toList());
 
         // Validate the plan for the cases
         FuncPlan planDb = funcPlanQuery.checkAndFind(updatedCasesDb.get(0).getPlanId());
@@ -326,10 +326,10 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
       @Override
       protected void checkParams() {
-        updatedCases = cases.stream().filter(x -> nonNull(x.getId())).collect(Collectors.toList());
+        updatedCases = cases.stream().filter(x -> nonNull(x.getId())).toList();
         if (isNotEmpty(updatedCases)) {
           // Ensure all cases to update exist in DB
-          List<Long> ids = updatedCases.stream().map(FuncCase::getId).collect(Collectors.toList());
+          List<Long> ids = updatedCases.stream().map(FuncCase::getId).toList();
           updatedCasesDb = funcCaseQuery.checkAndFind(ids);
 
           // Validate the plan for the cases
@@ -351,7 +351,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         List<FuncCase> addCases = cases.stream().filter(x -> isNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(addCases)) {
           // Add new cases
           idKeys.addAll(add(addCases));
@@ -366,7 +366,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
               .collect(Collectors.toMap(FuncCase::getId, x -> x));
           funcCaseRepo.batchUpdate(updatedCasesDb.stream()
               .map(x -> setReplaceInfo(x, updatedCasesMap.get(x.getId())))
-              .collect(Collectors.toList()));
+              .toList());
 
           // Replace tags for updated cases
           tagTargetCmd.replaceCase(updatedCases);
@@ -388,7 +388,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream()
               .map(x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                   .setTesterId(x.getTesterId()))
-              .collect(Collectors.toList()), activities);
+              .toList(), activities);
         }
         return idKeys;
       }
@@ -496,7 +496,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         // Log clone activities for audit
         activityCmd.addAll(toActivities(FUNC_CASE, newCases,
             ActivityType.CLONE, casesDb.stream().map(s -> new Object[]{s.getName()})
-                .collect(Collectors.toList())));
+                .toList()));
         return idKeys;
       }
     }.execute();
@@ -555,7 +555,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
         // Log move activities for audit
         List<Activity> activities = toActivities(FUNC_CASE, casesDb, MOVED,
-            casesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList()));
+            casesDb.stream().map(s -> new Object[]{s.getName()}).toList());
         activityCmd.addAll(activities);
 
         // Send notification events for moved cases
@@ -903,7 +903,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure all cases to modify exist in DB
         casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());
@@ -961,7 +961,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           funcCaseQuery.assembleAndSendModifyNoticeEvent(resultCases.stream().map(
                   x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                       .setTesterId(x.getTesterId()))
-              .collect(Collectors.toList()), activities);
+              .toList(), activities);
         }
       }
     }.execute();
@@ -1060,7 +1060,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
         funcCaseQuery.assembleAndSendModifyNoticeEvent(
             casesDb.stream().map(x -> new FuncCaseInfo().setId(x.getId())
                     .setName(x.getName()).setTesterId(x.getTesterId()))
-                .collect(Collectors.toList()), activities);
+                .toList(), activities);
         return null;
       }
     }.execute();
@@ -1083,7 +1083,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       protected void checkParams() {
         // Ensure all cases to review exist in DB
         casesDb = funcCaseQuery.checkAndFind(cases.stream().map(FuncCase::getId)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Validate all cases belong to the same plan
         Set<Long> planIds = casesDb.stream().map(FuncCase::getPlanId).collect(Collectors.toSet());
@@ -1480,7 +1480,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
           // Filter out cases that already exist
           List<String> namesDb = funcCaseRepo.findNamesByNameInAndPlanId(safePrefixNames, planId);
           cases = cases.stream().filter(x -> !namesDb.contains(x.getName()))
-              .collect(Collectors.toList());
+              .toList();
         }
 
         if (isEmpty(cases)) {
@@ -1601,7 +1601,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
 
         // Move deleted cases to trash for potential recovery
         funcTrashCmd.add0(casesDb.stream().map(FuncCaseConverter::toFuncCaseTrash)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Send notification events for deleted cases
         funcCaseQuery.assembleAndSendModifyNoticeEvent(casesDb, activities);
@@ -1657,7 +1657,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       funcCaseQuery.assembleAndSendModifyNoticeEvent(reviewCasesDb.stream().map(
               x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName())
                   .setTesterId(x.getTesterId()))
-          .collect(Collectors.toList()), activities);
+          .toList(), activities);
     }
   }
 
@@ -1692,7 +1692,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
       List<Tag> caseTagsDb = null;
       if (isNotEmpty(case0.getTagTargets())) {
         caseTagsDb = tagQuery.checkAndFind(case0.getTagTargets().stream()
-            .map(TagTarget::getTagId).collect(Collectors.toList()));
+            .map(TagTarget::getTagId).toList());
       }
 
       // Create modification activity based on what changed
@@ -1707,7 +1707,7 @@ public class FuncCaseCmdImpl extends CommCmd<FuncCase, Long> implements FuncCase
     // Send notification events for all updated cases
     funcCaseQuery.assembleAndSendModifyNoticeEvent(updatedCasesDb.stream().map(
             x -> new FuncCaseInfo().setId(x.getId()).setName(x.getName()).setTesterId(x.getTesterId()))
-        .collect(Collectors.toList()), activities);
+        .toList(), activities);
   }
 
   /**

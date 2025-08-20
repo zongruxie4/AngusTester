@@ -795,7 +795,7 @@ public class ApisQueryImpl implements ApisQuery {
               && matches(x.getEndpoint(), matchEndpointRegex)))
               && (isEmpty(filterTags) || (isNotEmpty(x.getTags())
               && x.getTags().stream().anyMatch(filterTags::contains)))
-          ).collect(Collectors.toList());
+          ).toList();
     }
     assertResourceNotFound(serviceApisDb, "Not matched apis found", new Object[]{});
     return serviceApisDb;
@@ -812,7 +812,7 @@ public class ApisQueryImpl implements ApisQuery {
    */
   @Override
   public void checkOwnerExist(Collection<Apis> apis) {
-    List<Long> ids = apis.stream().map(Apis::getOwnerId).collect(Collectors.toList());
+    List<Long> ids = apis.stream().map(Apis::getOwnerId).toList();
     if (isNotEmpty(ids)) {
       // Prevent user sync failure after user deletion
       List<Long> userIds = userManager.findUserIdsByIdIn(ids);
@@ -863,7 +863,7 @@ public class ApisQueryImpl implements ApisQuery {
               // Note: URI cannot be null, must be safely converted to empty string
         List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
             serviceId, serviceApisMap.get(serviceId).stream().map(Apis::getEndpoint)
-                .collect(Collectors.toList()));
+                .toList());
       if (isNotEmpty(servicesApisDb)) {
         for (ApisBaseInfo apiDb : servicesApisDb) {
           for (Apis api : serviceApisMap.get(serviceId)) {
@@ -893,7 +893,7 @@ public class ApisQueryImpl implements ApisQuery {
       Long serviceId, boolean replace) {
     // Handle partial updates where method and endpoint may not be modified (nullable)
     List<Apis> updateApis = apis.stream().filter(x -> nonNull(x.getMethod())
-        || nonNull(x.getEndpoint())).collect(Collectors.toList());
+        || nonNull(x.getEndpoint())).toList();
     if (isNotEmpty(updateApis) && !replace /*Update apis*/) {
       for (Apis api : updateApis) {
         for (Apis apiDb : apisDb) {
@@ -912,7 +912,7 @@ public class ApisQueryImpl implements ApisQuery {
 
     // Note: URI cannot be null, must be safely converted to empty string
     List<ApisBaseInfo> servicesApisDb = apisBaseInfoRepo.findAllByServiceIdAndEndpointIn(
-        serviceId, apis.stream().map(Apis::getEndpoint).collect(Collectors.toList()));
+        serviceId, apis.stream().map(Apis::getEndpoint).toList());
     if (isNotEmpty(servicesApisDb)) {
       for (ApisBaseInfo apiDb : servicesApisDb) {
         for (Apis api : apis) {
@@ -1438,7 +1438,7 @@ public class ApisQueryImpl implements ApisQuery {
   //@NameJoin
   public static List<ApisInfoSummary> getApisInfoSummary(List<ApisBasicInfo> apis) {
     return isEmpty(apis) ? null
-        : apis.stream().map(ApisConverter::toApisInfoSummary).collect(Collectors.toList());
+        : apis.stream().map(ApisConverter::toApisInfoSummary).toList();
   }
 
   /**

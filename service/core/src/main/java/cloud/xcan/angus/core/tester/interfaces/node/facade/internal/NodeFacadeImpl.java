@@ -67,14 +67,14 @@ public class NodeFacadeImpl implements NodeFacade {
   @Override
   public List<IdKey<Long, Object>> add(List<NodeAddDto> dto) {
     List<Node> nodes = dto.stream().map(NodeAssembler::addDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return nodeCmd.add(nodes);
   }
 
   @Override
   public void update(List<NodeUpdateDto> dto) {
     List<Node> nodes = dto.stream().map(NodeAssembler::updateDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     nodeCmd.update(nodes);
   }
 
@@ -96,7 +96,7 @@ public class NodeFacadeImpl implements NodeFacade {
   @Override
   public void enabled(LinkedHashSet<EnabledOrDisabledDto> dto) {
     List<Node> nodes = dto.stream()
-        .map(NodeAssembler::enabledDtoToDomain).collect(Collectors.toList());
+        .map(NodeAssembler::enabledDtoToDomain).toList();
     nodeCmd.enabled(nodes);
   }
 
@@ -146,7 +146,7 @@ public class NodeFacadeImpl implements NodeFacade {
   public List<NodeMockServiceListVo> mockServiceList(Long id) {
     List<MockServiceInfo> mockServiceInfos = mockServiceQuery.findByNodeId(id);
     return mockServiceInfos.stream().map(NodeAssembler::toServiceListVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @NameJoin

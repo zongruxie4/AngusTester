@@ -71,11 +71,11 @@ public class FuncCaseOverdueJob {
       if (isNotEmpty(funcCases)) {
         // Update to overdue status
         funcCaseRepo.updateOverdue(
-            funcCases.stream().map(FuncCaseInfo::getId).collect(Collectors.toList()));
+            funcCases.stream().map(FuncCaseInfo::getId).toList());
 
         // Add overdue events
         assembleAndSendOverdueNoticeEvent(funcCases.stream()
-            .filter(x -> nonNull(x.getTesterId())).collect(Collectors.toList()));
+            .filter(x -> nonNull(x.getTesterId())).toList());
       }
     });
   }

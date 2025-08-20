@@ -169,7 +169,7 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
           if (isNotEmpty(sampleExtcContents)) {
             sampleContents = sampleExtcContents.stream()
                 .filter(x -> nonNull(x.getContent())).map(ExecResultConverter::toTestResultContent)
-                .collect(Collectors.toList());
+                .toList();
           }
           // Group sample contents by name for case result generation
           nameSampleContentsMap = isEmpty(sampleContents) ? null : sampleContents.stream()
@@ -305,14 +305,14 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
 
     // Initialize test result as passed by default
     testResult.setPassed(true);
-    
+
     // Handle ramp-up sample summary for performance testing
     if (execDb.getScriptType().isNonFunctionalTesting() && execDb.getAngusScript()
         .needResetAfterRamp()) {
       finalTotalSampleSummary = assembleFinalTotalRampSampleSummary(execDb,
           testResult.getIndicatorPerf());
     }
-    
+
     // Set sample summary, target summary, node usage summary, and sample content
     testResult.setSampleSummary(finalTotalSampleSummary);
     testResult.setTargetSummary(
@@ -339,7 +339,7 @@ public class ExecTestResultCmdImpl implements ExecTestResultCmd {
         throw SysException.of("Unsupported script test type");
       }
     }
-    
+
     // Update failure count if test failed
     if (!testResult.isPassed()) {
       testResult.setTestFailureNum(testResult.getTestFailureNum() + 1);

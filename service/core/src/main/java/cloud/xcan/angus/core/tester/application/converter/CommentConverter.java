@@ -41,7 +41,7 @@ public class CommentConverter {
             .setAvatar(comment.getAvatar())
             .setCreatedDate(comment.getCreatedDate())
             .setTotalCommentNum(totalCommentNum))
-        .collect(Collectors.toList());
+        .toList();
     return TreeUtils.toTree(vos, false);  // Use database sort
   }
 }

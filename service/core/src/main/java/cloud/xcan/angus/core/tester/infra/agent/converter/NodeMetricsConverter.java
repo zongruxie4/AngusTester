@@ -213,7 +213,7 @@ public class NodeMetricsConverter {
     Map<String, List<Response>> groupByDevice = groupByName(content.stream().filter(
             response -> response.getTags().stream().anyMatch(t -> "deviceName".equals(t.getTag()))
                 && response.getTags().stream().anyMatch(t -> "fileSystem".equals(t.getTag())))
-        .collect(Collectors.toList()));
+        .toList());
     List<DiskUsage> diskUsages = new ArrayList<>(groupByDevice.size());
     for (Map.Entry<String, List<Response>> entry : groupByDevice.entrySet()) {
       DiskUsage usage = new DiskUsage();
@@ -249,7 +249,7 @@ public class NodeMetricsConverter {
     Map<String, List<Response>> groupByDevice = groupByName(content.stream().filter(
             response -> response.getTags().stream().anyMatch(t -> "deviceName".equals(t.getTag()))
                 && response.getTags().stream().anyMatch(t -> "network".equals(t.getTag())))
-        .collect(Collectors.toList()));
+        .toList());
     List<NetUsage> netUsages = new ArrayList<>(groupByDevice.size());
     for (Map.Entry<String, List<Response>> entry : groupByDevice.entrySet()) {
       NetUsage usage = new NetUsage();

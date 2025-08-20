@@ -35,13 +35,13 @@ public class ApisUnarchivedFacadeImpl implements ApisUnarchivedFacade {
   @Override
   public List<IdKey<Long, Object>> add(List<ApisUnarchivedAddDto> dto) {
     return apisUnarchivedCmd.add(dto.stream().map(ApisUnarchivedAssembler::addDtoToDomain)
-        .collect(Collectors.toList()));
+        .toList());
   }
 
   @Override
   public void update(List<ApisUnarchivedUpdateDto> dto) {
     apisUnarchivedCmd.update(dto.stream().map(ApisUnarchivedAssembler::updateDtoToDomain)
-        .collect(Collectors.toList()));
+        .toList());
   }
 
   @Override

@@ -38,6 +38,6 @@ public class ServicesTestAssembler {
                     .priority(testing.getPriority().toExecPriority())
                     .build())
                 .build())*/
-        ).collect(Collectors.toList());
+        ).toList();
   }
 }

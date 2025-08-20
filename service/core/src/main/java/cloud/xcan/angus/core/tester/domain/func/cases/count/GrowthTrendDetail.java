@@ -29,7 +29,7 @@ public class GrowthTrendDetail extends GrowthTrendCount implements DataDetailBas
     List<String> values = new ArrayList<>();
     values.add(name);
     values.add(valueOf(totalNum));
-    values.addAll(timeSeriesDetail.stream().map(String::valueOf).collect(Collectors.toList()));
+    values.addAll(timeSeriesDetail.stream().map(String::valueOf).toList());
     return values.toArray(new String[0]);
   }
 }

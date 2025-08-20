@@ -58,7 +58,7 @@ public class ExecResultSummaryConverter {
   public static List<ExecTestCaseResultDetailSummary> toTestCaseResultDetailSummaries(
       List<ExecTestCaseResult> testResultDbs, String execName) {
     return isEmpty(testResultDbs) ? null : testResultDbs.stream()
-        .map(x -> toTestCaseResultDetailSummary(x, execName)).collect(Collectors.toList());
+        .map(x -> toTestCaseResultDetailSummary(x, execName)).toList();
   }
 
   public static ExecTestCaseResultDetailSummary toTestCaseResultDetailSummary(
@@ -119,7 +119,7 @@ public class ExecResultSummaryConverter {
     testResultSummary.setResultSummary(resultSummary);
 
     testResultSummary.setEnabledTestTypes(enabledTestTypes.stream().map(TestType::toScriptType)
-        .collect(Collectors.toList()));
+        .toList());
 
     testResultSummary.setResultDetailVoMap(result.stream().collect(
         Collectors.toMap(ExecTestResult::getScriptType, x -> toTestResultDetailSummary(x,

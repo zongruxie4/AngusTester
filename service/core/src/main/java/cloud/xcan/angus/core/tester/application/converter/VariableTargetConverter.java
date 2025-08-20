@@ -17,7 +17,7 @@ public class VariableTargetConverter {
       target.setTargetType(targetType);
       target.setTargetId(targetId);
       return target;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
 }

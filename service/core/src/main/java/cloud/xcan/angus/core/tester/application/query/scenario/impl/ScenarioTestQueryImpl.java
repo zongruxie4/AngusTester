@@ -198,7 +198,7 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
               .filter(x -> nonNull(x.getRequest().getServer())
                   && nonNull(x.getRequest().getServer().getUrl()))
               .map(x -> toServer(x.getRequest().getServer()))
-              .collect(Collectors.toList()));
+              .toList());
         }
         if (nonNull(angusScript.getTask()) && isNotEmpty(angusScript.getTask().getPipelines())) {
           servers.addAll(angusScript.getTask().getPipelines().stream().filter(
@@ -206,10 +206,10 @@ public class ScenarioTestQueryImpl implements ScenarioTestQuery {
                       && nonNull(((Http) x).getRequest().getServer())
                       && nonNull(((Http) x).getRequest().getServer().getUrl()))
               .map(x -> toServer(((Http) x).getRequest().getServer()))
-              .collect(Collectors.toList()));
+              .toList());
         }
         return servers.stream().filter(ObjectUtils.distinctByKey(Server::getUrl))
-            .collect(Collectors.toList());
+            .toList();
       }
     }.execute();
   }

@@ -86,14 +86,14 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
   public void setAssocForTask(List<? extends TaskFuncCaseAssoc<?, ?>> tasks) {
     if (isNotEmpty(tasks)) {
       List<TaskFuncCase> tfcs = findWideByTargetId(
-          tasks.stream().map(TaskFuncCaseAssoc::getId).collect(Collectors.toList()));
+          tasks.stream().map(TaskFuncCaseAssoc::getId).toList());
       if (isEmpty(tfcs)) {
         return;
       }
 
       List<Long> assocTaskIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocTask)
           .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-          .collect(Collectors.toList());
+          .toList();
       Map<Long, TaskInfo> assocTaskInfoMap = taskInfoRepo.findByIdIn(assocTaskIds)
           .stream().collect(Collectors.toMap(TaskInfo::getId, x -> x));
       if (isNotEmpty(assocTaskInfoMap)) {
@@ -101,12 +101,12 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           List<Long> taskAssocTaskIds = tfcs.stream()
               .filter(x -> x.isTaskAssocTask() && x.getWideTargetIds().contains(task.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .collect(Collectors.toList());
+              .toList();
           taskAssocTaskIds.remove(task.getId());
           if (isNotEmpty(taskAssocTaskIds)) {
             task.setAssocTasks(assocTaskInfoMap.entrySet().stream()
                 .filter(x -> taskAssocTaskIds.contains(x.getKey()))
-                .map(Entry::getValue).collect(Collectors.toList()));
+                .map(Entry::getValue).toList());
           }
         }
         // Set assignee name and avatar
@@ -115,7 +115,7 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
       }
 
       List<Long> assocCaseIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocCase)
-          .map(TaskFuncCase::getAssocTargetId).collect(Collectors.toList());
+          .map(TaskFuncCase::getAssocTargetId).toList();
       Map<Long, FuncCaseInfo> assocCaseInfoMap = funcCaseInfoRepo.findByIdIn(assocCaseIds)
           .stream().collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
       if (isNotEmpty(assocCaseInfoMap)) {
@@ -123,12 +123,12 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           List<Long> taskAssocCaseIds = tfcs.stream()
               .filter(x -> x.isTaskAssocCase() && x.getWideTargetIds().contains(task.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .collect(Collectors.toList());
+              .toList();
           taskAssocCaseIds.remove(task.getId());
           if (isNotEmpty(taskAssocCaseIds)) {
             task.setAssocCases(assocCaseInfoMap.entrySet().stream()
                 .filter(x -> taskAssocCaseIds.contains(x.getKey()))
-                .map(Entry::getValue).collect(Collectors.toList()));
+                .map(Entry::getValue).toList());
           }
         }
         // Set tester name and avatar
@@ -152,14 +152,14 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
   public void setAssocForCase(List<? extends TaskFuncCaseAssoc<?, ?>> cases) {
     if (isNotEmpty(cases)) {
       List<TaskFuncCase> tfcs = findWideByTargetId(
-          cases.stream().map(TaskFuncCaseAssoc::getId).collect(Collectors.toList()));
+          cases.stream().map(TaskFuncCaseAssoc::getId).toList());
       if (isEmpty(tfcs)) {
         return;
       }
 
       List<Long> assocTaskIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocCase)
           .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-          .collect(Collectors.toList());
+          .toList();
       Map<Long, TaskInfo> assocTaskInfoMap = taskInfoRepo.findByIdIn(assocTaskIds)
           .stream().collect(Collectors.toMap(TaskInfo::getId, x -> x));
       if (isNotEmpty(assocTaskInfoMap)) {
@@ -167,12 +167,12 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           List<Long> caseAssocTaskIds = tfcs.stream()
               .filter(x -> x.isTaskAssocCase() && x.getWideTargetIds().contains(case0.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .collect(Collectors.toList());
+              .toList();
           caseAssocTaskIds.remove(case0.getId());
           if (isNotEmpty(caseAssocTaskIds)) {
             case0.setAssocTasks(assocTaskInfoMap.entrySet().stream()
                 .filter(x -> caseAssocTaskIds.contains(x.getKey()))
-                .map(Entry::getValue).collect(Collectors.toList()));
+                .map(Entry::getValue).toList());
           }
         }
         // Set assignee name and avatar
@@ -181,7 +181,7 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
       }
 
       List<Long> assocCaseIds = tfcs.stream().filter(TaskFuncCase::isCaseAssocCase)
-          .map(TaskFuncCase::getAssocTargetId).collect(Collectors.toList());
+          .map(TaskFuncCase::getAssocTargetId).toList();
       Map<Long, FuncCaseInfo> assocCaseInfoMap = funcCaseInfoRepo.findByIdIn(assocCaseIds)
           .stream().collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
       if (isNotEmpty(assocCaseInfoMap)) {
@@ -189,12 +189,12 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           List<Long> caseAssocCaseIds = tfcs.stream()
               .filter(x -> x.isCaseAssocCase() && x.getWideTargetIds().contains(case0.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .collect(Collectors.toList());
+              .toList();
           caseAssocCaseIds.remove(case0.getId());
           if (isNotEmpty(caseAssocCaseIds)) {
             case0.setAssocCases(assocCaseInfoMap.entrySet().stream()
                 .filter(x -> caseAssocCaseIds.contains(x.getKey()))
-                .map(Entry::getValue).collect(Collectors.toList()));
+                .map(Entry::getValue).toList());
           }
         }
         // Set tester name and avatar

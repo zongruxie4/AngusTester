@@ -400,7 +400,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
 
           if (export) {
             List<Long> caseIds = page.getContent().stream().map(FuncCaseInfo::getId)
-                .collect(Collectors.toList());
+                .toList();
             Map<Long, FuncCase> caseMap = funcCaseRepo.findAllById(caseIds).stream()
                 .collect(Collectors.toMap(FuncCase::getId, x -> x));
             for (FuncCaseInfo caseInfo : page.getContent()) {
@@ -2670,7 +2670,7 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   @NameJoin
   public static List<FuncCaseSummary> getCaseSummary(List<FuncCaseInfo> cases) {
     return isEmpty(cases) ? null : cases.stream().map(FuncCaseConverter::toCaseSummary)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**

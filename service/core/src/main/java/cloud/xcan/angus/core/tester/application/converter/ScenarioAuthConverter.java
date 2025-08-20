@@ -21,7 +21,7 @@ public class ScenarioAuthConverter {
             .setAuthObjectType(AuthObjectType.USER)
             .setAuthObjectId(creatorId)
             .setAuths(ScenarioPermission.ALL)
-            .setCreator(true)).collect(Collectors.toList());
+            .setCreator(true)).toList();
   }
 
 }

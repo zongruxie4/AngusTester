@@ -128,7 +128,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
         }
 
         return sprintAuths.stream().map(TaskSprintAuth::getAuths)
-            .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+            .flatMap(Collection::stream).distinct().toList();
       }
     }.execute();
   }
@@ -422,7 +422,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
     Map<Long, List<TaskSprintAuth>> authMap = auths.stream()
         .filter(o -> nonNull(o.getSprintId()))
         .collect(Collectors.groupingBy(TaskSprintAuth::getSprintId));
-    
+
     // Check permissions for each sprint
     for (Long sprintId : authMap.keySet()) {
       List<TaskSprintAuth> values = authMap.get(sprintId);
@@ -431,13 +431,13 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
         Set<TaskSprintPermission> sprintPermissions = values.stream()
             .flatMap(o -> o.getAuths().stream())
             .collect(Collectors.toSet());
-        
+
         // Check if the required permission is present
         if (sprintPermissions.contains(permission)) {
           continue;
         }
       }
-      
+
       // Permission not found, throw exception with sprint details
       TaskSprint sprint = taskSprintRepo.findById(sprintId).orElse(null);
       BizAssert.assertTrue(false, TASK_SPRINT_NO_AUTH_CODE, TASK_SPRINT_NO_AUTH,
@@ -484,12 +484,12 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
     // Get user's organization IDs and add user ID for comprehensive permission check
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
     orgIds.add(userId);
-    
+
     return taskSprintAuthRepo.findAllByAuthObjectIdIn(orgIds).stream()
         .filter(auth -> auth.getAuths().contains(permission))
         .map(TaskSprintAuth::getSprintId)
         .distinct()
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**
@@ -529,9 +529,9 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
     // Get user's organization IDs and add user ID for comprehensive permission check
     List<Long> orgIds = userRepo.findOrgIdsById(userId);
     orgIds.add(userId);
-    
+
     // Return all user authorizations if no specific sprints provided
-    return isEmpty(projectIds) 
+    return isEmpty(projectIds)
         ? taskSprintAuthRepo.findAllByAuthObjectIdIn(orgIds)
         : taskSprintAuthRepo.findAllBySprintIdInAndAuthObjectIdIn(projectIds, orgIds);
   }
@@ -562,7 +562,7 @@ public class TaskSprintAuthQueryImpl implements TaskSprintAuthQuery {
       return TaskSprintPermission.ALL;
     }
     return auths.stream().map(TaskSprintAuth::getAuths)
-        .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        .flatMap(Collection::stream).distinct().toList();
   }
 
   /**

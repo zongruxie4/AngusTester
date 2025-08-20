@@ -79,7 +79,7 @@ public class ApisTrashFacadeImpl implements ApisTrashFacade {
   private void setApiMethodAndUri(Page<ApisTrash> trashPage, PageResult<ApisTrashDetailVo> page) {
     List<ApisTrash> trash = trashPage.getContent();
     List<ApisBaseInfo> apis = apisQuery.findBase0ByIdIn(
-        trash.stream().map(ApisTrash::getTargetId).collect(Collectors.toList()));
+        trash.stream().map(ApisTrash::getTargetId).toList());
     Map<Long, ApisBaseInfo> apisMap = apis.stream()
         .collect(Collectors.toMap(ApisBaseInfo::getId, Function.identity()));
     for (ApisTrashDetailVo apisDetailVo : page.getList()) {

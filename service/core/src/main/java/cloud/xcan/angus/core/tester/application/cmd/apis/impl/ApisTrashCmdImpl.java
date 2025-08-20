@@ -226,7 +226,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
 
     List<Long> serviceIds = trashes.stream()
         .filter(d -> d.getTargetType().isService()).map(ApisTrash::getTargetId)
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(serviceIds)) {
       // Clean up subordinates apis trash
       List<Long> apiIds = apisRepo.findAll0IdByServiceIdIn(serviceIds);
@@ -239,7 +239,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     }
 
     List<Long> apiIds = trashes.stream().filter(d -> d.getTargetType().isApi())
-        .map(ApisTrash::getTargetId).collect(Collectors.toList());
+        .map(ApisTrash::getTargetId).toList();
     if (isNotEmpty(apiIds)) {
       allApiIds.addAll(apiIds);
     }
@@ -255,7 +255,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
       return;
     }
     List<Long> backServiceIds = trashes.stream().filter(x -> x.getTargetType().isService())
-        .map(ApisTrash::getTargetId).collect(Collectors.toList());
+        .map(ApisTrash::getTargetId).toList();
     if (isEmpty(backServiceIds)) {
       return;
     }
@@ -272,7 +272,7 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
       return;
     }
     List<Long> backApiIds = trashes.stream().filter(x -> x.getTargetType().isApi())
-        .map(ApisTrash::getTargetId).collect(Collectors.toList());
+        .map(ApisTrash::getTargetId).toList();
     if (isEmpty(backApiIds)) {
       return;
     }
@@ -286,13 +286,13 @@ public class ApisTrashCmdImpl extends CommCmd<ApisTrash, Long> implements ApisTr
     if (isNotEmpty(apiInfos)) {
       // Get all parent project and service
       List<Long> serviceIds = apiInfos.stream()
-          .map(ApisBaseInfo::getServiceId).collect(Collectors.toList());
+          .map(ApisBaseInfo::getServiceId).toList();
       // Include logic deleted
       Collection<Services> services = servicesRepo.findAll0ByIdIn(serviceIds);
 
       // Cancel deleted parent service
       List<Long> backServiceIds = services.stream().map(Services::getId)
-          .collect(Collectors.toList());
+          .toList();
       if (isNotEmpty(backServiceIds)) {
         // Update undeleted service status
         servicesRepo.updateToUndeletedStatusByIdIn(backServiceIds);

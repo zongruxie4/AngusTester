@@ -178,7 +178,7 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
         // Only open the finished status
         if (!restart) {
           tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
-              .collect(Collectors.toList());
+              .toList();
         }
 
         if (isNotEmpty(tasksDb)) {
@@ -217,7 +217,7 @@ public class ScenarioTestCmdImpl implements ScenarioTestCmd {
         List<Long> taskIds = isEmpty(testTypes)
             ? taskRepo.findIdsByTargetIdIn(List.of(scenarioId))
             : taskRepo.findIdsByTargetIdInAndTestTypeIn(List.of(scenarioId),
-                testTypes.stream().map(TestType::getValue).collect(Collectors.toList()));
+                testTypes.stream().map(TestType::getValue).toList());
         if (isEmpty(taskIds)) {
           return null;
         }

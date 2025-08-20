@@ -114,7 +114,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
       protected List<IdKey<Long, Object>> process() {
         // Set API information for all cases
         ApisCaseConverter.setApisInfo(cases, apisDb);
-        
+
         // Insert all cases and get their IDs
         List<IdKey<Long, Object>> idKeys = batchInsert(cases, "name");
 
@@ -165,7 +165,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
       protected void checkParams() {
         // Validate all cases exist and retrieve current records
         updatedCasesDb = apisCaseQuery.checkAndFind(
-            cases.stream().map(ApisCase::getId).collect(Collectors.toList()));
+            cases.stream().map(ApisCase::getId).toList());
 
         // Ensure all cases belong to the same API (single API constraint)
         Set<Long> apiIds = updatedCasesDb.stream().map(ApisCase::getApisId)
@@ -211,10 +211,10 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
 
       @Override
       protected void checkParams() {
-        updatedCases = cases.stream().filter(x -> nonNull(x.getId())).collect(Collectors.toList());
+        updatedCases = cases.stream().filter(x -> nonNull(x.getId())).toList();
         if (isNotEmpty(updatedCases)) {
           // Check the cases exists
-          List<Long> ids = updatedCases.stream().map(ApisCase::getId).collect(Collectors.toList());
+          List<Long> ids = updatedCases.stream().map(ApisCase::getId).toList();
           updatedCasesDb = apisCaseQuery.checkAndFind(ids);
 
           // Check the apis exists
@@ -238,7 +238,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
       @Override
       protected Void process() {
         List<ApisCase> addCases = cases.stream().filter(x -> isNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(addCases)) {
           // Save cases
           ApisCaseConverter.setApisInfo(addCases, apisDb);
@@ -251,7 +251,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
               .collect(Collectors.toMap(ApisCase::getId, x -> x));
           apisCaseRepo.batchUpdate(updatedCasesDb.stream()
               .map(x -> setReplaceInfo(x, apisDb, updatedCasesMap.get(x.getId())))
-              .collect(Collectors.toList()));
+              .toList());
 
           // Synchronize testing cases to script
           scriptCmd.syncApisCaseToScript(apisDb, updatedCasesDb);
@@ -421,7 +421,7 @@ public class ApisCaseCmdImpl extends CommCmd<ApisCase, Long> implements ApisCase
 
         // Add clone activities
         activityCmd.addAll(toActivities(API_CASE, clonedCases, CLONE,
-            casesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+            casesDb.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();

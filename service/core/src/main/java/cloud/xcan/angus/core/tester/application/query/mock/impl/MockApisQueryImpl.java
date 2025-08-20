@@ -456,7 +456,7 @@ public class MockApisQueryImpl implements MockApisQuery {
   @Override
   public void checkAssocApissExists(List<MockApis> mockApis) {
     List<Long> apisIds = mockApis.stream().filter(x -> nonNull(x.getAssocApisId()))
-        .map(MockApis::getAssocApisId).collect(Collectors.toList());
+        .map(MockApis::getAssocApisId).toList();
     if (isNotEmpty(apisIds)) {
       List<ApisBaseInfo> apis = apisQuery.checkAndFindBaseInfos(apisIds);
       if (isNotEmpty(apis)) {

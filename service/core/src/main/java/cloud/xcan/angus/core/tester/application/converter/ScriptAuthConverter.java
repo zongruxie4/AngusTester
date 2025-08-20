@@ -22,7 +22,7 @@ public class ScriptAuthConverter {
             .setAuthObjectId(creatorId)
             .setAuths(ScriptPermission.ALL)
             .setCreator(true))
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

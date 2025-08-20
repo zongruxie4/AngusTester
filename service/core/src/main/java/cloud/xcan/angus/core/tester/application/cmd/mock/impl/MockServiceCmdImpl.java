@@ -509,7 +509,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
 
         // Check and get apis
         List<Apis> apisDb = apisQuery.findByServiceId(serviceId).stream()
-            .filter(x -> isNull(x.getMockApisId())).collect(Collectors.toList());
+            .filter(x -> isNull(x.getMockApisId())).toList();
         parseAndAddMockApisAndResponses(mockServiceDb, apisDb);
 
         // Save disassociation activity
@@ -542,7 +542,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
       protected List<StartVo> process() {
         // Fix:: Node IP may be updated
         Map<Long, Node> nodeMap = nodeQuery.findNodeMap(serviceDbs.stream()
-            .map(MockService::getNodeId).collect(Collectors.toList()));
+            .map(MockService::getNodeId).toList());
 
         // Start mock service
         MockServiceStartDto startDto = toMockServiceStartDto(nodeMap, serviceDbs,
@@ -672,7 +672,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
           if (strategyWhenDuplicated.isCover()) {
             List<MockApis> updateMockApisDb = mockApisDb.stream()
                 .filter(x -> angusMockApis.stream().anyMatch(x::sameIdentityAs))
-                .collect(Collectors.toList());
+                .toList();
             if (isNotEmpty(updateMockApisDb)) {
               Set<Long> updateApiIds = updateMockApisDb.stream().map(MockApis::getId)
                   .collect(Collectors.toSet());
@@ -681,7 +681,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
               List<cloud.xcan.angus.model.element.mock.apis.MockApis> updateAngusMockApis
                   = angusMockApis.stream()
                   .filter(x -> mockApisDb.stream().anyMatch(y -> y.sameIdentityAs(x)))
-                  .collect(Collectors.toList());
+                  .toList();
               mockApisCmd.addImportedMockApisAndResponses(mockServiceDb, updateAngusMockApis);
             }
           }
@@ -689,7 +689,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
           // Add new mock apis and responses
           List<cloud.xcan.angus.model.element.mock.apis.MockApis> newAngusMockApis = angusMockApis
               .stream().filter(x -> mockApisDb.stream().noneMatch(y -> y.sameIdentityAs(x)))
-              .collect(Collectors.toList());
+              .toList();
           if (isNotEmpty(newAngusMockApis)) {
             // Insert mock apis and response
             mockApisCmd.addImportedMockApisAndResponses(mockServiceDb, newAngusMockApis);
@@ -699,7 +699,7 @@ public class MockServiceCmdImpl extends CommCmd<MockService, Long> implements Mo
           if (deleteWhenNotExisted) {
             List<MockApis> deleteMockApisDb = mockApisDb.stream()
                 .filter(x -> angusMockApis.stream().noneMatch(x::sameIdentityAs))
-                .collect(Collectors.toList());
+                .toList();
             if (isNotEmpty(deleteMockApisDb)) {
               Set<Long> deleteApiIds = deleteMockApisDb.stream().map(MockApis::getId)
                   .collect(Collectors.toSet());

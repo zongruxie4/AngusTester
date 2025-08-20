@@ -288,7 +288,7 @@ public class ModuleQueryImpl implements ModuleQuery {
       
       // Remove duplicate modules based on ID to ensure uniqueness
       return allModules.stream().filter(distinctByKey(Module::getId))
-          .collect(Collectors.toList());
+          .toList();
     }
     return allModules;
   }
@@ -316,7 +316,7 @@ public class ModuleQueryImpl implements ModuleQuery {
       if (isNotEmpty(projectModuleSubs)) {
         allModuleAndSub.addAll(projectModuleSubs);
         // Update module IDs for the next iteration to find deeper sub-modules
-        moduleIds = projectModuleSubs.stream().map(Module::getId).collect(Collectors.toList());
+        moduleIds = projectModuleSubs.stream().map(Module::getId).toList();
       }
     } while (isNotEmpty(projectModuleSubs));
     return allModuleAndSub;
@@ -334,7 +334,7 @@ public class ModuleQueryImpl implements ModuleQuery {
    */
   @Override
   public List<Long> findSubIds(Long projectId, Collection<Long> moduleIds) {
-    return findSub(projectId, moduleIds).stream().map(Module::getId).collect(Collectors.toList());
+    return findSub(projectId, moduleIds).stream().map(Module::getId).toList();
   }
 
   /**
@@ -397,7 +397,7 @@ public class ModuleQueryImpl implements ModuleQuery {
   @Override
   public void checkUpdateNameExists(Long projectId, Collection<Module> modules) {
     List<Module> modulesDb = moduleRepo.findByProjectIdAndNameIn(
-        projectId, modules.stream().map(Module::getName).collect(Collectors.toList()));
+        projectId, modules.stream().map(Module::getName).toList());
     if (isEmpty(modulesDb)) {
       return;
     }

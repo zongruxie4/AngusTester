@@ -301,7 +301,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       protected Void process() {
         // Delete scripts for the specified API and test types
         scriptCmd.deleteBySource(ScriptSource.API, List.of(apisId),
-            testTypes.stream().map(TestType::toScriptType).collect(Collectors.toList()));
+            testTypes.stream().map(TestType::toScriptType).toList());
 
         // Log script deletion activity
         activityCmd.add(toActivity(API, apisDb, TARGET_SCRIPT_DELETED));
@@ -325,7 +325,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
   public void scriptDelete0(Long apisId, Set<TestType> testTypes) {
     // Delete scripts for the specified API and test types (no permission check)
     scriptCmd.deleteBySource(ScriptSource.API, List.of(apisId),
-        testTypes.stream().map(TestType::toScriptType).collect(Collectors.toList()));
+        testTypes.stream().map(TestType::toScriptType).toList());
   }
 
   /**
@@ -407,7 +407,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
         if (!restart) {
           // Only reopen tasks with finished status
           tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
-              .collect(Collectors.toList());
+              .toList();
         }
         
         // Retest or reopen tasks if any exist
@@ -454,7 +454,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
         List<Long> taskIds = isEmpty(testTypes)
             ? taskRepo.findIdsByTargetIdIn(apisIds)  // All tasks for the APIs
             : taskRepo.findIdsByTargetIdInAndTestTypeIn(apisIds,  // Tasks for specific test types
-                testTypes.stream().map(TestType::getValue).collect(Collectors.toList()));
+                testTypes.stream().map(TestType::getValue).toList());
         
         // Skip deletion if no tasks found
         if (isEmpty(taskIds)) {
@@ -648,7 +648,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
     // Find script IDs for the requested test types and trigger execution
     List<Long> scriptIds = scriptQuery.findInfoBySource(ScriptSource.API, apisDb.getId())
         .stream().filter(x -> testTypes.contains(TestType.of(x.getType())))
-        .map(ScriptInfo::getId).collect(Collectors.toList());
+        .map(ScriptInfo::getId).toList();
     
     if (isNotEmpty(scriptIds)) {
       for (Long scriptId : scriptIds) {
@@ -697,7 +697,7 @@ public class ApisTestCmdImpl implements ApisTestCmd {
       if (isNotEmpty(script.getAngusScript().getTask().getPipelines())) {
         apisCaseCmd.add(apisDb.getId(), script.getAngusScript().getTask().getPipelines()
             .stream().filter(x -> !((Http) x).isPersistent()) // Add new cases
-            .map(x -> httpToFuncCase(apisDb, (Http) x)).collect(Collectors.toList()));
+            .map(x -> httpToFuncCase(apisDb, (Http) x)).toList());
       }
       
       // Save the functional testing script

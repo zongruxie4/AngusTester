@@ -14,19 +14,19 @@ public class ScenarioTestConverter {
   public static void assembleScenarioTestCount(ScenarioTestCount count, List<Scenario> scenarios) {
     List<Long> enabledFuncScenarioId = scenarios.stream()
         .filter(x -> nonNull(x.getTestFunc()) && x.getTestFunc())
-        .map(Scenario::getId).collect(Collectors.toList());
+        .map(Scenario::getId).toList();
     count.setEnabledFuncTestNum(enabledFuncScenarioId.size());
     count.getEnabledTestScenarioIds().put(TestType.FUNCTIONAL, enabledFuncScenarioId);
 
     List<Long> enabledPerfScenarioId = scenarios.stream()
         .filter(x -> nonNull(x.getTestPerf()) && x.getTestPerf())
-        .map(Scenario::getId).collect(Collectors.toList());
+        .map(Scenario::getId).toList();
     count.setEnabledPerfTestNum(enabledPerfScenarioId.size());
     count.getEnabledTestScenarioIds().put(TestType.PERFORMANCE, enabledPerfScenarioId);
 
     List<Long> enabledStabilityScenarioId = scenarios.stream()
         .filter(x -> nonNull(x.getTestStability()) && x.getTestStability())
-        .map(Scenario::getId).collect(Collectors.toList());
+        .map(Scenario::getId).toList();
     count.setEnabledStabilityTestNum(enabledStabilityScenarioId.size());
     count.getEnabledTestScenarioIds().put(TestType.STABILITY, enabledStabilityScenarioId);
 
@@ -34,7 +34,7 @@ public class ScenarioTestConverter {
     count.setEnabledTestNum(count.getEnabledFuncTestNum() + count.getEnabledPerfTestNum()
         + count.getEnabledStabilityTestNum());
     count.setAllScenarios(scenarios.stream().map(ScenarioConverter::toScenarioInfo)
-        .collect(Collectors.toList()));
+        .toList());
   }
 
   public static void assembleTestScenarioCount(TestScenarioCount count, List<Scenario> scenarios) {

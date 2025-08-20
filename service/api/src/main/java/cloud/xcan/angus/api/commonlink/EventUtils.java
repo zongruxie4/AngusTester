@@ -19,7 +19,7 @@ public class EventUtils {
     EventContent eventContent = assembleNoticeEvent(TesterConstant.ANGUSTESTER_PRODUCT_CODE,
         EventType.NOTICE.getValue(), code, message, targetType, targetId, targetName,
         noticeTypes, ReceiveObjectType.USER, receiveObjectIds.stream().distinct()
-            .collect(Collectors.toList()));
+            .toList());
     eventContent.setSubject(message(EVENT_SUBJECT));
     return eventContent;
   }

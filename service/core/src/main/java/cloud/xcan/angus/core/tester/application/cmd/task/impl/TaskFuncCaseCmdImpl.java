@@ -61,23 +61,23 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
 
     List<TaskFuncCase> tfcsDb = taskFuncCaseRepo.findByTargetId(targetId);
     List<Long> assocTaskIdsDb = tfcsDb.stream().filter(TaskFuncCase::isAssocTask)
-        .map(TaskFuncCase::getAssocTargetId).collect(Collectors.toList());
+        .map(TaskFuncCase::getAssocTargetId).toList();
     List<Long> assocCaseIdsDb = tfcsDb.stream().filter(TaskFuncCase::isAssocFuncCase)
-        .map(TaskFuncCase::getAssocTargetId).collect(Collectors.toList());
+        .map(TaskFuncCase::getAssocTargetId).toList();
 
     List<TaskFuncCase> tfcs = new ArrayList<>();
     if (isNotEmpty(taskIds)) {
       tfcs.addAll(taskIds.stream().filter(x -> !assocTaskIdsDb.contains(x))
           .map(x -> new TaskFuncCase().setTargetId(targetId).setTargetType(targetType)
               .setAssocTargetId(x).setAssocTargetType(CombinedTargetType.TASK)
-          ).collect(Collectors.toList()));
+          ).toList());
     }
 
     if (isNotEmpty(caseIds)) {
       tfcs.addAll(caseIds.stream().filter(x -> !assocCaseIdsDb.contains(x))
           .map(x -> new TaskFuncCase().setTargetId(targetId).setTargetType(targetType)
               .setAssocTargetId(x).setAssocTargetType(CombinedTargetType.FUNC_CASE)
-          ).collect(Collectors.toList())
+          ).toList()
       );
     }
     if (isNotEmpty(tfcs)) {
@@ -171,7 +171,7 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
 
     List<Long> taskIdsDb = taskFuncCaseRepo.findByTargetIdAndAssocTargetType(
             targetId, CombinedTargetType.TASK).stream().map(TaskFuncCase::getAssocTargetId)
-        .collect(Collectors.toList());
+        .toList();
 
     List<Long> addTaskIds = new ArrayList<>(taskIds);
     addTaskIds.removeAll(taskIdsDb);
@@ -179,7 +179,7 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
       batchInsert0(addTaskIds.stream()
           .map(x -> new TaskFuncCase().setTargetId(targetId).setTargetType(targetType)
               .setAssocTargetId(x).setAssocTargetType(CombinedTargetType.TASK)
-          ).collect(Collectors.toList())
+          ).toList()
       );
     }
 
@@ -210,7 +210,7 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
 
     List<Long> caseIdsDb = taskFuncCaseRepo.findByTargetIdAndAssocTargetType(
             targetId, CombinedTargetType.FUNC_CASE).stream()
-        .map(TaskFuncCase::getAssocTargetId).collect(Collectors.toList());
+        .map(TaskFuncCase::getAssocTargetId).toList();
 
     List<Long> addCaseIds = new ArrayList<>(caseIds);
     addCaseIds.removeAll(caseIdsDb);
@@ -218,7 +218,7 @@ public class TaskFuncCaseCmdImpl extends CommCmd<TaskFuncCase, Long> implements 
       batchInsert0(addCaseIds.stream()
           .map(x -> new TaskFuncCase().setTargetId(targetId).setTargetType(targetType)
               .setAssocTargetId(x).setAssocTargetType(CombinedTargetType.FUNC_CASE)
-          ).collect(Collectors.toList())
+          ).toList()
       );
     }
 

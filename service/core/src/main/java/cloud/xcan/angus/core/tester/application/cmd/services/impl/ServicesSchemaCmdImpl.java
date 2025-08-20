@@ -359,7 +359,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
           }
           schemaDb.setServers(schemaDb.getServers().stream()
               .filter(x -> !serverIds.contains(getExtensionLong(x.getExtensions(), ID_KEY)))
-              .collect(Collectors.toList()));
+              .toList());
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_SERVER_UPDATED));
         }
 
@@ -369,7 +369,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             return null;
           }
           schemaDb.setTags(schemaDb.getTags().stream()
-              .filter(x -> !tagNames.contains(x.getName())).collect(Collectors.toList()));
+              .filter(x -> !tagNames.contains(x.getName())).toList());
           activityCmd.add(toActivity(SERVICE, serviceDb, ActivityType.SCHEMA_TAG_UPDATED));
         }
         servicesSchemaRepo.save(schemaDb);
@@ -528,7 +528,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
             apisCmd.add(newApis.stream().map(
                     x -> ApisConverter.assembleSchemaToAddApis(x, serviceDb, openApi.getComponents(),
                         apiSource, importSource, syncName))
-                .collect(Collectors.toList()), serviceDb, false);
+                .toList(), serviceDb, false);
           }
         } else {
           // Delete all APIs if no paths exist and deletion is requested
@@ -659,7 +659,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
     servicesSchemaRepo.deleteByServiceIdIn(serviceIds);
     ((RedisCaffeineCacheManager) cacheManager).evict("servicesSchema",
         serviceIds.stream().map(id -> "serviceId_" + id)
-            .collect(Collectors.toList()));
+            .toList());
   }
 
   /**

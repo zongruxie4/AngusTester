@@ -207,7 +207,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
         // Add clone activities
         activityCmd.addAll(toActivities(VARIABLE, clonedVariables, CLONE,
-            variablesDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+            variablesDb.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -256,7 +256,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
 
         // Save import variable activities
         activityCmd.addAll(toActivities(VARIABLE, variables, IMPORT,
-            variables.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+            variables.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -335,7 +335,7 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
     }
 
     validVariables = parsedVariables.stream().filter(x -> isNotEmpty(x.getName()))
-        .collect(Collectors.toList());
+        .toList();
     assertNotEmpty(validVariables, VARIABLE_IS_NOT_VALID);
 
     Set<String> names = validVariables.stream()
@@ -346,13 +346,13 @@ public class VariableCmdImpl extends CommCmd<Variable, Long> implements Variable
       variablesRepo.deleteByProjectIdAndNameIn(projectId, existedNames);
     } else {
       validVariables = validVariables.stream().filter(x -> !existedNames.contains(x.getName()))
-          .collect(Collectors.toList());
+          .toList();
     }
 
     assertNotEmpty(validVariables, VARIABLE_IS_NOT_VALID);
 
     // Save final valid variables
-    return validVariables.stream().map(x -> toVariable(projectId, x)).collect(Collectors.toList());
+    return validVariables.stream().map(x -> toVariable(projectId, x)).toList();
   }
 
   /**

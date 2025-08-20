@@ -160,7 +160,7 @@ public class ApisConverter {
           .setDeleted(false)
           .setStatus(ApiStatus.UNKNOWN);
       return cloneApis;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
   public static ApisTrash toApisTrash(ApisBaseInfo apisDb) {

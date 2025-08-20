@@ -232,7 +232,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
               .filter(ObjectUtils::isNotEmpty).flatMap(Collection::stream)
               .collect(Collectors.toSet());
           openApi.setTags(schemaDb.getTags().stream()
-              .filter(x -> apisTags.contains(x.getName())).collect(Collectors.toList()));
+              .filter(x -> apisTags.contains(x.getName())).toList());
         } else {
           openApi.setTags(schemaDb.getTags());
         }
@@ -550,7 +550,7 @@ public class ServicesSchemaQueryImpl implements ServicesSchemaQuery {
     Map<String, Operation> operationsMap = OpenAPIUtils.flatPaths(openAPI.getPaths());
     return isEmpty(operationsMap) ? new ArrayList<>()
         : operationsMap.keySet().stream().map(x -> toSchemaApis(operationsMap.get(x)))
-            .collect(Collectors.toList());
+            .toList();
   }
 
   /**

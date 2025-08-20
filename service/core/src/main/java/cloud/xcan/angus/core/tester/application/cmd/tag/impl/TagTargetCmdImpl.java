@@ -43,14 +43,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of tag target command operations for tag association management.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing tag associations
  * with various targets including tasks, functional cases, and other entities.</p>
- * 
+ *
  * <p>It handles the complete lifecycle of tag associations from creation
  * to deletion, including bulk operations, relationship management,
  * and activity logging for audit purposes.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Tag-target association management</li>
@@ -76,10 +76,10 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Adds tag targets without validation (internal use).
-   * 
+   *
    * <p>This method performs bulk insertion of tag targets without
    * validation checks. It is intended for internal use only.</p>
-   * 
+   *
    * @param tags the list of tag targets to add
    */
   @Override
@@ -89,12 +89,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Replaces task tag associations with comprehensive processing.
-   * 
+   *
    * <p>This method performs complete replacement of tag associations for tasks,
    * including adding new associations and removing unspecified ones.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param tags the list of tag targets to replace
    * @throws IllegalArgumentException if validation fails
    */
@@ -105,7 +105,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
     // Verify tags exist and retrieve them
     List<Tag> tagDbs = tagQuery.checkAndFind(tags.stream()
-        .map(TagTarget::getTagId).collect(Collectors.toList()));
+        .map(TagTarget::getTagId).toList());
 
     // TODO: Add maximum tag limit validation if needed
 
@@ -137,18 +137,18 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
                 new TreeSet<>(Comparator.comparing(TagTarget::getTargetId))), ArrayList::new))
             .stream().map(a -> new SimpleTaskActivityResource()
                 .setId(a.getTargetId()).setTaskId(a.getTargetId()).setName(a.getTargetName())
-            ).collect(Collectors.toList()),
+            ).toList(),
         ActivityType.TAG, tagDbs.stream().map(Tag::getName).collect(Collectors.joining(","))));
   }
 
   /**
    * Replaces task tag associations without activity logging.
-   * 
+   *
    * <p>This method performs complete replacement of tag associations for tasks
    * without logging activities. It is intended for internal use.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param tags the list of tag targets to replace
    * @throws IllegalArgumentException if validation fails
    */
@@ -183,12 +183,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Replaces tags for a specific task with validation.
-   * 
+   *
    * <p>This method replaces all tags associated with a task. If no tag IDs
    * are provided, all tags are cleared from the task.</p>
-   * 
+   *
    * <p>The method logs tag replacement and clearing activities for audit purposes.</p>
-   * 
+   *
    * @param taskId the ID of the task
    * @param tagIds the set of tag IDs to associate with the task (can be empty to clear all)
    * @throws IllegalArgumentException if validation fails
@@ -217,13 +217,13 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Replaces task tags without validation (internal use).
-   * 
+   *
    * <p>This method performs tag replacement for tasks without validation
    * and activity logging. It is intended for internal use only.</p>
-   * 
+   *
    * <p>Important: Update operations should not call this method.
    * External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param taskDb the task entity
    * @param tagTargets the list of tag targets to associate
    * @throws IllegalArgumentException if validation fails
@@ -245,12 +245,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Deletes tag associations for multiple tasks (internal use).
-   * 
+   *
    * <p>This method removes all tag associations for the specified tasks
    * without validation or activity logging.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param taskIds the collection of task IDs to delete tag associations for
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -261,10 +261,10 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Adds tag associations for functional cases.
-   * 
+   *
    * <p>This method creates tag associations for multiple functional cases
    * after validating that the tags exist.</p>
-   * 
+   *
    * @param cases the list of functional cases to add tags for
    */
   @Override
@@ -272,17 +272,17 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     List<TagTarget> tagTargets = getFuncCaseTagTargets(cases);
     if (isNotEmpty(tagTargets)) {
       tagQuery.checkAndFind(tagTargets.stream()
-          .map(TagTarget::getTagId).collect(Collectors.toList()));
+          .map(TagTarget::getTagId).toList());
       batchInsert0(tagTargets);
     }
   }
 
   /**
    * Updates tag associations for functional cases.
-   * 
+   *
    * <p>This method updates tag associations for multiple functional cases
    * after validating that the tags exist.</p>
-   * 
+   *
    * @param cases the list of functional cases to update tags for
    */
   @Override
@@ -290,34 +290,34 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     List<TagTarget> tagTargets = getFuncCaseTagTargets(cases);
     if (isNotEmpty(tagTargets)) {
       tagQuery.checkAndFind(tagTargets.stream()
-          .map(TagTarget::getTagId).collect(Collectors.toList()));
+          .map(TagTarget::getTagId).toList());
       replace0(tagTargets);
     }
   }
 
   /**
    * Replaces tag associations for functional cases.
-   * 
+   *
    * <p>This method completely replaces tag associations for multiple
    * functional cases by first deleting existing associations
    * and then adding new ones.</p>
-   * 
+   *
    * @param cases the list of functional cases to replace tags for
    */
   @Override
   public void replaceCase(List<FuncCase> cases) {
-    delete0ByCaseIds(cases.stream().map(FuncCase::getId).collect(Collectors.toList()));
+    delete0ByCaseIds(cases.stream().map(FuncCase::getId).toList());
     addCase(cases);
   }
 
   /**
    * Replaces case tag associations with comprehensive processing.
-   * 
+   *
    * <p>This method performs complete replacement of tag associations for cases,
    * including adding new associations and removing unspecified ones.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param tags the list of tag targets to replace
    * @throws IllegalArgumentException if validation fails
    */
@@ -327,7 +327,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
     assertNotEmpty(tags, "tags is required");
 
     List<Tag> tagDbs = tagQuery.checkAndFind(
-        tags.stream().map(TagTarget::getTagId).collect(Collectors.toList()));
+        tags.stream().map(TagTarget::getTagId).toList());
 
     // Check the maximum limit of tag? It is a full modification, and the parameter verification is enough
 
@@ -359,19 +359,19 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
                 new TreeSet<>(Comparator.comparing(TagTarget::getTargetId))), ArrayList::new))
             .stream().map(a -> new SimpleTaskActivityResource()
                 .setId(a.getTargetId()).setTaskId(a.getTargetId()).setName(a.getTargetName())
-            ).collect(Collectors.toList()),
+            ).toList(),
         ActivityType.TAG, tagDbs.stream().map(Tag::getName)
             .collect(Collectors.joining(","))));
   }
 
   /**
    * Replaces tags for a specific functional case with validation.
-   * 
+   *
    * <p>This method replaces all tags associated with a functional case. If no tag IDs
    * are provided, all tags are cleared from the case.</p>
-   * 
+   *
    * <p>The method logs tag replacement and clearing activities for audit purposes.</p>
-   * 
+   *
    * @param caseId the ID of the functional case
    * @param tagIds the collection of tag IDs to associate with the case (can be empty to clear all)
    * @throws IllegalArgumentException if validation fails
@@ -400,12 +400,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Deletes tag associations for multiple functional cases (internal use).
-   * 
+   *
    * <p>This method removes all tag associations for the specified functional cases
    * without validation or activity logging.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param caseIds the collection of case IDs to delete tag associations for
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -416,12 +416,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Replaces tag targets without activity logging (internal use).
-   * 
+   *
    * <p>This method performs complete replacement of tag targets without
    * validation or activity logging. It is intended for internal use.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param tagTargets the list of tag targets to replace
    * @throws IllegalArgumentException if validation fails
    */
@@ -456,12 +456,12 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Deletes tag targets by tag IDs (internal use).
-   * 
+   *
    * <p>This method removes all tag targets associated with the specified tag IDs
    * without validation or activity logging.</p>
-   * 
+   *
    * <p>External calling business logic must ensure data authorization and security.</p>
-   * 
+   *
    * @param tagIds the collection of tag IDs to delete targets for
    */
   //@Transactional(rollbackFor = Exception.class)
@@ -472,9 +472,9 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Deletes tag targets by target IDs.
-   * 
+   *
    * <p>This method removes all tag targets associated with the specified target IDs.</p>
-   * 
+   *
    * @param targetIds the list of target IDs to delete tag associations for
    */
   @Override
@@ -484,18 +484,18 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Identifies tag targets to be deleted based on unspecified tags.
-   * 
+   *
    * <p>This method compares existing tag targets with new tag targets
    * and identifies which existing targets should be deleted because
    * their tags are not included in the new specification.</p>
-   * 
+   *
    * @param tags the new tag targets specification
    * @param tagDbs the existing tag targets in database
    * @return list of tag targets to be deleted
    */
   private List<TagTarget> deleteUnsetTags(List<TagTarget> tags, List<TagTarget> tagDbs) {
     List<TagTarget> deletedTags = new ArrayList<>();
-    List<Long> tagIds = tags.stream().map(TagTarget::getTagId).collect(Collectors.toList());
+    List<Long> tagIds = tags.stream().map(TagTarget::getTagId).toList();
     for (TagTarget tagDb : tagDbs) {
       if (!tagIds.contains(tagDb.getTagId())) {
         deletedTags.add(tagDb);
@@ -506,10 +506,10 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Converts functional cases to tag targets.
-   * 
+   *
    * <p>This method extracts tag associations from functional cases
    * and converts them to tag target entities for database operations.</p>
-   * 
+   *
    * @param cases the list of functional cases
    * @return list of tag targets for the cases
    */
@@ -526,7 +526,7 @@ public class TagTargetCmdImpl extends CommCmd<TagTarget, Long> implements TagTar
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the tag target repository
    */
   @Override

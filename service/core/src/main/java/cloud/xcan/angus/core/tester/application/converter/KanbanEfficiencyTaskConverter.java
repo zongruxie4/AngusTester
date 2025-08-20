@@ -177,7 +177,7 @@ public class KanbanEfficiencyTaskConverter {
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
-        .collect(Collectors.toList());
+        .toList();
     long processedDays = calcProcessedDays(completedTasks);
     double dailyProcessedWorkload = calcDailyProcessedWorkload(completedTasks, processedDays);
     totalOverview.setDailyProcessedWorkload(dailyProcessedWorkload);
@@ -266,7 +266,7 @@ public class KanbanEfficiencyTaskConverter {
     totalOverview.setBugRate(totalOverview.calcBugRate());
     List<? extends TaskEfficiencySummary> validBugs = tasks.stream()
         .filter(x -> x.getTaskType().isBug() && !x.getStatus().isCanceled())
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(validBugs)) {
       long validBugNum = validBugs.size();
       totalOverview.setValidBugNum(validBugNum);
@@ -377,7 +377,7 @@ public class KanbanEfficiencyTaskConverter {
       FailureAssessmentCountBase totalOverview) {
     List<? extends TaskEfficiencySummary> validBugs = tasks.stream()
         .filter(x -> x.getTaskType().isBug() && !x.getStatus().isCanceled())
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(validBugs)) {
       int failureNum = validBugs.stream().map(TaskEfficiencySummary::getActualTotalNum)
           .reduce(0, Integer::sum);
@@ -405,7 +405,7 @@ public class KanbanEfficiencyTaskConverter {
       ListStatistics scores = new ListStatistics();
       List<TaskEfficiencySummary> validCompletedBugs = validBugs.stream()
           .filter(x -> x.getStatus().isCompleted() && nonNull(x.getStartDate())
-              && nonNull(x.getCompletedDate())).collect(Collectors.toList());
+              && nonNull(x.getCompletedDate())).toList();
       for (TaskEfficiencySummary bug : validCompletedBugs) {
         scores.addValue(
             calcWorkingHours(bug.getStartDate(), bug.getCompletedDate()).doubleValue());
@@ -472,7 +472,7 @@ public class KanbanEfficiencyTaskConverter {
       LeadTimeCountBase totalOverview) {
     List<? extends TaskEfficiencySummary> completedTasks = tasks.stream()
         .filter(x -> x.getStatus().isCompleted() && nonNull(x.getStartDate())
-            && nonNull(x.getCompletedDate())).collect(Collectors.toList());
+            && nonNull(x.getCompletedDate())).toList();
     int userNum = tasks.stream().map(TaskEfficiencySummary::getAssigneeId).collect(
         Collectors.toSet()).size();
     totalOverview.setUserNum(userNum);
@@ -500,7 +500,7 @@ public class KanbanEfficiencyTaskConverter {
       UnplannedWorkCountBase totalOverview, double dailyProcessedWorkload) {
     List<? extends TaskEfficiencySummary> unplannedTasks = tasks.stream()
         .filter(x -> !x.getStatus().isCanceled() && !x.getTaskType().isBug()
-            && x.getUnplanned()).collect(Collectors.toList());
+            && x.getUnplanned()).toList();
     if (isNotEmpty(unplannedTasks)) {
       totalOverview.setUnplannedNum(unplannedTasks.size());
       totalOverview.setUnplannedRate(totalOverview.calcUnplannedRate());
@@ -609,11 +609,11 @@ public class KanbanEfficiencyTaskConverter {
         + total.getMeetingNum());
     total.getTimeSeries().put("BACKLOG", getTimeSeriesByFormat(
         tasks.stream().filter(x -> isNull(x.getBacklog()) || x.getBacklog())
-            .collect(Collectors.toList()), DEFAULT_DAY_FORMAT));
+            .toList(), DEFAULT_DAY_FORMAT));
     total.getTimeSeries().put("SPRINT", getTimeSeriesByFormat(sprints, DEFAULT_DAY_FORMAT));
     total.getTimeSeries().put("TASK", getTimeSeriesByFormat(
         tasks.stream().filter(x -> nonNull(x.getBacklog()) && !x.getBacklog())
-            .collect(Collectors.toList()), DEFAULT_DAY_FORMAT));
+            .toList(), DEFAULT_DAY_FORMAT));
     total.getTimeSeries().put("MEETING", getTimeSeriesByFormat(meetings, DEFAULT_DAY_FORMAT));
     total.getTimeSeries().put("ANALYSIS", getTimeSeriesByFormat(sprints, DEFAULT_DAY_FORMAT));
     Map<String, List<DataAssetsTimeSeries>> totalTs = total.getTimeSeries().values().stream()
@@ -627,7 +627,7 @@ public class KanbanEfficiencyTaskConverter {
     }
     List<DataAssetsTimeSeries> finalTotalTs = sortedTotalTs.entrySet().stream()
         .map(x -> new DataAssetsTimeSeries(x.getKey(), x.getValue()))
-        .collect(Collectors.toList());
+        .toList();
     total.getTimeSeries().put("TOTAL", finalTotalTs);
     return total;
   }

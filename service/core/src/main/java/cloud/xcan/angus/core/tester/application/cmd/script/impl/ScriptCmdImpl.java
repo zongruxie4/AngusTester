@@ -829,7 +829,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
     Script scriptDb = scriptQuery.findBySourceAndScriptType(ScriptSource.API, apisDb.getId(),
         TEST_FUNCTIONALITY);
-    List<Long> caseIds = casesDb.stream().map(ApisCase::getId).collect(Collectors.toList());
+    List<Long> caseIds = casesDb.stream().map(ApisCase::getId).toList();
     Map<Long, Long> caseApiMap = casesDb.stream()
         .collect(Collectors.toMap(ApisCase::getId, ApisCase::getApisId));
     Map<Long, List<Variable>> caseVariableMap = variableTargetQuery.findVariables(caseIds,
@@ -852,7 +852,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
 
       if (isEmpty(angusScript.getTask().getPipelines())) {
         angusScript.getTask().setPipelines(casesDb.stream()
-            .map(ApisToAngusModelConverter::toHttp).collect(Collectors.toList()));
+            .map(ApisToAngusModelConverter::toHttp).toList());
       } else {
         List<TestTargetType> pipelines = new ArrayList<>();
         List<String> existedInScript = new ArrayList<>();
@@ -889,7 +889,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   @Override
   public long syncServiceCaseToScript(Services serviceDb, ScriptSource source,
       List<ApisCase> casesDb, List<Server> servers) {
-    List<Long> caseIds = casesDb.stream().map(ApisCase::getId).collect(Collectors.toList());
+    List<Long> caseIds = casesDb.stream().map(ApisCase::getId).toList();
     Map<Long, Long> caseApiMap = casesDb.stream()
         .collect(Collectors.toMap(ApisCase::getId, ApisCase::getApisId));
     Map<Long, List<Variable>> caseVariableMap = variableTargetQuery.findVariables(caseIds,
@@ -1067,9 +1067,9 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
   public static List<cloud.xcan.angus.model.element.variable.Variable> getAngusConfigurationVariables(
       Map<Long, List<Variable>> caseVariableMap) {
     List<Variable> variables = caseVariableMap.values().stream().flatMap(Collection::stream)
-        .collect(Collectors.toList());
+        .toList();
     return isEmpty(variables) ? null : variables.stream()
-        .map(ApisToAngusModelConverter::toAngusVariable).collect(Collectors.toList());
+        .map(ApisToAngusModelConverter::toAngusVariable).toList();
   }
 
   /**
@@ -1091,7 +1091,7 @@ public class ScriptCmdImpl extends CommCmd<Script, Long> implements ScriptCmd {
     List<Dataset> datasets = caseDatasetMap.get(case0.getId());
     return isEmpty(datasets) ? null
         : datasets.stream().map(DatasetConverter::toAngusDataset)
-            .collect(Collectors.toList());
+            .toList();
   }
 
   /**

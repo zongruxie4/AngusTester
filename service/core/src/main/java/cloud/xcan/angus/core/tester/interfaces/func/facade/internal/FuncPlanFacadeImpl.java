@@ -111,7 +111,7 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
   public List<FuncCaseListVo> notReviewed(Long planId, Long moduleId, Long reviewId) {
     List<FuncCaseInfo> caseInfos = funcPlanQuery.notReviewed(planId, moduleId, reviewId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @NameJoin
@@ -120,6 +120,6 @@ public class FuncPlanFacadeImpl implements FuncPlanFacade {
     List<FuncCaseInfo> caseInfos = funcPlanQuery.notEstablishedBaseline(
         planId, moduleId, baselineId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

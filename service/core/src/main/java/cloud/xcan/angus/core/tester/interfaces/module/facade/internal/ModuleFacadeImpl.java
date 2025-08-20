@@ -46,7 +46,7 @@ public class ModuleFacadeImpl implements ModuleFacade {
   @Override
   public void update(List<ModuleUpdateDto> dto) {
     List<Module> modules = dto.stream()
-        .map(ModuleAssembler::updateDtoToDomain).collect(Collectors.toList());
+        .map(ModuleAssembler::updateDtoToDomain).toList();
     moduleCmd.update(modules);
   }
 
@@ -58,7 +58,7 @@ public class ModuleFacadeImpl implements ModuleFacade {
   @Override
   public List<IdKey<Long, Object>> replace(List<ModuleReplaceDto> dto) {
     List<Module> modules = dto.stream()
-        .map(ModuleAssembler::replaceDtoToDomain).collect(Collectors.toList());
+        .map(ModuleAssembler::replaceDtoToDomain).toList();
     return moduleCmd.replace(modules);
   }
 
@@ -77,7 +77,7 @@ public class ModuleFacadeImpl implements ModuleFacade {
   public List<ModuleVo> list(ModuleFindDto dto) {
     List<Module> modules = moduleQuery.find(getSpecification(dto),
         dto.fullTextSearch, getMatchSearchFields(dto.getClass()));
-    return modules.stream().map(ModuleAssembler::toListVo).collect(Collectors.toList());
+    return modules.stream().map(ModuleAssembler::toListVo).toList();
   }
 
   @Override

@@ -210,11 +210,11 @@ public class FuncCaseAssembler {
         .setAttachments(case0.getAttachments())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-            .collect(Collectors.toList()) : Collections.emptyList())
+            .toList() : Collections.emptyList())
         .setRefTaskInfos(isNotEmpty(case0.getAssocTasks()) ? case0.getAssocTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefCaseInfos(isNotEmpty(case0.getAssocCases()) ? case0.getAssocCases().stream()
-            .map(FuncCaseAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(FuncCaseAssembler::toInfoVo).toList() : emptyList())
         .setProgress(case0.getProgress())
         .setFavourite(case0.getFavourite())
         .setFollow(case0.getFollow())
@@ -246,9 +246,9 @@ public class FuncCaseAssembler {
         .setPrecondition(case0.getPrecondition())
         .setSteps(case0.getSteps())
         .setRefTaskInfos(isNotEmpty(case0.getAssocTasks()) ? case0.getAssocTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefCaseInfos(isNotEmpty(case0.getAssocCases()) ? case0.getAssocCases().stream()
-            .map(FuncCaseAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(FuncCaseAssembler::toInfoVo).toList() : emptyList())
         .setDescription(case0.getDescription())
         .setReview(case0.getReview())
         .setReviewerId(case0.getReviewerId())
@@ -269,7 +269,7 @@ public class FuncCaseAssembler {
         .setTestResultHandleDate(case0.getTestResultHandleDate())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-            .collect(Collectors.toList()) : Collections.emptyList())
+            .toList() : Collections.emptyList())
         .setProgress(case0.getProgress())
         .setFavourite(case0.getFavourite())
         .setFollow(case0.getFollow())
@@ -356,18 +356,18 @@ public class FuncCaseAssembler {
         .setTestRemark(listVo.getTestRemark())
         .setTestResultHandleDate(listVo.getTestResultHandleDate())
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
-            .map(IdAndNameVo::getName).collect(Collectors.toList()) : Collections.emptyList())
+            .map(IdAndNameVo::getName).toList() : Collections.emptyList())
         .setCreatedByName(listVo.getCreatedByName())
         .setCreatedDate(listVo.getCreatedDate())
         .setLastModifiedByName(listVo.getLastModifiedByName())
         .setLastModifiedDate(listVo.getLastModifiedDate());
     if (isNotEmpty(listVo.getRefTaskInfos())) {
       vo.setRefTasks(listVo.getRefTaskInfos().stream().map(TaskInfoVo::getName)
-          .collect(Collectors.toList()));
+          .toList());
     }
     if (isNotEmpty(listVo.getRefCaseInfos())) {
       vo.setRefCases(listVo.getRefCaseInfos().stream().map(FuncCaseInfoVo::getName)
-          .collect(Collectors.toList()));
+          .toList());
     }
     if (isNotEmpty(listVo.getSteps())) {
       StringBuilder stringBuilder = new StringBuilder();

@@ -53,7 +53,7 @@ public class ExecResultConverter {
             .setExecName(execDb.getName())
             .setLastExecDate(execDb.getEndDate())
             .setExecBy(x.getExecBy()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

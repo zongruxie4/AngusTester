@@ -245,13 +245,13 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
 
         if (isNotEmpty(allTrashes)) {
           List<Long> sprintIds = allTrashes.stream().filter(d -> d.getTargetType().isSprint())
-              .map(TaskTrash::getTargetId).collect(Collectors.toList());
+              .map(TaskTrash::getTargetId).toList();
           if (isNotEmpty(sprintIds)) {
             backAllSprint(sprintIds);
           }
 
           List<Long> taskIds = allTrashes.stream().filter(d -> d.getTargetType().isTask())
-              .map(TaskTrash::getTargetId).collect(Collectors.toList());
+              .map(TaskTrash::getTargetId).toList();
           if (isNotEmpty(taskIds)) {
             backAllTask(taskIds);
           }
@@ -291,7 +291,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     List<Long> allTaskIds = new ArrayList<>();
 
     List<Long> sprintIds = trashes.stream().filter(d -> d.getTargetType().isSprint())
-        .map(TaskTrash::getTargetId).collect(Collectors.toList());
+        .map(TaskTrash::getTargetId).toList();
     if (isNotEmpty(sprintIds)) {
       List<Long> sprintCaseIds = taskInfoRepo.findAll0SprintIdsByIdIn(sprintIds);
       if (isNotEmpty(sprintCaseIds)) {
@@ -304,7 +304,7 @@ public class TaskTrashCmdImpl extends CommCmd<TaskTrash, Long> implements TaskTr
     }
 
     List<Long> taskIds = trashes.stream().filter(d -> d.getTargetType().isTask())
-        .map(TaskTrash::getTargetId).collect(Collectors.toList());
+        .map(TaskTrash::getTargetId).toList();
     if (isNotEmpty(taskIds)) {
       allTaskIds.addAll(taskIds);
     }

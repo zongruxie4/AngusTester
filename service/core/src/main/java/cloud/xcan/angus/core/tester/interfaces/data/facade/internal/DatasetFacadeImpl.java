@@ -110,7 +110,7 @@ public class DatasetFacadeImpl implements DatasetFacade {
     ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
     List<Dataset> variables = datasetQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
     return getResourceResponseEntity(String.format("ExportDatasets-%s", currentTimeMillis()),
-        format, variables.stream().map(DatasetAssembler::toExportVo).collect(Collectors.toList()));
+        format, variables.stream().map(DatasetAssembler::toExportVo).toList());
   }
 
 }

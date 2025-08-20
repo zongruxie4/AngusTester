@@ -24,7 +24,7 @@ public class ScenarioTestAssembler {
         .setOverdue(false)
         .setCode(getTaskCode())
         .setBacklog(false) // Assign sprint is required or is general project management
-    ).collect(Collectors.toList());
+    ).toList();
   }
 }
 

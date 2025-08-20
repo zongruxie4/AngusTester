@@ -145,7 +145,7 @@ public class KanbanCtoCaseConverter {
     List<FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(completedCases)) {
       long processedDays = calcProcessedDays(completedCases);
       backloggedCaseCount.setProcessedInDay(processedDays);
@@ -157,7 +157,7 @@ public class KanbanCtoCaseConverter {
     }
 
     List<FuncCaseEfficiencySummary> backloggedCases = cases.stream()
-        .filter(x -> !x.getTestResult().isFinished()).collect(Collectors.toList());
+        .filter(x -> !x.getTestResult().isFinished()).toList();
     if (isNotEmpty(backloggedCases)) {
       long backloggedNum = backloggedCases.size();
       backloggedCaseCount.setBackloggedNum(backloggedNum);
@@ -182,7 +182,7 @@ public class KanbanCtoCaseConverter {
     List<FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(completedCases)) {
       long processedDays = calcProcessedDays(completedCases);
       dailyProcessedWorkload = calcDailyProcessedWorkload(completedCases, processedDays);

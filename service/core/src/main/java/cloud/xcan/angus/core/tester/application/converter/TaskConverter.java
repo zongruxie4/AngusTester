@@ -285,7 +285,7 @@ public class TaskConverter {
         .setBacklog(false) // Assign sprint is required or is general project management
         .setOverdue(false)
         .setCode(getTaskCode())
-    ).collect(Collectors.toList());
+    ).toList();
   }
 
   public static void assembleMoveTask(TaskSprint targetSprintDb, Task taskDb) {
@@ -416,15 +416,15 @@ public class TaskConverter {
                     task.getSubTasks().stream().filter(x -> x.getStatus().isFinished()).count())
                 .setTotal(task.getSubTasks().size()))
         .setSubTaskInfos(isNotEmpty(task.getSubTasks()) ? task.getSubTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefTaskInfos(
             isNotEmpty(task.getAssocTasks()) ? task.getAssocTasks().stream()
-                .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+                .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefCaseInfos(
             isNotEmpty(task.getAssocCases()) ? task.getAssocCases().stream()
-                .map(FuncCaseAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+                .map(FuncCaseAssembler::toInfoVo).toList() : emptyList())
         .setTags(isNotEmpty(task.getTagTargets()) ? task.getTagTargets().stream()
-            .map(TaskAssembler::toTagVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toTagVo).toList() : emptyList())
         .setCurrentAssociateType(task.getCurrentAssociateType())
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
@@ -627,21 +627,21 @@ public class TaskConverter {
                       .setTargetId(task.getId()).setTargetType(CombinedTargetType.TASK)
                       .setTagId(tagsMap.get(x).get(0).getId())
                   /*.setTaskType(task.getTaskType())*/)
-              .collect(Collectors.toList()));
+              .toList());
         }
         List<String> taskNames0 = isNotEmpty(row[tasksIdx])
             ? List.of(row[tasksIdx].split("##")) : null;
         if (isNotEmpty(taskNames0)) {
           task.setRefTaskIds(new LinkedHashSet<>(
               taskNames0.stream().filter(x -> nonNull(tasksMap.get(x)))
-                  .map(x -> tasksMap.get(x).get(0).getId()).collect(Collectors.toList())));
+                  .map(x -> tasksMap.get(x).get(0).getId()).toList()));
         }
         List<String> caseNames0 = isNotEmpty(row[casesIdx])
             ? List.of(row[casesIdx].split("##")) : null;
         if (isNotEmpty(caseNames0)) {
           task.setRefCaseIds(new LinkedHashSet<>(
               caseNames0.stream().filter(x -> nonNull(casesMap.get(x)))
-                  .map(x -> casesMap.get(x).get(0).getId()).collect(Collectors.toList())));
+                  .map(x -> casesMap.get(x).get(0).getId()).toList()));
         }
         task.setOverdue(false)
             .setTotalNum(0).setFailNum(0)

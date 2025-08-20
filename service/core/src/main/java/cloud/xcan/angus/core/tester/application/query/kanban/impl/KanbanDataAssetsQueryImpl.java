@@ -326,49 +326,49 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
         List<ResourcesRanking> taskCountRank = taskCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.TASK, taskCountRank);
 
         List<ResourcesRanking> caseCountRank = caseCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.CASES, caseCountRank);
 
         List<ResourcesRanking> apisCountRank = apisCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.APIS, apisCountRank);
 
         List<ResourcesRanking> sceCountRank = sceCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.SCENARIO, sceCountRank);
 
         List<ResourcesRanking> scriptCountRank = scriptCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.SCRIPT, scriptCountRank);
 
         List<ResourcesRanking> mockApisCountRank = mockApiCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.MOCK_APIS, mockApisCountRank);
 
         List<ResourcesRanking> variableCountRank = variableCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.DATA_VARIABLE, variableCountRank);
 
         List<ResourcesRanking> datasetCountRank = datasetCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.DATA_DATASET, datasetCountRank);
 
         // Calculate total contribution rankings across all resource types
@@ -377,7 +377,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
         List<ResourcesRanking> totalCountRank = totalCountMap.entrySet().stream().map(
                 KanbanDataAssetsQueryImpl::getResourcesRanking)
             .sorted((u1, u2) -> Long.compare(u2.getCount(), u1.getCount()))
-            .collect(Collectors.toList());
+            .toList();
         ranks.put(DataAssetsLabel.TOTAL, totalCountRank);
 
         // Enrich rankings with user information
@@ -505,16 +505,16 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     // Process scenarios by testing type
     gt.put(DataAssetsLabel.TEST_FUNCTIONALITY, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().filter(x -> x.getScriptType().isFunctionalTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_PERFORMANCE, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().filter(x -> x.getScriptType().isPerformanceTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_STABILITY, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().filter(x -> x.getScriptType().isStabilityTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_CUSTOMIZATION, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().filter(x -> x.getScriptType().isCustomizedTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
   }
 
   /**
@@ -538,21 +538,21 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     // Process total scripts
     gt.put(DataAssetsLabel.TOTAL, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().map(x -> (IdAndCreatedDate) x)
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
             
     // Process scripts by testing type
     gt.put(DataAssetsLabel.TEST_FUNCTIONALITY, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().filter(x -> x.getType().isFunctionalTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_PERFORMANCE, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().filter(x -> x.getType().isPerformanceTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_STABILITY, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().filter(x -> x.getType().isStabilityTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
     gt.put(DataAssetsLabel.TEST_CUSTOMIZATION, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().filter(x -> x.getType().isCustomizedTesting())
-            .collect(Collectors.toList()), createLessThanOneMonth));
+            .toList(), createLessThanOneMonth));
   }
 
   /**
@@ -683,7 +683,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     // Convert to DataAssetsTimeSeries objects
     return sortedTimeGroup.entrySet().stream()
         .map(x -> new DataAssetsTimeSeries(x.getKey(), x.getValue()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**

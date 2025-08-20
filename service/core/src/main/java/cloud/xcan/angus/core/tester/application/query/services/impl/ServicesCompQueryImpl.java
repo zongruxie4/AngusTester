@@ -127,9 +127,9 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
       protected List<ServicesComp> process() {
         List<ServicesComp> cached = servicesCompQuery.findByServiceId(serviceId);
         return isEmpty(keys)
-            ? cached.stream().filter(x -> types.contains(x.getType())).collect(Collectors.toList())
+            ? cached.stream().filter(x -> types.contains(x.getType())).toList()
             : cached.stream().filter(x -> types.contains(x.getType()) && keys.contains(x.getKey()))
-                .collect(Collectors.toList());
+                .toList();
       }
     }.execute();
   }
@@ -158,7 +158,7 @@ public class ServicesCompQueryImpl implements ServicesCompQuery {
       @Override
       protected List<ServicesComp> process() {
         return servicesCompQuery.findByServiceId(serviceId).stream()
-            .filter(x -> refs.contains(x.getRef())).collect(Collectors.toList());
+            .filter(x -> refs.contains(x.getRef())).toList();
       }
     }.execute();
   }

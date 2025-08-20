@@ -601,9 +601,9 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
               + format(new Date(), DEFAULT_DATE_TIME_MS_FORMAT) + ".zip");
           try {
             FileUtils.compress(allExportedFiles.stream().map(File::getPath)
-                    .collect(Collectors.toList()).toArray(new String[]{}),
+                    .toList().toArray(new String[]{}),
                 allExportedFiles.stream().map(File::getName)
-                    .collect(Collectors.toList()).toArray(new String[]{}), finalFile.getPath());
+                    .toList().toArray(new String[]{}), finalFile.getPath());
           } catch (Exception e) {
             throw SysException.of("Exception compress export file, cause: "
                 + e.getMessage(), ExceptionLevel.URGENT);
@@ -615,7 +615,7 @@ public class ServicesCmdImpl extends CommCmd<Services, Long> implements Services
         // Add export service pref activity information
         activityCmd.addAll(toActivities(SERVICE, servicesDb, ActivityType.EXPORT, servicesDb
             .stream().map(Services::getName).toList()
-            .stream().map(str -> new Object[]{str}).collect(Collectors.toList())));
+            .stream().map(str -> new Object[]{str}).toList()));
         return finalFile;
       }
     }.execute();

@@ -108,7 +108,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
       protected void checkParams() {
         // Check the modules exists
         modulesDb = moduleQuery.checkAndFind(
-            modules.stream().map(Module::getId).collect(Collectors.toList()));
+            modules.stream().map(Module::getId).toList());
 
         Set<Long> projectIds = modulesDb.stream().map(Module::getProjectId)
             .collect(Collectors.toSet());
@@ -162,7 +162,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
 
         // Check the pid module exists under same project
         updateModules = modules.stream().filter(x -> nonNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(modules)) {
           // Check the edit permission
           Project projectDb = projectQuery.checkAndFind(projectId);
@@ -186,7 +186,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         List<Module> addModules = modules.stream().filter(x -> isNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(addModules)) {
           idKeys.addAll(add(projectId, addModules));
         }
@@ -196,7 +196,7 @@ public class ModuleCmdImpl extends CommCmd<Module, Long> implements ModuleCmd {
               .collect(Collectors.toMap(Module::getId, x -> x));
           moduleRepo.batchUpdate(updateModulesDb.stream()
               .map(x -> ModuleConverter.setReplaceInfo(x, updateModulesMap.get(x.getId())))
-              .collect(Collectors.toList()));
+              .toList());
 
           activityCmd.addAll(toActivities(MODULE, updateModulesDb, UPDATED));
         }

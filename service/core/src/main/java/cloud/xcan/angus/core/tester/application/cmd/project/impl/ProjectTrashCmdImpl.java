@@ -109,7 +109,7 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
         }
 
         List<Long> projectIds = allTrashes.stream().map(ProjectTrash::getTargetId)
-            .collect(Collectors.toList());
+            .toList();
 
         // Delete all trash
         projectTrashRepo.deleteByTargetIdIn(projectIds);
@@ -171,7 +171,7 @@ public class ProjectTrashCmdImpl extends CommCmd<ProjectTrash, Long> implements 
 
         if (isNotEmpty(allTrashes)) {
           List<Long> projectIds = allTrashes.stream().map(ProjectTrash::getTargetId)
-              .collect(Collectors.toList());
+              .toList();
 
           // Recovery project
           projectRepo.updateToUndeletedStatusByIdIn(projectIds);

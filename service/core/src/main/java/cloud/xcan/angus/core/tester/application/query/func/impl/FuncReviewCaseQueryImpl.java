@@ -117,7 +117,7 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
         Page<FuncReviewCase> page = fullTextSearch
             ? funcReviewCaseSearchRepo.find(criteria, pageable, FuncReviewCase.class, match)
             : funcReviewCaseRepo.findAll(spec, pageable);
-            
+
         // Enrich review cases with case information
         setCaseInfo(page.getContent());
         return page;
@@ -141,15 +141,15 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   public void checkReviewCaseValid(FuncReview reviewDb, List<FuncCaseInfo> funcCasesDb) {
     // Note: Review status validation is currently disabled
     // funcReviewQuery.checkHasStarted(reviewDb);
-    
+
     // Validate that cases are in a state that allows review operations
     funcCaseQuery.checkInfoCanReview(funcCasesDb);
-    
+
     // Check for duplicate reviews to prevent conflicts
-    List<Long> caseIds = funcCasesDb.stream().map(FuncCaseInfo::getId).collect(Collectors.toList());
+    List<Long> caseIds = funcCasesDb.stream().map(FuncCaseInfo::getId).toList();
     Set<Long> pendingReviewCaseIds = funcReviewCaseRepo.findPendingCaseIdByCaseIdInAndReviewIdNot(
         caseIds, reviewDb.getId());
-        
+
     if (!pendingReviewCaseIds.isEmpty()) {
       // Find the first case that has a duplicate review for error reporting
       FuncCaseInfo repeatedReviewCase = funcCasesDb.stream()
@@ -189,7 +189,7 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
   public List<FuncReviewCase> checkAndFind(Collection<Long> ids) {
     List<FuncReviewCase> reviewCases = funcReviewCaseRepo.findAllById(ids);
     assertResourceNotFound(isNotEmpty(reviewCases), ids.iterator().next(), "FuncReviewCase");
-    
+
     // Validate that all requested review cases were found
     if (ids.size() != reviewCases.size()) {
       for (FuncReviewCase reviewCase : reviewCases) {
@@ -214,11 +214,11 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
       // Collect all case IDs for efficient batch retrieval
       List<Long> caseIds = reviewCases.stream().map(FuncReviewCase::getCaseId).collect(
           Collectors.toList());
-          
+
       // Retrieve case information for all cases in a single query
       Map<Long, FuncCaseInfo> caseInfoMap = funcCaseQuery.checkAndFindInfo(caseIds).stream()
           .collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
-          
+
       // Associate case information with each review case
       for (FuncReviewCase reviewCase : reviewCases) {
         reviewCase.setCaseInfo(caseInfoMap.get(reviewCase.getCaseId()));

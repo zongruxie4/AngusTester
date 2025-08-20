@@ -243,7 +243,7 @@ public class VariableQueryImpl implements VariableQuery {
                 && nonNull(x.getRequest().getServer().getUrl()))
             .map(x -> toServer(x.getRequest().getServer()))
             .filter(ObjectUtils.distinctByKey(Server::getUrl))
-            .collect(Collectors.toList());
+            .toList();
       }
     }.execute();
   }

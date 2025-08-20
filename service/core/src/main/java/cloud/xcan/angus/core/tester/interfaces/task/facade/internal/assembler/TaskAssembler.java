@@ -97,7 +97,7 @@ public class TaskAssembler {
           .map(tagId -> new TagTarget().setId(uidGenerator.getUID())
               .setTargetType(CombinedTargetType.TASK)
               .setTargetId(task.getId()).setTagId(tagId))
-          .collect(Collectors.toList());
+          .toList();
       task.setTagTargets(tags);
     }
     return task;
@@ -130,7 +130,7 @@ public class TaskAssembler {
           .map(tagId -> new TagTarget()
               .setTargetType(CombinedTargetType.TASK)
               .setTargetId(task.getId()).setTagId(tagId))
-          .collect(Collectors.toList());
+          .toList();
       task.setTagTargets(tags);
     }
     return task;
@@ -164,7 +164,7 @@ public class TaskAssembler {
           .map(tagId -> new TagTarget()
               .setTargetType(CombinedTargetType.TASK)
               .setTargetId(task.getId()).setTagId(tagId))
-          .collect(Collectors.toList());
+          .toList();
       task.setTagTargets(tags);
     }
     return task;
@@ -210,13 +210,13 @@ public class TaskAssembler {
         .setTotalNum(task.getTotalNum())
         .setParentTaskId(task.getParentTaskId())
         .setSubTaskInfos(isNotEmpty(task.getSubTasks()) ? task.getSubTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefTaskInfos(isNotEmpty(task.getAssocTasks()) ? task.getAssocTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setRefCaseInfos(isNotEmpty(task.getAssocCases()) ? task.getAssocCases().stream()
-            .map(FuncCaseAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(FuncCaseAssembler::toInfoVo).toList() : emptyList())
         .setTags(isNotEmpty(task.getTagTargets()) ? task.getTagTargets().stream()
-            .map(TaskAssembler::toTagVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toTagVo).toList() : emptyList())
         .setCurrentAssociateType(task.getCurrentAssociateType())
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
@@ -315,11 +315,11 @@ public class TaskAssembler {
         .setTotalNum(task.getTotalNum())
         .setParentTaskId(task.getParentTaskId())
         .setTags(isNotEmpty(task.getTagTargets()) ? task.getTagTargets().stream()
-            .map(TaskAssembler::toTagVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toTagVo).toList() : emptyList())
         .setRefCaseInfos(isNotEmpty(task.getAssocCases()) ? task.getAssocCases().stream()
-            .map(FuncCaseAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(FuncCaseAssembler::toInfoVo).toList() : emptyList())
         .setRefTaskInfos(isNotEmpty(task.getAssocTasks()) ? task.getAssocTasks().stream()
-            .map(TaskAssembler::toInfoVo).collect(Collectors.toList()) : emptyList())
+            .map(TaskAssembler::toInfoVo).toList() : emptyList())
         .setCurrentAssociateType(task.getCurrentAssociateType())
         .setConfirmTask(task.isConfirmTask())
         .setOverdue(task.getOverdue())
@@ -387,11 +387,11 @@ public class TaskAssembler {
         .setFailNum(listVo.getFailNum())
         .setTotalNum(listVo.getTotalNum())
         .setRefTasks(isNotEmpty(listVo.getRefTaskInfos()) ? listVo.getRefTaskInfos().stream()
-            .map(TaskInfoVo::getName).collect(Collectors.toList()) : emptyList())
+            .map(TaskInfoVo::getName).toList() : emptyList())
         .setRefCases(isNotEmpty(listVo.getRefCaseInfos()) ? listVo.getRefCaseInfos().stream()
-            .map(FuncCaseInfoVo::getName).collect(Collectors.toList()) : emptyList())
+            .map(FuncCaseInfoVo::getName).toList() : emptyList())
         .setRefTags(isNotEmpty(listVo.getTags()) ? listVo.getTags().stream()
-            .map(IdAndNameVo::getName).collect(Collectors.toList()) : emptyList())
+            .map(IdAndNameVo::getName).toList() : emptyList())
         .setDescription(listVo.getDescription())
         .setCreatedByName(listVo.getCreatedByName())
         .setCreatedDate(listVo.getCreatedDate())
@@ -414,7 +414,7 @@ public class TaskAssembler {
         .setConfirmorId(task.getConfirmorId())
         /*.setTags(isNotEmpty(task.getTagTargets()) ? task.getTagTargets().stream().map(
                 o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-            .collect(Collectors.toList()) : Collections.emptyList())*/
+            .toList() : Collections.emptyList())*/
         .setCreatedBy(task.getCreatedBy())
         .setCreatedDate(task.getCreatedDate());
   }

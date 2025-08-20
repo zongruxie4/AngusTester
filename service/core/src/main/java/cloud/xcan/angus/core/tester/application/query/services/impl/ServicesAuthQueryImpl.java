@@ -451,7 +451,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
       List<ServicesAuth> values = authMap.get(serviceId);
       if (isNotEmpty(values)) {
         List<ServicesPermission> projectPermissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(projectPermissions) && projectPermissions.contains(permission)) {
           continue;
         }
@@ -494,7 +494,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     orgIds.add(userId);
     return servicesAuthRepo.findAllByAuthObjectIdIn(orgIds).stream()
         .filter(p -> p.getAuths().contains(permission)).map(ServicesAuth::getServiceId)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   /**
@@ -554,7 +554,7 @@ public class ServicesAuthQueryImpl implements ServicesAuthQuery {
     }
 
     return projectAuths.stream().map(ServicesAuth::getAuths).flatMap(Collection::stream)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   /**

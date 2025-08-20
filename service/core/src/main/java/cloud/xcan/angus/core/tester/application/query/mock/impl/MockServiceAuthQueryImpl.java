@@ -428,7 +428,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
       List<MockServiceAuth> values = authsMap.get(mockServiceId);
       if (isNotEmpty(values)) {
         List<MockServicePermission> permissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(permissions) && permissions.contains(permission)) {
           continue;
         }
@@ -478,7 +478,7 @@ public class MockServiceAuthQueryImpl implements MockServiceAuthQuery {
     // Find all authorization records for the user and their organizations
     return mockServiceAuthRepo.findAllByAuthObjectIdIn(orgIds).stream()
         .filter(p -> p.getAuths().contains(permission)).map(MockServiceAuth::getMockServiceId)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /**

@@ -498,7 +498,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       return vo.getResults();
     } else {
       return nodeCmds.stream().map(x -> StartVo.fail(x.getServiceId(),
-          message(AGENT_PUSH_START_FAILED))).collect(Collectors.toList());
+          message(AGENT_PUSH_START_FAILED))).toList();
     }
   }
 
@@ -519,7 +519,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       if (isEmpty(startVos)) {
         return dto.getCmdParams().stream()
             .map(x -> StartVo.fail(x.getServiceId(), message(AGENT_NOT_RUNNING)))
-            .collect(Collectors.toList());
+            .toList();
       }
       Map<Long, StartCmdParam> serviceCmdMap = dto.getCmdParams().stream()
           .collect(Collectors.toMap(StartCmdParam::getServiceId, x -> x));
@@ -534,7 +534,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       String cause = ExceptionUtils.getMessage(e);
       log.error("Broadcast start mock service to remote controller exception: {}", cause);
       return dto.getCmdParams().stream().map(x -> StartVo.fail(x.getServiceId(), cause))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -554,7 +554,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
     } else {
       return nodeCmds.stream()
           .map(x -> StopVo.fail(x.getServiceId(), message(AGENT_PUSH_STOP_FAILED)))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -575,7 +575,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       if (isEmpty(stopVos)) {
         return dto.getCmdParams().stream()
             .map(x -> StopVo.fail(x.getServiceId(), message(AGENT_NOT_RUNNING)))
-            .collect(Collectors.toList());
+            .toList();
       }
       Map<Long, StopCmdParam> serviceCmdMap = dto.getCmdParams().stream()
           .collect(Collectors.toMap(StopCmdParam::getServiceId, x -> x));
@@ -590,7 +590,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       String cause = ExceptionUtils.getMessage(e);
       log.error("Broadcast stop mock service to remote controller exception: {}", e.getMessage());
       return dto.getCmdParams().stream().map(x -> StopVo.fail(x.getServiceId(), cause))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -609,7 +609,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       return vo.getResults();
     } else {
       return nodeCmds.stream().map(x -> StatusVo.fail(x.getServiceId(),
-          message(AGENT_PUSH_STATUS_FAILED))).collect(Collectors.toList());
+          message(AGENT_PUSH_STATUS_FAILED))).toList();
     }
   }
 
@@ -630,7 +630,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       if (isEmpty(statusVos)) {
         return dto.getCmdParams().stream()
             .map(x -> StatusVo.fail(x.getServiceId(), message(AGENT_NOT_RUNNING)))
-            .collect(Collectors.toList());
+            .toList();
       }
       Map<Long, StatusCmdParam> serviceCmdMap = dto.getCmdParams().stream()
           .collect(Collectors.toMap(StatusCmdParam::getServiceId, x -> x));
@@ -645,7 +645,7 @@ public class MockServiceManageCmdImpl implements MockServiceManageCmd {
       String cause = ExceptionUtils.getMessage(e);
       log.error("Broadcast status mock service to remote controller exception: {}", e.getMessage());
       return dto.getCmdParams().stream().map(x -> StatusVo.fail(x.getServiceId(), cause))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 

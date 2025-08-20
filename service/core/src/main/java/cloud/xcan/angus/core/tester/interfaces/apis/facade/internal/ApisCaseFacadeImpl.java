@@ -40,21 +40,21 @@ public class ApisCaseFacadeImpl implements ApisCaseFacade {
   @Override
   public List<IdKey<Long, Object>> add(List<ApisCaseAddDto> dto) {
     List<ApisCase> cases = dto.stream().map(ApisCaseAssembler::addDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return apisCaseCmd.add(cases);
   }
 
   @Override
   public void update(List<ApisCaseUpdateDto> dto) {
     List<ApisCase> apisCases = dto.stream()
-        .map(ApisCaseAssembler::updateDtoToDomain).collect(Collectors.toList());
+        .map(ApisCaseAssembler::updateDtoToDomain).toList();
     apisCaseCmd.update(apisCases);
   }
 
   @Override
   public void replace(List<ApisCaseReplaceDto> dto) {
     List<ApisCase> cases = dto.stream()
-        .map(ApisCaseAssembler::replaceDtoToDomain).collect(Collectors.toList());
+        .map(ApisCaseAssembler::replaceDtoToDomain).toList();
     apisCaseCmd.replace(cases);
   }
 

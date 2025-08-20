@@ -152,7 +152,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
     List<NodeUsage> nodeUsages = findAllNodeUsages(nodeId, from, to);
     if (isNotEmpty(nodeUsages)) {
       List<Double> cpuUsageRates = nodeUsages.stream().map(x -> 100 - x.getCpu().getIdle())
-          .collect(Collectors.toList());
+          .toList();
       double meanCpu = cpuUsageRates.stream().mapToDouble(Double::doubleValue).sum()
           / nodeUsages.size();
       double maxCpu = Collections.max(cpuUsageRates);
@@ -160,7 +160,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
 
       List<Double> memoryUsageRates = nodeUsages.stream()
           .map(x -> 100 - x.getMemory().getUsedPercent())
-          .collect(Collectors.toList());
+          .toList();
       double meanMemory = memoryUsageRates.stream().mapToDouble(Double::doubleValue).sum()
           / nodeUsages.size();
       double maxMemory = Collections.max(memoryUsageRates);
@@ -168,7 +168,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
 
       List<Double> fsUsageRates = nodeUsages.stream()
           .map(x -> 100 - x.getFilesystem().getUsedPercent())
-          .collect(Collectors.toList());
+          .toList();
       double meanFs = fsUsageRates.stream().mapToDouble(Double::doubleValue).sum()
           / nodeUsages.size();
       double maxFs = Collections.max(fsUsageRates);
@@ -182,7 +182,7 @@ public class NodeUsageQueryImpl implements NodeUsageQuery {
           .findFirst().get().getValue().stream()
           // The sum of sending and receiving
           .map(x -> x.getNetwork().getRxBytesRate() + x.getNetwork().getTxBytesRate())
-          .collect(Collectors.toList());
+          .toList();
       double meanCpu = netUsageRates.stream().mapToDouble(Double::doubleValue).sum()
           / nodeUsages.size();
       double maxCpu = Collections.max(netUsageRates);

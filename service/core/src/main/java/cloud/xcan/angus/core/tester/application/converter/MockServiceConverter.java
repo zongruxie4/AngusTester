@@ -215,14 +215,14 @@ public class MockServiceConverter {
         .setCmdParams(serviceDbs.stream()
             .map(x -> toStartMockServiceCmdParam(x, nodeMap.get(x.getNodeId()),
                 mockTesterApisServerUrl))
-            .collect(Collectors.toList()));
+            .toList());
   }
 
   public static MockServiceStopDto toMockServiceStopDto(List<MockServiceInfo> serviceDbs) {
     return new MockServiceStopDto().setBroadcast(true)
         .setCmdParams(serviceDbs.stream()
             .map(MockServiceConverter::mockServiceResultToToService)
-            .collect(Collectors.toList()));
+            .toList());
   }
 
   public static MockServiceApisSyncDto toMockServiceApisSyncDto(MockService service,
@@ -237,7 +237,7 @@ public class MockServiceConverter {
             .setSyncMockService(false)
             .setSyncMockApisOperations(apis.stream()
                 .map(x -> String.format("%s:%s", x.getMethod().getValue(), x.getEndpoint()))
-                .collect(Collectors.toList())));
+                .toList()));
   }
 
   public static MockServiceApisDeleteDto toMockServiceApisDeleteDto(MockService service,
@@ -251,7 +251,7 @@ public class MockServiceConverter {
             .setDeleteAllMockApis(false)
             .setDeleteMockApisOperations(apis.stream()
                 .map(x -> String.format("%s:%s", x.getMethod().getValue(), x.getEndpoint()))
-                .collect(Collectors.toList())));
+                .toList()));
   }
 
   public static MockServiceApisSyncDto toMockServiceApisSyncDto(MockService service,

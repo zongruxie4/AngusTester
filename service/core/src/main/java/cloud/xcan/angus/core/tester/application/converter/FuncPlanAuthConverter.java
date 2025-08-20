@@ -24,7 +24,7 @@ public class FuncPlanAuthConverter {
             .setAuthObjectId(creatorId)
             .setAuths(auths)
             .setCreator(creator))
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

@@ -132,7 +132,7 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
         // Delete all trash
         funcTrashRepo.deleteByTargetIdIn(allTrashes.stream().map(FuncTrash::getTargetId)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Delete association data
         deleteAssociation(allTrashes);
@@ -221,13 +221,13 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
         if (isNotEmpty(allTrashes)) {
           List<Long> planIds = allTrashes.stream().filter(d -> d.getTargetType().isPlan())
-              .map(FuncTrash::getTargetId).collect(Collectors.toList());
+              .map(FuncTrash::getTargetId).toList();
           if (isNotEmpty(planIds)) {
             backAllPlan(planIds);
           }
 
           List<Long> caseIds = allTrashes.stream().filter(d -> d.getTargetType().isCase())
-              .map(FuncTrash::getTargetId).collect(Collectors.toList());
+              .map(FuncTrash::getTargetId).toList();
           if (isNotEmpty(caseIds)) {
             backAllCase(caseIds);
           }
@@ -271,7 +271,7 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     List<Long> allCaseIds = new ArrayList<>();
 
     List<Long> planIds = trashes.stream().filter(d -> d.getTargetType().isPlan())
-        .map(FuncTrash::getTargetId).collect(Collectors.toList());
+        .map(FuncTrash::getTargetId).toList();
     if (isNotEmpty(planIds)) {
       List<Long> planCaseIds = funcCaseRepo.findAll0IdByPlanIdIn(planIds);
       if (isNotEmpty(planCaseIds)) {
@@ -284,7 +284,7 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
     }
 
     List<Long> caseIds = trashes.stream().filter(d -> d.getTargetType().isCase())
-        .map(FuncTrash::getTargetId).collect(Collectors.toList());
+        .map(FuncTrash::getTargetId).toList();
     if (isNotEmpty(caseIds)) {
       allCaseIds.addAll(caseIds);
     }

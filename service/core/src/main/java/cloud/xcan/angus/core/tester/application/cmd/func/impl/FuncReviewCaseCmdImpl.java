@@ -115,7 +115,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
             .collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
         List<FuncReviewCase> reviewCases = caseIds.stream()
             .map(x -> toReviewCase(funcReviewDb, caseInfoMap.get(x)))
-            .collect(Collectors.toList());
+            .toList();
         List<IdKey<Long, Object>> idKeys = batchInsert(reviewCases);
 
         // Save activities
@@ -146,7 +146,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
       protected void checkParams() {
         // Check the review cases exists
         reviewCaseIds = reviewCases.stream().map(FuncReviewCase::getId)
-            .collect(Collectors.toList());
+            .toList();
         reviewCasesDb = funcReviewCaseQuery.checkAndFind(reviewCaseIds);
         // Check the review and cases is consistent
         Set<Long> planIds = reviewCasesDb.stream().map(FuncReviewCase::getPlanId)
@@ -155,13 +155,13 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         Set<Long> reviewIds = reviewCasesDb.stream().map(FuncReviewCase::getReviewId)
             .collect(Collectors.toSet());
         assertTrue(reviewIds.size() == 1,"Only supports modification one case review result");
-        // Check the review exists  
+        // Check the review exists
         reviewDb = funcReviewQuery.checkAndFind(reviewIds.iterator().next());
         // Check the review permission
         funcPlanAuthQuery.checkReviewAuth(getUserId(), planIds.iterator().next());
         // Check the case exists and can review
         casesDb = funcCaseQuery.checkAndFind(reviewCasesDb.stream().map(FuncReviewCase::getCaseId)
-            .collect(Collectors.toList()));
+            .toList());
         // Check the review has started
         funcReviewQuery.checkHasStarted(reviewDb);
         // Check the case can review
@@ -234,7 +234,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
       @Override
       protected Void process() {
         List<Long> caseIds = reviewCasesDb.stream().map(FuncReviewCase::getCaseId)
-            .collect(Collectors.toList());
+            .toList();
 
         // Reset cases status
         if (reset) {
@@ -299,7 +299,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
         funcReviewCaseRecordCmd.deleteByReviewCaseIdIn(ids);
 
         List<FuncCaseInfo> caseInfos = funcCaseInfoRepo.findAll0ByIdIn(
-            reviewCasesDb.stream().map(FuncReviewCase::getCaseId).collect(Collectors.toList()));
+            reviewCasesDb.stream().map(FuncReviewCase::getCaseId).toList());
         activityCmd.addAll(toActivities(FUNC_CASE, caseInfos, ActivityType.FUNC_REVIEW_DELETE,
             reviewDb.getName()));
         return null;
@@ -320,7 +320,7 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
       CoreUtils.copyProperties(reviewCaseDb, record, "id");
       record.setReviewCaseId(reviewCaseDb.getId());
       return record;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
   /**

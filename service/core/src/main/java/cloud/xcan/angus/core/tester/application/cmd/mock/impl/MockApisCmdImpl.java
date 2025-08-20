@@ -261,7 +261,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
       @Override
       protected void checkParams() {
         updatedApis = mockApis.stream().filter(x -> nonNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(updatedApis)) {
           // Check the mock apis exists
           updatedApisDb = mockApisQuery.checkAndFind(mockApis.stream().map(MockApis::getId)
@@ -297,7 +297,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
       protected List<IdKey<Long, Object>> process() {
         List<IdKey<Long, Object>> idKeys = new ArrayList<>();
         List<MockApis> addApis = mockApis.stream().filter(x -> isNull(x.getId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(addApis)) {
           idKeys.addAll(add(addApis, true));
         }
@@ -367,7 +367,7 @@ public class MockApisCmdImpl extends CommCmd<MockApis, Long> implements MockApis
         List<MockApisResponse> responses = mockApisResponseRepo.findAllByMockApisId(id);
         if (isNotEmpty(responses)) {
           mockApisResponseCmd.add0(responses.stream().map(MockApisResponse::copy)
-              .map(o -> o.setMockApisId(idKey.getId()).setId(null)).collect(Collectors.toList()));
+              .map(o -> o.setMockApisId(idKey.getId()).setId(null)).toList());
         }
 
         // Save clone activity

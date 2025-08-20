@@ -84,7 +84,7 @@ public class ServicesSchemaConverter {
           if (cover) {
             List<Server> updatedServers = openapiServers.stream()
                 .filter(x -> serversDbMap.containsKey(x.getUrl()))
-                .collect(Collectors.toList());
+                .toList();
             if (isNotEmpty(updatedServers)) {
               for (Server updatedServer : updatedServers) {
                 Server serverDb = serversDbMap.get(updatedServer.getUrl());
@@ -96,7 +96,7 @@ public class ServicesSchemaConverter {
 
           List<Server> addServers = openapiServers.stream()
               .filter(x -> !serversDbMap.containsKey(x.getUrl()))
-              .collect(Collectors.toList());
+              .toList();
           if (isNotEmpty(addServers)) {
             for (Server addServer : addServers) {
               addServer.addExtension(ID_KEY, getCachedUidGenerator().getUID());

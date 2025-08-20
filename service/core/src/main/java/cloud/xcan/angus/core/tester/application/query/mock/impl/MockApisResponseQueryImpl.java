@@ -104,14 +104,14 @@ public class MockApisResponseQueryImpl implements MockApisResponseQuery {
         // Check for duplicate names within the provided response list
         List<MockApisResponse> mockApisResponses = entry.getValue().stream()
             .filter(ObjectUtils.duplicateByKey(MockApisResponse::getName))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(mockApisResponses)) {
           throw ResourceExisted.of(mockApisResponses.get(0).getName(), "MockApisResponse");
         }
 
         // Check for conflicts with existing responses in the database
         List<String> names = entry.getValue().stream()
-            .map(MockApisResponse::getName).collect(Collectors.toList());
+            .map(MockApisResponse::getName).toList();
         List<String> existedNames = mockApisResponseRepo
             .findNamesByMockApisIdAndNameIn(entry.getKey(), names);
         if (isNotEmpty(existedNames)) {

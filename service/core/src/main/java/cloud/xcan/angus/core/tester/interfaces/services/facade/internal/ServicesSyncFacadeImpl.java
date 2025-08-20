@@ -35,7 +35,7 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
   @Override
   public void replaceAll(Long serviceId, List<ServicesSyncReplaceDto> dto) {
     servicesSyncCmd.replaceAll(serviceId,
-        dto.stream().map(x -> toDomain(serviceId, x)).collect(Collectors.toList()));
+        dto.stream().map(x -> toDomain(serviceId, x)).toList());
   }
 
   @Override
@@ -58,7 +58,7 @@ public class ServicesSyncFacadeImpl implements ServicesSyncFacade {
   public List<ServicesSyncDetailVo> list(Long serviceId) {
     List<ServicesSync> syncs = servicesSyncQuery.find(serviceId);
     return isEmpty(syncs) ? null : syncs.stream().map(ServicesSyncAssembler::toDetailVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

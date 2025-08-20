@@ -339,7 +339,7 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
 
     // Note: serviceId is cannot be redundant, changes will occur after movement apis
     List<Long> enabledTestApiIds = testApis.getEnabledTestApiIds().values().stream()
-        .flatMap(Collection::stream).toList().stream().distinct().collect(Collectors.toList());
+        .flatMap(Collection::stream).toList().stream().distinct().toList();
 
     Map<Long, List<ExecTestResultInfo>> apisTestResultMap =
         execTestResultInfoRepo.findByScriptSourceIdInAndScriptSource(
@@ -407,7 +407,7 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
         }
       }
       return apiResultInfo;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
   /**
@@ -427,7 +427,7 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
 
     // Note: serviceId is cannot be redundant, changes will occur after movement apis
     List<Long> enabledTestScenarioIds = testScenario.getEnabledTestScenarioIds().values().stream()
-        .flatMap(Collection::stream).toList().stream().distinct().collect(Collectors.toList());
+        .flatMap(Collection::stream).toList().stream().distinct().toList();
 
     Map<Long, List<ExecTestResultInfo>> apisTestResultMap =
         execTestResultInfoRepo.findByScriptSourceIdInAndScriptSource(
@@ -494,7 +494,7 @@ public class ExecTestResultQueryImpl implements ExecTestResultQuery {
         }
       }
       return apiResultInfo;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
   /**

@@ -2437,7 +2437,7 @@ public class TaskQueryImpl implements TaskQuery {
       projectTaskSubs = taskInfoRepo.findByProjectIdAndParentTaskIdIn(projectId, taskIds);
       if (isNotEmpty(projectTaskSubs)) {
         allTaskAndSub.addAll(projectTaskSubs);
-        taskIds = projectTaskSubs.stream().map(TaskInfo::getId).collect(Collectors.toList());
+        taskIds = projectTaskSubs.stream().map(TaskInfo::getId).toList();
       }
     } while (isNotEmpty(projectTaskSubs));
     return allTaskAndSub;
@@ -2455,7 +2455,7 @@ public class TaskQueryImpl implements TaskQuery {
       projectTaskSubs = taskRepo.findByProjectIdAndParentTaskIdIn(projectId, taskIds);
       if (isNotEmpty(projectTaskSubs)) {
         allTaskAndSub.addAll(projectTaskSubs);
-        taskIds = projectTaskSubs.stream().map(Task::getId).collect(Collectors.toList());
+        taskIds = projectTaskSubs.stream().map(Task::getId).toList();
       }
     } while (isNotEmpty(projectTaskSubs));
     return allTaskAndSub;
@@ -2464,7 +2464,7 @@ public class TaskQueryImpl implements TaskQuery {
   @Override
   public List<Long> findAllSubIds(Long projectId, Collection<Long> taskIds) {
     return findAllSubInfo(projectId, taskIds).stream().map(TaskInfo::getId)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -3187,7 +3187,7 @@ public class TaskQueryImpl implements TaskQuery {
   @NameJoin
   public static List<TaskSummary> getTaskSummary(List<TaskInfo> tasks) {
     return isEmpty(tasks) ? null
-        : tasks.stream().map(TaskConverter::toTaskSummary).collect(Collectors.toList());
+        : tasks.stream().map(TaskConverter::toTaskSummary).toList();
   }
 
   /**

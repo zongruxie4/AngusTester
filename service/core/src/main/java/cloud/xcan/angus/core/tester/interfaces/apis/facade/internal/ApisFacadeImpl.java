@@ -58,21 +58,21 @@ public class ApisFacadeImpl implements ApisFacade {
   @Override
   public List<IdKey<Long, Object>> archive(List<ApisArchiveDto> dto) {
     List<Apis> apis = dto.stream().map(ApisAssembler::archiveDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return apisCmd.archive(apis);
   }
 
   @Override
   public void update(List<ApisUpdateDto> dto) {
     List<Apis> apis = dto.stream().map(ApisAssembler::updateDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     apisCmd.update(apis, true);
   }
 
   @Override
   public List<IdKey<Long, Object>> replace(List<ApisReplaceDto> dto) {
     List<Apis> apis = dto.stream().map(ApisAssembler::replaceDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return apisCmd.replace(apis);
   }
 
@@ -220,7 +220,7 @@ public class ApisFacadeImpl implements ApisFacade {
   @Override
   public List<ApisDetailVo> listDetail(HashSet<Long> ids, Boolean resolveRef) {
     return apisQuery.listDetail(ids, resolveRef).stream()
-        .map(ApisAssembler::toDetailVo).collect(Collectors.toList());
+        .map(ApisAssembler::toDetailVo).toList();
   }
 
   @NameJoin

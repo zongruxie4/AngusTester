@@ -655,7 +655,7 @@ public class TaskSprintCmdImpl extends CommCmd<TaskSprint, Long> implements Task
   private void startSprintIfCompleted(List<TaskSprint> sprintsDb) {
     // Find completed sprints and restart them to pending status
     List<TaskSprint> completedSprintDb = sprintsDb.stream()
-        .filter(x -> x.getStatus().isCompleted()).collect(Collectors.toList());
+        .filter(x -> x.getStatus().isCompleted()).toList();
     if (isNotEmpty(completedSprintDb)) {
       for (TaskSprint sprint : completedSprintDb) {
         sprint.setStatus(TaskSprintStatus.PENDING);

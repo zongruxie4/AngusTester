@@ -218,7 +218,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
           return page;
         }
         List<Long> nodeIds = page.getContent().stream().map(NodeInfo::getId)
-            .collect(Collectors.toList());
+            .toList();
         Set<Long> liveNodeIds = getLiveNodeIds(nodeIds);
         for (NodeInfo nodeInfo : page.getContent()) {
           nodeInfo.setAgentOnline(liveNodeIds.contains(nodeInfo.getId()));
@@ -540,7 +540,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
       List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-          .collect(Collectors.toList());
+          .toList();
       Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
       for (NodeInfo selectNode : selectNodes) {
         assertTrue(liveNodeIds.contains(selectNode.getId()),
@@ -576,7 +576,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       ProtocolAssert.assertTrue(isNotEmpty(selectNodes), message(NO_AVAILABLE_NODES));
 
       List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-          .collect(Collectors.toList());
+          .toList();
       Set<Long> liveNodeIds = getLiveNodeIds(selectNodeIds);
       for (NodeInfo selectNode : selectNodes) {
         assertTrue(liveNodeIds.contains(selectNode.getId()),
@@ -705,7 +705,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
     List<NodeInfo> finalOptionalNodes = nodes.stream()
         .filter(x -> validNodeVoMap.containsKey(x.getId()) && nonNull(x.getInfo()))
         .sorted((s1, s2) -> Integer.compare(s2.getInfo().getCpuNum(), s1.getInfo().getCpuNum()))
-        .collect(Collectors.toList());
+        .toList();
 
     assertTrue(isNotEmpty(finalOptionalNodes), message(NODE_SPEC_INFO_MISSING_T),
         new Object[]{validNodeVos.get(0).getId()});
@@ -721,7 +721,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
 
       // When policy selection is not enabled, the idle machine with the highest configuration is selected by default
       List<NodeInfo> idleNodes = finalOptionalNodes.stream()
-          .filter(x -> !nodeExecTaskNums.containsKey(x.getId())).collect(Collectors.toList());
+          .filter(x -> !nodeExecTaskNums.containsKey(x.getId())).toList();
       return idleNodes.size() >= nodeNum ? idleNodes.subList(0, nodeNum)
           : finalOptionalNodes.subList(0, nodeNum);
     }
@@ -731,7 +731,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       finalOptionalNodes = finalOptionalNodes.stream()
           .filter(x -> !nodeExecTaskNums.containsKey(x.getId())
               || strategy.getMaxTaskNum() <= nodeExecTaskNums.get(x.getId()))
-          .collect(Collectors.toList());
+          .toList();
     }
 
     if (nonNull(strategy.getSpecEnabled()) && strategy.getSpecEnabled()) {
@@ -741,7 +741,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
           .parse(strategy.getMemorySpec()).toBytes())
           && (isNull(strategy.getDiskSpec()) || x.getInfo().getFsTotal() >= DataSize
           .parse(strategy.getDiskSpec()).toBytes())
-      ).collect(Collectors.toList());
+      ).toList();
     }
 
     if (nonNull(strategy.getIdleRateEnabled()) && strategy.getIdleRateEnabled()) {
@@ -756,7 +756,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
                 && (isNull(strategy.getDiskIdleRate()) || nodeUsage.getFilesystem().getFreePercent()
                 <= RateValue.parse(strategy.getDiskIdleRate()).getValue())
         );
-      }).collect(Collectors.toList());
+      }).toList();
     }
 
     if (finalOptionalNodes.size() >= nodeNum) {
@@ -856,7 +856,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
       Set<Long> onlineIds = getLiveNodeIds(nodes.stream().map(Node::getId)
           .collect(Collectors.toSet()));
       return isEmpty(nodes) ? null : nodes.stream()
-          .filter(x -> onlineIds.contains(x.getId())).collect(Collectors.toList());
+          .filter(x -> onlineIds.contains(x.getId())).toList();
     }
     return null;
   }
@@ -986,7 +986,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
     } else {
       return nodeCmds.stream().map(
               x -> CheckPortVo.fail(message(AGENT_PUSH_CHECK_PORT_FAILED), x.getServerPort()))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -1002,7 +1002,7 @@ public class NodeInfoQueryImpl implements NodeInfoQuery {
           e.getMessage());
       String cause = getRootCauseMessage(e);
       return dto.getCmdParams().stream().map(
-          x -> CheckPortVo.fail(cause, x.getServerPort())).collect(Collectors.toList());
+          x -> CheckPortVo.fail(cause, x.getServerPort())).toList();
     }
   }
 

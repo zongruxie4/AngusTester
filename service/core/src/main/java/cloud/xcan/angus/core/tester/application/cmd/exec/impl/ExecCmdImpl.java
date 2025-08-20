@@ -1187,7 +1187,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
       saveIds.removeAll(existIds);
       execNodeCmd.add0(saveIds.stream()
           .map(x -> new ExecNode().setExecId(exec.getId()).setNodeId(x))
-          .collect(Collectors.toList()));
+          .toList());
     }
   }
 
@@ -1266,21 +1266,21 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             }).orElseContentThrow();
         return isNotEmpty(runVos) ? runVos : dto.getRemoteNodeIds().stream()
             .map(x -> RunnerRunVo.fail(String.valueOf(dto.getId()), x, message(AGENT_NOT_RUNNING)))
-            .collect(Collectors.toList());
+            .toList();
       } else {
         ApiLocaleResult<?> result = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<?>>() {
             });
         return dto.getRemoteNodeIds().stream()
             .map(x -> RunnerRunVo.fail(String.valueOf(dto.getId()), x, result.getMsg()))
-            .collect(Collectors.toList());
+            .toList();
       }
     } catch (Throwable e) {
       String message = message(BROADCAST_START_TO_REMOTE_EXCEPTION_T, new Object[]{getMessage(e)});
       log.error(message);
       return dto.getRemoteNodeIds().stream()
           .map(x -> RunnerRunVo.fail(String.valueOf(dto.getId()), x, message))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -1304,21 +1304,21 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
             }).orElseContentThrow();
         return isNotEmpty(stopVos) ? stopVos : dto.getRemoteNodeIds().stream()
             .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, message(AGENT_NOT_RUNNING)))
-            .collect(Collectors.toList());
+            .toList();
       } else {
         ApiLocaleResult<?> result = objectMapper.readValue(response.body(),
             new TypeReference<ApiLocaleResult<?>>() {
             });
         return dto.getRemoteNodeIds().stream()
             .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, result.getMsg()))
-            .collect(Collectors.toList());
+            .toList();
       }
     } catch (Throwable e) {
       String message = message(BROADCAST_STOP_TO_REMOTE_EXCEPTION_T, new Object[]{getMessage(e)});
       log.error(message);
       return dto.getRemoteNodeIds().stream()
           .map(x -> RunnerStopVo.fail(String.valueOf(dto.getId()), x, message))
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 
@@ -1351,7 +1351,7 @@ public class ExecCmdImpl extends CommCmd<Exec, Long> implements ExecCmd {
 
     // Extract node IDs from selected nodes
     List<Long> selectNodeIds = selectNodes.stream().map(NodeInfo::getId)
-        .collect(Collectors.toList());
+        .toList();
     
     // Get live node IDs to validate availability
     Set<Long> liveNodeIds = nodeInfoQuery.getLiveNodeIds(selectNodeIds);

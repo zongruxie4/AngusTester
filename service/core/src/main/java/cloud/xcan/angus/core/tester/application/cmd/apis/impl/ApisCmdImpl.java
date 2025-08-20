@@ -7,6 +7,8 @@ import static cloud.xcan.angus.core.biz.ProtocolAssert.assertTrue;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.activityParams;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivities;
 import static cloud.xcan.angus.core.tester.application.converter.ActivityConverter.toActivity;
+import static cloud.xcan.angus.core.tester.application.converter.ApisAuthConverter.toApisCreatorAuth;
+import static cloud.xcan.angus.core.tester.application.converter.ApisConverter.assembleApiAuthInfo;
 import static cloud.xcan.angus.core.tester.application.converter.MockApisConverter.toAssocOrCopeMockApis;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.ADD_ASSOC_TARGET;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.APIS_AUTH_UPDATE;
@@ -27,6 +29,7 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SCHEMA_S
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.STATUS_UPDATE;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.UPDATED;
 import static cloud.xcan.angus.core.utils.CoreUtils.batchCopyPropertiesIgnoreNull;
+import static cloud.xcan.angus.core.utils.PrincipalContextUtils.isJobOrInnerApi;
 import static cloud.xcan.angus.core.utils.ServletUtils.buildDownloadResourceResponseEntity;
 import static cloud.xcan.angus.spec.experimental.StandardCharsets.UTF_8;
 import static cloud.xcan.angus.spec.principal.PrincipalContext.getExtension;
@@ -250,17 +253,16 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         Set<ApisAuth> apisAuths = new HashSet<>();
         for (Apis api : apis) {
           // Assemble API authorization information
-          ApisConverter.assembleApiAuthInfo(api, servicesDb);
-          
+          assembleApiAuthInfo(api, servicesDb);
+
           Set<Long> creatorIds = new HashSet<>();
           // Add current user or service creator based on context
-          creatorIds.add(
-              PrincipalContextUtils.isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
+          creatorIds.add(isJobOrInnerApi() ? servicesDb.getCreatedBy() : getUserId());
           // Add service creator authorization
           creatorIds.add(servicesDb.getCreatedBy());
-          
+
           // Generate creator authorization records
-          apisAuths.addAll(ApisAuthConverter.toApisCreatorAuth(api, creatorIds));
+          apisAuths.addAll(toApisCreatorAuth(api, creatorIds));
         }
         return new ArrayList<>(apisAuths);
       }
@@ -328,7 +330,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       @Override
       protected void checkParams() {
         // Retrieve existing APIs for validation
-        List<Long> apisIds = apis.stream().map(Apis::getId).collect(Collectors.toList());
+        List<Long> apisIds = apis.stream().map(Apis::getId).toList();
         apisDbs = apisQuery.checkAndFind(apisIds);
 
         // Ensure all APIs belong to the same service (single service constraint)
@@ -371,7 +373,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
                 .setId(x.getId()).setSummary(x.getSummary());
             apisBasicInfos.setCreatedBy(x.getCreatedBy());
             return apisBasicInfos;
-          }).collect(Collectors.toList()), activities);
+          }).toList(), activities);
         }
         return null;
       }
@@ -400,7 +402,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       @Override
       protected void checkParams() {
         // Separate new APIs (without ID) for addition
-        addApis = apis.stream().filter(x -> isNull(x.getId())).collect(Collectors.toList());
+        addApis = apis.stream().filter(x -> isNull(x.getId())).toList();
         if (isNotEmpty(addApis)) {
           // Ensure all new APIs belong to the same service
           Set<Long> serviceIds = addApis.stream().map(Apis::getServiceId)
@@ -409,11 +411,10 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         }
 
         // Separate existing APIs (with ID) for update
-        updateApis = apis.stream().filter(x -> nonNull(x.getId())).collect(Collectors.toList());
+        updateApis = apis.stream().filter(x -> nonNull(x.getId())).toList();
         if (isNotEmpty(updateApis)) {
           // Retrieve existing APIs for validation
-          List<Long> updateApisIds = updateApis.stream().map(Apis::getId)
-              .collect(Collectors.toList());
+          List<Long> updateApisIds = updateApis.stream().map(Apis::getId).toList();
           updateApisDbs = apisQuery.checkAndFind(updateApisIds);
 
           // Ensure all existing APIs belong to the same service
@@ -454,8 +455,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           batchUpdate0(updateApisDbs);
 
           // Log update activities
-          List<Activity> activities = toActivities(API, updateApisDbs, UPDATED,
-              activityParams(apis));
+          List<Activity> activities = toActivities(API, updateApisDbs, UPDATED, activityParams(apis));
           activityCmd.addAll(activities);
 
           // Send modification notification events
@@ -464,7 +464,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
                 .setId(x.getId()).setSummary(x.getSummary());
             apisBasicInfos.setCreatedBy(x.getCreatedBy());
             return apisBasicInfos;
-          }).collect(Collectors.toList()), activities);
+          }).toList(), activities);
         }
         return idKeys;
       }
@@ -532,7 +532,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Check the view api permission
         apisAuthQuery.checkViewAuth(getUserId(), id);
         // Check the add api to service permission
-        servicesAuthQuery.checkAddAuth(PrincipalContext.getUserId(), apisDb.getServiceId());
+        servicesAuthQuery.checkAddAuth(getUserId(), apisDb.getServiceId());
       }
 
       @Override
@@ -594,7 +594,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Validate target service API quota limits
         apisQuery.checkServiceApisQuota(apiIds.stream().map(
                 id -> new Apis().setId(id).setServiceId(targetServiceId))
-            .collect(Collectors.toList()));
+            .toList());
 
         // Note: Allow repeated names after move (names can be duplicated across services)
       }
@@ -625,7 +625,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
                   .setId(x.getId()).setSummary(x.getSummary());
               apisBasicInfos.setCreatedBy(x.getCreatedBy());
               return apisBasicInfos;
-            }).collect(Collectors.toList()), activities);
+            }).toList(), activities);
         return null;
       }
     }.execute();
@@ -775,7 +775,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           return null;
         }
         apisDb.setServers(apisDb.getServers().stream()
-            .filter(x -> !serverUrls.contains(x.getUrl())).collect(Collectors.toList()));
+            .filter(x -> !serverUrls.contains(x.getUrl())).toList());
         apisRepo.save(apisDb);
 
         activityCmd.add(toActivity(API, apisDb, SCHEMA_SERVER_UPDATED));
@@ -801,9 +801,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void addParameters(Long serviceId, ServiceApisScope modifyScope, String matchEndpointRegex,
-      HttpMethod matchMethod, Set<Long> selectedApisIds, Set<String> filterTags,
-      List<Parameter> parameters) {
+  public void addParameters(Long serviceId, ServiceApisScope modifyScope,
+      String matchEndpointRegex, HttpMethod matchMethod, Set<Long> selectedApisIds,
+      Set<String> filterTags, List<Parameter> parameters) {
     new BizTemplate<Void>() {
       List<Apis> serviceApisDb;
 
@@ -819,7 +819,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         // Extract parameter names for duplicate checking
         Set<String> addParameterNames = parameters.stream().map(Parameter::getName)
             .collect(Collectors.toSet());
-        
+
         // Add parameters to each matching API
         for (Apis apis : serviceApisDb) {
           if (isEmpty(apis.getParameters())) {
@@ -827,10 +827,10 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
             apis.setParameters(parameters);
             continue;
           }
-          
+
           // Filter out existing parameters with the same names and add new ones
           List<Parameter> finalParameters = apis.getParameters().stream()
-              .filter(x -> !addParameterNames.contains(x.getName())).collect(Collectors.toList());
+              .filter(x -> !addParameterNames.contains(x.getName())).toList();
           finalParameters.addAll(parameters);
           apis.setParameters(finalParameters);
         }
@@ -887,7 +887,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           }
           if (!updateParameterNames.isEmpty()) {
             apis.setParameters(finalParameters.values().stream().flatMap(List::stream)
-                .collect(Collectors.toList()));
+                .toList());
             apisRepo.save(apis);
             activityCmd.add(toActivity(API, apis, APIS_PARAMETER_UPDATE,
                 String.join(",", updateParameterNames)));
@@ -982,9 +982,9 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
           if (isEmpty(apis.getParameters())) {
             continue;
           }
-          
+
           Set<String> updateParameterNames = new HashSet<>();
-          
+
           // Update parameter enabled status for each matching parameter
           for (Parameter parameter : apis.getParameters()) {
             if (names.contains(parameter.getName())) {
@@ -1009,7 +1009,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
               }
             }
           }
-          
+
           // Save API and log activity if parameters were updated
           if (!updateParameterNames.isEmpty()) {
             apisRepo.save(apis);
@@ -1301,14 +1301,14 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
       protected ResponseEntity<org.springframework.core.io.Resource> process() {
         // Generate OpenAPI document in the specified format
         String openAPI = apisQuery.openapiDetail(id, format, false, true);
-        
+
         // Retrieve API information for filename and activity logging
         Apis apisDb = (Apis) getExtension(id.toString());
-        
+
         // Convert to byte array for download
         byte[] bytes = openAPI.getBytes(UTF_8);
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(bytes));
-        
+
         // Build download response with proper headers
         ResponseEntity<org.springframework.core.io.Resource> responseEntity =
             buildDownloadResourceResponseEntity(-1, APPLICATION_OCTET_STREAM,
@@ -1368,7 +1368,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
 
         // Add deleted APIs to trash for potential recovery
         trashApisCmd.add0(apisBasesDb.stream().map(ApisConverter::toApisTrash)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Send modification notification events
         apisQuery.assembleAndSendModifyNoticeEvent(
@@ -1377,7 +1377,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
                   .setId(x.getId()).setSummary(x.getSummary());
               apisBasicInfos.setCreatedBy(x.getCreatedBy());
               return apisBasicInfos;
-            }).collect(Collectors.toList()), activities);
+            }).toList(), activities);
         return null;
       }
     }.execute();
@@ -1404,37 +1404,37 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
   public void delete0(List<Long> apiIds) {
     // Clear mock API associations to prevent orphaned references
     mockApisRepo.updateAssocToNullByApisIdIn(apiIds);
-    
+
     // Remove APIs from database
     apisRepo.deleteAllByIdIn(apiIds);
-    
+
     // Delete associated API test cases
     apisCaseCmd.deleteByApisIdIn(apiIds);
-    
+
     // Delete associated API scripts
     scriptCmd.deleteBySource(ScriptSource.API, apiIds);
-    
+
     // Delete API authorization records
     apisAuthRepo.deleteByApisIdIn(apiIds);
-    
+
     // Delete API favorite records
     apisFavoriteRepo.deleteByApisIdIn(apiIds);
-    
+
     // Delete API follow records
     apisFollowRepo.deleteByApisIdIn(apiIds);
-    
+
     // Delete API performance indicators
     indicatorPerfCmd.deleteAllByTarget(apiIds, API);
-    
+
     // Delete API stability indicators
     indicatorStabilityCmd.deleteAllByTarget(apiIds, API);
-    
+
     // Delete API variable associations
     variableTargetRepo.deleteByTarget(apiIds, API.getValue());
-    
+
     // Delete API dataset associations
     datasetTargetRepo.deleteByTarget(apiIds, API.getValue());
-    
+
     // Note: Associated test tasks are not deleted to preserve test history
     // apisTestCmd.delete0(apiIds);
   }
@@ -1473,15 +1473,15 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     // Extract unarchived API IDs
     Set<Long> unarchivedIds = apis.stream().map(Apis::getUnarchivedId)
         .filter(Objects::nonNull).collect(Collectors.toSet());
-    
+
     if (isNotEmpty(unarchivedIds)) {
       // Retrieve unarchived API details
       List<ApisUnarchived> unarchivedApis = checkAndGetUnarchived(unarchivedIds);
-      
+
       // Create mapping for efficient lookup
       Map<Long, ApisUnarchived> unarchivedMap = unarchivedApis.stream()
           .collect(Collectors.toMap(ApisUnarchived::getId, o -> o));
-      
+
       // Merge missing parameters from unarchived APIs to current APIs
       apis.forEach(api -> {
         ApisUnarchived apisUnarchived = unarchivedMap.get(api.getUnarchivedId());
@@ -1514,7 +1514,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
     // Query unarchived APIs for current user
     List<ApisUnarchived> unarchivedApisDb = apisUnarchivedRepo.findAllByCreatedByAndIdIn(
         getUserId(), unarchivedIds);
-    
+
     // Validate that unarchived APIs exist
     assertResourceNotFound(unarchivedApisDb, unarchivedIds.iterator().next(), "UnarchiveApi");
 
@@ -1523,7 +1523,7 @@ public class ApisCmdImpl extends CommCmd<Apis, Long> implements ApisCmd {
         .map(ApisUnarchived::getId).filter(Objects::nonNull).collect(Collectors.toSet());
     Set<Long> unarchiveRequestIds = new HashSet<>(unarchivedIds);
     unarchiveRequestIds.removeAll(unarchivedExistIds);
-    
+
     // Validate that all requested APIs were found
     assertResourceNotFound(unarchiveRequestIds.isEmpty(), unarchiveRequestIds, "UnarchiveApi");
     return unarchivedApisDb;

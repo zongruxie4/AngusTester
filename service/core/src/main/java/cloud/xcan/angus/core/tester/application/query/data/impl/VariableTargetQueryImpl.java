@@ -123,14 +123,14 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
         Map<Long, List<Variable>> targetVariablesMap = new HashMap<>();
         List<VariableTarget> variableTargets = variableTargetRepo.findByTargetIdInAndType(
             targetIds, targetType);
-        
+
         // Handle API case inheritance from associated APIs
         if (API_CASE.getValue().equals(targetType) && isNotEmpty(caseApiMap)) {
           // Retrieve variables associated with the APIs
           Map<Long, List<VariableTarget>> apisVariableTargetMap = variableTargetRepo.findByTargetIdInAndType(
                   new HashSet<>(caseApiMap.values()), CombinedTargetType.API.getValue()).stream()
               .collect(Collectors.groupingBy(VariableTarget::getTargetId));
-          
+
           if (isNotEmpty(apisVariableTargetMap)) {
             // Create inherited variable targets for cases
             for (Long caseId : targetIds) {
@@ -143,17 +143,17 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
                         target.setTargetType(API_CASE);
                         target.setVariableId(x.getVariableId());
                         return target;
-                      }).collect(Collectors.toList()));
+                      }).toList());
                 }
               }
             }
           }
         }
-        
+
         if (variableTargets.isEmpty()) {
           return targetVariablesMap;
         }
-        
+
         // Retrieve all variables and build the result map
         List<Variable> variables = variableRepo.findAllById(
             variableTargets.stream().map(VariableTarget::getVariableId)
@@ -161,19 +161,19 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
         if (variables.isEmpty()) {
           return targetVariablesMap;
         }
-        
+
         // Group variable IDs by target ID
         Map<Long, List<Long>> caseVariableIdsMap = variableTargets.stream()
             .collect(Collectors.groupingBy(VariableTarget::getTargetId,
                 Collectors.mapping(VariableTarget::getVariableId, Collectors.toList())));
-        
+
         // Build final result map
         for (VariableTarget vt : variableTargets) {
           List<Long> variableIds = caseVariableIdsMap.get(vt.getTargetId());
           if (isEmpty(variableIds)) {
             targetVariablesMap.put(vt.getTargetId(),
                 variables.stream().filter(x -> variableIds.contains(x.getId()))
-                    .collect(Collectors.toList()));
+                    .toList());
           }
         }
         return targetVariablesMap;
@@ -298,7 +298,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
     if (isEmpty(targets)) {
       return;
     }
-    
+
     // Enrich API target names
     Set<Long> apisIds = targets.stream().filter(x -> x.getTargetType().isApi())
         .map(BaseTarget::getTargetId).collect(Collectors.toSet());
@@ -311,7 +311,7 @@ public class VariableTargetQueryImpl implements VariableTargetQuery {
         }
       }
     }
-    
+
     // Enrich API case target names
     Set<Long> apisCaseIds = targets.stream().filter(x -> x.getTargetType().isApiCase())
         .map(BaseTarget::getTargetId).collect(Collectors.toSet());

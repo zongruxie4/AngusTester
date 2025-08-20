@@ -100,7 +100,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
       protected List<IdKey<Long, Object>> process() {
         List<Tag> tags = names.stream()
             .map(name -> new Tag().setProjectId(projectId).setName(name))
-            .collect(Collectors.toList());
+            .toList();
         List<IdKey<Long, Object>> idKeys = batchInsert(tags, "name");
 
         activityCmd.addAll(toActivities(TAG, tags, CREATED, activityParams(tags)));
@@ -129,7 +129,7 @@ public class TagCmdImpl extends CommCmd<Tag, Long> implements TagCmd {
       @Override
       protected void checkParams() {
         // Verify tags exist and retrieve them
-        tagsDb = tagQuery.checkAndFind(tags.stream().map(Tag::getId).collect(Collectors.toList()));
+        tagsDb = tagQuery.checkAndFind(tags.stream().map(Tag::getId).toList());
         Set<Long> projectIds = tagsDb.stream().map(Tag::getProjectId)
             .collect(Collectors.toSet());
         // Verify all tags belong to the same project

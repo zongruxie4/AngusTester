@@ -138,7 +138,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
 
         // Retrieve user's authorization records for the plan
         List<FuncPlanAuth> auths = findAuth(userId, planId);
-        
+
         // Grant all permissions if user is the creator
         if (isCreator(auths)) {
           return FuncPlanPermission.ALL;
@@ -147,7 +147,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
         // Extract and return distinct permissions from authorization records
         return auths.stream()
             .map(FuncPlanAuth::getAuths).flatMap(Collection::stream).distinct()
-            .collect(Collectors.toList());
+            .toList();
       }
     }.execute();
   }
@@ -189,7 +189,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
 
         // Retrieve current user's authorization records for the plan
         List<FuncPlanAuth> auths = findAuth(getUserId(), planId);
-        
+
         // Grant all permissions if current user is the creator
         if (isCreator(auths)) {
           authCurrent.addPermissions(FuncPlanPermission.ALL);
@@ -199,7 +199,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
         // Extract and add distinct permissions from authorization records
         List<FuncPlanPermission> authPermissions = auths.stream()
             .map(FuncPlanAuth::getAuths).flatMap(Collection::stream).distinct()
-            .collect(Collectors.toList());
+            .toList();
         authCurrent.addPermissions(authPermissions);
         return authCurrent;
       }
@@ -233,7 +233,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
       @Override
       protected Map<Long, FuncPlanAuthCurrent> process() {
         Map<Long, FuncPlanAuthCurrent> authCurrentMap = new HashMap<>();
-        
+
         // Grant all permissions for all plans if admin override is enabled and current user is admin
         if (nonNull(admin) && admin && isAdminUser()) {
           for (FuncPlan plan : planDb) {
@@ -249,7 +249,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
         Set<Long> currentCreatorIds = planDb.stream()
             .filter(x -> x.getCreatedBy().equals(getUserId())).map(FuncPlan::getId)
             .collect(Collectors.toSet());
-            
+
         // Grant all permissions for plans where current user is creator
         if (isNotEmpty(currentCreatorIds)) {
           for (FuncPlan plan : planDb) {
@@ -269,7 +269,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
           // Batch retrieve authorization records for remaining plans
           Map<Long, List<FuncPlanAuth>> planAuthsMap = findAuth(getUserId(), remainIds)
               .stream().collect(Collectors.groupingBy(FuncPlanAuth::getPlanId));
-              
+
           for (FuncPlan plan : planDb) {
             if (remainIds.contains(plan.getId())) {
               FuncPlanAuthCurrent authCurrent = new FuncPlanAuthCurrent();
@@ -545,7 +545,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
     if (isCreator(planAuths)) {
       return;
     }
-    
+
     // Validate that user has the required permission
     if (!findDirAction(planAuths).contains(permission)) {
       throw BizException.of(FUNC_PLAN_NO_AUTH_CODE, FUNC_PLAN_NO_AUTH, new Object[]{permission});
@@ -592,13 +592,13 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
     Map<Long, List<FuncPlanAuth>> authMap = auths.stream()
         .filter(o -> nonNull(o.getPlanId()))
         .collect(Collectors.groupingBy(FuncPlanAuth::getPlanId));
-        
+
     // Validate permissions for each plan
     for (Long planId : authMap.keySet()) {
       List<FuncPlanAuth> values = authMap.get(planId);
       if (isNotEmpty(values)) {
         List<FuncPlanPermission> planPermissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(planPermissions) && planPermissions.contains(permission)) {
           continue;
         }
@@ -708,7 +708,7 @@ public class FuncPlanAuthQueryImpl implements FuncPlanAuthQuery {
     }
 
     return planAuths.stream().map(FuncPlanAuth::getAuths).flatMap(Collection::stream)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   /**

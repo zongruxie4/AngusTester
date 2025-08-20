@@ -105,19 +105,19 @@ public class ApisTestConverter {
   public static void assembleApisTestCount(ApisTestCount count, List<ApisBaseInfo> apis) {
     List<Long> enabledFuncApisId = apis.stream()
         .filter(x -> nonNull(x.getTestFunc()) && x.getTestFunc())
-        .map(ApisBaseInfo::getId).collect(Collectors.toList());
+        .map(ApisBaseInfo::getId).toList();
     count.setEnabledFuncTestNum(enabledFuncApisId.size());
     count.getEnabledTestApiIds().put(TestType.FUNCTIONAL, enabledFuncApisId);
 
     List<Long> enabledPerfApisId = apis.stream()
         .filter(x -> nonNull(x.getTestPerf()) && x.getTestPerf())
-        .map(ApisBaseInfo::getId).collect(Collectors.toList());
+        .map(ApisBaseInfo::getId).toList();
     count.setEnabledPerfTestNum(enabledPerfApisId.size());
     count.getEnabledTestApiIds().put(TestType.PERFORMANCE, enabledPerfApisId);
 
     List<Long> enabledStabilityApisId = apis.stream()
         .filter(x -> nonNull(x.getTestStability()) && x.getTestStability())
-        .map(ApisBaseInfo::getId).collect(Collectors.toList());
+        .map(ApisBaseInfo::getId).toList();
     count.setEnabledStabilityTestNum(enabledStabilityApisId.size());
     count.getEnabledTestApiIds().put(TestType.STABILITY, enabledStabilityApisId);
 
@@ -125,7 +125,7 @@ public class ApisTestConverter {
     count.setEnabledTestNum(count.getEnabledFuncTestNum() + count.getEnabledPerfTestNum()
         + count.getEnabledStabilityTestNum());
     count.setAllApis(apis.stream().map(ApisTestConverter::toApisInfo)
-        .collect(Collectors.toList()));
+        .toList());
   }
 
   public static void assembleTestApisCount(TestApisCount count, List<ApisBaseInfo> apis) {

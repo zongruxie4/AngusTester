@@ -56,6 +56,6 @@ public class TaskTestFacadeImpl implements TaskTestFacade {
   public List<TaskAssocVo> getAssocVos(TaskType taskType, Long targetId) {
     List<TaskInfo> tasks = taskQuery.assocList(taskType, targetId);
     return isEmpty(tasks) ? null : tasks.stream().map(TaskAssembler::toTaskAssocVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

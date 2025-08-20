@@ -110,6 +110,6 @@ public class VariableFacadeImpl implements VariableFacade {
     ScriptFormat format = nullSafe(dto.getFormat(), ScriptFormat.YAML);
     List<Variable> variables = variableQuery.findByProjectAndIds(dto.getProjectId(), dto.getIds());
     return getResourceResponseEntity(String.format("ExportVariables-%s", currentTimeMillis()),
-        format, variables.stream().map(VariableAssembler::toExportVo).collect(Collectors.toList()));
+        format, variables.stream().map(VariableAssembler::toExportVo).toList());
   }
 }

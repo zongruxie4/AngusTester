@@ -118,7 +118,7 @@ public class ScriptFacadeImpl implements ScriptFacade {
   @Override
   public List<ScriptInfosVo> infos(Set<Long> ids) {
     return scriptQuery.infos(ids).stream().map(ScriptAssembler::toInfosVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

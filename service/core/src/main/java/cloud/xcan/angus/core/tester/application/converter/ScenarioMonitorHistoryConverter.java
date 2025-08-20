@@ -26,7 +26,7 @@ public class ScenarioMonitorHistoryConverter {
         .setExecId(debug.getId())
         .setExecStartDate(debug.getCreatedDate()).setExecEndDate(debug.getEndDate())
         .setSampleContents(debug.getSampleContents().stream()
-            .map(ExecSampleConverter::toExecSampleContentInfo).collect(Collectors.toList()))
+            .map(ExecSampleConverter::toExecSampleContentInfo).toList())
         .setSchedulingResult(debug.getSchedulingResult());
   }
 

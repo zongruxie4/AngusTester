@@ -111,7 +111,7 @@ public class NodeMetricsFacadeImpl implements NodeMetricsFacade {
     return isEmpty(diskUsageMap) ? null: diskUsageMap.entrySet().stream()
         .map(o -> new NodeDiskInfoVo().setDeviceName(o.getKey())
             .setDiskUsage(nonNull(o.getValue()) ? toDiskValue(o.getValue()) : null))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -141,7 +141,7 @@ public class NodeMetricsFacadeImpl implements NodeMetricsFacade {
     return isEmpty(netUsageMap) ? null: netUsageMap.entrySet().stream()
         .map(o -> new ModeNetworkInfoVo().setDeviceName(o.getKey())
             .setNetworkUsage(nonNull(o.getValue()) ? toNetworkValue(o.getValue()) : null)
-        ).collect(Collectors.toList());
+        ).toList();
   }
 
   @Override

@@ -765,7 +765,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   public void setNodeInfo(List<MockService> services) {
     if (isNotEmpty(services)) {
       Map<Long, Node> nodeMap = nodeQuery.findNodeMap(services.stream()
-          .map(MockService::getNodeId).collect(Collectors.toList()));
+          .map(MockService::getNodeId).toList());
       for (MockService service : services) {
         Node node = nodeMap.get(service.getNodeId());
         if (nonNull(node)) {
@@ -783,7 +783,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
   public void setInfoNodeInfo(List<MockServiceInfo> services) {
     if (isNotEmpty(services)) {
       Map<Long, Node> nodeMap = nodeQuery.findNodeMap(services.stream()
-          .map(MockServiceInfo::getNodeId).collect(Collectors.toList()));
+          .map(MockServiceInfo::getNodeId).toList());
       for (MockServiceInfo service : services) {
         Node node = nodeMap.get(service.getNodeId());
         if (nonNull(node)) {
@@ -811,7 +811,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
 
       if (isNotEmpty(doAuthServices)) {
         Map<Long, List<MockServiceAuth>> authServiceMap = mockServiceAuthQuery.findAuth(
-                getUserId(), mockServices.stream().map(MockService::getId).collect(Collectors.toList()))
+                getUserId(), mockServices.stream().map(MockService::getId).toList())
             .stream().collect(Collectors.groupingBy(MockServiceAuth::getMockServiceId));
         for (MockService doAuthService : doAuthServices) {
           if (authServiceMap.containsKey(doAuthService.getId())) {
@@ -839,7 +839,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
       if (isNotEmpty(doAuthServices)) {
         Map<Long, List<MockServiceAuth>> authServiceMap = mockServiceAuthQuery.findAuth(
                 getUserId(), mockServices.stream().map(MockServiceInfo::getId)
-                    .collect(Collectors.toList()))
+                    .toList())
             .stream().collect(Collectors.groupingBy(MockServiceAuth::getMockServiceId));
         for (MockServiceInfo doAuthService : doAuthServices) {
           if (authServiceMap.containsKey(doAuthService.getId())) {
@@ -880,7 +880,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
         .setBroadcast(true).setCmdParams(services.stream().map(x -> new StatusCmdParam()
                 .setDeviceId(x.getNodeId()).setServiceId(x.getId())
                 .setServerIp(x.getNodeIp()).setServerPort(x.getServicePort()))
-            .collect(Collectors.toList()));
+            .toList());
     List<StatusVo> result = mockServiceManageCmd.status(dto);
     Map<Long, MockServiceStatus> serviceStatusMap = new HashMap<>(services.size());
     if (isNotEmpty(result)) {
@@ -905,7 +905,7 @@ public class MockServiceQueryImpl implements MockServiceQuery {
             services.stream().map(x -> new StatusCmdParam()
                     .setDeviceId(x.getNodeId()).setServiceId(x.getId())
                     .setServerIp(x.getNodeIp()).setServerPort(x.getServicePort()))
-                .collect(Collectors.toList()));
+                .toList());
     List<StatusVo> result = mockServiceManageCmd.status(dto);
     Map<Long, MockServiceStatus> serviceStatusMap = new HashMap<>(services.size());
     if (isNotEmpty(result)) {

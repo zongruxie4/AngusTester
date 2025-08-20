@@ -199,7 +199,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
         // Add clone activities
         activityCmd.addAll(toActivities(DATASET, clonedDatasets, CLONE,
-            datasetsDb.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+            datasetsDb.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -248,7 +248,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
 
         // Save import dataset activities
         activityCmd.addAll(toActivities(DATASET, datasets, IMPORT,
-            datasets.stream().map(s -> new Object[]{s.getName()}).collect(Collectors.toList())));
+            datasets.stream().map(s -> new Object[]{s.getName()}).toList()));
         return idKeys;
       }
     }.execute();
@@ -328,7 +328,7 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
     }
 
     validDatasets = parsedVariables.stream().filter(x -> isNotEmpty(x.getName())
-        && isNotEmpty(x.getParameters())).collect(Collectors.toList());
+        && isNotEmpty(x.getParameters())).toList();
     assertNotEmpty(validDatasets, DATASET_IS_NOT_VALID);
 
     Set<String> names = validDatasets.stream()
@@ -339,14 +339,14 @@ public class DatasetCmdImpl extends CommCmd<Dataset, Long> implements DatasetCmd
       datasetRepo.deleteByProjectIdAndNameIn(projectId, existedNames);
     } else {
       validDatasets = validDatasets.stream().filter(x -> !existedNames.contains(x.getName()))
-          .collect(Collectors.toList());
+          .toList();
     }
 
     assertNotEmpty(validDatasets, DATASET_IS_NOT_VALID);
 
     // Save final valid datasets
     return validDatasets.stream().map(
-        x -> toDataset(projectId, x)).collect(Collectors.toList());
+        x -> toDataset(projectId, x)).toList();
   }
 
   /**

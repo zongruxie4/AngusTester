@@ -93,7 +93,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
         // Check the apisId in the parameter apisResponses is consistent with the current parameter apisId
         List<MockApisResponse> subApisResponses = apisResponses.stream()
             .filter(r -> nonNull(r.getMockApisId()) && !apisId.equals(r.getMockApisId()))
-            .collect(Collectors.toList());
+            .toList();
         ProtocolAssert.assertTrue(isEmpty(subApisResponses), MOCK_APIS_RESPONSE_ID_INCONSISTENT_T,
             new Object[]{apisId});
 
@@ -124,7 +124,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
       List<MockApisResponse> apisResponses) {
     return batchInsert(apisResponses.stream()
         .map(o -> o.setProjectId(apisDb.getProjectId()).setMockServiceId(apisDb.getMockServiceId()))
-        .collect(Collectors.toList()), "mockApisId");
+        .toList(), "mockApisId");
   }
 
   /**
@@ -176,7 +176,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
         // Check the apisId in the parameter apisResponses is consistent with the current parameter apisId
         List<MockApisResponse> subApisResponses = responses.stream()
             .filter(r -> nonNull(r.getMockServiceId()) && !apisId.equals(r.getMockServiceId()))
-            .collect(Collectors.toList());
+            .toList();
         if (isNotEmpty(subApisResponses)) {
           throw ProtocolException.of(MOCK_APIS_RESPONSE_ID_INCONSISTENT_T);
         }
@@ -207,7 +207,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
     List<Long> exitedIds = mockApisResponseRepo.findIdsByApisId(apisId);
     if (isNotEmpty(exitedIds)) {
       List<Long> requestIds = responses.stream().map(MockApisResponse::getId)
-          .collect(Collectors.toList());
+          .toList();
       exitedIds.removeAll(requestIds);
       if (isNotEmpty(exitedIds)) {
         mockApisResponseRepo.deleteByIdIn(exitedIds);
@@ -219,7 +219,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
         responses.stream().filter(r -> nonNull(r.getId()))
             .map(o -> o.setProjectId(apisDb.getProjectId())
                 .setMockServiceId(apisDb.getMockServiceId()))
-            .collect(Collectors.toList());
+            .toList();
     if (isNotEmpty(updateMockApisResponses)) {
       // Check the name cannot be duplicated
       mockApisResponseQuery.checkAddResponseNameExists(updateMockApisResponses);
@@ -231,7 +231,7 @@ public class MockApisResponseCmdImpl extends CommCmd<MockApisResponse, Long> imp
         responses.stream().filter(r -> Objects.isNull(r.getId()))
             .map(o -> o.setProjectId(apisDb.getProjectId())
                 .setMockServiceId(apisDb.getMockServiceId()))
-            .collect(Collectors.toList());
+            .toList();
     if (isNotEmpty(addMockApisResponses)) {
       // Check the name cannot be duplicated
       mockApisResponseQuery.checkAddResponseNameExists(addMockApisResponses);

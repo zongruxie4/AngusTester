@@ -86,7 +86,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
     Map<Integer, FuncCaseDetailVo> allVersionCaseVos = new HashMap<>();
     if (nonNull(baselineCases)) {
       List<FuncCaseDetailVo> allBaselineCaseVos = baselineCases.stream()
-          .map(FuncBaselineCaseAssembler::toDetailVo).collect(Collectors.toList());
+          .map(FuncBaselineCaseAssembler::toDetailVo).toList();
       allVersionCaseVos.putAll(allBaselineCaseVos.stream()
           .collect(Collectors.toMap(FuncCaseDetailVo::getVersion, x -> x)));
       if (baselineDb.getEstablished()) {
@@ -151,7 +151,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<FuncCaseExportListVo> data = page.getList().stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, baselineId, dto);

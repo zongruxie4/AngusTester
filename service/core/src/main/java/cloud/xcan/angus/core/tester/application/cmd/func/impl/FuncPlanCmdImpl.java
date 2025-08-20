@@ -639,7 +639,7 @@ public class FuncPlanCmdImpl extends CommCmd<FuncPlan, Long> implements FuncPlan
   private void startPlanIfCompleted(List<FuncPlan> plansDb) {
     // Find all plans that are currently completed
     List<FuncPlan> completedPlansDb = plansDb.stream()
-        .filter(x -> x.getStatus().isCompleted()).collect(Collectors.toList());
+        .filter(x -> x.getStatus().isCompleted()).toList();
     
     if (isNotEmpty(completedPlansDb)) {
       // Set all completed plans back to PENDING status

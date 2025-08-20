@@ -109,7 +109,7 @@ public class TaskRemarkQueryImpl implements TaskRemarkQuery {
   public List<TaskRemarkSummary> findSummaryByTaskId(Long taskId) {
     List<TaskRemark> taskRemarks = taskRemarkRepo.findByTaskId(taskId);
     return isEmpty(taskRemarks) ? null
-        : taskRemarks.stream().map(TaskConverter::toTaskRemarkSummary).collect(Collectors.toList());
+        : taskRemarks.stream().map(TaskConverter::toTaskRemarkSummary).toList();
   }
 
   /**

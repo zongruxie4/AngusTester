@@ -45,14 +45,14 @@ import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Implementation of API authorization query operations for permission management.
- * 
+ *
  * <p>This class provides comprehensive functionality for querying and validating
  * API permissions, including user authorization checks, permission validation,
  * and authorization status management.</p>
- * 
+ *
  * <p>It handles various permission types including view, modify, delete, debug,
  * test, grant, share, release, and export permissions with proper validation.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>User permission validation and checking</li>
@@ -80,10 +80,10 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Gets the authorization status for an API.
-   * 
+   *
    * <p>This method retrieves whether authorization is enabled for a specific API,
    * indicating whether permission checks are required for access.</p>
-   * 
+   *
    * @param apiId the API ID to check authorization status for
    * @return true if authorization is enabled, false otherwise
    */
@@ -107,13 +107,13 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Gets user permissions for a specific API with admin privilege handling.
-   * 
+   *
    * <p>This method retrieves all permissions granted to a user for a specific API,
    * including special handling for admin users and API creators.</p>
-   * 
+   *
    * <p>The method considers admin privileges and creator permissions when
    * determining the final permission set.</p>
-   * 
+   *
    * @param apiId the API ID to check permissions for
    * @param userId the user ID to get permissions for
    * @param admin whether to consider admin privileges
@@ -157,13 +157,13 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Gets current user authorization status for a specific API.
-   * 
+   *
    * <p>This method retrieves the current user's authorization status for a specific API,
    * including project authorization, API authorization, and detailed permission set.</p>
-   * 
+   *
    * <p>The method considers admin privileges, creator permissions, and public access
    * when determining the final authorization status.</p>
-   * 
+   *
    * @param apiId the API ID to check current user authorization for
    * @param admin whether to consider admin privileges
    * @return the current user's authorization status with detailed permissions
@@ -279,10 +279,10 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Checks if user has grant authorization for an API.
-   * 
+   *
    * <p>This method validates whether a user has permission to grant access to an API.
    * Public APIs can be modified and authorized by anyone.</p>
-   * 
+   *
    * @param userId the user ID to check grant authorization for
    * @param apisId the API ID to check grant authorization for
    * @throws BizException if user lacks grant authorization
@@ -300,10 +300,10 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Checks if user has release authorization for an API.
-   * 
+   *
    * <p>This method validates whether a user has permission to release an API.
    * Release permission is also required for modifying the released status of public APIs.</p>
-   * 
+   *
    * @param userId the user ID to check release authorization for
    * @param apisId the API ID to check release authorization for
    * @throws BizException if user lacks release authorization
@@ -327,13 +327,13 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Checks user authorization for a specific permission with advanced options.
-   * 
+   *
    * <p>This method provides comprehensive authorization checking with options to ignore
    * admin permissions and public access controls.</p>
-   * 
+   *
    * <p>The method handles special cases for grant and release permissions on public APIs,
    * and validates creator permissions and flat permission sets.</p>
-   * 
+   *
    * @param userId the user ID to check authorization for
    * @param apisId the API ID to check authorization for
    * @param permission the permission to check
@@ -377,13 +377,13 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
 
   /**
    * Verifies operation permissions for multiple APIs in batch.
-   * 
+   *
    * <p>This method performs batch permission validation for multiple APIs,
    * checking if the current user has the specified permission for all APIs.</p>
-   * 
+   *
    * <p>The method handles admin user privileges and filters APIs that require
    * authorization control for efficient validation.</p>
-   * 
+   *
    * @param apiIds the collection of API IDs to check permissions for
    * @param permission the permission to validate for all APIs
    * @throws BizException if user lacks permission for any API in the batch
@@ -414,7 +414,7 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
       List<ApisAuth> values = authMap.get(apiId);
       if (isNotEmpty(values)) {
         List<ApiPermission> permissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(permissions) && permissions.contains(permission)) {
           continue;
         }
@@ -471,7 +471,7 @@ public class ApisAuthQueryImpl implements ApisAuthQuery {
       return ApiPermission.ALL;
     }
     return apisAuths.stream().map(ApisAuth::getAuths).flatMap(Collection::stream)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   @Override

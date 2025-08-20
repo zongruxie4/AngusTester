@@ -48,7 +48,7 @@ public class FuncBaselineCaseConverter {
           .setCreatedBy(getUserId())
           .setCreatedDate(LocalDateTime.now());
       return baselineCase;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
 }

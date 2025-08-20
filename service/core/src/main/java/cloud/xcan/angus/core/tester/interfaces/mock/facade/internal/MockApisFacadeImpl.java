@@ -44,21 +44,21 @@ public class MockApisFacadeImpl implements MockApisFacade {
   @Override
   public List<IdKey<Long, Object>> add(List<MockApisAddDto> dto) {
     List<MockApis> apis = dto.stream().map(MockApisAssembler::addDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return mockApisCmd.add(apis, true);
   }
 
   @Override
   public void update(List<MockApisUpdateDto> dto) {
     List<MockApis> mockApis = dto.stream()
-        .map(MockApisAssembler::updateDtoToDomain).collect(Collectors.toList());
+        .map(MockApisAssembler::updateDtoToDomain).toList();
     mockApisCmd.update(mockApis);
   }
 
   @Override
   public List<IdKey<Long, Object>> replace(List<MockApisReplaceDto> dto) {
     List<MockApis> mockApis = dto.stream()
-        .map(MockApisAssembler::replaceDtoToDomain).collect(Collectors.toList());
+        .map(MockApisAssembler::replaceDtoToDomain).toList();
     return mockApisCmd.replace(mockApis);
   }
 

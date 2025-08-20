@@ -51,7 +51,7 @@ public class MockApisOpen2pFacadeImpl implements MockApisOpen2pFacade {
     List<MockApis> mockApis = mockApisQuery.info0(dto.getMockServiceId(),
         dto.getMethod(), dto.getEndpoint());
     return isEmpty(mockApis) ? null : mockApis.stream()
-        .map(MockApisAssembler::toMockApisDetailVo).collect(Collectors.toList());
+        .map(MockApisAssembler::toMockApisDetailVo).toList();
   }
 
 }

@@ -47,7 +47,7 @@ public class FuncReviewCaseFacadeImpl implements FuncReviewCaseFacade {
   @Override
   public void review(List<FuncReviewCaseDto> dto) {
     List<FuncReviewCase> reviewCases = dto.stream()
-        .map(FuncReviewCaseAssembler::reviewDtoToDomain).collect(Collectors.toList());
+        .map(FuncReviewCaseAssembler::reviewDtoToDomain).toList();
     funcReviewCaseCmd.review(reviewCases);
   }
 

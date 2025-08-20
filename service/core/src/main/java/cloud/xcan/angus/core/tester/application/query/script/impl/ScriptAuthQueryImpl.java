@@ -307,7 +307,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
         ProtocolAssert.assertTrue(isNotEmpty(scriptIds), PARAM_MISSING_T, PARAM_MISSING_KEY,
             new Object[]{"scriptId"});
         batchCheckPermission(scriptIds.stream().map(Long::parseLong)
-            .collect(Collectors.toList()), ScriptPermission.VIEW);
+            .toList(), ScriptPermission.VIEW);
       }
 
       @Override
@@ -495,7 +495,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
       List<ScriptAuth> values = authMap.get(id);
       if (isNotEmpty(values)) {
         List<ScriptPermission> permissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(permissions) && permissions.contains(permission)) {
           continue;
         }
@@ -595,7 +595,7 @@ public class ScriptAuthQueryImpl implements ScriptAuthQuery {
       return ScriptPermission.ALL;
     }
     return auths.stream().map(ScriptAuth::getAuths).flatMap(Collection::stream)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   /**

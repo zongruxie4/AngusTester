@@ -104,7 +104,7 @@ public class MockApisAssembler {
         .setApisMethod(apis.getApisMethod())
         .setApisEndpoint(apis.getApisEndpoint())
         .setResponses(nonNull(apis.getResponses()) ? apis.getResponses().stream()
-            .map(MockApisAssembler::toMockApiResponseInfoVo).collect(Collectors.toList()) : null)
+            .map(MockApisAssembler::toMockApiResponseInfoVo).toList() : null)
         .setTenantId(apis.getTenantId())
         .setCreatedBy(apis.getCreatedBy())
         .setCreatedDate(apis.getCreatedDate())
@@ -172,7 +172,7 @@ public class MockApisAssembler {
         .setAssocProjectId(apis.getAssocServiceId())
         .setAssocApisId(apis.getAssocApisId())
         .setResponses(nonNull(apis.getResponses()) ? apis.getResponses().stream()
-            .map(MockApisAssembler::toMockApiResponseInfoVo).collect(Collectors.toList()) : null);
+            .map(MockApisAssembler::toMockApiResponseInfoVo).toList() : null);
   }
 
   @NotNull

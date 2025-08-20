@@ -236,7 +236,7 @@ public class KanbanEfficiencyCaseConverter {
     List<FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
-        .collect(Collectors.toList());
+        .toList();
     long processedDays = calcProcessedDays(completedCases);
     double dailyProcessedWorkload = calcDailyProcessedWorkload(completedCases, processedDays);
     totalOverview.setDailyProcessedWorkload(dailyProcessedWorkload);
@@ -301,7 +301,7 @@ public class KanbanEfficiencyCaseConverter {
       LeadTimeCountBase totalOverview) {
     List<? extends FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getCreatedDate())
-            && nonNull(x.getTestResultHandleDate())).collect(Collectors.toList());
+            && nonNull(x.getTestResultHandleDate())).toList();
     int userNum = cases.stream().map(FuncCaseEfficiencySummary::getTesterId).collect(
         Collectors.toSet()).size();
     totalOverview.setUserNum(userNum);
@@ -329,7 +329,7 @@ public class KanbanEfficiencyCaseConverter {
       UnplannedWorkCountBase totalOverview, double dailyProcessedWorkload) {
     List<? extends FuncCaseEfficiencySummary> unplannedTasks = cases.stream()
         .filter(x -> !x.getTestResult().isCanceled() && x.getUnplanned())
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(unplannedTasks)) {
       totalOverview.setUnplannedNum(unplannedTasks.size());
       totalOverview.setUnplannedRate(totalOverview.calcUnplannedRate());
@@ -375,7 +375,7 @@ public class KanbanEfficiencyCaseConverter {
     detail.setName(name);
     CoreUtils.copyProperties(count, detail, "timeSeries");
     detail.setTimeSeriesDetail(count.getTimeSeries().stream().map(DataAssetsTimeSeries::getValue)
-        .collect(Collectors.toList()));
+        .toList());
     return detail;
   }
 
@@ -405,7 +405,7 @@ public class KanbanEfficiencyCaseConverter {
     }
     List<DataAssetsTimeSeries> finalTotalTs = sortedTotalTs.entrySet().stream()
         .map(x -> new DataAssetsTimeSeries(x.getKey(), x.getValue()))
-        .collect(Collectors.toList());
+        .toList();
     total.getTimeSeries().put("TOTAL", finalTotalTs);
     return total;
   }

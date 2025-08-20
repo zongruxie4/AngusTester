@@ -67,11 +67,11 @@ public class TaskOverdueJob {
       if (isNotEmpty(tasks)) {
         // Update to overdue status
         taskInfoRepo.updateOverdue(tasks.stream().map(TaskInfo::getId)
-            .collect(Collectors.toList()));
+            .toList());
 
         // Add overdue events
         assembleAndSendOverdueNoticeEvent(
-            tasks.stream().filter(x -> nonNull(x.getAssigneeId())).collect(Collectors.toList()));
+            tasks.stream().filter(x -> nonNull(x.getAssigneeId())).toList());
       }
     });
   }

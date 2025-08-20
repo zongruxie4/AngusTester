@@ -103,7 +103,7 @@ public class ExecAssembler {
         .setLastSchedulingResult(exec.getLastSchedulingResult());
     if (isNotEmpty(exec.getSampleContents())) {
       detailVo.setSampleContents(exec.getSampleContents().stream()
-          .map(ExecSampleAssembler::toExecSampleExtcVo).collect(Collectors.toList()));
+          .map(ExecSampleAssembler::toExecSampleExtcVo).toList());
     }
     return detailVo;
   }

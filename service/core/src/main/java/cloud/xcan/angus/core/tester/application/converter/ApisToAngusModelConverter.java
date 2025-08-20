@@ -73,7 +73,7 @@ public class ApisToAngusModelConverter {
     script.setAuth(nullSafe(script.getAuth(), false));
 
     List<cloud.xcan.angus.model.element.dataset.Dataset> angusDatasets = isEmpty(datasets) ? null
-        : datasets.stream().map(DatasetConverter::toAngusDataset).collect(Collectors.toList());
+        : datasets.stream().map(DatasetConverter::toAngusDataset).toList();
 
     if (apisDb.getProtocol().isHttp()) {
       List<Http> https = new ArrayList<>();
@@ -127,7 +127,7 @@ public class ApisToAngusModelConverter {
 
     List<cloud.xcan.angus.model.element.variable.Variable> angusVariables =
         isNotEmpty(variables) ? variables.stream()
-            .map(ApisToAngusModelConverter::toAngusVariable).collect(Collectors.toList()) : null;
+            .map(ApisToAngusModelConverter::toAngusVariable).toList() : null;
     overrideExecServerParameter(serverMap, angusVariables);
     script.getAngusScript().getConfiguration().setVariables(angusVariables);
   }

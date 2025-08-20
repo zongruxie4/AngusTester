@@ -127,7 +127,7 @@ public class ServicesSchemaFacadeImpl implements ServicesSchemaFacade {
   public List<ServiceServerVo> serverListByProject(Long projectId) {
     List<ServiceServer> servers = servicesSchemaQuery.serverListByProject(projectId);
     return isNotEmpty(servers) ? servers.stream().map(ServicesSchemaAssembler::toServiceServerVo)
-        .collect(Collectors.toList()) : null;
+        .toList() : null;
   }
 
   @Override

@@ -48,7 +48,7 @@ public class ScriptTagCmdImpl extends CommCmd<ScriptTag, Long> implements
 
     List<ScriptTag> scriptTags = tags.stream()
         .map(tagName -> new ScriptTag().setScriptId(scriptId).setName(tagName))
-        .collect(Collectors.toList());
+        .toList();
     batchInsert0(scriptTags);
   }
 

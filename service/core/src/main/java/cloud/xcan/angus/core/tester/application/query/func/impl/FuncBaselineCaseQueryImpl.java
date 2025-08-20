@@ -154,7 +154,7 @@ public class FuncBaselineCaseQueryImpl implements FuncBaselineCaseQuery {
 
           if (export) {
             List<Long> caseIds = page.getContent().stream()
-                .map(FuncBaselineCaseInfo::getCaseId).collect(Collectors.toList());
+                .map(FuncBaselineCaseInfo::getCaseId).toList();
             Map<Long, FuncCase> caseMap = funcCaseRepo.findAllById(caseIds).stream()
                 .collect(Collectors.toMap(FuncCase::getId, x -> x));
             for (FuncBaselineCaseInfo caseInfo : page.getContent()) {

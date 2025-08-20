@@ -42,14 +42,14 @@ public class VariableTargetFacadeImpl implements VariableTargetFacade {
   @Override
   public List<VariableDetailVo> list(Long targetId, String targetType) {
     List<Variable> variables = variableTargetQuery.findVariables(targetId, targetType);
-    return variables.stream().map(VariableAssembler::toDetailVo).collect(Collectors.toList());
+    return variables.stream().map(VariableAssembler::toDetailVo).toList();
   }
 
   @NameJoin
   @Override
   public List<VariableTargetVo> listTarget(Long variableId) {
     List<VariableTarget> targets = variableTargetQuery.findTargets(variableId);
-    return targets.stream().map(VariableAssembler::toTargetVo).collect(Collectors.toList());
+    return targets.stream().map(VariableAssembler::toTargetVo).toList();
   }
 
   @Override

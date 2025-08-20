@@ -376,7 +376,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
     
     // Evict cache for all affected services
     ((RedisCaffeineCacheManager) cacheManager).evict("servicesComps", serviceIds.stream()
-        .map(id -> "serviceId_" + id).collect(Collectors.toList()));
+        .map(id -> "serviceId_" + id).toList());
   }
 
   /**
@@ -394,7 +394,7 @@ public class ServicesCompCmdImpl extends CommCmd<ServicesComp, Long> implements 
     if (isNotEmpty(comps)) {
       List<ServicesComp> newComps = comps.stream()
           .map(x -> ServicesCompConverter.toClonedProjectComp(x, serviceId))
-          .collect(Collectors.toList());
+          .toList();
       batchInsert0(newComps);
     }
   }

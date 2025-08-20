@@ -457,7 +457,7 @@ public class TaskSprintQueryImpl implements TaskSprintQuery {
           List<UserInfo> members = memberIds.stream()
               .filter(users::containsKey)
               .map(memberId -> CoreUtils.copyProperties(users.get(memberId), new UserInfo()))
-              .collect(Collectors.toList());
+              .toList();
           
           sprint.setMembers(members);
         } else {

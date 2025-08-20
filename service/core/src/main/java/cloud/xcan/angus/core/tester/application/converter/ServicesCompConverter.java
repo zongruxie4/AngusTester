@@ -148,7 +148,7 @@ public class ServicesCompConverter {
     Components components = new Components();
     for (ServicesCompType type : compsMap.keySet()) {
       List<ServicesComp> comps = compsMap.get(type).stream()
-          .filter(distinctByKey(ServicesComp::getRef)).collect(Collectors.toList());
+          .filter(distinctByKey(ServicesComp::getRef)).toList();
       switch (type) {
         case schemas: {
           components.schemas(toOasComp(Schema.class, comps));

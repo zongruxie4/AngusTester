@@ -51,10 +51,10 @@ public class CommentFacadeImpl implements CommentFacade {
     if (isEmpty(comments)) {
       return null;
     }
-    List<Long> userIds = comments.stream().map(Comment::getUserId).collect(Collectors.toList());
+    List<Long> userIds = comments.stream().map(Comment::getUserId).toList();
     List<AngusCommentDetailVo> detailVos = comments.stream().map(
             c -> toAngusCommentDetailVo(userManager.getUserBaseMap(userIds), c))
-        .collect(Collectors.toList());
+        .toList();
     return getTreeList(detailVos, comments.size());
   }
 

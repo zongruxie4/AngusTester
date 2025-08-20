@@ -563,7 +563,7 @@ public class NodeQueryImpl implements NodeQuery {
    */
   @Override
   public void setNodeRoles(List<Node> nodes) {
-    List<Long> nodeIds = nodes.stream().map(Node::getId).collect(Collectors.toList());
+    List<Long> nodeIds = nodes.stream().map(Node::getId).toList();
     Map<Long, Set<NodeRole>> rolesMap = getNodeRoles(nodeIds);
     if (isNotEmpty(rolesMap)) {
       for (Node node0 : nodes) {

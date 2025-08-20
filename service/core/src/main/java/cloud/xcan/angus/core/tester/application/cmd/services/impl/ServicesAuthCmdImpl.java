@@ -335,7 +335,7 @@ public class ServicesAuthCmdImpl extends CommCmd<ServicesAuth, Long> implements 
     // Add new creator authorizations
     List<ServicesAuth> serviceAuths = creatorIds.stream()
         .map(creatorId -> toServicesCreatorAuth(creatorId, serviceId, uidGenerator))
-        .collect(Collectors.toList());
+        .toList();
     batchInsert(serviceAuths, "authObjectId");
   }
 

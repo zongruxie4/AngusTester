@@ -151,7 +151,7 @@ public class KanbanCtoTaskConverter {
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(completedTasks)) {
       long processedDays = calcProcessedDays(completedTasks);
       backloggedTaskCount.setProcessedInDay(processedDays);
@@ -163,7 +163,7 @@ public class KanbanCtoTaskConverter {
     }
 
     List<TaskEfficiencySummary> backloggedTasks = tasks.stream()
-        .filter(x -> !x.getStatus().isFinished()).collect(Collectors.toList());
+        .filter(x -> !x.getStatus().isFinished()).toList();
     if (isNotEmpty(backloggedTasks)) {
       long backloggedNum = backloggedTasks.size();
       backloggedTaskCount.setBackloggedNum(backloggedNum);
@@ -189,7 +189,7 @@ public class KanbanCtoTaskConverter {
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
-        .collect(Collectors.toList());
+        .toList();
     if (isNotEmpty(completedTasks)) {
       long processedDays = calcProcessedDays(completedTasks);
       dailyProcessedWorkload = calcDailyProcessedWorkload(completedTasks, processedDays);

@@ -117,11 +117,11 @@ public class CommentQueryImpl implements CommentQuery {
       return null;
     }
     // Collect all user IDs for enrichment
-    List<Long> userIds = comments.stream().map(Comment::getUserId).collect(Collectors.toList());
+    List<Long> userIds = comments.stream().map(Comment::getUserId).toList();
     // Enrich each comment with user information
     List<CommentSummary> contentCommentDetailVos = comments.stream().map(
             c -> toCommentSummary(userManager.getUserBaseMap(userIds), c))
-        .collect(Collectors.toList());
+        .toList();
     // Build threaded comment tree
     return CommentConverter.getTreeList(contentCommentDetailVos, comments.size());
   }

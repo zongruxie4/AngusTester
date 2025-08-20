@@ -34,13 +34,13 @@ public class MockApisResponseFacadeImpl implements MockApisResponseFacade {
   @Override
   public List<IdKey<Long, Object>> add(Long apisId, List<MockApisResponseAddDto> dto) {
     return mockApisResponseCmd.add(apisId, dto.stream()
-        .map(x -> addDtoToDomain(apisId, x)).collect(Collectors.toList()));
+        .map(x -> addDtoToDomain(apisId, x)).toList());
   }
 
   @Override
   public void replace(Long apisId, List<MockApisResponseReplaceDto> dto) {
     mockApisResponseCmd.replace(apisId, dto.stream()
-        .map(x -> replaceDtoToDomain(apisId, x)).collect(Collectors.toList()));
+        .map(x -> replaceDtoToDomain(apisId, x)).toList());
   }
 
   @Override
@@ -52,7 +52,7 @@ public class MockApisResponseFacadeImpl implements MockApisResponseFacade {
   public List<MockApiResponseVo> all(Long apisId) {
     List<MockApisResponse> apisResponses = mockApisResponseQuery.findAllByApisId(apisId);
     return isEmpty(apisResponses) ? null : apisResponses.stream()
-        .map(MockApisResponseAssembler::toMockApisResponseVo).collect(Collectors.toList());
+        .map(MockApisResponseAssembler::toMockApisResponseVo).toList();
   }
 
 }

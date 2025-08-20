@@ -42,14 +42,14 @@ public class DatasetTargetFacadeImpl implements DatasetTargetFacade {
   @Override
   public List<DatasetDetailVo> list(Long targetId, String targetType) {
     List<Dataset> datasets = datasetTargetQuery.findDatasets(targetId, targetType);
-    return datasets.stream().map(DatasetAssembler::toDetailVo).collect(Collectors.toList());
+    return datasets.stream().map(DatasetAssembler::toDetailVo).toList();
   }
 
   @NameJoin
   @Override
   public List<DatasetTargetVo> listTarget(Long datasetId) {
     List<DatasetTarget> targets = datasetTargetQuery.findTargets(datasetId);
-    return targets.stream().map(DatasetAssembler::toTargetVo).collect(Collectors.toList());
+    return targets.stream().map(DatasetAssembler::toTargetVo).toList();
   }
 
   @Override

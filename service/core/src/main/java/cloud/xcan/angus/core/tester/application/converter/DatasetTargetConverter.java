@@ -17,7 +17,7 @@ public class DatasetTargetConverter {
       target.setTargetType(targetType);
       target.setTargetId(targetId);
       return target;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 
 }

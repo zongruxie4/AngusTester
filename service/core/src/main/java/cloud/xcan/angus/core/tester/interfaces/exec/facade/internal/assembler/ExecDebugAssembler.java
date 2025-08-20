@@ -75,7 +75,7 @@ public class ExecDebugAssembler {
     if (isNotEmpty(debug.getSampleContents())) {
       detailVo.setSampleContents(
           debug.getSampleContents().stream().map(ExecSampleConverter::toExecSampleContentInfo)
-              .collect(Collectors.toList()));
+              .toList());
     }
     boolean testSucceed = debug.getStatus().isCompleted();
     String testFailureMessage = testSucceed ? null : debug.getMessage();

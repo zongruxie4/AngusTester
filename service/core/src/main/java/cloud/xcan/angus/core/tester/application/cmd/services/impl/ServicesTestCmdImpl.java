@@ -59,14 +59,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of service testing command operations.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing service-level
  * testing operations, including test configuration, script generation,
  * task management, and execution control.</p>
- * 
+ *
  * <p>It handles various test types including functional, performance, stability,
  * smoke, and security testing with proper authorization and activity logging.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>Test type enablement and configuration</li>
@@ -106,12 +106,12 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Enables or disables specific test types for a service.
-   * 
+   *
    * <p>This method controls the availability of different test types
    * (functional, performance, stability) for all APIs within a service.</p>
-   * 
+   *
    * <p>The method logs the enablement/disablement activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param testTypes the set of test types to configure
    * @param enabled whether to enable or disable the test types
@@ -155,13 +155,13 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Generates test scripts for all APIs in a service.
-   * 
+   *
    * <p>This method creates test scripts for all APIs within a service
    * based on the specified script types. It only generates scripts
    * that don't already exist for each API.</p>
-   * 
+   *
    * <p>The method logs script generation activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param scripts the list of script configurations to generate
    * @throws IllegalArgumentException if validation fails
@@ -204,12 +204,12 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Deletes test scripts for all APIs in a service.
-   * 
+   *
    * <p>This method removes test scripts for all APIs within a service
    * based on the specified test types.</p>
-   * 
+   *
    * <p>The method logs script deletion activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param testTypes the set of test types to delete scripts for
    * @throws IllegalArgumentException if validation fails
@@ -245,12 +245,12 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Generates test tasks for all APIs in a service.
-   * 
+   *
    * <p>This method creates test tasks for all APIs within a service
    * based on the specified test settings and sprint configuration.</p>
-   * 
+   *
    * <p>The method logs task generation activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param sprintId the ID of the sprint to associate tasks with
    * @param testings the list of test task settings
@@ -290,13 +290,13 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Restarts or reopens test tasks for all APIs in a service.
-   * 
+   *
    * <p>This method controls the restart/reopen behavior of test tasks
    * for all APIs within a service. When restart is false, only finished
    * tasks are reopened.</p>
-   * 
+   *
    * <p>The method logs the restart/reopen activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param restart whether to restart all tasks or only reopen finished ones
    * @throws IllegalArgumentException if validation fails
@@ -329,7 +329,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
           // Only open the finished status
           if (!restart) {
             tasksDb = tasksDb.stream().filter(t -> TaskStatus.isFinished(t.getStatus()))
-                .collect(Collectors.toList());
+                .toList();
           }
           if (isNotEmpty(tasksDb)) {
             taskCmd.retest0ByTarget(restart, tasksDb);
@@ -344,13 +344,13 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Deletes test tasks for a service based on test types.
-   * 
+   *
    * <p>This method removes test tasks for a service, optionally filtered
    * by specific test types. If no test types are specified, all tasks
    * are deleted.</p>
-   * 
+   *
    * <p>The method logs task deletion activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param testTypes the set of test types to filter tasks by (optional)
    * @throws IllegalArgumentException if validation fails
@@ -375,7 +375,7 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
         List<Long> taskIds = isEmpty(testTypes)
             ? taskRepo.findTaskIdByTargetParentId(serviceId)
             : taskRepo.findTaskIdByTargetParentIdAndTestTypeIn(serviceId,
-                testTypes.stream().map(TestType::getValue).collect(Collectors.toList()));
+                testTypes.stream().map(TestType::getValue).toList());
         if (isEmpty(taskIds)) {
           return null;
         }
@@ -391,11 +391,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Adds test executions for all APIs in a service.
-   * 
+   *
    * <p>This method creates test executions for all APIs within a service
    * based on the specified test types and server configurations.
    * Only enabled test types are considered for execution.</p>
-   * 
+   *
    * @param servicesId the ID of the service
    * @param testTypes the set of test types to execute
    * @param servers the list of server configurations for testing
@@ -437,11 +437,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Adds smoke test execution for a service.
-   * 
+   *
    * <p>This method creates smoke test execution for a service by
    * synchronizing smoke test cases to scripts and creating execution
    * tasks. It validates that smoke test cases exist before execution.</p>
-   * 
+   *
    * @param servicesId the ID of the service
    * @param servers the list of server configurations for testing (optional)
    * @throws IllegalArgumentException if validation fails or smoke cases not found
@@ -478,11 +478,11 @@ public class ServicesTestCmdImpl implements ServicesTestCmd {
 
   /**
    * Adds security test execution for a service.
-   * 
+   *
    * <p>This method creates security test execution for a service by
    * synchronizing security test cases to scripts and creating execution
    * tasks. It validates that security test cases exist before execution.</p>
-   * 
+   *
    * @param servicesId the ID of the service
    * @param servers the list of server configurations for testing (optional)
    * @throws IllegalArgumentException if validation fails or security cases not found

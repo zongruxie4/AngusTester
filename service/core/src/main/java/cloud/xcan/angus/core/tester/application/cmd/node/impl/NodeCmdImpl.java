@@ -243,7 +243,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         for (String regionId : regionNodeMap.keySet()) {
           List<Node> nodes = regionNodeMap.get(regionId);
           List<String> instanceIds = nodes.stream().map(Node::getInstanceId)
-              .collect(Collectors.toList());
+              .toList();
           ecsClient.stopInstances(regionId, instanceIds);
         }
         return null;
@@ -281,7 +281,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         for (String regionId : regionNodeMap.keySet()) {
           List<Node> nodes = regionNodeMap.get(regionId);
           List<String> instanceIds = nodes.stream().map(Node::getInstanceId)
-              .collect(Collectors.toList());
+              .toList();
           ecsClient.restartInstances(regionId, instanceIds);
         }
         return null;
@@ -348,10 +348,10 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       protected Void process() {
         // Delete AliYun instance
         deleteNodesByOnlineBuy(nodesDb.stream().filter(node -> node.getSource().isOnlineBuy())
-            .collect(Collectors.toList()));
+            .toList());
         // Delete own node
         nodesDb = nodesDb.stream().filter(node -> node.getSource().isOwnNode())
-            .collect(Collectors.toList());
+            .toList();
         nodeRepo.deleteAll(nodesDb);
 
         // Delete node info in AngusCtrl
@@ -455,7 +455,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
 
         // Overwrite user submission attributes
         nodes = nodes.stream().map(t -> NodeConverter.copyPurchaseProperties(node, t))
-            .collect(Collectors.toList());
+            .toList();
 
         // Add purchase nodes
         add(nodes);
@@ -517,7 +517,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
         for (String regionId : regionNodeMap.keySet()) {
           List<Node> nodes = regionNodeMap.get(regionId);
           List<String> instanceIds = nodes.stream().map(Node::getInstanceId)
-              .collect(Collectors.toList());
+              .toList();
           Map<String, Node> descNodeMap;
           try {
             log.info("Instance info sync to update aliyun instance info, region: {}, nodes: {}",
@@ -835,7 +835,7 @@ public class NodeCmdImpl extends CommCmd<Node, Long> implements NodeCmd {
       List<String> deletedInstanceIds = new ArrayList<>();
       for (String regionId : regionIdMap.keySet()) {
         List<String> instanceIds = regionIdMap.get(regionId).stream().map(Node::getInstanceId)
-            .collect(Collectors.toList());
+            .toList();
         try {
           log.info("Delete aliyun instances, region:{}, instanceIds:{}", regionId, instanceIds);
           ecsClient.deleteInstances(regionId, instanceIds);

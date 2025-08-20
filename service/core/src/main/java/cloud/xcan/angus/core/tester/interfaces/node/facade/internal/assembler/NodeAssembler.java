@@ -109,7 +109,7 @@ public class NodeAssembler {
 
   public static List<Node> deletesDtoToDomain(Collection<Long> ids) {
     return ids.stream().map(i -> new Node().setId(i))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static void completeNodeDetailVo(NodeDetailVo nodeDetailVo, NodeInfo nodeInfo) {

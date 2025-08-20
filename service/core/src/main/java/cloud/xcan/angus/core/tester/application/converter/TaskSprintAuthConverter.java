@@ -21,7 +21,7 @@ public class TaskSprintAuthConverter {
             .setAuthObjectId(creatorId)
             .setAuths(TaskSprintPermission.ALL)
             .setCreator(true))
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

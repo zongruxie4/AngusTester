@@ -20,7 +20,7 @@ public class TagTargetConverter {
         .setTargetType(CombinedTargetType.TASK)
         .setTargetId(taskDb.getId())
         .setTargetName(taskDb.getName())
-        .setTagId(x)).collect(Collectors.toList());
+        .setTagId(x)).toList();
   }
 
   public static List<TagTarget> toUpdateTaskTag(Set<Long> tagIds, Task taskDb) {
@@ -29,7 +29,7 @@ public class TagTargetConverter {
         .setTargetType(CombinedTargetType.TASK)
         .setTargetId(taskDb.getId())
         .setTargetName(taskDb.getName())
-        .setTagId(x)).collect(Collectors.toList());
+        .setTagId(x)).toList();
   }
 
   public static List<TagTarget> toCaseTagTargets(Long caseId, Collection<Long> tagIds) {
@@ -37,7 +37,7 @@ public class TagTargetConverter {
         .map(tagId -> new TagTarget()
             .setTargetType(CombinedTargetType.FUNC_CASE)
             .setTargetId(caseId).setTagId(tagId))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static List<TagTarget> toUpdateCaseTag(Collection<Long> tagIds, FuncCaseInfo caseDb) {
@@ -46,6 +46,6 @@ public class TagTargetConverter {
         .setTargetType(CombinedTargetType.FUNC_CASE)
         .setTargetId(caseDb.getId())
         .setTargetName(caseDb.getName())
-        .setTagId(x)).collect(Collectors.toList());
+        .setTagId(x)).toList();
   }
 }

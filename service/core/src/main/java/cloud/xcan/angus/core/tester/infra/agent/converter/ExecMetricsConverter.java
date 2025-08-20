@@ -136,7 +136,7 @@ public class ExecMetricsConverter {
               .setKey(keys[1])
               .setContent(nonNull(x.getValue()) ? JsonUtils.toJson(x.getValue()) : null);
           return metrics;
-        }).collect(Collectors.toList()));
+        }).toList());
       }
 
       if (isNotEmpty(sample.getExtContent1())) {
@@ -155,7 +155,7 @@ public class ExecMetricsConverter {
               .setKey(keys[1])
               .setContent(nonNull(x.getValue()) ? JsonUtils.toJson(x.getValue()) : null);
           return metrics;
-        }).collect(Collectors.toList()));
+        }).toList());
       }
 
       if (isNotEmpty(sample.getExtContent2())) {
@@ -175,7 +175,7 @@ public class ExecMetricsConverter {
               .setKey(keys[1])
               .setContent(nonNull(x.getValue()) ? JsonUtils.toJson(x.getValue()) : null);
           return metrics;
-        }).collect(Collectors.toList()));
+        }).toList());
       }
     }
 

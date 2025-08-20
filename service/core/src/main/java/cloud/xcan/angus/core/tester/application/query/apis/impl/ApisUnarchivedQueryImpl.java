@@ -162,7 +162,7 @@ public class ApisUnarchivedQueryImpl implements ApisUnarchivedQuery {
     List<Long> existIds = apisUnarchivedRepo.findApisUnarchiveCreateBy(
         apis.stream().map(ApisUnarchived::getId).collect(Collectors.toSet()), getUserId());
 
-    List<Long> requestIds = apis.stream().map(ApisUnarchived::getId).collect(Collectors.toList());
+    List<Long> requestIds = apis.stream().map(ApisUnarchived::getId).toList();
     requestIds.removeAll(existIds);
     BizAssert.assertTrue(isEmpty(requestIds), APIS_UNARCHIVED_NO_PERMISSION_CODE,
         APIS_UNARCHIVED_NO_PERMISSION_T, new Object[]{requestIds});

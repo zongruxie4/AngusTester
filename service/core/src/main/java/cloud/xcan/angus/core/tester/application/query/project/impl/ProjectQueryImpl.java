@@ -80,7 +80,7 @@ public class ProjectQueryImpl implements ProjectQuery {
         List<Long> orgIds = userManager.getValidOrgAndUserIds(userId);
         List<Project> projects = projectRepo.findMemberProjects(orgIds);
         return isEmpty(name) ? projects : projects.stream().filter(x -> x.getName().contains(name))
-            .collect(Collectors.toList());
+            .toList();
       }
     }.execute();
   }

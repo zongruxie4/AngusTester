@@ -146,7 +146,7 @@ public class ServicesSyncQueryImpl implements ServicesSyncQuery {
   @Override
   public void checkRepeatedNameInParams(List<String> names) {
     List<String> repeatedNames = names.stream().filter(ObjectUtils.duplicateByKey(x -> x))
-        .collect(Collectors.toList());
+        .toList();
     ProtocolAssert.assertTrue(isEmpty(repeatedNames), SERVICE_SYNC_NAME_EXISTED_T, PARAM_ERROR_KEY,
         new Object[]{isNotEmpty(repeatedNames) ? repeatedNames.get(0) : ""});
   }

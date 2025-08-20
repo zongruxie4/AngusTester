@@ -89,21 +89,21 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @Override
   public List<IdKey<Long, Object>> add(List<FuncCaseAddDto> dto) {
     List<FuncCase> cases = dto.stream().map(FuncCaseAssembler::addDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     return funcCaseCmd.add(cases);
   }
 
   @Override
   public void update(List<FuncCaseUpdateDto> dto) {
     List<FuncCase> funcCases = dto.stream()
-        .map(FuncCaseAssembler::updateDtoToDomain).collect(Collectors.toList());
+        .map(FuncCaseAssembler::updateDtoToDomain).toList();
     funcCaseCmd.update(funcCases);
   }
 
   @Override
   public List<IdKey<Long, Object>> replace(List<FuncCaseReplaceDto> dto) {
     List<FuncCase> cases = dto.stream()
-        .map(FuncCaseAssembler::replaceDtoToDomain).collect(Collectors.toList());
+        .map(FuncCaseAssembler::replaceDtoToDomain).toList();
     return funcCaseCmd.replace(cases);
   }
 
@@ -165,14 +165,14 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @Override
   public void resultReplace(List<FuncCaseResultModifyDto> dto) {
     List<FuncCase> cases = dto.stream()
-        .map(FuncCaseAssembler::resultModifyDtoToDomain).collect(Collectors.toList());
+        .map(FuncCaseAssembler::resultModifyDtoToDomain).toList();
     funcCaseCmd.resultModify(cases, true);
   }
 
   @Override
   public void resultUpdate(List<FuncCaseResultModifyDto> dto) {
     List<FuncCase> cases = dto.stream()
-        .map(FuncCaseAssembler::resultModifyDtoToDomain).collect(Collectors.toList());
+        .map(FuncCaseAssembler::resultModifyDtoToDomain).toList();
     funcCaseCmd.resultModify(cases, false);
   }
 
@@ -189,7 +189,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   @Override
   public void review(List<FuncCaseReviewDto> dto) {
     List<FuncCase> cases = dto.stream()
-        .map(FuncCaseAssembler::reviewDtoToDomain).collect(Collectors.toList());
+        .map(FuncCaseAssembler::reviewDtoToDomain).toList();
     funcCaseCmd.review(cases);
   }
 
@@ -237,7 +237,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, @Nullable TaskType taskType) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInCase(id, moduleId, taskType);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @NameJoin
@@ -245,7 +245,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   public List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId) {
     List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInCase(id, moduleId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @NameJoin
@@ -259,7 +259,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
   public List<FuncCaseReviewVo> reviewList(Long id) {
     List<FuncReviewCaseRecord> caseReviews = funcReviewCaseRecordQuery.caseReview(id);
     return isEmpty(caseReviews) ? Collections.emptyList()
-        : caseReviews.stream().map(FuncCaseAssembler::toReviewListVo).collect(Collectors.toList());
+        : caseReviews.stream().map(FuncCaseAssembler::toReviewListVo).toList();
   }
 
   @NameJoin
@@ -291,7 +291,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<FuncCaseExportListVo> data = page.getList().stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, dto);

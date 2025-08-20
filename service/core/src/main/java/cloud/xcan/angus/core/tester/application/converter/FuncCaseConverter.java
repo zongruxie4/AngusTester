@@ -343,7 +343,7 @@ public class FuncCaseConverter {
         //.setAttachments(case0.getAttachments())
         //.setTags(ObjectUtils.isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
         //    .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-        //    .collect(Collectors.toList()) : Collections.emptyList())
+        //    .toList() : Collections.emptyList())
         //.setRefMap(case0.getRefMap())
         //.setFavourite(case0.getFavourite())
         //.setFollow(case0.getFollow())
@@ -390,7 +390,7 @@ public class FuncCaseConverter {
         .setAttachments(case0.getAttachments())
         .setTags(isNotEmpty(case0.getTagTargets()) ? case0.getTagTargets().stream()
             .map(o -> new IdAndNameVo().setId(o.getTagId()).setName(o.getTagName()))
-            .collect(Collectors.toList()) : Collections.emptyList())
+            .toList() : Collections.emptyList())
         .setAssocTasks(case0.getAssocTasks())
         .setAssocCases(case0.getAssocCases())
         .setFavourite(case0.getFavourite())
@@ -510,7 +510,7 @@ public class FuncCaseConverter {
   public static List<Long> objectArrToGroup(ArrayList<Object> result) {
     return isEmpty(result) ? Collections.emptyList()
         : result.stream().filter(Objects::nonNull).map(x -> ((BigInteger) x).longValue())
-            .collect(Collectors.toList());
+            .toList();
   }
 
   public static @NotNull List<FuncCase> importToDomain(CachedUidGenerator uidGenerator,
@@ -570,21 +570,21 @@ public class FuncCaseConverter {
         funcCase.setTagTargets(taskTags.stream().filter(x -> nonNull(tagsMap.get(x)))
             .map(x -> new TagTarget().setId(uidGenerator.getUID())
                 .setTargetId(funcCase.getId()).setTagId(tagsMap.get(x).get(0).getId()))
-            .collect(Collectors.toList()));
+            .toList());
       }
 
       List<String> taskNames0 = isNotEmpty(row[tasksIdx])
           ? List.of(row[tasksIdx].split("##")) : null;
       if (isNotEmpty(taskNames0)) {
         List<Long> refTaskIds = taskNames0.stream().filter(x -> nonNull(tasksMap.get(x)))
-            .map(x -> tasksMap.get(x).get(0).getId()).collect(Collectors.toList());
+            .map(x -> tasksMap.get(x).get(0).getId()).toList();
         funcCase.setRefTaskIds(new LinkedHashSet<>(refTaskIds));
       }
       List<String> caseNames0 = isNotEmpty(row[casesIdx])
           ? List.of(row[casesIdx].split("##")) : null;
       if (isNotEmpty(caseNames0)) {
         List<Long> refCaseIds = caseNames0.stream().filter(x -> nonNull(casesMap.get(x)))
-            .map(x -> casesMap.get(x).get(0).getId()).collect(Collectors.toList());
+            .map(x -> casesMap.get(x).get(0).getId()).toList();
         funcCase.setRefCaseIds(new LinkedHashSet<>(refCaseIds));
       }
 
@@ -796,7 +796,7 @@ public class FuncCaseConverter {
     List<FuncCaseEfficiencySummary> testerCases = testerTaskMap.get(testerId);
     count.setTotalCaseNum(testerCases.size());
     List<FuncCaseEfficiencySummary> validTesterCases = testerCases.stream()
-        .filter(x -> !x.getTestResult().isCanceled()).collect(Collectors.toList());
+        .filter(x -> !x.getTestResult().isCanceled()).toList();
     count.setValidCaseNum(validTesterCases.size());
 
     count.setEvalWorkload(
@@ -865,7 +865,7 @@ public class FuncCaseConverter {
     List<FuncCaseEfficiencySummary> testerCases = testerTaskMap.get(testerId);
     count.setTotalCaseNum(testerCases.size());
     List<FuncCaseEfficiencySummary> validTesterCases = testerCases.stream()
-        .filter(x -> !x.getTestResult().isCanceled()).collect(Collectors.toList());
+        .filter(x -> !x.getTestResult().isCanceled()).toList();
     count.setValidCaseNum(validTesterCases.size());
 
     count.setEvalWorkload(

@@ -225,7 +225,7 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
         ProtocolAssert.assertTrue(isNotEmpty(scenarioIds), PARAM_MISSING_T, PARAM_MISSING_KEY,
             new Object[]{"scenarioId"});
         batchCheckPermission(scenarioIds.stream().map(Long::parseLong)
-            .collect(Collectors.toList()), ScenarioPermission.VIEW);
+            .toList(), ScenarioPermission.VIEW);
       }
 
       @Override
@@ -414,7 +414,7 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
       List<ScenarioAuth> values = authMap.get(sceId);
       if (isNotEmpty(values)) {
         List<ScenarioPermission> scePermissions = values.stream()
-            .flatMap(o -> o.getAuths().stream()).collect(Collectors.toList());
+            .flatMap(o -> o.getAuths().stream()).toList();
         if (isNotEmpty(scePermissions) && scePermissions.contains(permission)) {
           continue;
         }
@@ -514,7 +514,7 @@ public class ScenarioAuthQueryImpl implements ScenarioAuthQuery {
       return ScenarioPermission.ALL;
     }
     return auths.stream().map(ScenarioAuth::getAuths).flatMap(Collection::stream)
-        .distinct().collect(Collectors.toList());
+        .distinct().toList();
   }
 
   /**

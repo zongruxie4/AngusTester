@@ -41,7 +41,7 @@ public class TagFacadeImpl implements TagFacade {
   @Override
   public void update(List<TagUpdateDto> dto) {
     List<Tag> appTags = dto.stream().map(TagAssembler::updateDtoToDomain)
-        .collect(Collectors.toList());
+        .toList();
     tagCmd.update(appTags);
   }
 

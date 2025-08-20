@@ -108,7 +108,7 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
         }
 
         List<Long> scenarioIds = allTrashes.stream()
-            .map(ScenarioTrash::getTargetId).collect(Collectors.toList());
+            .map(ScenarioTrash::getTargetId).toList();
 
         // Delete all trash
         scenarioTrashRepo.deleteByTargetIdIn(scenarioIds);
@@ -168,7 +168,7 @@ public class ScenarioTrashCmdImpl extends CommCmd<ScenarioTrash, Long> implement
         // Bach scenario
         if (isNotEmpty(allTrashes)) {
           List<Long> scenarioIds = allTrashes.stream()
-              .map(ScenarioTrash::getTargetId).collect(Collectors.toList());
+              .map(ScenarioTrash::getTargetId).toList();
 
           // Update undeleted scenario status
           scenarioRepo.updateToUndeletedStatusByIdIn(scenarioIds);

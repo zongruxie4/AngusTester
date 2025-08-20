@@ -69,7 +69,7 @@ public class NodeInfoFacadeImpl implements NodeInfoFacade {
   public List<NodeExecVo> exec(Long id) {
     List<ExecInfo> execInfos = execQuery.findByNodeId(id);
     return isEmpty(execInfos) ? null
-        : execInfos.stream().map(NodeInfoAssembler::toNodeExecInfo).collect(Collectors.toList());
+        : execInfos.stream().map(NodeInfoAssembler::toNodeExecInfo).toList();
   }
 
   @Override

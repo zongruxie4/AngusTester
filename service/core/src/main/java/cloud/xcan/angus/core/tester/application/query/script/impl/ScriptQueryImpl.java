@@ -468,7 +468,7 @@ public class ScriptQueryImpl implements ScriptQuery {
   public Set<Long> findIdsBySourceAndTypeIn(ScriptSource source, Collection<Long> sourceTargetIds,
       Collection<ScriptType> testTypes) {
     return scriptRepo.findIdsBySourceIdInAndSourceAndType(sourceTargetIds, source.getValue(),
-        testTypes.stream().map(ScriptType::getValue).collect(Collectors.toList()));
+        testTypes.stream().map(ScriptType::getValue).toList());
   }
 
   /**
@@ -780,7 +780,7 @@ public class ScriptQueryImpl implements ScriptQuery {
   @Override
   public void setScriptTag(Script script) {
     List<String> tags = scriptTagRepo.findByScriptId(script.getId()).stream()
-        .map(ScriptTag::getName).collect(Collectors.toList());
+        .map(ScriptTag::getName).toList();
     script.setTags(tags);
   }
 
@@ -803,7 +803,7 @@ public class ScriptQueryImpl implements ScriptQuery {
       for (ScriptInfo scriptInfo : scriptInfos) {
         if (tagsMap.containsKey(scriptInfo.getId())) {
           scriptInfo.setTags(tagsMap.get(scriptInfo.getId()).stream()
-              .map(ScriptTag::getName).collect(Collectors.toList()));
+              .map(ScriptTag::getName).toList());
         }
       }
     }

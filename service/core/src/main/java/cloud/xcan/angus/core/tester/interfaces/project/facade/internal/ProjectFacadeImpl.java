@@ -71,7 +71,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
   //@NameJoin -> NOOP
   public List<ProjectDetailVo> userJoined(Long userId, String name) {
     List<Project> projects = projectQuery.userJoined(userId, name);
-    return projects.stream().map(ProjectAssembler::toDetailVo).collect(Collectors.toList());
+    return projects.stream().map(ProjectAssembler::toDetailVo).toList();
   }
 
   @Override
@@ -85,7 +85,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
     List<UserBase> users = projectQuery.userMember(id);
     return users.stream().map(x -> new UserInfo().setId(x.getId())
             .setFullName(x.getFullName()).setAvatar(x.getAvatar()))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

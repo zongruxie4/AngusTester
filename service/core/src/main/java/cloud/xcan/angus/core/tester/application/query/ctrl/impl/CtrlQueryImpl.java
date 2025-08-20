@@ -130,7 +130,7 @@ public class CtrlQueryImpl implements CtrlQuery {
 
         // Extract IP addresses of healthy instances
         List<String> upInstanceIps = upInstances.stream().map(ServiceInstance::getHost)
-            .collect(Collectors.toList());
+            .toList();
         log.info("Discovery up instance ips: {}", upInstanceIps);
         log.info("Discovery isCloudServiceEdition={}, upInstanceIps.contains(nodes[0].ip)={}",
             isCloudServiceEdition(), nodes.get(0).getIp());
@@ -139,10 +139,10 @@ public class CtrlQueryImpl implements CtrlQuery {
         List<Node> validNodes = isCloudServiceEdition()
             ? nodes.stream().filter(x ->
             (isNotEmpty(x.getPublicIp()) || isNotEmpty(x.getDomain()) && isNotEmpty(x.getIp())
-                && upInstanceIps.contains(x.getIp()))).collect(Collectors.toList())
+                && upInstanceIps.contains(x.getIp()))).toList()
             : nodes.stream().filter(x ->
                     isNotEmpty(x.getIp()) && upInstanceIps.contains(x.getIp()))
-                .collect(Collectors.toList());
+                .toList();
         if (isEmpty(validNodes)) {
           log.error("Fatal: No valid controller nodes found, tenantId={}, dto={}", tenantId, dto);
           discoveryNodeVo.setFailed("Fatal: No valid controller nodes found");
@@ -209,7 +209,7 @@ public class CtrlQueryImpl implements CtrlQuery {
       protected List<ChannelRouter> process() {
         // Flatten nested channel map structure into single list
         return LocalChannelRouterManager.LOCAL_CHANNEL_MAP.values().stream().map(
-            ConcurrentHashMap::values).flatMap(Collection::stream).collect(Collectors.toList());
+            ConcurrentHashMap::values).flatMap(Collection::stream).toList();
       }
     }.execute();
   }

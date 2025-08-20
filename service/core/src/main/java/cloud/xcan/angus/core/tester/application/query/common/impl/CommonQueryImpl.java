@@ -559,7 +559,7 @@ public class CommonQueryImpl implements CommonQuery {
               infos.put(entry.getKey(), new LinkedHashSet<>(users.stream().map(
                       x -> new OrgTargetInfo().setId(x.getId()).setName(x.getFullName())
                           .setAvatar(x.getAvatar()).setType(OrgTargetType.USER))
-                  .collect(Collectors.toList())));
+                  .toList()));
               break;
             case DEPT:
               List<Dept> depts = (List<Dept>) userManager.findOrgs(entry.getKey(),
@@ -567,7 +567,7 @@ public class CommonQueryImpl implements CommonQuery {
               infos.put(entry.getKey(), new LinkedHashSet<>(depts.stream().map(
                       x -> new OrgTargetInfo().setId(x.getId()).setName(x.getName())
                           .setAvatar(null).setType(OrgTargetType.DEPT))
-                  .collect(Collectors.toList())));
+                  .toList()));
               break;
             case GROUP:
               List<Group> groups = (List<Group>) userManager.findOrgs(entry.getKey(),
@@ -575,7 +575,7 @@ public class CommonQueryImpl implements CommonQuery {
               infos.put(entry.getKey(), new LinkedHashSet<>(groups.stream().map(
                       x -> new OrgTargetInfo().setId(x.getId()).setName(x.getName())
                           .setAvatar(null).setType(OrgTargetType.GROUP))
-                  .collect(Collectors.toList())));
+                  .toList()));
               break;
           }
         }

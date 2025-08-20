@@ -217,7 +217,7 @@ public class TaskFacadeImpl implements TaskFacade {
   public List<TaskInfoVo> notAssociatedSubtask(Long id, Long moduleId) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedSubtask(id, moduleId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -235,7 +235,7 @@ public class TaskFacadeImpl implements TaskFacade {
   public List<TaskInfoVo> notAssociatedTask(Long id, Long moduleId, TaskType taskType) {
     List<TaskInfo> caseInfos = taskQuery.notAssociatedTaskInTask(id, moduleId, taskType);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(TaskAssembler::toInfoVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -253,7 +253,7 @@ public class TaskFacadeImpl implements TaskFacade {
   public List<FuncCaseListVo> notAssociatedCase(Long id, Long moduleId) {
     List<FuncCaseInfo> caseInfos = funcCaseQuery.notAssociatedCaseInTask(id, moduleId);
     return isEmpty(caseInfos) ? null : caseInfos.stream().map(FuncCaseAssembler::toListVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -325,7 +325,7 @@ public class TaskFacadeImpl implements TaskFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<TaskListExportVo> data = page.getList().stream().map(TaskAssembler::toTaskVo)
-        .collect(Collectors.toList());
+        .toList();
     while (page.getList().size() >= 500) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, dto);

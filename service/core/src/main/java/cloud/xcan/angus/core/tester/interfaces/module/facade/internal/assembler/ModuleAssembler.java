@@ -29,7 +29,7 @@ public class ModuleAssembler {
         .map(x -> new Module().setProjectId(dto.getProjectId())
             .setPid(isNull(dto.getPid()) || dto.getPid() < 1 ? DEFAULT_ROOT_PID : dto.getPid())
             .setSequence(nullSafe(dto.getSequence(), (int) (currentTimeMillis() / 1000)))
-            .setName(x)).collect(Collectors.toList());
+            .setName(x)).toList();
   }
 
   public static Module updateDtoToDomain(ModuleUpdateDto dto) {

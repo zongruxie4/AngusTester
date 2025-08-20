@@ -110,7 +110,7 @@ public class ExecFacadeImpl implements ExecFacade {
   public List<ExecInfoVo> listInfo(Set<Long> ids, Boolean joinSampleSummary) {
     List<ExecInfo> execInfos = execQuery.listInfo(ids, joinSampleSummary);
     return isEmpty(execInfos) ? null : execInfos.stream().map(ExecAssembler::toExecInfoVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
@@ -119,7 +119,7 @@ public class ExecFacadeImpl implements ExecFacade {
     List<ExecInfo> execInfos = execQuery.listInfoBySource(resourceType, resourceIds,
         joinSampleSummary);
     return isEmpty(execInfos) ? null : execInfos.stream().map(ExecAssembler::toExecInfoVo)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override
