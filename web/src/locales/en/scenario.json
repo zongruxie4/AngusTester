@@ -271,7 +271,8 @@
           "operation": "Operation"
         },
         "noDescription": "No description~",
-        "createdBy": "Created by"
+        "createdBy": "Created by",
+        "noExecute": "Not Executed"
       },
       "messages": {
         "cancelFavouriteSuccess": "Cancel favourite successfully",
@@ -310,15 +311,42 @@
         "ellipsis": {
           "more": "More"
         },
-                 "messages": {
+        "messages": {
            "updateSuccess": "Successfully updated to associated interfaces"
          }
        },
-       "drawer": {
-         "menuItems": {
-           "activity": "Activity"
-         }
-       }
-     }
-   }
- } 
+               "drawer": {
+          "menuItems": {
+            "activity": "Activity"
+          }
+        }
+      }
+    },
+    "auth": {
+      "description": "Configure data operation permissions for scenarios for specified users. By configuring permissions, you can more efficiently complete debugging, management, testing and other interface work in team collaboration.",
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "authSet": {
+        "searchPlaceholder": "Search name",
+        "table": {
+          "columns": {
+            "name": "Name",
+            "permissionControl": "Permission Control",
+            "permission": "Permission"
+          }
+        },
+        "loading": "Loading...",
+        "selectAll": "All"
+      },
+      "groupSet": {
+        "searchPlaceholders": {
+          "dept": "Search department",
+          "group": "Search group",
+          "user": "Search user"
+        }
+      }
+    }
+  }  

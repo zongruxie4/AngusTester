@@ -13,9 +13,11 @@ import {
   ScriptTypeTag
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import { scenario } from 'src/api/tester';
 import { MenuItem, MenuItemKey, MenuItemPermission, SceneInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: SceneInfo[];
@@ -134,7 +136,7 @@ const cancelFavourite = async (id: string) => {
   const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFavouriteFlag');
   const data = dropdownMenuItems.find(item => item.key === 'favouriteFlag');
   dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  notification.success('取消收藏成功');
+  notification.success(t('scenario.list.messages.cancelFavouriteSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -148,7 +150,7 @@ const cancelFollow = async (id: string) => {
   const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFollowFlag');
   const data = dropdownMenuItems.find(item => item.key === 'followFlag');
   dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  notification.success('取消关注成功');
+  notification.success(t('scenario.list.messages.cancelFollowSuccess'));
 };
 
 const toClone = async (value: SceneInfo) => {
@@ -157,14 +159,14 @@ const toClone = async (value: SceneInfo) => {
     return;
   }
 
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
   emit('clone', value);
 };
 
 const deleteScene = ({ name, id }: { name: string; id: string }) => {
   modal.confirm({
     centered: true,
-    content: `删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【${name}】？`,
+    content: t('scenario.list.messages.deleteConfirm', { name }),
     async onOk () {
       loading.value = true;
       const [error] = await scenario.deleteScenario(id);
@@ -178,7 +180,7 @@ const deleteScene = ({ name, id }: { name: string; id: string }) => {
       sceneList.value.splice(delIdx, 1);
 
       emit('delete', id);
-      notification.success('删除成功，您可以在回收站查看删除后的场景。');
+      notification.success(t('scenario.list.messages.deleteSuccess'));
     }
   });
 };
@@ -220,7 +222,7 @@ const toFavourite = async (id: string) => {
   const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'favouriteFlag');
   const data = dropdownMenuItems.find(item => item.key === 'cancelFavouriteFlag');
   dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  notification.success('收藏成功');
+  notification.success(t('scenario.list.messages.favouriteSuccess'));
 };
 
 const toFollow = async (id: string) => {
@@ -234,7 +236,7 @@ const toFollow = async (id: string) => {
   const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'followFlag');
   const data = dropdownMenuItems.find(item => item.key === 'cancelFollowFlag');
   dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  notification.success('关注成功');
+  notification.success(t('scenario.list.messages.followSuccess'));
 };
 
 // 重新打开测试任务
@@ -243,7 +245,7 @@ const reopenContent = ref('');
 const reopenTestTask = (item) => {
   selectedId.value = item.id;
   reopenTestTaskVisible.value = true;
-  reopenContent.value = `将场景下所有已结束的任务状态更新为"待测试"， 不清理统计计数和状态，您确认重新打开测试任务【${item.name}】吗？`;
+  reopenContent.value = t('scenario.list.messages.reopenConfirm', { name: item.name });
 };
 
 // 重新开始测试
@@ -252,7 +254,7 @@ const restartContent = ref('');
 const restartTestTask = (item) => {
   selectedId.value = item.id;
   restartTestTaskVisible.value = true;
-  restartContent.value = `将场景下所有已结束的任务状态更新为"待测试"， 相关统计计数和状态会被清除，您确认重新开始测试【${item.name}】吗？`;
+  restartContent.value = t('scenario.list.messages.restartConfirm', { name: item.name });
 };
 
 const createTestTask = (id: string): void => {
@@ -372,18 +374,18 @@ const resBgColorMap = {
 };
 
 const dropdownMenuItems: readonly MenuItem[] = [
-  { key: 'followFlag', name: '关注', permission: 'VIEW', icon: 'icon-yiguanzhu' },
-  { key: 'cancelFollowFlag', name: '取消关注', permission: 'VIEW', icon: 'icon-quxiaoguanzhu' },
-  { key: 'favouriteFlag', name: '收藏', permission: 'VIEW', icon: 'icon-yishoucang' },
-  { key: 'cancelFavouriteFlag', name: '取消收藏', permission: 'VIEW', icon: 'icon-quxiaoshoucang' },
-  { key: 'auth', name: '权限', permission: 'GRANT', icon: 'icon-quanxian1' },
-  { key: 'export', name: '导出脚本', permission: 'EXPORT', icon: 'icon-daochu' },
+  { key: 'followFlag', name: t('scenario.list.actions.follow'), permission: 'VIEW', icon: 'icon-yiguanzhu' },
+  { key: 'cancelFollowFlag', name: t('scenario.list.actions.cancelFollow'), permission: 'VIEW', icon: 'icon-quxiaoguanzhu' },
+  { key: 'favouriteFlag', name: t('scenario.list.actions.favourite'), permission: 'VIEW', icon: 'icon-yishoucang' },
+  { key: 'cancelFavouriteFlag', name: t('scenario.list.actions.cancelFavourite'), permission: 'VIEW', icon: 'icon-quxiaoshoucang' },
+  { key: 'auth', name: t('scenario.list.actions.auth'), permission: 'GRANT', icon: 'icon-quanxian1' },
+  { key: 'export', name: t('scenario.list.actions.export'), permission: 'EXPORT', icon: 'icon-daochu' },
   // { key: 'performTesting', name: '执行测试', permission: 'TEST', icon: 'icon-zhihangceshi' },
-  { key: 'delete', name: '删除', permission: 'DELETE', icon: 'icon-qingchu' },
-  { key: 'createTestTask', name: '生成测试任务', permission: 'TEST', icon: 'icon-shengchengceshirenwu1', tip: '生成功能、性能和稳定性测试任务。' },
-  { key: 'restartTestTask', name: '重新开始测试任务', permission: 'TEST', icon: 'icon-zhongxinkaishiceshi', tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。' },
-  { key: 'reopenTestTask', name: '重新打开测试任务', permission: 'TEST', icon: 'icon-zhongxindakaiceshirenwu', tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。' },
-  { key: 'deleteTestTask', name: '删除测试任务', permission: 'TEST', icon: 'icon-shanchuceshirenwu1', tip: '删除接口对应功能、性能和稳定性测试任务。' }
+  { key: 'delete', name: t('scenario.list.actions.delete'), permission: 'DELETE', icon: 'icon-qingchu' },
+  { key: 'createTestTask', name: t('scenario.list.actions.createTestTask'), permission: 'TEST', icon: 'icon-shengchengceshirenwu1', tip: '生成功能、性能和稳定性测试任务。' },
+  { key: 'restartTestTask', name: t('scenario.list.actions.restartTestTask'), permission: 'TEST', icon: 'icon-zhongxinkaishiceshi', tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。' },
+  { key: 'reopenTestTask', name: t('scenario.list.actions.reopenTestTask'), permission: 'TEST', icon: 'icon-zhongxindakaiceshirenwu', tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。' },
+  { key: 'deleteTestTask', name: t('scenario.list.actions.deleteTestTask'), permission: 'TEST', icon: 'icon-shanchuceshirenwu1', tip: '删除接口对应功能、性能和稳定性测试任务。' }
 ];
 </script>
 <template>
@@ -400,7 +402,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 {{ record.name }}
               </RouterLink>
               <div>
-                <Badge :text="record.lastExecStatus?.message || '未执行'" :color="resBgColorMap[record.lastExecStatus?.value || '']" />
+                <Badge :text="record.lastExecStatus?.message || t('scenario.list.table.noExecute')" :color="resBgColorMap[record.lastExecStatus?.value || '']" />
                 <template v-if="record?.lastExecStatus?.value !== 'COMPLETED' && record?.lastExecFailureMessage">
                   <Tooltip
                     placement="topLeft"
@@ -416,7 +418,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 </template>
               </div>
             </div>
-            <div v-if="!record.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">无描述~</div>
+            <div v-if="!record.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">{{ t('scenario.list.table.noDescription') }}</div>
             <TypographyParagraph
               v-else
               class="h-9 leading-4.5 mb-2.5 text-theme-sub-content"
@@ -430,7 +432,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
                 class="flex-shrink-0 w-6 h-6 rounded-xl" />
               <div class="flex items-center space-x-3">
                 <span>{{ record.createdByName }}</span>
-                <span>创建于{{ record.createdDate }}</span>
+                <span>{{ t('scenario.list.table.createdBy') }}{{ record.createdDate }}</span>
               </div>
             </div>
 
@@ -505,9 +507,9 @@ const dropdownMenuItems: readonly MenuItem[] = [
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${selectedId}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${selectedId}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有场景相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级目录权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-        title="场景权限"
+        :onTips="t('scenario.list.tips.authOn')"
+        :offTips="t('scenario.list.tips.authOff')"
+        :title="t('scenario.list.tips.authTitle')"
         @change="authFlagChange" />
     </AsyncComponent>
 
@@ -515,7 +517,7 @@ const dropdownMenuItems: readonly MenuItem[] = [
       <CreateTestTaskModal
         v-model:id="selectedId"
         v-model:visible="createTestTaskVisible"
-        infoText="场景测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
+        :infoText="t('scenario.list.tips.testTaskInfo')"
         type="SCENARIO" />
     </AsyncComponent>
 

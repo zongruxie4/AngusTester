@@ -271,7 +271,8 @@
           "operation": "操作"
         },
         "noDescription": "无描述~",
-        "createdBy": "创建于"
+        "createdBy": "创建于",
+        "noExecute": "未执行"
       },
       "messages": {
         "cancelFavouriteSuccess": "取消收藏成功",
@@ -310,14 +311,41 @@
         "ellipsis": {
           "more": "更多"
         },
-                 "messages": {
+        "messages": {
            "updateSuccess": "更新到已关联接口成功"
          }
        },
-       "drawer": {
+      "drawer": {
          "menuItems": {
            "activity": "活动"
          }
+      }
+     }
+   },
+   "auth": {
+     "description": "对指定的用户配置场景的数据操作权限。通过配置权限可以更加高效的在团队协作间完成调试、管理、测试等接口工作。",
+     "tabs": {
+       "user": "用户",
+       "dept": "部门",
+       "group": "组"
+     },
+     "authSet": {
+       "searchPlaceholder": "查询名称",
+       "table": {
+         "columns": {
+           "name": "名称",
+           "permissionControl": "权限控制",
+           "permission": "权限"
+         }
+       },
+       "loading": "加载中...",
+       "selectAll": "全部"
+     },
+     "groupSet": {
+       "searchPlaceholders": {
+         "dept": "查询部门",
+         "group": "查询组",
+         "user": "查询用户"
        }
      }
    }

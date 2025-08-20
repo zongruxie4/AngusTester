@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { enumUtils } from '@xcan-angus/infra';
 import { ScenarioPermission } from '@/enums/enums';
+
+const { t } = useI18n();
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 
@@ -35,7 +38,7 @@ onMounted(() => {
   loadEnums();
 });
 
-const text = '对指定的用户配置场景的数据操作权限。通过配置权限可以更加高效的在团队协作间完成调试、管理、测试等接口工作。';
+const text = t('scenario.auth.description');
 </script>
 
 <template>
@@ -45,7 +48,7 @@ const text = '对指定的用户配置场景的数据操作权限。通过配置
       v-model:activeKey="activeKey"
       size="small"
       style="height: calc(100% - 18px);">
-      <TabPane key="user" tab="用户">
+      <TabPane key="user" :tab="t('scenario.auth.tabs.user')">
         <GroupSet
           key="user"
           v-model:checkedId="checkedUserId"
@@ -63,7 +66,7 @@ const text = '对指定的用户配置场景的数据操作权限。通过配置
           :projectId="props.projectId"
           class="flex-1" />
       </TabPane>
-      <TabPane key="dept" tab="部门">
+      <TabPane key="dept" :tab="t('scenario.auth.tabs.dept')">
         <GroupSet
           key="dept"
           v-model:checkedId="checkedDeptId"
@@ -81,7 +84,7 @@ const text = '对指定的用户配置场景的数据操作权限。通过配置
           :projectId="props.projectId"
           class="flex-1" />
       </TabPane>
-      <TabPane key="group" tab="组">
+      <TabPane key="group" :tab="t('scenario.auth.tabs.group')">
         <GroupSet
           key="group"
           v-model:checkedId="checkedGroupId"
